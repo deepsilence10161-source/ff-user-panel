@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#050507;color:#fff">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#050507">
+<title>Mini eSports</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* Anti white-flash — loads before styles.css */
+html,body{background:#050507!important;color:#fff!important}
+#splash{background:#050507!important}
+#loginScreen{background:#050507!important}
+.app-wrap{background:#050507!important}
+</style>
+<link rel="stylesheet" href="styles.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+</head>
+<body style="background:#050507;color:#fff">
+<div class="app-wrap">
+
+<!-- SPLASH -->
+<div id="splash">
+<div class="sp-icon">🎮</div>
+<div class="sp-title">Mini eSports</div>
+<div class="sp-sub">Loading your arena...</div>
+<div class="sp-spinner"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+<div class="login-logo">🎮</div>
+<div class="login-title">Mini eSports</div>
+<div class="login-sub">Join Free Fire tournaments, compete with players, and win real cash prizes!</div>
+<button class="g-btn" id="googleBtn" onclick="doGoogleLogin()">
+<svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+Continue with Google
+</button>
+<div class="login-help">Sign in with your Google account to get started. No password needed!</div>
+</div>
+
+<!-- HEADER -->
+<div id="header" style="display:none">
+<div class="hdr-row">
+<div class="hdr-left"><i class="fas fa-fire hdr-fire"></i><span class="hdr-name">Mini eSports</span></div>
+<div class="hdr-right">
+<div class="hdr-bell" onclick="showUserSearch()" title="Search Matches"><i class="fas fa-search" style="font-size:14px"></i></div>
+<div class="hdr-bell" onclick="navTo('notif')"><i class="fas fa-bell"></i><span class="dot" id="bellDot"></span></div>
+<div class="hdr-chip chip-coin" onclick="window.showCoinConverter&&showCoinConverter()"><span>🪙</span><span id="hdrCoins">0</span></div>
+<div class="hdr-chip chip-money" onclick="window.showPrizeTracker&&showPrizeTracker()"><span>₹</span><span id="hdrMoney">0</span></div>
+</div>
+</div>
+<!-- hdrUidBar removed -->
+<div class="ticker-wrap"><span class="ticker-txt" id="tickerTxt">Welcome to Mini eSports! 🔥</span></div>
+</div>
+
+<div id="stateBanner" class="state-banner" style="display:none"></div>
+<div id="offlineBanner" class="offline-banner" style="display:none">📡 No connection — data may be outdated</div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" style="display:none">
+
+<!-- HOME -->
+<div class="screen active" id="scrHome">
+<div class="status-tabs" id="homeST">
+<div class="s-tab active" data-st="upcoming" onclick="setST('home','upcoming')">Upcoming</div>
+<div class="s-tab" data-st="live" onclick="setST('home','live')"><span class="livedot"></span>Live</div>
+<div class="s-tab" data-st="completed" onclick="setST('home','completed')">Completed</div>
+</div>
+<div class="cat-pills" id="homeCat">
+<div class="c-pill cp-paid active" data-cat="paid" onclick="setCat('paid')">💰 Paid</div>
+<div class="c-pill cp-coin" data-cat="coin" onclick="setCat('coin')">🪙 Coin</div>
+<div class="c-pill" data-cat="ad" onclick="setCat('ad')" style="background:rgba(255,159,28,.12);color:#ff9f1c;border:1px solid rgba(255,159,28,.25)">📺 Ad Free</div>
+</div>
+<div id="homeList"></div>
+</div>
+
+<!-- SPECIAL -->
+<div class="screen" id="scrSpecial">
+<div class="sp-toggle">
+<div class="sp-tog-btn active" onclick="setSpec('weekly',this)">Sunday Special</div>
+<div class="sp-tog-btn" onclick="setSpec('monthly',this)">Monthly Special</div>
+</div>
+<div class="cd-wrap">
+<div class="cd-box"><div class="num" id="cdD">00</div><div class="lbl">Days</div></div>
+<div class="cd-box"><div class="num" id="cdH">00</div><div class="lbl">Hours</div></div>
+<div class="cd-box"><div class="num" id="cdM">00</div><div class="lbl">Mins</div></div>
+<div class="cd-box"><div class="num" id="cdS">00</div><div class="lbl">Secs</div></div>
+</div>
+<div id="specialList"></div>
+</div>
+
+<!-- MY MATCHES -->
+<div class="screen" id="scrMatches">
+<div class="status-tabs" id="mmST">
+<div class="s-tab active" data-st="upcoming" onclick="setST('mm','upcoming')">Upcoming</div>
+<div class="s-tab" data-st="live" onclick="setST('mm','live')"><span class="livedot"></span>Live</div>
+<div class="s-tab" data-st="completed" onclick="setST('mm','completed')">Completed</div>
+</div>
+<div id="mmList"></div>
+</div>
+
+<div class="screen" id="scrWallet">
+<div id="walletMain">
+<div class="w-card wc-money">
+<div class="w-label">Real Money Balance</div>
+<div class="w-total green" id="wTotal">₹0</div>
+<div class="w-break" id="wBreak">Deposited: ₹0 | Winnings: ₹0 | Bonus: ₹0</div>
+<div class="w-btns">
+<button class="w-btn wb-add" onclick="startAdd()"><i class="fas fa-plus"></i> Add Money</button>
+<button class="w-btn wb-wd" onclick="startWd()"><i class="fas fa-arrow-down"></i> Withdraw</button>
+</div>
+</div>
+<div class="w-card wc-coin">
+<div class="w-label">Coins</div>
+<div class="w-total yellow" id="wCoins">🪙 0</div>
+<!-- Check-in button -->
+<button class="w-btn" onclick="window.doCheckIn&&doCheckIn()" style="background:linear-gradient(135deg,rgba(0,255,156,.15),rgba(0,255,156,.05));color:var(--green);border:1px solid rgba(0,255,156,.2);margin-top:8px"><i class="fas fa-calendar-check"></i> Daily Check-In (+🪙5)</button>
+<!-- Buy Coins Button -->
+<button class="w-btn" onclick="showCoinShop()" style="background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,140,0,.08));color:#ffd700;border:1px solid rgba(255,215,0,.25);margin-top:6px"><i class="fas fa-store"></i> Buy Coins</button>
+</div>
+<!-- COIN SHOP MODAL (hidden) -->
+<div id="coinShopModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeCoinShop()">
+<div style="background:var(--card);border-radius:24px 24px 0 0;padding:24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div>
+      <div style="font-size:20px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🪙 Coin Shop</div>
+      <div style="font-size:11px;color:var(--txt2);margin-top:2px">Coins se Coin matches khelo</div>
+    </div>
+    <button onclick="closeCoinShop()" style="background:rgba(255,255,255,.08);border:none;color:var(--txt);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+  </div>
+  <!-- Packages -->
+  <div class="coin-pkg-grid">
+    <div class="coin-pkg" onclick="buyCoinPkg(29,200,'starter')">
+      <div class="pkg-coins">200🪙</div>
+      <div class="pkg-bonus">Starter Pack</div>
+      <div class="pkg-price">₹29</div>
+      <div class="pkg-label">~₹0.14/coin</div>
+    </div>
+    <div class="coin-pkg popular" onclick="buyCoinPkg(59,500,'popular')">
+      <div class="pkg-coins">500🪙</div>
+      <div class="pkg-bonus">+50 Bonus Coins!</div>
+      <div class="pkg-price">₹59</div>
+      <div class="pkg-label">Best Value 🔥</div>
+    </div>
+    <div class="coin-pkg" onclick="buyCoinPkg(99,1000,'value')">
+      <div class="pkg-coins">1000🪙</div>
+      <div class="pkg-bonus">+150 Bonus Coins!</div>
+      <div class="pkg-price">₹99</div>
+      <div class="pkg-label">Super Deal 💎</div>
+    </div>
+    <div class="coin-pkg" onclick="buyCoinPkg(199,2500,'mega')">
+      <div class="pkg-coins">2500🪙</div>
+      <div class="pkg-bonus">+500 Bonus Coins!</div>
+      <div class="pkg-price">₹199</div>
+      <div class="pkg-label">Mega Pack 👑</div>
+    </div>
+  </div>
+  <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15);border-radius:12px;padding:12px;margin-top:16px;font-size:11px;color:var(--txt2);text-align:center">
+    💡 Purchase ke liye UPI payment karo aur screenshot admin ko bhejo. Admin 1-2 ghante mein coins add karega.
+  </div>
+  <div id="coinShopMsg" style="display:none;margin-top:12px;padding:12px;border-radius:12px;font-size:13px;font-weight:700;text-align:center"></div>
+</div>
+</div>
+<!-- Quick wallet tools - Clean v11 -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 0 12px">
+<button onclick="window.showCoinHistory&&showCoinHistory()" style="padding:11px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-history"></i> Coin History</button>
+<button onclick="window.showEarningsBreakdown&&showEarningsBreakdown()" style="padding:11px;border-radius:12px;background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);color:var(--green);font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-chart-pie"></i> Earnings</button>
+<button onclick="window.checkWithdrawalEligibility&&checkWithdrawalEligibility()" style="padding:11px;border-radius:12px;background:rgba(185,100,255,.06);border:1px solid rgba(185,100,255,.15);color:var(--purple);font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-check-circle"></i> WD Check</button>
+<button onclick="window.showTransactionSummary&&showTransactionSummary()" style="padding:11px;border-radius:12px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);color:var(--blue);font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-file-invoice"></i> Summary</button>
+</div>
+<div class="wh-section">
+<div class="wh-title"><i class="fas fa-history"></i> Transaction History</div>
+
+<div id="walletHist"></div>
+</div>
+</div>
+<div id="walletFlow" style="display:none"></div>
+</div>
+
+<!-- RANK -->
+<div class="screen" id="scrRank"><div id="rankContent"></div></div>
+
+<!-- PROFILE -->
+<div class="screen" id="scrProfile"><div id="profileContent"></div></div>
+
+<!-- NOTIFICATIONS -->
+<div class="screen" id="scrNotif">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+<i class="fas fa-arrow-left" style="cursor:pointer;font-size:18px" onclick="goBack()"></i>
+<span style="font-size:18px;font-weight:700">Notifications</span>
+</div>
+<div id="notifList"></div>
+</div>
+
+<!-- CHAT -->
+<div class="screen" id="scrChat">
+<div class="chat-container">
+<div class="chat-header">
+<i class="fas fa-arrow-left ch-back" onclick="goBack()"></i>
+<div class="ch-ava"><i class="fas fa-headset"></i></div>
+<div class="ch-info"><div class="ch-name">Support Team</div><div class="ch-status" id="chatSt">Online</div></div>
+</div>
+<div class="chat-messages" id="chatMsgs"></div>
+<div class="chat-input-wrap">
+<input type="text" id="chatIn" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendChat()">
+<button class="chat-send-btn" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomNav" style="display:none">
+<div class="nav-row">
+<div class="nav-item active" data-nav="home" onclick="navTo('home')"><i class="fas fa-home"></i><span>Home</span></div>
+<div class="nav-item" data-nav="special" onclick="navTo('special')"><i class="fas fa-crown"></i><span>Special</span></div>
+<div class="nav-item" data-nav="matches" onclick="navTo('matches')"><i class="fas fa-gamepad"></i><span>My Matches</span></div>
+<div class="nav-item" data-nav="wallet" onclick="navTo('wallet')"><i class="fas fa-wallet"></i><span>Wallet</span></div>
+<div class="nav-item" data-nav="rank" onclick="navTo('rank')"><i class="fas fa-trophy"></i><span>Rank</span></div>
+<div class="nav-item" data-nav="profile" onclick="navTo('profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOv" onclick="if(event.target===this)closeModal()">
+<div class="modal-box">
+<div class="modal-drag"></div>
+<div class="modal-hdr"><span id="modalT"></span><span class="m-close" onclick="closeModal()"><i class="fas fa-times"></i></span></div>
+<div class="modal-body" id="modalB"></div>
+</div>
+</div>
+
+<div id="rpContainer"></div>
+<div id="toast-wrap"></div>
+</div>
+
+<script src="app.js"></script>
+<!-- NEW FEATURES -->
+<script src="js/match-timer.js"></script>
+<script src="js/room-reveal.js"></script>
+<script src="js/anti-cheat.js"></script>
+<script src="js/security.js"></script>
+<script src="js/wallet-history.js"></script>
+<script src="js/match-result-detail.js"></script>
+<script src="js/streak.js"></script>
+<script src="js/referral-tracker.js"></script>
+<script src="js/profile-card.js"></script>
+<script src="js/quick-deposit.js"></script>
+<script src="js/offline-handler.js"></script>
+<script src="js/features-user.js"></script>
+<script src="js/features/f01-late-join-banner.js"></script>
+<script src="js/features/f02-popularity-badge.js"></script>
+<script src="js/features/f03-difficulty-badge.js"></script>
+<script src="js/features/f04-dynamic-prize.js"></script>
+<script src="js/features/f05-quick-rematch.js"></script>
+<script src="js/features/f06-daily-streak.js"></script>
+<script src="js/features/f07-weekly-challenge.js"></script>
+<script src="js/features/f10-performance-dashboard.js"></script>
+<script src="js/features/f11-win-prediction.js"></script>
+<script src="js/features/f12-player-titles.js"></script>
+<script src="js/features/f13-wallet-split.js"></script>
+<script src="js/features/f14-post-match-survey.js"></script>
+<script src="js/features/f16-online-count.js"></script>
+<script src="js/features/f17-match-reminder.js"></script>
+<script src="js/features/f18-earning-goal.js"></script>
+<script src="js/features/f19-referral-leaderboard.js"></script>
+<script src="js/features/f20-match-share-card.js"></script>
+<script src="js/features/f21-season-system.js"></script>
+<script src="js/features/f22-player-chat.js"></script>
+  <script src="js/features/f23-achievements.js"></script>
+  <script src="js/features/f24-result-screenshot.js"></script>
+  <script src="js/features/f25-public-history.js"></script>
+  <script src="js/features/f26-cashback.js"></script>
+  <script src="js/features/f27-live-counter.js"></script>
+  <script src="js/features/f28-verified-badge.js"></script>
+  <script src="js/features/f29-special-tournaments.js"></script>
+    <script src="js/features/f30-smart-filter.js"></script>
+    <script src="js/features/f31-rank-widget.js"></script>
+    <script src="js/features/f32-countdown.js"></script>
+    <script src="js/features/f33-prize-popup.js"></script>
+    <script src="js/features/f34-notif-center.js"></script>
+    <script src="js/features/f35-join-confirm.js"></script>
+    <script src="js/features/f36-wallet-guard.js"></script>
+    <script src="js/features/f37-per-match-reminder.js"></script>
+    <script src="js/features/f38-result-card.js"></script>
+    <script src="js/features/f39-team-check.js"></script>
+    <script src="js/features/f40-match-recap.js"></script>
+    <script src="js/features/f41-profile-completeness.js"></script>
+    <script src="js/features/f42-coin-history.js"></script>
+    <script src="js/features/f43-share-app.js"></script>
+    <script src="js/features/f44-polls.js"></script>
+    <script src="js/features/f45-suggestions.js"></script>
+    <script src="js/features/f46-features-bundle.js"></script>
+    <script src="js/features/f47-anti-fraud-complete.js"></script>
+    <script src="js/features/f48-engagement-complete.js"></script>
+    <script src="js/features/f49-ux-complete.js"></script>
+    <!-- ====== PREVIOUSLY MISSING FEATURES (f75-f84) ====== -->
+    <script src="js/features/f75-smart-match-filter.js"></script>
+    <script src="js/features/f76-wallet-alert.js"></script>
+    <script src="js/features/f77-match-countdown.js"></script>
+    <script src="js/features/f78-my-rank-widget.js"></script>
+    <script src="js/features/f79-prize-breakdown.js"></script>
+    <script src="js/features/f80-auto-team-check.js"></script>
+    <script src="js/features/f81-notif-center-v2.js"></script>
+    <script src="js/features/f82-smart-join-confirm.js"></script>
+    <script src="js/features/f83-result-history-card.js"></script>
+    <script src="js/features/f84-match-reminder-bell.js"></script>
+    <!-- ====== NEW ANTI-SPAM FEATURES (50 Total) ====== -->
+    <script src="js/features/f50-screenshot-watermark-validator.js"></script>
+    <script src="js/features/f51-rapid-join-spam-blocker.js"></script>
+    <script src="js/features/f52-referral-abuse-detector.js"></script>
+    <script src="js/features/f53-chat-spam-prevention.js"></script>
+    <script src="js/features/f54-multi-account-blocker.js"></script>
+    <script src="js/features/f55-utr-duplicate-detector.js"></script>
+    <script src="js/features/f56-vpn-proxy-detection.js"></script>
+    <script src="js/features/f57-f72-advanced-fraud-shield.js"></script>
+    <script src="js/features/f73-f74-session-metadata.js"></script>
+    <!-- ✅ LEGAL COMPLIANCE SYSTEM -->
+    <script src="js/legal-compliance.js"></script>
+    <!-- ✅ PREVIEW / COMING SOON MODE -->
+    <script src="js/preview-mode.js"></script>
+    <!-- ✅ UI FIXES MASTER -->
+    <script src="js/ui-fixes.js"></script>
+    <!-- ✅ SMART AUTOMATIONS -->
+    <script src="js/smart-automations.js"></script>
+    <!-- ✅ DIAMOND SYSTEM — Wallet display + TDS aware withdrawal -->
+    <script src="js/diamond-system.js"></script>
+    <!-- ✅ REFERRAL SYSTEM FIX -->
+    <script src="js/referral-system-fix.js"></script>
+
+    <!-- ═══ USER AUTOMATION FEATURES f85–f109 ═══ -->
+    <script src="js/features/f85-performance-trend.js"></script>
+    <script src="js/features/f86-session-summary.js"></script>
+    <script src="js/features/f87-comeback-alert.js"></script>
+    <script src="js/features/f88-spending-tracker.js"></script>
+    <script src="js/features/f89-milestone-tracker.js"></script>
+    <script src="js/features/f90-combo-streak-bonus.js"></script>
+    <script src="js/features/f91-best-match-suggester.js"></script>
+    <script src="js/features/f92-daily-quiz.js"></script>
+    <script src="js/features/f93-f99-automation-bundle.js"></script>
+    <script src="js/features/f100-f109-automation-bundle.js"></script>
+
+<!-- ═══ EXTRA FIXES (all safe — loaded after app.js) ═══ -->
+<script src="js/ad-manager.js"></script>
+<!-- Fix 9: Toast Queue -->
+<script src="js/fix9-toast-queue.js"></script>
+<!-- Fix 10: Server Time Sync -->
+<script src="js/fix10-server-time-sync.js"></script>
+<!-- Fix 5: Listener Manager -->
+<script src="js/fix5-listener-manager.js"></script>
+<!-- Fix 6: Offline Queue -->
+<script src="js/fix6-offline-queue.js"></script>
+<!-- Fix 8: Lazy Loading (safe version - no createElement override) -->
+<script src="js/fix8-lazy-loading.js"></script>
+<!-- Fix 12: Push Notifications -->
+<script src="js/fix12-push-notifications.js"></script>
+<!-- User Presence -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var _presInt = setInterval(function() {
+    if (!window.db || !window.U) return;
+    clearInterval(_presInt);
+    var ref = db.ref('presence/' + U.uid);
+    db.ref('.info/connected').on('value', function(s) {
+      if (s.val() !== true) return;
+      ref.onDisconnect().remove();
+      ref.set({ online: true, role: 'user', lastSeen: firebase.database.ServerValue.TIMESTAMP, page: window.curScr || 'home' });
+    });
+    setInterval(function() {
+      if (window.U && window.curScr) ref.update({ page: curScr, lastSeen: firebase.database.ServerValue.TIMESTAMP });
+    }, 30000);
+  }, 1000);
+});
+</script>
+</body>
+</html>
