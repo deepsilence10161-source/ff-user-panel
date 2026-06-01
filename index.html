@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#050507;color:#fff">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#050507">
+<meta name="app-url" content="https://ff-user-panel.deepsilence10161.workers.dev/">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Mini eSports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* Anti white-flash — inline, loads before styles.css */
+html,body{background:#050507!important;color:#fff!important}
+#splash,#loginScreen,.app-wrap{background:#050507!important}
+</style>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="js/user-ui-v10.css">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png">
+<!-- OneSignal Push Notifications -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "9c00aa92-4577-484c-996d-4494e8c6afad",
+      safari_web_id: "web.onesignal.auto.6b7c8d9e-0f1a-2b3c-4d5e-6f7a8b9c0d1e",
+      notifyButton: { enable: false },
+      allowLocalhostAsSecureOrigin: true,
+      serviceWorkerPath: "OneSignalSDKWorker.js"
+    });
+  });
+</script>
+</head>
+<body style="background:#050507;color:#fff">
+<div class="app-wrap">
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sp-icon">🎮</div>
+  <div class="sp-title">Mini eSports</div>
+  <div class="sp-sub">Loading your arena...</div>
+  <div class="sp-spinner"></div>
+</div>
+
+<!-- LOGIN — Google Only (Firebase Auth → Supabase JWT) -->
+<div id="loginScreen" style="display:none">
+<style>
+#loginScreen{
+  position:fixed;inset:0;z-index:9000;
+  background:#050507;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:28px;
+}
+#loginScreen::before{
+  content:'';position:fixed;top:-100px;left:-60px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(185,100,255,.2) 0%,transparent 70%);
+  animation:lsOrb 7s ease-in-out infinite;pointer-events:none;
+}
+#loginScreen::after{
+  content:'';position:fixed;bottom:-80px;right:-40px;
+  width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,212,255,.16) 0%,transparent 70%);
+  animation:lsOrb 9s ease-in-out infinite reverse;pointer-events:none;
+}
+@keyframes lsOrb{0%,100%{transform:translateY(0);}50%{transform:translateY(-28px);}}
+
+.ls-logo-wrap{
+  position:relative;margin-bottom:10px;
+  animation:lsPop .7s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes lsPop{from{opacity:0;transform:scale(.4);}to{opacity:1;transform:scale(1);}}
+.ls-logo{
+  width:90px;height:90px;border-radius:28px;
+  background:linear-gradient(135deg,#b964ff,#00d4ff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:46px;
+  box-shadow:0 0 50px rgba(185,100,255,.45),0 0 100px rgba(0,212,255,.15);
+  animation:lsPulse 3s ease-in-out infinite 1s;
+}
+@keyframes lsPulse{
+  0%,100%{box-shadow:0 0 50px rgba(185,100,255,.45),0 0 100px rgba(0,212,255,.15);}
+  50%{box-shadow:0 0 70px rgba(185,100,255,.7),0 0 120px rgba(0,212,255,.3);}
+}
+.ls-ring{
+  position:absolute;inset:-10px;border-radius:38px;
+  border:2px solid transparent;
+  background:linear-gradient(#050507,#050507) padding-box,
+             linear-gradient(135deg,#b964ff,#00d4ff,#b964ff) border-box;
+  animation:lsRing 3s linear infinite;
+}
+@keyframes lsRing{to{filter:hue-rotate(360deg);}}
+
+.ls-title{
+  font-size:28px;font-weight:900;letter-spacing:-.5px;
+  background:linear-gradient(135deg,#fff 30%,#b964ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:lsFadeUp .6s .15s both;
+}
+.ls-sub{
+  font-size:13px;color:rgba(255,255,255,.4);text-align:center;
+  margin-bottom:32px;line-height:1.55;max-width:260px;
+  animation:lsFadeUp .6s .25s both;
+}
+@keyframes lsFadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+.ls-card{
+  width:100%;max-width:340px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:24px;
+  animation:lsFadeUp .6s .35s both;
+}
+
+/* Google button */
+.ls-google-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;
+  gap:12px;padding:16px 20px;border-radius:16px;
+  background:#fff;color:#1a1a1a;
+  font-size:15px;font-weight:700;letter-spacing:.1px;
+  border:none;cursor:pointer;
+  box-shadow:0 4px 20px rgba(255,255,255,.1);
+  transition:transform .15s,box-shadow .15s,opacity .15s;
+  font-family:inherit;
+}
+.ls-google-btn:active{transform:scale(.97);}
+.ls-google-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.ls-google-btn svg{flex-shrink:0;}
+
+.ls-divider{
+  display:flex;align-items:center;gap:10px;margin:14px 0;
+}
+.ls-divider::before,.ls-divider::after{
+  content:'';flex:1;height:1px;background:rgba(255,255,255,.08);
+}
+.ls-divider span{font-size:10px;color:rgba(255,255,255,.2);font-weight:600;}
+
+.ls-note{
+  font-size:10px;color:rgba(255,255,255,.22);
+  text-align:center;line-height:1.6;margin-top:14px;
+}
+
+/* Loading state */
+.ls-loading{
+  display:none;align-items:center;justify-content:center;
+  gap:8px;padding:12px;
+  font-size:13px;color:rgba(255,255,255,.45);
+}
+.ls-spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.15);
+  border-top-color:#b964ff;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.ls-err{
+  display:none;background:rgba(255,68,68,.1);
+  border:1px solid rgba(255,68,68,.25);border-radius:10px;
+  padding:10px;font-size:12px;color:#ff7070;
+  text-align:center;margin-top:10px;line-height:1.5;
+}
+
+/* Badges */
+.ls-badges{
+  display:flex;gap:8px;margin-top:18px;
+  animation:lsFadeUp .6s .5s both;
+}
+.ls-badge{
+  flex:1;text-align:center;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:10px 6px;
+}
+.ls-badge-icon{font-size:18px;margin-bottom:3px;}
+.ls-badge-txt{font-size:9px;color:rgba(255,255,255,.3);font-weight:600;line-height:1.3;}
+</style>
+
+<!-- Logo -->
+<div class="ls-logo-wrap">
+  <div class="ls-ring"></div>
+  <div class="ls-logo">🎮</div>
+</div>
+<div class="ls-title">Mini eSports</div>
+<div class="ls-sub">India ka Halal Esports Platform<br>Free Fire Tournaments — Bilkul Free!</div>
+
+<!-- Card -->
+<div class="ls-card">
+
+  <!-- Google btn -->
+  <button class="ls-google-btn" id="googleLoginBtn" onclick="doGoogleLogin()">
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    </svg>
+    Continue with Google
+  </button>
+
+  <!-- Loading -->
+  <div class="ls-loading" id="loginLoading">
+    <div class="ls-spinner"></div>
+    <span>Logging in...</span>
+  </div>
+
+  <!-- Error -->
+  <div class="ls-err" id="loginErr"></div>
+
+  <div class="ls-note">
+    🔒 Secure Google login · No password needed<br>
+    Pehli baar? Profile auto-create hoga
+  </div>
+</div>
+
+<!-- Badges -->
+<div class="ls-badges">
+  <div class="ls-badge">
+    <div class="ls-badge-icon">✅</div>
+    <div class="ls-badge-txt">100%<br>Halal</div>
+  </div>
+  <div class="ls-badge">
+    <div class="ls-badge-icon">🆓</div>
+    <div class="ls-badge-txt">Always<br>Free</div>
+  </div>
+  <div class="ls-badge">
+    <div class="ls-badge-icon">🏆</div>
+    <div class="ls-badge-txt">Win<br>Prizes</div>
+  </div>
+  <div class="ls-badge">
+    <div class="ls-badge-icon">🔐</div>
+    <div class="ls-badge-txt">RLS<br>Secure</div>
+  </div>
+</div>
+
+</div>
+
+
+
+  <style>
+  #loginScreen{
+    position:fixed;inset:0;z-index:9000;
+    background:#050507;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:24px;overflow-y:auto;
+  }
+
+  /* Animated background orbs */
+  #loginScreen::before{
+    content:'';position:fixed;top:-120px;left:-80px;
+    width:340px;height:340px;border-radius:50%;
+    background:radial-gradient(circle,rgba(185,100,255,.18) 0%,transparent 70%);
+    animation:orbFloat 6s ease-in-out infinite;pointer-events:none;
+  }
+  #loginScreen::after{
+    content:'';position:fixed;bottom:-100px;right:-60px;
+    width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(0,212,255,.15) 0%,transparent 70%);
+    animation:orbFloat 8s ease-in-out infinite reverse;pointer-events:none;
+  }
+  @keyframes orbFloat{
+    0%,100%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-30px) scale(1.08);}
+  }
+
+  /* Logo animation */
+  .ob-logo-wrap{
+    position:relative;margin-bottom:8px;
+    animation:logoPop .7s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes logoPop{
+    0%{opacity:0;transform:scale(0.5) rotate(-10deg);}
+    100%{opacity:1;transform:scale(1) rotate(0);}
+  }
+  .ob-logo{
+    width:88px;height:88px;border-radius:28px;
+    background:linear-gradient(135deg,#b964ff,#00d4ff);
+    display:flex;align-items:center;justify-content:center;
+    font-size:44px;
+    box-shadow:0 0 40px rgba(185,100,255,.4),0 0 80px rgba(0,212,255,.15);
+    animation:logoPulse 2.5s ease-in-out infinite 1s;
+  }
+  @keyframes logoPulse{
+    0%,100%{box-shadow:0 0 40px rgba(185,100,255,.4),0 0 80px rgba(0,212,255,.15);}
+    50%{box-shadow:0 0 60px rgba(185,100,255,.7),0 0 100px rgba(0,212,255,.3);}
+  }
+  .ob-ring{
+    position:absolute;inset:-8px;border-radius:36px;
+    border:2px solid transparent;
+    background:linear-gradient(#050507,#050507) padding-box,
+               linear-gradient(135deg,#b964ff,#00d4ff,#b964ff) border-box;
+    animation:ringRotate 3s linear infinite;
+  }
+  @keyframes ringRotate{to{filter:hue-rotate(360deg);}}
+
+  .ob-title{
+    font-size:26px;font-weight:900;text-align:center;margin-bottom:4px;
+    background:linear-gradient(135deg,#fff 40%,#b964ff);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    animation:fadeUp .6s .2s both;
+  }
+  .ob-sub{
+    font-size:12px;color:rgba(255,255,255,.45);text-align:center;
+    margin-bottom:28px;line-height:1.5;max-width:280px;
+    animation:fadeUp .6s .3s both;
+  }
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(16px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* Card */
+  .ob-card{
+    width:100%;max-width:360px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;padding:24px;
+    animation:fadeUp .6s .4s both;
+  }
+
+  .ob-step{
+    display:flex;align-items:center;gap:8px;
+    font-size:11px;color:rgba(255,255,255,.35);
+    margin-bottom:20px;
+    font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  }
+  .ob-step-dot{
+    width:6px;height:6px;border-radius:50%;
+    background:linear-gradient(135deg,#b964ff,#00d4ff);
+    box-shadow:0 0 8px rgba(185,100,255,.6);
+  }
+
+  .ob-field{margin-bottom:16px;}
+  .ob-label{
+    font-size:11px;font-weight:700;color:rgba(255,255,255,.5);
+    text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:block;
+  }
+  .ob-input{
+    width:100%;box-sizing:border-box;
+    padding:14px 16px;border-radius:14px;
+    background:rgba(255,255,255,.06);
+    border:1.5px solid rgba(255,255,255,.1);
+    color:#fff;font-size:15px;font-weight:600;
+    outline:none;transition:border-color .2s,box-shadow .2s;
+    font-family:inherit;
+  }
+  .ob-input::placeholder{color:rgba(255,255,255,.2);font-weight:400;}
+  .ob-input:focus{
+    border-color:rgba(185,100,255,.6);
+    box-shadow:0 0 0 3px rgba(185,100,255,.1);
+  }
+  .ob-hint{
+    font-size:10px;color:rgba(255,255,255,.25);
+    margin-top:4px;line-height:1.4;
+  }
+
+  /* Submit button */
+  .ob-btn{
+    width:100%;padding:16px;border-radius:16px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#b964ff,#7c3aed);
+    color:#fff;font-size:16px;font-weight:800;
+    letter-spacing:.3px;margin-top:8px;
+    box-shadow:0 4px 24px rgba(185,100,255,.4);
+    transition:transform .15s,box-shadow .15s,opacity .15s;
+    font-family:inherit;
+  }
+  .ob-btn:active{transform:scale(.97);box-shadow:0 2px 12px rgba(185,100,255,.3);}
+  .ob-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+  /* Error */
+  .ob-error{
+    display:none;background:rgba(255,68,68,.1);
+    border:1px solid rgba(255,68,68,.3);border-radius:10px;
+    padding:10px 14px;font-size:12px;color:#ff6b6b;
+    margin-top:12px;text-align:center;line-height:1.5;
+  }
+
+  /* Features strip */
+  .ob-features{
+    display:flex;gap:8px;margin-top:20px;
+    animation:fadeUp .6s .55s both;
+  }
+  .ob-feat{
+    flex:1;background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:14px;padding:12px 8px;text-align:center;
+  }
+  .ob-feat-icon{font-size:20px;margin-bottom:4px;}
+  .ob-feat-txt{font-size:9px;color:rgba(255,255,255,.35);line-height:1.3;font-weight:600;}
+
+  /* Loading dots */
+  .ob-loading{display:none;text-align:center;padding:12px;color:rgba(255,255,255,.4);font-size:13px;}
+  .ob-loading span{display:inline-block;animation:dot 1.2s infinite;margin:0 2px;}
+  .ob-loading span:nth-child(2){animation-delay:.2s;}
+  .ob-loading span:nth-child(3){animation-delay:.4s;}
+  @keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+  </style>
+
+  <!-- Logo + title -->
+  <div class="ob-logo-wrap">
+    <div class="ob-ring"></div>
+    <div class="ob-logo">🎮</div>
+  </div>
+  <div class="ob-title">Mini eSports</div>
+  <div class="ob-sub">India ka Halal Esports Platform<br>Free Fire Tournaments — Bilkul Free!</div>
+
+  <!-- Setup card -->
+  <div class="ob-card">
+    <div class="ob-step">
+      <div class="ob-step-dot"></div>
+      Ek baar setup karo — hamesha ke liye
+    </div>
+
+    <div class="ob-field">
+      <label class="ob-label" for="setupIgn">🎮 Free Fire IGN (Naam)</label>
+      <input id="setupIgn" class="ob-input" type="text"
+        placeholder="Tumhara in-game naam"
+        maxlength="20" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="ob-hint">Wahi naam jo Free Fire mein dikhta hai</div>
+    </div>
+
+    <div class="ob-field">
+      <label class="ob-label" for="setupFfUid">🆔 Free Fire UID</label>
+      <input id="setupFfUid" class="ob-input" type="tel"
+        placeholder="8-12 digit number (e.g. 123456789)"
+        maxlength="12" pattern="[0-9]*" inputmode="numeric"
+        autocomplete="off">
+      <div class="ob-hint">
+        Free Fire → Profile icon → UID number copy karo
+      </div>
+    </div>
+
+    <div class="ob-error" id="setupError"></div>
+    <div class="ob-loading" id="setupLoading">
+      <span>●</span><span>●</span><span>●</span>
+      Profile bana rahe hain
+    </div>
+
+    <button class="ob-btn" id="setupSubmitBtn"
+      onclick="window.submitDeviceProfile()">
+      Enter the Game →
+    </button>
+  </div>
+
+  <!-- Feature pills -->
+  <div class="ob-features">
+    <div class="ob-feat">
+      <div class="ob-feat-icon">🔒</div>
+      <div class="ob-feat-txt">No Password<br>Ever</div>
+    </div>
+    <div class="ob-feat">
+      <div class="ob-feat-icon">✅</div>
+      <div class="ob-feat-txt">100%<br>Halal</div>
+    </div>
+    <div class="ob-feat">
+      <div class="ob-feat-icon">🆓</div>
+      <div class="ob-feat-txt">Always<br>Free</div>
+    </div>
+    <div class="ob-feat">
+      <div class="ob-feat-icon">🏆</div>
+      <div class="ob-feat-txt">Win<br>Prizes</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- HEADER -->
+<div id="header" style="display:none">
+  <div class="hdr-row">
+    <div class="hdr-left"><i class="fas fa-fire hdr-fire"></i><span class="hdr-name">Mini eSports</span></div>
+    <div class="hdr-right">
+      <div class="hdr-bell" onclick="showUserSearch()" title="Search Matches"><i class="fas fa-search" style="font-size:14px"></i></div>
+      <div class="hdr-bell" onclick="navTo('notif')"><i class="fas fa-bell"></i><span class="dot" id="bellDot"></span></div>
+      <div class="hdr-chip chip-coin" onclick="navTo('wallet')" title="Coins"><span>🪙</span><span id="hdrCoins">0</span></div>
+      <div class="hdr-chip" onclick="navTo('wallet')" style="background:rgba(0,212,255,.1);color:#00d4ff;border-color:rgba(0,212,255,.2)" title="Sky Diamonds"><span>💎</span><span id="hdrMoney">0</span></div>
+      <div class="hdr-chip" onclick="navTo('wallet')" style="background:rgba(0,255,100,.08);border-color:rgba(0,255,100,.2)" title="Green Diamonds"><img src="js/green-diamond.png" style="width:13px;height:13px;object-fit:contain;vertical-align:middle"><span id="hdrGD" style="color:#00ff64;margin-left:3px">0</span></div>
+    </div>
+  </div>
+  <div class="ticker-wrap"><span class="ticker-txt" id="tickerTxt">Welcome to Mini eSports! 🔥</span></div>
+</div>
+
+<div id="stateBanner" class="state-banner" style="display:none"></div>
+<div id="offlineBanner" class="offline-banner" style="display:none">📡 No connection — data may be outdated</div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" style="display:none">
+
+  <!-- HOME -->
+  <div class="screen active" id="scrHome">
+    <!-- Quick access bar -->
+    <div class="special-access-bar">
+      <div class="special-pill" onclick="navTo('special')" style="background:rgba(185,100,255,.1);border:1px solid rgba(185,100,255,.25);color:#b964ff">
+        <i class="fas fa-crown" style="font-size:12px"></i> Special
+      </div>
+      <div class="special-pill" onclick="window.showClanHome&&showClanHome()" style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);color:#ffd700">
+        <i class="fas fa-shield-alt" style="font-size:12px"></i> Clan
+      </div>
+      <div class="special-pill" onclick="window.showBattlePass&&showBattlePass()" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:#00d4ff">
+        <i class="fas fa-ticket-alt" style="font-size:12px"></i> Season Pass
+      </div>
+      <div class="special-pill" onclick="window.showPremiumUpgrade&&showPremiumUpgrade()" style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);color:#ffd700">
+        <i class="fas fa-gem" style="font-size:12px"></i> Premium
+      </div>
+      <div class="special-pill" onclick="window.showMissionsPanel&&showMissionsPanel()" style="background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.2);color:#00ff9c">
+        <i class="fas fa-tasks" style="font-size:12px"></i> Missions
+      </div>
+      <div class="special-pill" onclick="window.showCityLeaderboard&&showCityLeaderboard()" style="background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);color:#ff9f1c">
+        <i class="fas fa-city" style="font-size:12px"></i> City #1
+      </div>
+      <div class="special-pill" onclick="window.showCosmeticsStore&&showCosmeticsStore()" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:#00d4ff">
+        <i class="fas fa-store" style="font-size:12px"></i> Store
+      </div>
+      <div class="special-pill" onclick="window.showReferEarn&&showReferEarn()" style="background:rgba(185,100,255,.08);border:1px solid rgba(185,100,255,.2);color:#b964ff">
+        <i class="fas fa-user-friends" style="font-size:12px"></i> Refer
+      </div>
+    </div>
+    <!-- Clan War Sunday Banner -->
+    <div id="clanWarBanner" style="display:none;background:linear-gradient(135deg,rgba(185,100,255,.1),rgba(124,58,237,.07));border:1.5px solid rgba(185,100,255,.25);border-radius:14px;padding:12px 14px;margin:0 0 10px;align-items:center;gap:12px;cursor:pointer" onclick="window.showClanHome&&showClanHome()">
+      <div style="font-size:26px">⚔️</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:800;color:#b964ff">Clan War Sunday!</div>
+        <div id="clanWarBannerLabel" style="font-size:11px;color:var(--txt2);margin-top:2px">Aaj Clan War hai — apne clan ke liye khelo!</div>
+      </div>
+      <div style="font-size:11px;color:#b964ff;font-weight:700">Join →</div>
+    </div>
+    <div class="status-tabs" id="homeST">
+      <div class="s-tab active" data-st="upcoming" onclick="setST('home','upcoming')">Upcoming</div>
+      <div class="s-tab" data-st="live" onclick="setST('home','live')"><span class="livedot"></span>Live</div>
+      <div class="s-tab" data-st="completed" onclick="setST('home','completed')">Completed</div>
+    </div>
+    <div class="cat-pills" id="homeCat">
+      <div class="c-pill cp-paid active" data-cat="paid" onclick="setCat('paid')">💰 Paid</div>
+      <div class="c-pill cp-coin" data-cat="coin" onclick="setCat('coin')">🪙 Coin</div>
+      <div class="c-pill" data-cat="ad" onclick="setCat('ad')" style="background:rgba(255,159,28,.12);color:#ff9f1c;border:1px solid rgba(255,159,28,.25)">📺 Ad Free</div>
+    </div>
+    <div id="homeList"></div>
+  </div>
+
+  <!-- SPECIAL -->
+  <div class="screen" id="scrSpecial">
+    <div class="sp-toggle">
+      <div class="sp-tog-btn active" onclick="setSpec('weekly',this)">Sunday Special</div>
+      <div class="sp-tog-btn" onclick="setSpec('monthly',this)">Monthly Special</div>
+    </div>
+    <div class="cd-wrap">
+      <div class="cd-box"><div class="num" id="cdD">00</div><div class="lbl">Days</div></div>
+      <div class="cd-box"><div class="num" id="cdH">00</div><div class="lbl">Hours</div></div>
+      <div class="cd-box"><div class="num" id="cdM">00</div><div class="lbl">Mins</div></div>
+      <div class="cd-box"><div class="num" id="cdS">00</div><div class="lbl">Secs</div></div>
+    </div>
+    <div id="specialList"></div>
+  </div>
+
+  <!-- MY MATCHES -->
+  <div class="screen" id="scrMatches">
+    <div class="status-tabs" id="mmST">
+      <div class="s-tab active" data-st="upcoming" onclick="setST('mm','upcoming')">Upcoming</div>
+      <div class="s-tab" data-st="live" onclick="setST('mm','live')"><span class="livedot"></span>Live</div>
+      <div class="s-tab" data-st="completed" onclick="setST('mm','completed')">Completed</div>
+    </div>
+    <div id="mmList"></div>
+  </div>
+
+  <!-- WALLET -->
+  <div class="screen" id="scrWallet">
+    <div id="walletMain">
+      <!-- Sky Diamond Card -->
+      <div class="w-card wc-money" style="background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(185,100,255,.07));border:1px solid rgba(0,212,255,.25)">
+        <div class="w-label" style="color:#00d4ff">💎 Sky Diamond Balance</div>
+        <div class="w-total" id="wTotal" style="color:#00d4ff">💎 0</div>
+        <div class="w-break" id="wBreak" style="color:#7a7a8e;font-size:12px">Sky Diamond se Paid matches khelo</div>
+        <div style="background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:12px;color:#00d4ff;line-height:1.5">
+          ℹ️ <strong>Withdraw nahi hoga</strong> — Sky Diamonds sirf matches khelne ke liye hain.
+        </div>
+        <div class="w-btns">
+          <button class="w-btn wb-add" onclick="startAdd()" style="background:linear-gradient(135deg,#0066ff,#00d4ff);color:#fff"><i class="fas fa-gem"></i> Buy Sky Diamonds</button>
+        </div>
+      </div>
+      <div class="w-card wc-coin">
+        <div class="w-label">Coins</div>
+        <div class="w-total yellow" id="wCoins">🪙 0</div>
+        <button class="w-btn" onclick="window.doCheckIn&&doCheckIn()" style="background:linear-gradient(135deg,rgba(0,255,156,.15),rgba(0,255,156,.05));color:var(--green);border:1px solid rgba(0,255,156,.2);margin-top:8px"><i class="fas fa-calendar-check"></i> Daily Check-In (+🪙5)</button>
+        <button class="w-btn" onclick="showCoinShop()" style="background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,140,0,.08));color:#ffd700;border:1px solid rgba(255,215,0,.25);margin-top:6px"><i class="fas fa-store"></i> Buy Coins</button>
+      </div>
+
+      <!-- COIN SHOP MODAL — FREE EARN only, no UPI purchase -->
+      <div id="coinShopModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeCoinShop()">
+        <div style="background:var(--card);border-radius:24px 24px 0 0;padding:24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <div>
+              <div style="font-size:20px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🪙 Coins Kaise Kamao</div>
+              <div style="font-size:11px;color:var(--txt2);margin-top:2px">100% Free — koi payment nahi chahiye</div>
+            </div>
+            <button onclick="closeCoinShop()" style="background:rgba(255,255,255,.08);border:none;color:var(--txt);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+          </div>
+          <div style="background:linear-gradient(135deg,rgba(0,255,156,.1),rgba(0,212,255,.06));border:1.5px solid rgba(0,255,156,.3);border-radius:14px;padding:10px 14px;margin:12px 0;font-size:12px;color:#00ff9c;font-weight:700;text-align:center">
+            ✅ Coins kharidne ki zaroorat nahi — neeche se free earn karo!
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div onclick="closeCoinShop();window.showAdEarn&&showAdEarn()" style="background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='rgba(255,165,0,.12)'" onmouseout="this.style.background='rgba(255,165,0,.06)'">
+              <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ff8c00,#ffd700);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">📺</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:800;color:#ffd700">Watch Ad</div>
+                <div style="font-size:11px;color:var(--txt2);margin-top:3px">Rewarded Ad dekho → <strong style="color:#ffd700">+10🪙</strong> turant milenge</div>
+                <div style="font-size:10px;color:#ff8c00;margin-top:5px">Daily 5 baar tak • Har din reset hota hai</div>
+              </div>
+              <div style="font-size:16px;color:#ffd700;font-weight:900;white-space:nowrap">+10🪙</div>
+            </div>
+            <div onclick="closeCoinShop();window.doCheckIn&&doCheckIn()" style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='rgba(0,255,156,.12)'" onmouseout="this.style.background='rgba(0,255,156,.06)'">
+              <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">📅</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:800;color:var(--green)">Daily Check-In</div>
+                <div style="font-size:11px;color:var(--txt2);margin-top:3px">Roz login karo → <strong style="color:var(--green)">+5🪙</strong> guaranteed</div>
+                <div style="font-size:10px;color:var(--green);margin-top:5px">7-day streak bonus → +50🪙 extra!</div>
+              </div>
+              <div style="font-size:16px;color:var(--green);font-weight:900;white-space:nowrap">+5🪙</div>
+            </div>
+            <div onclick="closeCoinShop();navTo('profile')" style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .2s" onmouseover="this.style.background='rgba(0,212,255,.12)'" onmouseout="this.style.background='rgba(0,212,255,.06)'">
+              <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">👥</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:800;color:#00d4ff">Referral</div>
+                <div style="font-size:11px;color:var(--txt2);margin-top:3px">Dost ko invite karo → <strong style="color:#00d4ff">+50🪙</strong> dono ko</div>
+                <div style="font-size:10px;color:#00d4ff;margin-top:5px">Profile → Referral Code share karo</div>
+              </div>
+              <div style="font-size:16px;color:#00d4ff;font-weight:900;white-space:nowrap">+50🪙</div>
+            </div>
+            <div style="background:rgba(185,100,255,.06);border:1px solid rgba(185,100,255,.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px">
+              <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏆</div>
+              <div style="flex:1">
+                <div style="font-size:14px;font-weight:800;color:#b964ff">Match Jeetna</div>
+                <div style="font-size:11px;color:var(--txt2);margin-top:3px">Coin Match ya Ad Match jeeto → coins prize milenge</div>
+                <div style="font-size:10px;color:#b964ff;margin-top:5px">Match results ke baad auto credit hota hai</div>
+              </div>
+              <div style="font-size:16px;color:#b964ff;font-weight:900;white-space:nowrap">🏅</div>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;margin-top:16px;font-size:11px;color:var(--txt2);text-align:center;line-height:1.8">
+            💡 <strong style="color:#fff">Coins = Free gaming currency.</strong><br>
+            Kharidne ki zaroorat nahi — bas active raho, earn karte raho!
+          </div>
+        </div>
+      </div>
+
+      <!-- Green Diamond info -->
+      <div style="background:linear-gradient(135deg,rgba(0,255,100,.07),rgba(0,212,255,.04));border:1px solid rgba(0,255,100,.2);border-radius:14px;padding:14px;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:800;color:#00ff64;margin-bottom:8px;display:flex;align-items:center;gap:7px">
+          <img src="js/green-diamond.png" style="width:18px;height:18px;object-fit:contain;vertical-align:middle"> Green Diamond
+        </div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8">
+          Sirf <strong style="color:#00ff64">Paid Matches</strong> jeetne par milta hai.<br>
+          Rank, Badges, Titles ke liye use karo.<br>
+          <span style="color:#ff6b6b">❌ Paise se nahi khareeda ja sakta</span><br>
+          <span style="color:#ff6b6b">❌ Withdraw nahi hota</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,255,100,.1)">
+          <span style="font-size:12px;color:#666">Aapke Green Diamonds</span>
+          <span id="greenDiaCount" style="display:flex;align-items:center;gap:6px">
+            <img src="js/green-diamond.png" style="width:20px;height:20px;object-fit:contain">
+            <span style="font-size:18px;font-weight:900;color:#00ff64">0</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Sponsored Prize Card -->
+      <div id="sponsoredPrizeCard" style="display:none;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,140,0,.05));border:1.5px solid rgba(255,215,0,.3);border-radius:14px;padding:14px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div style="font-size:13px;font-weight:800;color:#ffd700;display:flex;align-items:center;gap:7px">
+            <i class="fas fa-medal"></i> Sponsored Prize
+          </div>
+          <div style="font-size:10px;color:#888;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.2);border-radius:8px;padding:3px 8px;color:#00ff9c;font-weight:700">☪️ HALAL</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:24px;font-weight:900;color:#ffd700" id="sponsoredBalDisplay">₹0</div>
+            <div style="font-size:11px;color:#888;margin-top:2px">Sponsor tournament se kamaya</div>
+          </div>
+          <button onclick="startWd()" style="padding:10px 16px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:13px;font-weight:800;cursor:pointer"><i class="fas fa-paper-plane"></i> Withdraw</button>
+        </div>
+        <div style="font-size:11px;color:#888;line-height:1.7;background:rgba(0,0,0,.2);border-radius:10px;padding:9px 12px">
+          ✅ Sirf sponsored tournament winners hi withdraw kar sakte hain.<br>
+          Admin approve karega — UPI pe direct transfer hoga.
+        </div>
+      </div>
+
+      <!-- Quick wallet tools -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 0 12px">
+        <button onclick="window.showCoinHistory&&showCoinHistory()" style="padding:11px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-history"></i> Coin History</button>
+        <button onclick="window.showTransactionSummary&&showTransactionSummary()" style="padding:11px;border-radius:12px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);color:var(--blue);font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-file-invoice"></i> Summary</button>
+      </div>
+
+      <div class="wh-section">
+        <div class="wh-title"><i class="fas fa-history"></i> Transaction History</div>
+        <div id="walletHist"></div>
+      </div>
+    </div>
+    <div id="walletFlow" style="display:none"></div>
+  </div>
+
+  <!-- RANK -->
+  <div class="screen" id="scrRank"><div id="rankContent"></div></div>
+
+  <!-- PROFILE -->
+  <div class="screen" id="scrProfile"><div id="profileContent"></div></div>
+
+  <!-- NOTIFICATIONS -->
+  <div class="screen" id="scrNotif">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <i class="fas fa-arrow-left" style="cursor:pointer;font-size:18px" onclick="goBack()"></i>
+      <span style="font-size:18px;font-weight:700">Notifications</span>
+    </div>
+    <div id="notifList"></div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="screen" id="scrChat">
+    <div class="chat-container">
+      <div class="chat-header">
+        <i class="fas fa-arrow-left ch-back" onclick="goBack()"></i>
+        <div class="ch-ava"><i class="fas fa-headset"></i></div>
+        <div class="ch-info"><div class="ch-name">Support Team</div><div class="ch-status" id="chatSt">Online</div></div>
+      </div>
+      <div class="chat-messages" id="chatMsgs"></div>
+      <div class="chat-input-wrap">
+        <input type="text" id="chatIn" placeholder="Type your message..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="chat-send-btn" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /mainContent -->
+
+<!-- BOTTOM NAV -->
+<div id="bottomNav" style="display:none">
+  <div class="nav-row">
+    <div class="nav-item active" data-nav="home" onclick="navTo('home')">
+      <i class="fas fa-home"></i><span>Home</span>
+    </div>
+    <div class="nav-item" data-nav="rank" onclick="navTo('rank')">
+      <i class="fas fa-trophy"></i><span>Rank</span>
+    </div>
+    <div class="nav-item nav-center" data-nav="matches" onclick="navTo('matches')" style="position:relative">
+      <div style="width:46px;height:46px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-top:-12px;box-shadow:0 4px 20px rgba(0,255,156,.4);border:2px solid rgba(255,255,255,.15)">
+        <i class="fas fa-gamepad" style="font-size:20px;color:#000"></i>
+      </div>
+      <span style="margin-top:2px">Matches</span>
+    </div>
+    <div class="nav-item" data-nav="wallet" onclick="navTo('wallet')">
+      <i class="fas fa-wallet"></i><span>Wallet</span>
+    </div>
+    <div class="nav-item" data-nav="profile" onclick="navTo('profile')">
+      <i class="fas fa-user"></i><span>Profile</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOv" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-drag"></div>
+    <div class="modal-hdr"><span id="modalT"></span><span class="m-close" onclick="closeModal()"><i class="fas fa-times"></i></span></div>
+    <div class="modal-body" id="modalB"></div>
+  </div>
+</div>
+
+<div id="rpContainer"></div>
+<div id="toast-wrap"></div>
+
+</div><!-- /app-wrap -->
+
+<!-- ═══════════════════════════════════════════════════════
+     CORE APP — pehle load hoga
+     Ye ZARURI hai baaki sab se pehle
+     ═══════════════════════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════════════════════
+     SAFE LOADER — app.js ke baad, sab feature files ko
+     safely load karta hai. Koi crash ho to app continue kare.
+     ═══════════════════════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════════════
+     FIREBASE SDK — RTDB + Analytics only (9.23.0)
+     Auth moved to Supabase
+═══════════════════════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     SUPABASE SDK — main backend
+═══════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     CORE — must load first, in order
+═══════════════════════════════════════════════ -->
+<script src="core/firebase.js"></script>
+<script src="core/db.js"></script>
+<script src="core/db-bridge.js"></script>
+<script src="core/bugfixes.js"></script>
+<script src="core/imgbb.js"></script>
+<script src="features/app-config.js"></script>
+<script src="core/utils.js"></script>
+<script src="core/router.js"></script>
+<script src="core/modal.js"></script>
+<script src="core/header.js"></script>
+<script src="core/auth.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     SCREENS — UI renderers
+═══════════════════════════════════════════════ -->
+<script src="screens/home.js"></script>
+<script src="screens/matches.js"></script>
+<script src="screens/join.js"></script>
+<script src="screens/room.js"></script>
+<script src="screens/wallet.js"></script>
+<script src="screens/rank.js"></script>
+<script src="screens/profile.js"></script>
+<script src="screens/support.js"></script>
+<script src="screens/notifications.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     FEATURES — optional modules
+═══════════════════════════════════════════════ -->
+<script src="features/ads.js"></script>
+<script src="features/premium.js"></script>
+<script src="features/battle-pass.js"></script>
+<script src="features/clan.js"></script>
+<script src="features/spectator.js"></script>
+<script src="features/growth.js"></script>
+<script src="features/premium-creator.js"></script>
+
+<!-- ═══════════════════════════════════════════════
+     CORE BOOT — last: starts listeners after all
+     screens and features are loaded
+═══════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════
+     NEW FEATURE MODULES
+═══════════════════════════════════════════ -->
+<script src="features/auto-squad.js"></script>
+<script src="features/seasonal-league.js"></script>
+<script src="features/checkin-system.js"></script>
+<script src="features/watch-earn.js"></script>
+<script src="features/match-history.js"></script>
+<script src="features/admin-badge.js"></script>
+
+<!-- v17 NEW FEATURES -->
+<script src="features/skill-matchmaking.js"></script>
+<script src="features/squad-finder.js"></script>
+<script src="features/friends.js"></script>
+<script src="features/challenge.js"></script>
+<script src="features/player-card.js"></script>
+<script src="features/streak.js"></script>
+<script src="features/city-championship.js"></script>
+<script src="features/clean-badge.js"></script>
+<script src="features/bracket.js"></script>
+<script src="features/squad-bank.js"></script>
+<script src="features/mentor.js"></script>
+<script src="features/clan-war.js"></script>
+<script src="features/india-map.js"></script>
+
+<!-- js/ utility layer -->
+<script src="js/safe-loader.js"></script>
+<script src="js/fixes-v7.js"></script>
+<script src="js/fixes-v8.js"></script>
+<script src="js/fixes-v9.js"></script>
+<script src="js/fix5-listener-manager.js"></script>
+<script src="js/fix6-offline-queue.js"></script>
+<script src="js/fix8-lazy-loading.js"></script>
+<script src="js/fix9-toast-queue.js"></script>
+<script src="js/fix10-server-time-sync.js"></script>
+<script src="js/fix12-push-notifications.js"></script>
+<script src="js/features-user.js"></script>
+<script src="js/ui-fixes.js"></script>
+<script src="js/security-patches.js"></script>
+<script src="js/security.js"></script>
+<script src="js/anti-cheat.js"></script>
+<!-- Device fingerprint for anti-cheat (auth is handled by Firebase Google login) -->
+<script src="js/device-identity.js" defer></script>
+<script src="js/legal-compliance.js"></script>
+<script src="js/diamond-system.js"></script>
+<script src="js/rank-system.js"></script>
+<script src="js/wallet-history.js"></script>
+<script src="js/match-timer.js"></script>
+<script src="js/match-result-detail.js"></script>
+<script src="js/room-reveal.js"></script>
+<script src="js/quick-deposit.js"></script>
+<script src="js/offline-handler.js"></script>
+<script src="js/referral-tracker.js"></script>
+<script src="js/referral-system-fix.js"></script>
+<script src="js/profile-card.js"></script>
+<script src="js/smart-automations.js"></script>
+<script src="js/preview-mode.js"></script>
+
+<script src="core/listeners.js"></script>
+<script src="core/boot.js"></script>
+
+</body>
+</html>
