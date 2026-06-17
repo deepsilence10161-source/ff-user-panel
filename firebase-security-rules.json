@@ -1,0 +1,78 @@
+{
+  "rules": {
+    "appSettings": {
+      ".read": true,
+      ".write": false
+    },
+    "matches": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "deviceProfiles": {
+      ".read": "auth != null",
+      "$fpKey": {
+        ".write": "auth != null"
+      }
+    },
+    "ffUidIndex": {
+      ".read": "auth != null",
+      "$ffUid": {
+        ".write": "auth != null"
+      }
+    },
+    "ignIndex": {
+      ".read": "auth != null",
+      "$ign": {
+        ".write": "auth != null"
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "joinRequests": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "deviceJoins": {
+      "$deviceId": {
+        "$matchId": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "deviceAnomalies": {
+      ".read": false,
+      ".write": "auth != null"
+    },
+    "notifications": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "support": {
+      "$ticketId": {
+        "messages": {
+          "$msgId": {
+            ".read": "auth != null",
+            ".write": "auth != null"
+          }
+        }
+      }
+    },
+    "clans": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "polls": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}
