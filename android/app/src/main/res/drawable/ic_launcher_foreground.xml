@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Purple background circle -->
+    <path
+        android:fillColor="#6B21A8"
+        android:pathData="M54,54m-54,0a54,54 0,1 1,108 0a54,54 0,1 1,-108 0" />
+
+    <!-- M letter white -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,76L22,32L34,32L54,62L74,32L86,32L86,76L74,76L74,50L54,80L34,50L34,76Z" />
+
+</vector>
