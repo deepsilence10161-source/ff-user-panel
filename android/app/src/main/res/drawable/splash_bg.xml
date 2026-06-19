@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background color -->
+    <item android:drawable="@color/purple_dark" />
+
+    <!-- Center logo — vector drawable, isliye <bitmap> nahi <item> use karo -->
+    <item
+        android:width="120dp"
+        android:height="120dp"
+        android:gravity="center"
+        android:drawable="@drawable/ic_launcher_foreground" />
+
+</layer-list>
