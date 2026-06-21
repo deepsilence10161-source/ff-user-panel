@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
+
+android {
+    compileSdk 34
+    namespace 'com.miniesports.app'
+
+    defaultConfig {
+        applicationId "com.miniesports.app"
+        minSdk 24
+        targetSdk 34
+        versionCode 3
+        versionName "1.0.2"
+    }
+
+    signingConfigs {
+        release {
+            storeFile     file("keystore.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
+            keyAlias      System.getenv("KEY_ALIAS")         ?: ""
+            keyPassword   System.getenv("KEY_PASSWORD")      ?: ""
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig   signingConfigs.release
+            minifyEnabled   false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                          'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+// Crashlytics config — NDK symbols upload disable karo (WebView app ko nahi chahiye)
+// Mapping file bhi disable — minify OFF hai to file hogi hi nahi
+firebaseCrashlytics {
+    nativeSymbolUploadEnabled false
+    mappingFileUploadEnabled false
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.browser:browser:1.7.0'
+    implementation 'com.google.android.gms:play-services-ads:23.0.0'
+    implementation 'com.onesignal:OneSignal:5.1.6'
+
+    // Firebase BOM — sab Firebase versions sync rehte hain
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    // firebase-crashlytics-ndk HATAYA — WebView app ko native symbol upload nahi chahiye
+    // Yeh NDK plugin CI mein fail karta tha unnecessarily
+    implementation 'com.google.firebase:firebase-analytics'
+}
