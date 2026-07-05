@@ -1,0 +1,791 @@
+/* ================================================================
+   MINI eSPORTS USER PANEL — UI UPGRADE v10
+   Professional mobile gaming UI
+================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap');
+
+/* ── Root variables upgrade ── */
+:root {
+  --bg: #050507;
+  --bg2: #0b0b10;
+  --card: #101018;
+  --card2: #16161f;
+  --green: #00ff9c;
+  --yellow: #ffd700;
+  --red: #ff3b5c;
+  --blue: #00d4ff;
+  --purple: #b964ff;
+  --orange: #ff8c00;
+  --txt: #f0f0f8;
+  --txt2: #7070a0;
+  --border: rgba(255,255,255,.07);
+  --primary: #00ff9c;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+}
+
+/* ═══════════════════════════════════════
+   SPLASH — Premium entrance animation
+═══════════════════════════════════════ */
+#splash {
+  background: radial-gradient(ellipse at 50% 40%, rgba(0,255,156,.06) 0%, #050507 65%) !important;
+}
+
+#splash .sp-title {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.5px !important;
+}
+
+#splash .sp-sub {
+  font-size: 13px !important;
+  color: #555577 !important;
+  letter-spacing: .5px !important;
+}
+
+/* ═══════════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════════ */
+#loginScreen {
+  background: #050507 !important;
+  background-image:
+    radial-gradient(ellipse at 30% 20%, rgba(0,255,156,.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(185,100,255,.04) 0%, transparent 50%) !important;
+}
+
+.login-logo { font-size: 72px !important; filter: drop-shadow(0 0 20px rgba(0,255,156,.3)); }
+
+.login-title {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 36px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.5px !important;
+}
+
+.login-sub {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #6666aa !important;
+}
+
+.g-btn {
+  background: linear-gradient(135deg, rgba(0,255,156,.12), rgba(0,212,255,.08)) !important;
+  border: 1.5px solid rgba(0,255,156,.25) !important;
+  color: #00ff9c !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  border-radius: 16px !important;
+  padding: 16px 24px !important;
+  box-shadow: 0 4px 24px rgba(0,255,156,.1) !important;
+  transition: all .2s !important;
+}
+
+.g-btn:hover {
+  background: linear-gradient(135deg, rgba(0,255,156,.2), rgba(0,212,255,.12)) !important;
+  box-shadow: 0 6px 32px rgba(0,255,156,.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ═══════════════════════════════════════
+   HEADER — Premium glass
+═══════════════════════════════════════ */
+#header {
+  background: rgba(5,5,7,.88) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+}
+
+.hdr-name {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.3px !important;
+}
+
+.hdr-chip {
+  border-radius: 12px !important;
+  padding: 6px 10px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  transition: all .2s !important;
+}
+
+.hdr-chip:active { transform: scale(.95) !important; }
+
+.hdr-bell {
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.06) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+}
+
+/* ═══════════════════════════════════════
+   BOTTOM NAV — Floating island style
+═══════════════════════════════════════ */
+#bottomNav {
+  background: rgba(10,10,18,.95) !important;
+  backdrop-filter: blur(24px) !important;
+  border-top: 1px solid rgba(255,255,255,.07) !important;
+}
+
+.nav-item {
+  padding: 5px 8px !important;
+  border-radius: 12px !important;
+  transition: all .2s !important;
+  position: relative !important;
+}
+
+.nav-item span {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .3px !important;
+}
+
+.nav-item.active {
+  background: rgba(0,255,156,.1) !important;
+}
+
+.nav-item.active::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -1px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 20px !important;
+  height: 2px !important;
+  background: var(--green) !important;
+  border-radius: 0 0 2px 2px !important;
+}
+
+/* ═══════════════════════════════════════
+   STATUS TABS
+═══════════════════════════════════════ */
+.s-tab {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  padding: 8px 18px !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(255,255,255,.04) !important;
+  transition: all .2s !important;
+}
+
+.s-tab.active {
+  background: rgba(0,255,156,.12) !important;
+  border-color: rgba(0,255,156,.3) !important;
+  color: var(--green) !important;
+  box-shadow: 0 2px 12px rgba(0,255,156,.1) !important;
+}
+
+/* ═══════════════════════════════════════
+   CATEGORY PILLS
+═══════════════════════════════════════ */
+.cat-pills {
+  gap: 8px !important;
+  margin-bottom: 16px !important;
+}
+
+.c-pill {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 14px !important;
+  padding: 11px 16px !important;
+  transition: all .2s !important;
+  border: 1.5px solid var(--border) !important;
+}
+
+.c-pill.active {
+  box-shadow: 0 4px 16px rgba(0,255,106,.1) !important;
+}
+
+/* ═══════════════════════════════════════
+   MATCH CARD — Elite gaming UI
+═══════════════════════════════════════ */
+.m-card {
+  background: linear-gradient(160deg, #0d0d18, #0a0a12) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  border-radius: 20px !important;
+  margin-bottom: 14px !important;
+  overflow: hidden !important;
+  transition: all .22s !important;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.5),
+    0 1px 0 rgba(255,255,255,.04) inset !important;
+  position: relative !important;
+}
+
+.m-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important; left: 0 !important; right: 0 !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent) !important;
+}
+
+.m-card:active { transform: scale(.98) !important; }
+
+.mc-name {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.3px !important;
+}
+
+.badge {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: .8px !important;
+  border-radius: 8px !important;
+  padding: 3px 9px !important;
+}
+
+.mc-cell label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .8px !important;
+  color: #555577 !important;
+}
+
+.mc-cell span {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.mc-join {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: .4px !important;
+  border-radius: 11px !important;
+  padding: 9px 18px !important;
+  transition: all .18s !important;
+}
+
+.mc-join.join-ok {
+  background: rgba(0,255,156,.08) !important;
+  border: 2px solid #00ff9c !important;
+  color: #00ff9c !important;
+  box-shadow: 0 0 20px rgba(0,255,106,.2), inset 0 0 10px rgba(0,255,106,.05) !important;
+}
+
+.mc-join.join-ok:active {
+  transform: scale(.95) !important;
+  box-shadow: 0 0 10px rgba(0,255,106,.15) !important;
+}
+
+.mc-bar-fill {
+  background: linear-gradient(90deg, #00ff9c, #00d4ff) !important;
+  box-shadow: 0 0 8px rgba(0,255,156,.4) !important;
+}
+
+/* ═══════════════════════════════════════
+   WALLET CARDS
+═══════════════════════════════════════ */
+.w-card {
+  border-radius: 18px !important;
+  padding: 20px !important;
+  margin-bottom: 12px !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.w-card::after {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(135deg, rgba(255,255,255,.02), transparent) !important;
+  pointer-events: none !important;
+}
+
+.w-label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: .8px !important;
+  text-transform: uppercase !important;
+}
+
+.w-total {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 34px !important;
+  font-weight: 900 !important;
+  letter-spacing: -1px !important;
+  line-height: 1.1 !important;
+}
+
+.w-btn {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  border-radius: 13px !important;
+  padding: 13px !important;
+  transition: all .18s !important;
+}
+
+.w-btn:active { transform: scale(.97) !important; }
+
+.w-btn.wb-add {
+  background: linear-gradient(135deg, #0066ff, #00d4ff) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(0,102,255,.25) !important;
+}
+
+/* ═══════════════════════════════════════
+   MODAL — Elegant bottom sheet
+═══════════════════════════════════════ */
+.modal-overlay {
+  background: rgba(0,0,0,.7) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.modal-box {
+  background: #0f0f18 !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  border-radius: 24px 24px 0 0 !important;
+  box-shadow: 0 -20px 60px rgba(0,0,0,.8) !important;
+  max-height: 90vh !important;
+}
+
+.modal-hdr {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  padding: 18px 20px 14px !important;
+  border-bottom: 1px solid rgba(255,255,255,.07) !important;
+}
+
+.modal-drag {
+  width: 40px !important;
+  height: 4px !important;
+  background: rgba(255,255,255,.15) !important;
+  border-radius: 2px !important;
+  margin: 10px auto 0 !important;
+}
+
+.modal-body {
+  padding: 16px 20px 24px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ═══════════════════════════════════════
+   RANK SCREEN
+═══════════════════════════════════════ */
+.rank-formula-banner {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  border-radius: 14px !important;
+}
+
+.s-tab {
+  font-size: 12px !important;
+}
+
+/* ═══════════════════════════════════════
+   EMPTY STATE
+═══════════════════════════════════════ */
+.empty-state {
+  background: rgba(255,255,255,.02) !important;
+  border: 1px dashed rgba(255,255,255,.08) !important;
+  border-radius: 18px !important;
+  padding: 50px 20px !important;
+}
+
+.empty-state p {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #555577 !important;
+}
+
+/* ═══════════════════════════════════════
+   NOTIFICATIONS
+═══════════════════════════════════════ */
+#scrNotif .screen-title,
+#scrNotif span[style*="font-size:18px"] {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 800 !important;
+}
+
+/* ═══════════════════════════════════════
+   CHAT
+═══════════════════════════════════════ */
+.chat-header {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  background: rgba(10,10,18,.95) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.chat-input-wrap {
+  background: rgba(10,10,18,.95) !important;
+  border-top: 1px solid var(--border) !important;
+  padding: 10px 14px !important;
+}
+
+#chatIn {
+  background: rgba(255,255,255,.05) !important;
+  border: 1.5px solid rgba(255,255,255,.1) !important;
+  border-radius: 12px !important;
+  color: var(--txt) !important;
+  font-family: 'Inter', sans-serif !important;
+  padding: 11px 14px !important;
+  font-size: 13px !important;
+  transition: all .2s !important;
+}
+
+#chatIn:focus {
+  border-color: rgba(0,255,156,.3) !important;
+  outline: none !important;
+}
+
+.chat-send-btn {
+  background: linear-gradient(135deg, #00ff9c, #00d4ff) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  width: 42px !important;
+  height: 42px !important;
+  color: #000 !important;
+  font-size: 15px !important;
+  cursor: pointer !important;
+  transition: all .18s !important;
+  box-shadow: 0 2px 12px rgba(0,255,156,.25) !important;
+}
+
+/* ═══════════════════════════════════════
+   COUNTDOWN (SPECIAL SCREEN)
+═══════════════════════════════════════ */
+.cd-box {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 16px !important;
+  padding: 16px 8px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.cd-box .num {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 900 !important;
+  letter-spacing: -1px !important;
+}
+
+.cd-box .lbl {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  color: #444466 !important;
+}
+
+/* ═══════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════ */
+.prof-ava {
+  transition: all .3s !important;
+}
+
+.prof-btn {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  border-radius: 14px !important;
+  transition: all .18s !important;
+}
+
+.prof-btn:active { transform: scale(.97) !important; }
+
+/* ═══════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════ */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+/* ═══════════════════════════════════════
+   COIN PACKAGES
+═══════════════════════════════════════ */
+.coin-pkg {
+  background: var(--card) !important;
+  border: 1.5px solid rgba(255,255,255,.08) !important;
+  border-radius: 16px !important;
+  padding: 16px 12px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all .2s !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.coin-pkg:hover, .coin-pkg:active {
+  border-color: rgba(255,215,0,.3) !important;
+  background: rgba(255,215,0,.06) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(255,215,0,.1) !important;
+}
+
+.coin-pkg.popular {
+  border-color: rgba(255,215,0,.3) !important;
+  background: rgba(255,215,0,.06) !important;
+  box-shadow: 0 4px 20px rgba(255,215,0,.12) !important;
+}
+
+.pkg-coins {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  margin-bottom: 4px !important;
+}
+
+.pkg-price {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  color: #00ff9c !important;
+  margin: 6px 0 !important;
+}
+
+.pkg-label {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: #555577 !important;
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+#toast-wrap > div {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5) !important;
+  padding: 12px 20px !important;
+}
+
+/* ═══════════════════════════════════════
+   TRANSACTION HISTORY
+═══════════════════════════════════════ */
+.wh-card {
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  background: rgba(255,255,255,.03) !important;
+  transition: all .2s !important;
+}
+
+.wh-card:hover { border-color: rgba(255,255,255,.1) !important; }
+
+.wh-icon {
+  border-radius: 12px !important;
+}
+
+.wh-info .wh-name {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+}
+
+/* ═══════════════════════════════════════
+   SECTION HEADING
+═══════════════════════════════════════ */
+.section-heading {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 1.5px !important;
+  color: #333355 !important;
+  text-transform: uppercase !important;
+  margin: 16px 0 10px !important;
+  padding-left: 2px !important;
+}
+
+/* Accent line before section headings */
+.section-heading::before {
+  content: '' !important;
+  display: inline-block !important;
+  width: 3px !important;
+  height: 11px !important;
+  background: var(--green) !important;
+  border-radius: 2px !important;
+  margin-right: 6px !important;
+  vertical-align: middle !important;
+}
+
+/* ═══════════════════════════════════════
+   BOTTOM NAV — Center button special
+═══════════════════════════════════════ */
+.nav-center span {
+  color: var(--green) !important;
+  font-weight: 800 !important;
+}
+
+/* Make sure nav-center active state looks right */
+.nav-center.active > div:first-child {
+  box-shadow: 0 6px 28px rgba(0,255,156,.55) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ═══════════════════════════════════════
+   HOME SCREEN — Special events quick access
+═══════════════════════════════════════ */
+.special-access-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.special-access-bar::-webkit-scrollbar { display: none; }
+
+/* ✅ UI POLISH: horizontally-scrollable chip rows were cutting off
+   abruptly at the screen edge with no hint that there's more to scroll
+   to. A soft fade on the trailing edge is the standard mobile pattern
+   for "swipe for more" — reusable on any scroll row via this class. */
+.scroll-fade-x {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+}
+
+.special-pill {
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .18s;
+  white-space: nowrap;
+}
+
+.special-pill:active { transform: scale(.96); }
+
+/* ═══════════════════════════════════════
+   MATCH CARD — Enhanced glow on entry type
+═══════════════════════════════════════ */
+.m-card[data-type="paid"] {
+  border-color: rgba(185,100,255,.2) !important;
+}
+
+.m-card[data-type="paid"]:hover {
+  border-color: rgba(185,100,255,.35) !important;
+  box-shadow: 0 8px 32px rgba(185,100,255,.1) !important;
+}
+
+.m-card[data-type="coin"]:hover {
+  border-color: rgba(255,215,0,.25) !important;
+  box-shadow: 0 8px 32px rgba(255,215,0,.08) !important;
+}
+
+/* ═══════════════════════════════════════
+   WALLET — Sky Diamond card proper gradient
+═══════════════════════════════════════ */
+.wc-money {
+  background: linear-gradient(135deg, rgba(0,100,255,.08), rgba(0,212,255,.06)) !important;
+  border-color: rgba(0,212,255,.2) !important;
+}
+
+.wc-coin {
+  background: linear-gradient(135deg, rgba(255,215,0,.08), rgba(255,140,0,.04)) !important;
+  border-color: rgba(255,215,0,.15) !important;
+}
+
+/* ═══════════════════════════════════════
+   WALLET BUY BUTTON
+═══════════════════════════════════════ */
+.wb-add {
+  background: linear-gradient(135deg, #0055dd, #00aaff) !important;
+  box-shadow: 0 4px 16px rgba(0,85,221,.25) !important;
+}
+
+/* ═══════════════════════════════════════
+   NOTIFICATIONS — Cleaner
+═══════════════════════════════════════ */
+#notifList > div {
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  margin-bottom: 8px !important;
+  transition: all .18s !important;
+  background: rgba(255,255,255,.03) !important;
+  padding: 12px 14px !important;
+}
+
+#notifList > div:hover {
+  border-color: rgba(255,255,255,.1) !important;
+  background: rgba(255,255,255,.05) !important;
+}
+
+/* ═══════════════════════════════════════
+   WALLET FLOW STEPS
+═══════════════════════════════════════ */
+.w-step-dot {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50% !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+}
+
+.w-step-dot.active {
+  background: var(--green) !important;
+  box-shadow: 0 0 16px rgba(0,255,156,.4) !important;
+}
+
+/* ═══════════════════════════════════════
+   AMOUNT BUTTONS
+═══════════════════════════════════════ */
+.w-amt-btn {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  border-radius: 12px !important;
+  padding: 12px 8px !important;
+  transition: all .18s !important;
+}
+
+.w-amt-btn.active {
+  background: rgba(0,255,156,.12) !important;
+  border-color: rgba(0,255,156,.4) !important;
+  color: var(--green) !important;
+  box-shadow: 0 0 12px rgba(0,255,156,.15) !important;
+}
+
+/* ═══════════════════════════════════════
+   PROFILE — Rank section
+═══════════════════════════════════════ */
+.rank-podium-wrap {
+  border-radius: 22px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,.6) !important;
+}
+
+/* ═══════════════════════════════════════
+   TICKER
+═══════════════════════════════════════ */
+.ticker-wrap {
+  padding: 4px 16px 8px !important;
+}
+
+.ticker-txt {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
