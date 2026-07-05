@@ -1,0 +1,79 @@
+{
+  "rules": {
+
+    "support": {
+      "$ticketId": {
+        ".read":  "auth != null",
+        ".write": "auth != null"
+      }
+    },
+
+    "deviceJoins": {
+      "$deviceId": {
+        ".read":  "auth != null",
+        ".write": "auth != null"
+      }
+    },
+
+    "appSettings": {
+      ".read":  true,
+      ".write": "auth != null"
+    },
+
+    "adminConfig": {
+      ".read":  true,
+      ".write": "auth != null"
+    },
+
+    "creatorVideos": {
+      ".read":  "auth != null",
+      ".write": "auth != null"
+    },
+
+    "videoReports": {
+      ".read":  "auth != null",
+      ".write": "auth != null"
+    },
+
+    "tdsRecords": {
+      ".read":  "auth != null",
+      ".write": "auth != null"
+    },
+
+    "tdsHeld": {
+      ".read":  "auth != null",
+      ".write": "auth != null"
+    },
+
+    "adminActions": {
+      ".read":  "auth != null",
+      ".write": "auth != null"
+    },
+
+    "earlyAccessUsers": {
+      ".read":  "auth != null",
+      ".write": "auth != null"
+    },
+
+    "users": {
+      "$uid": {
+        "videoStrikes": {
+          ".read":  "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+
+    "presence": {
+      "$uid": {
+        ".read":  "auth != null",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+
+    "$other": {
+      ".read":  false,
+      ".write": false
+    }
+  }
+}
