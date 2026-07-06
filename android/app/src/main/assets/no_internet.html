@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:#1a0533;
+    color:#fff;
+    font-family:sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    text-align:center;
+    padding:24px;
+  }
+  .icon { font-size:64px; margin-bottom:16px; }
+  h1 { font-size:22px; margin-bottom:8px; color:#A855F7; }
+  p  { font-size:14px; color:#ccc; margin-bottom:32px; }
+  button {
+    background:#6B21A8;
+    color:#fff;
+    border:none;
+    padding:14px 32px;
+    border-radius:12px;
+    font-size:16px;
+    cursor:pointer;
+  }
+</style>
+</head>
+<body>
+  <div class="icon">📡</div>
+  <h1>No Internet</h1>
+  <p>Internet connection check karo<br>aur dobara try karo</p>
+  <button onclick="location.reload()">Retry</button>
+</body>
+</html>
