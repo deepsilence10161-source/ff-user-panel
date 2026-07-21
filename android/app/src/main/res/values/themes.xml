@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main theme -->
+    <style name="Theme.MiniEsports" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/purple_dark</item>
+        <item name="android:statusBarColor">@color/purple_dark</item>
+        <item name="android:navigationBarColor">@color/purple_dark</item>
+        <item name="colorPrimary">@color/purple_mid</item>
+        <item name="colorAccent">@color/purple_light</item>
+    </style>
+
+    <!-- Splash theme -->
+    <style name="Theme.MiniEsports.Splash" parent="Theme.MiniEsports">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+</resources>
