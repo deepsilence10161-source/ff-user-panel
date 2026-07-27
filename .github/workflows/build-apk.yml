@@ -1,0 +1,117 @@
+name: Build Mini eSports APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.2'
+
+      # ══════════════════════════════════════════════════════════
+      # KEYSTORE STRATEGY
+      # ──────────────────────────────────────────────────────────
+      # PEHLI BAAR: Naya keystore generate hoga → SHA-1 logs mein
+      #   dikhega → use Firebase Console mein register karo
+      #   → keystore artifact download karo → base64 karo
+      #   → KEYSTORE_B64 secret mein save karo
+      #
+      # BAAD MEIN: KEYSTORE_B64 secret se same keystore use hoga
+      #   → same SHA-1 → Google login kaam karega
+      # ══════════════════════════════════════════════════════════
+
+      - name: Setup Keystore
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_B64 }}" ]; then
+            # ── Saved keystore use karo (same SHA-1 every build) ──
+            echo "✅ Saved keystore found — using it"
+            echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > android/app/keystore.jks
+          else
+            # ── First time: Naya keystore generate karo ──
+            echo "⚠️  KEYSTORE_B64 secret nahi mila — naya keystore bana raha hai"
+            echo "    Build ke baad steps follow karo to save permanent keystore"
+            keytool -genkeypair \
+              -keystore android/app/keystore.jks \
+              -storetype PKCS12 \
+              -alias "${{ secrets.KEY_ALIAS }}" \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 36500 \
+              -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
+              -keypass  "${{ secrets.KEY_PASSWORD }}" \
+              -dname "CN=MiniEsports, OU=App, O=MiniEsports, L=India, ST=India, C=IN" \
+              -noprompt
+          fi
+          echo "Keystore ready:" && ls -lh android/app/keystore.jks
+
+      # ── SHA-1 print karo — Firebase Console mein register karo ──
+      - name: Print SHA-1 (Firebase Console → Android App → Add Fingerprint)
+        run: |
+          echo ""
+          echo "════════════════════════════════════════════════════════"
+          echo "  GOOGLE LOGIN FIX — Yeh SHA-1 copy karo"
+          echo "  Firebase Console → fft-app-1e283 → Project Settings"
+          echo "  → Your Apps → Android App → Add Fingerprint"
+          echo "════════════════════════════════════════════════════════"
+          keytool -list -v \
+            -keystore android/app/keystore.jks \
+            -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
+            -alias    "${{ secrets.KEY_ALIAS }}" \
+            | grep -E "SHA1:|SHA256:" | head -4
+          echo "════════════════════════════════════════════════════════"
+          echo ""
+
+      - name: Build Release APK
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS:         ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD:      ${{ secrets.KEY_PASSWORD }}
+        run: gradle assembleRelease --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiniEsports-APK
+          path: android/app/build/outputs/apk/release/app-release.apk
+          retention-days: 30
+
+      # ── Keystore artifact bhi upload karo (permanent save ke liye) ──
+      - name: Upload Keystore (SAVE THIS — base64 karke KEYSTORE_B64 secret mein daalo)
+        uses: actions/upload-artifact@v4
+        with:
+          name: keystore-SAVE-THIS
+          path: android/app/keystore.jks
+          retention-days: 90
+
+      - name: Build Release AAB (Play Store)
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS:         ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD:      ${{ secrets.KEY_PASSWORD }}
+        run: gradle bundleRelease --stacktrace
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiniEsports-AAB
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30
