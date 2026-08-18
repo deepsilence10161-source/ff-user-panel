@@ -47,9 +47,25 @@
   /* ═══════════════════════════════════════
      1. STATE CHECK
   ═══════════════════════════════════════ */
+  /* mesInit is called by boot, the user realtime listener and its fallback
+     poll. Keep one timer/modal only; otherwise those callers can stack the
+     same state modal several times before the first timeout fires. */
+  var _stateCheckTimer = null;
+  var _stateModalOpen = false;
+
+  function _savedState() {
+    return window.UD && typeof window.UD.state === 'string' ? window.UD.state.trim() : '';
+  }
+
   window.mesCheckState = function () {
-    /* BUG FIX (2026-07): sessionStorage → localStorage, see mesInit note. */
-    if (localStorage.getItem('_mes_state')) return;
+    if (_stateCheckTimer) { clearTimeout(_stateCheckTimer); _stateCheckTimer = null; }
+    if (_savedState()) {
+      localStorage.setItem('_mes_state', _savedState()); // cache only; server remains source of truth
+      _stateModalOpen = false;
+      return;
+    }
+    if (_stateModalOpen) return;
+    _stateModalOpen = true;
     var h = '<div style="text-align:center"><div style="font-size:42px;margin-bottom:10px">🗺️</div>'
       + '<div style="font-size:15px;font-weight:900;color:#fff;margin-bottom:8px">State Verification</div>'
       + '<div style="font-size:12px;color:#8888aa;margin-bottom:16px">Real money gaming kuch states mein restricted hai. Apna state select karo:</div>'
@@ -57,15 +73,47 @@
     CONFIG.bannedStates.forEach(function(s) {
       h += '<button onclick="window.mesStateBan()" style="padding:11px;border-radius:10px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer;width:100%">' + s + '</button>';
     });
-    h += '<button onclick="window.mesStateOk()" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-size:13px;font-weight:700;cursor:pointer;width:100%">✓ Haryana / Delhi / Punjab / Other</button>'
-      + '</div><div style="font-size:10px;color:#555">IT Rules 2023 compliance ke liye zaroori</div></div>';
+    ['Haryana', 'Delhi', 'Punjab', 'Other'].forEach(function(s) {
+      h += '<button data-state-choice onclick="window.mesStateOk(\'' + s + '\')" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-size:13px;font-weight:700;cursor:pointer;width:100%">✓ ' + s + '</button>';
+    });
+    h += '</div><div style="font-size:10px;color:#555">IT Rules 2023 compliance ke liye zaroori</div></div>';
     _open('🗺️ State Verification Required', h);
   };
   window.mesStateBan = function () {
+    _stateModalOpen = false;
     _close();
     document.body.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050507;color:#fff;padding:32px;text-align:center"><div style="font-size:56px;margin-bottom:16px">🚫</div><div style="font-size:20px;font-weight:900;color:#ff6b6b;margin-bottom:10px">Service Unavailable</div><div style="font-size:13px;color:#888;line-height:1.9;max-width:300px">Aapke state mein real money gaming legally restricted hai.</div></div>';
   };
-  window.mesStateOk = function () { localStorage.setItem('_mes_state','1'); _close(); setTimeout(window.mesAgeGate, 400); };
+  window.mesStateOk = function (state) {
+    var allowed = ['Haryana', 'Delhi', 'Punjab', 'Other'];
+    if (allowed.indexOf(state) < 0) return;
+    if (!window.U || !window.U.uid || !window._supa || !window._supaReady) {
+      _toast('Login sync ho raha hai — ek baar phir try karo', 'err');
+      return;
+    }
+    var buttons = document.querySelectorAll('[data-state-choice]');
+    buttons.forEach(function(btn) { btn.disabled = true; });
+    window._supa.from('users')
+      .update({ state: state, updated_at: new Date().toISOString() })
+      .eq('id', window.U.uid)
+      .select('state')
+      .single()
+      .then(function(res) {
+        if (res.error || !res.data || !res.data.state) {
+          throw (res.error || new Error('State save failed'));
+        }
+        if (window.UD) window.UD.state = res.data.state;
+        localStorage.setItem('_mes_state', res.data.state);
+        _stateModalOpen = false;
+        _close();
+        setTimeout(window.mesAgeGate, 400);
+      })
+      .catch(function(err) {
+        console.error('[StateGate] Failed to persist state:', err && err.message);
+        buttons.forEach(function(btn) { btn.disabled = false; });
+        _toast('State save nahi hui — dobara try karo', 'err');
+      });
+  };
 
   /* ═══════════════════════════════════════
      2. AGE GATE 18+
@@ -556,11 +604,19 @@
   }
   window.mesInit = function () {
     if (!window.U||!window.UD) return;
-    /* BUG FIX (2026-07): sessionStorage clears every time the tab/app is
-       closed, so the "state verification" step re-ran on every single
-       app open instead of once ever. localStorage persists correctly. */
-    if (!localStorage.getItem('_mes_state')) { setTimeout(window.mesCheckState,1800); return; }
-    if (!window.UD.ageVerified) { setTimeout(window.mesAgeGate,1800); return; }
+    /* users.state is the durable source of truth. The old localStorage value
+       was only "1", so it could not prove which state had been selected. */
+    if (!_savedState()) {
+      if (!_stateCheckTimer && !_stateModalOpen) {
+        _stateCheckTimer = setTimeout(function() {
+          _stateCheckTimer = null;
+          window.mesCheckState();
+        }, 1800);
+      }
+      return;
+    }
+    localStorage.setItem('_mes_state', _savedState());
+    if (window.UD.age_verified !== true) { setTimeout(window.mesAgeGate,1800); return; }
     if (!window.UD.accepted_policy) { setTimeout(function(){_showTC(window.U.uid);},1800); }
   };
 

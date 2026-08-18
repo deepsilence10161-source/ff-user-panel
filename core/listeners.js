@@ -204,6 +204,7 @@ function _applyUser(sp) {
   UD.rankPoints = sp.rank_points || UD.rankPoints || 0;
   UD.loginStreak = sp.streak_days || UD.loginStreak || 0;
   UD.lastCheckIn = sp.last_checkin_date || UD.lastCheckIn || '';
+  if (window.updateDailyCheckInButton) window.updateDailyCheckInButton();
   /* ── Premium: handle both premium_level (INT) and premium_tier (TEXT) ── */
   var _premTier = 0;
   if (typeof sp.premium_level === 'number' && sp.premium_level >= 0) {
