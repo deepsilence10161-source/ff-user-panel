@@ -1,9 +1,9 @@
 /* ================================================================
-   MINI ESPORTS — SERVICE WORKER v32
+   MINI ESPORTS — SERVICE WORKER v33
    Cache-first for static (JS/CSS/fonts) → 2nd load nearly instant
    Network-first for Supabase API → data always fresh
 ================================================================ */
-var CACHE_VER    = 'me-v32-8-4';
+var CACHE_VER    = 'me-v33-8-18';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is

@@ -350,7 +350,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
       </div>
     </div>
     <div class="cat-pills" id="homeCat">
-      <div class="c-pill cp-paid active" data-cat="paid" onclick="setCat('paid')">💰 Paid</div>
+      <div class="c-pill active" data-cat="all" onclick="setCat('all')">🎮 All</div>
+      <div class="c-pill cp-paid" data-cat="paid" onclick="setCat('paid')">💰 Paid</div>
       <div class="c-pill cp-coin" data-cat="coin" onclick="setCat('coin')">🪙 Coin</div>
       <div class="c-pill" data-cat="ad" onclick="setCat('ad')" style="background:rgba(255,159,28,.12);color:#ff9f1c;border:1px solid rgba(255,159,28,.25)">📺 Ad Free</div>
     </div>
@@ -418,7 +419,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
           <div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,235,150,.55),rgba(255,215,0,.1) 70%);display:flex;align-items:center;justify-content:center;font-size:32px;margin:12px auto;filter:drop-shadow(0 0 14px rgba(255,215,0,.75)) drop-shadow(0 0 4px rgba(255,255,255,.5));animation:diaGlow 2.2s ease-in-out infinite .3s">🪙</div>
           <div class="w-total yellow" id="wCoins" style="font-size:30px;margin-bottom:10px">0</div>
           <div style="height:1px;background:rgba(255,215,0,.15);margin:0 0 10px"></div>
-          <button class="w-btn" onclick="window.doCheckIn&&doCheckIn()" style="background:linear-gradient(135deg,rgba(0,255,156,.15),rgba(0,255,156,.05));color:var(--green);border:1px solid rgba(0,255,156,.2);width:100%;margin-bottom:6px;margin-top:auto"><i class="fas fa-calendar-check"></i> Daily Check-In (+🪙5)</button>
+          <button id="checkInBtn" data-daily-checkin class="w-btn" onclick="window.doCheckIn&&doCheckIn()" style="background:linear-gradient(135deg,rgba(0,255,156,.15),rgba(0,255,156,.05));color:var(--green);border:1px solid rgba(0,255,156,.2);width:100%;margin-bottom:6px;margin-top:auto"><i class="fas fa-calendar-check"></i> Daily Check-In (+🪙5)</button>
           <button class="w-btn" onclick="showCoinShop()" style="background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,140,0,.08));color:#ffd700;border:1px solid rgba(255,215,0,.25);width:100%;min-height:46px;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center"><i class="fas fa-gift"></i> Earn Coins</button>
         </div>
       </div>

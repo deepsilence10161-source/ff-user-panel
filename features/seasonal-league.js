@@ -15,8 +15,9 @@ var _season = null;
 /* ── Load Current Season ── */
 window.loadCurrentSeason = function() {
   if (!window._supa) { setTimeout(window.loadCurrentSeason, 800); return; }
-  /* ✅ Supabase config table (not Firebase appSettings) */
-  window._supa.from('config')
+  /* App configuration lives in app_settings. The old `config` table does
+     not exist in production and caused a 404 on every page load. */
+  window._supa.from('app_settings')
     .select('value')
     .eq('key', 'currentSeason')
     .maybeSingle()

@@ -228,7 +228,8 @@ function renderHome() {
     var tEntry = (t.entryType || '').toString().toLowerCase().trim();
     var wantCat = hCF.toString().toLowerCase().trim();
     var catMatch = false;
-    if (wantCat === 'coin') catMatch = (tEntry === 'coin' || Number(t.entryFee) === 0);
+    if (wantCat === 'all') catMatch = true;
+    else if (wantCat === 'coin') catMatch = (tEntry === 'coin' || Number(t.entryFee) === 0);
     else if (wantCat === 'ad') catMatch = (tEntry === 'ad');
     else catMatch = (tEntry !== 'coin' && tEntry !== 'ad' && Number(t.entryFee) > 0);
     if (!catMatch) continue;

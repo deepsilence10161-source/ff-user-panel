@@ -74,7 +74,7 @@ var _READ_KEYS = {};
 function _saveReadKeys() {
   try { localStorage.setItem("_mes_read_keys", JSON.stringify(_READ_KEYS)); } catch(e) {}
 }
-var curScr = "home", prevScr = "home", hSF = "upcoming", hCF = "paid", mmSF = "upcoming";
+var curScr = "home", prevScr = "home", hSF = "upcoming", hCF = "all", mmSF = "upcoming";
 var spType = "weekly", cdInt = null, partnerCache = {};
 var wfStep = 0, wfAmt = 0, wfScreenshot = "";
 

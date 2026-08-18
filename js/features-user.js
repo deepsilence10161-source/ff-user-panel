@@ -2093,7 +2093,27 @@ window._showAchievementsLegacy = function () {
   };
 
   /* ─── FEATURE 103: DAILY CHECK-IN BUTTON ─── */
+  function _checkInDateToday() {
+    return new Date().toISOString().slice(0, 10);
+  }
+  window.updateDailyCheckInButton = function () {
+    var claimed = !!(window.UD && window.UD.lastCheckIn === _checkInDateToday());
+    document.querySelectorAll('[data-daily-checkin]').forEach(function(btn) {
+      btn.disabled = claimed;
+      btn.setAttribute('aria-disabled', claimed ? 'true' : 'false');
+      btn.innerHTML = claimed
+        ? '<i class="fas fa-check-circle"></i> Checked In Today'
+        : '<i class="fas fa-calendar-check"></i> Daily Check-In (+🪙5)';
+      btn.style.opacity = claimed ? '0.65' : '1';
+      btn.style.cursor = claimed ? 'default' : 'pointer';
+    });
+  };
   window.doCheckIn = function () {
+    if (window.UD && window.UD.lastCheckIn === _checkInDateToday()) {
+      window.updateDailyCheckInButton();
+      _toast('✅ Aaj already check-in kar chuke ho!', 'inf');
+      return;
+    }
     /* ✅ FIX (live-testing, 401 on Daily Check-In click): window._supa
        exists from page-load as an ANON client (see supabase-init-early
        equivalent in core/db.js) — it only becomes authenticated after
@@ -2128,9 +2148,14 @@ window._showAchievementsLegacy = function () {
         }
         var totalReward = r.data.total;
         var newStreak = r.data.streak;
-        if (window.UD) { window.UD.coins = (Number(window.UD.coins) || 0) + totalReward; window.UD.streak_days = newStreak; }
+        if (window.UD) {
+          window.UD.coins = (Number(window.UD.coins) || 0) + totalReward;
+          window.UD.streak_days = newStreak;
+          window.UD.lastCheckIn = _checkInDateToday();
+        }
         if (window.updateHdr) updateHdr();
         if (window.renderWallet) renderWallet();
+        window.updateDailyCheckInButton();
         _toast(r.data.milestone_bonus > 0
           ? '🎉 Check-in complete! +🪙' + totalReward + ' Coins (' + newStreak + '-day milestone bonus!) 🔥'
           : '🎉 Check-in complete! +🪙' + totalReward + ' Coins earned!', 'ok');

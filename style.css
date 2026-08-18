@@ -205,6 +205,15 @@ body {
   box-shadow: 0 4px 16px rgba(0,255,106,.1) !important;
 }
 
+/* Home now has All/Paid/Coin/Ad categories. Keep all four usable on
+   narrow phones instead of letting their intrinsic labels overflow. */
+#homeCat .c-pill {
+  min-width: 0;
+  padding: 10px 5px !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+}
+
 /* ═══════════════════════════════════════
    FILTER DROPDOWN ROW (Status + Rank) — 2026-08 redesign, same polish
    pass as the rest of this file applies to .s-tab / .c-pill above
