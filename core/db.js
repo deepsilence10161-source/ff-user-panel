@@ -367,7 +367,7 @@
       getUpcoming: async function() {
         var { data, error } = await window._supa
           .from('active_matches')   /* uses the view */
-          .select('id,title,mode,status,game,scheduled_at,entry_fee,prize_pool,team_size,max_players,current_players,map,perspective,is_featured,match_type,banner_url')
+          .select('id,title,mode,match_sub_type,status,scheduled_at,entry_fee,entry_type,prize_pool,first_prize,max_slots,filled_slots,map,is_special,special_category')
           .order('scheduled_at', { ascending: true })
           .limit(50);              /* max 50 — home screen mein itne kaafi hain */
         if (error) return _err('matches.getUpcoming', error);

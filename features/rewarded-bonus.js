@@ -2,24 +2,34 @@
    REWARDED ADS BONUS SYSTEM
    Premium users ke liye optional rewarded ads:
    "5 ads dekho → 1 Ad-Match free join karo (credit)"
-   Non-premium: "3 ads dekho → 50 coins bonus"
+   Non-premium: config ke mutabik coins bonus
    Har user rewarded ads se benefit le sakta hai
 ================================================================ */
 (function(){
 'use strict';
 
-var BONUS_KEY    = '_mes_rew_bonus_';
-var MAX_ADS_DAY  = 5;   /* max rewarded ads per day */
+/* One counter for every rewarded-ad entry point. The server/RPC remains the
+   authoritative cap; this is only the UX counter and must not be split. */
+var BONUS_KEY    = '_adWatched_';
+var MAX_ADS_DAY  = 5;
+function _dailyLimit() {
+  var n = window.CFG && Number(window.CFG.adDailyLimit);
+  return n > 0 ? n : MAX_ADS_DAY;
+}
+function _adReward() {
+  var n = window.CFG && Number(window.CFG.adCoinsPerWatch);
+  return n > 0 ? n : 10;
+}
 
 function _todayKey() { return new Date().toISOString().split('T')[0]; }
 
 function _getCount(uid) {
-  var raw = localStorage.getItem(BONUS_KEY + uid + '_' + _todayKey());
+  var raw = localStorage.getItem(BONUS_KEY + _todayKey() + '_' + uid);
   return parseInt(raw || '0');
 }
 
 function _incCount(uid) {
-  var key = BONUS_KEY + uid + '_' + _todayKey();
+  var key = BONUS_KEY + _todayKey() + '_' + uid;
   var val = parseInt(localStorage.getItem(key) || '0') + 1;
   localStorage.setItem(key, val);
   return val;
@@ -32,18 +42,19 @@ window.showRewardedBonusModal = function() {
 
   var count   = _getCount(uid);
   var isPrem  = window.getUserPremiumTier ? window.getUserPremiumTier() > 0 : false;
-  var remaining = MAX_ADS_DAY - count;
+  var dailyMax = _dailyLimit();
+  var remaining = dailyMax - count;
 
   var h = '<div style="text-align:center;padding:8px 0 18px">';
   h += '<div style="font-size:40px;margin-bottom:8px">🎬</div>';
   h += '<div style="font-size:17px;font-weight:900;color:#fff;margin-bottom:4px">Ads Dekho — Bonus Pao!</div>';
-  h += '<div style="font-size:12px;color:#888;margin-bottom:16px">Aaj ke ' + remaining + ' ads baaki hain (max ' + MAX_ADS_DAY + '/day)</div>';
+  h += '<div style="font-size:12px;color:#888;margin-bottom:16px">Aaj ke ' + remaining + ' ads baaki hain (max ' + dailyMax + '/day)</div>';
 
   /* Progress bar */
-  var pct = Math.min(100, (count / MAX_ADS_DAY) * 100);
+  var pct = Math.min(100, (count / dailyMax) * 100);
   h += '<div style="background:rgba(255,255,255,.06);border-radius:20px;height:8px;margin-bottom:6px;overflow:hidden">';
   h += '<div style="background:linear-gradient(90deg,#00ff9c,#00bcd4);height:100%;border-radius:20px;width:' + pct + '%;transition:width .4s"></div></div>';
-  h += '<div style="font-size:10px;color:#555;margin-bottom:16px">' + count + '/' + MAX_ADS_DAY + ' ads aaj dekhe gaye</div>';
+  h += '<div style="font-size:10px;color:#555;margin-bottom:16px">' + count + '/' + dailyMax + ' ads aaj dekhe gaye</div>';
 
   /* Rewards */
   h += '<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">';
@@ -52,7 +63,7 @@ window.showRewardedBonusModal = function() {
   if (!isPrem) {
     h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between">';
     h += '<div><div style="font-size:13px;font-weight:700;color:#e0e0e0">🪙 Coin Bonus</div>';
-    h += '<div style="font-size:11px;color:#888;margin-top:3px">Ek ad = +50 Coins</div></div>';
+    h += '<div style="font-size:11px;color:#888;margin-top:3px">Ek ad = +' + _adReward() + ' Coins</div></div>';
     h += '<button onclick="window.watchAdForCoins()" style="padding:9px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:12px;font-weight:900;cursor:pointer' + (remaining<=0?';opacity:.4;pointer-events:none':'') + '">' + (remaining<=0?'Aaj limit!':'Ad Dekho →') + '</button>';
     h += '</div>';
   }
@@ -79,36 +90,14 @@ window.showRewardedBonusModal = function() {
   if (window.openModal) openModal('🎬 Ad Bonus', h);
 };
 
-/* ── Watch Ad for Coins (non-premium) ── */
-window.watchAdForCoins = function() {
-  var uid = window.U && window.U.uid;
-  if (!uid) return;
-  if (_getCount(uid) >= MAX_ADS_DAY) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
-  if (!window.AdManager) { if(window.toast) toast('Ad load nahi hua','err'); return; }
-  if(window.closeModal) closeModal();
-  setTimeout(function() {
-    window.AdManager.showRewardedAd(function() {
-      /* Rewarded */
-      _incCount(uid);
-      /* Give 50 coins */
-      _giveCoins(uid, 50, function() {
-        if(window.toast) toast('🪙 +50 Coins mile! Aaj aur ads dekho.','ok');
-        if(window.awardBPXP) window.awardBPXP('ad_watched');
-      }, function() {
-        /* BUG #43 FIX: genuine failure now shown honestly instead of a fake success toast */
-        if(window.toast) toast('Coins credit nahi ho paye, dobara try karo','err');
-      });
-    }, function() {
-      if(window.toast) toast('Ad pura dekho reward ke liye!','inf');
-    }, 'coins_bonus');
-  }, 400);
-};
+/* Coin rewards are implemented once in features/ads.js. Keeping a second
+   window.watchAdForCoins here used to overwrite it and pay a hardcoded reward. */
 
 /* ── Watch Ad for XP ── */
 window.watchAdForXP = function() {
   var uid = window.U && window.U.uid;
   if (!uid) return;
-  if (_getCount(uid) >= MAX_ADS_DAY) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
+  if (_getCount(uid) >= _dailyLimit()) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
   if (!window.AdManager) { if(window.toast) toast('Ad load nahi hua','err'); return; }
   if(window.closeModal) closeModal();
   setTimeout(function() {
@@ -129,7 +118,7 @@ window.watchAdForMatchCredit = function() {
   if (!uid) return;
   var isPrem = window.getUserPremiumTier ? window.getUserPremiumTier() > 0 : false;
   if (!isPrem) { if(window.toast) toast('Yeh sirf premium users ke liye hai!','inf'); return; }
-  if (_getCount(uid) >= MAX_ADS_DAY) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
+  if (_getCount(uid) >= _dailyLimit()) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
   if (!window.AdManager) return;
   if(window.closeModal) closeModal();
   setTimeout(function() {
@@ -165,33 +154,6 @@ window.useAdMatchCredit = function(uid) {
   localStorage.setItem('_mes_match_credits_' + uid, c - 1);
   return true;
 };
-
-/* ── Give Coins helper ── */
-function _giveCoins(uid, amount, cb, errCb) {
-  if (window._supa) {
-    /* BUG #33 FIX (2026-07): the daily ad-watch cap (MAX_ADS_DAY) was only ever checked via
-       localStorage (_getCount above) — trivially bypassed by clearing browser storage or
-       using incognito, letting a user farm unlimited coins. claim_ad_reward() now
-       independently re-counts today's actual ad-watch transactions server-side and rejects
-       past MAX_ADS_DAY regardless of what the client's local counter claims. */
-    window._supa.rpc('claim_ad_reward', { p_amount: amount, p_max_per_day: MAX_ADS_DAY })
-      .then(function(r) {
-        if (r.error || (r.data && r.data.success === false)) {
-          var e = (r.data && r.data.error) || (r.error && r.error.message) || 'Failed';
-          console.error('[rewarded-bonus] coin credit failed:', e);
-          if(errCb) errCb(new Error(e)); else if(cb) cb();
-          return;
-        }
-        if(cb) cb();
-      })
-      .catch(function(e) {
-        console.error('[rewarded-bonus] coin credit failed:', e && e.message);
-        if(errCb) errCb(e); else if(cb) cb();
-      });
-  } else {
-    if(cb) cb();
-  }
-}
 
 /* ── Add "Earn with Ads" button to relevant screens ──
    BUG FIX (2026-08): this "Ads Dekho — Bonus Pao" row used to sit at

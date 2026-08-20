@@ -294,7 +294,7 @@ window.watchAdForCoins = function() {
   }
 
   /* Daily limit check — adDailyLimit from CFG (default 5) */
-  var dailyLimit = (window.CFG && window.CFG.adDailyLimit) ? Number(window.CFG.adDailyLimit) : 5;
+  var dailyLimit = (window.CFG && Number(window.CFG.adDailyLimit)) || 5;
   var todayKey   = new Date().toISOString().split('T')[0];
   var _adStorKey = '_adWatched_' + todayKey + '_' + window.U.uid;
   var watchedToday = parseInt(localStorage.getItem(_adStorKey) || '0');
@@ -305,19 +305,28 @@ window.watchAdForCoins = function() {
 
   window.AdManager.showRewardedAd(
     function() {
-      /* Increment daily count */
-      try { localStorage.setItem(_adStorKey, String(watchedToday + 1)); } catch(e) {}
-      /* Reward: use CFG value (default 10), fallback 5 */
-      var coinReward = (window.CFG && window.CFG.adCoinsPerWatch) ? Number(window.CFG.adCoinsPerWatch) : 10;
-      /* ✅ Supabase ONLY — no Firebase double-credit */
-      if (window._supa && window.U) {
-        window._supa.rpc('increment_balance', { p_uid: window.U.uid, p_col: 'coins', p_amount: coinReward }).then(null, function(){});
+      /* Reward: use CFG value (default 10) */
+      var coinReward = (window.CFG && Number(window.CFG.adCoinsPerWatch)) || 10;
+      /* One server-authoritative credit. Do not combine this with a Firebase
+         transaction or a second increment_balance call. claim_ad_reward also
+         enforces the daily cap if localStorage is cleared. */
+      var credit = window._supa && window.U
+        ? window._supa.rpc('claim_ad_reward', { p_amount: coinReward, p_max_per_day: dailyLimit })
+        : Promise.reject(new Error('Reward service unavailable'));
+      credit.then(function(r) {
+        if (r && (r.error || (r.data && r.data.success === false))) {
+          if (window.toast) toast('Coins credit nahi ho paye, dobara try karo', 'err');
+          return;
+        }
+        try { localStorage.setItem(_adStorKey, String(watchedToday + 1)); } catch(e) {}
         if (window.UD) window.UD.coins = (window.UD.coins || 0) + coinReward;
         if (window.updateHdr) window.updateHdr();
-      }
-      if (window.analytics) window.analytics.adWatched();
-      var remaining = dailyLimit - (watchedToday + 1);
-      if (window.toast) toast('+' + coinReward + ' Coins mila! 🪙' + (remaining > 0 ? ' (' + remaining + ' ads baaki aaj)' : ' (Aaj ka limit complete! 🎉)'), 'ok');
+        if (window.analytics) window.analytics.adWatched();
+        var remaining = dailyLimit - (watchedToday + 1);
+        if (window.toast) toast('+' + coinReward + ' Coins mila! 🪙' + (remaining > 0 ? ' (' + remaining + ' ads baaki aaj)' : ' (Aaj ka limit complete! 🎉)'), 'ok');
+      }, function() {
+        if (window.toast) toast('Coins credit nahi ho paye, dobara try karo', 'err');
+      });
     },
     function() {
       if (window.toast) toast('Ad load nahi hua, dobara try karo.', 'err');
@@ -392,7 +401,7 @@ window.showAdEarn = function() {
   if (window.openModal) openModal('📺 Watch & Earn',
     '<div style="text-align:center;padding:20px">' +
     '<div style="font-size:40px;margin-bottom:12px">📺</div>' +
-    '<p style="font-size:14px;color:var(--txt2)">Ad dekho aur +5 Coins pao!</p>' +
+    '<p style="font-size:14px;color:var(--txt2)">Ad dekho aur +' + ((window.CFG && Number(window.CFG.adCoinsPerWatch)) || 10) + ' Coins pao!</p>' +
     '<button onclick="closeModal();if(window.watchAdForCoins)watchAdForCoins();" ' +
     'style="margin-top:14px;padding:12px 28px;border-radius:12px;border:none;' +
     'background:var(--primary);color:#000;font-weight:800;font-size:14px;cursor:pointer">▶ Watch Ad</button>' +

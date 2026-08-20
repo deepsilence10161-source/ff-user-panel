@@ -142,6 +142,12 @@ function _applyCfg(c) {
   if (c.appForceUpdateEnabled  != null) window.CFG.appForceUpdateEnabled  = !!c.appForceUpdateEnabled;
   if (c.appSupportContact      != null) window.CFG.appSupportContact      = String(c.appSupportContact);
   if (c.appExpectedSigningHash != null) window.CFG.appExpectedSigningHash = String(c.appExpectedSigningHash);
+  /* Keep the static Coin Shop card in sync with live admin settings. */
+  var _adRewardLabel = '+' + (Number(window.CFG.adCoinsPerWatch) || 10) + '🪙';
+  var _adRewardText = document.getElementById('coinShopAdRewardText');
+  var _adRewardBadge = document.getElementById('coinShopAdRewardBadge');
+  if (_adRewardText) _adRewardText.textContent = _adRewardLabel;
+  if (_adRewardBadge) _adRewardBadge.textContent = _adRewardLabel;
   window._cfgLoaded = true;
   if (window.renderHome) window.renderHome();
   if (window.renderWallet) window.renderWallet();

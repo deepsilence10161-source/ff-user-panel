@@ -129,7 +129,7 @@ window.addFriend=function(uid,ign,btn){
   // Insert both directions for easy querying
   _s().from('friendships').upsert([{user_a:_uid(),user_b:uid},{user_a:uid,user_b:_uid()}],{onConflict:'user_a,user_b',ignoreDuplicates:true})
   .then(function(){
-    _s().from('notifications').insert({user_id:uid,type:'friend_add',title:'👥 New Friend!',body:myIgn+' ne tumhe friend add kiya!',ref_id:_uid(),is_read:false}).catch(function(){});
+    _s().from('notifications').insert({user_id:uid,type:'friend_add',title:'👥 New Friend!',body:myIgn+' ne tumhe friend add kiya!',ref_id:_uid(),is_read:false}).then(null, function(){});
     if(window.logActivity)logActivity('join','Friend '+ign+' add kar liya!');
     if(btn){btn.textContent='✅ Added';btn.style.background='rgba(0,255,156,.15)';}
     if(window.toast)toast('✅ '+ign+' friend ban gaya!','ok');

@@ -198,6 +198,21 @@
         console.error('[Bridge] Blocked attempted client-side premium_level write for', targetUid, '— use approve_premium (admin) or start_free_trial RPCs instead.');
         return Promise.resolve({ error: { message: 'premium_level is not directly client-writable — use an admin-checked RPC' } });
       }
+      /* users/{uid}/missionProgress/{key} = scalar. In particular, a
+         claimed_* key is a claim operation, not ordinary progress. */
+      if (field === 'missionProgress' && parts[3] != null) {
+        var _today = new Date().toISOString().split('T')[0];
+        var _key = parts[3];
+        var _claim = /^claimed_(.+?)_(.+)$/.exec(_key);
+        if (_claim) {
+          return window._supa.rpc('claim_mission_reward', {
+            p_mission_key: _claim[1], p_period: _claim[2], p_coins: 0
+          });
+        }
+        return window._supa.rpc('track_mission_progress', {
+          p_mission_key: _key, p_period: _today, p_progress: Number(value) || 0, p_target: 1
+        });
+      }
       /* users/{uid}/missionProgress */
       if (field === 'missionProgress' && typeof value === 'object') {
         /* ✅ BUG FIX (2026-07-20): was a direct upsert() — bypassed
@@ -618,9 +633,13 @@
         .eq('user_id', parts[1]).gte('period', today2)
         .then(function(r) {
           var obj = {};
-          (r.data || []).forEach(function(m) { obj[m.mission_key] = m.progress; });
-          callback(_fakeSnap(obj));
-        }, function() { callback(_fakeSnap({})); });
+          (r.data || []).forEach(function(m) {
+            obj[m.mission_key] = m.progress;
+            if (m.claimed) obj['claimed_' + m.mission_key + '_' + m.period] = true;
+          });
+          var subKey = parts[3] || null;
+          callback(_fakeSnap(subKey ? (obj[subKey] != null ? obj[subKey] : null) : obj));
+        }, function() { callback(_fakeSnap(parts[3] ? null : {})); });
       return;
     }
 

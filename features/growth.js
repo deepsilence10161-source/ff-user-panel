@@ -196,10 +196,13 @@ function giveShareCoins() {
 /* ================================================================
    3. DAILY + WEEKLY MISSIONS
    ================================================================ */
+var _autoClaimedToday = null;
+
 window.showMissionsPanel = function() {
   if (!window.UD || !window.U) { toast('Login karo pehle', 'err'); return; }
   var stats = window.UD.stats || {};
-  var today = new Date().toDateString();
+  var today = new Date().toISOString().split('T')[0];
+  var displayToday = new Date().toDateString();
   var weekNum = getWeekNum();
 
   window.db.ref('users/' + window.U.uid + '/missionProgress').once('value', function(snap) {
@@ -207,9 +210,9 @@ window.showMissionsPanel = function() {
 
     var DAILY = [
       { id: 'daily_login',   label: '📅 Login Karo',      desc: 'Aaj login kiya',          reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_login:5),   check: true,                              auto: true },
-      { id: 'daily_match',   label: '🎮 1 Match Khelo',   desc: 'Aaj 1 match join karo',   reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_match:10),  check: (prog.lastMatchDate === today) },
+      { id: 'daily_match',   label: '🎮 1 Match Khelo',   desc: 'Aaj 1 match join karo',   reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_match:10),  check: (prog.lastMatchDate === displayToday) },
       { id: 'daily_kills3',  label: '💀 3 Kills Karo',    desc: 'Aaj 3 kills lo',          reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_kills3:5),   check: (Number(prog.todayKills||0) >= 3) },
-      { id: 'daily_checkin', label: '🎁 Check-In Karo',   desc: 'Bonus coins',             reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_checkin:5),   check: (prog.lastCheckIn === today) },
+      { id: 'daily_checkin', label: '🎁 Check-In Karo',   desc: 'Bonus coins',             reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_checkin:5),   check: (prog.lastCheckIn === displayToday) },
     ];
 
     var WEEKLY = [
@@ -237,14 +240,11 @@ window.showMissionsPanel = function() {
     h += '</div>';
     if (window.openModal) openModal('🎯 Missions', h);
 
-    // Auto-claim daily login
-    if (!prog['claimed_daily_login_' + today]) {
-      /* ✅ Note (2026-08-17): claimMission() now always re-renders (both
-         the success path and the already-claimed path), so the panel
-         will correctly flip from "Claim +5" to "✅ Claimed" ~300ms after
-         this fires, instead of staying stuck showing the stale
-         pre-claim state until manually reopened. */
-      claimMission('daily_login', 5, today, 'daily');
+    // Auto-claim daily login once per session/day; never create a render loop.
+    if (!prog['claimed_daily_login_' + today] && _autoClaimedToday !== today) {
+      _autoClaimedToday = today;
+      var _loginReward = (window.CFG && window.CFG.missions && Number(window.CFG.missions.daily_login)) || 5;
+      claimMission('daily_login', _loginReward, today, 'daily', true);
     }
   });
 };
@@ -272,34 +272,45 @@ function renderMissionCard(m, done, claimed, period, type) {
     '<div style="flex-shrink:0">' + btnHtml + '</div></div>';
 }
 
-window.claimMission = function(missionId, coins, period, type) {
+window.claimMission = function(missionId, coins, period, type, silent) {
   if (!window.db || !window.U) return;
   var claimKey = 'claimed_' + missionId + '_' + (type === 'weekly' ? 'w' : '') + period;
   var path = 'users/' + window.U.uid + '/missionProgress/' + claimKey;
 
   window.db.ref(path).once('value', function(s) {
-    if (s.val()) {
-      /* ✅ FIX (2026-08-17): this used to return immediately without
-         re-rendering, so if the panel's HTML was drawn before an
-         auto-claim finished (e.g. daily_login claims itself the instant
-         the panel opens, using a `prog` snapshot fetched before the
-         claim), the card stayed showing the un-claimed "Claim +5" button
-         forever until the panel was closed and reopened — even though
-         claiming had genuinely already succeeded in the backend. Now
-         re-renders here too, so the UI always catches up to the real
-         claimed state. */
-      toast('Pehle se claim ho chuka hai', 'inf');
-      if (window.showMissionsPanel) setTimeout(window.showMissionsPanel, 300);
+    var v = s.val();
+    /* Empty bridge maps are not claim flags. Only an explicit true/1 is. */
+    var alreadyClaimed = (v === true || v === 1 || v === 'true');
+    if (alreadyClaimed) {
+      if (!silent && window.toast) toast('Pehle se claim ho chuka hai', 'inf');
       return;
     }
-    window.db.ref(path).set(true);
-    window.db.ref('users/' + window.U.uid + '/coins').transaction(function(v) { return (v||0) + coins; });
-    if (window._supa && window.U) { window._supa.rpc('increment_balance', { p_uid: window.U.uid, p_col: 'coins', p_amount: coins }).then(null, function(){}); window._supa.from('wallet_transactions').insert({ user_id: window.U.uid, currency: 'coins', txn_type: 'credit', amount: coins, reason: 'mission_reward' }).then(null, function(){}); }
-    if (window.UD) { window.UD.coins = (window.UD.coins||0) + coins; if (window.updateHdr) updateHdr(); }
-    toast('+' + coins + ' 🪙 Coins mile! Mission complete! 🎉', 'ok');
-    if (window.updateHdr) window.updateHdr();
-    // Re-render
-    if (window.showMissionsPanel) setTimeout(window.showMissionsPanel, 300);
+
+    /* Atomic server-side claim: it verifies the mission and writes the claim
+       flag together with the coin credit. Never split these into set() plus
+       increment_balance, otherwise a failed flag write permits farming. */
+    if (!window._supa) {
+      if (!silent && window.toast) toast('Reward service available nahi hai', 'err');
+      return;
+    }
+    window._supa.rpc('claim_mission_reward', {
+      p_mission_key: missionId,
+      p_period: period,
+      p_coins: Number(coins) || 0
+    }).then(function(r) {
+      if (r && (r.error || (r.data && r.data.success === false))) {
+        if (!silent && window.toast) toast('Mission reward nahi mila, dobara try karo', 'err');
+        return;
+      }
+      if (window.UD) {
+        window.UD.coins = (window.UD.coins || 0) + (Number(coins) || 0);
+        if (window.updateHdr) window.updateHdr();
+      }
+      if (!silent && window.toast) toast('+' + coins + ' 🪙 Coins mile! Mission complete! 🎉', 'ok');
+      if (!silent && window.showMissionsPanel) setTimeout(window.showMissionsPanel, 300);
+    }, function() {
+      if (!silent && window.toast) toast('Mission reward nahi mila, dobara try karo', 'err');
+    });
   });
 };
 
