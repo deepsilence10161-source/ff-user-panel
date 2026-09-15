@@ -3,6 +3,59 @@
 
 ---
 
+## 🔴 2026-09-15 — `app-compat/no-app` (Sky Diamond submit blocked)
+
+### ✅ FIXED — "No Firebase App '[DEFAULT]' has been created"
+**Files:** `core/firebase.js`, `core/imgbb.js`, `core/db.js`, `js/paytm-checkout.js`, `js/legal-compliance.js`
+
+**Reported symptom:** On the Sky Diamond purchase screen, tapping **Submit Payment**
+after uploading a valid screenshot and entering the UTR showed a red toast:
+
+```
+❌ DEBUG ERROR (dupcheck): Firebase: No Firebase App '[DEFAULT]'
+has been created - call Firebase App.initializeApp() (app-compat/no-app)
+```
+
+and the request was never submitted.
+
+**Root cause:** `core/firebase.js` creates its app under the name **`"mainApp"`**
+(`firebase.initializeApp({...}, "mainApp")`). Nothing in this codebase ever creates
+a *default* app — but a bare `firebase.auth()` call resolves by app name and defaults
+to `"[DEFAULT]"`, so **every one of them threw**.
+
+Two compounding factors made this silent for so long:
+
+1. Most call sites had a surrounding `try/catch`, so the throw was swallowed and the
+   feature just quietly stopped working — screenshots/profile/banner uploads
+   (`core/imgbb.js:39`) reported a misleading *"Login required to upload"*, Paytm
+   checkout never got a token, and logout never cleared the Firebase session.
+2. But `core/imgbb.js:73` called `firebase.auth()` a **second** time while *building
+   its own error message* — and that one sat **outside** any `try/catch`. So there the
+   throw escaped the entire upload path, propagated up into `quick-deposit.js`'s
+   `_onDupCheckResult`, and surfaced as the red `(dupcheck)` toast that aborted the
+   submit. The `(dupcheck)` try/catch was itself added on 2026-09-14 as temporary
+   instrumentation to locate this exact failure — it did its job.
+
+Verified against `firebase-app-compat` **9.23.0** (the version `index.html` loads):
+the pre-fix code reproduces the error string byte-for-byte; the post-fix code
+does not throw and `fbAuth()` resolves Auth correctly on repeated calls.
+
+**Fix:** Added `window.fbAuth()` in `core/firebase.js`, which resolves Auth from the
+real app (the existing `auth` global, else `firebase.auth(_fireApp)`) and never
+consults `"[DEFAULT]"`. Replaced all bare `firebase.auth()` calls with it, and wrapped
+the `imgbb.js:73` message-builder so a token problem can never again crash an
+unrelated flow.
+
+> **Convention:** never call bare `firebase.auth()` in this codebase — use `window.fbAuth()`.
+
+**Also bumped (required to actually ship the fix):** `sw.js` `CACHE_VER` →
+`me-v38-9-15a` and `ASSET_VER` → `20260915a`, and index.html's `?v=` suffix →
+`20260915a`. Per this file's own notes, a stale cache is why previous fixes to this
+area appeared not to apply in the APK WebView.
+
+---
+
+
 ## 🔴 CRITICAL FIXES
 
 ### C-1 ✅ — `.info` Path Routing (Server Time Sync Broken)

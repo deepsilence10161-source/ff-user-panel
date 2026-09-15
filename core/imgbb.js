@@ -27,15 +27,23 @@
      failing immediately. */
   function _getAuthToken(cb) {
     try {
-      if (!window.firebase || !firebase.auth) { cb(null); return; }
-      var cur = firebase.auth().currentUser;
+      /* ✅ FIX (2026-09-15, CRITICAL): was `firebase.auth().currentUser` —
+         a bare firebase.auth() looks for the app named "[DEFAULT]", which
+         this codebase never creates (core/firebase.js registers the app as
+         "mainApp"), so this line threw "app-compat/no-app" on EVERY call.
+         The throw was silently swallowed by the catch below, so uploads
+         just failed with a misleading "Login required to upload" forever.
+         window.fbAuth() resolves Auth from the real app instead. */
+      var _a = window.fbAuth ? window.fbAuth() : null;
+      if (!_a) { cb(null); return; }
+      var cur = _a.currentUser;
       if (cur) {
         cur.getIdToken().then(cb).catch(function() { cb(null); });
         return;
       }
       /* Not ready yet — wait briefly for auth state to restore */
       var settled = false;
-      var unsub = firebase.auth().onAuthStateChanged(function(user) {
+      var unsub = _a.onAuthStateChanged(function(user) {
         if (settled) return;
         settled = true;
         try { unsub(); } catch (e) {}
@@ -70,7 +78,18 @@
   function _doUpload(b64, name, callback) {
     _getAuthToken(function(token) {
       if (!token) {
-        var msg = (window.firebase && firebase.auth && firebase.auth().currentUser)
+        /* ✅ FIX (2026-09-15, CRITICAL): this line re-called the bare
+           `firebase.auth()` while BUILDING the error message, and unlike
+           line 39 it sat outside any try/catch — so the "[DEFAULT] app"
+           throw escaped _getAuthToken and _doUpload entirely and blew up
+           in the caller. That is precisely the red
+           "❌ DEBUG ERROR (dupcheck)" toast seen on the Sky Diamond
+           submit screen after a valid screenshot + UTR. Now uses the
+           safe helper, and is itself wrapped so a token problem can
+           never again surface as an unrelated crash. */
+        var _a = null;
+        try { _a = window.fbAuth ? window.fbAuth() : null; } catch (e) {}
+        var msg = (_a && _a.currentUser)
           ? 'Could not verify login — please try again'
           : 'Login required to upload';
         callback(msg, null);

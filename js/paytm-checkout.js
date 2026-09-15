@@ -28,8 +28,14 @@
   /* ── helpers ── */
   function _getToken(cb) {
     try {
-      if (window.firebase && firebase.auth && firebase.auth().currentUser) {
-        firebase.auth().currentUser.getIdToken(true).then(cb).catch(function () { cb(null); });
+      /* ✅ FIX (2026-09-15): bare firebase.auth() resolves the "[DEFAULT]"
+         app, which this codebase never creates (core/firebase.js names its
+         app "mainApp") — it threw app-compat/no-app every time, the catch
+         below swallowed it, and Paytm checkout could never get a token.
+         window.fbAuth() resolves Auth from the real app. */
+      var _a = window.fbAuth ? window.fbAuth() : null;
+      if (_a && _a.currentUser) {
+        _a.currentUser.getIdToken(true).then(cb).catch(function () { cb(null); });
       } else {
         cb(null);
       }
