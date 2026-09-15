@@ -122,12 +122,14 @@ window._buyDiamondPkg = function(diamonds, price) {
       return;
     }
     var reason = (_pre && _pre.err) || 'upload fail';
-    /* ✅ FIX (2026-09-15b, kept): user ne paisa de diya hai — proof kho
-       nahi sakta. Compressed proof chhota hai, to server upload fail hone
-       par usse request ke saath inline bhej do. 15c: reason bhi dikhao
-       taki agla failure diagnose ho sake. */
+    /* User has already paid, so the proof must never be lost. The
+       compressed data URL is a fully supported screenshot_url value and
+       the admin panel renders it directly. That is a SUCCESS fallback,
+       not a failed payment: log the hosting issue for diagnosis, but do
+       not show a scary "server pe upload nahi hua" toast immediately
+       before the confirmed request-success toast. */
     if (_ss && _ss.length < 700000 && _ss.indexOf('data:image/') === 0) {
-      if (window.toast) toast('⚠️ Screenshot server pe upload nahi hua (' + reason + ') — proof request ke saath seedha bhej rahe hain', 'inf');
+      console.warn('[quick-deposit] Hosted proof upload failed; saving compressed proof inline:', reason);
       cb(null, null, _ss);
       return;
     }
@@ -137,11 +139,14 @@ window._buyDiamondPkg = function(diamonds, price) {
   window._diaDepSs = function(inp) {
     if (!inp.files || !inp.files[0]) return;
     var f = inp.files[0];
+    /* Clear immediately so selecting the same proof again after any
+       failure always emits onchange. */
+    inp.value = '';
     /* Bug #45 pattern (already used in screens/wallet.js) — validate type
        before doing anything else, so a non-image can't reach the uploader. */
     if (f.type && f.type.indexOf('image/') !== 0) {
       if (window.toast) toast('Sirf image file upload karo!', 'err');
-      inp.value = ''; return;
+      return;
     }
     /* ✅ FIX (2026-09-15b): this used to store the RAW FileReader data URL.
        A phone screenshot is typically 2-5 MB, so every submit POSTed a

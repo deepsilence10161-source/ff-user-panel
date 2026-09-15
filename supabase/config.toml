@@ -1,0 +1,12 @@
+# Source-controlled Edge Function auth configuration.
+#
+# The app authenticates users with Firebase, not Supabase Auth. Therefore the
+# Edge gateway cannot be the identity verifier for this function: it rejects
+# the preflight-free recovery request before index.ts can inspect fb_token.
+# imgbb-upload performs its own fail-closed Firebase RS256/JWKS verification,
+# so disabling only the gateway's legacy JWT check does NOT make uploads
+# anonymous.
+project_id = "hddhkculuyrfoevxmlwy"
+
+[functions.imgbb-upload]
+verify_jwt = false

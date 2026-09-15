@@ -1,5 +1,5 @@
 /* ================================================================
-   IMGBB UPLOAD — core/imgbb.js  v33-CORS-FIX
+   IMGBB UPLOAD — core/imgbb.js  v34-GATEWAY-FIX
    ----------------------------------------------------------------
    HISTORY (keep this — every past fix here was real, and the next
    person needs to know which transport shape was already tried):
@@ -10,8 +10,14 @@
              secret se padhta hai. Key ab public nahi hai.
    • 2026-09 bare firebase.auth() calls → "app-compat/no-app" throw,
              every upload died. Fixed via window.fbAuth().
-   • 2026-09-15b (THIS FILE, v33) "Failed to fetch" on EVERY image
-             upload — root cause + fix documented at _send() below.
+   • 2026-09-15b (v33) "Failed to fetch" on EVERY image upload —
+             root cause + fix documented at _send() below.
+   • 2026-09-16 (v34) Supabase's current Edge gateway also expects the
+             public project key in `apikey`. The client only sent it as
+             Authorization, then its no-header fallback was rejected with
+             `UNAUTHORIZED_NO_AUTH_HEADER / Missing authorization header`.
+             v34 sends the standard Supabase browser header set and keeps
+             the Firebase identity token in the HTTPS request body.
 
    ── v33 ROOT CAUSE ("Failed to fetch" / "Screenshot upload failed") ──
    The request sent a CUSTOM header — X-Firebase-Token — alongside
@@ -32,7 +38,9 @@
 
    ── THE FIX (two rules, do not break them) ──
    1. Only ever send header names the gateway's fixed allow-list
-      contains: Authorization + Content-Type. Nothing custom, ever.
+      contains: Authorization + apikey + Content-Type. Nothing custom.
+      `apikey` is required by the current Supabase Edge gateway; the
+      public anon project key belongs in both standard gateway fields.
    2. The Firebase token therefore travels in the REQUEST BODY
       (`fb_token`), not in a header. The Edge Function reads it from
       there and verifies it server-side against Google's public keys.
@@ -221,13 +229,17 @@
 
   /* ================================================================
      TRANSPORT
-     stage 0 — Authorization + Content-Type only. Exactly the header
-               set Supabase's own JS client uses, so it is guaranteed to
-               pass the gateway's preflight allow-list.
-     stage 1 — no Authorization header at all, Content-Type text/plain
-               (both CORS-"simple"), token in the body. Sends no
-               preflight whatsoever, so no allow-list mismatch can block
-               it. Only used if stage 0 exhausted its retries.
+     stage 0 — Supabase's standard browser headers: `apikey`,
+               `Authorization`, and `Content-Type`. All three are on the
+               Edge gateway's fixed CORS allow-list. Earlier code omitted
+               `apikey`; the relay can reject that request before the
+               function runs.
+     stage 1 — no gateway headers, Content-Type text/plain (CORS-simple),
+               Firebase token in the body. This is a genuinely preflight-
+               free recovery path. It works because imgbb-upload is
+               deployed with verify_jwt=false and then cryptographically
+               verifies the Firebase token itself. Only used after stage
+               0 exhausts transient retries.
   ================================================================ */
   function _attempt(b64, name, token, stage, attempt, lastMsg, callback) {
     _send(b64, name, token, stage, function(err, status, data, raw) {
@@ -243,6 +255,17 @@
       }
 
       var authFail = !err && (status === 401 || status === 403);
+
+      /* A preflight-free stage-1 request cannot pass while an old
+         deployment still has gateway verify_jwt enabled. Do not replace
+         the real stage-0 network/server reason with the gateway's
+         misleading "Missing authorization header" response. The source-
+         controlled config + deploy workflow turn that gateway check off;
+         the function still verifies Firebase cryptographically itself. */
+      if (authFail && stage === 1 && /missing authorization header/i.test(_serverMsg(data, raw))) {
+        callback(lastMsg || 'Image service update pending — thodi der baad dobara try karo', null);
+        return;
+      }
 
       /* ── 401/403: refresh the Firebase token once, then retry ──
          (An expired ID token is the single most common cause of a
@@ -279,18 +302,23 @@
   }
 
   function _send(b64, name, token, stage, cb) {
-    /* ⚠️ RULE: never add a header here that isn't `authorization` or
-       `content-type`. Any other name makes the browser preflight the
-       request and block it — that is the entire v33 bug. */
+    /* ⚠️ RULE: stage 0 may use ONLY Supabase's documented standard
+       CORS headers. In particular, never move the Firebase token into a
+       custom header again. `apikey` is not custom from the gateway's
+       perspective; it is part of the fixed allow-list and is required by
+       the current relay. */
     var headers = { 'Content-Type': (stage === 0 ? 'application/json' : 'text/plain;charset=UTF-8') };
-    if (stage === 0) headers['Authorization'] = 'Bearer ' + SUPA_ANON_KEY;
+    if (stage === 0) {
+      headers['apikey'] = SUPA_ANON_KEY;
+      headers['Authorization'] = 'Bearer ' + SUPA_ANON_KEY;
+    }
 
     var opts = {
       method: 'POST',
       headers: headers,
-      /* NOTE (v33): the Firebase token is in the BODY, not a header.
-         The gateway only lets `authorization` + `content-type` through
-         on a preflight, and the Edge Function verifies this token
+      /* The Firebase token is in the BODY, not a custom header. The
+         gateway's fixed preflight list accepts the standard project-key
+         headers above, and the Edge Function verifies this identity token
          itself against Google's public keys. */
       body: JSON.stringify({ image: b64, name: name || undefined, fb_token: token })
     };
@@ -349,69 +377,96 @@
     return m || 'Upload failed';
   }
 
+  /* ── Persist a hosted profile/banner URL and only report success after
+     PostgREST confirms that the authenticated user's row was affected.
+     A normal update can return error:null with zero rows when RLS blocks
+     it; DB.users.updateImage() deliberately detects that case. */
+  function _saveUserImage(field, url, callback) {
+    var label = field === 'avatar_url' ? 'Photo' : 'Banner';
+    if (!window.DB || !window.DB.users) {
+      if (window.toast) toast(label + ' save failed — service unavailable', 'err');
+      if (callback) callback(null);
+      return;
+    }
+    var fields = {}; fields[field] = url;
+    var write;
+    try {
+      write = window.DB.users.updateImage
+        ? window.DB.users.updateImage(field, url)
+        : window.DB.users.update(fields);
+    } catch (e) {
+      if (window.toast) toast(label + ' save failed — dobara try karo', 'err');
+      if (callback) callback(null);
+      return;
+    }
+    Promise.resolve(write).then(function(res) {
+      if (!res || !res.ok) {
+        console.warn('[ImgBB] ' + label + ' DB save rejected:', res && res.error);
+        if (window.toast) toast(label + ' save failed — dobara try karo', 'err');
+        if (callback) callback(null);
+        return;
+      }
+      if (window.UD) {
+        if (field === 'avatar_url') window.UD.profileImage = url;
+        else window.UD.bannerImage = url;
+      }
+      if (callback) callback(url);
+    }, function(e) {
+      console.warn('[ImgBB] ' + label + ' DB save failed:', e && e.message);
+      if (window.toast) toast(label + ' save failed — internet check karke dobara try karo', 'err');
+      if (callback) callback(null);
+    });
+  }
+
+  function _prepareImage(input, maxDim, quality, maxKB, callback) {
+    /* profile.js already compresses the banner once for its instant
+       preview. Accepting that data URL here avoids decoding/compressing
+       the exact same file a second time. Existing File callers remain
+       fully compatible. */
+    if (typeof input === 'string') { callback(input); return; }
+    _compressImage(input, maxDim, quality, maxKB, callback);
+  }
+
   /* ── Profile image upload ── */
-  window.uploadProfileImage = function(file, callback) {
+  window.uploadProfileImage = function(fileOrDataUrl, callback) {
     var uid  = window.U ? window.U.uid : 'user';
     var name = 'profile_' + uid + '_' + Date.now();
-    /* ✅ FIX (2026-09-15c): "image upload pe click karo to kuch hota hi
-       nahi" — between the tap and the first visible feedback there was a
-       silent window (compress + auth token + network round-trips) that
-       read as a dead button, and on a failed upload the only toast came
-       at the very end. Announce the start so every tap has an immediate,
-       visible response; success/error toasts still follow as before. */
     if (window.toast) toast('⏳ Photo upload ho rahi hai…', 'inf');
-    compImg(file, 400, 0.8, 150, function(b64) {
-      uploadToImgBB(b64, name, function(err, url) {
-        if (err) { if (window.toast) toast('Image upload failed: ' + err, 'err'); if (callback) callback(null); return; }
-        /* ✅ BUG FIX (2026-08-23): "Profile image update hi nahi hota".
-           Two stacked bugs — (1) window.DB.users.update() was called
-           fire-and-forget, its result never checked, so the caller's
-           success callback fired unconditionally even on a genuine DB
-           failure. (2) `window.UD.avatar_url = url` set the WRONG field
-           name — every screen that displays the photo reads
-           UD.profileImage (camelCase, mapped from avatar_url by
-           core/listeners.js _applyUser), not UD.avatar_url. So even a
-           fully successful DB save would still render the OLD photo
-           until the next ~30s background poll happened to overwrite
-           UD wholesale — making it look broken when the save itself
-           had actually worked. Now waits for DB confirmation and sets
-           the field every screen actually reads. */
-        if (window.DB) {
-          window.DB.users.update({ avatar_url: url }).then(function(res) {
-            if (!res || !res.ok) { if (window.toast) toast('Photo save failed — dobara try karo', 'err'); if (callback) callback(null); return; }
-            if (window.UD) window.UD.profileImage = url;
-            if (callback) callback(url);
-          });
-        } else if (callback) { callback(null); }
+    _prepareImage(fileOrDataUrl, 400, 0.8, 150, function(b64) {
+      if (!b64) {
+        if (window.toast) toast('Image read nahi hui — JPG/PNG image dobara choose karo', 'err');
+        if (callback) callback(null);
+        return;
+      }
+      window.uploadToImgBB(b64, name, function(err, url) {
+        if (err || !url) {
+          if (window.toast) toast('Image upload failed: ' + (err || 'server ne URL nahi diya'), 'err');
+          if (callback) callback(null);
+          return;
+        }
+        _saveUserImage('avatar_url', url, callback);
       });
     });
   };
 
   /* ── Banner image upload ── */
-  window.uploadBannerImage = function(file, callback) {
+  window.uploadBannerImage = function(fileOrDataUrl, callback) {
     var uid  = window.U ? window.U.uid : 'user';
     var name = 'banner_' + uid + '_' + Date.now();
-    /* ✅ FIX (2026-09-15c): immediate visible feedback on tap — see the
-       matching note in uploadProfileImage above. */
     if (window.toast) toast('⏳ Banner upload ho rahi hai…', 'inf');
-    compImg(file, 800, 0.75, 250, function(b64) {
-      uploadToImgBB(b64, name, function(err, url) {
-        if (err) { if (window.toast) toast('Banner upload failed: ' + err, 'err'); if (callback) callback(null); return; }
-        /* ✅ BUG FIX (2026-08-23): same two bugs as profile image above —
-           (1) fire-and-forget DB write with no result check, and (2)
-           `window.UD.banner_url = url` set the wrong field name; every
-           screen reads UD.bannerImage (camelCase). Also: users.banner_url
-           didn't exist as a column at all until this session's migration
-           — every banner save before this was failing outright at the
-           database level with a genuine Postgres error this fire-and-
-           forget call never surfaced. */
-        if (window.DB) {
-          window.DB.users.update({ banner_url: url }).then(function(res) {
-            if (!res || !res.ok) { if (window.toast) toast('Banner save failed — dobara try karo', 'err'); if (callback) callback(null); return; }
-            if (window.UD) window.UD.bannerImage = url;
-            if (callback) callback(url);
-          });
-        } else if (callback) { callback(null); }
+    _prepareImage(fileOrDataUrl, 800, 0.75, 250, function(b64) {
+      if (!b64) {
+        if (window.toast) toast('Banner image read nahi hui — JPG/PNG dobara choose karo', 'err');
+        if (callback) callback(null);
+        return;
+      }
+      window.uploadToImgBB(b64, name, function(err, url) {
+        if (err || !url) {
+          if (window.toast) toast('Banner upload failed: ' + (err || 'server ne URL nahi diya'), 'err');
+          if (callback) callback(null);
+          return;
+        }
+        _saveUserImage('banner_url', url, callback);
       });
     });
   };
@@ -430,33 +485,71 @@
     _doUpload(_stripPrefix(base64), name || ('img_' + Date.now()), callback, _mimeOf(base64));
   };
 
-  /* ── Image compressor ── */
-  window.compImg = function(file, maxDim, quality, maxKB, cb) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var img = new Image();
-      img.onload = function() {
-        var w = img.width, h = img.height;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
-          else       { w = Math.round(w * maxDim / h); h = maxDim; }
-        }
-        var c = document.createElement('canvas');
-        c.width = w; c.height = h;
-        c.getContext('2d').drawImage(img, 0, 0, w, h);
-        var q = quality, result = c.toDataURL('image/jpeg', q);
-        while (result.length > maxKB * 1370 && q > 0.1) {
-          q = Math.round((q - 0.1) * 10) / 10;
-          result = c.toDataURL('image/jpeg', q);
-        }
-        cb(result);
-      };
-      img.onerror = function() { cb(e.target.result); };
-      img.src = e.target.result;
-    };
-    reader.onerror = function() { cb(null); };
-    reader.readAsDataURL(file);
-  };
+  /* ── Canonical image compressor ─────────────────────────────────
+     This is deliberately private and then exported. screens/wallet.js
+     used to declare a second global `compImg` later in script order,
+     silently replacing this implementation with one that had no read or
+     decode error handlers. Profile/banner selection could then hang with
+     no callback and no toast on an unsupported/corrupt image. There is now
+     one implementation, every terminal path calls back exactly once, and
+     profile helpers call the private reference so another script cannot
+     accidentally replace it again. */
+  function _compressImage(file, maxDim, quality, maxKB, cb) {
+    var finished = false;
+    function finish(value) {
+      if (finished) return;
+      finished = true;
+      cb(value || null);
+    }
+    if (!_isFileLike(file) || typeof FileReader !== 'function') { finish(null); return; }
 
-  console.log('[ImgBB] v33-CORS-FIX ready — no custom headers, token in body ✅');
+    var reader;
+    try { reader = new FileReader(); }
+    catch (e) { finish(null); return; }
+
+    reader.onload = function(e) {
+      var original = String((e && e.target && e.target.result) || '');
+      if (!original || original.indexOf('data:') !== 0) { finish(null); return; }
+      if (typeof Image !== 'function') { finish(original); return; }
+
+      var img = new Image();
+      var decodeTimer = setTimeout(function() {
+        /* Keep the original image rather than hanging forever. The shared
+           uploader will still apply its own size guard/recompression. */
+        finish(original);
+      }, 15000);
+      img.onload = function() {
+        if (finished) return;
+        clearTimeout(decodeTimer);
+        try {
+          var w = Number(img.width) || 0, h = Number(img.height) || 0;
+          if (!w || !h) { finish(original); return; }
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.max(1, Math.round(h * maxDim / w)); w = maxDim; }
+            else       { w = Math.max(1, Math.round(w * maxDim / h)); h = maxDim; }
+          }
+          var c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          var ctx = c.getContext && c.getContext('2d');
+          if (!ctx) { finish(original); return; }
+          ctx.drawImage(img, 0, 0, w, h);
+          var q = Math.min(1, Math.max(0.1, Number(quality) || 0.8));
+          var result = c.toDataURL('image/jpeg', q);
+          while (result.length > maxKB * 1370 && q > 0.1) {
+            q = Math.max(0.1, Math.round((q - 0.1) * 10) / 10);
+            result = c.toDataURL('image/jpeg', q);
+          }
+          finish(result);
+        } catch (e2) { finish(original); }
+      };
+      img.onerror = function() { clearTimeout(decodeTimer); finish(original); };
+      try { img.src = original; } catch (e3) { clearTimeout(decodeTimer); finish(original); }
+    };
+    reader.onerror = function() { finish(null); };
+    reader.onabort = function() { finish(null); };
+    try { reader.readAsDataURL(file); } catch (e4) { finish(null); }
+  }
+  window.compImg = _compressImage;
+
+  console.log('[ImgBB] v34-GATEWAY-FIX ready — standard Supabase headers, token in body ✅');
 })();

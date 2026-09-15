@@ -7,9 +7,10 @@
    deta hai jo pehle seedha ImgBB deta tha — isliye client ka
    `d.data.url` wala code bina badle chalta rahega.
 
-   Client ise aise call karta hai (core/imgbb.js v33):
+   Client ise aise call karta hai (core/imgbb.js v34):
      POST /functions/v1/imgbb-upload
-     headers: Authorization: Bearer <supabase anon key>
+     headers: apikey: <supabase anon key>
+              Authorization: Bearer <supabase anon key>
               Content-Type: application/json
      body:    { image: "<base64>", name: "optional", fb_token: "<firebase id token>" }
 
@@ -117,7 +118,10 @@ Deno.serve(async (req: Request) => {
     const fd = new FormData();
     fd.append("key", IMGBB_KEY);
     fd.append("image", b64);
-    fd.append("expiration", "0");
+    /* `expiration` is optional. ImgBB documents only 60..15552000 when
+       the parameter is present; sending the old literal "0" relied on
+       undocumented tolerance and can be rejected. Omit it for a permanent
+       image (the documented default). */
     if (name) fd.append("name", name.slice(0, 100));
 
     const r = await fetch(IMGBB_URL, { method: "POST", body: fd });
