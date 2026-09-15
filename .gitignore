@@ -1,0 +1,21 @@
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/
+*.min.js.map
+
+# Node
+node_modules/
+package-lock.json

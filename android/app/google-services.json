@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "247829466483",
+    "firebase_url": "https://fft-app-1e283-default-rtdb.firebaseio.com",
+    "project_id": "fft-app-1e283",
+    "storage_bucket": "fft-app-1e283.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247829466483:android:1dd327fc8886e68dff4906",
+        "android_client_info": {
+          "package_name": "com.miniesports.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247829466483-8t93qo2ql9n06cdmihveulmv1q9mu9bi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.miniesports.app",
+            "certificate_hash": "a86c181aa6d820574bd7c7b53838dd73c1ff84c3"
+          }
+        },
+        {
+          "client_id": "247829466483-76misqmapf7pu81m9ims0r4p9lgufiap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByZ4u5QGrB2l9v-nwVJOu-WJrLGnLJsyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247829466483-76misqmapf7pu81m9ims0r4p9lgufiap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
