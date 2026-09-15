@@ -3,6 +3,212 @@
 
 ---
 
+## 🔴 2026-09-15b — `imgbb-upload` (EVERY image upload failed: "Failed to fetch")
+**Files:** `core/imgbb.js`, `supabase/functions/imgbb-upload/index.ts`,
+`js/quick-deposit.js`, `screens/wallet.js`, `sw.js`, `index.html`
+**Tests added:** `tests/imgbb-upload-cors.test.mjs`, `tests/imgbb-upload-auth.test.mjs`
+
+> ⚠️ **The Edge Function MUST be redeployed for this to work.** The client
+> fix alone is not enough — see "Why both halves are needed" below.
+
+### ✅ FIXED — "Screenshot upload failed: Failed to fetch" / "Banner upload failed: Failed to fetch"
+
+**Reported symptom:** identical red toast on every image upload in the app —
+screenshot on the Sky Diamond *Submit Payment* screen, and banner on the
+profile screen:
+
+```
+❌ Screenshot upload failed: Failed to fetch. Try again.
+❌ Banner upload failed: Failed to fetch
+```
+
+Note what the message *isn't*: there is no HTTP status in it. That is the
+signature of a request the browser refused to send at all — `fetch()`
+rejecting with a bare `TypeError("Failed to fetch")` before any server
+ever saw it.
+
+---
+
+#### Root cause #1 (client) — a custom header broke the CORS preflight
+
+`core/imgbb.js` sent the Firebase ID token as a **custom** header:
+
+```js
+headers: {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer ' + SUPA_ANON_KEY,
+  'X-Firebase-Token': token          // ← this line
+}
+```
+
+`X-Firebase-Token` is not a CORS-safelisted header name, so the browser
+must first send a **preflight** (`OPTIONS`) and will only send the real
+`POST` if the preflight's `Access-Control-Allow-Headers` lists **every**
+header name the request wants to use. Supabase Edge Functions answer that
+preflight at the gateway, and the gateway only allows the fixed list
+`authorization, x-client-info, apikey, content-type` — custom headers set
+in the function's own `CORS` object are dropped before user code runs
+(upstream: supabase/supabase#41334).
+
+`x-firebase-token` was never in that list, so:
+
+1. preflight fails → 2. `POST` is **never sent** → 3. `fetch()` rejects with
+plain `TypeError: Failed to fetch` → 4. no status, no body, no server log
+entry, nothing to debug from. Every upload path in the app shares this one
+function (`uploadToImgBB` / `uploadToImgBBBase64`), which is why profile
+photo, banner, Sky Diamond proof, wallet proof, kill proof and report proof
+all failed the same way at once.
+
+Verified by reproducing it: `tests/imgbb-upload-cors.test.mjs` implements
+the browser's preflight rule and plays the **real** `core/imgbb.js` through
+it. The old header set is blocked under *both* plausible allow-lists; the
+new one passes under both.
+
+#### Root cause #2 (server) — the anon key was being treated as the user
+
+Even with the preflight fixed, the upload still could not have worked. The
+function took the gateway-passing header and used it as the user's identity:
+
+```ts
+const jwt = Authorization;               // ← this is the public anon key
+const supabaseAsUser = createClient(SUPABASE_URL, ANON_KEY,
+  { global: { headers: { Authorization: `Bearer ${jwt}` } } });
+const { data: userData, error } = await supabaseAsUser.auth.getUser();
+if (error || !userData?.user) return 401 "Invalid session, dobara login karo";
+```
+
+That anon key is a valid Supabase JWT but its payload has **no `sub` claim**
+at all — decoded from the exact key in `core/db.js`:
+
+```json
+{ "iss": "supabase", "ref": "hddhkculuyrfoevxmlwy", "role": "anon",
+  "iat": 1778454518, "exp": 2094030518 }
+```
+
+GoTrue's `/auth/v1/user` requires `sub`, so `getUser()` failed on **every
+single call** → `401 Invalid session, dobara login karo`. The "Invalid
+session" wording was misleading too: the user *was* logged in, they were
+just never asked for a token the function could verify.
+
+#### Root cause #3 (payload) — raw 3-5 MB screenshots on mobile data
+
+The Sky Diamond screen stored the raw `FileReader` data URL and POSTed it
+as-is: a modern phone screenshot is 2-5 MB, so the JSON body was ~3-7 MB.
+Even after #1 and #2 were fixed, that is slow and drops mid-request on weak
+mobile data (another "Failed to fetch"), and it burns the user's data. The
+wallet screen already compressed (800px / q0.7) — the Sky Diamond screen
+never did.
+
+---
+
+### The fixes
+
+**`core/imgbb.js` (v33-CORS-FIX)** — the transport was rebuilt around two
+rules, documented in the file so they don't get broken again:
+
+1. **Never send a header that isn't `authorization` or `content-type`.**
+   Exactly the header set Supabase's own JS client uses, so it can always
+   pass the gateway preflight.
+2. **The Firebase token travels in the request body (`fb_token`)**, where
+   the function verifies it. Same HTTPS request, same secrecy — it just
+   cannot break a preflight.
+
+On top of that, since a bare `Failed to fetch` is impossible to debug:
+
+- transient failures (network blip / timeout / 5xx / 408 / 429) retry with
+  backoff; a `401` force-refreshes the Firebase ID token and retries once
+  (an expired token used to fail identically forever);
+- if the normal transport is *still* blocked, one final attempt is made as a
+  100%-preflight-free request (no `Authorization`, `Content-Type: text/plain`
+  — both CORS-"simple", so no `OPTIONS` happens at all and no allow-list
+  mismatch can stop it); the token rides in the body;
+- every attempt now has a 60s `AbortController` timeout, so a hung upload
+  can no longer leave the UI spinning forever;
+- failures map to actionable text ("Network error — internet check karke
+  dobara try karo", "Upload timeout …") instead of the raw browser string;
+- images above ~1.1 MB are quietly re-compressed (1600px / q0.82) before
+  upload — proof stays readable, payload drops by an order of magnitude;
+- `instanceof File` is now guarded (it throws a `TypeError` that took the
+  whole upload path down in envs where `File` is undefined).
+
+**`supabase/functions/imgbb-upload/index.ts` (v2)**
+
+- CORS allow-list is now a superset of the gateway's list *including*
+  `x-firebase-token`, so already-cached old clients (installed APKs) stop
+  being broken by their preflight even before they update;
+- the function looks for the **real** user token — body `fb_token`, legacy
+  `X-Firebase-Token` header, or an `Authorization` bearer that is actually a
+  user JWT — and verifies it:
+  - **Firebase ID token** → RS256 signature verified against Google's public
+    JWKS (`securetoken@system.gserviceaccount.com`, cached 6h, auto-refresh
+    on unknown `kid`) plus `aud`/`iss`/`exp`/`sub` checks against
+    `FIREBASE_PROJECT_ID` (default `fft-app-1e283`);
+  - **Supabase JWT** → `auth.getUser()` with the service-role key;
+- public anon/service keys are explicitly skipped as identities (they have a
+  `role` and no `sub`) — that was root cause #2 in one line;
+- failure to verify fails **closed** (401), and too-big / missing images are
+  rejected before any ImgBB call is made.
+
+**`js/quick-deposit.js`** — screenshot is compressed on selection
+(800px / q0.7, same as the wallet flow), type-validated, and if the upload
+still fails the proof is attached to the request inline (it is ~150 KB now)
+instead of dead-ending a purchase the user has already paid for. The
+"Try again" dead-end is what a user sees as "app toot gaya".
+
+**`screens/wallet.js`** — same dead-end fixed: on upload failure it used to
+save `screenshot_url: null` silently (admin got a pending deposit with **no
+proof**); it now attaches the compressed proof and says so.
+
+---
+
+### Why both halves are needed
+
+| Client | Function | Result |
+|---|---|---|
+| old (custom header) | old | preflight blocked → `Failed to fetch` ← **what was happening** |
+| **new** | old | preflight passes, then `401 Invalid session` |
+| old | **new** | allow-list now includes `x-firebase-token` → works for old APKs |
+| **new** | **new** | ✅ works |
+
+So: **redeploy the Edge Function** (Supabase Dashboard → Edge Functions →
+`imgbb-upload` → paste `index.ts` → Deploy) and ship the client files.
+Only the client files are needed for the *deployed* function to keep working
+with old APKs, but the reverse is not true.
+
+---
+
+### Verification
+
+- Live endpoint probed: `GET /functions/v1/imgbb-upload` answers
+  `{"code":"UNAUTHORIZED_NO_AUTH_HEADER"}` — the project is up, the function
+  is deployed, and the gateway has JWT verification ON (which is also what
+  makes the preflight behaviour above deterministic).
+- Anon-key JWT payload decoded and checked for the missing `sub` claim
+  (root cause #2 confirmed against the real key this repo ships).
+- `node tests/imgbb-upload-cors.test.mjs` → **22/22 pass**: old header set
+  reproduced as blocked under both allow-lists, shipped client succeeds
+  under both, preflight-free fallback works, 5xx retry + 401 token refresh
+  work, and no custom header is sent.
+- `node tests/imgbb-upload-auth.test.mjs` → **24/24 pass**: the real
+  `index.ts` loaded with Deno/external-network stubbed and driven with a
+  locally generated RS256 keypair. Valid token → 200 + hosted URL; anon key
+  alone → 401; tampered signature, expired token, wrong `aud`, wrong `iss`,
+  missing `sub`, unknown `kid` and garbage all → 401; legacy header still
+  verifies; missing/oversized image → 400; ImgBB failure → 502 with its own
+  message (never a fake success).
+
+### Also bumped (required to actually ship the fix)
+
+`sw.js` `CACHE_VER` → `me-v38-9-15b`, `ASSET_VER` → `20260915b`, and every
+`?v=` in `index.html` → `20260915b`. Per this file's own notes, a stale
+WebView cache is why previous fixes appeared not to apply.
+
+> **Convention (extends the 2026-09-15 rule):** in upload code, never send
+> bare `firebase.auth()` (use `window.fbAuth()`) **and** never add a custom
+> request header — put anything the server needs in the body.
+
+---
+
 ## 🔴 2026-09-15 — `app-compat/no-app` (Sky Diamond submit blocked)
 
 ### ✅ FIXED — "No Firebase App '[DEFAULT]' has been created"

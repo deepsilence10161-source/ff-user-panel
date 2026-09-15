@@ -499,7 +499,19 @@ function submitAddMoney() {
         /* Issue #29 Fix: handle ImgBB upload errors gracefully */
         if (err) {
           console.warn('[Wallet] ImgBB upload error:', err);
-          /* Proceed with null URL rather than blocking the entire submission */
+          /* ✅ FIX (2026-09-15b): "gracefully" used to mean saving the row
+             with screenshot_url = null — i.e. the admin received a pending
+             deposit request with NO payment proof and no visible hint to
+             the user that their screenshot never made it. The local copy
+             is already compressed (~150 KB) before upload (handleSS →
+             compImg), which is small enough to attach inline, so attach it
+             instead of losing the proof. Only fall back to null if even
+             that is somehow too large. */
+          if (screenshotData.length < 700000 && screenshotData.indexOf('data:image/') === 0) {
+            toast('⚠️ Screenshot server pe upload nahi hua — proof request ke saath bhej diya', 'inf');
+            saveRequest(screenshotData);
+            return;
+          }
         }
         saveRequest(err ? null : url);
       });
