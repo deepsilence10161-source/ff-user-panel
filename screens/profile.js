@@ -260,17 +260,24 @@ function renderProfile() {
 
 function uploadProfImg(inp) {
   if (!inp.files || !inp.files[0]) return;
+  var _f = inp.files[0];
+  /* ✅ FIX (2026-09-15c): "photo select karta hoon, kuch hota hi nahi, na
+     error aata hai" — after ANY finished (or failed) upload attempt the
+     file input kept its old value, so picking the SAME image again never
+     fired `onchange` at all: no upload, no toast, a completely silent
+     dead tap. Clearing the value right after reading the file makes
+     every pick re-trigger the handler. */
+  inp.value = '';
   /* GATED (2026-08): profile photo change is now a premium perk.
      Free users get a clear message instead of a silent no-op. */
   if (!window.isPremiumActive || !isPremiumActive()) {
     toast('👑 Profile photo change sirf Premium members ke liye hai', 'err');
-    inp.value = '';
     if (window.showPremiumUpgrade) showPremiumUpgrade();
     return;
   }
   /* uploadProfileImage is defined in imgbb.js — always use it */
   if (window.uploadProfileImage) {
-    uploadProfileImage(inp.files[0], function(url) {
+    uploadProfileImage(_f, function(url) {
       if (url) { toast('Photo updated! ✅', 'ok'); setTimeout(renderProfile, 300); }
       /* NOTE: uploadProfileImage's own error path already calls
          toast() on failure (see core/imgbb.js) — if neither the
@@ -280,7 +287,7 @@ function uploadProfImg(inp) {
     });
     return;
   }
-  compImg(inp.files[0], 400, 0.8, 150, function(b64) {
+  compImg(_f, 400, 0.8, 150, function(b64) {
     uploadToImgBB(b64, 'profile_' + U.uid, function(err, url) {
       if (err || !url) { toast('Upload failed: ' + (err||'unknown'), 'err'); return; }
       /* ✅ BUG FIX (2026-08-23): "Profile image update hi nahi hota".
@@ -305,15 +312,20 @@ function uploadProfImg(inp) {
 }
 function uploadBannerImg(inp) {
   if (!inp.files || !inp.files[0]) return;
+  var _f = inp.files[0];
+  /* ✅ FIX (2026-09-15c): same silent-dead-tap fix as uploadProfImg —
+     without this, re-picking the same banner image after a failed
+     attempt never fired `onchange` (input still held the old value),
+     which is exactly "na upload hota hai na error aata hai". */
+  inp.value = '';
   /* GATED (2026-08): banner change is also a premium perk. */
   if (!window.isPremiumActive || !isPremiumActive()) {
     toast('👑 Banner change sirf Premium members ke liye hai', 'err');
-    inp.value = '';
     if (window.showPremiumUpgrade) showPremiumUpgrade();
     return;
   }
-  if (window.uploadBannerImage) { uploadBannerImage(inp.files[0], function(url) { if (url) { toast('Banner updated! ✅', 'ok'); setTimeout(renderProfile, 300); } }); return; }
-  compImg(inp.files[0], 800, 0.75, 250, function(b64) {
+  if (window.uploadBannerImage) { uploadBannerImage(_f, function(url) { if (url) { toast('Banner updated! ✅', 'ok'); setTimeout(renderProfile, 300); } }); return; }
+  compImg(_f, 800, 0.75, 250, function(b64) {
     uploadToImgBB(b64, 'banner_' + U.uid, function(err, url) {
       if (err || !url) { toast('Upload failed: ' + (err||'unknown'), 'err'); return; }
       /* ✅ BUG FIX (2026-08-23): same two bugs as avatar upload above —

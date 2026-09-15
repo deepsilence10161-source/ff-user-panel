@@ -3,6 +3,66 @@
 
 ---
 
+## 🔴 2026-09-15c — Submit speed, history currency mix, upload feedback & deploy gap
+**Files:** `js/quick-deposit.js`, `screens/wallet.js`, `core/imgbb.js`,
+`screens/profile.js`, `sw.js`, `index.html`, `.github/workflows/deploy-edge.yml`,
+`supabase/functions/README.md`
+
+### ✅ FIXED — "Submit Payment button kaam nahi kar raha lagta hai, process bahut slow"
+Root cause do cheezein thi: (1) screenshot ka ImgBB upload **submit tap karne
+ke baad** shuru hota tha, isliye tap ke baad seconds tak kuch hota hua dikhta
+hi nahi tha; (2) button par koi state/feedback nahi tha. Ab upload
+**background me screenshot select karte hi** shuru ho jaata hai (generation-
+guarded, re-pick par stale upload invalidate), aur Submit tap karte hi button
+disable hokar stage labels dikhata hai (`⏳ Submit ho raha hai…` →
+`⏳ Screenshot upload ho raha hai…` → `⏳ Request save ho rahi hai…`). Submit
+ab aam taur par sirf ek fast DB write hai. Wallet wizard (Submit for
+Verification) par bhi yahi pre-upload lagta hai. Saath hi success toast ab
+sirf tab aata hai jab Supabase insert **confirm** ho jaaye — pehle insert
+fire-and-forget tha aur supabase-js v2 DB errors ko `.error` field me resolve
+karta hai (reject nahi karta), isliye fail hone par bhi "Request submit!"
+dikh jaata tha. Wallet wizard ka `sd_amount` bhi fix hua: woh ₹ amount ko hi
+diamond count maan leta tha (₹99 package = 99 diamonds credit), ab live
+config se price→diamonds map hota hai (₹99 → 120).
+
+### ✅ FIXED — Transaction history me "₹99 ke 120 diamonds" ko "+💎99" dikhana
+History row `w.amount` (jo `amount_inr` se aata hai) par 💎 icon laga deti
+thi — do currencies ek number me mix. Ab deposit row me **sirf diamond
+amount** (`sd_amount`, jo admin actually credit karta hai) dikhta hai:
+`+💎120`. Jis legacy row me diamond amount hai hi nahi wahan `+₹99` dikhta
+hai — ek row me ek hi currency. Withdrawal rows hamesha `₹` dikhati hain.
+Pending-deposit wallet_transactions log me bhi amount ab diamond count hai.
+(Deposits stat card ka "Total: ₹…" jaan-boojh kar rupees me hai — woh paid
+money ka aggregate hai, koi single row mix nahi hoti.)
+
+### ✅ FIXED — "Screenshot server pe upload nahi hua" warning jabki admin ko screenshot dikhta tha
+Warning tab aati hai jab ImgBB upload fail hota hai aur compressed proof
+request ke saath inline chala jaata hai (admin ko photo dikhta hai — isi
+liye confusion). Do fix: (1) warning me ab **asli server reason** bhi dikhta
+hai (`…upload nahi hua (Invalid session, dobara login karo) — …`) taki har
+failure diagnose ho sake; (2) asli root cause — **Edge Function ka naya code
+deploy nahi hua tha** (production me v1 chalta raha jo har upload ko 401
+deta hai) — iske liye `.github/workflows/deploy-edge.yml` add kiya gaya hai
+jo `supabase/functions/**` push par deploy karta hai, aur
+`supabase/functions/README.md` me one-command manual deploy + verify table
+hai. Deploy hone ke baad yeh warning aani band ho jaayegi.
+
+### ✅ FIXED — Profile photo / banner upload: "na upload hota hai, na error aata hai"
+Do stacked bugs: (1) file input ka value clear nahi hota tha, isliye fail
+attempt ke baad **wahi image dobara select karne par `onchange` fire hi
+nahi hota tha** — bilkul silent dead tap; ab file padhte hi value clear hoti
+hai. (2) Tap aur pehle feedback ke beech silent window tha — ab
+`uploadProfileImage`/`uploadBannerImage` shuru hone par turant
+`⏳ Photo/Banner upload ho rahi hai…` toast dikhate hain; success/error
+toasts pehle jaise hi aate hain.
+
+###  Release hygiene
+`sw.js` CACHE_VER `me-v39-9-15c` + ASSET_VER `20260915c`, index.html ke sab
+`?v=` tags `20260915c` — warna service worker purana JS serve karta rahega
+aur fixes device tak pahunchengi hi nahi (repo ka apna documented rule).
+
+---
+
 ## 🔴 2026-09-15b — `imgbb-upload` (EVERY image upload failed: "Failed to fetch")
 **Files:** `core/imgbb.js`, `supabase/functions/imgbb-upload/index.ts`,
 `js/quick-deposit.js`, `screens/wallet.js`, `sw.js`, `index.html`

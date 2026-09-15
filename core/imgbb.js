@@ -339,6 +339,13 @@
   window.uploadProfileImage = function(file, callback) {
     var uid  = window.U ? window.U.uid : 'user';
     var name = 'profile_' + uid + '_' + Date.now();
+    /* ✅ FIX (2026-09-15c): "image upload pe click karo to kuch hota hi
+       nahi" — between the tap and the first visible feedback there was a
+       silent window (compress + auth token + network round-trips) that
+       read as a dead button, and on a failed upload the only toast came
+       at the very end. Announce the start so every tap has an immediate,
+       visible response; success/error toasts still follow as before. */
+    if (window.toast) toast('⏳ Photo upload ho rahi hai…', 'inf');
     compImg(file, 400, 0.8, 150, function(b64) {
       uploadToImgBB(b64, name, function(err, url) {
         if (err) { if (window.toast) toast('Image upload failed: ' + err, 'err'); if (callback) callback(null); return; }
@@ -370,6 +377,9 @@
   window.uploadBannerImage = function(file, callback) {
     var uid  = window.U ? window.U.uid : 'user';
     var name = 'banner_' + uid + '_' + Date.now();
+    /* ✅ FIX (2026-09-15c): immediate visible feedback on tap — see the
+       matching note in uploadProfileImage above. */
+    if (window.toast) toast('⏳ Banner upload ho rahi hai…', 'inf');
     compImg(file, 800, 0.75, 250, function(b64) {
       uploadToImgBB(b64, name, function(err, url) {
         if (err) { if (window.toast) toast('Banner upload failed: ' + err, 'err'); if (callback) callback(null); return; }
