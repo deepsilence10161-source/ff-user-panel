@@ -488,7 +488,29 @@ function _loadWalletHistory() {
   if (!window._supa || !U) return;
   window._supa.from('sd_requests').select('*').eq('user_id', U.uid).order('created_at', { ascending: false }).limit(30)
     .then(function(r) {
-      WH = (r.data||[]).map(function(w) { return { _key:w.id, uid:U.uid, amount:w.amount_inr||w.sd_amount||0, sdAmount:w.sd_amount||0, type:'deposit', status:w.status||'pending', utr:w.upi_ref||'', screenshotUrl:w.screenshot_url||'', createdAt:w.created_at?new Date(w.created_at).getTime():0 }; });
+      WH = (r.data||[]).map(function(w) {
+        /* ✅ FIX (2026-09-16): every sd_requests row used to be forced to
+           type:'deposit' — so a withdrawal request (written by the
+           submit_gd_withdrawal RPC / admin WD queue with a
+           request_type of 'withdrawal' or similar) rendered as a fake
+           "Deposit via UPI" history row. Detect the request kind from
+           its own fields so withdrawals show as "Withdrawal" (₹) and
+           deposits stay "Deposit via UPI" (diamonds). */
+        var _rt = String(w.request_type || w.type || '').toLowerCase();
+        var _isWd = /(withdraw|payout|cashout)/.test(_rt) || /(^|_)wd(_|$)/.test(_rt);
+        return {
+          _key: w.id,
+          uid: U.uid,
+          requestType: _rt,
+          amount: w.amount_inr || w.sd_amount || 0,
+          sdAmount: w.sd_amount || 0,
+          type: _isWd ? 'withdraw' : 'deposit',
+          status: w.status || 'pending',
+          utr: w.upi_ref || '',
+          screenshotUrl: w.screenshot_url || '',
+          createdAt: w.created_at ? new Date(w.created_at).getTime() : 0
+        };
+      });
       WH.sort(function(a,b) { return (b.createdAt||0)-(a.createdAt||0); });
       if (curScr==='wallet') renderWallet();
     }).catch(function(e) { console.warn('[L9]', e.message); });
@@ -497,36 +519,52 @@ function _loadTransactions() {
   if (!window._supa || !U) return;
   window._supa.from('wallet_transactions').select('*').eq('user_id', U.uid).order('created_at', { ascending: false }).limit(50)
     .then(function(r) {
-      TXNS = (r.data||[]).map(function(t) {
-        var _C=['credit','match_win','admin_credit','watch_earn','daily_bonus',
-          'referral','check_in','checkin','refund','match_refund','ad_reward',
-          'no_show_refund','referral_bonus','gift_coins','bonus','winning','wallet_credit'];
-        /* ✅ BUG FIX (2026-08-23): two related bugs fixed together —
-           (1) this allow-list only recognized the literal word 'credit',
-           not other genuinely-credit txn_type strings written elsewhere
-           in the stack (e.g. 'sky_diamond_credit', 'sd_purchase_approved').
-           Anything unrecognized became 'debit' and displayed as a fake
-           "🎮 Entry Fee" (wallet.js typeMap). The specific duplicate
-           write that triggered this is fixed at the source
-           (admin-inline.js approveSkyDiaReq no longer double-writes),
-           but keeping this purely allow-list-based means any future new
-           txn_type string would silently misfire the same way — so
-           reason strings ending in _credit/_bonus/_paid/_refund/
-           _approved/_win are now also treated as credits.
-           (2) `amount:t.txn_type==='credit'?t.amount:-t.amount` used to
-           check the RAW t.txn_type against the literal string 'credit'
-           again, independently of the classification just computed —
-           so even after correctly classifying e.g. 'sky_diamond_credit'
-           as type:'credit' for display, the amount sign check right
-           next to it used a DIFFERENT, narrower test and still negated
-           it. Both now derive from the same single classification. */
-        var t2 = (t.txn_type||'').toLowerCase();
+      var _C=['credit','match_win','admin_credit','watch_earn','daily_bonus',
+        'referral','check_in','checkin','refund','match_refund','ad_reward',
+        'no_show_refund','referral_bonus','gift_coins','bonus','winning','wallet_credit'];
+      TXNS = (r.data||[]).reduce(function(acc, t) {
+        var t2 = String(t.txn_type || '').toLowerCase();
+        var amt = Math.abs(Number(t.amount || 0));
+
+        /* ✅ FIX (2026-09-16): "History me ek hi transaction do baar dikh
+           rahi hai — Deposit via UPI + ek fake 'Bonus' row". A deposit is
+           ALREADY rendered from sd_requests as its own "Deposit via UPI"
+           row (see _loadWalletHistory + renderWallet's WH branch). But the
+           deposit pipeline ALSO writes mirror rows into wallet_transactions:
+           `pending_deposit` (submitted) and then the admin-approval credit
+           (`sd_purchase_approved`, `sky_diamond_credit`, or a plain
+           `credit`/`bonus` against the sky_diamonds currency). Every one of
+           those mirrors maps to exactly ONE sd_requests row, so rendering
+           them here produced a phantom second row — mislabelled "💰 Bonus"
+           — that never corresponded to a real, separate event. Sky diamonds
+           can only ever be BOUGHT (they aren't earnable/refundable), so ANY
+           sky_diamonds credit is by definition a deposit approval → hide it.
+           (Sky-diamond DEBITS — paid-match entry fees — are still shown.)
+           Zero-amount and empty rows are ledger noise → drop those too. */
+        var isWithdraw = /(^|_)(withdrawal|withdraw|wd)(_|$)/.test(t2) || t2 === 'wd';
+        /* NOTE: match refunds (claim_match_refund → txn_type 'match_refund' /
+           'refund') intentionally do NOT match the tokens below, so every
+           legit cancelled-match refund still renders as "↩️ Refund". */
+        var isDepositMirror =
+          /(^|_)(pending_deposit|deposit|deposit_approved|sd_purchase_approved|sd_purchase|sd_credit|purchase_approved|sky_diamond_credit|diamond_credit)(_|$)/.test(t2) ||
+          ((t.currency === 'sky_diamonds' || t.currency === 'sky_diamond') &&
+            (['credit', 'bonus', 'wallet_credit', 'admin_credit'].indexOf(t2) !== -1));
+        if (isDepositMirror) return acc;                 /* already shown via sd_requests */
+        if (!amt && !t2) return acc;                     /* empty row */
+        if (!amt) return acc;                            /* zero-value noise */
+
         var isCredit = _C.indexOf(t2) !== -1 || /_(credit|bonus|paid|refund|approved|win)$/.test(t2);
-        return { _key:t.id, type: isCredit ? 'credit' : 'debit',
-          amount: isCredit ? t.amount : -t.amount,
-          description:t.note||t.reason||'', currency:t.currency||'coins',
-          timestamp:t.created_at?new Date(t.created_at).getTime():0, read:true };
-      });
+        acc.push({
+          _key: t.id,
+          type: isWithdraw ? 'withdraw' : (isCredit ? 'credit' : 'debit'),
+          amount: isWithdraw ? -amt : (isCredit ? amt : -amt),
+          description: t.note || t.reason || '',
+          currency: t.currency || 'coins',
+          timestamp: t.created_at ? new Date(t.created_at).getTime() : 0,
+          read: true
+        });
+        return acc;
+      }, []);
       if (curScr==='wallet') renderWallet();
     }).catch(function(e) { console.warn('[L4b]', e.message); });
 }

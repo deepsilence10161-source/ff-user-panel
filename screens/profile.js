@@ -324,8 +324,25 @@ function uploadBannerImg(inp) {
     if (window.showPremiumUpgrade) showPremiumUpgrade();
     return;
   }
-  if (window.uploadBannerImage) { uploadBannerImage(_f, function(url) { if (url) { toast('Banner updated! ✅', 'ok'); setTimeout(renderProfile, 300); } }); return; }
+  /* ✅ FIX (2026-09-16): an immediate, visible preview makes every
+     successful pick feel alive (same as the photo flow) instead of an
+     idle "har bar fail" feel while the upload runs. It's set here,
+     before the upload, and the hosted URL replaces it on success. */
+  function _showBannerPreview(b64) {
+    var card = document.querySelector('.prof-header');
+    if (card && b64) card.style.background = 'url(' + b64 + ') center/cover no-repeat';
+  }
+  if (window.uploadBannerImage) {
+    compImg(_f, 800, 0.75, 250, function(b64) {
+      if (b64) _showBannerPreview(b64);
+      uploadBannerImage(_f, function(url) {
+        if (url) { toast('Banner updated! ✅', 'ok'); setTimeout(renderProfile, 300); }
+      });
+    });
+    return;
+  }
   compImg(_f, 800, 0.75, 250, function(b64) {
+    _showBannerPreview(b64);
     uploadToImgBB(b64, 'banner_' + U.uid, function(err, url) {
       if (err || !url) { toast('Upload failed: ' + (err||'unknown'), 'err'); return; }
       /* ✅ BUG FIX (2026-08-23): same two bugs as avatar upload above —

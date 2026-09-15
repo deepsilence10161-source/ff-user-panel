@@ -172,10 +172,24 @@
   function _doUpload(b64, name, callback, mime) {
     if (typeof b64 !== 'string' || !b64) { callback('Invalid input', null); return; }
     _maybeShrink(b64, mime, function(small) {
-      _getAuthToken(function(token) {
-        if (!token) { callback(_loginMsg(), null); return; }
-        _attempt(small, name, token, 0, 0, '', callback);
-      });
+      /* ✅ FIX (2026-09-16): _getAuthToken already waits a few seconds for
+         auth state to restore, but on a fresh WebView/app-open the restore
+         can take a little longer — and the upload used to fail instantly
+         with "Login required" the moment the token wasn't ready. Retry the
+         token a couple of times with backoff before surfacing an error, so
+         a momentary restore lag no longer kills a user-triggered upload. */
+      _authTokenWithRetry(small, name, 0, callback);
+    });
+  }
+
+  function _authTokenWithRetry(b64, name, attempt, callback) {
+    _getAuthToken(function(token) {
+      if (token) { _attempt(b64, name, token, 0, 0, '', callback); return; }
+      if (attempt < 2) {
+        setTimeout(function() { _authTokenWithRetry(b64, name, attempt + 1, callback); }, 1500 * (attempt + 1));
+        return;
+      }
+      callback(_loginMsg(), null);
     });
   }
 
