@@ -67,9 +67,73 @@ window._buyDiamondPkg = function(diamonds, price) {
   h += '<div class="f-group" style="margin-top:10px"><label>UTR / UPI Reference Number *</label>';
   h += '<input type="text" id="_diaDepUtr" placeholder="e.g. 123456789012" style="width:100%;padding:11px;border-radius:10px;border:1px solid rgba(0,212,255,.25);background:rgba(0,0,0,.3);color:#fff;font-size:13px;box-sizing:border-box">';
   h += '<div style="font-size:10px;color:#666;margin-top:4px">Payment app ke transaction/UTR number screenshot ke saath match karo</div></div>';
-  h += '<button onclick="window._submitDiaDep(' + diamonds + ',' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#0066ff,#00d4ff);color:#fff;font-size:14px;font-weight:900;cursor:pointer;margin-top:4px">Submit Payment 💎</button>';
+  /* ✅ FIX (2026-09-15c, SPEED): button now has an id so the submit flow
+     can disable it and show live stage labels the instant it is tapped.
+     Previously the button gave ZERO feedback for the whole (slow) upload
+     window, which read as "button kaam hi nahi kar raha". */
+  h += '<button id="_diaDepBtn" onclick="window._submitDiaDep(' + diamonds + ',' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#0066ff,#00d4ff);color:#fff;font-size:14px;font-weight:900;cursor:pointer;margin-top:4px">Submit Payment 💎</button>';
   if (window.openModal) openModal('💎 Buy ' + diamonds + ' Sky Diamonds', h);
   var _ss = '';
+  var _submitting = false;
+  /* ✅ FIX (2026-09-15c, SPEED): the screenshot upload used to start only
+     when Submit was tapped, so the tap appeared to do nothing for as long
+     as the ImgBB round-trip took (seconds on mobile data, longer with
+     retries). Now the upload starts IN THE BACKGROUND the moment the
+     screenshot is picked — by the time the user has typed the UTR and
+     tapped Submit the hosted URL is usually already there, so Submit
+     becomes a single fast DB write. Generations guard against a stale
+     upload answering for a re-picked screenshot. */
+  var _pre = null; /* { gen, state:'uploading'|'done'|'error', url, err, waiters[] } */
+
+  function _btn(label, disabled) {
+    var b = document.getElementById('_diaDepBtn');
+    if (!b) return;
+    if (label != null) b.textContent = label;
+    b.disabled = !!disabled;
+    b.style.opacity = disabled ? '.75' : '1';
+  }
+  function _startPreUpload() {
+    if (!_ss || !window.uploadToImgBBBase64) return;
+    var gen = (_pre ? _pre.gen + 1 : 1);
+    _pre = { gen: gen, state: 'uploading', url: null, err: null, waiters: [] };
+    try {
+      window.uploadToImgBBBase64(_ss, 'dia_proof_' + Date.now(), function(err, url) {
+        if (!_pre || _pre.gen !== gen) return; /* stale generation — ignore */
+        if (err) { _pre.state = 'error'; _pre.err = err; }
+        else     { _pre.state = 'done';  _pre.url = url; }
+        var ws = _pre.waiters; _pre.waiters = [];
+        for (var i = 0; i < ws.length; i++) { try { ws[i](); } catch (e) {} }
+      });
+    } catch (e) { _pre.state = 'error'; _pre.err = String((e && e.message) || e); }
+  }
+  /* Resolve the hosted screenshot URL: reuse the background upload when
+     possible, otherwise start one now. cb(errOrNull, urlOrNull, inlineB64OrNull) */
+  function _ensureUpload(retried, cb) {
+    if (_pre && _pre.state === 'done') { cb(null, _pre.url, null); return; }
+    if (_pre && _pre.state === 'uploading') {
+      _btn('⏳ Screenshot upload ho raha hai…', true);
+      _pre.waiters.push(function() { _ensureUpload(retried, cb); });
+      return;
+    }
+    if (_pre && _pre.state === 'error' && !retried) {
+      /* One fresh attempt before falling back (transient blip?) */
+      _pre = null; _startPreUpload();
+      _ensureUpload(true, cb);
+      return;
+    }
+    var reason = (_pre && _pre.err) || 'upload fail';
+    /* ✅ FIX (2026-09-15b, kept): user ne paisa de diya hai — proof kho
+       nahi sakta. Compressed proof chhota hai, to server upload fail hone
+       par usse request ke saath inline bhej do. 15c: reason bhi dikhao
+       taki agla failure diagnose ho sake. */
+    if (_ss && _ss.length < 700000 && _ss.indexOf('data:image/') === 0) {
+      if (window.toast) toast('⚠️ Screenshot server pe upload nahi hua (' + reason + ') — proof request ke saath seedha bhej rahe hain', 'inf');
+      cb(null, null, _ss);
+      return;
+    }
+    cb(reason, null, null);
+  }
+
   window._diaDepSs = function(inp) {
     if (!inp.files || !inp.files[0]) return;
     var f = inp.files[0];
@@ -95,6 +159,7 @@ window._buyDiamondPkg = function(diamonds, price) {
       var area = document.getElementById('_diaDepArea');
       if (prev) { prev.src = _ss; prev.style.display = 'block'; }
       if (area) area.innerHTML = '<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Screenshot ready ✅</div><input type="file" id="_diaDepIn" accept="image/*" style="display:none" onchange="window._diaDepSs(this)">';
+      _startPreUpload(); /* background upload — Submit becomes instant */
     }
     function _raw() {
       var r = new FileReader();
@@ -121,11 +186,14 @@ window._buyDiamondPkg = function(diamonds, price) {
     try {
       window.__realSubmitDiaDep(diamonds, price);
     } catch (e) {
-      if (window.toast) toast('❌ DEBUG ERROR: ' + (e && e.message || e), 'err');
+      if (window.toast) toast('❌ Submit error: ' + (e && e.message || e), 'err');
       console.error('[quick-deposit] _submitDiaDep threw:', e);
+      _submitting = false;
+      _btn('Submit Payment 💎', false);
     }
   };
   window.__realSubmitDiaDep = function(diamonds, price) {
+    if (_submitting) return;
     if (!_ss) { if (window.toast) toast('Screenshot upload karo!', 'err'); return; }
     /* ✅ FIX (2026-08-17, CRITICAL): UTR/UPI reference number was never
        collected or validated at all before this fix. */
@@ -144,6 +212,8 @@ window._buyDiamondPkg = function(diamonds, price) {
        is no longer used or required here. */
     if (!window.U) { if (window.toast) toast('⚠️ Login state load ho raha hai, thodi der ruk kar try karo (window.U missing)', 'err'); return; }
     if (!window._supa) { if (window.toast) toast('⚠️ App abhi poora load nahi hua, thodi der ruk kar try karo (Supabase missing)', 'err'); return; }
+    _submitting = true;
+    _btn('⏳ Submit ho raha hai…', true); /* instant feedback on tap */
 
     /* Issue #10 Fix: Replace djb2 with SHA-256 (crypto.subtle) to eliminate
        hash collisions on large user base. async/await handled via Promise chain. */
@@ -160,6 +230,12 @@ window._buyDiamondPkg = function(diamonds, price) {
       var h = 0, i = str.length;
       while (i--) { h = ((h << 5) - h) + str.charCodeAt(i); h |= 0; }
       return Promise.resolve('DP' + Math.abs(h).toString(36).toUpperCase().padStart(8,'0'));
+    }
+
+    function _abort(msg) {
+      _submitting = false;
+      _btn('Submit Payment 💎', false);
+      if (msg && window.toast) toast(msg, 'err');
     }
 
     _hashStr(_ss.substring(0, 2000)).then(function(_imgHash) {
@@ -199,27 +275,43 @@ window._buyDiamondPkg = function(diamonds, price) {
            kept only so existing admin-panel display code that references
            it doesn't need touching). */
         var id = 'sd_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-        if (window._supa) {
-          window._supa.from('sd_requests').insert({
-            user_id: window.U.uid,
-            ign: (window.UD && window.UD.ign) || '',
-            firebase_req_id: id,
-            request_type: 'sky_diamond_purchase',
-            sd_amount: diamonds,
-            amount_inr: price,
-            screenshot_url: screenshotUrl,
-            upi_ref: _utr,
-            img_hash: _imgHash,
-            status: 'pending'
-          }).then(null, function(e){ console.warn('[quick-deposit] Supabase insert failed:', e.message); });
-        }
-        /* ✅ FIX (2026-08-17): removed self-notification — the user just
-           submitted this request themselves, so notifying them "you sent a
-           request" adds no information and only irritates (per direct
-           feedback). The success toast below already confirms submission;
-           a real notification will arrive once admin approves/rejects. */
-        if (window.toast) toast('✅ Request submit! Admin 1-2 ghante mein diamonds add karega.', 'ok');
-        if (window.closeModal) closeModal();
+        _btn('⏳ Request save ho rahi hai…', true);
+        /* ✅ FIX (2026-09-15c): the insert used to be fire-and-forget with
+           the success toast + closeModal fired unconditionally BEFORE any
+           DB confirmation — a rejected insert (RLS/offline) still showed
+           "Request submit!" and closed the form, losing the purchase.
+           supabase-js v2 also RESOLVES with `.error` instead of rejecting
+           on DB errors, so both outcomes are checked here. The toast and
+           modal close now only happen on a confirmed save. */
+        window._supa.from('sd_requests').insert({
+          user_id: window.U.uid,
+          ign: (window.UD && window.UD.ign) || '',
+          firebase_req_id: id,
+          request_type: 'sky_diamond_purchase',
+          sd_amount: diamonds,
+          amount_inr: price,
+          screenshot_url: screenshotUrl,
+          upi_ref: _utr,
+          img_hash: _imgHash,
+          status: 'pending'
+        }).then(function(res) {
+          if (res && res.error) {
+            console.warn('[quick-deposit] Supabase insert failed:', res.error.message);
+            _abort('❌ Request save nahi hua — internet check karke dobara try karo');
+            return;
+          }
+          /* ✅ FIX (2026-08-17): removed self-notification — the user just
+             submitted this request themselves, so notifying them "you sent a
+             request" adds no information and only irritates (per direct
+             feedback). The success toast below already confirms submission;
+             a real notification will arrive once admin approves/rejects. */
+          _submitting = false;
+          if (window.toast) toast('✅ Request submit! Admin 1-2 ghante mein diamonds add karega.', 'ok');
+          if (window.closeModal) closeModal();
+        }, function(e) {
+          console.warn('[quick-deposit] Supabase insert failed:', e && e.message);
+          _abort('❌ Request save nahi hua — internet check karke dobara try karo');
+        });
       } catch (e) {
         /* ✅ DEBUG (2026-09-14): this whole function runs inside an
            async callback (ImgBB upload's callback, itself inside a
@@ -228,8 +320,10 @@ window._buyDiamondPkg = function(diamonds, price) {
            to become a silent unhandled rejection with zero visible
            feedback, indistinguishable from the button "doing nothing".
            Now always surfaces visibly. */
-        if (window.toast) toast('❌ DEBUG ERROR (submit): ' + (e && e.message || e), 'err');
+        if (window.toast) toast('❌ Submit error (save): ' + (e && e.message || e), 'err');
         console.error('[quick-deposit] _doSubmit threw:', e);
+        _submitting = false;
+        _btn('Submit Payment 💎', false);
       }
     }
 
@@ -255,54 +349,46 @@ window._buyDiamondPkg = function(diamonds, price) {
         .limit(1)
         .then(_onDupCheckResult, _onDupCheckFail);
     } else {
-      _doSubmit(_ss);
+      _onDupCheckFail();
     }
 
     function _onDupCheckResult(res) {
       try {
+        /* v2 resolves with .error on DB/RLS/network trouble — fail OPEN
+           (same as _onDupCheckFail) instead of silently stalling. */
+        if (res && res.error) { _onDupCheckFail(); return; }
         if (res.data && res.data.length > 0) {
           var existing = res.data[0];
+          _submitting = false;
+          _btn('Submit Payment 💎', false);
           if (window.toast) toast('⚠️ Yeh screenshot pehle se use ho chuka hai! (Status: ' + existing.status + ')', 'err');
           return;
         }
-        /* Issue #29 Fix: ImgBB error handling before submitting */
-        if (_ss && window.uploadToImgBBBase64) {
-          window.uploadToImgBBBase64(_ss, 'dia_proof_' + Date.now(), function(err, url) {
-            try {
-              if (err) {
-                /* ✅ FIX (2026-09-15b): pehle yahan sirf ek red toast hota
-                   tha aur purchase wahin khatam — user ne paisa de diya
-                   hota tha, admin ko proof milta hi nahi, aur user ko
-                   lagta tha app toda hua hai. Ab proof chhota hai (upload
-                   se pehle compress hota hai), to usse SEEDHA request ke
-                   saath bhej dete hain — admin ko proof mil jaata hai aur
-                   purchase complete hoti hai. Sirf tab jab proof chhota
-                   ho (data URL me bhi kbhi DB/UI ko tang na kare) —
-                   warna saaf message ki dobara try karo. */
-                if (_ss && _ss.length < 700000 && _ss.indexOf('data:image/') === 0) {
-                  if (window.toast) toast('⚠️ Screenshot server pe upload nahi hua — proof request ke saath seedha bhej rahe hain', 'inf');
-                  _doSubmit(_ss);
-                  return;
-                }
-                if (window.toast) toast('❌ Screenshot upload failed: ' + err, 'err');
-                return;
-              }
-              _doSubmit(url);
-            } catch (e2) {
-              if (window.toast) toast('❌ Screenshot upload error: ' + (e2 && e2.message || e2), 'err');
-              console.error('[quick-deposit] uploadToImgBBBase64 callback threw:', e2);
-            }
-          });
-        } else {
-          _doSubmit(_ss); /* fallback: no ImgBB configured, store raw data URL */
-        }
+        /* Issue #29 Fix: ImgBB error handling before submitting.
+           ✅ 2026-09-15c: reuses the background pre-upload started when
+           the screenshot was picked — normally already finished, so this
+           returns instantly and Submit feels instant. */
+        _ensureUpload(false, function(err, url, inlineB64) {
+          if (err) {
+            _abort('❌ Screenshot upload failed: ' + err);
+            return;
+          }
+          _doSubmit(url || inlineB64);
+        });
       } catch (e) {
-        if (window.toast) toast('❌ DEBUG ERROR (dupcheck): ' + (e && e.message || e), 'err');
+        if (window.toast) toast('❌ Submit error (dupcheck): ' + (e && e.message || e), 'err');
         console.error('[quick-deposit] _onDupCheckResult threw:', e);
+        _submitting = false;
+        _btn('Submit Payment 💎', false);
       }
     }
 
-    function _onDupCheckFail() { _doSubmit(_ss); }
+    function _onDupCheckFail() {
+      _ensureUpload(false, function(err, url, inlineB64) {
+        if (err) { _abort('❌ Screenshot upload failed: ' + err); return; }
+        _doSubmit(url || inlineB64);
+      });
+    }
 
     }, function(hashErr) {
       /* ✅ DEBUG (2026-09-14): if crypto.subtle.digest ever rejects on
@@ -311,8 +397,10 @@ window._buyDiamondPkg = function(diamonds, price) {
          feedback — this is exactly Junaid's "click does nothing" report
          after both field-validation guards pass correctly. Now surfaces
          it visibly instead of hanging. */
-      if (window.toast) toast('❌ DEBUG ERROR (hash): ' + (hashErr && hashErr.message || hashErr), 'err');
+      if (window.toast) toast('❌ Submit error (hash): ' + (hashErr && hashErr.message || hashErr), 'err');
       console.error('[quick-deposit] _hashStr rejected:', hashErr);
+      _submitting = false;
+      _btn('Submit Payment 💎', false);
     }); /* end _hashStr .then */
   };
 };

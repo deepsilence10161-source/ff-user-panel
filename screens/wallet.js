@@ -144,12 +144,26 @@ function renderWallet() {
       if (activeFilter === 'debit' && isD) return;
       var sc = w.status === 'approved' || w.status === 'done' ? 'whs-a' : w.status === 'rejected' ? 'whs-r' : 'whs-p';
       var sl = w.status === 'approved' || w.status === 'done' ? 'Done' : w.status === 'rejected' ? 'Failed' : 'Pending';
-      var amt = Math.abs(w.amount || 0);
+      /* ✅ FIX (2026-09-15c): "History me +💎99 dikhta hai jabki maine ₹99
+         me 120 diamonds kharide the" — the row hardcoded the 💎 icon onto
+         `w.amount`, which core/listeners.js fills from amount_INR (the
+         money paid), so a ₹99 purchase rendered as "99 diamonds": two
+         currencies mixed into one number. A deposit credits DIAMONDS
+         (sd_amount, what admin actually adds), so that is the single
+         number shown, with its own icon; only when a row has no diamond
+         amount at all (legacy data) does it fall back to the ₹ figure —
+         one currency per row, never mixed. Withdrawals are real money,
+         so they always show ₹. */
+      var _diaAmt = Math.abs(Number(w.sdAmount || w.diamonds || 0));
+      var _inrAmt = Math.abs(Number(w.amount || 0));
+      var amtTxt = isD
+        ? (_diaAmt > 0 ? '+💎' + _diaAmt : '+₹' + _inrAmt)
+        : '-₹' + _inrAmt;
       h += '<div class="wh-card"><div class="wh-icon ' + (isD ? 'whi-g' : 'whi-r') + '"><i class="fas fa-' + (isD ? 'arrow-up' : 'arrow-down') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + (isD ? 'Deposit via UPI' : 'Withdrawal') + '</div>';
       h += '<div class="wh-time">' + timeAgo(w.createdAt || w.timestamp) + '</div>';
       if (w.utr || w.transactionId) h += '<div class="wh-utr">UTR: ' + (w.utr || w.transactionId) + '</div>';
-      h += '</div><div class="wh-amt ' + (isD ? 'wha-g' : 'wha-r') + '">' + (isD ? '+' : '-') + '💎' + amt + '</div>';
+      h += '</div><div class="wh-amt ' + (isD ? 'wha-g' : 'wha-r') + '">' + amtTxt + '</div>';
       h += '<span class="wh-status ' + sc + '">' + sl + '</span></div>';
     } else {
       // Internal transactions (entry fee, winnings, cashback, etc)
@@ -183,7 +197,7 @@ function renderWallet() {
 
 function startAdd() {
   if (isVO()) { toast('Complete profile first', 'err'); return; }
-  history.pushState(null, null, null); wfStep = 1; wfAmt = 0; wfScreenshot = ''; showWFStep();
+  history.pushState(null, null, null); wfStep = 1; wfAmt = 0; wfScreenshot = ''; _wfPreUp = null; showWFStep();
 }
 /* ✅ Bug 34 Fix: Email verification helper (avoids nested quote issues in onclick) */
 window._sendEmailVerif = function() {
@@ -288,6 +302,7 @@ function cancelWF() {
   $('walletMain').style.display = '';
   /* Bug H-1 Fix: Clear screenshot data to free memory */
   try { wfScreenshot = ''; wfStep = 1; wfAmt = 0; } catch(e) {}
+  _wfPreUp = null; /* 15c: drop any in-flight background proof upload */
   var prev = document.getElementById('ssPreview');
   if (prev) { prev.src = ''; prev.style.display = 'none'; }
 }
@@ -370,7 +385,50 @@ function handleSS(inp) {
   if (_ssFile && !_ssFile.type.startsWith('image/')) {
     toast('Sirf image file upload karo!', 'err'); inp.value=''; return;
   }
-  compImg(inp.files[0], 800, 0.7, 150, function(b64) { wfScreenshot = b64; var prev = $('ssPreview'); if (prev) { prev.src = b64; prev.style.display = 'block'; } });
+  compImg(inp.files[0], 800, 0.7, 150, function(b64) { wfScreenshot = b64; var prev = $('ssPreview'); if (prev) { prev.src = b64; prev.style.display = 'block'; } _startWfPreUpload(); });
+}
+/* ✅ FIX (2026-09-15c, SPEED): same background pre-upload as the Sky
+   Diamond modal (js/quick-deposit.js) — the ImgBB round-trip starts when
+   the screenshot is picked instead of when Submit is tapped, so the
+   submit click no longer stalls for the whole upload. Generations make
+   a re-picked screenshot invalidate the older upload. */
+var _wfPreUp = null;
+function _startWfPreUpload() {
+  _wfPreUp = null;
+  if (!wfScreenshot || !window.uploadToImgBBBase64) return;
+  var gen = (window._wfPreGen || 0) + 1; window._wfPreGen = gen;
+  var st = { gen: gen, state: 'uploading', url: null, err: null, waiters: [] };
+  _wfPreUp = st;
+  try {
+    window.uploadToImgBBBase64(wfScreenshot, 'payment_proof_pre_' + Date.now(), function(err, url) {
+      if (_wfPreUp !== st) return;
+      if (err) { st.state = 'error'; st.err = err; }
+      else     { st.state = 'done';  st.url = url; }
+      var ws = st.waiters; st.waiters = [];
+      for (var i = 0; i < ws.length; i++) { try { ws[i](); } catch (e) {} }
+    });
+  } catch (e) { st.state = 'error'; st.err = String((e && e.message) || e); }
+}
+/* cb(errOrNull, urlOrNull, inlineB64OrNull) */
+function _wfEnsureUpload(retried, btn, cb) {
+  if (_wfPreUp && _wfPreUp.state === 'done') { cb(null, _wfPreUp.url, null); return; }
+  if (_wfPreUp && _wfPreUp.state === 'uploading') {
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Screenshot upload ho raha hai…'; }
+    _wfPreUp.waiters.push(function() { _wfEnsureUpload(retried, btn, cb); });
+    return;
+  }
+  if (_wfPreUp && _wfPreUp.state === 'error' && !retried) {
+    _startWfPreUpload();
+    _wfEnsureUpload(true, btn, cb);
+    return;
+  }
+  var reason = (_wfPreUp && _wfPreUp.err) || 'upload fail';
+  if (wfScreenshot && wfScreenshot.length < 700000 && wfScreenshot.indexOf('data:image/') === 0) {
+    toast('⚠️ Screenshot server pe upload nahi hua (' + reason + ') — proof request ke saath bhej diya', 'inf');
+    cb(null, null, wfScreenshot);
+    return;
+  }
+  cb(reason, null, null);
 }
 function compImg(file, maxDim, quality, maxKB, cb) {
   var reader = new FileReader();
@@ -463,24 +521,47 @@ function submitAddMoney() {
       return;
     }
 
-    /* Upload screenshot to ImgBB */
-    var screenshotData = wfScreenshot || '';
+    /* Upload screenshot to ImgBB
+       ✅ 2026-09-15c: reuses the background pre-upload kicked off in
+       handleSS when the screenshot was picked — normally already done,
+       so Submit no longer waits on the ImgBB round-trip. */
+    var _pkgMatch = ((window.CFG && window.CFG.sdPackages) || []).filter(function(p){ return Number(p.price) === Number(wfAmt); })[0];
+    /* ✅ FIX (2026-09-15c): sd_amount used to be wfAmt — the RUPEE figure —
+       so a ₹99 package bought through this wizard was recorded (and then
+       credited by admin) as 99 diamonds instead of the package's real
+       diamond count (120). Map price → diamonds from the same live config
+       the Buy modal uses; custom amounts keep the old 1:1 semantics. */
+    var _diaAmt = (_pkgMatch && _pkgMatch.diamonds) ? Number(_pkgMatch.diamonds) : Number(wfAmt);
     function saveRequest(screenshotUrl) {
       window._supa.from('sd_requests').insert({
         user_id: U.uid,
         ign: (UD && UD.ign) || '',
         amount_inr: wfAmt,
-        sd_amount: wfAmt,
+        sd_amount: _diaAmt,
         upi_ref: utr,
         screenshot_url: screenshotUrl || null,
         img_hash: _imgHash,
         status: 'pending'
-      }).then(function() {
+      }).then(function(res) {
+        /* ✅ FIX (2026-09-15c): supabase-js v2 RESOLVES with `.error` on
+           DB/RLS failures instead of rejecting — the old single-callback
+           .then() treated those as success and toasted "submitted" while
+           nothing was saved. Both outcomes are handled now. */
+        if (res && res.error) {
+          console.warn('[Wallet] sd_requests insert failed:', res.error.message);
+          _addMoneySubmitting = false;
+          if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+          toast('❌ Request save nahi hua — dobara try karo', 'err');
+          return;
+        }
         /* Issue #23 Fix: Also log UTR in wallet_transactions as ref_id
-           so it's queryable in Supabase admin views alongside balance changes */
+           so it's queryable in Supabase admin views alongside balance changes.
+           15c: amount here is the DIAMOND count (currency sky_diamonds),
+           not the rupee figure — same currency-mixing bug as the history
+           row fixed above. */
         window._supa.from('wallet_transactions').insert({
           user_id: U.uid, txn_type: 'pending_deposit',
-          currency: 'sky_diamonds', amount: wfAmt,
+          currency: 'sky_diamonds', amount: _diaAmt,
           ref_id: utr,
           description: 'UPI payment pending — UTR: ' + utr
         }).then(null, function(){});
@@ -489,35 +570,22 @@ function submitAddMoney() {
         toast('Payment submitted for verification! ✅ Admin 24h mein approve karega.', 'ok');
         if (window.renderWallet) renderWallet();
       }, function(e) {
+        console.warn('[Wallet] sd_requests insert failed:', e && e.message);
         _addMoneySubmitting = false;
         if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
-        toast('Error submitting. Try again.', 'err');
+        toast('❌ Request save nahi hua — dobara try karo', 'err');
       });
     }
-    if (screenshotData && window.uploadToImgBBBase64) {
-      window.uploadToImgBBBase64(screenshotData, 'payment_proof_' + utr, function(err, url) {
-        /* Issue #29 Fix: handle ImgBB upload errors gracefully */
-        if (err) {
-          console.warn('[Wallet] ImgBB upload error:', err);
-          /* ✅ FIX (2026-09-15b): "gracefully" used to mean saving the row
-             with screenshot_url = null — i.e. the admin received a pending
-             deposit request with NO payment proof and no visible hint to
-             the user that their screenshot never made it. The local copy
-             is already compressed (~150 KB) before upload (handleSS →
-             compImg), which is small enough to attach inline, so attach it
-             instead of losing the proof. Only fall back to null if even
-             that is somehow too large. */
-          if (screenshotData.length < 700000 && screenshotData.indexOf('data:image/') === 0) {
-            toast('⚠️ Screenshot server pe upload nahi hua — proof request ke saath bhej diya', 'inf');
-            saveRequest(screenshotData);
-            return;
-          }
-        }
-        saveRequest(err ? null : url);
-      });
-    } else {
-      saveRequest(null);
-    }
+    _wfEnsureUpload(false, btn, function(err, url, inlineB64) {
+      if (err) {
+        console.warn('[Wallet] ImgBB upload error:', err);
+        _addMoneySubmitting = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+        toast('❌ Screenshot upload failed: ' + err + ' — dobara try karo', 'err');
+        return;
+      }
+      saveRequest(url || inlineB64);
+    });
   }).catch(function(e) {
     _addMoneySubmitting = false;
     if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
