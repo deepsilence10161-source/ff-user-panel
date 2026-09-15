@@ -85,11 +85,13 @@ function renderWallet() {
     _seen[k] = true;
     allTxns.push({ _src: 'txn', _ts: t.timestamp || 0, data: t });
   });
-  // Synthetic entry: if winnings > 0 but no winning transaction, show balance entry
+  // Synthetic entry: if green diamonds > 0 but no winning transaction, show balance entry
   var existingWinTxn = TXNS.some(function(t) { return t.type === 'winning' || t.type === 'result'; });
-  var currentWin = Number((UD.realMoney || {}).winnings) || 0;
+  var currentWin = Number((UD.greenDiamonds !== undefined && UD.greenDiamonds !== null)
+                     ? UD.greenDiamonds
+                     : (UD.realMoney || {}).winnings) || 0;
   if (currentWin > 0 && !existingWinTxn) {
-    allTxns.push({ _src: 'txn', _ts: 0, data: { type: 'winning', amount: currentWin, description: 'Match Winnings (total)', timestamp: 0, _synthetic: true } });
+    allTxns.push({ _src: 'txn', _ts: 0, data: { type: 'winning', amount: currentWin, currency: 'green_diamonds', description: 'Match Winnings (total)', timestamp: 0, _synthetic: true } });
   }
   allTxns.sort(function(a,b) { return b._ts - a._ts; });
 
@@ -171,7 +173,7 @@ function renderWallet() {
       var isCredit = amt2 > 0;
       if (activeFilter === 'credit' && !isCredit) return;
       if (activeFilter === 'debit' && isCredit) return;
-      var typeMap = { winning: '🏆 Prize Won', debit: '🎮 Entry Fee', credit: '💰 Bonus', cashback: '🔄 Cashback', referral: '🤝 Referral', refund: '↩️ Refund' };
+      var typeMap = { winning: '🏆 Prize Won', debit: '🎮 Entry Fee', credit: '💰 Bonus', cashback: '🔄 Cashback', referral: '🤝 Referral', refund: '↩️ Refund', withdraw: '📤 Withdrawal', withdrawal: '📤 Withdrawal', result: '🏆 Prize Won' };
       var label = typeMap[w.type] || w.description || w.type || 'Transaction';
       var desc = w.description || '';
       var iconColor = isCredit ? 'whi-g' : 'whi-r';
@@ -183,8 +185,12 @@ function renderWallet() {
          balance. Now picks the icon from the row's real currency field
          (already correctly set upstream in core/listeners.js's
          _loadTransactions — it just wasn't being read here). */
-      var _curIcon = (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
-                   : (w.currency === 'green_diamonds') ? '🌿' : '🪙';
+      var _curIcon = (w.currency === 'sponsored' || w.currency === 'inr' || w.currency === 'money')
+                   ? '₹'
+                   : (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
+                   : (w.currency === 'green_diamonds')
+                     ? '<img src="js/green-diamond.png" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
+                     : '🪙';
       h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
       h += '<div class="wh-time">' + timeAgo(w.timestamp) + '</div>';
@@ -348,6 +354,14 @@ function showWFStep() {
     h += '<button class="f-btn fb-green" style="margin-top:12px" onclick="wfNext()">✅ I Have Paid →</button>';
     h += '<button class="f-btn" style="background:var(--card2);color:var(--txt2);margin-top:8px" onclick="cancelWF()">Cancel</button>';
   } else if (wfStep === 3) {
+    /* ✅ FIX (2026-09-16): wfStep-3 re-renders from scratch on every
+       navigation (back/forward between steps included), so any pre-upload
+       promise from a previous visit is stale by the time Submit reads it.
+       Drop the stale handle so this step always starts clean — the upload
+       (re)kicks off the moment a screenshot is picked, exactly like
+       quick-deposit.js. */
+    _wfPreUp = null;
+    window._wfPreGen = (window._wfPreGen || 0) + 1;
     h += '<div style="font-size:16px;font-weight:700;margin-bottom:14px">Enter Transaction Details</div>';
     h += '<div class="f-group"><label>UTR Number (Mandatory)</label><input type="text" class="f-input" id="addUtr" placeholder="Enter UTR from your UPI app"><div style="font-size:11px;color:var(--txt2);margin-top:4px">Find UTR in your UPI app payment history</div></div>';
     h += '<div class="f-group"><label>Payment Screenshot</label><div class="upload-area" onclick="$(\'ssInput\').click()"><i class="fas fa-cloud-upload-alt" style="display:block;font-size:28px;color:var(--txt2);margin-bottom:8px"></i><p>Tap to upload screenshot</p><input type="file" id="ssInput" accept="image/*" style="display:none" onchange="handleSS(this)"></div><img id="ssPreview" class="upload-preview" style="display:none"></div>';
@@ -411,6 +425,16 @@ function _startWfPreUpload() {
 }
 /* cb(errOrNull, urlOrNull, inlineB64OrNull) */
 function _wfEnsureUpload(retried, btn, cb) {
+  /* ✅ FIX (2026-09-16): if no pre-upload ever started (e.g. the uploader
+     wasn't ready the moment the screenshot was picked), don't jump
+     straight to the inline fallback — actually attempt a real upload
+     first. The inline path stays as the last-resort safety net so a
+     payment proof is never lost, but only AFTER a genuine attempt. */
+  if (!_wfPreUp && wfScreenshot && wfScreenshot.indexOf('data:image/') === 0 && window.uploadToImgBBBase64 && !retried) {
+    _startWfPreUpload();
+    _wfEnsureUpload(true, btn, cb);
+    return;
+  }
   if (_wfPreUp && _wfPreUp.state === 'done') { cb(null, _wfPreUp.url, null); return; }
   if (_wfPreUp && _wfPreUp.state === 'uploading') {
     if (btn) { btn.disabled = true; btn.textContent = '⏳ Screenshot upload ho raha hai…'; }
@@ -453,7 +477,7 @@ function submitAddMoney() {
   /* Cross-cutting #3 Fix: Guard offline submissions — wallet deposits need
      server-side processing, cannot be queued for later like match joins. */
   if (!navigator.onLine) {
-    toast('📡 Internet nahi hai. Online hone ke baad try karo.', 'err');
+    toast('📡 Internet nahi hai. Online hone ke baad try karo. (Paise bhej diye to screenshot sambhal ke rakhna!)', 'err');
     return;
   }
   if (!wfScreenshot || wfScreenshot.length < 100) { toast('Payment screenshot upload karo — mandatory hai!', 'err'); return; }
@@ -533,6 +557,13 @@ function submitAddMoney() {
        the Buy modal uses; custom amounts keep the old 1:1 semantics. */
     var _diaAmt = (_pkgMatch && _pkgMatch.diamonds) ? Number(_pkgMatch.diamonds) : Number(wfAmt);
     function saveRequest(screenshotUrl) {
+      /* ✅ FIX (2026-09-16): `screenshotUrl` is either an ImgBB-hosted URL
+         or, when ImgBB was unreachable, the compressed proof inline as a
+         data-URL (see _wfEnsureUpload below). Both are saved to
+         screenshot_url — the single column sd_requests (and the admin
+         panel's "Sky Diamond Requests" view) already reads for proof — so
+         the proof ALWAYS reaches admin exactly how it leaves the phone,
+         hosted or inline. */
       window._supa.from('sd_requests').insert({
         user_id: U.uid,
         ign: (UD && UD.ign) || '',
