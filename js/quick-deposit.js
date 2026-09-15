@@ -72,15 +72,41 @@ window._buyDiamondPkg = function(diamonds, price) {
   var _ss = '';
   window._diaDepSs = function(inp) {
     if (!inp.files || !inp.files[0]) return;
-    var r = new FileReader();
-    r.onload = function(e) {
-      _ss = e.target.result;
+    var f = inp.files[0];
+    /* Bug #45 pattern (already used in screens/wallet.js) — validate type
+       before doing anything else, so a non-image can't reach the uploader. */
+    if (f.type && f.type.indexOf('image/') !== 0) {
+      if (window.toast) toast('Sirf image file upload karo!', 'err');
+      inp.value = ''; return;
+    }
+    /* ✅ FIX (2026-09-15b): this used to store the RAW FileReader data URL.
+       A phone screenshot is typically 2-5 MB, so every submit POSTed a
+       ~3-7 MB JSON body to the Edge Function on mobile data — slow at
+       best, and on a weak connection it simply dropped mid-request, which
+       the user saw as "Failed to fetch" / upload failed even after the
+       CORS bug was fixed. Now compressed the same way every other upload
+       in this app already compresses (800px/0.7 ≈ 100-200 KB is plenty
+       for a payment proof admin reads on a phone). Falls back to the raw
+       data URL if canvas compression is unavailable or fails. */
+    function _apply(dataUrl) {
+      if (!dataUrl) return;
+      _ss = dataUrl;
       var prev = document.getElementById('_diaDepPreview');
       var area = document.getElementById('_diaDepArea');
       if (prev) { prev.src = _ss; prev.style.display = 'block'; }
       if (area) area.innerHTML = '<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Screenshot ready ✅</div><input type="file" id="_diaDepIn" accept="image/*" style="display:none" onchange="window._diaDepSs(this)">';
-    };
-    r.readAsDataURL(inp.files[0]);
+    }
+    function _raw() {
+      var r = new FileReader();
+      r.onload = function(e) { _apply(e.target.result); };
+      r.readAsDataURL(f);
+    }
+    if (window.compImg) {
+      try { compImg(f, 800, 0.7, 200, function(b64) { if (b64) _apply(b64); else _raw(); }); }
+      catch (e) { _raw(); }
+    } else {
+      _raw();
+    }
   };
   window._submitDiaDep = function(diamonds, price) {
     /* ✅ DEBUG WRAP (2026-09-14): Junaid confirmed screenshot uploaded +
@@ -244,12 +270,26 @@ window._buyDiamondPkg = function(diamonds, price) {
           window.uploadToImgBBBase64(_ss, 'dia_proof_' + Date.now(), function(err, url) {
             try {
               if (err) {
-                if (window.toast) toast('❌ Screenshot upload failed: ' + err + '. Try again.', 'err');
+                /* ✅ FIX (2026-09-15b): pehle yahan sirf ek red toast hota
+                   tha aur purchase wahin khatam — user ne paisa de diya
+                   hota tha, admin ko proof milta hi nahi, aur user ko
+                   lagta tha app toda hua hai. Ab proof chhota hai (upload
+                   se pehle compress hota hai), to usse SEEDHA request ke
+                   saath bhej dete hain — admin ko proof mil jaata hai aur
+                   purchase complete hoti hai. Sirf tab jab proof chhota
+                   ho (data URL me bhi kbhi DB/UI ko tang na kare) —
+                   warna saaf message ki dobara try karo. */
+                if (_ss && _ss.length < 700000 && _ss.indexOf('data:image/') === 0) {
+                  if (window.toast) toast('⚠️ Screenshot server pe upload nahi hua — proof request ke saath seedha bhej rahe hain', 'inf');
+                  _doSubmit(_ss);
+                  return;
+                }
+                if (window.toast) toast('❌ Screenshot upload failed: ' + err, 'err');
                 return;
               }
               _doSubmit(url);
             } catch (e2) {
-              if (window.toast) toast('❌ DEBUG ERROR (imgbb cb): ' + (e2 && e2.message || e2), 'err');
+              if (window.toast) toast('❌ Screenshot upload error: ' + (e2 && e2.message || e2), 'err');
               console.error('[quick-deposit] uploadToImgBBBase64 callback threw:', e2);
             }
           });
