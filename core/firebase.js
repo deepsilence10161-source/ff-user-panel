@@ -65,6 +65,51 @@ try {
   }
 } catch(e) { console.warn("[Firebase] Auth init:", e.message); }
 
+/* ── window.fbAuth() — ALWAYS use this instead of bare firebase.auth() ──
+   ✅ FIX (2026-09-15, CRITICAL) — "No Firebase App '[DEFAULT]' has been
+   created - call Firebase App.initializeApp() (app-compat/no-app)".
+
+   The only app this codebase ever creates is the NAMED one above
+   ("mainApp"). Nothing anywhere calls firebase.initializeApp() without a
+   name, so an app called "[DEFAULT]" has never existed. But a bare
+   firebase.auth() call resolves by app NAME and defaults to "[DEFAULT]" —
+   so every single one of them threw the error above, immediately and
+   every time (verified against firebase-app-compat 9.23.0, the exact
+   version index.html loads).
+
+   Most call sites wrapped it in try/catch, so the failure was invisible
+   and just quietly disabled the feature:
+     • core/imgbb.js line 39   → swallowed → cb(null) → "Login required
+       to upload" on every screenshot/profile/banner upload
+     • js/paytm-checkout.js    → swallowed → cb(null) → no Paytm token
+     • core/db.js logout       → swallowed → Firebase session never cleared
+   But core/imgbb.js line 73 called firebase.auth() a SECOND time while
+   building its error message — OUTSIDE any try/catch — so there the throw
+   escaped the whole upload path, propagated up into quick-deposit.js's
+   _onDupCheckResult, and surfaced as the red
+   "❌ DEBUG ERROR (dupcheck)" toast that aborted every Sky Diamond
+   purchase submission right after the screenshot + UTR were filled in
+   correctly. (That toast's try/catch was added 2026-09-14 as temporary
+   instrumentation to find exactly this — it did its job.)
+
+   This helper returns Auth from the real app. Prefer the already-built
+   `auth` global; otherwise resolve explicitly against _fireApp, so
+   "[DEFAULT]" is never consulted. Never call bare firebase.auth() in
+   this codebase. */
+window.fbAuth = function() {
+  if (auth) return auth;                                   /* _fireApp.auth() */
+  if (!window.firebase || typeof firebase.auth !== 'function') return null;
+  /* No _fireApp means no app was created at all — return null rather than
+     falling back to a bare firebase.auth(), which would just re-throw. */
+  if (!_fireApp) return null;
+  try {
+    return firebase.auth(_fireApp);
+  } catch (e) {
+    console.warn("[Firebase] fbAuth() could not resolve Auth:", e.message);
+    return null;
+  }
+};
+
 /* ── Global State Variables (unchanged for screen compatibility) ── */
 var U = null, UD = null, MT = {}, JR = {}, NOTIFS = [], PAY = {}, WH = [], REFS = [], TXNS = [], prevMTKeys = {};
 /* ✅ BUG FIX (2026-08-24): "Sponsored match admin panel me ban gaya aur

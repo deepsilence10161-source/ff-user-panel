@@ -167,7 +167,13 @@
 
       /* Logout — Firebase se sign out karo */
       logout: async function() {
-        var firebaseAuth = window.auth || (window.firebase && window.firebase.auth());
+        /* ✅ FIX (2026-09-15): the fallback `firebase.auth()` here was a bare
+           call (resolves "[DEFAULT]", which never exists — app is named
+           "mainApp"), so it threw app-compat/no-app and the surrounding
+           catch swallowed it, meaning the Firebase session was never
+           actually cleared on logout. Use the safe helper from
+           core/firebase.js. */
+        var firebaseAuth = window.fbAuth ? window.fbAuth() : window.auth;
         try { if (firebaseAuth) await firebaseAuth.signOut(); } catch(e) {}
         /* Reset Supabase client to anon */
         try {

@@ -201,7 +201,10 @@
   };
   window.mesAgeUnder18 = function () {
     _close();
-    if (window.firebase && window.firebase.auth) window.firebase.auth().signOut();
+    /* ✅ FIX (2026-09-15): bare firebase.auth() → "[DEFAULT]" app → threw
+       app-compat/no-app, uncaught here, so hitting the 18+ gate crashed
+       instead of signing the user out. */
+    if (window.fbAuth) { var _a = window.fbAuth(); if (_a) _a.signOut(); }
     document.body.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050507;color:#fff;padding:32px;text-align:center"><div style="font-size:56px;margin-bottom:16px">🔞</div><div style="font-size:20px;font-weight:900;color:#ff6b6b;margin-bottom:10px">18+ Only</div></div>';
   };
 
@@ -519,7 +522,7 @@
     if (!confirm(days+' din ka break lena chahte ho?')) return;
     window.db.ref('users/'+window.U.uid).update({selfExcluded:true,selfExcludedTill:Date.now()+days*864e5});
     _close(); _toast(days+' din ka break laga diya!','ok');
-    setTimeout(function(){if(window.firebase&&window.firebase.auth)window.firebase.auth().signOut();},2000);
+    setTimeout(function(){if(window.fbAuth){var _a=window.fbAuth();if(_a)_a.signOut();}},2000);
   };
   window.mesCheckExclusion = function () {
     if (!window.UD) return false;
