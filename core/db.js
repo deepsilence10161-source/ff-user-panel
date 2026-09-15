@@ -358,6 +358,44 @@
         return { ok: true, data: data };
       },
 
+      /* Profile/banner URL update with affected-row confirmation.
+         A plain PostgREST UPDATE can resolve with error:null even when RLS
+         affected zero rows; image upload must not toast success in that
+         case. Keep this narrow/whitelisted so no unrelated profile update
+         behaviour changes. */
+      updateImage: async function(field, url) {
+        var uid = _uid();
+        if (!uid) return { ok: false, error: 'not_authenticated' };
+        if (field !== 'avatar_url' && field !== 'banner_url') {
+          return { ok: false, error: 'invalid_image_field' };
+        }
+        if (typeof url !== 'string' || !/^https:\/\//i.test(url)) {
+          return { ok: false, error: 'invalid_image_url' };
+        }
+        var patch = { updated_at: new Date().toISOString() };
+        patch[field] = url;
+        try {
+          var result = await window._supa
+            .from('users')
+            .update(patch)
+            .eq('id', uid)
+            .select('id,' + field)
+            .maybeSingle();
+          if (result.error) {
+            console.error('[DB:users.updateImage]', result.error);
+            return { ok: false, error: result.error.message || 'image_update_failed' };
+          }
+          if (!result.data || result.data.id !== uid || result.data[field] !== url) {
+            console.error('[DB:users.updateImage] No user row was updated (possible RLS denial)');
+            return { ok: false, error: 'update_not_applied' };
+          }
+          return { ok: true, data: result.data };
+        } catch (e) {
+          console.error('[DB:users.updateImage]', e);
+          return { ok: false, error: (e && e.message) || 'image_update_failed' };
+        }
+      },
+
       /* Get any user by ID */
       getById: async function(uid) {
         var { data, error } = await window._supa

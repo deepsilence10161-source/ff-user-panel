@@ -128,11 +128,11 @@ console.log('\n1. Preflight (what the browser sends before every upload)');
   check('response is readable cross-origin', res.headers.get('Access-Control-Allow-Origin') === '*');
 }
 
-console.log('\n2. The NEW client shape: anon key in Authorization + Firebase token in the body');
+console.log('\n2. The NEW client shape: project key in apikey/Auth + Firebase token in the body');
 {
   const { handler, fetchCalls } = loadFunction();
   const res = await post(handler, {
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ANON_KEY },
+    headers: { 'Content-Type': 'application/json', 'apikey': ANON_KEY, 'Authorization': 'Bearer ' + ANON_KEY },
     body: { image: 'A'.repeat(5000), name: 'dia_proof', fb_token: validToken },
   });
   const json = await res.json();
@@ -141,6 +141,9 @@ console.log('\n2. The NEW client shape: anon key in Authorization + Firebase tok
   check('response carries CORS headers', res.headers.get('Access-Control-Allow-Origin') === '*');
   check('imgbb was called with the server-side secret key',
     fetchCalls.some((c) => c.url.includes('api.imgbb.com') && String(c.opts?.body) !== ''));
+  const imgbbCall = fetchCalls.find((c) => c.url.includes('api.imgbb.com'));
+  check('permanent upload omits invalid expiration=0',
+    !!imgbbCall && !imgbbCall.opts.body.has('expiration'));
 }
 
 console.log('\n3. The OLD failure mode must stay fixed: anon key alone is NOT an identity');

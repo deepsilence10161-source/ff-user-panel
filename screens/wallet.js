@@ -394,12 +394,21 @@ function wfPaytmPay() {
 }
 function handleSS(inp) {
   if (!inp.files || !inp.files[0]) return;
-  /* Bug #45 supplement: Validate screenshot file type */
   var _ssFile = inp.files[0];
-  if (_ssFile && !_ssFile.type.startsWith('image/')) {
-    toast('Sirf image file upload karo!', 'err'); inp.value=''; return;
+  /* Clear immediately so choosing the same screenshot after any failure
+     still fires onchange. */
+  inp.value = '';
+  if (_ssFile.type && _ssFile.type.indexOf('image/') !== 0) {
+    toast('Sirf image file upload karo!', 'err'); return;
   }
-  compImg(inp.files[0], 800, 0.7, 150, function(b64) { wfScreenshot = b64; var prev = $('ssPreview'); if (prev) { prev.src = b64; prev.style.display = 'block'; } _startWfPreUpload(); });
+  if (!window.compImg) { toast('Image tool load nahi hua — app refresh karo', 'err'); return; }
+  window.compImg(_ssFile, 800, 0.7, 150, function(b64) {
+    if (!b64) { toast('Screenshot read nahi hui — JPG/PNG dobara choose karo', 'err'); return; }
+    wfScreenshot = b64;
+    var prev = $('ssPreview');
+    if (prev) { prev.src = b64; prev.style.display = 'block'; }
+    _startWfPreUpload();
+  });
 }
 /* ✅ FIX (2026-09-15c, SPEED): same background pre-upload as the Sky
    Diamond modal (js/quick-deposit.js) — the ImgBB round-trip starts when
@@ -448,28 +457,17 @@ function _wfEnsureUpload(retried, btn, cb) {
   }
   var reason = (_wfPreUp && _wfPreUp.err) || 'upload fail';
   if (wfScreenshot && wfScreenshot.length < 700000 && wfScreenshot.indexOf('data:image/') === 0) {
-    toast('⚠️ Screenshot server pe upload nahi hua (' + reason + ') — proof request ke saath bhej diya', 'inf');
+    /* This is a successful durability fallback, not a failed payment.
+       `screenshot_url` accepts the compressed data URL and the admin panel
+       renders it directly — exactly why the proof was visible in the
+       user's screenshot despite the old warning. Keep the technical
+       failure in the console, then let the confirmed DB insert's success
+       toast be the only user-facing result. */
+    console.warn('[Wallet] Hosted proof upload failed; saving compressed proof inline:', reason);
     cb(null, null, wfScreenshot);
     return;
   }
   cb(reason, null, null);
-}
-function compImg(file, maxDim, quality, maxKB, cb) {
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var img = new Image();
-    img.onload = function() {
-      var w = img.width, h = img.height;
-      if (w > maxDim || h > maxDim) { if (w > h) { h = h * (maxDim / w); w = maxDim; } else { w = w * (maxDim / h); h = maxDim; } }
-      var c = document.createElement('canvas'); c.width = w; c.height = h;
-      var ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
-      var q = quality, result = c.toDataURL('image/jpeg', q);
-      while (result.length > maxKB * 1370 && q > 0.1) { q -= 0.1; result = c.toDataURL('image/jpeg', q); }
-      cb(result);
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
 }
 var _addMoneySubmitting = false;
 function submitAddMoney() {

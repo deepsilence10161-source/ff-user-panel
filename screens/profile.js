@@ -258,109 +258,81 @@ function renderProfile() {
   pc.innerHTML = h;
 }
 
+var _profilePhotoUploading = false;
+var _profileBannerUploading = false;
+
+function _validProfileImage(file, label) {
+  if (!file) return false;
+  if (file.type && file.type.indexOf('image/') !== 0) {
+    toast('Sirf image file choose karo!', 'err'); return false;
+  }
+  /* Decoding a huge camera file can exhaust an older Android WebView
+     before compression gets a chance to run. ImgBB itself caps at 32 MB. */
+  if (file.size && file.size > 25 * 1024 * 1024) {
+    toast(label + ' bahut badi hai — 25 MB se chhoti image choose karo', 'err'); return false;
+  }
+  return true;
+}
+
 function uploadProfImg(inp) {
   if (!inp.files || !inp.files[0]) return;
-  var _f = inp.files[0];
-  /* ✅ FIX (2026-09-15c): "photo select karta hoon, kuch hota hi nahi, na
-     error aata hai" — after ANY finished (or failed) upload attempt the
-     file input kept its old value, so picking the SAME image again never
-     fired `onchange` at all: no upload, no toast, a completely silent
-     dead tap. Clearing the value right after reading the file makes
-     every pick re-trigger the handler. */
-  inp.value = '';
-  /* GATED (2026-08): profile photo change is now a premium perk.
-     Free users get a clear message instead of a silent no-op. */
+  var file = inp.files[0];
+  inp.value = ''; /* same file must remain retryable */
+
   if (!window.isPremiumActive || !isPremiumActive()) {
     toast('👑 Profile photo change sirf Premium members ke liye hai', 'err');
     if (window.showPremiumUpgrade) showPremiumUpgrade();
     return;
   }
-  /* uploadProfileImage is defined in imgbb.js — always use it */
-  if (window.uploadProfileImage) {
-    uploadProfileImage(_f, function(url) {
-      if (url) { toast('Photo updated! ✅', 'ok'); setTimeout(renderProfile, 300); }
-      /* NOTE: uploadProfileImage's own error path already calls
-         toast() on failure (see core/imgbb.js) — if neither the
-         success nor the error branch is visibly firing, check the
-         browser console for a thrown exception before this callback
-         (e.g. compImg() failing silently on an unreadable file). */
-    });
-    return;
-  }
-  compImg(_f, 400, 0.8, 150, function(b64) {
-    uploadToImgBB(b64, 'profile_' + U.uid, function(err, url) {
-      if (err || !url) { toast('Upload failed: ' + (err||'unknown'), 'err'); return; }
-      /* ✅ BUG FIX (2026-08-23): "Profile image update hi nahi hota".
-         Root cause: DB.users.update() was fire-and-forget here — not
-         awaited, its result never checked — so the "Photo updated!"
-         toast fired unconditionally even if the DB write silently
-         failed. Separately, UD.profileImage was never updated locally,
-         only the DB row — so even a fully successful save wouldn't
-         show up until the next ~30s background poll re-fetched the
-         user row, making it LOOK broken even when it wasn't. Now waits
-         for confirmation and updates UD immediately for instant
-         visual feedback. */
-      if (!window.DB) { toast('Service unavailable', 'err'); return; }
-      DB.users.update({ avatar_url: url }).then(function(res) {
-        if (!res || !res.ok) { toast('Photo save failed — dobara try karo', 'err'); return; }
-        if (window.UD) window.UD.profileImage = url;
-        toast('Photo updated! ✅', 'ok');
-        renderProfile();
-      });
-    });
+  if (!_validProfileImage(file, 'Photo')) return;
+  if (_profilePhotoUploading) { toast('Photo upload already chal rahi hai…', 'inf'); return; }
+  if (!window.uploadProfileImage) { toast('Image service load nahi hui — app refresh karo', 'err'); return; }
+
+  _profilePhotoUploading = true;
+  window.uploadProfileImage(file, function(url) {
+    _profilePhotoUploading = false;
+    if (!url) return; /* shared helper already displayed the exact error */
+    toast('Photo updated! ✅', 'ok');
+    renderProfile();
   });
 }
+
 function uploadBannerImg(inp) {
   if (!inp.files || !inp.files[0]) return;
-  var _f = inp.files[0];
-  /* ✅ FIX (2026-09-15c): same silent-dead-tap fix as uploadProfImg —
-     without this, re-picking the same banner image after a failed
-     attempt never fired `onchange` (input still held the old value),
-     which is exactly "na upload hota hai na error aata hai". */
-  inp.value = '';
-  /* GATED (2026-08): banner change is also a premium perk. */
+  var file = inp.files[0];
+  inp.value = ''; /* same file must remain retryable */
+
   if (!window.isPremiumActive || !isPremiumActive()) {
     toast('👑 Banner change sirf Premium members ke liye hai', 'err');
     if (window.showPremiumUpgrade) showPremiumUpgrade();
     return;
   }
-  /* ✅ FIX (2026-09-16): an immediate, visible preview makes every
-     successful pick feel alive (same as the photo flow) instead of an
-     idle "har bar fail" feel while the upload runs. It's set here,
-     before the upload, and the hosted URL replaces it on success. */
-  function _showBannerPreview(b64) {
+  if (!_validProfileImage(file, 'Banner')) return;
+  if (_profileBannerUploading) { toast('Banner upload already chal rahi hai…', 'inf'); return; }
+  if (!window.uploadBannerImage || !window.compImg) { toast('Image service load nahi hui — app refresh karo', 'err'); return; }
+
+  _profileBannerUploading = true;
+  /* Compress once: use the exact same bytes for immediate preview and
+     upload. The old flow decoded/compressed the banner twice. */
+  window.compImg(file, 800, 0.75, 250, function(dataUrl) {
+    if (!dataUrl) {
+      _profileBannerUploading = false;
+      toast('Banner image read nahi hui — JPG/PNG dobara choose karo', 'err');
+      return;
+    }
     var card = document.querySelector('.prof-header');
-    if (card && b64) card.style.background = 'url(' + b64 + ') center/cover no-repeat';
-  }
-  if (window.uploadBannerImage) {
-    compImg(_f, 800, 0.75, 250, function(b64) {
-      if (b64) _showBannerPreview(b64);
-      uploadBannerImage(_f, function(url) {
-        if (url) { toast('Banner updated! ✅', 'ok'); setTimeout(renderProfile, 300); }
-      });
-    });
-    return;
-  }
-  compImg(_f, 800, 0.75, 250, function(b64) {
-    _showBannerPreview(b64);
-    uploadToImgBB(b64, 'banner_' + U.uid, function(err, url) {
-      if (err || !url) { toast('Upload failed: ' + (err||'unknown'), 'err'); return; }
-      /* ✅ BUG FIX (2026-08-23): same two bugs as avatar upload above —
-         (1) DB.users.update({banner_url:...}) was ALSO failing outright
-         at the database level until this session: the users table had
-         NO banner_url column at all (added via migration), so every
-         single banner upload was hitting a genuine Postgres error that
-         this fire-and-forget call never surfaced — the success toast
-         fired regardless. (2) UD.bannerImage was never populated from
-         the DB anywhere (core/listeners.js _applyUser fixed separately),
-         so even a successful save wouldn't display without a poll cycle. */
-      if (!window.DB) { toast('Service unavailable', 'err'); return; }
-      DB.users.update({ banner_url: url }).then(function(res) {
-        if (!res || !res.ok) { toast('Banner save failed — dobara try karo', 'err'); return; }
-        if (window.UD) window.UD.bannerImage = url;
-        toast('Banner updated! ✅', 'ok');
+    if (card) card.style.background = 'url(' + dataUrl + ') center/cover no-repeat';
+
+    window.uploadBannerImage(dataUrl, function(url) {
+      _profileBannerUploading = false;
+      if (!url) {
+        /* The preview was local-only. Restore the last persisted banner so
+           a failed save never looks like it succeeded. */
         renderProfile();
-      });
+        return;
+      }
+      toast('Banner updated! ✅', 'ok');
+      renderProfile();
     });
   });
 }

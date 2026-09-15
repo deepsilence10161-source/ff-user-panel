@@ -30,13 +30,13 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
      A — the truncated standard list the gateway returns for deployed
          functions (supabase/supabase#41334 — custom headers in the
          function's own CORS object are dropped before user code runs)
-     B — the function's own CORS object as committed, which lists only
-         authorization + content-type.
+     B — the function's minimal standard CORS set: authorization +
+         apikey + content-type (legacy cached-client extras omitted).
    The upload has to work under BOTH, because we cannot control which
    one wins in production. */
 const ALLOW_LISTS = {
   'gateway standard (truncated)': ['authorization', 'x-client-info', 'apikey', 'content-type'],
-  'function-owned list': ['authorization', 'content-type'],
+  'function-owned list': ['authorization', 'apikey', 'content-type'],
 };
 
 const SAFELISTED_CT = ['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'];
@@ -158,15 +158,18 @@ for (const [label, allow] of Object.entries(ALLOW_LISTS)) {
   });
   const { err, url } = await callUpload(client);
   check(`[${label}] upload succeeded`, !err && url === okBody.data.url, 'err=' + err);
-  check(`[${label}] no custom header sent`,
-    log.preflights.every((p) => p.requested.every((h) => ['content-type', 'authorization'].includes(h))),
+  check(`[${label}] only Supabase standard headers sent`,
+    log.preflights.every((p) => p.requested.every((h) => ['content-type', 'authorization', 'apikey'].includes(h))),
+    JSON.stringify(log.preflights[0] || {}));
+  check(`[${label}] project key sent in apikey (current gateway requirement)`,
+    log.preflights.some((p) => p.requested.includes('apikey')),
     JSON.stringify(log.preflights[0] || {}));
   check(`[${label}] firebase token travelled in the body`,
     body && typeof body.fb_token === 'string' && body.fb_token.length > 10,
     JSON.stringify(body && Object.keys(body)));
 }
 
-console.log('\n3. If even "authorization" is refused, the preflight-free stage-1 fallback must still land');
+console.log('\n3. If gateway headers are refused, the preflight-free stage-1 fallback must still land');
 {
   const log = { preflights: [], blockedRequests: [] };
   let sawNoPreflightPost = false;
@@ -180,7 +183,7 @@ console.log('\n3. If even "authorization" is refused, the preflight-free stage-1
   });
   const origFetch = client.fetch;
   client.fetch = (url, opts = {}) => {
-    if (!opts.headers || !opts.headers['Authorization']) sawNoPreflightPost = true;
+    if (!opts.headers || (!opts.headers['Authorization'] && !opts.headers.apikey)) sawNoPreflightPost = true;
     return origFetch(url, opts);
   };
   const { err, url } = await callUpload(client);
@@ -233,12 +236,55 @@ console.log('\n5. The server-side function must be a superset of the old allow-l
   const fn = fs.readFileSync(path.join(ROOT, 'supabase/functions/imgbb-upload/index.ts'), 'utf8');
   const m = /"Access-Control-Allow-Headers":\s*"([^"]+)"/.exec(fn);
   const allowed = (m?.[1] || '').split(',').map((s) => s.trim().toLowerCase());
-  for (const h of ['authorization', 'content-type', 'x-firebase-token']) {
+  for (const h of ['authorization', 'apikey', 'content-type', 'x-firebase-token']) {
     check(`function allows "${h}"`, allowed.includes(h), 'list: ' + m?.[1]);
   }
   check('function verifies the Firebase token itself (Google JWKS)', /securetoken@system\.gserviceaccount\.com/.test(fn));
   check('function no longer trusts the anon key as a user identity',
     /role && !claims\.sub/.test(fn));
+  check('invalid expiration=0 is not sent to ImgBB', !/fd\.append\(["']expiration["'],\s*["']0["']\)/.test(fn));
+
+  const config = fs.readFileSync(path.join(ROOT, 'supabase/config.toml'), 'utf8');
+  check('gateway verify_jwt is source-controlled OFF for this self-verifying function',
+    /\[functions\.imgbb-upload\][\s\S]*?verify_jwt\s*=\s*false/.test(config));
+}
+
+console.log('\n6. Profile and banner helpers save the correct confirmed database fields');
+{
+  const log = { preflights: [], blockedRequests: [] };
+  const client = loadClient({
+    fetchImpl: browserFetch({
+      allowHeaders: ALLOW_LISTS['gateway standard (truncated)'],
+      server: async () => jsonResponse(200, okBody),
+      log,
+    }),
+  });
+  client.U = { uid: 'firebase-uid-123' };
+  client.UD = { profileImage: 'old-avatar', bannerImage: 'old-banner' };
+  const writes = [];
+  client.DB = { users: { updateImage: async (field, url) => {
+    writes.push({ field, url });
+    return { ok: true, data: { id: client.U.uid, [field]: url } };
+  } } };
+
+  const avatar = await new Promise((resolve) => client.uploadProfileImage(
+    'data:image/jpeg;base64,' + 'A'.repeat(4000), resolve,
+  ));
+  const banner = await new Promise((resolve) => client.uploadBannerImage(
+    'data:image/jpeg;base64,' + 'B'.repeat(4000), resolve,
+  ));
+  check('avatar saves avatar_url', writes[0]?.field === 'avatar_url');
+  check('banner saves banner_url (never avatar_url)', writes[1]?.field === 'banner_url');
+  check('profile helper updates the field the UI renders',
+    avatar === okBody.data.url && client.UD.profileImage === okBody.data.url);
+  check('banner helper updates the field the UI renders',
+    banner === okBody.data.url && client.UD.bannerImage === okBody.data.url);
+}
+{
+  const wallet = fs.readFileSync(path.join(ROOT, 'screens/wallet.js'), 'utf8');
+  check('wallet no longer overrides the canonical global compressor',
+    !/function\s+compImg\s*\(/.test(wallet));
+  check('wallet explicitly uses the canonical compressor', /window\.compImg\(/.test(wallet));
 }
 
 console.log(`\n${fail === 0 ? '✅ ALL PASS' : '❌ FAILURES'} — ${pass} passed, ${fail} failed\n`);

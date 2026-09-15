@@ -3,6 +3,64 @@
 
 ---
 
+## 🔴 2026-09-16b — Image gateway, real deployment, profile/banner reliability
+**Files:** `core/imgbb.js`, `core/db.js`, `screens/profile.js`,
+`screens/wallet.js`, `js/quick-deposit.js`, `supabase/config.toml`,
+`supabase/functions/imgbb-upload/index.ts`,
+`supabase/functions/deploy-imgbb-upload.yml.template`, tests + cache versions
+
+### ✅ FIXED — `Missing authorization header` while proof still appears in Admin
+The two observations were both true. Hosted ImgBB upload failed at the
+Supabase Edge gateway, then the payment safety path put the compressed
+`data:image/...` proof directly in `sd_requests.screenshot_url`. Admin reads
+that same column and browsers can render a data URL, so the proof appeared
+correctly even though the separate hosting attempt failed. The old UI called
+that successful durability fallback an upload error, causing the confusing
+warning in the screenshot.
+
+Root causes found:
+
+1. Client sent the anon project key only as `Authorization`; the current Edge
+   relay's standard invocation shape also requires `apikey`. v34 now sends
+   `apikey + Authorization + Content-Type`, all from the documented CORS
+   allow-list, while the real Firebase identity stays in the HTTPS body.
+2. The no-header recovery request reached a deployment with gateway
+   `verify_jwt` still ON, so relay code — before our function — returned
+   `UNAUTHORIZED_NO_AUTH_HEADER`. `supabase/config.toml` now permanently sets
+   `verify_jwt=false` for this one function. Security is not removed:
+   `index.ts` independently verifies Firebase RS256 signature, issuer,
+   audience, expiry and uid before touching the server-side ImgBB key.
+3. The deployment workflow existed only as a `.template`, so it never ran;
+   worse, its project ref omitted one character (`...evmlwy` instead of the
+   real `...evxmlwy`). An image-only workflow template now deploys only
+   `imgbb-upload` and health-checks that a request reaches function code;
+   repository owner can create it manually under `.github/workflows/` when
+   the GitHub App itself has no workflow-write permission.
+4. Function sent ImgBB undocumented `expiration=0`; permanent uploads now use
+   the documented behavior: omit `expiration`.
+
+When hosted upload is genuinely unavailable, the compressed inline proof is
+still saved (never lose evidence after payment), but no false failure toast
+is shown. Only a confirmed DB insert produces the final success message.
+
+### ✅ FIXED — profile photo/banner did not upload or could hang silently
+`screens/wallet.js` declared a second global `compImg` after `core/imgbb.js`
+and silently replaced the canonical compressor. That duplicate had no
+FileReader error, abort, image-decode error, or timeout callbacks; one bad or
+unsupported image could leave profile/banner upload forever waiting with no
+result. There is now one callback-once compressor with all terminal paths.
+Profile and banner helpers use its private reference, validate file type/size,
+block duplicate concurrent taps, and persist the correct columns through a
+whitelisted `DB.users.updateImage` method that confirms a row was actually
+affected (detects silent RLS zero-row updates). Banner is compressed once for
+both preview and upload, and a failed save rolls the temporary preview back.
+
+### Release hygiene
+`sw.js`: `me-v40-9-16b` / `20260916b`; every local `index.html` asset tag:
+`20260916b`, so installed WebViews receive the fix instead of stale JS.
+
+---
+
 ## 🔴 2026-09-15c — Submit speed, history currency mix, upload feedback & deploy gap
 **Files:** `js/quick-deposit.js`, `screens/wallet.js`, `core/imgbb.js`,
 `screens/profile.js`, `sw.js`, `index.html`, `.github/workflows/deploy-edge.yml`,
