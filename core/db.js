@@ -79,6 +79,20 @@
     return null;
   }
 
+  /* Postgres/PostgREST error ko ek chhota, toast-worthy line me badlo.
+     Full error console me hi rehta hai; UI ko sirf woh hissa chahiye jo
+     culprit bataye — e.g. `insert or update on table "profile_requests"
+     violates foreign key constraint ... [23503]` se turant pata chal
+     jaata hai ki avatar_url UPDATE koi FK-dependent trigger tod raha hai.
+     (2026-09-16c: pehle sirf error.message jaata tha, code/details kabhi
+     nahi — message ke bina class ka error code bhi ab dikhta hai.) */
+  function _pgErrText(err) {
+    if (!err) return 'image_update_failed';
+    var msg = String(err.message || 'image_update_failed');
+    var code = err.code ? ' [' + err.code + ']' : '';
+    return (msg + code).slice(0, 180);
+  }
+
   /* ================================================================
      DB NAMESPACE — sab public methods yahan
   ================================================================ */
@@ -362,7 +376,24 @@
          A plain PostgREST UPDATE can resolve with error:null even when RLS
          affected zero rows; image upload must not toast success in that
          case. Keep this narrow/whitelisted so no unrelated profile update
-         behaviour changes. */
+         behaviour changes.
+
+         ✅ FIX (2026-09-16c) — "Photo save failed — dobara try karo" jabki
+         ImgBB upload SUCCESS aur banner save bhi SUCCESS. Banner aur photo
+         dono isi ek method se guzarte hain, bas `field` alag hai — to
+         avatar-only failure ka matlab hai Postgres khud avatar_url wali
+         UPDATE ko rok raha hai (trigger exception / trigger value-rewrite /
+         CHECK constraint / column change — RLS row-level hoti hai, woh
+         dono ko equally rokti). Purana code woh asli Postgres reason
+         console ke aage khaa jaata tha aur UI ko ek generic
+         'image_update_failed' deta tha — diagnose karna impossible.
+         Ab: (1) asli message + pg error code caller tak jaata hai (toast
+         tak — ek screenshot se culprit pakda jaayega), aur (2) "row
+         updated par stored value alag hai" (kaa'ida: koi BEFORE UPDATE
+         trigger ne avatar_url ko NULL/placeholder se overwrite kar diya)
+         ko RLS zero-row se ALAG identify kiya jaata hai, stored value ke
+         saath log karke. Diagnosis SQL: supabase/migrations/
+         20260916_diagnose_avatar_url_save.sql */
       updateImage: async function(field, url) {
         var uid = _uid();
         if (!uid) return { ok: false, error: 'not_authenticated' };
@@ -383,11 +414,28 @@
             .maybeSingle();
           if (result.error) {
             console.error('[DB:users.updateImage]', result.error);
-            return { ok: false, error: result.error.message || 'image_update_failed' };
+            return { ok: false, error: _pgErrText(result.error) };
           }
-          if (!result.data || result.data.id !== uid || result.data[field] !== url) {
+          if (!result.data || result.data.id !== uid) {
+            /* Zero rows affected — RLS denial ya row hi missing. Banner
+               bhi yahi method use karke pass ho raha hai to avatar ke liye
+               yeh branch practically impossible hai; phir bhi alag rakha
+               hai taki teeno failure classes ek-ek screenshot me pehchani
+               jaa sakein. */
             console.error('[DB:users.updateImage] No user row was updated (possible RLS denial)');
-            return { ok: false, error: 'update_not_applied' };
+            return { ok: false, error: 'update_not_applied_rls' };
+          }
+          if (result.data[field] !== url) {
+            /* Row update HUI par stored value woh nahi jo bheji — yaani ek
+               DB trigger ne avatar_url ko rewrite/normalize/NULL kar diya.
+               Yeh avatar-only failures ka classic signature hai (banner pe
+               koi aisa trigger nahi). Stored value log karo: agar woh NULL
+               ya kisi internal placeholder pe badli hai to culprit trigger
+               section-2 SQL se turant milega. */
+            console.error('[DB:users.updateImage] DB trigger ne ' + field +
+              ' rewrite kar diya — sent:', String(url).slice(0, 120),
+              '| stored:', String(result.data[field]).slice(0, 160));
+            return { ok: false, error: 'db_trigger_rewrote_value' };
           }
           return { ok: true, data: result.data };
         } catch (e) {

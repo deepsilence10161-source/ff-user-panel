@@ -3,6 +3,65 @@
 
 ---
 
+## 🔴 2026-09-16c — Profile photo save fail: asli DB wajah ab dikhti hai
+**Files:** `core/db.js`, `core/imgbb.js`,
+`supabase/migrations/20260916_diagnose_avatar_url_save.sql`,
+`tests/db-update-image-errors.test.mjs`, `sw.js`, `index.html`
+
+### Reported symptom
+ImgBB pe image pahunch jaati hai, banner (banner_url) bhi save hota hai,
+par profile PHOTO ke liye hamesha sirf `Photo save failed — dobara try
+karo`.
+
+### Isolation (fail hone wali jagah confirmed)
+Photo aur banner client me EK HI path se guzarte hain:
+`core/imgbb.js → _saveUserImage → DB.users.updateImage('avatar_url' |
+'banner_url', url)` → `UPDATE public.users SET <col>=url WHERE id=uid`.
+Banner pass + photo fail ⇒ transport, ImgBB, auth, RLS row-policy sab theek
+hain — warna dono rok jaate. Rok sirf `avatar_url` column ke saath judi
+hai, yaani Postgres-side (trigger exception / trigger value-rewrite /
+CHECK / column rename-drop). Aisi rok ko koi bhi client change bypass
+nahi kar sakta — aur purana toast `res.error` ko khaa jaata tha, isliye
+asli wajah kabhi saamne hi nahi aayi.
+
+### Changes
+1. `DB.users.updateImage` (core/db.js) — Postgres ka ASLI message + pg
+   error code (`[23503]`, `[42703]`…) ab caller tak jaata hai
+   (`_pgErrText`). Teen failure classes ab alag-alag hain:
+   `update_not_applied_rls` (zero rows) vs `db_trigger_rewrote_value`
+   (row update HUI par stored value alag — classic avatar-only BEFORE
+   UPDATE trigger signature; bheji hui aur stored dono values console me).
+2. `_saveUserImage` (core/imgbb.js) — generic "dobara try karo" hata diya;
+   toast ab asli reason dikhata hai (`Photo save failed: <reason>`), known
+   codes ko Hinglish line milti hai. Agli baar ka ek hi screenshot
+   culprit bata dega. imgbb.js v35.
+3. `supabase/migrations/20260916_diagnose_avatar_url_save.sql` — Supabase
+   SQL Editor me ek click diagnosis: users table ke triggers (source ke
+   saath), column type/length, CHECK constraints, `profile_requests`/
+   moderation tables ke FK (auth.users pe juda FK Firebase users ke liye
+   hamesha 23503 deta hai — isi class ka bug pehle users.create me aa
+   chuka hai), RLS policies, PostgREST cache reload. Section 7 me har
+   diagnosis ka ready-made FIX (commented) hai.
+4. `tests/db-update-image-errors.test.mjs` — real `core/db.js` ko vm
+   browser-context + mock PostgREST ke saath chala kar 7 regression checks
+   (FK/42703 message passthrough, rewrite detector, RLS zero-row, banner
+   guard, input guards). `node tests/db-update-image-errors.test.mjs` ✅
+   aur purane imgbb tests bhi green.
+
+### Owner action needed (DB-side fix)
+Client fix se fail hone wala photo khud save nahi hoga — Postgres wali
+rok hatne ke baad hi save hoga. SQL Editor me upar wali diagnostic file
+run karo: jo trigger/constraint section 2/3/4 me dikhe (ya naya toast jo
+ab exact reason batayega), Section 7 ka matching FIX uncomment karke run
+karo. Postmortem ke liye `core/db.js` console lines ready hain.
+
+### Release hygiene
+`sw.js` CACHE_VER `me-v41-9-16c` + ASSET_VER `20260916c`, index.html ke sab
+92 `?v=` tags `20260916c` — warna installed WebViews purana JS serve karti
+rahengi (repo rule).
+
+---
+
 ## 🔴 2026-09-16b — Image gateway, real deployment, profile/banner reliability
 **Files:** `core/imgbb.js`, `core/db.js`, `screens/profile.js`,
 `screens/wallet.js`, `js/quick-deposit.js`, `supabase/config.toml`,

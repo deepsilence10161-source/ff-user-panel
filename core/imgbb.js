@@ -1,5 +1,5 @@
 /* ================================================================
-   IMGBB UPLOAD — core/imgbb.js  v34-GATEWAY-FIX
+   IMGBB UPLOAD — core/imgbb.js  v35-SAVE-ERROR-VISIBLE
    ----------------------------------------------------------------
    HISTORY (keep this — every past fix here was real, and the next
    person needs to know which transport shape was already tried):
@@ -18,6 +18,14 @@
              `UNAUTHORIZED_NO_AUTH_HEADER / Missing authorization header`.
              v34 sends the standard Supabase browser header set and keeps
              the Firebase identity token in the HTTPS request body.
+   • 2026-09-16c (v35) "Photo save failed — dobara try karo" even though
+             ImgBB upload AND banner save both succeeded: avatar_url ka DB
+             update server-side rok gaya (trigger/constraint class ka bug —
+             client ka dono path identical hai) aur purana toast wajah khaa
+             jaata tha. _saveUserImage ab updateImage ka ASLI reason
+             dikhata hai (message + pg code), taaki ek hi screenshot se
+             DB-side culprit pakda jaa sake. Diagnosis + fix SQL:
+             supabase/migrations/20260916_diagnose_avatar_url_save.sql
 
    ── v33 ROOT CAUSE ("Failed to fetch" / "Screenshot upload failed") ──
    The request sent a CUSTOM header — X-Firebase-Token — alongside
@@ -401,8 +409,27 @@
     }
     Promise.resolve(write).then(function(res) {
       if (!res || !res.ok) {
-        console.warn('[ImgBB] ' + label + ' DB save rejected:', res && res.error);
-        if (window.toast) toast(label + ' save failed — dobara try karo', 'err');
+        var why = res && res.error ? String(res.error) : '';
+        console.warn('[ImgBB] ' + label + ' DB save rejected:', why);
+        /* ✅ FIX (2026-09-16c): generic "dobara try karo" hata diya — ImgBB
+           upload SUCCESS + banner save SUCCESS ke baad bhi sirf profile
+           PHOTO ka save fail ho raha tha, aur generic toast se asli
+           Postgres reason (trigger FK violation / constraint / column
+           issue) kabhi saamne hi nahi aata tha. Ab DB.users.updateImage ka
+           asli reason hi dikhata hai — ek screenshot culprit bata dega.
+           Jaan-bujhe map kiye gaye codes ko Hinglish line milti hai;
+           baaki raw reason (message + pg code, 180 chars tak) dikhata hai. */
+        var line;
+        if (why === 'update_not_applied_rls') {
+          line = label + ' save nahi hui (permission) — logout/login karke dobara try karo';
+        } else if (why === 'db_trigger_rewrote_value') {
+          line = label + ' server ne save nahi ki (DB trigger blocked) — support ko report karo';
+        } else if (why === 'not_authenticated') {
+          line = 'Login expire ho gaya — dobara login karo';
+        } else {
+          line = label + ' save failed: ' + (why ? why.slice(0, 140) : 'dobara try karo');
+        }
+        if (window.toast) toast(line, 'err');
         if (callback) callback(null);
         return;
       }
@@ -551,5 +578,5 @@
   }
   window.compImg = _compressImage;
 
-  console.log('[ImgBB] v34-GATEWAY-FIX ready — standard Supabase headers, token in body ✅');
+  console.log('[ImgBB] v35-SAVE-ERROR-VISIBLE ready — DB save failure ka asli reason ab toast me ✅');
 })();
