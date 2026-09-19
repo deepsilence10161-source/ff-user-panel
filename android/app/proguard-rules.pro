@@ -1,0 +1,3 @@
+-keep class com.miniesports.app.** { *; }
+-keep class com.google.android.gms.ads.** { *; }
+-keep class com.onesignal.** { *; }
