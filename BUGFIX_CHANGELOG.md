@@ -3,6 +3,22 @@
 
 ---
 
+## 🔴 2026-09-20c — ROOM CREDS: matches table ab poori tarah creds-free (Phase-2)
+**Files:** `features/creator-match-host.js`, `core/db.js`, `index.html`, `sw.js`
+**DB half:** `match_rooms` table + redirect trigger + RPC v3 (admin repo `sql and developer guide/2026-09-20c-ROOM-PHASE2-DELTA.sql`)
+
+### Kya badla
+- `matches.room_id/room_password` ab DB me **hamesha NULL** rehte hain (defaults NULL) —
+  raw REST `select=*`, realtime WebSocket payloads, har jagah creds-free.
+- Creds sirf `match_rooms` table me (admin-only RLS read) aur sirf
+  `get_room_credentials` RPC se milte hain (joined + release-window; host/admin bypass).
+- Naya redirect-trigger: koi bhi purana writer jo matches me room likhta hai, transparently
+  match_rooms me chala jata hai — kisi existing code me change nahi laga pada.
+- Creator host-screen: "Room ID Enter Karo" check ab `room_status` se (set_room 'saved' set karta hai).
+- `joinRequests.getMine` embedded select se room cols removed.
+
+---
+
 ## 🔴 2026-09-20b — ROOM CREDENTIALS LEAK FIX (Round-3 security)
 **Files:** `core/listeners.js`, `screens/room.js`, `index.html`, `sw.js`
 **DB half:** naya `get_room_credentials(p_match_id)` RPC (admin repo `sql and developer guide/2026-09-20b-R3-FIX-DELTA.sql`)
