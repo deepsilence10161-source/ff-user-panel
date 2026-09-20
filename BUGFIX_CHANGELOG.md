@@ -3,6 +3,25 @@
 
 ---
 
+## 🔴 2026-09-20b — ROOM CREDENTIALS LEAK FIX (Round-3 security)
+**Files:** `core/listeners.js`, `screens/room.js`, `index.html`, `sw.js`
+**DB half:** naya `get_room_credentials(p_match_id)` RPC (admin repo `sql and developer guide/2026-09-20b-R3-FIX-DELTA.sql`)
+
+### Bug
+`matches` table se `select=*` (initial load + 15s poll + realtime) room_id/room_password
+bhi browser me aa jaate the — release-window se PEHLE bhi. Devtools me koi bhi joined/
+unjoined user creds dekh sakta tha.
+
+### Fix
+- `_toMT()` ab `roomId:''`, `roomPassword:''` — creds MT me kabhi store nahi hote.
+  Non-secret `room_status`/`room_released_at` chalte hain (release-notify isi se).
+- `showRP()` ab pehle `get_room_credentials` RPC call karta hai — server khud verify
+  karta hai ki user joined hai + room release ho chuka hai, tabhi creds milte hain.
+  `not_released_yet` par friendly toast. Creds sirf memory me inject hote hain.
+- sw CACHE_VER `me-v42-9-20a`, index.html `?v=20260920a` bumps.
+
+---
+
 ## 🔴 2026-09-16c — Profile photo save fail: asli DB wajah ab dikhti hai
 **Files:** `core/db.js`, `core/imgbb.js`,
 `supabase/migrations/20260916_diagnose_avatar_url_save.sql`,
