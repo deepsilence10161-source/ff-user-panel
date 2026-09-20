@@ -205,6 +205,23 @@
   waitFor(function(){ return window.showRP !== undefined; }, function() {
     var _origShowRP = window.showRP;
     window.showRP = function(matchId, matchData) {
+      /* ✅ R3 (2026-09-20): creds MT me nahi hote (room-leak fix) — released
+         par pehle RPC se fetch, phir original flow. */
+      var _mdT = matchData || matchId;
+      if (_mdT && (_mdT.roomStatus === 'released' || _mdT.room_status === 'released') && !(_mdT.roomId || _mdT.room_id) && window._supa) {
+        var _mid = _mdT.id || _mdT.matchId || (typeof matchId === 'string' ? matchId : '');
+        if (_mid) {
+          window._supa.rpc('get_room_credentials', { p_match_id: _mid }).then(function(res) {
+            var d = res && res.data;
+            if (d && d.success) {
+              _mdT.roomId = d.room_id; _mdT.roomPassword = d.room_password;
+              if (window.MT && window.MT[_mid]) { MT[_mid].roomId = d.room_id; MT[_mid].roomPassword = d.room_password; }
+            }
+            if (_origShowRP) _origShowRP(_mdT, true);
+          });
+          return;
+        }
+      }
       /* If already released by admin, show immediately without countdown */
       var md = matchData || {};
       if (md.roomStatus === 'released' || md.room_status === 'released') {

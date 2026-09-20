@@ -72,8 +72,11 @@ function renderMM() {
     var _relMin = Number(t.roomReleaseMinutes) || 5;
     var _matchMsec = Number(t.matchTime) || 0;
     var _releaseAt = _matchMsec > 0 ? _matchMsec - (_relMin * 60000) : 0;
-    if (t.roomId && t.roomPassword) {
-      if (t.roomStatus === 'released') {
+    /* ✅ R3 (2026-09-20): creds MT me nahi hote (room-leak fix) — readiness
+       roomStatus se, creds RPC se (_showRoomViaRpc). In-memory creds ho
+       (ek baar fetch ke baad) to inline box warna fetch-button. */
+    if (t.roomStatus === 'released' || t.roomStatus === 'saved') {
+      if (t.roomId && t.roomPassword) {
         /* Released manually by admin — respect timing: show only if release time has passed */
         var _releasedAt = Number(t.roomReleasedAt) || 0;
         /* Show if: manual release time has passed OR auto-release time has passed */
@@ -84,10 +87,12 @@ function renderMM() {
         if (_releaseAt > 0 && (window.serverNow?window.serverNow():Date.now()) >= _releaseAt) _roomReady = true;
       }
     }
-    if (_roomReady) {
+    if (_roomReady && t.roomId && t.roomPassword) {
       h += '<div class="room-box rb-green" style="margin-top:8px"><div style="display:flex;justify-content:space-between;align-items:center"><span><strong>Room ID:</strong> ' + t.roomId + '</span><button onclick="copyTxt(String(t.roomId||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
       h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span><strong>Password:</strong> ' + t.roomPassword + '</span><button onclick="copyTxt(String(t.roomPassword||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
-    } else if (t.roomId && t.roomPassword && _matchMsec > 0 && Date.now() < _releaseAt) {
+    } else if (_roomReady && !(t.roomId && t.roomPassword)) {
+      h += '<button onclick="_showRoomViaRpc(\'' + t.id + '\', this)" style="width:100%;margin-top:8px;background:rgba(0,255,106,.12);border:1px solid rgba(0,255,106,.35);color:var(--green);padding:10px;border-radius:10px;font-weight:800;cursor:pointer"><i class="fas fa-key"></i> 🔑 Room Details dekho</button>';
+    } else if ((t.roomStatus === 'released' || t.roomStatus === 'saved') && _matchMsec > 0 && Date.now() < _releaseAt) {
       /* Room saved but not yet time to show — show countdown */
       var _minLeft = Math.ceil((_releaseAt - Date.now()) / 60000);
       h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px 12px;margin-top:8px;text-align:center"><i class="fas fa-lock" style="color:#ffd700"></i> <span style="font-size:12px;color:#ffd700;font-weight:700">Room ' + _minLeft + ' min mein milegi</span></div>';

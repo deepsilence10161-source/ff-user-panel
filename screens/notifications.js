@@ -106,9 +106,15 @@ function openNotif(key) {
   h += '<div style="font-size:14px;line-height:1.6;color:var(--txt)">' + (window.escHtml?window.escHtml(n.message||''):(n.message||'')) + '</div>';
   if (n.matchId && n.type === 'room_released') {
     var t = MT[n.matchId];
-    if (t && t.roomId && t.roomPassword && hasJ(n.matchId)) {
-      h += '<div class="room-box rb-green" style="margin-top:14px"><div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-bottom:4px">Room ID</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:20px;font-weight:900">' + t.roomId + '</span><button onclick="copyTxt(String(t.roomId||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
-      h += '<div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-top:8px;margin-bottom:4px">Password</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:20px;font-weight:900">' + t.roomPassword + '</span><button onclick="copyTxt(String(t.roomPassword||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
+    /* ✅ R3 (2026-09-20): creds MT me nahi hote (room-leak fix) —
+       released + joined par RPC-fetch button, warna cached creds box. */
+    if (t && t.roomStatus === 'released' && hasJ(n.matchId)) {
+      if (t.roomId && t.roomPassword) {
+        h += '<div class="room-box rb-green" style="margin-top:14px"><div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-bottom:4px">Room ID</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:20px;font-weight:900">' + t.roomId + '</span><button onclick="copyTxt(String(t.roomId||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
+        h += '<div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-top:8px;margin-bottom:4px">Password</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:20px;font-weight:900">' + t.roomPassword + '</span><button onclick="copyTxt(String(t.roomPassword||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
+      } else {
+        h += '<button onclick="_showRoomViaRpc(\'' + n.matchId + '\', this)" style="width:100%;margin-top:14px;background:rgba(0,255,106,.12);border:1px solid rgba(0,255,106,.35);color:var(--green);padding:10px;border-radius:10px;font-weight:800;cursor:pointer"><i class="fas fa-key"></i> 🔑 Room Details dekho</button>';
+      }
     }
   }
   openModal('Notification', h);

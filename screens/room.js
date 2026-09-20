@@ -39,9 +39,34 @@ function checkRefunds() {
 }
 
 /* ====== ROOM POPUP ====== */
+/* ✅ R3 (2026-09-20): global helper — kahin se bhi (match-detail screen,
+   notifications, bell) room-creds RPC se laao. MT me creds hote hi nahi. */
+window._showRoomViaRpc = function(mid, btn) {
+  if (!window.MT || !MT[mid]) { toast('Match load ho raha hai, thoda ruko...', 'warn'); return; }
+  if (!window._supa) return;
+  if (btn) { btn.disabled = true; }
+  window._supa.rpc('get_room_credentials', { p_match_id: mid })
+    .then(function(res) {
+      var d = res && res.data;
+      if (d && d.success) {
+        MT[mid].roomId = d.room_id; MT[mid].roomPassword = d.room_password;
+        MT[mid].roomStatus = 'released'; MT[mid].roomReleasedAt = Date.now();
+        showRP(MT[mid], true);
+      } else if (d && d.error === 'not_released_yet') {
+        toast('🔑 Room abhi release nahi hua — match start se ~5 min pehle milega', 'warn');
+      } else if (d && d.error === 'not_joined') {
+        toast('Pehle is match mein join karo', 'err');
+      } else {
+        toast('Room details abhi available nahi', 'warn');
+      }
+      if (btn) { btn.disabled = false; }
+    }).catch(function() { toast('Network error — dobara try karo', 'err'); if (btn) btn.disabled = false; });
+};
+
 /* Room ID sirf 15 min pehle se dikhao, join karte hi nahi */
 function showRP(t, forceShow) {
-  if (!t || !t.roomId || !t.roomPassword) return;
+  /* ✅ R3 fix: entry-guard ab sirf object check karta hai — creds RPC se aate hain (MT me nahi hote) */
+  if (!t) return;
   /* ✅ SECURITY FIX: Only show room to users who have joined this match */
   var mid = t.id || t.matchId || t.key || '';
   if (!forceShow && mid && window.U) {
