@@ -90,10 +90,11 @@ window.showSupportWithBadge = function() {
   h += '<div style="display:flex;flex-direction:column;gap:8px">';
   [
     { icon:'⚠️', label:'Match Dispute', fn:'showResultDispute' },
-    { icon:'💬', label:'Support Chat', fn:'startChat' },
+    { icon:'💬', label:'Support Chat', call:"closeModal&&closeModal();navTo&&navTo('chat')" },
     { icon:'📝', label:'Feedback', fn:'showFeedback' },
   ].forEach(function(btn) {
-    h += '<button onclick="if(window.' + btn.fn + ')' + btn.fn + '()" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer;text-align:left">' + btn.icon + ' ' + btn.label + '</button>';
+    var _oc = btn.call ? btn.call : ('if(window.' + btn.fn + ')' + btn.fn + '()');
+    h += '<button onclick="' + _oc + '" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer;text-align:left">' + btn.icon + ' ' + btn.label + '</button>';
   });
   h += '</div>';
 
