@@ -232,7 +232,8 @@ window.showBattlePass=function(){
       h+='<div style="font-size:9px;color:#555;margin-bottom:3px;font-weight:700">FREE</div>';
       var fLabel=td.free.label||(td.free.type==='gd'?GDI(11)+' '+td.free.v:'');
       h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+fLabel+'</div>';
-      if(hasPrem&&unlocked&&!fc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'free\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radius:6px;border:none;background:rgba(0,255,100,.15);color:#00ff64;cursor:pointer;font-weight:700">CLAIM</button>';
+      /* ✅ R3 fix (2026-09-20d): free-track claim sirf unlocked maangta hai — hasPrem sirf prem-track ke liye (RPC bhi free-track par premium nahi maangta) */
+      if(unlocked&&!fc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'free\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radius:6px;border:none;background:rgba(0,255,100,.15);color:#00ff64;cursor:pointer;font-weight:700">CLAIM</button>';
       else if(hasPrem&&fc)       h+='<div style="margin-top:4px;font-size:9px;color:#00ff64;font-weight:700">✓ Claimed</div>';
       else if(!hasPrem)          h+='<div style="margin-top:4px;font-size:9px;color:#444">🔒 Season Pass chahiye</div>';
       h+='</div>';
