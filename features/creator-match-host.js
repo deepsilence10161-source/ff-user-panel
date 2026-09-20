@@ -173,7 +173,7 @@ window.showMyCreatorMatches = function() {
   if (window.openModal) openModal('📋 Mere Matches', h);
 
   window._supa.from('matches')
-    .select('id,title,status,entry_fee,entry_type,filled_slots,max_slots,scheduled_at,room_id')
+    .select('id,title,status,entry_fee,entry_type,filled_slots,max_slots,scheduled_at,room_status') /* ✅ R3-Phase2: room creds ab match_rooms me — sirf non-secret room_status */
     .eq('creator_uid', uid())
     .order('created_at', { ascending: false })
     .limit(20)
@@ -193,7 +193,7 @@ window.showMyCreatorMatches = function() {
         bh += '<div style="font-size:11px;color:#888">' + (m.entry_fee||0) + ' ' + (m.entry_type==='coins'?'🪙':'💎') + ' · ' + (m.filled_slots||0) + '/' + (m.max_slots||0) + ' players</div></div>';
         bh += '<span style="font-size:10px;color:' + statusColor + ';font-weight:700">' + statusLabel + '</span>';
         bh += '</div>';
-        if (m.status === 'upcoming' && !m.room_id) {
+        if (m.status === 'upcoming' && (m.room_status || 'pending') === 'pending') { /* ✅ R3-Phase2: set_room room_status='saved' karta hai */
           bh += '<button onclick="showCreatorRoomEntry(\'' + m.id + '\')" style="width:100%;padding:9px;border-radius:10px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">🔑 Room ID Enter Karo</button>';
         } else if (m.status === 'live') {
           bh += '<button onclick="showCreatorResultForm(\'' + m.id + '\')" style="width:100%;padding:9px;border-radius:10px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.2);color:#00ff9c;font-size:12px;font-weight:700;cursor:pointer">🏆 Result Submit Karo</button>';

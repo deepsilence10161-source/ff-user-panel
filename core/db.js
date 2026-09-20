@@ -566,7 +566,7 @@
         var uid = _uid();
         var { data, error } = await window._supa
           .from('join_requests')
-          .select('*, match:matches(title,scheduled_at,mode,status,room_id,room_password)')
+          .select('*, match:matches(title,scheduled_at,mode,status)') /* ✅ R3-Phase2: room creds matches me nahi (match_rooms) */
           .eq('user_id', uid)
           .order('created_at', { ascending: false });
         if (error) return _err('joinRequests.getMine', error);
