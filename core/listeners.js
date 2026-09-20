@@ -372,7 +372,7 @@ function _toMT(m) {
       if(et==='free'||et==='freeentry')         return 'free';
       if(et==='paid'||et==='sky'||et==='skydia'||et==='skydiamond'||et==='sd') return 'paid';
       return 'free';
-    })(m.entry_type), firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, roomId: m.room_id||'', roomPassword: m.room_password||'', roomStatus: m.room_id?'released':'pending', bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, _src:'supabase' };
+    })(m.entry_type), firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, _src:'supabase' };
 }
 
 /* ================================================================ L4: JOIN REQUESTS */
@@ -710,7 +710,7 @@ function detectChanges() {
   for (var k in MT) newKeys[k] = true;
   for (var k in newKeys) {
     var t = MT[k]; if (!t) continue;
-    if (t.roomId && t.roomPassword && !prevMTKeys[k+'_room']) {
+    if (t.roomStatus === 'released' && !prevMTKeys[k+'_room']) {
       prevMTKeys[k+'_room'] = true;
       if (hasJ(k)) {
         pushLocalNotif('room_released', '🔑 Room Details Released!', 'Room ID & Password ready for "' + (t.name||'Match') + '". Tap to view.', t.name, k);

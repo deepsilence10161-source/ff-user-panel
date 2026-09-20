@@ -65,15 +65,36 @@ function showRP(t, forceShow) {
           .maybeSingle()
           .then(function(r) {
             if (r.data) {
-              /* Verified — show room */
-              _showRPWithTimeCheck(t, forceShow, mid);
+              /* Verified — ab creds RPC se fetch karke show */
+              _fetchRoomAndShow(t, mid, forceShow);
             }
           }).catch(function() {});
       }
       return; /* Do not reveal room until verified */
     }
   }
-  _showRPWithTimeCheck(t, forceShow, mid);
+  /* ✅ SECURITY FIX (2026-09-20 R3): creds ab get_room_credentials() RPC se
+     aate hain — server khud verify karta hai ki (a) user joined hai aur
+     (b) room release-window khul chuka hai. MT ab room creds rakhta hi nahi. */
+  _fetchRoomAndShow(t, mid, forceShow);
+}
+
+function _fetchRoomAndShow(t, mid, forceShow) {
+  if (!window._supa) return;
+  window._supa.rpc('get_room_credentials', { p_match_id: mid })
+    .then(function(res) {
+      var d = res && res.data;
+      if (d && d.success) {
+        t.roomId = d.room_id; t.roomPassword = d.room_password; /* memory-only */
+        _showRPWithTimeCheck(t, forceShow, mid);
+      } else if (d && d.error === 'not_released_yet') {
+        toast('🔑 Room abhi release nahi hua — match start se ~5 min pehle khulega', 'warn');
+      } else if (d && d.error === 'not_joined') {
+        toast('Pehle is match mein join karo', 'err');
+      } else if (d && d.error === 'room_not_set') {
+        toast('Host ne abhi room details nahi daale', 'warn');
+      }
+    }).catch(function(){});
 }
 
 function _showRPWithTimeCheck(t, forceShow, mid) {
