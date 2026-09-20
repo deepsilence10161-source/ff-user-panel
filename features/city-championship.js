@@ -105,19 +105,12 @@ window.updateCityChampScore=function(wins,kills){
   var mon=_month(); var score=(wins?10:0)+(kills||0);
   var myIgn=window.UD.ign||window.UD.displayName||'Player';
   // Upsert city total
+  /* Round-10 (2026-09-20n): direct upsert fallback REMOVED — server ne
+     city_championship ke any-auth INSERT/UPDATE policies drop kar di hain
+     (koi bhi KISI BHI city ka score tamper kar sakta tha). increment_city_score
+     RPC hi ek authorized path hai (self-only + per-call caps). */
   _s().rpc('increment_city_score',{p_city:city,p_month:mon,p_score:score,p_wins:wins?1:0,p_kills:kills||0,p_uid:_uid()})
-  .catch(function(){
-    // Fallback: direct upsert
-    _s().from('city_championship').select('id,score,wins,kills,player_count').eq('city',city).eq('month',mon).single()
-    .then(function(r){
-      var d=r.data;
-      if(d){
-        _s().from('city_championship').update({score:(d.score||0)+score,wins:(d.wins||0)+(wins?1:0),kills:(d.kills||0)+(kills||0)}).eq('id',d.id).then(null, function(){});
-      } else {
-        _s().from('city_championship').insert({city:city,month:mon,score:score,wins:wins?1:0,kills:kills||0,player_count:1}).then(null, function(){});
-      }
-    }).catch(function(){});
-  });
+  .catch(function(){});
 };
 
 // Pill injection
