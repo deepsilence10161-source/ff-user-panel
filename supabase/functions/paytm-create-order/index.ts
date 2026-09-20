@@ -1,7 +1,28 @@
 /* ================================================================
-   paytm-create-order — STANDALONE (no _shared import needed)
-   Dashboard se directly paste karo — koi aur file upload karne
-   ki zaroorat nahi hai.
+   paytm-create-order — v3 (2026-09-20j ROUND-7 FIX)
+   ----------------------------------------------------------------
+   ★ FIX (Round-7 live-audit): PayTM deposits were 100% DEAD.
+     Old flow sent the Firebase ID token as `Authorization: Bearer`
+     → Supabase Edge gateway (verify_jwt) rejects third-party
+     asymmetric JWTs with 401 UNAUTHORIZED_ASYMMETRIC_JWT before
+     the function ever runs. Proven live on 2026-09-20.
+     Even past the gateway, auth.getUser() (GoTrue) can never
+     validate a Firebase token (this project has ZERO native
+     Supabase auth users — auth.users count = 0).
+
+   NEW AUTH (same battle-tested pattern as imgbb-upload v2):
+     • Gateway verify_jwt disabled for this function
+       (see supabase/config.toml + dashboard setting).
+     • Function does its own fail-closed identity check:
+       body fb_token → legacy X-Firebase-Token header →
+       Authorization bearer (any real user JWT). Keys with
+       `role` but no `sub` (public anon key) are skipped.
+     • Firebase RS256 signature verified against Google's
+       public JWKS + iss/aud/exp/sub checks. No crypto trust
+       in anything the client says.
+
+   Everything else (amount caps, sd_request creation, PayTM
+   initiateTransaction, checksum) is unchanged.
 ================================================================ */
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -49,32 +70,34 @@ function getPaytmConfig() {
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-firebase-token",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 const MIN_INR = 10, MAX_INR = 50000;
+const FIREBASE_PROJECT_ID = Deno.env.get("FIREBASE_PROJECT_ID") ?? "fft-app-1e283";
+const FIREBASE_JWKS_URL = "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
+
+type Identity = { uid: string; provider: "firebase" | "supabase" };
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: CORS });
   try {
     if (req.method !== "POST") return json({ error: "POST use karo" }, 405);
 
-    const jwt = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
-    if (!jwt) return json({ error: "Login required" }, 401);
-
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const supabaseAsUser = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY")!, {
-      global: { headers: { Authorization: `Bearer ${jwt}` } },
-    });
-    const { data: userData, error: userErr } = await supabaseAsUser.auth.getUser();
-    if (userErr || !userData?.user) return json({ error: "Invalid session, dobara login karo" }, 401);
-    const uid = userData.user.id;
-
-    const body = await req.json().catch(() => ({}));
+    /* Body parse FIRST — fb_token ab body me aata hai (CORS-safe). */
+    const body = await req.json().catch(() => ({})) as
+      { amount?: unknown; fb_token?: unknown } | null;
     const amount = Number(body?.amount);
+
+    /* ── Identity: fail-closed, crypto-verified (imgbb-upload pattern) ── */
+    const identity = await identifyUser(req, body);
+    if (!identity) return json({ error: "Login required — dobara login karo" }, 401);
+    const uid = identity.uid;
+
     if (!amount || isNaN(amount) || amount < MIN_INR || amount > MAX_INR)
       return json({ error: `Amount ₹${MIN_INR} se ₹${MAX_INR} ke beech hona chahiye` }, 400);
 
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const admin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const { data: row, error: insErr } = await admin
       .from("sd_requests")
@@ -114,6 +137,108 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Server error, dobara try karo" }, 500);
   }
 });
+
+/* ══════════════ IDENTITY (inlined from imgbb-upload v2) ══════════════
+   Order: body fb_token → legacy X-Firebase-Token header → Authorization
+   bearer. Public anon/service keys (role bina sub) skip hoti hain. */
+async function identifyUser(
+  req: Request,
+  body: { fb_token?: unknown } | null,
+): Promise<Identity | null> {
+  const fromBody = typeof body?.fb_token === "string" && body.fb_token.length > 20 ? [body.fb_token as string] : [];
+  const legacyHeader = (req.headers.get("X-Firebase-Token") || "").trim();
+  const authHeader = bearer(req.headers.get("Authorization"));
+
+  const seen = new Set<string>();
+  const candidates: string[] = [];
+  for (const t of [...fromBody, legacyHeader, authHeader]) {
+    if (typeof t === "string" && t.length > 20 && !seen.has(t)) { seen.add(t); candidates.push(t); }
+  }
+
+  for (const token of candidates) {
+    const claims = peekClaims(token);
+    /* Public anon/service key ko identity MAT maano — usme sub nahi hota. */
+    if (claims && claims.role && !claims.sub) continue;
+    const fb = await verifyFirebaseIdToken(token);
+    if (fb) return fb;
+  }
+  return null;
+}
+
+function bearer(h: string | null): string {
+  return (h || "").replace(/^Bearer\s+/i, "").trim();
+}
+
+function peekClaims(jwt: string): Record<string, unknown> | null {
+  try {
+    const parts = jwt.split(".");
+    if (parts.length !== 3) return null;
+    return JSON.parse(new TextDecoder().decode(b64urlToBytes(parts[1])));
+  } catch { return null; }
+}
+
+let _jwks: Record<string, JsonWebKey> | null = null;
+let _jwksExpiry = 0;
+
+async function _getFirebaseKeys(forceRefresh = false): Promise<Record<string, JsonWebKey>> {
+  const now = Date.now();
+  if (!forceRefresh && _jwks && now < _jwksExpiry) return _jwks;
+  const r = await fetch(FIREBASE_JWKS_URL);
+  const j = await r.json();
+  const map: Record<string, JsonWebKey> = {};
+  for (const k of (j?.keys ?? [])) if (k?.kid) map[k.kid] = k as JsonWebKey;
+  if (!Object.keys(map).length) throw new Error("Empty Firebase JWKS");
+  _jwks = map;
+  _jwksExpiry = now + 6 * 60 * 60 * 1000;
+  return _jwks;
+}
+
+async function verifyFirebaseIdToken(token: string): Promise<Identity | null> {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+
+    const header = JSON.parse(new TextDecoder().decode(b64urlToBytes(parts[0])));
+    if (header?.alg !== "RS256" || !header?.kid) return null;
+
+    const payload = JSON.parse(new TextDecoder().decode(b64urlToBytes(parts[1])));
+    const now = Math.floor(Date.now() / 1000);
+    if (typeof payload?.exp !== "number" || payload.exp < now) return null;
+    if (payload?.aud !== FIREBASE_PROJECT_ID) return null;
+    if (payload?.iss !== `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`) return null;
+    if (!payload?.sub || typeof payload.sub !== "string") return null;
+
+    let keys = await _getFirebaseKeys();
+    let jwk = keys[header.kid];
+    if (!jwk) { keys = await _getFirebaseKeys(true); jwk = keys[header.kid]; }
+    if (!jwk) return null;
+
+    const key = await crypto.subtle.importKey(
+      "jwk", jwk, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, false, ["verify"],
+    );
+    const ok = await crypto.subtle.verify(
+      "RSASSA-PKCS1-v1_5",
+      key,
+      b64urlToBytes(parts[2]),
+      new TextEncoder().encode(`${parts[0]}.${parts[1]}`),
+    );
+    if (!ok) return null;
+
+    return { uid: payload.sub, provider: "firebase" };
+  } catch (e) {
+    console.error("verifyFirebaseIdToken failed:", e);
+    return null;
+  }
+}
+
+function b64urlToBytes(s: string): Uint8Array {
+  let b = s.replace(/-/g, "+").replace(/_/g, "/");
+  while (b.length % 4) b += "=";
+  const bin = atob(b);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
 
 function json(obj: unknown, status = 200) {
   return new Response(JSON.stringify(obj), { status, headers: { ...CORS, "Content-Type": "application/json" } });
