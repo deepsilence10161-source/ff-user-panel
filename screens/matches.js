@@ -318,44 +318,25 @@ function confirmGiftTicket(matchId) {
   _findUserByFF(ffUid, function(friendUid, friendData) {
     if (!friendUid || !friendData) { toast('Player not found with this FF UID', 'err'); return; }
     if (friendUid === U.uid) { toast('Apne aap ko gift nahi kar sakte 😄', 'err'); return; }
-    // Deduct from sender
-    if (isCoin) {
-      /* Bug Fix: Use atomic decrement_balance RPC instead of non-atomic transaction() */
-      if (window._supa) {
-        window._supa.rpc('decrement_balance', { p_uid: U.uid, p_col: 'coins', p_amount: fee }).then(null, function(){});
-      } /* Supabase decrement_balance handles it */
-    }
-    else deductMoney(fee, 'Gift to ' + (friendData.ign||ffUid) + ' - ' + (t.name||'Match'));
-    /* ✅ Supabase gift_tickets table */
-    if (window._supa) {
-      window._supa.from('gift_tickets').insert({
-        from_uid:   U.uid,
-        from_name:  UD.ign || UD.displayName || '',
-        to_uid:     friendUid,
-        to_ff_uid:  ffUid,
-        match_id:   matchId,
-        match_name: t.name || '',
-        fee:        fee,
-        entry_type: t.entryType || 'paid',
-        status:     'pending'
-      }).then(function(gr) {
-        /* Notify friend via Supabase notifications */
-        window._supa.from('notifications').insert({
-          user_id: friendUid,
-          type:    'gift_ticket',
-          title:   '🎁 Match Ticket Gift!',
-          body:    (UD.ign||'A friend') + ' ne tumhe "' + (t.name||'Match') + '" ka entry ticket gift kiya!'
-        }).catch(function(){});
+    /* ✅ Round-8 FIX (2026-09-20k): purana flow deduct aur ticket-insert ALAG
+       calls karta tha — insert fail hone par paisa katta reh jata, aur koi bhi
+       direct PostgREST insert se BINA pay ke ticket bana sakta tha (policy sirf
+       from_uid check karti thi). Ab ek hi server-side RPC: atomic debit +
+       ticket + ledger + notif, fee/insufficient/self-gift server verify karta hai. */
+    window._supa.rpc('gift_match_entry', { p_match_id: matchId, p_to_uid: friendUid })
+      .then(function(gr) {
+        var d = gr && gr.data;
+        if ((gr && gr.error) || (d && d.ok === false)) {
+          toast((d && d.error) || 'Gift send failed — retry karo', 'err');
+          console.error('[Gift]', (gr && gr.error) || d);
+          return;
+        }
         closeModal();
         toast('🎁 Gift ticket sent successfully!', 'ok');
       }).catch(function(e) {
         toast('Gift send failed — retry karo', 'err');
         console.error('[Gift]', e);
       });
-    } else {
-      closeModal();
-      toast('🎁 Gift ticket sent!', 'ok');
-    }
   });
 }
 
