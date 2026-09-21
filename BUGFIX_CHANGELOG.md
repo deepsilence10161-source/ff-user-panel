@@ -3,6 +3,56 @@
 
 ---
 
+## 🔴 2026-09-22e — R28e: PERMISSION_DENIED pageerror (anti-cheat headless alert raw-Firebase me)
+**Files:** `js/anti-cheat.js`
+
+### Bug (live-proven, join-flow console + pageerror)
+Join सफल होने के बाद भी हर बार console में `@firebase/database: set at
+/adminAlerts/… failed: permission_denied` और एक uncaught `pageerror
+PERMISSION_DENIED: Permission denied` आता था। Root: `adminAlerts` node की
+Firebase RTDB rules में कोई entry ही नहीं है (admin repo
+`firebase-rules.json` में grep → खाली), और `anti-cheat.js` का headless-
+detection alert raw `window._fbDb` (bridge को bypass करके) से लिखता था —
+जबकि bridge पहले से `adminAlerts → admin_activity_log` (Supabase) route
+जानता है। Playwright/headless env में `_isHeadlessBrowser=true` होता है,
+इसलिए यह write हर join-test में trigger होकर failure देता था (compat-SDK
+bina-completion-callback write fail पर visible error throw करता है)।
+
+### Fix
+- headless-alert अब वही Supabase `admin_activity_log` insert करता है जो
+  bridge/Fix-v29 करते हैं (admin को alert मिलता ही रहता है, feature delete
+  नहीं हुआ)। `window._supa` न हो तो fallback raw-Firebase push (अब silent
+  completion-callback के साथ)।
+
+---
+
+## 🔴 2026-09-22d — R28d: Supabase `.insert({...}).catch()` (builder thenable hai) — 7 latent crashes
+**Files:** `screens/join.js` (3), `features/challenge.js` (2), `features/friends.js` (2), `features/mentor.js` (2), `js/security.js` (1)
+
+### Bug (live-proven console रूट)
+Join पर RPC तो 200 देता था, join_requests row भी बनती थी — फिर भी toast
+आता था "⚠️ Server setup incomplete — Admin ko SUPABASE_SQL_SETUP.sql run
+karna hai" (झूठा label)। असली console root था:
+`[Join] RPC error (no fallback): _s(...).from(...).insert(...).catch is not
+a function`। supabase-js v2 ka query-builder **thenable** hai — us pe
+`.then()` ke BINA direct `.catch()` call karna invalid hai (`TypeError:
+….catch is not a function`)। Ye error outer RPC-`.catch` me girta tha aur
+wahan se mislabeled "server setup incomplete" toast banata tha.
+
+### Fix
+- `screens/join.js` 3 jagah (₹/diamonds each-pays deduction, `_afterJoinSuccess`
+  diamond deduction): `.insert({...}).catch(fn)` → `.insert({...}).then(null, fn)`।
+- Pura-repo scanner se audit kiya (balanced-brace parser se har `.insert({...})`
+  ke baad immediate-`.catch` dhoondha) — **7 valid spots** mile wahi pattern:
+  `challenge.js` 2 (notification insert), `friends.js` 2 (notification +
+  user_activities), `mentor.js` 2 (notification), `security.js` 1
+  (admin_activity_log anomaly). Sab `.then(null, fn)` me fixed (semantics
+  identical, ab crash nahi hota).
+- Verify: scanner re-run → 0 bache, `node --check` sab syntax-clean, aur
+  live join-flow me ab koi error-toast/pageerror-via-this-root nahi aata।
+
+---
+
 ## 🔴 2026-09-22c — R28c: Join-flow "uid is not defined" crash (join सफल होकर भी error दिखता था)
 **Files:** `screens/join.js`, `index.html`, `sw.js`
 

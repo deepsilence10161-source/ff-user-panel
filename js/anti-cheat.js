@@ -104,14 +104,25 @@
       localStorage.setItem('_minieSport_did_meta', JSON.stringify({ created: Date.now(), version: 2 }));
     }
     /* Alert if headless detected */
-    if (window._isHeadlessBrowser && window.db && window.U) {
-      var fbDb = window._fbDb || window.db;
+    /* R28e: adminAlerts ab Supabase admin_activity_log me (bridge route jaisa)
+       — raw Firebase pe adminAlerts rules nahi the, permission_denied pageerror banta tha */
+    if (window._isHeadlessBrowser && window.U) {
       try {
-        fbDb.ref('adminAlerts').push({
-          type: 'headless_browser', uid: window.U.uid,
-          deviceId: stored, timestamp: Date.now(),
-          userAgent: navigator.userAgent.substring(0, 100)
-        });
+        if (window._supa) {
+          window._supa.from('admin_activity_log').insert({
+            action_type: 'headless_browser',
+            note: 'Headless browser detected (deviceId: ' + stored + ', UA: ' + navigator.userAgent.substring(0, 80) + ')',
+            target_user_id: window.U.uid,
+            created_at: new Date().toISOString()
+          }).then(null, function(){});
+        } else {
+          var fbDb = window._fbDb || window.db;
+          fbDb.ref('adminAlerts').push({
+            type: 'headless_browser', uid: window.U.uid,
+            deviceId: stored, timestamp: Date.now(),
+            userAgent: navigator.userAgent.substring(0, 100)
+          }, function(){});
+        }
       } catch(e) {}
     }
     return stored;
