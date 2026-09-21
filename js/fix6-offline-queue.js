@@ -182,6 +182,7 @@
                 entry_type:    'free',
                 status:        'joined',
                 user_ign:      p.userIgn || '',
+                ign_at_join:   p.userIgn || (window.UD && window.UD.ign) || '',
                 user_ff_uid:   p.userFFUID || ''
               }).then(null, function(e) { console.warn('[OQ] Supabase free join insert fail:', e && e.message); });
             }

@@ -4,6 +4,36 @@
 ---
 
 
+## 🔴 2026-09-22m — R28m: ign_at_join root-cause fix (3 join-paths) + filled_slots-drift code-proven report
+**Files:** `screens/join.js`, `js/fix6-offline-queue.js`
+
+### Bug (code-level, live DB proven)
+`join_requests.ign_at_join` HAR paid/free join me khali reh jata tha (live:
+6 rows — 5 coin + 1 free — sab ign_at_join '')। Root:
+1. **Paid path** (join.js on RPC `validate_and_join_match`): server
+   `ign_at_join = COALESCE(p_join_data->>'ign','')` padhta hai, par client
+   `_joinData` me `ign` key THI HI NAHI (sirf `userName`) → server ko khali
+   milta tha. Ab `ign: UD.ign` bheja jaata hai.
+2. **Free path** (join.js direct insert): sirf `user_ign` likhta tha,
+   `ign_at_join` nahi. Ab dono.
+3. **Offline-queue free join** (fix6-offline-queue.js): same — sirf
+   `user_ign`. Ab `ign_at_join` bhi.
+(Ad-path rank.js pehle se sahi tha — `ign_at_join` likhta hai.)
+
+### Known (report-only, code-proven — fix server/admin side चाहिए)
+- **filled_slots drift:** koi bhi join-remove/kick/delete ya status-flip
+  (refunded/cancelled/no_show) pe `matches.filled_slots` decrement NAHI
+  hota — pura codebase grep: sirf join-time +1 (RPC `validate_and_join_match`
+  + `increment_match_filled_slots`) aur no_show-cron (`releaseNoShows` client
+  bookkeeping + `internal_process_no_show_refunds` server) hi filled_slots
+  touch karta hai. Admin "Cancel & refund ALL" (admin-inline.js L2734) join
+  rows ko `refunded` karta hai par filled_slots wahi rehta hai → slots-drift.
+  Fix server-side (RPC/trigger: status-flip pe filled_slots decrement ya
+  recount) — user-panel se possible nahi (RPC service_role-bound)।
+
+---
+
+
 ## 🔴 2026-09-22k — R28k: Live screen-sweep — false-₹-claims hataye + Titles badge + notif dedup
 **Files:** `screens/profile.js`, `screens/notifications.js`, `js/profile-card.js`, `js/preview-mode.js`, `core/utils.js` (+cache-bump)
 

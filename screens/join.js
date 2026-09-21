@@ -373,7 +373,12 @@ async function _doJoinCore(id, t, tp) {
     var _supaCol = isCoin ? 'coins' : 'sky_diamonds';
     var _joinData = {
       requestId: jid, userName: UD.ign || '', userFFUID: UD.ffUid || '',
-      displayName: UD.displayName || '', userEmail: UD.email || '',
+      /* ✅ R28m FIX (2026-09-22): server RPC validate_and_join_match
+         ign_at_join = COALESCE(p_join_data->>'ign','') लिखता है — par ye
+         _joinData kabhi `ign` key bhejti hi nahi thi (sirf userName), isliye
+         har paid join me ign_at_join DB me KHALI reh jata tha (live proven:
+         5 coin rows sab ''). Ab wahi key server chahta hai wahi bhej rahe hain. */
+      ign: UD.ign || '', displayName: UD.displayName || '', userEmail: UD.email || '',
       matchName: t.name || '', mode: tp, slotsBooked: slotsNeeded,
       teamMembers: JSON.stringify(team || []), slotNumber: mySlot,
       allSlots: JSON.stringify(assignedSlots || []),
@@ -448,7 +453,12 @@ async function _doJoinCore(id, t, tp) {
         entry_type: 'free',
         status:     'joined',
         fee_type:   _feeType || 'solo',
-        user_ign:   (UD && UD.ign) || ''
+        user_ign:   (UD && UD.ign) || '',
+        /* ✅ R28m FIX: free/ad साथी paths की तरह ign_at_join भी भरो —
+           pehle sirf user_ign likh raha tha, isliye free joins me
+           ign_at_join khali reh jata tha (admin/creator UI + room
+           display isi ko padhta hai). */
+        ign_at_join: (UD && UD.ign) || ''
       }).then(function(r) {
         if (r.error) {
           /* unique_user_match constraint fires here if already joined */
