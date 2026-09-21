@@ -68,7 +68,7 @@ window._submitDuelChallenge=function(toUid,toIgn){
   _s().from('duel_challenges').insert({challenger_uid:_uid(),challenger_ign:myIgn,opponent_uid:toUid,challengee_ign:toIgn,mode:mode,taunt:taunt.trim(),status:'pending'})
   .then(function(r){
     var cid=(r.data&&r.data[0]&&r.data[0].id)||null;
-    _s().from('notifications').insert({user_id:toUid,type:'duel_challenge',title:'⚔️ Duel Challenge!',body:myIgn+' ne tumhe 1v1 challenge bheja! ('+mode.toUpperCase()+')'+(taunt?' — "'+taunt+'"':''),ref_id:cid?String(cid):null,is_read:false}).catch(function(){});
+    _s().from('notifications').insert({user_id:toUid,type:'duel_challenge',title:'⚔️ Duel Challenge!',body:myIgn+' ne tumhe 1v1 challenge bheja! ('+mode.toUpperCase()+')'+(taunt?' — "'+taunt+'"':''),ref_id:cid?String(cid):null,is_read:false}).then(null, function(){});
     if(window.logActivity)logActivity('join','⚔️ '+toIgn+' ko duel challenge bheja');
     if(window.toast)toast('⚔️ Challenge bhej diya '+toIgn+' ko!','ok');
     if(window.closeModal)closeModal();
@@ -132,7 +132,7 @@ window.acceptDuel=function(cid){
   .then(function(r){
     var d=r.data;if(!d)return;
     _s().from('duel_challenges').update({status:'accepted'}).eq('id',cid).then(function(){
-      _s().from('notifications').insert({user_id:d.challenger_uid,type:'duel_accepted',title:'⚔️ Challenge Accepted!',body:(_ud().ign||'Player')+' ne tumhara duel accept kar liya!',ref_id:String(cid),is_read:false}).catch(function(){});
+      _s().from('notifications').insert({user_id:d.challenger_uid,type:'duel_accepted',title:'⚔️ Challenge Accepted!',body:(_ud().ign||'Player')+' ne tumhara duel accept kar liya!',ref_id:String(cid),is_read:false}).then(null, function(){});
       if(window.toast)toast('✅ Challenge accept! Agle match mein milo.','ok');
       if(window.closeModal)closeModal();
     });

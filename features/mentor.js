@@ -157,7 +157,7 @@ window._submitMentorRequest=function(mentorUid,mentorIgn){
   var ud=_ud();var ri=_ri(ud.rank_points||0);
   _s().from('mentor_requests').insert({mentor_uid:mentorUid,mentor_ign:mentorIgn,student_uid:_uid(),student_ign:ud.ign||ud.displayName||'Player',student_rank_pts:ud.rank_points||0,student_rank_badge:ri.b,message:msg.trim(),status:'pending'})
   .then(function(){
-    _s().from('notifications').insert({user_id:mentorUid,type:'mentor_request',title:'📚 New Student Request!',body:(ud.ign||'Player')+' ('+ri.b+') ne mentor session request bheja!',ref_id:_uid(),is_read:false}).catch(function(){});
+    _s().from('notifications').insert({user_id:mentorUid,type:'mentor_request',title:'📚 New Student Request!',body:(ud.ign||'Player')+' ('+ri.b+') ne mentor session request bheja!',ref_id:_uid(),is_read:false}).then(null, function(){});
     if(window.toast)toast('✅ Request bhej di!','ok');if(window.closeModal)closeModal();
   }).catch(function(e){if(window.toast)toast('Error: '+(e.message||'Try again'),'err');});
 };
@@ -168,7 +168,7 @@ window.acceptMentorReq=function(reqId){
   .then(function(r){
     var req=r.data;if(!req)return;
     _s().from('mentor_requests').update({status:'accepted'}).eq('id',reqId).then(function(){
-      _s().from('notifications').insert({user_id:req.student_uid,type:'mentor_accepted',title:'🎉 Mentor Accepted!',body:(_ud().ign||'Mentor')+' ne tumhari request accept kar li!',ref_id:_uid(),is_read:false}).catch(function(){});
+      _s().from('notifications').insert({user_id:req.student_uid,type:'mentor_accepted',title:'🎉 Mentor Accepted!',body:(_ud().ign||'Mentor')+' ne tumhari request accept kar li!',ref_id:_uid(),is_read:false}).then(null, function(){});
       _s().from('mentor_profiles').select('total_students').eq('user_id',_uid()).single().then(function(m){
         if(m.data)_s().from('mentor_profiles').update({total_students:(m.data.total_students||0)+1}).eq('user_id',_uid()).catch(function(){});
       }).catch(function(){});

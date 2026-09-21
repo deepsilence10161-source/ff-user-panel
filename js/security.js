@@ -223,7 +223,7 @@ window.reportLoginAnomaly = function(uid, message, extraDetails) {
   };
 
   supa.from('admin_activity_log').insert(entry)
-    .catch(function(e) { console.warn('[security] anomaly log write failed:', e.message); });
+    .then(null, function(e) { console.warn('[security] anomaly log write failed:', e.message); });
 };
 
 

@@ -572,7 +572,7 @@ async function _doJoinCore(id, t, tp) {
               user_id: pUid, currency: 'coins', txn_type: 'debit',
               amount: pEntryFee, reason: 'match_entry',
               note: 'Match Entry: ' + (t.name||'Match') + ' (Each pays own)'
-            }).catch(function(){});
+            }).then(null, function(){}); /* R28d: .catch→.then(null,) — builder is thenable */
           }
         } else {
           /* Sky diamonds deduction via Supabase RPC only */
@@ -582,7 +582,7 @@ async function _doJoinCore(id, t, tp) {
               user_id: pUid, currency: 'sky_diamonds', txn_type: 'debit',
               amount: pEntryFee, reason: 'match_entry',
               note: 'Match Entry: ' + (t.name||'Match') + ' (Each pays own)'
-            }).catch(function(){});
+            }).then(null, function(){}); /* R28d: .catch→.then(null,) */
             /* Creator commission release (2026-07) — see premium-creator.js */
             if (pEntryFee > 0 && window.releaseCreatorCommissionIfPending) window.releaseCreatorCommissionIfPending(pUid);
           }
@@ -695,7 +695,7 @@ function deductMoney(amt, reason) {
     window._supa.from('wallet_transactions').insert({
       user_id: U.uid, currency: 'sky_diamonds', txn_type: 'debit',
       amount: amt, reason: 'match_entry', note: reason || 'Entry Fee'
-    }).catch(function(){});
+    }).then(null, function(){}); /* R28d: .catch→.then(null,) */
   }
   // Record in wallet transaction history
   db.ref('users/' + U.uid + '/transactions').push({
