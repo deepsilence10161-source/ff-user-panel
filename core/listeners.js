@@ -621,6 +621,15 @@ function _bootAppSettings() {
         .then(function(r) {
           if (!r.data||!r.data.value) return;
           var cfg = r.data.value;
+          /* ✅ R26 FIX (2026-09-21): ye handler sirf ticker/banner/PAY
+             set karta tha — poora CFG (paytmEnabled, sdPackages, premium,
+             battlePassPrice, season, cosmetics…) NAHI. Isliye admin ka
+             koi bhi settings toggle (jaise Paytm Instant Checkout) user
+             ko realtime me nahi milta tha — sirf 60s poll ya full reload
+             par. Ab wahi complete _applyCfg chalta hai jo boot par bhi
+             use hota hai (same single source of truth); pehle ke
+             ticker/banner/PAY assignments neeche vaise-hi rakhe hain. */
+          if (window._applyCfg) window._applyCfg(cfg);
           if (cfg.ticker) { var tt=$('tickerTxt'); if (tt) tt.textContent = cfg.ticker; }
           if (cfg.banner) { var el=$('dynamicBanner'); if (el) { el.style.display='block'; el.textContent=typeof cfg.banner==='string'?cfg.banner:(cfg.banner.text||''); el.style.background=typeof cfg.banner==='object'&&cfg.banner.color?cfg.banner.color:'rgba(0,255,156,.1)'; el.style.color=typeof cfg.banner==='object'&&cfg.banner.textColor?cfg.banner.textColor:'var(--green)'; } }
           if (cfg.payment) PAY = cfg.payment;
