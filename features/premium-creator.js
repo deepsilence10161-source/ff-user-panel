@@ -3,7 +3,7 @@
    Mini eSports User Panel v12
    
    1. Streak Milestones (Day 7 / 30 / 100)
-   2. Premium Enforcement (ad-free, early access, monthly bonus)
+   2. Premium Enforcement (ad-free, monthly bonus, premium badge)
    3. Creator Dashboard (Blue Diamond commission)
    4. Achievements v3 (City King, Unstoppable, Veteran etc.)
    ================================================================ */
@@ -178,7 +178,7 @@ window.renderPremiumCard = function() {
       h += '</div>';
     });
     h += '</div>';
-    h += '<div style="font-size:11px;color:var(--txt2);line-height:1.7">✅ Ad-free results &nbsp;✅ Early match access<br>✅ Monthly bonus coins &nbsp;✅ Premium badge</div>';
+    h += '<div style="font-size:11px;color:var(--txt2);line-height:1.7">✅ Ad-free results &nbsp;✅ Monthly bonus coins<br>✅ Premium badge &nbsp;✅ Photo/Banner change</div>';
     h += '</div>';
     return h;
   }
@@ -193,7 +193,7 @@ window.renderPremiumCard = function() {
   h += '<div style="font-size:10px;color:var(--txt2)">Expires: ' + expDate + '</div>';
   h += '</div>';
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
-  [['🚫 Ads', 'Result se pehle ad nahi'], ['⚡ Early Access', '10 min pehle matches'], ['+' + bonusMap[tier] + '🪙', 'Monthly bonus'], ['💎 Badge', nameMap[tier] + ' profile badge']].forEach(function(f) {
+  [['🚫 Ads', 'Result se pehle ad nahi'], ['🖼️ Photo/Banner', 'Profile photo + banner change'], ['+' + bonusMap[tier] + '🪙', 'Monthly bonus'], ['💎 Badge', nameMap[tier] + ' profile badge']].forEach(function(f) {
     h += '<div style="background:rgba(0,0,0,.2);border-radius:10px;padding:8px;font-size:11px"><div style="font-weight:800;color:' + col + '">' + f[0] + '</div><div style="color:var(--txt2);margin-top:2px">' + f[1] + '</div></div>';
   });
   h += '</div></div>';

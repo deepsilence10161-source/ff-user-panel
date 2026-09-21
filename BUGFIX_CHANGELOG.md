@@ -4,6 +4,40 @@
 ---
 
 
+## 🔴 2026-09-22n — R28n: Premium sales-copy false claims hatao (Early-Access + Priority-Support) + sw.js ASSET_VER re-sync
+**Files:** `features/premium.js`, `features/premium-creator.js`, `sw.js`
+
+### 1. Premium बिक्री copy में false claims (सच-check + redesignation)
+Standing rule के मुताबिक — "जो बिक्री-कॉपी का झूठा दावा है उसे हटाओ या सचमुच
+implement"। Code-level से cross-check करने पर:
+- **No Ads** ✅ (ads.js `_isNoAds()` tier-gated) — असली, लागू रहे
+- **Premium Badge** ✅ (`applyPremiumPerks` + profile) — असली
+- **Photo/Banner change** ✅ (profile.js `_premActive` guard L296/L319) — असली
+- **Creator Program** ✅ (premium-creator + `creator_create_match` RPC) — असली
+- **Live Stream Slot** ✅ (premium-creator L452 gold-gate) — असली
+- **Custom Profile Theme (Diamond glow)** ✅ (`_premT3Style`) — असली
+- **Coins bonus/month** ✅ (`claim_premium_monthly_bonus`) — असली
+
+पर दो दावे झूठे थे (कोई server/client wiring नहीं):
+- **"Early Match Access — room 10 min pehle"** — `get_room_credentials` RPC
+  (SCHEMA L9071-9072) release rule = `scheduled_at - room_release_minutes`, सबके
+  लिए एक जैसा; premium-tier skip कहीं नहीं। Tier-ki skips-queue note (L2250)
+  सिर्फ matchmaking priority का होता, room release का नहीं। → हटाया
+- **"Priority Customer Support — ticket sabse pehle"** — कोई priority-queue
+  नहीं; support `support/{uid}` पर सब बराबर। → हटाया
+
+Premium-creator upsell card में भी "Early match access" दो जगह था → असली
+implemented perk "Photo/Banner change" से बदला।
+
+### 2. sw.js ASSET_VER re-sync (20260921g → 20260922n)
+`ASSET_VER` R28j/k/m तीनों releases में stale रहा (LOCAL_FILES precache urls पुरानी
+`?v=` suffix पर इशारा करते थे — install-time precache चुपचाप useless)। अब index.html
+के `?v=`साथ sync। (रuntime असर सीमित — fetch-handler हमारे files network-first serve
+करता है; precache consistency ही main reason.)
+
+---
+
+
 ## 🔴 2026-09-22m — R28m: ign_at_join root-cause fix (3 join-paths) + filled_slots-drift code-proven report
 **Files:** `screens/join.js`, `js/fix6-offline-queue.js`
 

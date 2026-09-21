@@ -2,7 +2,7 @@
    MINI eSPORTS — PREMIUM SYSTEM v3.0
    Tier 1  ₹49/month  Silver  — No Ads + Silver Badge + Photo/Banner + 50 Coins/mo
    Tier 2  ₹99/month  Gold    — T1 + Creator Program + Live Stream + 150 Coins/mo
-   Tier 3  ₹199/month Diamond — T2 + Early Match Access (10 min pehle) + Custom Theme + 400 Coins/mo
+   Tier 3  ₹199/month Diamond — T2 + Custom Theme + 400 Coins/mo
    (Bonus currency coins {50,150,400}/mo — server-authoritative, see
     claim_premium_monthly_bonus. No real-money prize, no withdrawal.)
    POLICY: No real-money prize, no withdrawal from gaming wallet
@@ -34,7 +34,7 @@ function _buildTiers(){
     {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',coinBonus:_premBonuses[2]||150,best:true,
      perks:[{i:'✅',t:'Silver ke saare features shaamil'},{i:'🎮',t:'Creator Program Unlock — apne matches host karo, referral commission kamao'},{i:'📡',t:'Live Stream Slot — apna YouTube/Insta stream link app mein dikhao'},{i:'🪙',t:(_premBonuses[2]||150)+' Coins bonus har mahine'}]},
     {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',coinBonus:_premBonuses[3]||400,
-     perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'⏰',t:'Early Match Access — room 10 min pehle milega'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'⚡',t:'Priority Customer Support — ticket sabse pehle'},{i:'🪙',t:(_premBonuses[3]||400)+' Coins bonus har mahine'}]}
+     perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'🪙',t:(_premBonuses[3]||400)+' Coins bonus har mahine'}]}
   ];
 }
 var TIERS=_buildTiers(); // initial snapshot for any early reference; _renderPremModal() rebuilds fresh on each open
