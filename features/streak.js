@@ -73,6 +73,44 @@ function _showStreakModal(streak,badge){
   if(window.openModal)openModal('🔥 Win Streak',h);
 }
 
+// ── F06 Streak hook (R25 restore 2026-09-21) ──────────────────────────
+//   fixes-v7.js + features-user.js isko call karte hain:
+//     window.f06Streak.show(cycleStreak, reward)   — check-in ke baad
+//     window.f06Streak.check = window._checkStreakFixed
+//   (daily check-in streak tier 1..7 ka popup). Ye object pehle kabhi
+//   define nahi hua tha — callers guard `if(window.f06Streak)` se safe
+//   the, isliye koi error nahi aata tha, but streak celebration popup
+//   bhi kabhi nahi dikhta tha. Ab wapas joda gaya.
+window.f06Streak = {
+  show: function(tierIdx, reward) {
+    if (!window.U) return;
+    var tiers = window._adminDailyBonusRewards || [5, 7, 10, 12, 15, 20, 30];
+    var idx = Math.max(1, Math.min(7, Number(tierIdx) || 1));
+    var streak = Number((window.UD && window.UD.streak_days) || window.UD.loginStreak) || 0;
+    var h = '<div style="text-align:center;padding:14px 0 4px">';
+    h += '<div style="font-size:52px;margin-bottom:8px">🔥</div>';
+    h += '<div style="font-size:22px;font-weight:900">' + streak + '-Day Streak!</div>';
+    h += '<div style="font-size:13px;color:var(--txt2);margin-top:5px">Aaj ka check-in bonus: <b style="color:var(--green)">+🪙 ' + (Number(reward) || 0).toLocaleString('en-IN') + ' Coins</b></div>';
+    h += '</div>';
+    h += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:16px 0">';
+    for (var i = 0; i < 7; i++) {
+      var v = tiers[i] || 0;
+      var hit = (i + 1) === idx;
+      var past = (i + 1) < idx;
+      h += '<div style="text-align:center;padding:9px 2px;border-radius:10px;background:' + (hit ? 'rgba(255,140,0,.22)' : (past ? 'rgba(0,255,100,.12)' : 'rgba(255,255,255,.05)')) + ';border:1px solid ' + (hit ? 'rgba(255,140,0,.5)' : (past ? 'rgba(0,255,100,.3)' : 'rgba(255,255,255,.08)')) + '">';
+      h += '<div style="font-size:9px;color:var(--txt2)">D' + (i + 1) + '</div>';
+      h += '<div style="font-size:12px;font-weight:800;color:' + (hit ? '#ff8c00' : (past ? '#00ff64' : 'var(--txt2)')) + '">' + (past ? '✓' : '+' + v) + '</div>';
+      h += '</div>';
+    }
+    h += '</div>';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:11px;padding:10px;font-size:11px;color:var(--txt2);text-align:center">Roz check-in karo — D7 par +30 Coins aur har 30 din mein milestone bonus!</div>';
+    h += '<div style="text-align:center;margin-top:12px"><button onclick="if(window.closeModal)closeModal()" style="padding:11px 34px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffaa00,#ff8c00);color:#000;font-weight:900;font-size:13px;cursor:pointer">Chalo! 🔥</button></div>';
+    if (window.openModal) openModal('📅 Check-in Streak', h);
+  },
+  /* check: fixes-v7.js इसे window._checkStreakFixed से overwrite कर देता है */
+  check: function(){}
+};
+
 // Load on login
 var _si=0,_st=setInterval(function(){
   _si++;if(_si>80){clearInterval(_st);return;}

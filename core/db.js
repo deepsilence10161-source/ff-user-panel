@@ -1224,9 +1224,17 @@
          unwired (no UI calls claimTier anywhere yet), so fixing it
          properly now means it's safe by construction whenever it
          does get wired up. */
-      claimTier: async function(seasonId, tier) {
+      claimTier: async function(seasonId, tier, track) {
+        /* ✅ R25 FIX (2026-09-21): RPC arg-match — live fn signature is
+           claim_battle_pass_tier(p_season, p_tier, p_track, p_gd_reward
+           DEFAULT 0); this wrapper used to send p_season_key (wrong name,
+           and p_track missing) so call RPC rejected with
+           'function claim_battle_pass_tier(text, integer) does not exist'
+           whenever wired. p_gd_reward is intentionally NOT sent — the RPC
+           ignores it and reads the authoritative freeGd/premGd amount from
+           the battle_passes.tiers jsonb (never from the client). */
         var { data, error } = await window._supa.rpc('claim_battle_pass_tier', {
-          p_season_key: seasonId, p_tier: tier
+          p_season: seasonId, p_tier: tier, p_track: track || 'free'
         });
         if (error) return _err('battlePass.claimTier', error);
         if (data && data.success === false) return _err('battlePass.claimTier', { message: data.error });

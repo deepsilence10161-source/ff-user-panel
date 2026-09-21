@@ -696,4 +696,23 @@ if (document.readyState === 'loading') {
 window._growthInitFn   = initGrowth;
 window.initGrowth      = initGrowth; /* ✅ inside IIFE scope */
 
+/* ═══════════════════════════════════════════════════════════════
+   ✅ R25 (2026-09-21): sendClanWarChallenge — NAAM-normalization
+   ═══════════════════════════════════════════════════════════════
+   js/bugfixes-v29-final.js ka FIX M-9 guard "window.sendClanWarChallenge"
+   ke hone ka intzaar karta hai (expires_at auto-patch के liye), lekin
+   features/clan-war.js ne hamesha challenge ko window._sendWarChallenge
+   naam se bheja tha — sendClanWarChallenge kabhi define hi nahi hua.
+   Isliye M-9 ka clan_war_challenges.insert-expiry patch kabhi attach
+   nahi hota tha (expiry patch sirf isi naam par latakta hai). Yahan
+   sirf ALIAS diya ja raha hai — koi duplicate data-layer nahi banti,
+   sirf wahi core _sendWarChallenge call hota hai. */
+window.sendClanWarChallenge = function(fromId, toId, toName, fromName, btn) {
+  if (window._sendWarChallenge) {
+    return window._sendWarChallenge(fromId, toId, toName, fromName, btn);
+  }
+  /* fallback: agar core module kisi wajah se late ho (defensive only) */
+  if (window.toast) toast('Clan war service abhi ready nahi — retry karo', 'err');
+};
+
 })();

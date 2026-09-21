@@ -24,7 +24,7 @@
    LOCAL_FILES, not just this one, or the exact same "fix doesn't seem
    to apply" pattern will keep recurring for any JS change, not just
    WhatsApp. */
-var CACHE_VER    = 'me-v47-9-21c';
+var CACHE_VER    = 'me-v48-9-21d';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is
@@ -73,6 +73,7 @@ var LOCAL_FILES = [
   'features/city-championship.js','features/clean-badge.js','features/bracket.js',
   'features/squad-bank.js','features/mentor.js','features/clan-war.js',
   'features/india-map.js',
+  'features/f29-special-tournament.js', /* ✅ R25: F29 helper (vaapas joda) */
   'js/safe-loader.js','js/fixes-v7.js','js/fixes-v8.js','js/fixes-v9.js',
   'js/fix5-listener-manager.js','js/fix6-offline-queue.js','js/fix8-lazy-loading.js',
   'js/fix9-toast-queue.js','js/fix10-server-time-sync.js','js/fix12-push-notifications.js',
