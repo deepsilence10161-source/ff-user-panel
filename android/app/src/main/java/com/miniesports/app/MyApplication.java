@@ -1,7 +1,6 @@
 package com.miniesports.app;
 
 import android.app.Application;
-import com.onesignal.OneSignal;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
@@ -11,20 +10,7 @@ import java.util.Date;
 
 public class MyApplication extends Application {
 
-    private static final String ONESIGNAL_APP_ID =
-        "a65c45fc-7579-4851-8f1f-225721a81668";
 
-    /* R23 (2026-09-21): WebView-JS se native-SDK identity bridge.
-       AndroidBridge.osLogin(uid) isko call karta hai — isse OneSignal
-       is device ko usi user se bind karta hai (external_id = firebase-uid)
-       aur server ka push-send usi ko target karta hai. */
-    public static void osBindUser(String uid) {
-        try {
-            OneSignal.login(uid);
-        } catch (Throwable t) {
-            saveCrashStatic("OneSignal.login failed (non-fatal)", t);
-        }
-    }
 
     public static void osUnbindUser() {
         try {
@@ -63,11 +49,8 @@ public class MyApplication extends Application {
         // OneSignal init — try-catch zaroori hai. Agar SDK fail ho (version
         // mismatch, bad config, etc.) to bhi poora app crash nahi karega,
         // sirf push-notification feature skip ho jayega.
-        try {
-            OneSignal.initWithContext(this, ONESIGNAL_APP_ID);
-        } catch (Throwable t) {
-            saveCrash("OneSignal init failed (non-fatal, app continues)", t);
-        }
+        /* R23: सारे OneSignal calls केंद्रीकृत OneSignalManager wrapper से */
+        OneSignalManager.initialize(this);
     }
 
     private void saveCrash(String label, Throwable t) {
