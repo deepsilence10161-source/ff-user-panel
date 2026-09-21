@@ -171,7 +171,15 @@ function _applyUser(sp) {
   UD.coins = typeof sp.coins === 'number' ? sp.coins : (UD.coins || 0);
   UD.skyDiamonds = typeof sp.sky_diamonds === 'number' ? sp.sky_diamonds : (UD.skyDiamonds || 0);
   UD.greenDiamonds = typeof sp.green_diamonds === 'number' ? sp.green_diamonds : (UD.greenDiamonds || 0);
-  UD.realMoney = { deposited: UD.skyDiamonds, winnings: UD.greenDiamonds, bonus: 0 };
+  /* ⚠️ R28j (2026-09-22) POLICY FIX — realMoney ka `winnings` Green
+     Diamonds (non-withdrawable virtual prize) ko point karta tha, jisse
+     har jagah Green Diamonds ₹-rupee "winnings" ki tarah dikhne laga
+     (e.g. withdrawal modal, Transaction Summary, net-position). Green
+     Diamonds kabhi ₹ nahi — sirf UD.sponsored_winnings hi withdrawable
+     real prize hai. Ab UD.realMoney sirf deprecated Firebase-style
+     shape ke liye rakha hai: deposited=sky (khareeda), winnings=0
+     (koi real-money win balance user side se hota hi nahi), bonus=0. */
+  UD.realMoney = { deposited: UD.skyDiamonds, winnings: 0, bonus: 0 };
   UD.ign = sp.ign || UD.ign || '';
   UD.displayName = sp.ign || UD.displayName || '';
   UD.email = sp.email || UD.email || '';

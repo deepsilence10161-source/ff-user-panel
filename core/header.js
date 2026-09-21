@@ -2,7 +2,11 @@
 function updateHdr() {
   if (!UD) return;
   var coins = Number(UD.coins) || 0;
-  var money = getMoneyBal();
+  /* R28j (2026-09-22): hdrMoney chip 💎 = Sky Diamonds (sirf deposited/
+     purchased). Pehle getMoneyBal() = deposited+winnings+bonus sab जोड़
+     देता था, isliye Sky-Diamond chip par Green-Diamond + bonus मिलाकर
+     ग़लत नंबर दिखता था (Green Diamonds ka apna #hdrGD chip अलग है)। */
+  var money = Math.max(Number(UD.skyDiamonds) || 0, 0);
   var hc = $('hdrCoins'), hm = $('hdrMoney');
   if (hc) {
     var oldC = Number(hc.textContent) || 0;

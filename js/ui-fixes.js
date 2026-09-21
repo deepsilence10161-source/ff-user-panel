@@ -181,6 +181,10 @@ function removeCalculatorBtn() {
    "TDS OFF/ON" text aur "100 💎 = ₹100" line
 ══════════════════════════════════════════════ */
 function hideTDSTextInWallet() {
+  /* R28j (2026-09-22): 'Diamond -> ₹ Conversion' card ab diamond-system.js
+     inject nahi karta (halal model — diamonds ₹ nahi bante), isliye ye
+     observer ab natural no-op hai. Observed-card cleanup ab zaroorat nahi. */
+  if (typeof MutationObserver === 'undefined') return;
   var obs3 = new MutationObserver(function() {
     /* Diamond conversion card mein sirf withdrawal button aur amount dikhao */
     var card = document.getElementById('_diamondConvCard');
@@ -539,7 +543,9 @@ window.generateStatCard = function() {
   /* Header */
   h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">';
   h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">🎮</span><span style="font-size:13px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mini eSports</span></div>';
-  h += '<div style="font-size:9px;color:#333">student-4356.github.io</div>';
+  /* R28j (2026-09-22): stale host -> canonical base */
+  var _baseUrl = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+  h += '<div style="font-size:9px;color:#333">' + _baseUrl.replace(/^https?:\/\//,'') + '</div>';
   h += '</div>';
   /* Player name */
   h += '<div style="margin-bottom:14px">';

@@ -29,7 +29,10 @@ window.showTransactionSummary = function() {
     var wds = WH.filter(function(w){ return w.type==='withdraw' && (w.status==='approved'||w.status==='done'); });
     var totalDep = deps.reduce(function(s,w){ return s+(w.amount||0); }, 0);
     var totalWd = wds.reduce(function(s,w){ return s+(w.amount||0); }, 0);
-    var UD = window.UD; var win = (UD && UD.realMoney && UD.realMoney.winnings) || 0;
+    var UD = window.UD; var win = Math.max(Number(UD && UD.sponsored_winnings) || 0, 0);
+    /* R28j: pehle UD.realMoney.winnings (jise listeners.js greenDiamonds
+       alias karta tha) ₹ ki tarah dikhta tha — ab sponsored_winnings se
+       सच्चा withdrawable prize balance. */
     var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
     [
       { l: '💰 Total Deposited', v: '₹'+totalDep, c: 'var(--blue)' },
@@ -147,16 +150,26 @@ window.submitReport = function(matchId, reportedUid) {
 
 window.shareToInstagram = function(matchId) {
     var MT = window.MT || {}; var t = MT[matchId]; if (!t) return;
-    // Create share card as canvas then open Instagram
+    /* R28j (2026-09-22): stale host (student-4356.github.io) + false
+       cash-claim copy hatao. Prize ab entryType ke hisaab se dikhta hai
+       (coin → 🪙, else 💎 Sky Diamonds) — user ki policy: bina-cheez
+       ka ₹ claim nahi. URL canonical window.APP_URL / current origin. */
+    var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin';
+    var prize = Math.max(Number(t.firstPrize || t.prize1st || 0), 0);
+    var prizeTxt = isCoin ? ('🪙 ' + prize + ' Coins') : ('💎 ' + prize + ' Green Diamonds');
+    var feeNum = Number(t.entryFee || 0);
+    var feeTxt = feeNum > 0 ? (isCoin ? ('🪙 ' + feeNum) : ('💎 ' + feeNum)) : 'FREE';
+    var base = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+    var joinUrl = base + '?join=' + matchId + '&ref=' + (((window.UD && (window.UD.ffUid || window.UD.referralCode))) || '');
     var text = '🎮 ' + (t.name||'Match') + '\n' +
-      '🏆 1st Prize: ₹' + (t.firstPrize||0) + '\n' +
-      '💰 Entry: ₹' + (t.entryFee||0) + '\n' +
+      '🏆 1st Prize: ' + prizeTxt + '\n' +
+      '🎟 Entry: ' + feeTxt + '\n' +
       '⚔️ ' + (t.mode||'solo').toUpperCase() + ' Mode\n' +
-      '🔗 Join: student-4356.github.io\n' +
-      '#MiniESports #FreeFire #WinCash';
-    
+      '🔗 ' + base + '\n' +
+      '#MiniESports #FreeFire';
+
     if (navigator.share) {
-      navigator.share({ title: t.name||'Match', text: text, url: 'https://student-4356.github.io' })
+      navigator.share({ title: t.name||'Match', text: text, url: joinUrl })
         .catch(function(){});
     } else {
       // Copy and open Instagram
@@ -395,7 +408,7 @@ window.applyDynamicWallpaper = function() {
     ctx.fillText('₹' + (prize || 0), 250, 140);
     ctx.fillStyle = '#aaa'; ctx.font = '14px Arial'; ctx.fillText('Won', 250, 160);
     ctx.fillStyle = '#555'; ctx.font = '12px Arial';
-    ctx.fillText((UD ? UD.ign : '') + ' | mini-esports.app', 20, 200);
+    ctx.fillText((UD ? UD.ign : '') + ' | ' + ((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/')), 20, 200);
     var url = canvas.toDataURL();
     var a = document.createElement('a'); a.href = url; a.download = 'result-card.png'; a.click();
     _toast('🖼️ Result card download ho rahi hai!');
@@ -648,7 +661,7 @@ window.applyDynamicWallpaper = function() {
       ctx.fillText(s[0], x, 152);
     });
     ctx.fillStyle = '#444'; ctx.font = '10px Arial';
-    ctx.fillText('mini-esports.app', 20, 185);
+    ctx.fillText((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/'), 20, 185);
     var url = canvas.toDataURL();
     var a = document.createElement('a'); a.href = url; a.download = 'player-card.png'; a.click();
     _toast('🎴 Player card downloaded!');
@@ -1295,7 +1308,7 @@ window.applyDynamicWallpaper = function() {
       '\n👤 Captain: ' + (UD.ign || 'Player') +
       '\n🔥 FF UID: ' + (UD.ffUid || 'N/A') +
       '\n🎁 Referral Code: ' + code +
-      '\n📱 mini-esports.app';
+      '\n📱 ' + ((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/'));
     if (navigator.share) navigator.share({ text: msg });
     else if (window.copyTxt) { copyTxt(msg); _toast('Team invite copied!'); }
   };
@@ -1568,7 +1581,7 @@ window.applyDynamicWallpaper = function() {
     ctx.fillText('participated in ' + (matchName || 'Tournament'), 250, 165);
     ctx.fillText('Rank #' + (rank || '-') + ' · ' + (date || new Date().toLocaleDateString()), 250, 195);
     ctx.fillStyle = '#ffd700'; ctx.font = '12px Arial';
-    ctx.fillText('mini-esports.app', 250, 275);
+    ctx.fillText((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/'), 250, 275);
     var url = canvas.toDataURL();
     var a = document.createElement('a'); a.href = url; a.download = 'certificate.png'; a.click();
     _toast('🏅 Certificate downloaded!');
@@ -1665,7 +1678,16 @@ window.applyDynamicWallpaper = function() {
   /* ─── FEATURE 96: SHARE MATCH ON WHATSAPP ─── */
   window.shareMatchWhatsApp = function (matchId) {
     var t = window.MT && window.MT[matchId]; if (!t) return;
-    var msg = '🎮 Join ' + t.name + ' on Mini eSports!\n💰 Prize: ₹' + (t.prizePool||0) + '\n💵 Entry: ₹' + (t.entryFee||0) + '\n⏰ ' + (t.matchTime ? new Date(Number(t.matchTime)).toLocaleString() : '') + '\n📱 mini-esports.app';
+    /* R28j (2026-09-22): false ₹-claim + fake domain (mini-esports.app)
+       hatao. Prize/entry ab entryType ke hisaab se (coin 🪙 / Sky 💎),
+       URL canonical APP_URL / current origin. */
+    var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin';
+    var prize = Math.max(Number(t.firstPrize || t.prize1st || t.prizePool || 0), 0);
+    var fee = Number(t.entryFee || 0);
+    var prizeTxt = isCoin ? ('🪙 ' + prize + ' Coins') : ('💎 ' + prize + ' Green Diamonds');
+    var feeTxt = fee > 0 ? (isCoin ? ('🪙 ' + fee) : ('💎 ' + fee)) : 'FREE';
+    var base = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+    var msg = '🎮 Join ' + t.name + ' on Mini eSports!\n🏆 Prize: ' + prizeTxt + '\n🎟 Entry: ' + feeTxt + '\n⏰ ' + (t.matchTime ? new Date(Number(t.matchTime)).toLocaleString() : '') + '\n📱 ' + base;
     window.openWhatsApp(msg);
   };
 

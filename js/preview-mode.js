@@ -121,7 +121,7 @@
       'background-clip:text;animation:tickerShine 4s linear infinite,pvScroll 18s linear infinite;',
       'display:inline-block;padding-left:100%'
     ].join('');
-    txt.textContent = '🚀 Preview Mode — App Coming Soon' + launchText + '  •  Join karo aur tournament mein participate karo!  •  💰 Real cash prizes  •  🏆 Free Fire Tournaments';
+    txt.textContent = '🚀 Preview Mode — App Coming Soon' + launchText + '  •  Join karo aur tournament mein participate karo!  •  🪙 Free coins + rewards  •  🏆 Free Fire Tournaments';
 
     /* Share button */
     var shareBtn = document.createElement('button');

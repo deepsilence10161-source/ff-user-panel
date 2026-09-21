@@ -201,7 +201,7 @@
       '📊 Rank: ' + rankMedal(r.rank) + '\n' +
       '💀 Kills: ' + (r.kills || 0) + '\n' +
       (r.totalWinning > 0 ? '💰 Won: 💎' + r.totalWinning + '\n' : '') +
-      '\n🔥 Play on Mini eSports and win real cash!\n' + window.location.origin;
+      '\n🔥 Play skill-based tournaments on Mini eSports — 🪙 coins + 💎 diamonds jito!\n' + window.location.origin;
 
     if (navigator.share) {
       navigator.share({ title: 'My Match Result', text: text }).catch(function () {

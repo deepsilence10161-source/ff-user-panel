@@ -349,42 +349,15 @@ waitFor(function(){ return window.saveTM; }, function(){
 });
 
 /* ════════════════════════════════════════════
-   FIX #12 — UTR MANDATORY IN WITHDRAWAL
+   FIX #12 — UTR MANDATORY IN WITHDRAWAL  [R28j: REMOVED]
+   Ye wrapper legacy diamond-SYSTEM ke cash-withdrawal modal
+   (_confirmDiamondWD) mein "UTR Number" field inject karta tha.
+   R28j (2026-09-22) se diamond → ₹ cash withdrawal halal-model
+   ke tahat hata di gayi hai (sirf sponsored winnings
+   withdrawable, UPI-only — screens/wallet.js
+   submitSponsoredWd). Ye dono waitFor wrappers ab obsolete
+   hain aur hata diye gaye.
 ════════════════════════════════════════════ */
-waitFor(function(){ return window.startWd; }, function(){
-  var origSWD = window.startWd;
-  window.startWd = function() {
-    origSWD.apply(this, arguments);
-    setTimeout(function() {
-      if (document.getElementById('wdUtrNumber')) return;
-      var upiEl = document.getElementById('wdUpi');
-      if (!upiEl) return;
-      var wrap = document.createElement('div');
-      wrap.className = 'f-group';
-      wrap.style.marginTop = '8px';
-      wrap.innerHTML = '<label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">UTR Number <span style="color:#ff6b6b">*</span> <span style="font-size:10px;color:#888">(Payment ke baad bank/UPI app mein milta hai)</span></label>' +
-        '<input type="text" class="f-input" id="wdUtrNumber" placeholder="12-digit UTR number" maxlength="22" style="font-family:monospace;letter-spacing:1px" oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,\'\')">';
-      var fg = upiEl.closest ? upiEl.closest('.f-group') : upiEl.parentNode;
-      if (fg && fg.insertAdjacentElement) fg.insertAdjacentElement('afterend', wrap);
-      else if (upiEl.parentNode) upiEl.parentNode.appendChild(wrap);
-    }, 350);
-  };
-});
-
-waitFor(function(){ return window._confirmDiamondWD; }, function(){
-  var origCD = window._confirmDiamondWD;
-  window._confirmDiamondWD = function(maxDiamonds) {
-    var utrEl = document.getElementById('wdUtrNumber');
-    var utrVal = utrEl ? utrEl.value.trim() : '';
-    if (!utrVal || utrVal.length < 6) {
-      if (window.toast) window.toast('⚠️ UTR Number mandatory hai — enter karo!', 'err');
-      if (utrEl) { utrEl.focus(); utrEl.style.boxShadow = '0 0 0 2px #ff6b6b'; setTimeout(function(){utrEl.style.boxShadow='';}, 2000); }
-      return;
-    }
-    window._pendingUTR = utrVal;
-    origCD(maxDiamonds);
-  };
-});
 
 /* ════════════════════════════════════════════
    FIX #13 — POLL INSTANT RESULT
@@ -642,7 +615,7 @@ waitFor(function(){return window.U&&window.UD&&window.db;},function(){
     if(!window.UD) return;
     var code=window.UD.referralCode||'MINI';
     var link=(window.location.origin||'')+'/index.html?ref='+code;
-    var msg='🎮 Mini eSports pe khelo aur paise kamao!\nFree Fire tournaments join karo, real prizes jito!\n🔗 '+link+'\n🎁 Code: '+code+'\n(Dono ko bonus coins milenge! 🪙)';
+    var msg='🎮 Mini eSports pe skill-based tournaments khelo!\n🪙 Free coins + rewards kamao — kahin koi entry-fee wali gambling nahi.\n🔗 '+link+'\n🎁 Code: '+code+'\n(Dono ko bonus coins milenge! 🪙)';
     var h='<div>';
     h+='<div style="background:linear-gradient(135deg,rgba(0,255,156,.1),rgba(0,212,255,.05));border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px">';
     h+='<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">Tumhara Referral Code</div>';
@@ -834,9 +807,14 @@ waitFor(function(){return window.db&&window.renderHome;},function(){
    ✨ WHATSAPP/TELEGRAM MATCH SHARE
 ════════════════════════════════════════════ */
 window.shareMatchWhatsApp=function(matchId,matchName,prize){
+  /* R28j (2026-09-22): ye legacy version features-user.js ke live
+     version se override ho jata hai; false ₹-claim + fake domain
+     (mini-esports.app) hataye. Prize entryType-dependent hota hai —
+     is signature mein entryType nahi milta, isliye bina currency
+     symbol ke (number hi sach hai, ₹ ka jhootha claim nahi). */
   var code=(window.UD&&window.UD.referralCode)||'MINI';
-  var link=(window.location&&window.location.origin||'https://mini-esports.app')+'/index.html?ref='+code;
-  var msg='🎮 मैंने MINI ESPORT पर "'+(matchName||'match')+'" join की!\n💰 Prize Pool: ₹'+(prize||0)+'\n🔥 तुम भी join करो!\n📲 '+link+'\n🎁 Code: '+code+' (Dono को 🪙 bonus)';
+  var link=(typeof window.APP_URL==='string'&&window.APP_URL)||((window.location&&window.location.origin)||'')+'/';
+  var msg='🎮 मैंने MINI ESPORTS पर "'+(matchName||'match')+'" join की!\n🏆 Prize Pool: '+(prize||0)+'\n🔥 तुम भी join करो!\n📲 '+link+'\n🎁 Code: '+code+' (Dono को 🪙 bonus)';
   var h='<div>';
   h+='<div style="background:rgba(0,0,0,.4);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--txt2);line-height:1.8;white-space:pre-wrap">'+msg+'</div>';
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">';

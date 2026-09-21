@@ -3,6 +3,28 @@
 
 ---
 
+
+## 🔴 2026-09-22j — R28j: Diamond-cash (halal-model) policy enforcement — jhoothe ₹-widhdrawal claim hatao
+**Files:** `js/diamond-system.js`, `js/fixes-v7.js`, `core/listeners.js`, `core/header.js`, `js/features-user.js`, `js/ui-fixes.js`, `screens/matches.js`, `screens/rank.js`, `js/match-result-detail.js`, `js/preview-mode.js` (+cache-bump `index.html`, `sw.js`)
+
+### Bug (live-proven: qauser1 wallet deep-probe)
+1. **Wallet modal mein jhootha cash-claim.** `js/diamond-system.js` (legacy, L749 load) `window.startWd` ko override karke ek "💎 Withdraw Diamonds" modal dikhata tha jo Sky (deposited 70) + Green (winnings 14) diamonds ko jodkar **"Withdrawable 💎84 → Aapko milega: ₹84"** bolta tha (TDS ke saath), jabki usi wallet page par likha tha "❌ Withdraw nahi hota", admin policy kehti hai sirf `sponsored_winnings` withdrawable hai, aur server RPC `submit_gd_withdrawal` sirf `green_diamonds` deduct karta (request_type `green_diamond_withdrawal` — live 0 rows). Use "withdraw" bolna = virtual currency ko cash batana.
+2. **Root alias.** `core/listeners.js` `UD.realMoney = { deposited: skyDiamonds, winnings: greenDiamonds }` — Green Diamonds (virtual prize) ko ₹-"winnings" bana deta tha, isliye har jagah (header fallback, Transaction Summary, Net Position) green diamonds ₹ ki tarah dikhte the.
+3. **Header chip.** `core/header.js` `hdrMoney` (💎 Sky Diamond chip) `getMoneyBal()` = deposited+winnings+bonus jodkar dikhata tha — green+b bonus mil ke galat number (green ka apna #hdrGD chip alag hai).
+4. **Stale + jhoothi share copy.** 4 jagah `student-4356.github.io` (purana host), `shareToInstagram`/`shareMatchWhatsApp` mein "1st Prize: ₹", "#WinCash", "win real cash", aur fake domain `mini-esports.app` — entry-fee-based ₹ prize policy me hai hi nahi.
+
+### Fix
+- `diamond-system.js`: poori cash-withdrawal machinery (startWd override, `_confirmDiamondWD` RPC caller, TDS, conversion-card, UTR flow) DISABLED — ab sirf `fmtDiamond/fmtRupee` helper + comment (feature delete nahi, false-claim removal; asli withdraw path `wallet.js startWd() → sponsored_winnings → submitSponsoredWd()` alag se kaam karta hai).
+- `fixes-v7.js`: obsolete UTR-wrapper (`_confirmDiamondWD` guard + `wdUtrNumber` inject) hatao.
+- `core/listeners.js`: `realMoney.winnings = 0` (sirf legacy shape preserve; asli prize `UD.sponsored_winnings`).
+- `core/header.js`: `hdrMoney = UD.skyDiamonds` (camelCase) — sirf khareeda balance.
+- `features-user.js`: Transaction Summary `win` → `sponsored_winnings`; `shareToInstagram`/`shareMatchWhatsApp`/`shareTeamInvite`/canvas watermarks → canonical `APP_URL`/origin + currency-sahi copy (coin match = 🪙 Coins, paid/sd match = 💎 Green Diamonds per join.js prize model); `_doCompare` Earnings row → `-` (0 fallback, koi fake ₹ nahi).
+- `ui-fixes.js`: `hideTDSTextInWallet` ab no-op (conversion card hai hi nahi).
+- `screens/matches.js` `showTeamQR` joinLink → canonical base; `screens/rank.js` + `js/match-result-detail.js` share-card ka "win real cash!" → "skill-based tournaments — coins + diamonds jito"; `js/preview-mode.js` ticker "Real cash prizes" → "Free coins + rewards".
+- Cache-bump: index `v=20260922j`, sw `me-v58-9-22j`.
+
+---
+
 ## 🔴 2026-09-22i — R28i: Khareedi cosmetics/achievements refresh par gayab (ghost-load fix)
 **Files:** `core/listeners.js`
 

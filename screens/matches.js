@@ -343,7 +343,9 @@ function confirmGiftTicket(matchId) {
 /* ====== QR TEAM UP ====== */
 function showTeamQR(matchId) {
   var t = MT[matchId]; if (!t) return;
-  var joinLink = 'https://student-4356.github.io/FF-User-Panel/?join=' + matchId + '&ref=' + (UD.ffUid||U.uid.substr(0,8));
+  /* R28j (2026-09-22): stale host student-4356.github.io -> canonical base */
+  var _base = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+  var joinLink = _base + '?join=' + matchId + '&ref=' + (UD.ffUid||U.uid.substr(0,8));
   var h = '<div style="text-align:center;padding:8px">';
   h += '<div style="font-size:14px;font-weight:800;margin-bottom:4px">📱 QR Code se Join karo</div>';
   h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">Apne teammate ko yeh QR scan karne do — wo directly is match lobby mein aa jayega</div>';
