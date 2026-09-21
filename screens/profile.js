@@ -58,7 +58,10 @@ function renderProfile() {
      a normal part of this function's own single h string instead of a
      separate late injection, so it's simply always there, every render,
      with no timing race against anything. */
-  var inviteEarnHtml = '<button id="inviteEarnBtn" onclick="window.showInviteEarn&&showInviteEarn()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-user-plus"></i> 🎁 Invite & Earn — दोस्त लाओ ₹ पाओ!</button>';
+  /* R28k (2026-09-22): referral से ₹ nahi — bonus COINS milte hain
+     (claim_referral_reward → coinsEarned, "Dono ko bonus coins milenge").
+     पुराना "दोस्त लाओ ₹ पाओ" झूठा cash-दावा tha — hataya. */
+  var inviteEarnHtml = '<button id="inviteEarnBtn" onclick="window.showInviteEarn&&showInviteEarn()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-user-plus"></i> 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!</button>';
   var h = inviteEarnHtml + '<div class="prof-header" style="position:relative;overflow:hidden;margin:0 0 14px;padding:16px;border-radius:20px;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;' + bannerStyle + ';box-shadow:0 8px 24px rgba(0,0,0,.35)">';
   /* Decorative glow overlay so the card still looks alive with no custom banner set */
   if (!bannerImg) {
@@ -121,7 +124,11 @@ function renderProfile() {
   /* ── My Titles button ── */
   h += '<button class="prof-btn" onclick="window.showPlayerTitles&&showPlayerTitles()" style="background:linear-gradient(135deg,rgba(185,100,255,.12),rgba(0,212,255,.07));border:1px solid rgba(185,100,255,.3);color:#b964ff;margin-bottom:8px">';
   h += '<span style="margin-right:auto"><i class="fas fa-star" style="margin-right:8px;color:#ffd700"></i>My Titles</span>';
-  h += '<span style="font-size:12px;background:rgba(185,100,255,.15);padding:2px 8px;border-radius:10px">' + (UD.title ? '1' : '0') + ' active</span></button>';
+  /* R28k (2026-09-22): badge ab equip-system jo asli me chalta hai —
+     equipped cosmetic-title (header chip jaisa) dikhata hai. Purana
+     UD.title kabhi populate hota hi nahi tha → "0 active" hamesha
+     (jhootha). Koi equipped title na ho to "View all" (koi fake 0 nahi). */
+  h += '<span style="font-size:12px;background:rgba(185,100,255,.15);padding:2px 8px;border-radius:10px">' + ((_eqTag) ? '✨ ' + _eqTag : 'View all') + '</span></button>';
   /* ✅ Bug 28 Fix: Removed duplicate showAchievements button — keep only showAchievementsV3 below */
   /* ── Battle Pass button ── */
   h += '<button class="prof-btn" onclick="window.showBattlePass&&showBattlePass()" style="background:linear-gradient(135deg,rgba(185,100,255,.12),rgba(255,215,0,.07));border:1px solid rgba(185,100,255,.3);color:#b964ff;margin-bottom:8px">';
@@ -374,7 +381,7 @@ function applyReferralCode() {
 }
 function shareRef(code) {
   var url = window.location.href;
-  var msg = '🎮 Join Mini eSports — India\'s Best Free Fire Tournament App! 🔥\n\n💰 Win Real Cash Prizes!\n🪙 Get FREE bonus coins on signup!\n\n👉 Use my referral code: ' + code + '\n📲 Download now:';
+  var msg = '🎮 Join Mini eSports — India\'s Best Free Fire Tournament App! 🔥\n\n🪙 Get FREE bonus coins on signup!\n📈 Skill-based tournaments — coins + 💎 diamonds jito!\n\n👉 Use my referral code: ' + code + '\n📲 Download now:';
   /* ✅ BUG FIX (2026-08-26): "WhatsApp abhi bhi nahi khulta" — after
      the wa.me link code itself was verified clean and correctly
      deployed multiple times (confirmed directly on the live GitHub

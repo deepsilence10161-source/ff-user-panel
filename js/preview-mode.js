@@ -184,7 +184,7 @@
     var ud = window.UD || {}; var U = window.U;
     var code = ud.referralCode || (U ? U.uid.substring(0, 8).toUpperCase() : '');
     var url  = window.location.href;
-    var msg  = '🎮 Mini eSports is launching soon!\n\n🏆 Free Fire Tournaments · 💎 Real Cash Prizes\n⚡ Instant Payouts · 🏅 Live Leaderboards\n\n📲 Join Early:\n' + url +
+    var msg  = '🎮 Mini eSports is launching soon!\n\n🏆 Skill-based Free Fire Tournaments\n🪙 Free coins + 💎 diamonds rewards · 🏅 Live Leaderboards\n\n📲 Join Early:\n' + url +
                (code ? '\n\n🎁 Referral Code: *' + code + '*' : '');
     if (navigator.share) {
       navigator.share({ title: 'Mini eSports — Coming Soon', text: msg }).catch(function () {

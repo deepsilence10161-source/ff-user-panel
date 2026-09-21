@@ -10,6 +10,35 @@ function toggleAchievements() {
 
 function renderNotifs() {
   var nl = $('notifList'); if (!nl) return;
+  /* ✅ R28k (2026-09-22): DB me same notification double-INSERTED rehta
+     hai (admin-side dual-write — same body+ref_id ~300-400ms apart; live
+     proven Supabase rows me: "🏆 Match Result!"/"💬 Support Reply" sab
+     pairs me). User-panel display dedup karta hai. SAFETY: sirf
+     NEAR-duplicates collapse hote hain — same type+title+body AND
+     createdAt 3s ke andar (asli double-write signature ~300-400ms).
+     Alag matches ke same-text legit notifs (alg time par) safe rehte
+     hain. Data delete nahi hota — sirf display. Backend dual-write
+     alag issue hai (admin repo fix). */
+  try {
+    var _sorted = (NOTIFS || []).slice().sort(function(a, b) {
+      return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0);
+    });
+    var _kept = [];
+    _sorted.forEach(function(n) {
+      var fp = String(n.type || '') + '|' + String(n.title || '') + '|' + String(n.message || n.body || '');
+      fp = fp.replace(/\s+/g, ' ').trim().slice(0, 200);
+      var ts = Number(n.createdAt) || 0;
+      var dup = false;
+      if (fp) {
+        for (var i = 0; i < _kept.length; i++) {
+          var k = _kept[i];
+          if (k._fp === fp && Math.abs(ts - (Number(k.createdAt) || 0)) <= 3000) { dup = true; break; }
+        }
+      }
+      if (!dup) { n._fp = fp; _kept.push(n); }
+    });
+    NOTIFS = _kept;
+  } catch (e) { /* dedup best-effort — render as-is if anything throws */ }
   if (!NOTIFS.length) { nl.innerHTML = '<div class="empty-state"><i class="fas fa-bell"></i><p>No notifications</p></div>'; if (window.updateBell) updateBell(); return; }
   // Mark ALL as read when panel opens
   if (U && UD) {

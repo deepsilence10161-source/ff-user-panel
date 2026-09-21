@@ -92,7 +92,7 @@
     ctx.fillText('🎮 Mini eSports', 200, 210);
     ctx.fillStyle = '#333';
     ctx.font = '9px Arial, sans-serif';
-    ctx.fillText('Play & Win Real Cash!', 200, 224);
+    ctx.fillText('Play tournaments · 🪙 coins & 💎 diamonds', 200, 224);
 
     // Convert to blob and share/download
     try {

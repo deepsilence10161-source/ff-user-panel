@@ -4,6 +4,53 @@
 ---
 
 
+## 🔴 2026-09-22k — R28k: Live screen-sweep — false-₹-claims hataye + Titles badge + notif dedup
+**Files:** `screens/profile.js`, `screens/notifications.js`, `js/profile-card.js`, `js/preview-mode.js`, `core/utils.js` (+cache-bump)
+
+### Live-proven (qauser1, full screen-sweep: home/matches/rank/profile/notif/chat — 0 page-errors)
+1. **"My Titles 0 active"** — `UD.title` codebase me KAHIN populate hota hi nahi
+   (grep: koi assignment nahi) → profile header par equipped cosmetic-tag
+   "⚡ BEAST MODE" dikhta tha (R28i/R28h se sahi), par Titles button hamesha
+   "0 active" bolta tha (jhootha). Ab badge `getEquippedTagText()` se wahi
+   equipped title dikhata hai (ya "View all" — koi fake 0 nahi).
+2. **False-₹ claims (share/copy):** profile invite "दोस्त लाओ ₹ पाओ!" (asli me
+   bonus COINS milte — claim_referral_reward), `shareRef` "💰 Win Real Cash
+   Prizes!", `core/utils.js shareApp` "win REAL CASH!", `js/profile-card.js`
+   "Play & Win Real Cash!", `js/preview-mode.js` "💎 Real Cash Prizes · Instant
+   Payouts" — sab entry-fee ₹-prize ka jhootha dawa tha. Coins/diamonds +
+   referral-bonus hi asli reward hain; ab wahi likha hai.
+3. **Notifications duplicate-cards** — Supabase `notifications` me sab rows
+   PAIRS me double-INSERTED (same body+ref_id, ~300-400ms apart; live rows:
+   "🏆 Match Result!"/"💬 Support Reply" dono). User-panel display ab NEAR-
+   dup dedup karta hai (same type+title+body AND 3s window) — data-delete
+   nahi, sirf display. Backend dual-write (admin repo: `_adminNotifyUser`
+   RTDB-push + Supabase-insert dono likhta hai) alag se fix karna hai.
+
+### Known (report-only, fix user-panel me possible nahi)
+- **ImgBB API key banned/revoked** — direct call bhi `code:103 "You have been
+  forbidden to use this website."` (400). Edge-fn `imgbb-upload` deployed+gate
+  sahi (OPTIONS 204, 400/401 checks pass), par ImgBB khud sab uploads reject.
+  Data-loss NAHI: inline data-URL fallback se `sd_requests.screenshot_url`
+  me proof bachta hai (live rows: 7×DATAURL, 1×IMGbbURL) aur admin `<img>`
+  render karta hai. Action: nayi ImgBB key (owner dashboard) ya Supabase
+  Storage bucket banake imgbb-upload ko storage pe switch karein.
+- **Match-status drift** — `R24 LIVE E2E`: `result_published_at` set + `status`
+  abhi bhi `upcoming` (har match me consistent nahi). fa22 mrPublishResults
+  Supabase `status:'completed'` likhta hai, par ye match publish results-copy
+  se alag hua tha. Matches-tab (jo `effSt(t)` matchTime-based dikhata hai)
+  isliye "No upcoming" (join_request ka completed हो चुका match upcoming
+  me show nahi ho pata)। User-panel effSt `result_published_at` feedback अभी padh nahi
+  sakta (matches select us column ko nahi leta). Admin-side publish path aur
+  user-panel effSt dono ko ek consistent status-source pe lana chahiye.
+  (Report-only; data correct hai — result/prize wallet me already सही.)
+- **join_requests.ign_at_join खाली** + **delete-join→filled_slots drift** —
+  abhi भी open (trace अधूरा)।
+- Hunter7 sd_requests (8 rows, 2 rejected/1 approved/5 pending) — asli-paise,
+  हाथ नहीं लगाया, सिर्फ report।
+
+---
+
+
 ## 🔴 2026-09-22j — R28j: Diamond-cash (halal-model) policy enforcement — jhoothe ₹-widhdrawal claim hatao
 **Files:** `js/diamond-system.js`, `js/fixes-v7.js`, `core/listeners.js`, `core/header.js`, `js/features-user.js`, `js/ui-fixes.js`, `screens/matches.js`, `screens/rank.js`, `js/match-result-detail.js`, `js/preview-mode.js` (+cache-bump `index.html`, `sw.js`)
 

@@ -315,12 +315,15 @@ function getMatchStatus(matchTime, storedStatus) {
 }
 
 /* ====== SHARE APP FUNCTION ====== */
+/* R28k (2026-09-22): "win REAL CASH" false-claim tha — entry-fee wali
+   prizes ₹ nahi (sponsored-tournaments alag, admin-approve). Coins +
+   diamonds + referral-bonus hi asli reward hain. */
 function shareApp() {
   var refCode = (UD && UD.referralCode) ? UD.referralCode : (U ? U.uid.substring(0, 8).toUpperCase() : '');
-  var text = '🎮 Join me on Mini eSports and win REAL CASH in Free Fire tournaments! 🔥\n\n💰 Play matches, win prizes!\n🪙 Use my referral code: ' + refCode + ' to get bonus coins!\n\n👇 Download now:';
+  var text = '🎮 Join me on Mini eSports — Free Fire tournaments! 🔥\n\n🪙 Play matches, win coins & 💎 diamonds!\n🎁 Use my referral code: ' + refCode + ' to get bonus coins!\n\n👇 Download now:';
   var url = window.location.href;
   if (navigator.share) {
-    navigator.share({ title: 'Mini eSports - Win Real Cash!', text: text, url: url }).catch(function(err) {
+    navigator.share({ title: 'Mini eSports - Play Free Fire Tournaments!', text: text, url: url }).catch(function(err) {
       if (err.name !== 'AbortError') {
         copyTxt(text + '\n' + url);
         toast('Invite link copied!', 'ok');
