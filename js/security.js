@@ -75,50 +75,6 @@ window.getStrongFingerprint = function() {
   return window._mesFP || (window._mesFP = buildStrongFingerprint());
 };
 
-// Device fingerprint Firebase mein save karo (login ke baad call karo)
-window.saveDeviceFingerprint = function(uid) {
-  if (!uid || typeof db === 'undefined') return;
-  var fp = window.getStrongFingerprint();
-  var deviceInfo = {
-    fp: fp,
-    ua: navigator.userAgent.substring(0, 100),
-    screen: screen.width + 'x' + screen.height,
-    platform: navigator.platform || '',
-    lang: navigator.language || '',
-    cores: navigator.hardwareConcurrency || 0,
-    lastSeen: Date.now()
-  };
-
-  // Is fingerprint se kitne accounts linked hain check karo
-  db.ref('deviceFingerprints/' + fp).once('value', function(s) {
-    var existing = s.val() || {};
-    var linkedUids = existing.uids || [];
-
-    if (linkedUids.indexOf(uid) === -1) {
-      // New UID on this device
-      if (linkedUids.length >= 2) {
-        // 2+ accounts already on this device — flag karo
-        db.ref('adminAlerts').push({
-          type: 'multi_account',
-          fingerprint: fp,
-          newUid: uid,
-          existingUids: linkedUids,
-          timestamp: Date.now(),
-          severity: 'HIGH',
-          message: 'Same device se ' + (linkedUids.length + 1) + ' accounts detected!'
-        });
-        // User ko bhi flag karo
-        db.ref('users/' + uid + '/flags/multiAccount').set({
-          detected: true, timestamp: Date.now(), fp: fp, linkedAccounts: linkedUids.length
-        });
-      }
-      linkedUids.push(uid);
-    }
-
-    db.ref('deviceFingerprints/' + fp).set(Object.assign(deviceInfo, { uids: linkedUids }));
-    db.ref('users/' + uid + '/deviceFP').set({ fp: fp, lastSeen: Date.now() });
-  });
-};
 
 /* ═══════════════════════════════════════════════
    PART 2: FAKE SCREENSHOT DETECTION
@@ -270,23 +226,6 @@ window.reportLoginAnomaly = function(uid, message, extraDetails) {
     .catch(function(e) { console.warn('[security] anomaly log write failed:', e.message); });
 };
 
-/* Auto-detect login anomaly: multiple IPs or new device after long gap */
-window._checkLoginAnomalyOnAuth = function(uid, currentFP) {
-  if (!uid || !window.db) return;
-  window.db.ref('users/' + uid + '/lastFP').once('value', function(s) {
-    var lastFP = s.val();
-    if (lastFP && lastFP !== currentFP) {
-      // New device fingerprint — log as anomaly (not necessarily malicious, but flag it)
-      window.reportLoginAnomaly(uid, 'New device fingerprint on login', {
-        previous_fp: lastFP.substring(0, 10) + '...',
-        new_fp: currentFP.substring(0, 10) + '...',
-        timestamp: Date.now()
-      });
-    }
-    // Update stored FP
-    window.db.ref('users/' + uid + '/lastFP').set(currentFP);
-  });
-};
 
 console.log('[Mini eSports] ✅ Security System loaded (Fingerprint + Screenshot Validation + Anomaly Logger)');
 

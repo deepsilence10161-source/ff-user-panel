@@ -13,7 +13,6 @@ var GD = '<img src="' + GD_SRC + '" style="width:14px;height:14px;vertical-align
 var GD_LG = '<img src="' + GD_SRC + '" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;display:inline-block">';
 window.GD_ICON = GD;
 window.GD_ICON_LG = GD_LG;
-window.fmtGD = function(v){ return GD + ' <span style="color:#00ff64;font-weight:800">' + (Number(v)||0) + '</span>'; };
 
 var GREEN_DIAMOND_EMOJI = '\uD83D\uDCAA'.charAt(0) === '\uD83D' ? null : null; // not used
 // Use unicode codepoint to avoid the emoji being replaced at build time

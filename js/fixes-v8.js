@@ -203,8 +203,6 @@
 
       /* f29 referral integration — f19 disabled (v7 already handles this) */
       if (window._v7RankInstalled) {
-        /* v7 rank already patched — f19 should be disabled */
-        window.renderReferralLeaderboard = function () { return ''; };
       }
     }, 2000);
   });

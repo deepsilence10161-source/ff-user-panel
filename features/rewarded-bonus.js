@@ -35,60 +35,6 @@ function _incCount(uid) {
   return val;
 }
 
-/* ── Show "Earn with Ads" modal ── */
-window.showRewardedBonusModal = function() {
-  var uid = window.U && window.U.uid;
-  if (!uid) { if(window.toast) toast('Pehle login karo!','err'); return; }
-
-  var count   = _getCount(uid);
-  var isPrem  = window.getUserPremiumTier ? window.getUserPremiumTier() > 0 : false;
-  var dailyMax = _dailyLimit();
-  var remaining = dailyMax - count;
-
-  var h = '<div style="text-align:center;padding:8px 0 18px">';
-  h += '<div style="font-size:40px;margin-bottom:8px">🎬</div>';
-  h += '<div style="font-size:17px;font-weight:900;color:#fff;margin-bottom:4px">Ads Dekho — Bonus Pao!</div>';
-  h += '<div style="font-size:12px;color:#888;margin-bottom:16px">Aaj ke ' + remaining + ' ads baaki hain (max ' + dailyMax + '/day)</div>';
-
-  /* Progress bar */
-  var pct = Math.min(100, (count / dailyMax) * 100);
-  h += '<div style="background:rgba(255,255,255,.06);border-radius:20px;height:8px;margin-bottom:6px;overflow:hidden">';
-  h += '<div style="background:linear-gradient(90deg,#00ff9c,#00bcd4);height:100%;border-radius:20px;width:' + pct + '%;transition:width .4s"></div></div>';
-  h += '<div style="font-size:10px;color:#555;margin-bottom:16px">' + count + '/' + dailyMax + ' ads aaj dekhe gaye</div>';
-
-  /* Rewards */
-  h += '<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">';
-
-  /* Non-premium: coins bonus */
-  if (!isPrem) {
-    h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between">';
-    h += '<div><div style="font-size:13px;font-weight:700;color:#e0e0e0">🪙 Coin Bonus</div>';
-    h += '<div style="font-size:11px;color:#888;margin-top:3px">Ek ad = +' + _adReward() + ' Coins</div></div>';
-    h += '<button onclick="window.watchAdForCoins()" style="padding:9px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:12px;font-weight:900;cursor:pointer' + (remaining<=0?';opacity:.4;pointer-events:none':'') + '">' + (remaining<=0?'Aaj limit!':'Ad Dekho →') + '</button>';
-    h += '</div>';
-  }
-
-  /* Battle Pass XP */
-  h += '<div style="background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.15);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between">';
-  h += '<div><div style="font-size:13px;font-weight:700;color:#ffd700">⚡ Battle Pass XP</div>';
-  h += '<div style="font-size:11px;color:#888;margin-top:3px">Ek ad = +5 XP (max 3/day)</div></div>';
-  h += '<button onclick="window.watchAdForXP()" style="padding:9px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:12px;font-weight:900;cursor:pointer' + (remaining<=0?';opacity:.4;pointer-events:none':'') + '">' + (remaining<=0?'Aaj limit!':'Ad Dekho →') + '</button>';
-  h += '</div>';
-
-  /* Premium users: Ad-Match credit */
-  if (isPrem) {
-    var credits = window.getAdMatchCredits ? window.getAdMatchCredits(uid) : 0;
-    h += '<div style="background:rgba(0,255,156,.04);border:1px solid rgba(0,255,156,.15);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between">';
-    h += '<div><div style="font-size:13px;font-weight:700;color:#00ff9c">🎮 Match Credit</div>';
-    h += '<div style="font-size:11px;color:#888;margin-top:3px">5 ads dekho → 1 Ad-Match free</div>';
-    h += '<div style="font-size:10px;color:#00ff9c;margin-top:2px">Abhi: ' + credits + ' credit(s)</div></div>';
-    h += '<button onclick="window.watchAdForMatchCredit()" style="padding:9px 14px;border-radius:11px;border:none;background:linear-gradient(135deg,#00ff9c,#009688);color:#000;font-size:12px;font-weight:900;cursor:pointer' + (remaining<=0?';opacity:.4;pointer-events:none':'') + '">' + (remaining<=0?'Aaj limit!':'5 Ads Dekho') + '</button>';
-    h += '</div>';
-  }
-
-  h += '</div></div>';
-  if (window.openModal) openModal('🎬 Ad Bonus', h);
-};
 
 /* Coin rewards are implemented once in features/ads.js. Keeping a second
    window.watchAdForCoins here used to overwrite it and pay a hardcoded reward. */
@@ -148,12 +94,6 @@ function _giveMatchCredit(uid) {
   var c = window.getAdMatchCredits(uid) + 1;
   localStorage.setItem('_mes_match_credits_' + uid, c);
 }
-window.useAdMatchCredit = function(uid) {
-  var c = window.getAdMatchCredits(uid);
-  if (c <= 0) return false;
-  localStorage.setItem('_mes_match_credits_' + uid, c - 1);
-  return true;
-};
 
 /* ── Add "Earn with Ads" button to relevant screens ──
    BUG FIX (2026-08): this "Ads Dekho — Bonus Pao" row used to sit at

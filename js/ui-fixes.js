@@ -143,25 +143,6 @@ function fixLegalButtons() {
   if (!window.closeProfileSettings || window._legalFixed) return;
   window._legalFixed = true;
 
-  /* Patch: legal buttons direct call karo bina close delay ke */
-  window._openLegal = function(fn) {
-    /* Close sheet first */
-    var s = document.getElementById('profSettingsSheet');
-    if (s) {
-      s.style.opacity = '0';
-      s.style.transform = 'translateY(20px)';
-      s.style.transition = 'all .2s';
-      setTimeout(function() {
-        if (s.parentNode) s.remove();
-        setTimeout(function() {
-          /* Security Fix: Replace eval() with whitelist-based function dispatch */
-          _safeFnCall(fn);
-        }, 100);
-      }, 200);
-    } else {
-      _safeFnCall(fn);
-    }
-  };
 }
 
 /* ══════════════════════════════════════════════

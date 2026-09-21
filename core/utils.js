@@ -13,11 +13,6 @@ window.escHtml = function(str) {
     .replace(/'/g, '&#x27;')
     .replace(/\//g, '&#x2F;');
 };
-/* Safe text insertion — use this instead of element.innerHTML for user content */
-window.setTextSafe = function(el, str) {
-  if (!el) return;
-  el.textContent = str || '';
-};
 
 /* ====== HELPERS ====== */
 function $(id) { return document.getElementById(id); }

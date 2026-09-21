@@ -19,23 +19,12 @@
      growth.js aur utils.js dono mein $ defined thi.
      Ab check karo — already defined hai to skip karo */
   if (typeof window.$ === 'undefined') {
-    window.$ = function(id) { return document.getElementById(id); };
   }
 
   /* ── FIX 2: init() name collision ──
      premium-creator.js ki init() → initPremiumCreator()
      growth.js ki init() → initGrowth()
      Yeh wrappers old names ko safely remap karte hain */
-  window._fixInitCollision = function() {
-    /* premium-creator.js ne apni init define ki hogi */
-    if (typeof window._premiumCreatorInitFn === 'function') {
-      window.initPremiumCreator = window._premiumCreatorInitFn;
-    }
-    /* growth.js ne apni init define ki hogi */
-    if (typeof window._growthInitFn === 'function') {
-      window.initGrowth = window._growthInitFn;
-    }
-  };
 
   /* ── FIX 3: SW Registration ── */
   if ('serviceWorker' in navigator) {
@@ -86,22 +75,6 @@
     if (btn) btn.style.display = 'flex';
   });
 
-  window.showInstallPrompt = function() {
-    if (!_deferredInstall) {
-      if (window.toast) toast('App already installed ya browser support nahi karta', 'inf');
-      return;
-    }
-    _deferredInstall.prompt();
-    _deferredInstall.userChoice.then(function(result) {
-      if (result.outcome === 'accepted') {
-        if (window.toast) toast('✅ App install ho raha hai!', 'ok');
-        if (window.analytics) analytics.logEvent('app_installed');
-      }
-      _deferredInstall = null;
-      var btn = document.getElementById('installAppBtn');
-      if (btn) btn.style.display = 'none';
-    });
-  };
 
   window.addEventListener('appinstalled', function() {
     console.log('[PWA] App installed');

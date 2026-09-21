@@ -87,7 +87,6 @@
     return Date.now() + _serverOffset;
   };
 
-  window.getServerOffset = function() { return _serverOffset; };
 
   /* ── Patch effSt() to use server time ── */
   function patchEffSt() {
@@ -124,14 +123,6 @@
     console.log('[ServerTime] effSt() patched to use server time.');
   }
 
-  /* ── Patch match countdown displays ── */
-  window._serverCountdown = function(targetTime) {
-    var remaining = targetTime - window.serverNow();
-    if (remaining <= 0) return '00:00';
-    var m = Math.floor(remaining / 60000);
-    var s = Math.floor((remaining % 60000) / 1000);
-    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-  };
 
   /* ── Re-sync periodically to catch clock drift (every 5 min) ── */
   function startPeriodicSync() {

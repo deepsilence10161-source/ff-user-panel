@@ -52,27 +52,7 @@ window.renderAdminBadge = function() {
     '</div>';
 };
 
-/* ── Track when user submits a dispute/support ── */
-window.trackSupportSubmit = function(requestId) {
-  if (!window.db) return;
-  window.db.ref('supportRequests/' + requestId + '/submittedAt').set(Date.now());
-};
 
-/* ── Track when admin responds (called from admin panel) ── */
-window.trackAdminResponse = function(requestId, submittedAt) {
-  if (!window.db) return;
-  var responseTime = Date.now() - Number(submittedAt);
-  if (responseTime <= 0 || responseTime > 7 * 86400000) return; // Ignore if > 7 days
-
-  window.db.ref('appSettings/adminResponseStats').transaction(function(stats) {
-    stats = stats || { totalResponded: 0, totalTimeMs: 0, avgResponseMs: 0 };
-    stats.totalResponded += 1;
-    stats.totalTimeMs    += responseTime;
-    stats.avgResponseMs   = Math.round(stats.totalTimeMs / stats.totalResponded);
-    stats.lastUpdated     = Date.now();
-    return stats;
-  });
-};
 
 /* ── Show support page with badge ── */
 window.showSupportWithBadge = function() {

@@ -30,16 +30,6 @@ window.ADMOB_IDS = ADMOB;
    5s is fast enough to avoid excess reads while giving near-instant ad removal. */
 var _premCache = { tier: 0, exp: 0, checked: 0 };
 
-/* Called by premium.js after a successful purchase to instantly remove ads */
-window._invalidateAdPremiumCache = function() {
-  _premCache = { tier: 0, exp: 0, checked: 0 };
-  /* Re-check immediately and hide banner if now premium */
-  if (typeof _adIsPremium === 'function' && _adIsPremium()) {
-    if (window.AdManager) window.AdManager.hideBanner();
-    var ov = document.getElementById('_adOverlay');
-    if (ov) ov.remove();
-  }
-};
 
 function _adIsPremium() {
   var now = Date.now();
@@ -266,10 +256,6 @@ window.onInterstitialDismissed = function() {
   }
 };
 
-/* Banner loaded */
-window.onBannerLoaded = function() {
-  console.log('[AdManager] Banner loaded ✅');
-};
 
 /* ================================================================
    MATCH-END INTERSTITIAL

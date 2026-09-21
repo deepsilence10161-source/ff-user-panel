@@ -1148,14 +1148,5 @@
 
   /* Issue #35 Fix: Firebase uses epoch ms (Number), Supabase expects ISO 8601.
      Always pass timestamps through this before inserting into Supabase. */
-  window._toSupaTimestamp = function(ts) {
-    if (!ts) return new Date().toISOString();
-    var num = Number(ts);
-    if (!isNaN(num) && num > 1000000000000) {
-      return new Date(num).toISOString(); // Firebase ms epoch → ISO
-    }
-    if (typeof ts === 'string' && ts.includes('T')) return ts; // already ISO
-    return new Date().toISOString(); // fallback
-  };
 
 })();

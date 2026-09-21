@@ -206,42 +206,6 @@ function renderLeaderList(cont, players, tab, city) {
 /* ================================================================
    2. SHARE CARD — VIRAL LOOP
    ================================================================ */
-window.showShareCard = function(matchId, playerRank, playerKills, cityName) {
-  if (!window.UD || !window.U) return;
-  var ign = window.UD.ign || window.UD.displayName || 'Player';
-  var rank = playerRank || 1;
-  var kills = playerKills || 0;
-  var city = cityName || window.UD.city || 'India';
-
-  var rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '#' + rank;
-  var msg = rankEmoji + ' ' + ign + ' ne ' + city + ' mein #' + rank + ' rank liya!\n💀 ' + kills + ' kills\n🎮 Mini eSports pe khelna chahte ho?\n👉 Download karo aur mere se takrao!\n#MinieSports #FreeFire #BGMI';
-
-  var h = '<div style="text-align:center">';
-  // Share card visual
-  h += '<div id="shareCardVisual" style="background:linear-gradient(135deg,#0a0a1a,#1a1a2e,#0d1117);border:2px solid rgba(0,255,156,.3);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden">';
-  h += '<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 30% 30%,rgba(0,255,156,.05),transparent 60%),radial-gradient(circle at 70% 70%,rgba(0,212,255,.05),transparent 60%)"></div>';
-  h += '<div style="font-size:11px;font-weight:800;color:#00ff9c;letter-spacing:2px;margin-bottom:12px;opacity:.7">MINI ESPORTS</div>';
-  h += '<div style="font-size:48px;margin-bottom:8px">' + rankEmoji + '</div>';
-  h += '<div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:4px">' + ign + '</div>';
-  h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:16px">' + city + '</div>';
-  h += '<div style="display:flex;justify-content:center;gap:20px;margin-bottom:12px">';
-  h += '<div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#ffd700">#' + rank + '</div><div style="font-size:10px;color:var(--txt2)">RANK</div></div>';
-  h += '<div style="width:1px;background:rgba(255,255,255,.1)"></div>';
-  h += '<div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#ff6b6b">' + kills + '</div><div style="font-size:10px;color:var(--txt2)">KILLS</div></div>';
-  h += '</div>';
-  h += '<div style="font-size:10px;color:rgba(0,255,156,.5);font-weight:700;letter-spacing:1px">CHALLENGE ME ON MINI ESPORTS</div>';
-  h += '</div>';
-
-  h += '<button onclick="doShareResult(\'' + encodeURIComponent(msg) + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:10px"><i class="fab fa-whatsapp"></i> WhatsApp pe Share Karo</button>';
-  h += '<button onclick="doShareResultGeneric(\'' + encodeURIComponent(msg) + '\')" style="width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px"><i class="fas fa-share-alt"></i> Kisi bhi app se share karo</button>';
-  /* ✅ REMOVED (2026-08-22): the "+20 Coins" reward banner and the entire
-     giveShareCoins() mechanism behind it — per explicit instruction, the
-     platform should not pay coins for sharing a result. Sharing still
-     works below, just without a reward attached. */
-  h += '</div>';
-
-  if (window.openModal) openModal('🏆 Result Share Karo', h);
-};
 
 window.doShareResult = function(encodedMsg) {
   var msg = decodeURIComponent(encodedMsg);
@@ -709,31 +673,6 @@ window.injectGrowthButtons = function() {
 /* ================================================================
    8. MISSION COMPLETE NOTIFICATION — after match result
    ================================================================ */
-window.triggerMissionCheck = function(kills, rank) {
-  if (!window.db || !window.U) return;
-  var today = new Date().toDateString();
-  var wn = getWeekNum();
-  /* Read existing progress first, then update atomically */
-  window.db.ref('users/' + window.U.uid + '/missionProgress').once('value', function(snap) {
-    var existing = snap.val() || {};
-    var updates = { lastMatchDate: today };
-    updates['wMatches_' + wn] = ((existing['wMatches_' + wn]) || 0) + 1;
-    if (kills >= 3) updates.todayKills = ((existing.todayKills) || 0) + kills;
-    if (rank <= 3)  updates['wTop3_' + wn] = true;
-    window.db.ref('users/' + window.U.uid + '/missionProgress').update(updates);
-    /* Also sync to Supabase mission_progress */
-    if (window.DB && window.DB.missions) {
-      var period = new Date().toISOString().split('T')[0];
-      /* Note: updateProgress returns null on a Postgres-level error (already
-         logged by DB's shared _err helper) or the RPC's own {success,error?}
-         JSONB otherwise — check success, not .error, and treat null as
-         already-handled rather than re-logging it. */
-      DB.missions.updateProgress('weekly_matches', period, updates['wMatches_' + wn], 5).then(function(res){
-        if(res && res.success === false){console.error('[Growth] mission_progress sync rejected:',res.error);}
-      });
-    }
-  });
-};
 
 /* ================================================================
    INIT

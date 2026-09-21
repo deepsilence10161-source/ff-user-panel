@@ -55,41 +55,6 @@ function loadMatchHistory() {
   if (list) list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--txt2)">Koi match history nahi — pehle match khelo!</div>';
 }
 
-/* ── Save match result to history (called by admin result approval) ── */
-window.saveMatchToHistory = function(matchId, resultData) {
-  /* Bug 63 Fix: Removed duplicate Firebase RTDB writes.
-     Match history is stored in Supabase join_requests table.
-     Stats are stored in Supabase users table.
-     Writing to both caused duplicate wallet records + wasted Firebase quota. */
-  if (!window.U || !window._supa) return;
-  var uid = window.U.uid;
-  /* Update Supabase join_request with result data */
-  window._supa.from('join_requests')
-    .update({
-      placement:       resultData.position  || 0,
-      kills:           resultData.kills     || 0,
-      prize_earned:    resultData.prize     || 0,
-      status:          'completed'
-    })
-    .eq('match_id', matchId)
-    .eq('user_id', uid)
-    .then(null, function(e){ console.warn('[MatchHistory] Update failed:', e.message); });
-
-  /* Update aggregate stats on users table */
-  var statsUpdate = { updated_at: new Date().toISOString() };
-  if (window.UD) {
-    statsUpdate.total_matches = (Number(window.UD.total_matches)||0) + 1;
-    statsUpdate.total_kills   = (Number(window.UD.total_kills  )||0) + (resultData.kills||0);
-    if (resultData.position === 1)
-      statsUpdate.total_wins  = (Number(window.UD.total_wins   )||0) + 1;
-    /* Update local cache */
-    window.UD.total_matches = statsUpdate.total_matches;
-    window.UD.total_kills   = statsUpdate.total_kills;
-    if (resultData.position === 1) window.UD.total_wins = statsUpdate.total_wins;
-  }
-  window._supa.from('users').update(statsUpdate).eq('id', uid)
-    .then(null, function(e){ console.warn('[MatchHistory] Stats update failed:', e.message); });
-};
 
 /* ── Profile stats card ── */
 window.renderPlayerStatsCard = function() {

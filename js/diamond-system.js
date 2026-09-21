@@ -38,17 +38,7 @@
     });
   }
 
-  /* ════ UTILITY: Diamonds to Rupees convert karo ════ */
-  window.diamondsToRupees = function (diamonds) {
-    if (_tdsActive) {
-      return Math.floor(diamonds * (1 - TDS_RATE)); /* 100 💎 = ₹70 */
-    }
-    return diamonds; /* 100 💎 = ₹100 */
-  };
 
-  window.rupeesToDiamonds = function (rupees) {
-    return rupees; /* 1:1 conversion on deposit */
-  };
 
   /* ════ FORMAT: Display ke liye ════ */
   window.fmtDiamond = function (val) {

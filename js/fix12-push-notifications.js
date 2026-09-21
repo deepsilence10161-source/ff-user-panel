@@ -227,23 +227,6 @@
     }
   };
 
-  /* ── Auto-prompt logic: don't ask immediately on load ── */
-  /* Only prompt after user has interacted with a match */
-  window._notifAutoPrompt = function() {
-    var asked = localStorage.getItem(STORAGE_KEY);
-    if (asked) return; /* Already asked */
-    if (getPermission() !== 'default') return;
-
-    /* Show gentle prompt banner */
-    setTimeout(function() {
-      var banner = document.createElement('div');
-      banner.id = 'notifPromptBanner';
-      banner.style.cssText = 'position:fixed;bottom:80px;left:12px;right:12px;background:rgba(0,255,156,.1);border:1px solid var(--green,#00ff9c);border-radius:12px;padding:12px 14px;z-index:9990;display:flex;align-items:center;gap:10px;animation:toastIn .3s ease';
-      banner.innerHTML = '<span style="font-size:20px">🔔</span><div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--green,#00ff9c)">Match Reminders Enable Karo</div><div style="font-size:11px;color:#aaa;margin-top:2px">Match se pehle alert milega</div></div><button onclick="window._reqNotifPerm();this.closest(\'#notifPromptBanner\').remove()" style="background:var(--green,#00ff9c);color:#000;border:none;border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer">Enable</button><button onclick="this.closest(\'#notifPromptBanner\').remove()" style="background:transparent;border:none;color:#aaa;font-size:16px;cursor:pointer;padding:0 4px">✕</button>';
-      document.body.appendChild(banner);
-      setTimeout(function() { if (banner.parentNode) banner.remove(); }, 12000);
-    }, 3000);
-  };
 
   console.log('[Mini eSports] ✅ Fix 12: Push Notification Manager loaded. Platform:', isIOS ? 'iOS' : isAndroid ? 'Android' : 'Desktop');
 })();

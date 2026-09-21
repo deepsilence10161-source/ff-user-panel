@@ -370,47 +370,6 @@
   /* ═══════════════════════════════════════
      7. TDS DISCLOSURE
   ═══════════════════════════════════════ */
-  window.mesTDSDisclosure = function (amt, onConfirm) {
-    if (!window.U||!window.db) { if (onConfirm) onConfirm(); return; }
-    window.db.ref('appSettings/tdsConfig').once('value', function(cfgSnap) {
-      var tdsActive=(cfgSnap.val()||{}).active===true;
-      window.db.ref('users/'+window.U.uid+'/tds').once('value', function(snap) {
-        var d=snap.val()||{};
-        var won=Number(d.winningsCredited)||0, fees=Number(d.entryFeesPaid)||0;
-        var net=Math.max(0,won-fees);
-        var h='<div>';
-        if (!tdsActive) {
-          h+='<div style="background:rgba(0,255,156,.07);border:1px solid rgba(0,255,156,.2);border-radius:12px;padding:14px;margin-bottom:12px">'
-            +'<div style="font-size:13px;font-weight:800;color:#00ff9c;margin-bottom:8px">Testing Phase — TDS Abhi Active Nahi</div>'
-            +'<div style="font-size:12px;color:#ccc;line-height:1.8">Poora Rs.'+amt+' aapko milega.<br>Net winnings: Rs.'+net+' (Prizes Rs.'+won+' − Fees Rs.'+fees+')<br><br>Jab limits cross honge tab 30% TDS auto-on hoga.</div></div>';
-        } else {
-          var ded=Number(d.tdsDeducted)||0;
-          var owed=Math.round(net*0.30);
-          var tdsNow=Math.min(Math.max(0,owed-ded),amt);
-          var gets=amt-tdsNow;
-          h+='<div style="background:rgba(255,215,0,.07);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:14px;margin-bottom:12px">'
-            +'<div style="font-size:13px;font-weight:800;color:#ffd700;margin-bottom:10px">TDS Deduction — Section 194BA</div>'
-            +'<div style="font-size:12px;color:#ccc;line-height:2">'
-            +'<div style="display:flex;justify-content:space-between"><span>Prizes Won:</span><span style="color:#00ff9c">Rs.'+won+'</span></div>'
-            +'<div style="display:flex;justify-content:space-between"><span>Fees Paid:</span><span style="color:#ff6b6b">-Rs.'+fees+'</span></div>'
-            +'<div style="display:flex;justify-content:space-between;font-weight:700"><span>Net Winnings:</span><span style="color:#ffd700">Rs.'+net+'</span></div>'
-            +'<div style="display:flex;justify-content:space-between"><span>TDS @30%:</span><span style="color:#ffaa00">Rs.'+owed+'</span></div>'
-            +'<div style="display:flex;justify-content:space-between"><span>Already Deducted:</span><span style="color:#00ff9c">-Rs.'+ded+'</span></div>'
-            +'<div style="display:flex;justify-content:space-between;font-weight:900;border-top:1px solid rgba(255,255,255,.1);padding-top:6px;margin-top:4px"><span style="color:#fff">Is bar TDS:</span><span style="color:#ff6b6b;font-size:14px">Rs.'+tdsNow+'</span></div>'
-            +'</div></div>'
-            +'<div style="background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:12px;margin-bottom:12px">'
-            +'<div style="display:flex;justify-content:space-between;font-size:14px;font-weight:900"><span>Rs.'+amt+' request</span><span style="color:#00ff9c">Rs.'+gets+' UPI pe</span></div>'
-            +'<div style="font-size:11px;color:#8888aa;margin-top:4px">Rs.'+tdsNow+' TDS govt ko — Form 26AS mein aayega</div></div>';
-        }
-        h+='<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px">'
-          +'<input type="checkbox" id="_mes_tds_cbx" style="margin-top:3px;accent-color:#ffd700;flex-shrink:0">'
-          +'<label for="_mes_tds_cbx" style="font-size:12px;color:#8888aa">Main samajhta hoon — gaming winnings taxable income hai</label></div>'
-          +'<button onclick="window.mesTDSConfirm()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer">Samajh Gaya — Proceed ✓</button></div>';
-        _open('💰 Tax Information', h);
-        window._mes_tds_cb=onConfirm;
-      });
-    });
-  };
   window.mesTDSConfirm = function () {
     if (!(document.getElementById('_mes_tds_cbx')||{}).checked) { _toast('Checkbox tick karo','err'); return; }
     _close(); if (window._mes_tds_cb) setTimeout(window._mes_tds_cb,200);
@@ -463,41 +422,6 @@
      trigger duplicate TDS activation. _thresholdLock prevents re-entry while
      an async check is in flight. */
   var _thresholdLock = false;
-  window.mesCheckTDSThreshold = function (wdAmt, netWinnings) {
-    if (_thresholdLock) return; // another check in flight
-    if (Date.now()-_thresholdChecked < 300000) return;
-    _thresholdLock = true;
-    _thresholdChecked = Date.now();
-
-    function _release() { _thresholdLock = false; }
-
-    if (!window.db) { _release(); return; }
-    window.db.ref('appSettings/tdsConfig').once('value', function(cfgSnap) {
-      if ((cfgSnap.val()||{}).active===true) { _release(); return; }
-      var triggered=[];
-      if (netWinnings>=THRESHOLDS.singleWinning) triggered.push({type:'single_winning',value:netWinnings});
-      var thirtyDaysAgo=Date.now()-30*24*3600*1000;
-      window.db.ref('payoutLogs').orderByChild('timestamp').startAt(thirtyDaysAgo).once('value', function(s) {
-        var monthlyTotal=0;
-        if (s.exists()) s.forEach(function(c){monthlyTotal+=Number((c.val()||{}).amount)||0;});
-        if (monthlyTotal>=THRESHOLDS.monthlyPayout) triggered.push({type:'monthly_payout',value:monthlyTotal});
-        window.db.ref('users').once('value', function(us) {
-          var totalUsers=0; if (us.exists()) us.forEach(function(){totalUsers++;});
-          if (totalUsers>=THRESHOLDS.totalUsers) triggered.push({type:'user_count',value:totalUsers});
-          if (triggered.length===0) { _release(); return; }
-          var fy=(function(){var d=new Date();return d.getMonth()<3?(d.getFullYear()-1)+'-'+d.getFullYear():d.getFullYear()+'-'+(d.getFullYear()+1);})();
-          window.db.ref('appSettings/tdsConfig').set({active:true,activatedAt:Date.now(),activatedBy:'auto_threshold',triggeredBy:triggered[0].type,financialYear:fy});
-          window.db.ref('adminAlerts').push({type:'TDS_AUTO_ACTIVATED',severity:'CRITICAL',message:'[TDS AUTO-ON] Section 194BA TDS activated! Reason: '+triggered[0].type,triggers:triggered,activatedAt:Date.now(),read:false,action:'Admin Panel > Legal Dashboard > TDS Records check karo. TAN register karo.'});
-          window.db.ref('tdsActivationLog').push({activatedAt:Date.now(),activatedBy:'auto_threshold',triggeredBy:triggered,financialYear:fy});
-          if (window._supa) {
-            window._supa.from('admin_activity_log').insert({action_type:'TDS_AUTO_ACTIVATED',details:{triggered:triggered,financialYear:fy},status:'open'}).then(null, function(){});
-          }
-          _open('⚠️ TDS System Activated','<div style="text-align:center;padding:8px"><div style="font-size:40px;margin-bottom:12px">⚠️</div><div style="font-size:16px;font-weight:900;color:#ffd700;margin-bottom:10px">TDS Ab Active Hai</div><div style="font-size:13px;color:#8888aa;line-height:1.8;margin-bottom:16px">Platform ke scale hone par Section 194BA TDS automatically activate ho gaya.<br><br>Ab se har withdrawal pe <strong style="color:#ff6b6b">30% TDS</strong> deduct hoga.</div><button onclick="window.closeModal&&closeModal()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer">Samajh Gaya ✓</button></div>');
-          _release();
-        });
-      });
-    });
-  };
 
   /* ═══════════════════════════════════════
      10. RESPONSIBLE GAMING

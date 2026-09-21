@@ -116,13 +116,6 @@ function _getBPProgress(uid, cb) {
     });
 }
 
-/* ── Get current pass tier ── */
-window.getPassTier=function(uid,cb){
-  _getBPProgress(uid, function(d){
-    if(!d){cb(0,false,null);return;}
-    cb(d.current_tier||0, d.has_premium||false, d);
-  });
-};
 
 /* ── Award XP → tier up (called from match result) ── */
 /* Bug #15 Fix: XP update queue — prevents race condition from concurrent updates */

@@ -159,31 +159,6 @@ window.releaseNoShows = function(matchId) {
     }, function(e) { console.error('[releaseNoShows]', e); });
 };
 
-/* ── Check-in reminder notification ── */
-window.scheduleCheckInReminder = function(matchId, matchTime) {
-  var cfg = window.CFG || {};
-  var openMins = Number(cfg.checkInOpenMins || 30);
-  var remindAt = Number(matchTime) - openMins * 60000;
-  var delay = remindAt - ((window.serverNow && typeof window.serverNow === "function") ? window.serverNow() : Date.now()); /* Bug H-2 Fix: serverNow */
-  if (delay < 0 || delay > 4 * 3600000) return; // Skip if too far or past
-
-  if (_checkInTimers[matchId]) clearTimeout(_checkInTimers[matchId]);
-  _checkInTimers[matchId] = setTimeout(function() {
-    if (!window.hasJ || !window.hasJ(matchId)) return;
-    window.hasCheckedIn(matchId, function(checked) {
-      if (!checked) {
-        toast('⚠️ Match check-in khul gaya! Abhi check-in karo!', 'err');
-        // Push local notification if supported
-        if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification('Mini eSports ⚠️', {
-            body: 'Match check-in open ho gaya! Jaldi check-in karo!',
-            icon: '/assets/green-diamond.png'
-          });
-        }
-      }
-    });
-  }, delay);
-};
 
 })();
 

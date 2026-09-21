@@ -153,38 +153,7 @@ window.checkPremiumMonthlyBonus = function() {
   }, function() { /* network error — silently skip, will retry next load */ });
 };
 
-// EARLY ACCESS — show matches 10 min early for premium
-window.canSeeEarlyAccess = function(matchStartTime) {
-  if (!getPremiumTier()) return false;
-  var now = Date.now();
-  var start = Number(matchStartTime) || 0;
-  return (start - now) <= 10 * 60 * 1000; // 10 min window
-};
 
-// AD GATE — show interstitial before result, skip for premium
-window.gateResultWithAd = function(callback) {
-  if (isPremium()) {
-    if (callback) callback();
-    return;
-  }
-  // Show interstitial ad, then call callback
-  if (window.admob && window.admob.showInterstitial) {
-    try {
-      window.admob.showInterstitial(function() {
-        if (callback) callback();
-      });
-    } catch(e) {
-      if (callback) callback();
-    }
-  } else if (window.AdManager && window.AdManager.showInterstitial) {
-    try {
-      window.AdManager.showInterstitial();
-    } catch(e) {}
-    setTimeout(function() { if (callback) callback(); }, 1000);
-  } else {
-    if (callback) callback();
-  }
-};
 
 // PREMIUM STATUS CARD — shown in profile
 window.renderPremiumCard = function() {
@@ -650,24 +619,6 @@ window.initPremiumCreator    = initPremiumCreator; /* ✅ inside IIFE scope */
 /* ================================================================
    CREATOR VIDEO UPLOAD FORM (C2)
    ================================================================ */
-window.showCreatorVideoUpload = function() {
-  var platforms = (window.CFG && window.CFG.videoAllowedPlatforms) || 'both';
-  var placeholderHint = platforms === 'youtube'   ? 'https://youtube.com/watch?v=...'
-                      : platforms === 'instagram' ? 'https://www.instagram.com/reel/...'
-                      : 'YouTube ya Instagram link';
-
-  var h = '<div style="padding:4px 0">';
-  h += '<div class="f-group"><label>🔗 Video Link</label>';
-  h += '<input type="url" id="cvLink" class="f-input" placeholder="' + placeholderHint + '"></div>';
-  h += '<div class="f-group"><label>📝 Title (max 60 characters)</label>';
-  h += '<input type="text" id="cvTitle" class="f-input" maxlength="60" placeholder="Video ka title"></div>';
-  h += '<div class="f-group"><label>📄 Description (max 200 characters)</label>';
-  h += '<textarea id="cvDesc" class="f-input" maxlength="200" rows="3" placeholder="Short description..."></textarea></div>';
-  h += '<div style="font-size:11px;color:#888;margin-bottom:14px">✅ Platform allowed: ' + (platforms === 'both' ? 'YouTube + Instagram' : platforms) + '</div>';
-  h += '<button onclick="submitCreatorVideo()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ff6b35,#ff3d00);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">📤 Video Share Karo</button>';
-  h += '</div>';
-  if (window.openModal) openModal('📹 New Video Share', h);
-};
 
 window.submitCreatorVideo = function() {
   var link  = ((document.getElementById('cvLink') ||{}).value||'').trim();
@@ -736,32 +687,6 @@ window.submitCreatorVideo = function() {
 /* ================================================================
    MY CREATOR VIDEOS LIST
    ================================================================ */
-window.showMyCreatorVideos = function() {
-  if (!uid() || !db()) return;
-  db().ref('creatorVideos').orderByChild('creatorUid').equalTo(uid()).limitToLast(20)
-    .once('value', function(snap) {
-      var videos = [];
-      snap.forEach(function(c){ var v = c.val(); v._id = c.key; videos.push(v); });
-      videos.sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); });
-
-      var h = '<div style="display:grid;gap:10px">';
-      if (!videos.length) {
-        h += '<div style="text-align:center;color:#888;padding:20px">Koi video nahi hai abhi.</div>';
-      } else {
-        videos.forEach(function(v) {
-          var statusColor = v.status === 'live' ? '#00ff9c' : v.status === 'auto_hidden' ? '#ffd700' : '#ff6b6b';
-          var statusText  = v.status === 'live' ? '✅ Live' : v.status === 'auto_hidden' ? '⚠️ Hidden (' + v.reportCount + ' reports)' : '🚫 Removed';
-          h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px">';
-          h += '<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px">' + v.title + '</div>';
-          h += '<div style="font-size:11px;color:' + statusColor + ';margin-bottom:4px">' + statusText + '</div>';
-          h += '<a href="' + v.link + '" target="_blank" style="font-size:11px;color:#00d4ff">' + v.link.slice(0,40) + '...</a>';
-          h += '</div>';
-        });
-      }
-      h += '</div>';
-      if (window.openModal) openModal('📹 Mere Videos', h);
-    });
-};
 
 /* ================================================================
    CREATOR MATCH FORM (C3) — delegated to creator-match-host.js

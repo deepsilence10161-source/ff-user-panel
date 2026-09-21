@@ -6,36 +6,6 @@
 (function(){
 'use strict';
 
-/* ── Live Feed (Home screen widget) ── */
-window.renderLiveFeed = function(containerId) {
-  var el = document.getElementById(containerId); if (!el) return;
-  if (!window.db) { el.style.display = 'none'; return; }
-  window.db.ref('liveStreams').orderByChild('live').equalTo(true)
-    .limitToLast(5).once('value', function(s) {
-      if (!s.exists()) { el.style.display = 'none'; return; }
-      var streams = [];
-      s.forEach(function(c) { var d = c.val(); d._uid = c.key; streams.push(d); });
-      if (!streams.length) { el.style.display = 'none'; return; }
-      var h = '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">';
-      h += '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:livePulse 1s ease-in-out infinite"></div>';
-      h += '<div style="font-size:13px;font-weight:800;color:#fff">LIVE Matches</div></div>';
-      streams.forEach(function(st) {
-        var safeTitle = window.escHtml ? window.escHtml(st.title || st.ign || 'Live Match') :
-          String(st.title || st.ign || 'Live Match').replace(/</g, '&lt;');
-        h += '<div style="padding:12px;border-radius:14px;background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.2);margin-bottom:8px">';
-        h += '<div style="display:flex;align-items:center;gap:10px">';
-        h += '<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:16px">' + (st.avatar || '🎮') + '</div>';
-        h += '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">' + safeTitle + '</div>';
-        h += '<div style="display:flex;align-items:center;gap:8px;margin-top:2px">';
-        h += '<div style="display:flex;align-items:center;gap:4px"><div style="width:7px;height:7px;border-radius:50%;background:#ff4444;animation:livePulse 1s ease-in-out infinite"></div><span style="font-size:10px;color:#ff8888">LIVE</span></div>';
-        h += '<span style="font-size:10px;color:#888">👁️ ' + (st.viewers || 0) + ' watch kar rahe hain</span>';
-        h += '</div></div>';
-        if (st.link) h += '<a href="' + st.link + '" target="_blank" rel="noopener" style="padding:7px 12px;border-radius:10px;border:none;background:rgba(255,68,68,.2);color:#ff8888;font-size:11px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap">Watch 📺</a>';
-        h += '</div></div>';
-      });
-      el.innerHTML = h; el.style.display = 'block';
-    });
-};
 
 /* ── Stream Settings Modal ── */
 window.showStreamSettings = function() {
@@ -161,21 +131,6 @@ window.showStreamSettings = function() {
   if (window.openModal) openModal('📺 Stream Settings', h);
 };
 
-/* ── Watch Live button on profiles ── */
-window.addWatchLiveBtn = function(profileUid, container) {
-  if (!window.db || !profileUid || !container) return;
-  window.db.ref('users/' + profileUid + '/isLive').once('value', function(s) {
-    if (!s.val()) return;
-    window.db.ref('users/' + profileUid + '/streamLink').once('value', function(sl) {
-      var link = sl.val(); if (!link) return;
-      var btn = document.createElement('a');
-      btn.href = link; btn.target = '_blank'; btn.rel = 'noopener';
-      btn.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;background:rgba(255,68,68,.15);border:1px solid rgba(255,68,68,.3);color:#ff8888;font-size:12px;font-weight:700;text-decoration:none;margin:6px 0';
-      btn.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:#ff4444;animation:livePulse 1s ease-in-out infinite"></div> Watch Live 📺';
-      container.appendChild(btn);
-    });
-  });
-};
 
 /* CSS */
 if (!document.getElementById('_liveStyle')) {

@@ -300,8 +300,6 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
   /* Block f19 from re-hooking (our renderRank already has referral button) */
   window._f19Hooked = true;
 
-  /* Export for timeout fallback */
-  window._doRenderRankList = function(rc, users) { renderUsers(rc, users || []); };
   console.log('[v7] ✅ Rank: instant-render with cache installed');
 });
 

@@ -498,14 +498,6 @@
     });
   };
 
-  /* ── Wallet screenshot upload ── */
-  window.uploadWalletScreenshot = function(b64, callback) {
-    var uid  = window.U ? window.U.uid : 'user';
-    var name = 'wallet_ss_' + uid + '_' + Date.now();
-    uploadToImgBB(b64, name, function(err, url) {
-      callback(err ? null : url);
-    });
-  };
 
   /* ── Base64 direct upload ── */
   window.uploadToImgBBBase64 = function(base64, name, callback) {

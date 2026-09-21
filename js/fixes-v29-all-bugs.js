@@ -73,18 +73,6 @@
      to update creator_applications table properly
   ============================================================= */
   waitFor(function(){ return window._supa !== undefined; }, function() {
-    /* Override creator stats save to use Supabase correctly */
-    window._saveCreatorStats = function(uid, stats) {
-      if (!window._supa || !uid) return;
-      window._supa.from('creator_applications')
-        .update({
-          total_earnings: stats.totalEarnings || stats.earnings || 0,
-          referral_count: stats.totalReferrals || stats.referralCount || 0,
-          updated_at: new Date().toISOString()
-        })
-        .eq('user_id', uid)
-        .then(null, function(e) { console.warn('[Bug#3] Creator stats save failed:', e.message); });
-    };
     console.log('[Fix v29] Bug #3: Creator stats save patch installed');
   }, 200, 8000);
 
@@ -93,19 +81,6 @@
      watch_earn_log instead of empty Firebase watchEarnings
   ============================================================= */
   waitFor(function(){ return window.startWatching !== undefined || window.startWatchEarn !== undefined; }, function() {
-    /* Patch getWatchEarnToday to read from Supabase */
-    window._getWatchEarnToday = function(uid, cb) {
-      if (!window._supa || !uid) { cb({ totalMins:0, totalCoins:0 }); return; }
-      var today = new Date().toISOString().split('T')[0];
-      window._supa.from('watch_earn_log')
-        .select('coins_earned,watched_mins')
-        .eq('user_id', uid).eq('log_date', today)
-        .maybeSingle()
-        .then(function(r) {
-          var d = r.data || { coins_earned:0, watched_mins:0 };
-          cb({ totalMins: d.watched_mins||0, totalCoins: d.coins_earned||0 });
-        }, function() { cb({ totalMins:0, totalCoins:0 }); });
-    };
     console.log('[Fix v29] Bug #5: Watch & Earn daily limit reads from Supabase');
   }, 300, 10000);
 

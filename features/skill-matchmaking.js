@@ -116,19 +116,6 @@ function _ensureRankChips(){
   _syncRankSelect();
 }
 
-/* ── Show rank-locked match indicator in match cards ── */
-window.getRankLockHTML=function(match){
-  var myRp=(window.UD&&window.UD.rank_points)||0;
-  if(match.rank_min!==undefined&&myRp<Number(match.rank_min)){
-    var needed=_tier(match.rank_min);
-    return '<div style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);font-size:10px;font-weight:700;color:#ff6b6b">🔒 '+needed+' Rank Required</div>';
-  }
-  if(match.rank_tier&&match.rank_tier!=='all'){
-    var ri={Bronze:{c:'#cd7f32',e:'🏅'},Silver:{c:'#c0c0c0',e:'🥈'},Gold:{c:'#ffd700',e:'🥇'},Platinum:{c:'#e0e0ff',e:'🔷'},Diamond:{c:'#00d4ff',e:'💎'},Legend:{c:'#b964ff',e:'👑'}}[match.rank_tier];
-    if(ri) return '<div style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;background:'+ri.c+'11;border:1px solid '+ri.c+'33;font-size:10px;font-weight:700;color:'+ri.c+'">'+ri.e+' '+match.rank_tier+' Match</div>';
-  }
-  return '';
-};
 
 /* ── "My Rank" quick display pill in header ── */
 var _rkHdrI=0,_rkHdrT=setInterval(function(){

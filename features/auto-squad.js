@@ -301,49 +301,7 @@
       });
   };
 
-  /* ── Get auto-team for a match (used by join.js) ── */
-  window.getAutoTeam = function (matchId, callback) {
-    if (!_uid() || !_s()) { callback(null); return; }
-    _s().from('auto_squad_queue')
-      .select('*, team_members:auto_squad_queue!team_id(user_id, ign, rank_tier)')
-      .eq('match_id', matchId)
-      .eq('user_id', _uid())
-      .maybeSingle()
-      .then(function (r) {
-        callback(r.data || null);
-      }).catch(function () { callback(null); });
-  };
 
-  /* ── Admin: View Auto Queue ── */
-  window.loadAutoQueueAdmin = function (matchId, containerId) {
-    var cont = document.getElementById(containerId);
-    if (!cont || !_s()) return;
-
-    _s().from('auto_squad_queue')
-      .select('*, user:users(ign, rank_tier)')
-      .eq('match_id', matchId)
-      .eq('status', 'waiting')
-      .order('joined_at', { ascending: true })
-      .then(function (r) {
-        var players = r.data || [];
-        if (!players.length) {
-          cont.innerHTML = '<div style="color:#666;font-size:12px;padding:8px">Queue khali hai</div>';
-          return;
-        }
-        var html = '<div style="font-size:11px;color:#888;margin-bottom:6px">Auto Queue (' + players.length + ' waiting)</div>';
-        players.forEach(function (p) {
-          var pIgn = (p.user && p.user.ign) || p.ign || 'Unknown';
-          html += '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)">';
-          html += '<span style="font-size:12px;font-weight:700">' + pIgn + '</span>';
-          html += '<span style="font-size:10px;color:#888">' + ((p.user && p.user.rank_tier) || p.rank_tier || '') + '</span>';
-          html += '<button onclick="removeFromAutoQueue(\'' + matchId + '\',\'' + p.user_id + '\')" style="margin-left:auto;padding:2px 8px;border-radius:6px;background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.2);color:#ff6b6b;font-size:10px;cursor:pointer">Remove</button>';
-          html += '</div>';
-        });
-        cont.innerHTML = html;
-      }).catch(function () {
-        cont.innerHTML = '<div style="color:#ff6b6b;font-size:12px;padding:8px">Load error</div>';
-      });
-  };
 
   window.removeFromAutoQueue = function (matchId, uid) {
     if (!_s()) return;
