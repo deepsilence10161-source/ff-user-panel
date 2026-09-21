@@ -43,6 +43,28 @@ window.startAdd = function() {
   return;
 };
 
+/* ✅ R26 (2026-09-21): Paytm Instant — isi file ke modal ka handler.
+   wallet.js ka wfPaytmPay() seedha wfAmt (manual wizard amount) use karta
+   tha; is quick-deposit flow me price package se aata hai. closeModal is
+   liye pehle — Paytm checkout modal ke UPPER khulega. Amount validation
+   ₹10 min (RPC/Edge bhi enforce karta hai). */
+window._paytmInstantPay = function(price) {
+  if (!window.startPaytmPayment) { if (window.toast) toast('Paytm abhi ready nahi hai, app update karo', 'err'); return; }
+  var a = Math.round(Number(price) || 0);
+  if (!a || a < 10) { if (window.toast) toast('Invalid amount', 'err'); return; }
+  if (window.closeModal) closeModal();
+  window.startPaytmPayment(a, {
+    onStatus: function(status, detail) {
+      if (status === 'loading')    { if (window.toast) toast('Order ban raha hai...', 'info'); }
+      else if (status === 'processing') { if (window.toast) toast('Confirm ho raha hai...', 'info'); }
+      else if (status === 'approved')   { if (window.toast) toast('💎 Sky Diamonds add ho gaye!', 'success'); }
+      else if (status === 'rejected')   { if (window.toast) toast('Payment fail ho gaya', 'err'); }
+      else if (status === 'timeout')    { if (window.toast) toast('Thodi der lag rahi hai — Wallet History mein check karo', 'info'); }
+      else if (status === 'error')      { if (window.toast) toast(detail || 'Kuch galat ho gaya', 'err'); }
+    }
+  });
+};
+
 window._buyDiamondPkg = function(diamonds, price) {
   var h = '<div style="text-align:center;padding:8px 0 14px">';
   h += '<div style="font-size:28px;font-weight:900;color:#00d4ff">💎 ' + diamonds + '</div>';
@@ -72,6 +94,18 @@ window._buyDiamondPkg = function(diamonds, price) {
      Previously the button gave ZERO feedback for the whole (slow) upload
      window, which read as "button kaam hi nahi kar raha". */
   h += '<button id="_diaDepBtn" onclick="window._submitDiaDep(' + diamonds + ',' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#0066ff,#00d4ff);color:#fff;font-size:14px;font-weight:900;cursor:pointer;margin-top:4px">Submit Payment 💎</button>';
+  /* ✅ R26 FIX (2026-09-21): Paytm Instant Checkout was UNREACHABLE.
+     Root cause: wallet.js ka Paytm button showWFStep() step-1 mein tha,
+     lekin wallet ka "Buy Sky Diamonds" startAdd() quick-deposit.js ke
+     window.startAdd se override ho chuka hai (quick-deposit baad mein load
+     hota hai) — isliye wallet.js ka step-1 flow kabhi render hi nahi hota
+     tha aur Paytm button (chahe admin toggle ON bhi kare) user ko kabhi
+     nahi dikhta tha. Ab Paytm Instant option isi LIVE user-flow mein
+     dikhta hai — sirf tab jab admin ne toggle ON kiya ho
+     (CFG.paytmEnabled). Manual screenshot-path bilkul waise hi rehta hai. */
+  if (window.CFG && window.CFG.paytmEnabled && window.startPaytmPayment) {
+    h += '<button onclick="window._paytmInstantPay(' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#00baf2,#0095d7);color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-top:6px">⚡ Pay Instantly via Paytm (UPI) — Auto Credit</button>';
+  }
   if (window.openModal) openModal('💎 Buy ' + diamonds + ' Sky Diamonds', h);
   var _ss = '';
   var _submitting = false;
