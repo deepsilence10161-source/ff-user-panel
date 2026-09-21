@@ -3,6 +3,27 @@
 
 ---
 
+## 🔴 2026-09-22i — R28i: Khareedi cosmetics/achievements refresh par gayab (ghost-load fix)
+**Files:** `core/listeners.js`
+
+### Bug (live-proven, e2e: buy → equip → refresh)
+Cosmetic kharid kar equip kiya (`tag_beast`, purchase_cosmetic 200, DB me
+`is_equipped=true` row maujood) — par fresh login/session par
+`window._supaCosmetics` UNDEFINED reh jata tha aur store phir se "Buy"
+dikhata tha (own item locked jaisa). Root: `boot()` ke andar `_loadExtras()`
+ghost-samay me chalta hai — jab Supabase client abhi Firebase-JWT se
+TOKENIZED nahi hua hota (anon) — isliye RLS `user_cosmetics`/
+`user_achievements` SELECT ko khali return karta hai aur
+`_supaCosmetics={}` hamesha ke liye atak jata hai (koi retry nahi tha).
+
+### Fix
+`_bootChannelSetup()` (jo TOKENIZED client ready hone par db.js se 800ms
+baad aur TOKEN_REFRESHED par chalta hai) ab `_loadExtras()` dobara bulata
+hai — ownership/achievements real auth me load hote hain. Idempotent,
+koi nuksaan nahi.
+
+---
+
 ## 🔴 2026-09-22h — R28h: Equipped tag/frame profile par raw-key ("tag_beast") nahi, catalog name dikhega
 **Files:** `features/growth.js`
 
