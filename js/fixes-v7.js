@@ -39,6 +39,28 @@ function waitFor(fn, cb, max) {
 waitFor(function () { return window.db && window.calcRk && !window._v7RankInstalled; }, function () {
   window._v7RankInstalled = true;
 
+  /* R28o FIX: db.ref('users') list-read अब Supabase bridge से flat shape
+     (total_wins/total_kills/total_matches/avatar_url) देता है, पुराने
+     Firebase {stats:{...}} shape नहीं। renderUsers (नीचे) u.stats.kills
+     पढ़ता था → हमेशा 0। Normalizer flat→stats map करता है। */
+  function _normRankUser(u, key) {
+    var o = { _uid: key };
+    if (u) {
+      o.ign         = u.ign || u.displayName || '';
+      o.displayName = u.displayName || u.ign || '';
+      o.profileImage = u.avatar_url || u.avatarUrl || u.profileImage || '';
+      o.ffUid       = u.ff_uid || '';
+      o.rankPoints  = Number(u.rank_points || 0);
+      o.winStreak   = Number(u.win_streak || u.winStreak || 0);
+      o.stats = {
+        matches: Number(u.total_matches || u.matches || 0),
+        wins:    Number(u.total_wins    || u.wins   || 0),
+        kills:   Number(u.total_kills   || u.kills  || 0)
+      };
+    }
+    return o;
+  }
+
   /* Cache for instant repeat renders */
   var _cachedUsers = null;
   var _cacheTime = 0;
@@ -220,7 +242,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
         if (snap.exists()) {
           snap.forEach(function(c) {
             var u = c.val();
-            if (u && (u.ign||u.displayName)) users.push(Object.assign({_uid:c.key}, u));
+            if (u && (u.ign||u.displayName||u.total_kills!==undefined)) users.push(_normRankUser(u, c.key));
           });
         }
       } catch(e) {}
@@ -290,7 +312,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
     if (!_cachedUsers && window.db) {
       window.db.ref('users').limitToLast(300).once('value', function(snap) {
         var users = [];
-        try { if(snap.exists()) snap.forEach(function(c){ var u=c.val(); if(u&&(u.ign||u.displayName)) users.push(Object.assign({_uid:c.key},u)); }); } catch(e) {}
+        try { if(snap.exists()) snap.forEach(function(c){ var u=c.val(); if(u&&(u.ign||u.displayName||u.total_kills!==undefined)) users.push(_normRankUser(u, c.key)); }); } catch(e) {}
         _cachedUsers = users;
         _cacheTime = Date.now();
       });

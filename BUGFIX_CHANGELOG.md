@@ -4,6 +4,31 @@
 ---
 
 
+## 🔴 2026-09-22o — R28o: Rank leaderboard flat-shape 0-kills fix (bridge-normalizer)
+**Files:** `js/fixes-v7.js`
+
+### Bug (live-proven — screen + DB + bridge तीन-तरह से)
+Rank screen सबको "0 kills / 0 wins / K:0 W:0" दिखा रहा था, जबकि:
+- Supabase `leaderboard` + `users` में QAUserOne=18 kills, QAUserTwo=12,
+  QAUserThree=4 (service-role live-read confirmed)
+- client `_supa.from('leaderboard').select('*')` भी सही data देता था
+- पर screen render 0 (rank_deep_probe + नेटवर्क trace: rank पर कोई
+  `/leaderboard` request ही नहीं हुई)
+
+Root: `fixes-v7.js` अपना खुद का `renderRank` install करता है जो `window.db
+.ref('users').limitToLast(...).once('value')` से data लेता है। यह bridge के
+जरिए (db-bridge L751) अब `user_public_profiles` view से flat-shape
+(`total_wins/total_kills/total_matches`) लौटाता है, जबकि v7 का renderUsers
+वो पुराना Firebase `{stats:{kills}}` shape ढूँढ़ता था → undefined → सब 0
+(names तो दिखते, सिर्फ stats zero)।
+
+Fix: v7 में `_normRankUser()` normalizer जोड़ा — flat Supabase-shape को
+`{_uid, ign, profileImage, stats:{matches,wins,kills}}` में map करता है;
+दोनों fetch-paths (fetchAndRender + 2s-warmup) उसी से गुजरते हैं।
+
+---
+
+
 ## 🔴 2026-09-22n — R28n: Premium sales-copy false claims hatao (Early-Access + Priority-Support) + sw.js ASSET_VER re-sync
 **Files:** `features/premium.js`, `features/premium-creator.js`, `sw.js`
 
