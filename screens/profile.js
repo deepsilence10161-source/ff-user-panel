@@ -5,6 +5,8 @@ function renderProfile() {
   /* R28: equipped cosmetics — frame warna + tag prefix */
   var _eqFrame = window.getEquippedFrameColor ? window.getEquippedFrameColor() : null;
   var _eqTag   = window.getEquippedTagText    ? window.getEquippedTagText()    : null;
+  /* R28g: VIP Slot Pass equipped → ⭐ VIP chip (cosmetic ka असली-use, pehle kuch bhi nahi dikhta tha) */
+  var _eqVip   = window.getEquippedCosmetic ? window.getEquippedCosmetic('vip') : null;
   var st = UD.stats || {}, rk = calcRk(st);
   var lv = 1 + Math.floor((st.matches||0)/3) + Math.floor((st.wins||0)*2) + Math.floor((st.kills||0)/10) + Math.floor((st.earnings||0)/50);
   var xp = ((st.matches||0)%3)*3 + ((st.kills||0)%10);
@@ -84,6 +86,7 @@ function renderProfile() {
   h += '<span style="font-size:12px;font-weight:800;color:#fff">Lvl ' + lv + '</span>';
   h += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:' + rk.bg + ';border:1px solid ' + rk.color + '55;color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</span>';
   if (UD.title) h += '<span class="prof-title-chip">' + UD.title + '</span>';
+  if (_eqVip) h += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700">⭐ VIP</span>';
   h += '</div>';
   h += '<div class="xp-bar-wrap" style="margin:8px 0 0;background:transparent;border:none;padding:0"><div class="xp-bar-top" style="margin-bottom:5px"><span class="xp-level" style="font-size:10px;-webkit-text-fill-color:#999;background:none">' + rk.pts + ' pts</span><span class="xp-text" style="font-size:10px">' + xp + '/' + maxXp + ' XP</span></div>';
   h += '<div class="xp-track" style="height:7px"><div class="xp-fill" style="width:' + xpPct + '%"></div></div></div>';

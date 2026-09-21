@@ -484,22 +484,37 @@ window.copyReferCode = function(code) {
    5. SKY DIAMOND COSMETICS STORE
    ================================================================ */
 function _getCosmetics() {
+  /* R28g (2026-09-22): har item ki desc ek hi static map se — pehle desc
+     field exist hi nahi karta tha, isliye store ke har card par "undefined"
+     print hota tha (live-proven). CFG.cosmetics (backend) me bhi desc nahi
+     bheja jata, isliye desc yahan client-side feature-copy hi hai. */
+  var DESC = {
+    frame_neon:   'Neon glow border',
+    frame_fire:   'Jalti Fire border',
+    frame_galaxy: 'Galaxy purple glow',
+    frame_gold:   'Gold champion border',
+    tag_beast:    '⚡ BEAST MODE tag',
+    tag_pro:      '🎯 PRO PLAYER tag',
+    tag_king:     '👑 KING tag',
+    vip_slot:     '⭐ VIP badge apne profile par'
+  };
   if (window.CFG && window.CFG.cosmetics) {
     return Object.keys((window.CFG && window.CFG.cosmetics)).map(function(id) {
       var c = (window.CFG && window.CFG.cosmetics)[id];
       return { id: id, name: c.name, price: c.price, icon: c.icon,
+        desc: DESC[id] || c.desc || '',
         type: id.startsWith('frame') ? 'frame' : id.startsWith('tag') ? 'tag' : 'vip' };
     });
   }
   return [
-    { id:'frame_neon',   name:'Neon Frame',     price:50,  icon:'🟢', type:'frame' },
-    { id:'frame_fire',   name:'Fire Frame',      price:75,  icon:'🔥', type:'frame' },
-    { id:'frame_galaxy', name:'Galaxy Frame',    price:100, icon:'🌌', type:'frame' },
-    { id:'frame_gold',   name:'Gold Champion',   price:150, icon:'🏆', type:'frame' },
-    { id:'tag_beast',    name:'⚡ BEAST MODE',   price:30,  icon:'⚡', type:'tag'   },
-    { id:'tag_pro',      name:'🎯 PRO PLAYER',   price:30,  icon:'🎯', type:'tag'   },
-    { id:'tag_king',     name:'👑 KING',         price:50,  icon:'👑', type:'tag'   },
-    { id:'vip_slot',     name:'VIP Slot Pass',   price:200, icon:'⭐', type:'vip'   },
+    { id:'frame_neon',   name:'Neon Frame',     price:50,  icon:'🟢', desc:DESC.frame_neon,   type:'frame' },
+    { id:'frame_fire',   name:'Fire Frame',      price:75,  icon:'🔥', desc:DESC.frame_fire,   type:'frame' },
+    { id:'frame_galaxy', name:'Galaxy Frame',    price:100, icon:'🌌', desc:DESC.frame_galaxy, type:'frame' },
+    { id:'frame_gold',   name:'Gold Champion',   price:150, icon:'🏆', desc:DESC.frame_gold,   type:'frame' },
+    { id:'tag_beast',    name:'⚡ BEAST MODE',   price:30,  icon:'⚡', desc:DESC.tag_beast,    type:'tag'   },
+    { id:'tag_pro',      name:'🎯 PRO PLAYER',   price:30,  icon:'🎯', desc:DESC.tag_pro,      type:'tag'   },
+    { id:'tag_king',     name:'👑 KING',         price:50,  icon:'👑', desc:DESC.tag_king,     type:'tag'   },
+    { id:'vip_slot',     name:'VIP Slot Pass',   price:200, icon:'⭐', desc:DESC.vip_slot,     type:'vip'   },
   ];
 }
 

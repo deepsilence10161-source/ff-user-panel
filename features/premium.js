@@ -29,12 +29,12 @@ function _buildTiers(){
   var _premPrices  = _premCfg.prices  || {};
   var _premBonuses = _premCfg.bonuses || {};
   return [
-    {tier:1,price:_premPrices[1]||49,label:'Silver',icon:'🥈',color:'#e0e0e0',glow:'rgba(224,224,224,.5)',bg:'rgba(224,224,224,.06)',border:'rgba(224,224,224,.25)',gdBonus:_premBonuses[1]||5,
-     perks:[{i:'🚫',t:'No Ads — match join karte waqt koi ad nahi'},{i:'🥈',t:'Premium Silver Badge — profile par dikh'},{i:'🖼️',t:'Profile Photo & Banner Change — apni photo/banner lagao'},{i:'GD',t:(_premBonuses[1]||50)+' Coins bonus har mahine'}]},
-    {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',gdBonus:_premBonuses[2]||150,best:true,
-     perks:[{i:'✅',t:'Silver ke saare features shaamil'},{i:'🎮',t:'Creator Program Unlock — apne matches host karo, referral commission kamao'},{i:'📡',t:'Live Stream Slot — apna YouTube/Insta stream link app mein dikhao'},{i:'GD',t:(_premBonuses[2]||150)+' Coins bonus har mahine'}]},
-    {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',gdBonus:_premBonuses[3]||400,
-     perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'⏰',t:'Early Match Access — room 10 min pehle milega'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'⚡',t:'Priority Customer Support — ticket sabse pehle'},{i:'GD',t:(_premBonuses[3]||400)+' Coins bonus har mahine'}]}
+    {tier:1,price:_premPrices[1]||49,label:'Silver',icon:'🥈',color:'#e0e0e0',glow:'rgba(224,224,224,.5)',bg:'rgba(224,224,224,.06)',border:'rgba(224,224,224,.25)',coinBonus:_premBonuses[1]||50,
+     perks:[{i:'🚫',t:'No Ads — match join karte waqt koi ad nahi'},{i:'🥈',t:'Premium Silver Badge — profile par dikh'},{i:'🖼️',t:'Profile Photo & Banner Change — apni photo/banner lagao'},{i:'🪙',t:(_premBonuses[1]||50)+' Coins bonus har mahine'}]},
+    {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',coinBonus:_premBonuses[2]||150,best:true,
+     perks:[{i:'✅',t:'Silver ke saare features shaamil'},{i:'🎮',t:'Creator Program Unlock — apne matches host karo, referral commission kamao'},{i:'📡',t:'Live Stream Slot — apna YouTube/Insta stream link app mein dikhao'},{i:'🪙',t:(_premBonuses[2]||150)+' Coins bonus har mahine'}]},
+    {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',coinBonus:_premBonuses[3]||400,
+     perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'⏰',t:'Early Match Access — room 10 min pehle milega'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'⚡',t:'Priority Customer Support — ticket sabse pehle'},{i:'🪙',t:(_premBonuses[3]||400)+' Coins bonus har mahine'}]}
   ];
 }
 var TIERS=_buildTiers(); // initial snapshot for any early reference; _renderPremModal() rebuilds fresh on each open
@@ -104,8 +104,9 @@ function _renderPremModal(){
     h+='<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">';
     t.perks.forEach(function(p){h+='<div style="display:flex;align-items:flex-start;gap:9px"><div style="width:22px;height:22px;border-radius:7px;background:'+t.color+'15;border:1px solid '+t.color+'40;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">'+(p.i==='GD'?GDI(12):p.i)+'</div><div style="font-size:12px;color:#ddd;line-height:1.55;margin-top:3px">'+p.t+'</div></div>';});
     h+='</div>';
-    /* GD bonus pill */
-    h+='<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:11px;background:rgba(0,255,100,.05);border:1px solid rgba(0,255,100,.15);margin-bottom:13px">'+GDI(16)+' <span style="font-size:12px;color:#00ff64;font-weight:700">'+t.gdBonus+' Green Diamonds / mahine bonus</span></div>';
+    /* Monthly Coins bonus pill — server claim_premium_monthly_bonus COINS
+       {50,150,400} credit karta hai (Green Diamonds nahi), copy ab sach se match */
+    h+='<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:11px;background:rgba(255,190,20,.06);border:1px solid rgba(255,190,20,.18);margin-bottom:13px"><span style="font-size:15px">🪙</span> <span style="font-size:12px;color:#ffc53d;font-weight:700">'+t.coinBonus+' Coins / mahine bonus</span></div>';
     /* CTA */
     if(!isA)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#333);color:'+(t.tier===1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px '+t.glow+';letter-spacing:.3px">Upgrade to '+t.label+' →</button>';
     else h+='<div style="text-align:center;font-size:12px;color:'+t.color+';font-weight:700;padding:10px;background:'+t.color+'10;border-radius:11px">✅ Yeh tumhara current plan hai</div>';

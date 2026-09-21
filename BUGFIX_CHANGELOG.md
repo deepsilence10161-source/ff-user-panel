@@ -3,6 +3,34 @@
 
 ---
 
+## 🔴 2026-09-22g — R28g: Cosmetics Store "undefined" + VIP Slot (beasr) + premium copy झूठी-दावे
+**Files:** `features/growth.js`, `features/premium.js`, `screens/profile.js`
+
+### 1. Cosmetics Store हर card पर "undefined" (live-proven)
+Store ke har item card par desc mein "undefined" print hota tha. Root:
+`_getCosmetics()` ke items mein `desc` field tha hi nahi (na fallback
+catalog mein, na `app_settings.live_config.cosmetics` backend mein),
+lekin `renderCosmeticCards` `c.desc` render karta tha. FIX: ek static
+`DESC` map (frame/tag/vip) — CFG aur fallback dono path ab desc dikhate
+hain, "undefined" gayab.
+
+### 2. Premium bonus दावा "Green Diamonds" (ग़लत) — ab "Coins" (सच)
+`claim_premium_monthly_bonus` server COINS credit karta hai {50,150,400}
+(live-proven function-def), lekin premium modal ki bonus-pill green-
+diamond icon + color ke saath "Green Diamonds / mahine" dikhati thi, aur
+fallback default bhi galat tha (5, server 50). FIX: pill ab 🪙 Coins
+icon + warna, label "Coins / mahine", fallback `||50` (server-map se
+match). Perk-lines bhi `GD` → `🪙` icon.
+
+### 3. VIP Slot Pass (₹200 SD) be-asar tha — ab real use
+`vip_slot` ka koi consumer nahi tha — "Priority slot" ka claim kahin
+implement nahi tha (silently broken sellable). FIX: equipped hone par
+profile header par ⭐ VIP chip dikhta hai (`getEquippedCosmetic('vip')`
++ profile render), desc bhi sach kiya "⭐ VIP badge apne profile par".
+(Koi feature delete nahi hua; VIP-shop item ab visually-asli hai.)
+
+---
+
 ## 🔴 2026-09-22e — R28e: PERMISSION_DENIED pageerror (anti-cheat headless alert raw-Firebase me)
 **Files:** `js/anti-cheat.js`
 
