@@ -101,10 +101,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
         promptOptions: { autoPrompt: false }
       });
     } catch (e) {
-      console.warn('[OneSignal] init failed — push notifications unavailable this session. ' +
-        'If this says "AppID doesn\'t match existing apps", check the OneSignal ' +
-        'dashboard: (1) app 9c00aa92-... still exists and is not deleted, ' +
-        '(2) its allowed origins include this exact domain. Error:', e && e.message);
+      console.warn('[OneSignal] init failed — push unavailable this session (app a65c45fc). Check dashboard app exists + allowed origins. Error:', e && e.message);
     }
   });
 </script>
