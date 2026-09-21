@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 
 import com.onesignal.OneSignal;
 import com.onesignal.debug.LogLevel;
@@ -102,8 +103,16 @@ public final class OneSignalManager {
                 .setMessage(
                     "You can now send Push Notifications & In-App Messages through OneSignal. "
                     + "Tap below to enable push notifications.")
-                .setPositiveButton("Got it", (dialog, which) ->
-                    OneSignal.getNotifications().requestPermission(true, result -> { }))
+                /* नोट: आधिकारिक prompt का Java-sample requestPermission(true,
+                   result->{}) 5.9.2 पर compile नहीं होता (callback Kotlin
+                   Continuation है, functional-interface नहीं) — इसलिए वही
+                   काम native POST_NOTIFICATIONS request से (वैसा ही व्यवहार) */
+                .setPositiveButton("Got it", (dialog, which) -> {
+                    if (android.os.Build.VERSION.SDK_INT >= 33) {
+                        ActivityCompat.requestPermissions(activity,
+                            new String[]{ "android.permission.POST_NOTIFICATIONS" }, 4101);
+                    }
+                })
                 .setCancelable(false)
                 .show();
         } catch (Throwable ignored) { }

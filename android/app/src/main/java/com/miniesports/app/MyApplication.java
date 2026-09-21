@@ -12,19 +12,7 @@ public class MyApplication extends Application {
 
 
 
-    public static void osUnbindUser() {
-        try {
-            OneSignal.logout();
-        } catch (Throwable t) {
-            saveCrashStatic("OneSignal.logout failed (non-fatal)", t);
-        }
-    }
 
-    private static void saveCrashStatic(String label, Throwable t) {
-        try {
-            FirebaseCrashlytics.getInstance().recordException(t);
-        } catch (Exception ignored) { }
-    }
 
     @Override
     public void onCreate() {
