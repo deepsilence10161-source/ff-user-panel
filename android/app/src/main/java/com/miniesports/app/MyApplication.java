@@ -12,7 +12,33 @@ import java.util.Date;
 public class MyApplication extends Application {
 
     private static final String ONESIGNAL_APP_ID =
-        "f263d25f-d176-412f-90b0-c07f791166ed";
+        "a65c45fc-7579-4851-8f1f-225721a81668";
+
+    /* R23 (2026-09-21): WebView-JS se native-SDK identity bridge.
+       AndroidBridge.osLogin(uid) isko call karta hai — isse OneSignal
+       is device ko usi user se bind karta hai (external_id = firebase-uid)
+       aur server ka push-send usi ko target karta hai. */
+    public static void osBindUser(String uid) {
+        try {
+            OneSignal.login(uid);
+        } catch (Throwable t) {
+            saveCrashStatic("OneSignal.login failed (non-fatal)", t);
+        }
+    }
+
+    public static void osUnbindUser() {
+        try {
+            OneSignal.logout();
+        } catch (Throwable t) {
+            saveCrashStatic("OneSignal.logout failed (non-fatal)", t);
+        }
+    }
+
+    private static void saveCrashStatic(String label, Throwable t) {
+        try {
+            FirebaseCrashlytics.getInstance().recordException(t);
+        } catch (Exception ignored) { }
+    }
 
     @Override
     public void onCreate() {

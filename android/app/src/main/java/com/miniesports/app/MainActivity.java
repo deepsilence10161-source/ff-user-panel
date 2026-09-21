@@ -45,6 +45,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 // ─────────────────────────────────────────────────────────────────
 
+import com.onesignal.OneSignal;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -106,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
         showLastCrashIfAny();
         setContentView(R.layout.activity_main);
 
+        /* R23: Android 13+ (API 33) पर notification permission runtime माँगना
+           ज़रूरी — OneSignal native push के लिए। v33 से पहले no-op। */
+        try {
+            OneSignal.requestPermission(true);
+        } catch (Throwable ignored) { }
         ActivityCompat.requestPermissions(this, new String[]{
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -182,6 +188,25 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public boolean isAndroidApp() { return true; }
+
+        /* R23 (2026-09-21): OneSignal native push — WebView के user को
+           native SDK से bind/unbind करना (external_id = firebase-uid).
+           MyApplication.osBindUser → OneSignal.login(uid). */
+        @JavascriptInterface
+        public void osLogin(String uid) {
+            try {
+                if (uid != null && uid.length() > 10) {
+                    MyApplication.osBindUser(uid);
+                }
+            } catch (Exception ignored) { }
+        }
+
+        @JavascriptInterface
+        public void osLogout() {
+            try {
+                MyApplication.osUnbindUser();
+            } catch (Exception ignored) { }
+        }
 
         /* ✅ FORCE UPDATE (2026-07): returns the REAL installed APK's
            versionName straight from PackageManager — this can only change

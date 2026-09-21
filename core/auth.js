@@ -366,6 +366,13 @@ async function _handleSignIn(user) {
 
   /* Save OneSignal tag */
   if (window._saveOneSignalId) window._saveOneSignalId(user.uid);
+  /* R23: APK में native OneSignal-SDK से user-bind (external_id = uid) —
+     इसी से server का push-send सही user को native notification भेज पाता है। */
+  try {
+    if (window.Android && typeof window.Android.osLogin === 'function') {
+      window.Android.osLogin(user.uid);
+    }
+  } catch(e) {}
 
   /* Boot app */
   if (window.afterLogin) window.afterLogin(window.U);
@@ -391,6 +398,13 @@ window.doLogout = function() {
   try {
     if (window.Android && typeof window.Android.nativeGoogleSignOut === 'function') {
       window.Android.nativeGoogleSignOut();
+    }
+  } catch(e) {}
+
+  /* R23: native OneSignal unbind — अगले user को पिछले के pushes न मिलें */
+  try {
+    if (window.Android && typeof window.Android.osLogout === 'function') {
+      window.Android.osLogout();
     }
   } catch(e) {}
 
