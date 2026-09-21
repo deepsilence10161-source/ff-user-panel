@@ -102,13 +102,22 @@ window.showSeasonInfo = function() {
 /* ── Season History (profile pe) ── */
 window.showSeasonHistory = function() {
   if (!window.U) { toast('Login karo pehle', 'err'); return; }
+  /* R28b FIX (2026-09-22): ye function renderSeasonHistory(hist) bulata
+     tha, jo #seasonHistList element dhunda karta tha — par koi modal
+     khula hi nahi jata tha, isliye wo element kabhi exist hi nahi karta,
+     aur button dabane par KABHI KUCH DIKHTA HI NAHI THA (renderSeasonHistory
+     silently return ho jata tha). Ab modal pehle khulta hai (spinner +
+     #seasonHistList ke saath), data aane par renderSeasonHistory use
+     bhar deta hai — showMatchHistory jaisa hi existing pattern. */
+  var h = '<div id="seasonHistList" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading…</div>';
+  if (window.openModal) openModal('🏆 Season History', h);
   /* Load season history from Supabase */
   if (window._supa) {
     window._supa.from('seasonal_league_history').select('*').eq('user_id', window.U.uid).order('created_at', { ascending: false })
       .then(function(r) {
         var hist = (r.data || []).map(function(s) { return { seasonName: s.season_name, seasonNum: s.season_num, finalTier: s.final_tier, points: s.points, badge: s.badge, reward: s.reward, emoji: s.emoji }; });
         if (window.renderSeasonHistory) renderSeasonHistory(hist);
-      }).catch(function(){ toast('Season history load nahi hui', 'err'); });
+      }).catch(function(){ if (window.renderSeasonHistory) renderSeasonHistory([]); });
     return;
   }
   /* Fallback: empty history if Supabase not ready */

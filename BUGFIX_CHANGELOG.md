@@ -3,6 +3,25 @@
 
 ---
 
+## 🔴 2026-09-22b — R28b: Season History button kabhi kuch dikhata hi nahi tha (full panel live-test)
+**Files:** `features/seasonal-league.js`, `index.html`, `sw.js`
+
+### Bug (live-proven)
+profile → "Season History" button dabaya to KABHI KUCH NAHI DIKHTA THA.
+Root: `showSeasonHistory()` sirf `renderSeasonHistory(hist)` bulata tha, wo
+`#seasonHistList` element dhunda tha — lekin `showSeasonHistory` ne kabhi
+modal khola hi nahi, isliye wo element exist hi nahi karta, aur
+renderSeasonHistory har baar silently `return` ho jata tha.
+`#seasonHistList` pure repo me kahin create hi nahi hota tha.
+
+### Fix
+- `showSeasonHistory()` ab pehle modal kholta hai (spinner + `#seasonHistList`),
+  Supabase `seasonal_league_history` fetch ke baad `renderSeasonHistory` ko
+  bhar deta hai — `showMatchHistory` jaisa hi existing pattern.
+- koi data-layer/schema change nahi.
+
+---
+
 ## 🔴 2026-09-22a — R28: Premium perks ab ASLI (audioit se mile saare fixes)
 **Files:** `features/premium.js`, `features/free-trial.js`, `screens/profile.js`, `features/growth.js`, `index.html`, `sw.js`
 **DB half:** `get_room_credentials` v4 (Diamond Early Access) — admin repo `sql and developer guide/2026-09-22a-R28-PREMIUM-DELTA.sql`
