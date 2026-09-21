@@ -678,7 +678,7 @@ async function _doJoinCore(id, t, tp) {
     _joinInFlight = false; /* ✅ Release join lock */
     clearTimeout(_jifTimer);
     toast('Joined successfully! 🎮', 'ok');
-    _sessionJoinedMatches[uid + '_' + id] = true; /* Bug #18 dedup mark */
+    _sessionJoinedMatches[U.uid + '_' + id] = true; /* Bug #18 dedup mark — R28b: uid→U.uid ("uid is not defined" fix) */
   }, false);
 }
 
@@ -717,7 +717,7 @@ function _afterJoinSuccess(id, t, tp, jid, assignedSlots) {
   closeModal();
   partnerCache = {};
   toast('🎮 Joined successfully! Room ID match time pe milega.', 'ok');
-  _sessionJoinedMatches[uid + '_' + id] = true; /* Bug #18 dedup mark */
+  _sessionJoinedMatches[U.uid + '_' + id] = true; /* Bug #18 dedup mark — R28b: uid→U.uid ("uid is not defined" fix) */
   /* Update local JR cache immediately so hasJ() works without reload */
   if (!window.JR) window.JR = {};
   JR[jid] = { matchId: id, userId: U.uid, status: 'joined', mode: tp, createdAt: Date.now() };

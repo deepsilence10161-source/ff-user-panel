@@ -3,6 +3,32 @@
 
 ---
 
+## 🔴 2026-09-22c — R28c: Join-flow "uid is not defined" crash (join सफल होकर भी error दिखता था)
+**Files:** `screens/join.js`, `index.html`, `sw.js`
+
+### Bug (live-proven, full-panel join flow)
+Join सफल हो जाता था (Supabase `join_requests` row बनती थी, "Joined
+successfully" bhi आता था) — लेकिन तुरंत बाद एक दूसरा toast आता था
+"❌ Join failed: uid is not defined" और console में PERMISSION_DENIED।
+Root: `screens/join.js` में दो जगह (L681, L720 / `_afterJoinSuccess` +
+team-join path) `_sessionJoinedMatches[uid + '_' + id]` लिखा था — यहाँ
+`uid` undeclared variable है (सही `U.uid`)। ReferenceError से उस success-
+handler का बाक़ी कोड (JR-cache update, UI refresh) अधूरा छूट जाता था,
+इसलिए join "हुआ-पर-नहीं-दिखा" जैसा भ्रम होता था।
+
+### Fix
+- दोनों जगह `uid` → `U.uid` (surgical, कोई और बदलाव नहीं)।
+- team-partner join वाला दूसरा path भी ढक लिया।
+
+### नोट (अगला-काम)
+Join की Firebase-`db.ref('joinRequests')` mirror-writes Supabase-bridge से
+दोहरी-लिखावट भी करती हैं (RPC पहले ही insert कर चुका होता है) — यह
+silent-duplicate है, PERMISSION_DENIED उसी से। Data-layer सही है (RPC
+ही असली-लेखन है), पर duplicate-writes की सफ़ाई अगले-राउंड (डुप्लीकेट/
+मिरर-सफ़ाई) में अलग से करूँगा — इसे बिना-सोचे-समझे हाथ नहीं लगाया।
+
+---
+
 ## 🔴 2026-09-22b — R28b: Season History button kabhi kuch dikhata hi nahi tha (full panel live-test)
 **Files:** `features/seasonal-league.js`, `index.html`, `sw.js`
 
