@@ -667,12 +667,26 @@ var _COS_FRAME_COLORS = {
 window.getEquippedCosmetic = function(typ) {
   var owned = (window.UD && window.UD.cosmetics) || {};
   var hit = null;
+  /* R28h: user_cosmetics DB row mein 'name' column nahi hai — raw
+     cosmetic_key ("tag_beast") profile par chip ban ke dikh raha tha
+     (live-proven). Ab display-name catalog (_getCosmetics) se resolve
+     hota hai, warna "⚡ BEAST MODE" ki jagah "tag_beast" dikh raha tha. */
   Object.keys(owned).forEach(function(k) {
     var c = owned[k] || {};
-    if (c.is_equipped && k.split('_')[0] === typ) hit = { id: k, name: c.name || k, row: c };
+    if (c.is_equipped && k.split('_')[0] === typ) hit = { id: k, name: c.name || _cosmeticName(k) || k, row: c };
   });
   return hit;
 };
+/* catalog se display-name nikaalo (key se) */
+function _cosmeticName(key) {
+  try {
+    var items = _getCosmetics();
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === key) return items[i].name;
+    }
+  } catch(e) {}
+  return null;
+}
 window.getEquippedFrameColor = function() {
   var f = window.getEquippedCosmetic('frame');
   if (!f) return null;
