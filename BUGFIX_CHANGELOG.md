@@ -3,6 +3,30 @@
 
 ---
 
+## 🔴 2026-09-22a — R28: Premium perks ab ASLI (audioit se mile saare fixes)
+**Files:** `features/premium.js`, `features/free-trial.js`, `screens/profile.js`, `features/growth.js`, `index.html`, `sw.js`
+**DB half:** `get_room_credentials` v4 (Diamond Early Access) — admin repo `sql and developer guide/2026-09-22a-R28-PREMIUM-DELTA.sql`
+
+### Kya badla (sab live-verified)
+- **Bonus currency ek** — har jagah Coins {50/150/400}/mo (server
+  `claim_premium_monthly_bonus`). Purani "+5/15/35 Green Diamonds" copy hatai
+  (kabhi GD credit hota hi nahi tha).
+- **Free trial 3 din** (server `start_free_trial()` = 3 days tier 1) — "7-din",
+  "5 GD bonus", "Green Name" ke galat claims removed; reminder final-day par.
+- **Early Match Access ASLI** — `get_room_credentials` v4: unexpired
+  `premium_level>=3` wale JOINED user ko room +10 min pehle. Join-check intact.
+- **Priority Support ASLI** — Diamond user ka support-ticket subject
+  `🔷 PRIORITY —` prefix (`submitSupport`, `isPremiumActive(3)`), existing
+  `support_tickets` table — koi schema change nahi.
+- **Cosmetics equip/display wired** — `user_cosmetics.is_equipped` ab store me
+  Apply/Remove (`toggleCosmeticEquip`) + profile me equipped frame (avatar
+  border) + tag (naam prefix). Pehle khareeda item sirf "Owned" dikhkar pada
+  rehta tha — ab lagaya BHI ja sakta hai.
+- **Private Match Host / "Mentor access" claims hatae** (kabhi implement hi
+  nahi the) — Gold tier copy ab sirf Creator Program + Live Stream (dono real).
+
+---
+
 ## 🔴 2026-09-20c — ROOM CREDS: matches table ab poori tarah creds-free (Phase-2)
 **Files:** `features/creator-match-host.js`, `core/db.js`, `index.html`, `sw.js`
 **DB half:** `match_rooms` table + redirect trigger + RPC v3 (admin repo `sql and developer guide/2026-09-20c-ROOM-PHASE2-DELTA.sql`)

@@ -564,12 +564,18 @@ function renderCosmeticCards(filter, owned, mySD) {
   items.forEach(function(c) {
     var isOwned = !!owned[c.id];
     var canBuy = mySD >= c.price;
+    /* R28 (2026-09-22): khareeda hua item ab LAGAYA BHI JA SAKTA hai —
+       "Owned" sirf mark tha, ab Apply/Remove (equip) real hai. */
     h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;text-align:center">';
     h += '<div style="font-size:28px;margin-bottom:6px">' + c.icon + '</div>';
     h += '<div style="font-size:12px;font-weight:800;margin-bottom:3px">' + c.name + '</div>';
     h += '<div style="font-size:10px;color:var(--txt2);margin-bottom:8px">' + c.desc + '</div>';
     if (isOwned) {
-      h += '<span style="font-size:11px;color:#00ff9c;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(0,255,156,.1)">✅ Owned</span>';
+      var isEq = !!(owned[c.id] && owned[c.id].is_equipped);
+      h += '<div style="display:flex;flex-direction:column;gap:5px">';
+      h += '<span style="font-size:11px;color:#00ff9c;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(0,255,156,.1)">✅ Owned' + (isEq ? ' · Active' : '') + '</span>';
+      h += '<button onclick="window.toggleCosmeticEquip(\'' + c.id + '\',this)" style="width:100%;padding:7px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;background:' + (isEq ? 'rgba(255,255,255,.08)' : 'linear-gradient(135deg,#00ff9c,#00cc7a)') + ';border:1px solid ' + (isEq ? 'rgba(255,255,255,.2)' : 'rgba(0,255,156,.4)') + ';color:' + (isEq ? '#ccc' : '#000') + '">' + (isEq ? 'Remove' : 'Apply') + '</button>';
+      h += '</div>';
     } else {
       h += '<button onclick="buyCosmetic(\'' + c.id + '\',' + c.price + ',\'' + encodeURIComponent(c.name) + '\',this)" style="width:100%;padding:7px;border-radius:10px;background:' + (canBuy?'linear-gradient(135deg,#0066ff,#00d4ff)':'rgba(255,255,255,.05)') + ';border:1px solid rgba(0,212,255,' + (canBuy?'.4':'.1') + ');color:' + (canBuy?'#fff':'#555') + ';font-size:11px;font-weight:800;cursor:' + (canBuy?'pointer':'default') + '">💎 ' + c.price + '</button>';
     }
@@ -633,6 +639,87 @@ window.buyCosmetic = function(id, price, encodedName, btnEl) {
     toast('❌ Network error, dobara try karo', 'err');
     if (btn) { btn.disabled = false; btn.textContent = '💎 ' + price; }
   });
+};
+
+/* R28 (2026-09-22): equipped-cosmetic पढ़ने का एक ही source — profile,
+   player-card, rank sab yahin se frame/tag lete hain. */
+var _COS_FRAME_COLORS = {
+  frame_neon:   '#00ff9c',
+  frame_fire:   '#ff6b2b',
+  frame_galaxy: '#b964ff',
+  frame_gold:   '#ffd700'
+};
+window.getEquippedCosmetic = function(typ) {
+  var owned = (window.UD && window.UD.cosmetics) || {};
+  var hit = null;
+  Object.keys(owned).forEach(function(k) {
+    var c = owned[k] || {};
+    if (c.is_equipped && k.split('_')[0] === typ) hit = { id: k, name: c.name || k, row: c };
+  });
+  return hit;
+};
+window.getEquippedFrameColor = function() {
+  var f = window.getEquippedCosmetic('frame');
+  if (!f) return null;
+  return _COS_FRAME_COLORS[f.id] || '#00ff9c';
+};
+window.getEquippedTagText = function() {
+  var t = window.getEquippedCosmetic('tag');
+  return t ? t.name : null;
+};
+
+/* R28 (2026-09-22): Equip/अन-Equip — existing user_cosmetics.is_equipped
+   (core/db.js DB.cosmetics.equip) ko UI se joda. Same-type items ek
+   saath sirf ek active: frame lagane se doosra frame off. */
+window.toggleCosmeticEquip = function(id, btnEl) {
+  if (!window.U || !window.UD || !window._supa) { if (window.toast) toast('Login karo pehle', 'err'); return; }
+  var owned = (window.UD.cosmetics || {});
+  var cur = owned[id] || {};
+  var nowEq = !!cur.is_equipped;
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = '...'; }
+
+  var fn = function() {
+    if (!window.UD.cosmetics) window.UD.cosmetics = {};
+    if (nowEq) {
+      /* Remove: sirf is item ko off */
+      Object.keys(window.UD.cosmetics).forEach(function(k) {
+        if (window.UD.cosmetics[k] && window.UD.cosmetics[k].is_equipped && k.split('_')[0] === id.split('_')[0]) {
+          window.UD.cosmetics[k].is_equipped = false;
+        }
+      });
+    } else {
+      /* Apply: same-type off, is item on */
+      Object.keys(window.UD.cosmetics).forEach(function(k) {
+        if (window.UD.cosmetics[k] && k.split('_')[0] === id.split('_')[0]) {
+          window.UD.cosmetics[k].is_equipped = (k === id);
+        }
+      });
+    }
+    if (window.updateHdr) window.updateHdr();
+    window.showCosmeticsStore();
+  };
+
+  if (nowEq) {
+    /* unequip */
+    window._supa.from('user_cosmetics')
+      .update({ is_equipped: false })
+      .eq('user_id', window.U.uid)
+      .like('cosmetic_key', id.split('_')[0] + '%')
+      .then(fn, function(e) { if (window.toast) toast('❌ Remove nahi hua, dobara try karo', 'err'); if (btnEl) btnEl.disabled = false; });
+  } else {
+    /* unequip same-type, then equip selected */
+    window._supa.from('user_cosmetics')
+      .update({ is_equipped: false })
+      .eq('user_id', window.U.uid)
+      .like('cosmetic_key', id.split('_')[0] + '%')
+      .then(function() {
+        return window._supa.from('user_cosmetics')
+          .update({ is_equipped: true })
+          .eq('user_id', window.U.uid)
+          .eq('cosmetic_key', id);
+      })
+      .then(fn, function(e) { if (window.toast) toast('❌ Apply nahi hua, dobara try karo', 'err'); if (btnEl) btnEl.disabled = false; });
+  }
 };
 
 /* ================================================================

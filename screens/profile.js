@@ -2,6 +2,9 @@
 function renderProfile() {
   var pc = $('profileContent'); if (!pc || !UD) return;
   var av = UD.profileImage ? '<img src="' + UD.profileImage + '">' : (UD.ign || UD.displayName || '?').charAt(0).toUpperCase();
+  /* R28: equipped cosmetics — frame warna + tag prefix */
+  var _eqFrame = window.getEquippedFrameColor ? window.getEquippedFrameColor() : null;
+  var _eqTag   = window.getEquippedTagText    ? window.getEquippedTagText()    : null;
   var st = UD.stats || {}, rk = calcRk(st);
   var lv = 1 + Math.floor((st.matches||0)/3) + Math.floor((st.wins||0)*2) + Math.floor((st.kills||0)/10) + Math.floor((st.earnings||0)/50);
   var xp = ((st.matches||0)%3)*3 + ((st.kills||0)%10);
@@ -69,13 +72,13 @@ function renderProfile() {
   h += '<input type="file" id="profBannerIn" accept="image/*" style="display:none" onchange="uploadBannerImg(this)">';
   /* Avatar (left) */
   h += '<div class="prof-ava-wrap" style="position:relative;flex-shrink:0;z-index:2;margin:0">';
-  h += '<div class="prof-ava" style="width:88px;height:88px;font-size:34px;border:3.5px solid ' + rk.color + ';box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 24px ' + rk.color + 'aa,0 0 46px ' + rk.color + '44;' + ringAnim + '">' + av + '</div>';
+  h += '<div class="prof-ava" style="width:88px;height:88px;font-size:34px;border:3.5px solid ' + (_eqFrame || rk.color) + ';box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 24px ' + (_eqFrame || rk.color) + 'aa,0 0 46px ' + (_eqFrame || rk.color) + '44;' + ringAnim + '">' + av + '</div>';
   h += '<div class="prof-edit-btn" onclick="document.getElementById(\'profImgIn\').click()" title="' + (_premActive?'Change photo':'Premium feature — change photo') + '" style="background:' + rk.color + ';border-color:rgba(5,5,7,.8)">' + (_premActive?'<i class="fas fa-pencil-alt"></i>':'<i class="fas fa-lock" style="font-size:11px"></i>') + '</div>';
   h += '<input type="file" id="profImgIn" accept="image/*" style="display:none" onchange="uploadProfImg(this)">';
   h += '</div>';
   /* Info (right) */
   h += '<div style="flex:1;min-width:0;z-index:2;padding-right:36px">';
-  h += '<div style="font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + premBadge + '</div>';
+  h += '<div style="font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (_eqTag ? '<span style="color:' + (_eqFrame || '#00ff9c') + ';margin-right:6px">' + _eqTag + '</span>' : '') + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + premBadge + '</div>';
   h += '<div style="font-size:10px;color:#888;margin-top:2px;font-weight:600;letter-spacing:.3px">UID: ' + displayUid + '</div>';
   h += '<div style="display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap">';
   h += '<span style="font-size:12px;font-weight:800;color:#fff">Lvl ' + lv + '</span>';
@@ -1043,8 +1046,12 @@ function submitSupport() {
   if (!msg || !msg.trim()) { toast('Describe your issue', 'err'); return; }
   /* ✅ Save to Supabase support_tickets (not Firebase RTDB) */
   if (window._supa && window.U && window.UD) {
+    /* R28 (2026-09-22): Premium members ko priority — subject pe flag,
+       admin ticket-list mein sabse upar dikhega. Data-layer same hai. */
+    var _isPrem = window.isPremiumActive ? isPremiumActive(3) : false; /* Diamond */
+    var _subject = (_isPrem ? '🔷 PRIORITY — ' : '') + (type || 'general');
     window._supa.from('support_tickets').insert({
-      user_id: window.U.uid, subject: type || 'general',
+      user_id: window.U.uid, subject: _subject,
       status: 'open', message: msg.trim(),
       user_ign: window.UD.ign || '', user_ff_uid: window.UD.ff_uid || ''
     }).then(function() {

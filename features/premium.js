@@ -1,8 +1,10 @@
 /* ================================================================
    MINI eSPORTS — PREMIUM SYSTEM v3.0
-   Tier 1  ₹49/month  Silver  — No Ads + Badge + Green Name + 5 GD
-   Tier 2  ₹99/month  Gold    — T1 + Private Match + 15 GD
-   Tier 3  ₹199/month Diamond — T2 + Early Access + Theme + 35 GD
+   Tier 1  ₹49/month  Silver  — No Ads + Silver Badge + Photo/Banner + 50 Coins/mo
+   Tier 2  ₹99/month  Gold    — T1 + Creator Program + Live Stream + 150 Coins/mo
+   Tier 3  ₹199/month Diamond — T2 + Early Match Access (10 min pehle) + Custom Theme + 400 Coins/mo
+   (Bonus currency coins {50,150,400}/mo — server-authoritative, see
+    claim_premium_monthly_bonus. No real-money prize, no withdrawal.)
    POLICY: No real-money prize, no withdrawal from gaming wallet
 ================================================================ */
 (function(){
@@ -28,11 +30,11 @@ function _buildTiers(){
   var _premBonuses = _premCfg.bonuses || {};
   return [
     {tier:1,price:_premPrices[1]||49,label:'Silver',icon:'🥈',color:'#e0e0e0',glow:'rgba(224,224,224,.5)',bg:'rgba(224,224,224,.06)',border:'rgba(224,224,224,.25)',gdBonus:_premBonuses[1]||5,
-     perks:[{i:'🚫',t:'No Ads — match join karte waqt koi ad nahi'},{i:'🥈',t:'Premium Silver Badge — profile par dikh'},{i:'💬',t:'Green Name — lobby chat mein naam hari rang ka'},{i:'🖼️',t:'Profile Photo & Banner Change — apni photo/banner lagao'},{i:'GD',t:(_premBonuses[1]||5)+' Green Diamonds har mahine (rank/badges ke liye)'}]},
-    {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',gdBonus:_premBonuses[2]||15,best:true,
-     perks:[{i:'✅',t:'Silver ke saare features shaamil'},{i:'🏠',t:'Private Match Host — doston ke saath custom room banao'},{i:'🎮',t:'Creator Program Unlock — apne matches host karo, referral commission kamao'},{i:'📡',t:'Live Stream Slot — apna YouTube/Insta stream link app mein dikhao'},{i:'GD',t:(_premBonuses[2]||15)+' Green Diamonds har mahine'}]},
-    {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',gdBonus:_premBonuses[3]||35,
-     perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'⏰',t:'Early Match Access — 15 min pehle dekho'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'⚡',t:'Priority Customer Support'},{i:'GD',t:(_premBonuses[3]||35)+' Green Diamonds har mahine'}]}
+     perks:[{i:'🚫',t:'No Ads — match join karte waqt koi ad nahi'},{i:'🥈',t:'Premium Silver Badge — profile par dikh'},{i:'🖼️',t:'Profile Photo & Banner Change — apni photo/banner lagao'},{i:'GD',t:(_premBonuses[1]||50)+' Coins bonus har mahine'}]},
+    {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',gdBonus:_premBonuses[2]||150,best:true,
+     perks:[{i:'✅',t:'Silver ke saare features shaamil'},{i:'🎮',t:'Creator Program Unlock — apne matches host karo, referral commission kamao'},{i:'📡',t:'Live Stream Slot — apna YouTube/Insta stream link app mein dikhao'},{i:'GD',t:(_premBonuses[2]||150)+' Coins bonus har mahine'}]},
+    {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',gdBonus:_premBonuses[3]||400,
+     perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'⏰',t:'Early Match Access — room 10 min pehle milega'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'⚡',t:'Priority Customer Support — ticket sabse pehle'},{i:'GD',t:(_premBonuses[3]||400)+' Coins bonus har mahine'}]}
   ];
 }
 var TIERS=_buildTiers(); // initial snapshot for any early reference; _renderPremModal() rebuilds fresh on each open
@@ -117,7 +119,7 @@ function _renderPremModal(){
      already claimed, so the button kept showing even after someone used
      their one-time trial (they'd only find out it was already used when
      they tapped it and got an error toast). Now also hides once claimed. */
-  if(!uT && !(window.isTrialUsed && window.isTrialUsed()))h+='<button onclick="if(window.startFreeTrial)window.startFreeTrial()" style="flex:1;padding:11px;border-radius:12px;border:1px solid rgba(224,224,224,.2);background:rgba(224,224,224,.05);color:#e0e0e0;font-size:12px;font-weight:900;cursor:pointer">🎁 7-Din FREE Trial</button>';
+  if(!uT && !(window.isTrialUsed && window.isTrialUsed()))h+='<button onclick="if(window.startFreeTrial)window.startFreeTrial()" style="flex:1;padding:11px;border-radius:12px;border:1px solid rgba(224,224,224,.2);background:rgba(224,224,224,.05);color:#e0e0e0;font-size:12px;font-weight:900;cursor:pointer">🎁 3-Din FREE Trial</button>';
   h+='</div>';
   if(window.openModal)openModal('👑 Premium Club',h);
 }

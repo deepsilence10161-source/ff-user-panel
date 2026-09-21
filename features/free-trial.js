@@ -1,14 +1,18 @@
 /* ================================================================
-   FREE TRIAL SYSTEM — 7-Day Silver Premium Trial
+   FREE TRIAL SYSTEM — 3-Day Silver Premium Trial
    - Pehli baar premium dekho → "FREE try karo" button dikhega
-   - Day 5: reminder notification
-   - Day 7: "Trial khatam — ₹49 mein continue?"
-   - Trial mein: banner ads band, Silver badge, green name
+   - Day end pe: Trial khatam hone par continue prompt
+   - Trial mein (Silver tier 1 ke perks): ads band, Silver badge,
+     profile photo/banner change
+   NOTE (2026-09-22): server start_free_trial() grants PREMIUM LEVEL 1
+   for 3 days (DB source of truth). Client copy ab usi se match karta
+   hai — "7 din" and "5 GD bonus" claims removed (kabhi credit nahi
+   hote the), "Green Name" removed (lobby chat chalu nahi hai).
 ================================================================ */
 (function(){
 'use strict';
 
-var TRIAL_DAYS = 7;
+var TRIAL_DAYS = 3; /* server start_free_trial() grants 3 days tier 1 */
 var TRIAL_KEY  = '_mes_trial_'; /* + uid */
 
 /* ── Trial Status ── */
@@ -96,11 +100,11 @@ function _showTrialWelcome() {
   h += '<div style="font-size:20px;font-weight:900;color:#e0e0e0;margin-bottom:6px">Silver Trial Shuru!</div>';
   h += '<div style="font-size:13px;color:#888;margin-bottom:16px">' + TRIAL_DAYS + ' din bilkul free</div>';
   h += '<div style="background:rgba(224,224,224,.06);border:1px solid rgba(224,224,224,.15);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
-  ['🚫 Koi Ads nahi — match join karte waqt','🥈 Silver Badge — profile par','💬 Green Name — lobby chat mein','📊 5 Green Diamonds bonus is mahine'].forEach(function(p){
+  ['🚫 Koi Ads nahi — match join karte waqt','🥈 Silver Badge — profile par','🖼️ Photo & Banner Change — apna look lagao'].forEach(function(p){
     h += '<div style="font-size:12px;color:#ddd;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)">' + p + '</div>';
   });
   h += '</div>';
-  h += '<div style="font-size:12px;color:#555;margin-bottom:14px">Day 7 pe ₹49/month mein continue kar sakte ho</div>';
+  h += '<div style="font-size:12px;color:#555;margin-bottom:14px">Trial ke baad sirf ₹49/month mein continue kar sakte ho</div>';
   h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:14px;font-weight:900;cursor:pointer">🎮 App Use Karo!</button>';
   h += '</div>';
   if (window.openModal) openModal('🥈 Silver Trial Active!', h);
@@ -114,7 +118,7 @@ function _showTrialExpiredModal() {
   h += '<div style="font-size:13px;color:#888;margin-bottom:16px">Ads wapas aa jayenge — continue karo sirf ₹49/month mein</div>';
   h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:13px;padding:12px;margin-bottom:14px">';
   h += '<div style="font-size:24px;font-weight:900;color:#ffd700;margin-bottom:4px">₹49 <span style="font-size:13px;color:#888">/mahina</span></div>';
-  h += '<div style="font-size:11px;color:#aaa">Ad-free + Silver Badge + 5 GD/month</div>';
+  h += '<div style="font-size:11px;color:#aaa">Ad-free + Silver Badge + 50 Coins/month</div>';
   h += '</div>';
   h += '<button onclick="if(window.buyPremium)buyPremium(1,49)" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px">💳 Silver Kharido — ₹49/month</button>';
   h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#666;font-size:13px;cursor:pointer">Baad mein</button>';
@@ -163,7 +167,7 @@ function _showTrialPrompt(onShowFull) {
   h += '<div style="font-size:19px;font-weight:900;color:#e0e0e0;margin-bottom:6px">FREE Trial Milega!</div>';
   h += '<div style="font-size:13px;color:#888;margin-bottom:18px">Silver Premium ' + TRIAL_DAYS + ' din bilkul free try karo</div>';
   h += '<div style="background:rgba(224,224,224,.06);border:1px solid rgba(224,224,224,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
-  ['🚫 No Ads', '🥈 Silver Badge', '💬 Green Name Chat', '📊 5 GD Bonus'].forEach(function(p){
+  ['🚫 No Ads', '🥈 Silver Badge', '🖼️ Photo & Banner Change'].forEach(function(p){
     h += '<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#ddd;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)">' + p + '</div>';
   });
   h += '</div>';
@@ -191,14 +195,14 @@ function checkTrialState() {
   if (window.isTrialActive()) {
     _applyTrialPerks();
 
-    /* Day 5 reminder */
+    /* Final-day reminder (trial ab 3 din ka hai) */
     var t = window.getTrialStatus();
     if (t && !t.reminderSent) {
       var daysPassed = Math.floor((Date.now() - t.startedAt) / (24 * 60 * 60 * 1000));
-      if (daysPassed >= 5) {
+      if (daysPassed >= TRIAL_DAYS - 1) {
         t.reminderSent = true;
         localStorage.setItem(TRIAL_KEY + uid, JSON.stringify(t));
-        if (window.toast) toast('⏰ Trial ke 2 din baaki — ₹49 mein continue karo!', 'inf');
+        if (window.toast) toast('⏰ Trial aakhri din par hai — ₹49 mein continue karo!', 'inf');
       }
     }
   } else if (window.isTrialExpired()) {
