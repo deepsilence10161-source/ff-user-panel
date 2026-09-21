@@ -24,7 +24,7 @@
    LOCAL_FILES, not just this one, or the exact same "fix doesn't seem
    to apply" pattern will keep recurring for any JS change, not just
    WhatsApp. */
-var CACHE_VER    = 'me-v43-9-21a';
+var CACHE_VER    = 'me-v44-9-21b';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is
@@ -51,7 +51,7 @@ var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
    was silently doing nothing useful for months. Must ALWAYS be kept
    equal to whatever ?v= suffix index.html's local <script>/<link>
    tags use, updated together on every release from now on. */
-var ASSET_VER = '20260921a';
+var ASSET_VER = '20260921b';
 
 var LOCAL_FILES = [
   '','index.html','styles.css','style.css','manifest.json',
