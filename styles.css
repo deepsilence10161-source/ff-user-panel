@@ -1036,3 +1036,19 @@ textarea.f-input{resize:none;min-height:80px}
   0%   { background-position: -200% 0; }
   100% { background-position:  200% 0; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   R19 (2026-09-21) — UX hardening
+   ══════════════════════════════════════════════════════════════ */
+/* FIX: settings-sheet आदि पर हल्के ऊपर-से-नीचे pull पर browser का
+   native pull-to-refresh (गोल घूमता पहिया) trigger होकर पूरा app
+   refresh कर देता था। overscroll-behavior-y: contain उसे रोकता है —
+   scrolling वैसी ही रहती है, सिर्फ chain-to-root pull नहीं जाता।
+   (APK WebView अगर native SwipeRefreshLayout लगाए तो वो APK-side
+   setting है — web-side PTR इससे बंद।) */
+html, body {
+  overscroll-behavior-y: contain;
+}
+/* FIX: rejected/failed deposit history में green मत दिखाओ — muted grey */
+.wh-amt.wha-m { color: #8a91a5; }
+.wh-icon.whi-m { background: rgba(138,145,165,.12); color: #8a91a5; }

@@ -1105,7 +1105,7 @@ window.showProfileSettings = function() {
     return r ? parseInt(r[1],16)+','+parseInt(r[2],16)+','+parseInt(r[3],16) : '255,255,255';
   }
 
-  var h = '<div style="background:#0d0d1a;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding-bottom:env(safe-area-inset-bottom,12px);max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch">';
+  var h = '<div style="background:#0d0d1a;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding-bottom:env(safe-area-inset-bottom,12px);max-height:88vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch">';
   /* Drag handle */
   h += '<div style="text-align:center;padding:14px 0 6px"><div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.18);margin:0 auto"></div></div>';
   /* Header */

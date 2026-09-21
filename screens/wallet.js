@@ -161,11 +161,15 @@ function renderWallet() {
       var amtTxt = isD
         ? (_diaAmt > 0 ? '+💎' + _diaAmt : '+₹' + _inrAmt)
         : '-₹' + _inrAmt;
-      h += '<div class="wh-card"><div class="wh-icon ' + (isD ? 'whi-g' : 'whi-r') + '"><i class="fas fa-' + (isD ? 'arrow-up' : 'arrow-down') + '"></i></div>';
+      /* ✅ FIX (R19, 2026-09-21): rejected/failed deposit को भी green "+💎120"
+         icon+amount मिलता था — misleading (पैसा credit हुआ ही नहीं)। अब failed
+         row muted-grey render होती है; red "Failed" badge पहले से था। */
+      var _fail = (w.status === 'rejected');
+      h += '<div class="wh-card"><div class="wh-icon ' + (isD ? (_fail ? 'whi-m' : 'whi-g') : 'whi-r') + '"><i class="fas fa-' + (isD ? 'arrow-up' : 'arrow-down') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + (isD ? 'Deposit via UPI' : 'Withdrawal') + '</div>';
       h += '<div class="wh-time">' + timeAgo(w.createdAt || w.timestamp) + '</div>';
       if (w.utr || w.transactionId) h += '<div class="wh-utr">UTR: ' + (w.utr || w.transactionId) + '</div>';
-      h += '</div><div class="wh-amt ' + (isD ? 'wha-g' : 'wha-r') + '">' + amtTxt + '</div>';
+      h += '</div><div class="wh-amt ' + (isD ? (_fail ? 'wha-m' : 'wha-g') : 'wha-r') + '">' + amtTxt + '</div>';
       h += '<span class="wh-status ' + sc + '">' + sl + '</span></div>';
     } else {
       // Internal transactions (entry fee, winnings, cashback, etc)
@@ -174,7 +178,14 @@ function renderWallet() {
       if (activeFilter === 'credit' && !isCredit) return;
       if (activeFilter === 'debit' && isCredit) return;
       var typeMap = { winning: '🏆 Prize Won', debit: '🎮 Entry Fee', credit: '💰 Bonus', cashback: '🔄 Cashback', referral: '🤝 Referral', refund: '↩️ Refund', withdraw: '📤 Withdrawal', withdrawal: '📤 Withdrawal', result: '🏆 Prize Won' };
-      var label = typeMap[w.type] || w.description || w.type || 'Transaction';
+      /* ✅ FIX (R19, 2026-09-21): typeMap हर debit को "Entry Fee" दिखा देता था —
+         cosmetics-store से badge खरीदने पर भी "Entry Fee ⚡ BADGE-NAME" render
+         होता था (user confusion: उसे लगा entry-fee कट गई)। अब reason से
+         असली पहचान: cosmetic_purchase → Store Purchase, reward_redemption →
+         Reward Redemption. बाकी reasons पहले जैसा। */
+      var label = (w.reason === 'cosmetic_purchase') ? '🛍️ Store Purchase'
+                : (w.reason === 'reward_redemption') ? '🎁 Reward Redemption'
+                : typeMap[w.type] || w.description || w.type || 'Transaction';
       var desc = w.description || '';
       var iconColor = isCredit ? 'whi-g' : 'whi-r';
       var amtColor = isCredit ? 'wha-g' : 'wha-r';

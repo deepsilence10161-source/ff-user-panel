@@ -580,6 +580,7 @@ function _loadTransactions() {
           type: isWithdraw ? 'withdraw' : (isCredit ? 'credit' : 'debit'),
           amount: isWithdraw ? -amt : (isCredit ? amt : -amt),
           description: t.note || t.reason || '',
+          reason: t.reason || '',
           currency: t.currency || 'coins',
           timestamp: t.created_at ? new Date(t.created_at).getTime() : 0,
           read: true
