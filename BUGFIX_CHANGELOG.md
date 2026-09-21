@@ -3,6 +3,23 @@
 
 ---
 
+## 🔴 2026-09-22h — R28h: Equipped tag/frame profile par raw-key ("tag_beast") nahi, catalog name dikhega
+**Files:** `features/growth.js`
+
+### Bug (live-proven, buy→equip→profile e2e)
+Cosmetic kharid kar equip kiya (`tag_beast`, purchase_cosmetic 200, DB
+`is_equipped=true`) — profile header par naam ki jagah raw DB key
+`tag_beast` chip ban ke dikh raha tha (`⚡ BEAST MODE` nahi). Root:
+`user_cosmetics` DB row mein `name` column nahi hai, aur
+`getEquippedCosmetic` fallback `c.name || k` se key lauta deta tha.
+
+### Fix
+`getEquippedCosmetic` ab catalog (`_getCosmetics`) se display-name resolve
+karta hai (`_cosmeticName(key)`), sirf bagair-name rows ke liye. Ab
+profile/player-card par asli naam dikhta hai, key nahi.
+
+---
+
 ## 🔴 2026-09-22g — R28g: Cosmetics Store "undefined" + VIP Slot (beasr) + premium copy झूठी-दावे
 **Files:** `features/growth.js`, `features/premium.js`, `screens/profile.js`
 
