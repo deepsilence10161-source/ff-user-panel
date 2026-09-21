@@ -18,6 +18,183 @@
   /* =========================================================
      ✅ KEPT FEATURES (Halal — 22 from original)
      ========================================================= */
+  /* ==== R24 RESTORE (feature-restore — NOT dead) ====
+     ये सात features पहले गलत-'dead-code' मानकर हट गए थे (d3614a3),
+     पर इनके बटन/कॉल आज भी UI में जिंदा हैं — वापस जोड़े गए।
+     ==== */
+
+window.showTransactionSummary = function() {
+    var WH = window.WH || [];
+    var deps = WH.filter(function(w){ return w.type==='deposit' && (w.status==='approved'||w.status==='done'); });
+    var wds = WH.filter(function(w){ return w.type==='withdraw' && (w.status==='approved'||w.status==='done'); });
+    var totalDep = deps.reduce(function(s,w){ return s+(w.amount||0); }, 0);
+    var totalWd = wds.reduce(function(s,w){ return s+(w.amount||0); }, 0);
+    var UD = window.UD; var win = (UD && UD.realMoney && UD.realMoney.winnings) || 0;
+    var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+    [
+      { l: '💰 Total Deposited', v: '₹'+totalDep, c: 'var(--blue)' },
+      { l: '🏆 Total Winnings', v: '₹'+win, c: 'var(--green)' },
+      { l: '📤 Total Withdrawn', v: '₹'+totalWd, c: '#ffaa00' },
+      { l: '📊 Net Position', v: '₹'+(totalDep+win-totalWd), c: (totalDep+win-totalWd >= 0 ? 'var(--green)' : '#ff6b6b') }
+    ].forEach(function(item) {
+      h += '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center">';
+      h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">' + item.l + '</div>';
+      h += '<div style="font-size:20px;font-weight:900;color:' + item.c + '">' + item.v + '</div></div>';
+    });
+    h += '</div>';
+    if (window.openModal) openModal('Transaction Summary', h);
+  };
+
+window.copyMyFFUID = function() { var UD = window.UD; if (!UD || !UD.ffUid) { _toast('FF UID not set!', 'err'); return; } window.copyTxt && copyTxt(UD.ffUid); _toast('FF UID copied: ' + UD.ffUid, 'ok'); };
+
+window.getDeviceFingerprint = function() {
+    var nav = window.navigator;
+    var screen = window.screen;
+    var fp = [
+      nav.userAgent, nav.language, nav.platform,
+      screen.width + 'x' + screen.height, screen.colorDepth,
+      nav.hardwareConcurrency || '', nav.deviceMemory || '',
+      new Date().getTimezoneOffset()
+    ].join('|');
+    // Simple hash
+    var hash = 0;
+    for (var i = 0; i < fp.length; i++) { hash = ((hash << 5) - hash) + fp.charCodeAt(i); hash |= 0; }
+    return Math.abs(hash).toString(36);
+  };
+
+window.registerDeviceFingerprint = function() {
+    var db = window.db; var U = window.U; if (!db || !U) return;
+    var fp = window.getDeviceFingerprint();
+    db.ref('deviceFingerprints/' + fp).once('value', function(s) {
+      var existing = s.val();
+      if (existing && existing.uid !== U.uid) {
+        // Another account on same device - flag it
+        db.ref('users/' + U.uid + '/multiAccountFlag').set(true);
+        db.ref('users/' + U.uid + '/flaggedDevice').set(fp);
+      } else {
+        db.ref('deviceFingerprints/' + fp).set({ uid: U.uid, lastSeen: Date.now() });
+        db.ref('users/' + U.uid + '/deviceFp').set(fp);
+      }
+    });
+  };
+
+window.checkInstantRefunds = function() {
+    var JR = window.JR || {}, MT = window.MT || {}, U = window.U;
+    if (!window._supa || !U) return;
+    for (var k in JR) {
+      var jr = JR[k]; if (jr.refunded || jr.isTeamMember) continue;
+      var t = MT[jr.matchId]; if (!t) continue;
+      var st = (t.status||'').toLowerCase();
+      if (st === 'cancelled' || st === 'canceled') {
+        (function(joinId, matchName) {
+          window._supa.rpc('claim_match_refund', { p_join_id: joinId })
+            .then(function(res) {
+              var d = res && res.data;
+              if (!d || !d.success) return;
+              if (window.UD) {
+                if (d.currency === 'coins') { window.UD.coins = (window.UD.coins || 0) + d.refunded; }
+                else { window.UD.sky_diamonds = (window.UD.sky_diamonds || 0) + d.refunded; }
+                if (window.updateHdr) window.updateHdr();
+              }
+              JR[joinId].refunded = true;
+              _toast('⚡ Instant Refund! 💎' + d.refunded + ' wapas mil gaya — ' + matchName + ' cancelled', 'ok');
+            }, function(){});
+        })(k, t.name || 'Match');
+      }
+    }
+  };
+
+window.showReportPlayer = function(matchId, reportedUid, reportedName) {
+    var h = '<div style="padding:4px">';
+    h += '<div style="font-size:13px;font-weight:700;margin-bottom:12px">👤 Reporting: ' + (reportedName||'Player') + '</div>';
+    h += '<div class="f-group"><label>Report Type</label><select class="f-input" id="repType"><option value="cheating">🎮 Cheating / Hack</option><option value="abuse">🤬 Abusive Language</option><option value="afk">🚶 AFK / Not Playing</option><option value="wrong_slot">📍 Wrong Slot</option><option value="result_dispute">⚔️ Result Dispute</option><option value="other">❓ Other</option></select></div>';
+    h += '<div class="f-group"><label>Description</label><textarea class="f-input" id="repDesc" placeholder="Kya hua explain karo..." rows="3"></textarea></div>';
+    h += '<div class="f-group"><label>Proof Screenshot (optional)</label><input type="file" accept="image/*" id="repProofFile" class="f-input" onchange="window._repProof=null;var r=new FileReader();r.onload=function(e){window._repProof=e.target.result;};r.readAsDataURL(this.files[0])"></div>';
+    h += '<button onclick="window.submitReport(\'' + matchId + '\',\'' + (reportedUid||'') + '\')" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;border:none;font-weight:800;font-size:14px;cursor:pointer;margin-top:8px"><i class="fas fa-flag"></i> Submit Report</button>';
+    h += '</div>';
+    if (window.openModal) openModal('🚩 Report Player', h);
+  };
+
+window.submitReport = function(matchId, reportedUid) {
+    var U = window.U; var UD = window.UD; if (!U) return;
+    var type = (document.getElementById('repType')||{}).value || 'other';
+    var desc = (document.getElementById('repDesc')||{}).value || '';
+    if (!desc.trim()) { _toast('Description likhna zaroori hai', 'err'); return; }
+    var _doInsert = function(proofUrl) {
+      var payload = {
+        reporter_id: U.uid, reported_id: reportedUid || null,
+        match_id: matchId, type: type, description: desc.trim(),
+        proof_url: proofUrl || null, status: 'open'
+      };
+      if (window._supa) {
+        window._supa.from('reports').insert(payload)
+          .then(function() { window._repProof = null; _toast('✅ Report submitted!'); if (window.closeModal) closeModal(); })
+          .catch(function() { _toast('Submit nahi hua, dobara try karo', 'err'); });
+      } else if (window.db) {
+        db.ref('reports').push(Object.assign({ createdAt: Date.now() }, payload));
+        window._repProof = null; _toast('✅ Report submitted!'); if (window.closeModal) closeModal();
+      }
+    };
+    /* Upload proof screenshot if present */
+    if (window._repProof && window.uploadToImgBBBase64) {
+      uploadToImgBBBase64(window._repProof, 'report_proof_' + U.uid + '_' + Date.now(), function(err, url) {
+        _doInsert(url || null);
+      });
+    } else {
+      _doInsert(null);
+    }
+  };
+
+window.shareToInstagram = function(matchId) {
+    var MT = window.MT || {}; var t = MT[matchId]; if (!t) return;
+    // Create share card as canvas then open Instagram
+    var text = '🎮 ' + (t.name||'Match') + '\n' +
+      '🏆 1st Prize: ₹' + (t.firstPrize||0) + '\n' +
+      '💰 Entry: ₹' + (t.entryFee||0) + '\n' +
+      '⚔️ ' + (t.mode||'solo').toUpperCase() + ' Mode\n' +
+      '🔗 Join: student-4356.github.io\n' +
+      '#MiniESports #FreeFire #WinCash';
+    
+    if (navigator.share) {
+      navigator.share({ title: t.name||'Match', text: text, url: 'https://student-4356.github.io' })
+        .catch(function(){});
+    } else {
+      // Copy and open Instagram
+      navigator.clipboard && navigator.clipboard.writeText(text).then(function() {
+        _toast('Caption copied! Instagram pe paste karo 📋', 'ok');
+        setTimeout(function() { window.open('instagram://story-camera', '_blank'); }, 500);
+      }).catch(function() { _toast('Copy failed', 'err'); });
+    }
+  };
+
+window.applyDynamicWallpaper = function() {
+    var UD = window.UD; if (!UD) return;
+    var rk = window.calcRk ? window.calcRk(UD.stats||{}) : { badge:'Bronze', color:'#cd7f32' };
+    var body = document.body;
+    var existing = document.getElementById('_dynWallpaper');
+    if (existing) existing.remove();
+    var style = document.createElement('style');
+    style.id = '_dynWallpaper';
+    var colors = {
+      'Diamond': ['#b964ff','#00d4ff','#ff00ff'],
+      'Platinum': ['#00d4ff','#ffffff','#00ff9c'],
+      'Gold': ['#ffd700','#ff8c00','#ffaa00'],
+      'Silver': ['#c0c0c0','#ffffff','#aaaaaa'],
+      'Bronze': ['#cd7f32','#8b4513','#a0522d']
+    };
+    var c = colors[rk.badge] || colors['Bronze'];
+    style.textContent = '@keyframes wallpaperShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}';
+    // Apply subtle gradient animation to app background
+    var bg = document.getElementById('mainContent') || body;
+    // Just update CSS var for subtle effect, don't break layout
+    body.style.setProperty('--dyn-glow', c[0] + '15');
+    if (body.getAttribute('data-theme') !== 'light') {
+      document.documentElement.style.setProperty('--bg', '#050507');
+      document.getElementById('homeList') && (document.getElementById('homeList').style.background = '');
+    }
+    document.head.appendChild(style);
+  };
+
 
   /* ─── FEATURE 1: MATCH REMINDER (Browser Notification) ─── */
   window.setMatchReminder = function (matchId, matchTime, matchName) {
