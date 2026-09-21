@@ -45,7 +45,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 // ─────────────────────────────────────────────────────────────────
 
-import com.onesignal.OneSignal;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -107,11 +106,15 @@ public class MainActivity extends AppCompatActivity {
         showLastCrashIfAny();
         setContentView(R.layout.activity_main);
 
-        /* R23: Android 13+ (API 33) पर notification permission runtime माँगना
-           ज़रूरी — OneSignal native push के लिए। v33 से पहले no-op। */
-        try {
-            OneSignal.requestPermission(true);
-        } catch (Throwable ignored) { }
+        /* R23: Android 13+ (API 33) पर POST_NOTIFICATIONS runtime permission
+           ज़रूरी — OneSignal native push के लिए। v33 से पहले no-op।
+           (OneSignal v5 SDK में requestPermission-helper नहीं है, इसलिए
+           सीधा native request; string-literal = compileSdk-स्वतंत्र।) */
+        if (android.os.Build.VERSION.SDK_INT >= 33) {
+            ActivityCompat.requestPermissions(this,
+                new String[]{ "android.permission.POST_NOTIFICATIONS" },
+                PERMISSION_REQUEST + 1);
+        }
         ActivityCompat.requestPermissions(this, new String[]{
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
