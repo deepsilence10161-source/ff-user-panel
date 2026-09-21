@@ -1,4 +1,5 @@
 {
+  "_WARNING": "\u26a0\ufe0f STALE COPY \u2014 LIVE RTDB RULES ARE DIFFERENT (R2-strict, live-verified 2026-09). Ye file DEPLOY MAT karna \u2014 is '_WARNING' key ki wajah se deploy validation khud fail hogi (jaan-boojh kar rakha, taaki koi purani copy se live rules overwrite na kar de). Live rules dashboard/Console se hi manage karo.",
   "rules": {
     "appSettings": {
       ".read": true,
