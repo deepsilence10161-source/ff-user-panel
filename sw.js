@@ -24,7 +24,7 @@
    LOCAL_FILES, not just this one, or the exact same "fix doesn't seem
    to apply" pattern will keep recurring for any JS change, not just
    WhatsApp. */
-var CACHE_VER    = 'me-v44-9-21b';
+var CACHE_VER    = 'me-v45-9-21';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is
@@ -51,7 +51,7 @@ var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
    was silently doing nothing useful for months. Must ALWAYS be kept
    equal to whatever ?v= suffix index.html's local <script>/<link>
    tags use, updated together on every release from now on. */
-var ASSET_VER = '20260921b';
+var ASSET_VER = '20260921f';
 
 var LOCAL_FILES = [
   '','index.html','styles.css','style.css','manifest.json',
@@ -65,7 +65,7 @@ var LOCAL_FILES = [
   'features/battle-pass.js','features/battle-pass-xp.js','features/free-trial.js',
   'features/bundle-offers.js','features/rewarded-bonus.js','features/clan.js',
   'features/spectator.js','features/growth.js','features/premium-creator.js',
-  'features/creator-video-feed.js','features/creator-match-host.js',
+  'features/creator-match-host.js',  /* R24: creator-video-feed हटा (feature अगस्त-2026 में removed; zero-refs सिद्ध) */
   'features/auto-squad.js','features/seasonal-league.js','features/checkin-system.js',
   'features/watch-earn.js','features/match-history.js','features/admin-badge.js',
   'features/skill-matchmaking.js','features/squad-finder.js','features/friends.js',
