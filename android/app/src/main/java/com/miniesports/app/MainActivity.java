@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         public void osLogin(String uid) {
             try {
                 if (uid != null && uid.length() > 10) {
-                    MyApplication.osBindUser(uid);
+                    OneSignalManager.login(uid);
                 }
             } catch (Exception ignored) { }
         }
