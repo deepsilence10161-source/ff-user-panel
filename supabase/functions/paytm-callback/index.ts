@@ -54,13 +54,30 @@ async function creditIfFirstTime(admin: any, orderId: string, note: string) {
     .select("id, user_id, sd_amount").maybeSingle();
   if (flipErr) throw flipErr;
   if (!flipped) return "already_done";
-  const { error: rpcErr } = await admin.rpc("increment_balance",
-    { p_uid: flipped.user_id, p_col: "sky_diamonds", p_amount: flipped.sd_amount });
-  if (rpcErr) throw rpcErr;
+
+  /* ✅ R26 harden (2026-09-21): flip-first (at-most-once) theek tha, lekin
+     agar increment_balance transiently fail ho jaata to row approved reh
+     jaati aur user ko diamonds nahi milte = silently lost credit (webhook
+     re-delivery bhi use nahi kar paati kyunki status ab pending nahi).
+     Ab credit fail par status wapas 'pending' kar dete hain taaki agla
+     callback re-attempt kar sake — no double-credit (eq-status guard),
+     no stuck-lost credit. Ledger/notification rows best-effort hain
+     (source of truth = users sky_diamonds + approved status). */
+  try {
+    const { error: rpcErr } = await admin.rpc("increment_balance",
+      { p_uid: flipped.user_id, p_col: "sky_diamonds", p_amount: flipped.sd_amount });
+    if (rpcErr) throw rpcErr;
+  } catch (e) {
+    console.error(`credit failed for ${orderId}, reverting to pending:`, e);
+    await admin.from("sd_requests")
+      .update({ status: "pending", review_note: "credit retry pending" })
+      .eq("id", orderId);
+    throw e;
+  }
   await admin.from("wallet_transactions").insert({
     user_id: flipped.user_id, currency: "sky_diamonds", txn_type: "credit",
     amount: flipped.sd_amount, reason: "sd_purchase", note,
-  });
+  }).catch(() => {});
   await admin.from("notifications").insert({
     user_id: flipped.user_id, title: "Sky Diamonds Added! 💎",
     body: `${flipped.sd_amount} Sky Diamonds aapke wallet mein add ho gaye.`, type: "wallet",

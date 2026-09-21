@@ -99,9 +99,29 @@ Deno.serve(async (req: Request) => {
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const admin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+    /* ✅ R26 FIX (2026-09-21): package-aware diamond mapping — Paytm auto
+       checkout pehle INR→diamonds 1:1 credit karta tha (₹99 = 99💎), jabki
+       manual UPI flow (wallet.js 2026-09-15c) price ko live_config ki
+       sdPackages list se match karke asli diamond-count deta hai (₹99 =
+       120💎). Is wajah se Paytm wale users ko manual wale ke mukable kam
+       diamonds milte = direct user-loss + manual-vs-auto inconsistency.
+       Ab wahi live_config mapping yahan bhi lagti hai; custom amount
+       (package se milta nahi) pehle jaisa 1:1 rehta hai. */
+    let sdAmount = amount;
+    try {
+      const { data: cfgRow } = await admin
+        .from("app_settings").select("value").eq("key", "live_config").maybeSingle();
+      const pkgs = (cfgRow && cfgRow.value && Array.isArray(cfgRow.value.sdPackages))
+        ? cfgRow.value.sdPackages : [];
+      for (const p of pkgs) {
+        if (Number(p && p.price) === amount) { sdAmount = Number(p && p.diamonds) || amount; break; }
+      }
+    } catch { /* best-effort — mapping fail par 1:1 fallback, koi loss nahi */ }
+
     const { data: row, error: insErr } = await admin
       .from("sd_requests")
-      .insert({ user_id: uid, sd_amount: amount, amount_inr: amount, request_type: "paytm_auto", status: "pending" })
+      .insert({ user_id: uid, sd_amount: sdAmount, amount_inr: amount, request_type: "paytm_auto", status: "pending" })
       .select("id").single();
     if (insErr || !row) { console.error("insert failed:", insErr); return json({ error: "Order create nahi ho saka" }, 500); }
     const orderId = row.id as string;
