@@ -98,6 +98,14 @@ function _bootChannelSetup() {
   _bootWallet();
   _bootReferrals();
   _bootAppSettings();
+  /* R28i (2026-09-22): yeh function tabhi chalta hai jab TOKENIZED Supabase
+     client ready ho (syncFirebaseToken recreate ke baad / TOKEN_REFRESHED).
+     boot() ke andar ka _loadExtras() ghost-समय me anon client se chalta tha
+     → RLS empty → _supaCosmetics undefined hamesha ke liye (cosmetics/
+     achievements khareed ke refresh par gayab — live-proved). Ab yahan se
+     dobara fetch hota hai, isliye ownership/achievements asli auth me load
+     hote hain. Idempotent hain — re-run me koi nuksaan nahi. */
+  if (typeof _loadExtras === 'function') _loadExtras();
   /* Re-setup token refresh guard on new _supa */
   window._tokenRefreshHandler = null;
   _setupTokenRefreshGuard();
