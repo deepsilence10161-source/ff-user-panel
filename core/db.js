@@ -498,7 +498,12 @@
       getUpcoming: async function() {
         var { data, error } = await window._supa
           .from('active_matches')   /* uses the view */
-          .select('id,title,mode,status,game,scheduled_at,entry_type,entry_fee,prize_pool,team_size,max_players,current_players,map,perspective,is_featured,match_type,banner_url')
+          /* ✅ R3-HARDEN FIX (2026-09-23): pehle ka select non-existent columns
+             maangta tha (game/team_size/max_players/current_players/perspective/
+             match_type) → har call 42703 column does not exist = helper broken.
+             Ab view ke REAL columns se map kiya (mode, max_slots, filled_slots,
+             match_sub_type). Room creds view me hain hi nahi (P0 leak fix). */
+          .select('id,title,name,mode,status,scheduled_at,entry_type,entry_fee,prize_pool,max_slots,filled_slots,map,is_featured,match_sub_type,banner_url')
           .order('scheduled_at', { ascending: true })
           .limit(50);              /* max 50 — home screen mein itne kaafi hain */
         if (error) return _err('matches.getUpcoming', error);
