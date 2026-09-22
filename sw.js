@@ -51,7 +51,7 @@ var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
    was silently doing nothing useful for months. Must ALWAYS be kept
    equal to whatever ?v= suffix index.html's local <script>/<link>
    tags use, updated together on every release from now on. */
-var ASSET_VER = '20260922r';
+var ASSET_VER = '20260922s';
 
 var LOCAL_FILES = [
   '','index.html','styles.css','style.css','manifest.json',
