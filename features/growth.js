@@ -487,7 +487,10 @@ function _getCosmetics() {
   /* R28g (2026-09-22): har item ki desc ek hi static map se — pehle desc
      field exist hi nahi karta tha, isliye store ke har card par "undefined"
      print hota tha (live-proven). CFG.cosmetics (backend) me bhi desc nahi
-     bheja jata, isliye desc yahan client-side feature-copy hi hai. */
+     bheja jata, isliye desc yahan client-side feature-copy hi hai.
+     R29F (2026-09-22): + Battle Pass collectibles (badge/title/theme/emoji)
+     — server claim_battle_pass_tier RPC inhe claim par grant karta hai;
+     yahan catalog me daalke store/profile unhe dikhata + equip karata hai. */
   var DESC = {
     frame_neon:   'Neon glow border',
     frame_fire:   'Jalti Fire border',
@@ -498,24 +501,85 @@ function _getCosmetics() {
     tag_king:     '👑 KING tag',
     vip_slot:     '⭐ VIP badge apne profile par'
   };
+  var base;
   if (window.CFG && window.CFG.cosmetics) {
-    return Object.keys((window.CFG && window.CFG.cosmetics)).map(function(id) {
+    base = Object.keys((window.CFG && window.CFG.cosmetics)).map(function(id) {
       var c = (window.CFG && window.CFG.cosmetics)[id];
       return { id: id, name: c.name, price: c.price, icon: c.icon,
         desc: DESC[id] || c.desc || '',
-        type: id.startsWith('frame') ? 'frame' : id.startsWith('tag') ? 'tag' : 'vip' };
+        type: id.indexOf('frame') === 0 ? 'frame' : id.indexOf('tag') === 0 ? 'tag' : 'vip' };
     });
+  } else {
+    base = [
+      { id:'frame_neon',   name:'Neon Frame',     price:50,  icon:'🟢', desc:DESC.frame_neon,   type:'frame' },
+      { id:'frame_fire',   name:'Fire Frame',      price:75,  icon:'🔥', desc:DESC.frame_fire,   type:'frame' },
+      { id:'frame_galaxy', name:'Galaxy Frame',    price:100, icon:'🌌', desc:DESC.frame_galaxy, type:'frame' },
+      { id:'frame_gold',   name:'Gold Champion',   price:150, icon:'🏆', desc:DESC.frame_gold,   type:'frame' },
+      { id:'tag_beast',    name:'⚡ BEAST MODE',   price:30,  icon:'⚡', desc:DESC.tag_beast,    type:'tag'   },
+      { id:'tag_pro',      name:'🎯 PRO PLAYER',   price:30,  icon:'🎯', desc:DESC.tag_pro,      type:'tag'   },
+      { id:'tag_king',     name:'👑 KING',         price:50,  icon:'👑', desc:DESC.tag_king,     type:'tag'   },
+      { id:'vip_slot',     name:'VIP Slot Pass',   price:200, icon:'⭐', desc:DESC.vip_slot,     type:'vip'   }
+    ];
   }
-  return [
-    { id:'frame_neon',   name:'Neon Frame',     price:50,  icon:'🟢', desc:DESC.frame_neon,   type:'frame' },
-    { id:'frame_fire',   name:'Fire Frame',      price:75,  icon:'🔥', desc:DESC.frame_fire,   type:'frame' },
-    { id:'frame_galaxy', name:'Galaxy Frame',    price:100, icon:'🌌', desc:DESC.frame_galaxy, type:'frame' },
-    { id:'frame_gold',   name:'Gold Champion',   price:150, icon:'🏆', desc:DESC.frame_gold,   type:'frame' },
-    { id:'tag_beast',    name:'⚡ BEAST MODE',   price:30,  icon:'⚡', desc:DESC.tag_beast,    type:'tag'   },
-    { id:'tag_pro',      name:'🎯 PRO PLAYER',   price:30,  icon:'🎯', desc:DESC.tag_pro,      type:'tag'   },
-    { id:'tag_king',     name:'👑 KING',         price:50,  icon:'👑', desc:DESC.tag_king,     type:'tag'   },
-    { id:'vip_slot',     name:'VIP Slot Pass',   price:200, icon:'⭐', desc:DESC.vip_slot,     type:'vip'   },
-  ];
+  return base.concat(_getBpCosmetics());
+}
+
+/* R29F (2026-09-22): Battle Pass collectibles catalog. Single source =
+   server battle_passes.tiers (anon-readable); static fallback = live
+   2026_09 season data (same values). */
+var _bpCosCache = null;
+function _getBpCosmetics() {
+  if (_bpCosCache) return _bpCosCache;
+  var map = [];
+  function pushC(c) {
+    if (!c || !c.key) return;
+    var typ = c.type === 'theme' ? 'frame' : (c.type === 'badge' || c.type === 'title') ? 'tag' : (c.type === 'emoji' ? 'emoji' : 'tag');
+    map.push({ id: c.key, name: c.name || c.key, icon: c.icon || '🎫', price: 0,
+      desc: 'Battle Pass Season reward', type: typ, source: 'bp' });
+  }
+  try {
+    if (window._bpSeasonTiers && window._bpSeasonTiers.length) {
+      window._bpSeasonTiers.forEach(function(t){ pushC(t.freeCos); pushC(t.premCos); });
+    }
+  } catch(e){}
+  if (!map.length) {
+    map = [
+      { id:'tag_bp_prem_1',    name:'🎖️ Starter Badge',      icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_prem_5',    name:'🌟 Chosen One',         icon:'🌟', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'emoji_bp_prem_8',  name:'🔥 Fire Pack',          icon:'🔥', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_13', name:'🔵 Blue Flame Border',  icon:'🔵', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_15',   name:'🥈 Silver Fighter',     icon:'🥈', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'emoji_bp_prem_18', name:'⚡ Lightning Pack',     icon:'⚡', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_23', name:'🟣 Purple Haze Border', icon:'🟣', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_25',   name:'🥇 Gold Champion',      icon:'🥇', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'emoji_bp_prem_28', name:'👑 Crown Pack',         icon:'👑', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_33', name:'🟡 Golden Frame',       icon:'🟡', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'emoji_bp_prem_35', name:'🌈 Neon Pack',          icon:'🌈', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_38', name:'🌊 Ocean Wave Border',  icon:'🌊', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_40',   name:'💎 Platinum Pro',       icon:'💎', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'emoji_bp_prem_43', name:'🔴 Fire God Pack',      icon:'🔴', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_48', name:'🌌 Galaxy Border',      icon:'🌌', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_50',   name:'🏆 Season Legend',      icon:'🏆', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_5',    name:'🥉 Bronze Warrior',     icon:'🥉', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_15',   name:'🎖️ Participant',       icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_30',   name:'💪 Grinder',            icon:'💪', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_45',   name:'🎯 Dedicated',          icon:'🎯', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' }
+    ];
+  }
+  _bpCosCache = map;
+  /* best-effort live sync — DB hi single source hai */
+  if (window._supa && !window._bpSeasonTiersLoaded) {
+    window._bpSeasonTiersLoaded = true;
+    window._supa.from('battle_passes').select('tiers').eq('is_active', true)
+      .order('start_date', { ascending: false }).limit(1)
+      .then(function(r) {
+        if (r && r.data && r.data[0] && r.data[0].tiers) {
+          window._bpSeasonTiers = r.data[0].tiers;
+          _bpCosCache = null;
+        }
+      }, function(){});
+  }
+  return map;
 }
 
 window.showCosmeticsStore = function() {
@@ -530,7 +594,7 @@ window.showCosmeticsStore = function() {
 
   // Tabs
   h += '<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">';
-  ['All','Frames','Tags','VIP'].forEach(function(tab, i) {
+  ['All','Frames','Tags','VIP','Season'].forEach(function(tab, i) {
     h += '<button onclick="filterCosmetics(\'' + tab.toLowerCase() + '\')" id="cosTab_' + tab.toLowerCase() + '" style="padding:5px 12px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:' + (i===0?'#00d4ff':'rgba(255,255,255,.08)') + ';color:' + (i===0?'#000':'var(--txt)') + '">' + tab + '</button>';
   });
   h += '</div>';
@@ -558,7 +622,7 @@ window.showCosmeticsStore = function() {
 };
 
 window.filterCosmetics = function(filter) {
-  ['all','frames','tags','vip'].forEach(function(t) {
+  ['all','frames','tags','vip','season'].forEach(function(t) {
     var b = document.getElementById('cosTab_' + t);
     if (b) { b.style.background = t===filter?'#00d4ff':'rgba(255,255,255,.08)'; b.style.color = t===filter?'#000':'var(--txt)'; }
   });
@@ -569,10 +633,11 @@ window.filterCosmetics = function(filter) {
 function renderCosmeticCards(filter, owned, mySD) {
   var items = _getCosmetics().filter(function(c) {
     if (filter === 'all') return true;
-    if (filter === 'frames') return c.type === 'frame';
-    if (filter === 'tags') return c.type === 'tag';
-    if (filter === 'vip') return c.type === 'vip';
-    return true;
+    if (filter === 'frames') return c.type === 'frame' && c.source !== 'bp';
+    if (filter === 'tags') return c.type === 'tag' && c.source !== 'bp';
+    if (filter === 'vip') return c.type === 'vip' && c.source !== 'bp';
+    if (filter === 'season') return c.source === 'bp';
+    return c.type === filter;
   });
 
   var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
@@ -591,6 +656,10 @@ function renderCosmeticCards(filter, owned, mySD) {
       h += '<span style="font-size:11px;color:#00ff9c;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(0,255,156,.1)">✅ Owned' + (isEq ? ' · Active' : '') + '</span>';
       h += '<button onclick="window.toggleCosmeticEquip(\'' + c.id + '\',this)" style="width:100%;padding:7px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;background:' + (isEq ? 'rgba(255,255,255,.08)' : 'linear-gradient(135deg,#00ff9c,#00cc7a)') + ';border:1px solid ' + (isEq ? 'rgba(255,255,255,.2)' : 'rgba(0,255,156,.4)') + ';color:' + (isEq ? '#ccc' : '#000') + '">' + (isEq ? 'Remove' : 'Apply') + '</button>';
       h += '</div>';
+    } else if (c.source === 'bp') {
+      /* R29F: Battle Pass collectible — sky diamonds se nahi khareedte;
+         Season Pass claim karke milta hai (claim_battle_pass_tier). */
+      h += '<button onclick="if(window.showBattlePass)showBattlePass();" style="width:100%;padding:7px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;background:rgba(185,100,255,.1);border:1px solid rgba(185,100,255,.3);color:#b964ff">🎫 Season Pass reward</button>';
     } else {
       h += '<button onclick="buyCosmetic(\'' + c.id + '\',' + c.price + ',\'' + encodeURIComponent(c.name) + '\',this)" style="width:100%;padding:7px;border-radius:10px;background:' + (canBuy?'linear-gradient(135deg,#0066ff,#00d4ff)':'rgba(255,255,255,.05)') + ';border:1px solid rgba(0,212,255,' + (canBuy?'.4':'.1') + ');color:' + (canBuy?'#fff':'#555') + ';font-size:11px;font-weight:800;cursor:' + (canBuy?'pointer':'default') + '">💎 ' + c.price + '</button>';
     }
@@ -662,7 +731,13 @@ var _COS_FRAME_COLORS = {
   frame_neon:   '#00ff9c',
   frame_fire:   '#ff6b2b',
   frame_galaxy: '#b964ff',
-  frame_gold:   '#ffd700'
+  frame_gold:   '#ffd700',
+  /* R29F: Battle Pass theme-frame colors (equip → profile avatar ring) */
+  frame_bp_prem_13: '#4287f5', /* Blue Flame */
+  frame_bp_prem_23: '#9b59f0', /* Purple Haze */
+  frame_bp_prem_33: '#f0c040', /* Golden */
+  frame_bp_prem_38: '#2ec8ff', /* Ocean Wave */
+  frame_bp_prem_48: '#b964ff'  /* Galaxy */
 };
 window.getEquippedCosmetic = function(typ) {
   var owned = (window.UD && window.UD.cosmetics) || {};

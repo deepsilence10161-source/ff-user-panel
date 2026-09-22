@@ -72,7 +72,7 @@ var TIERS_DATA=[
   {t:47,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:48,free:{type:'gd',v:15},prem:{type:'theme',v:'🌌 Galaxy Border',label:'Galaxy Animated Border'}},
   {t:49,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
-  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'🏆 Season Legend',label:'Season Legend Title + 50 '+GDI(13),extraGD:50}}
+  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'🏆 Season Legend',label:'Season Legend Title + 50 '+GDI(13)}}
 ];
 
 /* Get current season ID as text '2026_06'
@@ -284,6 +284,10 @@ window.claimPassReward=function(tierNum,track){
          real field name; the actual column/field is green_diamonds.) */
       var lbl=reward.label||reward.v||'Reward';
       if(window.toast)toast('✅ '+lbl+' claimed!','ok');
+      /* R29F: cosmetic collectible (badge/theme/emoji/title) bhi grant
+         hota hai — UD.cosmetics ko re-sync karo taaki Cosmetics Store
+         turant ise "Owned" dikhaye (equip ke liye). */
+      if (r.data && r.data.cosmetic && window._loadExtras) window._loadExtras();
       setTimeout(function(){ window.showBattlePass(); }, 400);
     }, function(e){ _bpClaimInProgress[claimKey]=false; if(window.toast)toast('Claim failed, retry karo.','err'); console.error('[BattlePass] Claim error:',e.message); });
 };
