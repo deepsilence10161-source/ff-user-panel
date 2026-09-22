@@ -102,18 +102,11 @@ function deleteNotif(key, src) {
   updateBell();
   renderNotifs();
 }
-function clearAllNotifs() {
-  if (!U) return;
-  // PERMANENT FIX: Save clearedAt so Firebase listener skips old notifs
-  var _clearedNow = Date.now();
-  _notifClearedAt = _clearedNow;
-  if (window._supa && U) { window._supa.from('notifications').update({ is_read: true }).eq('user_id', U.uid).eq('is_read', false).then(null, function(){}); }
-  NOTIFS = [];
-  _READ_KEYS = {};
-  if (UD) UD.readNotifications = {};
-  updateBell();
-  renderNotifs();
-}
+/* ✅ DEDUP (P2 refactor): clearAllNotifs yahan duplicate tha — asli LIVE version
+   core/listeners.js mein hai (window.clearAllNotifs = clearAllNotifs, line ~830),
+   jo Supabase bulk-mark-read + toast deta hai aur is file ke baad load hota hai,
+   isliye yah bare copy hamesha shadow ho jaati thi (never ran). Button onclick
+   "clearAllNotifs()" bhi global resolve karta hai → listeners.js version hi chalta hai. */
 function openNotif(key) {
   if (window.markNotifRead) markNotifRead(key);
   // Mark locally and in persistent set
