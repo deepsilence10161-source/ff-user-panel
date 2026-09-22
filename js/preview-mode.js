@@ -233,12 +233,22 @@
             injectTickerPreview(cfg);
             enableBlock();
             if (window.U && window._supa) {
-              window._supa.from('early_access_users').upsert({
+              /* ✅ R29D FIX (2026-09-22): .upsert() yahan par hamesha
+                 "permission denied for table early_access_users" deta tha
+                 (live-proven) — supabase-js ke upsert ko INSERT *aur* UPDATE
+                 dono privileges chahiye, aur is table ke anon/authenticated
+                 roles par sirf INSERT+SELECT grant hai (UPDATE nahi). RLS
+                 policy `eau_self_insert` (with check auth.jwt()->>'sub' =
+                 user_id) isliye INSERT se hi sahi security milti hai.
+                 .insert({ onConflict, ignoreDuplicates:true }) INSERT-only
+                 hota hai → live-proven 201/200 successful, PK-conflict par
+                 silently ignore (existing row re-join case). */
+              window._supa.from('early_access_users').insert({
                 user_id: window.U.uid,
                 name: (window.UD || {}).displayName || (window.UD || {}).ign || '',
                 joined_at: new Date().toISOString(),
                 platform: /Android/.test(navigator.userAgent) ? 'android' : 'web'
-              }, { onConflict: 'user_id' }).then(null, function(e){ console.warn('[PreviewMode] early_access_users upsert failed:', e && e.message); });
+              }, { onConflict: 'user_id', ignoreDuplicates: true }).then(null, function(e){ console.warn('[PreviewMode] early_access_users insert failed:', e && e.message); });
             }
           } else if (n < 20) {
             setTimeout(function () { tryInject(n + 1); }, 300);
