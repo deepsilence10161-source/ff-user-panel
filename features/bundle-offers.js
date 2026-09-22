@@ -19,7 +19,7 @@ var BUNDLES = [
     originalPrice: 98, /* 49 + 49 */
     save: 19,
     color: '#e0e0e0',
-    includes: ['Premium Silver (1 mahina)', 'Season Battle Pass', '5 GD bonus', 'No Ads']
+    includes: ['Premium Silver (1 mahina)', 'Season Battle Pass', 'No Ads']
   },
   {
     id: 'gold_bp',
@@ -30,7 +30,7 @@ var BUNDLES = [
     save: 19,
     color: '#ffd700',
     best: true,
-    includes: ['Premium Gold (1 mahina)', 'Season Battle Pass', '15 GD bonus', 'No Ads', 'Private Match Host']
+    includes: ['Premium Gold (1 mahina)', 'Season Battle Pass', 'No Ads']
   }
 ];
 
