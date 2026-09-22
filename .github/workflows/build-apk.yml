@@ -45,19 +45,14 @@ jobs:
             echo "${{ secrets.KEYSTORE_B64 }}" | base64 -d > android/app/keystore.jks
           else
             # ── First time: Naya keystore generate karo ──
-            echo "⚠️  KEYSTORE_B64 secret nahi mila — naya keystore bana raha hai"
-            echo "    Build ke baad steps follow karo to save permanent keystore"
-            keytool -genkeypair \
-              -keystore android/app/keystore.jks \
-              -storetype PKCS12 \
-              -alias "${{ secrets.KEY_ALIAS }}" \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 36500 \
-              -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
-              -keypass  "${{ secrets.KEY_PASSWORD }}" \
-              -dname "CN=MiniEsports, OU=App, O=MiniEsports, L=India, ST=India, C=IN" \
-              -noprompt
+            # 🔒 R29E P0-FIX (2026-09-22): build fail kar do, silently naya
+            #    keystore GEN nahi — naye key se SHA-1 badal jata hai (Google
+            #    login/firebase break) aur keyloc दो अलग-अलग app-identity
+            #    ban jati hai. Pehle secret set karo, phir build.
+            echo "❌ KEYSTORE_B64 secret set nahi hai — pehle secret sahi"
+            echo "   se save karo (repo secrets), phir build chalao."
+            echo "   Naya keystore yahan generate NAHI hota (R29E fix)."
+            exit 1
           fi
           echo "Keystore ready:" && ls -lh android/app/keystore.jks
 
@@ -93,13 +88,10 @@ jobs:
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
-      # ── Keystore artifact bhi upload karo (permanent save ke liye) ──
-      - name: Upload Keystore (SAVE THIS — base64 karke KEYSTORE_B64 secret mein daalo)
-        uses: actions/upload-artifact@v4
-        with:
-          name: keystore-SAVE-THIS
-          path: android/app/keystore.jks
-          retention-days: 90
+      # ── 🔒 R29E P0-FIX (2026-09-22): Keystore artifact upload REMOVED — ye
+      #    signing key ko publically downloadable artifact bana deta tha
+      #    (koi bhi contributor APK sign + update-push kar sakta tha). Keystore
+      #    ab SIRF KEYSTORE_B64 secret me rahega, artifact me kabhi nahi. ──
 
       - name: Build Release AAB (Play Store)
         working-directory: android

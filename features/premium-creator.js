@@ -697,74 +697,73 @@ window.submitCreatorVideo = function() {
    CREATOR EARNINGS VIEW (C4)
    ================================================================ */
 window.showCreatorEarnings = function() {
-  if (!uid() || !db()) return;
-  db().ref('creatorCommission/' + uid()).limitToLast(20)
-    .once('value', function(snap) {
-      var list = [];
-      snap.forEach(function(c){ var v = c.val(); v._key = c.key; list.push(v); });
-      list.sort(function(a,b){ return (b.createdAt||0) - (a.createdAt||0); });
+  if (!uid() || !window._supa) return;
+  var h = '<div id="_credEarnBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('💰 Commission Earnings', h);
 
-      var h = '';
+  /* R29E P1-FIX (2026-09-22): purana is view ka data Firebase
+     `creatorCommission/{uid}` mirror se aata tha — jo user-bridge me
+     kabhi map hi nahi tha (0 results hamesha). Ab seedha single source
+     of truth Supabase `creator_commissions` ledger se padhta hai. */
+  window._supa.from('creator_commissions')
+    .select('match_id,amount,currency,status,eligible_at,created_at')
+    .eq('creator_uid', uid())
+    .order('created_at', { ascending: false }).limit(50)
+    .then(function(r) {
+      var list = r.data || [];
+      var body = document.getElementById('_credEarnBody');
       if (!list.length) {
-        h = '<div style="text-align:center;color:#888;padding:20px">Koi commission history nahi abhi.\n\nPehle match host karo aur complete karo!</div>';
-      } else {
-        h = '<div style="display:grid;gap:8px">';
-        list.forEach(function(c) {
-          var stColor = c.status === 'paid' ? '#00ff9c' : c.status === 'eligible' ? '#ffd700' : '#aaa';
-          var stLabel = c.status === 'paid' ? '✅ Paid' : c.status === 'eligible' ? '💰 Eligible' : '🔒 Hold';
-          var dtStr   = c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-IN') : '';
-          var eligStr = c.eligibleAt && c.status === 'hold' ? ' (eligible: ' + new Date(c.eligibleAt).toLocaleDateString('en-IN') + ')' : '';
-          var amtStr  = c.currency === 'gd' ? c.amount + ' 🟢 GD' : '₹' + (c.amount||0);
-
-          h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">';
-          h += '<div>';
-          h += '<div style="font-size:11px;color:#888">Match: ' + (c.matchId||'').slice(0,8) + '... · ' + dtStr + '</div>';
-          h += '<div style="font-size:10px;color:' + stColor + '">' + stLabel + eligStr + '</div>';
-          h += '</div>';
-          h += '<div style="font-size:15px;font-weight:900;color:#b964ff">' + amtStr + '</div>';
-          h += '</div>';
-        });
-
-        // Eligible payout button for INR commissions
-        var eligInr = list.filter(function(c){ return c.status === 'eligible' && c.currency === 'inr'; })
-                         .reduce(function(s,c){ return s + (c.amount||0); }, 0);
-        if (eligInr >= ((window.CFG && window.CFG.creatorMinPayout) || 100)) {
-          h += '<button onclick="requestMatchCommissionPayout(' + eligInr + ')" style="width:100%;margin-top:10px;padding:12px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:13px;font-weight:800;cursor:pointer">💰 ₹' + eligInr + ' Payout Request</button>';
-        }
-        h += '</div>';
+        if (body) body.innerHTML = '<div style="text-align:center;color:#888;padding:20px">Koi commission history nahi abhi.<br><br>Pehle match host karo aur complete karo!</div>';
+        return;
       }
-      if (window.openModal) openModal('💰 Commission Earnings', h);
+      var grid = '<div style="display:grid;gap:8px">';
+      list.forEach(function(c) {
+        var st = c.status || 'hold';
+        var stColor = st === 'paid' ? '#00ff9c' : st === 'eligible' ? '#ffd700' : '#aaa';
+        var stLabel = st === 'paid' ? '✅ Paid' : st === 'eligible' ? '💰 Eligible' : (st === 'pending_payout' ? '⏳ Payout pending' : '🔒 Hold');
+        var dtStr   = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN') : '';
+        var eligStr = c.eligible_at && st === 'hold' ? ' (eligible: ' + new Date(c.eligible_at).toLocaleDateString('en-IN') + ')' : '';
+        var amtStr  = c.currency === 'gd' ? (c.amount||0) + ' 🟢 GD' : '₹' + (c.amount||0);
+
+        grid += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">';
+        grid += '<div>';
+        grid += '<div style="font-size:11px;color:#888">Match: ' + String(c.match_id||'').slice(0,8) + '... · ' + dtStr + '</div>';
+        grid += '<div style="font-size:10px;color:' + stColor + '">' + stLabel + eligStr + '</div>';
+        grid += '</div>';
+        grid += '<div style="font-size:15px;font-weight:900;color:#b964ff">' + amtStr + '</div>';
+        grid += '</div>';
+      });
+
+      var eligInr = list.filter(function(c){ return c.status === 'eligible' && c.currency === 'inr'; })
+                       .reduce(function(s,c){ return s + (Number(c.amount)||0); }, 0);
+      if (eligInr >= ((window.CFG && window.CFG.creatorMinPayout) || 100)) {
+        grid += '<button onclick="requestMatchCommissionPayout(' + eligInr + ')" style="width:100%;margin-top:10px;padding:12px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:13px;font-weight:800;cursor:pointer">💰 ₹' + eligInr + ' Payout Request</button>';
+      }
+      grid += '</div>';
+      if (body) body.innerHTML = grid;
+      else if (window.openModal) openModal('💰 Commission Earnings', grid);
+    }, function(err) {
+      var body = document.querySelector('#_credEarnBody');
+      if (body) body.innerHTML = '<div style="text-align:center;color:#ff6b6b;padding:20px">Load failed</div>';
     });
 };
 
 window.requestMatchCommissionPayout = function(amount) {
-  if (!uid() || !db()) return;
+  if (!uid() || !window._supa) return;
   if (!confirm('₹' + amount + ' match commission payout request karo?')) return;
-  db().ref('creatorPayouts').push({
-    uid: uid(), ign: ud().ign||'', amount: amount,
-    type: 'match_commission', status: 'pending', createdAt: Date.now(),
+  /* R29E P1-FIX: server-authoritative claim_match_commission_payout atomically
+     (a) eligible→pending_payout transition + (b) creator_payouts pending row
+     banata hai. Purana RTDB `creatorPayouts` push user-bridge me map hi nahi
+     tha (silent drop) — ab wo path hata diya. */
+  window._supa.rpc('claim_match_commission_payout').then(function(res) {
+    if (res.error || (res.data && res.data.success === false)) {
+      var msg = (res.data && res.data.error) || (res.error && res.error.message) || 'Unknown error';
+      console.error('[Creator] claim_match_commission_payout failed:', msg);
+      if (window.toast) toast('⚠️ Payout claim sync fail: ' + msg, 'err');
+      return;
+    }
+    toast('✅ Payout request submit! Admin process karega.', 'ok');
   });
-  /* ✅ BUG FIX (2026-07-19, CRITICAL): was a direct client-side
-     creator_commissions.update({status:'pending_payout'}) — this table's
-     RLS has no self-UPDATE policy at all (only cc_select_creator, SELECT
-     only), so this call has always been silently rejected and swallowed
-     by its own .catch(), meaning no match-hosting commission has ever
-     actually been marked eligible-for-payout in Supabase, no matter how
-     many times a creator clicked this button. claim_match_commission_payout
-     does the correct, scoped transition (only the caller's own 'eligible'
-     INR rows, atomically) instead of a raw update that would have needed
-     an equally-raw RLS policy able to bypass the hold/eligible lifecycle. */
-  if (window._supa) {
-    window._supa.rpc('claim_match_commission_payout').then(function(res) {
-      if (res.error || (res.data && res.data.success === false)) {
-        var msg = (res.data && res.data.error) || (res.error && res.error.message) || 'Unknown error';
-        console.error('[Creator] claim_match_commission_payout failed:', msg);
-        if (window.toast) toast('⚠️ Payout claim sync fail: ' + msg, 'err');
-        return;
-      }
-    });
-  }
-  toast('✅ Payout request submit! Admin process karega.', 'ok');
   if (window.closeModal) closeModal();
 };
 

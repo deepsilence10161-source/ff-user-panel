@@ -9,6 +9,7 @@ on:
       - ".github/workflows/deploy-imgbb-upload.yml"
       - "supabase/config.toml"
       - "supabase/functions/imgbb-upload/**"
+      - "supabase/functions/push-send/**"
 
 permissions:
   contents: read
@@ -56,28 +57,44 @@ jobs:
         shell: bash
         run: supabase secrets set IMGBB_KEY="$IMGBB_KEY" FIREBASE_PROJECT_ID=fft-app-1e283 --project-ref "$PROJECT_REF"
 
+      - name: Sync optional OneSignal secrets
+        if: ${{ secrets.ONESIGNAL_APP_ID != '' }}
+        shell: bash
+        run: supabase secrets set ONESIGNAL_APP_ID="${{ secrets.ONESIGNAL_APP_ID }}" ONESIGNAL_REST_KEY="${{ secrets.ONESIGNAL_REST_KEY }}" ONESIGNAL_TRIGGER_SECRET="${{ secrets.ONESIGNAL_TRIGGER_SECRET }}" --project-ref "$PROJECT_REF"
+
       - name: Deploy imgbb-upload
         shell: bash
         run: supabase functions deploy imgbb-upload --project-ref "$PROJECT_REF" --no-verify-jwt
+
+      # R29E P1-FIX (2026-09-22): push-send ab source-push par auto-deploy hota hai
+      # (pehle sirf manual deploy tha). Gateway verify_jwt DEFAULT (ON) rakha —
+      # DB trigger (notifications_push_hook) apikey (anon key, valid Supabase JWT)
+      # bhejta hai; direct public call x-push-secret guard se 403 hoti hai.
+      - name: Deploy push-send
+        shell: bash
+        run: supabase functions deploy push-send --project-ref "$PROJECT_REF"
 
       - name: Verify deployment and gateway configuration
         shell: bash
         run: |
           URL="https://${PROJECT_REF}.supabase.co/functions/v1/imgbb-upload"
           BODY_FILE="$(mktemp)"
-
-          STATUS="$(curl --silent --show-error --output "$BODY_FILE" --write-out "%{http_code}" --request POST "$URL" --header "Content-Type: text/plain;charset=UTF-8" --data '{"image":"QUJD","name":"deployment-health-check"}')"
+          # R29E P1-FIX (2026-09-22): health-check ab PUBLIC anon apikey ke
+          # saath POST karta hai (wahi key jo client code me embedded hai) —
+          # isliye gateway verify_jwt ON ya OFF dono me function tak
+          # pahunchta hai. Function-level auth (Firebase ID token verify)
+          # hi asli gate hai; bina FB token ke "Login required" 401 aana
+          # chahiye.
+          STATUS="$(curl --silent --show-error --output "$BODY_FILE" --write-out "%{http_code}" --request POST "$URL" \
+            --header "Content-Type: application/json" \
+            --header "apikey: ${{ vars.SUPABASE_ANON_KEY }}" \
+            --header "Authorization: Bearer ${{ vars.SUPABASE_ANON_KEY }}" \
+            --data '{"image":"QUJD","name":"deployment-health-check"}')"
 
           BODY="$(cat "$BODY_FILE")"
 
           echo "Health-check HTTP status: $STATUS"
           echo "Health-check response: $BODY"
-
-          if echo "$BODY" | grep -q "UNAUTHORIZED_NO_AUTH_HEADER"; then
-            echo "::error::Supabase gateway JWT verification abhi bhi enabled hai."
-            echo "::error::imgbb-upload ko --no-verify-jwt ke saath deploy hona chahiye."
-            exit 1
-          fi
 
           if [ "$STATUS" != "401" ]; then
             echo "::error::Expected HTTP 401 from function authentication check, lekin HTTP $STATUS mila."
@@ -90,5 +107,4 @@ jobs:
           fi
 
           echo "Image upload function successfully deployed."
-          echo "Gateway JWT verification disabled hai."
           echo "Function-level Firebase authentication correctly active hai."
