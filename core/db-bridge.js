@@ -779,7 +779,16 @@
     }
     /* matches/mid/joinedPlayers → Supabase join_requests */
     if (root === 'matches' && parts[1] && parts[2] === 'joinedPlayers') {
-      window._supa.from('join_requests').select('user_id,ign_at_join,status').eq('match_id', parts[1]).in('status', ['approved','pending'])
+      /* ✅ R29B FIX (2026-09-22): paid join ab server-authoritative
+         status='joined' likhta hai (auto-approve); purana .in('status',
+         ['approved','pending']) filter R29B ke baad stale ho gaya tha —
+         usme sirf legacy rows aati thin aur saare naye joins (status
+         'joined') invisible ho jaate. Ab admin-panel jaisa hi correct
+         logic: sirf genuinely-not-joined terminal statuses exclude karo. */
+      window._supa.from('join_requests')
+        .select('user_id,ign_at_join,status')
+        .eq('match_id', parts[1])
+        .not('status', 'in', '(cancelled,refunded,rejected,no_show)')
         .then(function(r) {
           var obj = {};
           (r.data || []).forEach(function(jr) { obj[jr.user_id] = { ign: jr.ign_at_join, status: jr.status }; });
