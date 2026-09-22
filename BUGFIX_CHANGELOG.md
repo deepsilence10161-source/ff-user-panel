@@ -4,6 +4,25 @@
 ---
 
 
+## 🔴 2026-09-22p — R28p: profile phone-dup-check privacy fix (view-leak patched server-side)
+**Files:** `core/utils.js` (+ admin-repo SQL delta R29 — view से phone/referral_code हटाया)
+
+### Bug (live-proven)
+`user_public_profiles` view (security_invoker=false + GRANT SELECT TO anon) में
+`phone` + `referral_code` columns थे — anon बिना login किसी भी user का
+referral_code/phone पढ़ सकता था (e.g. Hunter7 का `TYHTZFON` live-leak हुआ)।
+
+### Fix (client-side — इस file में)
+`_findUserByPhone()` अब view से `.eq('phone',...)` query नहीं करता (view से
+यह column हट चुका है — server-side admin-repo R29 delta)। अब secure RPC
+`public.user_has_phone(p_phone)` कॉल करता है — SECURITY DEFINER, sirf
+authenticated role, सिर्फ `{found:true/false}` existence-check (कोई
+uid/phone/ign output नहीं)। callers (profile.js dup-check) को सिर्फ "already
+registered" boolean चाहिए था — semantics बरकरार।
+
+---
+
+
 ## 🔴 2026-09-22o — R28o: Rank leaderboard flat-shape 0-kills fix (bridge-normalizer)
 **Files:** `js/fixes-v7.js`
 

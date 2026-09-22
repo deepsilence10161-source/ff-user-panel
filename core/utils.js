@@ -476,8 +476,19 @@ function _findUserByIGN(ign, callback) {
 }
 function _findUserByPhone(phone, callback) {
   if (!phone || !window._supa) { callback(null, null); return; }
-  window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url').eq('phone', phone).limit(1).maybeSingle()
-    .then(function(r) { callback(r.data ? r.data.id : null, r.data ? Object.assign(r.data, { ffUid: r.data.ff_uid, profileImage: r.data.avatar_url }) : null); })
+  /* ✅ PRIVACY FIX (2026-09-22): user_public_profiles view se phone
+     column हटा दिया गया (anon/cross-user phone leak — live-proven).
+     Ab secure RPC `user_has_phone` se sirf existence-check hota hai:
+     SECURITY DEFINER, sirf authenticated role, किसी ka uid/phone/ign
+     output नहीं होता — caller ko bas {found:true/false} milta hai.
+     callers (profile.js dup-check) को sirf id chahiye thi; ab wahi
+     boolean semantics ke saath work karta hai. */
+  window._supa.rpc('user_has_phone', { p_phone: phone })
+    .then(function(r) {
+      if (r.error) { callback(null, null); return; }
+      var found = !!(r.data && r.data.found);
+      callback(found ? 'phone-taken' : null, null);
+    })
     .catch(function() { callback(null, null); });
 }
 
