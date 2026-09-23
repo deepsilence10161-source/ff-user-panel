@@ -704,26 +704,12 @@ window.applyDynamicWallpaper = function() {
      6. Real-time notification to teammate's device
   */
   window.processTeammateJoins = function (matchId, teamMembers, captainName, matchName, isCoin, tp) {
-    if (!teamMembers || teamMembers.length <= 1) return;
-    teamMembers.forEach(function (member, idx) {
-      if (member.role === 'captain') return; // Skip captain
-      var pUid = member._fbUid || null;
-      var pFFUid = member.uid || '';
-      var pName = member.name || 'Teammate';
-      if (!pUid) {
-        // Find by ffUid
-        db.ref('users').orderByChild('ffUid').equalTo(pFFUid).once('value', function (s) {
-          if (!s.exists()) return;
-          s.forEach(function (c) {
-            _createTeammateJR(c.key, c.val(), matchId, matchName, isCoin, tp, teamMembers, captainName, window.U.uid);
-          });
-        });
-      } else {
-        db.ref('users/' + pUid).once('value', function (s) {
-          if (s.exists()) _createTeammateJR(pUid, s.val(), matchId, matchName, isCoin, tp, teamMembers, captainName, window.U.uid);
-        });
-      }
-    });
+    /* ✅ R5 (2026-09-23): CLIENT-SIDE TEAM-ROW BUILDER RETIRED — pehle ye
+       Firebase-only partner joinRequests banata tha (Supabase authority se
+       alag). Ab team join server join_match_team RPC se atomic banta hai
+       (screens/join.js). Ye stub callers ke liye inert rakha hai — koi
+       Firebase join-authority write nahi karta. */
+    return;
   };
 
   function _createTeammateJR(pFirebaseUid, pData, matchId, matchName, isCoin, mode, allMembers, captainName, captainFirebaseUid) {

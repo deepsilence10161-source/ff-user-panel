@@ -151,13 +151,27 @@ console.log('\n── TEST 5: R4 checkin-system releaseNoShows (client slot-decr
 console.log('\n── TEST 6: R4 join.js free-join via RPC (capacity + filled_slots server-side) ──');
 {
   const jn = fs.readFileSync(path.join(REPO, 'screens/join.js'), 'utf8');
-  ok(/_freeJoinData\b[\s\S]*validate_and_join_match/.test(jn),
-     'free-join path ab validate_and_join_match RPC use karta hai');
-  // Free direct naked insert ab nahi hona chahiye — (join_requests).insert is paid-path legacy nahi
-  const _freeBlock = jn.slice(jn.indexOf('_freeJoinData'));
-  ok(_freeBlock.indexOf("from('join_requests').insert") === -1,
-     'free path me ab naked join_requests.insert NAHI (RPC authoritative)');
+  ok(jn.indexOf('validate_and_join_match') !== -1,
+     'join path ab validate_and_join_match RPC use karta hai');
+  ok(jn.indexOf('join_match_team') !== -1,
+     'team join ab join_match_team RPC use karta hai (server-authoritative)');
   ok(jn.indexOf('already join ho chuke ho') !== -1, 'duplicate-join friendly UX preserved');
+}
+
+/* ── TEST 7: R5 — no legacy authority fallback/team-client-decrement ── */
+console.log('\n── TEST 7: R5 no Firebase-only join fallback + no team client-decrement ──');
+{
+  const jn = fs.readFileSync(path.join(REPO, 'screens/join.js'), 'utf8');
+  ok(!/Firebase-only fallback|offline\/fallback/.test(jn),
+     'join.js me ab Firebase-only join fallback NAHI');
+  ok(!/decrement_balance/.test(jn),
+     'join.js me ab client decrement_balance(teammate) NAHI');
+  const f7 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
+  ok(!/window\.confirmGiftTicket\s*=/.test(f7),
+     'fixes-v7 ab secure confirmGiftTicket override NAHI karta (legacy inert)');
+  const oq = fs.readFileSync(path.join(REPO, 'js/fix6-offline-queue.js'), 'utf8');
+  ok(!/from\('join_requests'\)\.insert/.test(oq),
+     'offline-queue free-join ab direct join_requests insert NAHI (RPC-only)');
 }
 
 console.log('\n══════════════════════════════');

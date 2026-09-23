@@ -420,64 +420,18 @@ waitFor(function(){ return window.castVote; }, function(){
 
 /* ════════════════════════════════════════════
    FIX #14 — GIFT TICKET joinRequest CREATE
+   ✅ R5 (2026-09-23): LEGACY OVERRIDE REMOVED — ye Firebase-only flow
+   (client apne coins khud db.ref().transaction() se deduct karta tha +
+   fake giftTickets/joinRequests likhta tha) secure confirmGiftTicket() को
+   later-load में overwrite kar deta tha (screens/matches.js का RPC-based
+   implementation). R5 से gift sirf server gift_match_entry() RPC se —
+   matches.js का secure confirmGiftTicket ही एकमात्र ACTIVE flow hai.
+   Ye waitFor ab koi override नहीं करता (inert stub) ताकि script-order
+   कभी वापस insecure न बना सके।
 ════════════════════════════════════════════ */
 waitFor(function(){ return window.confirmGiftTicket && window.db; }, function(){
-  window.confirmGiftTicket = function(matchId) {
-    if (!window.db||!window.MT||!window.U||!window.UD) return;
-    var t = window.MT[matchId]; if (!t) return;
-    var ffUid = ((document.getElementById('giftToUid')||{}).value||'').trim();
-    if (ffUid.length < 5) { if(window.toast)window.toast('Valid FF UID enter karo','err'); return; }
-    var isCoin = (t.entryType||'').toLowerCase()==='coin';
-    var fee = Number(t.entryFee)||0;
-
-    /* Balance check first */
-    if (fee > 0) {
-      var myBal = isCoin ? (Number(window.UD.coins)||0) :
-        (window.getMoneyBal ? window.getMoneyBal() : (Number((window.UD.realMoney||{}).deposited||0)+Number((window.UD.realMoney||{}).winnings||0)));
-      if (myBal < fee) { if(window.toast)window.toast('Insufficient balance to gift this entry!','err'); return; }
-    }
-
-    window.db.ref('users').orderByChild('ffUid').equalTo(ffUid).once('value', function(s) {
-      if (!s.exists()) { if(window.toast)window.toast('Player not found with this FF UID','err'); return; }
-      var friendUid=null, friendData=null;
-      s.forEach(function(c){if(!friendUid){friendUid=c.key;friendData=c.val();}});
-      if (friendUid===window.U.uid) { if(window.toast)window.toast('Apne aap ko gift nahi kar sakte 😄','err'); return; }
-
-      window.db.ref('joinRequests').orderByChild('matchId').equalTo(matchId).once('value', function(jSnap) {
-        var alreadyIn = false;
-        if (jSnap.exists()) jSnap.forEach(function(jc){if(jc.val().userId===friendUid)alreadyIn=true;});
-        if (alreadyIn) { if(window.toast)window.toast('Yeh player already is match mein join kar chuka hai!','inf'); return; }
-
-        if (isCoin) window.db.ref('users/'+window.U.uid+'/coins').transaction(function(c){return Math.max((c||0)-fee,0);});
-        else if (window.deductMoney) window.deductMoney(fee,'Gift → '+(friendData.ign||ffUid)+' · '+(t.name||'Match'));
-
-        var gid = window.db.ref('giftTickets').push().key;
-        window.db.ref('giftTickets/'+gid).set({
-          fromUid:window.U.uid, fromName:window.UD.ign||window.UD.displayName||'',
-          toUid:friendUid, toFFUid:ffUid, matchId:matchId, matchName:t.name||'',
-          fee:fee, entryType:t.entryType||'paid', status:'gifted', createdAt:Date.now()
-        });
-
-        var jrId = window.db.ref('joinRequests').push().key;
-        window.db.ref('joinRequests/'+jrId).set({
-          userId:friendUid, userName:friendData.ign||friendData.displayName||'Player',
-          userEmail:friendData.email||'', ffUid:friendData.ffUid||ffUid,
-          matchId:matchId, matchName:t.name||'', entryFee:fee, entryType:t.entryType||'paid',
-          giftedBy:window.U.uid, giftedByName:window.UD.ign||window.UD.displayName||'',
-          giftId:gid, isGifted:true, status:'pending',
-          mode:t.mode||t.type||'solo', createdAt:Date.now(), timestamp:Date.now()
-        });
-        window.db.ref('users/'+friendUid+'/joinedMatches/'+matchId).set({matchId:matchId,joinId:jrId,isGifted:true,joinedAt:Date.now()});
-        window.db.ref('users/'+friendUid+'/notifications').push({
-          type:'gift_ticket', title:'🎁 Match Ticket Gift!',
-          body:(window.UD.ign||'A friend')+' ne tumhe "'+( t.name||'Match')+'" ka ticket gift kiya!',
-          matchId:matchId, giftId:gid, read:false, createdAt:Date.now()
-        });
-        if (window.closeModal) window.closeModal();
-        if (window.toast) window.toast('🎁 Gift sent! Unka joinRequest create ho gaya.','ok');
-      });
-    });
-  };
+  /* R5: inert — secure confirmGiftTicket (screens/matches.js → gift_match_entry RPC)
+     को वापस नहीं छेड़ा जाता। Legacy Firebase gift path disabled. */
 });
 
 /* ════════════════════════════════════════════

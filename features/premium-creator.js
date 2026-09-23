@@ -548,7 +548,11 @@ window.checkAndAwardAchievements = function() {
     try {
       if (a.check && a.check()) {
         db().ref('users/' + uid() + '/achievementsV3/' + a.id).set({ awardedAt: Date.now() });
-        db().ref('users/' + uid() + '/coins').transaction(function(v){ return (v||0) + 50; });
+        /* ✅ R5 (2026-09-23): +50 coin credit REMOVED — general bridge coins
+           credit path security se block hai (2026-09-08), yani pehle bhi
+           actually credit NAHI hota tha; jabki popup गलत दिखता tha.
+           Achievement award display-only है (कोई financial credit नहीं,
+           कोई false promise नहीं)। */
         showAchievementPopup(a);
       }
     } catch(e) {}

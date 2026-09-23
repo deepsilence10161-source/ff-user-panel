@@ -164,28 +164,36 @@
                 _doRPCReplay();
               }).catch(function() { _doRPCReplay(); });
           } else {
-            /* Free match — insert directly */
-            var _freePayload = Object.assign({}, p, {
-              timestamp: firebase.database.ServerValue.TIMESTAMP,
-              status: 'joined', _offlineQueued: true
+            /* ✅ R5: Free match — server-authoritative RPC ONLY (paid jaisa).
+               Pehle yahan direct join_requests insert hota tha (Supabase fail
+               hone par bhi Firebase join accepted) — ab free/ad join bhi
+               validate_and_join_match RPC se; fail = queue drop, koi
+               Firebase-only authority join nahi. */
+            window._supa.rpc('validate_and_join_match', {
+              p_uid:         window.U.uid,
+              p_match_id:    p.matchId,
+              p_entry_fee:   0,
+              p_currency:    'coins',
+              p_join_data:   {}
+            }).then(function(r) {
+              if ((r && r.error) || (r && r.data && r.data.ok === false)) {
+                var e = (r.data && r.data.error) || (r.error && r.error.message) || 'Server rejected';
+                if (window.toast) window.toast('❌ Queued join failed: ' + e, 'err');
+                done(true);
+              } else {
+                /* success → Firebase mirror (display only) */
+                if (window.db) {
+                  window.db.ref('joinRequests').push(Object.assign({}, p, {
+                    timestamp: (firebase.database && firebase.database.ServerValue) ? firebase.database.ServerValue.TIMESTAMP : Date.now(),
+                    status: 'joined', _offlineQueued: true
+                  }));
+                }
+                done(true);
+              }
+            }).catch(function() {
+              if (window.toast) window.toast('❌ Queued join failed — server unavailable', 'err');
+              done(true);
             });
-            if (window.db) {
-              window.db.ref('joinRequests').push(_freePayload)
-                .then(function() { done(true); })
-                .catch(function() { done(false); });
-            }
-            if (window._supa && window.U) {
-              window._supa.from('join_requests').insert({
-                user_id:       window.U.uid,
-                match_id:      p.matchId,
-                entry_fee_paid: 0,
-                entry_type:    'free',
-                status:        'joined',
-                user_ign:      p.userIgn || '',
-                ign_at_join:   p.userIgn || (window.UD && window.UD.ign) || '',
-                user_ff_uid:   p.userFFUID || ''
-              }).then(null, function(e) { console.warn('[OQ] Supabase free join insert fail:', e && e.message); });
-            }
           }
         });
         break;

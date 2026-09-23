@@ -367,28 +367,27 @@
         }).eq('id', jid);
       }
       if (!subF && typeof value === 'object') {
-        /* Full join request creation */
-        return window._supa.from('join_requests').upsert({
-          id: jid,
-          match_id: value.matchId,
-          user_id: value.userId,
-          status: value.status || 'pending',
-          /* ✅ BUG FIX (2026-09-14): was writing entry_type as
-             'coins'/'diamonds' — a vocabulary no other reader of this
-             column (admin-inline.js, listeners.js, supabase-rtdb-bridge.js)
-             recognizes; every match/join entry_type elsewhere is
-             'paid'/'coin'/'ad'. Pass the real value straight through. */
-          entry_type: value.entryType || 'paid',
-          entry_fee_paid: value.entryFee || 0,
-          ign_at_join: value.userName || value.userIGN || '',
-          in_room: value.inRoom || false,
-          checked_in: value.checkedIn || false,
-          squad_members: JSON.stringify(value.teamMembers || []),
-          slot_number: value.slotNumber || null,
-          captain_uid: value.captainUid || null,
-          fee_type: value.feeType || 'solo',
-          created_at: new Date().toISOString()
-        }, { onConflict: 'match_id,user_id' });
+        /* ✅ R5 (2026-09-23): FINANCIAL AUTHORITY LEAK FIX — client mirror ab
+           join_requests.entry_fee_paid/entry_type/fee_type/captain_uid को
+           UPSERT नहीं कर सकता। Ye upsert `onConflict match_id,user_id` से
+           पहले से बनी SERVER row (validate_and_join_match/join_match_team)
+           को OVERWRITE kar deta था — yani client free/ad join के बाद mirror
+           .set({status:'joined', entryFee:0}) server की authoritative paid
+           fee को 0 कर सकता था। Ab:
+           - संभव हो तो sirf DISPLAY columns (ign_at_join, teeam member) update,
+             kabhi financial columns nahi.
+           - Nahi to पूरा upsert वही skip (financial-authoritative Supabase
+             row ko client कभी नहीं छूता)। Firebase mirror अब सिर्फ़ display.
+           NOTE: अब सारे authoritative joins RPC से बनते हैं (R4+R5), isliye
+           ये client upsert कभी create-path नहीं होना चाहिए — हम सिर्फ़ update-
+           only बनाए हुए हैं (एक row पहले से server बनी होती है). */
+        return window._supa.from('join_requests').update({
+          ign_at_join: value.userName || value.userIGN || ''
+        }).eq('match_id', value.matchId).eq('user_id', value.userId).then(function(r) {
+          /* Row exist नहीं करती (e.g. सच में legacy path) तो silently ignore —
+             financial authority कभी client से नहीं बनती। */
+          return r;
+        });
       }
       if (!subF && isUpdate) {
         var upd = {};

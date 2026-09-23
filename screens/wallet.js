@@ -293,22 +293,31 @@ function submitSponsoredWd(maxBal) {
   if (!upi || !/^[\w.\-]{2,}@[\w]{2,}$/.test(upi.trim())) { toast('Valid UPI ID daalo (e.g. name@upi, phone@paytm)', 'err'); return; }
   if (amt > maxBal)      { toast('Balance se zyada nahi withdraw kar sakte', 'err'); return; }
 
-  /* Supabase-only withdrawal request */
+  /* ✅ R5: SERVER-AUTHORITATIVE withdrawal request — ab SECDEF RPC
+     submit_sponsored_withdrawal(p_amount, p_upi) server-side balance/
+     pending-sum verify karke EXPLICIT status='pending' row banata hai.
+     Pehle client direct wallet_transactions insert karta tha (schema
+     default par rely) — ab client amount ke अलावा kuch nahi; server
+     authoritative balance + dup-guard + pending status. केवल sponsored
+     winnings withdrawable (server bhi yahi rule). */
   if (!window._supa || !window._supaReady) { toast('Service unavailable. Try again.', 'err'); return; }
-  window._supa.from('wallet_transactions').insert({
-    user_id: U.uid,
-    txn_type: 'pending_withdraw',
-    amount: amt,
-    currency: 'sponsored',
-    reason: 'Sponsored withdrawal to UPI: ' + upi,
-    ref_id: null
-  }).then(function() {
-    closeModal();
-    toast('✅ Withdrawal request submit ho gayi! Admin approve karega.', 'ok');
-    if (window.renderWallet) renderWallet();
-  }).catch(function(e) {
-    toast('Error submitting. Try again.', 'err');
-  });
+  window._supa.rpc('submit_sponsored_withdrawal', { p_amount: amt, p_upi: upi.trim() })
+    .then(function(r) {
+      var d = r && r.data;
+      if ((r && r.error) || (d && d.success === false)) {
+        var e = (d && d.error) || ((r && r.error) && r.error.message) || 'Error';
+        var msg = e === 'amount_exceeds_balance' ? 'Balance se zyada nahi withdraw kar sakte'
+                : e === 'pending_requests_exceed_balance' ? 'Pehle wali pending request resolve hone do'
+                : 'Error submitting. Try again.';
+        toast('❌ ' + msg, 'err');
+        return;
+      }
+      closeModal();
+      toast('✅ Withdrawal request submit ho gayi! Admin approve karega.', 'ok');
+      if (window.renderWallet) renderWallet();
+    }).catch(function(e) {
+      toast('Error submitting. Try again.', 'err');
+    });
 }
 function submitWd() {
   // Legacy stub — now handled by submitSponsoredWd()

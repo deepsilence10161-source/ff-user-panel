@@ -33,7 +33,9 @@
 
    असली withdraw path (जो अब काम करता है) =
      screens/wallet.js  startWd() → sponsored_winnings → submitSponsoredWd()
-     (insert wallet_transactions pending_withdraw, admin approve करता है)
+     (R5: SECDEF RPC submit_sponsored_withdrawal — server balance/dup-guard
+     verify karke EXPLICIT status='pending' row; admin resolve_sponsored_withdrawal
+     se approve/reject).
 
    Native render/update पहले से सही:
      • screens/wallet.js renderWallet() — Sky=deposited, Green=

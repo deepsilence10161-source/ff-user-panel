@@ -258,6 +258,93 @@ function doJoin(id) {
 /* Bug #18 Fix: Session-level join dedup — blocks duplicate joins if lock releases early */
 var _sessionJoinedMatches = {};
 
+/* ✅ R5: server-authoritative team payload builder — captain + partners as
+   SUPABASE UIDs (users.id). Server join_match_team team[0].uid === auth.uid()
+   verify karta hai; partners की fee/eligibility server derive karta hai.
+   Client sirf ids चुनता है, kabhi amount/currency नहीं। */
+function _teamPayload(tp, cb) {
+  var need = tp === 'duo' ? 1 : (tp === 'squad' ? 3 : 0);
+  var team = [{ uid: U.uid, ign: (UD && UD.ign) || '' }];
+  if (need === 0) { cb(team); return; }
+  var parts = [];
+  for (var i = 1; i <= need; i++) { if (partnerCache[i]) parts.push(partnerCache[i]); }
+  if (parts.length !== need) { cb(null); return; }
+  var resolved = false;
+  var out = team.slice();
+  var done = 0;
+  function finish() {
+    if (resolved) return;
+    if (done === need) { resolved = true; cb(out); }
+  }
+  parts.forEach(function(p) {
+    function pushResolved(uid) {
+      if (resolved) return;
+      if (!uid) { resolved = true; cb(null); return; }
+      out.push({ uid: uid, ign: (p.ign || p.displayName || '') });
+      done++;
+      finish();
+    }
+    if (p._fbUid) { pushResolved(p._fbUid); }
+    else if (p.ffUid) { window._findUserByFF(p.ffUid, function(k) { pushResolved(k); }); }
+    else { pushResolved(null); }
+  });
+}
+
+/* ✅ R5: Firebase MIRROR-only team rows (server success के बाद; admin roster/
+   realtime display के लिए — कभी authority नहीं)। Supabase join_requests ही
+   सच है; ये sirf दृश्य-कॉपी हैं, financial/authoritative write नहीं। */
+function _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots) {
+  if (!teamArr || teamArr.length < 2) return;
+  var _feeType = window._feeType || 'captain_pays';
+  var entryType = (t.entryType || '').toString().toLowerCase();
+  var isCoin = entryType === 'coin' || entryType === 'coins';
+  var isSkyDia = entryType === 'paid' || entryType === 'sky' || entryType === 'skydiamond' || entryType === 'sd';
+  var isAdT = entryType === 'ad' || entryType === 'ads';
+  var fee = Number(t.entryFee) || 0;
+  for (var i = 1; i < teamArr.length; i++) {
+    var m = teamArr[i];
+    var pEntryFee = (_feeType === 'each_pays') ? fee : 0;
+    var pSlot = assignedSlots ? (assignedSlots[i] || assignedSlots[0]) : null;
+    var pjid = db.ref('joinRequests').push().key;
+    db.ref('joinRequests/' + pjid).set({
+      requestId: pjid, userId: m.uid, userName: m.ign || '',
+      userFFUID: m.ffUid || '', displayName: m.ign || '',
+      matchId: id, matchName: t.name || '', entryFee: pEntryFee,
+      entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAdT ? 'ad' : 'free',
+      mode: tp, status: 'joined', slotsBooked: 0,
+      teamMembers: JSON.stringify(teamArr.map(function(x){ return { uid: x.ffUid || x.uid, name: x.ign || '' }; })),
+      captainUid: U.uid, captainName: (UD && UD.ign) || '',
+      slotNumber: pSlot || null, allSlots: assignedSlots || null,
+      feeType: _feeType, isTeamMember: true, createdAt: Date.now()
+    });
+    /* Firebase-only partner notification (display) */
+    var notifId = db.ref('users/' + m.uid + '/notifications').push().key;
+    db.ref('users/' + m.uid + '/notifications/' + notifId).set({
+      type: 'team_joined', title: '🎮 Match Joined!',
+      body: (UD.ign || 'Captain') + ' ne team join kiya — "' + (t.name || 'match') + '". ' +
+            ((_feeType === 'each_pays' && pEntryFee > 0) ? 'Entry fee tumhare wallet se kati gai.' : 'Captain ne fee di hai.'),
+      matchId: id, read: false, createdAt: Date.now()
+    });
+  }
+  /* captain mirror already written by caller (_joinData path) */
+  void jid;
+
+  /* saved-team persistence (next-join UX; non-financial social metadata).
+     Security: display-only, bridge user-scoped, Supabase से ख़ुद भी कुछ नहीं गिराता। */
+  try {
+    if (tp === 'duo' && teamArr[1]) {
+      localStorage.setItem('lastDuoPartner', JSON.stringify({ uid: teamArr[1].ffUid || teamArr[1].uid, name: teamArr[1].ign || '' }));
+      db.ref('users/' + U.uid + '/duoTeam').set({ memberUid: teamArr[1].uid, memberFfUid: teamArr[1].ffUid || '', memberName: teamArr[1].ign || '', addedAt: Date.now() });
+    }
+    if (tp === 'squad') {
+      var sq = teamArr.slice(1).map(function(m){ return { uid: m.uid, ffUid: m.ffUid || '', name: m.ign || '' }; });
+      var saved = sq.map(function(m){ return { uid: m.ffUid || m.uid, name: m.name }; });
+      localStorage.setItem('lastSquadPartners', JSON.stringify(saved));
+      db.ref('users/' + U.uid + '/squadTeam').set({ members: sq, updatedAt: Date.now() });
+    }
+  } catch(e) {}
+}
+
 async function _doJoinCore(id, t, tp) {
   /* ✅ Bug 10 Fix: Prevent rapid double-clicks / duplicate join requests */
   if (_joinInFlight) {
@@ -314,49 +401,40 @@ async function _doJoinCore(id, t, tp) {
       team.push({ uid: partnerCache[i].ffUid, name: partnerCache[i].ign || partnerCache[i].displayName || '', role: 'member' });
     }
   }
-  var matchPath = (t._src || 'matches') + '/' + id;
-  var ref = db.ref(matchPath + '/joinedSlots');
-  ref.transaction(function(cur) {
-    cur = (cur || 0) + slotsNeeded;
-    if (cur > (Number(t.maxSlots) || 1)) return;
-    return cur;
-  }, function(err, committed, snap) {
-    if (err || !committed) { toast('Failed to book slots', 'err'); return; }
-    /* BUG FIX #5: Also update filledSlots for Admin panel sync */
-    db.ref(matchPath + '/filledSlots').transaction(function(v) {
-      return (v || 0) + slotsNeeded;
-    });
+  /* ✅ R5: PRE-BOOKING REMOVED — pehle client yahan `joinedSlots`/`filledSlots`
+     Firebase transaction chala kar slots book karta tha (server fills se
+     pehle hi capacity modify). Ab SINGLE authority = server: slots server
+     validate_and_join_match / join_match_team ke ANDAR atomic bharte hain
+     (उसी से capacity enforce hoti hai). Yahan sirf DISPLAY-ONLY slot labels
+     bante hain (asali slot room/manager server ke result se). */
+  var _serverFilled = Number(t.filledSlots || t.joinedSlots || 0);
+  var firstSlotNum = _serverFilled + 1;
+  var assignedSlots = [];
+  if (tp === 'solo') {
+    assignedSlots = [String(firstSlotNum)];
+  } else if (tp === 'duo') {
+    var teamNum = Math.ceil(firstSlotNum / 2);
+    assignedSlots = [teamNum + '/1', teamNum + '/2'];
+  } else { // squad
+    var teamNumS = Math.ceil(firstSlotNum / 4);
+    assignedSlots = [teamNumS+'/1', teamNumS+'/2', teamNumS+'/3', teamNumS+'/4'];
+  }
+  var mySlot = assignedSlots[0]; // captain/solo gets first slot
 
-    /* SLOT ASSIGNMENT: Calculate slot(s) for this player */
-    var newTotal = snap ? snap.val() : 0;
-    var firstSlotNum = newTotal - slotsNeeded + 1; // e.g. if total=4,needed=2 → first=3
-    var assignedSlots = [];
-    if (tp === 'solo') {
-      assignedSlots = [String(firstSlotNum)];
-    } else if (tp === 'duo') {
-      // Team number = ceil(firstSlotNum/2), positions 1 and 2
-      var teamNum = Math.ceil(firstSlotNum / 2);
-      assignedSlots = [teamNum + '/1', teamNum + '/2'];
-    } else { // squad
-      var teamNumS = Math.ceil(firstSlotNum / 4);
-      assignedSlots = [teamNumS+'/1', teamNumS+'/2', teamNumS+'/3', teamNumS+'/4'];
+  // DUPLICATE JOIN CHECK - prevent same user joining same match twice
+  var existingJoin = false;
+  Object.keys(JR).forEach(function(k) {
+    var jr = JR[k];
+    if (jr && jr.matchId === id && jr.userId === U.uid && jr.status !== 'cancelled') {
+      existingJoin = true;
     }
-    var mySlot = assignedSlots[0]; // captain/solo gets first slot
-
-    // DUPLICATE JOIN CHECK - prevent same user joining same match twice
-    var existingJoin = false;
-    Object.keys(JR).forEach(function(k) {
-      var jr = JR[k];
-      if (jr && jr.matchId === id && jr.userId === U.uid && jr.status !== 'cancelled') {
-        existingJoin = true;
-      }
-    });
-    if (existingJoin) {
-      toast('⚠️ Tum already is match mein join ho!', 'err');
-      setLoading(null, false);
-      return;
-    }
-    var jid = db.ref('joinRequests').push().key;
+  });
+  if (existingJoin) {
+    toast('⚠️ Tum already is match mein join ho!', 'err');
+    setLoading(null, false);
+    return;
+  }
+  var jid = db.ref('joinRequests').push().key;
     var _feeType = (tp !== 'solo') ? (window._feeType || 'captain_pays') : 'solo';
     /* Bug High #7 Fix: Calculate per-player fee correctly based on selected split mode.
        captain_pays → captain pays full fee × slotsNeeded (already correct)
@@ -388,340 +466,95 @@ async function _doJoinCore(id, t, tp) {
       isTeamMember: false, createdAt: Date.now()
     };
 
-    /* ✅ Bug 1 Fix: Server-side RPC is MANDATORY for paid matches — NO client-side fallback allowed */
-    if (_captainFee > 0) {
-      if (!window._supa || !window._supaReady) {
-        clearTimeout(_jifTimer); _joinInFlight = false;
-        toast('❌ Service unavailable — dobara try karo', 'err');
-        return;
-      }
-      window._supa.rpc('validate_and_join_match', {
-        p_uid: U.uid, p_match_id: id,
-        p_entry_fee: _captainFee, p_currency: _supaCol,
-        p_join_data: _joinData
-      }).then(function(r) {
-        if (r && r.error) {
-          clearTimeout(_jifTimer); _joinInFlight = false;
-          toast('❌ Server error: ' + (r.error.message || 'Join failed — try again'), 'err');
-          return;
-        }
-        if (r && r.data && r.data.ok === false) {
-          clearTimeout(_jifTimer); _joinInFlight = false;
-          toast('❌ ' + (r.data.error || 'Join failed'), 'err');
-          return;
-        }
-        /* Server confirmed — update local UD for immediate UI response */
-        if (isCoin) UD.coins = Math.max((UD.coins||0) - _captainFee, 0);
-        else { UD.skyDiamonds = Math.max((UD.skyDiamonds||0)-_captainFee,0); if(UD.realMoney) UD.realMoney.deposited = Math.max((UD.realMoney.deposited||0)-_captainFee,0); }
-        /* Creator commission (2026-08 redesign): now computed entirely
-           server-side inside validate_and_join_match at spend-time — see
-           that RPC's migration notes. This client-side release call is
-           obsolete (releaseCreatorCommissionIfPending was removed from
-           premium-creator.js); left as a no-op guard, safe to delete. */
-        if (isSkyDia && _captainFee > 0 && window.releaseCreatorCommissionIfPending) window.releaseCreatorCommissionIfPending(U.uid);
-        /* Mirror to Firebase RTDB for admin sync */
-        db.ref('joinRequests/' + jid).set(Object.assign({ requestId: jid, userId: U.uid, matchId: id,
-          entryFee: _captainFee, entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAd ? 'ad' : 'free', /* ✅ correct types */ status: 'joined', createdAt: Date.now() }, _joinData));
-        _afterJoinSuccess(id, t, tp, jid, assignedSlots);
-      }).catch(function(rpcErr) {
-        /* Network/RPC error — fail hard, no bypass */
-        clearTimeout(_jifTimer); _joinInFlight = false;
-        var errMsg = (rpcErr && rpcErr.message) || 'Network error';
-        var isRpcMissing = errMsg.indexOf('function') !== -1 || errMsg.indexOf('404') !== -1;
-        if (isRpcMissing) {
-          toast('⚠️ Server setup incomplete — Admin ko SUPABASE_SQL_SETUP.sql run karna hai!', 'err');
-        } else {
-          toast('❌ Join failed: ' + errMsg, 'err');
-        }
-        console.error('[Join] RPC error (no fallback):', errMsg);
-      });
-      return; /* Early return — rest of function runs in .then() callback via _afterJoinSuccess */
+    /* ✅ R5 FIX: SINGLE SERVER-AUTHORITATIVE JOIN — solo→validate_and_join_match,
+       duo/squad→join_match_team. Client sirf ids/एक request bhejता है; fee,
+       currency, eligibility, capacity, debit सब server atomic. NO fallback:
+       RPC fail = join fail. Firebase sirf success ke baad mirror. */
+    if (!window._supa || !window._supaReady) {
+      clearTimeout(_jifTimer); _joinInFlight = false;
+      setLoading(null, false);
+      toast('❌ Service unavailable — join nahi ho paya.', 'err');
+      return;
     }
-    /* Bug 1 Fix: Free matches also go through Supabase so the unique_user_match
-       constraint (user_id, match_id) prevents duplicate joins from multiple tabs.
-       Firebase write is a mirror only — Supabase is the authoritative gate. */
     var _freeJoinData = Object.assign({
       requestId: jid, userId: U.uid, matchId: id,
       entryFee: 0, entryType: 'free', status: 'joined', createdAt: Date.now()
     }, _joinData);
 
-    /* ✅ ROUND-4 FIX (2026-09-23i): free/ad joins ab bhi VALIDATE_AND_JOIN_MATCH
-       RPC se jaate hain (paid path jaisa) — pehle direct join_requests insert
-       hota tha, isliye matches.filled_slots kabhi nahi badhta tha (live-proven
-       gap: free match filled_slots=0, active_joins=1) aur free matches par
-       koi CAPACITY enforcement hi nahi thi (max_slots ka koi server check
-       nahi). Ab RPC: duplicate check + capacity v_available + player-slot
-       increment (+1 solo / +2 duo / +4 squad) + (free me fee 0, koi debit
-       nahi) sab atomic — server-authoritative, bina kisi business-rule
-       change ke. */
-    if (window._supa) {
+    function _mirrorCaptain() {
+      db.ref('joinRequests/' + jid).set(Object.assign({
+        requestId: jid, userId: U.uid, matchId: id,
+        entryFee: _captainFee,
+        entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAd ? 'ad' : 'free',
+        status: 'joined', createdAt: Date.now()
+      }, _joinData));
+    }
+
+    function _joinFailed(err) {
+      clearTimeout(_jifTimer); _joinInFlight = false;
+      setLoading(null, false);
+      var msg = (err && err.message) || (err == null ? 'Join failed' : String(err));
+      if (msg === 'Aap already join ho chuke ho') toast('✅ Aap is match mein already join ho chuke ho!', 'inf');
+      else toast('❌ ' + msg, 'err');
+    }
+
+    if (tp === 'solo') {
       window._supa.rpc('validate_and_join_match', {
         p_uid: U.uid, p_match_id: id,
-        p_entry_fee: 0, p_currency: 'coins',
+        p_entry_fee: _captainFee, p_currency: _supaCol,
         p_join_data: _joinData
       }).then(function(r) {
-        if (r && r.error) {
-          clearTimeout(_jifTimer); _joinInFlight = false;
-          toast('❌ Server error: ' + (r.error.message || 'Join failed — try again'), 'err');
-          return;
+        if (r && r.error) { _joinFailed(r.error); return; }
+        if (r && r.data && r.data.ok === false) { _joinFailed(r.data.error); return; }
+        if (_captainFee > 0) {
+          if (isCoin) UD.coins = Math.max((UD.coins||0) - _captainFee, 0);
+          else { UD.skyDiamonds = Math.max((UD.skyDiamonds||0)-_captainFee,0); if(UD.realMoney) UD.realMoney.deposited = Math.max((UD.realMoney.deposited||0)-_captainFee,0); }
         }
-        if (r && r.data && r.data.ok === false) {
-          clearTimeout(_jifTimer); _joinInFlight = false;
-          var _freeErr = r.data.error || 'Join failed';
-          /* Preserve friendly duplicate-join UX (purane direct-insert path
-             jaisa) — RPC duplicate check par yahi message deta hai. */
-          if (_freeErr.indexOf('already join') >= 0 || _freeErr.indexOf('already_joined') >= 0) {
-            toast('✅ Aap is match mein already join ho chuke ho!', 'inf');
-          } else {
-            toast('❌ ' + _freeErr, 'err');
-          }
-          return;
-        }
-        /* Mirror to Firebase for admin panel + real-time listeners */
-        db.ref('joinRequests/' + jid).set(_freeJoinData);
-        _afterJoinSuccess(id, t, tp, jid, _freeJoinData);
-      }).catch(function(e) {
-        /* Supabase RPC unreachable — Firebase-only fallback */
-        db.ref('joinRequests/' + jid).set(_freeJoinData);
-        _afterJoinSuccess(id, t, tp, jid, _freeJoinData);
-      });
-    } else {
-      /* No Supabase — Firebase only (offline/fallback) */
-      db.ref('joinRequests/' + jid).set(_freeJoinData);
-      _afterJoinSuccess(id, t, tp, jid, _freeJoinData);
+        _mirrorCaptain();
+        _afterJoinSuccess(id, t, tp, jid, assignedSlots);
+      }).catch(function(e) { _joinFailed(e); });
+      return;
     }
 
-    // ── MATCH COMMISSION — 15% to creator if match has creatorUid ──
-    var _isSkyDiaPaid = (t.entryType||'').toString().toLowerCase() === 'paid';
-    if (_isSkyDiaPaid && _captainFee > 0 && t.creatorUid) {
-      var _commRate = (window.CFG && window.CFG.commission) || 0.15;
-      var _commission = Math.floor(_captainFee * _commRate);
-      if (_commission > 0) {
-        db.ref('creatorStats/' + t.creatorUid + '/totalSales').transaction(function(v){ return (v||0)+1; });
-        db.ref('creatorStats/' + t.creatorUid + '/totalCommission').transaction(function(v){ return (v||0)+_commission; });
-        db.ref('creatorStats/' + t.creatorUid + '/pendingPayout').transaction(function(v){ return (v||0)+_commission; });
-        db.ref('creatorStats/' + t.creatorUid + '/matchEarnings/' + id).transaction(function(v){ return (v||0)+_commission; });
-        db.ref('users/' + t.creatorUid + '/notifications').push({
-          type: 'match_commission',
-          title: '🔵 Commission Mili!',
-          message: '💎' + _captainFee + ' entry fee → Tumhara 15% commission: 💎' + _commission + ' (match: ' + (t.name||'Match') + ')',
-          read: false, timestamp: Date.now()
-        });
+    /* duo/squad → join_match_team (server validates team, locks ALL rows,
+       verifies sab ki balance, atomic debit, no partial payment) */
+    _teamPayload(tp, function(teamArr) {
+      if (!teamArr) {
+        clearTimeout(_jifTimer); _joinInFlight = false;
+        setLoading(null, false);
+        toast('❌ Team members verify nahi huye — dobara check karo', 'err');
+        return;
       }
-    }
-
-    db.ref('users/' + U.uid + '/stats/matches').transaction(function(m) { return (m || 0) + 1; });
-    /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet RPC"
-       audit — swapped generic increment_balance (locked to
-       service_role only this session) for increment_own_match_played,
-       a narrow RPC that only ever adds exactly 1 to the caller's own
-       total_matches — no column or amount is client-controlled. */
-    if (window.DB && window._supaReady) {
-      window._supa.rpc('increment_own_match_played').then(null, function(){});
-    }
-    /* Save last used team to localStorage for quick join next time */
-    if (tp === 'duo' && partnerCache[1]) {
-      try { localStorage.setItem('lastDuoPartner', JSON.stringify({ uid: partnerCache[1].ffUid, name: partnerCache[1].ign || partnerCache[1].displayName || '' })); } catch(e) {}
-      /* AUTO-SAVE to Firebase duoTeam so profile mein bhi dikhe */
-      if (partnerCache[1].ffUid && partnerCache[1]._fbUid) {
-        var _pc1 = partnerCache[1];
-        db.ref('users/' + U.uid + '/duoTeam').set({ memberUid: _pc1._fbUid, memberFfUid: _pc1.ffUid, memberName: _pc1.ign || _pc1.displayName || '', addedAt: Date.now() });
-        db.ref('users/' + _pc1._fbUid + '/duoTeam').set({ memberUid: U.uid, memberFfUid: UD.ffUid || '', memberName: UD.ign || UD.displayName || '', addedAt: Date.now() });
-      }
-    }
-    if (tp === 'squad') {
-      var savedSquad = [];
-      for (var si = 1; si <= 3; si++) { if (partnerCache[si]) savedSquad.push({ uid: partnerCache[si].ffUid, name: partnerCache[si].ign || partnerCache[si].displayName || '' }); }
-      try { localStorage.setItem('lastSquadPartners', JSON.stringify(savedSquad)); } catch(e) {}
-      /* AUTO-SAVE squad to Firebase */
-      var _sqMembers = [];
-      for (var qi = 1; qi <= 3; qi++) {
-        if (partnerCache[qi] && partnerCache[qi]._fbUid) {
-          var _pm = partnerCache[qi];
-          _sqMembers.push({ uid: _pm._fbUid, ffUid: _pm.ffUid || '', name: _pm.ign || _pm.displayName || '', addedAt: Date.now() });
-          /* Also update partner's squadTeam */
-          db.ref('users/' + _pm._fbUid + '/squadTeam').set({ members: [{ uid: U.uid, ffUid: UD.ffUid||'', name: UD.ign||UD.displayName||'' }].concat(_sqMembers.filter(function(m){return m.uid!==_pm._fbUid;})), updatedAt: Date.now() });
-        }
-      }
-      if (_sqMembers.length > 0) {
-        db.ref('users/' + U.uid + '/squadTeam').set({ members: _sqMembers, updatedAt: Date.now() });
-      }
-    }
-    // Partner joinRequests banao taaki unhe My Matches mein dikhe
-    var _makePartnerJR = function(pUid, pName, pFFUid, pIndex) {
-      if (!pUid) { console.warn('[Team] _makePartnerJR: pUid missing for index', pIndex); return; }
-      if (pUid === U.uid) return; // don't create for self
-
-      /* Bug 6 Fix: Check self-exclusion AND Supabase ban for each team member.
-         Previously only captain was checked — banned/excluded teammates still got join requests. */
-      function _doMakeJR() {
-        var pSlotIdx = (pIndex || 1);
-        var pSlot = assignedSlots ? (assignedSlots[pSlotIdx] || assignedSlots[0]) : null;
-        var pjid = db.ref('joinRequests').push().key;
-      /* each_pays: partner pays own fee; captain_pays: partner entry is free */
-      var pEntryFee = (_feeType === 'each_pays') ? fee : 0;
-      var pjData = {
-        requestId: pjid, userId: pUid, userName: pName || '', userFFUID: pFFUid || '',
-        displayName: pName || '',
-        matchId: id, matchName: t.name || '', entryFee: pEntryFee,
-        entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAd ? 'ad' : 'free', /* ✅ correct types */ mode: tp, status: 'joined',
-        slotsBooked: 0, teamMembers: team, captainUid: U.uid,
-        captainName: UD.ign || UD.displayName || '',
-        slotNumber: pSlot || null,
-        allSlots: assignedSlots || null,
-        feeType: _feeType,
-        isTeamMember: true,
-        createdAt: Date.now()
-      };
-      db.ref('joinRequests/' + pjid).set(pjData);
-      db.ref('users/' + pUid + '/stats/matches').transaction(function(m) { return (m||0)+1; });
-      
-      /* each_pays: deduct fee from partner's wallet */
-      if (_feeType === 'each_pays' && pEntryFee > 0) {
-        if (isCoin) {
-          /* Single deduction via Supabase RPC only */
-          if (window._supa) {
-            window._supa.rpc('decrement_balance', { p_uid: pUid, p_col: 'coins', p_amount: pEntryFee }).then(null, function(){});
-            window._supa.from('wallet_transactions').insert({
-              user_id: pUid, currency: 'coins', txn_type: 'debit',
-              amount: pEntryFee, reason: 'match_entry',
-              note: 'Match Entry: ' + (t.name||'Match') + ' (Each pays own)'
-            }).then(null, function(){}); /* R28d: .catch→.then(null,) — builder is thenable */
-          }
-        } else {
-          /* Sky diamonds deduction via Supabase RPC only */
-          if (window._supa) {
-            window._supa.rpc('decrement_balance', { p_uid: pUid, p_col: 'sky_diamonds', p_amount: pEntryFee }).then(null, function(){});
-            window._supa.from('wallet_transactions').insert({
-              user_id: pUid, currency: 'sky_diamonds', txn_type: 'debit',
-              amount: pEntryFee, reason: 'match_entry',
-              note: 'Match Entry: ' + (t.name||'Match') + ' (Each pays own)'
-            }).then(null, function(){}); /* R28d: .catch→.then(null,) */
-            /* Creator commission release (2026-07) — see premium-creator.js */
-            if (pEntryFee > 0 && window.releaseCreatorCommissionIfPending) window.releaseCreatorCommissionIfPending(pUid);
-          }
-        }
-      }
-      
-      // Notify partner
-      var notifId = db.ref('users/' + pUid + '/notifications').push().key;
-      var notifBody = _feeType === 'each_pays'
-        ? (UD.ign||'Captain') + ' ne team join kiya! \"' + (t.name||'match') + '\" — Entry fee 💎' + pEntryFee + ' tumhare wallet se kati gai.'
-        : (UD.ign || 'Your teammate') + ' ne "' + (t.name||'match') + '" join kiya — tum bhi team mein ho! Captain ne fee di hai.';
-      db.ref('users/' + pUid + '/notifications/' + notifId).set({
-        type: 'team_joined', title: '🎮 Match Joined!',
-        body: notifBody,
-        matchId: id, read: false, createdAt: Date.now()
-      });
-      console.log('[Team] Created joinRequest for partner: uid=' + pUid + ' feeType=' + _feeType + ' slot=' + pSlot);
-      } // end _doMakeJR
-
-      /* Bug 6 Fix: Check ban + self-exclusion for teammate via Supabase then Firebase */
-      if (window._supa) {
-        window._supa.from('user_public_profiles').select('is_banned').eq('id', pUid).single() /* BUG #38 FIX */
-          .then(function(r) {
-            if (r.data && r.data.is_banned) {
-              toast('⚠️ Teammate (' + (pName||pUid.substring(0,8)) + ') ka account banned hai — join nahi ho sakta', 'err');
-              return;
-            }
-            db.ref('users/' + pUid + '/selfExcluded').once('value', function(s) {
-              if (s.val() === true) {
-                toast('⚠️ Teammate (' + (pName||pUid.substring(0,8)) + ') self-exclusion mein hai', 'err');
-                return;
-              }
-              _doMakeJR();
-            });
-          })
-          .catch(function() { _doMakeJR(); }); // Supabase fail → proceed
-      } else {
-        db.ref('users/' + pUid + '/selfExcluded').once('value', function(s) {
-          if (s.val() === true) {
-            toast('⚠️ Teammate (' + (pName||pUid.substring(0,8)) + ') self-exclusion mein hai', 'err');
-            return;
-          }
-          _doMakeJR();
-        });
-      }
-    };
-
-    /* Issue #17 Fix: Dedup guard — clear on new join attempt */
-    if (!window._joinTeamProcessed || window._joinTeamProcessedMatch !== mid) {
-      window._joinTeamProcessed = {};
-      window._joinTeamProcessedMatch = mid;
-    }
-
-    /* Safe wrapper: if _fbUid available use it, else look up by ffUid */
-    var _safePartnerJR = function(partnerObj, pIndex) {
-      if (!partnerObj) return;
-      /* Issue #17 Fix: skip if already processed this partner in this join attempt */
-      var _dedupeKey = (partnerObj._fbUid || partnerObj.ffUid || ('idx_' + pIndex));
-      if (window._joinTeamProcessed[_dedupeKey]) {
-        console.warn('[Team] Skipping duplicate partner:', _dedupeKey); return;
-      }
-      window._joinTeamProcessed[_dedupeKey] = true;
-      if (partnerObj._fbUid && partnerObj._fbUid !== U.uid) {
-        _makePartnerJR(partnerObj._fbUid, partnerObj.ign||partnerObj.displayName||'', partnerObj.ffUid||'', pIndex);
-      } else if (partnerObj.ffUid) {
-        /* Fallback: look up Firebase UID from ffUid */
-        var _ffUid = partnerObj.ffUid;
-        var _pName = partnerObj.ign || partnerObj.displayName || '';
-        _findUserByFF(_ffUid, function(fbKey) {
-          if (true) {
-            if (fbKey && fbKey !== U.uid) {
-              _makePartnerJR(fbKey, _pName, _ffUid, pIndex);
-            } else {
-              console.warn('[Team] _safePartnerJR fallback: fbKey not found for ffUid', _ffUid);
-            }
-          }
-        });
-      } else {
-        console.warn('[Team] _safePartnerJR: no uid or ffUid for partner at index', pIndex);
-      }
-    };
-    if (tp === 'duo' && partnerCache[1]) {
-      _safePartnerJR(partnerCache[1], 1);
-    }
-    if (tp === 'squad') {
-      for (var _si = 1; _si <= 3; _si++) {
-        if (partnerCache[_si]) {
-          _safePartnerJR(partnerCache[_si], _si);
-        }
-      }
-    }
-    partnerCache = {}; closeModal();
-    _joinInFlight = false; /* ✅ Release join lock */
-    clearTimeout(_jifTimer);
-    toast('Joined successfully! 🎮', 'ok');
-    _sessionJoinedMatches[U.uid + '_' + id] = true; /* Bug #18 dedup mark — R28b: uid→U.uid ("uid is not defined" fix) */
-  }, false);
+      window._supa.rpc('join_match_team', {
+        p_match_id: id, p_mode: tp,
+        p_fee_type: (window._feeType || 'captain_pays'),
+        p_team: teamArr
+      }).then(function(r) {
+        if (r && r.error) { _joinFailed(r.error); return; }
+        if (r && r.data && r.data.ok === false) { _joinFailed(r.data.error); return; }
+        var _myFee = (window._feeType === 'each_pays') ? fee : (_captainFee || fee * (tp === 'duo' ? 2 : 4));
+        if (isCoin) UD.coins = Math.max((UD.coins||0) - _myFee, 0);
+        else if (isSkyDia) UD.skyDiamonds = Math.max((UD.skyDiamonds||0) - _myFee, 0);
+        if (UD.realMoney && isSkyDia) UD.realMoney.deposited = Math.max((UD.realMoney.deposited||0) - _myFee, 0);
+        _mirrorCaptain();
+        /* partner rows: Firebase mirror only (admin roster display) — Supabase
+           join_requests already has authoritative rows (server ne banaye) */
+        _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots);
+        _afterJoinSuccess(id, t, tp, jid, assignedSlots);
+      }).catch(function(e) { _joinFailed(e); });
+    });
+    return;
 }
 
 function deductMoney(amt, reason) {
-  /* ✅ SINGLE deduction — Supabase direct only (no db.ref() to avoid bridge double-hit) */
-  var newSkyDia = Math.max((UD.skyDiamonds || UD.realMoney && UD.realMoney.deposited || 0) - amt, 0);
-  /* Update local UD immediately for UI */
-  UD.skyDiamonds = newSkyDia;
-  UD.realMoney = UD.realMoney || {};
-  UD.realMoney.deposited = newSkyDia;
-  /* Supabase write */
-  if (window._supa) {
-    window._supa.rpc('decrement_balance', { p_uid: U.uid, p_col: 'sky_diamonds', p_amount: amt }).then(null, function(){});
-    window._supa.from('wallet_transactions').insert({
-      user_id: U.uid, currency: 'sky_diamonds', txn_type: 'debit',
-      amount: amt, reason: 'match_entry', note: reason || 'Entry Fee'
-    }).then(null, function(){}); /* R28d: .catch→.then(null,) */
-  }
-  // Record in wallet transaction history
-  db.ref('users/' + U.uid + '/transactions').push({
-    type: 'debit', amount: -amt,
-    description: reason || 'Entry Fee',
-    timestamp: Date.now(), read: false
-  });
-  // TDS TRACKING
-  if (amt > 0) { db.ref('users/' + U.uid + '/tds/entryFeesPaid').transaction(function(v) { return (v||0)+amt; }); }
-  /* Creator commission release (2026-07) — see premium-creator.js.
-     Cheap no-op for users who were never referred by a creator. */
-  if (amt > 0 && window.releaseCreatorCommissionIfPending) window.releaseCreatorCommissionIfPending(U.uid);
+  /* ✅ R5 (2026-09-23): relinquished global legacy helper — old (pre-R5)
+     गिफ्ट flows ab server RPC gift_match_entry से atomic हैं, और team
+     से join अब join_match_team से server-authoritative है. Yे helper ab
+     koi caller nahi rakhta (grep-verified: sirf legacy fixes-v7 gift था,
+     जो R5 में inert). Purani direct client-payment logic HATA DI (double-
+     debit/unsafe-path band) — ab sirf no-op placeholder, koi financial write
+     nahi. */
+  console.warn('[deductMoney] legacy helper (no-op) — server RPC use karo');
 }
 
 /* ── _afterJoinSuccess — called after join RPC/DB write confirmed ── */
