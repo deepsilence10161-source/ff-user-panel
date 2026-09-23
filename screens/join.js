@@ -445,39 +445,43 @@ async function _doJoinCore(id, t, tp) {
       entryFee: 0, entryType: 'free', status: 'joined', createdAt: Date.now()
     }, _joinData);
 
+    /* ✅ ROUND-4 FIX (2026-09-23i): free/ad joins ab bhi VALIDATE_AND_JOIN_MATCH
+       RPC se jaate hain (paid path jaisa) — pehle direct join_requests insert
+       hota tha, isliye matches.filled_slots kabhi nahi badhta tha (live-proven
+       gap: free match filled_slots=0, active_joins=1) aur free matches par
+       koi CAPACITY enforcement hi nahi thi (max_slots ka koi server check
+       nahi). Ab RPC: duplicate check + capacity v_available + player-slot
+       increment (+1 solo / +2 duo / +4 squad) + (free me fee 0, koi debit
+       nahi) sab atomic — server-authoritative, bina kisi business-rule
+       change ke. */
     if (window._supa) {
-      window._supa.from('join_requests').insert({
-        user_id:    U.uid,
-        match_id:   id,
-        entry_fee:  0,
-        entry_type: 'free',
-        status:     'joined',
-        fee_type:   _feeType || 'solo',
-        user_ign:   (UD && UD.ign) || '',
-        /* ✅ R28m FIX: free/ad साथी paths की तरह ign_at_join भी भरो —
-           pehle sirf user_ign likh raha tha, isliye free joins me
-           ign_at_join khali reh jata tha (admin/creator UI + room
-           display isi ko padhta hai). */
-        ign_at_join: (UD && UD.ign) || ''
+      window._supa.rpc('validate_and_join_match', {
+        p_uid: U.uid, p_match_id: id,
+        p_entry_fee: 0, p_currency: 'coins',
+        p_join_data: _joinData
       }).then(function(r) {
-        if (r.error) {
-          /* unique_user_match constraint fires here if already joined */
-          var errMsg = r.error.message || '';
-          if (errMsg.indexOf('unique_user_match') >= 0 ||
-              errMsg.indexOf('duplicate') >= 0 ||
-              errMsg.indexOf('unique') >= 0) {
+        if (r && r.error) {
+          clearTimeout(_jifTimer); _joinInFlight = false;
+          toast('❌ Server error: ' + (r.error.message || 'Join failed — try again'), 'err');
+          return;
+        }
+        if (r && r.data && r.data.ok === false) {
+          clearTimeout(_jifTimer); _joinInFlight = false;
+          var _freeErr = r.data.error || 'Join failed';
+          /* Preserve friendly duplicate-join UX (purane direct-insert path
+             jaisa) — RPC duplicate check par yahi message deta hai. */
+          if (_freeErr.indexOf('already join') >= 0 || _freeErr.indexOf('already_joined') >= 0) {
             toast('✅ Aap is match mein already join ho chuke ho!', 'inf');
           } else {
-            toast('Join failed: ' + errMsg, 'err');
+            toast('❌ ' + _freeErr, 'err');
           }
-          clearTimeout(_jifTimer); _joinInFlight = false;
           return;
         }
         /* Mirror to Firebase for admin panel + real-time listeners */
         db.ref('joinRequests/' + jid).set(_freeJoinData);
         _afterJoinSuccess(id, t, tp, jid, _freeJoinData);
       }).catch(function(e) {
-        /* Supabase unreachable — Firebase-only fallback */
+        /* Supabase RPC unreachable — Firebase-only fallback */
         db.ref('joinRequests/' + jid).set(_freeJoinData);
         _afterJoinSuccess(id, t, tp, jid, _freeJoinData);
       });

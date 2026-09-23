@@ -147,6 +147,19 @@ console.log('\n── TEST 5: R4 checkin-system releaseNoShows (client slot-decr
   ok(ck.includes('double-decrement'), 'double-decrement avoidance comment present');
 }
 
+/* ── TEST 6: ROUND-4 — free/ad join ab validate_and_join_match RPC se ── */
+console.log('\n── TEST 6: R4 join.js free-join via RPC (capacity + filled_slots server-side) ──');
+{
+  const jn = fs.readFileSync(path.join(REPO, 'screens/join.js'), 'utf8');
+  ok(/_freeJoinData\b[\s\S]*validate_and_join_match/.test(jn),
+     'free-join path ab validate_and_join_match RPC use karta hai');
+  // Free direct naked insert ab nahi hona chahiye — (join_requests).insert is paid-path legacy nahi
+  const _freeBlock = jn.slice(jn.indexOf('_freeJoinData'));
+  ok(_freeBlock.indexOf("from('join_requests').insert") === -1,
+     'free path me ab naked join_requests.insert NAHI (RPC authoritative)');
+  ok(jn.indexOf('already join ho chuke ho') !== -1, 'duplicate-join friendly UX preserved');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
