@@ -345,6 +345,46 @@ function _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots) {
   } catch(e) {}
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   R6 — _inviteTeammatesAndJoin (TEAM AUTHORIZATION FLOW)
+   ═══════════════════════════════════════════════════════════════════
+   Server join_match_team ne TEAM_NOT_AUTHORIZED diya = teammates ne
+   abhi consent nahi diya. Captain ko automate-friendly tarika chahiye.
+   Yahan captain ke naam se team_invitations banti hain (RPC), members
+   ko notification jaati hai. Member jab accept karta hai (notification
+   se ya profile se), tabhi server join karne deta hai. Retry join बाद
+   में manually (यह security boundary kabhi auto-bypass नहीं करता —
+   कोई wallet/slot/join write sirf server accept ke baad). */
+function _inviteTeammatesAndJoin(id, t, tp, teamArr) {
+  function _fail(msg) {
+    clearTimeout(window._jifTimer); _joinInFlight = false;
+    setLoading(null, false);
+    toast('❌ ' + (msg || 'Join failed'), 'err');
+  }
+  if (!teamArr || teamArr.length < 2) { _fail('Team members missing'); return; }
+  var memberIds = [];
+  for (var i = 1; i < teamArr.length; i++) {
+    if (teamArr[i] && teamArr[i].uid) memberIds.push(teamArr[i].uid);
+  }
+  if (!memberIds.length) { _fail('Teammates verify nahi huye'); return; }
+  if (!window._supa) { _fail('Service unavailable'); return; }
+  window._supa.rpc('invite_team_members', {
+    p_match_id: id,
+    p_mode: tp,
+    p_fee_type: (window._feeType || 'captain_pays'),
+    p_member_uids: memberIds
+  }).then(function(ir) {
+    var idata = ir && ir.data;
+    if ((ir && ir.error) || (idata && idata.ok === false)) {
+      _fail((idata && idata.error) || ((ir && ir.error) && ir.error.message) || 'Invite nahi bhej paaye');
+      return;
+    }
+    toast('📨 Team invites bhej diye! Teammates accept karein, phir dobara Join dabao.', 'inf');
+    if (window.closeModal) closeModal();
+    if (curScr === 'home' && window.renderHome) renderHome();
+  }).catch(function(e) { _fail(e && e.message ? e.message : 'Invite failed'); });
+}
+
 async function _doJoinCore(id, t, tp) {
   /* ✅ Bug 10 Fix: Prevent rapid double-clicks / duplicate join requests */
   if (_joinInFlight) {
@@ -531,7 +571,21 @@ async function _doJoinCore(id, t, tp) {
         p_team: teamArr
       }).then(function(r) {
         if (r && r.error) { _joinFailed(r.error); return; }
-        if (r && r.data && r.data.ok === false) { _joinFailed(r.data.error); return; }
+        if (r && r.data && r.data.ok === false) {
+          /* ══ R6 TEAM AUTHORIZATION ══
+             Server sirf unhi teammates का wallet/slot/join मानता है जिन्होंने
+             consent दिया हो (accepted team invitation या auto-squad matched
+             team). Any other UID = पूरा join reject (0 debits, 0 slots).
+             `code` machine-readable, `error` human-friendly (दोनो fallback). */
+          if (r.data.code === 'TEAM_NOT_AUTHORIZED'
+              || (r.data.error || '').indexOf('authorize') !== -1) {
+            clearTimeout(_jifTimer); _joinInFlight = false;
+            setLoading(null, false);
+            _inviteTeammatesAndJoin(id, t, tp, teamArr);
+            return;
+          }
+          _joinFailed(r.data.error); return;
+        }
         var _myFee = (window._feeType === 'each_pays') ? fee : (_captainFee || fee * (tp === 'duo' ? 2 : 4));
         if (isCoin) UD.coins = Math.max((UD.coins||0) - _myFee, 0);
         else if (isSkyDia) UD.skyDiamonds = Math.max((UD.skyDiamonds||0) - _myFee, 0);

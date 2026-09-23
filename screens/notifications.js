@@ -1,6 +1,33 @@
 /* ====== NOTIFICATIONS ====== */
-function toggleAchievements() {
-  var ac = document.getElementById('achContent');
+/* ══ R6 TEAM AUTHORIZATION ══
+   _respondTeamInvite(matchId, accept) — invited member apni pending
+   team_invitation accept/decline karta hai (server-authoritative consent).
+   sirf member_uid == auth.uid() wali row respond hoti hai — koi bhi
+   किसी और की invitation change nahi kar sakta (server double-checks). */
+window._respondTeamInvite = function (matchId, accept) {
+  if (!window.U || !window.U.uid || !window._supa) { if (window.toast) toast('Login karo pehle', 'err'); return; }
+  window._supa.from('team_invitations')
+    .select('id').eq('match_id', matchId).eq('member_uid', window.U.uid).eq('status', 'pending')
+    .maybeSingle()
+    .then(function (r) {
+      if (r && r.error) { if (window.toast) toast('Invitation load nahi hui', 'err'); return; }
+      if (!r.data) { if (window.toast) toast('Pending invitation nahi mili', 'inf'); return; }
+      return window._supa.rpc('respond_team_invite', { p_invite_id: r.data.id, p_accept: accept });
+    })
+    .then(function (rr) {
+      if (!rr) return;
+      var d = rr && rr.data;
+      if ((rr && rr.error) || (d && d.ok === false)) {
+        if (window.toast) toast('Error: ' + ((d && d.error) || 'response failed'), 'err');
+        return;
+      }
+      if (window.toast) toast(accept ? '✅ Team invite accept ho gayi! Captain ab join kar sakta hai.' : 'Invite decline ho gayi.', 'ok');
+      if (window.renderNotifs) renderNotifs();
+    })
+    .catch(function (e) { if (window.toast) toast('Response failed', 'err'); });
+};
+
+function toggleAchievements() {  var ac = document.getElementById('achContent');
   var ch = document.getElementById('achChevron');
   if (!ac) return;
   var isOpen = ac.style.display !== 'none';
@@ -81,12 +108,21 @@ function renderNotifs() {
     else if (n.type === 'wallet_approved' || n.type === 'withdraw_done') ic = 'ng';
     else if (n.type === 'wallet_rejected' || n.type === 'withdraw_rejected') ic = 'nr';
     else if (n.type === 'match_completed' || n.type === 'result') ic = 'ng';
+    else if (n.type === 'team_invite') ic = 'np';
     h += '<div class="notif-card' + (unread ? ' unread' : '') + '" style="position:relative" onclick="openNotif(\'' + n._key + '\')">';
     h += '<div class="notif-icon ' + ic + '"><i class="fas ' + (n.faIcon || 'fa-bell') + '"></i></div>';
     h += '<div class="notif-body"><div class="notif-title">' + (window.escHtml?window.escHtml(n.title||'Notification'):(n.title||'Notification')) + '</div>';
     h += '<div class="notif-msg">' + (window.escHtml?window.escHtml(n.message||''):(n.message||'')) + '</div>';
     h += '<div class="notif-time">' + timeAgo(n.createdAt) + '</div>';
     if (n.matchName) h += '<span style="display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;background:rgba(185,100,255,.1);color:var(--purple);margin-top:4px">' + n.matchName + '</span>';
+    /* ══ R6 TEAM AUTHORIZATION ══
+       team_invite notification पर member Accept/Decline करता है (voice consent).
+       Accept = server respond_team_invite (member JWT) → captain ka join ab
+       authorize hota hai. Client-side कोई wallet/slot write नहीं — सिर्फ़ consent इंटेंट। */
+    if (n.type === 'team_invite' && n.matchId) {
+      h += '<div style="display:flex;gap:8px;margin-top:8px"><button onclick="event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\'' + n.matchId + '\', true)" style="flex:1;padding:7px 10px;border-radius:9px;border:1px solid rgba(0,255,156,.35);background:rgba(0,255,156,.14);color:#00ff9c;font-size:11px;font-weight:800;cursor:pointer">✓ Accept</button>'
+        + '<button onclick="event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\'' + n.matchId + '\', false)" style="flex:1;padding:7px 10px;border-radius:9px;border:1px solid rgba(255,80,80,.35);background:rgba(255,80,80,.12);color:#ff6b6b;font-size:11px;font-weight:800;cursor:pointer">✗ Decline</button></div>';
+    }
     h += '</div>';
     // Delete button right side
     h += '<button onclick="event.stopPropagation();deleteNotif(\'' + n._key + '\',\'' + (n._srcUser ? 'user' : 'global') + '\')" style="position:absolute;top:10px;right:10px;background:rgba(255,50,50,.12);border:1px solid rgba(255,50,50,.2);color:#ff5555;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-times"></i></button>';

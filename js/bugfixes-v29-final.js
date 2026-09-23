@@ -346,11 +346,11 @@ function _fixH5_SquadBankAtomic() {
             }).eq('id', clanId);
           });
         
-        /* Log wallet transaction */
-        window._supa.from('wallet_transactions').insert({
-          user_id: uid, currency: 'green_diamonds', txn_type: 'debit',
-          amount: amt, reason: 'squad_bank_contribution'
-        }).then(null, function(){});
+        /* R6: ledger client-write हटाई — असली authority-झाला path =
+           contribute_to_squad_bank RPC (features/squad-bank.js) जो atomic
+           debit + ledger + clan update करता है। Ye legacy wrapper ab koi
+           wallet_transactions INSERT nahi karta (server guard + blocking). */
+        if (window.toast) toast('💡 Squad bank contribution ke liye Squad Bank tab use karo', 'inf');
         
         if (window.toast) toast('✅ ' + amt + ' GD contribute kar diye!', 'ok');
         if (window.closeModal) closeModal();

@@ -689,19 +689,12 @@
         return _err('wallet.credit', { message: 'DB.wallet.credit() has been removed for security reasons — use a dedicated reward RPC instead' });
       },
 
-      /* Debit any currency */
+      /* Debit any currency — R6: ledger insert हटाया (fft_guard अब regular-user
+         ledger INSERT block करता है; कोई live caller नहीं)। Debit ke liye हर
+         flow ka अपना dedicated server RPC है। */
       debit: async function(uid, currency, amount, reason, refId) {
-        await window._supa.from('wallet_transactions').insert({
-          user_id: uid, currency: currency,
-          txn_type: 'debit', amount: amount,
-          reason: reason, ref_id: refId || null
-        });
-        var col = _currencyCol(currency);
-        var { data, error } = await window._supa.rpc('decrement_balance', {
-          p_uid: uid, p_col: col, p_amount: amount
-        });
-        if (error) return _err('wallet.debit', error);
-        return data;
+        console.error('[DB.wallet.debit] legacy path — use a dedicated server RPC (validate_and_join_match, gift_match_entry, contribute_to_squad_bank, redeem_reward_item, purchase_cosmetic)');
+        return _err('wallet.debit', { message: 'DB.wallet.debit() retired — server RPC is the only debit authority' });
       },
 
       /* Get my transactions */

@@ -174,6 +174,32 @@ console.log('\n── TEST 7: R5 no Firebase-only join fallback + no team client
      'offline-queue free-join ab direct join_requests insert NAHI (RPC-only)');
 }
 
+/* ── TEST 8: R6 — team authorization (invite/accept/consent) + ledger authority ── */
+console.log('\n── TEST 8: R6 team authorization + server-only ledger ──');
+{
+  const jn = fs.readFileSync(path.join(REPO, 'screens/join.js'), 'utf8');
+  ok(jn.indexOf('TEAM_NOT_AUTHORIZED') !== -1,
+     'join.js ab server TEAM_NOT_AUTHORIZED pe invite-flow chalaata hai');
+  ok(jn.indexOf('invite_team_members') !== -1,
+     'join.js invite_team_members RPC use karta hai (consent flow)');
+  ok(jn.indexOf('_inviteTeammatesAndJoin') !== -1,
+     'join.js me _inviteTeammatesAndJoin helper hai');
+  const nn = fs.readFileSync(path.join(REPO, 'screens/notifications.js'), 'utf8');
+  ok(nn.indexOf('_respondTeamInvite') !== -1,
+     'notifications.js me _respondTeamInvite (member accept/decline) hai');
+  ok(nn.indexOf('respond_team_invite') !== -1,
+     'notifications.js respond_team_invite RPC use karta hai');
+  const rk = fs.readFileSync(path.join(REPO, 'screens/rank.js'), 'utf8');
+  ok(!/\.from\('join_requests'\)\.insert/.test(rk),
+     'rank.js ad-join ab direct join_requests insert NAHI (server RPC)');
+  const bb = fs.readFileSync(path.join(REPO, 'core/db-bridge.js'), 'utf8');
+  ok(!/(?:\'join_requests\'|"join_requests")\)\s*\.\s*insert|\.from\('wallet_transactions'\)\.insert/.test(bb),
+     'db-bridge me ab client join_requests/wallet_transactions INSERT NAHI');
+  const db = fs.readFileSync(path.join(REPO, 'core/db.js'), 'utf8');
+  ok(!/from\('wallet_transactions'\)\.insert/.test(db),
+     'core/db.js me ab client wallet_transactions INSERT NAHI');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

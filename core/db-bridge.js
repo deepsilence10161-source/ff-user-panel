@@ -302,23 +302,18 @@
         updateData[_fieldMap[field]] = value;
         return window._supa.from('users').update(updateData).eq('id', targetUid);
       }
-      /* coinHistory write → log to Supabase wallet_transactions */
+      /* coinHistory write → R6: BLOCKED — सिर्फ server RPC ही ledger बनाता है.
+         (fft_guard अब regular-user ledger INSERT नहीं मानता; यह path legacy
+         client-side ledger write tries नहीं करता। कोई working caller नहीं —
+         history sirf dedicated RPCs से लिखी जाती है।) */
       if (field === 'coinHistory' && typeof value === 'object') {
-        return window._supa.from('wallet_transactions').insert({
-          user_id: targetUid, currency: 'coins',
-          txn_type: value.amount > 0 ? 'credit' : 'debit',
-          amount: Math.abs(value.amount || 1),
-          reason: 'match_entry', note: value.reason || ''
-        }).then(null, function(){});
+        console.warn('[Bridge] users/coinHistory client LEADER WRITE blocked — server RPC is the only ledger authority');
+        return Promise.resolve({ error: { message: 'Ledger sirf server likhta hai' } });
       }
-      /* transactions write → log to Supabase */
+      /* transactions write → same as above (server-authoritative ledger only) */
       if (field === 'transactions' && typeof value === 'object') {
-        return window._supa.from('wallet_transactions').insert({
-          user_id: targetUid, currency: 'sky_diamonds',
-          txn_type: value.type === 'credit' ? 'credit' : 'debit',
-          amount: Math.abs(value.amount || 1),
-          reason: 'match_entry', note: value.description || ''
-        }).then(null, function(){});
+        console.warn('[Bridge] users/transactions client LEADER WRITE blocked — server RPC is the only ledger authority');
+        return Promise.resolve({ error: { message: 'Ledger sirf server likhta hai' } });
       }
       /* Bug #8 Fix: User preferences that were being lost */
       if (field === 'avatarBgColor') {

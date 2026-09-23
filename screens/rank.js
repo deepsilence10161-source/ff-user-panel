@@ -186,32 +186,27 @@ function confirmAdMatchJoin(matchId) {
 
   if (!window._supa || !window.U) { toast('Service unavailable. Try again.', 'err'); return; }
 
-  /* Insert into Supabase join_requests — same table all other joins use */
-  window._supa.from('join_requests').insert({
-    match_id:       matchId,
-    user_id:        window.U.uid,
-    entry_type:     'ad',
-    entry_fee_paid: 0,
-    status:         'joined',
-    ign_at_join:    (window.UD && window.UD.ign) || '',
-    mode:           tp,
-    ad_watched:     true
+  /* ══ R6 FIX ══
+     Pehle yahan DIRECT join_requests INSERT hota tha — capacity/filled_slots
+     ka koi server check nahi (ad match oversubscribe ho sakta tha, slot
+     accounting bilkul skip). Ab FREE/AD join bhi single authority =
+     validate_and_join_match RPC (match lock + capacity + duplicate + slot
+     increment sab server-side atomic). RPC fail = join fail safely —
+     koi direct client join-row नहीं। */
+  window._supa.rpc('validate_and_join_match', {
+    p_uid:       window.U.uid,
+    p_match_id:  matchId,
+    p_entry_fee: 0,
+    p_currency:  'coins',
+    p_join_data: { mode: tp, ign: (window.UD && window.UD.ign) || '' }
   }).then(function(r) {
-    if (r.error) {
-      /* Unique constraint = already joined */
-      var msg = (r.error.message || '').toLowerCase();
-      if (msg.indexOf('unique') >= 0 || msg.indexOf('duplicate') >= 0) {
-        toast('✅ Tum already is match mein ho!', 'inf');
-        navTo('matches'); return;
-      }
-      toast('Join failed: ' + (r.error.message || ''), 'err'); return;
-    }
-    /* Update slot count atomically via Supabase RPC */
+    if (r && r.error) { toast('Join failed: ' + (r.error.message || ''), 'err'); return; }
+    if (r && r.data && r.data.ok === false) { toast('❌ ' + (r.data.error || 'Join failed'), 'err'); return; }
+
+    /* ad-watched marker — own-row non-financial update (display/tracking only) */
     if (window._supa) {
-      /* FINAL FIX (2026-07): removed redundant increment_match_slots call — validate_and_
-         join_match already increments filled_slots internally as part of the same atomic
-         join transaction above; this separate call was double-counting every join and had
-         no caller-identity check (the RPC itself has been dropped). */
+      window._supa.from('join_requests').update({ ad_watched: true })
+        .eq('match_id', matchId).eq('user_id', window.U.uid).then(null, function() {});
     }
     /* Update local MT + JR cache */
     if (window.MT && window.MT[matchId]) {
