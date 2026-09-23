@@ -204,9 +204,9 @@
 
     if (isCap) {
       h += '<div style="font-size:12px;background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:10px;padding:10px;margin-bottom:12px;color:#00ff9c">';
-      h += '👑 Tum Captain ho! Match join karo sabke liye.';
+      h += '👑 Tum Captain ho! Match join karo sabke liye. Sabki entry fee apni-apni kategi (har player apna hissa deta hai).';
       h += '</div>';
-      h += '<button onclick="cJoin(\'' + matchId + '\');closeModal()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:900;cursor:pointer">🎮 Match Join Karo (Captain)</button>';
+      h += '<button onclick="autoSquadCaptainJoin(\'' + matchId + '\',\'' + mode + '\');closeModal()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:900;cursor:pointer">🎮 Match Join Karo (Captain)</button>';
     } else {
       h += '<div style="font-size:12px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:10px;margin-bottom:12px;color:#00d4ff">';
       h += '⏳ Captain match join kar raha hai — wait karo notification ke liye.';
@@ -280,6 +280,40 @@
     if (_queuePollTimers[matchId]) clearInterval(_queuePollTimers[matchId]);
     _queuePollTimers[matchId] = setInterval(_updateBanner, 8000);
   }
+
+  /* ── R7: Auto-Squad Captain Join (server-authoritative consent) ──
+     Captain apni matched team ke liye seedhe join_match_team RPC call
+     karta hai — teammates ki list client se NAHI aati (victim-UID
+     manufacture impossible)। Server apne authoritative auto_squad_queue
+     rows (same match + same team_id + status='matched', mode exact,
+     fee_type='each_pays') se teammates derive karta hai। Agar caller ki
+     apni matched-queue entry nahi → REJECT; team payment model hamesha
+     server-side 'each_pays' (har player apne authorized queue action se
+     hi match hua hai)। Duo/squad BHI p_mode match.table se aata hai —
+     client sirf match_id de sakta hai, baaki server derive karta hai। */
+  window.autoSquadCaptainJoin = function (matchId, mode) {
+    if (!_uid() || !_s()) { _t('Login/connection error', 'err'); return; }
+    var t = window.MT && window.MT[matchId];
+    if (!t) { _t('Match nahi mila', 'err'); return; }
+    var tp = (mode || t.mode || 'solo').toString().toLowerCase();
+    if (tp !== 'duo' && tp !== 'squad') { _t('Invalid mode', 'err'); return; }
+
+    if (window.escHtml) { /* noop, placeholder */ }
+    _t('⏳ Team join ho rahi hai…', 'inf');
+
+    window._supa.rpc('join_match_team', {
+      p_match_id: matchId,
+      p_mode: tp,
+      p_fee_type: 'each_pays',
+      p_team: [] /* SERVER IGNORES client team for auto-squad; teammates server-derived */
+    }).then(function (r) {
+      if (r && r.error) { _t('❌ Join failed: ' + ((r.error.message) || 'error'), 'err'); return; }
+      if (r && r.data && r.data.ok === false) { _t('❌ ' + (r.data.error || 'Join failed'), 'err'); return; }
+      _t('🎮 Team join ho gayi!', 'ok');
+      if (window.renderMM) setTimeout(window.renderMM, 400);
+      if (window.navTo) navTo('matches');
+    }).catch(function (e) { _t('❌ Join failed', 'err'); });
+  };
 
   /* ── Leave Queue ── */
   window.leaveAutoQueue = function (matchId) {

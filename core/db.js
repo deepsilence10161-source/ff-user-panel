@@ -1278,14 +1278,11 @@
     ──────────────────────────────────────── */
     autoSquad: {
       joinQueue: async function(matchId, mode) {
-        var uid = _uid();
-        var { data, error } = await window._supa
-          .from('auto_squad_queue')
-          .upsert({
-            match_id: matchId, user_id: uid, mode: mode, status: 'waiting'
-          }, { onConflict: 'match_id,user_id' })
-          .select()
-          .single();
+        /* R7: direct upsert HATA — insert/update privileges revoked for
+           authenticated; queue writes solely via join_auto_squad_queue RPC
+           (server match/mode validate + matched-rejoin band). */
+        var { error, data } = await window._supa
+          .rpc('join_auto_squad_queue', { p_match_id: matchId, p_mode: mode });
         if (error) return _err('autoSquad.joinQueue', error);
         return data;
       },

@@ -200,6 +200,22 @@ console.log('\n── TEST 8: R6 team authorization + server-only ledger ──'
      'core/db.js me ab client wallet_transactions INSERT NAHI');
 }
 
+/* ── TEST 9: R7 FINAL SECURITY LOCK — team consent + auto-squad ── */
+console.log('\n── TEST 9: R7 team consent + auto-squad server-authoritative ──');
+{
+  const asq = fs.readFileSync(path.join(REPO, 'features/auto-squad.js'), 'utf8');
+  ok(asq.indexOf('autoSquadCaptainJoin') !== -1,
+     'auto-squad captain join ab dedicated server RPC flow (autoSquadCaptainJoin)');
+  ok(asq.indexOf('p_team: []') !== -1 && asq.indexOf('join_match_team') !== -1,
+     'auto-squad join ab empty p_team (server teammate-derivation — no client UID list)');
+  const db = fs.readFileSync(path.join(REPO, 'core/db.js'), 'utf8');
+  ok(!/\.upsert\(\{[\s\S]*?match_id:\s*matchId[\s\S]*?auto_squad_queue/.test(db) ||
+     !/joinQueue[\s\S]*?\.upsert/.test(db),
+     'db.js autoSquad.joinQueue ab direct upsert NAHI (RPC join_auto_squad_queue)');
+  const jn = fs.readFileSync(path.join(REPO, 'screens/join.js'), 'utf8');
+  ok(jn.indexOf('join_match_team') !== -1, 'join_match_team RPC intact');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
