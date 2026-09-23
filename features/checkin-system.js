@@ -122,41 +122,23 @@ window.renderCheckInBtn = function(matchId, t) {
    server-side via a scheduled job (internal_process_no_show_refunds,
    pg_cron, service_role-only — no client can ever call it) that does
    the exact same status-flip + wallet-credit + notification, safely.
-   This client function now only handles filled_slots bookkeeping
-   (not money, harmless to leave client-triggered) and reads back the
-   already-processed no_show rows for the slot-count update — it no
-   longer touches join_requests.status or any wallet column itself. */
+   ROUND-4 (2026-09-23): filled_slots decrement ab SERVER-side hota hai —
+   internal_process_no_show_refunds (pg_cron, har minute) no_show flip ke
+   saath hi player-slot decrement bhi atomic karta hai (mode-derived:
+   solo 1 / duo 2 / squad 4). Client ab filled_slots ko NAHI chhedta —
+   warna server + client DONO ghata dete = double-decrement (live-proven
+   pattern: pehle server ghataata hi nahi tha, ab ghataata hai). Ye
+   function ab pure NO-OP bookkeeping stub hai (callers ke liye API
+   stable rakhta hai) — koi wallet column, koi status write, koi slot
+   write nahi. */
 window.releaseNoShows = function(matchId) {
+  /* SERVER-AUTHORITATIVE — internal_process_no_show_refunds already
+     decrements filled_slots (player-slots). Client-side decrement
+     removed to avoid double-decrement. Stub retained so existing
+     callers (auto watcher below) keep working unchanged. */
   if (!window._supa) return;
-  var cfg = window.CFG || {};
-  var closeMins = Number(cfg.checkInCloseMins || 5);
-  var t = window.MT && window.MT[matchId];
-  if (!t) return;
-
-  var closeAt = Number(t.matchTime) - closeMins * 60000;
-  var _now = (window.serverNow && typeof window.serverNow === 'function') ? window.serverNow() : Date.now();
-  if (_now < closeAt) return; /* Too early */
-
-  /* Count rows the server-side cron job has already flipped to
-     'no_show' for this match, to keep filled_slots in sync. This is
-     read-only from the client's perspective — no credit, no status
-     write happens here anymore. */
-  window._supa.from('join_requests')
-    .select('id', { count: 'exact', head: true })
-    .eq('match_id', matchId)
-    .eq('status', 'no_show')
-    .then(function(r) {
-      var noShowCount = r.count || 0;
-      if (!noShowCount) return;
-      window._supa.from('matches').select('filled_slots').eq('id', matchId).single()
-        .then(function(mr) {
-          var current = (mr.data && mr.data.filled_slots) || 0;
-          var updated = Math.max(current - noShowCount, 0);
-          if (updated !== current) {
-            window._supa.from('matches').update({ filled_slots: updated }).eq('id', matchId).then(null, function(){});
-          }
-        }, function(){});
-    }, function(e) { console.error('[releaseNoShows]', e); });
+  if (!window.MT || !window.MT[matchId]) return;
+  return;
 };
 
 
