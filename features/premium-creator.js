@@ -213,8 +213,10 @@ window.renderPremiumCard = function() {
    - Admin creates all real-money matches (anti-fraud) — creators do
      NOT self-host matches. A creator's job is purely to refer players
      via their code/link; every match a referred player pays real Sky
-     Diamonds to join earns the creator 25%, automatically, for as
-     long as that player keeps playing — not a one-time payout.
+     Diamonds to join earns the creator the server-configured commission
+     (SD match = 15%, coin match = 10% — live_config.creator_system),
+     automatically, for as long as that player keeps playing — not a
+     one-time payout.
    - Live-streaming your own gameplay/matches is a PREMIUM perk (see
      showPremiumInfo), not a Creator Program perk — a creator without
      Premium can still refer and earn, they just don't get the
@@ -313,14 +315,14 @@ function _renderCreatorSignupForm() {
   h += '<div style="font-size:17px;font-weight:900;margin-bottom:8px">Creator Ban Jao!</div>';
   h += '<div style="font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px">';
   h += 'Apne YouTube/Instagram followers ko Mini eSports pe lao apne code se.<br>';
-  h += 'Jab woh <strong style="color:#00d4ff">Sky Diamonds kharch karke paid match khelte hain</strong>, tumhe har match pe <strong style="color:#00d4ff">25% commission</strong> milta hai!';
+  h += 'Jab woh <strong style="color:#00d4ff">Sky Diamonds kharch karke paid match khelte hain</strong>, tumhe har match pe <strong style="color:#00d4ff">15% commission</strong> milta hai!';
   h += '</div>';
   h += '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
   h += '<div style="font-size:12px;font-weight:700;color:#00d4ff;margin-bottom:8px">💰 Kaise kaam karta hai</div>';
   h += '<div style="font-size:12px;color:var(--txt2);line-height:1.9">';
   h += '1️⃣ Apna code banao, followers ko share karo<br>';
   h += '2️⃣ Woh signup pe tumhara code daalte hain<br>';
-  h += '3️⃣ Jab bhi woh Sky Diamonds se ek paid match join karte hain, tumhe 25% milta hai — <strong style="color:#00ff9c">sirf ek baar nahi, har match pe jab tak woh khelte rahenge</strong><br>';
+  h += '3️⃣ Jab bhi woh Sky Diamonds se ek paid match join karte hain, tumhe 15% commission milta hai — <strong style="color:#00ff9c">sirf ek baar nahi, har match pe jab tak woh khelte rahenge</strong><br>';
   h += '4️⃣ Apna khud ka chhota tournament bhi host kar sakte ho — room set karo, result submit karo';
   h += '</div>';
   h += '<div style="font-size:10px;color:var(--txt2);margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,212,255,.15)">ℹ️ Sirf khareedne se commission nahi milta — referral ko real match khelna hoga. Result submit hote hi auto-verify hota hai; sirf suspicious cases Admin dekhta hai.</div>';
@@ -406,7 +408,7 @@ function renderCreatorDash(codeRow, stats, me) {
   h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">';
   [
     { label: 'Referred Matches Played', val: stats.total_matches||0, unit: 'matches', color: '#00d4ff' },
-    { label: 'Total Commission', val: '💎'+(stats.total_earnings||0), unit: 'earned (25%/match)', color: '#00ff9c' },
+    { label: 'Total Commission', val: '💎'+(stats.total_earnings||0), unit: 'earned (referrals)', color: '#00ff9c' },
   ].forEach(function(s) {
     h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px">';
     h += '<div style="font-size:10px;color:var(--txt2);margin-bottom:4px">' + s.label + '</div>';
