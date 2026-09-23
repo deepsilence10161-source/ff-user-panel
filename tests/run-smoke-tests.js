@@ -119,6 +119,23 @@ console.log('\n── TEST 3: features-user-tail.js referenced (load order) ─�
   ok(tailIdx > mainIdx, 'tail loads after main');
 }
 
+/* ── TEST 4: AUTO-VERSION single-source (R3 Phase-16) ────────── */
+console.log('\n── TEST 4: auto-version (build.gradle + CI fetch-depth) ──');
+{
+  const gradle = fs.readFileSync(path.join(REPO, 'android/app/build.gradle'), 'utf8');
+  // ab literal versionCode/versionName numbers NAHI होने चाहिए — git-count से बनते हैं
+  ok(!/versionCode\s+\d+/.test(gradle), 'versionCode ab hardcoded literal nahi (git-count se)');
+  ok(!/versionName\s+['"]\d/.test(gradle), 'versionName ab hardcoded literal nahi (git-count se)');
+  ok(gradle.includes('gitCommitCount'), 'gitCommitCount() helper present');
+  ok(gradle.includes('rev-list') && gradle.includes('--count') && gradle.includes('HEAD'),
+     'git rev-list --count HEAD is the source-of-truth');
+  ok(gradle.includes('VERSION_MAJOR'), 'VERSION_MAJOR declared (major feature-release ke liye)');
+  ok(/versionCode\s+vc\b/.test(gradle) && /versionName\s+"\$\{VERSION_MAJOR\}/.test(gradle),
+     'versionCode/versionName EK computed `vc` se — mismatch impossible');
+  const wf = fs.readFileSync(path.join(REPO, '.github/workflows/build-apk.yml'), 'utf8');
+  ok(wf.includes('fetch-depth: 0'), 'CI checkout fetch-depth: 0 (shallow-clone trap fix)');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

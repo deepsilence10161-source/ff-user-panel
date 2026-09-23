@@ -13,6 +13,24 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          # ══════════════════════════════════════════════════════════
+          # AUTO-VERSION (R3 Phase-16): पूरी git history चाहिए — build.gradle
+          # versionCode/versionName = git commit count से बनाता है। depth:1
+          # (shallow) पर count=1 मिलता और Play-Store reject होता। यह
+          # fetch-depth: 0 पूरा history लाता है।
+          # ══════════════════════════════════════════════════════════
+          fetch-depth: 0
+
+      - name: Show auto-computed version
+        run: |
+          CNT="$(git rev-list --count HEAD)"
+          MAJ="$(sed -n 's/^def VERSION_MAJOR = \([0-9]*\).*/\1/p' android/app/build.gradle | head -1)"
+          MIN="$(sed -n 's/^def VERSION_MINOR = \([0-9]*\).*/\1/p' android/app/build.gradle | head -1)"
+          echo "commit count  = $CNT"
+          echo "versionCode   = $CNT"
+          echo "versionName   = ${MAJ:-?}.${MIN:-?}.$CNT"
+          echo "(build.gradle defaultConfig इन्हीं से बनता है — कोई manual bump नहीं)"
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4

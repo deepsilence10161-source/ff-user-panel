@@ -4,6 +4,58 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+/*
+ * ─────────────────────────────────────────────────────────────────────
+ * AUTO-VERSION (R3 Phase-16, 2026-09-23)
+ * versionCode / versionName ab GIT HISTORY se बनते हैं — कहीं manually
+ * bump नहीं करना। MAJOR/MINOR सिर्फ़ बड़े feature-release पर बदलो
+ * (e.g. 2.0 कब शुरू करना हो), patch + versionCode हर commit पर अपने-आप।
+ *
+ *   सख्त नियम:
+ *   • build machine पर git होना चाहिए (local clone / CI में fetch-depth:0)
+ *   • count न मिले = BUILD FAIL (silent stale-version कभी नहीं)
+ *   • कोई दूसरा versionCode/versionName इस file में declare न करें
+ * ─────────────────────────────────────────────────────────────────────
+ */
+// ⚠️ `def` = lexical script vars — android{} nested closure mein bhi 100%
+//    reliably resolve hote hain (ext-properties nested mein kabhi-kabhi नहीं)।
+def VERSION_MAJOR = 1
+def VERSION_MINOR = 0
+
+def gitCommitCount() {
+    def count = -1
+    try {
+        // project.rootDir = android/ (root-project dir — settings.gradle yahin
+        // hai). git yahan se चलाने पर parent dirs mein `.git` dhundh leta hai
+        // (repo root tak chad jata hai) — local clone aur CI dono mein verified.
+        // (String-form execute() — Groovy ka battle-tested idiom, List-form
+        //  ke overload-उलझन से bacha।)
+        def proc = 'git rev-list --count HEAD'.execute(null, project.rootDir)
+        def outBuf = new ByteArrayOutputStream()
+        def errBuf = new ByteArrayOutputStream()
+        proc.consumeProcessOutput(outBuf, errBuf)  // deadlock-safe read
+        proc.waitFor()
+        if (proc.exitValue() == 0) {
+            count = new String(outBuf.toByteArray(), 'UTF-8').trim().toInteger()
+        } else {
+            logger.error('[auto-version] git rev-list failed: ' + new String(errBuf.toByteArray(), 'UTF-8').trim())
+        }
+    } catch (Exception e) {
+        logger.error('[auto-version] git unreadable: ' + e.message)
+    }
+    if (count < 1) {
+        throw new GradleException(
+            '[auto-version] git commit count NAHI mila — build nahi chalega. ' +
+            'Local: repo root se build karo ya git available karo. ' +
+            'CI: checkout step mein fetch-depth: 0 rakho (build-apk.yml mein set hai).')
+    }
+    return count
+}
+
+// ⚠️ EK BAAR compute karo — versionCode aur versionName dono isi value se:
+//    do baar call karne par build के दौरान नया commit आने से mismatch ho sakta.
+def vc = gitCommitCount()
+
 android {
     compileSdk 34
     namespace 'com.miniesports.app'
@@ -12,8 +64,23 @@ android {
         applicationId "com.miniesports.app"
         minSdk 24
         targetSdk 34
-        versionCode 5
-        versionName "1.0.4"
+        // ═════════════════════════════════════════════════════════════
+        // AUTO-VERSION (R3 Phase-16, 2026-09-23) — कोई manual bump नहीं
+        // ═════════════════════════════════════════════════════════════
+        // एक ही source-of-truth: git history (कुल commit count)।
+        //   versionCode = <कुल commits>   → 61, 62, 63 … (हमेशा बढ़ता, Play-safe)
+        //   versionName = <MAJOR>.<MINOR>.<count>  → 1.0.61, 1.0.62 …
+        // हर commit पर दोनों अपने-आप बढ़ते हैं — "bump bhool जाना"
+        // या "कई जगह छूट जाना" अब impossible है (कोई दूसरी जगह नहीं)।
+        //
+        // ज़रूरत:
+        //   LOCAL build → git clone में history हमेशा रहती है ✓
+        //   CI build    → checkout step में fetch-depth: 0 (shallow नहीं)
+        //                  — build-apk.yml में पहले से set है।
+        // count न मिले (git absent) → build FAIL, silent fallback नहीं —
+        // version कभी भी चुपचाप गलत/पुराना नहीं होना चाहिए।
+        versionCode vc
+        versionName "${VERSION_MAJOR}.${VERSION_MINOR}.${vc}"
     }
 
     signingConfigs {

@@ -4,6 +4,36 @@
 ---
 
 
+## 🟢 2026-09-23x — R3 Phase-16: AUTO-VERSION (manual version bump ख़त्म)
+**Files:** `android/app/build.gradle`, `.github/workflows/build-apk.yml`, `tests/run-smoke-tests.js`
+
+### Problem (live-proven — पूरे repo में version कॉलिंग-स्कैन)
+`versionCode` / `versionName` सिर्फ़ `android/app/build.gradle` के 2 literal में
+थे (`5` / `"1.0.4"`) — हर release पर इन्हें हाथ से बढ़ाना पड़ता था। भूलने/छूटने
+पर: Play-Store अपलोड reject (same/पुराना versionCode), force-update
+(`appMinSupportedVersion`) गलत दिखना, डबल-चेकिंग का काम। (बाक़ी "version"
+references सब server-side force-update config हैं — असली APK version नहीं।)
+
+### Fix — एक source-of-truth + अपने-आप bump
+- `versionCode = git commit count (HEAD)` → 61, 62, 63 … हर commit पर +1।
+- `versionName = VERSION_MAJOR.VERSION_MINOR.<count>` → 1.0.61, 1.0.62 …
+- `VERSION_MAJOR`/`VERSION_MINOR` = `def` script vars — सिर्फ़ बड़े feature-
+  release पर बदलो (जैसे 2.0 लॉन्च); patch हमेशा auto।
+- दोनों **एक ही computed `vc`** से — versionCode/versionName mismatch impossible।
+- **कोई दूसरी जगह literal version रखना मना** — smoke-test इसकी चौकसी करता है।
+- count न मिले (git absent / shallow clone) = **BUILD FAIL**, चुपचाप stale
+  version नहीं — CI में `fetch-depth: 0` (checkout) से पूरा history मिलता है।
+
+### Verification
+- smoke `tests/run-smoke-tests.js` → **22/22** (नया TEST 4: auto-version)।
+- `git rev-list --count HEAD` = 61, repo-root और `android/` दोनों से (execute-dir
+  जहाँ build चलता है) → versionCode 61 / versionName 1.0.61।
+- Play-Store versionCode limit 2100000000 — int-overflow से कोसों दूर।
+- `_versionLessThan()` (force-update) के लिए semantic compare अब और भी सही —
+  1.0.61 > 1.0.4 हमेशा।
+
+---
+
 ## 🔴 2026-09-22p — R28p: profile phone-dup-check privacy fix (view-leak patched server-side)
 **Files:** `core/utils.js` (+ admin-repo SQL delta R29 — view से phone/referral_code हटाया)
 
