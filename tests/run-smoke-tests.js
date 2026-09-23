@@ -136,6 +136,17 @@ console.log('\n── TEST 4: auto-version (build.gradle + CI fetch-depth) ─�
   ok(wf.includes('fetch-depth: 0'), 'CI checkout fetch-depth: 0 (shallow-clone trap fix)');
 }
 
+/* ── TEST 5: ROUND-4 — checkin-system releaseNoShows server-authoritative ── */
+console.log('\n── TEST 5: R4 checkin-system releaseNoShows (client slot-decrement removed) ──');
+{
+  const ck = fs.readFileSync(path.join(REPO, 'features/checkin-system.js'), 'utf8');
+  // Client ab filled_slots ko NAHI chhedta — server (internal_process_no_show_refunds) ghataata hai
+  ok(!/filled_slots[^\n]*update\(/.test(ck.split('window.releaseNoShows')[1] || ''),
+     'releaseNoShows ab client filled_slots decrement NAHI karta (server-authoritative)');
+  ok(ck.includes('SERVER-AUTHORITATIVE'), 'releaseNoShows me SERVER-AUTHORITATIVE marker present');
+  ok(ck.includes('double-decrement'), 'double-decrement avoidance comment present');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
