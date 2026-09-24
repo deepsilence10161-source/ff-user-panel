@@ -965,21 +965,18 @@
       console.error('[Bridge] Supabase write error for path:', path, '—', msg);
     }
 
-    /* Firebase RTDB fallback for financial paths — only if _fbDb available */
-    /* (Allowed paths: users/{uid}/coins, users/{uid}/realMoney etc go through RTDB as last resort) */
-    if (window._fbDb && path && value !== undefined) {
-      var root = path.split('/')[0];
-      /* Only fallback for financial/user paths that Firebase can handle */
-      var fbFallbackPaths = ['users', 'joinRequests', 'walletRequests'];
-      if (fbFallbackPaths.indexOf(root) !== -1) {
-        console.warn('[Bridge] Attempting Firebase RTDB fallback for:', path);
-        try {
-          window._fbDb.ref(path).set(value);
-        } catch(fbErr) {
-          console.error('[Bridge] Firebase fallback also failed:', fbErr.message);
-        }
-      }
-    }
+    /* ⛔ R7 FOLLOW-UP (2026-09-24c): Firebase RTDB financial fallback REMOVED.
+       Supabase is the ONLY authoritative financial ledger. Previously, if a
+       Supabase write/RPC failed, this handler silently mirrored the value into
+       Firebase RTDB (users/{uid}/coins, joinRequests, walletRequests) — a
+       second, non-authoritative balance write that could desync the wallet and
+       let a later Firebase-first flow (or the admin panel) read a balance that
+       never actually landed in Postgres. That fallback is gone entirely.
+       On Supabase failure we now ONLY surface the error (console + one-time
+       toast). Genuinely Firebase-only mirror paths (tdsRecords, tdsHeld,
+       videoWatched, selfExcluded, matches/spectator listeners) are NOT
+       routed through this handler — they are dispatched directly inside
+       _supaWrite and are unaffected. */
   }
 
   /* ── INSTALL BRIDGE ── */
