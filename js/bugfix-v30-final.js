@@ -199,6 +199,13 @@
          zero visible clan and zero way to create a new one. Now verifies
          against the real clans table first and self-heals (clears the
          stale pointer) instead of trusting a cached client value. */
+      /* R8 FINAL (2026-09-26) — VARIABLE-ORDER FIX (clan self-heal cleanup):
+         the self-heal UPDATE below referenced `uid` while its declaration
+         (`var uid = _uid();`) sat AFTER the block. var-hoisting made `uid`
+         undefined at that point, so the update ran as `id=eq.undefined` and
+         the orphaned pointer was never cleared — exactly the lockout this
+         self-heal was written to prevent. uid is now declared first. */
+      var uid  = _uid();
       var myOldClan = window.UD && (window.UD.clanId || window.UD.clan_id);
       if (myOldClan) {
         var _stillReal = await _s().from('clans').select('id').eq('id', myOldClan).maybeSingle();
@@ -210,7 +217,6 @@
         if (window.UD) { window.UD.clanId = null; window.UD.clan_id = null; }
       }
 
-      var uid  = _uid();
       var code = _genCode();
 
       _s().from('clans').insert({
@@ -259,17 +265,19 @@
       /* ✅ BUG FIX (2026-08-23): same self-heal as _doCreateClan above —
          don't trust a cached UD.clan_id without verifying the clan it
          points to still exists. */
+      /* R8 FINAL (2026-09-26): declaration order normalised (uid first) so the
+         self-heal and the join RPC always use the same verified uid. */
+      var uid  = _uid();
       var myOldClan = window.UD && (window.UD.clanId || window.UD.clan_id);
       if (myOldClan) {
         var _stillReal2 = await _s().from('clans').select('id').eq('id', myOldClan).maybeSingle();
         if (_stillReal2 && _stillReal2.data && _stillReal2.data.id) {
           _t('Pehle apna current clan chhodo!', 'err'); return;
         }
-        await _s().from('users').update({ clan_id: null }).eq('id', _uid());
+        await _s().from('users').update({ clan_id: null }).eq('id', uid);
         if (window.UD) { window.UD.clanId = null; window.UD.clan_id = null; }
       }
 
-      var uid  = _uid();
       var code = clanIdOrCode.toString().trim().toUpperCase();
 
       /* Determine lookup strategy */
@@ -350,24 +358,34 @@
     console.log('[V30 #1] joinClan + _doJoinByCode Supabase patch ✅');
 
     /* ──────────────────────────────────────────────────────
-       LEAVE CLAN — Supabase only (atomic RPC with fallback)
+       LEAVE CLAN — canonical RPC is the SOLE authority
+       R8 FINAL (2026-09-26): the direct-Supabase fallback
+       (clan_members.delete() → users.update({clan_id:null})) is REMOVED.
+       leave_clan RPC verifies the caller server-side, and moves membership
+       + clan counter + user pointer atomically. A failed RPC = failed leave:
+       we surface the error and change NOTHING locally (no silent fallback,
+       no client-side direct write).
     ────────────────────────────────────────────────────── */
     window.leaveClan = function(clanId) {
       if (!_s() || !_uid()) return;
       if (!confirm('Kya aap sach mein clan chhodni chahte ho? Yeh action undo nahi ho sakta.')) return;
       var uid = _uid();
 
-      _s().rpc('leave_clan', { p_user_id: uid, p_clan_id: clanId })
-        .then(function() { _afterLeave(); })
-        .catch(function() {
-          /* RPC fallback */
-          _s().from('clan_members').delete()
-            .eq('clan_id', clanId).eq('user_id', uid)
-            .then(function() {
-              return _s().from('users').update({ clan_id: null }).eq('id', uid);
-            })
-            .then(function() { _afterLeave(); })
-            .catch(function(e) { _t('Leave error: ' + (e.message || 'retry karo'), 'err'); });
+      Promise.resolve(_s().rpc('leave_clan', { p_user_id: uid, p_clan_id: clanId }))
+        .then(function(res) {
+          var err  = (res && res.error) || null;
+          var data = (res && res.data) || {};
+          if (err) {
+            _t('Leave error: ' + (err.message || 'RPC failed'), 'err');
+            return;
+          }
+          if (data && typeof data === 'object' && data.ok === false) {
+            _t('Leave error: ' + (data.error || 'failed'), 'err');
+            return;
+          }
+          _afterLeave();
+        }, function(e) {
+          _t('Leave error: ' + ((e && e.message) || 'retry karo'), 'err');
         });
 
       function _afterLeave() {
