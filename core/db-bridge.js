@@ -353,48 +353,39 @@
     if (root === 'joinRequests' && parts[1]) {
       var jid = parts[1];
       var subF = parts[2];
+      /* ══ R8 FINAL (2026-09-26c): join_requests authoritative columns ab
+         SERVER-RPC-only hain — status/checked_in/checkin_at/kills/placement/
+         prize_earned claamp trigger se client se FREEZE kiye gaye hain.
+         - refund  → claim_match_refund / claim_no_show_refund RPC (live)
+         - checkin → check_in_match RPC (R8)
+         - results → publish_match_results / correct_match_result RPC
+         Bridge ab koi financial/attendance join_requests write NAHI karta;
+         sirf display-only ign_at_join mirror-update rehta hai. */
       if (subF === 'refunded') {
-        return window._supa.from('join_requests').update({ status: 'refunded' }).eq('id', jid);
+        /* R8: legacy status write retired — refund only via claim_match_refund RPC. */
+        return Promise.resolve();
       }
       if (subF === 'inRoom') {
-        return window._supa.from('join_requests').update({
-          in_room: true, checkin_at: new Date().toISOString()
-        }).eq('id', jid);
+        /* R8: legacy attendance write retired — in_room sirf check-in/confirm
+           RPC path se; bridge ab in_room/checkin_at nahi likhta. */
+        return Promise.resolve();
       }
       if (!subF && typeof value === 'object') {
-        /* ✅ R5 (2026-09-23): FINANCIAL AUTHORITY LEAK FIX — client mirror ab
-           join_requests.entry_fee_paid/entry_type/fee_type/captain_uid को
-           UPSERT नहीं कर सकता। Ye upsert `onConflict match_id,user_id` से
-           पहले से बनी SERVER row (validate_and_join_match/join_match_team)
-           को OVERWRITE kar deta था — yani client free/ad join के बाद mirror
-           .set({status:'joined', entryFee:0}) server की authoritative paid
-           fee को 0 कर सकता था। Ab:
-           - संभव हो तो sirf DISPLAY columns (ign_at_join, teeam member) update,
-             kabhi financial columns nahi.
-           - Nahi to पूरा upsert वही skip (financial-authoritative Supabase
-             row ko client कभी नहीं छूता)। Firebase mirror अब सिर्फ़ display.
-           NOTE: अब सारे authoritative joins RPC से बनते हैं (R4+R5), isliye
-           ये client upsert कभी create-path नहीं होना चाहिए — हम सिर्फ़ update-
-           only बनाए हुए हैं (एक row पहले से server बनी होती है). */
+        /* R5 + R8 FINANCIAL-AUTHORITY LEAK FIX: client mirror sirf display
+           (ign_at_join) update karta hai — never fee/status/attendance. */
         return window._supa.from('join_requests').update({
           ign_at_join: value.userName || value.userIGN || ''
         }).eq('match_id', value.matchId).eq('user_id', value.userId).then(function(r) {
-          /* Row exist नहीं करती (e.g. सच में legacy path) तो silently ignore —
-             financial authority कभी client से नहीं बनती। */
           return r;
         });
       }
       if (!subF && isUpdate) {
-        var upd = {};
-        if (value.inRoom !== undefined) upd.in_room = value.inRoom;
-        if (value.checkedIn !== undefined) upd.checked_in = value.checkedIn;
-        if (value.status) upd.status = value.status;
-        if (value.kills !== undefined) upd.kills = value.kills;
-        if (value.placement !== undefined) upd.placement = value.placement;
-        return window._supa.from('join_requests').update(upd).eq('id', jid);
+        /* R8: legacy isUpdate (status/kills/placement/in_room/checked_in)
+           retired — clamp trigger already freezes these for clients; all
+           authoritative writes route through server RPCs. */
+        return Promise.resolve();
       }
     }
-
     /* walletRequests/{id} */
     if (root === 'walletRequests' && parts[1] && typeof value === 'object') {
       return window._supa.from('sd_requests').upsert({

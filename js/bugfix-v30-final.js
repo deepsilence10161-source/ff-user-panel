@@ -304,10 +304,14 @@
           p_max_members: MAX_MEMBERS
         })
         .then(function(rpcRes) {
-          var res = rpcRes.data;
-          if (res && res.success === false) {
+          /* R8: join_clan ka server contract 'ok' hai (success nahi) —
+             pehle client 'success' check karta tha jo hamesha undefined rehta
+             tha, isliye failed join bhi 'join kar liya' bol deta tha. */
+          var res = (rpcRes && rpcRes.data) || {};
+          if (res.ok === false || res.error) {
             var msg = res.error === 'clan_full'      ? 'Clan full ho gaya!'
                     : res.error === 'already_in_clan' ? 'Pehle current clan chhodo!'
+                    : res.error === 'Already in clan' ? 'Pehle se member ho!'
                     : 'Join error: ' + (res.error || 'unknown');
             _t(msg, 'err'); return;
           }
@@ -329,18 +333,10 @@
     }
 
     function _joinDirect(uid, clan) {
-      _s().from('clan_members')
-        .insert({ clan_id: clan.id, user_id: uid, role: 'member' })
-        .then(function() {
-          return _s().from('clans')
-            .update({ total_members: (clan.total_members || 0) + 1 })
-            .eq('id', clan.id);
-        })
-        .then(function() {
-          return _s().from('users').update({ clan_id: clan.id }).eq('id', uid);
-        })
-        .then(function() { _afterJoin(clan); })
-        .catch(function(e) { _t('Join error: ' + (e.message || 'retry karo'), 'err'); });
+      /* R8 (2026-09-26c): direct clan_members/clans/users join-write retired —
+         join_clan RPC hi canonical hai (caller identity + membership server-
+         verified). Fallback ab NO-OP; RPC fail = join fail. */
+      _t('Clan join RPC se hi hoga — dobara try karo', 'err');
     }
 
     /* _doJoinByCode: uses join_code column (not UUID prefix) */
@@ -650,18 +646,11 @@
         p_wins:    wins  ? 1 : 0,
         p_kills:   kills || 0
       }).catch(function() {
-        /* RPC fallback — read-modify-write */
-        _s().from('clans')
-          .select('weekly_score, total_wins, total_kills')
-          .eq('id', clanId).single()
-          .then(function(r) {
-            if (!r.data) return;
-            _s().from('clans').update({
-              weekly_score: (r.data.weekly_score || 0) + score,
-              total_wins:   (r.data.total_wins   || 0) + (wins  ? 1 : 0),
-              total_kills:  (r.data.total_kills  || 0) + (kills || 0)
-            }).eq('id', clanId).then(null, function(){});
-          });
+        /* R8 (2026-09-26c): NO direct-clan-write fallback — clan economy ab
+           sirf server RPC se hi likhi jaati hai (clans aur users ke direct
+           economy UPDATEs guard/clamp kar diye gaye hain; read-modify-write
+           fallback race-susceptible tha). RPC fail = score drop; server
+           publish_match_results/increment_clan_score already do this. */
       });
     };
 

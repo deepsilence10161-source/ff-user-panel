@@ -306,12 +306,20 @@ function _fixH5_SquadBankAtomic() {
       var clanId = (window.UD || {}).clanId || (window.UD || {}).clan_id;
       if (!clanId) { if (window.toast) toast('Clan nahi mila', 'err'); return; }
       
-      /* Fix H-5: Use atomic decrement_balance RPC instead of direct SET */
-      window._supa.rpc('decrement_balance', {
-        p_uid: uid, p_col: 'green_diamonds', p_amount: amt
+      /* R8 (2026-09-26c): squad-bank contribution ab EK atomic server RPC
+         contribute_to_squad_bank se — debit + ledger + clans.squad_bank_gd
+         sab server side (decrement_balance + direct clans read-modify-write
+         ka race-prone combo retired). */
+      window._supa.rpc('contribute_to_squad_bank', {
+        p_clan_id: clanId, p_uid: uid, p_amount: amt
       }).then(function(r) {
         if (r.error) {
-          if (window.toast) toast('Insufficient GD ya error: ' + r.error.message, 'err');
+          if (window.toast) toast('Contribution error: ' + r.error.message, 'err');
+          return;
+        }
+        var d = r.data || {};
+        if (d.ok === false) {
+          if (window.toast) toast(d.error || 'Contribution rejected', 'err');
           return;
         }
         /* ✅ BUG FIX (2026-08-25): "Green Diamond wallet me sahi dikhta
@@ -329,27 +337,9 @@ function _fixH5_SquadBankAtomic() {
         if (window.UD) { window.UD.green_diamonds = _newGd; window.UD.greenDiamonds = _newGd; }
         if (window.updateHdr) window.updateHdr();
         
-        /* Update clan squad bank */
-        window._supa.from('clans').select('squad_bank_gd, squad_bank_contributors')
-          .eq('id', clanId).single()
-          .then(function(cr) {
-            if (cr.error || !cr.data) return;
-            var newGd = (cr.data.squad_bank_gd || 0) + amt;
-            var contribs = cr.data.squad_bank_contributors || {};
-            contribs[uid] = {
-              ign: (window.UD || {}).ign || 'Player',
-              gd: ((contribs[uid] || {}).gd || 0) + amt
-            };
-            return window._supa.from('clans').update({
-              squad_bank_gd: newGd,
-              squad_bank_contributors: contribs
-            }).eq('id', clanId);
-          });
-        
-        /* R6: ledger client-write हटाई — असली authority-झाला path =
-           contribute_to_squad_bank RPC (features/squad-bank.js) जो atomic
-           debit + ledger + clan update करता है। Ye legacy wrapper ab koi
-           wallet_transactions INSERT nahi karta (server guard + blocking). */
+        /* R8: clan squad_bank update ab contribute_to_squad_bank RPC ne
+           server-side kar diya (atomic debit + ledger + clans). Yahan koi
+           direct clans/wallet write NAHI — RPC hi authority hai. */
         if (window.toast) toast('💡 Squad bank contribution ke liye Squad Bank tab use karo', 'inf');
         
         if (window.toast) toast('✅ ' + amt + ' GD contribute kar diye!', 'ok');

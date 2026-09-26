@@ -201,10 +201,15 @@ function confirmInRoom(jKey, btn) {
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming...';
   if (!window._supa || !window._supaReady) { btn.disabled = false; toast('Service unavailable', 'err'); return; }
-  window._supa.from('join_requests')
-    .update({ in_room: true, in_room_at: new Date().toISOString() })
-    .eq('id', jKey)
-    .then(function() {
+  /* R8 (2026-09-26c): in_room ab server-authoritative hai — clamp trigger ne
+     client ko join_requests.in_room likhne se rok diya; sirf confirm_in_room
+     RPC (caller = own join, active status) valid hai. Direct update ab
+     silently fail hota tha — RPC se real success/error milta hai. */
+  window._supa.rpc('confirm_in_room', { p_join_id: jKey })
+    .then(function(r) {
+      var d = (r && r.data) || {};
+      if (r.error) { toast('Error: ' + (r.error.message || ''), 'err'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-gamepad"></i> I\'m In Room ✅'; return; }
+      if (d.success === false) { toast('Room confirm nahi hua: ' + (d.error || 'not allowed'), 'err'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-gamepad"></i> I\'m In Room ✅'; return; }
       btn.outerHTML = '<div class="inroom-confirmed"><i class="fas fa-check-circle"></i> You confirmed entering the room!</div>';
       toast('✅ Room entry confirmed! Admin will see you.', 'ok');
     }).catch(function(e) {

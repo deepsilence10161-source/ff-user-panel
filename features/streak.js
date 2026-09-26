@@ -19,22 +19,21 @@ window.getStreakBadge=function(streak){
 };
 
 window.updateWinStreak=function(isWin){
-  if(!_s()||!_uid())return;
+  /* R8 (2026-09-26c): users.win_streak ka AUTHORITATIVE writer server hai —
+     publish_match_results hi winner+1 / loser=0 set karta hai (single txn,
+     result verify ke saath). Client-side direct update ek self-report vector
+     tha (user apni streak khud bada sakta tha → season ranking score me
+     win_streak*10 feed hota hai) + server ke saath race karta tha. Ab yahan
+     sirf LOCAL UI feedback hota hai — koi Supabase write NAHI. */
+  if(!_uid())return;
   var ud=window.UD||{};
   var cur=Number(ud.win_streak||ud._winStreak||0);
   var newStreak=isWin?cur+1:0;
-  _s().from('users').update({win_streak:newStreak}).eq('id',_uid())
-  .then(function(){
-    if(window.UD){ window.UD.win_streak=newStreak; window.UD._winStreak=newStreak; }
-    var badge=window.getStreakBadge(newStreak);
-    if(badge&&isWin)_showStreakToast(badge,newStreak);
-    _injectStreakBadge(newStreak);
-    if(window.logActivity&&badge&&isWin)logActivity('streak',badge.emoji+' '+newStreak+' win streak! '+badge.label);
-  }).catch(function(){
-    // Fallback: just update locally
-    if(window.UD){ window.UD.win_streak=newStreak; window.UD._winStreak=newStreak; }
-    _injectStreakBadge(newStreak);
-  });
+  if(window.UD){ window.UD.win_streak=newStreak; window.UD._winStreak=newStreak; }
+  var badge=window.getStreakBadge(newStreak);
+  if(badge&&isWin)_showStreakToast(badge,newStreak);
+  _injectStreakBadge(newStreak);
+  if(window.logActivity&&badge&&isWin)logActivity('streak',badge.emoji+' '+newStreak+' win streak! '+badge.label);
 };
 
 function _showStreakToast(badge,streak){

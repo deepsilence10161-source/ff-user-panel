@@ -62,17 +62,16 @@ window.doMatchCheckIn = function(matchId) {
     toast('Pehle match join karo', 'err'); return;
   }
 
-  /* ✅ Supabase check-in (not Firebase) */
+  /* ✅ R8 (2026-09-26c): check-in ab server-authoritative RPC se —
+     check_in_match window ki real open/close server-side validate karta
+     hai (client ab checked_in force nahi kar sakta — clamp trigger ne
+     direct update freeze kar diya hai). */
   if (!window._supa || !window._supaReady) { toast('Service unavailable', 'err'); return; }
-  window._supa.from('join_requests')
-    .update({
-      checked_in: true,
-      checkin_at: new Date().toISOString()
-    })
-    .eq('match_id', matchId)
-    .eq('user_id', window.U.uid)
+  window._supa.rpc('check_in_match', { p_match_id: matchId })
     .then(function(r) {
       if (r.error) { toast('Check-in error: ' + (r.error.message || ''), 'err'); return; }
+      var d = r.data || {};
+      if (d.success === false) { toast('Check-in: ' + (d.error || 'not allowed'), 'err'); return; }
       toast('✅ Check-in ho gaya! Match ke liye tayar raho 🎮', 'ok');
       /* Update JR local cache */
       if (window.JR) {

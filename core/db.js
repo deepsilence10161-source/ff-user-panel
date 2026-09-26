@@ -591,43 +591,43 @@
         return data;
       },
 
-      /* Submit join request */
+      /* Submit join request — R8 (2026-09-26c): server-authoritative.
+         Client ab join_requests row khud INSERT nahi karta (fee/status/
+         entry_type sab server derive karta hai). Direct INSERT would now
+         hit the clamp + guard triggers anyway; forward to the ONE canonical
+         join engine (validate_and_join_match) instead. */
       create: async function(matchId, entryType, entryFee, extraData) {
         var uid = _uid();
-        var { data, error } = await window._supa
-          .from('join_requests')
-          .insert({
-            match_id: matchId,
-            user_id: uid,
-            entry_type: entryType,
-            entry_fee_paid: entryFee,
-            ign_at_join: window.UD ? window.UD.ign : '',
-            ...extraData
-          })
-          .select()
-          .single();
+        var cur = entryType === 'coin' ? 'coins'
+                : (entryType === 'paid' || entryType === 'sky_diamond' || entryType === 'skyDiamond') ? 'sky_diamonds'
+                : 'coins';
+        var { data, error } = await window._supa.rpc('validate_and_join_match', {
+          p_uid: uid, p_match_id: matchId,
+          p_entry_fee: Number(entryFee) || 0,
+          p_currency: cur,
+          p_join_data: extraData || null
+        });
         if (error) return _err('joinRequests.create', error);
         return data;
       },
 
-      /* Check in to match */
-      checkIn: async function(joinRequestId) {
-        var { data, error } = await window._supa
-          .from('join_requests')
-          .update({ checked_in: true, checkin_at: new Date().toISOString() })
-          .eq('id', joinRequestId)
-          .eq('user_id', _uid());
+      /* Check in — R8 (2026-09-26c): server-authoritative check_in_match RPC
+         (window server-validates the real open/close window; client can no
+         longer force checked_in). */
+      checkIn: async function(matchId) {
+        var { data, error } = await window._supa.rpc('check_in_match', {
+          p_match_id: matchId
+        });
         if (error) return _err('joinRequests.checkIn', error);
         return data;
       },
 
-      /* Confirm in room */
+      /* Confirm in room — R8 (2026-09-26c): confirm_in_room RPC
+         (attendance server-authoritative; clamp froze client in_room). */
       confirmInRoom: async function(joinRequestId) {
-        var { data, error } = await window._supa
-          .from('join_requests')
-          .update({ in_room: true })
-          .eq('id', joinRequestId)
-          .eq('user_id', _uid());
+        var { data, error } = await window._supa.rpc('confirm_in_room', {
+          p_join_id: joinRequestId
+        });
         if (error) return _err('joinRequests.confirmInRoom', error);
         return data;
       },
@@ -643,24 +643,20 @@
         return data || [];
       },
 
-      /* Admin: approve/reject */
+      /* R8 (2026-09-26c): setStatus/setResult RETIRED — join_requests
+         status/kills/placement/prize_earned ab clamp-trigger se client-
+         frozen hain aur sirf server RPCs (publish_match_results,
+         correct_match_result, cancel_match_with_refunds) se update hote
+         hain. Ye user-panel client par admin-named helpers kabhi bhi
+         functional nahi the (user JWT admin nahi hota); ab loud no-op. */
       setStatus: async function(id, status, note) {
-        var { data, error } = await window._supa
-          .from('join_requests')
-          .update({ status: status, rejection_note: note || null })
-          .eq('id', id);
-        if (error) return _err('joinRequests.setStatus', error);
-        return data;
+        console.error('[DB.joinRequests.setStatus] RETIRED — join approval/result status ab authoritative server RPC se hi update hota hai (admin panel: publish_match_results / correct_match_result).');
+        return _err('joinRequests.setStatus', { message: 'Join status ab server RPC se update hota hai' });
       },
 
-      /* Admin: set kills + placement (result) */
       setResult: async function(id, kills, placement, prizeEarned) {
-        var { data, error } = await window._supa
-          .from('join_requests')
-          .update({ kills: kills, placement: placement, prize_earned: prizeEarned || 0 })
-          .eq('id', id);
-        if (error) return _err('joinRequests.setResult', error);
-        return data;
+        console.error('[DB.joinRequests.setResult] RETIRED — kills/placement/prize_earned ab sirf publish_match_results / correct_match_result RPC se likhe jaate hain.');
+        return _err('joinRequests.setResult', { message: 'Match results ab server RPC se update hote hain' });
       }
     },
 

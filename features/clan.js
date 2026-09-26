@@ -303,18 +303,23 @@ window.showClanLeaderboardFull=function(){
   });
 };
 
-/* Update clan score on match result */
+/* Update clan score on match result — R8 (2026-09-26c): Firebase economy
+   writes REMOVED. Supabase authoritative; increment_clan_score RPC server-
+   side hi caller membership verify karta hai (no client-computed economy
+   write). This shallow variant is kept signature-compatible but delegates
+   to the RPC (bugfix-v30-final.js loads a fuller version after us anyway). */
 window.updateClanScore=function(uid,kills,wins){
-  // Bug New-3 Fix: Explicit window.UD check — prevents crash when called
-  // before auth completes (e.g. from a background timer or offline queue replay)
   if(!window.UD)return;
-  if(!window.db||!uid)return;
-  var clanId=(window.UD&&window.UD.clanId)||null;
+  var clanId=(window.UD&&window.UD.clanId)||(window.UD&&window.UD.clan_id)||null;
   if(!clanId)return;
+  if(!window._supa)return;
   var score=(kills||0)*1+(wins||0)*5;
-  window.db.ref('clans/'+clanId+'/weeklyScore').transaction(function(v){return (Number(v)||0)+score;});
-  if(kills)window.db.ref('clans/'+clanId+'/totalKills').transaction(function(v){return (Number(v)||0)+kills;});
-  if(wins)window.db.ref('clans/'+clanId+'/totalWins').transaction(function(v){return (Number(v)||0)+wins;});
+  window._supa.rpc('increment_clan_score',{
+    p_clan_id:clanId,
+    p_score:score,
+    p_wins:wins?1:0,
+    p_kills:kills||0
+  }).catch(function(){ /* R8: no client write fallback — silent drop on RPC failure */ });
 };
 
 console.log('[Mini eSports] Clan System v1.0 ✅');
