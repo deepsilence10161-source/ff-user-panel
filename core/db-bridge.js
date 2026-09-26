@@ -484,14 +484,14 @@
     }
     /* matches/mid/joinedSlots → Supabase matches.filled_slots */
     if (root === 'matches' && parts[1] && parts[2] === 'joinedSlots') {
-      /* ✅ SECURITY FIX (2026-09-08): swapped generic increment_balance
-         (locked to service_role only this session) for
-         increment_match_filled_slots, a narrow RPC that only ever adds
-         exactly 1 to a match's filled_slots — no column or amount is
-         client-controlled. Not a money column, but still needed a
-         safe replacement since increment_balance is no longer
-         reachable by regular users at all. */
-      return window._supa.rpc('increment_match_filled_slots', { p_match_id: parts[1] }).then(null, function(){});
+      /* R8 cleanup (2026-09-26): the increment_match_filled_slots call was
+         removed — that RPC is service_role-ONLY, so this legacy
+         `matches/<id>/joinedSlots` write path could never succeed (it was
+         swallowed by .then(null, ...)). Join slots are authoritative on the
+         server: validate_and_join_match increments filled_slots inside the join
+         transaction. This legacy path is now an explicit no-op instead of a
+         call that always fails. */
+      return Promise.resolve();
     }
     /* matches/mid/spectators/uid → Firebase RTDB (realtime spectator count) */
     if (root === 'matches' && parts[2] === 'spectators') {

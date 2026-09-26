@@ -467,18 +467,12 @@
       },
 
       /* Admin: ban/unban */
-      setBan: async function(uid, isBanned, reason) {
-        /* BUG #40 FIX (2026-07-30): direct column UPDATE would fail now — is_banned/
-           ban_reason's UPDATE grant is revoked for anon/authenticated (they were
-           previously writable by ANY logged-in user, not just admins — see AUDIT-LOG
-           BUG #40). This function has no live callers (dead code per earlier audit
-           pass) but updated anyway in case it's ever wired up. */
-        var { data, error } = await window._supa.rpc('set_user_ban_status', {
-          p_uid: uid, p_banned: isBanned, p_reason: reason || null
-        });
-        if (error) return _err('users.setBan', error);
-        return data;
-      },
+      /* users.setBan REMOVED (2026-09-26, dead-code cleanup): it called
+         set_user_ban_status, which is service_role-ONLY (anon/authenticated
+         always get 42501), and it had zero callers anywhere in either panel.
+         Admin banning lives in the Admin Panel, which reaches the same RPC
+         through the trusted admin-gateway path. Removing the dead call-site
+         (no behaviour change — the call could never succeed). */
 
       /* Poll my profile every 30s (replaces Firebase listener) */
       pollMe: function(callback) {
