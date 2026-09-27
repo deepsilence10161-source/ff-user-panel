@@ -1503,6 +1503,13 @@ window.applyDynamicWallpaper = function() {
           '#maintOverlay .mo-btn-s:hover{background:rgba(255,255,255,.09)}',
           '#maintOverlay .mo-foot{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.06);',
             'font-size:10.5px;color:#5d6480;display:flex;align-items:center;justify-content:center;gap:6px}',
+          /* Hard lock: safe-loader/fixes-v8 boot ke baad bottomNav ka inline
+             display:block dobara set kar dete hain (race). Stylesheet !important
+             inline style ko bhi haraa deta hai, isliye nav kisi bhi re-render
+             ke baad chhupa hi rahega jab tak body par maint-on class hai. */
+          'body.maint-on #bottomNav{display:none!important}',
+          'body.maint-on #mainContent{pointer-events:none!important}',
+          'body.maint-on #header{pointer-events:none!important}',
           '#maintOverlay .mo-foot .mo-shield{color:#00ff9c}',
           /* keyframes */
           '@keyframes maintFade{from{opacity:0}to{opacity:1}}',
@@ -1566,9 +1573,11 @@ window.applyDynamicWallpaper = function() {
       overlay.classList.add('mOpen');
       if (main) main.style.pointerEvents = 'none';
       if (nav) nav.style.display = 'none';
+      document.body.classList.add('maint-on');
       window._maintStartCountdown && window._maintStartCountdown();
     } else {
       overlay.classList.remove('mOpen');
+      document.body.classList.remove('maint-on');
       if (main) main.style.pointerEvents = '';
       if (nav && window.U) nav.style.display = '';
       window._maintStopCountdown && window._maintStopCountdown();
