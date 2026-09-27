@@ -146,19 +146,67 @@
     return client;
   }
 
+  /* SupabaseClient.functions ek GETTER hai (supabase-js v2):
+       get functions() { return new FunctionsClient(this.functionsUrl.href, {...}) }
+     Matlab har `client.functions` access par ek NAYA FunctionsClient milta hai — isliye
+     instance par invoke patch karne se asli call bach jaati thi (live test me pakda gaya:
+     functions.invoke server tak pahunch raha tha, "Edge Function returned a non-2xx").
+     Ab: prototype ka getter hi wrap hota hai, aur jo client wapas milta hai uspar invoke
+     lock lagta hai; instance par bhi ek shadow getter define karte hain (belt & braces). */
+  function _lockFunctionsProto(client) {
+    try {
+      var proto = Object.getPrototypeOf(client);
+      if (!proto || proto.__pvFnProto) return;
+      var desc = Object.getOwnPropertyDescriptor(proto, 'functions');
+      if (!desc || typeof desc.get !== 'function') return;
+      proto.__pvFnProto = true;
+      var origGet = desc.get;
+      Object.defineProperty(proto, 'functions', {
+        configurable: true,
+        get: function () {
+          var real = origGet.call(this);
+          if (!real || real.__pvInvokeLocked || typeof real.invoke !== 'function') return real;
+          try {
+            real.__pvInvokeLocked = true;
+            var origInvoke = real.invoke.bind(real);
+            real.invoke = function (name) {
+              if (_previewActive) {
+                /* preview me koi edge-function call nahi: payment (paytm-*),
+                   upload (imgbb), push registration, admin gateway — sab actions */
+                _note('functions.invoke:' + name);
+                return _blockedBuilder('preview_mode_read_only:invoke:' + name);
+              }
+              return origInvoke.apply(null, arguments);
+            };
+          } catch (e) {}
+          return real;
+        }
+      });
+    } catch (e) {}
+  }
+
   function _lockFunctions(client) {
-    if (!client || client.__pvFnLocked || !client.functions || typeof client.functions.invoke !== 'function') return client;
-    try { client.__pvFnLocked = true; } catch (e) { return client; }
-    var origInvoke = client.functions.invoke.bind(client.functions);
-    client.functions.invoke = function (name) {
-      if (_previewActive) {
-        /* preview me koi edge-function call nahi: payment (paytm-*),
-           upload (imgbb), push registration, admin gateway — sab actions */
-        _note('functions.invoke:' + name);
-        return _blockedBuilder('preview_mode_read_only:invoke:' + name);
+    if (!client || client.__pvFnLocked) return client;
+    _lockFunctionsProto(client);
+    var fns = null;
+    try { fns = client.functions; } catch (e) { return client; }
+    if (!fns || typeof fns.invoke !== 'function') return client;
+    try {
+      client.__pvFnLocked = true;
+      if (!fns.__pvInvokeLocked) {
+        fns.__pvInvokeLocked = true;
+        var origInvoke = fns.invoke.bind(fns);
+        fns.invoke = function (name) {
+          if (_previewActive) {
+            _note('functions.invoke:' + name);
+            return _blockedBuilder('preview_mode_read_only:invoke:' + name);
+          }
+          return origInvoke.apply(null, arguments);
+        };
       }
-      return origInvoke.apply(null, arguments);
-    };
+      /* getter ko instance par shadow karo — har access par wahi locked instance mile */
+      Object.defineProperty(client, 'functions', { configurable: true, get: function () { return fns; } });
+    } catch (e) {}
     return client;
   }
 
@@ -299,10 +347,15 @@
 
       var tag = (target.tagName || '').toLowerCase();
       var isFileInput = tag === 'input' && (target.type || '').toLowerCase() === 'file';
+      /* Reload/retry jaise app-level screens (maintenance overlay) aur apna
+         toast preview mode me bhi kaam karte rahenge — warna maintenance ke
+         "Abhi Check Karo" / Support buttons preview ke saath chalta nahi. */
+      if (target.closest && target.closest('#maintOverlay')) return;
       var shouldBlock = (
         tag === 'button' || isFileInput || tag === 'textarea' || tag === 'select' ||
         (tag === 'input' && (target.type || '').toLowerCase() !== 'search') ||
-        target.getAttribute('onclick') || target.closest('button')
+        target.getAttribute('onclick') || target.closest('button') ||
+        target.closest('.btn, [role="button"], .nav-item, .tab, [data-action]')
       );
       if (!shouldBlock) return;
     }
