@@ -1548,7 +1548,11 @@ window.applyDynamicWallpaper = function() {
         var btn = this;
         btn.innerHTML = '⏳ Checking…';
         window._maintRecheck().then(function (still) {
-          if (still) { btn.innerHTML = '😕 Abhi bhi maintenance me hai'; setTimeout(function () { btn.innerHTML = '🔄 Abhi Check Karo'; }, 1600); }
+          if (still) {
+            btn.innerHTML = '😕 Abhi bhi maintenance me hai';
+            if (window._maintStartCountdown) window._maintStartCountdown(true);   /* auto-check window 30s se restart */
+            setTimeout(function () { btn.innerHTML = '🔄 Abhi Check Karo'; }, 1600);
+          }
           else { btn.innerHTML = '✅ Wapas aa gaya!'; }
         }, function () { btn.innerHTML = '🔄 Abhi Check Karo'; });
       });
@@ -1599,8 +1603,14 @@ window.applyDynamicWallpaper = function() {
         window._maintRecheck().then(null, function () {});
       }
     }
-    window._maintStartCountdown = function () {
-      if (_t) return;
+    window._maintStartCountdown = function (force) {
+      /* force=true → chalta hua countdown bhi 30s se restart (manual
+         "Abhi Check Karo" ke baad auto-check window fresh honi chahiye;
+         pehle `if (_t) return;` ki wajah se countdown purana hi chalta rehta tha). */
+      if (_t) {
+        if (!force) return;
+        clearInterval(_t); _t = null;
+      }
       _left = 30;
       var el = document.getElementById('maintCountdown');
       if (el) el.textContent = '30s';
