@@ -1426,28 +1426,193 @@ window.applyDynamicWallpaper = function() {
      matching "works after refresh, not while already open". The realtime
      subscription now lives in core/listeners.js's _bootAppSettings(),
      which calls this function directly by name. */
-  function applyMaintState(isMaint) {
+  function applyMaintState(isMaint, cfg) {
+    /* ✅ REDESIGN (2026-09-26): maintenance screen ab ek proper branded
+       "coming back soon" page hai — animated aurora background, glass card,
+       admin ke config message (app_settings.maintenance.message) ka support,
+       auto re-check countdown, aur "Abhi Check Karo" / Support buttons.
+       Behaviour identical: overlay full-screen, main content pointer-events
+       none, bottom nav hidden. Pure CSS/SVG — koi external asset nahi.
+       Baaki panels' call-signature bhi same hai (isMaint boolean); cfg
+       optional hai (message dikhane ke liye). */
     var overlay = document.getElementById('maintOverlay');
     if (!overlay) {
       overlay = document.createElement('div');
       overlay.id = 'maintOverlay';
-      overlay.style.cssText = 'display:none;position:fixed;inset:0;z-index:99999;background:#050507;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px';
-      overlay.innerHTML = '<div style="font-size:60px;margin-bottom:20px">⚙️</div><div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:10px">Maintenance Mode</div><div style="font-size:14px;color:#7a7a8e;line-height:1.6">Hum kuch improvements kar rahe hain.<br>Thodi der baad try karo. 🙏</div>';
+      overlay.setAttribute('role', 'alertdialog');
+      overlay.setAttribute('aria-live', 'polite');
+
+      if (!document.getElementById('_maintStyle')) {
+        var st = document.createElement('style');
+        st.id = '_maintStyle';
+        st.textContent = [
+          '#maintOverlay{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;',
+            'align-items:center;justify-content:center;text-align:center;padding:26px;overflow:hidden;',
+            'background:radial-gradient(120% 90% at 50% 0%,#0b1226 0%,#06070f 55%,#04050a 100%);',
+            'font-family:inherit;-webkit-tap-highlight-color:transparent}',
+          '#maintOverlay.mOpen{display:flex;animation:maintFade .45s ease both}',
+          /* aurora blobs */
+          '#maintOverlay .mo-blob{position:absolute;border-radius:50%;filter:blur(64px);opacity:.5;pointer-events:none}',
+          '#maintOverlay .mo-b1{width:340px;height:340px;left:-90px;top:-60px;background:radial-gradient(circle,#00ff9c55,transparent 68%);animation:maintFloat1 13s ease-in-out infinite}',
+          '#maintOverlay .mo-b2{width:300px;height:300px;right:-80px;top:14%;background:radial-gradient(circle,#00d4ff4d,transparent 68%);animation:maintFloat2 16s ease-in-out infinite}',
+          '#maintOverlay .mo-b3{width:380px;height:380px;left:50%;bottom:-140px;transform:translateX(-50%);background:radial-gradient(circle,#b964ff40,transparent 70%);animation:maintFloat3 19s ease-in-out infinite}',
+          /* grid */
+          '#maintOverlay .mo-grid{position:absolute;inset:0;pointer-events:none;opacity:.5;',
+            'background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);',
+            'background-size:44px 44px;mask-image:radial-gradient(75% 60% at 50% 42%,#000 0%,transparent 100%);',
+            '-webkit-mask-image:radial-gradient(75% 60% at 50% 42%,#000 0%,transparent 100%)}',
+          /* card */
+          '#maintOverlay .mo-card{position:relative;width:100%;max-width:372px;padding:30px 24px 22px;border-radius:26px;',
+            'background:linear-gradient(165deg,rgba(20,24,38,.72),rgba(10,12,22,.82));',
+            'border:1px solid rgba(255,255,255,.085);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);',
+            'box-shadow:0 26px 70px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.06);',
+            'animation:maintCardIn .55s cubic-bezier(.2,.9,.3,1.15) both}',
+          /* icon ring */
+          '#maintOverlay .mo-ring{width:86px;height:86px;margin:0 auto 16px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}',
+          '#maintOverlay .mo-ring:before{content:"";position:absolute;inset:0;border-radius:50%;padding:2px;',
+            'background:conic-gradient(from 0deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);',
+            '-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;',
+            'animation:maintSpin 5.5s linear infinite}',
+          '#maintOverlay .mo-ring:after{content:"";position:absolute;inset:-10px;border-radius:50%;background:radial-gradient(circle,#00ff9c2e,transparent 70%);animation:maintPulse 2.4s ease-in-out infinite}',
+          '#maintOverlay .mo-ico{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:29px;',
+            'background:linear-gradient(150deg,rgba(0,255,156,.14),rgba(0,212,255,.1));border:1px solid rgba(255,255,255,.08);',
+            'box-shadow:inset 0 0 22px rgba(0,255,156,.12);animation:maintBob 3.4s ease-in-out infinite}',
+          /* chip + text */
+          '#maintOverlay .mo-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;margin-bottom:13px;',
+            'background:rgba(0,255,156,.09);border:1px solid rgba(0,255,156,.24);color:#8effcf;',
+            'font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}',
+          '#maintOverlay .mo-chip i{width:6px;height:6px;border-radius:50%;background:#00ff9c;box-shadow:0 0 8px #00ff9c;animation:maintPulse 1.6s infinite}',
+          '#maintOverlay .mo-title{margin:0 0 9px;font-size:22px;font-weight:900;color:#fff;letter-spacing:.2px;line-height:1.25}',
+          '#maintOverlay .mo-msg{margin:0 auto;max-width:300px;font-size:13px;line-height:1.62;color:#9aa0b4}',
+          '#maintOverlay .mo-msg b{color:#cfd4e4;font-weight:700}',
+          /* progress */
+          '#maintOverlay .mo-bar{position:relative;height:5px;border-radius:99px;margin:20px auto 10px;max-width:250px;overflow:hidden;background:rgba(255,255,255,.07)}',
+          '#maintOverlay .mo-bar span{position:absolute;inset:0;border-radius:99px;',
+            'background:linear-gradient(90deg,transparent,#00ff9c,#00d4ff,transparent);background-size:44% 100%;background-repeat:no-repeat;',
+            'animation:maintShimmer 1.9s ease-in-out infinite}',
+          '#maintOverlay .mo-auto{display:flex;align-items:center;justify-content:center;gap:7px;font-size:11px;color:#6f7690;margin-bottom:18px}',
+          '#maintOverlay .mo-auto b{color:#9fe8c8;font-variant-numeric:tabular-nums}',
+          /* buttons */
+          '#maintOverlay .mo-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:270px;margin:0 auto 9px;',
+            'padding:13px 18px;border-radius:14px;border:0;font-family:inherit;font-size:13.5px;font-weight:900;cursor:pointer;',
+            'transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}',
+          '#maintOverlay .mo-btn:active{transform:scale(.972)}',
+          '#maintOverlay .mo-btn-p{color:#04120b;background:linear-gradient(135deg,#00ff9c,#00d4ff);box-shadow:0 12px 30px rgba(0,255,156,.22)}',
+          '#maintOverlay .mo-btn-p:hover{filter:brightness(1.06);box-shadow:0 14px 34px rgba(0,255,156,.3)}',
+          '#maintOverlay .mo-btn-s{color:#c8cede;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1)}',
+          '#maintOverlay .mo-btn-s:hover{background:rgba(255,255,255,.09)}',
+          '#maintOverlay .mo-foot{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.06);',
+            'font-size:10.5px;color:#5d6480;display:flex;align-items:center;justify-content:center;gap:6px}',
+          '#maintOverlay .mo-foot .mo-shield{color:#00ff9c}',
+          /* keyframes */
+          '@keyframes maintFade{from{opacity:0}to{opacity:1}}',
+          '@keyframes maintCardIn{from{opacity:0;transform:translateY(22px) scale(.965)}to{opacity:1;transform:none}}',
+          '@keyframes maintSpin{to{transform:rotate(360deg)}}',
+          '@keyframes maintPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}',
+          '@keyframes maintBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}',
+          '@keyframes maintShimmer{0%{background-position:-44% 0}100%{background-position:144% 0}}',
+          '@keyframes maintFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,22px) scale(1.08)}}',
+          '@keyframes maintFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-24px,18px) scale(1.1)}}',
+          '@keyframes maintFloat3{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}50%{transform:translateX(-50%) translateY(-26px) scale(1.06)}}',
+          '@media (prefers-reduced-motion:reduce){#maintOverlay *{animation:none!important}}'
+        ].join('');
+        document.head.appendChild(st);
+      }
+
+      overlay.innerHTML = [
+        '<div class="mo-blob mo-b1"></div><div class="mo-blob mo-b2"></div><div class="mo-blob mo-b3"></div>',
+        '<div class="mo-grid"></div>',
+        '<div class="mo-card" id="maintCard">',
+          '<div class="mo-ring"><div class="mo-ico">🛠️</div></div>',
+          '<div class="mo-chip"><i></i> Maintenance Mode</div>',
+          '<h1 class="mo-title">Thodi der ki baat hai 🙏</h1>',
+          '<p class="mo-msg" id="maintMsg">Hum app ko aur behtar bana rahe hain.<br>Bas <b>thodi der</b> me wapas aa jaayenge — tab tak breathe karo 😄</p>',
+          '<div class="mo-bar"><span></span></div>',
+          '<div class="mo-auto"><span>Auto check</span> <b id="maintCountdown">30s</b></div>',
+          '<button type="button" class="mo-btn mo-btn-p" id="maintRetry">🔄 Abhi Check Karo</button>',
+          '<button type="button" class="mo-btn mo-btn-s" id="maintSupport">💬 Support se baat karo</button>',
+          '<div class="mo-foot"><span class="mo-shield">🔒</span> Aapka data safe hai · Mini eSports</div>',
+        '</div>'
+      ].join('');
       document.body.appendChild(overlay);
+
+      /* Buttons — retry: dobara app_settings read; support: WhatsApp */
+      overlay.querySelector('#maintRetry').addEventListener('click', function () {
+        var btn = this;
+        btn.innerHTML = '⏳ Checking…';
+        window._maintRecheck().then(function (still) {
+          if (still) { btn.innerHTML = '😕 Abhi bhi maintenance me hai'; setTimeout(function () { btn.innerHTML = '🔄 Abhi Check Karo'; }, 1600); }
+          else { btn.innerHTML = '✅ Wapas aa gaya!'; }
+        }, function () { btn.innerHTML = '🔄 Abhi Check Karo'; });
+      });
+      overlay.querySelector('#maintSupport').addEventListener('click', function () {
+        var msg = 'Hello Mini eSports team! App maintenance me hai — kab tak wapas aayega?';
+        if (window.openWhatsApp) { window.openWhatsApp(msg); }
+        else { window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); }
+      });
     }
+
+    /* config message (admin) — set ho to default ki jagah dikhao */
+    var msgEl = overlay.querySelector('#maintMsg');
+    var cfgMsg = cfg && typeof cfg === 'object' && typeof cfg.message === 'string' ? cfg.message.trim() : '';
+    if (msgEl) {
+      if (cfgMsg) msgEl.innerHTML = cfgMsg.replace(/[<>]/g, '');
+      else msgEl.innerHTML = 'Hum app ko aur behtar bana rahe hain.<br>Bas <b>thodi der</b> me wapas aa jaayenge — tab tak breathe karo 😄';
+    }
+
     var main = document.getElementById('mainContent');
     var nav = document.getElementById('bottomNav');
     if (isMaint) {
-      overlay.style.display = 'flex';
+      overlay.classList.add('mOpen');
       if (main) main.style.pointerEvents = 'none';
       if (nav) nav.style.display = 'none';
+      window._maintStartCountdown && window._maintStartCountdown();
     } else {
-      overlay.style.display = 'none';
+      overlay.classList.remove('mOpen');
       if (main) main.style.pointerEvents = '';
       if (nav && window.U) nav.style.display = '';
+      window._maintStopCountdown && window._maintStopCountdown();
     }
   }
   window.applyMaintState = applyMaintState;
+
+  /* ── Auto re-check countdown (30s) — maintenance ke dauraan har 30s par
+        app_settings dobara padhta hai, aur khatam hone par khud-ba-khud
+        overlay hata deta hai. Button ("Abhi Check Karo") bhi same path. ── */
+  (function () {
+    var _t = null, _left = 30;
+    function _tick() {
+      _left -= 1;
+      var el = document.getElementById('maintCountdown');
+      if (el) el.textContent = _left + 's';
+      if (_left <= 0) {
+        _left = 30;
+        window._maintRecheck().then(null, function () {});
+      }
+    }
+    window._maintStartCountdown = function () {
+      if (_t) return;
+      _left = 30;
+      var el = document.getElementById('maintCountdown');
+      if (el) el.textContent = '30s';
+      _t = setInterval(_tick, 1000);
+    };
+    window._maintStopCountdown = function () {
+      if (_t) { clearInterval(_t); _t = null; }
+      _left = 30;
+    };
+    window._maintRecheck = function () {
+      if (!window._supa) return Promise.resolve(true);
+      return window._supa.from('app_settings').select('value').eq('key', 'maintenance').maybeSingle()
+        .then(function (res) {
+          if (res.error) return true;
+          var v = res.data && res.data.value;
+          var still = !!(v && v.active === true);
+          applyMaintState(still, v);
+          return still;
+        });
+    };
+  })();
 
   window.checkMaintenance = function () {
     /* ✅ MIGRATED (2026-08-18): Maintenance Mode moved from Firebase RTDB
@@ -1475,7 +1640,7 @@ window.applyDynamicWallpaper = function() {
           console.error('[checkMaintenance] app_settings read failed:', res.error.message);
           return;
         }
-        applyMaintState(!!(res.data && res.data.value && res.data.value.active === true));
+        applyMaintState(!!(res.data && res.data.value && res.data.value.active === true), res.data && res.data.value);
       });
 
     /* ✅ Safety-net poll — unaffected by the channel-lifecycle bug above
@@ -1486,7 +1651,7 @@ window.applyDynamicWallpaper = function() {
       window._maintModePollTimer = setInterval(function () {
         window._supa.from('app_settings').select('value').eq('key','maintenance').maybeSingle()
           .then(function (res) {
-            if (!res.error) applyMaintState(!!(res.data && res.data.value && res.data.value.active === true));
+            if (!res.error) applyMaintState(!!(res.data && res.data.value && res.data.value.active === true), res.data && res.data.value);
           });
       }, 25000);
     }
