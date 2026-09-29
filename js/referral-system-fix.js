@@ -179,8 +179,15 @@
 
       if (supa) {
         // Supabase check — single row lookup is fast and accurate
+        /* ✅ FIX (2026-09-30): .single() → .maybeSingle().
+           Naye user ka users-row is check se THODI DER BAAD banta hai, isliye
+           .single() par PostgREST HTTP 406 deta tha aur browser console me
+           "Failed to load resource: 406" error chhap jaata tha (live verified
+           request order: 204 PATCH users → 406 GET users → 201 POST users).
+           .maybeSingle() 0 rows par saaf {data:null} deta hai — wahi
+           isNewUser=true wala behaviour, bina console error ke. */
         supa.from('users').select('id,referred_by,referral_popup_done')
-          .eq('id', user.uid).single()
+          .eq('id', user.uid).maybeSingle()
           .then(function(r) {
             // If Supabase has no row → brand new user
             var isNewUser = !r.data;

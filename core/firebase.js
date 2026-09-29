@@ -19,7 +19,14 @@ var _fireApp = firebase.initializeApp({
   storageBucket:     "fft-app-1e283.firebasestorage.app",
   messagingSenderId: "247829466483",
   appId:             "1:247829466483:web:6961488f1d3c4e3fff4906",
-  measurementId:     "G-XXXXXXXXXX"
+  /* ✅ FIX (2026-09-30): yeh placeholder chhoot gaya tha, isliye Firebase
+     Analytics har load par error deta tha —
+     "@firebase/analytics: The measurement ID in the local Firebase config
+      (G-XXXXXXXXXX) does not match the measurement ID fetched from the server"
+     aur saara analytics data silently drop ho raha tha (live verified: failed
+     beacon request mein asli measurement id G-5TNKW1TVB1 dikh raha tha).
+     Ab wahi asli measurement id set hai. */
+  measurementId:     "G-5TNKW1TVB1"
 }, "mainApp");
 
 /* ── Firebase RTDB — SIRF support/ chat ke liye ── */

@@ -633,7 +633,12 @@ function _bootAppSettings() {
   _poll('appcfg', function() { if (window.loadAppConfig) loadAppConfig(); }, 60000); /* ✅ SPEED FIX (2026-08-24): was 5 minutes — tightened safety-net; live_config realtime channel above is now primary */
   if (window._supa) {
     function _loadLiveConfig() {
-      window._supa.from('app_settings').select('value').eq('key', 'live_config').single()
+      /* ✅ FIX (2026-09-30): .single() → .maybeSingle() — live_config row na
+         hone par (ya RLS ke kisi bhi edge case mein) .single() PostgREST se
+         HTTP 406 deta hai aur browser use console ERROR ki tarah log karta
+         hai. .maybeSingle() 0 rows par saaf {data:null,error:null} deta hai.
+         Row maujood hone par behaviour bilkul same rehta hai. */
+      window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
         .then(function(r) {
           if (!r.data||!r.data.value) return;
           var cfg = r.data.value;

@@ -293,7 +293,8 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
       // read) in case the admin just fixed the link or flipped the
       // Force Update switch OFF.
       if (window._supa) {
-        window._supa.from('app_settings').select('value').eq('key', 'live_config').single()
+        /* ✅ FIX (2026-09-30): .single() → .maybeSingle() (406 console-noise class) */
+        window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
           .then(function(r) {
             if (r.data && r.data.value) {
               try { localStorage.setItem('_appConfigCache', JSON.stringify({ config: r.data.value, timestamp: Date.now() })); } catch (e) {}
@@ -343,7 +344,8 @@ window.loadAppConfig = function() {
 
   /* Always try fresh load regardless of cache */
   if (window._supa) {
-    window._supa.from('app_settings').select('value').eq('key', 'live_config').single()
+    /* ✅ FIX (2026-09-30): .single() → .maybeSingle() (406 console-noise class) */
+    window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
       .then(function(r) {
         if (r.data && r.data.value) {
           _applyCfg(r.data.value);

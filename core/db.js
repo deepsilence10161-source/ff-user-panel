@@ -900,11 +900,14 @@
     config: {
       /* Load live config from Supabase */
       load: async function() {
+        /* ✅ FIX (2026-09-30): .single() → .maybeSingle() — 0 rows par
+           PostgREST 406 deta hai (console ERROR noise); maybeSingle same
+           behaviour deta hai jab row maujood ho. */
         var { data, error } = await window._supa
           .from('app_settings')
           .select('value')
           .eq('key', 'live_config')
-          .single();
+          .maybeSingle();
         if (error) { _err('config.load', error); return; }
         if (data && data.value) {
           /* Deep merge into window.CFG */
