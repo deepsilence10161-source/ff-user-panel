@@ -148,6 +148,7 @@ window.AdManager = {
     }
     var wb = document.getElementById('_webBanner');
     if (wb) wb.remove();
+    try { document.body.classList.remove('has-web-banner'); } catch(e) {}
   },
 
   /* Ad Match: show N rewarded ads before join */
@@ -215,9 +216,21 @@ window.AdManager = {
     if (document.getElementById('_webBanner')) return;
     var bn = document.createElement('div');
     bn.id = '_webBanner';
-    bn.style.cssText = 'position:fixed;bottom:calc(56px + env(safe-area-inset-bottom));left:0;right:0;height:50px;background:rgba(0,0,0,.9);border-top:1px solid rgba(255,255,255,.06);z-index:900;display:flex;align-items:center;justify-content:center;gap:10px';
+    /* ✅ FIX (2026-09-30): pehle bottom:56px tha, lekin bottom-nav asli mein 75px
+       ooncha hai (padding-bottom:env(safe-area-inset-bottom) ke saath) — isliye
+       banner 19px neeche ko nav ke PEECHE dhas jaata tha aur squashed dikhta tha.
+       Ab nav ki asli height naap kar banner uske theek upar baithta hai, aur
+       --wb-pad variable se page content ko banner ke upar utha diya jaata hai. */
+    var _navH = 75;
+    try { var _bn=document.getElementById('bottomNav'); if(_bn){ var _h=Math.round(_bn.getBoundingClientRect().height); if(_h>40) _navH=_h; } } catch(e) {}
+    bn.style.cssText = 'position:fixed;bottom:' + _navH + 'px;left:0;right:0;height:50px;background:rgba(0,0,0,.9);border-top:1px solid rgba(255,255,255,.06);z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;pointer-events:none';
+    try { document.body.style.setProperty('--wb-pad', (_navH + 50 + 10) + 'px'); } catch(e) {}
     bn.innerHTML = '<span style="font-size:10px;color:#555">AD</span><span style="font-size:12px;color:#888">Mini eSports — Tournament Platform</span><span style="font-size:10px;color:#555">AD</span>';
     document.body.appendChild(bn);
+    /* ✅ FIX (2026-09-30): banner dikhne par body par class — layout (styles.css)
+       tab chat input aur neeche wale buttons ko banner ke upar utha deta hai.
+       Banner khud pointer-events:none hai, isliye koi tap nahi kha sakta. */
+    try { document.body.classList.add('has-web-banner'); } catch(e) {}
   }
 };
 
@@ -370,6 +383,7 @@ window.recheckAds = function(){
     if(ov) ov.remove();
     var wb = document.getElementById('_webBanner');
     if(wb) wb.remove();
+    try { document.body.classList.remove('has-web-banner'); } catch(e) {}
   }
 };
 

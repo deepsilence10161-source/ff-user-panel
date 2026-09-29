@@ -1052,3 +1052,21 @@ html, body {
 /* FIX: rejected/failed deposit history में green मत दिखाओ — muted grey */
 .wh-amt.wha-m { color: #8a91a5; }
 .wh-icon.whi-m { background: rgba(138,145,165,.12); color: #8a91a5; }
+
+/* ✅ FIX (2026-09-30, live paint-audit): neeche wala WEB AD BANNER taps kha raha
+   tha. Banner position:fixed, bottom:56px, height:50px, z-index:900 hai aur
+   uske andar SIRF text hai (koi link/button nahi — DOM+code dono se verify).
+   Wajah se ye chat input (chat screen) aur wallet ke "Coin History"/"Summary"
+   buttons ke upar aa jaata tha: elementFromPoint() banner return karta tha aur
+   asli click input ko focus hi nahi karta tha (activeElement BODY reh jaata tha).
+   Fix: (a) banner ab pointer-events:none — kabhi taps nahi kha sakta,
+        (b) jab banner dikhe tab mainContent/chat ko 50px upar rakho, taaki
+            content banner ke NEECHE chhupe nahi. */
+#_webBanner { pointer-events: none !important; }
+body.has-web-banner #mainContent {
+  /* --wb-pad JS se set hota hai (nav height + banner 50px + 10px gap) */
+  padding-bottom: var(--wb-pad, 135px);
+}
+body.has-web-banner .chat-container {
+  height: calc(100dvh - var(--wb-pad, 135px) - 90px - env(safe-area-inset-top));
+}
