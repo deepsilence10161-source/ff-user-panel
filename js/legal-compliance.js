@@ -298,21 +298,37 @@
     var c1=(document.getElementById('_mes_tc1')||{}).checked;
     var c2=(document.getElementById('_mes_tc2')||{}).checked;
     if (!c1||!c2) { _toast('Dono checkboxes tick karo','err'); return; }
-    /* BUG FIX (2026-07): this used to write tcAccepted to Firebase RTDB,
-       but the gate that decides whether to SHOW this popup (_runNext /
-       mesInit below) checks window.UD.tcAccepted — and window.UD comes
-       from Supabase, which never had this field. So acceptance was never
-       actually remembered and this popup (+ the "Welcome to Mini
-       eSports!" toast) came back on literally every single app open.
-       Writing to the accepted_policy column that already exists in the
-       users table (see COMPLETE_SCHEMA.sql) so it's read back correctly
-       on the next load, and updating window.UD immediately so it can't
-       re-trigger later in this same session either. */
-    if (window.DB && window.DB.users) {
-      window.DB.users.update({ accepted_policy: true }).then(null, function(){});
+
+    /* ✅ FIX (live-testing 2026-10-01, walk9v-proven): pehle ye niche wali
+       `window.DB.users.update({accepted_policy:true})` write par bharosa tha —
+       us write ko DB ka guard_users_self_update trigger
+       "Column accepted_policy is not self-editable" (P0001) se reject kar
+       deta tha, aur error .then(null, ...) me chup-chaap nigal liya jata tha.
+       Nateeja: T&C kabhi save hi nahi hoti thi, aur HAR reload/session par
+       wahi "Terms & Conditions" screen wapas aa jati thi (walk9v evidence:
+       network 400 + console [DB:users.update] P0001 + DB accepted_policy=false
+       + reload par modal dobara). Ab server-side RPC accept_terms()
+       (security definer, owner postgres) se save hota hai — bilkul waise hi
+       jaise age-gate submit_age_verification() RPC use karta hai. Write fail
+       hone par modal KHULA rehta hai + toast aata hai, taaki user retry kar
+       sake instead of chup-chaap aage badh jane ki. */
+    if (!window._supa || !window.U || !window.U.uid) {
+      _toast('Login sync ho raha hai — ek baar phir try karo', 'err');
+      return;
     }
-    if (window.UD) window.UD.accepted_policy = true;
-    _close(); _toast('Welcome to Mini eSports! ✓','ok');
+    var btn = document.querySelector('button[onclick*="mesAcceptTC"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+    window._supa.rpc('accept_terms').then(function (res) {
+      if (res && res.error) throw res.error;
+      if (res && res.data && res.data.success === false) throw new Error(res.data.error || 'save failed');
+      if (window.UD) window.UD.accepted_policy = true;
+      if (window.UD) window.UD.accepted_policy_at = new Date().toISOString();
+      _close(); _toast('Welcome to Mini eSports! ✓','ok');
+    }).catch(function (err) {
+      console.error('[TC] accept save nahi hui:', err && err.message);
+      if (btn) { btn.disabled = false; btn.textContent = '✓ Accept & Continue'; }
+      _toast('Accept save nahi hua — dobara try karo', 'err');
+    });
   };
 
   /* ═══════════════════════════════════════
