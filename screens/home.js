@@ -517,7 +517,25 @@ window.renderSponsoredTournaments = function() {
     if (alreadyJoined) {
       h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(0,255,156,.12);color:var(--green);border:1px solid rgba(0,255,156,.3)" disabled>✅ Joined</button>';
     } else if (s.match_id && MT[s.match_id]) {
-      h += '<button class="f-btn" style="width:100%;font-weight:800;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:none" onclick="cJoin(\'' + s.match_id + '\')">⚡ Join Now</button>';
+      /* ✅ BUG FIX (2026-09-30, live-testing): sponsored/free-tournament card
+         ka "⚡ Join Now" match ke STATUS ko dekhta hi nahi tha — khatam ho
+         chuke (ya shuru ho chuke / cancelled) sponsored match par bhi active
+         Join button dikhta tha. Click par kuch nahi hota tha (cJoin() andar
+         se "Match khatam ho gaya!" toast deke rok deta hai) — yani card user
+         ko galat bata raha tha ki wo join kar sakta hai. Ab CTA wahi status
+         gate use karta hai jo normal match card upar use karta hai. */
+      var _spMatch   = MT[s.match_id];
+      var _spEs      = (window.effSt ? effSt(_spMatch) : String(_spMatch.status || 'upcoming').toLowerCase());
+      var _spStarted = _spMatch.matchTime && ((window.serverNow ? window.serverNow() : Date.now()) >= Number(_spMatch.matchTime));
+      if (_spEs === 'completed' || _spEs === 'resultPublished') {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(0,212,255,.1);color:#00d4ff;border:1px solid rgba(0,212,255,.25)" disabled>✅ Match Completed</button>';
+      } else if (_spEs === 'cancelled') {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(255,46,46,.1);color:#ff2e2e;border:1px solid rgba(255,46,46,.25)" disabled>🚫 Match Cancelled</button>';
+      } else if (_spEs === 'live' && _spStarted) {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(255,107,107,.12);color:#ff6b6b;border:1px solid rgba(255,107,107,.3)" disabled>🔴 Match Started</button>';
+      } else {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:none" onclick="cJoin(\'' + s.match_id + '\')">⚡ Join Now</button>';
+      }
     } else if (realMatch && realMatch.status === 'completed') {
       /* ✅ BUG FIX (2026-09-05): realMatch here can only be non-null via
          the SP_MATCH fallback above (MT[s.match_id] was just checked
