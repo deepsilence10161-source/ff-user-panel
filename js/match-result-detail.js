@@ -55,7 +55,37 @@
       if (p) p.remove();
     });
 
-    /* Fetch result data */
+    /* ✅ R8 FIX (2026-09-30): Result data Supabase `join_requests` se aata hai
+       (placement / kills / prize_earned — yahi publish_match_results RPC bharta hai).
+       Pehle ye page Firebase-style path `matches/<id>/results/<uid>` padhta tha,
+       jiska R8 bridge me koi handler hi nahi hai → published result hone par bhi
+       page "Result abhi publish nahi hua" dikhata tha.
+       NOTE: ye file screens/rank.js (line ~687) ke baad load hoti hai aur
+       window.showResultPage ko override karti hai, isliye fix yahin zaroori tha. */
+    function _renderFromJR(row) {
+      renderResultPage(page, {
+        rank: row.placement || 0,
+        kills: row.kills || 0,
+        winnings: row.prize_earned || 0,
+        totalWinning: row.prize_earned || 0,
+        killPrize: row.per_kill_prize || 0,
+        matchName: (t && (t.name || t.title)) || '',
+        mode: (t && (t.mode || t.gameMode)) || '',
+        userId: U.uid, matchId: matchId
+      }, t, matchId);
+    }
+    if (window._supa) {
+      window._supa.from('join_requests').select('*')
+        .eq('match_id', matchId).eq('user_id', U.uid).maybeSingle()
+        .then(function (resp) {
+          var row = resp && resp.data;
+          var _done = !!row && (row.placement > 0 || row.prize_earned > 0 ||
+                                (t && (t.status === 'completed' || t.resultPublished)));
+          if (_done) { _renderFromJR(row); } else { page.innerHTML = _noResultHTML(); }
+        }).catch(function () { page.innerHTML = _noResultHTML(); });
+      return;
+    }
+    /* Legacy fallback (sirf tab jab _supa maujood na ho) */
     db.ref('matches/' + matchId + '/results/' + U.uid).once('value', function (s) {
       var r = s.exists() ? s.val() : null;
       if (!r) {

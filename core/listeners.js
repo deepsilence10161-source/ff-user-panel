@@ -388,7 +388,11 @@ function _toMT(m) {
       if(et==='free'||et==='freeentry')         return 'free';
       if(et==='paid'||et==='sky'||et==='skydia'||et==='skydiamond'||et==='sd') return 'paid';
       return 'free';
-    })(m.entry_type), firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, _src:'supabase' };
+    })(m.entry_type), firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, /* ✅ R8 FIX (2026-09-30): publish marker — admin publish karte hi
+       matches.result_published_at set hota hai. Pehle ye field MT me aata
+       hi nahi tha, isliye user panel ko kabhi pata nahi chalta tha ki
+       result publish ho gaya (View Result button ki shart poori nahi hoti). */
+    resultPublished: !!m.result_published_at, _src:'supabase' };
 }
 
 /* ================================================================ L4: JOIN REQUESTS */
@@ -418,7 +422,12 @@ function _toJR(jr) {
       if(et==='ad'||et==='ads')     return 'ad';
       if(et==='free')               return 'free';
       return 'paid';
-    })(jr.entry_type), entryFee: jr.entry_fee_paid||0, userName: jr.ign_at_join||'', ign: jr.ign_at_join||'', kills: jr.kills||0, rank: jr.placement||0, winnings: jr.prize_earned||0, inRoom: jr.in_room||false, checkedIn: jr.checked_in||false, refunded: jr.status==='refunded', resultStatus: jr.status==='approved'?'done':jr.status, createdAt: jr.created_at ? new Date(jr.created_at).getTime() : 0 };
+    })(jr.entry_type), entryFee: jr.entry_fee_paid||0, userName: jr.ign_at_join||'', ign: jr.ign_at_join||'', kills: jr.kills||0, rank: jr.placement||0, winnings: jr.prize_earned||0, /* ✅ R8 FIX (2026-09-30): result object — isse My Matches card par
+       result card (rank/kills/winnings) render hota hai. Pehle ye field
+       kabhi set nahi hota tha, isliye publish ke baad bhi user ko apna
+       result dikhta hi nahi tha (sirf khaali jagah + Details button). */
+    result: (jr.placement || jr.prize_earned) ? { rank: jr.placement||0, kills: jr.kills||0, prize: jr.prize_earned||0 } : null,
+    inRoom: jr.in_room||false, checkedIn: jr.checked_in||false, refunded: jr.status==='refunded', resultStatus: jr.status==='approved'?'done':jr.status, createdAt: jr.created_at ? new Date(jr.created_at).getTime() : 0 };
 }
 
 /* ================================================================ L5: NOTIFICATIONS */

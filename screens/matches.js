@@ -1,3 +1,12 @@
+/* ✅ R8 FIX (2026-09-30): match card ka time label status-aware.
+   Pehle completed match par bhi "Starts in: 0h 23m" (countdown) dikhta tha
+   kyunki fmtTime() sirf matchTime dekhta hai, match status nahi. */
+function _mmTimeLabel(displaySt, t) {
+  if (displaySt === 'completed' || displaySt === 'resultPublished') return 'Match Ended';
+  if (displaySt === 'cancelled') return 'Cancelled';
+  return fmtTime(t.matchTime);
+}
+
 function renderMM() {
   var l = $('mmList'); if (!l) return;
   var f = [];
@@ -66,7 +75,10 @@ function renderMM() {
     h += '<div class="mm-details"><span><i class="fas fa-gamepad"></i> ' + tp.toUpperCase() + '</span>';
     h += '<span><i class="fas fa-coins"></i> ' + (jr.entryFee > 0 ? (jr.entryType==='coin'?'🪙 ':'💎') + jr.entryFee : 'FREE') + '</span>';
     if (t.map) h += '<span><i class="fas fa-map"></i> ' + titleCase(t.map) + '</span>';
-    h += '<span><i class="fas fa-clock"></i> ' + fmtTime(t.matchTime) + '</span></div>';
+    /* ✅ R8 FIX (2026-09-30): completed/resultPublished match ke card par pehle
+       "Starts in: Xh Ym" jaisa countdown dikhta rehta tha (fmtTime sirf time dekhta
+       hai, status nahi) — ab status ke hisaab se sahi label. */
+    h += '<span><i class="fas fa-clock"></i> ' + _mmTimeLabel(displaySt, t) + '</span></div>';
     /* Room display: show ONLY if within release time window - regardless of roomStatus */
     var _roomReady = false;
     var _relMin = Number(t.roomReleaseMinutes) || 5;
@@ -113,7 +125,10 @@ function renderMM() {
     h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
     /* Left: Result button (if resultPublished/completed) else Chat button */
     var _matchSt = effSt(t);
-    var _hasResult = jr.result || t.status === 'resultPublished' || _matchSt === 'resultPublished';
+    /* ✅ R8 FIX (2026-09-30): server 'completed' + result_published_at likhta hai
+       (naam 'resultPublished' nahi), isliye t.resultPublished bhi check karo —
+       warna publish hone ke baad bhi View Result button kabhi aata hi nahi tha. */
+    var _hasResult = jr.result || t.resultPublished || t.status === 'resultPublished' || _matchSt === 'resultPublished';
     if (_hasResult) {
       /* Result publish hua hai — Chat ki jagah Result button dikhao */
       h += '<button onclick="(function(){if(window.showMatchEndAd){window.showMatchEndAd(function(){window.showResultPage&&showResultPage(\'' + t.id + '\')});}else{window.showResultPage&&showResultPage(\'' + t.id + '\');}})()" style="padding:8px;border-radius:8px;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,140,0,.08));border:1px solid rgba(255,215,0,.35);color:#ffd700;font-size:11px;font-weight:800;cursor:pointer"><i class="fas fa-trophy"></i> View Result</button>';
