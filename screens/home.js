@@ -133,7 +133,11 @@ function mcHTML(t) {
   var isHot = (pct >= 70);
   var isFeatured = t.isFeatured || t.isSpecial;
   var glowStr = es === 'live' ? '0 0 20px ' + modeClr + '55' : '0 4px 20px rgba(0,0,0,.35)';
-  var h = '<div class="m-card" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + '">';
+  /* ✅ BUG Y FIX (2026-10-02): auto-squad ka _showQueueBanner card ko
+     '[data-match-id="…"]' se dhoondta hai — attribute kahin set hi nahi
+     hota tha ⇒ queue banner + 8s poll (jo matched-par Team-Ready card
+     bhi kholta hai) KABHI nahi chalta tha. Ab card par attribute set. */
+  var h = '<div class="m-card" data-match-id="' + t.id + '" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + '">';
   h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,' + modeClr + '20,transparent 70%);pointer-events:none"></div>';
   if (isHot) h += '<div style="position:absolute;top:10px;left:-1px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;font-size:9px;font-weight:900;padding:3px 10px 3px 6px;border-radius:0 20px 20px 0;letter-spacing:.5px">🔥 HOT</div>';
   if (t.isMonthlySpecial || t.specialCategory === 'monthly_special') h += '<div style="position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:8px;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:.3px">👑 MONTHLY</div>'; 
@@ -452,7 +456,7 @@ window.renderSponsoredTournaments = function() {
     var matchTimeMs = rm.matchTime || (rm.scheduled_at ? new Date(rm.scheduled_at).getTime() : 0);
     var timeHTML = matchTimeMs ? fmtTime(matchTimeMs) : 'Time Not Announced';
 
-    h += '<div class="m-card" style="border-top:3px solid #ffd700;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(255,215,0,.15);background:linear-gradient(180deg,rgba(255,215,0,.05),transparent 40%)">';
+    h += '<div class="m-card" data-match-id="' + (s.match_id || rm.id || '') + '" style="border-top:3px solid #ffd700;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(255,215,0,.15);background:linear-gradient(180deg,rgba(255,215,0,.05),transparent 40%)">';
     h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,215,0,.16),transparent 70%);pointer-events:none"></div>';
 
     /* ── Sponsor header strip — wrapped in .mc-top's own padding

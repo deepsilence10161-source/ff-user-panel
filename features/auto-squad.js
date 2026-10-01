@@ -170,6 +170,7 @@
             /* Show team card to current user if they're in this team */
             if (uids.indexOf(_uid()) !== -1) {
               _t('🎉 Team ban gayi! Captain match join karega.', 'ok');
+              _cardShown[matchId] = true; /* BUG Y dedupe: banner-poll is page par dobara na kholе */
               _showTeamFormedCard(team, captain, matchId, mode, matchData);
             }
           }).catch(function (e) {
@@ -217,6 +218,43 @@
     if (window.openModal) openModal('🎉 Team Ready!', h);
   }
 
+  /* ── BUG Y FIX (2026-10-02): Team-Ready card sirf USI page par dikhta tha
+     jisne form_auto_squad_team RPC jeeta (aksar member ka page, kyunki wo
+     join ke turant baad _tryFormTeam chalata hai). Dusre participant —
+     aksar CAPTAIN — ke page par banner sirf 'Team ban gayi' text dikhata
+     tha aur uska 8s poll 'matched' milte hi return kar deta tha, to
+     captain ke paas 'Match Join Karo (Captain)' button KABHI nahi aata
+     (notification sirf plain text hai, koi action nahi) ⇒ captain UI se
+     team join kar hi nahi sakta tha. Ab banner matched-status par formed
+     team fetch karke card SAB participants ko dikhata hai (ek hi baar —
+     _cardShown dedupe, taki band kiya hua modal har 8s me dobara na khule). */
+  var _cardShown = {};
+  function _showFormedCardOnce(matchId, mode) {
+    if (_cardShown[matchId]) return;
+    if (!_s() || !_uid()) return;
+    _s().from('auto_squad_queue')
+      .select('status, team_id')
+      .eq('match_id', matchId)
+      .eq('user_id', _uid())
+      .maybeSingle()
+      .then(function (qr) {
+        if (!qr || qr.error || !qr.data || qr.data.status !== 'matched' || !qr.data.team_id) return;
+        var teamId = qr.data.team_id;
+        _s().from('auto_squad_queue')
+          .select('*, user:users(ign, avatar_url, rank_tier, rank_points)')
+          .eq('team_id', teamId)
+          .order('rank_pts', { ascending: false })
+          .then(function (r2) {
+            if (r2 && r2.error) return;
+            var team = r2.data || [];
+            if (!team.length) return;
+            if (team.map(function (p) { return p.user_id; }).indexOf(_uid()) === -1) return;
+            _cardShown[matchId] = true; /* pehli safal fetch par hi — dobara na khule */
+            _showTeamFormedCard(team, team[0], matchId, mode, window.MT && window.MT[matchId]);
+          }, function () {});
+      }, function () {});
+  }
+
   /* ── Queue waiting banner ── */
   var _queuePollTimers = {};
   function _showQueueBanner(matchId, mode, needed) {
@@ -249,6 +287,8 @@
 
           if (r.data.status === 'matched') {
             banner.innerHTML = '<div style="font-size:12px"><span style="color:#ffd700;font-weight:700">🎉 Team ban gayi!</span><br><span style="font-size:10px;color:var(--txt2)">Check notifications</span></div>';
+            /* BUG Y FIX: matched hone par bhi card dikhao (agar is page par abhi tak nahi dikha) */
+            _showFormedCardOnce(matchId, mode);
             return;
           }
 
