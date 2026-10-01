@@ -227,6 +227,11 @@ function _applyUser(sp) {
   UD.clanId = sp.clan_id || UD.clanId || null;
   UD.isBanned = sp.is_banned || false;
   UD.isAdmin = sp.is_admin || false;
+  /* ✅ BUG R FIX (2026-10-01): email_verified kabhi UD par copy hi nahi hota
+     tha (getMe ke select me bhi nahi tha) — isliye wallet.js ka withdrawal
+     gate DB flag se kabhi pass nahi ho sakta tha. Ab dono jagah se aata hai. */
+  UD.email_verified = !!sp.email_verified;
+  UD.emailVerified  = UD.email_verified;
   /* ✅ BUG FIX (2026-07-22): age_verified/accepted_policy were never
      mapped here — meaning both only ever got set as a session-local
      override by whichever screen (legal-compliance.js) happened to write

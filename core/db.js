@@ -260,9 +260,17 @@
            Not the root cause of the ₹/Green-Diamond mixup bug itself, but
            left stale here would have masked the fix under this exact
            reconnect path. */
+        /* ✅ BUG R FIX (2026-10-01, deep E2E): email_verified select list me
+           hi nahi tha — aur _applyUser bhi usko UD par copy nahi karta tha.
+           Asar: wallet.js ka withdrawal gate `(UD.email_verified ||
+           U.emailVerified)` DB wala flag KABHI padh hi nahi paata tha; sirf
+           Firebase ka U.emailVerified (Google sign-in par true rehta hai,
+           email/password users par false) kaam karta tha. Yani admin/support
+           users.email_verified=true karke bhi kisi ko withdraw ke liye
+           unblock nahi kar sakte the — DB column bekaar tha. Ab map hota hai. */
         var { data, error } = await window._supa
           .from('users')
-          .select('id,ign,email,avatar_url,banner_url,coins,sky_diamonds,green_diamonds,sponsored_winnings,rank_tier,rank_points,total_wins,total_kills,total_matches,city,is_creator,premium_level,clan_id,referral_code,profile_status,is_banned,ban_reason,accepted_policy,created_at,streak_days,streak_milestones_claimed')
+          .select('id,ign,email,email_verified,avatar_url,banner_url,coins,sky_diamonds,green_diamonds,sponsored_winnings,rank_tier,rank_points,total_wins,total_kills,total_matches,city,is_creator,premium_level,clan_id,referral_code,profile_status,is_banned,ban_reason,accepted_policy,created_at,streak_days,streak_milestones_claimed')
           .eq('id', uid)
           .maybeSingle();
         if (error) { _err('users.getMe', error); return undefined; }
