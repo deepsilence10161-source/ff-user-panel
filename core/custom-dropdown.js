@@ -34,7 +34,12 @@ var _DD_CONFIG = {
     options: [
       { v: 'upcoming', l: '⏱️ Upcoming' },
       { v: 'live',     l: '🔴 Live' },
-      { v: 'completed',l: '✅ Completed' }
+      { v: 'completed',l: '✅ Completed' },
+      /* Bug V fix (2026-10-01): admin ke cancel karne par (refund ke saath) user
+         ko apna match dekhna chahiye — "Entry fee refunded" chip yahin se live
+         hota hai. Pehle 'cancelled' filter option hi nahi tha, isliye wo card
+         kabhi reachable nahi tha. */
+      { v: 'cancelled',l: '🚫 Cancelled' }
     ],
     onSelect: function(v) { if (window.setST) setST('mm', v); }
   }

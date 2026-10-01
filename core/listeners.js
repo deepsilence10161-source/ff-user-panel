@@ -371,15 +371,42 @@ function _loadSponsored() {
 function _loadMatches() {
   if (!window._supa) return;
   var _sevenDaysAgo = new Date(Date.now() - 7 * 24 * 3600000).toISOString();
+  /* Bug V fix (2026-10-01): user ke APNE cancelled matches bhi load karo.
+     Pehle sirf upcoming/live/completed aate the — isliye admin ke cancel karte
+     hi (refund dekar) wo match user panel se poori tarah gayab ho jaata tha:
+     na "My Matches" me, na home feed me. Aur screens/matches.js ka reassuring
+     "Entry fee refunded" chip (shart: t.status==='cancelled' && jr.refunded)
+     kabhi render hi nahi ho sakta tha — pure dead UI (live proof: WALK10j).
+     Sirf UNHI cancelled matches ka data la rahe hain jinme current user ka apna
+     entry tha (join_requests status refunded/cancelled) — baaki sab invisible
+     rehta hai; aur renderHome me pehle se `es==='cancelled' -> continue` guard
+     hai, isliye home feed bilkul unaffected rahega. */
+  var _myCancelled = (window.U && window.U.uid)
+    ? window._supa.from('join_requests').select('match_id,status')
+        .eq('user_id', window.U.uid).in('status', ['refunded', 'cancelled'])
+        .then(function (jr) {
+          var ids = [];
+          (jr.data || []).forEach(function (x) {
+            if (x && x.match_id && ids.indexOf(x.match_id) === -1) ids.push(x.match_id);
+          });
+          if (!ids.length) return { data: [] };
+          return window._supa.from('matches').select('*').in('id', ids).eq('status', 'cancelled');
+        })
+        .catch(function () { return { data: [] }; })
+    : Promise.resolve({ data: [] });
+
   Promise.all([
     window._supa.from('matches').select('*').in('status', ['upcoming', 'live']).order('scheduled_at', { ascending: true }),
-    window._supa.from('matches').select('*').eq('status', 'completed').gte('scheduled_at', _sevenDaysAgo).order('scheduled_at', { ascending: false }).limit(100)
+    window._supa.from('matches').select('*').eq('status', 'completed').gte('scheduled_at', _sevenDaysAgo).order('scheduled_at', { ascending: false }).limit(100),
+    _myCancelled
   ]).then(function(results) {
-    var r1 = results[0], r2 = results[1];
-    if (!r1.data && !r2.data) return;
+    var r1 = results[0], r2 = results[1], r3 = results[2];
+    if (!r1.data && !r2.data && !(r3 && r3.data)) return;
     for (var k in MT) delete MT[k];
     (r1.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
     (r2.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+    /* apne hi cancelled+refunded entries -> "Entry fee refunded" chip ab live hai */
+    ((r3 && r3.data) || []).forEach(function(m) { MT[m.id] = _toMT(m); });
     detectChanges(); renderHome(); renderSP(); renderMM();
   }).catch(function(e) { console.warn('[L2]', e.message); });
 }

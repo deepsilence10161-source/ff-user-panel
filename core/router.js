@@ -43,7 +43,7 @@ function navTo(scr) {
 /* UPDATED (2026-08 redesign #2): status filter is now a custom dark
    dropdown (core/custom-dropdown.js), not a native <select> — keep the
    displayed label in sync with hSF/mmSF whenever set programmatically. */
-var _ST_LABELS = { upcoming:'⏱️ Upcoming', live:'🔴 Live', completed:'✅ Completed' };
+var _ST_LABELS = { upcoming:'⏱️ Upcoming', live:'🔴 Live', completed:'✅ Completed', cancelled:'🚫 Cancelled' };
 function setST(w, v) {
   if (w === 'home') {
     hSF = v;
