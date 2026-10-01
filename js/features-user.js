@@ -890,6 +890,16 @@ window.applyDynamicWallpaper = function() {
   /* ─── NEW FEATURE 32: RESULT DISPUTE FORM ─── */
   var _dispScreenshotB64 = null;
   window.showResultDispute = function (matchId) {
+    /* Safety (Bug T follow-up): bina match-id ke call par form khulne se pehle
+       _submitDispute('undefined') chala jaata tha → match_id='undefined' wali
+       galat/galat-dispute row. Ab user ko seedha Matches screen par bhejte hain
+       jahan har match ka apna "Report Dispute" button sahi id ke saath hai. */
+    if (!matchId) {
+      if (window.closeModal) closeModal();
+      if (window.toast) toast('Match chuno — Matches list se report karo', 'err');
+      if (window.navTo) navTo('matches');
+      return;
+    }
     _dispScreenshotB64 = null;
     var h = '<div style="padding:8px">';
     h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:12px">Galat result ke against complaint submit karo</div>';
