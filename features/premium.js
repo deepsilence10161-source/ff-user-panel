@@ -98,6 +98,12 @@ function _renderPremModal(){
     h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+t.icon+'</div>';
     h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
     if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">✅ Active Plan</div>';
+    /* ✅ BUG Z2 FIX (2026-10-02): Active plan par koi button hi nahi tha —
+       matlab apna current tier RENEW karna UI se asambhav tha (sirf doosre
+       tiers ka Upgrade button dikhta tha). Renew wahi approve_premium RPC
+       pipeline use karta hai jiska math GREATEST(current_expires, now)+30d
+       hai — yaani extend. Ab Active tile par bhi Renew button. */
+    if(isA)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#ff8c00);color:'+(t.tier===1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer;margin-top:6px">🔁 Renew +30 Din — ₹'+t.price+'</button>';
     else h+='<div style="font-size:10px;color:#888;margin-top:2px">Monthly subscription</div>';
     h+='</div></div><div style="text-align:right"><div style="font-size:26px;font-weight:900;color:'+t.color+'">₹'+t.price+'</div><div style="font-size:10px;color:#666">/mahina</div></div></div>';
     /* Perks */
