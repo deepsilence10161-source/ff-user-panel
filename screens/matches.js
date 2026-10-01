@@ -121,6 +121,16 @@ function renderMM() {
     if (t.creatorUid && effSt(t) === 'completed') {
       h += '<button onclick="window.rateCreatorMatch&&rateCreatorMatch(\'' + t.id + '\',\'' + t.creatorUid + '\')" style="width:100%;padding:8px;border-radius:8px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);color:#ffd700;font-size:11px;font-weight:700;cursor:pointer;margin-top:6px"><i class="fas fa-star"></i> Is Creator Match Ko Rate Karo</button>';
     }
+    /* ✅ Bug W FIX (2026-10-01): check-in button sirf Match Details modal me
+       tha — wahan bhi wo unreachable tha. Ab seedha "My Matches" card par,
+       jahan user ko apna joined match dikhta hai. id alag (checkinCardBtn_)
+       hai taaki modal wale button se duplicate-id na ho. Sirf upcoming
+       match par (cancelled/completed par koi matlab nahi). */
+    if (window.CFG && window.CFG.checkInEnabled && window.renderCheckInBtn
+        && displaySt === 'upcoming' && jr.status !== 'no_show') {
+      h += window.renderCheckInBtn(jr.matchId, t, 'checkinCardBtn');
+    }
+
     /* Action buttons row — split into 2 halves */
     h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
     /* Left: Result button (if resultPublished/completed) else Chat button */
@@ -262,6 +272,24 @@ function showDet(id) {
 
   // Live Feed button removed
 
+  // ── Pre-match Check-In button ──
+  /* ✅ Bug W FIX (2026-10-01): yeh block pehle `if (tp !== 'solo' && !hasJ(id))`
+     ke andar tha, jabki renderCheckInBtn() ke pehle hi line par
+     `if (!window.hasJ(matchId)) return ''` likha hai — do bilkul contradictory
+     shartein, isliye button KABHI render hi nahi hota tha (kisi bhi mode me,
+     kisi bhi user ke liye). Live nuksaan: koi user check-in kar hi nahi sakta
+     tha ⇒ checked_in hamesha false ⇒ server cron
+     internal_process_no_show_refunds har paid player ka entry match se 5 min
+     pehle hi no_show karke refund kar deta tha aur slot chura deta tha
+     (WALK10l me live proof: checkinBtn_<id> = None, saath hi refund+ledger+
+     notification sab fire ho gaye). Ab block bahar hai: joined player ko,
+     kisi bhi mode (solo/duo/squad) me, milega. Cancelled/completed par
+     dikhate nahi (wahan countdown ka koi matlab nahi). */
+  if (window.CFG && window.CFG.checkInEnabled && window.renderCheckInBtn
+      && _matchStatus !== 'cancelled' && _matchStatus !== 'completed') {
+    h += window.renderCheckInBtn(id, t);
+  }
+
   // Feature 36: Post-match feedback
   if (effSt(t) === 'completed' && hasJ(id)) {
     h += '<button onclick="window.showMatchFeedback&&showMatchFeedback(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(255,215,0,.2);background:rgba(255,215,0,.06);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-star"></i> Rate This Match</button>';
@@ -286,11 +314,6 @@ function showDet(id) {
       h += '<button onclick="if(window.showAutoSquadJoin)showAutoSquadJoin(\'' + id + '\',\''+_autoMode+'\')" ' +
         'style="width:100%;margin-top:8px;padding:12px;border-radius:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.2);color:var(--green);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">' +
         '<i class="fas fa-users"></i> Akele ho? Auto ' + (_isSquad?'Squad':'Duo') + ' Join Karo!</button>';
-    }
-
-    // ── Pre-match Check-In button ──
-    if (window.CFG && window.CFG.checkInEnabled && window.renderCheckInBtn) {
-      h += window.renderCheckInBtn(id, t);
     }
 
     // ── Watch & Earn button for live ──

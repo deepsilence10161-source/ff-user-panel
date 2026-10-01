@@ -81,33 +81,51 @@ window.doMatchCheckIn = function(matchId) {
           }
         }
       }
-      var btn = document.getElementById('checkinBtn_' + matchId);
-      if (btn) {
-        btn.innerHTML = '<i class="fas fa-check-circle"></i> Checked In ✅';
-        btn.style.background = 'rgba(0,255,156,.1)';
-        btn.style.color = 'var(--green)';
-        btn.disabled = true;
-      }
+      /* Bug W: button modal (checkinBtn_) aur My Matches card
+         (checkinCardBtn_) — dono par render hota hai, dono update karo. */
+      ['checkinBtn_', 'checkinCardBtn_'].forEach(function(pfx) {
+        var btn = document.getElementById(pfx + matchId);
+        if (btn) {
+          btn.innerHTML = '<i class="fas fa-check-circle"></i> Checked In ✅';
+          btn.style.background = 'rgba(0,255,156,.1)';
+          btn.style.color = 'var(--green)';
+          btn.disabled = true;
+        }
+      });
     }, function(e) { toast('Check-in failed — retry karo', 'err'); });
 };
 
-/* ── Render check-in button for match card ── */
-window.renderCheckInBtn = function(matchId, t) {
+/* ── Render check-in button for match card ──
+   ⚠️ Bug W (2026-10-01): ismein do live fixes —
+   (a) optional idPrefix: My Matches card aur Match Details modal dono par
+       button chahiye, aur duplicate DOM id se dono ek dusre ko toot jaate
+       (getElementById pehla hi deta hai) — isliye prefix alag.
+   (b) window band hone par ab khamoshi nahi: pehle '' return hota tha, to
+       user ko 5 min pehle pata hi nahi chalta tha ki uska check-in miss ho
+       gaya aur entry refund + slot chala gaya. Ab explicit warning. */
+window.renderCheckInBtn = function(matchId, t, idPrefix) {
   if (!window.hasJ || !window.hasJ(matchId)) return '';
+  var _id = (idPrefix || 'checkinBtn') + '_' + matchId;
   var isOpen = window.isCheckInOpen(t);
   if (!isOpen) {
-    // Show countdown to check-in
     var cfg = window.CFG || {};
     var openMins = Number(cfg.checkInOpenMins || 30);
     var openAt = Number(t.matchTime) - openMins * 60000;
-    var minsLeft = Math.ceil((openAt - ((window.serverNow && typeof window.serverNow === "function") ? window.serverNow() : Date.now())) / 60000);
+    var nowMs = (window.serverNow && typeof window.serverNow === "function") ? window.serverNow() : Date.now();
+    var minsLeft = Math.ceil((openAt - nowMs) / 60000);
     if (minsLeft > 0) {
       return '<div style="margin-top:6px;font-size:11px;color:#888;text-align:center">⏰ Check-in ' + minsLeft + ' min mein khulega</div>';
+    }
+    /* Window open ho chuka, close ho chuka, match abhi shuru nahi hua →
+       user ko saaf batao, warna wo sochta hai check-in ho gaya hai aur uska
+       entry refund ho jaata hai. */
+    if (Number(t.matchTime) > nowMs) {
+      return '<div style="margin-top:6px;font-size:11px;color:#ff9f43;text-align:center;font-weight:700">⚠️ Check-in window band ho chuka hai — entry refund ho sakti hai</div>';
     }
     return '';
   }
 
-  return '<button id="checkinBtn_' + matchId + '" onclick="doMatchCheckIn(\'' + matchId + '\')" ' +
+  return '<button id="' + _id + '" onclick="doMatchCheckIn(\'' + matchId + '\')" ' +
     'style="width:100%;margin-top:8px;padding:10px;border-radius:12px;background:linear-gradient(135deg,#ff8c00,#ffd700);border:none;color:#000;font-size:13px;font-weight:800;cursor:pointer">' +
     '<i class="fas fa-clipboard-check"></i> Match Check-In Karo!</button>';
 };
