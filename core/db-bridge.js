@@ -578,6 +578,20 @@
       }).then(null, function(){});
     }
 
+    /* ✅ Bug X Fix (2026-10-01): matchChat → Supabase match_chat.
+       Pehle koi case nahi tha — default fire-and-forget par gir kar messages
+       SILENTLY vanish ho jaate the (live-proven WALK10o: sender ko tak apna
+       message nahi dikhta tha). RLS chat_insert_own auth.uid() = user_id force
+       karta hai — koi doosre ke naam se message nahi daal sakta. */
+    if (root === 'matchChat' && parts[1] && value && typeof value === 'object' && value.text) {
+      return window._supa.from('match_chat').insert({
+        match_id: parts[1],
+        user_id: value.uid || _uid(),
+        name: value.name || 'Player',
+        text: String(value.text).slice(0, 500)
+      }).then(null, function(e) { console.warn('[Bridge] matchChat write:', e && e.message); });
+    }
+
     /* Bug #20 Fix: polls → in-session only, write to Supabase polls table if it exists */
     if (root === 'polls') {
       /* Bug #20 Fix: Write poll votes to Supabase poll_votes table */
@@ -850,6 +864,25 @@
 
     /* profileViews — soft analytics */
     if (root === 'profileViews') { callback(_fakeSnap(null)); return; }
+
+    /* ✅ Bug X Fix (2026-10-01): matchChat → Supabase match_chat.
+       limitToLast semantics: desc limit n, phir reverse = oldest→newest.
+       Pehle default empty snap milta tha — chat hamesha khaali dikhti thi. */
+    if (root === 'matchChat' && parts[1]) {
+      var _limChat = opts.limit || 20;
+      window._supa.from('match_chat').select('user_id,name,text,created_at')
+        .eq('match_id', parts[1])
+        .order('created_at', { ascending: false })
+        .limit(_limChat)
+        .then(function(r) {
+          var rows = (r.data || []).slice().reverse().map(function(x) {
+            return { uid: x.user_id, name: x.name, text: x.text,
+                     ts: x.created_at ? new Date(x.created_at).getTime() : 0 };
+          });
+          callback(_fakeSnapList(rows));
+        }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
 
     /* Default: return empty snap */
     callback(_fakeSnap(null));
