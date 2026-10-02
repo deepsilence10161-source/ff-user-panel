@@ -403,21 +403,45 @@
        changes/boot, not in a hot loop, so the cost is negligible — and it
        removes a network call that failed 100% of the time in testing. */
     var _origUpdateBell = window.updateBell;
-    window.updateBell = function() {
+    var _lastBellFetchTs = 0;
+    var _bellInFlight = false;
+    window.updateBell = function(forceDb) {
       var uid = window.U && window.U.uid;
       if (!uid || !window._supa) { if (_origUpdateBell) _origUpdateBell(); return; }
+      var _setBadge = function(count) {
+        var bell = document.getElementById('bellBadge') || document.getElementById('bell-badge') || document.getElementById('notifDot');
+        if (bell) {
+          if (bell.id === 'notifDot') {
+            bell.classList.toggle('on', count > 0);
+          } else {
+            bell.textContent = count > 0 ? (count >= 10 ? '9+' : String(count)) : '';
+            bell.style.display = count > 0 ? '' : 'none';
+          }
+        }
+        if (_origUpdateBell) { try { _origUpdateBell(); } catch(_e) {} }
+      };
+      /* Fast path: compute directly from in-memory NOTIFS when already loaded (eliminates 35+ duplicate GETs/session) */
+      if (!forceDb && window.NOTIFS && typeof window.NOTIFS === 'object' && Object.keys(window.NOTIFS).length > 0) {
+        var memUnread = Object.values(window.NOTIFS).filter(function(n) { return n && !n.read && !n.is_read; }).length;
+        _setBadge(memUnread);
+        return;
+      }
+      var now = Date.now();
+      if (!forceDb && (_bellInFlight || (now - _lastBellFetchTs < 30000))) {
+        if (_origUpdateBell) { try { _origUpdateBell(); } catch(_e2) {} }
+        return;
+      }
+      _bellInFlight = true;
+      _lastBellFetchTs = now;
       window._supa.from('notifications')
         .select('id')
         .eq('user_id', uid).eq('is_read', false)
         .limit(10)
         .then(function(r) {
+          _bellInFlight = false;
           var count = (r && r.data) ? r.data.length : 0;
-          var bell = document.getElementById('bellBadge') || document.getElementById('bell-badge');
-          if (bell) {
-            bell.textContent = count > 0 ? (count >= 10 ? '9+' : String(count)) : '';
-            bell.style.display = count > 0 ? '' : 'none';
-          }
-        }, function() { if (_origUpdateBell) _origUpdateBell(); });
+          _setBadge(count);
+        }, function() { _bellInFlight = false; if (_origUpdateBell) _origUpdateBell(); });
     };
     console.log('[Fix v29] Bug #30: Notification badge persists via Supabase is_read');
   }, 500, 12000);

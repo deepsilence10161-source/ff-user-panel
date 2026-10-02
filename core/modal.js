@@ -25,6 +25,57 @@ function closeModal() {
 }
 window.closeModal = closeModal;
 
+/* Accessibility enhancer (A11Y-001..003): automatically adds role="button" and
+   tabindex="0" + Enter/Space keyboard activation to dynamic div/span[onclick] elements */
+(function() {
+  function _a11yScan(root) {
+    try {
+      var scope = root && root.querySelectorAll ? root : document;
+      var nodes = scope.querySelectorAll('div[onclick], span[onclick]');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        if (el.id === 'modalOv' || el.classList.contains('modal-overlay')) continue;
+        if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+        if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      }
+      var btns = scope.querySelectorAll('button, [role="button"]');
+      for (var j = 0; j < btns.length; j++) {
+        var b = btns[j];
+        if (!b.getAttribute('aria-label') && !(b.textContent || '').trim()) {
+          var ttl = b.getAttribute('title') || (b.querySelector('i') && b.querySelector('i').className) || 'Button';
+          b.setAttribute('aria-label', String(ttl).replace(/fa[srb]?\s+fa-/g, '').replace(/-/g, ' ').trim() || 'Button');
+        }
+      }
+    } catch (_e) {}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { _a11yScan(document); });
+  } else {
+    _a11yScan(document);
+  }
+  try {
+    var _obs = new MutationObserver(function(muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var added = muts[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          if (added[j] && added[j].nodeType === 1) _a11yScan(added[j]);
+        }
+      }
+    });
+    if (document.body) _obs.observe(document.body, { childList: true, subtree: true });
+    else document.addEventListener('DOMContentLoaded', function() { _obs.observe(document.body, { childList: true, subtree: true }); });
+  } catch (_e2) {}
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeModal(); return; }
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var t = e.target;
+    if (t && (t.tagName === 'DIV' || t.tagName === 'SPAN') && t.getAttribute('role') === 'button' && typeof t.onclick === 'function') {
+      e.preventDefault();
+      t.click();
+    }
+  });
+})();
+
 /* ================================================================
    CITY LEADERBOARD + ONE-TIME AUTOMATIC LOCATION (2026-08 rewrite)
    BUG FIX: showCityLeaderboard() didn't exist anywhere in the codebase

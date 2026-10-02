@@ -43,7 +43,7 @@
       '.info',             /* Firebase RTDB special path (serverTimeOffset etc) — Bug C-1 Fix */
       'support',           /* Support chat messages */
       'supportTyping',     /* Support typing indicators */
-      'supportRequests',   /* Support ticket submissions */
+      /* supportRequests MOVED TO SUPABASE support_tickets — My-Tickets & Admin Support Sync */
       'appSettings',       /* Admin live config + adminResponseStats */
       'admins',            /* Admin user list */
       'presence',          /* Online presence */
@@ -880,6 +880,34 @@
                      ts: x.created_at ? new Date(x.created_at).getTime() : 0 };
           });
           callback(_fakeSnapList(rows));
+        }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* ✅ Support Tickets (supportRequests) → Supabase support_tickets */
+    if (root === 'supportRequests') {
+      var _supUid = _uid();
+      if (!_supUid) { callback(_fakeSnapList([])); return; }
+      window._supa.from('support_tickets').select('*')
+        .eq('user_id', _supUid)
+        .order('created_at', { ascending: false })
+        .limit(opts.limit || 50)
+        .then(function(r) {
+          var rows = (r.data || []).map(function(x) {
+            return {
+              id: x.id,
+              userId: x.user_id,
+              userName: x.user_ign || '',
+              type: x.subject || 'general',
+              subject: x.subject || 'general',
+              message: x.message || '',
+              status: x.status || 'open',
+              adminReply: x.admin_reply || '',
+              createdAt: x.created_at ? new Date(x.created_at).getTime() : 0,
+              repliedAt: x.replied_at ? new Date(x.replied_at).getTime() : 0
+            };
+          });
+          callback(_fakeSnapList(rows, 'id'));
         }, function() { callback(_fakeSnapList([])); });
       return;
     }

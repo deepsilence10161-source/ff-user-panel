@@ -277,12 +277,23 @@ function _applyUser(sp) {
   if (window._supaAchievements) UD.achievementsV3 = window._supaAchievements;
   if (window.updateHdr) updateHdr();
   if (window.applyState) applyState();
-  if (window.renderHome) renderHome();
-  if (window.renderProfile) renderProfile();
-  if (window.renderWallet) renderWallet();
+  /* Skip full DOM re-render on 15s safety poll when user data is unchanged */
+  var _uSig = [
+    UD.coins, UD.greenDiamonds, UD.skyDiamonds, UD.ign, UD.photoURL, UD.bannerURL,
+    UD.profileStatus, UD.profileVerified, UD.isBanned, UD.rankTier, UD.rankPoints,
+    UD.stats && UD.stats.matches, UD.stats && UD.stats.wins, UD.stats && UD.stats.kills,
+    UD.loginStreak, UD.lastCheckIn, _premTier, UD.isCreator, UD.isLive
+  ].join('|');
+  var _sigChanged = (window._lastAppliedUserSig !== _uSig);
+  window._lastAppliedUserSig = _uSig;
+  if (_sigChanged) {
+    if (window.renderHome) renderHome();
+    if (window.renderProfile) renderProfile();
+    if (window.renderWallet) renderWallet();
+  }
   if (window.checkStreakBonus) checkStreakBonus();
   updateBell();
-  if (window.mesInit) window.mesInit();
+  if (window.mesInit && !window._mesInitCalled) { window._mesInitCalled = true; window.mesInit(); }
 }
 /* ✅ BUG FIX (2026-08-24): "Green Diamond shows correct value in wallet
    but 0 in header chip". _applyUser is the ONE function that correctly
@@ -673,15 +684,17 @@ function _bootAppSettings() {
   if (window.loadAppConfig) loadAppConfig();
   _poll('appcfg', function() { if (window.loadAppConfig) loadAppConfig(); }, 60000); /* ✅ SPEED FIX (2026-08-24): was 5 minutes — tightened safety-net; live_config realtime channel above is now primary */
   if (window._supa) {
-    function _loadLiveConfig() {
+    function _loadLiveConfig(fromRt) {
       /* ✅ FIX (2026-09-30): .single() → .maybeSingle() — live_config row na
          hone par (ya RLS ke kisi bhi edge case mein) .single() PostgREST se
          HTTP 406 deta hai aur browser use console ERROR ki tarah log karta
          hai. .maybeSingle() 0 rows par saaf {data:null,error:null} deta hai.
          Row maujood hone par behaviour bilkul same rehta hai. */
-      window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
-        .then(function(r) {
-          if (!r.data||!r.data.value) return;
+      var _p = (typeof window._fetchLiveConfigOnce === 'function')
+        ? window._fetchLiveConfigOnce(!!fromRt)
+        : window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle();
+      _p.then(function(r) {
+          if (!r || !r.data||!r.data.value) return;
           var cfg = r.data.value;
           /* ✅ R26 FIX (2026-09-21): ye handler sirf ticker/banner/PAY
              set karta tha — poora CFG (paytmEnabled, sdPackages, premium,
@@ -697,7 +710,7 @@ function _bootAppSettings() {
           if (cfg.payment) PAY = cfg.payment;
         }).catch(function(){});
     }
-    _loadLiveConfig();
+    _loadLiveConfig(false);
     /* ✅ SPEED FIX (2026-08-24): app_settings had a 5-MINUTE poll and no
        realtime channel — the slowest data path in the whole app. If
        admin updates the ticker/banner, users could wait up to 5 minutes
@@ -707,9 +720,55 @@ function _bootAppSettings() {
        ticker update after the very first one ever set, forever, since
        textContent is never empty once set once. */
     var _liveConfigCh = window._supa.channel('app-settings-live')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'app_settings', filter: 'key=eq.live_config' }, _loadLiveConfig)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'app_settings', filter: 'key=eq.live_config' }, function() { _loadLiveConfig(true); })
       .subscribe();
     _realtimeChannels.push(_liveConfigCh);
+
+    /* ✅ UNIVERSAL <0.3s LIVE PULSE (live_join_events):
+       Since Supabase Realtime WALRUS does not evaluate Firebase JWTs for RLS-protected
+       tables (users, notifications, coin_requests, wallet_transactions, support_tickets),
+       live_join_events (public-read, zero-PII) emits a lightweight pulse row with
+       match_id='pulse:<table>' and event='<uid4_uid4>' whenever those tables change. */
+    try {
+      var _uPulseCh = window._supa.channel('universal-live-pulse-' + (U && U.uid ? U.uid.slice(0, 6) : 'anon'))
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'live_join_events' }, function(payload) {
+          try {
+            var row = (payload && payload.new) || {};
+            var mid = String(row.match_id || '');
+            if (!mid) return;
+            if (mid.indexOf('pulse:') !== 0) {
+              /* Match slot change — update MT[mid].joinedSlots in <0.3s */
+              if (window.MT && MT[mid] && row.filled_slots != null) {
+                MT[mid].joinedSlots = Number(row.filled_slots);
+                MT[mid].filled_slots = Number(row.filled_slots);
+                _debouncedRender();
+              }
+              _loadJoinRequests();
+              return;
+            }
+            var uid = (window.U && window.U.uid) || '';
+            var myTag = uid.length >= 8 ? (uid.slice(0, 4) + '_' + uid.slice(-4)) : '';
+            var evTag = String(row.event || '*');
+            if (evTag !== '*' && myTag && evTag !== myTag) return;
+            var tbl = mid.slice(6);
+            if (tbl === 'users' || tbl === 'profile_requests' || tbl === 'kyc_requests') {
+              _loadUser();
+            } else if (tbl === 'notifications') {
+              _loadNotifications();
+            } else if (tbl === 'coin_requests' || tbl === 'sd_requests' || tbl === 'wallet_transactions') {
+              _loadWallet();
+              _loadUser();
+            } else if (tbl === 'support_tickets' || tbl === 'support_messages') {
+              var mTit = document.getElementById('modalTitle');
+              if (mTit && mTit.textContent && mTit.textContent.indexOf('My Tickets') !== -1 && window.showMyTickets) {
+                window.showMyTickets();
+              }
+            }
+          } catch(_pe) {}
+        })
+        .subscribe();
+      _realtimeChannels.push(_uPulseCh);
+    } catch(_ce) {}
 
     /* ✅ BUG FIX (2026-09-17): "Preview/Maintenance mode admin se on karne
        par user panel me refresh karna padta hai" — root cause was NOT the

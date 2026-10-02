@@ -23,8 +23,33 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { generateKeyPairSync, createSign } from 'node:crypto';
-import { stripTypeScriptTypes } from 'node:module';
+import * as nodeModule from 'node:module';
 import { fileURLToPath } from 'node:url';
+
+const stripTypeScriptTypes = nodeModule.stripTypeScriptTypes || ((code) =>
+  code
+    .replace(/^type\s+\w+\s*=[\s\S]*?;\s*$/gm, '')
+    .replace(/:\s*string\[\]/g, '')
+    .replace(/new Set<string>\(\)/g, 'new Set()')
+    .replace(/\)\s*:\s*Promise<[\s\S]*?>+\s*\{/g, ') {')
+    .replace(/\)\s*:\s*Record<[^>]+>\s*\|\s*null\s*\{/g, ') {')
+    .replace(/\)\s*:\s*Uint8Array\s*\{/g, ') {')
+    .replace(/\)\s*:\s*string\s*\{/g, ') {')
+    .replace(/req\s*:\s*Request\s*,?\s*\n?\s*body\s*:\s*\{[^\}]+\}\s*\|\s*null\s*,?/g, 'req, body')
+    .replace(/req\s*:\s*Request/g, 'req')
+    .replace(/h\s*:\s*string\s*\|\s*null/g, 'h')
+    .replace(/jwt\s*:\s*string/g, 'jwt')
+    .replace(/token\s*:\s*string/g, 'token')
+    .replace(/\bs\s*:\s*string\b/g, 's')
+    .replace(/obj\s*:\s*unknown/g, 'obj')
+    .replace(/forceRefresh\s*=\s*false/g, 'forceRefresh = false')
+    .replace(/as\s+\n?\s*\|?\s*\{[\s\S]*?\}\s*\|\s*null/g, '')
+    .replace(/as\s+JsonWebKey/g, '')
+    .replace(/\(\s*t\s*\)\s*:\s*t\s+is\s+string/g, '(t)')
+    .replace(/:\s*Record<string,\s*JsonWebKey>\s*\|\s*null/g, '')
+    .replace(/:\s*Record<string,\s*JsonWebKey>/g, '')
+    .replace(/Deno\.env\.get\(([^)]+)\)!/g, 'Deno.env.get($1)')
+);
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FN_PATH = path.join(ROOT, 'supabase/functions/imgbb-upload/index.ts');

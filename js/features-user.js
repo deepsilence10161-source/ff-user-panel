@@ -809,25 +809,74 @@ window.applyDynamicWallpaper = function() {
   /* ─── NEW FEATURE 26: IN-APP SUPPORT TICKET TRACKER ─── */
   window.showMyTickets = function () {
     var uid = _safeUid(); if (!uid) return;
+    function _renderTicketList(tickets) {
+      tickets.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+      var h = '<div style="display:flex;flex-direction:column;gap:10px">';
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">' +
+           '<span style="font-size:12px;color:var(--txt2)">Tumhare submitted tickets &amp; admin replies</span>' +
+           '<button onclick="if(window.showSupportForm)showSupportForm()" style="padding:6px 12px;border-radius:8px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.3);color:var(--green);font-size:11px;font-weight:700;cursor:pointer">+ New Ticket</button>' +
+           '</div>';
+      if (!tickets.length) {
+        h += '<div style="text-align:center;color:var(--txt2);padding:28px 16px;background:var(--card2);border-radius:12px;border:1px solid var(--border)">' +
+             '<div style="font-size:28px;margin-bottom:6px">🎫</div>' +
+             '<div style="font-size:13px;font-weight:700;color:var(--txt)">Koi ticket submit nahi hua</div>' +
+             '<div style="font-size:11px;margin-top:4px">Koi dikkat ho to "+ New Ticket" dabayein</div>' +
+             '</div>';
+      }
+      var _esc = window.escHtml || function (s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+      tickets.forEach(function (t) {
+        var st = String(t.status || 'open').toLowerCase();
+        var hasReply = !!(t.adminReply || t.admin_reply);
+        var isResolved = (st === 'resolved' || st === 'closed' || st === 'replied' || hasReply);
+        var stColor = isResolved ? 'var(--green)' : '#ffaa00';
+        var stLabel = st === 'resolved' ? '✅ Resolved' : (hasReply ? '💬 Replied' : '⏳ Open');
+        var subj = _esc(t.subject || t.type || 'Support Issue');
+        var msg = _esc(t.message || '');
+        var reply = _esc(t.adminReply || t.admin_reply || '');
+        var dt = t.createdAt ? new Date(t.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+        h += '<div style="padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border)">';
+        h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">';
+        h += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:var(--txt);text-transform:capitalize">' + subj + '</div>';
+        h += '<div style="font-size:12px;color:var(--txt2);margin-top:4px;word-break:break-word">' + msg + '</div>';
+        if (dt) h += '<div style="font-size:10px;color:var(--txt2);margin-top:5px;opacity:.75">' + dt + '</div>';
+        h += '</div>';
+        h += '<span style="font-size:11px;font-weight:700;color:' + stColor + ';white-space:nowrap;background:rgba(255,255,255,.04);padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.08)">' + stLabel + '</span>';
+        h += '</div>';
+        if (reply) {
+          h += '<div style="margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(0,255,156,.07);border-left:3px solid var(--green)">' +
+               '<div style="font-size:10px;font-weight:800;color:var(--green);margin-bottom:3px">🛡️ Admin Reply</div>' +
+               '<div style="font-size:12px;color:var(--txt);line-height:1.45;word-break:break-word">' + reply + '</div>' +
+               '</div>';
+        }
+        h += '</div>';
+      });
+      h += '</div>';
+      var _open = window.openModal || window.showModal;
+      if (_open) _open('🎫 My Tickets', h);
+    }
+    if (window._supa) {
+      window._supa.from('support_tickets').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(50)
+        .then(function (r) {
+          var list = ((r && r.data) || []).map(function (x) {
+            return {
+              id: x.id,
+              subject: x.subject || 'general',
+              type: x.subject || 'general',
+              message: x.message || '',
+              status: x.status || 'open',
+              adminReply: x.admin_reply || '',
+              createdAt: x.created_at ? new Date(x.created_at).getTime() : 0,
+              repliedAt: x.replied_at ? new Date(x.replied_at).getTime() : 0
+            };
+          });
+          _renderTicketList(list);
+        }, function () { _renderTicketList([]); });
+      return;
+    }
     db.ref('supportRequests').orderByChild('userId').equalTo(uid).once('value', function (s) {
       var tickets = [];
       if (s.exists()) s.forEach(function (c) { tickets.push({ id: c.key, ...c.val() }); });
-      tickets.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
-      var h = '<div style="display:flex;flex-direction:column;gap:8px">';
-      if (!tickets.length) h += '<p style="text-align:center;color:var(--txt2);padding:30px">Koi ticket submit nahi hua</p>';
-      tickets.forEach(function (t) {
-        var stColor = t.status === 'resolved' ? 'var(--green)' : t.status === 'open' ? '#ffaa00' : 'var(--txt2)';
-        var stLabel = t.status === 'resolved' ? '✅ Resolved' : '⏳ Open';
-        h += '<div style="padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border)">';
-        h += '<div style="display:flex;justify-content:space-between;align-items:start">';
-        h += '<div><div style="font-size:13px;font-weight:700">' + (t.type || 'Issue') + '</div>';
-        h += '<div style="font-size:12px;color:var(--txt2);margin-top:4px">' + (t.message || '').substring(0, 60) + '...</div>';
-        h += '<div style="font-size:10px;color:var(--txt2);margin-top:4px">' + new Date(t.createdAt || 0).toLocaleDateString() + '</div></div>';
-        h += '<span style="font-size:11px;font-weight:700;color:' + stColor + '">' + stLabel + '</span>';
-        h += '</div></div>';
-      });
-      h += '</div>';
-      if (window.showModal) showModal('🎫 My Tickets', h);
+      _renderTicketList(tickets);
     });
   };
 

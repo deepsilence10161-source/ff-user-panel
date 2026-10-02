@@ -129,6 +129,38 @@ Deno.serve(async (req: Request) => {
 
     if (!data?.success) {
       console.error("imgbb-upload: ImgBB rejected:", JSON.stringify(data));
+      /* Automatic server-side fallback to Supabase Storage public bucket 'uploads'
+         so tiny screenshots, rate-limits, or upstream ImgBB outages never block
+         user deposits, season-pass proofs, or profile/banner uploads. */
+      try {
+        const supaUrl = Deno.env.get("SUPABASE_URL") || "";
+        const srvKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+        if (supaUrl && srvKey && !supaUrl.includes("stub.supabase.co")) {
+          const admin = createClient(supaUrl, srvKey, {
+            auth: { persistSession: false, autoRefreshToken: false },
+          });
+          if (admin && admin.storage && typeof admin.storage.from === "function") {
+            const bytes = b64urlToBytes(b64.replace(/\s+/g, ""));
+            const safeName = (name || "img").replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 48);
+            const path = `${identity.uid}/${Date.now()}_${safeName}.png`;
+            const up = await admin.storage.from("uploads").upload(path, bytes, {
+              contentType: "image/png",
+              upsert: true,
+            });
+            if (!up.error) {
+              const pub = `${supaUrl.replace(/\/$/, "")}/storage/v1/object/public/uploads/${path}`;
+              console.log(`imgbb-upload: fallback storage ok uid=${identity.uid} url=${pub}`);
+              return json({
+                success: true,
+                status: 200,
+                data: { url: pub, display_url: pub, thumb: { url: pub }, provider: "supabase_storage" },
+              });
+            }
+          }
+        }
+      } catch (fbErr) {
+        console.error("imgbb-upload storage fallback error:", fbErr);
+      }
       return json(
         { success: false, error: data?.error?.message || "ImgBB upload fail ho gaya" },
         502,

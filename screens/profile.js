@@ -1049,6 +1049,7 @@ function showSupportForm() {
   var h = '<div class="f-group"><label>Issue Type</label><select class="f-input" id="supType"><option value="payment">Payment Issue</option><option value="match">Match Issue</option><option value="account">Account Issue</option><option value="bug">Bug Report</option><option value="other">Other</option></select></div>';
   h += '<div class="f-group"><label>Describe your issue</label><textarea class="f-input" id="supMsg" placeholder="Explain your problem in detail..."></textarea></div>';
   h += '<button class="f-btn fb-green" onclick="submitSupport()">Submit Ticket</button>';
+  h += '<button class="f-btn" onclick="if(window.showMyTickets)showMyTickets()" style="margin-top:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--txt)">🎫 View My Tickets &amp; Replies</button>';
   openModal('Support Ticket', h);
 }
 function submitSupport() {
@@ -1113,6 +1114,7 @@ window.showProfileSettings = function() {
     { icon:'fa-ticket-alt',    label:'Redeem Voucher',        color:'#ffcc00', fn:'if(window.showVoucherModal)showVoucherModal();else navTo("wallet");window.closeProfileSettings()' },
     { icon:'fa-scroll',        label:'Rules & Fair Play',     color:'#aaa',    fn:'if(window.showRules)showRules();window.closeProfileSettings()' },
     { icon:'fa-headset',       label:'Support',               color:'#ffaa00', fn:'if(window.showSupportForm)showSupportForm();window.closeProfileSettings()' },
+    { icon:'fa-clipboard-list',label:'My Tickets & Replies',  color:'#00ff9c', fn:'if(window.showMyTickets)showMyTickets();window.closeProfileSettings()' },
     { icon:'fa-scale-balanced', label:'Legal & Compliance',   color:'#00d4ff', fn:'if(window.mesShowLegalModal)mesShowLegalModal();window.closeProfileSettings()' },
     { icon:'fa-sign-out-alt',  label:'Logout',                color:'#ff4444', fn:'if(window.doLogout&&confirm("Logout karna chahte ho?"))doLogout();window.closeProfileSettings()' },
   ];

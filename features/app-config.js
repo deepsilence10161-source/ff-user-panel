@@ -257,13 +257,32 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
     ? 'Ye app ka version verify nahi ho paya. Kripya official APK se dobara install karein.'
     : 'Aapka app ka version bahut purana ho chuka hai (installed: ' + installedVersion + '). Aage badhne ke liye naya version install karna zaroori hai.';
 
+  var targetVer = window.CFG.appLatestVersion || window.CFG.appMinSupportedVersion || 'latest';
+  var hasCached = false;
+  try {
+    if (window.Android && typeof window.Android.hasCachedUpdateApk === 'function') {
+      hasCached = !!window.Android.hasCachedUpdateApk(targetVer);
+    }
+  } catch (_ce) {}
+
   var html = '<div style="max-width:360px;width:100%;text-align:center">'
     + '<div style="font-size:52px;margin-bottom:18px">' + (tampered ? '⚠️' : '📲') + '</div>'
     + '<div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">' + title + '</div>'
-    + '<div style="font-size:13px;color:#999;line-height:1.7;margin-bottom:24px">' + msg + '</div>';
+    + '<div style="font-size:13px;color:#999;line-height:1.7;margin-bottom:20px">' + msg + '</div>'
+    + '<div id="fuProgressWrap" style="display:' + (hasCached ? 'block' : 'none') + ';margin-bottom:16px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(0,255,156,.22);text-align:left">'
+    + '  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+    + '    <span id="fuProgressMsg" style="font-size:11px;font-weight:700;color:#00ff9c">' + (hasCached ? '✅ Update already downloaded — ready to install!' : 'Preparing download...') + '</span>'
+    + '    <span id="fuProgressPct" style="font-size:12px;font-weight:900;color:#fff">' + (hasCached ? '100%' : '0%') + '</span>'
+    + '  </div>'
+    + '  <div style="width:100%;height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden">'
+    + '    <div id="fuProgressBar" style="width:' + (hasCached ? '100%' : '0%') + ';height:100%;background:linear-gradient(90deg,#00ff9c,#00d4ff);border-radius:99px;transition:width .2s ease"></div>'
+    + '  </div>'
+    + '  <div id="fuProgressBytes" style="font-size:10px;color:#888;margin-top:5px;text-align:right">' + (hasCached ? 'Verified APK in cache' : '') + '</div>'
+    + '</div>';
 
   if (apkUrl) {
-    html += '<button id="fuUpdateBtn" style="width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#00ff9c,#00d4ff);color:#000;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:10px">⬇️ Update Now</button>';
+    html += '<button id="fuUpdateBtn" style="width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,#00ff9c,#00d4ff);color:#000;font-size:15px;font-weight:900;cursor:pointer;margin-bottom:10px">'
+      + (hasCached ? '⚡ Install Downloaded Update' : '⬇️ Update Now (In-App)') + '</button>';
   }
   html += '<button id="fuRetryBtn" style="width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#ccc;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px">🔄 Retry (check again)</button>';
   if (supportContact) {
@@ -274,14 +293,67 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
   ov.innerHTML = html;
   document.body.appendChild(ov);
 
+  function _fmtMb(b) {
+    if (!b || b <= 0) return '0.0 MB';
+    return (b / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  window._onApkDownloadProgress = function(pct, downloadedBytes, totalBytes, state, statusMsg) {
+    var wrap = document.getElementById('fuProgressWrap');
+    var barEl = document.getElementById('fuProgressBar');
+    var pctEl = document.getElementById('fuProgressPct');
+    var bytesEl = document.getElementById('fuProgressBytes');
+    var msgEl = document.getElementById('fuProgressMsg');
+    var btn = document.getElementById('fuUpdateBtn');
+    if (wrap) wrap.style.display = 'block';
+    if (msgEl && statusMsg) {
+      msgEl.textContent = statusMsg;
+      msgEl.style.color = (state === 'error') ? '#ff6b6b' : '#00ff9c';
+    }
+    if (pct >= 0) {
+      if (barEl) barEl.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      if (pctEl) pctEl.textContent = Math.min(100, Math.max(0, pct)) + '%';
+    }
+    if (bytesEl) {
+      if (totalBytes > 0) {
+        bytesEl.textContent = _fmtMb(downloadedBytes) + ' / ' + _fmtMb(totalBytes);
+      } else if (downloadedBytes > 0) {
+        bytesEl.textContent = _fmtMb(downloadedBytes) + ' downloaded';
+      }
+    }
+    if (btn) {
+      if (state === 'downloading' || state === 'connecting' || state === 'verifying') {
+        btn.disabled = true;
+        btn.style.opacity = '0.75';
+        btn.textContent = (pct >= 0 ? ('⏳ Downloading... ' + pct + '%') : '⏳ Downloading...');
+      } else if (state === 'ready' || state === 'installing' || state === 'permission') {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = '⚡ Install Downloaded Update';
+      } else if (state === 'error') {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = (downloadedBytes > 0 ? '🔄 Resume Download' : '🔄 Retry Download');
+      }
+    }
+  };
+
   var updateBtn = document.getElementById('fuUpdateBtn');
   if (updateBtn) {
     updateBtn.addEventListener('click', function() {
-      // Direct top-level navigation (not window.open) — MainActivity's
-      // shouldOverrideUrlLoading already hands off any non-app http(s)
-      // URL to the system browser, which knows how to actually download
-      // and offer to install an .apk file.
-      window.location.href = apkUrl;
+      var curApkUrl = window.CFG.appApkUrl || apkUrl;
+      var curVer = window.CFG.appLatestVersion || window.CFG.appMinSupportedVersion || targetVer;
+      /* ✅ IN-APP DIRECT DOWNLOAD & INSTALL (Step 2):
+         Inside the Android APK, download directly in-app with progress bar,
+         HTTP Range resume, APK archive verification, and native Package Installer launch —
+         NEVER open an external browser! */
+      if (window.Android && typeof window.Android.downloadAndInstallApk === 'function') {
+        window._onApkDownloadProgress(hasCached ? 100 : 0, 0, 0, 'connecting',
+          hasCached ? 'Opening Android Installer...' : 'Starting in-app download...');
+        window.Android.downloadAndInstallApk(curApkUrl, String(curVer || 'latest'));
+        return;
+      }
+      window.location.href = curApkUrl;
     });
   }
   var retryBtn = document.getElementById('fuRetryBtn');
@@ -342,12 +414,25 @@ window.loadAppConfig = function() {
     }
   } catch(e) { /* corrupt cache — ignore */ }
 
+  /* Shared single-flight + 5s TTL fetcher for app_settings?key=eq.live_config
+     Eliminates 3-6 duplicate GETs during boot while keeping realtime updates instant (force=true). */
+  window._fetchLiveConfigOnce = function(force) {
+    if (!window._supa) return Promise.resolve({ data: null, error: null });
+    var now = Date.now();
+    if (!force && window._liveCfgPromise && (now - (window._liveCfgPromiseTs || 0) < 5000)) {
+      return window._liveCfgPromise;
+    }
+    window._liveCfgPromiseTs = now;
+    window._liveCfgPromise = window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle();
+    return window._liveCfgPromise;
+  };
+
   /* Always try fresh load regardless of cache */
   if (window._supa) {
     /* ✅ FIX (2026-09-30): .single() → .maybeSingle() (406 console-noise class) */
-    window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
+    window._fetchLiveConfigOnce(false)
       .then(function(r) {
-        if (r.data && r.data.value) {
+        if (r && r.data && r.data.value) {
           _applyCfg(r.data.value);
           window._cfgLoaded = true;
           try { localStorage.setItem('_appConfigCache', JSON.stringify({ config: r.data.value, timestamp: Date.now() })); } catch(e) {}

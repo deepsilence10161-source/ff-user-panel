@@ -27,13 +27,21 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.MessageDigest;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.os.Build;
+import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 // ── Native Google Sign-In ─────────────────────────────────────────
@@ -84,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int FILE_CHOOSER_REQUEST  = 101;
     private static final int PERMISSION_REQUEST    = 100;
     private static final int GOOGLE_SIGN_IN_REQUEST = 102;   // ← naya
+    private static final int INSTALL_PERMISSION_REQUEST = 103;
+
+    private final AtomicBoolean isApkDownloading = new AtomicBoolean(false);
+    private volatile File pendingInstallApkFile = null;
 
     // =========================================================
     // URLs
@@ -135,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
         setupBannerAd();
         loadInterstitialAd();
         loadRewardedAd();
+        cleanupOldUpdateApks();
 
         handleIntent(getIntent());
 
@@ -424,6 +437,182 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void onUserLoggedOut() { userLoggedIn = false; pageLoadCount = 0; }
+
+        // ── In-App Direct APK Update (Download + Smart Resume + Cache + Native Install) ──
+        @JavascriptInterface
+        public boolean hasCachedUpdateApk(String targetVersion) {
+            try {
+                File dir = getUpdatesDir();
+                String safeVer = sanitizeVersionTag(targetVersion);
+                File apkFile = new File(dir, "MiniEsports-v" + safeVer + ".apk");
+                return isValidApkFile(apkFile);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public void downloadAndInstallApk(String apkUrl, String targetVersion) {
+            if (apkUrl == null || apkUrl.trim().isEmpty()) {
+                emitApkProgress(0, 0, 0, "error", "APK download link configured nahi hai");
+                return;
+            }
+            final String cleanUrl = apkUrl.trim();
+            final String safeVer = sanitizeVersionTag(targetVersion);
+            final File dir = getUpdatesDir();
+            final File finalApk = new File(dir, "MiniEsports-v" + safeVer + ".apk");
+            final File partApk  = new File(dir, "MiniEsports-v" + safeVer + ".apk.part");
+
+            // 1. Smart Cache Check: agar valid APK pehle se downloaded hai, seedha install prompt kholo!
+            if (isValidApkFile(finalApk)) {
+                long len = finalApk.length();
+                emitApkProgress(100, len, len, "ready", "Update pehle se downloaded hai — installer khul raha hai...");
+                runOnUiThread(() -> promptInstallApk(finalApk));
+                return;
+            }
+
+            if (!isApkDownloading.compareAndSet(false, true)) {
+                emitApkProgress(-1, 0, 0, "downloading", "Download pehle se chal raha hai...");
+                return;
+            }
+
+            new Thread(() -> {
+                HttpURLConnection conn = null;
+                InputStream in = null;
+                FileOutputStream out = null;
+                try {
+                    if (!dir.exists()) dir.mkdirs();
+
+                    // Purane versions ke incomplete .part ya purane .apk files saaf karo
+                    File[] existingFiles = dir.listFiles();
+                    if (existingFiles != null) {
+                        for (File f : existingFiles) {
+                            String nm = f.getName();
+                            if (!nm.equals(finalApk.getName()) && !nm.equals(partApk.getName())) {
+                                try { f.delete(); } catch (Exception ignored) {}
+                            }
+                        }
+                    }
+
+                    long downloadedBytes = partApk.exists() ? partApk.length() : 0L;
+                    emitApkProgress(0, downloadedBytes, 0, "connecting",
+                        downloadedBytes > 0 ? "Download resume ho raha hai..." : "Server se connect ho raha hai...");
+
+                    String currentUrl = cleanUrl;
+                    int redirects = 0;
+                    int responseCode = -1;
+                    while (redirects < 8) {
+                        URL u = new URL(currentUrl);
+                        conn = (HttpURLConnection) u.openConnection();
+                        conn.setInstanceFollowRedirects(false);
+                        conn.setConnectTimeout(20000);
+                        conn.setReadTimeout(30000);
+                        conn.setRequestProperty("User-Agent", "MiniEsports-Android-Updater/1.0");
+                        conn.setRequestProperty("Accept", "application/vnd.android.package-archive,application/octet-stream,*/*");
+                        if (downloadedBytes > 0) {
+                            conn.setRequestProperty("Range", "bytes=" + downloadedBytes + "-");
+                        }
+                        conn.connect();
+                        responseCode = conn.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_MOVED_PERM ||
+                            responseCode == HttpURLConnection.HTTP_MOVED_TEMP ||
+                            responseCode == HttpURLConnection.HTTP_SEE_OTHER  ||
+                            responseCode == 307 || responseCode == 308) {
+                            String loc = conn.getHeaderField("Location");
+                            conn.disconnect();
+                            if (loc == null || loc.isEmpty()) break;
+                            currentUrl = new URL(u, loc).toString();
+                            redirects++;
+                            continue;
+                        }
+                        break;
+                    }
+
+                    boolean appendMode = false;
+                    long totalBytes = -1L;
+
+                    if (responseCode == HttpURLConnection.HTTP_PARTIAL) {
+                        // 206 Partial Content — server supports Range resume
+                        appendMode = true;
+                        long contentLen = conn.getContentLengthLong();
+                        if (contentLen > 0) totalBytes = downloadedBytes + contentLen;
+                    } else if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // 200 OK — start fresh from 0
+                        appendMode = false;
+                        downloadedBytes = 0L;
+                        totalBytes = conn.getContentLengthLong();
+                    } else if (responseCode == 416 && partApk.exists() && partApk.length() > 1024 * 1024) {
+                        // 416 Range Not Satisfiable — file may already be 100% downloaded in .part
+                        if (isValidApkFile(partApk)) {
+                            if (finalApk.exists()) finalApk.delete();
+                            partApk.renameTo(finalApk);
+                            long sz = finalApk.length();
+                            emitApkProgress(100, sz, sz, "ready", "Download complete! Installer khul raha hai...");
+                            runOnUiThread(() -> promptInstallApk(finalApk));
+                            return;
+                        } else {
+                            partApk.delete();
+                            throw new Exception("Corrupt partial file reset — dobara Update Now dabayein");
+                        }
+                    } else {
+                        throw new Exception("Server HTTP " + responseCode);
+                    }
+
+                    in = conn.getInputStream();
+                    out = new FileOutputStream(partApk, appendMode);
+
+                    byte[] buf = new byte[32768];
+                    int n;
+                    long lastEmitMs = 0L;
+                    while ((n = in.read(buf)) != -1) {
+                        out.write(buf, 0, n);
+                        downloadedBytes += n;
+                        long now = System.currentTimeMillis();
+                        if (now - lastEmitMs >= 120) {
+                            lastEmitMs = now;
+                            int pct = (totalBytes > 0)
+                                ? (int) Math.min(99L, (downloadedBytes * 100L) / totalBytes)
+                                : -1;
+                            emitApkProgress(pct, downloadedBytes, totalBytes, "downloading", "Downloading update...");
+                        }
+                    }
+                    out.flush();
+                    out.close();
+                    out = null;
+                    in.close();
+                    in = null;
+
+                    emitApkProgress(99, downloadedBytes, totalBytes, "verifying", "APK verify ho raha hai...");
+
+                    // Verify that downloaded file is a genuine, uncorrupted Android APK
+                    if (!isValidApkFile(partApk)) {
+                        partApk.delete();
+                        throw new Exception("Downloaded file valid APK nahi hai (corrupt ya incomplete download)");
+                    }
+
+                    if (finalApk.exists()) finalApk.delete();
+                    if (!partApk.renameTo(finalApk)) {
+                        throw new Exception("APK file save nahi ho paya");
+                    }
+
+                    emitApkProgress(100, downloadedBytes, downloadedBytes, "ready", "Download 100% complete! Installer khul raha hai...");
+                    runOnUiThread(() -> promptInstallApk(finalApk));
+
+                } catch (Exception e) {
+                    long partLen = partApk.exists() ? partApk.length() : 0L;
+                    String errMsg = e.getMessage() != null ? e.getMessage() : "Network error";
+                    emitApkProgress(-1, partLen, 0, "error",
+                        partLen > 0
+                            ? ("Download ruka (" + formatMb(partLen) + " saved) — Retry karne par yahin se resume hoga")
+                            : ("Download fail: " + errMsg));
+                } finally {
+                    isApkDownloading.set(false);
+                    try { if (out != null) out.close(); } catch (Exception ignored) {}
+                    try { if (in != null) in.close(); } catch (Exception ignored) {}
+                    try { if (conn != null) conn.disconnect(); } catch (Exception ignored) {}
+                }
+            }, "MiniEsports-ApkUpdater").start();
+        }
     }
     // =========================================================
 
@@ -439,6 +628,13 @@ public class MainActivity extends AppCompatActivity {
                 res == RESULT_OK && data != null ? new Uri[]{data.getData()} : null
             );
             filePathCallback = null;
+        }
+        else if (req == INSTALL_PERMISSION_REQUEST) {
+            if (pendingInstallApkFile != null && pendingInstallApkFile.exists()) {
+                File f = pendingInstallApkFile;
+                pendingInstallApkFile = null;
+                promptInstallApk(f);
+            }
         }
 
         // ── Native Google Sign-In result ──────────────────────
@@ -802,6 +998,123 @@ public class MainActivity extends AppCompatActivity {
         return ni != null && ni.isConnected();
     }
 
+    // =========================================================
+    // In-App APK Update Helpers (Cache, Verify, Cleanup, Install)
+    // =========================================================
+    private File getUpdatesDir() {
+        File ext = getExternalFilesDir(null);
+        File base = (ext != null) ? ext : getFilesDir();
+        File dir = new File(base, "updates");
+        if (!dir.exists()) dir.mkdirs();
+        return dir;
+    }
+
+    private String sanitizeVersionTag(String ver) {
+        if (ver == null || ver.trim().isEmpty()) return "latest";
+        String clean = ver.trim().replaceAll("[^A-Za-z0-9._-]", "_");
+        return clean.isEmpty() ? "latest" : clean;
+    }
+
+    private String formatMb(long bytes) {
+        return String.format(java.util.Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0));
+    }
+
+    private boolean isValidApkFile(File f) {
+        if (f == null || !f.exists() || f.length() < 512 * 1024) return false;
+        try {
+            PackageInfo pi = getPackageManager().getPackageArchiveInfo(f.getAbsolutePath(), 0);
+            return pi != null && pi.packageName != null && !pi.packageName.isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void cleanupOldUpdateApks() {
+        new Thread(() -> {
+            try {
+                File dir = getUpdatesDir();
+                File[] files = dir.listFiles();
+                if (files == null || files.length == 0) return;
+                PackageInfo installedPi = getPackageManager().getPackageInfo(getPackageName(), 0);
+                int installedCode = installedPi.versionCode;
+                String installedName = installedPi.versionName != null ? installedPi.versionName : "";
+                long now = System.currentTimeMillis();
+                for (File f : files) {
+                    String name = f.getName();
+                    // Delete stale .part files older than 24h
+                    if (name.endsWith(".part") && (now - f.lastModified() > 24L * 3600L * 1000L)) {
+                        try { f.delete(); } catch (Exception ignored) {}
+                        continue;
+                    }
+                    if (name.endsWith(".apk")) {
+                        try {
+                            PackageInfo archivePi = getPackageManager().getPackageArchiveInfo(f.getAbsolutePath(), 0);
+                            if (archivePi == null) {
+                                f.delete();
+                            } else if (archivePi.versionCode <= installedCode ||
+                                       installedName.equals(archivePi.versionName)) {
+                                // Already installed version (or older) — delete APK to free storage!
+                                f.delete();
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+            } catch (Exception ignored) {}
+        }, "MiniEsports-ApkCleanup").start();
+    }
+
+    private void emitApkProgress(int pct, long downloaded, long total, String state, String msg) {
+        final String safeState = (state != null ? state : "").replace("'", "\\'");
+        final String safeMsg   = (msg != null ? msg : "").replace("'", "\\'");
+        if (webView == null) return;
+        webView.post(() -> {
+            try {
+                webView.evaluateJavascript(
+                    "if(window._onApkDownloadProgress)window._onApkDownloadProgress(" +
+                    pct + "," + downloaded + "," + total + ",'" + safeState + "','" + safeMsg + "');",
+                    null
+                );
+            } catch (Exception ignored) {}
+        });
+    }
+
+    private void promptInstallApk(File apkFile) {
+        if (apkFile == null || !apkFile.exists()) {
+            emitApkProgress(-1, 0, 0, "error", "APK file nahi mila");
+            return;
+        }
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!getPackageManager().canRequestPackageInstalls()) {
+                    pendingInstallApkFile = apkFile;
+                    emitApkProgress(100, apkFile.length(), apkFile.length(), "permission",
+                        "Install permission allow karein — wapas aate hi install shuru hoga");
+                    Toast.makeText(this, "Please allow 'Install Unknown Apps' for Mini eSports", Toast.LENGTH_LONG).show();
+                    Intent permIntent = new Intent(
+                        Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        Uri.parse("package:" + getPackageName())
+                    );
+                    startActivityForResult(permIntent, INSTALL_PERMISSION_REQUEST);
+                    return;
+                }
+            }
+            Uri apkUri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                apkFile
+            );
+            Intent installIntent = new Intent(Intent.ACTION_VIEW);
+            installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(installIntent);
+            emitApkProgress(100, apkFile.length(), apkFile.length(), "installing",
+                "Android Installer khul gaya hai — 'Update / Install' par tap karein");
+        } catch (Exception e) {
+            emitApkProgress(-1, apkFile.length(), apkFile.length(), "error",
+                "Installer open nahi ho paya: " + (e.getMessage() != null ? e.getMessage() : "Error"));
+        }
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
@@ -814,6 +1127,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (bannerAdView != null) bannerAdView.resume();
+        if (pendingInstallApkFile != null && pendingInstallApkFile.exists()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
+                File f = pendingInstallApkFile;
+                pendingInstallApkFile = null;
+                promptInstallApk(f);
+            }
+        }
     }
 
     @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }

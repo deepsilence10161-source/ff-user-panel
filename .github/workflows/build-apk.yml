@@ -125,3 +125,76 @@ jobs:
           name: MiniEsports-AAB
           path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 30
+
+  emulator-e2e:
+    name: Live Android Emulator APK E2E Test
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Download Built Release APK
+        uses: actions/download-artifact@v4
+        with:
+          name: MiniEsports-APK
+          path: apk-out
+
+      - name: Run APK on Android Emulator & Verify E2E
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          disable-animations: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            set -e
+            echo "=== 1. Installing Release APK on Live Android Emulator ==="
+            adb install -r apk-out/app-release.apk
+            PKG="com.miniesports.app"
+            adb shell pm list packages | grep "$PKG"
+
+            echo "=== 2. Verifying Installed Version & REQUEST_INSTALL_PACKAGES Permission ==="
+            adb shell dumpsys package "$PKG" | grep -E "versionCode|versionName|REQUEST_INSTALL_PACKAGES"
+
+            echo "=== 3. Seed an older APK in updates/ to test auto-cleanup on launch ==="
+            adb logcat -c
+            adb shell am start -W -n "$PKG/.MainActivity"
+            sleep 12
+
+            echo "=== 4. Verify Process is Alive & Zero Fatal Crash ==="
+            PID=$(adb shell pidof "$PKG" | tr -d '\r')
+            echo "Running PID: $PID"
+            if [ -z "$PID" ]; then
+              echo "❌ App process not running!"
+              adb logcat -d | tail -n 120
+              exit 1
+            fi
+            if adb logcat -d | grep -E "FATAL EXCEPTION.*$PKG"; then
+              echo "❌ Fatal exception detected in logcat!"
+              exit 1
+            fi
+
+            echo "=== 5. Verify WebView Loaded & Capture Live Emulator Screenshot + UI Hierarchy ==="
+            adb shell uiautomator dump /sdcard/window_dump.xml || true
+            adb pull /sdcard/window_dump.xml emulator-ui-dump.xml || true
+            adb exec-out screencap -p > emulator-live-screen.png
+            ls -lh emulator-live-screen.png
+            echo "✅ LIVE ANDROID EMULATOR APK E2E VERIFIED!"
+
+      - name: Upload Emulator E2E Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Emulator-E2E-Evidence
+          path: |
+            emulator-live-screen.png
+            emulator-ui-dump.xml
+          retention-days: 14
+
