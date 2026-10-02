@@ -161,14 +161,22 @@
   window.uploadToImgBB = function(input, name, callback) {
     if (typeof input === 'string') {
       _doUpload(_stripPrefix(input), name, callback, _mimeOf(input));
-    } else if (_isFileLike(input)) {
+    } else if (_isFileLike(input) || (input && input.files && input.files[0] && typeof input.tagName === 'string')) {
+      /* ✅ BUG Z10 FIX (2026-10-02, WALK11s live-proven): <input type="file">
+         element par bhi .size(number)/.type(string) hone se _isFileLike true
+         ho jaata tha => readAsDataURL(INPUT-ELEMENT) TypeError ('not of type
+         Blob') — season-pass screenshot-upload hamesha mar jaata tha (error
+         sync-throw thi, fallback-branch kabhi chalti hi nahi thi). Ab element
+         aaye to uska files[0] liya jaata hai; File/Blob pehle jaisa hi. */
+      var _blob = (typeof Blob !== 'undefined' && input instanceof Blob) ? input : (input.files && input.files[0]);
+      if (!_blob) { callback('Invalid input', null); return; }
       var reader = new FileReader();
       reader.onload  = function(e) {
         var d = String((e && e.target && e.target.result) || '');
         _doUpload(_stripPrefix(d), name, callback, _mimeOf(d));
       };
       reader.onerror = function()  { callback('File read error', null); };
-      reader.readAsDataURL(input);
+      reader.readAsDataURL(_blob);
     } else {
       callback('Invalid input', null);
     }
