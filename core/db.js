@@ -908,12 +908,25 @@
     config: {
       /* Load live config from Supabase */
       load: async function(force) {
+        if (typeof window._fetchLiveConfigOnce !== 'function') {
+          window._fetchLiveConfigOnce = function(f) {
+            if (!window._supa) return Promise.resolve({ data: null, error: null });
+            var now = Date.now();
+            if (!f && window._liveCfgPromise && (now - (window._liveCfgPromiseTs || 0) < 15000)) {
+              return window._liveCfgPromise;
+            }
+            window._liveCfgPromiseTs = now;
+            /* Convert PostgrestFilterBuilder (lazy thenable) into a real shared Promise */
+            window._liveCfgPromise = Promise.resolve(
+              window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
+            ).then(function(r) { return r; });
+            return window._liveCfgPromise;
+          };
+        }
         /* ✅ FIX (2026-09-30): .single() → .maybeSingle() — 0 rows par
            PostgREST 406 deta hai (console ERROR noise); maybeSingle same
            behaviour deta hai jab row maujood ho. */
-        var res = (typeof window._fetchLiveConfigOnce === 'function')
-          ? await window._fetchLiveConfigOnce(!!force)
-          : await window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle();
+        var res = await window._fetchLiveConfigOnce(!!force);
         var data = res && res.data;
         var error = res && res.error;
         if (error) { _err('config.load', error); return; }

@@ -421,8 +421,15 @@
         if (_origUpdateBell) { try { _origUpdateBell(); } catch(_e) {} }
       };
       /* Fast path: compute directly from in-memory NOTIFS when already loaded (eliminates 35+ duplicate GETs/session) */
-      if (!forceDb && window.NOTIFS && typeof window.NOTIFS === 'object' && Object.keys(window.NOTIFS).length > 0) {
-        var memUnread = Object.values(window.NOTIFS).filter(function(n) { return n && !n.read && !n.is_read; }).length;
+      var nList = Array.isArray(window.NOTIFS) ? window.NOTIFS : (window.NOTIFS && typeof window.NOTIFS === 'object' ? Object.values(window.NOTIFS) : []);
+      if (!forceDb && nList.length > 0) {
+        var rdMap = (window.UD && window.UD.readNotifications) || {};
+        var rKeys = window._READ_KEYS || {};
+        var memUnread = nList.filter(function(n) {
+          if (!n) return false;
+          var k = n._key || n.id;
+          return !n.read && !n.is_read && !n._localRead && !(k && (rKeys[k] || rdMap[k]));
+        }).length;
         _setBadge(memUnread);
         return;
       }

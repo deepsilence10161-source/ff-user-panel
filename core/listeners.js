@@ -759,7 +759,7 @@ function _bootAppSettings() {
               _loadWallet();
               _loadUser();
             } else if (tbl === 'support_tickets' || tbl === 'support_messages') {
-              var mTit = document.getElementById('modalTitle');
+              var mTit = document.getElementById('modalT') || document.getElementById('modalTitle');
               if (mTit && mTit.textContent && mTit.textContent.indexOf('My Tickets') !== -1 && window.showMyTickets) {
                 window.showMyTickets();
               }

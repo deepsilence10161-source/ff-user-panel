@@ -262,8 +262,10 @@
           console.warn('[v8] boot() called again — ignoring to prevent duplicate listeners');
           return;
         }
-        window._bootCalled = true;
-        origBoot.call(this);
+        /* Do NOT set window._bootCalled = true before origBoot runs!
+           core/listeners.js boot() checks `if (window._bootCalled) return;` at entry
+           and sets `window._bootCalled = true` itself once `U` is present. */
+        return origBoot.apply(this, arguments);
       };
     }
   );

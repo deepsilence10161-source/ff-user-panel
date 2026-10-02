@@ -37,11 +37,11 @@ function fixHeader() {
   hdrLeft.dataset.fixed = '1';
   hdrLeft.innerHTML =
     '<div style="display:flex;align-items:flex-start;gap:6px">' +
-      '<i class="fas fa-fire" style="color:#ff2e2e;font-size:20px;filter:drop-shadow(0 0 8px rgba(255,46,46,.8));margin-top:2px;animation:firePulse 1.5s ease-in-out infinite"></i>' +
-      '<div style="line-height:1.15">' +
-        '<div style="font-size:17px;font-weight:900;background:linear-gradient(135deg,#00ff6a,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mini</div>' +
-        '<div style="font-size:13px;font-weight:800;color:#aaa;margin-top:-2px">eSports</div>' +
-      '</div>' +
+      '<i class="fas fa-fire" aria-hidden="true" style="color:#ff2e2e;font-size:20px;filter:drop-shadow(0 0 8px rgba(255,46,46,.8));margin-top:2px;animation:firePulse 1.5s ease-in-out infinite"></i>' +
+      '<h1 class="hdr-name" style="margin:0;line-height:1.15;display:block">' +
+        '<span style="display:block;font-size:17px;font-weight:900;background:linear-gradient(135deg,#00ff6a,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mini</span>' +
+        '<span style="display:block;font-size:13px;font-weight:800;color:#aaa;margin-top:-2px">eSports</span>' +
+      '</h1>' +
     '</div>';
 
   /* Add firePulse animation */

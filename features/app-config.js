@@ -396,6 +396,23 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
   }
 }
 
+/* Shared single-flight + 15s TTL fetcher for app_settings?key=eq.live_config
+   Defined at top-level so core/db.js, core/listeners.js, and features/app-config.js
+   all share one request during boot while keeping realtime updates instant (force=true). */
+window._fetchLiveConfigOnce = function(force) {
+  if (!window._supa) return Promise.resolve({ data: null, error: null });
+  var now = Date.now();
+  if (!force && window._liveCfgPromise && (now - (window._liveCfgPromiseTs || 0) < 15000)) {
+    return window._liveCfgPromise;
+  }
+  window._liveCfgPromiseTs = now;
+  /* Convert PostgrestFilterBuilder (lazy thenable) into a real shared Promise */
+  window._liveCfgPromise = Promise.resolve(
+    window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
+  ).then(function(r) { return r; });
+  return window._liveCfgPromise;
+};
+
 /* Load config — Supabase primary, Firebase fallback, localStorage cache (Issue #18 Fix) */
 window.loadAppConfig = function() {
   /* Issue #18 Fix: Read from localStorage cache first for instant startup,
@@ -413,19 +430,6 @@ window.loadAppConfig = function() {
       }
     }
   } catch(e) { /* corrupt cache — ignore */ }
-
-  /* Shared single-flight + 5s TTL fetcher for app_settings?key=eq.live_config
-     Eliminates 3-6 duplicate GETs during boot while keeping realtime updates instant (force=true). */
-  window._fetchLiveConfigOnce = function(force) {
-    if (!window._supa) return Promise.resolve({ data: null, error: null });
-    var now = Date.now();
-    if (!force && window._liveCfgPromise && (now - (window._liveCfgPromiseTs || 0) < 5000)) {
-      return window._liveCfgPromise;
-    }
-    window._liveCfgPromiseTs = now;
-    window._liveCfgPromise = window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle();
-    return window._liveCfgPromise;
-  };
 
   /* Always try fresh load regardless of cache */
   if (window._supa) {
