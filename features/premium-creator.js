@@ -196,6 +196,11 @@ window.renderPremiumCard = function() {
   [['🚫 Ads', 'Result se pehle ad nahi'], ['🖼️ Photo/Banner', 'Profile photo + banner change'], ['+' + bonusMap[tier] + '🪙', 'Monthly bonus'], ['💎 Badge', nameMap[tier] + ' profile badge']].forEach(function(f) {
     h += '<div style="background:rgba(0,0,0,.2);border-radius:10px;padding:8px;font-size:11px"><div style="font-weight:800;color:' + col + '">' + f[0] + '</div><div style="color:var(--txt2);margin-top:2px">' + f[1] + '</div></div>';
   });
+  h += '</div>';
+  /* ✅ BUG Z2 FIX (2026-10-02): premium-active card me plans kholne ka koi
+     button hi nahi tha — active user Premium Club/Renew tak pahunch hi nahi
+     sakta tha (profile par showPremiumUpgrade sirf non-premium card me tha). */
+  h += '<button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade();" style="width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1px solid ' + col + '55;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,140,0,.06));color:' + col + ';font-size:13px;font-weight:900;cursor:pointer">👑 Plans / Renew Dekho</button>';
   h += '</div></div>';
   return h;
 };
