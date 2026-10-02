@@ -37,7 +37,7 @@ begin
     return jsonb_build_object('ok', false, 'error', 'not_a_member');
   end if;
   update users set clan_id = null
-   where id = p_member_uid and clan_id = p_clan_id;
+   where id = p_member_uid and clan_id = p_clan_id::text;
   update clans c
      set total_members = (select count(*) from clan_members m where m.clan_id = c.id)
        + case when c.leader_uid is not null
@@ -64,7 +64,7 @@ begin
   if not exists (select 1 from clans where id = p_clan_id and leader_uid = v_caller) then
     return jsonb_build_object('ok', false, 'error', 'not_leader');
   end if;
-  update users set clan_id = null where clan_id = p_clan_id;
+  update users set clan_id = null where clan_id = p_clan_id::text;
   delete from clan_members where clan_id = p_clan_id;
   delete from clan_war_challenges
    where from_clan = p_clan_id or to_clan = p_clan_id;

@@ -21,7 +21,7 @@ function _loadClanWarData(myClanId){
   var mb=document.getElementById('modalB');if(!mb)return;
   if(!_s()){mb.innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
   var week=_week();
-  _s().from('clan_wars').select('*').eq('week',week).or('clan_a_id.eq.'+myClanId+',clan_b_id.eq.'+myClanId).eq('status','active').single()
+  _s().from('clan_wars').select('*').eq('week',week).or('clan_a_id.eq.'+myClanId+',clan_b_id.eq.'+myClanId).eq('status','active').maybeSingle()
   .then(function(r){ _renderActiveWar(mb,myClanId,r.data,week); })
   .catch(function(){ _renderWarLobby(mb,myClanId,week); });
 }
@@ -100,10 +100,19 @@ window._sendWarChallenge=function(fromId,toId,toName,fromName,btn){
   if(!_s())return;
   if(btn){btn.disabled=true;btn.textContent='Sending...';}
   var week=_week();
+  /* ✅ BUG Z7 FIX (2026-10-02, WALK10s live-proven): insert-ka error-response
+     bhi is .then(ok) shakha me aata tha — RLS/FK fail par bhi 'Challenge bhej
+     diya' success-toast jhoota dikhta tha aur DB me row kabhi nahi banti thi.
+     Ab r.error pehle check — error par sahi err-toast + button restore. */
   _s().from('clan_war_challenges').insert({week:week,from_clan:fromId,from_name:fromName,to_clan:toId,to_name:toName,status:'pending',expires_at:new Date(Date.now()+7*24*60*60*1000).toISOString()}) /* Bug M-9 Fix: 7-day expiry */
-  .then(function(){
+  .then(function(r){
+    if(r&&r.error){
+      if(btn){btn.disabled=false;btn.textContent='⚔️ Challenge';}
+      if(window.toast)toast('Challenge bhej nahi saki: '+(r.error.message||r.error.code||'error'),'err');
+      return;
+    }
     // Notify clan leader
-    _s().from('clans').select('leader_uid').eq('id',toId).single().then(function(r){
+    _s().from('clans').select('leader_uid').eq('id',toId).maybeSingle().then(function(r){
       if(r.data&&r.data.leader_uid){
         _s().from('notifications').insert({user_id:r.data.leader_uid,type:'clan_war_challenge',title:'⚔️ Clan War Challenge!',body:fromName+' ne tumhare clan ko war challenge bheja!',ref_id:null,is_read:false}).then(null, function(){});
       }
@@ -117,7 +126,7 @@ window.updateClanWarScore=function(wins,kills){
   if(!_s()||!_uid()||!window.UD)return;
   var clanId=window.UD.clan_id||window.UD.clanId;if(!clanId)return;
   var week=_week();var score=(wins?15:0)+(kills||0)*2+1;
-  _s().from('clan_wars').select('id,clan_a_id,clan_a_score,clan_b_score').eq('week',week).or('clan_a_id.eq.'+clanId+',clan_b_id.eq.'+clanId).eq('status','active').single()
+  _s().from('clan_wars').select('id,clan_a_id,clan_a_score,clan_b_score').eq('week',week).or('clan_a_id.eq.'+clanId+',clan_b_id.eq.'+clanId).eq('status','active').maybeSingle()
   .then(function(r){
     if(!r.data)return;
     var isClan1=r.data.clan_a_id===clanId;

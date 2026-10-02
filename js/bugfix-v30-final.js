@@ -270,8 +270,19 @@
       var uid  = _uid();
       var myOldClan = window.UD && (window.UD.clanId || window.UD.clan_id);
       if (myOldClan) {
-        var _stillReal2 = await _s().from('clans').select('id').eq('id', myOldClan).maybeSingle();
-        if (_stillReal2 && _stillReal2.data && _stillReal2.data.id) {
+        /* ✅ BUG Z8 FIX (2026-10-02, WALK10s run5 live-catch): sirf clan-EXIST
+           kaafi nahi tha — kick/hue leader-removal ke baad UD.clanId STALE
+           reh jaata tha (clan zaroor abhi bhi exist karta hai) aur genuine
+           re-join 'Pehle apna current clan chhodo!' se hamesha reject ho
+           jaata tha jab tak user page-reload na kare. Ab DB-TRUTH:
+           profiles.clan_id bhi verify — stale-UD par DB hi maano. */
+        var _both2 = await Promise.all([
+          _s().from('clans').select('id').eq('id', myOldClan).maybeSingle(),
+          _s().from('user_public_profiles').select('clan_id').eq('id', uid).maybeSingle()
+        ]);
+        var _clanStillReal = _both2[0] && _both2[0].data && _both2[0].data.id;
+        var _dbClanId = _both2[1] && _both2[1].data && _both2[1].data.clan_id;
+        if (_clanStillReal && _dbClanId === myOldClan) {
           _t('Pehle apna current clan chhodo!', 'err'); return;
         }
         await _s().from('users').update({ clan_id: null }).eq('id', uid);

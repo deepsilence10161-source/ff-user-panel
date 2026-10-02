@@ -14,12 +14,57 @@ var MAX_MEMBERS=10;
 
 /* ── Firebase paths: clans/{clanId}, users/{uid}/clanId ── */
 
-/* Helper: get user's clan */
+/* Helper: get user's clan
+   ✅ BUG Z6 FIX-2 (2026-10-02): ye function pehle Firebase RTDB-bridge
+   (clans/{id}.once('value')) padhta tha — Supabase-only data me ye node
+   adhoora/absent hai => kabhi clan.members=undefined (0/10 members),
+   leader undefined (Kick/Disband buttons gayab) aur invite-code
+   UUID-prefix. Ab Supabase direct: profiles->clans(select * => join_code
+   sahit)->clan_members->profiles, Firebase-shape mapping ke saath —
+   bilkul waise hi jaise js/fixes-v29-all-bugs.js ka Bug#1 wrapper —
+   ab dono definitions same-sahist hain, load-order race se app unaffected. */
 window.getUserClan=function(cb){
-  if(!window.U||!window.db){cb(null);return;}
-  var clanId=(window.UD&&window.UD.clanId)||null;
-  if(!clanId){cb(null);return;}
-  window.db.ref('clans/'+clanId).once('value',function(s){cb(s.exists()?Object.assign({_id:s.key},s.val()):null);});
+  if(!window._supa||!window.U||!window.U.uid){ if(window.db){try{ var _cid=(window.UD&&window.UD.clanId)||null; if(!_cid){cb(null);return;} window.db.ref('clans/'+_cid).once('value',function(s){cb(s.exists()?Object.assign({_id:s.key},s.val()):null);}); return;}catch(e){} } cb(null); return; }
+  var uid=window.U.uid;
+  window._supa.from('user_public_profiles').select('clan_id').eq('id',uid).maybeSingle()
+    .then(function(r){
+      var clanId=r.data&&r.data.clan_id;
+      if(!clanId){cb(null);return;}
+      window._supa.from('clans').select('*').eq('id',clanId).maybeSingle()
+        .then(function(cr){
+          var clan=cr.data;
+          if(!clan){cb(null);return;}
+          window._supa.from('clan_members').select('user_id,role,joined_at').eq('clan_id',clanId)
+            .then(function(mr){
+              var members=mr.data||[];
+              var ids=members.map(function(m){return m.user_id;});
+              var finish=function(usersMap){
+                var membersObj={};
+                members.forEach(function(m){
+                  var u=usersMap[m.user_id]||{};
+                  membersObj[m.user_id]={uid:m.user_id,ign:u.ign||'Player',avatar:u.avatar_url||'',role:m.role||'member',rankPoints:u.rank_points||0,joinedAt:m.joined_at};
+                });
+                clan.members=membersObj;
+                clan.totalMembers=Object.keys(membersObj).length;
+                clan._id=clan.id;
+                clan.leader=clan.leader_uid;
+                clan.weeklyScore=clan.weekly_score||0;
+                clan.totalWins=clan.total_wins||0;
+                clan.totalKills=clan.total_kills||0;
+                clan.memberCount=clan.total_members||Object.keys(membersObj).length;
+                if(!clan.join_code) clan.join_code=(clan.id||'').replace(/-/g,'').substring(0,8).toUpperCase();
+                cb(clan);
+              };
+              if(!ids.length){finish({});return;}
+              window._supa.from('user_public_profiles').select('id,ign,avatar_url,rank_points').in('id',ids)
+                .then(function(ur){var um={};(ur.data||[]).forEach(function(u){um[u.id]=u;});finish(um);})
+                .catch(function(){finish({});});
+            })
+            .catch(function(){cb(null);});
+        })
+        .catch(function(){cb(null);});
+    })
+    .catch(function(){cb(null);});
 };
 
 /* ── Show Clan Home ── */
@@ -85,7 +130,7 @@ function _showMyClan(clan){
   /* Invite code */
   h+='<div style="background:rgba(0,255,100,.05);border:1px solid rgba(0,255,100,.15);border-radius:12px;padding:12px;margin-bottom:14px;text-align:center">';
   h+='<div style="font-size:11px;color:#888;margin-bottom:6px">Clan Invite Code</div>';
-  h+='<div style="font-size:18px;font-weight:900;color:#00ff64;letter-spacing:2px">'+(clan._id||'').substring(0,8).toUpperCase()+'</div>';
+  h+='<div style="font-size:18px;font-weight:900;color:#00ff64;letter-spacing:2px">'+((clan.join_code||clan._id||'').substring(0,8).toUpperCase())+'</div>'; /* BUG Z6 FIX-2: join_code pehle — uuid-prefix nahi */
   h+='<div style="font-size:11px;color:#666;margin-top:4px">Dost ko yeh code de — wo join kar lega</div>';
   h+='</div>';
   /* Leave / Delete */
@@ -190,34 +235,68 @@ window.showJoinClanByCode=function(){
 };
 
 /* Join clan */
-window.joinClan=function(clanId){
-  if(!window.U||!window.UD||!window.db)return;
-  var uid=window.U.uid;
-  if(window.UD.clanId){if(window.toast)toast('Pehle apna clan chhodo!','err');return;}
-  window.db.ref('clans/'+clanId).once('value',function(s){
-    if(!s.exists()){if(window.toast)toast('Clan nahi mila!','err');return;}
-    var clan=s.val();
-    var mCount=clan.members?Object.keys(clan.members).length:0;
-    if(mCount>=MAX_MEMBERS){if(window.toast)toast('Clan full hai!','err');return;}
-    var updates={};
-    updates['clans/'+clanId+'/members/'+uid]={ign:window.UD.ign||window.UD.displayName||'Player',joinedAt:Date.now(),gd:0};
-    updates['clans/'+clanId+'/memberCount']=(mCount+1);
-    updates['users/'+uid+'/clanId']=clanId;
-    window.db.ref().update(updates,function(){
-      if(window.UD)window.UD.clanId=clanId;
-      if(window.toast)toast('✅ "'+(clan.name||'Clan')+'" join kar liya!','ok');
-      if(window.closeModal)closeModal();
-    });
-  });
+window.joinClan=async function(clanIdOrCode){
+  /* ✅ BUG Z6 FIX-4 (2026-10-02, WALK10s run8 live-catch): Firebase-bridge
+     clans/{CODE} padhta tha — CODE uuid nahi hai to PostgREST 400 (id=eq.CODE)
+     aur join maun-vifaI. Ab Supabase: DB-truth self-heal (Z8 jaisa — stale
+     UD.clanId par DB hi maano) -> code/uuid lookup -> join_clan RPC.
+     v30-joinClan jaisa hi vyavhaar — dono paribhasha same-sahist. */
+  if(!window._supa||!window.U||!window.U.uid)return;
+  try{
+    var uid=window.U.uid;
+    var myOld=(window.UD&&(window.UD.clanId||window.UD.clan_id))||null;
+    if(myOld){
+      var both=await Promise.all([
+        window._supa.from('clans').select('id').eq('id',myOld).maybeSingle(),
+        window._supa.from('user_public_profiles').select('clan_id').eq('id',uid).maybeSingle()
+      ]);
+      var _real=both[0]&&both[0].data&&both[0].data.id;
+      var _dbc=both[1]&&both[1].data&&both[1].data.clan_id;
+      if(_real&&_dbc===myOld){ if(window.toast)toast('Pehle apna current clan chhodo!','err'); return; }
+      await window._supa.from('users').update({clan_id:null}).eq('id',uid);
+      if(window.UD){window.UD.clanId=null;window.UD.clan_id=null;}
+    }
+    var inp=(clanIdOrCode||'').toString().trim();
+    if(!inp){ if(window.toast)toast('Clan ID ya code daalo!','err'); return; }
+    var isUuid=/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(inp);
+    var r=await (isUuid
+      ? window._supa.from('clans').select('id,name,total_members,emblem,badge').eq('id',inp).maybeSingle()
+      : window._supa.from('clans').select('id,name,total_members,emblem,badge').eq('join_code',inp.toUpperCase()).maybeSingle());
+    var clan=r&&r.data;
+    if(!clan){ if(window.toast)toast('Clan nahi mila! Code dobara check karo.','err'); return; }
+    if((clan.total_members||0)>=MAX_MEMBERS){ if(window.toast)toast('Clan full hai! ('+(clan.total_members||0)+'/'+MAX_MEMBERS+')','err'); return; }
+    var rpcRes=await window._supa.rpc('join_clan',{p_user_id:uid,p_clan_id:clan.id,p_ign:(window.UD&&window.UD.ign)||'Player',p_max_members:MAX_MEMBERS});
+    var res=(rpcRes&&rpcRes.data)||{};
+    if(res.ok===false||res.error){
+      var msg=res.error==='clan_full'?'Clan full ho gaya!':res.error==='already_in_clan'?'Pehle current clan chhodo!':res.error==='Already in clan'?'Pehle se member ho!':'Join error: '+(res.error||'unknown');
+      if(window.toast)toast(msg,'err'); return;
+    }
+    if(window.UD){window.UD.clanId=clan.id;window.UD.clan_id=clan.id;}
+    if(window.toast)toast('✅ "'+(clan.name||'Clan')+'" join kar liya!','ok');
+    if(window.closeModal)closeModal();
+    setTimeout(function(){window.showClanHome();},400);
+  }catch(e){ if(window.toast)toast('Join error: '+((e&&e.message)||e),'err'); }
 };
 
 /* Leave clan */
-window.leaveClan=function(clanId){
-  if(!window.U||!window.db)return;
+window.leaveClan=async function(clanId){
+  if(!window.U)return;
   /* Bug 74 Fix: Confirmation before leaving — prevents accidental data loss */
   var confirmed = window.confirm('Kya aap sach mein clan chhodni chahte ho? Yeh action undo nahi ho sakta.');
   if(!confirmed) return;
+  /* ✅ BUG Z6 FIX-4: Supabase RPC-first (leave_clan) — response ke baad hi
+     toast; bridge sirf RPC-na-mile par. */
   var uid=window.U.uid;
+  if(window._supa){
+    try{
+      await window._supa.rpc('leave_clan',{p_user_id:uid,p_clan_id:clanId});
+      if(window.UD){delete window.UD.clanId; window.UD.clan_id=null;}
+      if(window.toast)toast('Clan chhod diya!','ok');
+      if(window.closeModal)closeModal();
+      return;
+    }catch(e){ if(window.toast)toast('Leave error: '+((e&&e.message)||e),'err'); return; }
+  }
+  if(!window.db)return;
   window.db.ref('clans/'+clanId+'/members/'+uid).remove();
   window.db.ref('clans/'+clanId+'/memberCount').transaction(function(v){return Math.max(0,(Number(v)||0)-1);});
   window.db.ref('users/'+uid+'/clanId').remove();
@@ -228,10 +307,26 @@ window.leaveClan=function(clanId){
 
 /* Disband clan */
 window.disbandClan=function(clanId){
-  if(!window.U||!window.db)return;
+  if(!window.U)return;
   /* Bug 74 Fix: Double confirmation for disband — this removes all members */
   var confirmed = window.confirm('DISBAND CLAN? Yeh clan aur sare members remove ho jayenge. Yeh permanent action hai!');
   if(!confirmed) return;
+  /* ✅ BUG Z6 FIX-3 (2026-10-02): Firebase-bridge remove ki jagah Supabase
+     RPC-first (disband_clan, leader-verified, atomic: users.clan_id clear +
+     members + war-challenges + clan) — response ke baad hi toast; RPC na
+     mile to legacy chain. */
+  if(window._supa){
+    window._supa.rpc('disband_clan',{p_clan_id:clanId})
+      .then(function(d){
+        var r=d&&d.data;
+        if(r&&r.ok===false){ if(window.toast)toast('Disband error: '+(r.error||'unknown'),'err'); return; }
+        if(window.UD)delete window.UD.clanId;
+        if(window.toast)toast('Clan disband kar diya!','ok');
+        if(window.closeModal)closeModal();
+      },function(e){ if(window.toast)toast('Disband error: '+((e&&e.message)||e),'err'); });
+    return;
+  }
+  if(!window.db)return;
   window.db.ref('clans/'+clanId).remove();
   window.db.ref('users/'+window.U.uid+'/clanId').remove();
   if(window.UD)delete window.UD.clanId;
@@ -241,12 +336,20 @@ window.disbandClan=function(clanId){
 
 /* Kick member */
 window.kickClanMember=function(clanId,memberUid){
-  if(!window.db)return;
-  window.db.ref('clans/'+clanId+'/members/'+memberUid).remove();
-  window.db.ref('clans/'+clanId+'/memberCount').transaction(function(v){return Math.max(0,(Number(v)||0)-1);});
-  window.db.ref('users/'+memberUid+'/clanId').remove();
-  if(window.toast)toast('Member kick kar diya!','ok');
-  if(window.closeModal)closeModal();setTimeout(function(){window.showClanHome();},300);
+  /* ✅ BUG Z6 FIX-3 (2026-10-02): pehle Firebase-bridge remove + VERIFY-KE-BINA
+     success-toast — Supabase-only data me member-row DB me bachi re jaati thi
+     (WALK10s run5 live-catch: toast 'Member kick kar diya!' par members=2).
+     Ab Supabase RPC-first (kick_clan_member, leader-verified server-side),
+     response ke baad hi toast+refresh; RPC na mile to legacy chain. */
+  if(!window._supa||!window.U)return;
+  window._supa.rpc('kick_clan_member',{p_clan_id:clanId,p_member_uid:memberUid})
+    .then(function(d){
+      var r=d&&d.data;
+      if(r&&r.ok===false){ if(window.toast)toast('Kick error: '+(r.error||'unknown'),'err'); return; }
+      if(window.toast)toast('Member kick kar diya!','ok');
+      if(window.closeModal)closeModal();
+      setTimeout(function(){window.showClanHome();},300);
+    },function(e){ if(window.toast)toast('Kick error: '+((e&&e.message)||e),'err'); });
 };
 
 /* Clan Chat */
