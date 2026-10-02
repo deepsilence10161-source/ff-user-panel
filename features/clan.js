@@ -319,7 +319,7 @@ window.updateClanScore=function(uid,kills,wins){
     p_score:score,
     p_wins:wins?1:0,
     p_kills:kills||0
-  }).catch(function(){ /* R8: no client write fallback — silent drop on RPC failure */ });
+  }).then(null, function(){ /* R8: no client write fallback — silent drop on RPC failure (BUG Z5 FIX: thenable-safe — .catch is build me nahi hota) */ });
 };
 
 console.log('[Mini eSports] Clan System v1.0 ✅');

@@ -110,7 +110,7 @@ window.updateCityChampScore=function(wins,kills){
      (koi bhi KISI BHI city ka score tamper kar sakta tha). increment_city_score
      RPC hi ek authorized path hai (self-only + per-call caps). */
   _s().rpc('increment_city_score',{p_city:city,p_month:mon,p_score:score,p_wins:wins?1:0,p_kills:kills||0,p_uid:_uid()})
-  .catch(function(){});
+  .then(null, function(){}); /* BUG Z5 FIX: .catch is rpc-thenable pe exist nahi karta tha => city score kabhi update nahi hota tha */
 };
 
 // Pill injection

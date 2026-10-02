@@ -663,7 +663,7 @@
         p_score:   score,
         p_wins:    wins  ? 1 : 0,
         p_kills:   kills || 0
-      }).catch(function() {
+      }).then(null, function() { /* BUG Z5 FIX: is supabase-js build ke rpc()-thenable me .catch nahi hota — .catch access hi TypeError throw karta tha => request start se pehle hi crash, clan score kabhi update nahi hota tha */
         /* R8 (2026-09-26c): NO direct-clan-write fallback — clan economy ab
            sirf server RPC se hi likhi jaati hai (clans aur users ke direct
            economy UPDATEs guard/clamp kar diye gaye hain; read-modify-write
