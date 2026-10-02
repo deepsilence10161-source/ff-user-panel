@@ -17,11 +17,23 @@
   /* =============================================================
      BUG #1 FIX: Clan members — patch getUserClan to load
      clan_members from Supabase (not from Firebase snap.members)
+     ✅ BUG Z6 FIX (2026-10-02, WALK10s live-proven): ye wrapper sirf
+     (uid, cb) signature samajhta tha — jab showClanHome ise (cb) se
+     call karta hai to yeh cb ko "uid" maan kar TUTTI clan.js-original
+     (Firebase-bridge clans/{id} read) ko pass-back kar deta tha =>
+     My-Clan modal me members hamesha 0/10, leader undefined (isLeader
+     false => leader ko Disband/Kick buttons milte hi nahi the) aur
+     invite-code display join_code ki jagah UUID-prefix dikhata tha.
+     Ab both-style signatures + built clan ko Firebase-shape mapping
+     (_id/leader/weeklyScore/totalWins/totalKills/join_code/memberCount).
   ============================================================= */
   waitFor(function(){ return window.getUserClan !== undefined; }, function() {
     var _origGetUserClan = window.getUserClan;
-    window.getUserClan = function(uid, cb) {
-      if (!window._supa || !uid) { if (_origGetUserClan) _origGetUserClan(uid, cb); return; }
+    window.getUserClan = function(uidOrCb, cb2) {
+      var uid, cb;
+      if (typeof uidOrCb === 'function') { uid = window.U && window.U.uid; cb = uidOrCb; } /* BUG Z6 FIX: (cb) style */
+      else { uid = uidOrCb; cb = cb2; }
+      if (!window._supa || !uid || typeof cb !== 'function') { if (_origGetUserClan) _origGetUserClan(uid, cb); return; }
       /* Directly query Supabase — no Firebase bridge needed */
       window._supa.from('user_public_profiles').select('clan_id').eq('id', uid).maybeSingle() /* BUG #38 FIX */
         .then(function(r) {
@@ -60,6 +72,16 @@
                 });
                 clan.members = membersObj;
                 clan.totalMembers = Object.keys(membersObj).length;
+                /* BUG Z6 FIX: _showMyClan(clan.js) ye keys padhta hai — bina
+                   inke leader-check false, members-count 0 aur invite-code
+                   UUID-prefix ban jaata tha */
+                clan._id          = clan.id;
+                clan.leader       = clan.leader_uid;
+                clan.weeklyScore  = clan.weekly_score || 0;
+                clan.totalWins    = clan.total_wins  || 0;
+                clan.totalKills   = clan.total_kills || 0;
+                clan.memberCount  = membersObj.length || clan.total_members || Object.keys(membersObj).length;
+                clan.join_code    = clan.join_code || (clan.id || '').replace(/-/g, '').substr(0, 8).toUpperCase();
                 cb(clan);
               }).catch(function() { clan.members = {}; cb(clan); });
           }).catch(function(e) { console.warn('[Bug#1] getUserClan failed:', e.message); cb(null); });

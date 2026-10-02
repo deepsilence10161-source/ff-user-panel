@@ -403,65 +403,114 @@
     /* ──────────────────────────────────────────────────────
        DISBAND CLAN — Supabase only
     ────────────────────────────────────────────────────── */
+    /* ✅ BUG Z4 FIX (2026-10-02, WALK10s live-proven): purana 3-step chain
+       half-disband karta tha — clans par DELETE policy hi nahi thi (0-rows
+       silent), members sirf leader ki apni row, baaki users ka clan_id
+       stale. Ab server-authoritative disband_clan RPC (leader-verified,
+       atomic: users.clan_id clear + members + war-challenges + clan).
+       Missing-RPC par legacy chain fallback. */
     window.disbandClan = function(clanId) {
       if (!_s() || !_uid()) return;
       if (!confirm('DISBAND CLAN? Yeh clan aur sare members permanently remove honge!')) return;
       var uid = _uid();
 
-      /* Step 1: clear all users' clan_id */
-      _s().from('users').update({ clan_id: null }).eq('clan_id', clanId)
-        .then(function() {
-          /* Step 2: delete all members */
-          return _s().from('clan_members').delete().eq('clan_id', clanId);
-        })
-        .then(function() {
-          /* Step 3: delete clan (leader check) */
-          return _s().from('clans').delete().eq('id', clanId).eq('leader_uid', uid);
-        })
-        .then(function() {
-          if (window.UD) {
-            delete window.UD.clanId;
-            delete window.UD.clan_id;
-            window.UD.clanId   = null;
-            window.UD.clan_id  = null;
+      function _afterDisband() {
+        if (window.UD) {
+          delete window.UD.clanId;
+          delete window.UD.clan_id;
+          window.UD.clanId   = null;
+          window.UD.clan_id  = null;
+        }
+        _t('Clan disband kar diya!', 'ok');
+        if (window.closeModal) closeModal();
+      }
+
+      function _disbandLegacy() {
+        _s().from('users').update({ clan_id: null }).eq('clan_id', clanId)
+          .then(function() {
+            return _s().from('clan_members').delete().eq('clan_id', clanId);
+          })
+          .then(function() {
+            return _s().from('clans').delete().eq('id', clanId).eq('leader_uid', uid);
+          })
+          .then(function() {
+            _afterDisband();
+          })
+          .then(null, function(e) { _t('Disband error: ' + (e && e.message || 'retry karo'), 'err'); });
+      }
+
+      _s().rpc('disband_clan', { p_clan_id: clanId })
+        .then(function(res) {
+          if (res && res.error) {
+            var msg = (res.error && res.error.message) || '';
+            if (res.error.code === 'PGRST202' || /not found/i.test(msg)) { _disbandLegacy(); return; }
+            _t('Disband error: ' + (msg || 'failed'), 'err'); return;
           }
-          _t('Clan disband kar diya!', 'ok');
-          if (window.closeModal) closeModal();
-        })
-        .catch(function(e) { _t('Disband error: ' + (e.message || 'retry karo'), 'err'); });
+          var d = res && res.data;
+          if (d && d.ok === false) {
+            var em = d.error === 'not_leader' ? 'Sirf leader disband kar sakta hai' : (d.error || 'failed');
+            _t('Disband error: ' + em, 'err'); return;
+          }
+          _afterDisband();
+        }, function() { _disbandLegacy(); });
     };
 
     /* ──────────────────────────────────────────────────────
        KICK MEMBER — Supabase only
     ────────────────────────────────────────────────────── */
+    /* ✅ BUG Z3 FIX (2026-10-02, WALK10s live-proven): purana 4-step
+       direct-write chain leader ke liye bhi 0-rows "success" deta tha
+       (cm_delete_own + users_update_own RLS) => member row bachi rehti thi
+       par 'kick ho gaya' toast aa jaata tha. Ab server-authoritative
+       kick_clan_member RPC (leader-verified); missing-RPC par legacy chain. */
     window.kickClanMember = function(clanId, memberUid) {
       if (!_s() || !_uid()) return;
 
-      _s().from('clan_members').delete()
-        .eq('clan_id', clanId).eq('user_id', memberUid)
-        .then(function() {
-          return _s().from('users').update({ clan_id: null })
-            .eq('id', memberUid);
-        })
-        .then(function() {
-          /* Decrement member count */
-          return _s().from('clans')
-            .select('total_members')
-            .eq('id', clanId)
-            .single();
-        })
-        .then(function(r) {
-          var cur = (r.data && r.data.total_members) || 1;
-          return _s().from('clans')
-            .update({ total_members: Math.max(0, cur - 1) })
-            .eq('id', clanId);
-        })
-        .then(function() {
+      function _kickLegacy() {
+        _s().from('clan_members').delete()
+          .eq('clan_id', clanId).eq('user_id', memberUid)
+          .then(function() {
+            return _s().from('users').update({ clan_id: null })
+              .eq('id', memberUid);
+          })
+          .then(function() {
+            return _s().from('clans')
+              .select('total_members')
+              .eq('id', clanId)
+              .single();
+          })
+          .then(function(r) {
+            var cur = (r.data && r.data.total_members) || 1;
+            return _s().from('clans')
+              .update({ total_members: Math.max(0, cur - 1) })
+              .eq('id', clanId);
+          })
+          .then(function() {
+            _t('Member kick kar diya!', 'ok');
+            if (window.closeModal) closeModal();
+            setTimeout(function() { if (window.showClanHome) showClanHome(); }, 300);
+          })
+          .then(null, function(e) { _t('Kick error: ' + (e && e.message || 'retry karo'), 'err'); });
+      }
+
+      _s().rpc('kick_clan_member', { p_clan_id: clanId, p_member_uid: memberUid })
+        .then(function(res) {
+          if (res && res.error) {
+            var msg = (res.error && res.error.message) || '';
+            if (res.error.code === 'PGRST202' || /not found/i.test(msg)) { _kickLegacy(); return; }
+            _t('Kick error: ' + (msg || 'failed'), 'err'); return;
+          }
+          var d = res && res.data;
+          if (d && d.ok === false) {
+            var em = d.error === 'not_leader' ? 'Sirf leader kick kar sakta hai'
+                   : d.error === 'not_a_member' ? 'Ye member is clan me nahi hai'
+                   : d.error || 'failed';
+            _t('Kick error: ' + em, 'err'); return;
+          }
           _t('Member kick kar diya!', 'ok');
           if (window.closeModal) closeModal();
           setTimeout(function() { if (window.showClanHome) showClanHome(); }, 300);
-        })
-        .catch(function(e) { _t('Kick error: ' + (e.message || 'retry karo'), 'err'); });
+        }, function() { _kickLegacy(); });
     };
 
     console.log('[V30 #1] leaveClan / disbandClan / kickClanMember Supabase ✅');
