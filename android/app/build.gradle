@@ -33,8 +33,7 @@ def gitCommitCount() {
         def proc = 'git rev-list --count HEAD'.execute(null, project.rootDir)
         def outBuf = new ByteArrayOutputStream()
         def errBuf = new ByteArrayOutputStream()
-        proc.consumeProcessOutput(outBuf, errBuf)  // deadlock-safe read
-        proc.waitFor()
+        proc.waitForProcessOutput(outBuf, errBuf)  // joins stream consumer threads + waits for process exit
         if (proc.exitValue() == 0) {
             count = new String(outBuf.toByteArray(), 'UTF-8').trim().toInteger()
         } else {
