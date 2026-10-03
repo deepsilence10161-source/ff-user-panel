@@ -338,24 +338,34 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
     }
   };
 
+  var hasNativeUpdater = !!(window.Android && typeof window.Android.downloadAndInstallApk === 'function');
   var updateBtn = document.getElementById('fuUpdateBtn');
   if (updateBtn) {
     updateBtn.addEventListener('click', function() {
       var curApkUrl = window.CFG.appApkUrl || apkUrl;
       var curVer = window.CFG.appLatestVersion || window.CFG.appMinSupportedVersion || targetVer;
-      /* ✅ IN-APP DIRECT DOWNLOAD & INSTALL (Step 2):
-         Inside the Android APK, download directly in-app with progress bar,
-         HTTP Range resume, APK archive verification, and native Package Installer launch —
-         NEVER open an external browser! */
+      /* ✅ IN-APP DIRECT DOWNLOAD & INSTALL:
+         Inside the Android APK (v1.0.107+), download directly in-app with progress bar,
+         256KB buffered streaming, HTTP Range resume, APK archive verification,
+         and native Package Installer launch — NEVER open an external browser! */
       if (window.Android && typeof window.Android.downloadAndInstallApk === 'function') {
         window._onApkDownloadProgress(hasCached ? 100 : 0, 0, 0, 'connecting',
-          hasCached ? 'Opening Android Installer...' : 'Starting in-app download...');
+          hasCached ? 'Opening Android Installer...' : 'Starting fast in-app download...');
         window.Android.downloadAndInstallApk(curApkUrl, String(curVer || 'latest'));
         return;
       }
-      var w = null;
-      try { w = window.open(curApkUrl, '_blank'); } catch (_we) {}
-      if (!w) window.location.href = curApkUrl;
+      /* Legacy APK fallback (only for users still on an older APK < 1.0.107 that lacked downloadAndInstallApk) */
+      var wrap = document.getElementById('fuProgressWrap');
+      var msgEl = document.getElementById('fuProgressMsg');
+      if (wrap) wrap.style.display = 'block';
+      if (msgEl) {
+        msgEl.style.color = '#ffd700';
+        msgEl.innerHTML = '📁 <b>Downloads folder में "MiniEsports.apk" पर tap करके Install करें!</b><br><span style="color:#ccc;font-weight:500">इस एक बार नया APK install करते ही आगे से हर update बिना ब्राउज़र खोले ऐप के अंदर ही live होगा।</span>';
+      }
+      if (!window._legacyApkOpenedOnce) {
+        window._legacyApkOpenedOnce = true;
+        window.location.href = curApkUrl;
+      }
     });
   }
   var retryBtn = document.getElementById('fuRetryBtn');

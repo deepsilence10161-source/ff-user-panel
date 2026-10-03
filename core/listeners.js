@@ -494,10 +494,43 @@ function _bootNotifications() {
   _rtCh('notifs-global', 'notifications', 'target_all=eq.true', _handleNotifRT);
   _poll('notifs', _loadNotifs, 30000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
 }
+function _getNotifClearedAt() {
+  if (U && U.uid) {
+    try {
+      var saved = Number(localStorage.getItem('_mes_cleared_at_' + U.uid) || 0);
+      if (saved > _notifClearedAt) _notifClearedAt = saved;
+    } catch (e) {}
+  }
+  return _notifClearedAt;
+}
+function _getDeletedNotifKeys() {
+  window._DELETED_NOTIF_KEYS = window._DELETED_NOTIF_KEYS || {};
+  if (U && U.uid) {
+    try {
+      var saved = JSON.parse(localStorage.getItem('_mes_deleted_notifs_' + U.uid) || '{}');
+      Object.assign(window._DELETED_NOTIF_KEYS, saved);
+    } catch (e) {}
+  }
+  return window._DELETED_NOTIF_KEYS;
+}
+function _saveDeletedNotifKeys(keysObj) {
+  window._DELETED_NOTIF_KEYS = Object.assign(window._DELETED_NOTIF_KEYS || {}, keysObj || {});
+  if (U && U.uid) {
+    try {
+      localStorage.setItem('_mes_deleted_notifs_' + U.uid, JSON.stringify(window._DELETED_NOTIF_KEYS));
+    } catch (e) {}
+  }
+}
+window._getDeletedNotifKeys = _getDeletedNotifKeys;
+window._saveDeletedNotifKeys = _saveDeletedNotifKeys;
+
 function _handleNotifRT(p) {
   if (p.eventType === 'INSERT' && p.new) {
     var n = _toNotif(p.new);
-    if (_notifClearedAt > 0 && (n.createdAt||0) <= _notifClearedAt) return;
+    var clearedAt = _getNotifClearedAt();
+    var delKeys = _getDeletedNotifKeys();
+    if (delKeys[n._key]) return;
+    if (clearedAt > 0 && (n.createdAt||0) <= clearedAt) return;
     if (!NOTIFS.some(function(x) { return x._key === n._key; })) {
       NOTIFS.unshift(n); updateBell(); if (curScr === 'notif') renderNotifs();
       var imp = ['result','wallet_approved','wallet_rejected','room_released','admin_alert','global_broadcast'];
@@ -509,6 +542,9 @@ function _handleNotifRT(p) {
   } else if (p.eventType === 'UPDATE' && p.new) {
     NOTIFS.forEach(function(x) { if (x._key===p.new.id) { x.is_read=p.new.is_read; x._localRead=p.new.is_read; } });
     updateBell();
+  } else if (p.eventType === 'DELETE' && p.old && p.old.id) {
+    NOTIFS = NOTIFS.filter(function(x) { return x._key !== p.old.id; });
+    updateBell(); if (curScr === 'notif') renderNotifs();
   }
 }
 function _loadNotifs() {
@@ -521,10 +557,13 @@ function _loadNotifs() {
     .or('user_id.eq.' + U.uid + ',target_all.eq.true')
     .order('created_at', { ascending: false }).limit(50)
     .then(function(r) {
+      var clearedAt = _getNotifClearedAt();
+      var delKeys = _getDeletedNotifKeys();
       NOTIFS = [];
       (r.data || []).forEach(function(n) {
         var m = _toNotif(n);
-        if (_notifClearedAt > 0 && (m.createdAt||0) <= _notifClearedAt) return;
+        if (delKeys[m._key]) return;
+        if (clearedAt > 0 && (m.createdAt||0) <= clearedAt) return;
         NOTIFS.push(m);
       });
       updateBell(); if (curScr === 'notif') renderNotifs();
@@ -539,8 +578,20 @@ function markNotifRead(key) {
   window._supa.from('notifications').update({ is_read: true }).eq('id', key).eq('user_id', U.uid).then(null, function(){});
 }
 function clearAllNotifs() {
-  _notifClearedAt = Date.now();
-  if (window._supa) window._supa.from('notifications').update({ is_read: true }).eq('user_id', U.uid).eq('is_read', false).then(null, function(){});
+  var maxTs = Date.now();
+  var toDel = {};
+  (NOTIFS || []).forEach(function(n) {
+    if (n && n._key) toDel[n._key] = true;
+    if (n && Number(n.createdAt) > maxTs) maxTs = Number(n.createdAt);
+  });
+  _notifClearedAt = maxTs + 1000;
+  if (U && U.uid) {
+    try { localStorage.setItem('_mes_cleared_at_' + U.uid, String(_notifClearedAt)); } catch (e) {}
+  }
+  _saveDeletedNotifKeys(toDel);
+  if (window._supa && U && U.uid) {
+    window._supa.from('notifications').delete().eq('user_id', U.uid).then(null, function(){});
+  }
   NOTIFS = []; _READ_KEYS = {}; if (UD) UD.readNotifications = {};
   updateBell(); if (curScr === 'notif') renderNotifs(); toast('All notifications cleared', 'ok');
 }

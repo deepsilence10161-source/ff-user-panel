@@ -428,12 +428,20 @@ window.addEventListener('popstate', function(e) {
 });
 
 function goBack() {
-  /* Priority 0: Close profile settings sheet */
+  /* Priority 0: Close Earn Coins (coinShopModal) if open */
+  var csm = document.getElementById('coinShopModal');
+  if (csm && csm.style.display !== 'none' && csm.style.display !== '') {
+    if (window.closeCoinShop) closeCoinShop(); else csm.style.display = 'none';
+    return;
+  }
+  /* Priority 0a: Close profile settings sheet */
   var ps = document.getElementById('profSettingsSheet');
   if (ps) { closeProfileSettings(); return; }
-  /* Priority 0b: Close referral popup */
+  /* Priority 0b: Close referral popup or avatar bg modal */
   var rcp = document.getElementById('_refCodePopup');
   if (rcp) { rcp.remove(); return; }
+  var abm = document.getElementById('_avatarBgModal');
+  if (abm) { abm.remove(); return; }
   /* Priority 1: Close Room ID Popup */
   var rp = $('rpContainer');
   if (rp && rp.children.length > 0) { rp.innerHTML = ''; return; }
@@ -448,7 +456,7 @@ function goBack() {
   /* Priority 5: Navigate to home from any other screen */
   if (curScr !== 'home') { navTo('home'); return; }
   /* Priority 6: Already on home — re-push state to prevent exit */
-  history.pushState(null, null, null);
+  try { history.pushState(null, null, null); } catch(e) {}
 }
 
 /* ====== NAVIGATION ====== */

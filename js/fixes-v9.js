@@ -128,19 +128,8 @@ wait(function(){ return typeof window.renderProfile==='function' && !window._v9r
       if(ava && window.UD && window.UD.avatarBgColor){
         ava.style.background = window.UD.avatarBgColor;
       }
-      var wrap = pc.querySelector('.prof-ava-wrap');
-      if(wrap && !wrap.querySelector('#_avaBgBtn')){
-        var btn = document.createElement('div');
-        btn.id = '_avaBgBtn';
-        btn.title = 'Change background';
-        btn.style.cssText = 'position:absolute;bottom:-8px;right:-8px;width:22px;height:22px;border-radius:50%;' +
-          'background:linear-gradient(135deg,#b964ff,#00d4ff);border:2px solid #050507;' +
-          'display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:10px;flex-shrink:0';
-        btn.innerHTML = '\uD83C\uDFA8';
-        btn.onclick = function(e){ e.stopPropagation(); window.showAvatarBgPicker(); };
-        wrap.style.position = 'relative';
-        wrap.appendChild(btn);
-      }
+      var oldBtn = pc.querySelector('#_avaBgBtn');
+      if(oldBtn) oldBtn.remove();
     }, 80);
   };
 });

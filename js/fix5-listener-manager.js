@@ -169,6 +169,9 @@
         'notifications',
         'value',
         function(s) {
+          var delKeys = (window._getDeletedNotifKeys && window._getDeletedNotifKeys()) || {};
+          var clearedAt = 0;
+          try { if (U && U.uid) clearedAt = Number(localStorage.getItem('_mes_cleared_at_' + U.uid) || 0); } catch (e) {}
           var oldKeys = {};
           NOTIFS.forEach(function(n) { if (n._key) oldKeys[n._key] = true; });
           NOTIFS = [];
@@ -177,6 +180,9 @@
               var v = c.val();
               if (!v) return;
               v._key = c.key;
+              if (delKeys[v._key]) return;
+              var ts = Number(v.createdAt || v.timestamp || 0);
+              if (clearedAt > 0 && ts > 0 && ts <= clearedAt) return;
               // target check
               if (v.targetUid && v.targetUid !== U.uid) return;
               NOTIFS.push(v);

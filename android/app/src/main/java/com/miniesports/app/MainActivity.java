@@ -25,6 +25,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -154,23 +156,12 @@ public class MainActivity extends AppCompatActivity {
         if (isOnline()) webView.loadUrl(APP_URL);
         else webView.loadUrl("file:///android_asset/no_internet.html");
 
-        swipeRefresh.setOnRefreshListener(() -> {
-            if (isOnline()) webView.reload();
-            else webView.loadUrl("file:///android_asset/no_internet.html");
-            swipeRefresh.setRefreshing(false);
-        });
+        swipeRefresh.setEnabled(false);
+        swipeRefresh.setOnRefreshListener(() -> swipeRefresh.setRefreshing(false));
 
-        /* BUG FIX (2026-07): the app's HTML has `overflow:hidden` on
-           <body> and scrolls internally inside #mainContent instead, so
-           SwipeRefreshLayout's default canChildScrollUp() check (which
-           looks at the WebView's own native scroll, always 0 here) never
-           saw the page as "scrolled down" — meaning ANY upward swipe
-           ANYWHERE, even mid-scroll through a long list, was treated as
-           "already at the top, must be a pull-to-refresh" and kept
-           re-triggering refreshes. reportScrollTop() below is called from
-           JS whenever #mainContent's real scroll position changes, so
-           this callback now reflects the actual page state. */
-        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> !isContentAtTop);
+        /* Disable native pull-to-refresh reload so dragging down inside modals
+           or pressing back never triggers a full WebView reload. */
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> true);
     }
 
     @Override
@@ -505,10 +496,13 @@ public class MainActivity extends AppCompatActivity {
                         URL u = new URL(currentUrl);
                         conn = (HttpURLConnection) u.openConnection();
                         conn.setInstanceFollowRedirects(false);
-                        conn.setConnectTimeout(20000);
-                        conn.setReadTimeout(30000);
-                        conn.setRequestProperty("User-Agent", "MiniEsports-Android-Updater/1.0");
+                        conn.setConnectTimeout(15000);
+                        conn.setReadTimeout(25000);
+                        conn.setUseCaches(false);
+                        conn.setRequestProperty("User-Agent", "MiniEsports-Android-Updater/2.0");
                         conn.setRequestProperty("Accept", "application/vnd.android.package-archive,application/octet-stream,*/*");
+                        conn.setRequestProperty("Accept-Encoding", "identity");
+                        conn.setRequestProperty("Connection", "keep-alive");
                         if (downloadedBytes > 0) {
                             conn.setRequestProperty("Range", "bytes=" + downloadedBytes + "-");
                         }
@@ -558,26 +552,42 @@ public class MainActivity extends AppCompatActivity {
                         throw new Exception("Server HTTP " + responseCode);
                     }
 
-                    in = conn.getInputStream();
+                    in = new BufferedInputStream(conn.getInputStream(), 262144);
                     out = new FileOutputStream(partApk, appendMode);
+                    BufferedOutputStream bos = new BufferedOutputStream(out, 262144);
 
-                    byte[] buf = new byte[32768];
+                    byte[] buf = new byte[131072];
                     int n;
-                    long lastEmitMs = 0L;
+                    long lastEmitMs = System.currentTimeMillis();
+                    long speedWindowStartMs = lastEmitMs;
+                    long speedWindowBytes = 0L;
+                    String speedLabel = "";
                     while ((n = in.read(buf)) != -1) {
-                        out.write(buf, 0, n);
+                        bos.write(buf, 0, n);
                         downloadedBytes += n;
+                        speedWindowBytes += n;
                         long now = System.currentTimeMillis();
-                        if (now - lastEmitMs >= 120) {
+                        if (now - lastEmitMs >= 100) {
+                            long elapsedSecMs = Math.max(1L, now - speedWindowStartMs);
+                            if (elapsedSecMs >= 400) {
+                                double bytesPerSec = (speedWindowBytes * 1000.0) / elapsedSecMs;
+                                if (bytesPerSec >= 1024 * 1024) {
+                                    speedLabel = String.format(java.util.Locale.US, " (%.1f MB/s)", bytesPerSec / (1024.0 * 1024.0));
+                                } else {
+                                    speedLabel = String.format(java.util.Locale.US, " (%.0f KB/s)", bytesPerSec / 1024.0);
+                                }
+                                speedWindowStartMs = now;
+                                speedWindowBytes = 0L;
+                            }
                             lastEmitMs = now;
                             int pct = (totalBytes > 0)
                                 ? (int) Math.min(99L, (downloadedBytes * 100L) / totalBytes)
                                 : -1;
-                            emitApkProgress(pct, downloadedBytes, totalBytes, "downloading", "Downloading update...");
+                            emitApkProgress(pct, downloadedBytes, totalBytes, "downloading", "In-app downloading" + speedLabel + "...");
                         }
                     }
-                    out.flush();
-                    out.close();
+                    bos.flush();
+                    bos.close();
                     out = null;
                     in.close();
                     in = null;
@@ -809,6 +819,12 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
 
+                // Direct APK update URLs — NEVER open external browser! Always download & install in-app!
+                if (url.endsWith(".apk") || url.contains("MiniEsports.apk") || url.contains("/releases/latest/download/")) {
+                    new AndroidBridge().downloadAndInstallApk(url, "latest");
+                    return true;
+                }
+
                 // Baaki external links → browser
                 if (url.startsWith("http") || url.startsWith("https")) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -914,6 +930,11 @@ public class MainActivity extends AppCompatActivity {
                         // dialog showing the wa.me redirect page instead of the WhatsApp
                         // app. Mirror the main WebView's behaviour: dismiss this popup and
                         // let the OS route it to whichever app handles it.
+                        if (url.endsWith(".apk") || url.contains("MiniEsports.apk") || url.contains("/releases/latest/download/")) {
+                            d.dismiss();
+                            new AndroidBridge().downloadAndInstallApk(url, "latest");
+                            return true;
+                        }
                         d.dismiss();
                         try {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -928,6 +949,14 @@ public class MainActivity extends AppCompatActivity {
                 ((WebView.WebViewTransport) resultMsg.obj).setWebView(popup);
                 resultMsg.sendToTarget();
                 return true;
+            }
+        });
+
+        // Intercept any WebView download (.apk) so it ALWAYS runs in-app without opening browser
+        webView.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
+            if (url != null && (url.endsWith(".apk") || url.contains("MiniEsports.apk") ||
+                "application/vnd.android.package-archive".equalsIgnoreCase(mimeType))) {
+                new AndroidBridge().downloadAndInstallApk(url, "latest");
             }
         });
     }
@@ -1117,8 +1146,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack(); return true;
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView != null) {
+            /* Delegate back navigation to SPA JS router (window.goBack) so modals/screens
+               close cleanly without triggering a native WebView history reload. */
+            webView.evaluateJavascript(
+                "(function(){ if(typeof window.goBack==='function'){ window.goBack(); return 'handled'; } return 'none'; })()",
+                result -> {
+                    if (result == null || !result.contains("handled")) {
+                        if (webView.canGoBack()) webView.goBack();
+                    }
+                }
+            );
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }

@@ -131,6 +131,11 @@ function renderNotifs() {
   nl.innerHTML = h;
 }
 function deleteNotif(key, src) {
+  // Persist deleted key so poll/realtime never resurrects it
+  if (key) {
+    var d = {}; d[key] = true;
+    if (window._saveDeletedNotifKeys) window._saveDeletedNotifKeys(d);
+  }
   // Remove from local NOTIFS
   NOTIFS = NOTIFS.filter(function(n) { return n._key !== key; });
   _READ_KEYS[key] = true;
@@ -182,7 +187,10 @@ function openNotif(key) {
    ======================================== */
 function showCoinShop() {
   var modal = document.getElementById('coinShopModal');
-  if (modal) modal.style.display = 'flex';
+  if (modal) {
+    modal.style.display = 'flex';
+    try { history.pushState(null, null, null); } catch(e) {}
+  }
 }
 function closeCoinShop() {
   var modal = document.getElementById('coinShopModal');

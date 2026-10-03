@@ -377,16 +377,15 @@
           .then(null, function(){});
       }
     };
-    /* Also patch markAllRead */
+    /* Also patch clearAllNotifs — permanently delete own rows in Supabase */
     var _origClearAll = window.clearAllNotifs;
     window.clearAllNotifs = function() {
       if (_origClearAll) _origClearAll();
-      /* Bug #30 Fix: Bulk mark read in Supabase */
       var uid = window.U && window.U.uid;
       if (window._supa && uid) {
         window._supa.from('notifications')
-          .update({ is_read: true })
-          .eq('user_id', uid).eq('is_read', false)
+          .delete()
+          .eq('user_id', uid)
           .then(null, function(){});
       }
     };
@@ -420,14 +419,18 @@
         }
         if (_origUpdateBell) { try { _origUpdateBell(); } catch(_e) {} }
       };
-      /* Fast path: compute directly from in-memory NOTIFS when already loaded (eliminates 35+ duplicate GETs/session) */
+      /* Fast path: compute directly from in-memory NOTIFS when already initialized */
       var nList = Array.isArray(window.NOTIFS) ? window.NOTIFS : (window.NOTIFS && typeof window.NOTIFS === 'object' ? Object.values(window.NOTIFS) : []);
-      if (!forceDb && nList.length > 0) {
+      var clearedTs = Number(localStorage.getItem('_mes_cleared_at_' + uid) || 0);
+      var delMap = (typeof window._getDeletedNotifKeys === 'function') ? window._getDeletedNotifKeys() : (window._DELETED_NOTIF_KEYS || {});
+      if (!forceDb && (nList.length > 0 || clearedTs > 0)) {
         var rdMap = (window.UD && window.UD.readNotifications) || {};
         var rKeys = window._READ_KEYS || {};
         var memUnread = nList.filter(function(n) {
           if (!n) return false;
           var k = n._key || n.id;
+          if (k && delMap[k]) return false;
+          if (clearedTs > 0 && Number(n.createdAt || n.timestamp || 0) <= clearedTs) return false;
           return !n.read && !n.is_read && !n._localRead && !(k && (rKeys[k] || rdMap[k]));
         }).length;
         _setBadge(memUnread);
@@ -441,13 +444,18 @@
       _bellInFlight = true;
       _lastBellFetchTs = now;
       window._supa.from('notifications')
-        .select('id')
+        .select('id,created_at')
         .eq('user_id', uid).eq('is_read', false)
-        .limit(10)
+        .limit(20)
         .then(function(r) {
           _bellInFlight = false;
-          var count = (r && r.data) ? r.data.length : 0;
-          _setBadge(count);
+          var rows = (r && r.data) ? r.data.filter(function(row) {
+            if (!row || delMap[row.id]) return false;
+            var ts = row.created_at ? new Date(row.created_at).getTime() : 0;
+            if (clearedTs > 0 && ts > 0 && ts <= clearedTs) return false;
+            return true;
+          }) : [];
+          _setBadge(rows.length);
         }, function() { _bellInFlight = false; if (_origUpdateBell) _origUpdateBell(); });
     };
     console.log('[Fix v29] Bug #30: Notification badge persists via Supabase is_read');
@@ -668,23 +676,27 @@
   }, 500, 12000);
 
   /* =============================================================
-     BUG #39 FIX: Notification delete — add confirm() dialog
+     BUG #39 FIX: Notification delete — persist deletion in localStorage + Supabase
   ============================================================= */
   waitFor(function(){ return window.deleteNotif !== undefined || window.delNotif !== undefined; }, function() {
     var _patchDeleteNotif = function(fnName) {
       var _orig = window[fnName];
       window[fnName] = function(notifId) {
-        if (!confirm('Notification delete karna chahte ho?')) return;
+        if (notifId && window._saveDeletedNotifKeys) {
+          var d = {}; d[notifId] = true;
+          window._saveDeletedNotifKeys(d);
+        }
         if (_orig) _orig(notifId);
         /* Also delete from Supabase */
-        if (window._supa && notifId) {
-          window._supa.from('notifications').delete().eq('id', notifId).then(null, function(){});
+        var uid = window.U && window.U.uid;
+        if (window._supa && notifId && uid) {
+          window._supa.from('notifications').delete().eq('id', notifId).eq('user_id', uid).then(null, function(){});
         }
       };
     };
     if (window.deleteNotif) _patchDeleteNotif('deleteNotif');
     if (window.delNotif)    _patchDeleteNotif('delNotif');
-    console.log('[Fix v29] Bug #39: Notification delete confirm installed');
+    console.log('[Fix v29] Bug #39: Notification delete persistence installed');
   }, 600, 12000);
 
   /* =============================================================

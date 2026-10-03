@@ -242,7 +242,11 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
         if (snap.exists()) {
           snap.forEach(function(c) {
             var u = c.val();
-            if (u && (u.ign||u.displayName||u.total_kills!==undefined)) users.push(_normRankUser(u, c.key));
+            if (!u) return;
+            var nm = String(u.ign || u.displayName || '').trim();
+            if (u.is_admin || u.isAdmin || u.leaderboard_hidden || u.leaderboardHidden || u.is_banned || u.isBanned) return;
+            if (/^QA[-_]?/i.test(nm) || nm.toLowerCase() === 'adminaccount') return;
+            if (u.ign || u.displayName || u.total_kills !== undefined) users.push(_normRankUser(u, c.key));
           });
         }
       } catch(e) {}
