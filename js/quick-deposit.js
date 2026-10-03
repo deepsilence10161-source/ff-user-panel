@@ -9,7 +9,7 @@ window.startAdd = function() {
   /* Info box */
   h += '<div style="background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:#00d4ff;line-height:1.7">';
   h += '💎 <b>Sky Diamond</b> = Paid matches ki entry fee<br>';
-  h += '<img src="js/green-diamond.png" style="width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block"> <b>Green Diamond</b> = Matches jeetne par milta hai (rank ke liye)<br>';
+  h += '<img src="js/green-diamond.png?v=20261003a" style="width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block"> <b>Green Diamond</b> = Matches jeetne par milta hai (rank ke liye)<br>';
   h += '🪙 <b>Coins</b> = Daily bonus/Ads se milta hai (free matches ke liye)<br>';
   h += '⚠️ Koi bhi diamond <b>withdraw nahi</b> hota — sirf matches khelo!';
   h += '</div>';
