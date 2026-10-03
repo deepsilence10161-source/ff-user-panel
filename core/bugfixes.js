@@ -37,7 +37,7 @@
            on both; this call is now a harmless retry of the same
            registration index.html already makes, giving it a second
            (backoff) attempt if the first one failed. */
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
           .then(function(reg) {
             console.log('[SW] Registered, scope:', reg.scope);
             setInterval(function() { reg.update(); }, 1800000);
