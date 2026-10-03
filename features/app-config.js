@@ -353,7 +353,9 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
         window.Android.downloadAndInstallApk(curApkUrl, String(curVer || 'latest'));
         return;
       }
-      window.location.href = curApkUrl;
+      var w = null;
+      try { w = window.open(curApkUrl, '_blank'); } catch (_we) {}
+      if (!w) window.location.href = curApkUrl;
     });
   }
   var retryBtn = document.getElementById('fuRetryBtn');

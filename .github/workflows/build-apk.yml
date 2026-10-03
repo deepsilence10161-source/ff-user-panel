@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
 
@@ -105,6 +107,19 @@ jobs:
           name: MiniEsports-APK
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
+
+      - name: Publish Latest APK to GitHub Releases (Direct Download URL)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CNT="$(git rev-list --count HEAD)"
+          TAG="v1.0.${CNT}"
+          cp android/app/build/outputs/apk/release/app-release.apk MiniEsports.apk
+          gh release create "$TAG" MiniEsports.apk \
+            --title "Mini eSports $TAG (Official APK)" \
+            --notes "Auto-published signed release APK ($TAG) for Force Update & direct download." \
+            --latest || \
+          gh release upload "$TAG" MiniEsports.apk --clobber
 
       # ── 🔒 R29E P0-FIX (2026-09-22): Keystore artifact upload REMOVED — ye
       #    signing key ko publically downloadable artifact bana deta tha
