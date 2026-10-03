@@ -159,8 +159,8 @@ function _bootUser() {
   _poll('user', _loadUser, 15000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll — realtime is primary, this only fires if a channel silently drops */
 }
 function _loadUser() {
-  if (!window._supa || !U) return;
-  window._supa.from('users').select('*').eq('id', U.uid).single()
+  if (!window._supa || !U) return Promise.resolve();
+  return window._supa.from('users').select('*').eq('id', U.uid).single()
     .then(function(r) { if (r.data) _applyUser(r.data); })
     .catch(function(e) { console.warn('[L1]', e.message); });
 }
@@ -407,7 +407,7 @@ function _loadMatches() {
         .catch(function () { return { data: [] }; })
     : Promise.resolve({ data: [] });
 
-  Promise.all([
+  return Promise.all([
     window._supa.from('matches').select('*').in('status', ['upcoming', 'live']).order('scheduled_at', { ascending: true }),
     window._supa.from('matches').select('*').eq('status', 'completed').gte('scheduled_at', _sevenDaysAgo).order('scheduled_at', { ascending: false }).limit(100),
     _myCancelled
@@ -450,8 +450,8 @@ function _bootJoinRequests() {
   _poll('jr', _loadJR, 15000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
 }
 function _loadJR() {
-  if (!window._supa || !U) return;
-  window._supa.from('join_requests').select('*').eq('user_id', U.uid)
+  if (!window._supa || !U) return Promise.resolve();
+  return window._supa.from('join_requests').select('*').eq('user_id', U.uid)
     .then(function(r) {
       JR = {};
       (r.data || []).forEach(function(jr) { JR[jr.id] = _toJR(jr); });
@@ -512,12 +512,12 @@ function _handleNotifRT(p) {
   }
 }
 function _loadNotifs() {
-  if (!window._supa || !U) return;
+  if (!window._supa || !U) return Promise.resolve();
   /* ✅ BUG FIX (2026-09-16): was .eq('user_id', U.uid) only — see note
      above. .or(...) fetches both this user's own notifications AND every
      target_all=true global broadcast in one query, matching what RLS
      already permits reading. */
-  window._supa.from('notifications').select('*')
+  return window._supa.from('notifications').select('*')
     .or('user_id.eq.' + U.uid + ',target_all.eq.true')
     .order('created_at', { ascending: false }).limit(50)
     .then(function(r) {
@@ -943,5 +943,6 @@ window._loadMatches = _loadMatches;
 window._loadJR = _loadJR;
 window._loadNotifs = _loadNotifs;
 window._loadUser = _loadUser;
+window._refreshUserState = _loadUser;
 /* Bug C-3 Fix: Expose channel management for token refresh */
 window._cleanupChannels = _cleanupChannels;

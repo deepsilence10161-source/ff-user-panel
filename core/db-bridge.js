@@ -573,9 +573,37 @@
       return window._supa.from('admin_activity_log').insert({
         action_type: value.type || 'anti_cheat_alert',
         note: value.message || value.reason || JSON.stringify(value).substring(0, 500),
-        target_user_id: value.uid || null,
+        target_user_id: value.uid || _uid() || null,
         created_at: new Date().toISOString()
       }).then(null, function(){});
+    }
+
+    /* disputes/{id} → public.disputes */
+    if (root === 'disputes' && typeof value === 'object' && value !== null) {
+      var _dMatchId = value.matchId || null;
+      var _uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      return window._supa.from('disputes').insert({
+        match_id: (_dMatchId && _uuidRe.test(_dMatchId)) ? _dMatchId : null,
+        user_id: value.uid || _uid(),
+        type: value.type || 'other',
+        message: value.description || value.message || '',
+        status: value.status || 'open'
+      }).then(null, function(e){ console.warn('[Bridge] disputes write:', e && e.message); });
+    }
+
+    /* kycRequests/{uid} → public.kyc_requests */
+    if (root === 'kycRequests' && typeof value === 'object' && value !== null) {
+      return window._supa.from('kyc_requests').insert({
+        user_id: value.uid || parts[1] || _uid(),
+        document_type: 'pan_aadhaar',
+        document_url: JSON.stringify({
+          ign: value.ign || '',
+          pan: value.pan || '',
+          aadhaarLast4: value.aadhaarLast4 || '',
+          name: value.name || ''
+        }),
+        status: value.status || 'pending'
+      }).then(null, function(e){ console.warn('[Bridge] kyc_requests write:', e && e.message); });
     }
 
     /* ✅ Bug X Fix (2026-10-01): matchChat → Supabase match_chat.
@@ -647,6 +675,26 @@
       if (parts[1] !== _uid()) { callback(_fakeSnap(0)); return; }
       window._supa.from('users').select('coins').eq('id', parts[1]).single()
         .then(function(r) { callback(_fakeSnap(r.data ? r.data.coins : 0)); }, function() { callback(_fakeSnap(0)); });
+      return;
+    }
+
+    /* users/{uid}/kyc — read latest kyc_requests row for this user */
+    if (root === 'users' && parts[2] === 'kyc') {
+      window._supa.from('kyc_requests').select('*').eq('user_id', parts[1])
+        .order('created_at', { ascending: false }).limit(1).maybeSingle()
+        .then(function(r) {
+          var row = r && r.data;
+          if (!row) { callback(_fakeSnap(null)); return; }
+          var meta = {};
+          try { if (row.document_url && row.document_url[0] === '{') meta = JSON.parse(row.document_url); } catch(e) {}
+          callback(_fakeSnap({
+            status: row.status === 'approved' ? 'verified' : (row.status || 'pending'),
+            pan: meta.pan || '',
+            aadhaarLast4: meta.aadhaarLast4 || '',
+            name: meta.name || '',
+            submittedAt: row.created_at ? new Date(row.created_at).getTime() : 0
+          }));
+        }, function() { callback(_fakeSnap(null)); });
       return;
     }
 

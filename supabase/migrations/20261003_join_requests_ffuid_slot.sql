@@ -578,3 +578,66 @@ CREATE POLICY notif_insert ON public.notifications
       ])
     )
   );
+
+-- Admin & Leader RLS policies for remaining tables discovered during deep audit
+DROP POLICY IF EXISTS cr_update_admin ON public.coin_requests;
+CREATE POLICY cr_update_admin ON public.coin_requests
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS kyc_update_admin ON public.kyc_requests;
+CREATE POLICY kyc_update_admin ON public.kyc_requests
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS dp_update_admin ON public.disputes;
+CREATE POLICY dp_update_admin ON public.disputes
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS ba_admin_all ON public.ban_appeals;
+CREATE POLICY ba_admin_all ON public.ban_appeals
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS chr_admin_write ON public.cheat_reports;
+CREATE POLICY chr_admin_write ON public.cheat_reports
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS kp_admin_all ON public.kill_proofs;
+CREATE POLICY kp_admin_all ON public.kill_proofs
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS rr_update_admin ON public.refund_requests;
+CREATE POLICY rr_update_admin ON public.refund_requests
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS rp_admin_all ON public.reports;
+CREATE POLICY rp_admin_all ON public.reports
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS cw_admin_write ON public.clan_wars;
+CREATE POLICY cw_admin_write ON public.clan_wars
+  FOR ALL
+  USING ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true))
+  WITH CHECK ((auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true));
+
+DROP POLICY IF EXISTS clans_delete_leader ON public.clans;
+CREATE POLICY clans_delete_leader ON public.clans
+  FOR DELETE
+  USING (
+    (auth.jwt() ->> 'sub') = leader_uid
+    OR (auth.jwt() ->> 'sub') IN (SELECT id FROM public.users WHERE is_admin = true)
+  );

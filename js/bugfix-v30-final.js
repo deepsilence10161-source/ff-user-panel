@@ -858,13 +858,15 @@
     var _origCJoin = window.cJoin;
 
     window.cJoin = function(matchId) {
-      if (!_s() || !matchId) {
-        /* No Supabase available — proceed with original (will fail server-side if full) */
+      if (!_s() || !matchId || (window.MT && window.MT[matchId])) {
+        /* MT[matchId] is already kept fresh in <0.3s via Realtime + pulse,
+           and validate_and_join_match enforces capacity atomically on server.
+           Open confirmation modal immediately (0ms) for instant UX. */
         _origCJoin(matchId);
         return;
       }
 
-      /* Re-check from Supabase before proceeding */
+      /* Fallback if match not yet in MT cache */
       _s().from('matches')
         .select('status, max_slots, filled_slots')
         .eq('id', matchId)

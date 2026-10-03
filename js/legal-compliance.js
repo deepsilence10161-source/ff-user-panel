@@ -336,28 +336,44 @@
   ═══════════════════════════════════════ */
   window.mesShowKYC = function () {
     if (!window.U||!window.UD) { _toast('Please login first','err'); return; }
-    var kyc=window.UD.kyc||{}, uid=window.U.uid;
-    if (kyc.status==='verified') { _toast('✓ KYC already verified!','ok'); return; }
-    if (kyc.status==='pending') {
-      _open('🪪 KYC Verification', '<div style="text-align:center;padding:20px"><div style="font-size:44px;margin-bottom:12px">⏳</div><div style="font-size:15px;font-weight:700;color:#ffaa00">KYC Under Review</div><div style="font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7">Aapki KYC review mein hai.<br>24-48 hours mein verify hogi.</div></div>');
-      return;
+    var uid=window.U.uid;
+    function _renderKYC(kyc) {
+      kyc = kyc || window.UD.kyc || {};
+      if (window.UD) window.UD.kyc = kyc;
+      if (kyc.status==='verified' || kyc.status==='approved') {
+        _open('🪪 KYC Verification', '<div style="text-align:center;padding:20px"><div style="font-size:44px;margin-bottom:12px">✅</div><div style="font-size:15px;font-weight:700;color:#00ff9c">KYC Verified</div><div style="font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7">Aapki KYC successfully verify ho chuki hai.</div></div>');
+        _toast('✓ KYC already verified!','ok');
+        return;
+      }
+      if (kyc.status==='pending') {
+        _open('🪪 KYC Verification', '<div style="text-align:center;padding:20px"><div style="font-size:44px;margin-bottom:12px">⏳</div><div style="font-size:15px;font-weight:700;color:#ffaa00">KYC Under Review</div><div style="font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7">Aapki KYC review mein hai.<br>24-48 hours mein verify hogi.</div></div>');
+        return;
+      }
+      var h = '<div>'
+        + '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:#8888aa">Rs.500+ withdrawal ke liye PAN mandatory (IT Rules 2023)</div>'
+        + '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">PAN Card Number *</label>'
+        + '<input type="text" id="_mes_pan" placeholder="ABCDE1234F" maxlength="10" oninput="this.value=this.value.toUpperCase()" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box"></div>'
+        + '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Aadhaar Number *</label>'
+        + '<input type="text" id="_mes_aadhaar" placeholder="123456789012" maxlength="12" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box"></div>'
+        + '<div style="margin-bottom:14px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Full Name (as in PAN) *</label>'
+        + '<input type="text" id="_mes_kycname" placeholder="RAHUL SHARMA" oninput="this.value=this.value.toUpperCase()" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:14px;box-sizing:border-box"></div>'
+        + '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px">'
+        + '<input type="checkbox" id="_mes_kyc_cbx" style="margin-top:3px;accent-color:#00ff9c;flex-shrink:0">'
+        + '<label for="_mes_kyc_cbx" style="font-size:11px;color:#8888aa">Ye meri real identity hai. Galat info = ban + legal action</label></div>'
+        + '<button onclick="window.mesSubmitKYC(\''+uid+'\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#8844cc);color:#fff;font-weight:900;font-size:14px;border:none;cursor:pointer">Submit KYC</button>'
+        + '</div>';
+      _open('🪪 KYC Verification', h);
     }
-    var h = '<div>'
-      + '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:#8888aa">Rs.500+ withdrawal ke liye PAN mandatory (IT Rules 2023)</div>'
-      + '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">PAN Card Number *</label>'
-      + '<input type="text" id="_mes_pan" placeholder="ABCDE1234F" maxlength="10" oninput="this.value=this.value.toUpperCase()" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box"></div>'
-      + '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Aadhaar Number *</label>'
-      + '<input type="text" id="_mes_aadhaar" placeholder="123456789012" maxlength="12" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box"></div>'
-      + '<div style="margin-bottom:14px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Full Name (as in PAN) *</label>'
-      + '<input type="text" id="_mes_kycname" placeholder="RAHUL SHARMA" oninput="this.value=this.value.toUpperCase()" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:14px;box-sizing:border-box"></div>'
-      + '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px">'
-      + '<input type="checkbox" id="_mes_kyc_cbx" style="margin-top:3px;accent-color:#00ff9c;flex-shrink:0">'
-      + '<label for="_mes_kyc_cbx" style="font-size:11px;color:#8888aa">Ye meri real identity hai. Galat info = ban + legal action</label></div>'
-      + '<button onclick="window.mesSubmitKYC(\''+uid+'\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#8844cc);color:#fff;font-weight:900;font-size:14px;border:none;cursor:pointer">Submit KYC</button>'
-      + '</div>';
-    _open('🪪 KYC Verification', h);
+    if (window.db && window.db.ref) {
+      window.db.ref('users/' + uid + '/kyc').once('value', function(s) {
+        _renderKYC(s && typeof s.val === 'function' ? s.val() : null);
+      });
+    } else {
+      _renderKYC(window.UD.kyc);
+    }
   };
   window.mesSubmitKYC = function (uid) {
+    uid = uid || (window.U && window.U.uid);
     var pan=((document.getElementById('_mes_pan')||{}).value||'').trim().toUpperCase();
     var aadhaar=((document.getElementById('_mes_aadhaar')||{}).value||'').replace(/\D/g,'');
     var name=((document.getElementById('_mes_kycname')||{}).value||'').trim();
@@ -366,6 +382,7 @@
     if (!/^\d{12}$/.test(aadhaar)) { _toast('Aadhaar 12 digits hona chahiye','err'); return; }
     if (name.length<3) { _toast('Full name enter karo','err'); return; }
     if (!cbx) { _toast('Checkbox tick karo','err'); return; }
+    if (window.UD) window.UD.kyc = { status:'pending', panFull:pan, panLast4:pan.slice(-4), aadhaarLast4:aadhaar.slice(-4), name:name, submittedAt:Date.now() };
     window.db.ref('users/'+uid+'/kyc').set({status:'pending',panFull:pan,panLast4:pan.slice(-4),aadhaarLast4:aadhaar.slice(-4),name:name,submittedAt:Date.now()});
     window.db.ref('kycRequests/'+uid).set({uid:uid,ign:(window.UD||{}).ign||'',pan:pan,aadhaarLast4:aadhaar.slice(-4),name:name,status:'pending',submittedAt:Date.now()});
     _close(); _toast('KYC submitted! 24-48 hrs mein verify hogi ✓','ok');
@@ -490,7 +507,7 @@
     h += '<div style="margin-bottom:16px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Details:</label>'
       + '<textarea id="_mes_ddesc" placeholder="Poori baat likho..." style="width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:13px;height:80px;resize:none;box-sizing:border-box"></textarea></div>';
     var mid = matchId || '';
-    h += '<button onclick="window.mesSubmitDispute()' + ' style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffaa00,#ff8800);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer">Submit Dispute</button>';
+    h += '<button onclick="window.mesSubmitDispute(\'' + mid + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffaa00,#ff8800);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer">Submit Dispute</button>';
     h += '</div>';
     _open('🚨 Dispute / Complaint', h);
   };
