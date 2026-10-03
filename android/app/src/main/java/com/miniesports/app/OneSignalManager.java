@@ -65,56 +65,14 @@ public final class OneSignalManager {
         } catch (Throwable ignored) { }
     }
 
-    /* ── PUSH SUBSCRIPTION VERIFICATION DIALOG ── */
+    /* ── PUSH SUBSCRIPTION OBSERVER (dialog removed — silent permission check) ── */
     public static void setupPushSubscriptionObserver(final Activity activity) {
         if (!isInitialized || activity == null) return;
-        IPushSubscriptionObserver observer = new IPushSubscriptionObserver() {
-            @Override
-            public void onPushSubscriptionChange(PushSubscriptionChangedState state) {
-                maybeShowIntegrationCompleteDialog(activity, state.getCurrent().getId());
-            }
-        };
-        pushSubscriptionObserver = observer;
-        OneSignal.getUser().getPushSubscription().addObserver(observer);
-
-        /* ID observer-attach होने से पहले भी server-assigned हो सकती है —
-           तुरंत current value भी जाँचो */
-        maybeShowIntegrationCompleteDialog(
-            activity, OneSignal.getUser().getPushSubscription().getId());
-    }
-
-    private static boolean isRegistered(String subscriptionId) {
-        return subscriptionId != null && !subscriptionId.isEmpty()
-            && !subscriptionId.startsWith("local-");
-    }
-
-    private static void maybeShowIntegrationCompleteDialog(
-            final Activity activity, String subscriptionId) {
-        if (isRegistered(subscriptionId) && dialogShown.compareAndSet(false, true)) {
-            new Handler(Looper.getMainLooper()).post(() ->
-                showIntegrationCompleteDialog(activity));
-        }
-    }
-
-    private static void showIntegrationCompleteDialog(final Activity activity) {
         try {
-            new AlertDialog.Builder(activity)
-                .setTitle("Your OneSignal SDK integration is complete!")
-                .setMessage(
-                    "You can now send Push Notifications & In-App Messages through OneSignal. "
-                    + "Tap below to enable push notifications.")
-                /* नोट: आधिकारिक prompt का Java-sample requestPermission(true,
-                   result->{}) 5.9.2 पर compile नहीं होता (callback Kotlin
-                   Continuation है, functional-interface नहीं) — इसलिए वही
-                   काम native POST_NOTIFICATIONS request से (वैसा ही व्यवहार) */
-                .setPositiveButton("Got it", (dialog, which) -> {
-                    if (android.os.Build.VERSION.SDK_INT >= 33) {
-                        ActivityCompat.requestPermissions(activity,
-                            new String[]{ "android.permission.POST_NOTIFICATIONS" }, 4101);
-                    }
-                })
-                .setCancelable(false)
-                .show();
+            if (android.os.Build.VERSION.SDK_INT >= 33) {
+                ActivityCompat.requestPermissions(activity,
+                    new String[]{ "android.permission.POST_NOTIFICATIONS" }, 4101);
+            }
         } catch (Throwable ignored) { }
     }
 }

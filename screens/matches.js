@@ -193,12 +193,13 @@ function showDet(id) {
   var _d1 = t.firstPrize || t.prize1st || 0;
   var _d2 = t.secondPrize || t.prize2nd || 0;
   var _d3 = t.thirdPrize || t.prize3rd || 0;
+  var _detPrSym = window._prizeIcon ? window._prizeIcon(t) : (isCoin ? '🪙' : (window.GD_ICON || '💎'));
   if (_d1 || _d2 || _d3) {
     h += '<div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px solid rgba(255,215,0,.2);border-radius:12px">';
     h += '<div style="font-size:14px;font-weight:700;color:var(--yellow);margin-bottom:10px"><i class="fas fa-trophy"></i> Prize Breakdown</div>';
-    if (_d1) h += '<div class="d-row"><span class="dl">🥇 1st Prize</span><span class="dv green">💎' + _d1 + '</span></div>';
-    if (_d2) h += '<div class="d-row"><span class="dl">🥈 2nd Prize</span><span class="dv">💎' + _d2 + '</span></div>';
-    if (_d3) h += '<div class="d-row"><span class="dl">🥉 3rd Prize</span><span class="dv">💎' + _d3 + '</span></div>';
+    if (_d1) h += '<div class="d-row"><span class="dl">🥇 1st Prize</span><span class="dv green">' + _detPrSym + _d1 + '</span></div>';
+    if (_d2) h += '<div class="d-row"><span class="dl">🥈 2nd Prize</span><span class="dv">' + _detPrSym + _d2 + '</span></div>';
+    if (_d3) h += '<div class="d-row"><span class="dl">🥉 3rd Prize</span><span class="dv">' + _detPrSym + _d3 + '</span></div>';
     h += '</div>';
   }
   if (t.description) h += '<div style="margin-top:12px;padding:12px;background:var(--card);border-radius:10px;font-size:13px;color:var(--txt2);line-height:1.5">' + t.description + '</div>';
@@ -229,21 +230,11 @@ function showDet(id) {
       h += '<div class="rp-label" style="margin-top:8px">Password</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="room-big">' + t.roomPassword + '</span><button onclick="copyTxt(\'' + String(t.roomPassword||'').replace(/'/g,"\\'") + '\')" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
     } else { h += '<div class="room-box rb-yellow" style="margin-top:12px"><i class="fas fa-lock"></i> Join the match to see room details</div>'; }
   } else { h += '<div class="room-box rb-blue" style="margin-top:12px"><i class="fas fa-clock"></i> Room details will be shared before match start</div>'; }
-  // Share Match button removed
-  /* ✅ BUG FIX (2026-08-22): 'jr' was never defined anywhere in showDet(id)
-     — only 't' (the match) exists here, not a join_request. Referencing
-     undefined 'jr' threw a ReferenceError partway through building the
-     modal HTML, which aborted the whole function before openModal() was
-     ever called — so tapping "Details" appeared to do NOTHING (no error
-     shown to the user, modal just never opened). Bug 78's intent (only
-     show Invite Friends for upcoming/live, not cancelled/completed) is
-     preserved using MT[id].status directly since that's all this
-     function actually has access to. */
+  /* Single Share / Invite Friends button — opens Android native Share sheet */
   var _matchStatus = (t.status || '').toLowerCase();
   if (_matchStatus !== 'cancelled' && _matchStatus !== 'completed') {
-    h += '<button onclick="shareMatch(\'' + id + '\')" style="width:100%;margin-top:14px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-share-alt"></i> ⚡ Invite Friends</button>';
+    h += '<button onclick="shareMatch(\'' + id + '\')" style="width:100%;margin-top:14px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-share-alt"></i> Share Match — Invite Friends</button>';
   }
-  h += '<button onclick="window.shareToInstagram&&shareToInstagram(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#e1306c,#833ab4,#f77737);color:#fff;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fab fa-instagram"></i> Share to Instagram Stories</button>';
 
   // Watchlist button removed
 

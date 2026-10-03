@@ -380,27 +380,13 @@ function applyReferralCode() {
     }, function() { toast('Referral apply nahi hua', 'err'); });
 }
 function shareRef(code) {
-  var url = window.location.href;
+  var url = (typeof window.APP_URL === 'string' && window.APP_URL) || window.location.href;
   var msg = '🎮 Join Mini eSports — India\'s Best Free Fire Tournament App! 🔥\n\n🪙 Get FREE bonus coins on signup!\n📈 Skill-based tournaments — coins + 💎 diamonds jito!\n\n👉 Use my referral code: ' + code + '\n📲 Download now:';
-  /* ✅ BUG FIX (2026-08-26): "WhatsApp abhi bhi nahi khulta" — after
-     the wa.me link code itself was verified clean and correctly
-     deployed multiple times (confirmed directly on the live GitHub
-     Pages repo, byte for byte), this is the real remaining cause:
-     navigator.share() was tried FIRST here, with openWhatsApp() only
-     as a .catch() fallback if it REJECTS. Inside this specific wrapped
-     WebView, navigator.share() can resolve successfully (never
-     rejecting, so the fallback never runs) while its own internal
-     handoff to WhatsApp is what's actually broken — Android System
-     WebView's native Web Share implementation is completely outside
-     this app's own code and cannot be inspected or fixed from here.
-     The screenshot evidence matches exactly: a whatsapp://send/?...
-     URL with mangled/mojibake text is the signature of a native share
-     bridge re-encoding the string, not of any wa.me link this codebase
-     builds (every such link here is a plain https://wa.me/... URL).
-     Going straight to the verified-working openWhatsApp() removes
-     navigator.share from this path entirely — no more silent
-     hand-off to a native implementation this app can't control. */
-  window.openWhatsApp(msg + '\n' + url);
+  if (window.nativeShareText) {
+    window.nativeShareText('Mini eSports — Invite Friends', msg, url);
+  } else {
+    window.openWhatsApp(msg + '\n' + url);
+  }
 }
 function addTM(mode) {
   if (isVO()) { toast('Complete profile first', 'err'); return; }
@@ -645,6 +631,14 @@ window.showChangeFfUid = function() {
     h += 'Amount: <b style="color:#00ff9c">₹' + FF_UID_CHANGE_FEE + '</b><br>';
     h += 'Note: <b>UIDChange-' + U.uid.substring(0,8) + '</b>';
     h += '</div>';
+    if (window.renderPaytmInstantBlock) {
+      h += window.renderPaytmInstantBlock(
+        FF_UID_CHANGE_FEE,
+        'window._paytmFfUidChange(' + FF_UID_CHANGE_FEE + ')',
+        '_cfPtmBtn',
+        '_cfPtmSt'
+      );
+    }
     h += '<div class="f-group"><label>Payment Screenshot *</label>';
     h += '<div id="_cfArea" onclick="document.getElementById(\'_cfIn\').click()" style="border:2px dashed rgba(185,100,255,.3);border-radius:12px;padding:18px;text-align:center;cursor:pointer">';
     h += '<i class="fas fa-camera" style="font-size:26px;color:#b964ff55;display:block;margin-bottom:6px"></i>';
@@ -669,6 +663,25 @@ window.showChangeFfUid = function() {
       if (area) area.innerHTML = '<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Screenshot ready ✅</div><input type="file" id="_cfIn" accept="image/*" style="display:none" onchange="window._cfSs(this)">';
     };
     r.readAsDataURL(inp.files[0]);
+  };
+
+  window._paytmFfUidChange = function(fee) {
+    var newUidInput = document.getElementById('cfNewUid');
+    var newUid = (newUidInput ? newUidInput.value : '').trim();
+    if (!/^\d{8,12}$/.test(newUid)) { toast('⚠️ Pehle upar naya 8-12 digit FF UID daalo!', 'err'); return; }
+    if (newUid === UD.ffUid) { toast('Ye toh tumhara current UID hai — naya UID daalo', 'err'); return; }
+    if (window.paytmInstantPurchase) {
+      window.paytmInstantPurchase(
+        fee,
+        'paytm_ff_uid_change',
+        { new_ff_uid: newUid, new_ign: UD.ign || '' },
+        '_cfPtmBtn',
+        '_cfPtmSt',
+        function() {
+          toast('✅ Payment Confirmed! FF UID change request submit ho gaya.', 'ok');
+        }
+      );
+    }
   };
 
   window._submitFfUidChange = function(premiumFlag) {

@@ -115,6 +115,15 @@ function _showBundlePayment(b) {
   h += '<div style="font-size:16px;font-weight:900;color:' + b.color + '">' + b.label + '</div>';
   h += '<div style="font-size:28px;font-weight:900;color:#fff;margin:8px 0">₹' + b.price + ' <span style="font-size:12px;color:#666;text-decoration:line-through">₹' + b.originalPrice + '</span></div>';
   h += '<div style="font-size:12px;color:#00ff9c;font-weight:700">Save ₹' + b.save + '! 🎉</div></div>';
+  var _bTier = (b.id === 'gold_bp') ? 2 : 1;
+  if (window.renderPaytmInstantBlock) {
+    h += window.renderPaytmInstantBlock(
+      b.price,
+      'window.paytmInstantPurchase(' + b.price + ',\'paytm_bundle\',{bundle_id:\'' + b.id + '\',tier:' + _bTier + ',label:\'' + b.label + '\'},\'_bndlPtmBtn\',\'_bndlPtmSt\',function(){if(window.toast)toast(\'🎉 ' + b.label + ' Activated!\',\'ok\');})',
+      '_bndlPtmBtn',
+      '_bndlPtmSt'
+    );
+  }
   h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px">';
   ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹' + b.price + ' bhejo', 'Screenshot lo', '1-2 ghante mein dono activate honge'].forEach(function(s,i){
     h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';
@@ -174,6 +183,14 @@ window.buyAnnualPlan = function(tier, price) {
     h += '<div style="font-size:16px;font-weight:900;color:' + p.color + ';margin-top:6px">' + p.label + '</div>';
     h += '<div style="font-size:28px;font-weight:900;color:#fff;margin:8px 0">₹' + price + '<span style="font-size:12px;color:#888">/year</span></div>';
     h += '<div style="font-size:12px;color:#00ff9c;font-weight:700">Save ₹' + p.save + ' vs monthly! 🎉</div></div>';
+    if (window.renderPaytmInstantBlock) {
+      h += window.renderPaytmInstantBlock(
+        price,
+        'window.paytmInstantPurchase(' + price + ',\'paytm_annual\',{tier:' + tier + ',label:\'' + p.label + '\'},\'_annPtmBtn\',\'_annPtmSt\',function(){if(window.toast)toast(\'🎉 ' + p.label + ' Activated!\',\'ok\');})',
+        '_annPtmBtn',
+        '_annPtmSt'
+      );
+    }
     h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px">';
     ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹' + price + ' bhejo', 'Screenshot lo', '24 ghante mein 12-month activate hoga'].forEach(function(s,i){
       h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';

@@ -65,6 +65,8 @@
   */
   window.startPaytmPayment = function (amount, opts) {
     var cb = (opts && typeof opts.onStatus === 'function') ? opts.onStatus : function () {};
+    var purpose = (opts && opts.purpose) ? String(opts.purpose) : '';
+    var meta    = (opts && opts.meta && typeof opts.meta === 'object') ? opts.meta : {};
     cb('loading');
 
     _getToken(function (token) {
@@ -73,17 +75,84 @@
       fetch(EDGE_BASE + '/paytm-create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ amount: amount })
+        body: JSON.stringify({ amount: amount, purpose: purpose, meta: meta })
       })
         .then(function (r) { return r.json(); })
-        .then(function (d) {
+        .then(async function (d) {
           if (!d || !d.txnToken) {
             cb('error', d && d.error ? d.error : 'Order create nahi ho saka');
             return;
           }
+          if (purpose && d.orderId && window._supa) {
+            try {
+              await window._supa.rpc('tag_paytm_order_purpose', {
+                p_order_id: d.orderId,
+                p_purpose: purpose,
+                p_meta: meta
+              });
+            } catch (_e) {}
+          }
           _openCheckout(d, cb);
         })
         .catch(function (e) { cb('error', e.message || 'Network error'); });
+    });
+  };
+
+  /* ── Shared Instant Paytm Purchase Helper for Premium / Season Pass / Bundles / UID Change ── */
+  window.renderPaytmInstantBlock = function (amount, onclickJs, btnId, statusId) {
+    if (!(window.CFG && window.CFG.paytmEnabled && window.startPaytmPayment)) return '';
+    var bId = btnId || '_ptmInstBtn';
+    var sId = statusId || '_ptmInstStatus';
+    return '<div style="margin-bottom:14px">' +
+      '<button type="button" id="' + bId + '" onclick="' + onclickJs + '" ' +
+      'style="width:100%;padding:13px;border-radius:12px;border:none;cursor:pointer;' +
+      'background:linear-gradient(135deg,#00baf2,#0082c8);color:#fff;font-weight:900;font-size:14px;' +
+      'display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(0,186,242,.35)">' +
+      '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)</button>' +
+      '<div id="' + sId + '" style="display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-size:12px"></div>' +
+      '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 4px">' +
+      '<div style="flex:1;height:1px;background:rgba(255,255,255,.08)"></div>' +
+      '<span style="font-size:10px;color:#888;font-weight:700">YA MANUAL SCREENSHOT SE</span>' +
+      '<div style="flex:1;height:1px;background:rgba(255,255,255,.08)"></div></div>' +
+      '</div>';
+  };
+
+  window.paytmInstantPurchase = function (amount, purpose, meta, btnId, statusId, onApproved) {
+    var btn = document.getElementById(btnId || '_ptmInstBtn');
+    var st  = document.getElementById(statusId || '_ptmInstStatus');
+    function setSt(bg, col, msg) {
+      if (!st) return;
+      st.style.display = 'block';
+      st.style.background = bg;
+      st.style.color = col;
+      st.innerHTML = msg;
+    }
+    window.startPaytmPayment(amount, {
+      purpose: purpose,
+      meta: meta || {},
+      onStatus: function (status, detail) {
+        if (status === 'loading') {
+          if (btn) { btn.disabled = true; btn.textContent = '⏳ Connecting to Paytm...'; }
+          setSt('rgba(0,186,242,.1)', '#00baf2', '⏳ Creating Paytm order...');
+        } else if (status === 'processing') {
+          if (btn) btn.textContent = '⏳ Payment window open...';
+          setSt('rgba(255,170,0,.1)', '#ffaa00', '📱 Paytm pe UPI payment complete karo...');
+        } else if (status === 'approved') {
+          setSt('rgba(0,255,156,.12)', '#00ff9c', '✅ Payment Confirmed! Instant activation complete.');
+          if (window._loadUser) window._loadUser();
+          if (typeof onApproved === 'function') onApproved();
+          setTimeout(function () { if (window.closeModal) closeModal(); }, 1500);
+        } else if (status === 'rejected') {
+          if (btn) { btn.disabled = false; btn.textContent = '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)'; }
+          setSt('rgba(255,68,68,.12)', '#ff4444', '❌ Payment failed ya cancel ho gaya. Dobara try karo.');
+        } else if (status === 'timeout') {
+          if (btn) { btn.disabled = false; btn.textContent = '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)'; }
+          setSt('rgba(255,170,0,.1)', '#ffaa00', '⏰ Confirmation mein time lag raha hai — thodi der mein auto-update hoga.');
+        } else if (status === 'error') {
+          if (btn) { btn.disabled = false; btn.textContent = '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)'; }
+          setSt('rgba(255,68,68,.12)', '#ff4444', '⚠️ ' + (detail || 'Error — manual screenshot method use karo'));
+        }
+      }
     });
   };
 

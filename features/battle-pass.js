@@ -303,6 +303,14 @@ window.buySeasonPass=function(){
     h+='<div style="font-size:11px;font-weight:700;color:#b964ff;margin-bottom:8px">PREMIUM TRACK UNLOCKS:</div>';
     ['50 Tiers ke exclusive rewards (Badges, Titles, Themes, Emojis)','Free track se zyada Green Diamonds','Har mahine naye exclusive items','Season Legend Title (Tier 50 pe)'].forEach(function(t){h+='<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#ccc;margin-bottom:5px"><span style="color:#b964ff">✓</span>'+t+'</div>';});
     h+='</div>';
+    if (window.renderPaytmInstantBlock) {
+      h += window.renderPaytmInstantBlock(
+        PASS_PRICE(),
+        'window.paytmInstantPurchase(' + PASS_PRICE() + ',\'paytm_season_pass\',{season:\'current\'},\'_spPtmBtn\',\'_spPtmSt\',function(){if(window.toast)toast(\'🎫 Season Pass Activated!\',\'ok\');})',
+        '_spPtmBtn',
+        '_spPtmSt'
+      );
+    }
     h+='<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:12px">';
     ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹'+PASS_PRICE()+' bhejo','Screenshot lo','Neeche upload karo — 1-2 ghante mein activate hoga'].forEach(function(s,i){h+='<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(185,100,255,.12);border:1px solid rgba(185,100,255,.3);color:#b964ff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">'+(i+1)+'</div>'+s+'</div>';});
     h+='</div>';

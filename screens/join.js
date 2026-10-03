@@ -622,6 +622,24 @@ function _afterJoinSuccess(id, t, tp, jid, assignedSlots) {
   /* Update local JR cache immediately so hasJ() works without reload */
   if (!window.JR) window.JR = {};
   JR[jid] = { matchId: id, userId: U.uid, status: 'joined', mode: tp, createdAt: Date.now() };
+  /* Immediately record entry-fee debit in local TXNS + sync from Supabase wallet_transactions */
+  var _joinFee = Number(t && t.entryFee) || 0;
+  if (_joinFee > 0) {
+    if (!window.TXNS) window.TXNS = [];
+    var _isCoinEntry = (String((t && t.entryType) || '').toLowerCase() === 'coin');
+    window.TXNS.unshift({
+      _key: 'join_' + jid,
+      type: 'debit',
+      amount: -_joinFee,
+      description: 'Joined: ' + ((t && (t.name || t.title)) || 'Match'),
+      reason: 'match_entry',
+      refId: id,
+      currency: _isCoinEntry ? 'coins' : 'sky_diamonds',
+      timestamp: Date.now(),
+      read: true
+    });
+  }
+  if (window._loadTransactions) setTimeout(function() { window._loadTransactions(); }, 400);
   /* ✅ BUG FIX (2026-09-16): "Match join karne ke baad match section me
      show hi nahi ho raha, join button bhi joined nahi dikh raha, refresh
      karne par hi sahi dikhta hai" — JR[jid] above already makes hasJ(id)

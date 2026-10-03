@@ -132,8 +132,9 @@ function renderWallet() {
         var debitTypes = ['debit','entry','join','deduct','purchase','withdraw','spend'];
         return debitTypes.some(function(t) { return et.indexOf(t) >= 0; }) || amt < 0;
       }
-      if (_af === 'sky')  return et.indexOf('diamond')>=0||et.indexOf('paid')>=0||et.indexOf('sky')>=0||et.indexOf('deposit')>=0||et.indexOf('withdraw')>=0;
-      if (_af === 'coin') return et.indexOf('coin')>=0||et.indexOf('ad')>=0||et.indexOf('check')>=0;
+      var cur = (w.currency || '').toLowerCase();
+      if (_af === 'sky')  return et.indexOf('diamond')>=0||et.indexOf('paid')>=0||et.indexOf('sky')>=0||et.indexOf('deposit')>=0||et.indexOf('withdraw')>=0||cur.indexOf('sky')>=0||cur.indexOf('diamond')>=0;
+      if (_af === 'coin') return et.indexOf('coin')>=0||et.indexOf('ad')>=0||et.indexOf('check')>=0||cur.indexOf('coin')>=0;
       return true;
     });
   }
@@ -206,7 +207,7 @@ function renderWallet() {
       h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
       h += '<div class="wh-time">' + timeAgo(w.timestamp) + '</div>';
       if (desc && desc !== label) h += '<div class="wh-utr">' + desc + '</div>';
-      h += '</div><div class="wh-amt ' + amtColor + '">' + (isCredit ? '+' : '') + _curIcon + Math.abs(amt2) + '</div></div>';
+      h += '</div><div class="wh-amt ' + amtColor + '">' + (isCredit ? '+' : '-') + _curIcon + Math.abs(amt2) + '</div></div>';
     }
   });
   wh.innerHTML = h;

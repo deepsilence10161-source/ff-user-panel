@@ -11,7 +11,7 @@ function navTo(scr) {
   if (scr === 'rank') renderRank();
   if (scr === 'profile') renderProfile();
   if (scr === 'chat') startChat();
-  if (scr === 'wallet') renderWallet();
+  if (scr === 'wallet') { renderWallet(); if (window._loadWallet) window._loadWallet(); }
   if (scr === 'notif') {
     renderNotifs();
     /* FIX: Mark all as read when user opens notification tab */

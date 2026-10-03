@@ -133,6 +133,7 @@ function _renderPremModal(){
 
 window.buyPremium=function(tier,price){
   var t=TIERS[tier-1]; if(!t) return;
+  if(price==null) price=t.defaultPrice;
   var h='<div style="text-align:center;padding:6px 0 16px"><div style="font-size:34px;margin-bottom:6px;animation:premFloat 2s ease-in-out infinite">'+t.icon+'</div>';
   h+='<div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
   h+='<div style="font-size:30px;font-weight:900;margin:6px 0;color:#fff">₹'+price+'<span style="font-size:13px;color:#888">/mahina</span></div></div>';
@@ -142,6 +143,14 @@ window.buyPremium=function(tier,price){
   t.perks.forEach(function(p){h+='<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#ccc;margin-bottom:5px"><span>'+(p.i==='GD'?GDI(13):p.i)+'</span><span>'+p.t+'</span></div>';});
   h+='</div>';
   /* Payment steps */
+  if (window.renderPaytmInstantBlock) {
+    h += window.renderPaytmInstantBlock(
+      price,
+      'window.paytmInstantPurchase(' + price + ',\'paytm_premium\',{tier:' + tier + ',label:\'' + t.label + '\'},\'_premPtmBtn\',\'_premPtmSt\',function(){if(window.toast)toast(\'🎉 Premium ' + t.label + ' Activated!\',\'ok\');})',
+      '_premPtmBtn',
+      '_premPtmSt'
+    );
+  }
   h+='<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px">';
   h+='<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:10px;letter-spacing:.5px">PAYMENT STEPS:</div>';
   [

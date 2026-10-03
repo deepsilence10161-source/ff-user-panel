@@ -424,7 +424,7 @@ function _loadMatches() {
 }
 function _toMT(m) {
   var _filled = m.filled_slots || 0;
-  return { id: m.id, name: m.title, title: m.title, status: m.status||'upcoming', mode: m.mode||'solo', gameMode: m.mode||'solo', map: m.map||'Bermuda', entryFee: m.entry_fee||0, entryType: (function(et){
+  var _normEntry = (function(et){
       if(!et) return 'free';
       et = et.toLowerCase().replace(/_/g,'').replace(/-/g,'');
       if(et==='coin'||et==='coins')            return 'coin';
@@ -432,7 +432,18 @@ function _toMT(m) {
       if(et==='free'||et==='freeentry')         return 'free';
       if(et==='paid'||et==='sky'||et==='skydia'||et==='skydiamond'||et==='sd') return 'paid';
       return 'free';
-    })(m.entry_type), firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, /* ✅ R8 FIX (2026-09-30): publish marker — admin publish karte hi
+    })(m.entry_type);
+  var _normPrize = (function(pt, isSp, ent){
+      if (isSp) return 'inr';
+      var p = String(pt || '').toLowerCase().replace(/_/g,'').replace(/-/g,'');
+      if (p === 'coin' || p === 'coins') return 'coin';
+      if (p === 'inr' || p === 'cash') return 'inr';
+      if (p === 'skydiamond' || p === 'sky' || p === 'sd') return 'skyDiamond';
+      if (p === 'greendiamond' || p === 'gd' || p === 'green') return 'greenDiamond';
+      if (ent === 'coin' || ent === 'ad' || ent === 'free') return 'coin';
+      return 'greenDiamond';
+    })(m.prize_type, m.is_sponsored, _normEntry);
+  return { id: m.id, name: m.title, title: m.title, status: m.status||'upcoming', mode: m.mode||'solo', gameMode: m.mode||'solo', map: m.map||'Bermuda', entryFee: m.entry_fee||0, entryType: _normEntry, prizeType: _normPrize, firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, /* ✅ R8 FIX (2026-09-30): publish marker — admin publish karte hi
        matches.result_published_at set hota hai. Pehle ye field MT me aata
        hi nahi tha, isliye user panel ko kabhi pata nahi chalta tha ki
        result publish ho gaya (View Result button ki shart poori nahi hoti). */
@@ -603,40 +614,52 @@ function pushLocalNotif(type, title, msg, matchName, matchId) {
 }
 
 /* ================================================================ L9: WALLET */
+function _loadWallet() {
+  _loadWalletHistory();
+  _loadTransactions();
+}
+window._loadWallet = _loadWallet;
+window._loadWalletHistory = _loadWalletHistory;
+window._loadTransactions = _loadTransactions;
+
 function _bootWallet() {
-  _loadWalletHistory(); _loadTransactions();
+  _loadWallet();
   _rtCh('wallet-' + U.uid, 'sd_requests', 'user_id=eq.' + U.uid, function(p) {
     if (p.new) {
       var ns=(p.new.status||'').toLowerCase();
       /* ✅ FIX: p.old is null in Supabase Realtime by default — compare against WH cache */
       var _cachedReq = WH.find(function(w){ return w._key===p.new.id; });
       var os = _cachedReq ? (_cachedReq.status||'').toLowerCase() : '';
+      var _rt = String(p.new.request_type || '').toLowerCase();
+      var _isSpecialPaytm = /^paytm_(premium|annual|season_pass|bundle|ff_uid_change)$/.test(_rt);
       if (ns==='approved' && os!=='approved') {
-        toast('✅ Sky Diamonds added! 💎'+(p.new.sd_amount||0),'ok');
+        if (!_isSpecialPaytm) {
+          toast('✅ Sky Diamonds added! 💎'+(p.new.sd_amount||0),'ok');
+        }
+        _loadUser();
         if(window.updateHdr) updateHdr();
       } else if (ns==='rejected' && os!=='rejected') {
         toast('❌ Deposit request rejected. Contact support.','err');
       }
-      _loadWalletHistory();
+      _loadWallet();
     }
   });
   _rtCh('txns-' + U.uid, 'wallet_transactions', 'user_id=eq.' + U.uid, function(p) {
-    if (p.eventType==='INSERT') { _loadTransactions(); _loadUser(); }
+    _loadTransactions();
+    _loadUser();
   });
-  _poll('wallet', _loadWalletHistory, 30000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
+  _poll('wallet', _loadWallet, 30000); /* ✅ Polls both sd_requests AND wallet_transactions */
 }
 function _loadWalletHistory() {
   if (!window._supa || !U) return;
   window._supa.from('sd_requests').select('*').eq('user_id', U.uid).order('created_at', { ascending: false }).limit(30)
     .then(function(r) {
-      WH = (r.data||[]).map(function(w) {
-        /* ✅ FIX (2026-09-16): every sd_requests row used to be forced to
-           type:'deposit' — so a withdrawal request (written by the
-           submit_gd_withdrawal RPC / admin WD queue with a
-           request_type of 'withdrawal' or similar) rendered as a fake
-           "Deposit via UPI" history row. Detect the request kind from
-           its own fields so withdrawals show as "Withdrawal" (₹) and
-           deposits stay "Deposit via UPI" (diamonds). */
+      WH = (r.data||[]).filter(function(w) {
+        var _rt = String(w.request_type || w.type || '').toLowerCase();
+        /* Hide special non-wallet Paytm purchase orders (Premium/SeasonPass/Bundle) from SD deposit history */
+        if (/^paytm_(premium|annual|season_pass|bundle|ff_uid_change)$/.test(_rt)) return false;
+        return true;
+      }).map(function(w) {
         var _rt = String(w.request_type || w.type || '').toLowerCase();
         var _isWd = /(withdraw|payout|cashout)/.test(_rt) || /(^|_)wd(_|$)/.test(_rt);
         return {
@@ -667,25 +690,7 @@ function _loadTransactions() {
         var t2 = String(t.txn_type || '').toLowerCase();
         var amt = Math.abs(Number(t.amount || 0));
 
-        /* ✅ FIX (2026-09-16): "History me ek hi transaction do baar dikh
-           rahi hai — Deposit via UPI + ek fake 'Bonus' row". A deposit is
-           ALREADY rendered from sd_requests as its own "Deposit via UPI"
-           row (see _loadWalletHistory + renderWallet's WH branch). But the
-           deposit pipeline ALSO writes mirror rows into wallet_transactions:
-           `pending_deposit` (submitted) and then the admin-approval credit
-           (`sd_purchase_approved`, `sky_diamond_credit`, or a plain
-           `credit`/`bonus` against the sky_diamonds currency). Every one of
-           those mirrors maps to exactly ONE sd_requests row, so rendering
-           them here produced a phantom second row — mislabelled "💰 Bonus"
-           — that never corresponded to a real, separate event. Sky diamonds
-           can only ever be BOUGHT (they aren't earnable/refundable), so ANY
-           sky_diamonds credit is by definition a deposit approval → hide it.
-           (Sky-diamond DEBITS — paid-match entry fees — are still shown.)
-           Zero-amount and empty rows are ledger noise → drop those too. */
         var isWithdraw = /(^|_)(withdrawal|withdraw|wd)(_|$)/.test(t2) || t2 === 'wd';
-        /* NOTE: match refunds (claim_match_refund → txn_type 'match_refund' /
-           'refund') intentionally do NOT match the tokens below, so every
-           legit cancelled-match refund still renders as "↩️ Refund". */
         var isDepositMirror =
           /(^|_)(pending_deposit|deposit|deposit_approved|sd_purchase_approved|sd_purchase|sd_credit|purchase_approved|sky_diamond_credit|diamond_credit)(_|$)/.test(t2) ||
           ((t.currency === 'sky_diamonds' || t.currency === 'sky_diamond') &&
@@ -695,12 +700,18 @@ function _loadTransactions() {
         if (!amt) return acc;                            /* zero-value noise */
 
         var isCredit = _C.indexOf(t2) !== -1 || /_(credit|bonus|paid|refund|approved|win)$/.test(t2);
+        var desc = t.note || t.reason || '';
+        if (t.reason === 'match_entry') {
+          var mtObj = (t.ref_id && window.MT && window.MT[t.ref_id]) ? window.MT[t.ref_id] : null;
+          desc = mtObj ? ('Joined: ' + (mtObj.name || mtObj.title || 'Match')) : 'Match Entry Fee';
+        }
         acc.push({
           _key: t.id,
           type: isWithdraw ? 'withdraw' : (isCredit ? 'credit' : 'debit'),
           amount: isWithdraw ? -amt : (isCredit ? amt : -amt),
-          description: t.note || t.reason || '',
+          description: desc,
           reason: t.reason || '',
+          refId: t.ref_id || '',
           currency: t.currency || 'coins',
           timestamp: t.created_at ? new Date(t.created_at).getTime() : 0,
           read: true

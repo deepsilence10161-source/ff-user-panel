@@ -105,7 +105,7 @@ function _applyCfg(c) {
   if (c.matchReminderMins      != null) window.CFG.matchReminderMins      = Number(c.matchReminderMins);
   if (c.autoSquadEnabled       != null) window.CFG.autoSquadEnabled       = Number(c.autoSquadEnabled);
   if (c.autoSquadTimeout       != null) window.CFG.autoSquadTimeout       = Number(c.autoSquadTimeout);
-  if (c.checkInEnabled         != null) window.CFG.checkInEnabled         = Number(c.checkInEnabled);
+  window.CFG.checkInEnabled = 0;
   if (c.checkInOpenMins        != null) window.CFG.checkInOpenMins        = Number(c.checkInOpenMins);
   if (c.checkInCloseMins       != null) window.CFG.checkInCloseMins       = Number(c.checkInCloseMins);
   if (c.watchEarnEnabled       != null) window.CFG.watchEarnEnabled       = Number(c.watchEarnEnabled);

@@ -159,10 +159,11 @@ function mcHTML(t) {
   }
   var _subTypeMap = { battle_royale:'Battle Royale', clash_squad:'Clash Squad', sniper_only:'Sniper Only', shotgun_only:'Shotgun Only', pistol_only:'Pistol Only', no_heal:'No Heal', rush_only:'Rush Only' };
   var _subTypeLbl = _subTypeMap[t.matchSubType] || t.matchType || 'Battle Royale';
+  var _prSym = window._prizeIcon ? window._prizeIcon(t) : ((t.prizeType === 'coin' || t.entryType === 'coin') ? '🪙' : (window.GD_ICON || '💎'));
   h += '<div class="mc-sub"><span><i class="fas fa-gamepad"></i> ' + _subTypeLbl + '</span>';
   if (t.map) h += '<span><i class="fas fa-map"></i> ' + titleCase(t.map) + '</span>';
   var _subPerKill = Number(t.perKillPrize || t.perKill) || 0;
-  if (_subPerKill) h += '<span style="color:#ff6b6b"><i class="fas fa-skull"></i> 💎' + _subPerKill + '/Kill</span>';
+  if (_subPerKill) h += '<span style="color:#ff6b6b"><i class="fas fa-skull"></i> ' + _prSym + _subPerKill + '/Kill</span>';
 
   h += '</div></div>';
 
@@ -183,10 +184,8 @@ function mcHTML(t) {
       h += '<div class="mc-prize-box ' + p.cls + '">';
       h += '<div class="mc-prize-icon">' + p.icon + '</div>';
       h += '<div class="mc-prize-rank">' + p.rank + '</div>';
-      /* Prize symbol based on prizeType: coin matches → 🪙, SD/paid matches → 💎 (GD) */
-        var _prSym = (t.prizeType === 'coin' || t.entryType === 'coin') ? '🪙' :
-                     (t.prizeType === 'sky_diamond') ? '🔷' : '💎';
-        h += '<div class="mc-prize-amt">' + _prSym + p.val + '</div>';
+      /* Prize symbol based on prizeType: coin matches → 🪙, SD/paid matches → Green Diamond icon */
+      h += '<div class="mc-prize-amt">' + _prSym + p.val + '</div>';
       h += '</div>';
     });
     h += '</div>';
@@ -195,7 +194,7 @@ function mcHTML(t) {
   /* BOTTOM 3-COL ROW: Entry Fee 30% | Per Kill 30% | Time 40% — NO prize pool box */
   var perKillVal = Number(t.perKillPrize || t.perKill) || 0;
   var perKillHTML = perKillVal
-    ? '<span class="kill-val"><i class="fas fa-skull" style="font-size:11px;margin-right:2px"></i>' + ((t.prizeType==='coin'||t.entryType==='coin')?'🪙':'💎') + perKillVal + '/Kill</span>'
+    ? '<span class="kill-val"><i class="fas fa-skull" style="font-size:11px;margin-right:2px"></i>' + _prSym + perKillVal + '/Kill</span>'
     : '<span style="color:var(--txt2);font-size:11px;font-weight:600">N/A</span>';
   h += '<div class="mc-mid" style="grid-template-columns:30% 30% 40%">';
   h += '<div class="mc-cell" style="border-right:1px solid rgba(0,229,255,.12)"><label style="color:#00e5ff99">Entry Fee</label>' + feeHTML + '</div>';

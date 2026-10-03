@@ -1315,10 +1315,12 @@ window.applyDynamicWallpaper = function() {
   window.renderResultCard = function (jr) {
     if (!jr || !jr.result) return '';
     var r = jr.result;
+    var mt = window.MT && window.MT[jr.matchId];
+    var pSym = window._prizeIcon ? window._prizeIcon(mt) : (window.GD_ICON || '💎');
     return '<div style="margin-top:8px;padding:8px 12px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px solid rgba(255,215,0,.2);border-radius:10px;display:flex;gap:12px;align-items:center">' +
       '<div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#ffd700">#' + (r.rank || '-') + '</div><div style="font-size:10px;color:var(--txt2)">Rank</div></div>' +
       '<div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#ff6b6b">' + (r.kills || 0) + '💀</div><div style="font-size:10px;color:var(--txt2)">Kills</div></div>' +
-      (r.prize > 0 ? '<div style="text-align:center"><div style="font-size:18px;font-weight:900;color:var(--green)">₹' + r.prize + '</div><div style="font-size:10px;color:var(--txt2)">Won</div></div>' : '') +
+      (r.prize > 0 ? '<div style="text-align:center"><div style="font-size:18px;font-weight:900;color:var(--green)">' + pSym + r.prize + '</div><div style="font-size:10px;color:var(--txt2)">Won</div></div>' : '') +
       '<button onclick="window.quickShareResult&&quickShareResult(\'' + (jr.matchId||'') + '\')" style="margin-left:auto;padding:6px 12px;border-radius:8px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.2);color:var(--green);font-size:11px;font-weight:700;cursor:pointer"><i class="fas fa-share"></i></button>' +
       '</div>';
   };

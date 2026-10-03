@@ -314,6 +314,63 @@ function getMatchStatus(matchTime, storedStatus) {
   return 'completed';
 }
 
+/* ====== NATIVE ANDROID / WEB SHARE HELPER + PRIZE ICON HELPER ====== */
+window._prizeIcon = function(t) {
+  if (!t) return (window.GD_ICON || '💎');
+  var pt = String(t.prizeType || t.prize_type || '').toLowerCase();
+  var et = String(t.entryType || t.entry_type || '').toLowerCase();
+  if (t.isSponsored || t.is_sponsored || pt === 'inr' || pt === 'cash') return '₹';
+  if (pt === 'coin' || pt === 'coins' || (!pt && (et === 'coin' || et === 'coins' || et === 'ad' || et === 'free'))) return '🪙';
+  if (pt === 'skydiamond' || pt === 'sky_diamond' || pt === 'sky') return '💎';
+  return window.GD_ICON || '<img src="green-diamond.png" alt="GD" class="gd-icon">';
+};
+
+window.nativeShareText = function(title, text, url) {
+  var fullText = String(text || '');
+  if (url && fullText.indexOf(url) === -1) {
+    fullText = fullText ? (fullText + '\n\n' + url) : String(url);
+  }
+  if (window.Android && typeof window.Android.nativeShare === 'function') {
+    try {
+      window.Android.nativeShare(String(title || 'Mini eSports'), fullText);
+      return true;
+    } catch (e) {}
+  }
+  if (window.Android && typeof window.Android.nativeShareWhatsApp === 'function') {
+    try {
+      window.Android.nativeShareWhatsApp(fullText);
+      return true;
+    } catch (e) {}
+  }
+  if (navigator.share) {
+    var payload = { title: String(title || 'Mini eSports'), text: String(text || '') };
+    if (url) payload.url = String(url);
+    navigator.share(payload).catch(function(err) {
+      if (!err || err.name !== 'AbortError') {
+        copyTxt(fullText);
+      }
+    });
+    return true;
+  }
+  copyTxt(fullText);
+  return false;
+};
+
+/* Bridge navigator.share to Android.nativeShare inside the Android APK */
+if (window.Android && (typeof window.Android.nativeShare === 'function' || typeof window.Android.nativeShareWhatsApp === 'function')) {
+  try {
+    navigator.share = function(data) {
+      return new Promise(function(resolve, reject) {
+        try {
+          var d = data || {};
+          window.nativeShareText(d.title || 'Mini eSports', d.text || '', d.url || '');
+          resolve();
+        } catch (e) { reject(e); }
+      });
+    };
+  } catch (e) {}
+}
+
 /* ====== SHARE APP FUNCTION ====== */
 /* R28k (2026-09-22): "win REAL CASH" false-claim tha — entry-fee wali
    prizes ₹ nahi (sponsored-tournaments alag, admin-approve). Coins +
@@ -321,18 +378,8 @@ function getMatchStatus(matchTime, storedStatus) {
 function shareApp() {
   var refCode = (UD && UD.referralCode) ? UD.referralCode : (U ? U.uid.substring(0, 8).toUpperCase() : '');
   var text = '🎮 Join me on Mini eSports — Free Fire tournaments! 🔥\n\n🪙 Play matches, win coins & 💎 diamonds!\n🎁 Use my referral code: ' + refCode + ' to get bonus coins!\n\n👇 Download now:';
-  var url = window.location.href;
-  if (navigator.share) {
-    navigator.share({ title: 'Mini eSports - Play Free Fire Tournaments!', text: text, url: url }).catch(function(err) {
-      if (err.name !== 'AbortError') {
-        copyTxt(text + '\n' + url);
-        toast('Invite link copied!', 'ok');
-      }
-    });
-  } else {
-    copyTxt(text + '\n' + url);
-    toast('Invite link copied to clipboard!', 'ok');
-  }
+  var url = (typeof window.APP_URL === 'string' && window.APP_URL) || window.location.href;
+  window.nativeShareText('Mini eSports - Play Free Fire Tournaments!', text, url);
 }
 
 /* ====== SHARE MATCH FUNCTION ====== */
@@ -348,26 +395,13 @@ function shareMatch(id) {
     if (window.toast) toast('Yeh match already complete ho gaya', 'inf');
     return;
   }
-  /* ✅ BUG FIX (2026-09-14): same class of bug as screens/home.js —
-     category must come from entryType alone, not from whether fee
-     happens to be zero. */
   var isCoin = ((t.entryType || '').toLowerCase() === 'coin');
   var entryText = isCoin ? '🪙 ' + (t.entryFee || 0) + ' Coins' : '💎' + (t.entryFee || 0);
   var refCode = (UD && UD.referralCode) ? UD.referralCode : '';
   var text = '🎮 Join "' + (t.name || 'Match') + '" on Mini eSports!\n\n🎯 Entry: ' + entryText + '\n🗺️ Map: ' + titleCase(t.map || 'Unknown') + '\n⏰ ' + fmtTime(t.matchTime);
   if (refCode) text += '\n\n🎁 Use code ' + refCode + ' for bonus coins!';
-  var url = window.location.href;
-  if (navigator.share) {
-    navigator.share({ title: t.name || 'Mini eSports Match', text: text, url: url }).catch(function(err) {
-      if (err.name !== 'AbortError') {
-        copyTxt(text + '\n\n' + url);
-        toast('Match details copied!', 'ok');
-      }
-    });
-  } else {
-    copyTxt(text + '\n\n' + url);
-    toast('Match details copied!', 'ok');
-  }
+  var url = (typeof window.APP_URL === 'string' && window.APP_URL) || window.location.href;
+  window.nativeShareText(t.name || 'Mini eSports Match', text, url);
 }
 
 /* ====== ACCESS CONTROL ====== */

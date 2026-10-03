@@ -345,6 +345,27 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        // ── Native Android System Share Sheet (ACTION_SEND Chooser) ──
+        @JavascriptInterface
+        public void nativeShare(String title, String text) {
+            runOnUiThread(() -> {
+                try {
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    if (title != null && !title.isEmpty()) {
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                    }
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, text != null ? text : "");
+                    Intent chooser = Intent.createChooser(sendIntent,
+                        (title != null && !title.isEmpty()) ? title : "Share via");
+                    startActivity(chooser);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this,
+                        "Koi app nahi mila share karne ke liye", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         // ── Chrome Custom Tab (fallback) ──────────────────────
         @JavascriptInterface
         public void openGoogleLogin(String url) {

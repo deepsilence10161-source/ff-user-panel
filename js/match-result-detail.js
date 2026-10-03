@@ -124,7 +124,7 @@
     var _eType     = String((t && (t.entryType || t.entry_type)) || '').toLowerCase();
     var _isCoinPrize = (_pType === 'coin' || _pType === 'coins' || _pType === 'cash') ||
                        (!_pType && _eType !== 'paid' && _eType !== 'sky' && _eType !== 'skydiamond' && _eType !== 'sky_diamond');
-    var _currIcon  = _isCoinPrize ? '🪙 ' : '💎 ';
+    var _currIcon  = window._prizeIcon ? (window._prizeIcon(t) + ' ') : (_isCoinPrize ? '🪙 ' : ((window.GD_ICON || '💎') + ' '));
 
     /* Rank card colors */
     var rankColor = rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : rank === 3 ? '#cd7f32' : '#00d4ff';
