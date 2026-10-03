@@ -703,7 +703,6 @@ waitFor(function(){return window.db&&window.U;},function(){
     var m=s.val();if(!m||!_ready)return;
     if((Date.now()-(m.createdAt||0))>300000)return;
     if(window.toast)window.toast('🆕 New Match: '+(m.name||'Tournament')+' added!','ok');
-    window.db.ref('users/'+uid+'/notifications').push({title:'🆕 New Match!',message:'"'+(m.name||'Match')+'" add hua! Entry:💎'+(m.entryFee||0)+' Prize:₹'+(m.prizePool||0),type:'new_match',read:false,createdAt:Date.now()});
   });
   setTimeout(function(){_ready=true;},4000);
   setTimeout(function(){

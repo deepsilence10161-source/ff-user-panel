@@ -255,25 +255,17 @@
         return;
       }
 
-      /* ── Check 3: Self-exclusion (async DB check) ── */
-      var U = window.U, db = window.db;
-      if (U && db) {
-        db.ref('users/' + U.uid + '/selfExcluded').once('value', function(s) {
-          if (!s.val()) { _runJoin(id); return; }
-          db.ref('users/' + U.uid + '/selfExcludedTill').once('value', function(ts) {
-            var till = Number(ts.val()) || 0;
-            if (till && Date.now() < till) {
-              if (window.toast) window.toast('🚫 Break active hai till ' + new Date(till).toLocaleDateString('en-IN'), 'err');
-            } else {
-              /* Expired — clear and allow */
-              db.ref('users/' + U.uid).update({ selfExcluded: false, selfExcludedTill: null });
-              _runJoin(id);
-            }
-          });
-        });
-      } else {
-        _runJoin(id);
+      /* ── Check 3: Self-exclusion (fast in-memory UD check) ── */
+      var U = window.U, db = window.db, UD = window.UD || {};
+      if (U && UD.selfExcluded) {
+        var till = Number(UD.selfExcludedTill) || 0;
+        if (till && Date.now() < till) {
+          if (window.toast) window.toast('🚫 Break active hai till ' + new Date(till).toLocaleDateString('en-IN'), 'err');
+          return;
+        }
+        if (db) db.ref('users/' + U.uid).update({ selfExcluded: false, selfExcludedTill: null });
       }
+      _runJoin(id);
     };
 
     /* _runJoin: device fingerprint check then core join */

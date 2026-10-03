@@ -106,48 +106,55 @@
     /* Alert if headless detected */
     /* R28e: adminAlerts ab Supabase admin_activity_log me (bridge route jaisa)
        — raw Firebase pe adminAlerts rules nahi the, permission_denied pageerror banta tha */
-    if (window._isHeadlessBrowser && window.U) {
+    if (window._isHeadlessBrowser && window.U && window.U.uid && !window._headlessAlertSent) {
       try {
-        if (window._supa) {
+        if (window._supa && window._supaReady) {
+          window._headlessAlertSent = true;
           window._supa.from('admin_activity_log').insert({
             action_type: 'headless_browser',
             note: 'Headless browser detected (deviceId: ' + stored + ', UA: ' + navigator.userAgent.substring(0, 80) + ')',
             target_user_id: window.U.uid,
             created_at: new Date().toISOString()
           }).then(null, function(){});
-        } else {
-          var fbDb = window._fbDb || window.db;
-          fbDb.ref('adminAlerts').push({
-            type: 'headless_browser', uid: window.U.uid,
-            deviceId: stored, timestamp: Date.now(),
-            userAgent: navigator.userAgent.substring(0, 100)
-          }, function(){});
         }
       } catch(e) {}
     }
     return stored;
   }
 
-  /* ── 5. Check device join in Firebase ── */
+  /* ── 5. Check device join in Firebase (with localStorage fast-path + 200ms timeout guard) ── */
   function checkDeviceJoin(matchId, callback) {
+    var done = false;
+    function finish(joined, val) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      callback(joined, val);
+    }
+    try {
+      var localRaw = localStorage.getItem('_djoin_' + matchId);
+      if (localRaw) {
+        var localRec = JSON.parse(localRaw);
+        if (localRec && localRec.uid) { finish(true, localRec); return; }
+      }
+    } catch (e) {}
+    var fbDb = window._fbDb || window.db;
+    if (!fbDb) { finish(false, null); return; }
+    var timer = setTimeout(function () { finish(false, null); }, 200);
     var did      = getDeviceId();
     var canvasFP = sessionStorage.getItem('_mes_cfp') || _canvasFP();
     var webglFP  = sessionStorage.getItem('_mes_wfp')  || _webglFP();
-    var fbDb     = window._fbDb || window.db;
-    if (!fbDb) { callback(false, null); return; }
     fbDb.ref('deviceJoins/' + did + '/' + matchId).once('value', function (s) {
-      if (s.exists()) { callback(true, s.val()); return; }
-      /* Check canvas FP key */
+      if (s && s.exists()) { finish(true, s.val()); return; }
       var cfpKey = 'cfp_' + canvasFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
       fbDb.ref('deviceJoins/' + cfpKey + '/' + matchId).once('value', function (s2) {
-        if (s2.exists()) { callback(true, s2.val()); return; }
-        /* Check WebGL FP key */
+        if (s2 && s2.exists()) { finish(true, s2.val()); return; }
         var wfpKey = 'wfp_' + webglFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
         fbDb.ref('deviceJoins/' + wfpKey + '/' + matchId).once('value', function (s3) {
-          callback(s3.exists(), s3.val());
-        });
-      });
-    });
+          finish(!!(s3 && s3.exists()), s3 ? s3.val() : null);
+        }, function () { finish(false, null); });
+      }, function () { finish(false, null); });
+    }, function () { finish(false, null); });
   }
 
   /* ── 6. Save device join (all 3 keys for cross-detection) ── */
@@ -156,14 +163,16 @@
     var canvasFP = sessionStorage.getItem('_mes_cfp') || _canvasFP();
     var webglFP  = sessionStorage.getItem('_mes_wfp')  || _webglFP();
     var fbDb     = window._fbDb || window.db;
-    var U = window.U; if (!U || !fbDb) return;
+    var U = window.U; if (!U) return;
     var record = { uid: U.uid, joinRequestId: joinRequestId, joinedAt: Date.now(),
       userAgent: navigator.userAgent.substring(0, 80), isHeadless: !!window._isHeadlessBrowser };
-    fbDb.ref('deviceJoins/' + did + '/' + matchId).set(record);
+    try { localStorage.setItem('_djoin_' + matchId, JSON.stringify(record)); } catch (e) {}
+    if (!fbDb) return;
+    fbDb.ref('deviceJoins/' + did + '/' + matchId).set(record, function(){});
     var cfpKey = 'cfp_' + canvasFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
-    fbDb.ref('deviceJoins/' + cfpKey + '/' + matchId).set(record);
+    fbDb.ref('deviceJoins/' + cfpKey + '/' + matchId).set(record, function(){});
     var wfpKey = 'wfp_' + webglFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
-    fbDb.ref('deviceJoins/' + wfpKey + '/' + matchId).set(record);
+    fbDb.ref('deviceJoins/' + wfpKey + '/' + matchId).set(record, function(){});
     /* Issue #20 Fix: Store audio FP in sessionStorage so security-patches.js
        can read it, and use consistent key format matching canvas/webgl pattern */
     _audioFP(function (afp) {
@@ -171,11 +180,9 @@
       if (afp && afp !== 'no_audio' && afp !== 'audio_err') {
         var afpKey = 'AFP' + afp.replace(/\./g,'').replace(/-/g,'').substring(0, 12);
         sessionStorage.setItem('_mes_afp_key', afpKey);
-        fbDb.ref('deviceJoins/' + afpKey + '/' + matchId).set(record)
-          .catch(function(){});
+        fbDb.ref('deviceJoins/' + afpKey + '/' + matchId).set(record, function(){});
       }
     });
-    localStorage.setItem('_djoin_' + matchId, JSON.stringify(record));
   }
 
   function saveJoinMeta(joinRequestId) {

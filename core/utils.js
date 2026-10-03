@@ -377,8 +377,8 @@ function shareMatch(id) {
    still has 'complete' sitting in their row. Accept both values here as
    defense-in-depth so already-approved-but-mislabeled users aren't
    stuck on View Only forever waiting for a re-approval. */
-function isOk() { return UD && (UD.profileStatus === 'approved' || UD.profileStatus === 'complete'); }
-function isVO() { return !UD || (UD.profileStatus !== 'approved' && UD.profileStatus !== 'complete'); }
+function isOk() { return UD && (UD.profileStatus === 'approved' || UD.profileStatus === 'complete' || UD.profileStatus === 'verified'); }
+function isVO() { return !UD || (UD.profileStatus !== 'approved' && UD.profileStatus !== 'complete' && UD.profileStatus !== 'verified'); }
 
 /* Premium check (2026-08): centralizes tier + expiry so every feature
    gate (profile photo, banner, live-stream, etc) reads the same truth

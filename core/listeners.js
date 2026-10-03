@@ -246,6 +246,7 @@ function _applyUser(sp) {
   UD.accepted_policy = !!sp.accepted_policy;
   UD.profileStatus = sp.profile_status || sp.profileStatus || UD.profileStatus || 'not_requested'; /* ✅ snake_case fix */
   UD.ffUid = sp.ffUid || sp.ff_uid || UD.ffUid || '';
+  UD.ff_uid = UD.ffUid;
   UD.bio = sp.bio || UD.bio || '';
   UD.stats = { matches: sp.total_matches || 0, wins: sp.total_wins || 0, kills: sp.total_kills || 0, earnings: (UD.stats && UD.stats.earnings) || 0 };
   UD.rankTier = sp.rank_tier || UD.rankTier || 'bronze';
@@ -742,8 +743,10 @@ function _bootAppSettings() {
                 MT[mid].joinedSlots = Number(row.filled_slots);
                 MT[mid].filled_slots = Number(row.filled_slots);
                 _debouncedRender();
+              } else {
+                _loadMatches();
               }
-              _loadJoinRequests();
+              _loadJR();
               return;
             }
             var uid = (window.U && window.U.uid) || '';
@@ -751,10 +754,12 @@ function _bootAppSettings() {
             var evTag = String(row.event || '*');
             if (evTag !== '*' && myTag && evTag !== myTag) return;
             var tbl = mid.slice(6);
-            if (tbl === 'users' || tbl === 'profile_requests' || tbl === 'kyc_requests') {
+            if (tbl === 'matches') {
+              _loadMatches();
+            } else if (tbl === 'users' || tbl === 'profile_requests' || tbl === 'kyc_requests') {
               _loadUser();
             } else if (tbl === 'notifications') {
-              _loadNotifications();
+              _loadNotifs();
             } else if (tbl === 'coin_requests' || tbl === 'sd_requests' || tbl === 'wallet_transactions') {
               _loadWallet();
               _loadUser();
@@ -934,5 +939,9 @@ function _loadExtras() {
 window.markNotifRead = markNotifRead;
 window.clearAllNotifs = clearAllNotifs;
 window.pushLocalNotif = pushLocalNotif;
+window._loadMatches = _loadMatches;
+window._loadJR = _loadJR;
+window._loadNotifs = _loadNotifs;
+window._loadUser = _loadUser;
 /* Bug C-3 Fix: Expose channel management for token refresh */
 window._cleanupChannels = _cleanupChannels;

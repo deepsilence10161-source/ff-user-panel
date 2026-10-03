@@ -63,12 +63,13 @@
        NOTE: ye file screens/rank.js (line ~687) ke baad load hoti hai aur
        window.showResultPage ko override karti hai, isliye fix yahin zaroori tha. */
     function _renderFromJR(row) {
+      var _pkRate = Number(t && (t.perKill || t.perKillPrize || t.per_kill_prize)) || 0;
       renderResultPage(page, {
         rank: row.placement || 0,
         kills: row.kills || 0,
         winnings: row.prize_earned || 0,
         totalWinning: row.prize_earned || 0,
-        killPrize: row.per_kill_prize || 0,
+        killPrize: (Number(row.kills) || 0) * _pkRate,
         matchName: (t && (t.name || t.title)) || '',
         mode: (t && (t.mode || t.gameMode)) || '',
         userId: U.uid, matchId: matchId
@@ -107,6 +108,7 @@
 
   /* ── Render full page HTML ── */
   function renderResultPage(page, r, t, matchId) {
+    window._lastResultData = r;
     var UD = window.UD || {};
     var totalWin = Number(r.totalWinning) || (Number(r.winnings || 0) + Number(r.killPrize || 0));
     var rank     = Number(r.rank) || 0;
@@ -116,8 +118,13 @@
     var isTeam    = (mode === 'duo' || mode === 'squad');
     var won       = rank === 1;
     var playerName = UD.ign || UD.displayName || 'Player';
-    var ffUid      = UD.ffUid || UD.uid || '';
+    var ffUid      = UD.ffUid || UD.ff_uid || UD.uid || '';
     var tier       = _getTier(UD.stats || {});
+    var _pType     = String((t && (t.prizeType || t.prize_type)) || '').toLowerCase();
+    var _eType     = String((t && (t.entryType || t.entry_type)) || '').toLowerCase();
+    var _isCoinPrize = (_pType === 'coin' || _pType === 'coins' || _pType === 'cash') ||
+                       (!_pType && _eType !== 'paid' && _eType !== 'sky' && _eType !== 'skydiamond' && _eType !== 'sky_diamond');
+    var _currIcon  = _isCoinPrize ? '🪙 ' : '💎 ';
 
     /* Rank card colors */
     var rankColor = rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : rank === 3 ? '#cd7f32' : '#00d4ff';
@@ -156,7 +163,7 @@
     /* Player name + title */
     h += '<div style="text-align:center;margin-bottom:6px;position:relative;z-index:1">';
     h += '<div style="font-size:22px;font-weight:900;color:#fff">' + playerName + '</div>';
-    h += '<div style="font-size:12px;color:#888;margin-top:2px">FE UID: ' + ffUid + '</div>';
+    h += '<div style="font-size:12px;color:#888;margin-top:2px">FF UID: ' + ffUid + '</div>';
     h += '</div>';
 
     /* Tier badge */
@@ -194,7 +201,7 @@
     if (totalWin > 0) {
       h += '<div style="background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);border-radius:14px;padding:12px;text-align:center;margin-bottom:12px;position:relative;z-index:1">';
       h += '<div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Prize Won</div>';
-      h += '<div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💎 ' + totalWin + '</div>';
+      h += '<div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">' + _currIcon + totalWin + '</div>';
       h += '</div>';
     }
 
@@ -204,7 +211,7 @@
     h += '<div style="display:flex;gap:12px;flex-wrap:wrap">';
     h += '<span style="font-size:11px;color:#ccc">🏆 Rank: <b style="color:' + rankColor + '">' + rankMedal(rank) + '</b></span>';
     h += '<span style="font-size:11px;color:#ccc">💀 Kills: <b style="color:#ff6b6b">' + kills + '</b></span>';
-    if (r.killPrize > 0) h += '<span style="font-size:11px;color:#ccc">🔫 Kill Prize: <b style="color:#ffd700">💎' + r.killPrize + '</b></span>';
+    if (r.killPrize > 0) h += '<span style="font-size:11px;color:#ccc">🔫 Kill Prize: <b style="color:#ffd700">' + _currIcon + r.killPrize + '</b></span>';
     h += '</div>';
     h += '</div>';
 
@@ -226,11 +233,16 @@
     var UD = window.UD || {};
     if (!r) { if (window.toast) window.toast('Result data nahi mila', 'err'); return; }
 
+    var _pType2 = String((t && (t.prizeType || t.prize_type)) || '').toLowerCase();
+    var _eType2 = String((t && (t.entryType || t.entry_type)) || '').toLowerCase();
+    var _isCoin2 = (_pType2 === 'coin' || _pType2 === 'coins' || _pType2 === 'cash') ||
+                   (!_pType2 && _eType2 !== 'paid' && _eType2 !== 'sky' && _eType2 !== 'skydiamond' && _eType2 !== 'sky_diamond');
+    var _cIcon2 = _isCoin2 ? '🪙' : '💎';
     var text = '🎮 Mini eSports — Match Result!\n\n' +
       '🏆 ' + (t ? t.name : 'Match') + '\n' +
       '📊 Rank: ' + rankMedal(r.rank) + '\n' +
       '💀 Kills: ' + (r.kills || 0) + '\n' +
-      (r.totalWinning > 0 ? '💰 Won: 💎' + r.totalWinning + '\n' : '') +
+      (r.totalWinning > 0 ? '💰 Won: ' + _cIcon2 + r.totalWinning + '\n' : '') +
       '\n🔥 Play skill-based tournaments on Mini eSports — 🪙 coins + 💎 diamonds jito!\n' + window.location.origin;
 
     if (navigator.share) {

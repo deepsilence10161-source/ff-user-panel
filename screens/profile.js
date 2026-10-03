@@ -1064,7 +1064,7 @@ function submitSupport() {
     window._supa.from('support_tickets').insert({
       user_id: window.U.uid, subject: _subject,
       status: 'open', message: msg.trim(),
-      user_ign: window.UD.ign || '', user_ff_uid: window.UD.ff_uid || ''
+      user_ign: window.UD.ign || '', user_ff_uid: window.UD.ffUid || window.UD.ff_uid || ''
     }).then(function() {
       closeModal(); toast('✅ Ticket submitted! Hum jald jawab denge.', 'ok');
     }).catch(function() { toast('Submit nahi hua, dobara try karo', 'err'); });
@@ -1076,6 +1076,7 @@ function submitSupport() {
     closeModal(); toast('✅ Ticket submitted!', 'ok');
   }
 }
+window.submitSupportTicket = submitSupport;
 function showRules() {
   var rules = ['Use only your registered IGN and UID. Mismatch = disqualification.', 'No teaming with enemies. Fair play only.', 'Join the room on time. Late = no refund.', 'Screenshots/proof may be required for disputes.', 'Admin decisions are final in all matters.', 'No abusive language in chat or support.', 'Multiple accounts will result in permanent ban.'];
   var h = '';
