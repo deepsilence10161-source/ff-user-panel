@@ -1070,3 +1070,46 @@ body.has-web-banner #mainContent {
 body.has-web-banner .chat-container {
   height: calc(100dvh - var(--wb-pad, 135px) - 90px - env(safe-area-inset-top));
 }
+
+/* ============================================================
+   PREMIUM RAINBOW BORDER SYSTEM (2026-10-04)
+   Bugs 7/8/10: premium user ke profile box, match card aur
+   searched-player card par "unlimited colours" animated rainbow
+   border. @property se smooth angle rotation (Chrome/WebView);
+   bina @property support ke gradient static rehta hai (still
+   poora rainbow). Naye JS files isi class ko inject karti hain:
+   .rb-wrap (card wrapper) / .rb-ring (avatar ring).
+   ============================================================ */
+@property --rbAngle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes rbSpin { to { --rbAngle: 360deg; } }
+.rb-wrap {
+  position: relative;
+  border-radius: 20px;
+  padding: 2px;
+  background: conic-gradient(from var(--rbAngle, 0deg),
+    #ff004d, #ff8c00, #ffd700, #00ff9c, #00d4ff, #b964ff, #ff004d);
+  animation: rbSpin 4s linear infinite;
+  isolation: isolate;
+}
+.rb-wrap > .rb-inner {
+  border-radius: 18px;
+  position: relative;
+  z-index: 1;
+}
+.rb-wrap.rb-glow {
+  box-shadow: 0 0 18px rgba(255, 0, 77, .25), 0 0 34px rgba(0, 212, 255, .18);
+}
+.rb-ring {
+  padding: 3px;
+  border-radius: 50%;
+  background: conic-gradient(from var(--rbAngle, 0deg),
+    #ff004d, #ff8c00, #ffd700, #00ff9c, #00d4ff, #b964ff, #ff004d);
+  animation: rbSpin 3s linear infinite;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.rb-ring > * { border-radius: 50%; }

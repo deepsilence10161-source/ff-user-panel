@@ -62,28 +62,47 @@ function renderProfile() {
      (claim_referral_reward → coinsEarned, "Dono ko bonus coins milenge").
      पुराना "दोस्त लाओ ₹ पाओ" झूठा cash-दावा tha — hataya. */
   var inviteEarnHtml = '<button id="inviteEarnBtn" onclick="window.showInviteEarn&&showInviteEarn()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-user-plus"></i> 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!</button>';
-  var h = inviteEarnHtml + '<div class="prof-header" style="position:relative;overflow:hidden;margin:0 0 14px;padding:16px;border-radius:20px;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;' + bannerStyle + ';box-shadow:0 8px 24px rgba(0,0,0,.35)">';
+  /* ── Premium state (card build se PEHLE compute — header isi ko use karta hai) ── */
+  var _premActive = window.isPremiumActive ? isPremiumActive() : false;
+  var _premActiveGold = window.isPremiumActive ? isPremiumActive(2) : false; /* Gold+ perks: Live Stream, Creator Program */
+  /* ✅ BUG FIX (2026-10-04) — Bugs 6 + 7:
+     (6) title / premium / VIP badges lagne par profile box ki UI toot rahi
+         thi (name-line ka nowrap + fixed chips row overflow). Ab: name line
+         wrap karti hai, chips row wrap karti hai, card grow karta hai.
+     (7) premium user ke profile box + profile picture par "unlimited
+         colours" animated rainbow glow border (styles.css .rb-wrap/.rb-ring). */
+  var _cardBase = 'position:relative;overflow:hidden;margin:0 0 14px;padding:16px;border-radius:' + (_premActive?'18px':'20px') + ';border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;' + bannerStyle + ';box-shadow:0 8px 24px rgba(0,0,0,.35)';
+  var h = inviteEarnHtml;
+  if (_premActive) {
+    /* Rainbow gradient border: wrapper gradient + andar asli card */
+    h += '<div class="rb-wrap rb-glow" style="margin:0 0 14px"><div class="prof-header rb-inner" style="' + _cardBase + '">';
+  } else {
+    h += '<div class="prof-header" style="' + _cardBase + '">';
+  }
   /* Decorative glow overlay so the card still looks alive with no custom banner set */
   if (!bannerImg) {
     h += '<div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 25%,rgba(185,100,255,.22) 0%,transparent 45%),radial-gradient(circle at 92% 10%,rgba(0,212,255,.18) 0%,transparent 40%),radial-gradient(circle at 60% 105%,rgba(255,140,0,.12) 0%,transparent 45%)"></div>';
   }
   /* Top-right controls — grouped, INSIDE the card (banner-change + settings) */
-  var _premActive = window.isPremiumActive ? isPremiumActive() : false;
-  var _premActiveGold = window.isPremiumActive ? isPremiumActive(2) : false; /* Gold+ perks: Live Stream, Creator Program */
+  /* (_premActive / _premActiveGold already computed above, before card build) */
   h += '<div style="position:absolute;top:10px;right:10px;display:flex;gap:6px;z-index:5">';
   h += '<div onclick="document.getElementById(\'profBannerIn\').click()" title="' + (_premActive?'Change banner':'Premium feature — change banner') + '" style="width:30px;height:30px;border-radius:9px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative"><i class="fas fa-image" style="font-size:12px;color:#ccc"></i>' + (_premActive?'':'<i class="fas fa-lock" style="position:absolute;bottom:-3px;right:-3px;font-size:8px;color:#ffd700;background:#000;border-radius:50%;padding:2px"></i>') + '</div>';
   h += '<div onclick="showProfileSettings()" title="Settings" style="width:30px;height:30px;border-radius:9px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fas fa-cog" style="font-size:13px;color:#ccc"></i></div>';
   h += '</div>';
   h += '<input type="file" id="profBannerIn" accept="image/*" style="display:none" onchange="uploadBannerImg(this)">';
-  /* Avatar (left) */
+  /* Avatar (left) — premium user ko rainbow ring (Bug 7) */
   h += '<div class="prof-ava-wrap" style="position:relative;flex-shrink:0;z-index:2;margin:0">';
-  h += '<div class="prof-ava" style="width:88px;height:88px;font-size:34px;border:3.5px solid ' + (_eqFrame || rk.color) + ';box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 24px ' + (_eqFrame || rk.color) + 'aa,0 0 46px ' + (_eqFrame || rk.color) + '44;' + ringAnim + '">' + av + '</div>';
+  var _avaBorder = _premActive ? '' : ('border:3.5px solid ' + (_eqFrame || rk.color) + ';box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 24px ' + (_eqFrame || rk.color) + 'aa,0 0 46px ' + (_eqFrame || rk.color) + '44;');
+  if (_premActive) h += '<span class="rb-ring">';
+  h += '<div class="prof-ava" style="width:88px;height:88px;font-size:34px;' + _avaBorder + ringAnim + '">' + av + '</div>';
+  if (_premActive) h += '</span>';
   h += '<div class="prof-edit-btn" onclick="document.getElementById(\'profImgIn\').click()" title="' + (_premActive?'Change photo':'Premium feature — change photo') + '" style="background:' + rk.color + ';border-color:rgba(5,5,7,.8)">' + (_premActive?'<i class="fas fa-pencil-alt"></i>':'<i class="fas fa-lock" style="font-size:11px"></i>') + '</div>';
   h += '<input type="file" id="profImgIn" accept="image/*" style="display:none" onchange="uploadProfImg(this)">';
   h += '</div>';
-  /* Info (right) */
+  /* Info (right) — Bug 6: name line ab wrap karti hai (title/premium/VIP
+     badges ke saath layout nahi tootti), chips row bhi wrap karti hai */
   h += '<div style="flex:1;min-width:0;z-index:2;padding-right:36px">';
-  h += '<div style="font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (_eqTag ? '<span style="color:' + (_eqFrame || '#00ff9c') + ';margin-right:6px">' + _eqTag + '</span>' : '') + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + premBadge + '</div>';
+  h += '<div style="font-size:18px;font-weight:900;line-height:1.3;word-break:break-word;display:flex;flex-wrap:wrap;align-items:center;gap:5px;row-gap:4px">' + (_eqTag ? '<span style="color:' + (_eqFrame || '#00ff9c') + '">' + _eqTag + '</span>' : '') + '<span>' + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + '</span>' + premBadge + '</div>';
   h += '<div style="font-size:10px;color:#888;margin-top:2px;font-weight:600;letter-spacing:.3px">UID: ' + displayUid + '</div>';
   h += '<div style="display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap">';
   h += '<span style="font-size:12px;font-weight:800;color:#fff">Lvl ' + lv + '</span>';
@@ -95,6 +114,7 @@ function renderProfile() {
   h += '<div class="xp-track" style="height:7px"><div class="xp-fill" style="width:' + xpPct + '%"></div></div></div>';
   h += '</div>'; /* end info column */
   h += '</div>'; /* end prof-header card */
+  if (_premActive) h += '</div>'; /* end rainbow border wrapper (Bug 7) */
 
   var _pm = Number(st.matches||0), _pw = Number(st.wins||0), _pk = Number(st.kills||0);
   var _pwr = _pm > 0 ? Math.round((_pw/_pm)*100) : 0;
@@ -482,28 +502,32 @@ function saveTM(mode) {
   var uid = ($('tmUid') || {}).value, ign = ($('tmIgn') || {}).value;
   uid = (uid||'').trim(); ign = (ign||'').trim();
   if (!uid && !ign) { toast('FF UID ya IGN mein se koi ek daalo', 'err'); return; }
-  if (!uid || uid.length < 5) { toast('Valid FF UID chahiye (min 5 digits)', 'err'); return; }
-  if (!ign) ign = uid; // fallback if IGN not filled
-  uid = uid.trim(); ign = ign.trim();
-  // Self-check
-  if (uid === (UD.ffUid || '')) { toast('Cannot add yourself!', 'err'); return; }
-  _findUserByFF(uid, function(partnerKey, partnerData) {
-    if (!partnerKey || !partnerData) { toast('UID "' + uid + '" not found!', 'err'); return; }
+  /* ✅ BUG FIX (2026-10-04): pehle UID hi chalta tha aur IGN khali chhod diya
+     jata tha ("UID hi dalni padti hai"). Ab IGN se bhi lookup hota hai. */
+  if (uid && uid.length < 5) { toast('Valid FF UID chahiye (min 5 digits)', 'err'); return; }
+  // Self-check (UID aur IGN dono se)
+  if (uid && uid === (UD.ffUid || '')) { toast('Cannot add yourself!', 'err'); return; }
+  if (ign && (UD.ign || '').toLowerCase() === ign.toLowerCase()) { toast('Cannot add yourself!', 'err'); return; }
+  var _onFound = function(partnerKey, partnerData, lookedUpIgn) {
+    if (!partnerKey || !partnerData) {
+      toast((uid ? 'UID "' + uid + '"' : 'IGN "' + lookedUpIgn + '"') + ' not found!', 'err'); return;
+    }
     var myUid = UD.ffUid || '';
     var myName = UD.ign || UD.displayName || 'Player';
-    var partnerName = partnerData.ign || partnerData.displayName || ign;
+    var partnerName = partnerData.ign || partnerData.displayName || lookedUpIgn || ign;
+    var partnerFF = partnerData.ffUid || uid;
     if (mode === 'duo') {
       // TWO-WAY SYNC: Save in BOTH users' profiles (duoTeam + partnerUid)
-      var myTeamData = { memberUid: uid, memberName: partnerName };
+      var myTeamData = { memberUid: partnerFF, memberName: partnerName };
       var partnerTeamData = { memberUid: myUid, memberName: myName };
       // Save duoTeam object
       db.ref('users/' + U.uid + '/duoTeam').set(myTeamData);
       db.ref('users/' + partnerKey + '/duoTeam').set(partnerTeamData);
       // ALSO save partnerUid for quick lookup
-      db.ref('users/' + U.uid + '/partnerUid').set(uid);
+      db.ref('users/' + U.uid + '/partnerUid').set(partnerFF);
       db.ref('users/' + partnerKey + '/partnerUid').set(myUid);
       console.log('[Mini eSports] ✅ Duo sync (2-way): ' + myName + ' ↔ ' + partnerName);
-      console.log('[Mini eSports]   users/' + U.uid + '/partnerUid = ' + uid);
+      console.log('[Mini eSports]   users/' + U.uid + '/partnerUid = ' + partnerFF);
       console.log('[Mini eSports]   users/' + partnerKey + '/partnerUid = ' + myUid);
     } else {
       // Check squad not full
@@ -511,10 +535,10 @@ function saveTM(mode) {
       if (myMembers.length >= 3) { toast('Squad full! (Max 3 teammates)', 'err'); return; }
       // Check not already in squad
       var alreadyInMySquad = false;
-      myMembers.forEach(function(m) { if (m.uid === uid) alreadyInMySquad = true; });
+      myMembers.forEach(function(m) { if (m.uid === partnerFF) alreadyInMySquad = true; });
       if (alreadyInMySquad) { toast('Already in your squad!', 'inf'); return; }
       // TWO-WAY SYNC: Add to BOTH users' squads
-      myMembers.push({ uid: uid, name: partnerName });
+      myMembers.push({ uid: partnerFF, name: partnerName });
       db.ref('users/' + U.uid + '/squadTeam/members').set(myMembers);
       // Also save squad UIDs array for quick lookup
       db.ref('users/' + U.uid + '/squadUids').set(myMembers.map(function(m) { return m.uid; }));
@@ -529,7 +553,14 @@ function saveTM(mode) {
       console.log('[Mini eSports] ✅ Squad sync (2-way): ' + myName + ' ↔ ' + partnerName);
     }
     closeModal(); toast('✅ ' + partnerName + ' added as teammate! (Synced both profiles)', 'ok');
-  });
+  };
+  /* ✅ BUG FIX (2026-10-04): UID diya hai to FF-UID se lookup, warna IGN se.
+     Pehle sirf UID chalta tha — IGN daalne par "not found" aata tha. */
+  if (uid) {
+    _findUserByFF(uid, function (k, d) { _onFound(k, d, ign); });
+  } else {
+    _findUserByIGN(ign, function (k, d) { _onFound(k, d, ign); });
+  }
 }
 function removeTM(mode, idx) {
   if (mode === 'duo') {

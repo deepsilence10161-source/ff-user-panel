@@ -28,7 +28,10 @@ function liveSearchUsers(q) {
       .or('ign.ilike.%' + q + '%,ff_uid.ilike.%' + q + '%')
       .eq('is_banned', false).limit(10)
       .then(function(r) {
-        var results = (r.data || []).map(function(u) {
+        /* ✅ BUG FIX (2026-10-04): search results mein user ko KHUD KI row
+           nahi dikhni chahiye — own uid filter kiya. */
+        var _myUid = (window.U && window.U.uid) || '';
+        var results = (r.data || []).filter(function(u) { return u.id !== _myUid; }).map(function(u) {
           return { uid: u.id, u: { ign: u.ign||'', displayName: u.ign||'', ffUid: u.ff_uid||'', profileImage: u.avatar_url||'', profileStatus: u.profile_status||'', city: u.city||'', stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 } } };
         });
         renderSearchResults(results, q);
@@ -137,7 +140,13 @@ function mcHTML(t) {
      '[data-match-id="…"]' se dhoondta hai — attribute kahin set hi nahi
      hota tha ⇒ queue banner + 8s poll (jo matched-par Team-Ready card
      bhi kholta hai) KABHI nahi chalta tha. Ab card par attribute set. */
-  var h = '<div class="m-card" data-match-id="' + t.id + '" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + '">';
+  /* ✅ BUG FIX (2026-10-04) Bug 8: premium user ke liye match card par
+     "unlimited colours" animated rainbow glow border (styles.css .rb-wrap).
+     Non-premium ke liye layout bilkul same. */
+  var _mViewerPrem = (window.isPremiumActive && isPremiumActive()) ? true : false;
+  var h = _mViewerPrem
+    ? '<div class="rb-wrap rb-glow" style="margin:0 0 12px"><div class="m-card rb-inner" data-match-id="' + t.id + '" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + ';margin:0">'
+    : '<div class="m-card" data-match-id="' + t.id + '" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + '">';
   h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,' + modeClr + '20,transparent 70%);pointer-events:none"></div>';
   if (isHot) h += '<div style="position:absolute;top:10px;left:-1px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;font-size:9px;font-weight:900;padding:3px 10px 3px 6px;border-radius:0 20px 20px 0;letter-spacing:.5px">🔥 HOT</div>';
   if (t.isMonthlySpecial || t.specialCategory === 'monthly_special') h += '<div style="position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:8px;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:.3px">👑 MONTHLY</div>'; 
@@ -222,6 +231,7 @@ function mcHTML(t) {
     h += window.f29SpecialTournament.getEligibilityInfo(t);
   }
   h += '</div></div>';
+  if (_mViewerPrem) h += '</div>'; /* close rainbow wrapper (Bug 8) */
   return h;
 }
 

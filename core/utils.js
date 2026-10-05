@@ -512,8 +512,10 @@ function _findUserByFF(ffUid, callback) {
 }
 function _findUserByIGN(ign, callback) {
   if (!ign || !window._supa) { callback(null, null); return; }
-  window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,profile_status').eq('ign', ign).limit(1).maybeSingle()
-    .then(function(r) { callback(r.data ? r.data.id : null, r.data ? Object.assign(r.data, { ffUid: r.data.ff_uid, profileImage: r.data.avatar_url }) : null); })
+  /* ✅ BUG FIX (2026-10-04): exact-match (case-sensitive) ki jagah ilike —
+     "singham7" ya "Singham7" dono se milega. */
+  window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,profile_status').ilike('ign', ign).limit(1).maybeSingle()
+    .then(function(r) { callback(r.data ? r.data.id : null, r.data ? Object.assign(r.data, { ign: r.data.ign, displayName: r.data.ign, ffUid: r.data.ff_uid, profileImage: r.data.avatar_url, profileStatus: r.data.profile_status }) : null); })
     .catch(function() { callback(null, null); });
 }
 function _findUserByPhone(phone, callback) {

@@ -320,14 +320,17 @@ function _renderCreatorSignupForm() {
   h += '<div style="font-size:17px;font-weight:900;margin-bottom:8px">Creator Ban Jao!</div>';
   h += '<div style="font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px">';
   h += 'Apne YouTube/Instagram followers ko Mini eSports pe lao apne code se.<br>';
-  h += 'Jab woh <strong style="color:#00d4ff">Sky Diamonds kharch karke paid match khelte hain</strong>, tumhe har match pe <strong style="color:#00d4ff">15% commission</strong> milta hai!';
+  /* ✅ BUG FIX (2026-10-04): commission SIRF hosted Sky Diamond match par
+     (jahan user sky diamond kharch kare) — pct admin-set (CFG) se, hardcoded nahi. */
+  var _sdPct = (window.CFG && window.CFG.sdMatchCommissionPct) || 15;
+  h += 'Jab aap <strong style="color:#00d4ff">apna hosted Sky Diamond match</strong> khilwaate ho aur koi user usme <strong style="color:#00d4ff">Sky Diamond kharch karke join karta hai</strong>, tumhe har match pe <strong style="color:#00d4ff">' + _sdPct + '% commission</strong> milta hai!';
   h += '</div>';
   h += '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
   h += '<div style="font-size:12px;font-weight:700;color:#00d4ff;margin-bottom:8px">💰 Kaise kaam karta hai</div>';
   h += '<div style="font-size:12px;color:var(--txt2);line-height:1.9">';
   h += '1️⃣ Apna code banao, followers ko share karo<br>';
   h += '2️⃣ Woh signup pe tumhara code daalte hain<br>';
-  h += '3️⃣ Jab bhi woh Sky Diamonds se ek paid match join karte hain, tumhe 15% commission milta hai — <strong style="color:#00ff9c">sirf ek baar nahi, har match pe jab tak woh khelte rahenge</strong><br>';
+  h += '3️⃣ Jab aap apne <strong style="color:#00d4ff">hosted Sky Diamond match</strong> mein kisi bhi user ko sky diamond kharch karwaate ho, tumhe <strong style="color:#00d4ff">' + _sdPct + '% commission</strong> milta hai — <strong style="color:#00ff9c">sirf hosted Sky Diamond matches par</strong> (coin/green diamond matches par koi commission nahi)<br>';
   h += '4️⃣ Apna khud ka chhota tournament bhi host kar sakte ho — room set karo, result submit karo';
   h += '</div>';
   h += '<div style="font-size:10px;color:var(--txt2);margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,212,255,.15)">ℹ️ Sirf khareedne se commission nahi milta — referral ko real match khelna hoga. Result submit hote hi auto-verify hota hai; sirf suspicious cases Admin dekhta hai.</div>';
@@ -352,8 +355,12 @@ window.submitCreatorSignup = function() {
   if (!channel) { toast('Channel URL daalo', 'err'); return; }
   if (!window._supa) { toast('Service unavailable', 'err'); return; }
 
+  /* ✅ BUG FIX (2026-10-04): channel_url + followers insert nahi ho rahe the
+     (form collect hota tha par DB mein save nahi) — isliye admin panel ke
+     Creator Applications table mein Channel/Followers box khali tha. */
   window._supa.from('creator_applications').insert({
-    user_id: uid(), creator_code: code, status: 'pending'
+    user_id: uid(), creator_code: code, status: 'pending',
+    channel_url: channel, followers: followers
   }).then(function(r) {
     if (r.error) {
       /* ✅ BUG FIX (2026-08-23): creator_applications has UNIQUE(user_id),
@@ -405,7 +412,10 @@ function renderCreatorDash(codeRow, stats, me) {
   h += '<div style="font-size:13px;font-weight:800;color:#00d4ff">🔵 Creator Code</div><span style="color:#00ff9c;font-weight:700;font-size:12px">✅ Active</span>';
   h += '</div>';
   h += '<div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:3px;margin-bottom:6px">' + code + '</div>';
-  h += '<div style="font-size:11px;color:var(--txt2)">Followers signup pe ye code daalein — commission tabhi milega jab woh paid match khelenge</div>';
+  /* ✅ BUG FIX (2026-10-04): text galat tha ("commission tabhi milega jab woh
+     paid match khelenge") — sahi: tab milega jab aap unhe apne hosted Sky
+     Diamond paid match mein khilwao. */
+  h += '<div style="font-size:11px;color:var(--txt2)">Followers signup pe ye code daalein — commission tabhi milega jab aap unhe apne hosted Sky Diamond paid match mein khilwaoge</div>';
   h += '<button onclick="copyCreatorCode(\'' + code + '\')" style="margin-top:8px;padding:7px 14px;border-radius:10px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.25);color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-copy"></i> Code Copy</button>';
   h += '</div>';
 

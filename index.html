@@ -446,23 +446,26 @@ body,#splash .sp-title,.login-title,.hdr-name{font-family:'Inter',-apple-system,
         </div>
       </div>
 
-      <!-- Green Diamond info -->
-      <div style="background:linear-gradient(135deg,rgba(0,255,100,.07),rgba(0,212,255,.04));border:1px solid rgba(0,255,100,.2);border-radius:14px;padding:14px;margin-bottom:12px">
-        <div style="font-size:13px;font-weight:800;color:#00ff64;margin-bottom:8px;display:flex;align-items:center;gap:7px">
-          <img src="js/green-diamond.png?v=20261003g" style="width:18px;height:18px;object-fit:contain;vertical-align:middle"> Green Diamond
-        </div>
-        <div style="font-size:12px;color:#aaa;line-height:1.8">
-          Sirf <strong style="color:#00ff64">Paid Matches</strong> jeetne par milta hai.<br>
-          Rank, Badges, Titles ke liye use karo.<br>
-          <span style="color:#ff6b6b">❌ Paise se nahi khareeda ja sakta</span><br>
-          <span style="color:#ff6b6b">❌ Withdraw nahi hota</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,255,100,.1)">
-          <span style="font-size:12px;color:#666">Aapke Green Diamonds</span>
-          <span id="greenDiaCount" style="display:flex;align-items:center;gap:6px">
-            <img src="js/green-diamond.png?v=20261003g" style="width:20px;height:20px;object-fit:contain">
-            <span style="font-size:18px;font-weight:900;color:#00ff64">0</span>
-          </span>
+      <!-- Green Diamond card (matches Sky/Coin card style) -->
+      <!-- ✅ BUG FIX (2026-10-04): green diamond box mein icon nahi tha (sky
+           diamond/coin boxes mein glowing icon hai). Ab right side mein
+           green-diamond.png ka wahi glowing icon + info compact. -->
+      <div style="background:linear-gradient(160deg,rgba(0,255,100,.10),rgba(0,80,40,.04));border:1px solid rgba(0,255,100,.3);border-radius:16px;padding:16px 14px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:10px;font-weight:800;color:#00ff64;letter-spacing:.5px;margin-bottom:6px">💚 GREEN DIAMOND</div>
+            <span id="greenDiaCount" style="display:inline-flex;align-items:center;gap:6px">
+              <img src="js/green-diamond.png?v=20261003g" style="width:20px;height:20px;object-fit:contain">
+              <span style="font-size:30px;font-weight:900;color:#00ff64">0</span>
+            </span>
+            <div style="font-size:11px;color:#888;margin-top:8px;line-height:1.7">
+              Sirf <strong style="color:#00ff64">Paid Matches</strong> jeetne par milta hai · Rank, Badges, Titles ke liye use karo<br>
+              <span style="color:#ff6b6b">❌ Paise se nahi khareeda ja sakta</span> · <span style="color:#ff6b6b">❌ Withdraw nahi hota</span>
+            </div>
+          </div>
+          <div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(120,255,180,.55),rgba(0,255,100,.1) 70%);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;filter:drop-shadow(0 0 14px rgba(0,255,100,.75)) drop-shadow(0 0 4px rgba(255,255,255,.5));animation:diaGlow 2.2s ease-in-out infinite .6s">
+            <img src="js/green-diamond.png?v=20261003g" alt="Green Diamond" style="width:38px;height:38px;object-fit:contain">
+          </div>
         </div>
       </div>
 

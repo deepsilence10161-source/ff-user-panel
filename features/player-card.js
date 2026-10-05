@@ -15,7 +15,7 @@ window.showPlayerCard = function(targetUid){
   if(window._supa){
     /* BUG #38 FIX (2026-07-30): user_public_profiles view — works for self or other uid,
        columns here were already public-safe. */
-    window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,rank_points,rank_tier,total_wins,total_kills,total_matches,city,clan_id').eq('id',uid).single()
+    window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,rank_points,rank_tier,total_wins,total_kills,total_matches,city,clan_id,is_vip').eq('id',uid).single()
     .then(function(r){ _renderPlayerCard(r.data||{}); })
     .catch(function(){ _renderPlayerCard(window.UD||{}); });
   } else {
@@ -38,10 +38,18 @@ function _renderPlayerCard(data){
   /* streak */
   var streak  = (window.UD&&data.id===(window.U&&window.U.uid)&&window.UD._winStreak)||0;
   var streakBadge = streak>=7?'💀 Unstoppable':streak>=5?'⚡ On Fire':streak>=3?'🔥 Hot Streak':'';
+  /* ✅ BUG FIX (2026-10-04) Bug 10: searched-user card ka border red
+     (rank-tier color) tha — ab own-profile-box jaisa BLUE border + soft
+     blue glow. VIP user (is_vip public view column) ke liye "unlimited
+     colours" animated rainbow glow border (styles.css .rb-wrap). Premium
+     status public nahi (RLS) — sirf is_vip dikhta hai, wahi use kiya. */
+  var _isVipTarget = !!data.is_vip;
+  var _cardBorder = _isVipTarget ? '' : 'border:2px solid rgba(0,212,255,.45);box-shadow:0 8px 24px rgba(0,212,255,.12)';
   /* Build the visual card */
   var h='<div id="playerCardWrap">';
   /* Card visual */
-  h+='<div id="playerCardVisual" style="background:linear-gradient(135deg,#0a0a1a 0%,#12122a 40%,#0f1f2e 100%);border-radius:20px;padding:0;overflow:hidden;position:relative;margin-bottom:14px;border:2px solid '+ri.color+'44">';
+  if (_isVipTarget) h+='<div class="rb-wrap rb-glow" style="margin-bottom:14px">';
+  h+='<div id="playerCardVisual" style="background:linear-gradient(135deg,#0a0a1a 0%,#12122a 40%,#0f1f2e 100%);border-radius:20px;padding:0;overflow:hidden;position:relative;margin-bottom:14px;'+_cardBorder+'">';
   /* Top glow */
   h+='<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,'+ri.color+',transparent)"></div>';
   /* BG blobs */
@@ -62,7 +70,7 @@ function _renderPlayerCard(data){
   h+='<div style="'+avStyle+'">'+avContent+'</div>';
   /* Name + FF UID */
   h+='<div style="flex:1;min-width:0">';
-  h+='<div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+ign+'</div>';
+  h+='<div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px">'+ign+(_isVipTarget?'<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700;flex-shrink:0">⭐ VIP</span>':'')+'</div>';
   h+='<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">FF UID: <span style="color:rgba(255,255,255,.8)">'+ffUid+'</span></div>';
   h+='<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">📍 '+city+'</div>';
   if(streakBadge) h+='<div style="margin-top:5px;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:rgba(255,165,0,.15);border:1px solid rgba(255,165,0,.3);font-size:11px;font-weight:800;color:#ffa500">'+streakBadge+'</div>';
@@ -89,6 +97,7 @@ function _renderPlayerCard(data){
   h+='<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,'+ri.color+',#00d4ff);border-radius:4px;transition:width .6s ease"></div>';
   h+='</div></div>';
   h+='</div>'; /* /playerCardVisual */
+  if (_isVipTarget) h+='</div>'; /* close rainbow wrapper (Bug 10) */
   /* Share buttons */
   h+='<button onclick="window.sharePlayerCard()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fab fa-whatsapp"></i> WhatsApp pe Share Karo</button>';
   h+='<button onclick="window.sharePlayerCardGeneric()" style="width:100%;padding:12px;border-radius:13px;border:1px solid var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer"><i class="fas fa-share-alt"></i> Kisi bhi app se share karo</button>';

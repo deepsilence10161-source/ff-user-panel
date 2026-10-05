@@ -50,6 +50,17 @@ window.CFG = {
     bonuses: { 1: 50, 2: 150, 3: 400 },
   },
   creatorMinPayout: 100,
+  /* ✅ BUG 16 (2026-10-04): Manual payment (UPI QR) system — admin
+     app_settings key='manual_payment' se configure karta hai
+     (upiId, payeeName, qrImageUrl, instructions, minAmount). */
+  manualPayment: {
+    enabled: true,
+    upiId: 'miniesports@upi',
+    payeeName: 'Mini eSports',
+    qrImageUrl: '',
+    instructions: 'UPI app se paisa bhejo, phir screenshot + UTR number submit karo',
+    minAmount: 10,
+  },
   cosmetics: {
     frame_neon:   { name: 'Neon Frame',      price: 50,  icon: '🟢' },
     frame_fire:   { name: 'Fire Frame',       price: 75,  icon: '🔥' },
@@ -165,6 +176,10 @@ function _applyCfg(c) {
   if (c.cosmetics         != null) window.CFG.cosmetics         = c.cosmetics;
   if (c.paytmEnabled      != null) window.CFG.paytmEnabled      = !!c.paytmEnabled;
   if (c.battlePassPrice   != null) window.CFG.battlePassPrice   = Number(c.battlePassPrice);
+  /* ✅ BUG 16 (2026-10-04): manual payment (UPI QR) settings — admin
+     App Settings → Payment section se save hoti hain, quick-deposit.js
+     inhi se QR image + UPI ID + instructions dikhata hai. */
+  if (c.manualPayment     != null) window.CFG.manualPayment     = c.manualPayment;
   window._cfgLoaded = true;
   if (window.renderHome) window.renderHome();
   if (window.renderWallet) window.renderWallet();

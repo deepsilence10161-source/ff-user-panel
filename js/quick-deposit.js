@@ -6,11 +6,10 @@ window.startAdd = function() {
   h += '<div style="font-size:17px;font-weight:900;color:#00d4ff">Buy Sky Diamonds</div>';
   h += '<div style="font-size:12px;color:#888;margin-top:4px">Sky Diamonds se Paid matches khelo</div>';
   h += '</div>';
-  /* Info box */
-  h += '<div style="background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:#00d4ff;line-height:1.7">';
-  h += '💎 <b>Sky Diamond</b> = Paid matches ki entry fee<br>';
-  h += '<img src="js/green-diamond.png?v=20261003a" style="width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block"> <b>Green Diamond</b> = Matches jeetne par milta hai (rank ke liye)<br>';
-  h += '🪙 <b>Coins</b> = Daily bonus/Ads se milta hai (free matches ke liye)<br>';
+  /* ✅ BUG FIX (2026-10-04): user ki requirement — "Sky Diamond =...,
+     Coins = daily bonus/Ads se milta hai..." wali explanatory lines HATA
+     do; sirf withdrawal warning rakho aur wo bhi RED color mein. */
+  h += '<div style="background:rgba(255,60,60,.07);border:1px solid rgba(255,60,60,.3);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:#ff4444;font-weight:700;line-height:1.6;text-align:center">';
   h += '⚠️ Koi bhi diamond <b>withdraw nahi</b> hota — sirf matches khelo!';
   h += '</div>';
   /* Packages from admin settings */
@@ -70,11 +69,66 @@ window._buyDiamondPkg = function(diamonds, price) {
   h += '<div style="font-size:28px;font-weight:900;color:#00d4ff">💎 ' + diamonds + '</div>';
   h += '<div style="font-size:22px;font-weight:900;color:#fff;margin:6px 0">₹' + price + '</div>';
   h += '</div>';
-  h += '<div style="background:rgba(0,0,0,.3);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;line-height:1.7;color:#ccc">';
-  h += 'UPI ID: <b style="color:#ffd700">miniesports@upi</b><br>';
-  h += 'Amount: <b style="color:#00ff9c">₹' + price + '</b><br>';
-  h += 'Note: <b>Diamonds-' + (window.UD && window.UD.ffUid || 'myUID') + '</b>';
-  h += '</div>';
+  /* ✅ BUG 16 (2026-10-04): Manual Payment QR System.
+     Pehle yahan sirf ek hardcoded text line thi ("UPI ID:
+     miniesports@upi — screenshot admin ko bhejo") — koi QR nahi tha,
+     koi admin-configurable UPI ID nahi thi, koi deep-link nahi tha.
+     Ab poora system: admin-configured QR image + UPI ID + payee name
+     (app_settings live_config.manualPayment, App Settings → Payment),
+     UPI deep-link (GPay/PhonePe/Paytm/BHIM intent), copy button,
+     amount + note pre-filled. Screenshot+UTR submit flow same. */
+  var _mp = (window.CFG && window.CFG.manualPayment) || {};
+  var _mpEnabled = _mp.enabled !== false; /* default ON */
+  /* Admin-entered values HTML mein inject ho rahi hain — escape zaroori
+     (warna ek '<' ya '"' poora payment box tod deta hai). */
+  function _mpEsc(s) {
+    return String(s == null ? '' : s).replace(/[<>&"']/g, function (ch) {
+      return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+  /* QR image sirf http(s) URL — javascript: / data: URL block */
+  var _qrRaw = String(_mp.qrImageUrl || '').trim();
+  var _qrSafe = /^https?:\/\//i.test(_qrRaw) ? _mpEsc(_qrRaw) : '';
+  /* Display ke liye escaped, deep-link ke liye RAW (encodeURIComponent
+     khud handle karta hai — double-escaping UPI intent tod deti hai). */
+  var _upiIdRaw = String(_mp.upiId || 'miniesports@upi').trim();
+  var _payeeRaw = String(_mp.payeeName || 'Mini eSports').trim();
+  var _upiId = _mpEsc(_upiIdRaw);
+  var _payee = _mpEsc(_payeeRaw);
+  var _note = 'Diamonds-' + ((window.UD && window.UD.ffUid) || 'myUID');
+  var _upiLink = 'upi://pay?pa=' + encodeURIComponent(_upiIdRaw) +
+                 '&pn=' + encodeURIComponent(_payeeRaw) +
+                 '&am=' + encodeURIComponent(String(price)) +
+                 '&cu=INR&tn=' + encodeURIComponent(_note);
+  if (_mpEnabled) {
+    /* QR image (admin ne upload ki ho to) */
+    if (_qrSafe) {
+      h += '<div style="text-align:center;margin-bottom:12px">';
+      h += '<div style="display:inline-block;background:#fff;border-radius:14px;padding:10px;box-shadow:0 4px 18px rgba(0,0,0,.4)">';
+      h += '<img src="' + _qrSafe + '" alt="UPI QR" style="display:block;width:190px;height:190px;object-fit:contain">';
+      h += '</div>';
+      h += '<div style="font-size:10px;color:#666;margin-top:6px">Kisi bhi UPI app se scan karo</div>';
+      h += '</div>';
+    }
+    /* UPI ID + copy + open-app row */
+    h += '<div style="background:rgba(0,0,0,.3);border-radius:12px;padding:12px;margin-bottom:10px;font-size:12px;line-height:1.8;color:#ccc">';
+    h += '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">';
+    h += '<div style="min-width:0">UPI ID:<br><b id="_mpUpiId" style="color:#ffd700;font-size:14px;word-break:break-all">' + _upiId + '</b></div>';
+    h += '<button onclick="(function(){var t=document.getElementById(\'_mpUpiId\').textContent;if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){if(window.toast)toast(\'UPI ID copy ho gaya 📋\',\'ok\')},function(){if(window.toast)toast(\'Copy nahi hua\',\'err\')})}else if(window.toast)toast(t,\'info\')})()" style="flex-shrink:0;padding:9px 12px;border-radius:9px;border:1px solid rgba(0,212,255,.3);background:rgba(0,212,255,.08);color:#00d4ff;font-size:11px;font-weight:800;cursor:pointer"><i class="fas fa-copy"></i> Copy</button>';
+    h += '</div>';
+    h += '<div style="margin-top:6px">Payee: <b style="color:#fff">' + _payee + '</b></div>';
+    h += '<div>Amount: <b style="color:#00ff9c">₹' + price + '</b></div>';
+    h += '<div>Note: <b style="color:#fff">' + _note + '</b> <span style="color:#666;font-size:10px">(payment note mein yeh likhna zaroori hai)</span></div>';
+    h += '</div>';
+    /* Open in UPI app — Android intent (wrapped WebView mein top-level nav) */
+    h += '<button onclick="(function(){try{window.location.href=\'' + _upiLink + '\'}catch(e){}})()" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00baf2,#0066ff);color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px"><i class="fas fa-mobile-alt"></i> UPI App Se Pay Karo (₹' + price + ')</button>';
+    /* Instructions (admin-configurable) */
+    if (_mp.instructions) {
+      h += '<div style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.18);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;color:#ccc;line-height:1.7;white-space:pre-line">' + _mpEsc(_mp.instructions) + '</div>';
+    }
+  } else {
+    h += '<div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;color:#ff9b9b;text-align:center">Manual UPI payment abhi band hai — Paytm option use karo ya thodi der baad try karo.</div>';
+  }
   h += '<div class="f-group"><label>Payment Screenshot *</label>';
   h += '<div id="_diaDepArea" onclick="document.getElementById(\'_diaDepIn\').click()" style="border:2px dashed rgba(0,212,255,.25);border-radius:12px;padding:18px;text-align:center;cursor:pointer">';
   h += '<i class="fas fa-camera" style="font-size:26px;color:#00d4ff55;display:block;margin-bottom:6px"></i>';

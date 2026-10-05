@@ -609,8 +609,20 @@ function clearAllNotifs() {
 function pushLocalNotif(type, title, msg, matchName, matchId) {
   if (NOTIFS.some(function(n) { return n.matchId===matchId && n.type===type; })) return;
   if (!window._supa || !U) return;
-  window._supa.from('notifications').insert({ user_id: U.uid, type: type, title: title, body: msg, ref_id: matchId||null })
-    .then(function(r) { if (r.data && r.data[0]) { NOTIFS.unshift(_toNotif(r.data[0])); updateBell(); } }).catch(function(){});
+  /* ✅ BUG FIX (2026-10-04): "ek hi match ki Match Completed notification
+     kai baar aa rahi thi". Root cause: detectChanges() boot par chalta hai
+     jab NOTIFS array abhi DB se load nahi hui hoti — in-memory dedupe fail
+     ho jata tha aur har app-reopen par nayi row insert ho jati thi (aur
+     OneSignal push bhi naya jata tha). Fix: insert se PEHLE DB mein check
+     ki (user_id, type, ref_id) ka notification pehle se hai kya. */
+  var _ref = matchId || '';
+  window._supa.from('notifications').select('id')
+    .eq('user_id', U.uid).eq('type', type).eq('ref_id', _ref).limit(1).maybeSingle()
+    .then(function(r) {
+      if (r && r.data) return; /* pehle se hai — duplicate mat banao */
+      return window._supa.from('notifications').insert({ user_id: U.uid, type: type, title: title, body: msg, ref_id: matchId||null })
+        .then(function(r2) { if (r2.data && r2.data[0]) { NOTIFS.unshift(_toNotif(r2.data[0])); updateBell(); } });
+    }).catch(function(){});
 }
 
 /* ================================================================ L9: WALLET */

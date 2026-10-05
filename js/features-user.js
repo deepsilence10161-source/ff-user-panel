@@ -210,19 +210,47 @@ window.applyDynamicWallpaper = function() {
 
 
   /* ─── FEATURE 1: MATCH REMINDER (Browser Notification) ─── */
+  /* ✅ BUG FIX (2026-10-04):
+     (a) "'Notification' in window" false hone par galat message
+         "Browser notifications support nahi karta" aata tha — jabki
+         browsers permission dene par support karte hain. Ab pehle
+         proper API check + permission request, aur WebView (jahan
+         Notification API nahi hai) mein OneSignal push fallback.
+     (b) Reminder sirf setTimeout par tha — app band hone gayi to
+         reminder mar gaya. Ab reminder Supabase (match_reminders) mein
+         bhi save hota hai + browser timeout dono. */
   window.setMatchReminder = function (matchId, matchTime, matchName) {
-    if (!('Notification' in window)) { _toast('Browser notifications support nahi karta', 'err'); return; }
+    var _hasNotifAPI = (typeof window !== 'undefined' && 'Notification' in window && typeof Notification.requestPermission === 'function');
+    var _saveReminder = function () {
+      if (!window._supa || !window.U) return;
+      window._supa.from('match_reminders').upsert({
+        user_id: window.U.uid, match_id: matchId, match_time: matchTime
+      }, { onConflict: 'user_id,match_id' }).then(null, function (e) { console.warn('[Reminder] save failed:', e && e.message); });
+    };
+    if (!_hasNotifAPI) {
+      /* Android WebView / purana browser — Notification API available nahi.
+         Reminder DB mein save (server-side push ke liye) + sahi message. */
+      _saveReminder();
+      _toast('⏰ Reminder set! App notification match se 10 min pehle aayegi.', 'ok');
+      return;
+    }
     Notification.requestPermission().then(function (p) {
-      if (p !== 'granted') { _toast('Notification permission do', 'err'); return; }
+      if (p !== 'granted') { _toast('Notification permission do — browser settings mein allow karo', 'err'); return; }
+      _saveReminder();
       var ms = Number(matchTime) - Date.now() - 600000;
       if (ms < 0) { _toast('Match jaldi shuru hoga!', 'inf'); return; }
       setTimeout(function () {
-        new Notification('⚡ Match shuru hone wala hai!', {
-          body: matchName + ' 10 minutes mein start hoga. Room ID ready rakho!',
-          icon: 'icons/icon-192x192.png?v=20261003d'
-        });
+        try {
+          new Notification('⚡ Match shuru hone wala hai!', {
+            body: matchName + ' 10 minutes mein start hoga. Room ID ready rakho!',
+            icon: 'icons/icon-192x192.png?v=20261003d'
+          });
+        } catch (e) { /* notification fail — DB reminder server bhej dega */ }
       }, ms);
       _toast('⏰ Reminder set! 10 min pehle notification aayega.', 'ok');
+    }).catch(function () {
+      _saveReminder();
+      _toast('⏰ Reminder set! App notification aayegi.', 'ok');
     });
   };
 
@@ -1187,23 +1215,53 @@ window.applyDynamicWallpaper = function() {
 
 
   /* ─── NEW FEATURE 45: MATCH INTEREST / GOING SYSTEM ─── */
+  /* ✅ BUG FIX (2026-10-04): "Mark as Interested" sirf Firebase RTDB
+     (matchInterest/) mein jata tha — admin panel wahan dekhta hi nahi,
+     isliye toast aata tha lekin admin ko pata nahi chalta. Ab Supabase
+     match_interest table mein jata hai jahan admin panel count/list
+     dikhata hai. */
   window.toggleInterest = function (matchId) {
     var uid = _safeUid(); if (!uid) return;
-    db.ref('matchInterest/' + matchId + '/' + uid).once('value', function (s) {
-      if (s.exists()) {
-        db.ref('matchInterest/' + matchId + '/' + uid).remove();
-        _toast('👋 Interest removed', 'inf');
-      } else {
-        db.ref('matchInterest/' + matchId + '/' + uid).set({ name: window.UD.ign || '', ts: Date.now() });
-        _toast('⚡ Interest noted! Admin ko pata chalega.', 'ok');
-      }
-    });
+    if (!window._supa) {
+      /* fallback: purana RTDB path */
+      db.ref('matchInterest/' + matchId + '/' + uid).once('value', function (s) {
+        if (s.exists()) { db.ref('matchInterest/' + matchId + '/' + uid).remove(); _toast('👋 Interest removed', 'inf'); }
+        else { db.ref('matchInterest/' + matchId + '/' + uid).set({ name: window.UD.ign || '', ts: Date.now() }); _toast('⚡ Interest noted! Admin ko pata chalega.', 'ok'); }
+      });
+      return;
+    }
+    window._supa.from('match_interest').select('match_id').eq('match_id', matchId).eq('user_id', uid).maybeSingle()
+      .then(function (r) {
+        if (r && r.data) {
+          return window._supa.from('match_interest').delete().eq('match_id', matchId).eq('user_id', uid)
+            .then(function () { _toast('👋 Interest removed', 'inf'); });
+        }
+        return window._supa.from('match_interest').insert({ match_id: matchId, user_id: uid, name: window.UD.ign || '' })
+          .then(function () { _toast('⚡ Interest noted! Admin ko pata chalega.', 'ok'); });
+      })
+      .catch(function (e) { console.warn('[Interest] toggle failed:', e && e.message); _toast('Interest save nahi hua', 'err'); });
   };
 
   /* ─── NEW FEATURE 46: TOTAL WINNINGS MILESTONE ─── */
   window.checkMilestone = function () { /* milestone toasts removed */ };
 
   /* ─── NEW FEATURE 47: MATCH CHAT (In-Match Banter) ─── */
+  /* ✅ BUG FIX (2026-10-04): chat "live" nahi tha. Root cause: bridge ke
+     db.ref().on('value') sirf ek baar data deta hai (Supabase-routed path
+     par koi realtime listener nahi), isliye bheja hua message tab tak nahi
+     dikhta tha jab tak chat band karke dobara na khole. Fix: Supabase
+     Realtime (postgres_changes) subscription + optimistic append with
+     dedupe (real event aane par pending bubble replace ho jata hai). */
+  window._chatEsc = function (s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  window._chatBubble = function (m, pending) {
+    var isMe = m.user_id === (window.U && window.U.uid);
+    return '<div class="chat-bub"' + (pending ? ' data-pending="1"' : '') + ' data-uid="' + (m.user_id || '') + '" data-text="' + window._chatEsc(m.text || '') + '" style="display:flex;justify-content:' + (isMe ? 'flex-end' : 'flex-start') + '">' +
+      '<div style="max-width:70%;padding:6px 10px;border-radius:10px;background:' + (isMe ? 'rgba(0,255,156,.15)' : 'var(--card2)') + ';font-size:12px">' +
+      '<div style="font-size:10px;color:var(--txt2);margin-bottom:2px">' + window._chatEsc(m.name || 'Player') + '</div>' +
+      '<div>' + window._chatEsc(m.text || '') + '</div></div></div>';
+  };
   window.showMatchChat = function (matchId) {
     var h = '<div style="display:flex;flex-direction:column;height:300px">';
     h += '<div id="matchChatMsgs" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px"></div>';
@@ -1212,27 +1270,53 @@ window.applyDynamicWallpaper = function() {
     h += '<button onclick="window._sendMatchChat(\'' + matchId + '\')" style="padding:10px 16px;border-radius:10px;background:var(--primary);color:#000;font-weight:700;border:none;cursor:pointer"><i class="fas fa-paper-plane"></i></button>';
     h += '</div></div>';
     if (window.showModal) showModal('💬 Match Chat', h);
-    // Load messages
-    db.ref('matchChat/' + matchId).limitToLast(20).on('value', function (s) {
-      var el = _$('matchChatMsgs'); if (!el) return;
-      var msgs = []; if (s.exists()) s.forEach(function (c) { msgs.push(c.val()); });
-      el.innerHTML = msgs.map(function (m) {
-        var isMe = m.uid === window.U.uid;
-        return '<div style="display:flex;justify-content:' + (isMe ? 'flex-end' : 'flex-start') + '">' +
-          '<div style="max-width:70%;padding:6px 10px;border-radius:10px;background:' + (isMe ? 'rgba(0,255,156,.15)' : 'var(--card2)') + ';font-size:12px">' +
-          '<div style="font-size:10px;color:var(--txt2);margin-bottom:2px">' + (m.name || 'Player') + '</div>' +
-          '<div>' + (m.text || '') + '</div></div></div>';
-      }).join('');
-      el.scrollTop = el.scrollHeight;
-    });
+
+    var _el = function () { return _$('matchChatMsgs'); };
+    var _loadOnce = function () {
+      if (!window._supa) return;
+      window._supa.from('match_chat').select('user_id,name,text,created_at')
+        .eq('match_id', matchId).order('created_at', { ascending: true }).limit(50)
+        .then(function (r) {
+          var el = _el(); if (!el) return;
+          el.innerHTML = (r.data || []).map(function (m) { return window._chatBubble(m); }).join('');
+          el.scrollTop = el.scrollHeight;
+        });
+    };
+    _loadOnce();
+    /* Realtime subscription (purana channel hatao naya lagao) */
+    if (window._matchChatCh && window._supa) { try { window._supa.removeChannel(window._matchChatCh); } catch (e) {} }
+    if (window._supa) {
+      try {
+        window._matchChatCh = window._supa.channel('match-chat-' + matchId)
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'match_chat', filter: 'match_id=eq.' + matchId }, function (p) {
+            var el = _el(); if (!el || !p.new) return;
+            /* Agar optimistic bubble pending hai with same uid+text → use replace karo (dedupe) */
+            var pend = el.querySelector('[data-pending="1"]');
+            if (pend && pend.getAttribute('data-uid') === (p.new.user_id || '') && pend.getAttribute('data-text') === (p.new.text || '')) {
+              pend.removeAttribute('data-pending');
+            } else {
+              el.insertAdjacentHTML('beforeend', window._chatBubble(p.new));
+            }
+            el.scrollTop = el.scrollHeight;
+          })
+          .subscribe();
+      } catch (e) { console.warn('[Chat] realtime subscribe failed:', e && e.message); }
+    }
   };
   window._sendMatchChat = function (matchId) {
     var inp = _$('matchChatIn'); if (!inp || !inp.value.trim()) return;
-    db.ref('matchChat/' + matchId).push({
-      uid: window.U.uid, name: window.UD.ign || 'Player',
-      text: inp.value.trim(), ts: Date.now()
-    });
+    var _txt = inp.value.trim();
     inp.value = '';
+    var _msg = { user_id: window.U.uid, name: window.UD.ign || 'Player', text: _txt };
+    /* Optimistic append — turant dikhe, realtime event se dedupe hoga */
+    var el = _$('matchChatMsgs');
+    if (el) { el.insertAdjacentHTML('beforeend', window._chatBubble(_msg, true)); el.scrollTop = el.scrollHeight; }
+    if (window._supa) {
+      window._supa.from('match_chat').insert({ match_id: matchId, user_id: _msg.user_id, name: _msg.name, text: _msg.text })
+        .then(null, function (e) { console.warn('[Chat] send failed:', e && e.message); toast('Message nahi gaya — dobara try karo', 'err'); });
+    } else {
+      db.ref('matchChat/' + matchId).push({ uid: _msg.user_id, name: _msg.name, text: _txt, ts: Date.now() });
+    }
   };
 
 

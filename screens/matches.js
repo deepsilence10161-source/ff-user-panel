@@ -229,7 +229,17 @@ function showDet(id) {
       h += '<div class="room-box rb-green" style="margin-top:12px"><div class="rp-label">Room ID</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="room-big">' + t.roomId + '</span><button onclick="copyTxt(\'' + String(t.roomId||'').replace(/'/g,"\\'") + '\')" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
       h += '<div class="rp-label" style="margin-top:8px">Password</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="room-big">' + t.roomPassword + '</span><button onclick="copyTxt(\'' + String(t.roomPassword||'').replace(/'/g,"\\'") + '\')" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
     } else { h += '<div class="room-box rb-yellow" style="margin-top:12px"><i class="fas fa-lock"></i> Join the match to see room details</div>'; }
-  } else { h += '<div class="room-box rb-blue" style="margin-top:12px"><i class="fas fa-clock"></i> Room details will be shared before match start</div>'; }
+  } else {
+    /* ✅ BUG FIX (2026-10-04): pehle match khatam hone ke baad bhi
+       "Room details will be shared before match start" dikhta tha — ab
+       status ke hisaab se sahi message. */
+    var _dSt = (t.status || '').toLowerCase();
+    if (_dSt === 'completed' || _dSt === 'finished' || _dSt === 'ended' || _dSt === 'cancelled') {
+      h += '<div class="room-box rb-grey" style="margin-top:12px;opacity:.75"><i class="fas fa-flag-checkered"></i> ' + (_dSt === 'cancelled' ? 'Match cancel ho gaya' : 'Match khatam ho chuka hai') + '</div>';
+    } else {
+      h += '<div class="room-box rb-blue" style="margin-top:12px"><i class="fas fa-clock"></i> Room details will be shared before match start</div>';
+    }
+  }
   /* Single Share / Invite Friends button — opens Android native Share sheet */
   var _matchStatus = (t.status || '').toLowerCase();
   if (_matchStatus !== 'cancelled' && _matchStatus !== 'completed') {

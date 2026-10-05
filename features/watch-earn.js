@@ -227,31 +227,74 @@ window.renderSpectatorCount = function(matchId) {
 };
 
 /* ── Show Live Matches to Spectate ── */
+/* ✅ BUG FIX (2026-10-04): "Live matches dikhte hi nahi" + "live stream on
+   karne par users ko video dikhti hi nahi". Root cause: ye function sirf
+   `matches` (status='live') padhta tha — lekin creator ka "Go Live" stream
+   `users.is_live` + `stream_link` mein save hota hai (aur users table RLS
+   own-row-only hai, isliye viewers ko wahan dikhta hi nahi). Live streams
+   `user_public_profiles` VIEW mein expose hote hain (is_live, stream_link,
+   stream_title) — ab wahan se aate hain. Live MATCH streams bhi dikhte hain. */
 window.showLiveSpectateList = function() {
   if (!window._supa) { toast('Connection error', 'err'); return; }
+  var _userStreams = [], _matchStreams = [];
+  function _render() {
+    var h = '';
+    var total = _userStreams.length + _matchStreams.length;
+    if (!total) {
+      h = '<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">📺</div><div style="color:var(--txt2)">Abhi koi live match nahi — jab match live ho tab yahan dikhega</div></div>';
+    } else {
+      h = '<div style="display:flex;flex-direction:column;gap:10px">';
+      _userStreams.forEach(function(u) {
+        var link = u.stream_link || '';
+        if (!link) return;
+        h += '<div style="background:rgba(255,0,0,.04);border:1px solid rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px">';
+        h += '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (window._chatEsc ? window._chatEsc(u.stream_title || (u.ign + ' — Live')) : (u.stream_title || (u.ign + ' — Live'))) + '</div>';
+        h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">🔴 ' + (window._chatEsc ? window._chatEsc(u.ign || 'Player') : (u.ign || 'Player')) + ' • Live stream</div></div>';
+        h += '<button onclick="window.watchStream(\'' + String(link).replace(/'/g, "\\'") + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer">👀 Watch</button>';
+        h += '</div>';
+      });
+      _matchStreams.forEach(function(m) {
+        var count = m.spectator_count || 0;
+        h += '<div style="background:rgba(255,0,0,.04);border:1px solid rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px">';
+        h += '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (m.title || 'Match') + '</div>';
+        h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + count + ' watching • ' + (m.mode || 'BR') + '</div></div>';
+        h += '<button onclick="startWatching(\'' + m.id + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer">👀 Watch</button>';
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+    if (window.openModal) openModal('📺 Live Matches', h);
+  }
+  /* 1. User live streams (user_public_profiles view — RLS-safe) */
+  window._supa.from('user_public_profiles')
+    .select('id,ign,stream_link,stream_title,is_live')
+    .eq('is_live', true).not('stream_link', 'is', null).limit(20)
+    .then(function(r) { _userStreams = (r.data || []).filter(function(u){ return u.stream_link; }); _render(); },
+          function() { _render(); });
+  /* 2. Live match streams (matches table) */
   window._supa.from('matches').select('id,title,mode,status,stream_link,youtube_link,spectator_count')
     .eq('status', 'live').limit(10)
     .then(function(r) {
-      var live = r.data || [];
-      var h = '';
-      if (!live.length) {
-        h = '<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">📺</div><div style="color:var(--txt2)">Abhi koi live match nahi — jab match live ho tab yahan dikhega</div></div>';
-      } else {
-        h = '<div style="display:flex;flex-direction:column;gap:10px">';
-        live.forEach(function(m) {
-          if (!m.stream_link && !m.youtube_link) return;
-          var count = m.spectator_count || 0;
-          h += '<div style="background:rgba(255,0,0,.04);border:1px solid rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px">';
-          h += '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>';
-          h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (m.title || 'Match') + '</div>';
-          h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + count + ' watching • ' + (m.mode || 'BR') + '</div></div>';
-          h += '<button onclick="startWatching(\'' + m.id + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer">👀 Watch</button>';
-          h += '</div>';
-        });
-        h += '</div>';
-      }
-      if (window.openModal) openModal('📺 Live Matches', h);
-    }, function() { toast('Matches load error', 'err'); });
+      _matchStreams = (r.data || []).filter(function(m) { return m.stream_link || m.youtube_link; });
+      _render();
+    }, function() {});
+};
+
+/* ✅ BUG FIX (2026-10-04): stream player modal — YouTube link ko embed
+   karke dikhata hai (pehle "Watch" sirf match-based tha, user stream ke
+   liye kuch nahi tha). */
+window.watchStream = function(link) {
+  if (!link) { if (window.toast) toast('Stream link nahi mila', 'err'); return; }
+  var _embed = link;
+  var _yt = link.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/))([\w-]{6,})/);
+  if (_yt && _yt[1]) _embed = 'https://www.youtube.com/embed/' + _yt[1];
+  var h = '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000">';
+  h += '<iframe src="' + _embed + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
+  h += '</div>';
+  h += '<div style="text-align:center;margin-top:10px"><a href="' + link + '" target="_blank" rel="noopener" style="color:#00d4ff;font-size:12px">🔗 YouTube par kholo</a></div>';
+  if (window.openModal) openModal('🔴 Live Stream', h);
 };
 
 })();
