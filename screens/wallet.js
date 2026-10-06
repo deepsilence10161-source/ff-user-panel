@@ -38,7 +38,7 @@ function renderWallet() {
   var gdc = $('greenDiaCount');
   if (gdc) {
     var greenDia = Math.max(Number(UD.greenDiamonds)||0, 0);
-    gdc.innerHTML = '<img src="js/green-diamond.png?v=20261006l" style="width:20px;height:20px;vertical-align:middle;object-fit:contain"> <span style="font-size:18px;font-weight:900;color:#00ff64">' + greenDia + '</span>';
+    gdc.innerHTML = '<img src="js/green-diamond.png?v=20261006m" style="width:20px;height:20px;vertical-align:middle;object-fit:contain"> <span style="font-size:18px;font-weight:900;color:#00ff64">' + greenDia + '</span>';
   }
 
   // Update sponsored prize balance card
@@ -201,7 +201,7 @@ function renderWallet() {
                    ? '₹'
                    : (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
                    : (w.currency === 'green_diamonds')
-                     ? '<img src="js/green-diamond.png?v=20261006l" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
+                     ? '<img src="js/green-diamond.png?v=20261006m" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
                      : '🪙';
       h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
@@ -347,6 +347,12 @@ function showWFStep() {
     h += '<div style="background:rgba(255,68,68,.08);border:1.5px solid rgba(255,68,68,.35);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#ff6b6b;line-height:1.5;text-align:left;font-weight:600">⚠️ <strong>Withdraw nahi hoga</strong> — Sky Diamonds sirf matches khelne ke liye hain, ye ek non-refundable in-app currency hai.</div>';
     h += '<div class="f-group"><label>Amount (₹) — Min ₹10</label><input type="number" class="f-input" id="addAmt" placeholder="Enter amount" min="10" value="' + (wfAmt || '') + '"></div>';
     var _sdPkgs = (window.CFG && window.CFG.sdPackages) || [{label:'₹50',price:50},{label:'₹99',price:99},{label:'₹199',price:199},{label:'₹499',price:499}];
+    /* ✅ B23 (2026-10-06): online (Paytm) payment ki seema yahin saaf likh do —
+       user amount chunte waqt hi jaan le (click karne par toast bhi aata hai,
+       aur cap ke upar order banta hi nahi). Seema Settings se badalti hai. */
+    h += '<div id="wfMaxHint" style="font-size:10px;color:#00baf2;margin-bottom:10px;line-height:1.5">' +
+         '⚡ Online (Paytm) payment sirf ₹' + ((window.CFG && window.CFG.paytmMaxTxn) || 2000) +
+         ' tak — isse upar ke liye UPI/QR (manual) se bhejo.</div>';
     h += '<div class="w-amt-grid">';
     _sdPkgs.forEach(function(p){ h += '<div class="w-amt-btn" onclick="pickAmt('+p.price+')">₹'+p.price+'<br><small style="font-size:9px;opacity:.7">'+p.label+'</small></div>'; });
     h += '</div>';
