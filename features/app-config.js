@@ -10,6 +10,9 @@ window.CFG = {
   commission:        0.15,
   roomReleaseMins:    10,
   matchReminderMins:  30,
+  /* ✅ A9: purani admin broadcast naye users ko kitne din tak dikhe
+     (0 = sab dikhe). Admin panel ke App Settings se badalta hai. */
+  notifBroadcastDays: 7,
   autoSquadEnabled:   1,
   autoSquadTimeout:   15,
   checkInEnabled:     1,
@@ -118,6 +121,7 @@ function _applyCfg(c) {
   if (c.commission        != null) window.CFG.commission        = Number(c.commission);
   if (c.roomReleaseMins        != null) window.CFG.roomReleaseMins        = Number(c.roomReleaseMins);
   if (c.matchReminderMins      != null) window.CFG.matchReminderMins      = Number(c.matchReminderMins);
+  if (c.notifBroadcastDays     != null) window.CFG.notifBroadcastDays     = Number(c.notifBroadcastDays);   /* A9 */
   if (c.autoSquadEnabled       != null) window.CFG.autoSquadEnabled       = Number(c.autoSquadEnabled);
   if (c.autoSquadTimeout       != null) window.CFG.autoSquadTimeout       = Number(c.autoSquadTimeout);
   window.CFG.checkInEnabled = 0;
@@ -130,6 +134,7 @@ function _applyCfg(c) {
   if (c.seasonName             != null) window.CFG.seasonName             = c.seasonName;
   if (c.seasonActive           != null) window.CFG.seasonActive           = Number(c.seasonActive);
   if (c.matchReminderMins != null) window.CFG.matchReminderMins = Number(c.matchReminderMins);
+  if (c.notifBroadcastDays != null) window.CFG.notifBroadcastDays = Number(c.notifBroadcastDays);   /* A9 */
   if (c.shareCoins        != null) window.CFG.shareCoins        = Number(c.shareCoins);
   if (c.referralJoinCoins != null) window.CFG.referralJoinCoins = Number(c.referralJoinCoins);
   if (c.referralSDBonusDiamonds != null) window.CFG.referralSDBonusDiamonds = Number(c.referralSDBonusDiamonds);

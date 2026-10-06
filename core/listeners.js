@@ -570,11 +570,23 @@ function _loadNotifs() {
     .then(function(r) {
       var clearedAt = _getNotifClearedAt();
       var delKeys = _getDeletedNotifKeys();
+      /* ✅ A9 (2026-10-06): purani ADMIN broadcast (target_all) naye users ko
+         nahi dikhni chahiye — warna naya user khaali purane dher me ulajh jata
+         hai (live DB me 19 din purani broadcast mili thi). Ab sirf aakhri
+         N din ki broadcast dikti hai; N admin ki setting se aata hai
+         (CFG.notifBroadcastDays, default 7) — B5 ke usool ke mutabik har
+         value Settings me hi rehti hai.
+         NOTE: apni (user-specific) notifications par koi kaid nahi — wo
+         hamesha dikhengi. */
+      var _bcDays = Number((window.CFG && window.CFG.notifBroadcastDays) || 7);
+      var _bcCut  = _bcDays > 0 ? (Date.now() - _bcDays * 86400000) : 0;
       NOTIFS = [];
       (r.data || []).forEach(function(n) {
         var m = _toNotif(n);
         if (delKeys[m._key]) return;
         if (clearedAt > 0 && (m.createdAt||0) <= clearedAt) return;
+        var _isBroadcast = (n.target_all === true) || (n.user_id === '__all__');
+        if (_isBroadcast && _bcCut > 0 && (m.createdAt || 0) < _bcCut) return;
         NOTIFS.push(m);
       });
       updateBell(); if (curScr === 'notif') renderNotifs();
