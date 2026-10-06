@@ -1046,6 +1046,10 @@ async function _submitProfileUpdateForVerifiedUser(ign, uid, phone, btn) {
       new_ff_uid:     uid,
       current_ign:    UD.ign || '',
       current_ff_uid: UD.ffUid || '',
+      /* ✅ A4 FIX (2026-10-06): purana phone bhi bhejo — admin panel ab
+         "purana → naya" dikha sakta hai (jaise IGN/FF UID me hota hai).
+         Column DB me add kiya gaya: profile_updates.current_phone */
+      current_phone:  UD.phone || '',
       new_phone:      phone || null,
       status:         'pending',
       request_count:  (UD.profileRequestCount || 0) + 1
