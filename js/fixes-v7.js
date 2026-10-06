@@ -683,21 +683,15 @@ waitFor(function(){return window.U&&window.UD&&window.db;},function(){
 
 /* ════════════════════════════════════════════
    ✨ ADMIN DAILY BONUS CONFIG
+   ✅ B26 (2026-10-07): yahan pehle Firebase RTDB
+   `appSettings/dailyBonusRewards` ka listener tha (day1..7 + day30Bonus ko
+   window._adminDailyBonusRewards / _adminDay30Bonus me utaarta tha).
+   Wo path 2026-08 ki Supabase migration ke baad MARA hua tha (live me wahan
+   value hi nahi thi), aur admin ka Daily Bonus Editor bhi ab Supabase
+   live_config.dailyBonusRewards par likhta hai — isliye ye listener hata
+   diya. Ab yeh dono globals features/app-config.js _applyCfg() me set hote
+   hain (live_config.dailyBonusRewards se), yani ek hi source, ek hi sach.
 ════════════════════════════════════════════ */
-waitFor(function(){return window.db;},function(){
-  window.db.ref('appSettings/dailyBonusRewards').on('value',function(s){
-    if(!s.exists())return;
-    var cfg=s.val(),arr=[];
-    for(var i=1;i<=7;i++) arr.push(Number(cfg['day'+i])||[5,7,10,12,15,20,30][i-1]);
-    window._adminDailyBonusRewards=arr;
-    /* BUG #39 FIX (2026-07-30): the admin's "Special Day-30 Bonus" field was being saved to
-       Firebase correctly but never actually read on the client — both process_daily_checkin
-       call sites hardcoded p_milestone_bonus:100 regardless of what the admin configured
-       here. Now captured alongside the daily tier array so it can be used below. */
-    window._adminDay30Bonus = Number(cfg.day30Bonus) || 100;
-  });
-});
-
 /* ════════════════════════════════════════════
    ✨ PUSH NOTIFICATIONS+
 ════════════════════════════════════════════ */

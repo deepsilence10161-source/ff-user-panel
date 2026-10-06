@@ -1148,8 +1148,13 @@
            real, tested RPC — so if this function is ever actually wired to
            a button in the future, there's only one authoritative check-in
            path in the whole codebase, not three drifting implementations. */
-        var tierRewards = (window.CFG && window.CFG.checkinTierRewards) || [5, 7, 10, 12, 15, 20, 30];
-        var milestoneBonus = (window.CFG && window.CFG.checkinStreakBonus7) || 50;
+        /* ✅ B26 (2026-10-07): values ab wahi globals se aati hain jo asli button
+           (features-user.js) aur admin ka Daily Bonus Editor (live_config.
+           dailyBonusRewards) use karte hain. Pehle yahan CFG.checkinTierRewards /
+           CFG.checkinStreakBonus7 likha tha — checkinTierRewards CFG me kabhi thi
+           hi nahi aur checkinStreakBonus7 server padhta hi nahi tha (dono dead). */
+        var tierRewards = window._adminDailyBonusRewards || [5, 7, 10, 12, 15, 20, 30];
+        var milestoneBonus = window._adminDay30Bonus || 100;
         var { data, error } = await window._supa.rpc('process_daily_checkin', {
           p_tier_rewards: tierRewards, p_milestone_bonus: milestoneBonus, p_milestone_days: 7
         });

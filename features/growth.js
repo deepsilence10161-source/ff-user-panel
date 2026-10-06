@@ -252,7 +252,7 @@ window.showMissionsPanel = function() {
        in — teeno ek hi kaam ke liye alag-alag coins de rahe the, sirf
        ek hona chahiye" — this used to auto-claim a 'daily_login' mission
        reward here, completely free, just for opening this panel — on
-       top of the real Daily Check-In button reward (checkinCoins, via
+       top of the real Daily Check-In button reward (dailyBonusRewards →
        process_daily_checkin RPC) AND a THIRD 'daily_checkin' mission
        reward that separately paid out again once the user checked in.
        Same real-world action ("I opened the app / checked in today"),
@@ -270,8 +270,9 @@ function _renderMissionsPanelFromProg(prog) {
 
   /* ✅ BUG FIX (2026-09-16): removed 'daily_login' and 'daily_checkin'
      from this list — both paid coins for the exact same real-world
-     action as the Daily Check-In button (process_daily_checkin RPC,
-     configured by admin's "Daily Check-In Coins" field), so a user
+     action as the Daily Check-In button (process_daily_checkin RPC, jiske
+     rewards admin ke "Daily Bonus Editor" → live_config.dailyBonusRewards
+     se aate hain — B26), so a user
      could collect three separate rewards for logging in/checking in
      once. Daily Check-In (the button, elsewhere in the app) is now the
      single place that pays for that. daily_match and daily_kills3 stay

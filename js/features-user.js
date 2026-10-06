@@ -255,7 +255,7 @@ window.applyDynamicWallpaper = function() {
                 try {
                   new Notification('⚡ Match shuru hone wala hai!', {
                     body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
-                    icon: 'icons/icon-192x192.png?v=20261007e'
+                    icon: 'icons/icon-192x192.png?v=20261007f'
                   });
                 } catch (e) {}
               }, _ms);
@@ -715,7 +715,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261007e'
+                    icon: 'icons/icon-192x192.png?v=20261007f'
                   });
                 }
                 break;
@@ -2197,17 +2197,52 @@ window.applyDynamicWallpaper = function() {
   function _checkInDateToday() {
     return new Date().toISOString().slice(0, 10);
   }
+  /* ✅ B26 (2026-10-07): agla check-in reward nikaalo — bilkul wahi cycle jo
+     server (process_daily_checkin) lagata hai: next_streak = (kal check-in hua
+     tha ? streak+1 : 1), position = ((next_streak-1) % 7) + 1, aur har 30 din
+     par milestone bonus. PEHLE button par hardcoded "(+🪙5)" likha tha jabki
+     day 2 se 7,10,12,15,20,30 coins milte hain — UI jhooth bol rahi thi.
+     Config na mile to null lauta deta hai (tab sirf "Daily Check-In" dikhta hai,
+     koi galat number nahi). */
+  window._nextCheckInReward = function () {
+    var tiers = (window._adminDailyBonusRewards && window._adminDailyBonusRewards.length === 7)
+      ? window._adminDailyBonusRewards : null;
+    if (!tiers) return null;
+    /* UD.streak_days asli check-in se aata hai; listeners.js sirf loginStreak
+       set karta hai — dono me se jo mile, wahi lo. */
+    var streak = Number((window.UD && (window.UD.streak_days != null ? window.UD.streak_days : window.UD.loginStreak)) || 0);
+    var last = window.UD && window.UD.lastCheckIn;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yStr = y.getFullYear() + '-' + String(y.getMonth() + 1).padStart(2, '0') + '-' + String(y.getDate()).padStart(2, '0');
+    var next = (last && String(last).slice(0, 10) === yStr) ? (streak + 1) : 1;
+    var reward = Number(tiers[(next - 1) % 7]) || 0;
+    var bonus = (next % 30 === 0) ? (Number(window._adminDay30Bonus) || 0) : 0;
+    return { reward: reward, bonus: bonus, streak: next };
+  };
   window.updateDailyCheckInButton = function () {
     var claimed = !!(window.UD && window.UD.lastCheckIn === _checkInDateToday());
+    var _nx = window._nextCheckInReward();
+    var _amtLabel = _nx
+      ? ('+🪙' + _nx.reward + (_nx.bonus ? ' +🎁' + _nx.bonus : ''))
+      : '🪙';
     document.querySelectorAll('[data-daily-checkin]').forEach(function(btn) {
       btn.disabled = claimed;
       btn.setAttribute('aria-disabled', claimed ? 'true' : 'false');
       btn.innerHTML = claimed
         ? '<i class="fas fa-check-circle"></i> Checked In Today'
-        : '<i class="fas fa-calendar-check"></i> Daily Check-In (+🪙5)';
+        : '<i class="fas fa-calendar-check"></i> Daily Check-In (' + _amtLabel + ')';
       btn.style.opacity = claimed ? '0.65' : '1';
       btn.style.cursor = claimed ? 'default' : 'pointer';
     });
+    /* ✅ B26: Coin Shop ke "Daily Check-In" tile par bhi asli agla reward dikhao
+       (pehle wahan hardcoded "+5🪙 / 7-day streak bonus +50🪙" likha tha, jo
+       day-2 se galat ho jata tha). */
+    var _amt  = document.getElementById('csCheckinAmt');
+    var _amt2 = document.getElementById('csCheckinAmt2');
+    var _cyc  = document.getElementById('csCheckinCycle');
+    if (_amt)  _amt.textContent  = _amtLabel;
+    if (_amt2) _amt2.textContent = _amtLabel;
+    if (_cyc && _nx) _cyc.textContent = 'Day ' + _nx.streak + ' par itne coins • 7-din cycle • har 30 din bonus';
   };
   window.doCheckIn = function () {
     if (window.UD && window.UD.lastCheckIn === _checkInDateToday()) {

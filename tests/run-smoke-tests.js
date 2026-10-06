@@ -298,6 +298,52 @@ console.log('\n── TEST 10: B15 match-interest ab server RPC par ──');
   }
 }
 
+/* ── TEST 11: B24/B26 — video dead-code gaya + daily bonus live_config se ── */
+console.log('\n── TEST 11: B24/B26 video safai + daily bonus ka ek source ──');
+{
+  /* comments me purane naam jaan-bujh kar likhe hain (itihaas), isliye
+     "live code" wali jaanch comments strip karke hoti hai */
+  const strip = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
+  const app = strip(fs.readFileSync(path.join(REPO, 'features/app-config.js'), 'utf8'));
+  ok(app.indexOf('dailyBonusRewards') !== -1,
+     'app-config me dailyBonusRewards (daily check-in ka ek source) hai');
+  ok(app.indexOf("window._adminDailyBonusRewards = [5, 7, 10, 12, 15, 20, 30];") !== -1,
+     'app-config me default globals set hote hain (config load se pehle bhi UI sahi)');
+  ok(app.indexOf("from('app_settings').select('value').eq('key', 'creator_system')") !== -1,
+     'creator settings ab Supabase creator_system se aati hain (Firebase adminConfig nahi)');
+  ok(!/window\.CFG\.video|videoWatchCoins|videoAllowedPlatforms|videoBannedKeywords/.test(app),
+     'app-config se video system ki saari keys gayi');
+  ok(!/CFG\.checkinCoins|CFG\.checkinStreakBonus7/.test(app),
+     'checkinCoins/checkinStreakBonus7 ka koi live use nahi bacha');
+  ok(app.indexOf('_loadFromFirebase') === -1, 'mara hua Firebase fallback hata diya');
+
+  const fu = strip(fs.readFileSync(path.join(REPO, 'js/features-user.js'), 'utf8'));
+  ok(fu.indexOf('window._nextCheckInReward') !== -1,
+     'features-user me _nextCheckInReward (asli agla reward) hai');
+  ok(fu.indexOf("+🪙5") === -1 && fu.indexOf('Daily Check-In (+🪙5)') === -1,
+     'button par hardcoded (+🪙5) nahi bacha');
+  ok(fu.indexOf('csCheckinAmt') !== -1, 'coin-shop tile ka amount bhi dynamic hai');
+
+  const idx = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
+  ok(idx.indexOf('csCheckinAmt') !== -1 && idx.indexOf('csCheckinCycle') !== -1,
+     'index.html me dynamic daily-check-in ids lagi hain');
+  ok(idx.indexOf('+5🪙') === -1 && idx.indexOf('+50🪙 extra') === -1,
+     'coin-shop ke jhoothe hardcoded amounts gaye');
+
+  const pc = fs.readFileSync(path.join(REPO, 'features/premium-creator.js'), 'utf8');
+  ok(!/window\.submitCreatorVideo\s*=/.test(pc),
+     'submitCreatorVideo (dead video upload) hata diya');
+  const f7 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
+  ok(f7.indexOf("ref('appSettings/dailyBonusRewards')") === -1,
+     'fixes-v7 ka mara hua Firebase daily-bonus listener gaya');
+  const bb = fs.readFileSync(path.join(REPO, 'core/db-bridge.js'), 'utf8');
+  ok(bb.indexOf("root === 'videoWatched'") === -1,
+     'db-bridge se videoWatched arm gaya');
+  const db = fs.readFileSync(path.join(REPO, 'core/db.js'), 'utf8');
+  ok(db.indexOf('window._adminDailyBonusRewards || [5, 7, 10, 12, 15, 20, 30]') !== -1,
+     'db.js ka check-in path bhi wahi ek source use karta hai');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

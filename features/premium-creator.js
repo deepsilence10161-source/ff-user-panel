@@ -638,72 +638,21 @@ window._premiumCreatorInitFn = initPremiumCreator;
 window.initPremiumCreator    = initPremiumCreator; /* ✅ inside IIFE scope */
 
 /* ================================================================
-   CREATOR VIDEO UPLOAD FORM (C2)
+   CREATOR VIDEO UPLOAD FORM (C2) — ✅ B24 (2026-10-07) ME HATA DIYA
+   ────────────────────────────────────────────────────────────────
+   Yahan window.submitCreatorVideo() tha jo video ko Firebase
+   `creatorVideos/` me likhta aur Supabase `creator_videos` me mirror karta.
+   YE POORA FEATURE MARA HUA THA, isliye hata diya:
+     * is function ka koi caller hi nahi tha (koi button/form ise nahi
+       bulata tha — code search se confirm),
+     * user panel me video DEKHNE ki koi screen nahi thi aur coin-earning
+       wala koi path nahi tha (admin ki "Creator Video System" settings
+       jhoothi thi — wo bhi hata di gayi),
+     * admin panel me videos review karne ka koi page nahi tha,
+     * `creator_videos` table khaali (0 rows) thi.
+   User panel me sirf ASLI watch feature hai: Watch & Earn (match ka live
+   stream dekhne par coins — features/watch-earn.js).
    ================================================================ */
-
-window.submitCreatorVideo = function() {
-  var link  = ((document.getElementById('cvLink') ||{}).value||'').trim();
-  var title = ((document.getElementById('cvTitle')||{}).value||'').trim();
-  var desc  = ((document.getElementById('cvDesc') ||{}).value||'').trim();
-
-  if (!link || !title) { toast('Link aur title required hain.', 'err'); return; }
-
-  // Platform validation
-  var platforms = (window.CFG && window.CFG.videoAllowedPlatforms) || 'both';
-  var isYT  = /youtube\.com|youtu\.be/.test(link);
-  var isIG  = /instagram\.com/.test(link);
-  if (platforms === 'youtube'   && !isYT) { toast('Sirf YouTube links allowed hain.', 'err'); return; }
-  if (platforms === 'instagram' && !isIG) { toast('Sirf Instagram links allowed hain.', 'err'); return; }
-  if (platforms === 'both'      && !isYT && !isIG) { toast('Sirf YouTube ya Instagram links allowed hain.', 'err'); return; }
-
-  // Client-side keyword filter (Layer 2)
-  var bannedKw = (window.CFG && window.CFG.videoBannedKeywords) || [];
-  var combined = (title + ' ' + desc).toLowerCase();
-  for (var i = 0; i < bannedKw.length; i++) {
-    if (bannedKw[i] && combined.indexOf(bannedKw[i].toLowerCase()) !== -1) {
-      toast('Yeh content hamari community guidelines ke against hai. Title/Description theek karo.', 'err');
-      return;
-    }
-  }
-
-  var platform  = isYT ? 'youtube' : 'instagram';
-  var creatorId = uid();
-  if (!creatorId || !db()) { toast('Login required.', 'err'); return; }
-
-  var videoId  = db().ref('creatorVideos').push().key;
-  var videoData = {
-    creatorUid:  creatorId,
-    title:       title,
-    description: desc,
-    link:        link,
-    platform:    platform,
-    status:      'live',
-    reportCount: 0,
-    createdAt:   Date.now(),
-  };
-
-  db().ref('creatorVideos/' + videoId).set(videoData, function(err) {
-    if (err) { toast('Error: ' + err.message, 'err'); return; }
-
-    // Mirror to Supabase creator_videos
-    if (window._supa) {
-      window._supa.from('creator_videos').insert({
-        firebase_id:  videoId,
-        creator_uid:  creatorId,
-        title:        title,
-        description:  desc,
-        link:         link,
-        platform:     platform,
-        status:       'live',
-        report_count: 0,
-        created_at:   new Date().toISOString(),
-      }).then(null, function(e){ console.warn('[Creator] Supabase video insert error:', e.message); });
-    }
-
-    toast('✅ Video live ho gaya! 🎉', 'ok');
-    if (window.closeModal) closeModal();
-  });
-};
 
 /* ================================================================
    MY CREATOR VIDEOS LIST

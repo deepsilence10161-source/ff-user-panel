@@ -75,17 +75,10 @@
       return window._fbDb.ref(path).set(value);
     }
 
-    /* BUG #42 FIX (2026-07): videoWatched (daily per-video watch tracking, used to enforce
-       the daily coin-earning cap on watching creator videos) had no case here either —
-       every write silently no-op'd, so both the read-back check (always empty) and the
-       write-after-watching (never persisted) meant the daily limit was never enforced at
-       all — unlimited coin farming by re-watching the same videos. Same Firebase-only
-       routing fix as tdsRecords/tdsHeld above. */
-    if (root === 'videoWatched' && window._fbDb) {
-      if (isUpdate) return window._fbDb.ref(path).update(value);
-      return window._fbDb.ref(path).set(value);
-    }
-
+    /* ✅ B24 (2026-10-07): videoWatched arm HATA diya — "creator video watch"
+       feature hi maujood nahi tha (na koi video feed, na video dekhne wali
+       screen, na koi is path ko likhne/parhne wala code). Jo feature nahi hai,
+       uske liye bridge arm rakhna sirf zimmedari ka bhram tha. */
     /* users/{uid}/... */
     if (root === 'users' && parts[1]) {
       var targetUid = parts[1];
@@ -647,11 +640,9 @@
     var parts = path.split('/').filter(Boolean);
     var root = parts[0];
 
-    /* BUG #36/#42 FIX (2026-07): read-side counterpart to the write-side fix above —
-       these paths must also be READ from real Firebase, not silently fall through to a
-       fake-empty Supabase-shaped result (which would make the daily video-watch limit
-       check always see "not watched yet" regardless of actual history). */
-    if ((root === 'videoWatched' || root === 'tdsRecords' || root === 'tdsHeld') && window._fbDb) {
+    /* ✅ B24: videoWatched yahan se hata (feature gaya) — tdsRecords/tdsHeld
+       waise hi real Firebase se padhe jaate hain (wo asli paths hain). */
+    if ((root === 'tdsRecords' || root === 'tdsHeld') && window._fbDb) {
       window._fbDb.ref(path).once('value', callback);
       return;
     }
@@ -1056,9 +1047,9 @@
        never actually landed in Postgres. That fallback is gone entirely.
        On Supabase failure we now ONLY surface the error (console + one-time
        toast). Genuinely Firebase-only mirror paths (tdsRecords, tdsHeld,
-       videoWatched, selfExcluded, matches/spectator listeners) are NOT
-       routed through this handler — they are dispatched directly inside
-       _supaWrite and are unaffected. */
+       selfExcluded, matches/spectator listeners) are NOT routed through
+       this handler — they are dispatched directly inside _supaWrite and are
+       unaffected. (B24: videoWatched isliye hata ki wo feature hi nahi tha.) */
   }
 
   /* ── INSTALL BRIDGE ── */

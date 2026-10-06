@@ -1,7 +1,9 @@
 /* ================================================================
    APP CONFIG — features/app-config.js | MiniESports v3.0
-   Source: Supabase app_settings table (key=live_config)
-   Fallback: Firebase RTDB appSettings/liveConfig
+   Source of truth: Supabase app_settings (key='live_config' + key='creator_system')
+   ✅ B24/B26 (2026-10-07): Firebase fallback HATA diya (appSettings/liveConfig
+   aur adminConfig/* dono mare hue paths the — admin panel 2026-08 se sirf
+   Supabase likhta hai), aur video system ki saari keys gayi.
 ================================================================ */
 
 /* Default config values */
@@ -29,10 +31,10 @@ window.CFG = {
   shareCoins:        20,
   missions: {
     /* ✅ BUG FIX (2026-09-16): daily_login and daily_checkin removed —
-       see features/growth.js for the full explanation. checkinCoins
-       (below) is now the single reward for the daily login/check-in
-       action; daily_match and daily_kills3 remain as genuinely separate
-       mission rewards. */
+       see features/growth.js for the full explanation. Daily login /
+       check-in ka reward ab dailyBonusRewards (neeche) se aata hai
+       (B26, 2026-10-07 — pehle checkinCoins tha jo server padhta hi nahi
+       tha); daily_match aur daily_kills3 alag, asli missions hain. */
     daily_match:     10,
     daily_kills3:    5,
     week_5matches:   50,
@@ -92,18 +94,27 @@ window.CFG = {
      charge/atki payment ka risk). Admin Settings se badli ja sakti hai. */
   paytmMaxTxn: 2000,
   adDailyLimit:     5,
-  checkinCoins:     5,
-  checkinStreakBonus7: 50,
-  // Creator & Video System defaults (loaded from adminConfig/ paths)
-  videoEnabled:            1,
-  videoWatchCoins:         5,
-  videoDailyLimit:         10,
-  videoAutoHideReports:    5,
-  videoFalseReportPenalty: 3,
-  videoBannedKeywords:     ['gandi','nangi','sexy','vulgar','18+','nude','porn','adult','xxx','explicit','hack tool','cheat','mod apk','aimbot','wallhack'],
-  videoAllowedPlatforms:   'both',
+  /* ✅ B26 (2026-10-07): checkinCoins / checkinStreakBonus7 hata diye — server
+     (process_daily_checkin) inhe kabhi padhta hi nahi tha (params ignore).
+     Daily check-in ka ek hi source: dailyBonusRewards (7-din cycle + day-30
+     bonus) — admin Quick Tools ke "Daily Bonus Editor" se set hota hai. */
+  dailyBonusRewards: {
+    day1: 5, day2: 7, day3: 10, day4: 12, day5: 15, day6: 20, day7: 30,
+    day30Bonus: 100,
+  },
+  /* ✅ B24 (2026-10-07): "Creator Video System" ki saari keys hata di gayi
+     (videoEnabled, videoWatchCoins, videoDailyLimit, videoAutoHideReports,
+     videoFalseReportPenalty, videoBannedKeywords, videoAllowedPlatforms) —
+     wo feature live hi nahi tha (user panel me video dekhne wali screen nahi
+     thi, admin me review page nahi thi, creator_videos khaali thi). User panel
+     me sirf ASLI watch feature bacha: Watch & Earn (upar wali keys).
+     ✅ coinMatchCommissionPct bhi hata (2026-10-04 se coin matches par
+     commission nahi — koi ise padhta bhi nahi tha).
+     Creator settings ab Supabase app_settings key='creator_system' se aati
+     hain (_loadCreatorConfig neeche) — pehle yeh Firebase adminConfig/
+     creatorSystem se aati thi jahan koi likhta hi nahi tha, isliye user ko
+     admin ka set kiya hua rate kabhi milta hi nahi tha. */
   creatorMatchEnabled:     1,
-  coinMatchCommissionPct:  10,
   sdMatchCommissionPct:    15,
   commissionHoldDays:      7,
   maxCreatorMatches:       3,
@@ -121,6 +132,16 @@ window.CFG = {
   appSupportContact:       '',
   appExpectedSigningHash:  '',
 };
+
+/* ✅ B26: daily check-in rewards ke do global — inse features-user.js ka asli
+   Check-In button (window.doCheckIn) aur features/streak.js dono padhte hain.
+   Defaults wahi hain jo server (process_daily_checkin) ke constants hain
+   ([5,7,10,12,15,20,30] + day-30 par 100), taki config load hone se pehle bhi
+   UI jhooth na bole. Live values _applyCfg() me live_config.dailyBonusRewards
+   se aati hain (pehle yeh Firebase appSettings/dailyBonusRewards se aati thi —
+   mara hua path). */
+window._adminDailyBonusRewards = [5, 7, 10, 12, 15, 20, 30];
+window._adminDay30Bonus = 100;
 
 /* Apply config from any source */
 function _applyCfg(c) {
@@ -155,18 +176,21 @@ function _applyCfg(c) {
   if (c.creatorMinPayout  != null) window.CFG.creatorMinPayout  = Number(c.creatorMinPayout);
   if (c.adCoinsPerWatch   != null) window.CFG.adCoinsPerWatch   = Number(c.adCoinsPerWatch);
   if (c.adDailyLimit      != null) window.CFG.adDailyLimit      = Number(c.adDailyLimit);
-  if (c.checkinCoins      != null) window.CFG.checkinCoins      = Number(c.checkinCoins);
-  if (c.checkinStreakBonus7 != null) window.CFG.checkinStreakBonus7 = Number(c.checkinStreakBonus7);
-  // Apply creator/video settings if present (when called from _loadCreatorConfig)
-  if (c.videoEnabled           != null) window.CFG.videoEnabled           = Number(c.videoEnabled);
-  if (c.videoWatchCoins        != null) window.CFG.videoWatchCoins        = Number(c.videoWatchCoins);
-  if (c.videoDailyLimit        != null) window.CFG.videoDailyLimit        = Number(c.videoDailyLimit);
-  if (c.videoAutoHideReports   != null) window.CFG.videoAutoHideReports   = Number(c.videoAutoHideReports);
-  if (c.videoFalseReportPenalty!= null) window.CFG.videoFalseReportPenalty= Number(c.videoFalseReportPenalty);
-  if (c.videoBannedKeywords    != null) window.CFG.videoBannedKeywords    = c.videoBannedKeywords;
-  if (c.videoAllowedPlatforms  != null) window.CFG.videoAllowedPlatforms  = c.videoAllowedPlatforms;
+  /* ✅ B26 (2026-10-07): daily check-in ka schedule — yahi ek source hai.
+     Do globals set karta hai (asli consumers) aur poora object CFG me bhi
+     rakhta hai (streak.js / future UI ke liye). */
+  if (c.dailyBonusRewards != null) {
+    window.CFG.dailyBonusRewards = c.dailyBonusRewards;
+    var _dbrFallback = [5, 7, 10, 12, 15, 20, 30];
+    var _dbrArr = [];
+    for (var _dbrI = 1; _dbrI <= 7; _dbrI++) {
+      _dbrArr.push(Number(c.dailyBonusRewards['day' + _dbrI]) || _dbrFallback[_dbrI - 1]);
+    }
+    window._adminDailyBonusRewards = _dbrArr;
+    window._adminDay30Bonus = Number(c.dailyBonusRewards.day30Bonus) || 100;
+  }
+  /* Creator settings (Supabase app_settings key='creator_system') */
   if (c.creatorMatchEnabled    != null) window.CFG.creatorMatchEnabled    = Number(c.creatorMatchEnabled);
-  if (c.coinMatchCommissionPct != null) window.CFG.coinMatchCommissionPct = Number(c.coinMatchCommissionPct);
   if (c.sdMatchCommissionPct   != null) window.CFG.sdMatchCommissionPct   = Number(c.sdMatchCommissionPct);
   if (c.commissionHoldDays     != null) window.CFG.commissionHoldDays     = Number(c.commissionHoldDays);
   if (c.maxCreatorMatches      != null) window.CFG.maxCreatorMatches      = Number(c.maxCreatorMatches);
@@ -490,32 +514,35 @@ window.loadAppConfig = function() {
           window._cfgLoaded = true;
           try { localStorage.setItem('_appConfigCache', JSON.stringify({ config: r.data.value, timestamp: Date.now() })); } catch(e) {}
         }
-      }).catch(function() { _loadFromFirebase(); });
+      }).catch(function() {
+        /* ✅ B26: pehle yahan _loadFromFirebase() (appSettings/liveConfig) fallback
+           tha — wo path mare hue Firebase mein tha (live me null), isliye fallback
+           sirf jhoothi tasalli deta tha. Ab cache/default hi rehti hai. */
+        console.warn('[AppConfig] live_config fetch fail — cache/default config chal rahi hai');
+      });
   } else {
     setTimeout(function() {
       if (window._supa) window.loadAppConfig();
-      else _loadFromFirebase();
+      else console.warn('[AppConfig] Supabase client abhi taiyar nahi — config retry app-resume par hoga');
     }, 1000);
   }
 };
 
-function _loadFromFirebase() {
-  if (!window.db) return;
-  window.db.ref('appSettings/liveConfig').once('value', function(snap) {
-    if (snap && snap.exists()) _applyCfg(snap.val());
-  });
-}
-
-/* Load creator/video config from separate Firebase paths (adminConfig/) */
+/* ✅ B26/B24 (2026-10-07): creator settings — Supabase app_settings
+   key='creator_system' (admin panel 2026-08 se yahi likhta hai).
+   PEHLE yeh Firebase adminConfig/creatorSystem se padhi jaati thi — mara hua
+   path (live me kabhi likha hi nahi gaya), isliye admin ka set kiya hua
+   SD commission % / hold days / max-matches user panel tak pahunchta hi nahi
+   tha; sab default par chal raha tha (premium-creator.js ka "15% commission"
+   text bhi). Ab admin Settings → "Creator Match Hosting" ka save seedha user
+   panel tak aata hai. */
 function _loadCreatorConfig() {
-  var rtdb = window.rtdb || window.db;
-  if (!rtdb) return;
-  rtdb.ref('adminConfig/videoModeration').once('value', function(vSnap) {
-    if (vSnap && vSnap.exists()) _applyCfg(vSnap.val());
-    rtdb.ref('adminConfig/creatorSystem').once('value', function(cSnap) {
-      if (cSnap && cSnap.exists()) _applyCfg(cSnap.val());
-    });
-  });
+  if (!window._supa) { setTimeout(_loadCreatorConfig, 800); return; }
+  window._supa.from('app_settings').select('value').eq('key', 'creator_system').limit(1)
+    .then(function (r) {
+      var v = r && r.data && r.data[0] && r.data[0].value;
+      if (v) _applyCfg(v);
+    }, function () { /* silent — defaults theek hain */ });
 }
 
 /* Auto-load on script load */
