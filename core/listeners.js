@@ -703,10 +703,17 @@ function _loadTransactions() {
         var amt = Math.abs(Number(t.amount || 0));
 
         var isWithdraw = /(^|_)(withdrawal|withdraw|wd)(_|$)/.test(t2) || t2 === 'wd';
-        var isDepositMirror =
-          /(^|_)(pending_deposit|deposit|deposit_approved|sd_purchase_approved|sd_purchase|sd_credit|purchase_approved|sky_diamond_credit|diamond_credit)(_|$)/.test(t2) ||
+        /* ✅ BUG FIX (2026-10-06, A11): match refund bhi sky_diamonds me aata
+           hai, aur neeche ka "deposit mirror" filter har sky_diamonds+credit
+           row ko chhaant deta tha (kyunki wo SD purchase ki mirror entry
+           hoti hai jo sd_requests se dikhti hai) — isliye SD entry fee ka
+           refund transaction history me KABHI nahi dikhta tha. Refund ko
+           pehle pehchan kar filter se bacha lete hain. */
+        var _isRefundRow = /refund/.test(t2) || /refund/.test(String(t.reason || '').toLowerCase());
+        var isDepositMirror = !_isRefundRow &&
+          (/(^|_)(pending_deposit|deposit|deposit_approved|sd_purchase_approved|sd_purchase|sd_credit|purchase_approved|sky_diamond_credit|diamond_credit)(_|$)/.test(t2) ||
           ((t.currency === 'sky_diamonds' || t.currency === 'sky_diamond') &&
-            (['credit', 'bonus', 'wallet_credit', 'admin_credit'].indexOf(t2) !== -1));
+            (['credit', 'bonus', 'wallet_credit', 'admin_credit'].indexOf(t2) !== -1)));
         if (isDepositMirror) return acc;                 /* already shown via sd_requests */
         if (!amt && !t2) return acc;                     /* empty row */
         if (!amt) return acc;                            /* zero-value noise */
@@ -716,6 +723,12 @@ function _loadTransactions() {
         if (t.reason === 'match_entry') {
           var mtObj = (t.ref_id && window.MT && window.MT[t.ref_id]) ? window.MT[t.ref_id] : null;
           desc = mtObj ? ('Joined: ' + (mtObj.name || mtObj.title || 'Match')) : 'Match Entry Fee';
+        }
+        /* ✅ A11: refund ko saaf-saaf likho — pehle kaccha 'match_refund'
+           text dikhta tha (ya SD case me kuch bhi nahi, upar wale filter se). */
+        if (_isRefundRow || t.reason === 'match_refund' || t2 === 'refund') {
+          var _mtRef = (t.ref_id && window.MT && window.MT[t.ref_id]) ? window.MT[t.ref_id] : null;
+          desc = 'Match Refund: ' + (_mtRef ? (_mtRef.name || _mtRef.title || 'Match') : (t.note || 'Cancelled match'));
         }
         acc.push({
           _key: t.id,

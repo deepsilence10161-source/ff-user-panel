@@ -19,7 +19,10 @@ function checkRefunds() {
          supplies only the join id, no amount at all. */
       if (window._supa && U) {
         var _jrKey = k; /* capture for closure */
-        window._supa.rpc('claim_match_refund', { p_join_id: _jrKey })
+        /* ✅ A11 FIX (2026-10-06): p_uid bhi — ANON client me auth.jwt() khaali
+           hota hai, isliye bina iske refund kabhi nahi milta tha. Paisa phir
+           bhi sirf usi join par wapas hota hai jiska user_id = p_uid. */
+        window._supa.rpc('claim_match_refund', { p_join_id: _jrKey, p_uid: U.uid })
           .then(function(res) {
             var d = res && res.data;
             if (!d || !d.success) return;

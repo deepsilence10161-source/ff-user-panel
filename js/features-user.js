@@ -90,7 +90,12 @@ window.checkInstantRefunds = function() {
       var st = (t.status||'').toLowerCase();
       if (st === 'cancelled' || st === 'canceled') {
         (function(joinId, matchName) {
-          window._supa.rpc('claim_match_refund', { p_join_id: joinId })
+          /* ✅ A11 FIX (2026-10-06): p_uid bhi bhejo — is app ka Supabase
+             client ANON key par chalta hai (login Firebase ka hai), isliye
+             RPC ke andar auth.jwt()->>'sub' khaali hota hai aur refund
+             hamesha 'Not authorized' deta tha. Server phir bhi refund SIRF
+             usi join par karta hai jiska user_id = p_uid ho. */
+          window._supa.rpc('claim_match_refund', { p_join_id: joinId, p_uid: (window.U && window.U.uid) || null })
             .then(function(res) {
               var d = res && res.data;
               if (!d || !d.success) return;
@@ -250,7 +255,7 @@ window.applyDynamicWallpaper = function() {
                 try {
                   new Notification('⚡ Match shuru hone wala hai!', {
                     body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
-                    icon: 'icons/icon-192x192.png?v=20261006d'
+                    icon: 'icons/icon-192x192.png?v=20261006e'
                   });
                 } catch (e) {}
               }, _ms);
@@ -710,7 +715,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261006d'
+                    icon: 'icons/icon-192x192.png?v=20261006e'
                   });
                 }
                 break;
