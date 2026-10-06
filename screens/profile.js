@@ -388,42 +388,18 @@ function uploadBannerImg(inp) {
     });
   });
 }
-function applyReferralCode() {
-  var inp = document.getElementById('applyRefInput');
-  var code = inp ? inp.value.trim().toUpperCase() : '';
-  if (!code || code.length < 4) { toast('Valid code enter karo', 'err'); return; }
-  if (!window._supa || !window._supaReady) { toast('Service unavailable', 'err'); return; }
-  /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet RPC"
-     audit found this credited the referrer's coins (someone else's
-     UID) directly via increment_balance() from the referred user's
-     own browser — that call was silently failing in production
-     already (increment_balance correctly rejects crediting another
-     user's UID from a non-admin caller), meaning referrer rewards
-     have never actually worked, invisibly, this whole time. Replaced
-     with claim_referral_reward(code) — one atomic server-side RPC
-     that validates the code, checks the "only one referral per user
-     ever" rule server-side (not via a client-side duplicate check),
-     computes the reward from config, and credits both sides safely
-     in a single transaction.
-     ✅ B20 (2026-10-07): signup-popup path (apply_referral_code) ka
-     vyavhaar bhi ab bilkul yahi hai — join bonus DONO ko milta hai
-     (admin hint "Dono ko milenge"), aur popup-path ka response
-     reward_self se wahi self-credit karta hai. Do alag reference
-     bonuses (SD bonus sirf pehli SD purchase par, match bonus
-     threshold poore hone par) DB me lagu hain. */
-  window._supa.rpc('claim_referral_reward', { p_code: code })
-    .then(function(res) {
-      var d = res && res.data;
-      if (!d || !d.success) {
-        toast((d && d.error) || 'Referral apply nahi hua', 'err');
-        return;
-      }
-      if (UD) { UD.coins = (UD.coins || 0) + d.coinsEarned; if (window.updateHdr) updateHdr(); }
-      toast('✅ Referral applied! +' + d.coinsEarned + ' coins!', 'ok');
-      closeModal();
-      renderProfile();
-    }, function() { toast('Referral apply nahi hua', 'err'); });
-}
+/* ✅ B20 (2026-10-07): yahan ek DEAD duplicate "applyReferralCode()" pada
+   tha — usme jo "applyRefInput" element dhoondha jata tha, wo app me
+   KAHIN banta hi nahi, isliye wo code kabhi chalta hi nahi tha. ULTA
+   nuksaan: referral-system-fix.js ka asli apply (window.applyReferralCode
+   — jo signup-popup aur URL ?ref= dono use karte hain) isi naam ka tha,
+   aur load order (index.html L679 profile.js → L782 referral-system-fix.js)
+   hamesha is dead version ko chup-chaap override kar deta. Ab referral
+   apply ka EK hi sach hai: referral-system-fix.js → apply_referral_code
+   (server-authoritative; join bonus DONO taraf).
+   ✅ B20 (2026-10-07): SD bonus (sirf dost ki PEHLI SD purchase par) aur
+   match bonus (dost threshold poore kare) DB me lagu hain — aur unka
+   code/comments ek hi sach rakhte hain. */
 function shareRef(code) {
   var url = (typeof window.APP_URL === 'string' && window.APP_URL) || window.location.href;
   var msg = '🎮 Join Mini eSports — India\'s Best Free Fire Tournament App! 🔥\n\n🪙 Get FREE bonus coins on signup!\n📈 Skill-based tournaments — coins + 💎 diamonds jito!\n\n👉 Use my referral code: ' + code + '\n📲 Download now:';

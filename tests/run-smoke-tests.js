@@ -422,6 +422,13 @@ console.log('\n── TEST 14: B20 referral rewards (dono ko join bonus + CFG-dr
      'B20: popup-path ka apply bhi self-credit karta hai (dono ko bonus)');
   ok(rs.indexOf('_joinRw') !== -1,
      'B20: stats ka fallback hardcoded 50 nahi, CFG se');
+
+  const pf = fs.readFileSync(path.join(REPO, 'screens/profile.js'), 'utf8');
+  ok(pf.indexOf('function applyReferralCode()') === -1,
+     'B20: profile.js ka dead duplicate applyReferralCode gaya (asli apply override nahi hota)');
+  const f7 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
+  ok(f7.indexOf('🪙150') === -1 && f7.indexOf('_rMThr') !== -1,
+     'B20: Invite & Earn ka jhootha "Tum 150" gaya — join/match values CFG se');
 }
 
 console.log('\n══════════════════════════════');

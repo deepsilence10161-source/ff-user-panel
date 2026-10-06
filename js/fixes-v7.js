@@ -600,7 +600,16 @@ waitFor(function(){return window.U&&window.UD&&window.db;},function(){
     h+='<div style="background:linear-gradient(135deg,rgba(0,255,156,.1),rgba(0,212,255,.05));border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px">';
     h+='<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">Tumhara Referral Code</div>';
     h+='<div style="font-size:30px;font-weight:900;color:#00ff9c;letter-spacing:3px">'+code+'</div>';
-    h+='<div style="font-size:11px;color:#aaa;margin-top:6px">Tum: 🪙150 · Dost: 🪙50 pehle match par</div>';
+    /* ✅ B20 (2026-10-07): yahan hardcoded "Tum: 150 coins, Dost: 50" tha —
+       wo JHooTH tha (150 kahin se nahi milta) aur admin ki setting
+       badalne par bhi yahi purana number dikhata rehta. Ab wahi sach
+       jo server lagu karta hai: join par DONO ko referralJoinCoins,
+       aur dost ke referralMatchThreshold matches poore hone par
+       referrer ko referralMatchCoins. */
+    var _rJoin  = (window.CFG && window.CFG.referralJoinCoins) || 50;
+    var _rMThr  = (window.CFG && window.CFG.referralMatchThreshold) || 5;
+    var _rMatch = (window.CFG && window.CFG.referralMatchCoins) || 30;
+    h+='<div style="font-size:11px;color:#aaa;margin-top:6px">Join par DONO ko +🪙'+_rJoin+' · Dost '+_rMThr+' matches khele to +🪙'+_rMatch+'</div>';
     h+='</div>';
     h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">';
     /* ✅ BUG FIX (2026-08-25, supersedes 2026-08-23 attempt): this

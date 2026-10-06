@@ -532,7 +532,7 @@
     window.showClanLeaderboardFull = function() {
       if (!_s()) { _t('Service unavailable', 'err'); return; }
       var GDI = window.GDI || function(s) {
-        return '<img src="js/green-diamond.png?v=20261007l" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle">';
+        return '<img src="js/green-diamond.png?v=20261007m" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle">';
       };
 
       _s().from('clans')
