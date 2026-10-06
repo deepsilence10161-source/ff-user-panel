@@ -12,7 +12,7 @@
    C-7: user_achievements duplicate table (SQL-side)
    C-8: admin.getStats RLS dependency note
    H-1: cancelWF wfScreenshot memory leak
-   H-2: isCheckInOpen Date.now → serverNow
+   H-2: (B30 ke saath HATA diya — pre-match check-in system hi gaya)
    H-3: match-timer renderHome wrap timing guard
    H-5: squad-bank atomic decrement
    H-8: leaderboard view missing columns
@@ -253,35 +253,11 @@ function _fixH1_WalletScreenshot() {
   }, 500);
 }
 
-/* ================================================================
-   FIX H-2: isCheckInOpen — Date.now() → serverNow()
-================================================================ */
-function _fixH2_CheckInServerTime() {
-  var _wait = setInterval(function() {
-    if (!window.isCheckInOpen) return;
-    clearInterval(_wait);
-    
-    window.isCheckInOpen = function(t) {
-      if (!t) return false;
-      /* Use server time if available, fallback to Date.now() */
-      var now = (window.serverNow && typeof window.serverNow === 'function')
-        ? window.serverNow()
-        : Date.now();
-      
-      var mt = Number(t.matchTime);
-      if (!mt) return false;
-      
-      var checkInOpenMins = Number(t.checkInOpenMins || t.checkinOpenMins || 30);
-      var checkInCloseMins = Number(t.checkInCloseMins || t.checkinCloseMins || 5);
-      
-      var openAt  = mt - (checkInOpenMins * 60000);
-      var closeAt = mt - (checkInCloseMins * 60000);
-      
-      return now >= openAt && now < closeAt;
-    };
-    console.log('[Fix H-2] isCheckInOpen now uses serverNow() ✅');
-  }, 300);
-}
+/* ✅ B30 (2026-10-07): FIX H-2 (isCheckInOpen ko serverNow par le jana) hata
+   diya — pre-match check-in system hi user panel se nikal gaya
+   (features/checkin-system.js delete). Yeh fix apne aap ko 0.3s ke interval
+   par dobara lagane ki koshish karta rehta tha — function ke na hone par
+   bekaar me chalta rehta, is liye poora block gaya. */
 
 /* ================================================================
    FIX H-5: Squad Bank — atomic decrement instead of direct SET
@@ -595,25 +571,9 @@ function _fixM11_BridgePollingDedup() {
   console.log('[Fix M-11] Bridge polling dedup check ✅');
 }
 
-/* ================================================================
-   FIX: isCheckInOpen line 103 — all Date.now() in checkin
-================================================================ */
-function _fixCheckInAllDates() {
-  var _wait = setInterval(function() {
-    if (!window.releaseNoShows) return;
-    clearInterval(_wait);
-    
-    var _origRelease = window.releaseNoShows;
-    window.releaseNoShows = function(matchId) {
-      /* Already uses serverNow in line 191 — just ensure it's available */
-      if (!window.serverNow) {
-        window.serverNow = function() { return Date.now(); };
-      }
-      return _origRelease.apply(this, arguments);
-    };
-    console.log('[Fix CheckIn] releaseNoShows serverNow guard ✅');
-  }, 400);
-}
+/* ✅ B30 (2026-10-07): "releaseNoShows serverNow guard" fix bhi hata diya —
+   pre-match check-in system ke saath yeh bhi gaya (jo function guard karta
+   tha wo hi nahi bacha). No-show release ka faisla ab sirf server par hai. */
 
 /* ================================================================
    FIX: Leaderboard view missing columns — patch query
@@ -702,7 +662,9 @@ function _initAllFixes() {
   _fixC5_AvatarBgColumn();
   _fixC6_SpectatorXSS();
   _fixH1_WalletScreenshot();
-  _fixH2_CheckInServerTime();
+  /* ✅ B30 (2026-10-07): _fixH2_CheckInServerTime() ka call hata diya —
+     function bhi isi commit me hati (pre-match check-in gaya). Warna yeh
+     call “not defined” error deti thi (E2E ne pakdi). */
   _fixH5_SquadBankAtomic();
   _fixM2_NotifOffline();
   _fixM4_CreatorStats();
@@ -710,7 +672,8 @@ function _initAllFixes() {
   _fixM9_ClanWarExpiry();
   _fixM10_AndroidAdFallback();
   _fixM11_BridgePollingDedup();
-  _fixCheckInAllDates();
+  /* ✅ B30 (2026-10-07): _fixCheckInAllDates() ka call bhi hata (function
+     pre-match check-in ke saath hati). */
   _fixLeaderboardColumns();
   _fixBridgePollsAfterTokenRefresh();
   

@@ -482,7 +482,9 @@ function _toJR(jr) {
        kabhi set nahi hota tha, isliye publish ke baad bhi user ko apna
        result dikhta hi nahi tha (sirf khaali jagah + Details button). */
     result: (jr.placement || jr.prize_earned) ? { rank: jr.placement||0, kills: jr.kills||0, prize: jr.prize_earned||0 } : null,
-    inRoom: jr.in_room||false, checkedIn: jr.checked_in||false, refunded: jr.status==='refunded', resultStatus: jr.status==='approved'?'done':jr.status, createdAt: jr.created_at ? new Date(jr.created_at).getTime() : 0 };
+    /* ✅ B30 (2026-10-07): `checkedIn` field hata di — pre-match check-in
+       system hi gaya (dobara jo bhi padhega usse purani jhooti value na mile). */
+    inRoom: jr.in_room||false, refunded: jr.status==='refunded', resultStatus: jr.status==='approved'?'done':jr.status, createdAt: jr.created_at ? new Date(jr.created_at).getTime() : 0 };
 }
 
 /* ================================================================ L5: NOTIFICATIONS */

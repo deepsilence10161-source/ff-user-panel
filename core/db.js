@@ -613,16 +613,11 @@
         return data;
       },
 
-      /* Check in — R8 (2026-09-26c): server-authoritative check_in_match RPC
-         (window server-validates the real open/close window; client can no
-         longer force checked_in). */
-      checkIn: async function(matchId) {
-        var { data, error } = await window._supa.rpc('check_in_match', {
-          p_match_id: matchId
-        });
-        if (error) return _err('joinRequests.checkIn', error);
-        return data;
-      },
+      /* ✅ B30 (2026-10-07): joinRequests.checkIn() hata diya — pre-match
+         check-in system poora nikal gaya (jo bhi caller tha wahi gaya).
+         Server RPC `check_in_match` DB me jaan-boojh kar chhoda hai: purane
+         installed APK ka button agar use bula le to error na aaye (aur naya
+         app ise kabhi nahi bulata). */
 
       /* Confirm in room — R8 (2026-09-26c): confirm_in_room RPC
          (attendance server-authoritative; clamp froze client in_room). */

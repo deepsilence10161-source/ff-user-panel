@@ -126,10 +126,11 @@ function renderMM() {
        jahan user ko apna joined match dikhta hai. id alag (checkinCardBtn_)
        hai taaki modal wale button se duplicate-id na ho. Sirf upcoming
        match par (cancelled/completed par koi matlab nahi). */
-    if (window.CFG && window.CFG.checkInEnabled && window.renderCheckInBtn
-        && displaySt === 'upcoming' && jr.status !== 'no_show') {
-      h += window.renderCheckInBtn(jr.matchId, t, 'checkinCardBtn');
-    }
+    /* ✅ B30 (2026-10-07): pre-match check-in poora hata diya — yeh block
+       (aur neeche match-detail wala) marte hue check-in system ko call karta
+       tha. Wajah poore feature ki hi thi: check-in ka asli kaam auto-refund /
+       slot-release tha, wo policy 2026-10-03 me hi hat chuki thi — is liye
+       button ka koi matlab nahi bacha tha. */
 
     /* Action buttons row — split into 2 halves */
     h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
@@ -283,7 +284,7 @@ function showDet(id) {
 
   // Live Feed button removed
 
-  // ── Pre-match Check-In button ──
+  // ── Pre-match Check-In button — ✅ B30 (2026-10-07) HATA DIYA ──
   /* ✅ Bug W FIX (2026-10-01): yeh block pehle `if (tp !== 'solo' && !hasJ(id))`
      ke andar tha, jabki renderCheckInBtn() ke pehle hi line par
      `if (!window.hasJ(matchId)) return ''` likha hai — do bilkul contradictory
@@ -296,10 +297,7 @@ function showDet(id) {
      notification sab fire ho gaye). Ab block bahar hai: joined player ko,
      kisi bhi mode (solo/duo/squad) me, milega. Cancelled/completed par
      dikhate nahi (wahan countdown ka koi matlab nahi). */
-  if (window.CFG && window.CFG.checkInEnabled && window.renderCheckInBtn
-      && _matchStatus !== 'cancelled' && _matchStatus !== 'completed') {
-    h += window.renderCheckInBtn(id, t);
-  }
+  /* ✅ B30: match-detail ka check-in button bhi hata (dekho upar wala note) */
 
   // Feature 36: Post-match feedback
   if (effSt(t) === 'completed' && hasJ(id)) {

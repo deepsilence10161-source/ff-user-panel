@@ -475,13 +475,12 @@
         .then(null, function(){});
     }
 
-    /* matches/mid/checkIns/uid → Supabase join_requests.checked_in */
-    if (root === 'matches' && parts[1] && parts[2] === 'checkIns' && parts[3]) {
-      if (value === null) {
-        return window._supa.from('join_requests').update({ checked_in: false }).eq('match_id', parts[1]).eq('user_id', parts[3]);
-      }
-      return window._supa.from('join_requests').update({ checked_in: true, checkin_at: new Date().toISOString() }).eq('match_id', parts[1]).eq('user_id', parts[3]);
-    }
+    /* ✅ B30 (2026-10-07): matches/<id>/checkIns/… ka bridge path hata diya —
+       pre-match check-in ka poora system user panel se nikal gaya. Koi is
+       path par likh hi nahi raha tha (checkin-system.js hi akela likhne wala
+       tha, wo bhi kill-switch ke baad no-op). DB ka column (checked_in) waise
+       hi pada hai — purane APK agar rpc check_in_match bulayein to error na
+       aaye; naya app ise padhta/likhta nahi. */
     /* matches/mid/joinedSlots → Supabase matches.filled_slots */
     if (root === 'matches' && parts[1] && parts[2] === 'joinedSlots') {
       /* R8 cleanup (2026-09-26): the increment_match_filled_slots call was
@@ -806,24 +805,8 @@
       return;
     }
 
-    /* matches/mid/checkIns → Supabase join_requests (checked_in) */
-    if (root === 'matches' && parts[1] && parts[2] === 'checkIns') {
-      var matchId = parts[1];
-      if (parts[3]) {
-        /* Single user checkin */
-        window._supa.from('join_requests').select('checked_in,checkin_at').eq('match_id', matchId).eq('user_id', parts[3]).maybeSingle()
-          .then(function(r) { callback(_fakeSnap(r.data ? { checkedIn: r.data.checked_in, checkinAt: r.data.checkin_at } : null)); }, function() { callback(_fakeSnap(null)); });
-      } else {
-        /* All checkins */
-        window._supa.from('join_requests').select('user_id,checked_in,ign_at_join').eq('match_id', matchId).eq('checked_in', true)
-          .then(function(r) {
-            var obj = {};
-            (r.data || []).forEach(function(jr) { obj[jr.user_id] = { checkedIn: true, ign: jr.ign_at_join }; });
-            callback(_fakeSnap(obj));
-          }, function() { callback(_fakeSnap({})); });
-      }
-      return;
-    }
+    /* ✅ B30 (2026-10-07): checkIns padhne ka bridge path bhi hata diya
+       (dekho upar wala note) — iska koi padhne wala nahi bacha tha. */
     /* matches/mid/joinedPlayers → Supabase join_requests */
     if (root === 'matches' && parts[1] && parts[2] === 'joinedPlayers') {
       /* ✅ R29B FIX (2026-09-22): paid join ab server-authoritative

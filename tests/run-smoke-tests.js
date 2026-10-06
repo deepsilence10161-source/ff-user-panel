@@ -165,14 +165,27 @@ console.log('\n── TEST 4: auto-version (build.gradle + CI fetch-depth) ─�
   ok(wf.includes('fetch-depth: 0'), 'CI checkout fetch-depth: 0 (shallow-clone trap fix)');
 }
 
-/* ── TEST 5: ROUND-4 — checkin-system releaseNoShows server-authoritative ── */
-console.log('\n── TEST 5: checkin-system server-authoritative (auto-refund REMOVED) ──');
+/* ── TEST 5: B30 — pre-match check-in POORA hata (2026-10-07, owner faisla) ──
+   Pehle yeh test checkin-system.js ke inert stubs check karta tha; ab system
+   hi nahi hai, is liye test ab "sach me gaya" is baat ko pakadta hai. */
+console.log('\n── TEST 5: B30 — pre-match check-in poori tarah hata ──');
 {
-  const ck = fs.readFileSync(path.join(REPO, 'features/checkin-system.js'), 'utf8');
-  ok(!/filled_slots/.test(ck), 'client ab filled_slots ko bilkul nahi chhedta (server-authoritative)');
-  ok(/window\.releaseNoShows\s*=\s*function\s*\(\s*\)\s*\{\s*\}/.test(ck), 'releaseNoShows inert stub mojood (purana caller crash na kare)');
-  ok(/window\.triggerNoShowRelease\s*=\s*function\s*\(\s*\)\s*\{\s*\}/.test(ck), 'triggerNoShowRelease inert stub mojood');
-  ok(/REMOVED per owner policy/.test(ck), 'REMOVED comment mojood (galti se wapas na jud jaye)');
+  ok(!fs.existsSync(path.join(REPO, 'features/checkin-system.js')),
+     'features/checkin-system.js file delete ho chuki');
+  const idx = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
+  ok(!/<script[^>]+checkin-system\.js/.test(idx), 'index.html me uska script tag bhi nahi');
+  ok(/B30/.test(idx), 'index.html me B30 note mojood (galti se wapas na jud jaye)');
+  /* sirf LIVE code dekho — comments me B30 ka zikr hona theek hai (dokument),
+     asli code zinda nahi hona chahiye */
+  const stripComments = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm, '');
+  const matches = stripComments(fs.readFileSync(path.join(REPO, 'screens/matches.js'), 'utf8'));
+  ok(!/renderCheckInBtn/.test(matches), 'matches.js ke live code me check-in button ka call nahi bacha');
+  const cfg = stripComments(fs.readFileSync(path.join(REPO, 'features/app-config.js'), 'utf8'));
+  ok(!/checkInEnabled|checkInOpenMins|checkInCloseMins/.test(cfg),
+     'app-config ke live code se checkIn* keys hat gayi');
+  const dbjs = fs.readFileSync(path.join(REPO, 'core/db.js'), 'utf8');
+  ok(!/joinRequests\.checkIn|check_in_match/.test(dbjs) || /B30/.test(dbjs),
+     'db.js me checkIn method gaya (ya B30 note ke saath hai)');
 }
 
 /* ── TEST 6: ROUND-4 — free/ad join ab validate_and_join_match RPC se ── */

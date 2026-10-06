@@ -16,9 +16,6 @@ window.CFG = {
   notifBroadcastDays: 7,
   autoSquadEnabled:   1,
   autoSquadTimeout:   15,
-  checkInEnabled:     1,
-  checkInOpenMins:    30,
-  checkInCloseMins:   5,
   watchEarnEnabled:   1,
   /* ✅ FIX (2026-10-06): interval 5 → 1. Pehle admin panel "2 coins / 5 min"
      deta tha par user panel "/min" dikhata tha — mismatch. Owner ne confirm
@@ -140,9 +137,9 @@ function _applyCfg(c) {
   if (c.notifBroadcastDays     != null) window.CFG.notifBroadcastDays     = Number(c.notifBroadcastDays);   /* A9 */
   if (c.autoSquadEnabled       != null) window.CFG.autoSquadEnabled       = Number(c.autoSquadEnabled);
   if (c.autoSquadTimeout       != null) window.CFG.autoSquadTimeout       = Number(c.autoSquadTimeout);
-  window.CFG.checkInEnabled = 0;
-  if (c.checkInOpenMins        != null) window.CFG.checkInOpenMins        = Number(c.checkInOpenMins);
-  if (c.checkInCloseMins       != null) window.CFG.checkInCloseMins       = Number(c.checkInCloseMins);
+  /* ✅ B30 (2026-10-07): checkInEnabled/checkInOpenMins/checkInCloseMins ki
+     mapping hata di — pre-match check-in ka poora system nikal gaya
+     (features/checkin-system.js delete, matches.js ke buttons gaye). */
   if (c.watchEarnEnabled       != null) window.CFG.watchEarnEnabled       = Number(c.watchEarnEnabled);
   if (c.watchCoinsPerInterval  != null) window.CFG.watchCoinsPerInterval  = Number(c.watchCoinsPerInterval);
   if (c.watchIntervalMins      != null) window.CFG.watchIntervalMins      = Number(c.watchIntervalMins);

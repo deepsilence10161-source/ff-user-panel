@@ -342,7 +342,7 @@
       var map = {
         'rpc:validate_and_join_match': 'Match join', 'rpc:join_clan': 'Clan join',
         'rpc:leave_clan': 'Clan leave', 'rpc:cast_poll_vote': 'Vote', 'rpc:redeem_voucher': 'Voucher redeem',
-        'rpc:claim_ad_reward': 'Ad reward', 'rpc:check_in_match': 'Check-in',
+        'rpc:claim_ad_reward': 'Ad reward',   /* ✅ B30: check-in hata — uski entry bhi gayi */
         'rpc:submit_age_verification': 'Verification submit', 'rpc:start_free_trial': 'Free trial',
         'rpc:contribute_to_squad_bank': 'Squad bank', 'rpc:purchase_cosmetic': 'Purchase'
       };
