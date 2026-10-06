@@ -59,7 +59,11 @@ window.CFG = {
   creatorMinPayout: 100,
   /* ✅ BUG 16 (2026-10-04): Manual payment (UPI QR) system — admin
      app_settings key='manual_payment' se configure karta hai
-     (upiId, payeeName, qrImageUrl, instructions, minAmount). */
+     (upiId, payeeName, qrImageUrl, instructions, minAmount).
+     ✅ B22 (2026-10-06): qrImageUrl me ab aam taur par UPLOADED QR ka
+     data-URI (data:image/png;base64,...) aata hai — admin panel me QR URL
+     paste karne ki jagah seedha upload hota hai. http(s) link bhi chalta
+     rahega (purani values tootni nahi chahiye). */
   manualPayment: {
     enabled: true,
     upiId: 'miniesports@upi',

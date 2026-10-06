@@ -86,9 +86,16 @@ window._buyDiamondPkg = function(diamonds, price) {
       return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[ch];
     });
   }
-  /* QR image sirf http(s) URL — javascript: / data: URL block */
+  /* QR image: admin ab settings me QR **upload** karta hai (B22, 2026-10-06) —
+     tab value `data:image/png;base64,...` hoti hai; link wali purani value
+     (http/https) bhi chalti rahegi. Baaki sab (javascript:, koi bhi non-image
+     data URI) pehle ki tarah BLOCK hai — wahi suraksha, sirf image tak seemit.
+     ⚠️ data-URI bahut lamba hota hai, isliye ise kisi string me embed karne se
+     pehle hamesha _mpEsc() se guzaro (neeche wahi hota hai). */
   var _qrRaw = String(_mp.qrImageUrl || '').trim();
-  var _qrSafe = /^https?:\/\//i.test(_qrRaw) ? _mpEsc(_qrRaw) : '';
+  var _qrIsDataImg = /^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=\s]+$/i.test(_qrRaw);
+  var _qrSafe = /^https?:\/\//i.test(_qrRaw) ? _mpEsc(_qrRaw)
+              : (_qrIsDataImg ? _mpEsc(_qrRaw) : '');
   /* Display ke liye escaped, deep-link ke liye RAW (encodeURIComponent
      khud handle karta hai — double-escaping UPI intent tod deti hai). */
   var _upiIdRaw = String(_mp.upiId || 'miniesports@upi').trim();
