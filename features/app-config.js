@@ -89,6 +89,10 @@ window.CFG = {
      are set in Supabase). Toggle in Admin → Settings → Payment Settings.
      Admin ne enable kiya to yeh true ho jaata hai live config se. */
   paytmEnabled:     false,
+  /* ✅ B23 (2026-10-06): Paytm (online) payment ki seema — ₹2000 se upar
+     online payment allowed nahi (user ka niyam: ₹2000+ par shopkeeper
+     charge/atki payment ka risk). Admin Settings se badli ja sakti hai. */
+  paytmMaxTxn: 2000,
   adDailyLimit:     5,
   checkinCoins:     5,
   checkinStreakBonus7: 50,
@@ -188,6 +192,7 @@ function _applyCfg(c) {
   if (c.streakMilestones  != null) window.CFG.streakMilestones  = c.streakMilestones;
   if (c.cosmetics         != null) window.CFG.cosmetics         = c.cosmetics;
   if (c.paytmEnabled      != null) window.CFG.paytmEnabled      = !!c.paytmEnabled;
+  if (c.paytmMaxTxn       != null) window.CFG.paytmMaxTxn       = Number(c.paytmMaxTxn) || 2000;
   if (c.battlePassPrice   != null) window.CFG.battlePassPrice   = Number(c.battlePassPrice);
   /* ✅ BUG 16 (2026-10-04): manual payment (UPI QR) settings — admin
      App Settings → Payment section se save hoti hain, quick-deposit.js

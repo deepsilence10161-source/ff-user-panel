@@ -38,7 +38,7 @@ function renderWallet() {
   var gdc = $('greenDiaCount');
   if (gdc) {
     var greenDia = Math.max(Number(UD.greenDiamonds)||0, 0);
-    gdc.innerHTML = '<img src="js/green-diamond.png?v=20261006j" style="width:20px;height:20px;vertical-align:middle;object-fit:contain"> <span style="font-size:18px;font-weight:900;color:#00ff64">' + greenDia + '</span>';
+    gdc.innerHTML = '<img src="js/green-diamond.png?v=20261006k" style="width:20px;height:20px;vertical-align:middle;object-fit:contain"> <span style="font-size:18px;font-weight:900;color:#00ff64">' + greenDia + '</span>';
   }
 
   // Update sponsored prize balance card
@@ -201,7 +201,7 @@ function renderWallet() {
                    ? '₹'
                    : (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
                    : (w.currency === 'green_diamonds')
-                     ? '<img src="js/green-diamond.png?v=20261006j" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
+                     ? '<img src="js/green-diamond.png?v=20261006k" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
                      : '🪙';
       h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
@@ -400,6 +400,15 @@ function wfNext() { if (wfStep === 1) { var a = Number(($('addAmt') || {}).value
 function wfPaytmPay() {
   var a = Number(($('addAmt') || {}).value);
   if (!a || a < 10) { toast('Minimum ₹10', 'err'); return; }
+  /* ✅ B23 (2026-10-06): online (Paytm) payment par ₹2000 ki seema — isse
+     upar wala paisa UPI/QR (manual) se hi aata hai, taki koi payment
+     atka hua (stuck) na bane. Seema Settings se badli ja sakti hai. */
+  if (window._paytmAmountAllowed && !window._paytmAmountAllowed(a)) {
+    toast(window._paytmCapMessage ? window._paytmCapMessage(a) : 'Online payment ki seema se upar hai', 'err');
+    var _hint = document.getElementById('wfMaxHint');
+    if (_hint) _hint.style.display = 'block';
+    return;
+  }
   if (!window.startPaytmPayment) { toast('Paytm abhi ready nahi hai, app update karo', 'err'); return; }
   wfAmt = a;
   window.startPaytmPayment(a, {

@@ -100,6 +100,38 @@ Deno.serve(async (req: Request) => {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const admin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
+    /* ✅ B23 (2026-10-06): ONLINE PAYMENT KI SEEMA (aakhri deewar).
+       User ka niyam: "Paytm ON ho to har transaction par ₹2000 ki seema
+       (₹2000 se upar online payment par shopkeeper charge lagta hai)".
+       Client (js/paytm-checkout.js) pehle hi rok deta hai, lekin ye check
+       SERVER par bhi hai — koi bhi rasta (purana APK, seedha API call)
+       cap ke upar ka order Paytm tak nahi pahucha sakta, aur is liye
+       sd_requests me koi atki (stuck) pending row bhi nahi banti.
+       Seema live_config.paytmMaxTxn se aati hai (default 2000, admin
+       Settings → Payment se badalti hai). Config padhna fail ho jaye to
+       bhi default 2000 hi lagta hai (fail-closed, kabhi khula nahi).
+
+       ⚠️ Ye jaanch sd_requests insert se PEHLE hai — yahi "stuck payment
+       nahi" ka asli ilaaj hai: mana hua amount database tak pahunchta hi
+       nahi, isliye admin ke paas adhura order dikhne ka sawaal nahi. */
+    let paytmMaxTxn = 2000;
+    let sdAmount = amount;
+    let pkgs: Array<{ price?: unknown; diamonds?: unknown }> = [];
+    try {
+      const { data: cfgRow } = await admin
+        .from("app_settings").select("value").eq("key", "live_config").maybeSingle();
+      const v: Record<string, unknown> = (cfgRow && cfgRow.value) ? cfgRow.value as Record<string, unknown> : {};
+      const n = Number(v.paytmMaxTxn);
+      if (Number.isFinite(n) && n >= MIN_INR) paytmMaxTxn = Math.min(n, MAX_INR);
+      pkgs = Array.isArray(v.sdPackages) ? v.sdPackages as Array<{ price?: unknown; diamonds?: unknown }> : [];
+    } catch { /* best-effort — config fail par default ₹2000 hi lagta hai */ }
+
+    if (amount > paytmMaxTxn)
+      return json({
+        error: `Online (Paytm) payment sirf ₹${paytmMaxTxn} tak — isse upar ke liye UPI/QR se manual payment karo`,
+        code: "PAYTM_MAX_TXN", maxTxn: paytmMaxTxn,
+      }, 400);
+
     /* ✅ R26 FIX (2026-09-21): package-aware diamond mapping — Paytm auto
        checkout pehle INR→diamonds 1:1 credit karta tha (₹99 = 99💎), jabki
        manual UPI flow (wallet.js 2026-09-15c) price ko live_config ki
@@ -108,16 +140,9 @@ Deno.serve(async (req: Request) => {
        diamonds milte = direct user-loss + manual-vs-auto inconsistency.
        Ab wahi live_config mapping yahan bhi lagti hai; custom amount
        (package se milta nahi) pehle jaisa 1:1 rehta hai. */
-    let sdAmount = amount;
-    try {
-      const { data: cfgRow } = await admin
-        .from("app_settings").select("value").eq("key", "live_config").maybeSingle();
-      const pkgs = (cfgRow && cfgRow.value && Array.isArray(cfgRow.value.sdPackages))
-        ? cfgRow.value.sdPackages : [];
-      for (const p of pkgs) {
-        if (Number(p && p.price) === amount) { sdAmount = Number(p && p.diamonds) || amount; break; }
-      }
-    } catch { /* best-effort — mapping fail par 1:1 fallback, koi loss nahi */ }
+    for (const p of pkgs) {
+      if (Number(p && p.price) === amount) { sdAmount = Number(p && p.diamonds) || amount; break; }
+    }
 
     const { data: row, error: insErr } = await admin
       .from("sd_requests")

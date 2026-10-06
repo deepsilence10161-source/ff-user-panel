@@ -168,8 +168,18 @@ window._buyDiamondPkg = function(diamonds, price) {
      nahi dikhta tha. Ab Paytm Instant option isi LIVE user-flow mein
      dikhta hai — sirf tab jab admin ne toggle ON kiya ho
      (CFG.paytmEnabled). Manual screenshot-path bilkul waise hi rehta hai. */
+  /* ✅ B23 (2026-10-06): ₹2000 se upar ke package par Paytm ka button hi nahi
+     dikhata (online payment ki seema — usse upar shopkeeper charge/atki
+     payment ka risk). User ke paas manual UPI/QR wala rasta wahi rehta hai. */
   if (window.CFG && window.CFG.paytmEnabled && window.startPaytmPayment) {
-    h += '<button onclick="window._paytmInstantPay(' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#00baf2,#0095d7);color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-top:6px">⚡ Pay Instantly via Paytm (UPI) — Auto Credit</button>';
+    if (window._paytmAmountAllowed && !window._paytmAmountAllowed(price)) {
+      h += '<div style="margin-bottom:10px;padding:11px 12px;border-radius:12px;background:rgba(255,170,0,.10);' +
+           'border:1px solid rgba(255,170,0,.28);color:#ffcc66;font-size:12px;line-height:1.6">' +
+           '⚠️ Online (Paytm) payment sirf ₹' + window._paytmMaxTxn() + ' tak — ye ₹' + price + ' hai.<br>' +
+           'Neeche wale <b>UPI / QR manual payment</b> se bhejo (screenshot + UTR).</div>';
+    } else {
+      h += '<button onclick="window._paytmInstantPay(' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#00baf2,#0082c8);color:#fff;font-weight:900;font-size:14px;margin-bottom:10px">⚡ Pay ₹' + price + ' Instantly via Paytm (UPI)</button>';
+    }
   }
   if (window.openModal) openModal('💎 Buy ' + diamonds + ' Sky Diamonds', h);
   var _ss = '';

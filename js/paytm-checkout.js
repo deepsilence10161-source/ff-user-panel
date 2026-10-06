@@ -52,6 +52,28 @@
     document.head.appendChild(s);
   }
 
+  /* ✅ B23 (2026-10-06) — ₹2000 KI SEEMA (user ka niyam):
+     "Paytm ON ho to har transaction par ₹2000 ki seema (₹2000 se upar online
+      payment par shopkeeper charge lagta hai)".
+     Isliye online (Paytm) payment ₹paytmMaxTxn se upar KABHI shuru nahi hoti:
+     na order banega, na paisa katega, na "atka hua" (stuck) payment banega.
+     Seema Settings se badli ja sakti hai (CFG.paytmMaxTxn, default 2000).
+     Agar user isse zyada dena chahta hai to usi modal me manual UPI/QR wala
+     rasta maujood rehta hai (wahan koi seema nahi — wo direct bank/UPI hai). */
+  window._paytmMaxTxn = function () {
+    var v = (window.CFG && window.CFG.paytmMaxTxn != null) ? Number(window.CFG.paytmMaxTxn) : 2000;
+    return (isFinite(v) && v > 0) ? v : 2000;
+  };
+  window._paytmCapMessage = function (amount) {
+    var max = window._paytmMaxTxn();
+    return '⚠️ ₹' + max + ' se upar ka online payment allow nahi (₹' + amount +
+           ') — isse upar ke liye UPI/QR se manual payment karo';
+  };
+  window._paytmAmountAllowed = function (amount) {
+    var a = Number(amount) || 0;
+    return a > 0 && a <= window._paytmMaxTxn();
+  };
+
   /* ── main export ── */
   /*
      startPaytmPayment(amount, { onStatus })
@@ -67,6 +89,21 @@
     var cb = (opts && typeof opts.onStatus === 'function') ? opts.onStatus : function () {};
     var purpose = (opts && opts.purpose) ? String(opts.purpose) : '';
     var meta    = (opts && opts.meta && typeof opts.meta === 'object') ? opts.meta : {};
+
+    /* ✅ B23: SEEMA KA GATE — sabse pehle yahin. Yahi ek jagah hai jahan se
+       poore app ka Paytm payment guzarta hai (wallet top-up, quick deposit,
+       premium, bundle, season pass, FF UID change) — isliye ek hi jagah
+       lagane se koi rasta chhoota nahi, aur galti se ₹2000+ ka order
+       ban hi nahi sakta (payment atakne ka sawaal hi nahi). */
+    if (!window._paytmAmountAllowed(amount)) {
+      var _capMsg = (Number(amount) > window._paytmMaxTxn())
+        ? window._paytmCapMessage(amount)
+        : '⚠️ Payment amount theek nahi hai';
+      cb('error', _capMsg);
+      if (window.toast) { try { toast(_capMsg, 'err'); } catch (e) {} }
+      return;
+    }
+
     cb('loading');
 
     _getToken(function (token) {
@@ -101,6 +138,20 @@
   /* ── Shared Instant Paytm Purchase Helper for Premium / Season Pass / Bundles / UID Change ── */
   window.renderPaytmInstantBlock = function (amount, onclickJs, btnId, statusId) {
     if (!(window.CFG && window.CFG.paytmEnabled && window.startPaytmPayment)) return '';
+
+    /* ✅ B23: seema se upar wale amount par Paytm ka button dikhate hi nahi —
+       warna user dabata, error aata, aur confusion hoti. Uski jagah saaf
+       batate hain ki itne paise ke liye UPI/QR (manual) use karo — wo rasta
+       isi block ke thik neeche maujood hota hai ("YA MANUAL SCREENSHOT SE"). */
+    if (!window._paytmAmountAllowed(amount)) {
+      var _maxNow = window._paytmMaxTxn();
+      return '<div style="margin-bottom:14px">' +
+        '<div style="padding:11px 12px;border-radius:12px;background:rgba(255,170,0,.10);' +
+        'border:1px solid rgba(255,170,0,.28);color:#ffcc66;font-size:12px;line-height:1.6">' +
+        '⚠️ Online (Paytm) payment sirf ₹' + _maxNow + ' tak — ye ₹' + amount + ' hai.<br>' +
+        'Neeche wale <b>UPI / QR manual payment</b> se bhejo (screenshot + UTR).' +
+        '</div></div>';
+    }
     var bId = btnId || '_ptmInstBtn';
     var sId = statusId || '_ptmInstStatus';
     return '<div style="margin-bottom:14px">' +
@@ -126,6 +177,14 @@
       st.style.background = bg;
       st.style.color = col;
       st.innerHTML = msg;
+    }
+    /* ✅ B23: seema ka check pehle — order banane ki koshish hi nahi hoti
+       (aur button bhi band kar dete hain taki user dobara na dabaye). */
+    if (!window._paytmAmountAllowed(amount)) {
+      var _cap = window._paytmCapMessage(amount);
+      setSt('rgba(255,170,0,.12)', '#ffcc66', _cap);
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
+      return;
     }
     window.startPaytmPayment(amount, {
       purpose: purpose,
