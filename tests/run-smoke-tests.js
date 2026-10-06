@@ -346,6 +346,37 @@ console.log('\n── TEST 11: B24/B26 video safai + daily bonus ka ek source �
      'db.js ka check-in path bhi wahi ek source use karta hai');
 }
 
+/* ── TEST 12: B11/B12 — sponsored prize type + winner-gets text ── */
+console.log('\n── TEST 12: B11/B12 sponsored prize type user tak (currency + admin ka chuna hua) ──');
+{
+  const ls = fs.readFileSync(path.join(REPO, 'core/listeners.js'), 'utf8');
+  const _normStart = ls.indexOf("var _normPrize = (function(pt, isSp, ent){");
+  const _normBlock = _normStart === -1 ? '' : ls.slice(_normStart, _normStart + 1800);
+  ok(_normStart !== -1 &&
+     _normBlock.indexOf("if (p === 'coin' || p === 'coins') return 'coin';") !== -1 &&
+     _normBlock.indexOf("if (isSp) return 'inr';") !== -1 &&
+     _normBlock.indexOf("if (p === 'coin' || p === 'coins') return 'coin';") <
+     _normBlock.indexOf("if (isSp) return 'inr';"),
+     'B11: _normPrize ab pehle asli prize_type padhta hai (sponsored par ₹ hardcode nahi)');
+  ok(ls.indexOf("if (p === 'inr' || p === 'cash' || p === 'money') return 'inr';") !== -1,
+     'B11: cash/inr/money → inr mapping maujood hai');
+
+  const home = fs.readFileSync(path.join(REPO, 'screens/home.js'), 'utf8');
+  ok(home.indexOf('_spUnit') !== -1, 'B11: sponsored card currency-aware hai');
+  ok(home.indexOf("mc-prize-amt\">💎") === -1,
+     'B11: prize box par hardcoded 💎 nahi bacha');
+  ok(home.indexOf('fourthToTenth') !== -1, 'B11: 4th-10th ka amount user ko dikhta hai');
+
+  const join = fs.readFileSync(path.join(REPO, 'screens/join.js'), 'utf8');
+  ok(/function _joinPrizeLabel\(/.test(join), 'B12: prize label helper maujood hai');
+  ok(join.indexOf('_joinPrizeLabel(t, _spRow)') !== -1,
+     'B12: Winner Gets ab admin ke chune hue prizes se banta hai');
+  ok(join.indexOf("'🆓 Free entry — small coin reward'") !== -1,
+     'B12: purani line sirf fallback ke roop me bachi hai (jab sach me prize set na ho)');
+  ok(/pz\.fourthToTenth/.test(join), 'B12: 4th-10th bhi summary me aata hai');
+  ok(join.indexOf('SP_T') !== -1, 'B12: sponsored row (admin ka asli data) priority par hai');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

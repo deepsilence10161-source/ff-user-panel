@@ -1,4 +1,28 @@
 /* ====== JOIN SYSTEM ====== */
+/* ✅ B12 (2026-10-07): sponsored/free match ka asli prize summary —
+   admin ne jo prize set kiya wahi text yahan banta hai.
+   Priority: sponsored_tournaments row (admin ka asli chuna hua) → match row. */
+function _joinPrizeLabel(t, sp) {
+  var ptRaw = String((sp && sp.prize_type) || t.prizeType || t.prize_type || '').toLowerCase();
+  var unit = (ptRaw === 'coin' || ptRaw === 'coins') ? '🪙'
+           : (ptRaw === 'skydiamond' || ptRaw === 'sky_diamond' || ptRaw === 'sky') ? '💎'
+           : (ptRaw === 'greendiamond' || ptRaw === 'green_diamond') ? '💎 (Green)'
+           : '₹';
+  var pz = (sp && sp.prizes) || {};
+  var p1 = Number(pz.first  != null ? pz.first  : (t.prize1st || 0)) || 0;
+  var p2 = Number(pz.second != null ? pz.second : (t.prize2nd || 0)) || 0;
+  var p3 = Number(pz.third  != null ? pz.third  : (t.prize3rd || 0)) || 0;
+  var p4 = Number(pz.fourthToTenth || 0) || 0;
+  var parts = [];
+  if (p1 > 0) parts.push('🥇 ' + unit + p1);
+  if (p2 > 0) parts.push('🥈 ' + unit + p2);
+  if (p3 > 0) parts.push('🥉 ' + unit + p3);
+  if (p4 > 0) parts.push('4th–10th ' + unit + p4 + ' each');
+  if (!parts.length) return '';
+  var head = (sp || t.isSponsored) ? '🏆 Sponsored prize — ' : '🏆 ';
+  return head + parts.join(' · ');
+}
+
 function cJoin(id) {
   // Check if already joined (as captain or team member)
   var _role = getJoinRole(id);
@@ -56,10 +80,23 @@ function cJoin(id) {
   /* Prize info based on match type */
   // Correct 3-currency model: Ad→Coins, Coin→SkyDia, Paid→GreenDia
   /* ✅ FIX: Coin match prize = Coins (was wrongly showing Sky Diamonds) */
-  var prizeLabel = isFree ? '🆓 Free entry — small coin reward'
+  /* ✅ B12 FIX (2026-10-07): "Sponsored match info me 'winner gets free
+     entry + small coin rewards' ki jagah ADMIN ka chuna hua dikhe."
+     Pehle har free/sponsored match par ye ek hi hardcoded line aati thi.
+     Ab agar match ke prizes hain (sponsored tournaments me admin khud
+     1st/2nd/3rd/4th-10th + prize type chunta hai) to wahi dikhaya jaata
+     hai — sponsored row se sabse pehle (wo admin ka asli chuna hua data
+     hai), warna match row ke apne prizes se. Sirf jab sach me kuch bhi
+     prize set na ho, purani line fallback rehti hai. */
+  var _spRow = null;
+  try {
+    var _spAll = window.SP_T || {};
+    for (var _k in _spAll) { if (_spAll[_k] && _spAll[_k].match_id === t.id) { _spRow = _spAll[_k]; break; } }
+  } catch (e) {}
+  var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? '🪙 Coins — Top 3 jeetenge'
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261007g" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261007h" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';

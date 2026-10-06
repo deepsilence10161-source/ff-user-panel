@@ -434,12 +434,19 @@ function _toMT(m) {
       return 'free';
     })(m.entry_type);
   var _normPrize = (function(pt, isSp, ent){
-      if (isSp) return 'inr';
       var p = String(pt || '').toLowerCase().replace(/_/g,'').replace(/-/g,'');
       if (p === 'coin' || p === 'coins') return 'coin';
-      if (p === 'inr' || p === 'cash') return 'inr';
+      if (p === 'inr' || p === 'cash' || p === 'money') return 'inr';
       if (p === 'skydiamond' || p === 'sky' || p === 'sd') return 'skyDiamond';
       if (p === 'greendiamond' || p === 'gd' || p === 'green') return 'greenDiamond';
+      /* ✅ B11 FIX (2026-10-07): yahan PEHLE sabse upar `if (isSp) return
+         'inr'` tha — yaani sponsored match ka prize HAMESHA ₹ maan liya
+         jaata tha, chahe admin ne create karte waqt 🪙 Coins chuna ho.
+         User ko galat currency dikhti thi (aur galat wallet ka bharosa
+         hota tha). Ab pehle ASLI prize_type padha jaata hai; sponsored ke
+         liye 'cash'/'inr' (real money) default hai — sirf tab jab DB me
+         value khaali/unknown ho. */
+      if (isSp) return 'inr';
       if (ent === 'coin' || ent === 'ad' || ent === 'free') return 'coin';
       return 'greenDiamond';
     })(m.prize_type, m.is_sponsored, _normEntry);

@@ -486,9 +486,21 @@ window.renderSponsoredTournaments = function() {
     if (mapName) h += '<span style="font-size:11px;color:var(--txt2);font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fas fa-map"></i> ' + mapName + '</span>';
     h += '</div></div>'; /* /.mc-top */
 
-    /* ── Prize boxes — 1st/2nd/3rd, same style as mcHTML. Sponsored
-       tournaments are always Sky Diamond (💎) prizes — matches the
-       ₹/💎 convention mcHTML itself uses for sky_diamond prizeType. ── */
+    /* ── Prize boxes — 1st/2nd/3rd, same style as mcHTML. ──
+       ✅ B11 FIX (2026-10-07): yahan currency HARDCODED 💎 thi, aur upar
+       comment tak likha tha "Sponsored tournaments are always Sky Diamond
+       (💎) prizes" — jo galat tha. Admin ab create karte waqt prize type
+       chunta hai (₹ Real Money / 🪙 Coins) aur wo value DB me
+       sponsored_tournaments.prize_type + matches.prize_type me aati hai.
+       User ko wahi dikhna chahiye jo admin ne chuna — warna user galat
+       currency ka bharosa karke join karta hai. (Default = ₹ real money,
+       kyunki sponsored prize ka asli maqsad cash hi hai.) */
+    var _spTypeRaw = String(s.prize_type || (rm && rm.prizeType) || 'cash').toLowerCase();
+    var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
+                : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
+                : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
+                    ? '<img src="js/green-diamond.png?v=20261007h" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';
       var prizeDefs = [
@@ -501,17 +513,19 @@ window.renderSponsoredTournaments = function() {
         h += '<div class="mc-prize-box ' + p.cls + '">';
         h += '<div class="mc-prize-icon">' + p.icon + '</div>';
         h += '<div class="mc-prize-rank">' + p.rank + '</div>';
-        h += '<div class="mc-prize-amt">💎' + p.val + '</div>';
+        h += '<div class="mc-prize-amt">' + _spUnit + p.val + '</div>';
         h += '</div>';
       });
       h += '</div>';
-      if (pool) h += '<div style="font-size:10px;color:var(--txt2);font-weight:700;margin:-4px 0 8px;text-align:right">Total Pool: <span style="color:var(--green)">💎' + pool + '</span></div>';
+      if (pool) h += '<div style="font-size:10px;color:var(--txt2);font-weight:700;margin:-4px 0 8px;text-align:right">Total Pool: <span style="color:var(--green)">' + _spUnit + pool + '</span></div>';
+      /* ✅ B11: admin ka 4th-10th wala amount bhi user ko dikhe (chhupa na rahe) */
+      if (Number(prizes.fourthToTenth) > 0) h += '<div style="font-size:10px;color:var(--txt2);font-weight:700;margin:-4px 0 8px;text-align:right">4th–10th: <span style="color:var(--green)">' + _spUnit + Number(prizes.fourthToTenth) + ' each</span></div>';
     }
 
     /* ── Entry / Per-Kill / Start-time row — identical layout to mcHTML ── */
     h += '<div class="mc-mid" style="grid-template-columns:30% 30% 40%">';
     h += '<div class="mc-cell" style="border-right:1px solid rgba(0,229,255,.12)"><label style="color:#00e5ff99">Entry Fee</label><span style="color:var(--green);font-weight:800;font-size:12px">FREE</span></div>';
-    h += '<div class="mc-cell" style="border-right:1px solid rgba(255,107,107,.12)"><label style="color:#ff6b6b99">Per Kill</label>' + (perKill ? '<span class="kill-val"><i class="fas fa-skull" style="font-size:11px;margin-right:2px"></i>💎' + perKill + '/Kill</span>' : '<span style="color:var(--txt2);font-size:11px;font-weight:600">N/A</span>') + '</div>';
+    h += '<div class="mc-cell" style="border-right:1px solid rgba(255,107,107,.12)"><label style="color:#ff6b6b99">Per Kill</label>' + (perKill ? '<span class="kill-val"><i class="fas fa-skull" style="font-size:11px;margin-right:2px"></i>' + _spUnit + perKill + '/Kill</span>' : '<span style="color:var(--txt2);font-size:11px;font-weight:600">N/A</span>') + '</div>';
     h += '<div class="mc-cell"><label style="color:#b964ff99">Start Time</label><span class="time-val">' + timeHTML + '</span></div></div>';
 
     /* ── Slots bar (only when we actually know capacity) ── */
