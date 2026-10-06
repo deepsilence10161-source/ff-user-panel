@@ -507,8 +507,10 @@
         created_at: new Date().toISOString()
       }, { onConflict: 'match_id,user_id' });
     }
-    /* matchFeedback, matchInterest, profileViews, killProofs → soft analytics, silently succeed */
-    if (root === 'matchFeedback' || root === 'matchInterest' ||
+    /* matchFeedback, profileViews, killProofs → soft analytics, silently succeed */
+    /* (B15, 2026-10-07: matchInterest arm hata diya — interest ab user panel se
+       seedha server RPC `toggle_match_interest` par jata hai, RTDB se nahi.) */
+    if (root === 'matchFeedback' ||
         root === 'profileViews' || root === 'killProofs' ||
         root === 'partnerRatings') {
       return Promise.resolve();
@@ -889,9 +891,6 @@
 
     /* matchFeedback — soft analytics, can silently no-op on read */
     if (root === 'matchFeedback') { callback(_fakeSnap(null)); return; }
-
-    /* matchInterest — soft feature, can silently no-op on read */
-    if (root === 'matchInterest') { callback(_fakeSnapList([])); return; }
 
     /* profileViews — soft analytics */
     if (root === 'profileViews') { callback(_fakeSnap(null)); return; }

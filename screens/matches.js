@@ -264,8 +264,12 @@ function showDet(id) {
     h += '<button onclick="window.setMatchReminder&&setMatchReminder(\'' + id + '\',' + t.matchTime + ',\'' + (t.name||'Match') + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-bell"></i> Set Match Reminder</button>';
   }
 
-  // Feature 45: Interest toggle
-  h += '<button onclick="window.toggleInterest&&toggleInterest(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-hand-paper"></i> Mark as Interested</button>';
+  // Feature 45: Interest toggle — ✅ B15 (2026-10-07): button par id + data-int-btn
+  // lagaya taaki uska ASLI state dikhe ("✓ Interested" agar pehle se hai).
+  // State modal khulte hi server RPC my_match_interests se aati hai (neeche
+  // openModal ke baad refreshInterests call dekho) — pehle user ko pata hi
+  // nahi chalta tha ki wo pehle se interested hai ya nahi.
+  h += '<button id="intBtn_' + id + '" data-int-btn="' + id + '" onclick="window.toggleInterest&&toggleInterest(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-hand-paper"></i> Mark as Interested</button>';
 
   // Feature 8: Roster Viewer
   // View Roster button removed
@@ -334,6 +338,8 @@ function showDet(id) {
   }
 
   openModal('Match Details', h);
+  /* ✅ B15: modal khulte hi apne interest ka asli state lao (server se) */
+  if (window.refreshInterests) { try { window.refreshInterests(); } catch (e) {} }
 }
 
 /* ====== GIFT TICKET ====== */

@@ -255,7 +255,7 @@ window.applyDynamicWallpaper = function() {
                 try {
                   new Notification('⚡ Match shuru hone wala hai!', {
                     body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
-                    icon: 'icons/icon-192x192.png?v=20261007d'
+                    icon: 'icons/icon-192x192.png?v=20261007e'
                   });
                 } catch (e) {}
               }, _ms);
@@ -715,7 +715,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261007d'
+                    icon: 'icons/icon-192x192.png?v=20261007e'
                   });
                 }
                 break;
@@ -1284,31 +1284,51 @@ window.applyDynamicWallpaper = function() {
 
 
   /* ─── NEW FEATURE 45: MATCH INTEREST / GOING SYSTEM ─── */
-  /* ✅ BUG FIX (2026-10-04): "Mark as Interested" sirf Firebase RTDB
-     (matchInterest/) mein jata tha — admin panel wahan dekhta hi nahi,
-     isliye toast aata tha lekin admin ko pata nahi chalta. Ab Supabase
-     match_interest table mein jata hai jahan admin panel count/list
-     dikhata hai. */
+  /* (Itihaas: 2026-10-04 se pehle yeh sirf Firebase RTDB `matchInterest/` me
+     jata tha jahan admin dekhta hi nahi tha; 04-10 ko Supabase table par
+     aaya, aur B15 me server RPC par — neeche poori baat.) */
+  /* ✅ B15 REWRITE (2026-10-07): "Mark as Interested" ab server RPC se chalta
+     hai — toggle_match_interest(p_uid, p_match_id, p_name). Pehle yeh seedha
+     Supabase table me likhta tha, jo client ke AUTH token par tika tha (RLS:
+     auth.uid() = user_id) — token sync/refresh na hone par insert chupke se
+     fail ho jata tha aur admin ko kuch nahi milta (live DB me table khaali
+     padi thi — isi liye user ki shikayat thi "data admin tak pahunchta hi
+     nahi"). Ab:
+       * insert/delete server par hota hai (RLS par nirbhar nahi),
+       * RPC us match ka TAAZA count bhi lauta deta hai,
+       * button turant apna naya state dikhata hai,
+       * aur refreshInterests() modal khulte hi "✓ Interested" laga deta hai. */
+  window._interestMark = function (matchId, on) {
+    var b = document.getElementById('intBtn_' + matchId);
+    if (!b) return;
+    b.innerHTML = on
+      ? '<i class="fas fa-check-circle" style="color:var(--green)"></i> ✓ Interested'
+      : '<i class="fas fa-hand-paper"></i> Mark as Interested';
+    b.style.borderColor = on ? 'rgba(0,255,156,.35)' : 'var(--border)';
+    b.style.color = on ? 'var(--green)' : 'var(--txt2)';
+  };
+  window.refreshInterests = function () {
+    var uid = _safeUid(); if (!uid || !window._supa) return;
+    window._supa.rpc('my_match_interests', { p_uid: uid }).then(function (r) {
+      var ids = (r && r.data) || [];
+      ids.forEach(function (mid) { window._interestMark(mid, true); });
+    }, function () { /* state na mile to button waise hi — koi shor nahi */ });
+  };
   window.toggleInterest = function (matchId) {
     var uid = _safeUid(); if (!uid) return;
-    if (!window._supa) {
-      /* fallback: purana RTDB path */
-      db.ref('matchInterest/' + matchId + '/' + uid).once('value', function (s) {
-        if (s.exists()) { db.ref('matchInterest/' + matchId + '/' + uid).remove(); _toast('👋 Interest removed', 'inf'); }
-        else { db.ref('matchInterest/' + matchId + '/' + uid).set({ name: window.UD.ign || '', ts: Date.now() }); _toast('⚡ Interest noted! Admin ko pata chalega.', 'ok'); }
-      });
-      return;
-    }
-    window._supa.from('match_interest').select('match_id').eq('match_id', matchId).eq('user_id', uid).maybeSingle()
+    var nm = (window.UD && window.UD.ign) || '';
+    if (!window._supa) { _toast('Interest sewa abhi uplabdh nahi', 'err'); return; }
+    window._supa.rpc('toggle_match_interest', { p_uid: uid, p_match_id: matchId, p_name: nm })
       .then(function (r) {
-        if (r && r.data) {
-          return window._supa.from('match_interest').delete().eq('match_id', matchId).eq('user_id', uid)
-            .then(function () { _toast('👋 Interest removed', 'inf'); });
-        }
-        return window._supa.from('match_interest').insert({ match_id: matchId, user_id: uid, name: window.UD.ign || '' })
-          .then(function () { _toast('⚡ Interest noted! Admin ko pata chalega.', 'ok'); });
-      })
-      .catch(function (e) { console.warn('[Interest] toggle failed:', e && e.message); _toast('Interest save nahi hua', 'err'); });
+        var d = (r && r.data) || {};
+        if (r && r.error) { _toast(r.error.message || 'Interest save nahi hua', 'err'); return; }
+        window._interestMark(matchId, !!d.interested);
+        _toast(d.interested
+          ? '⚡ Interest noted! Admin ko pata chal gaya (' + (d.count || 1) + ' interested).'
+          : '👋 Interest removed', d.interested ? 'ok' : 'inf');
+      }, function (e) {
+        _toast('Interest save nahi hua: ' + ((e && e.message) || ''), 'err');
+      });
   };
 
   /* ─── NEW FEATURE 46: TOTAL WINNINGS MILESTONE ─── */

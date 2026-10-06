@@ -257,6 +257,47 @@ console.log('\n── TEST 9: R7 team consent + auto-squad server-authoritative 
   ok(jn.indexOf('join_match_team') !== -1, 'join_match_team RPC intact');
 }
 
+/* ── TEST 10: B15 — Match Interest server-authoritative (admin tak pakka) ── */
+console.log('\n── TEST 10: B15 match-interest ab server RPC par ──');
+{
+  const fu = fs.readFileSync(path.join(REPO, 'js/features-user.js'), 'utf8');
+  ok(fu.indexOf("rpc('toggle_match_interest'") !== -1,
+     'features-user.js toggleInterest ab RPC toggle_match_interest use karta hai');
+  ok(fu.indexOf("rpc('my_match_interests'") !== -1,
+     'features-user.js refreshInterests ab RPC my_match_interests use karta hai');
+  ok(!/\.from\('match_interest'\)[\s\S]{0,80}?\.(insert|delete|upsert)\(/.test(fu),
+     'features-user.js me ab client-side match_interest INSERT/DELETE NAHI (RLS par nirbhar nahi)');
+  ok(fu.indexOf('window._interestMark') !== -1 && fu.indexOf('window.refreshInterests') !== -1,
+     'button state helpers (_interestMark / refreshInterests) maujood hain');
+  /* toggling ke baad count bhi milta ho (admin-side badge ka bharosa) */
+  ok(fu.indexOf("d.count") !== -1, 'toggle RPC ka count client tak aata hai');
+
+  const mm = fs.readFileSync(path.join(REPO, 'screens/matches.js'), 'utf8');
+  ok(mm.indexOf('intBtn_') !== -1 && mm.indexOf('data-int-btn') !== -1,
+     'matches.js button par id (intBtn_) + data-int-btn lagi');
+  ok(mm.indexOf('refreshInterests()') !== -1 && mm.indexOf("openModal('Match Details', h)") !== -1,
+     'modal khulte hi refreshInterests() chalta hai');
+
+  const bb = fs.readFileSync(path.join(REPO, 'core/db-bridge.js'), 'utf8');
+  ok(bb.indexOf("root === 'matchInterest'") === -1,
+     'db-bridge se mara-hua RTDB matchInterest arm hata diya');
+
+  /* admin panel (bhai repo) bhi sirf RPC par ho — direct table read NAHI
+     (wo anon role par "permission denied for table match_interest" deta tha) */
+  try {
+    const ad = fs.readFileSync(path.join(REPO, '..', 'ff-admin-panel/js/admin-inline-c.js'), 'utf8');
+    ok(ad.indexOf("rpc('admin_match_interests'") !== -1,
+       'admin loadMatchInterests ab RPC admin_match_interests use karta hai');
+    ok(ad.indexOf("supa.from('match_interest')") === -1,
+       'admin me ab direct match_interest table read NAHI (root cause: anon grant nahi)');
+    ok(ad.indexOf('function loadMatchInterests(matchId)') !== -1 &&
+       ad.indexOf('function showInterestedUsers(matchId)') !== -1,
+       'admin me loadMatchInterests + showInterestedUsers dono intact');
+  } catch (e) {
+    ok(false, 'admin panel admin-inline-c.js padha ja saka');
+  }
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
