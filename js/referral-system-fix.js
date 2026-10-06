@@ -103,6 +103,37 @@
     if (UD.referralPopupDone) return;
     try { if (localStorage.getItem('_refDone_' + U.uid)) return; } catch (e) {}
 
+    /* ✅ B20 (2026-10-07): {?ref=} link se aaya naya user — link me hi
+       code hai, usse TYP karana bewakoofi thi (aur pehle URL-auto-apply
+       alag engine (fixes-v7) me chalta tha jo isi popup ke
+       referralPopupDone flag se band ho jata tha — matlab link wala
+       bonus NAYE user ko kabhi milta hi nahi tha). Ab: link ho to
+       seedha auto-apply (popup skip). Apply server RPC se hota hai —
+       dono taraf bonus, ledger entry, aur guard sab usi ek jagah. */
+    var _urlRef = null;
+    try { _urlRef = new URLSearchParams(window.location.search).get('ref'); } catch (e) {}
+    if (_urlRef) {
+      db.ref('users/' + U.uid + '/referralPopupDone').set(true);
+      try { localStorage.setItem('_refDone_' + U.uid, '1'); } catch (e) {}
+      if (window._supa) window._supa.from('users').update({ referral_popup_done: true }).eq('id', U.uid).then(null, function(){});
+      UD.referralPopupDone = true;
+      var _ur = String(_urlRef).trim().toUpperCase();
+      window._supa.rpc('apply_referral_code', { p_code: _ur, p_reward: 0 })
+        .then(function (r) {
+          var d = r && r.data;
+          if (d && d.success) {
+            UD.referredBy = d.referrer_uid || UD.referredBy;
+            var _self = Number(d.reward_self != null ? d.reward_self : d.reward) || 0;
+            if (_self > 0) UD.coins = (UD.coins || 0) + _self;
+            if (window.updateHdr) window.updateHdr();
+            if (window.toast) window.toast('🎁 Link ka referral apply ho gaya!' + (_self > 0 ? ' +' + _self + ' coins!' : ''), 'ok');
+          } else {
+            if (window.toast) window.toast((d && d.error) || 'Referral code apply nahi hua', 'err');
+          }
+        }, function(){});
+      return;
+    }
+
     /* Mark immediately — no double show */
     db.ref('users/' + U.uid + '/referralPopupDone').set(true);
     try { localStorage.setItem('_refDone_' + U.uid, '1'); } catch (e) {}

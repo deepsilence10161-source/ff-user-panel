@@ -431,6 +431,10 @@ console.log('\n── TEST 14: B20 referral rewards (dono ko join bonus + CFG-dr
      'B20: Invite & Earn ka jhootha "Tum 150" gaya — join/match values CFG se');
   ok(f7.indexOf('_refTimer') !== -1 && f7.indexOf('_refTries') !== -1,
      'B20: {?ref=} link wala bonus ab login ke baad bhi apply hota hai (retry)');
+  ok(f7.indexOf('already = !!(window.UD && window.UD.referredBy)') !== -1,
+     'B20: retry sirf ASLI apply (referredBy) par rukta hai — popup ka dikhaya-hua flag use nahi');
+  ok(rs.indexOf('_urlRef') !== -1 && rs.indexOf("rpc('apply_referral_code', { p_code: _ur") !== -1,
+     'B20: {?ref=} link par popup ke bajaye seedha auto-apply (popup path)');
 }
 
 console.log('\n══════════════════════════════');

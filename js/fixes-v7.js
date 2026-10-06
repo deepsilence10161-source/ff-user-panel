@@ -693,8 +693,13 @@ waitFor(function(){return window.U&&window.UD&&window.db;},function(){
       var _refTries=0;
       var _refTimer=setInterval(function(){
         _refTries++;
+        /* ✅ B20: yahan pehle referralPopupDone bhi check hota tha — par wo
+           flag sirf "popup dikha diya" batata hai, apply hua ya nahi NAHI.
+           Naye user ko popup khulte hi flag true ho jata tha aur ye retry
+           chup-chaap band ho jata tha. Ab sirf ASLI apply (referredBy)
+           dekhkar rukta hai. */
         var already=false;
-        try { already = !!(window.UD && (window.UD.referredBy || window.UD.referralPopupDone)); } catch(e){}
+        try { already = !!(window.UD && window.UD.referredBy); } catch(e){}
         if(already || _refTries>60){ clearInterval(_refTimer); return; }
         if(window.U && window._supa && window._supaReady){
           clearInterval(_refTimer);
