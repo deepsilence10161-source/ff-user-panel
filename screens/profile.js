@@ -1,4 +1,23 @@
 /* ====== PROFILE ====== */
+
+/* ✅ FIX (2026-10-06) — Watch & Earn ka rate label HAMESHA sach dikhaye.
+   Pehle yahan hardcoded "+X🪙/min" likha tha jabki asli engine "X coins per
+   Y minute" deta hai (admin setting: watchCoinsPerInterval / watchIntervalMins).
+   Mismatch yahi tha: admin panel me 2 coins / 5 min, par user ko 2/min dikhta.
+   Ab label config se hi banta hai — jo admin set kare, user ko wahi dikhe:
+     • interval 1 min  → "2🪙/min"
+     • interval 5 min  → "2🪙 / 5 min"
+   (Live config me interval ab 1 min set kiya gaya hai, kyunki 2 coins per
+   minute hi sahi vyavhaar hai.) */
+function _watchRateLabel() {
+  var cfg  = window.CFG || {};
+  var c    = Number(cfg.watchCoinsPerInterval) || 2;
+  var mins = Number(cfg.watchIntervalMins) || 1;
+  if (mins <= 1) return '+' + c + '🪙/min';
+  return '+' + c + '🪙 / ' + mins + ' min';
+}
+window._watchRateLabel = _watchRateLabel;
+
 function renderProfile() {
   var pc = $('profileContent'); if (!pc || !UD) return;
   var av = UD.profileImage ? '<img src="' + UD.profileImage + '">' : (UD.ign || UD.displayName || '?').charAt(0).toUpperCase();
@@ -221,7 +240,7 @@ function renderProfile() {
   /* ── Watch History button ── */
   h += '<button class="prof-btn" onclick="if(window.showLiveSpectateList)showLiveSpectateList()" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);margin-bottom:8px">';
   h += '<span style="margin-right:auto"><i class="fas fa-eye" style="margin-right:8px;color:#ff4444"></i>Watch Live & Earn</span>';
-  h += '<span style="font-size:12px;color:#ff4444;font-weight:700">+' + ((window.CFG&&window.CFG.watchCoinsPerInterval)||2) + '🪙/min</span></button>';
+  h += '<span style="font-size:12px;color:#ff4444;font-weight:700">' + _watchRateLabel() + '</span></button>';
 
   /* ── Premium Card ── */
   if (window.renderPremiumCard) h += renderPremiumCard();

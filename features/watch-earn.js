@@ -165,7 +165,9 @@ function showWatchUI(matchId, t, minsLeft, coinsPerInterval, intervalMins) {
     '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>' +
     '<div style="flex:1;min-width:0">' +
       '<div style="font-size:12px;font-weight:800;color:#b964ff">👀 LIVE Watch & Earn</div>' +
-      '<div style="font-size:10px;color:var(--txt2);margin-top:1px">Har ' + intervalMins + ' min = +' + coinsPerInterval + '🪙 • <span id="watchTimeLeft">' + minsLeft + ' min baaki</span></div>' +
+      /* ✅ FIX (2026-10-06): copy ab config se — interval 1 min ho to
+         "Har 1 min = +2🪙" ki jagah saaf "+2🪙 per minute" dikhe. */
+      '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (intervalMins <= 1 ? '+' + coinsPerInterval + '🪙 per minute' : 'Har ' + intervalMins + ' min = +' + coinsPerInterval + '🪙') + ' • <span id="watchTimeLeft">' + minsLeft + ' min baaki</span></div>' +
     '</div>' +
     '<div style="text-align:right;flex-shrink:0">' +
       '<div style="font-size:16px;font-weight:900;color:#ffd700">+<span id="watchCoinsEarned">0</span>🪙</div>' +

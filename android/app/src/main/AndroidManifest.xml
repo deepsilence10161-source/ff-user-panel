@@ -3,12 +3,20 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- ✅ FIX (2026-10-06): CAMERA yahan se HATA diya gaya. Poori tarah verify
+         kiya gaya ki user-panel ka koi code camera use nahi karta
+         (na getUserMedia, na capture="camera", na ACTION_IMAGE_CAPTURE) —
+         phir bhi APK launch par CAMERA ki permission maangta tha, jisse naya
+         user bina kuch dekhe "Deny" daba deta tha aur Play Store policy par
+         bhi sawal uthta tha. Admin panel (OCR ke liye) camera use karta hai,
+         par woh alag web app hai — uski permission wahan browser/panel
+         handle karta hai, is APK ki nahi. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
+    <!-- ✅ FIX (2026-10-06): READ/WRITE_EXTERNAL_STORAGE hataye. File upload
+         SAF/Photo-Picker (onShowFileChooser → ACTION_GET_CONTENT) se hota hai,
+         jisme in permissions ki zaroorat nahi hoti (Android 4.4+ se aisa hi hai). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />

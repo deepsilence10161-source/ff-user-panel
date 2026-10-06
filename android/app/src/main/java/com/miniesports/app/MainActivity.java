@@ -124,11 +124,31 @@ public class MainActivity extends AppCompatActivity {
            होते ही एक बार दिखता है; notification-permission सिर्फ उसके
            "Got it" button से माँगी जाती है (launch पर नहीं)। */
         OneSignalManager.setupPushSubscriptionObserver(this);
-        ActivityCompat.requestPermissions(this, new String[]{
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        }, PERMISSION_REQUEST);
+        /* ── ✅ FIX (2026-10-06): launch par sirf wahi permissions maango jo
+           asli me zaroori hain ────────────────────────────────────────────
+           PEHLE: CAMERA + ACCESS_FINE_LOCATION + READ_EXTERNAL_STORAGE
+             → app khulte hi "Allow Mini eSports to take pictures and record
+               video?" dialog (splash ke upar) aata tha. Camera poori app me
+               kahin use hi nahi hota (verified) — naya user ghabra kar Deny
+               daba deta tha, aur Play Store policy me bhi bina-zaroorat
+               permission sawal uthati hai.
+           AB: sirf LOCATION (city-detect — core/modal.js me use hota hai)
+               aur NOTIFICATION (Android 13+ par POST_NOTIFICATIONS).
+           Camera ki zaroorat sirf ADMIN panel ko OCR ke liye hai, aur woh
+           alag web-app hai — uski permission wahan browser handle karta hai. */
+        java.util.ArrayList<String> _needed = new java.util.ArrayList<>();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            _needed.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= 33 &&
+                ActivityCompat.checkSelfPermission(this, "android.permission.POST_NOTIFICATIONS")
+                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            _needed.add("android.permission.POST_NOTIFICATIONS");
+        }
+        if (!_needed.isEmpty()) {
+            ActivityCompat.requestPermissions(this, _needed.toArray(new String[0]), PERMISSION_REQUEST);
+        }
 
         MobileAds.initialize(this, status -> {});
 
@@ -190,6 +210,20 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public boolean isAndroidApp() { return true; }
+
+        /* ✅ FIX (2026-10-06): login screen par back press se app band karne
+           ke liye. Pehle back button hamesha JS router (window.goBack) ko
+           diya jaata tha jo login screen par kuch nahi karta tha — user ko
+           lagta tha "back button chalta hi nahi". Ab JS login-screen detect
+           karke yeh method call karta hai (core/utils.js → goBack()). */
+        @JavascriptInterface
+        public void exitApp() {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    finish();
+                }
+            });
+        }
 
         /* R23 (2026-09-21): OneSignal native push — WebView के user को
            native SDK से bind/unbind करना (external_id = firebase-uid).

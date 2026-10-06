@@ -249,16 +249,14 @@ function _initFirebaseAuth() {
       if (ls) ls.style.display = 'none';
       await _handleSignIn(user);
     } else {
-      /* Signed out — show login */
+      /* Signed out — show login.
+         ✅ BUG FIX (2026-10-06): yahan pehle sirf screen dikhti thi, par
+         button ka disabled/atka-hua state reset nahi hota tha — isliye
+         logout ke baad "Continue with Google" dead lagta tha. Ab poora
+         login UI reset hota hai. */
       _loginLoading(false);
-      var ls = document.getElementById('loginScreen');
-      var mc = document.getElementById('mainContent');
-      var hd = document.getElementById('header');
-      var bn = document.getElementById('bottomNav');
-      if (ls) ls.style.display = 'flex';
-      if (mc) mc.style.display = 'none';
-      if (hd) hd.style.display = 'none';
-      if (bn) bn.style.display = 'none';
+      _resetLoginUI();
+      _showLoginScreen();
     }
   });
 
@@ -417,7 +415,61 @@ window.doLogout = function() {
 
   window.U  = null;
   window.UD = null;
+
+  /* ✅ BUG FIX (2026-10-06) — "logout ke baad login screen dead lagti hai,
+     Continue with Google kaam nahi karta, mobile ka back button bhi nahi
+     chalta; app dobara kholne par sab theek ho jata hai"
+
+     असली जड़ (live code-reading se siddh):
+       (a) doGoogleLogin() ne `btn.disabled = true` kiya tha aur usse reset
+           karne wala koi rasta logout par nahi tha → button permanently
+           disabled pada reh jata tha (isliye "kaam nahi karta").
+       (b) agar login attempt beech me chhoot gaya (back press / app pause),
+           _loginLoading(true) atka reh jata → button display:none + spinner
+           hamesha → screen "disabled si" lagti hai.
+       (c) purana error text + _redirectAuthPending flag bhi wahi rehta.
+       (d) login screen sirf Firebase ke async onAuthStateChanged se khulti
+           thi — network slow/pending ho to screen blank/dead lagti.
+     Ab logout par UI state poora reset hota hai aur login screen turant,
+     seedha kholi jaati hai (kisi network callback ka intezaar nahi). */
+  _resetLoginUI();
+  _showLoginScreen();
 };
+
+/* ── Login UI ko default (taza) state me laao ─────────────────────────
+   Kabhi kabhi login attempt beech me ruk jata hai — tab yeh function
+   button/spinner/error sab default par le aata hai. Logout aur
+   onAuthStateChanged(signed-out) dono isi ko call karte hain. */
+function _resetLoginUI() {
+  try {
+    var btn  = document.getElementById('googleLoginBtn');
+    var load = document.getElementById('loginLoading');
+    var err  = document.getElementById('loginErr');
+    if (btn)  { btn.disabled = false; btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.opacity = '1'; }
+    if (load) load.style.display = 'none';
+    if (err)  { err.textContent = ''; err.style.display = 'none'; }
+    window._redirectAuthPending = false;
+    window._loginBusy = false;
+    if (window._hideSplash) window._hideSplash();
+  } catch (e) {}
+}
+window._resetLoginUI = _resetLoginUI;
+
+/* ── Login screen kholo + app chrome chhupao (turant, sync) ───────── */
+function _showLoginScreen() {
+  try {
+    var ls = document.getElementById('loginScreen');
+    var mc = document.getElementById('mainContent');
+    var hd = document.getElementById('header');
+    var bn = document.getElementById('bottomNav');
+    if (ls) { ls.style.display = 'flex'; ls.style.pointerEvents = 'auto'; }
+    if (mc) mc.style.display = 'none';
+    if (hd) hd.style.display = 'none';
+    if (bn) bn.style.display = 'none';
+    window.curScr = 'login';   /* goBack() isi se samajhta hai ki login par hain */
+  } catch (e) {}
+}
+window._showLoginScreen = _showLoginScreen;
 
 /* ── Deep Link Auth Handler ─────────────────────────────────────────────
    MainActivity.onNewIntent() yeh call karta hai jab Chrome Custom Tab se

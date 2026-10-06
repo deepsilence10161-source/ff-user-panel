@@ -115,12 +115,18 @@
             '<div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">Kisi ka Referral Code hai?</div>',
             '<div style="font-size:13px;color:#888;line-height:1.6">Dost ka code daalo, bonus coins pao!<br><span style="color:#b964ff;font-weight:700">Sirf pehle login pe</span> — ek baar ka mauka</div>',
           '</div>',
-          '<div style="display:flex;gap:10px;margin-bottom:14px">',
+          '<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">',
             '<input id="_refCodeInput" type="text" placeholder="REFERRAL CODE" autocomplete="off" ',
-              'style="flex:1;padding:15px 16px;border-radius:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:#fff;font-size:16px;font-weight:800;outline:none;text-transform:uppercase;letter-spacing:2px" ',
+              /* ✅ BUG FIX (2026-10-06): Apply button screen se bahar nikal jata tha.
+                 Wajah: flex item ka default min-width:auto hota hai, isliye input
+                 apni intrinsic width (placeholder + letter-spacing) se chhota nahi
+                 hota tha aur button ko bahar dhakel deta tha. Fix: input par
+                 min-width:0 + button par flex-shrink:0 (aur chhoti screen ke liye
+                 letter-spacing bhi kam). */
+              'style="flex:1 1 140px;min-width:0;padding:15px 16px;border-radius:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:#fff;font-size:16px;font-weight:800;outline:none;text-transform:uppercase;letter-spacing:1px" ',
               'oninput="this.value=this.value.toUpperCase()">',
             '<button onclick="window.applyReferralCode(document.getElementById(\'_refCodeInput\').value)" ',
-              'style="padding:15px 18px;border-radius:14px;background:linear-gradient(135deg,#b964ff,#7c3aed);border:none;color:#fff;font-weight:900;font-size:14px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px rgba(124,58,237,.4)">Apply</button>',
+              'style="flex:0 0 auto;flex-shrink:0;padding:15px 18px;border-radius:14px;background:linear-gradient(135deg,#b964ff,#7c3aed);border:none;color:#fff;font-weight:900;font-size:14px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px rgba(124,58,237,.4)">Apply</button>',
           '</div>',
           '<div style="background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.15);border-radius:14px;padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">',
             '<div>',

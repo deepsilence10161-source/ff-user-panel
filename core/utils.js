@@ -462,6 +462,18 @@ window.addEventListener('popstate', function(e) {
 });
 
 function goBack() {
+  /* ── Priority -1 (✅ FIX 2026-10-06): Login screen par back = app band ──
+     Pehle yahan login screen ka koi case hi nahi tha, isliye har back press
+     Priority 6 par jaakar bas history re-push karta rehta tha — user ko
+     lagta tha "back button chalta hi nahi". Ab login screen par back press
+     seedha app band karti hai (Android bridge se), jo wahan sahi vyavhaar hai. */
+  var _ls = document.getElementById('loginScreen');
+  if (_ls && _ls.style.display !== 'none' && window.curScr === 'login') {
+    if (window.Android && typeof window.Android.exitApp === 'function') {
+      window.Android.exitApp();
+    }
+    return;
+  }
   /* Priority 0: Close Earn Coins (coinShopModal) if open */
   var csm = document.getElementById('coinShopModal');
   if (csm && csm.style.display !== 'none' && csm.style.display !== '') {

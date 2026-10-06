@@ -16,8 +16,12 @@ window.CFG = {
   checkInOpenMins:    30,
   checkInCloseMins:   5,
   watchEarnEnabled:   1,
+  /* ✅ FIX (2026-10-06): interval 5 → 1. Pehle admin panel "2 coins / 5 min"
+     deta tha par user panel "/min" dikhata tha — mismatch. Owner ne confirm
+     kiya: 2 coins PER MINUTE hi sahi hai. Ab default 2 coins / 1 min hai aur
+     user ko wahi dikhta hai (bina hardcode — config se). */
   watchCoinsPerInterval: 2,
-  watchIntervalMins:  5,
+  watchIntervalMins:  1,
   watchDailyLimitMins:30,
   seasonName:         'Season 1',
   seasonActive:       1,
