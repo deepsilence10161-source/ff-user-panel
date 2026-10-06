@@ -377,6 +377,19 @@ console.log('\n── TEST 12: B11/B12 sponsored prize type user tak (currency +
   ok(join.indexOf('SP_T') !== -1, 'B12: sponsored row (admin ka asli data) priority par hai');
 }
 
+/* ── TEST 13: B18 — season ab admin ki Settings se (ek hi sach) ── */
+console.log('\n── TEST 13: B18 season ka ek hi source (currentSeason + live_config) ──');
+{
+  const sl = fs.readFileSync(path.join(REPO, 'features/seasonal-league.js'), 'utf8');
+  ok(sl.indexOf("in('key', ['currentSeason', 'live_config'])") !== -1,
+     'B18: season dono rows se aata hai (admin ki settings user tak pahunchti hai)');
+  ok(sl.indexOf('cfg.seasonEndDate') !== -1 && sl.indexOf('cfg.seasonEndDays') !== -1,
+     'B18: endDate na ho to admin ke seasonEndDate/seasonEndDays se banti hai');
+  ok(sl.indexOf('now + 30 * 86400000') === -1,
+     'B18: jhoothi "aaj se 30 din" deadline gayab (user ko sach dikhta hai)');
+  ok(sl.indexOf('hasEnd') !== -1, 'B18: state saaf batati hai ki asli end date hai ya nahi');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

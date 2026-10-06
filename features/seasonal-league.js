@@ -17,12 +17,30 @@ window.loadCurrentSeason = function() {
   if (!window._supa) { setTimeout(window.loadCurrentSeason, 800); return; }
   /* App configuration lives in app_settings. The old `config` table does
      not exist in production and caused a 404 on every page load. */
+  /* ✅ B18 (2026-10-07): user ko sirf `currentSeason` par nahi chhodna —
+     admin ki Seasonal League settings (live_config.seasonName /
+     seasonEndDate / seasonActive) hamesha se isi jagah likhi jaati thin,
+     par ye screen unhe padhti hi nahi thi (2026-09-08 wali purani row se
+     user ko jhoothi "30 din baaki" dikhti rehti thi). Ab dono ek hi sach:
+     currentSeason pehle, aur agar wo khaali/adhooora ho to live_config
+     (admin Settings) — aur endDate na mile to admin ke seasonEndDate /
+     seasonEndDays se banti hai. */
   window._supa.from('app_settings')
-    .select('value')
-    .eq('key', 'currentSeason')
-    .maybeSingle()
+    .select('key,value')
+    .in('key', ['currentSeason', 'live_config'])
     .then(function(r) {
-      _season = r.data ? r.data.value : null;
+      var rows = (r && r.data) || [];
+      var cur = null, cfg = null;
+      rows.forEach(function (x) { if (x.key === 'currentSeason') cur = x.value; else if (x.key === 'live_config') cfg = x.value; });
+      var s = (cur && typeof cur === 'object') ? Object.assign({}, cur) : {};
+      if (cfg && typeof cfg === 'object') {
+        if (!s.name)   s.name   = cfg.seasonName;
+        if (s.active === undefined || s.active === null) s.active = (Number(cfg.seasonActive) !== 0);
+        if (!s.endDate) s.endDate = cfg.seasonEndDate || (cfg.seasonEndDays ? (Date.now() + Number(cfg.seasonEndDays) * 86400000) : null);
+      }
+      if (!s.name) s.name = 'Season 1';
+      if (s.active === undefined || s.active === null) s.active = true;
+      _season = s;
       window._currentSeason = _season;
       if (window.updateSeasonDisplay) window.updateSeasonDisplay(_season);
     })
@@ -38,17 +56,20 @@ window.getCurrentSeason = function() {
   var now = Date.now();
   /* endDate can be ISO string (from Supabase) or timestamp or null */
   var endRaw = _season.endDate || _season.end_date || null;
-  var end = endRaw ? (typeof endRaw === 'string' ? new Date(endRaw).getTime() : Number(endRaw)) : (now + 30 * 86400000);
-  /* Guard against NaN */
-  if (!end || isNaN(end)) end = now + 30 * 86400000;
-  var daysLeft = Math.max(0, Math.ceil((end - now) / 86400000));
+  var end = endRaw ? (typeof endRaw === 'string' ? new Date(endRaw).getTime() : Number(endRaw)) : 0;
+  /* ✅ B18: pehle tareekh na hone par chup-chaap "aaj se 30 din" maan liya
+     jaata tha — user ko jhoothi 30-din wali deadline dikhti thi jo kabhi
+     badalti nahi thi. Ab sach: tareekh na ho to koi jhoothi deadline nahi. */
+  if (!end || isNaN(end)) end = 0;
+  var daysLeft = end ? Math.max(0, Math.ceil((end - now) / 86400000)) : 0;
   return {
     id:       _season.id || 'S1',
     name:     _season.name || (window.CFG && window.CFG.seasonName) || 'Season 1',
     daysLeft: daysLeft,
     endDate:  end,
     active:   !!_season.active,
-    label:    daysLeft > 0 ? daysLeft + ' din baaki' : 'Ended'
+    label:    daysLeft > 0 ? daysLeft + ' din baaki' : 'Ended',
+    hasEnd:   !!end
   };
 };
 
