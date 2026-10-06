@@ -75,6 +75,11 @@ window.showCreatorMatchForm = function() {
      server-side (creator_create_match RPC) at max_slots × entry_fee so
      a creator can never promise a payout their own match can't cover. */
   h += '<div style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.15);border-radius:12px;padding:10px 12px;margin:4px 0 10px;font-size:10px;color:#ffd700">🏆 Prize pool tumhare match ke max collection (players × entry fee) se zyada nahi ho sakta</div>';
+  /* ✅ B2 (2026-10-06): "Sky Diamond prize me KABHI nahi diya jata" — creator ko
+     saaf batao ki 💎 Sky Diamond sirf ENTRY fee ka option hai; jeetne par prize
+     hamesha Green Diamond me milta hai (server bhi isi niyam par credit karta
+     hai: creator_create_match + publish_match_results). */
+  h += '<div style="font-size:10px;color:#00d4ff;margin:-4px 0 8px">ℹ️ 💎 Sky Diamond sirf <b>entry fee</b> ke liye hai — jeetne par prize hamesha <b>Green Diamond 💎</b> me milta hai.</div>';
   h += '<div class="f-group"><label>🥇 1st Prize</label>';
   h += '<input type="number" id="cmPrize1" class="f-input" value="0" min="0"></div>';
   h += '<div class="f-group"><label>🥈 2nd Prize</label>';
