@@ -255,7 +255,7 @@ window.applyDynamicWallpaper = function() {
                 try {
                   new Notification('⚡ Match shuru hone wala hai!', {
                     body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
-                    icon: 'icons/icon-192x192.png?v=20261007b'
+                    icon: 'icons/icon-192x192.png?v=20261007c'
                   });
                 } catch (e) {}
               }, _ms);
@@ -715,7 +715,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261007b'
+                    icon: 'icons/icon-192x192.png?v=20261007c'
                   });
                 }
                 break;
@@ -1215,7 +1215,14 @@ window.applyDynamicWallpaper = function() {
       h += '<button onclick="window.setModeFilter(\'' + m + '\')" style="padding:6px 14px;border-radius:20px;border:1px solid ' + (active ? 'var(--primary)' : 'var(--border)') + ';background:' + (active ? 'rgba(0,255,156,.12)' : 'transparent') + ';color:' + (active ? 'var(--primary)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">' + m.toUpperCase() + '</button>';
     });
     // Calendar button + the showMatchCalendar feature it opened were both removed per user request
-    h += '<button onclick="window.showSmartPrizeCalc&&showSmartPrizeCalc()" style="padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0">🧮 Calculator</button>';
+    /* ✅ (2026-10-07): 🧮 Calculator button + uska Prize Calculator modal bhi
+       HATA diya — user ka faisla. Wajah (B31 audit me nikli): modal ka fee
+       purani jami hui `commission` value (0.15) par chalta tha jo admin ki
+       kisi live setting se judi hi nahi thi (admin 2026-10-04 se wo key likhta
+       hi nahi; asli rate creator_system.sdMatchCommissionPct hai, aur coin
+       match par commission hi nahi lagta) — yaani calculator users ko galat
+       hisaab dikhata tha. Kisi match ka asli prize match card / match detail
+       me hi dikhta hai, wahi single sach hai. */
     h += '</div>';
     return h;
   };
@@ -2345,22 +2352,12 @@ window.applyDynamicWallpaper = function() {
   };
 
 
-  window._calcPrize = function() {
-    /* Bug Fix: Validate non-negative values — negative inputs gave negative prize pool */
-    var players = Math.max(1, Math.min(10000, parseInt((document.getElementById('calcPlayers')||{}).value||100) || 1));
-    var fee = Math.max(0, Math.min(100000, parseInt((document.getElementById('calcFee')||{}).value||10) || 0));
-    var total = players * fee;
-    var p1 = Math.round(total * 0.50), p2 = Math.round(total * 0.30), p3 = Math.round(total * 0.20);
-    var res = document.getElementById('calcResult');
-    if (res) res.innerHTML = '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:12px;padding:14px">' +
-      '<div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">Prize Distribution</div>' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span>Total Pool</span><span style="font-weight:800;color:var(--yellow)">₹'+total+'</span></div>' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span>🥇 1st (50%)</span><span style="font-weight:700;color:var(--green)">₹'+p1+'</span></div>' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span>🥈 2nd (30%)</span><span style="font-weight:700">₹'+p2+'</span></div>' +
-      '<div style="display:flex;justify-content:space-between;padding:6px 0"><span>🥉 3rd (20%)</span><span style="font-weight:700">₹'+p3+'</span></div>' +
-      '</div>';
-  };
-
+  /* ✅ HATA DIYA (2026-10-07): window._calcPrize — yeh Prize Calculator ke
+     modal (showSmartPrizeCalc) ke saath chalta tha. Wo poora calculator user
+     ke kehne par hat gaya (wajah: purani `commission` value par galat fee
+     dikhata tha) — is liye is marte hue helper ka bhi koi kaam nahi bacha.
+     Dhyan: match-result ke asli prize ka hisaab `_MRD`/match detail se hota
+     hai, is function se kabhi nahi hota tha (iska koi caller nahi tha). */
 
   /* ─── FEATURE 131: MATCH PERFORMANCE TRACKER ─── */
   window.showPerformanceTracker = function() {

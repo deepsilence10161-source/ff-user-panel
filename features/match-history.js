@@ -255,33 +255,13 @@ window.showPlayerTitles = function() {
   if (window.openModal) openModal('🎖️ My Titles', h);
 };
 
-/* ── showSmartPrizeCalc — prize calculator modal ── */
-window.showSmartPrizeCalc = function() {
-  var h = '<div>';
-  h += '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Entry Fee (Coins/Diamonds)</label>';
-  h += '<input type="number" id="calcFee" class="f-input" placeholder="e.g. 10" oninput="calcPrize()" min="0"></div>';
-  h += '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Total Players</label>';
-  h += '<input type="number" id="calcPlayers" class="f-input" placeholder="e.g. 100" oninput="calcPrize()" min="1"></div>';
-  h += '<div id="calcResult" style="background:rgba(0,255,106,.06);border:1px solid rgba(0,255,106,.15);border-radius:12px;padding:12px;font-size:13px;display:none"></div>';
-  h += '</div>';
-  if (window.openModal) openModal('🧮 Prize Calculator', h);
-};
-window.calcPrize = function() {
-  var fee = Number((document.getElementById('calcFee')||{}).value) || 0;
-  var players = Number((document.getElementById('calcPlayers')||{}).value) || 0;
-  var res = document.getElementById('calcResult'); if (!res) return;
-  if (!fee || !players) { res.style.display = 'none'; return; }
-  var pool = fee * players;
-  var commRate = (window.CFG && window.CFG.commission) || 0.15;
-  var netPool = Math.floor(pool * (1 - commRate));
-  var p1 = Math.floor(netPool * 0.5), p2 = Math.floor(netPool * 0.3), p3 = Math.floor(netPool * 0.2);
-  res.style.display = '';
-  res.innerHTML = '<div style="font-weight:800;margin-bottom:8px">Prize Distribution (Net Pool: ' + netPool + ')</div>' +
-    '<div style="display:flex;flex-direction:column;gap:4px">' +
-    '<div style="display:flex;justify-content:space-between">🥇 1st Place<strong style="color:#ffd700">' + p1 + '</strong></div>' +
-    '<div style="display:flex;justify-content:space-between">🥈 2nd Place<strong style="color:#ccc">' + p2 + '</strong></div>' +
-    '<div style="display:flex;justify-content:space-between">🥉 3rd Place<strong style="color:#cd7f32">' + p3 + '</strong></div>' +
-    '</div><div style="font-size:10px;color:var(--txt2);margin-top:8px">' + Math.round(commRate*100) + '% platform fee deducted</div>';
-};
+/* ✅ HATA DIYA (2026-10-07, user ka faisla): showSmartPrizeCalc() + calcPrize()
+   ka poora Prize Calculator modal. Wajah: yeh `window.CFG.commission` par
+   chalta tha — ek aisi value jo admin ki kisi live setting se judi nahi thi
+   (admin 2026-10-04 se `commission` key likhta hi nahi; asli rate
+   creator_system.sdMatchCommissionPct = 15 hai, aur coin match par commission
+   hi nahi lagta). Is liye yeh modal users ko galat "15% platform fee"
+   dikhata rehta. Match ka asli prize match card / match detail me dikhta hai.
+   Button bhi js/features-user.js ke renderFilterChips() se hata diya gaya. */
 
 })();
