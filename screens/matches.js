@@ -240,16 +240,26 @@ function showDet(id) {
       h += '<div class="room-box rb-blue" style="margin-top:12px"><i class="fas fa-clock"></i> Room details will be shared before match start</div>';
     }
   }
-  /* Single Share / Invite Friends button — opens Android native Share sheet */
+  /* ✅ BUG FIX (2026-10-06, A5): match शुरू (live) होते ही Match Info से
+     "Share Match — Invite Friends" और "Set Match Reminder" दोनों पंक्तियाँ
+     ग़ायब होनी चाहिए।
+     पहले की गड़बड़: share button सिर्फ़ cancelled/completed पर हटता था,
+     और reminder की शर्त में सिर्फ़ समय देखा जाता था — status 'live' होने पर
+     भी दोनों दिखते रहते थे (live match का invite/reminder बेमानी है, और
+     बाद का reminder server पर भी रद्द हो जाता है)।
+     अब एक ही जगह तय होता है: _started। */
+  var _mtNow = (window.serverNow ? window.serverNow() : Date.now());
   var _matchStatus = (t.status || '').toLowerCase();
-  if (_matchStatus !== 'cancelled' && _matchStatus !== 'completed') {
+  var _started = (Number(t.matchTime) > 0 && _mtNow >= Number(t.matchTime)) ||
+                 ['live', 'ongoing', 'started', 'in_progress', 'completed', 'ended', 'cancelled'].indexOf(_matchStatus) >= 0;
+  if (!_started) {
     h += '<button onclick="shareMatch(\'' + id + '\')" style="width:100%;margin-top:14px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-share-alt"></i> Share Match — Invite Friends</button>';
   }
 
   // Watchlist button removed
 
-  // Feature 1: Match Reminder
-  if (t.matchTime && Number(t.matchTime) > (window.serverNow?window.serverNow():Date.now())) {
+  // Feature 1: Match Reminder — sirf match se PEHLE (A5/A6)
+  if (!_started && t.matchTime && Number(t.matchTime) > _mtNow) {
     h += '<button onclick="window.setMatchReminder&&setMatchReminder(\'' + id + '\',' + t.matchTime + ',\'' + (t.name||'Match') + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-bell"></i> Set Match Reminder</button>';
   }
 

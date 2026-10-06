@@ -209,49 +209,106 @@ window.applyDynamicWallpaper = function() {
   };
 
 
-  /* ─── FEATURE 1: MATCH REMINDER (Browser Notification) ─── */
-  /* ✅ BUG FIX (2026-10-04):
-     (a) "'Notification' in window" false hone par galat message
-         "Browser notifications support nahi karta" aata tha — jabki
-         browsers permission dene par support karte hain. Ab pehle
-         proper API check + permission request, aur WebView (jahan
-         Notification API nahi hai) mein OneSignal push fallback.
-     (b) Reminder sirf setTimeout par tha — app band hone gayi to
-         reminder mar gaya. Ab reminder Supabase (match_reminders) mein
-         bhi save hota hai + browser timeout dono. */
+  /* ─── FEATURE 1: MATCH REMINDER ─── */
+  /* ✅ BUG FIX (2026-10-06) — यह असली जड़ live DB पर नापी गई है:
+     (a) match_reminders टेबल पर anon भूमिका को कोई अनुमति ही नहीं थी ⇒
+         ऐप से सीधा upsert पर 401 "permission denied for table
+         match_reminders" आता था। यानी रिमाइंडर कभी सेव ही नहीं होता था —
+         सिर्फ़ browser का setTimeout चलता था, जो ऐप बंद होते ही मर जाता
+         था (इसीलिए शिकायत: "notification आनी चाहिए थी, आई नहीं" — A6)।
+     (b) 10 मिनट कोड में हार्डकोड था, जबकि admin की सेटिंग
+         matchReminderMins = 30 थी ⇒ admin कुछ भी सेट करे, असर शून्य।
+     ✅ अब: नया RPC set_match_reminder() (SECURITY DEFINER) —
+        • सिर्फ़ match से पहले का समय मानता है, match शुरू हो चुका हो तो
+          साफ़ message के साथ रोक देता है,
+        • चुना हुआ समय बीत चुका हो (मैच नज़दीक हो) तो तुरंत भेजता है,
+        • server cron (send_due_match_reminders) ठीक उसी समय OneSignal
+          push भेजता है — ऐप बंद हो तब भी,
+        • app खुली हो तो साथ में local notification भी।
+     ✅ User अब ख़ुद चुनता है (5/10/15/30/60 मिनट या अपनी मर्ज़ी) और सारा
+        चुनाव ऐप की अपनी UI में — कोई browser popup नहीं। */
+  window._remindMatchName = '';
+  window._matchReminderApply = function (matchId, mins, matchName) {
+    var meUid = (window.U && window.U.uid) || '';
+    if (!meUid) { _toast('Pehle login karo', 'err'); return; }
+    if (!window._supa) { _toast('Reminder sewa abhi uplabdh nahi', 'err'); return; }
+    var _name = matchName || window._remindMatchName || 'Match';
+    var _mins = (mins === null || mins === undefined || mins === '') ? null : Number(mins);
+    window._supa.rpc('set_match_reminder', { p_uid: meUid, p_match_id: matchId, p_mins: _mins })
+      .then(function (res) {
+        if (res && res.error) { _toast(res.error.message || 'Reminder set nahi hua', 'err'); return; }
+        var d = (res && res.data) || {};
+        if (window.closeModal) closeModal();
+
+        /* app khuli ho to local notification bhi — server push iske bina bhi aata hai */
+        var _at = Number(d.remind_at) || 0;
+        var _ms = _at - Date.now();
+        if (_ms > 0 && _ms < 12 * 3600000) {
+          try {
+            if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+              setTimeout(function () {
+                try {
+                  new Notification('⚡ Match shuru hone wala hai!', {
+                    body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
+                    icon: 'icons/icon-192x192.png?v=20261006c'
+                  });
+                } catch (e) {}
+              }, _ms);
+            } else if (typeof Notification !== 'undefined' && Notification.requestPermission) {
+              Notification.requestPermission();
+            }
+          } catch (e) {}
+        }
+        _toast('⏰ Reminder set! Match se ' + (d.remind_mins || _mins || '') + ' minute pehle notification aayegi.', 'ok');
+      }, function (e) {
+        _toast((e && e.message) || 'Reminder set nahi hua', 'err');
+      });
+  };
+  window._remindCustom = function (matchId) {
+    var el = _$('remCustomMins');
+    var v = el ? Number(el.value) : 0;
+    if (!v || v < 1) { _toast('Kitne minute pehle? (1 se 1440)', 'err'); return; }
+    window._matchReminderApply(matchId, Math.min(1440, Math.round(v)), '');
+  };
   window.setMatchReminder = function (matchId, matchTime, matchName) {
-    var _hasNotifAPI = (typeof window !== 'undefined' && 'Notification' in window && typeof Notification.requestPermission === 'function');
-    var _saveReminder = function () {
-      if (!window._supa || !window.U) return;
-      window._supa.from('match_reminders').upsert({
-        user_id: window.U.uid, match_id: matchId, match_time: matchTime
-      }, { onConflict: 'user_id,match_id' }).then(null, function (e) { console.warn('[Reminder] save failed:', e && e.message); });
-    };
-    if (!_hasNotifAPI) {
-      /* Android WebView / purana browser — Notification API available nahi.
-         Reminder DB mein save (server-side push ke liye) + sahi message. */
-      _saveReminder();
-      _toast('⏰ Reminder set! App notification match se 10 min pehle aayegi.', 'ok');
+    var now = window.serverNow ? window.serverNow() : Date.now();
+    if (!matchTime || Number(matchTime) <= now) {
+      _toast('Match shuru ho chuka hai — ab reminder set nahi ho sakta', 'err');
       return;
     }
-    Notification.requestPermission().then(function (p) {
-      if (p !== 'granted') { _toast('Notification permission do — browser settings mein allow karo', 'err'); return; }
-      _saveReminder();
-      var ms = Number(matchTime) - Date.now() - 600000;
-      if (ms < 0) { _toast('Match jaldi shuru hoga!', 'inf'); return; }
-      setTimeout(function () {
-        try {
-          new Notification('⚡ Match shuru hone wala hai!', {
-            body: matchName + ' 10 minutes mein start hoga. Room ID ready rakho!',
-            icon: 'icons/icon-192x192.png?v=20261006b'
-          });
-        } catch (e) { /* notification fail — DB reminder server bhej dega */ }
-      }, ms);
-      _toast('⏰ Reminder set! 10 min pehle notification aayega.', 'ok');
-    }).catch(function () {
-      _saveReminder();
-      _toast('⏰ Reminder set! App notification aayegi.', 'ok');
+    window._remindMatchName = matchName || 'Match';
+    var left = Math.floor((Number(matchTime) - now) / 60000);
+    var def  = Number((window.CFG && window.CFG.matchReminderMins) || 30);
+    var opts = [5, 10, 15, 30, 60, 120];
+    if (opts.indexOf(def) < 0) opts.push(def);          /* admin ki setting hamesha dikhe */
+    opts.sort(function (a, b) { return a - b; });
+    var escName = String(matchName || 'Match').replace(/'/g, "\\'");
+
+    var h = '<div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.5">' +
+            window._chatEsc(matchName || 'Match') + ' — match ' +
+            (left < 60 ? (left + ' minute') : (Math.floor(left / 60) + ' ghante ' + (left % 60) + ' minute')) +
+            ' me shuru hoga. Kitne pehle batana?</div>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
+    opts.forEach(function (m) {
+      var ok = (Number(matchTime) - m * 60000) > now;    /* सिर्फ़ match से पहले का समय */
+      h += '<button ' + (ok
+              ? 'onclick="window._matchReminderApply(\'' + matchId + '\',' + m + ',\'' + escName + '\')"'
+              : 'disabled') +
+           ' style="flex:1 1 92px;padding:12px;border-radius:12px;border:1px solid ' +
+             (ok ? 'rgba(0,255,156,.3)' : 'var(--border)') + ';background:' +
+             (ok ? 'rgba(0,255,156,.08)' : 'var(--card2)') + ';color:' +
+             (ok ? 'var(--green)' : 'var(--txt2)') + ';font-size:13px;font-weight:' +
+             (m === def ? '800' : '600') + ';cursor:' + (ok ? 'pointer' : 'not-allowed') +
+             ';opacity:' + (ok ? '1' : '.45') + '">' + m + ' min pehle' + (m === def ? ' ⭐' : '') + '</button>';
     });
+    h += '</div>';
+    h += '<div style="display:flex;gap:8px;margin-top:12px">' +
+         '<input type="number" id="remCustomMins" min="1" max="1440" placeholder="Apni marzi (minute)" ' +
+         'style="flex:1 1 140px;min-width:0;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px">' +
+         '<button onclick="window._remindCustom(\'' + matchId + '\')" style="padding:10px 14px;border-radius:10px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;flex-shrink:0">Set</button>' +
+         '</div>';
+    h += '<div style="margin-top:10px;font-size:11px;color:var(--txt2)">⭐ = admin ki default setting. Sirf match se <b>pehle</b> ka samay chun sakte ho — bahut kam samay bacha ho to notification turant chali jayegi.</div>';
+    if (window.showModal) showModal('🔔 Set Match Reminder', h);
   };
 
   /* ─── FEATURE 2: PROFILE COMPLETION % BAR ─── */
@@ -653,7 +710,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261006b'
+                    icon: 'icons/icon-192x192.png?v=20261006c'
                   });
                 }
                 break;
@@ -1246,79 +1303,148 @@ window.applyDynamicWallpaper = function() {
   window.checkMilestone = function () { /* milestone toasts removed */ };
 
   /* ─── NEW FEATURE 47: MATCH CHAT (In-Match Banter) ─── */
-  /* ✅ BUG FIX (2026-10-04): chat "live" nahi tha. Root cause: bridge ke
-     db.ref().on('value') sirf ek baar data deta hai (Supabase-routed path
-     par koi realtime listener nahi), isliye bheja hua message tab tak nahi
-     dikhta tha jab tak chat band karke dobara na khole. Fix: Supabase
-     Realtime (postgres_changes) subscription + optimistic append with
-     dedupe (real event aane par pending bubble replace ho jata hai). */
+  /* ✅ BUG FIX (2026-10-06) — असली जड़, live DB पर नापी गई (A7/A8):
+     (a) ऐप का Supabase client सिर्फ़ ANON key से बनता है (लॉगिन Firebase का
+         है, Supabase auth का नहीं), इसलिए table की RLS नीति
+         (auth.jwt()->>'sub' = user_id) कभी पूरी नहीं होती — सीधा insert पर
+         401 "new row violates row-level security policy" आता था और select
+         हमेशा ख़ाली [] लौटाता था। नतीजा: message कभी सेव ही नहीं होता था,
+         इसलिए अपना ही message दिखने के लिए दोबारा खोलना पड़ता था।
+     (b) तुरंत डिलीवरी postgres_changes पर थी — SELECT अधिकार न होने से
+         वह event कभी आता ही नहीं, इसलिए चैट "live" थी ही नहीं।
+     ✅ अब: पढ़ना/लिखना SECURITY DEFINER RPC से (get_match_chat /
+        send_match_chat) — सिर्फ़ उसी match में join किए खिलाड़ी को अनुमति,
+        RLS में कोई ढील नहीं दी गई (ग़ैर-खिलाड़ी को 400 मिलता है — जाँचा गया)।
+        तुरंत डिलीवरी Realtime Broadcast चैनल से (anon पर काम करता है —
+        सीधे WebSocket से जाँचा गया) + हर 8 सेकंड DB से ताज़ा करने वाला
+        बचाव-पोल, ताकि कोई संदेश कभी न छूटे। */
   window._chatEsc = function (s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   };
   window._chatBubble = function (m, pending) {
     var isMe = m.user_id === (window.U && window.U.uid);
-    return '<div class="chat-bub"' + (pending ? ' data-pending="1"' : '') + ' data-uid="' + (m.user_id || '') + '" data-text="' + window._chatEsc(m.text || '') + '" style="display:flex;justify-content:' + (isMe ? 'flex-end' : 'flex-start') + '">' +
+    return '<div class="chat-bub"' + (pending ? ' data-pending="1"' : '') +
+      (m.id ? ' data-id="' + window._chatEsc(m.id) + '"' : '') +
+      ' data-uid="' + window._chatEsc(m.user_id || '') + '" data-text="' + window._chatEsc(m.text || '') +
+      '" style="display:flex;justify-content:' + (isMe ? 'flex-end' : 'flex-start') + '">' +
       '<div style="max-width:70%;padding:6px 10px;border-radius:10px;background:' + (isMe ? 'rgba(0,255,156,.15)' : 'var(--card2)') + ';font-size:12px">' +
       '<div style="font-size:10px;color:var(--txt2);margin-bottom:2px">' + window._chatEsc(m.name || 'Player') + '</div>' +
       '<div>' + window._chatEsc(m.text || '') + '</div></div></div>';
   };
+  /* pending (अभी भेजा) bubble ढूँढ़ो — id से नहीं, text की सीधी तुलना से
+     (text में quotes होने पर CSS selector टूट जाता, यह टूटता नहीं) */
+  window._chatFindPending = function (el, text) {
+    if (!el) return null;
+    var list = el.querySelectorAll('[data-pending="1"]');
+    for (var i = list.length - 1; i >= 0; i--) {
+      if (list[i].getAttribute('data-text') === String(text == null ? '' : text)) return list[i];
+    }
+    return null;
+  };
   window.showMatchChat = function (matchId) {
-    var h = '<div style="display:flex;flex-direction:column;height:300px">';
+    var meUid = (window.U && window.U.uid) || '';
+    var h = '<div style="display:flex;flex-direction:column;height:320px">';
+    h += '<div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#8fe3ff;padding:0 2px 6px"><span style="width:6px;height:6px;border-radius:50%;background:#00ff9c;display:inline-block"></span> Live — message turant pahunchega</div>';
     h += '<div id="matchChatMsgs" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px"></div>';
     h += '<div style="display:flex;gap:8px;padding:8px;border-top:1px solid var(--border)">';
-    h += '<input type="text" id="matchChatIn" placeholder="Type message..." style="flex:1;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px">';
-    h += '<button onclick="window._sendMatchChat(\'' + matchId + '\')" style="padding:10px 16px;border-radius:10px;background:var(--primary);color:#000;font-weight:700;border:none;cursor:pointer"><i class="fas fa-paper-plane"></i></button>';
+    h += '<input type="text" id="matchChatIn" maxlength="500" placeholder="Type message..." onkeydown="if(event.key===\'Enter\'){window._sendMatchChat(\'' + matchId + '\')}" style="flex:1;min-width:0;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px">';
+    h += '<button onclick="window._sendMatchChat(\'' + matchId + '\')" style="padding:10px 16px;border-radius:10px;background:var(--primary);color:#000;font-weight:700;border:none;cursor:pointer;flex-shrink:0"><i class="fas fa-paper-plane"></i></button>';
     h += '</div></div>';
     if (window.showModal) showModal('💬 Match Chat', h);
 
     var _el = function () { return _$('matchChatMsgs'); };
-    var _loadOnce = function () {
-      if (!window._supa) return;
-      window._supa.from('match_chat').select('user_id,name,text,created_at')
-        .eq('match_id', matchId).order('created_at', { ascending: true }).limit(50)
-        .then(function (r) {
+
+    /* ── इतिहास DB से (RPC: सिर्फ़ खिलाड़ी को) ── */
+    var _load = function () {
+      if (!window._supa || !meUid) return;
+      window._supa.rpc('get_match_chat', { p_match_id: matchId, p_uid: meUid, p_limit: 60 })
+        .then(function (res) {
+          if (res && res.error) { console.warn('[Chat] load:', res.error.message); return; }
           var el = _el(); if (!el) return;
-          el.innerHTML = (r.data || []).map(function (m) { return window._chatBubble(m); }).join('');
+          var rows = (res && res.data) || [];
+          /* अभी भेजे जा रहे (pending) bubbles न छूओ, बाक़ी पूरा repaint */
+          var keep = '';
+          var pend = el.querySelectorAll('[data-pending="1"]');
+          for (var i = 0; i < pend.length; i++) keep += pend[i].outerHTML;
+          el.innerHTML = rows.map(function (m) { return window._chatBubble(m); }).join('') + keep;
           el.scrollTop = el.scrollHeight;
-        });
+        }, function (e) { console.warn('[Chat] load fail:', e && e.message); });
     };
-    _loadOnce();
-    /* Realtime subscription (purana channel hatao naya lagao) */
-    if (window._matchChatCh && window._supa) { try { window._supa.removeChannel(window._matchChatCh); } catch (e) {} }
-    if (window._supa) {
-      try {
+    _load();
+
+    /* ── तुरंत डिलीवरी: Realtime Broadcast (RLS का मोहताज नहीं) ── */
+    try {
+      if (window._matchChatCh && window._supa) { window._supa.removeChannel(window._matchChatCh); }
+      window._matchChatCh = null;
+      if (window._supa) {
         window._matchChatCh = window._supa.channel('match-chat-' + matchId)
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'match_chat', filter: 'match_id=eq.' + matchId }, function (p) {
-            var el = _el(); if (!el || !p.new) return;
-            /* Agar optimistic bubble pending hai with same uid+text → use replace karo (dedupe) */
-            var pend = el.querySelector('[data-pending="1"]');
-            if (pend && pend.getAttribute('data-uid') === (p.new.user_id || '') && pend.getAttribute('data-text') === (p.new.text || '')) {
-              pend.removeAttribute('data-pending');
+          .on('broadcast', { event: 'msg' }, function (p) {
+            var el = _el(); if (!el || !p || !p.payload) return;
+            var m = p.payload || {};
+            if (m.id && el.querySelector('[data-id="' + window._chatEsc(m.id) + '"]')) return;
+            var mine = window._chatFindPending(el, m.text || '');
+            if (mine && m.user_id === meUid) {
+              /* अपना ही संदेश लौटा → pending पक्का कर दो (दोहरा नहीं) */
+              mine.removeAttribute('data-pending');
+              if (m.id) mine.setAttribute('data-id', m.id);
             } else {
-              el.insertAdjacentHTML('beforeend', window._chatBubble(p.new));
+              el.insertAdjacentHTML('beforeend', window._chatBubble(m));
             }
             el.scrollTop = el.scrollHeight;
           })
           .subscribe();
-      } catch (e) { console.warn('[Chat] realtime subscribe failed:', e && e.message); }
-    }
+      }
+    } catch (e) { console.warn('[Chat] realtime channel fail:', e && e.message); }
+
+    /* ── बचाव: हर 8 सेकंड DB से ताज़ा + बंद होने पर सफ़ाई ── */
+    if (window._matchChatPoll) clearInterval(window._matchChatPoll);
+    window._matchChatPoll = setInterval(function () {
+      if (!_el()) {
+        clearInterval(window._matchChatPoll);
+        try { if (window._matchChatCh && window._supa) window._supa.removeChannel(window._matchChatCh); } catch (e) {}
+        window._matchChatCh = null;
+        return;
+      }
+      _load();
+    }, 8000);
   };
   window._sendMatchChat = function (matchId) {
     var inp = _$('matchChatIn'); if (!inp || !inp.value.trim()) return;
+    var meUid = (window.U && window.U.uid) || '';
+    if (!meUid) { _toast('Pehle login karo', 'err'); return; }
     var _txt = inp.value.trim();
+    if (_txt.length > 500) { _toast('Message 500 akshar se bada nahi ho sakta', 'err'); return; }
     inp.value = '';
-    var _msg = { user_id: window.U.uid, name: window.UD.ign || 'Player', text: _txt };
-    /* Optimistic append — turant dikhe, realtime event se dedupe hoga */
     var el = _$('matchChatMsgs');
-    if (el) { el.insertAdjacentHTML('beforeend', window._chatBubble(_msg, true)); el.scrollTop = el.scrollHeight; }
-    if (window._supa) {
-      window._supa.from('match_chat').insert({ match_id: matchId, user_id: _msg.user_id, name: _msg.name, text: _msg.text })
-        .then(null, function (e) { console.warn('[Chat] send failed:', e && e.message); toast('Message nahi gaya — dobara try karo', 'err'); });
-    } else {
-      db.ref('matchChat/' + matchId).push({ uid: _msg.user_id, name: _msg.name, text: _txt, ts: Date.now() });
+    /* तुरंत दिखाओ — server से पक्का होने पर pending हटेगा */
+    if (el) {
+      el.insertAdjacentHTML('beforeend', window._chatBubble({ user_id: meUid, name: (window.UD && window.UD.ign) || 'Player', text: _txt }, true));
+      el.scrollTop = el.scrollHeight;
     }
+    if (!window._supa) { _toast('Chat sewa abhi uplabdh nahi', 'err'); return; }
+    window._supa.rpc('send_match_chat', {
+      p_match_id: matchId, p_uid: meUid,
+      p_name: (window.UD && window.UD.ign) || 'Player', p_text: _txt
+    }).then(function (res) {
+      if (res && res.error) {
+        var p = window._chatFindPending(el, _txt); if (p) p.remove();
+        _toast(res.error.message || 'Message nahi gaya', 'err');
+        return;
+      }
+      var row = (res && res.data) || null;
+      var p2 = window._chatFindPending(el, _txt);
+      if (p2) { p2.removeAttribute('data-pending'); if (row && row.id) p2.setAttribute('data-id', row.id); }
+      /* बाक़ी खिलाड़ियों को तुरंत — broadcast */
+      try {
+        if (row && window._matchChatCh && window._matchChatCh.send) {
+          window._matchChatCh.send({ type: 'broadcast', event: 'msg', payload: row });
+        }
+      } catch (e) { /* broadcast fail ho to 8 सेकंड का poll pakad lega */ }
+    }, function (e) {
+      var p3 = window._chatFindPending(el, _txt); if (p3) p3.remove();
+      _toast((e && e.message) || 'Message nahi gaya — dobara try karo', 'err');
+    });
   };
-
 
   /* ─── NEW FEATURE 49: DYNAMIC BANNER MESSAGES ─── */
   window.loadDynamicBanner = function () {
