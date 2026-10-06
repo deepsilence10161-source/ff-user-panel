@@ -61,7 +61,14 @@ window.getCurrentSeason = function() {
      jaata tha — user ko jhoothi 30-din wali deadline dikhti thi jo kabhi
      badalti nahi thi. Ab sach: tareekh na ho to koi jhoothi deadline nahi. */
   if (!end || isNaN(end)) end = 0;
-  var daysLeft = end ? Math.max(0, Math.ceil((end - now) / 86400000)) : 0;
+  /* ✅ B18: din CALENDAR-din me (admin ka hint bhi wahi ginta hai) — warna
+     ek hi tareekh admin ko 45 aur user ko 46 dikhati thi. */
+  var daysLeft = 0;
+  if (end) {
+    var _t0 = new Date(now); _t0.setHours(0, 0, 0, 0);
+    var _t1 = new Date(end); _t1.setHours(0, 0, 0, 0);
+    daysLeft = Math.max(0, Math.round((_t1.getTime() - _t0.getTime()) / 86400000));
+  }
   return {
     id:       _season.id || 'S1',
     name:     _season.name || (window.CFG && window.CFG.seasonName) || 'Season 1',
