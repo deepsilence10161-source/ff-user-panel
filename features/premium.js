@@ -9,7 +9,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261006h" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261006i" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho, code change
    na karna pade". price and gdBonus now come from window.CFG.premium
@@ -155,8 +155,11 @@ window.buyPremium=function(tier,price){
   h+='<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:10px;letter-spacing:.5px">PAYMENT STEPS:</div>';
   [
     'UPI ID: <strong style="color:#ffd700;font-size:13px">miniesports@upi</strong> par ₹'+price+' bhejo',
-    'Payment ka screenshot lo',
-    'Neeche upload karo — <strong style="color:#00ff9c">1-2 ghante mein activate hoga</strong>'
+    /* ✅ B16 (2026-10-06): UTR ab ZAROORI hai — payment app ke receipt me
+       transaction/UTR number hota hai; admin isse screenshot se match karke
+       verify karta hai (Sky Diamond flow jaisa hi). */
+    'Payment ka screenshot lo, aur UTR/Transaction number note karo',
+    'Neeche dono daalo — <strong style="color:#00ff9c">1-2 ghante mein activate hoga</strong>'
   ].forEach(function(s,i){h+='<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:9px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">'+(i+1)+'</div>'+s+'</div>';});
   h+='</div>';
   /* Screenshot upload */
@@ -165,6 +168,12 @@ window.buyPremium=function(tier,price){
   h+='<i class="fas fa-camera" style="font-size:28px;color:#ffd70055;display:block;margin-bottom:8px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div>';
   h+='<input type="file" id="_premSsIn" accept="image/*" style="display:none" onchange="window._premHandleSs(this)"></div>';
   h+='<img id="_premSsPreview" style="display:none;width:100%;border-radius:10px;margin-top:8px;max-height:180px;object-fit:cover"></div>';
+  /* ✅ B16 (2026-10-06): UTR / UPI reference field — pehle SIRF screenshot tha,
+     jisse admin ke paas payment ko match karne ka koi pakka zariya nahi tha.
+     Ab wahi pattern jo Sky Diamond buy flow (js/quick-deposit.js) me hai. */
+  h+='<div style="margin-bottom:12px"><label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
+  h+='<input type="text" id="_premUtr" inputmode="text" autocomplete="off" placeholder="jaise 432198765432" style="width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box">';
+  h+='<div style="font-size:10px;color:#666;margin-top:4px">Payment app ke transaction/UTR number — screenshot ke saath match hona chahiye</div></div>';
   h+='<div style="padding:10px 12px;border-radius:11px;background:rgba(255,85,85,.07);border:1px solid rgba(255,85,85,.15);font-size:11px;color:#ff9999;margin-bottom:12px">⚠️ Premium fees non-refundable hain. Coins/Diamonds withdraw nahi hote.</div>';
   h+='<button onclick="window._submitPremium('+tier+','+price+')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(255,215,0,.35)">💳 Payment Request Submit Karo</button>';
   if(window.openModal)openModal('💳 Buy Premium '+t.label,h);
@@ -172,6 +181,13 @@ window.buyPremium=function(tier,price){
   window._premHandleSs=function(inp){if(!inp.files||!inp.files[0])return;var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var cv=document.createElement('canvas'),mw=800,w=img.width,hh=img.height;if(w>mw){hh=Math.round(hh*(mw/w));w=mw;}cv.width=w;cv.height=hh;cv.getContext('2d').drawImage(img,0,0,w,hh);_ss=cv.toDataURL('image/jpeg',.72);var prev=document.getElementById('_premSsPreview'),area=document.getElementById('_premSsArea');if(prev){prev.src=_ss;prev.style.display='block';}if(area)area.innerHTML='<i class="fas fa-check-circle" style="color:#00ff9c;font-size:22px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Screenshot ready ✅</div><input type="file" id="_premSsIn" accept="image/*" style="display:none" onchange="window._premHandleSs(this)">';};img.src=e.target.result;};r.readAsDataURL(inp.files[0]);};
   window._submitPremium = function(tier, price) {
   if (!_ss) { if (window.toast) toast('Screenshot upload karo!', 'err'); return; }
+  /* ✅ B16 (2026-10-06): UTR/UPI reference ab ZAROORI — bina iske payment
+     verify karna namumkin tha (aur duplicate screenshot par bhi premium
+     activate ho sakta tha). Sky Diamond flow wala hi toast/tone. */
+  var _utrInp = document.getElementById('_premUtr');
+  var _utr = _utrInp ? _utrInp.value.trim() : '';
+  if (!_utr) { if (window.toast) toast('UTR / UPI reference number daalo!', 'err'); return; }
+  if (_utr.length < 6) { if (window.toast) toast('UTR number poora daalo (kam se kam 6 characters)', 'err'); return; }
   if (!window.U || !window.UD) return;
   if (!window._supa || !window._supaReady) { if (window.toast) toast('Service unavailable', 'err'); return; }
   var tierLabel = TIERS[tier-1] ? TIERS[tier-1].label : ('Tier ' + tier);
@@ -182,6 +198,7 @@ window.buyPremium=function(tier,price){
     tier:            tier,
     price:           price,
     screenshot_url:  _ss,
+    utr:             _utr,          /* ✅ B16: admin screenshot se match karega */
     status:          'pending'
   }).then(function(r) {
     if (r.error && r.error.message) {

@@ -125,12 +125,16 @@ function _showBundlePayment(b) {
     );
   }
   h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px">';
-  ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹' + b.price + ' bhejo', 'Screenshot lo', '1-2 ghante mein dono activate honge'].forEach(function(s,i){
+  /* ✅ B16 (2026-10-06): UTR ab zaroori — Sky Diamond/premium wala hi pattern. */
+  ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹' + b.price + ' bhejo', 'Screenshot lo, aur UTR/Transaction number note karo', 'Dono neeche daalo — 1-2 ghante mein activate honge'].forEach(function(s,i){
     h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';
   });
   h += '</div>';
   h += '<div id="_bndlSsArea" onclick="document.getElementById(\'_bndlSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div><input type="file" id="_bndlSsIn" accept="image/*" style="display:none" onchange="window._bndlHandleSs(this)"></div>';
   h += '<img id="_bndlSsPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
+  /* ✅ B16 (2026-10-06): UTR / UPI reference field (bina iske payment match karna mumkin nahi tha) */
+  h += '<label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
+  h += '<input type="text" id="_bndlUtr" autocomplete="off" placeholder="jaise 432198765432" style="width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:12px">';
   h += '<button onclick="window._submitBundle(\'' + b.id + '\',' + b.price + ')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,' + b.color + ',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">💳 Bundle Request Submit</button>';
   if (window.openModal) openModal('💳 ' + b.label, h);
 
@@ -149,6 +153,11 @@ function _showBundlePayment(b) {
 
   window._submitBundle = function(bundleId, price) {
     if (!_ss) { if(window.toast)toast('Screenshot upload karo!','err'); return; }
+    /* ✅ B16 (2026-10-06): UTR/UPI reference zaroori */
+    var _bUtrInp = document.getElementById('_bndlUtr');
+    var _bUtr = _bUtrInp ? _bUtrInp.value.trim() : '';
+    if (!_bUtr) { if(window.toast)toast('UTR / UPI reference number daalo!','err'); return; }
+    if (_bUtr.length < 6) { if(window.toast)toast('UTR number poora daalo (kam se kam 6 characters)','err'); return; }
     if (!window.U || !window._supa) return;
     /* ✅ Audit Fix: 'bundle_requests' table never existed — every submission
        failed silently AFTER the user had already sent real UPI money.
@@ -161,6 +170,7 @@ function _showBundlePayment(b) {
       tier: (bundleId === 'gold_bp') ? 2 : 1,
       price: price,
       screenshot_url: _ss,
+      utr: _bUtr,          /* ✅ B16 */
       status: 'pending',
       plan_type: 'bundle',
       bundle_id: bundleId
@@ -198,6 +208,9 @@ window.buyAnnualPlan = function(tier, price) {
     h += '</div>';
     h += '<div id="_annSsArea" onclick="document.getElementById(\'_annSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div><input type="file" id="_annSsIn" accept="image/*" style="display:none" onchange="window._annHandleSs(this)"></div>';
     h += '<img id="_annSsPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
+    /* ✅ B16 (2026-10-06): Annual plan me bhi UTR/UPI reference zaroori */
+    h += '<label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
+    h += '<input type="text" id="_annUtr" autocomplete="off" placeholder="jaise 432198765432" style="width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:12px">';
     h += '<button onclick="window._submitAnnual(' + tier + ',' + price + ')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,' + p.color + ',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">💳 Annual Plan Request Submit</button>';
     if (window.openModal) openModal('💳 ' + p.label, h);
 
@@ -209,7 +222,12 @@ window.buyAnnualPlan = function(tier, price) {
     window._submitAnnual = function(tier, price) {
       if (!_ss) { if(window.toast)toast('Screenshot upload karo!','err'); return; }
       if (!window.U || !window._supa) return;
-      window._supa.from('premium_requests').insert({ user_id: window.U.uid, user_name: (window.UD&&window.UD.ign)||'', tier: tier, price: price, screenshot_url: _ss, status: 'pending', plan_type: 'annual' }).then(function(){ if(window.toast)toast('✅ Annual plan request submit! 24 ghante mein active.','ok'); if(window.closeModal)closeModal(); }, function(){ if(window.toast)toast('Submit failed, retry karo','err'); });
+      /* ✅ B16 (2026-10-06): UTR/UPI reference zaroori (premium/bundle jaisa hi) */
+      var _aUtrInp = document.getElementById('_annUtr');
+      var _aUtr = _aUtrInp ? _aUtrInp.value.trim() : '';
+      if (!_aUtr) { if(window.toast)toast('UTR / UPI reference number daalo!','err'); return; }
+      if (_aUtr.length < 6) { if(window.toast)toast('UTR number poora daalo (kam se kam 6 characters)','err'); return; }
+      window._supa.from('premium_requests').insert({ user_id: window.U.uid, user_name: (window.UD&&window.UD.ign)||'', tier: tier, price: price, screenshot_url: _ss, utr: _aUtr, status: 'pending', plan_type: 'annual' }).then(function(){ if(window.toast)toast('✅ Annual plan request submit! 24 ghante mein active.','ok'); if(window.closeModal)closeModal(); }, function(){ if(window.toast)toast('Submit failed, retry karo','err'); });
     };
   });
 };
