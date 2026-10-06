@@ -7,8 +7,9 @@
 /* Default config values */
 window.CFG = {
   // Defaults — Firebase se override hota hai
-  commission:        0.15,
-  roomReleaseMins:    10,
+  /* ✅ B31 (2026-10-07): `commission` default bhi hata — yeh marta hua key
+     tha (upar _applyCfg me wajah likhi hai). Prize-calculator ka fee dikhane
+     ka faisla alag hai (report me sawal khula hai). */
   matchReminderMins:  30,
   /* ✅ A9: purani admin broadcast naye users ko kitne din tak dikhe
      (0 = sab dikhe). Admin panel ke App Settings se badalta hai. */
@@ -127,8 +128,14 @@ window.CFG = {
 /* Apply config from any source */
 function _applyCfg(c) {
   if (!c) return;
-  if (c.commission        != null) window.CFG.commission        = Number(c.commission);
-  if (c.roomReleaseMins        != null) window.CFG.roomReleaseMins        = Number(c.roomReleaseMins);
+  /* ✅ B31 (2026-10-07): `commission` ki mapping HATA di gayi — admin panel
+     2026-10-04 se yeh key likhta hi nahi ("single source = creator_system.
+     sdMatchCommissionPct"), aur live_config me padi purani 0.15 ki value
+     kisi live setting se judi nahi thi. Jo asli rate hai wahi dikhna chahiye;
+     purani jami hui value par bharosa karna hi bug tha. */
+  /* ✅ B31 (2026-10-07): `roomReleaseMins` ki mapping bhi hata di — B6/B21 ke
+     baad room timing SIRF admin ke Room Manager me set hoti hai (client-side
+     ise koi padhta hi nahi tha; row ke bina yeh mapping zinda laash thi). */
   if (c.matchReminderMins      != null) window.CFG.matchReminderMins      = Number(c.matchReminderMins);
   if (c.notifBroadcastDays     != null) window.CFG.notifBroadcastDays     = Number(c.notifBroadcastDays);   /* A9 */
   if (c.autoSquadEnabled       != null) window.CFG.autoSquadEnabled       = Number(c.autoSquadEnabled);
