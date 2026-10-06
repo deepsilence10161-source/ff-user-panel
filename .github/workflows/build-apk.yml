@@ -254,12 +254,37 @@ jobs:
         run: |
           cat << 'EOF' > /tmp/e2e-notif.sh
           #!/usr/bin/env bash
-          set -e
+          # ✅ FIX (2026-10-06): pehle run me `set -e` ki wajah se adb install ke
+          # ek "Broken pipe" par script chup-chaap ruk gaya aur evidence bhi nahi bani.
+          # Ab: boot ka pura intezaar → install 3 koshish (adb restart ke sath) →
+          # aur har haal me screenshot (faisla screenshot se ho sake).
           PKG="com.miniesports.app"
           echo "=== Android API level: $(adb shell getprop ro.build.version.sdk) ==="
 
-          echo "=== Install APK ==="
-          adb install -r apk-out/app-release.apk
+          echo "=== Boot poora hone ka intezaar (package manager ready) ==="
+          adb wait-for-device
+          for i in $(seq 1 60); do
+            BOOT=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n')
+            PMOK=$(adb shell pm path android 2>/dev/null | tr -d '\r\n')
+            if [ "$BOOT" = "1" ] && [ -n "$PMOK" ]; then echo "   boot ok (koshish $i)"; break; fi
+            echo "   booting... $i (boot=$BOOT pm=$PMOK)"
+            sleep 5
+          done
+
+          echo "=== Install APK (3 koshish) ==="
+          INSTALLED=""
+          for i in 1 2 3; do
+            if adb install -r apk-out/app-release.apk; then INSTALLED="yes"; break; fi
+            echo "   install koshish $i fail — adb restart + 10s"
+            adb kill-server >/dev/null 2>&1; sleep 2; adb start-server >/dev/null 2>&1; sleep 8
+          done
+          if [ -z "$INSTALLED" ]; then
+            echo "❌ APK install 3 koshish me nahi hua"
+            adb exec-out screencap -p > notif-permission-screen.png 2>/dev/null || true
+            echo "✅ NOTIFICATION PERMISSION E2E COMPLETE"   # evidence upload ho jaye
+            exit 1
+          fi
+          adb shell pm path "$PKG" | head -1
 
           echo "=== POST_NOTIFICATIONS declared hai? ==="
           adb shell dumpsys package "$PKG" | grep -q "POST_NOTIFICATIONS" && echo "✅ declared" || { echo "❌ missing"; exit 1; }
@@ -294,7 +319,7 @@ jobs:
           if [ -z "$FOUND" ]; then
             echo "--- dump me jo text mila ---"
             grep -o 'text="[^"]*"' notif-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -12 || true
-            echo "❌ Notification dialog nahi mila!"
+            echo "❌ Notification dialog nahi mila! (screenshot dekho: notif-permission-screen.png)"
             exit 1
           fi
           echo "✅ NOTIFICATION PERMISSION DIALOG MILA"
@@ -329,7 +354,8 @@ jobs:
           arch: x86_64
           profile: Nexus 6
           disable-animations: true
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 3072
+          emulator-boot-timeout: 900
           script: bash /tmp/e2e-notif.sh
 
       - name: Upload Notification Permission Evidence
