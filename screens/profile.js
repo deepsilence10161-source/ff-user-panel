@@ -404,7 +404,13 @@ function applyReferralCode() {
      that validates the code, checks the "only one referral per user
      ever" rule server-side (not via a client-side duplicate check),
      computes the reward from config, and credits both sides safely
-     in a single transaction. */
+     in a single transaction.
+     ✅ B20 (2026-10-07): signup-popup path (apply_referral_code) ka
+     vyavhaar bhi ab bilkul yahi hai — join bonus DONO ko milta hai
+     (admin hint "Dono ko milenge"), aur popup-path ka response
+     reward_self se wahi self-credit karta hai. Do alag reference
+     bonuses (SD bonus sirf pehli SD purchase par, match bonus
+     threshold poore hone par) DB me lagu hain. */
   window._supa.rpc('claim_referral_reward', { p_code: code })
     .then(function(res) {
       var d = res && res.data;

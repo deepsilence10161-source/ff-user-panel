@@ -59,6 +59,18 @@
         var referrerUid = r.data.referrer_uid;
         UD.referredBy = referrerUid;
         UD.referralPopupDone = true;
+        /* ✅ B20 (2026-10-07): join bonus ab DONO ko milta hai (admin ka
+           hint "Dono ko milenge"; server-side apply_referral_code me
+           v_real_reward dono taraf credit hota hai). Self-side coins
+           turant UD me reflect karo — warna header ka balance agle
+           refresh tak purana dikhta. Profile-screen ka manual-code path
+           (claim_referral_reward) pehle se dono ko deta tha — ab dono
+           paths ka vyavhaar ek hi hai. */
+        var _selfRw = Number(r.data.reward_self != null ? r.data.reward_self : r.data.reward) || 0;
+        if (_selfRw > 0) {
+          UD.coins = (UD.coins || 0) + _selfRw;
+          if (window.updateHdr) window.updateHdr();
+        }
         /* Mirror to Firebase for immediate local UD cache + push notification trigger */
         if (db) {
           db.ref('users/' + U.uid).update({ referredBy: referrerUid, referredByCode: code, referralAppliedAt: Date.now(), referralPopupDone: true });
@@ -69,7 +81,8 @@
           });
         }
         try { localStorage.setItem('_refDone_' + U.uid, '1'); } catch(e) {}
-        if (window.toast) window.toast('🎁 Code apply ho gaya! Account linked!', 'ok');
+        if (window.toast) window.toast('🎁 Code apply ho gaya! Account linked!'
+          + (_selfRw > 0 ? ' +' + _selfRw + ' coins mile!' : ''), 'ok');
         var pop = document.getElementById('_refCodePopup');
         if (pop) pop.remove();
       })
@@ -227,7 +240,11 @@
     if (!UD || !U) return;
     var myCode = UD.referralCode || U.uid.substring(0, 8).toUpperCase();
     var count  = Number(UD.referralCount) || 0;
-    var earned = Number(UD.referralCoinsEarned) || (count * 50);
+    /* ✅ B20 (2026-10-07): pehle fallback hardcoded 50 tha — admin ki
+       referralJoinCoins setting badalne par "Total Earned" galat
+       dikhata. Ab wahi CFG value jo server use karta hai. */
+    var _joinRw = (window.CFG && window.CFG.referralJoinCoins) || 50;
+    var earned = Number(UD.referralCoinsEarned) || (count * _joinRw);
 
     var h = '';
     h += '<div style="text-align:center;padding:8px 0 16px"><div style="font-size:48px;margin-bottom:10px">🎁</div>';

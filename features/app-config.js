@@ -52,6 +52,10 @@ window.CFG = {
   referralJoinCoins: 50,
   referralSDBonusDiamonds: 10,
   referralMatchCoins: 30,
+  /* ✅ B20 (2026-10-07): "Dost N matches khele → Coins" ka N bhi ab
+     setting hai (admin: Refer & Earn). DB trigger bhi isi key se
+     threshold uthata hai — dono taraf ek hi sach. */
+  referralMatchThreshold: 5,
   premium: {
     prices:  { 1: 49, 2: 99, 3: 199 },
     bonuses: { 1: 50, 2: 150, 3: 400 },
@@ -173,6 +177,7 @@ function _applyCfg(c) {
   if (c.referralJoinCoins != null) window.CFG.referralJoinCoins = Number(c.referralJoinCoins);
   if (c.referralSDBonusDiamonds != null) window.CFG.referralSDBonusDiamonds = Number(c.referralSDBonusDiamonds);
   if (c.referralMatchCoins!= null) window.CFG.referralMatchCoins= Number(c.referralMatchCoins);
+  if (c.referralMatchThreshold!=null) window.CFG.referralMatchThreshold = Number(c.referralMatchThreshold);
   if (c.creatorMinPayout  != null) window.CFG.creatorMinPayout  = Number(c.creatorMinPayout);
   if (c.adCoinsPerWatch   != null) window.CFG.adCoinsPerWatch   = Number(c.adCoinsPerWatch);
   if (c.adDailyLimit      != null) window.CFG.adDailyLimit      = Number(c.adDailyLimit);

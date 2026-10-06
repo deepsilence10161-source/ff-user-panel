@@ -441,10 +441,20 @@ window.showReferEarn = function() {
   // Reward steps
   h += '<div style="background:rgba(0,0,0,.3);border-radius:14px;padding:14px;margin-bottom:16px">';
   h += '<div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:10px">🎁 Reward Steps</div>';
+  /* ✅ B20 (2026-10-07): pehle teeno values (50/10/30 aur "5 matches")
+     yahan HARDCODED thi — admin Settings me value badalne par bhi ye
+     screen purani dikhati thi. Ab sab seedha CFG se (admin ka ek hi
+     sach): join coins dono ko, SD bonus sirf dost ki PEHLI SD purchase
+     par (DB: resolve_sd_request), match coins threshold poore hone par
+     (DB: trg_ref_match_bonus). */
+  var _rJoin  = (window.CFG && window.CFG.referralJoinCoins) || 50;
+  var _rSd    = (window.CFG && window.CFG.referralSDBonusDiamonds) || 10;
+  var _rMatch = (window.CFG && window.CFG.referralMatchCoins) || 30;
+  var _rMThr  = (window.CFG && window.CFG.referralMatchThreshold) || 5;
   var steps = [
-    { icon: '1️⃣', label: 'Dost join kare', you: '+50🪙', them: '+50🪙', done: count >= 1 },
-    { icon: '2️⃣', label: 'Dost pehla Sky Diamond kharido', you: '+10💎', them: '—', done: false },
-    { icon: '3️⃣', label: 'Dost 5 matches khele', you: '+30🪙', them: '—', done: false },
+    { icon: '1️⃣', label: 'Dost join kare', you: '+' + _rJoin + '🪙', them: '+' + _rJoin + '🪙', done: count >= 1 },
+    { icon: '2️⃣', label: 'Dost pehla Sky Diamond kharido', you: '+' + _rSd + '💎', them: '—', done: false },
+    { icon: '3️⃣', label: 'Dost ' + _rMThr + ' matches khele', you: '+' + _rMatch + '🪙', them: '—', done: false },
   ];
   steps.forEach(function(s) {
     h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;opacity:' + (s.done?'1':'.7') + '">';

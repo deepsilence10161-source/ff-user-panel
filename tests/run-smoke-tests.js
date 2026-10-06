@@ -402,6 +402,28 @@ console.log('\n── TEST 13: B18 season ka ek hi source (currentSeason + live_
      'B18: bridge ka once() ab thenable bhi hai (".then is not a function" pageerror gaya)');
 }
 
+/* ── TEST 14: B20 — referral niyam user panel me bhi admin ke ek hi sach se ── */
+console.log('\n── TEST 14: B20 referral rewards (dono ko join bonus + CFG-driven growth screen) ──');
+{
+  const ac = fs.readFileSync(path.join(REPO, 'features/app-config.js'), 'utf8');
+  ok(ac.indexOf('referralMatchThreshold: 5') !== -1,
+     'B20: threshold ka default (5) CFG me hai');
+  ok(ac.indexOf('c.referralMatchThreshold') !== -1,
+     'B20: admin ki setting CFG me aati hai (match milestone)');
+
+  const gr = fs.readFileSync(path.join(REPO, 'features/growth.js'), 'utf8');
+  ok(gr.indexOf("label: 'Dost 5 matches khele'") === -1,
+     'B20: growth screen ka hardcoded "Dost 5 matches khele" gaya');
+  ok(gr.indexOf('_rMThr') !== -1 && gr.indexOf('_rJoin') !== -1 && gr.indexOf('_rSd') !== -1 && gr.indexOf('_rMatch') !== -1,
+     'B20: teeno reward steps ab CFG se (admin value badle to screen badle)');
+
+  const rs = fs.readFileSync(path.join(REPO, 'js/referral-system-fix.js'), 'utf8');
+  ok(rs.indexOf('reward_self') !== -1 && rs.indexOf('_selfRw') !== -1,
+     'B20: popup-path ka apply bhi self-credit karta hai (dono ko bonus)');
+  ok(rs.indexOf('_joinRw') !== -1,
+     'B20: stats ka fallback hardcoded 50 nahi, CFG se');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
