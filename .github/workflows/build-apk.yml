@@ -313,23 +313,48 @@ jobs:
           adb shell am start -n "$PKG/.MainActivity" >/dev/null || true
           sleep 12
 
-          echo "=== Dialog ka pata lagao (12 koshish) ==="
-          FOUND=""
-          for i in $(seq 1 12); do
-            adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
-            adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
-            if [ -s notif-ui-dump.xml ] && grep -qi "notification" notif-ui-dump.xml; then FOUND="dump"; break; fi
-            PCWIN=$(adb shell dumpsys window windows 2>/dev/null | grep -o 'permissioncontroller' | head -1)
-            echo "   koshish $i: dump me nahi (permissioncontroller window: ${PCWIN:-'-'})"
-            if [ -n "$PCWIN" ] && [ $i -ge 3 ]; then
-              # window to hai — dump ko ek aur mauka, warna window ko hi proof maano
+          echo "=== Dialog ka pata lagao (16 koshish) — ANR ho to pehle hatao ==="
+          # ✅ FIX (2026-10-06, run 37493852679 ka screenshot proof): asli
+          # notification dialog aa jata hai (bell + Don't allow dikh raha tha)
+          # par uske UPAR system ka ANR dialog ("Process system isn't
+          # responding") chadh jata hai — usne uiautomator dump aur Allow ka
+          # tap dono rok diye the. Ab pehle mCurrentFocus dekhte hain:
+          #   * permissioncontroller → dialog upar hai, dump/tap karo
+          #   * "isn't responding"/Not Responding → ANR upar hai, BACK se hatao
+          #     (BACK ANR ko hi band karta hai; permission dialog neeche safe
+          #      rehta hai aur agli koshish me upar aa jata hai)
+          FOUND=""; FOCUS=""
+          for i in $(seq 1 16); do
+            FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
+            echo "   koshish $i: focus = ${FOCUS:-'-'}"
+            case "$FOCUS" in
+              *permissioncontroller*)
+                adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+                adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+                if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="window+dump"; else FOUND="window"; fi
+                break ;;
+              *"isn't responding"*|*"Not Responding"*|*"Application Error"*|*"ANR"*)
+                echo "   ⚠️ system ANR dialog upar hai — BACK bhej rahe hain (permission dialog neeche safe hai)"
+                adb shell input keyevent 4 >/dev/null 2>&1 || true
+                sleep 3 ;;
+              *)
+                sleep 4 ;;
+            esac
+          done
+
+          # dump na mila ho to ANR hataane ke baad kuch aur koshish (tap ke liye
+          # bounds chahiye hote hain, isliye ye zaroori hai)
+          if [ "$FOUND" = "window" ]; then
+            echo "=== dump ke liye 6 aur koshish (Allow ka bounds chahiye) ==="
+            for i in $(seq 1 6); do
               adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
               adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
-              if [ -s notif-ui-dump.xml ]; then FOUND="window+dump"; break; fi
-              FOUND="window"; break
-            fi
-            sleep 4
-          done
+              if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="window+dump"; break; fi
+              ANRW=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | grep -ci "responding" || true)
+              if [ "${ANRW:-0}" != "0" ]; then adb shell input keyevent 4 >/dev/null 2>&1 || true; fi
+              sleep 3
+            done
+          fi
 
           adb exec-out screencap -p > notif-permission-screen.png
           ls -lh notif-permission-screen.png
@@ -337,18 +362,36 @@ jobs:
           if [ -z "$FOUND" ]; then
             echo "--- dump me jo text mila ---"
             grep -o 'text="[^"]*"' notif-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -12 || true
-            adb exec-out screencap -p > notif-permission-screen.png
             echo "❌ Notification dialog nahi mila! (screenshot dekho: notif-permission-screen.png)"
             exit 1
           fi
-          echo "✅ NOTIFICATION PERMISSION DIALOG MILA (proof: $FOUND)"
+          echo "✅ NOTIFICATION PERMISSION DIALOG MILA (proof: $FOUND, focus: $FOCUS)"
           grep -o 'text="[^"]*"' notif-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -12 || true
 
           echo "=== Dialog ke 'Allow' button par TAP karo (asal user jaisa) ==="
           BOUNDS=$(grep -o 'text="[^"]*"[^>]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' notif-ui-dump.xml \
-            | grep -i 'allow' | head -1 \
+            | grep -i 'allow' | grep -iv "don't" | head -1 \
             | grep -o '\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]' | head -1)
-          if [ -z "$BOUNDS" ]; then echo "⚠️ Allow ka bounds nahi mila (dialog to mila hai)"; else
+          if [ -z "$BOUNDS" ]; then
+            # ✅ FIX: AOSP dialog me "Don't allow" (left) aur "Allow" (right) ek hi
+            # row me hote hain. Agar dump me sirf "Don't allow" mila ho to Allow
+            # usi line par daayein taraf hota hai — screen ki width se hisaab lagao.
+            DB=$(grep -o 'text="[^"]*"[^>]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' notif-ui-dump.xml \
+              | grep -i "don.t allow" | grep -o '\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]' | head -1)
+            if [ -n "$DB" ]; then
+              SIZE=$(adb shell wm size 2>/dev/null | sed 's/.*: //' | tr -d '\r')
+              SW=${SIZE%x*}
+              DY1=$(echo "$DB" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\2/')
+              DY2=$(echo "$DB" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\4/')
+              CY=$(( (DY1 + DY2) / 2 ))
+              CX=$(( SW * 4 / 5 ))
+              echo "   (Don't allow ke daayein Allow maan kar tap: $CX,$CY — screen width $SW)"
+              adb shell input tap "$CX" "$CY"
+              sleep 4
+            else
+              echo "⚠️ Allow ka bounds nahi mila (dialog to mila hai)"
+            fi
+          else
             X1=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\1/')
             Y1=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\2/')
             X2=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\3/')
@@ -357,7 +400,8 @@ jobs:
             echo "   Allow tap: $CX,$CY"
             adb shell input tap "$CX" "$CY"
             sleep 4
-            echo "=== Tap ke baad permission ki stithi ==="
+          fi
+          echo "=== Tap ke baad permission ki stithi ==="
             adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
             GRANT=$(adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
             if [ -n "$GRANT" ]; then echo "✅ POST_NOTIFICATIONS ab GRANTED hai (Allow ne kaam kiya)";
