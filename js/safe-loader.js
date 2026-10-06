@@ -53,14 +53,47 @@
   var _failed = [];
   var _total  = FEATURE_SCRIPTS.length;
 
+  /* ✅ B31 (2026-10-06): path se tulna — query string (?v=20261006n) ko
+     ignore karo. Pehle exact `script[src="…"]` match tha jo ?v= ki wajah se
+     kabhi match nahi hota → 20 files do-din dobara load hoti thin aur
+     purani copy nayi ko dhak deti thi. */
+  function _kyaPehleSeLoaded(src) {
+    var want = String(src).split('?')[0];
+    var tags = document.querySelectorAll('script[src]');
+    for (var i = 0; i < tags.length; i++) {
+      var got = (tags[i].getAttribute('src') || '').split('?')[0];
+      if (!got) continue;
+      /* dono taraf se normalize: 'features/clan.js' === './features/clan.js'
+         aur absolute path (https://…/features/clan.js) bhi match kare */
+      if (got === want || got.replace(/^\.\//, '') === want.replace(/^\.\//, '') ||
+          got === '/' + want || got.indexOf('/' + want) === got.length - want.length - 1) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /* ── Load scripts sequentially with error isolation ── */
   function loadNext(index) {
     if (index >= _total) { onAllLoaded(); return; }
 
     var item   = FEATURE_SCRIPTS[index];
 
-    /* Skip if already loaded (deduplicate) */
-    if (document.querySelector('script[src="' + item.src + '"]')) {
+    /* Skip if already loaded (deduplicate)
+       ✅ B31 FIX (2026-10-06, CRITICAL): pehle yahan
+         document.querySelector('script[src="features/skill-matchmaking.js"]')
+       tha — par index.html ke tags me cache-busting query hoti hai
+       (src="features/skill-matchmaking.js?v=20261006n"), aur attribute
+       selector POORA match maangta hai. Is liye yeh check kabhi sach nahi
+       hota tha aur loader apni list ki SAARI 20 files load karta rehta tha
+       — index.html ke baad. Asar: purani copy nayi (tested) copy ko dhak
+       deti thi; jaise features-user.js ka naya renderFilterChips (🧮
+       Calculator button wala) skill-matchmaking.js ki purani copy se
+       badal jata tha → user ko Calculator hi nahi dikhta tha. Ab path
+       (?v= hata kar) se tulna hoti hai, is liye jo file index.html me
+       pehle se hai wo dobara load NAHI hoti (loader ka apna likha hua
+       niyam: "sirf woh files jo index.html me nahi hain"). */
+    if (_kyaPehleSeLoaded(item.src)) {
       _loaded++;
       loadNext(index + 1);
       return;
