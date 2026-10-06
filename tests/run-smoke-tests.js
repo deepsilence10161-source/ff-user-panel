@@ -388,6 +388,18 @@ console.log('\n── TEST 13: B18 season ka ek hi source (currentSeason + live_
   ok(sl.indexOf('now + 30 * 86400000') === -1,
      'B18: jhoothi "aaj se 30 din" deadline gayab (user ko sach dikhta hai)');
   ok(sl.indexOf('hasEnd') !== -1, 'B18: state saaf batati hai ki asli end date hai ya nahi');
+  ok(sl.indexOf('monthKey:') !== -1, 'B18: monthly storage key bhi wahi ek jagah se');
+
+  /* Asli bug jo live E2E me pakda: rank-system.js (baad me load hota hai)
+     seasonal-league ka getCurrentSeason chup-chaap override kar deta tha. */
+  const rs = fs.readFileSync(path.join(REPO, 'js/rank-system.js'), 'utf8');
+  ok(rs.indexOf('window.getCurrentSeason =') === -1,
+     'B18: rank-system ab getCurrentSeason ko override nahi karta');
+  ok(rs.indexOf('window.getMonthlySeasonMeta =') !== -1 && rs.indexOf('_seasonMerged()') !== -1,
+     'B18: monthly meta alag function hai; display + key merged');
+  const br = fs.readFileSync(path.join(REPO, 'core/db-bridge.js'), 'utf8');
+  ok(/then:\s*function \(fn, errFn\)/.test(br),
+     'B18: bridge ka once() ab thenable bhi hai (".then is not a function" pageerror gaya)');
 }
 
 console.log('\n══════════════════════════════');

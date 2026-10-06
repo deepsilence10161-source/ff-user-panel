@@ -69,7 +69,10 @@ window.getCurrentSeason = function() {
     endDate:  end,
     active:   !!_season.active,
     label:    daysLeft > 0 ? daysLeft + ' din baaki' : 'Ended',
-    hasEnd:   !!end
+    hasEnd:   !!end,
+    /* ✅ B18: monthly storage key (seasonStats/<monthKey> / weekly buckets)
+       wahi ek jagah se — display admin ki settings se, key monthly bucket se */
+    monthKey: (window.getMonthlySeasonMeta ? window.getMonthlySeasonMeta().monthKey : (window.getWeekKey ? '' : ''))
   };
 };
 

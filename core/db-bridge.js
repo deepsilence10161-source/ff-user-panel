@@ -1116,10 +1116,22 @@
             var self = this;
             var opts = {};
             if (self._limit) opts.limit = self._limit;
+            /* ✅ B18 (2026-10-07, live E2E me pageerror): Firebase compat me
+               `once('value', cb)` call karne par bhi ek PROMISE milta hai,
+               is liye purana code `db.ref(...).once('value').then(...)` likhta
+               tha (js/referral-system-fix.js bhi). Yahan sirf `{catch: fn}`
+               return hota tha ⇒ ".then is not a function" pageerror.
+               Ab thenable dono tarah kaam karta hai (callback + promise). */
+            var _resolve;
+            var _p = new Promise(function (res) { _resolve = res; });
             _supaRead(path, function(snap) {
-              if (successCb) successCb(snap);
+              if (successCb) { try { successCb(snap); } catch (e) {} }
+              try { _resolve(snap); } catch (e) {}
             }, opts);
-            return { catch: function(fn) {} };
+            return {
+              then:  function (fn, errFn) { return _p.then(fn, errFn); },
+              catch: function (fn) { return _p.catch(fn); }
+            };
           },
 
           /* REALTIME (polling fallback) */

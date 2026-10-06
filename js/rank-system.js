@@ -9,8 +9,18 @@
 (function() {
 'use strict';
 
-/* ── Season: monthly, resets on 1st ── */
-window.getCurrentSeason = function() {
+/* ── Monthly bucket (leaderboard/stat keys ke liye) ──
+   ⚠️ LIVE-TESTING SABAK (2026-10-07, B18): pehle yahi function
+   `window.getCurrentSeason` ke naam se define hota tha — aur kyunki ye file
+   seasonal-league.js ke BAAD load hoti hai, ye usko CHUP-CHAAP override kar
+   deti thi. Nateeja: admin ki Seasonal League settings (naam/tareekh/ON-OFF)
+   user ko kabhi dikhti hi nahi thin; user ko yahan ka hardcoded monthly
+   "Season 14 '26" dikhta tha. Ab:
+     • display ka EK hi source = getCurrentSeason() (seasonal-league.js,
+       admin ki settings se),
+     • ye function sirf WAHI kaam karta hai jo iska asli kaam hai — monthly
+       storage key (seasonStats/<monthKey>) — naam alag se, override ke bina. */
+window.getMonthlySeasonMeta = function() {
   var now = new Date();
   var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var yr = now.getFullYear().toString().slice(-2);
@@ -28,6 +38,13 @@ window.getCurrentSeason = function() {
   };
 };
 
+/* Display + storage key ek saath (jo code dono chahta hai) */
+function _seasonMerged() {
+  var disp = (window.getCurrentSeason ? window.getCurrentSeason() : {}) || {};
+  var meta = (window.getMonthlySeasonMeta ? window.getMonthlySeasonMeta() : {}) || {};
+  return Object.assign({}, meta, disp, { monthKey: meta.monthKey || disp.monthKey || '' });
+}
+
 /* ── Weekly leaderboard (Monday reset) ── */
 function getWeekKey() {
   var now = new Date();
@@ -40,7 +57,7 @@ window.getWeekKey = getWeekKey;
 
 /* Bug #9 Fix: loadSeasonLeaderboard — 100% Supabase (Firebase seasonStats empty post-migration) */
 window.loadSeasonLeaderboard = function(cb) {
-  var s = window.getCurrentSeason ? window.getCurrentSeason() : { name:'Season', label:'', daysLeft:0, monthKey:'' };
+  var s = _seasonMerged();
   if (!window._supa) { if (cb) cb([], s); return; }
   /* Try leaderboard view first, fallback to users table */
   window._supa.from('leaderboard').select('*').limit(200)
@@ -76,7 +93,7 @@ window.loadSeasonLeaderboard = function(cb) {
 /* ── After match result: update season & weekly stats ── */
 window.updateSeasonStats = function(uid, statsUpdate) {
   if (!window.db || !uid) return;
-  var s = window.getCurrentSeason();
+  var s = _seasonMerged();
   var wk = getWeekKey();
   /* Season stats */
   var sRef = window.db.ref('seasonStats/' + s.monthKey + '/' + uid);
