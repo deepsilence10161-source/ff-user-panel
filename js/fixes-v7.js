@@ -678,14 +678,38 @@ waitFor(function(){return window.U&&window.UD&&window.db;},function(){
      link now actually works, correctly, instead of silently no-oping
      forever. */
   /* URL referral bonus */
+  /* ✅ B20 (2026-10-07): pehle yeh sirf tab chalta tha jab page khulte
+     waqt hi window.U + window._supa maujood ho — yaani link se aaya
+     NAYA user (jo pehle LOGIN karta hai) uske liye window.U abhi null
+     hota tha, isliye {?ref=} wala bonus uske case me kabhi apply hi
+     nahi hota tha (chup-chaap). Ab urlRef yaad rakhte hain aur login
+     hote hi (U + _supa ready) ek baar apply karte hain — 2 minute tak
+     retry, phir chhod dete hain. Referral row ka UNIQUE + UD.referredBy
+     dobara-apply rok deta hai, isliye repeat attempt bekaar nahi —
+     balki chup-chaap safe hai (RPC khud idempotent-safe hai). */
   try {
     var urlRef=new URLSearchParams(window.location.search).get('ref');
-    if(urlRef&&window.U&&window._supa){
-      /* apply_referral_code's own referrals.referred_id UNIQUE
-         constraint already prevents a user from ever applying a
-         second referral code — no separate "already received" flag
-         needed here, the RPC itself is idempotent-safe. */
-      window._supa.rpc('apply_referral_code', { p_code: urlRef.toUpperCase(), p_reward: 0 }).then(null, function(){});
+    if(urlRef){
+      var _refTries=0;
+      var _refTimer=setInterval(function(){
+        _refTries++;
+        var already=false;
+        try { already = !!(window.UD && (window.UD.referredBy || window.UD.referralPopupDone)); } catch(e){}
+        if(already || _refTries>60){ clearInterval(_refTimer); return; }
+        if(window.U && window._supa && window._supaReady){
+          clearInterval(_refTimer);
+          window._supa.rpc('apply_referral_code', { p_code: urlRef.toUpperCase(), p_reward: 0 })
+            .then(function(r){
+              if(r && r.data && r.data.success){
+                var _self=Number(r.data.reward_self != null ? r.data.reward_self : r.data.reward)||0;
+                try { if(window.UD){ window.UD.referredBy=r.data.referrer_uid||window.UD.referredBy; window.UD.referralPopupDone=true;
+                      if(_self>0) window.UD.coins=(window.UD.coins||0)+_self; } } catch(e){}
+                if(window.updateHdr) window.updateHdr();
+                if(window.toast) window.toast('🎁 Referral code applied!'+(_self>0?(' +'+_self+' coins!'):''),'ok');
+              }
+            }, function(){});
+        }
+      },2000);
     }
   } catch(e){}
 },60);

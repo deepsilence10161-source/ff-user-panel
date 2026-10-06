@@ -429,6 +429,8 @@ console.log('\n── TEST 14: B20 referral rewards (dono ko join bonus + CFG-dr
   const f7 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
   ok(f7.indexOf('🪙150') === -1 && f7.indexOf('_rMThr') !== -1,
      'B20: Invite & Earn ka jhootha "Tum 150" gaya — join/match values CFG se');
+  ok(f7.indexOf('_refTimer') !== -1 && f7.indexOf('_refTries') !== -1,
+     'B20: {?ref=} link wala bonus ab login ke baad bhi apply hota hai (retry)');
 }
 
 console.log('\n══════════════════════════════');
