@@ -243,6 +243,11 @@ jobs:
   notif-permission-e2e:
     needs: build
     runs-on: ubuntu-latest
+    # ✅ FIX (2026-10-06): pehle is job par koi timeout nahi tha — emulator
+    # atakne par pura workflow ghanton latak jata tha (aur proof banti hi nahi).
+    # 12 minute me poora kaam (boot + install + dump + tap + verify) ho jata
+    # hai; atakne par job fail hoti hai, chup-chaap latakti nahi.
+    timeout-minutes: 12
     steps:
       - name: Download Built Release APK
         uses: actions/download-artifact@v4
@@ -259,10 +264,17 @@ jobs:
           # Ab: boot ka pura intezaar → install 3 koshish (adb restart ke sath) →
           # aur har haal me screenshot (faisla screenshot se ho sake).
           PKG="com.miniesports.app"
+          # ✅ FIX (2026-10-06): emulator kabhi-kabhi ("system isn't responding"
+          # ke waqt) `adb shell dumpsys`/`uiautomator dump` par HAMESHA ke liye
+          # atak jata hai — `|| true` isse nahi rokti. Ab har adb call par 25s
+          # ka timeout hai, isliye script aage badhti rahegi aur evidence bhi
+          # ban jayegi (isi wajah se run 37498031435/37498643802 ka notif step
+          # hang hua tha).
+          adbt() { timeout 25 adb "$@"; }
           echo "=== Android API level: $(adb shell getprop ro.build.version.sdk) ==="
 
           echo "=== Boot poora hone ka intezaar (package manager ready) ==="
-          adb wait-for-device
+          adbt wait-for-device
           for i in $(seq 1 60); do
             BOOT=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n')
             PMOK=$(adb shell pm path android 2>/dev/null | tr -d '\r\n')
@@ -274,29 +286,29 @@ jobs:
           echo "=== Install APK (3 koshish) ==="
           INSTALLED=""
           for i in 1 2 3; do
-            if adb install -r apk-out/app-release.apk; then INSTALLED="yes"; break; fi
-            echo "   install koshish $i fail — adb restart + 10s"
-            adb kill-server >/dev/null 2>&1; sleep 2; adb start-server >/dev/null 2>&1; sleep 8
+            if adbt install -r apk-out/app-release.apk; then INSTALLED="yes"; break; fi
+            echo "   install koshish $i fail — adbt restart + 10s"
+            adbt kill-server >/dev/null 2>&1; sleep 2; adbt start-server >/dev/null 2>&1; sleep 8
           done
           if [ -z "$INSTALLED" ]; then
             echo "❌ APK install 3 koshish me nahi hua"
-            adb exec-out screencap -p > notif-permission-screen.png 2>/dev/null || true
+            adbt exec-out screencap -p > notif-permission-screen.png 2>/dev/null || true
             echo "✅ NOTIFICATION PERMISSION E2E COMPLETE"   # evidence upload ho jaye
             exit 1
           fi
-          adb shell pm path "$PKG" | head -1
+          adbt shell pm path "$PKG" | head -1
 
           echo "=== POST_NOTIFICATIONS declared hai? ==="
-          adb shell dumpsys package "$PKG" | grep -q "POST_NOTIFICATIONS" && echo "✅ declared" || { echo "❌ missing"; exit 1; }
-          adb shell dumpsys package "$PKG" | grep -qi "CAMERA" && { echo "❌ CAMERA declared hai!"; exit 1; } || echo "✅ CAMERA declared nahi hai"
+          adbt shell dumpsys package "$PKG" | grep -q "POST_NOTIFICATIONS" && echo "✅ declared" || { echo "❌ missing"; exit 1; }
+          adbt shell dumpsys package "$PKG" | grep -qi "CAMERA" && { echo "❌ CAMERA declared hai!"; exit 1; } || echo "✅ CAMERA declared nahi hai"
 
           echo "=== POST_NOTIFICATIONS ko ZABARDASTI chheeno (takay app ko maangna HI pade) ==="
-          adb shell pm revoke "$PKG" android.permission.POST_NOTIFICATIONS || true
-          adb shell dumpsys package "$PKG" | grep -A2 "android.permission.POST_NOTIFICATIONS" | head -4
+          adbt shell pm revoke "$PKG" android.permission.POST_NOTIFICATIONS || true
+          adbt shell dumpsys package "$PKG" | grep -A2 "android.permission.POST_NOTIFICATIONS" | head -4
 
           echo "=== Location pehle se de do, taki notification ka dialog saaf dikhe ==="
-          adb shell pm grant "$PKG" android.permission.ACCESS_FINE_LOCATION || true
-          adb shell pm grant "$PKG" android.permission.ACCESS_COARSE_LOCATION || true
+          adbt shell pm grant "$PKG" android.permission.ACCESS_FINE_LOCATION || true
+          adbt shell pm grant "$PKG" android.permission.ACCESS_COARSE_LOCATION || true
 
           echo "=== Launch app ==="
           # ✅ FIX (2026-10-06, run 37479470012): emulator par launch ke baad ANR
@@ -307,10 +319,10 @@ jobs:
           #  Ab: system error dialogs hi band kar diye (CI me standard trick),
           #  dump ki koshish 12 kar di, aur screenshot me na dikhe to bhi
           #  "permissioncontroller window maujood hai" ko proof maana jata hai.
-          adb shell settings put global hide_error_dialogs 1 || true
-          adb shell settings put secure anr_show_background 0 || true
-          adb logcat -c
-          adb shell am start -n "$PKG/.MainActivity" >/dev/null || true
+          adbt shell settings put global hide_error_dialogs 1 || true
+          adbt shell settings put secure anr_show_background 0 || true
+          adbt logcat -c
+          adbt shell am start -n "$PKG/.MainActivity" >/dev/null || true
           sleep 12
 
           echo "=== Dialog ka pata lagao (16 koshish) — ANR ho to pehle hatao ==="
@@ -329,13 +341,13 @@ jobs:
             echo "   koshish $i: focus = ${FOCUS:-'-'}"
             case "$FOCUS" in
               *permissioncontroller*)
-                adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
-                adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+                adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+                adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
                 if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="window+dump"; else FOUND="window"; fi
                 break ;;
               *"isn't responding"*|*"Not Responding"*|*"Application Error"*|*"ANR"*)
                 echo "   ⚠️ system ANR dialog upar hai — BACK bhej rahe hain (permission dialog neeche safe hai)"
-                adb shell input keyevent 4 >/dev/null 2>&1 || true
+                adbt shell input keyevent 4 >/dev/null 2>&1 || true
                 sleep 3 ;;
               *)
                 sleep 4 ;;
@@ -347,16 +359,16 @@ jobs:
           if [ "$FOUND" = "window" ]; then
             echo "=== dump ke liye 6 aur koshish (Allow ka bounds chahiye) ==="
             for i in $(seq 1 6); do
-              adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
-              adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+              adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+              adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
               if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="window+dump"; break; fi
               ANRW=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | grep -ci "responding" || true)
-              if [ "${ANRW:-0}" != "0" ]; then adb shell input keyevent 4 >/dev/null 2>&1 || true; fi
+              if [ "${ANRW:-0}" != "0" ]; then adbt shell input keyevent 4 >/dev/null 2>&1 || true; fi
               sleep 3
             done
           fi
 
-          adb exec-out screencap -p > notif-permission-screen.png
+          adbt exec-out screencap -p > notif-permission-screen.png
           ls -lh notif-permission-screen.png
 
           if [ -z "$FOUND" ]; then
@@ -386,7 +398,7 @@ jobs:
               CY=$(( (DY1 + DY2) / 2 ))
               CX=$(( SW * 4 / 5 ))
               echo "   (Don't allow ke daayein Allow maan kar tap: $CX,$CY — screen width $SW)"
-              adb shell input tap "$CX" "$CY"
+              adbt shell input tap "$CX" "$CY"
               sleep 4
             else
               echo "⚠️ Allow ka bounds nahi mila (dialog to mila hai)"
@@ -398,15 +410,15 @@ jobs:
             Y2=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\4/')
             CX=$(( (X1 + X2) / 2 )); CY=$(( (Y1 + Y2) / 2 ))
             echo "   Allow tap: $CX,$CY"
-            adb shell input tap "$CX" "$CY"
+            adbt shell input tap "$CX" "$CY"
             sleep 4
           fi
           echo "=== Tap ke baad permission ki stithi ==="
-            adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
+            adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
             GRANT=$(adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
             if [ -n "$GRANT" ]; then echo "✅ POST_NOTIFICATIONS ab GRANTED hai (Allow ne kaam kiya)";
             else echo "⚠️ granted=true nahi dikha — screenshot (notif-after-allow.png) dekho"; fi
-            adb exec-out screencap -p > notif-after-allow.png
+            adbt exec-out screencap -p > notif-after-allow.png
           fi
           echo "✅ NOTIFICATION PERMISSION E2E COMPLETE"
           EOF
