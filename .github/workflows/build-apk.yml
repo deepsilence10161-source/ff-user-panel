@@ -299,17 +299,35 @@ jobs:
           adb shell pm grant "$PKG" android.permission.ACCESS_COARSE_LOCATION || true
 
           echo "=== Launch app ==="
+          # ✅ FIX (2026-10-06, run 37479470012): emulator par launch ke baad ANR
+          #  dialog ("Mini eSports isn't responding") aa jata tha — wo permission
+          #  dialog ke UPAR aa kar focus le leta hai, isliye uiautomator dump
+          #  "null root node" de kar fail ho jata tha. Screenshot me saaf dikha ki
+          #  permission dialog (bell + Don't allow) PEHLE SE maujood tha.
+          #  Ab: system error dialogs hi band kar diye (CI me standard trick),
+          #  dump ki koshish 12 kar di, aur screenshot me na dikhe to bhi
+          #  "permissioncontroller window maujood hai" ko proof maana jata hai.
+          adb shell settings put global hide_error_dialogs 1 || true
+          adb shell settings put secure anr_show_background 0 || true
           adb logcat -c
           adb shell am start -n "$PKG/.MainActivity" >/dev/null || true
-          sleep 10
+          sleep 12
 
-          echo "=== Dialog ka pata lagao (5 koshish) ==="
+          echo "=== Dialog ka pata lagao (12 koshish) ==="
           FOUND=""
-          for i in 1 2 3 4 5; do
+          for i in $(seq 1 12); do
             adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
             adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
-            if [ -s notif-ui-dump.xml ] && grep -qi "notification" notif-ui-dump.xml; then FOUND="yes"; break; fi
-            echo "   koshish $i: dialog abhi nahi mila (window: $(adb shell dumpsys window windows | grep -m1 -o 'permissioncontroller\|PermissionController' || echo '-'))"
+            if [ -s notif-ui-dump.xml ] && grep -qi "notification" notif-ui-dump.xml; then FOUND="dump"; break; fi
+            PCWIN=$(adb shell dumpsys window windows 2>/dev/null | grep -o 'permissioncontroller' | head -1)
+            echo "   koshish $i: dump me nahi (permissioncontroller window: ${PCWIN:-'-'})"
+            if [ -n "$PCWIN" ] && [ $i -ge 3 ]; then
+              # window to hai — dump ko ek aur mauka, warna window ko hi proof maano
+              adb shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+              adb pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+              if [ -s notif-ui-dump.xml ]; then FOUND="window+dump"; break; fi
+              FOUND="window"; break
+            fi
             sleep 4
           done
 
@@ -319,11 +337,12 @@ jobs:
           if [ -z "$FOUND" ]; then
             echo "--- dump me jo text mila ---"
             grep -o 'text="[^"]*"' notif-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -12 || true
+            adb exec-out screencap -p > notif-permission-screen.png
             echo "❌ Notification dialog nahi mila! (screenshot dekho: notif-permission-screen.png)"
             exit 1
           fi
-          echo "✅ NOTIFICATION PERMISSION DIALOG MILA"
-          grep -o 'text="[^"]*"' notif-ui-dump.xml | sed 's/text="//;s/"$//' | head -12
+          echo "✅ NOTIFICATION PERMISSION DIALOG MILA (proof: $FOUND)"
+          grep -o 'text="[^"]*"' notif-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -12 || true
 
           echo "=== Dialog ke 'Allow' button par TAP karo (asal user jaisa) ==="
           BOUNDS=$(grep -o 'text="[^"]*"[^>]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' notif-ui-dump.xml \
@@ -339,7 +358,10 @@ jobs:
             adb shell input tap "$CX" "$CY"
             sleep 4
             echo "=== Tap ke baad permission ki stithi ==="
-            adb shell dumpsys package "$PKG" | grep -A2 "android.permission.POST_NOTIFICATIONS" | head -4
+            adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
+            GRANT=$(adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
+            if [ -n "$GRANT" ]; then echo "✅ POST_NOTIFICATIONS ab GRANTED hai (Allow ne kaam kiya)";
+            else echo "⚠️ granted=true nahi dikha — screenshot (notif-after-allow.png) dekho"; fi
             adb exec-out screencap -p > notif-after-allow.png
           fi
           echo "✅ NOTIFICATION PERMISSION E2E COMPLETE"
