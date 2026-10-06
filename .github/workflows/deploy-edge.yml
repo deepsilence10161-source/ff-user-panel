@@ -2,95 +2,124 @@
 # deploy-edge.yml — Supabase Edge Function ko repo ke source se SYNC rakhta hai
 # ----------------------------------------------------------------
 # KYU (asli dard, 2026-10-06): B23 ka client-side fix live tha par SERVER par
-#      purana function (paytm-create-order v15, 2026-09-21) chalta raha —
-#      us bundle me `paytmMaxTxn` naam ki cheez hi nahi thi, yaani ₹2000 ki
-#      seema server par zinda hi nahi thi. Isi tarah ka gap pehle imgbb-upload
-#      me bhi tha (v1 chal raha tha → har upload "Invalid session" 401).
-#      Sabak: jo function repo me hai wahi production me hona chahiye; yeh
-#      workflow woh gap khud band karta hai.
+#      purana function chalta raha — deployed paytm-create-order (v15,
+#      2026-09-21) ke bundle me `paytmMaxTxn` / `PAYTM_MAX_TXN` naam ki cheez
+#      hi nahi thi, yaani Rs.2000 ki seema server par zinda hi nahi thi.
+#      Isi tarah ka gap pehle imgbb-upload me bhi tha (v1 chal raha tha ->
+#      har upload "Invalid session" 401). Sabak: jo code repo me hai wahi
+#      production me hona chahiye; yeh workflow woh gap khud band karta hai.
 #
-# KYA DEPLOY HOTA HAI (jaan-boojh kar chuna hua, ek-ek verify karke):
-#   * paytm-create-order — B23 ki server-side ₹2000 seema isi me hai.
+# KYA DEPLOY HOTA HAI (jaan-boojh kar chuna hua):
+#   * paytm-create-order — B23 ki server-side Rs.2000 seema isi me hai.
 #     `--no-verify-jwt` uski maujooda setting (verify_jwt=false) jaisa hi hai.
-#   * imgbb-upload / paytm-callback / push-send — FILHAL YAHAN NAHI.
-#     push-send production me verify_jwt=TRUE hai (public direct-call band,
-#     sirf x-push-secret se chalta hai) — usse `--no-verify-jwt` se deploy
-#     karna suraksha kam kar deta. Unhe alag se, apni setting ke saath,
-#     verify karke deploy karna hai (B4/B29 ke waqt).
+#   * imgbb-upload / push-send — pehle se alag workflow
+#     (deploy-imgbb-upload.yml) se deploy hote hain, wahan unke OneSignal /
+#     ImgBB secrets bhi sync hote hain. Yahan dobara nahi.
+#   * paytm-callback — us me B23 ka koi badlav nahi, is liye chheda nahi gaya.
+#
+# NOTE (seekha hua): step-level `if` me `secrets` context GitHub MANA KARTA hai
+#      ("Unrecognized named-value: 'secrets'"). Is liye secret ko job-env me
+#      daal kar `env` se check karte hain (deploy-imgbb-upload.yml wala pattern).
 #
 # SETUP (ek baar): repo secret `SUPABASE_ACCESS_TOKEN` — pehle se maujood hai.
-#
-# MANUAL CHALANE KA TARIKA: Actions → deploy-edge-functions → Run workflow.
+# MANUAL CHALANE KA TARIKA: Actions -> Deploy paytm-create-order function ->
+#                            Run workflow.
 # ================================================================
-name: deploy-edge-functions
+name: Deploy paytm-create-order function
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches:
+      - main
     paths:
-      - 'supabase/functions/paytm-create-order/**'
-      - 'supabase/functions/_shared/paytm.ts'
-      - '.github/workflows/deploy-edge.yml'
+      - ".github/workflows/deploy-edge.yml"
+      - "supabase/functions/paytm-create-order/**"
+      - "supabase/functions/_shared/paytm.ts"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-paytm-create-order-production
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    name: Deploy paytm-create-order function
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_REF: hddhkculuyrfoevxmlwy
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Check Supabase deployment credentials
+        shell: bash
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret missing hai."
+            echo "::error::Repository Settings > Secrets and variables > Actions mein secret add karo."
+            exit 1
+          fi
+          echo "Supabase deployment credentials available."
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - name: Set function secrets (if provided)
-        if: ${{ secrets.IMGBB_KEY != '' }}
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF || 'hddhkculuyrfoevxmlwy' }}
-          IMGBB_KEY: ${{ secrets.IMGBB_KEY }}
-        run: |
-          supabase secrets set IMGBB_KEY="$IMGBB_KEY" --project-ref "$PROJECT_REF"
+      - name: Show Supabase CLI version
+        shell: bash
+        run: supabase --version
 
-      # ══════════════════════════════════════════════════════════
-      # B23 — Paytm ki ₹2000 seema SERVER par bhi
-      # ══════════════════════════════════════════════════════════
+      # ----------------------------------------------------------
+      # Deploy (gateway JWT verification OFF — function khud Firebase /
+      # Supabase token cryptographically verify karta hai, bilkul pehle jaisa)
+      # ----------------------------------------------------------
       - name: Deploy paytm-create-order
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF || 'hddhkculuyrfoevxmlwy' }}
-        run: |
-          supabase functions deploy paytm-create-order \
-            --project-ref "$PROJECT_REF" --no-verify-jwt
+        shell: bash
+        run: supabase functions deploy paytm-create-order --project-ref "$PROJECT_REF" --no-verify-jwt
 
       # ----------------------------------------------------------
-      # ASLI JAANCH (proof): deploy ke baad Supabase se wahi bundle
-      # wapas maango aur usme `paytmMaxTxn` + `PAYTM_MAX_TXN` dhoondo.
-      # Nahi mile to job FAIL — "deploy hua" ka dava bina proof nahi.
+      # ASLI JAANCH (proof): deploy ke baad wahi bundle Supabase se wapas
+      # maango aur usme `paytmMaxTxn` + `PAYTM_MAX_TXN` dhoondo.
+      # Na mile to job FAIL — "deploy ho gaya" ka dava bina proof nahi.
       # ----------------------------------------------------------
-      - name: Verify deployed bundle me ₹2000 seema hai
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF || 'hddhkculuyrfoevxmlwy' }}
+      - name: Verify deployed bundle me Rs.2000 seema hai
+        shell: bash
         run: |
           set -e
           python3 - << 'PY'
           import json, os, urllib.request
+
           ref = os.environ["PROJECT_REF"]
           tok = os.environ["SUPABASE_ACCESS_TOKEN"]
-          url = f"https://api.supabase.com/v1/projects/{ref}/functions/paytm-create-order"
-          req = urllib.request.Request(url, headers={"Authorization": "Bearer " + tok, "User-Agent": "Mozilla/5.0"})
-          meta = json.load(urllib.request.urlopen(req, timeout=60))
-          print("version:", meta.get("version"), "| updated_at:", meta.get("updated_at"), "| verify_jwt:", meta.get("verify_jwt"))
-          breq = urllib.request.Request(url + "/body", headers={"Authorization": "Bearer " + tok, "User-Agent": "Mozilla/5.0"})
-          body = urllib.request.urlopen(breq, timeout=120).read()
+          base = "https://api.supabase.com/v1/projects/%s/functions/paytm-create-order" % ref
+          hdr = {"Authorization": "Bearer " + tok, "User-Agent": "Mozilla/5.0"}
+
+          meta = json.load(urllib.request.urlopen(
+              urllib.request.Request(base, headers=hdr), timeout=60))
+          print("version:", meta.get("version"), "| updated_at:", meta.get("updated_at"),
+                "| status:", meta.get("status"), "| verify_jwt:", meta.get("verify_jwt"))
+
+          body = urllib.request.urlopen(
+              urllib.request.Request(base + "/body", headers=hdr), timeout=120).read()
           print("bundle bytes:", len(body))
+
           has_cap = b"paytmMaxTxn" in body
           has_code = b"PAYTM_MAX_TXN" in body
           print("paytmMaxTxn:", has_cap, "| PAYTM_MAX_TXN:", has_code)
+
           if not (has_cap and has_code):
-              raise SystemExit("B23 SEEMA DEPLOYED BUNDLE ME NAHI MILI — deploy asar nahi kiya")
-          print("B23 SERVER-SIDE SEEMA LIVE ✓")
+              raise SystemExit(
+                  "B23 SEEMA DEPLOYED BUNDLE ME NAHI MILI — deploy ka asar nahi hua")
+          print("B23 SERVER-SIDE SEEMA LIVE — OK")
           PY
+
+      - name: Summary
+        shell: bash
+        run: echo "paytm-create-order deploy + bundle verification pass."
