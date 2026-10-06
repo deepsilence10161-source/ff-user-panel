@@ -24,7 +24,7 @@
    LOCAL_FILES, not just this one, or the exact same "fix doesn't seem
    to apply" pattern will keep recurring for any JS change, not just
    WhatsApp. */
-var CACHE_VER    = 'me-v63-10-03f';
+var CACHE_VER    = 'me-v112-20261006a';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is
@@ -51,13 +51,17 @@ var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
    was silently doing nothing useful for months. Must ALWAYS be kept
    equal to whatever ?v= suffix index.html's local <script>/<link>
    tags use, updated together on every release from now on. */
-var ASSET_VER = '20261003e';
+var ASSET_VER = '20261006a';
 
 var LOCAL_FILES = [
   '','index.html','styles.css','style.css','manifest.json','js/green-diamond.png',
   'core/firebase.js','core/db.js','core/db-bridge.js','core/bugfixes.js',
   'core/imgbb.js','core/utils.js','core/router.js','core/modal.js',
   'core/header.js','core/auth.js','core/listeners.js','core/boot.js',
+  /* ✅ FIX (2026-10-06): ye 4 files index.html me load hoti thi par precache
+     list me nahi thi — offline me 404. Ab list poori hai. */
+  'core/custom-dropdown.js','js/r8-admin-gateway-shim.js',
+  'js/features-user-tail.js','features/polls.js',
   'screens/home.js','screens/matches.js','screens/join.js','screens/room.js',
   'screens/wallet.js','screens/rank.js','screens/profile.js',
   'screens/support.js','screens/notifications.js',

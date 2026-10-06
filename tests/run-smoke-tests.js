@@ -108,15 +108,44 @@ console.log('\n── TEST 2: notifications.js clearAllNotifs dedup ──');
   ok(listenerIdx > notifIdx, 'core/listeners.js loads AFTER screens/notifications.js (shadow order intact)');
 }
 
-/* ── TEST 3: features-user-tail referenced after main ────────── */
+/* ── TEST 3: features-user-tail referenced after main ──────────
+   ✅ FIX (2026-10-06): pehle ye test ek HARDCODED purani query-string
+   ('features-user.js?v=20260922t') dhoondhta tha. Jab bhi index.html ka
+   ?v= cache-busting stamp bump hota (jo har release par hona chahiye),
+   ye test JHOOTHA FAIL dene lagta tha — product bilkul theek hota, test
+   purana. Ab version-agnostic regex + file-exists check. */
 console.log('\n── TEST 3: features-user-tail.js referenced (load order) ──');
 {
   const html = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
-  const mainIdx = html.indexOf('features-user.js?v=20260922t');
-  const tailIdx = html.indexOf('features-user-tail.js?v=20260922t');
-  ok(mainIdx !== -1, 'features-user.js referenced');
-  ok(tailIdx !== -1, 'features-user-tail.js referenced');
-  ok(tailIdx > mainIdx, 'tail loads after main');
+  const mMain = html.match(/features-user\.js\?v=[0-9a-z]+/);
+  const mTail = html.match(/features-user-tail\.js\?v=[0-9a-z]+/);
+  ok(!!mMain, 'features-user.js referenced');
+  ok(!!mTail, 'features-user-tail.js referenced');
+  ok(!!mMain && !!mTail && html.indexOf(mTail[0]) > html.indexOf(mMain[0]), 'tail loads after main');
+  ok(fs.existsSync(path.join(REPO, 'js/features-user.js')), 'js/features-user.js file mojood hai');
+  ok(fs.existsSync(path.join(REPO, 'js/features-user-tail.js')), 'js/features-user-tail.js file mojood hai');
+}
+
+/* ── TEST 3b: cache-busting stamp — ek hi number har jagah (v2026-10-06) ──
+   Ye test version-sync.mjs ke invariant ki rakhwali karta hai: index.html,
+   sw.js (ASSET_VER + CACHE_VER) aur manifest.json — sab par EK hi stamp.
+   Mismatch = wahi purani bimari jisme "fix lagta hi nahi" (stale cache). */
+console.log('\n── TEST 3b: ek hi version stamp (index.html / sw.js / manifest.json) ──');
+{
+  const html = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
+  const stamps = [...new Set(html.match(/\?v=[0-9a-z]+/g) || [])];
+  ok(stamps.length === 1, 'index.html me sirf EK hi ?v= stamp (mile: ' + stamps.join(', ') + ')');
+  const stamp = (stamps[0] || '?v=').replace('?v=', '');
+  const sw = fs.readFileSync(path.join(REPO, 'sw.js'), 'utf8');
+  const asset = (sw.match(/var\s+ASSET_VER\s*=\s*'([^']*)'/) || [])[1];
+  const cache = (sw.match(/var\s+CACHE_VER\s*=\s*'me-v(\d+)-([^']*)'/) || [])[2];
+  ok(asset === stamp, 'sw.js ASSET_VER == index.html ?v= (mile: ' + asset + ')');
+  ok(cache === stamp, 'sw.js CACHE_VER == index.html ?v= (mile: ' + cache + ')');
+  const man = JSON.parse(fs.readFileSync(path.join(REPO, 'manifest.json'), 'utf8'));
+  const srcs = man.icons.map((i) => i.src).filter((s) => /\?v=/.test(s));
+  const manStamps = [...new Set(srcs.map((s) => (s.match(/\?v=[0-9a-z]+/) || [''])[0]))];
+  ok(srcs.length > 0 && manStamps.length === 1 && manStamps[0] === '?v=' + stamp,
+     'manifest.json icons ka stamp == index.html ?v= (mile: ' + manStamps.join(', ') + ')');
 }
 
 /* ── TEST 4: AUTO-VERSION single-source (R3 Phase-16) ────────── */
@@ -137,14 +166,13 @@ console.log('\n── TEST 4: auto-version (build.gradle + CI fetch-depth) ─�
 }
 
 /* ── TEST 5: ROUND-4 — checkin-system releaseNoShows server-authoritative ── */
-console.log('\n── TEST 5: R4 checkin-system releaseNoShows (client slot-decrement removed) ──');
+console.log('\n── TEST 5: checkin-system server-authoritative (auto-refund REMOVED) ──');
 {
   const ck = fs.readFileSync(path.join(REPO, 'features/checkin-system.js'), 'utf8');
-  // Client ab filled_slots ko NAHI chhedta — server (internal_process_no_show_refunds) ghataata hai
-  ok(!/filled_slots[^\n]*update\(/.test(ck.split('window.releaseNoShows')[1] || ''),
-     'releaseNoShows ab client filled_slots decrement NAHI karta (server-authoritative)');
-  ok(ck.includes('SERVER-AUTHORITATIVE'), 'releaseNoShows me SERVER-AUTHORITATIVE marker present');
-  ok(ck.includes('double-decrement'), 'double-decrement avoidance comment present');
+  ok(!/filled_slots/.test(ck), 'client ab filled_slots ko bilkul nahi chhedta (server-authoritative)');
+  ok(/window\.releaseNoShows\s*=\s*function\s*\(\s*\)\s*\{\s*\}/.test(ck), 'releaseNoShows inert stub mojood (purana caller crash na kare)');
+  ok(/window\.triggerNoShowRelease\s*=\s*function\s*\(\s*\)\s*\{\s*\}/.test(ck), 'triggerNoShowRelease inert stub mojood');
+  ok(/REMOVED per owner policy/.test(ck), 'REMOVED comment mojood (galti se wapas na jud jaye)');
 }
 
 /* ── TEST 6: ROUND-4 — free/ad join ab validate_and_join_match RPC se ── */
