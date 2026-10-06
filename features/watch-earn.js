@@ -37,7 +37,12 @@ window.startWatching = function(matchId) {
 
   var dailyLimit       = (window.CFG && window.CFG.watchDailyLimitMins)   || 30;
   var coinsPerInterval = (window.CFG && window.CFG.watchCoinsPerInterval)  || 2;
-  var intervalMins     = (window.CFG && window.CFG.watchIntervalMins)      || 5;
+  /* ✅ B31 (2026-10-06): fallback 5 → 1. Owner-confirmed rule "2 coins PER
+     MINUTE" hai (B17); CFG ka default bhi 1 hai (features/app-config.js).
+     Purana fallback 5 rehne se config load fail hone par chupke se
+     2 coins / 5 min (yaani 5 guna dheema) ho jata tha — config aur fallback
+     ka rate ek hi hona chahiye. */
+  var intervalMins     = (window.CFG && window.CFG.watchIntervalMins)      || 1;
 
   /* ✅ Check daily limit via Supabase watch_earn_log (not Firebase) */
   var today = new Date().toISOString().split('T')[0];
