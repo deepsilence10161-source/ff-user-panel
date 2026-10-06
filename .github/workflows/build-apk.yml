@@ -207,6 +207,14 @@ jobs:
             exit 1
           fi
 
+          echo "=== 4b. Declared Permissions Audit (camera NAHI hona chahiye) ==="
+          adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p' || true
+          if adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p' | grep -qi "CAMERA"; then
+            echo "❌ CAMERA permission abhi bhi declared hai!"
+            exit 1
+          fi
+          echo "✅ CAMERA declared nahi hai"
+
           echo "=== 5. Verify WebView Loaded & Capture Live Emulator Screenshot + UI Hierarchy ==="
           adb shell uiautomator dump /sdcard/window_dump.xml || true
           adb pull /sdcard/window_dump.xml emulator-ui-dump.xml || true
@@ -226,6 +234,85 @@ jobs:
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: bash /tmp/e2e-emulator.sh
+
+  # ✅ (2026-10-06) Notification permission ka ASLI saboot.
+  # POST_NOTIFICATIONS runtime permission sirf Android 13+ (API 33+) par hoti hai —
+  # API 30 wale emulator par wo dialog aata hi nahi, isliye upar wali job me ye
+  # dikh hi nahi sakta tha. Yahan API 34 par: pehle location pm grant se de dete
+  # hain, phir app kholte hain — ab notification ka dialog aana CHAHIYE.
+  notif-permission-e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Built Release APK
+        uses: actions/download-artifact@v4
+        with:
+          name: MiniEsports-APK
+          path: apk-out
+
+      - name: Prepare Notification Permission E2E Script
+        run: |
+          cat << 'EOF' > /tmp/e2e-notif.sh
+          #!/usr/bin/env bash
+          set -e
+          PKG="com.miniesports.app"
+          echo "=== Android API level ==="
+          adb shell getprop ro.build.version.sdk
+
+          echo "=== Install APK ==="
+          adb install -r apk-out/app-release.apk
+
+          echo "=== POST_NOTIFICATIONS declared hai? ==="
+          adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p'
+          adb shell dumpsys package "$PKG" | grep -q "POST_NOTIFICATIONS" && echo "✅ POST_NOTIFICATIONS declared" || { echo "❌ POST_NOTIFICATIONS missing"; exit 1; }
+
+          echo "=== Location pehle se de do, taki notification ka dialog saaf dikhe ==="
+          adb shell pm grant "$PKG" android.permission.ACCESS_FINE_LOCATION || true
+          adb shell pm grant "$PKG" android.permission.ACCESS_COARSE_LOCATION || true
+
+          echo "=== Launch app ==="
+          adb logcat -c
+          adb shell am start -W -n "$PKG/.MainActivity"
+          sleep 14
+
+          echo "=== Notification dialog ka UI dump ==="
+          adb shell uiautomator dump /sdcard/notif_dump.xml || true
+          adb pull /sdcard/notif_dump.xml notif-ui-dump.xml || true
+          adb exec-out screencap -p > notif-permission-screen.png
+          ls -lh notif-permission-screen.png
+
+          echo "=== Dialog me kya likha hai ==="
+          grep -o 'text="[^"]*"' notif-ui-dump.xml | sed 's/text="//;s/"$//' | head -12
+
+          if grep -qi "notification" notif-ui-dump.xml; then
+            echo "✅ NOTIFICATION PERMISSION DIALOG MILA — permission maangi ja rahi hai"
+          else
+            echo "❌ Notification dialog nahi mila!"
+            exit 1
+          fi
+          EOF
+          chmod +x /tmp/e2e-notif.sh
+
+      - name: Run Notification Permission E2E (Android 13+)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          disable-animations: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: bash /tmp/e2e-notif.sh
+
+      - name: Upload Notification Permission Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Notification-Permission-Evidence
+          path: |
+            notif-permission-screen.png
+            notif-ui-dump.xml
+          retention-days: 14
 
       - name: Upload Emulator E2E Evidence
         if: always()
