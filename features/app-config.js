@@ -101,7 +101,8 @@ window.CFG = {
   sdMatchCommissionPct:    15,
   commissionHoldDays:      7,
   maxCreatorMatches:       3,
-  minFollowersForSD:       1000,
+  /* ✅ B25 (2026-10-06): minFollowersForSD hata diya — koi ise check nahi karta
+     tha (admin row bhi hata di gayi hai), isliye dead setting rakhna galat tha. */
 
   /* ── Force Update Control (2026-07) ──────────────────────────────────
      Defaults are permissive (min version very low, force update OFF) so
@@ -157,7 +158,6 @@ function _applyCfg(c) {
   if (c.sdMatchCommissionPct   != null) window.CFG.sdMatchCommissionPct   = Number(c.sdMatchCommissionPct);
   if (c.commissionHoldDays     != null) window.CFG.commissionHoldDays     = Number(c.commissionHoldDays);
   if (c.maxCreatorMatches      != null) window.CFG.maxCreatorMatches      = Number(c.maxCreatorMatches);
-  if (c.minFollowersForSD      != null) window.CFG.minFollowersForSD      = Number(c.minFollowersForSD);
   /* ── Force Update Control ── */
   if (c.appLatestVersion       != null) window.CFG.appLatestVersion       = String(c.appLatestVersion);
   if (c.appMinSupportedVersion != null) window.CFG.appMinSupportedVersion = String(c.appMinSupportedVersion);
