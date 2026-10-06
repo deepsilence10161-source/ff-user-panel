@@ -247,8 +247,21 @@ jobs:
     # atakne par pura workflow ghanton latak jata tha (aur proof banti hi nahi).
     # 12 minute me poora kaam (boot + install + dump + tap + verify) ho jata
     # hai; atakne par job fail hoti hai, chup-chaap latakti nahi.
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
+      # ✅ FIX (2026-10-06, run 37500271627 ka asli sabab): is job me KVM enable
+      # karne wala step hi nahi tha (emulator-e2e me hai). Bina uske emulator
+      # "You're running a Linux VM where hardware acceleration is not available
+      # ... Disabling Linux hardware acceleration" ke saath SOFTWARE mode me
+      # chalta hai aur boot hi poora nahi hota — log me `getprop
+      # sys.boot_completed` khaali aata rehta hai (11+ minute), isliye dialog
+      # tak baat kabhi pahunchti hi nahi. Ab wahi KVM step yahan bhi hai.
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Download Built Release APK
         uses: actions/download-artifact@v4
         with:
@@ -433,7 +446,7 @@ jobs:
           profile: Nexus 6
           disable-animations: true
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 3072
-          emulator-boot-timeout: 900
+          emulator-boot-timeout: 420
           script: bash /tmp/e2e-notif.sh
 
       - name: Upload Notification Permission Evidence
