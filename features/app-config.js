@@ -178,8 +178,15 @@ function _applyCfg(c) {
   if (c.adDailyLimit      != null) window.CFG.adDailyLimit      = Number(c.adDailyLimit);
   /* ✅ B26 (2026-10-07): daily check-in ka schedule — yahi ek source hai.
      Do globals set karta hai (asli consumers) aur poora object CFG me bhi
-     rakhta hai (streak.js / future UI ke liye). */
-  if (c.dailyBonusRewards != null) {
+     rakhta hai (streak.js / future UI ke liye).
+     ⚠️ GATE (jhooth se bachne ke liye): yeh schedule SIRF tab lagta hai jab
+     live_config me `dailyBonusRewardsLive: true` ho — wo marker server-side
+     migration (2026-10-07-b24-b26) set karti hai, jo process_daily_checkin ko
+     bhi config padhna sikhhati hai. Warna aisa hota ki button naya amount
+     dikhata par server purane constants (5,7,10...) de deta — bilkul wahi
+     "UI jhooth bol rahi hai" wala bug jo hum theek kar rahe hain. Marker na
+     ho to server constants hi dikhte hain (dono taraf ek hi sach). */
+  if (c.dailyBonusRewards != null && c.dailyBonusRewardsLive === true) {
     window.CFG.dailyBonusRewards = c.dailyBonusRewards;
     var _dbrFallback = [5, 7, 10, 12, 15, 20, 30];
     var _dbrArr = [];

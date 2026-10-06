@@ -316,6 +316,8 @@ console.log('\n── TEST 11: B24/B26 video safai + daily bonus ka ek source �
   ok(!/CFG\.checkinCoins|CFG\.checkinStreakBonus7/.test(app),
      'checkinCoins/checkinStreakBonus7 ka koi live use nahi bacha');
   ok(app.indexOf('_loadFromFirebase') === -1, 'mara hua Firebase fallback hata diya');
+  ok(app.indexOf('dailyBonusRewardsLive === true') !== -1,
+     'schedule sirf server-marker ke saath lagta hai (UI jhooth na bole)');
 
   const fu = strip(fs.readFileSync(path.join(REPO, 'js/features-user.js'), 'utf8'));
   ok(fu.indexOf('window._nextCheckInReward') !== -1,
