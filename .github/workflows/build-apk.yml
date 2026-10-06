@@ -426,13 +426,15 @@ jobs:
             adbt shell input tap "$CX" "$CY"
             sleep 4
           fi
+          # ✅ FIX (2026-10-06): yahan ant me ek extra `fi` bacha hua tha (purane
+          # wrapper ka) — isi wajah se job exit code 2 se fail hoti thi, jabki
+          # poora proof (dump + Allow tap + granted=true) ban chuka tha.
           echo "=== Tap ke baad permission ki stithi ==="
-            adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
-            GRANT=$(adb shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
-            if [ -n "$GRANT" ]; then echo "✅ POST_NOTIFICATIONS ab GRANTED hai (Allow ne kaam kiya)";
-            else echo "⚠️ granted=true nahi dikha — screenshot (notif-after-allow.png) dekho"; fi
-            adbt exec-out screencap -p > notif-after-allow.png
-          fi
+          adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
+          GRANT=$(adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
+          if [ -n "$GRANT" ]; then echo "✅ POST_NOTIFICATIONS ab GRANTED hai (Allow ne kaam kiya)";
+          else echo "❌ granted=true nahi dikha — screenshot (notif-after-allow.png) dekho"; exit 1; fi
+          adbt exec-out screencap -p > notif-after-allow.png
           echo "✅ NOTIFICATION PERMISSION E2E COMPLETE"
           EOF
           chmod +x /tmp/e2e-notif.sh
