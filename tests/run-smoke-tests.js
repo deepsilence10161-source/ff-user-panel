@@ -519,6 +519,64 @@ console.log('\n── TEST 17: A12 profile hero card (rainbow frame + ring + pla
      'A12: CSS maujood + chhoti screen ke liye media rule');
 }
 
+/* ── TEST 18: A12 — profile hero card ka ASLI render (VM me renderProfile() chalao) ──
+   Ye test jaan-boojh kar string-check nahi hai: pichli baar hero card splice me
+   ek declaration (inviteEarnHtml) chhoot gayi thi aur live screen par
+   "Screen load error" aaya — string checks sab pass the. Ab renderProfile()
+   asal me chalta hai, isliye koi bhi missing-var/ReferenceError yahin pakda jayega. */
+console.log('\n── TEST 18: A12 render smoke (renderProfile asal me chalta hai) ──');
+{
+  function renderCtx(UD) {
+    const ctx = makeCtx();
+    const els = {};
+    ctx.document.getElementById = (id) => (els[id] = els[id] || fakeEl());
+    ctx.$ = ctx.document.getElementById;
+    ctx.UD = UD;
+    ctx.U = { uid: 'qa-uid-123456789' };
+    ctx.calcRk = () => ({ badge: 'Bronze', emoji: '🎖️', color: '#cd7f32', bg: 'rgba(205,127,50,.12)', pts: 120 });
+    ctx.isPremiumActive = (min) => (min ? Number(UD.premium && UD.premium.tier) >= min : Number(UD.premium && UD.premium.tier) > 0);
+    ctx.window.isPremiumActive = ctx.isPremiumActive;
+    ctx.toast = () => {};
+    /* profile.js apne render me rank.js ka badge-helper bulata hai + kuch
+       config helpers (sab guarded hain) — yahan stub, taaki asli render code
+       chale aur sirf missing-declaration wale bug pakde jayen. */
+    ctx.getPlayerBadges = () => ([{ icon: '🎮', name: 'First Match', desc: 'First match played', color: '#00ff6a', bg: 'rgba(0,255,106,.12)', glow: '', anim: '' }]);
+    ctx.CFG = {};
+    ctx.loadFile = (rel) => loadFile(ctx, rel);
+    return { ctx, els };
+  }
+  const freeUD = { ign: 'QA Free', ffUid: '912345678', profileImage: '', bannerImage: '', stats: { matches: 7, wins: 3, kills: 25, earnings: 0 }, premium: { tier: 0 }, title: '', coins: 10, greenDiamonds: 0, skyDiamonds: 0 };
+  const premUD = Object.assign({}, freeUD, { ign: 'QA Prem', premium: { tier: 2, expiresAt: Date.now() + 86400000 } });
+
+  let errF = null, htmlF = '';
+  {
+    const { ctx, els } = renderCtx(freeUD);
+    try { loadFile(ctx, 'screens/profile.js'); ctx.renderProfile(); htmlF = els['profileContent'].innerHTML || ''; }
+    catch (e) { errF = e.message; }
+  }
+  ok(!errF, 'A12: renderProfile() FREE user ke liye bina error chalta hai' + (errF ? ' (' + errF + ')' : ''));
+  ok(htmlF.indexOf('id="pfHeroCard"') !== -1 && htmlF.indexOf('pf2-plate') !== -1 && htmlF.indexOf('pf2-uid') !== -1
+     && htmlF.indexOf('pf2-lv') !== -1 && htmlF.indexOf('pf2-xpbar') !== -1,
+     'A12: FREE render me poora hero card banta hai (frame/plate/uid/lv/xp)');
+  ok(htmlF.indexOf('pf2-frame') !== -1 && htmlF.indexOf('rb-wrap') === -1 && htmlF.indexOf('pf2-prem') === -1,
+     'A12: FREE = neon frame, koi rainbow/premium plate nahi');
+  ok(htmlF.indexOf('inviteEarnBtn') !== -1,
+     'A12: Invite & Earn button isi ek render string me (blink-bug wapas nahi aaya)');
+  ok(htmlF.indexOf('912345678') !== -1 && htmlF.indexOf('Lv 11') !== -1 && htmlF.indexOf('8 / 10 XP') !== -1,
+     'A12: FREE render me asli UID/Lv/XP values (712345678 wala data)');
+
+  let errP = null, htmlP = '';
+  {
+    const { ctx, els } = renderCtx(premUD);
+    try { loadFile(ctx, 'screens/profile.js'); ctx.renderProfile(); htmlP = els['profileContent'].innerHTML || ''; }
+    catch (e) { errP = e.message; }
+  }
+  ok(!errP, 'A12: renderProfile() PREMIUM user ke liye bina error chalta hai' + (errP ? ' (' + errP + ')' : ''));
+  ok(htmlP.indexOf('rb-wrap rb-glow') !== -1 && htmlP.indexOf('rb-ring') !== -1 && htmlP.indexOf('pf2-crown') !== -1
+     && htmlP.indexOf('Premium II') !== -1,
+     'A12: PREMIUM render me rainbow frame + rainbow ring + 👑 + Premium II plate');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

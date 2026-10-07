@@ -71,6 +71,19 @@ function renderProfile() {
     var _pt = Number(UD.premium.tier);
     premPlate = '<div class="pf2-prem">⭐ ' + (_pt === 3 ? 'Premium III' : _pt === 2 ? 'Premium II' : 'Premium I') + '</div>';
   }
+  /* R28k (2026-09-22): referral se ₹ nahi — bonus COINS milte hain
+     (claim_referral_reward → coinsEarned, "Dono ko bonus coins milenge").
+     पुराना "दोस्त लाओ ₹ पाओ" झूठा cash-दावा tha — hataya. */
+  /* ✅ BUG FIX (2026-08-25) — "Invite & Earn row blink ho rahi hai":
+     ye button pehle js/fixes-v7.js se 400ms baad alag inject hota tha, par
+     renderProfile() har _applyUser/realtime update par poora
+     pc.innerHTML replace karta hai — injected button turant mit jata tha
+     (present→wiped→re-inject→wiped = blink). Isliye ye hamesha isi ek h
+     string ka hissa hai, koi late injection nahi. */
+  var inviteEarnHtml = '<button id="inviteEarnBtn" onclick="window.showInviteEarn&&showInviteEarn()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-user-plus"></i> 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!</button>';
+  /* ── Premium state (card build se PEHLE — header isi ko use karta hai) ── */
+  var _premActive = window.isPremiumActive ? isPremiumActive() : false;
+  var _premActiveGold = window.isPremiumActive ? isPremiumActive(2) : false; /* Gold+ perks: Live Stream, Creator Program */
   var chips = '';
   if (_eqVip) chips += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700">⭐ VIP</span>';
   if (UD.title) chips += '<span class="prof-title-chip">' + UD.title + '</span>';
