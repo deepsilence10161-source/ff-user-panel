@@ -447,6 +447,12 @@ console.log('\n── TEST 15: B28 user-side (teeno dormant screens ab Rank tab 
   const calls = (rk.match(/seasonBanner \+ rankTools/g) || []).length;
   ok(calls === 4,
      'B28: rankTools saare render paths me (turant render + teen _renderRankList calls)');
+  /* ⚠️ Live rank screen fixes-v7.js banati hai (wo window.renderRank ko
+     replace karti hai) — wahan bhi wahi row honi chahiye. */
+  const f7r = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
+  ok(f7r.indexOf('function buildRankTools') !== -1 && f7r.indexOf("'Clan War','showClanWar'") !== -1
+     && f7r.indexOf('return buildRankTools() +') !== -1,
+     'B28: LIVE rank renderer (fixes-v7) me bhi tools row — banner ke saath saare paths me');
   const cw = fs.readFileSync(path.join(REPO, 'features/clan-war.js'), 'utf8');
   const cc = fs.readFileSync(path.join(REPO, 'features/city-championship.js'), 'utf8');
   const mt = fs.readFileSync(path.join(REPO, 'features/mentor.js'), 'utf8');

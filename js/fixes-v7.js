@@ -88,10 +88,32 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
      Simplified (2026-08): reduced padding/font sizes and merged the
      name+label onto a tighter single line so it doesn't compete
      visually with the rank-formula banner right above it. */
+  /* ✅ B28 (2026-10-07): Clan War / City Championship / Mentor Hub — teeno
+     screens (features/clan-war.js, city-championship.js, mentor.js) pehle
+     panel me KAHIN se khulte hi nahi the (koi button inhe call hi nahi
+     karta tha — users ke liye ye features pahunch se bahar the). Ye row
+     Rank tab par teen saaf tool buttons deta hai.
+     ⚠️ ZAROORI: live rank screen YAHI file banati hai (ye window.renderRank
+     ko replace karti hai — screens/rank.js wala renderer live me chalta hi
+     nahi). Isliye row yahan hai; screens/rank.js me bhi wahi row rakhi hai
+     taaki agar wo path dobara zinda ho to feature gayab na ho. */
+  function buildRankTools() {
+    return '<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
+      [['⚔️','Clan War','showClanWar','rgba(255,107,107,.1)','rgba(255,107,107,.3)','#ff6b6b'],
+       ['🏙️','City Champ','showCityChampionship','rgba(255,170,0,.1)','rgba(255,170,0,.3)','#ffaa00'],
+       ['👨‍🏫','Mentor Hub','showMentorHub','rgba(255,215,0,.1)','rgba(255,215,0,.3)','#ffd700']].map(function(t){
+        return '<button onclick="window.' + t[2] + '&&window.' + t[2] + '()" style="flex:1;min-width:96px;padding:10px 8px;border-radius:12px;background:' + t[3] + ';border:1px solid ' + t[4] + ';color:' + t[5] + ';font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">' + t[0] + ' ' + t[1] + '</button>';
+      }).join('') +
+      '</div>';
+  }
+
   function buildSeasonBanner() {
     var season = { name: 'Season 1', daysLeft: 0, label: '' };
     try { if (window.getCurrentSeason) season = window.getCurrentSeason(); } catch (e) {}
-    return '<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(185,100,255,.07),rgba(0,212,255,.04));border:1px solid rgba(185,100,255,.15);border-radius:12px;padding:8px 14px;margin-bottom:10px">' +
+    /* B28: banner ke saath tools row bhi (neeche wale saare render paths —
+       normal list, error/retry, empty — isi ek jagah se aa jaate hain). */
+    return buildRankTools() +
+      '<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(185,100,255,.07),rgba(0,212,255,.04));border:1px solid rgba(185,100,255,.15);border-radius:12px;padding:8px 14px;margin-bottom:10px">' +
       '<div style="font-size:11px;font-weight:800;color:#b964ff">🏆 ' + (season.name || 'Season') + '<span style="font-size:10px;color:#666;font-weight:600"> · ' + (season.label || '') + '</span></div>' +
       '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#666;font-weight:600"> days left</span></div>' +
       '</div>';
