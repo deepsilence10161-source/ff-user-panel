@@ -220,7 +220,40 @@ jobs:
           adb pull /sdcard/window_dump.xml emulator-ui-dump.xml || true
           adb exec-out screencap -p > emulator-live-screen.png
           ls -lh emulator-live-screen.png
-          echo "✅ LIVE ANDROID EMULATOR APK E2E VERIFIED!"
+
+          # ══════════════════════════════════════════════════════════
+          # ✅ GEHRI JANCH (2026-10-07, live-testing round): pehle ye script
+          # sirf "app crash nahi hui" tak seemit thi. Ab ye bhi pakadta hai ki
+          # WebView me ASLI live app load hui ya error-page dikha.
+          # ══════════════════════════════════════════════════════════
+          echo "=== 6. WebView load-error audit (net::ERR / error page) ==="
+          if [ -f emulator-ui-dump.xml ] && grep -qiE "net::ERR|Webpage not available|ERR_CONNECTION|ERR_NAME_NOT_RESOLVED|ERR_INTERNET_DISCONNECTED" emulator-ui-dump.xml; then
+            echo "❌ WebView me load-error / error-page mila:"
+            grep -oiE "net::ERR[A-Z_]*|Webpage not available|ERR_CONNECTION[A-Z_]*" emulator-ui-dump.xml | head -5
+            exit 1
+          fi
+          echo "✅ WebView me koi net::ERR / error-page marker nahi"
+
+          echo "=== 7. Focused activity + WebView provider ==="
+          adb shell dumpsys activity activities | grep -m2 -E "topResumedActivity|mResumedActivity" || true
+          adb shell dumpsys webviewupdate 2>/dev/null | head -6 || true
+
+          echo "=== 8. Live host requests (logcat, soft) ==="
+          adb logcat -d | grep -oE "https?://[a-zA-Z0-9./_?=&-]+" | sort -u | grep -E "deepsilence10161-source.github.io|supabase" | head -10 || echo "(release build me WebView URL log nahi karta — soft check)"
+
+          echo "=== 9. Push/notification SDK + permissions (soft) ==="
+          adb logcat -d | grep -iE "onesignal|subscription|fcm" | head -10 || echo "(push SDK log nahi mila — soft check)"
+          adb shell dumpsys package "$PKG" | grep -iE "POST_NOTIFICATIONS|android.permission.INTERNET|ACCESS_FINE_LOCATION" | head -6 || true
+
+          echo "=== 10. Screenshot me asli content (blank screen nahi) ==="
+          SSIZE=$(stat -c%s emulator-live-screen.png 2>/dev/null || echo 0)
+          echo "screenshot bytes: $SSIZE"
+          if [ "$SSIZE" -lt 8000 ]; then
+            echo "❌ Screenshot bahut chhoti — screen blank ya render fail ho sakta hai"
+            exit 1
+          fi
+          echo "✅ Screenshot me asli content hai"
+          echo "✅ LIVE ANDROID EMULATOR APK E2E VERIFIED (deep audit ke saath)!"
           EOF
           chmod +x /tmp/e2e-emulator.sh
 
