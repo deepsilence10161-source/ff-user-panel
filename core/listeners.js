@@ -292,7 +292,10 @@ function _applyUser(sp) {
     if (window.renderProfile) renderProfile();
     if (window.renderWallet) renderWallet();
   }
-  if (window.checkStreakBonus) checkStreakBonus();
+  /* ✅ B19 (2026-10-07): yahan duplicate streak-toast (checkStreakBonus) call
+     hota tha — har profile refresh/poll par. Wo function + call hata diya;
+     streak milestone ka ek hi UI hai = checkStreakMilestones() ka popup
+     (features/premium-creator.js, server RPC se, sirf ek baar). */
   updateBell();
   if (window.mesInit && !window._mesInitCalled) { window._mesInitCalled = true; window.mesInit(); }
 }

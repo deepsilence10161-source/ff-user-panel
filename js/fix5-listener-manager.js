@@ -85,7 +85,8 @@
         var _rdFirebase = (UD.readNotifications) || {};
         Object.keys(_rdFirebase).forEach(function(k) { _READ_KEYS[k] = true; });
         updateHdr(); applyState(); renderHome(); renderProfile(); renderWallet();
-        if (window.checkStreakBonus) checkStreakBonus();
+        /* ✅ B19 (2026-10-07): duplicate streak-toast call hata diya — ek hi UI
+           (checkStreakMilestones popup) rehta hai, dekho features-user.js. */
         updateBell();
         if (window.mesInit) window.mesInit();
         if (window._markDataFresh) _markDataFresh();

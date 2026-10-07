@@ -1331,8 +1331,10 @@ window.applyDynamicWallpaper = function() {
       });
   };
 
-  /* ─── NEW FEATURE 46: TOTAL WINNINGS MILESTONE ─── */
-  window.checkMilestone = function () { /* milestone toasts removed */ };
+  /* ─── NEW FEATURE 46: TOTAL WINNINGS MILESTONE — ✅ dead no-op hata diya (B19):
+     ise koi call hi nahi karta tha aur iske andar pehle se hi kuch nahi tha
+     ("milestone toasts removed") — B19 me duplicate milestone-UI saaf karte
+     waqt ye khaali function bhi nikal diya, taaki ek hi asli raasta bache. */
 
   /* ─── NEW FEATURE 47: MATCH CHAT (In-Match Banter) ─── */
   /* ✅ BUG FIX (2026-10-06) — असली जड़, live DB पर नापी गई (A7/A8):
@@ -2075,23 +2077,20 @@ window.applyDynamicWallpaper = function() {
     return pct;
   };
 
-  /* ─── FEATURE 89: STREAK BONUS NOTIFICATION ─── */
-  window.checkStreakBonus = function () {
-    var UD = window.UD; if (!UD) return;
-    var streak = UD.loginStreak || 0;
-    var milestones = [3, 7, 14, 30];
-    /* BUG FIX (2026-07-30): this had no "already shown" guard at all — it's called from
-       core/listeners.js's _applyUser() on EVERY profile refresh (initial load, after
-       check-in, periodic poll), so as long as loginStreak stayed at a milestone value
-       (all day, until the next check-in), the same toast re-fired on every single
-       refresh — this is the exact "3 duplicate toasts stacked" bug reported live.
-       Now only shows once per streak value per browser session. */
-    if (streak === window._lastStreakToastShown) return;
-    if (milestones.indexOf(streak) >= 0) {
-      window._lastStreakToastShown = streak;
-      _toast('🎉 ' + streak + ' Day Streak Bonus! Extra 🪙 coins earned!', 'ok');
-    }
-  };
+  /* ─── FEATURE 89: STREAK BONUS NOTIFICATION — ✅ HATA DIYA (B19) ───
+     ✅ BUG FIX (2026-10-07, B19 — "double logic/UI"): ye DOOSRI (duplicate)
+     streak-milestone UI thi. Iska toast "N Day Streak Bonus! Extra 🪙 coins
+     earned!" kehta tha — par credit kuch bhi nahi karta tha (jhootha
+     "coins earned"), aur iski milestone list bhi [3,7,14,30] thi jabki
+     asli list [3,7,14,30,60,100] hai. Asli inaam (popup + server RPC
+     claim_streak_milestone) features/premium-creator.js ke
+     checkStreakMilestones() se milta hai — SSOT wahin hai. Net asar:
+     ek hi milestone par user ko DO jagah se DO message milte the.
+     Ab poora duplicate hataya: ye function + iske dono call-sites
+     (core/listeners.js _applyUser, js/fix5-listener-manager.js L1).
+     SSOT chain = admin Settings → app_settings.live_config
+     .streakMilestones (coins/badge) → RPC claim_streak_milestone
+     (atomic claim flag users.streak_milestones_claimed) → popup. */
 
   /* ─── FEATURE 90: IN-APP RULES SUMMARY ─── */
   window.showQuickRules = function () {

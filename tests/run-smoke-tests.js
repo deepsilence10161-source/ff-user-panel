@@ -463,6 +463,33 @@ console.log('\n── TEST 15: B28 user-side (teeno dormant screens ab Rank tab 
      'B28: teeno feature files abhi bhi load hoti hain');
 }
 
+/* ── TEST 16: B19 — streak milestone ka ek hi UI + ek hi SSOT ── */
+console.log('\n── TEST 16: B19 streak milestone (duplicate UI/logic saaf) ──');
+{
+  const fu = fs.readFileSync(path.join(REPO, 'js/features-user.js'), 'utf8');
+  ok(fu.indexOf('window.checkStreakBonus =') === -1,
+     'B19: duplicate streak-toast UI (checkStreakBonus) features-user.js se hat gayi');
+  ok(fu.indexOf('_lastStreakToastShown') === -1,
+     'B19: us duplicate toast ka per-session guard bhi gaya');
+  ok(fu.indexOf("' + streak + ' Day Streak Bonus!") === -1,
+     'B19: jhootha "Extra coins earned" _toast call kahin nahi bacha (comment me zikr theek hai)');
+  ok(fu.indexOf('window.checkMilestone') === -1,
+     'B19: dead no-op checkMilestone bhi saaf');
+  const ls = fs.readFileSync(path.join(REPO, 'core/listeners.js'), 'utf8');
+  const fx = fs.readFileSync(path.join(REPO, 'js/fix5-listener-manager.js'), 'utf8');
+  ok(ls.indexOf('checkStreakBonus()') === -1 && fx.indexOf('checkStreakBonus()') === -1,
+     'B19: dono call-sites (listeners _applyUser + fix5 L1) se call hata');
+  const pc = fs.readFileSync(path.join(REPO, 'features/premium-creator.js'), 'utf8');
+  ok(pc.indexOf('window.checkStreakMilestones') !== -1 && pc.indexOf("rpc('claim_streak_milestone'") !== -1
+     && pc.indexOf('showStreakCelebration') !== -1 && pc.indexOf('streakMilestonesClaimed') !== -1,
+     'B19: asli ek hi raasta bacha — RPC claim + popup (SSOT)');
+  ok(pc.indexOf('[3,7,14,30,60,100]') !== -1,
+     'B19: milestone list admin ki settings (live_config.streakMilestones) ke saath 3/7/14/30/60/100');
+  const idx = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
+  ok(idx.indexOf('features/premium-creator.js') !== -1,
+     'B19: SSOT file (premium-creator.js) index.html me load hoti rehti hai');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
