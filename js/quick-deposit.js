@@ -137,9 +137,38 @@ window._buyDiamondPkg = function(diamonds, price) {
     if (_mp.instructions) {
       h += '<div style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.18);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;color:#ccc;line-height:1.7;white-space:pre-line">' + _mpEsc(_mp.instructions) + '</div>';
     }
-  } else {
-    h += '<div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;color:#ff9b9b;text-align:center">Manual UPI payment abhi band hai — Paytm option use karo ya thodi der baad try karo.</div>';
   }
+  /* ✅ D10 FIX (2026-10-07, live-testing me pakda): manual UPI admin se
+     BAND hone par bhi neeche ka poora "screenshot + UTR + Submit" form
+     render ho jata tha (wo block is `if` ke bahar tha). Natija:
+       (1) user ko QR/UPI ID/payee dikhta hi nahi (kyunki wo block band
+           wali branch me hai) — yaani wo bhej hi kahan raha tha?
+       (2) phir bhi submit kar deta tha aur `sd_requests` me ek pending
+           request ban jati thi — admin ke paas aisi request pahunchti thi
+           jiska koi asli payment sabit karne ka raasta user ke saamne
+           tha hi nahi (bogus/atki hui request ka pura risk admin par),
+       (3) live me dono (manual + Paytm) band hone par user ke paas
+           diamonds kharidne ka koi raasta hi nahi bachta tha, par form
+           dikhta rehta tha — sabse confusing combination.
+     AB: manual band ho to sirf saaf message dikhta hai; form/submit tabhi
+     jab asli me payment ka raasta maujood ho. Neeche _submitDiaDep me
+     server-side jaisa guard bhi hai (purane khule modal se bhi request
+     na ban sake). */
+  var _paytmReachable = !!(window.CFG && window.CFG.paytmEnabled && window.startPaytmPayment);
+  if (!_mpEnabled) {
+    h += '<div style="background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:12px;padding:12px;margin-bottom:12px;font-size:12px;color:#ff9b9b;text-align:center">'
+      + (_paytmReachable
+          ? 'Manual UPI payment abhi band hai — upar wale <b>Paytm (UPI)</b> option se pay karo.'
+          : 'Online payment abhi available nahi hai — thodi der baad try karo. (Koi bhi paisa bhejne se pehle yahan UPI details dikhna zaroori hai.)')
+      + '</div>';
+  }
+  if (_paytmReachable && !_mpEnabled) {
+    /* Sirf Paytm path — package modal band karke Paytm checkout kholo */
+    h += '<button onclick="window._paytmInstantPay(' + price + ')" style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#00baf2,#0082c8);color:#fff;font-weight:900;font-size:14px;margin-bottom:6px">⚡ Pay ₹' + price + ' Instantly via Paytm (UPI)</button>';
+    if (window.openModal) openModal('💎 Buy ' + diamonds + ' Sky Diamonds', h);
+    return;
+  }
+  if (!_mpEnabled) { if (window.openModal) openModal('💎 Buy ' + diamonds + ' Sky Diamonds', h); return; }
   h += '<div class="f-group"><label>Payment Screenshot *</label>';
   h += '<div id="_diaDepArea" onclick="document.getElementById(\'_diaDepIn\').click()" style="border:2px dashed rgba(0,212,255,.25);border-radius:12px;padding:18px;text-align:center;cursor:pointer">';
   h += '<i class="fas fa-camera" style="font-size:26px;color:#00d4ff55;display:block;margin-bottom:6px"></i>';
@@ -308,6 +337,12 @@ window._buyDiamondPkg = function(diamonds, price) {
   };
   window.__realSubmitDiaDep = function(diamonds, price) {
     if (_submitting) return;
+    /* ✅ D10 guard: manual payment band hone par purane khule modal se bhi
+       koi request na bane (server-side jaisa safety). */
+    if (window.CFG && window.CFG.manualPayment && window.CFG.manualPayment.enabled === false) {
+      if (window.toast) toast('Manual UPI payment abhi band hai — request submit nahi ho sakti', 'err');
+      return;
+    }
     if (!_ss) { if (window.toast) toast('Screenshot upload karo!', 'err'); return; }
     /* ✅ FIX (2026-08-17, CRITICAL): UTR/UPI reference number was never
        collected or validated at all before this fix. */
