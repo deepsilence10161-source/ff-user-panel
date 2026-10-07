@@ -445,8 +445,8 @@ console.log('\n── TEST 15: B28 user-side (teeno dormant screens ab Rank tab 
      && rk.indexOf("'City Champ','showCityChampionship'") !== -1 && rk.indexOf("'Mentor Hub','showMentorHub'") !== -1,
      'B28: Rank tab par teeno tools ke buttons (pehle koi entry point hi nahi tha)');
   const calls = (rk.match(/seasonBanner \+ rankTools/g) || []).length;
-  ok(calls === 3,
-     'B28: rankTools teeno render paths me (loading/isSearch/error) — list render hone par bhi gayab nahi hota');
+  ok(calls === 4,
+     'B28: rankTools saare render paths me (turant render + teen _renderRankList calls)');
   const cw = fs.readFileSync(path.join(REPO, 'features/clan-war.js'), 'utf8');
   const cc = fs.readFileSync(path.join(REPO, 'features/city-championship.js'), 'utf8');
   const mt = fs.readFileSync(path.join(REPO, 'features/mentor.js'), 'utf8');
