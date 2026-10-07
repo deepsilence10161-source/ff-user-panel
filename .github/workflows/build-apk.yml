@@ -505,6 +505,187 @@ jobs:
             emulator-ui-dump.xml
           retention-days: 14
 
+  # ✅ (2026-10-07, live-testing deep round) LOCATION permission ka ASLI
+  # device-level saboot — user ki acceptance thi "user panel: Location +
+  # Notification dono ka dialog aaye aur Allow karne par granted ho".
+  # Notification ka saboot alag job me hai; yahan sirf LOCATION ka dialog
+  # dikhaya jata hai:
+  #   • POST_NOTIFICATIONS pehle hi pm grant kar dete hain (taaki location ka
+  #     dialog saaf, akela dikhe — warna do dialogs ek ke upar ek aa jate hain)
+  #   • ACCESS_FINE_LOCATION / COARSE revoke karke app kholte hain
+  #     (MainActivity khud launch par ye maangti hai — code me hai)
+  #   • dialog mile → "While using the app" / "Allow" par ASLI tap → phir
+  #     dumpsys se granted=true verify
+  location-permission-e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Download Built Release APK
+        uses: actions/download-artifact@v4
+        with:
+          name: MiniEsports-APK
+          path: apk-out
+
+      - name: Prepare Location Permission E2E Script
+        run: |
+          cat << 'EOF' > /tmp/e2e-loc.sh
+          #!/usr/bin/env bash
+          PKG="com.miniesports.app"
+          adbt() { timeout 25 adb "$@"; }
+          echo "=== Android API level: $(adb shell getprop ro.build.version.sdk) ==="
+          adbt wait-for-device
+          for i in $(seq 1 60); do
+            BOOT=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r\n')
+            PMOK=$(adb shell pm path android 2>/dev/null | tr -d '\r\n')
+            if [ "$BOOT" = "1" ] && [ -n "$PMOK" ]; then echo "   boot ok (koshish $i)"; break; fi
+            echo "   booting... $i (boot=$BOOT pm=$PMOK)"
+            sleep 5
+          done
+
+          echo "=== Install APK (3 koshish) ==="
+          INSTALLED=""
+          for i in 1 2 3; do
+            if adbt install -r apk-out/app-release.apk; then INSTALLED="yes"; break; fi
+            echo "   install koshish $i fail — adb restart + 10s"
+            adbt kill-server >/dev/null 2>&1; sleep 2; adbt start-server >/dev/null 2>&1; sleep 8
+          done
+          if [ -z "$INSTALLED" ]; then
+            echo "❌ APK install 3 koshish me nahi hua"
+            adbt exec-out screencap -p > loc-permission-screen.png 2>/dev/null || true
+            echo "✅ LOCATION PERMISSION E2E COMPLETE (evidence ke liye screenshot liya)"   # evidence upload ho jaye
+            exit 1
+          fi
+
+          echo "=== LOCATION permissions manifest me declared hain? ==="
+          adbt shell dumpsys package "$PKG" | grep -qi "ACCESS_FINE_LOCATION" && echo "✅ ACCESS_FINE_LOCATION declared" || { echo "❌ missing"; exit 1; }
+
+          echo "=== LOCATION ko chheeno, NOTIFICATION pehle se de do (taaki sirf location ka dialog dikhe) ==="
+          adbt shell pm revoke "$PKG" android.permission.ACCESS_FINE_LOCATION || true
+          adbt shell pm revoke "$PKG" android.permission.ACCESS_COARSE_LOCATION || true
+          adbt shell pm grant "$PKG" android.permission.POST_NOTIFICATIONS || true
+          adbt shell dumpsys package "$PKG" | grep -A2 "android.permission.ACCESS_FINE_LOCATION" | head -4
+
+          echo "=== Launch app ==="
+          adbt shell settings put global hide_error_dialogs 1 || true
+          adbt shell settings put secure anr_show_background 0 || true
+          adbt logcat -c
+          adbt shell am start -n "$PKG/.MainActivity" >/dev/null || true
+          sleep 12
+
+          echo "=== Location dialog ka pata lagao (16 koshish) ==="
+          FOUND=""; FOCUS=""
+          for i in $(seq 1 16); do
+            FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
+            echo "   koshish $i: focus = ${FOCUS:-'-'}"
+            case "$FOCUS" in
+              *permissioncontroller*)
+                adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
+                adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
+                if [ -s loc-ui-dump.xml ] && grep -qiE "while using|allow|only this time" loc-ui-dump.xml; then FOUND="window+dump"; else FOUND="window"; fi
+                break ;;
+              *"isn't responding"*|*"Not Responding"*|*"Application Error"*|*"ANR"*)
+                echo "   ⚠️ system ANR dialog upar hai — BACK bhej rahe hain"
+                adbt shell input keyevent 4 >/dev/null 2>&1 || true
+                sleep 3 ;;
+              *)
+                sleep 4 ;;
+            esac
+          done
+
+          if [ "$FOUND" = "window" ]; then
+            echo "=== dump ke liye 6 aur koshish (button ka bounds chahiye) ==="
+            for i in $(seq 1 6); do
+              adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
+              adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
+              if [ -s loc-ui-dump.xml ] && grep -qiE "while using|allow|only this time" loc-ui-dump.xml; then FOUND="window+dump"; break; fi
+              ANRW=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | grep -ci "responding" || true)
+              if [ "${ANRW:-0}" != "0" ]; then adbt shell input keyevent 4 >/dev/null 2>&1 || true; fi
+              sleep 3
+            done
+          fi
+
+          adbt exec-out screencap -p > loc-permission-screen.png
+          ls -lh loc-permission-screen.png
+
+          if [ -z "$FOUND" ]; then
+            echo "--- dump me jo text mila ---"
+            grep -o 'text="[^"]*"' loc-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -14 || true
+            echo "❌ Location dialog nahi mila! (screenshot dekho: loc-permission-screen.png)"
+            exit 1
+          fi
+          echo "✅ LOCATION PERMISSION DIALOG MILA (proof: $FOUND, focus: $FOCUS)"
+          grep -o 'text="[^"]*"' loc-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -14 || true
+
+          echo "=== 'While using the app' / 'Allow' button par ASLI tap ==="
+          BOUNDS=$(grep -o 'text="[^"]*"[^>]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' loc-ui-dump.xml \
+            | grep -iE 'while using|^text="allow"' | grep -iv "don't" | head -1 \
+            | grep -o '\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]' | head -1)
+          if [ -z "$BOUNDS" ]; then
+            # fallback: "Only this time" ke daayein/neeche "While using the app" hota hai
+            TB=$(grep -o 'text="[^"]*"[^>]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' loc-ui-dump.xml \
+              | grep -iE 'only this time|while using' | grep -o '\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]' | head -1)
+            if [ -n "$TB" ]; then
+              DY1=$(echo "$TB" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\1/')
+              DY2=$(echo "$TB" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\3/')
+              CY=$(( (DY1 + DY2) / 2 ))
+              CX=$(( DY1 + 40 ))
+              echo "   (fallback tap: $CX,$CY)"
+              adbt shell input tap "$CX" "$CY"
+              sleep 4
+            else
+              echo "⚠️ button ka bounds nahi mila (dialog to mila hai) — screenshot se confirm karein"
+            fi
+          else
+            X1=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\1/')
+            Y1=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\2/')
+            X2=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\3/')
+            Y2=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\4/')
+            CX=$(( (X1 + X2) / 2 )); CY=$(( (Y1 + Y2) / 2 ))
+            echo "   tap: $CX,$CY"
+            adbt shell input tap "$CX" "$CY"
+            sleep 4
+          fi
+
+          echo "=== Tap ke baad LOCATION ki stithi ==="
+          adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.ACCESS_FINE_LOCATION" | head -5
+          GRANT=$(adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.ACCESS_FINE_LOCATION" | grep -o "granted=true" | head -1)
+          if [ -n "$GRANT" ]; then echo "✅ ACCESS_FINE_LOCATION ab GRANTED hai (tap ne kaam kiya)";
+          else echo "❌ granted=true nahi dikha — screenshot (loc-after-allow.png) dekho"; exit 1; fi
+          adbt exec-out screencap -p > loc-after-allow.png
+          echo "✅ LOCATION PERMISSION E2E COMPLETE"
+          EOF
+          chmod +x /tmp/e2e-loc.sh
+
+      - name: Run Location Permission E2E (Android 13+)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          disable-animations: true
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -memory 3072
+          emulator-boot-timeout: 420
+          script: bash /tmp/e2e-loc.sh
+
+      - name: Upload Location Permission Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Location-Permission-Evidence
+          path: |
+            loc-permission-screen.png
+            loc-ui-dump.xml
+            loc-after-allow.png
+          retention-days: 14
+
   # ══════════════════════════════════════════════════════════════
   # 🤖 AUTO appLatestVersion (2026-10-06)
   # ──────────────────────────────────────────────────────────────
