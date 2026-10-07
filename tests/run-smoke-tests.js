@@ -437,6 +437,26 @@ console.log('\n── TEST 14: B20 referral rewards (dono ko join bonus + CFG-dr
      'B20: {?ref=} link par popup ke bajaye seedha auto-apply (popup path)');
 }
 
+/* ── TEST 15: B28 — Clan War / City Champ / Mentor Hub ab user panel se pahunch me ── */
+console.log('\n── TEST 15: B28 user-side (teeno dormant screens ab Rank tab se khulte hain) ──');
+{
+  const rk = fs.readFileSync(path.join(REPO, 'screens/rank.js'), 'utf8');
+  ok(rk.indexOf('rankTools') !== -1 && rk.indexOf("'Clan War','showClanWar'") !== -1
+     && rk.indexOf("'City Champ','showCityChampionship'") !== -1 && rk.indexOf("'Mentor Hub','showMentorHub'") !== -1,
+     'B28: Rank tab par teeno tools ke buttons (pehle koi entry point hi nahi tha)');
+  const calls = (rk.match(/seasonBanner \+ rankTools/g) || []).length;
+  ok(calls === 3,
+     'B28: rankTools teeno render paths me (loading/isSearch/error) — list render hone par bhi gayab nahi hota');
+  const cw = fs.readFileSync(path.join(REPO, 'features/clan-war.js'), 'utf8');
+  const cc = fs.readFileSync(path.join(REPO, 'features/city-championship.js'), 'utf8');
+  const mt = fs.readFileSync(path.join(REPO, 'features/mentor.js'), 'utf8');
+  ok(cw.indexOf('window.showClanWar') !== -1 && cc.indexOf('window.showCityChampionship') !== -1 && mt.indexOf('window.showMentorHub') !== -1,
+     'B28: teeno handlers (showClanWar/showCityChampionship/showMentorHub) maujood');
+  const idx = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
+  ok(idx.indexOf('features/clan-war.js') !== -1 && idx.indexOf('features/city-championship.js') !== -1 && idx.indexOf('features/mentor.js') !== -1,
+     'B28: teeno feature files abhi bhi load hoti hain');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

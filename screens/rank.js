@@ -312,9 +312,24 @@ function renderRank(tab) {
     '<div style="font-size:10px;color:#666">days left</div></div>' +
     '</div>';
 
-  rc.innerHTML = tabBar + seasonBanner + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+  /* ✅ B28 (2026-10-07): Clan War / City Championship / Mentor Hub — teeno
+     screens (features/clan-war.js, city-championship.js, mentor.js) pehle
+     panel me KAHIN se khulte hi nahi the (koi button inhe call hi nahi
+     karta tha — users ke liye ye features pahunch se bahar the). Ab yahan
+     Rank tab par teen saaf tool buttons hain. Handlers wahi purane
+     (showClanWar / showCityChampionship / showMentorHub) — inka apna
+     UI/logic wahi rehta hai. */
+  var rankTools = '<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
+    [['⚔️','Clan War','showClanWar','rgba(255,107,107,.1)','rgba(255,107,107,.3)','#ff6b6b'],
+     ['🏙️','City Champ','showCityChampionship','rgba(255,170,0,.1)','rgba(255,170,0,.3)','#ffaa00'],
+     ['👨‍🏫','Mentor Hub','showMentorHub','rgba(255,215,0,.1)','rgba(255,215,0,.3)','#ffd700']].map(function(t){
+      return '<button onclick="window.' + t[2] + '&&window.' + t[2] + '()" style="flex:1;min-width:96px;padding:10px 8px;border-radius:12px;background:' + t[3] + ';border:1px solid ' + t[4] + ';color:' + t[5] + ';font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">' + t[0] + ' ' + t[1] + '</button>';
+    }).join('') +
+    '</div>';
 
-  if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); return; }
+  rc.innerHTML = tabBar + seasonBanner + rankTools + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+
+  if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner + rankTools, false); return; }
   window._supa.from('leaderboard').select('*').limit(300)
     .then(function(r) {
       var users = (r.data || []).map(function(u) {
@@ -330,8 +345,8 @@ function renderRank(tab) {
         };
         return getVal(b) - getVal(a);
       });
-        _renderRankList(rc, users, sortKey, tabBar, seasonBanner, false);
-    }).catch(function() { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); });
+        _renderRankList(rc, users, sortKey, tabBar, seasonBanner + rankTools, false);
+    }).catch(function() { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner + rankTools, false); });
 }
 
 function _rankVal(u, sortKey) {
