@@ -490,6 +490,35 @@ console.log('\n── TEST 16: B19 streak milestone (duplicate UI/logic saaf) �
      'B19: SSOT file (premium-creator.js) index.html me load hoti rehti hai');
 }
 
+/* ── TEST 17: A12 — profile hero card (nayi profile UI image ke hisaab se) ── */
+console.log('\n── TEST 17: A12 profile hero card (rainbow frame + ring + plates + XP) ──');
+{
+  const pf = fs.readFileSync(path.join(REPO, 'screens/profile.js'), 'utf8');
+  ok(pf.indexOf('pf2-card') !== -1 && pf.indexOf('id="pfHeroCard"') !== -1 && pf.indexOf('pf2-frame') !== -1,
+     'A12: naya hero card maujood (frame + card, id="pfHeroCard")');
+  ok(pf.indexOf('class="rb-wrap rb-glow"') !== -1 && pf.indexOf('rb-ring') !== -1,
+     'A12: premium par animated rainbow frame + avatar ring (pehle ka perk bacha hua)');
+  ok(pf.indexOf('pf2-plate') !== -1 && pf.indexOf('pf2-bolt') !== -1 && pf.indexOf('pf2-crown') !== -1,
+     'A12: wings wali name plate (⚡ + naam + premium par 👑)');
+  ok(pf.indexOf('pf2-prem') !== -1 && pf.indexOf('pf2-uid') !== -1 && pf.indexOf('pf2-copy') !== -1,
+     'A12: Premium plate + UID pill + copy button');
+  ok(pf.indexOf('pf2-lv') !== -1 && pf.indexOf('pf2-rank') !== -1 && pf.indexOf('pf2-xpbar') !== -1,
+     'A12: hexagon Lv badge + rank plate + XP bar');
+  ok(pf.indexOf('copyTxt(') !== -1 && pf.indexOf('showProfileSettings()') !== -1
+     && pf.indexOf('uploadProfImg(this)') !== -1 && pf.indexOf('uploadBannerImg(this)') !== -1,
+     'A12: purane handlers sab jude (copy/settings/photo/banner) — kuch functionality nahi gayi');
+  ok(pf.indexOf("document.getElementById('pfHeroCard')") !== -1
+     && pf.indexOf("document.querySelector('.prof-header')") === -1,
+     'A12: banner turant-preview bhi naye hook (#pfHeroCard) par');
+  ok(pf.indexOf('var ringAnim') === -1,
+     'A12: purana dead ringAnim variable saaf (comment me zikr theek hai)');
+  ok(pf.indexOf("rk.emoji + ' ' + rk.badge") !== -1 && pf.indexOf('xpPct') !== -1 && pf.indexOf('lv = ') !== -1,
+     'A12: data asli hi hai (same lv/xp formula, asli rank badge)');
+  const css = fs.readFileSync(path.join(REPO, 'styles.css'), 'utf8');
+  ok(css.indexOf('.pf2-frame') !== -1 && css.indexOf('.pf2-lv') !== -1 && css.indexOf('@media (max-width:380px)') !== -1,
+     'A12: CSS maujood + chhoti screen ke liye media rule');
+}
+
 console.log('\n══════════════════════════════');
 console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

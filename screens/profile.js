@@ -31,9 +31,9 @@ function renderProfile() {
   var xp = ((st.matches||0)%3)*3 + ((st.kills||0)%10);
   var maxXp = 10, xpPct = Math.min(Math.round((xp/maxXp)*100), 100);
 
-  // Avatar ring color based on rank
+  /* Avatar ring color based on rank (✅ A12: alag `ringAnim` variable hata —
+     naya hero card ka neon ring CSS se khud manage hota hai) */
   var ringColor = rk.color || 'var(--green)';
-  var ringAnim = lv >= 10 ? 'animation:ringPulse 2s infinite' : '';
 
   /* Get display UID — show FF UID if available, otherwise show partial Firebase UID */
   var displayUid = UD.ffUid || U.uid.substring(0, 12);
@@ -47,93 +47,68 @@ function renderProfile() {
     premBadge = '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:linear-gradient(135deg,' + ptColor + '33,' + ptColor + '11);border:1px solid ' + ptColor + '66;color:' + ptColor + ';margin-left:6px;vertical-align:middle">' + ptLabel + '</span>';
   }
 
-  /* ── Profile Header Card (2026-07 redesign) ──
-     OLD layout: a full-bleed (edge-to-edge, no visible border) banner
-     strip with the avatar centered underneath it. Because it had no
-     border/rounded edge of its own and bled off both sides of the
-     screen, it read as a loose floating strip rather than a contained
-     "card" — the ⚙ settings icon technically sat inside that strip's
-     DOM, but visually it looked like it was floating outside any card.
-     NEW layout: one self-contained, rounded, bordered card — avatar on
-     the left, name/UID/level+rank/XP on the right (reference-inspired
-     horizontal layout). No separate "Edit Profile" text button — the
-     pencil icon on the avatar already handles that. The ⚙ settings icon
-     and 🖼 banner-change icon both live inside this card's own top-right
-     corner, grouped together. */
+  /* ── Profile Header Card — ✅ A12 (2026-10-07): "nayi profile UI image
+     (rainbow frame wali)" ke hisaab se centered HERO card:
+       frame (premium = animated rainbow, warna rank-color neon ring) →
+       bada avatar + neon ring + pencil → wings wali name plate (premium par
+       👑; equipped tag prefix wahi) → Premium plate (agar premium; VIP/title
+       chips usi ke neeche) → UID pill + copy button → neeche hexagon Lv badge
+       + rank plate + XP bar.
+     Sab data PEHLE jaisa real hi hai (UD/rk/lv/xp/formula — kuch nahi badla);
+     purane handlers bhi waise hi: banner/photo upload (premium lock), settings
+     gear, rank color, equipped frame/tag/VIP cosmetics.
+     Layout vertical hai (image jaisa) — isliye banner ab card ke peeche
+     full-bleed background hai, alag strip nahi. */
   var bannerImg = UD.bannerImage || '';
   var bannerStyle = bannerImg
     ? 'background:url(' + bannerImg + ') center/cover no-repeat'
     : 'background:linear-gradient(135deg,#0a0e2e 0%,#1a1145 40%,#0e2440 100%)';
-  /* ✅ BUG FIX (2026-08-25): "Invite & Earn row blink ho rahi hai — kabhi
-     dikhti hai kabhi nahi". Root cause: this button used to be injected
-     by a separate js/fixes-v7.js patch AFTER renderProfile() finished,
-     via a 400ms setTimeout that appended it into #profileContent. But
-     renderProfile() itself runs very frequently (every _applyUser call,
-     every realtime user-row update) and always does a full
-     pc.innerHTML = h replace — which wipes out that separately-injected
-     button immediately. So the button cycled
-     present→wiped-by-next-render→re-injected-400ms-later→wiped again,
-     which is exactly what looked like blinking. Fix: build the button as
-     a normal part of this function's own single h string instead of a
-     separate late injection, so it's simply always there, every render,
-     with no timing race against anything. */
-  /* R28k (2026-09-22): referral से ₹ nahi — bonus COINS milte hain
-     (claim_referral_reward → coinsEarned, "Dono ko bonus coins milenge").
-     पुराना "दोस्त लाओ ₹ पाओ" झूठा cash-दावा tha — hataya. */
-  var inviteEarnHtml = '<button id="inviteEarnBtn" onclick="window.showInviteEarn&&showInviteEarn()" style="width:100%;padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer;margin:0 0 10px;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-user-plus"></i> 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!</button>';
-  /* ── Premium state (card build se PEHLE compute — header isi ko use karta hai) ── */
-  var _premActive = window.isPremiumActive ? isPremiumActive() : false;
-  var _premActiveGold = window.isPremiumActive ? isPremiumActive(2) : false; /* Gold+ perks: Live Stream, Creator Program */
-  /* ✅ BUG FIX (2026-10-04) — Bugs 6 + 7:
-     (6) title / premium / VIP badges lagne par profile box ki UI toot rahi
-         thi (name-line ka nowrap + fixed chips row overflow). Ab: name line
-         wrap karti hai, chips row wrap karti hai, card grow karta hai.
-     (7) premium user ke profile box + profile picture par "unlimited
-         colours" animated rainbow glow border (styles.css .rb-wrap/.rb-ring). */
-  var _cardBase = 'position:relative;overflow:hidden;margin:0 0 14px;padding:16px;border-radius:' + (_premActive?'18px':'20px') + ';border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;' + bannerStyle + ';box-shadow:0 8px 24px rgba(0,0,0,.35)';
+  /* ✅ BUG FIX (2026-08-25) — Invite & Earn blink (dekho inviteEarnHtml):
+     wahi niyam — sab kuch isi ek h string me, koi late injection nahi. */
+  var _pf2Ring = _eqFrame || rk.color || '#00ff9c';
+  var premPlate = '';
+  if (UD.premium && UD.premium.tier) {
+    var _pt = Number(UD.premium.tier);
+    premPlate = '<div class="pf2-prem">⭐ ' + (_pt === 3 ? 'Premium III' : _pt === 2 ? 'Premium II' : 'Premium I') + '</div>';
+  }
+  var chips = '';
+  if (_eqVip) chips += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700">⭐ VIP</span>';
+  if (UD.title) chips += '<span class="prof-title-chip">' + UD.title + '</span>';
   var h = inviteEarnHtml;
-  if (_premActive) {
-    /* Rainbow gradient border: wrapper gradient + andar asli card */
-    h += '<div class="rb-wrap rb-glow" style="margin:0 0 14px"><div class="prof-header rb-inner" style="' + _cardBase + '">';
-  } else {
-    h += '<div class="prof-header" style="' + _cardBase + '">';
-  }
-  /* Decorative glow overlay so the card still looks alive with no custom banner set */
+  h += _premActive
+    ? '<div class="rb-wrap rb-glow" style="margin:0 0 14px"><div class="pf2-card rb-inner" id="pfHeroCard" style="' + bannerStyle + '">'
+    : '<div class="pf2-frame" style="margin:0 0 14px;--pf2c:' + _pf2Ring + '"><div class="pf2-card" id="pfHeroCard" style="' + bannerStyle + '">';
+  h += '<div class="pf2-dots"></div>';
   if (!bannerImg) {
-    h += '<div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 25%,rgba(185,100,255,.22) 0%,transparent 45%),radial-gradient(circle at 92% 10%,rgba(0,212,255,.18) 0%,transparent 40%),radial-gradient(circle at 60% 105%,rgba(255,140,0,.12) 0%,transparent 45%)"></div>';
+    h += '<div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 12%,rgba(185,100,255,.28) 0%,transparent 45%),radial-gradient(circle at 92% 8%,rgba(0,212,255,.22) 0%,transparent 42%),radial-gradient(circle at 60% 105%,rgba(255,140,0,.16) 0%,transparent 45%)"></div>';
   }
-  /* Top-right controls — grouped, INSIDE the card (banner-change + settings) */
-  /* (_premActive / _premActiveGold already computed above, before card build) */
-  h += '<div style="position:absolute;top:10px;right:10px;display:flex;gap:6px;z-index:5">';
-  h += '<div onclick="document.getElementById(\'profBannerIn\').click()" title="' + (_premActive?'Change banner':'Premium feature — change banner') + '" style="width:30px;height:30px;border-radius:9px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative"><i class="fas fa-image" style="font-size:12px;color:#ccc"></i>' + (_premActive?'':'<i class="fas fa-lock" style="position:absolute;bottom:-3px;right:-3px;font-size:8px;color:#ffd700;background:#000;border-radius:50%;padding:2px"></i>') + '</div>';
-  h += '<div onclick="showProfileSettings()" title="Settings" style="width:30px;height:30px;border-radius:9px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fas fa-cog" style="font-size:13px;color:#ccc"></i></div>';
+  /* Top-right: banner-change + settings (wahi handlers, naya neon look) */
+  h += '<div class="pf2-top">';
+  h += '<div class="pf2-topbtn" onclick="document.getElementById(\'profBannerIn\').click()" title="' + (_premActive ? 'Change banner' : 'Premium feature — change banner') + '"><i class="fas fa-image"></i>' + (_premActive ? '' : '<i class="fas fa-lock" style="position:absolute;bottom:-3px;right:-3px;font-size:8px;color:#ffd700;background:#000;border-radius:50%;padding:2px"></i>') + '</div>';
+  h += '<div class="pf2-topbtn" onclick="showProfileSettings()" title="Settings"><i class="fas fa-cog"></i></div>';
   h += '</div>';
   h += '<input type="file" id="profBannerIn" accept="image/*" style="display:none" onchange="uploadBannerImg(this)">';
-  /* Avatar (left) — premium user ko rainbow ring (Bug 7) */
-  h += '<div class="prof-ava-wrap" style="position:relative;flex-shrink:0;z-index:2;margin:0">';
-  var _avaBorder = _premActive ? '' : ('border:3.5px solid ' + (_eqFrame || rk.color) + ';box-shadow:0 0 0 1px rgba(255,255,255,.06),0 0 24px ' + (_eqFrame || rk.color) + 'aa,0 0 46px ' + (_eqFrame || rk.color) + '44;');
-  if (_premActive) h += '<span class="rb-ring">';
-  h += '<div class="prof-ava" style="width:88px;height:88px;font-size:34px;' + _avaBorder + ringAnim + '">' + av + '</div>';
-  if (_premActive) h += '</span>';
-  h += '<div class="prof-edit-btn" onclick="document.getElementById(\'profImgIn\').click()" title="' + (_premActive?'Change photo':'Premium feature — change photo') + '" style="background:' + rk.color + ';border-color:rgba(5,5,7,.8)">' + (_premActive?'<i class="fas fa-pencil-alt"></i>':'<i class="fas fa-lock" style="font-size:11px"></i>') + '</div>';
+  /* Avatar (centered) — premium par animated rainbow ring, warna kosmetik/rank color */
+  h += '<div class="pf2-ava-wrap">';
+  var _avaInner = '<div class="pf2-ava" style="' + (_premActive ? 'border-color:rgba(255,255,255,.10)' : 'border-color:' + _pf2Ring + ';box-shadow:0 0 24px ' + _pf2Ring + 'aa') + '">' + av + '</div>';
+  h += _premActive ? '<span class="rb-ring">' + _avaInner + '</span>' : _avaInner;
+  h += '<div class="prof-edit-btn" onclick="document.getElementById(\'profImgIn\').click()" title="' + (_premActive ? 'Change photo' : 'Premium feature — change photo') + '">' + (_premActive ? '<i class="fas fa-pencil-alt"></i>' : '<i class="fas fa-lock" style="font-size:11px"></i>') + '</div>';
   h += '<input type="file" id="profImgIn" accept="image/*" style="display:none" onchange="uploadProfImg(this)">';
   h += '</div>';
-  /* Info (right) — Bug 6: name line ab wrap karti hai (title/premium/VIP
-     badges ke saath layout nahi tootti), chips row bhi wrap karti hai */
-  h += '<div style="flex:1;min-width:0;z-index:2;padding-right:36px">';
-  h += '<div style="font-size:18px;font-weight:900;line-height:1.3;word-break:break-word;display:flex;flex-wrap:wrap;align-items:center;gap:5px;row-gap:4px">' + (_eqTag ? '<span style="color:' + (_eqFrame || '#00ff9c') + '">' + _eqTag + '</span>' : '') + '<span>' + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + '</span>' + premBadge + '</div>';
-  h += '<div style="font-size:10px;color:#888;margin-top:2px;font-weight:600;letter-spacing:.3px">UID: ' + displayUid + '</div>';
-  h += '<div style="display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap">';
-  h += '<span style="font-size:12px;font-weight:800;color:#fff">Lvl ' + lv + '</span>';
-  h += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:' + rk.bg + ';border:1px solid ' + rk.color + '55;color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</span>';
-  if (UD.title) h += '<span class="prof-title-chip">' + UD.title + '</span>';
-  if (_eqVip) h += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700">⭐ VIP</span>';
+  /* Name plate — wings + ⚡ + naam (premium par 👑), equipped tag prefix wahi */
+  h += '<div class="pf2-plate"><span class="pf2-bolt">⚡</span>' + (_eqTag ? '<span style="font-size:16px;font-weight:900;color:' + _pf2Ring + '">' + _eqTag + '</span>' : '') + '<span class="pf2-name">' + (window.escHtml ? window.escHtml(UD.ign || UD.displayName || 'Player') : (UD.ign || UD.displayName || 'Player')) + '</span>' + (_premActive ? '<span class="pf2-crown">👑</span>' : '') + '</div>';
+  h += premPlate;
+  if (chips) h += '<div class="pf2-chips">' + chips + '</div>';
+  /* UID pill + copy (copyTxt core/utils.js ka asli helper hai) */
+  h += '<div class="pf2-uid"><i class="fas fa-user"></i><span>UID : ' + displayUid + '</span><div class="pf2-copy" onclick="copyTxt(\'' + displayUid + '\')" title="Copy UID"><i class="fas fa-copy"></i></div></div>';
+  /* Footer row — hexagon Lv badge + rank plate + XP bar (asli lv/xp formula) */
+  h += '<div class="pf2-foot">';
+  h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
+  h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66">' + rk.emoji + ' ' + rk.badge + '</div>';
+  h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
   h += '</div>';
-  h += '<div class="xp-bar-wrap" style="margin:8px 0 0;background:transparent;border:none;padding:0"><div class="xp-bar-top" style="margin-bottom:5px"><span class="xp-level" style="font-size:10px;-webkit-text-fill-color:#999;background:none">' + rk.pts + ' pts</span><span class="xp-text" style="font-size:10px">' + xp + '/' + maxXp + ' XP</span></div>';
-  h += '<div class="xp-track" style="height:7px"><div class="xp-fill" style="width:' + xpPct + '%"></div></div></div>';
-  h += '</div>'; /* end info column */
-  h += '</div>'; /* end prof-header card */
-  if (_premActive) h += '</div>'; /* end rainbow border wrapper (Bug 7) */
+  h += '</div></div>';
+  if (_premActive) h += '</div>'; /* end rainbow wrapper */
 
   var _pm = Number(st.matches||0), _pw = Number(st.wins||0), _pk = Number(st.kills||0);
   var _pwr = _pm > 0 ? Math.round((_pw/_pm)*100) : 0;
@@ -372,7 +347,10 @@ function uploadBannerImg(inp) {
       toast('Banner image read nahi hui — JPG/PNG dobara choose karo', 'err');
       return;
     }
-    var card = document.querySelector('.prof-header');
+    /* ✅ A12 (2026-10-07): hero card ka naya hook `#pfHeroCard` hai
+       (purana `.prof-header` class header card se hat gaya, isliye
+       turant-preview wahi ruk jata — selector bhi naye hook par). */
+    var card = document.getElementById('pfHeroCard');
     if (card) card.style.background = 'url(' + dataUrl + ') center/cover no-repeat';
 
     window.uploadBannerImage(dataUrl, function(url) {

@@ -1113,3 +1113,83 @@ body.has-web-banner .chat-container {
   flex-shrink: 0;
 }
 .rb-ring > * { border-radius: 50%; }
+
+/* ══════════════════════════════════════════════════════════════════
+   A12 (2026-10-07) — PROFILE HERO CARD
+   "नई profile UI image (rainbow frame वाली)" के हिसाब से: frame (premium =
+   animated rainbow, warna rank-color neon) → बड़े avatar का neon ring +
+   pencil → wings वाली name plate (premium पर crown) → Premium plate →
+   UID pill + copy → नीचे hexagon Lv badge + rank plate + XP bar.
+   Saara data pehle jaisa REAL hai (UD/rk/lv/xp) — sirf shakal badli hai.
+   ══════════════════════════════════════════════════════════════════ */
+.pf2-frame{position:relative;border-radius:20px;padding:2px;
+  background:conic-gradient(from 210deg,var(--pf2c,#00ff9c),rgba(255,255,255,.08),var(--pf2c,#00ff9c),rgba(255,255,255,.10),var(--pf2c,#00ff9c));
+  box-shadow:0 0 20px -6px var(--pf2c,#00ff9c)}
+.pf2-card{position:relative;overflow:hidden;border-radius:18px;padding:18px 14px 14px;
+  border:1px solid rgba(255,255,255,.10);box-shadow:0 10px 28px rgba(0,0,0,.45);
+  display:flex;flex-direction:column;align-items:center;text-align:center;box-sizing:border-box}
+.pf2-dots{position:absolute;inset:0;pointer-events:none;opacity:.45;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:14px 14px}
+.pf2-top{position:absolute;top:10px;right:10px;display:flex;gap:8px;z-index:6}
+.pf2-topbtn{width:34px;height:34px;border-radius:11px;background:rgba(0,0,0,.5);
+  border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:inset 0 0 12px rgba(0,212,255,.18);position:relative}
+.pf2-topbtn i{font-size:13px;color:#dcdcdc}
+.pf2-ava-wrap{position:relative;z-index:3;margin:8px 0 12px}
+.pf2-ava{width:118px;height:118px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:46px;font-weight:900;color:#fff;background:linear-gradient(135deg,#2a0f0f,#5a1a12);
+  overflow:hidden;border:3px solid rgba(255,255,255,.14);box-sizing:border-box}
+.pf2-ava img{width:100%;height:100%;object-fit:cover}
+.pf2-ava-wrap .prof-edit-btn{width:34px;height:34px;font-size:13px;bottom:2px;right:2px;
+  background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:2px solid rgba(5,5,7,.85)}
+.pf2-plate{position:relative;z-index:3;display:flex;align-items:center;gap:8px;max-width:100%;
+  padding:8px 18px;border-radius:12px;background:linear-gradient(135deg,rgba(4,8,26,.95),rgba(22,10,44,.9));
+  box-shadow:0 0 0 2px rgba(255,170,0,.5),0 0 20px rgba(255,140,0,.20);margin-bottom:9px}
+.pf2-plate::before,.pf2-plate::after{content:'';position:absolute;top:50%;width:16px;height:22px;
+  transform:translateY(-50%);background:linear-gradient(90deg,rgba(255,200,60,.85),rgba(255,120,0,.15))}
+.pf2-plate::before{right:100%;margin-right:3px;clip-path:polygon(100% 50%,0 0,28% 50%,0 100%)}
+.pf2-plate::after{left:100%;margin-left:3px;clip-path:polygon(0 50%,100% 0,72% 50%,100% 100%)}
+.pf2-bolt{font-size:15px;color:#ffd700;text-shadow:0 0 8px rgba(255,215,0,.8)}
+.pf2-name{font-size:19px;font-weight:900;letter-spacing:.3px;color:#fff;max-width:200px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 0 12px rgba(0,212,255,.35)}
+.pf2-crown{font-size:15px}
+.pf2-prem{position:relative;z-index:3;display:inline-flex;align-items:center;gap:7px;padding:6px 18px;
+  border-radius:10px;font-size:13px;font-weight:900;color:#eaffea;margin-bottom:10px;
+  background:linear-gradient(135deg,rgba(0,60,20,.95),rgba(0,120,50,.55));
+  box-shadow:0 0 0 2px rgba(0,255,120,.55),0 0 18px rgba(0,255,120,.25)}
+.pf2-prem::before,.pf2-prem::after{content:'';position:absolute;top:50%;width:14px;height:20px;
+  transform:translateY(-50%);background:linear-gradient(90deg,rgba(190,255,210,.8),rgba(0,255,120,.10))}
+.pf2-prem::before{right:100%;margin-right:3px;clip-path:polygon(100% 50%,0 0,28% 50%,0 100%)}
+.pf2-prem::after{left:100%;margin-left:3px;clip-path:polygon(0 50%,100% 0,72% 50%,100% 100%)}
+.pf2-chips{position:relative;z-index:3;display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-bottom:8px;max-width:100%}
+.pf2-uid{position:relative;z-index:3;display:flex;align-items:center;gap:8px;max-width:100%;
+  padding:8px 10px 8px 14px;border-radius:12px;background:rgba(0,0,0,.42);
+  box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.16),0 0 14px rgba(0,212,255,.12);margin-bottom:12px}
+.pf2-uid i.fa-user{font-size:12px;color:#9fb3c8}
+.pf2-uid span{font-size:12.5px;font-weight:700;color:#e6edf5;letter-spacing:.4px;
+  max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf2-copy{width:28px;height:28px;border-radius:8px;border:1px solid rgba(185,100,255,.55);
+  background:rgba(185,100,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.pf2-copy i{font-size:12px;color:#d9b3ff}
+.pf2-foot{position:relative;z-index:3;display:flex;align-items:center;gap:9px;width:100%;margin-top:2px}
+.pf2-lv{position:relative;width:54px;height:46px;flex-shrink:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;color:#fff;
+  background:linear-gradient(160deg,#101426,#1d2340);
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
+  box-shadow:0 0 0 2px rgba(255,200,60,.6)}
+.pf2-lv .c{font-size:10px;color:#ffd700;line-height:1}
+.pf2-lv b{font-size:14px;font-weight:900;line-height:1.15}
+.pf2-rank{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;flex-shrink:0;
+  font-size:12.5px;font-weight:900;background:linear-gradient(135deg,rgba(6,10,30,.95),rgba(20,10,40,.85));
+  box-shadow:0 0 0 1.5px rgba(255,255,255,.18)}
+.pf2-xp{flex:1;min-width:0;text-align:right}
+.pf2-xp .t{font-size:11px;font-weight:800;color:#9fe9ff;letter-spacing:.3px}
+.pf2-xpbar{height:9px;margin-top:5px;border-radius:6px;background:rgba(0,0,0,.55);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);overflow:hidden}
+.pf2-xpbar i{display:block;height:100%;border-radius:6px;
+  background:linear-gradient(90deg,#00ff9c,#00d4ff);box-shadow:0 0 10px rgba(0,212,255,.6)}
+@media (max-width:380px){
+  .pf2-ava{width:104px;height:104px;font-size:40px}
+  .pf2-name{max-width:150px;font-size:17px}
+  .pf2-uid span{max-width:150px}
+}
