@@ -453,7 +453,20 @@ function _toMT(m) {
       if (ent === 'coin' || ent === 'ad' || ent === 'free') return 'coin';
       return 'greenDiamond';
     })(m.prize_type, m.is_sponsored, _normEntry);
-  return { id: m.id, name: m.title, title: m.title, status: m.status||'upcoming', mode: m.mode||'solo', gameMode: m.mode||'solo', map: m.map||'Bermuda', entryFee: m.entry_fee||0, entryType: _normEntry, prizeType: _normPrize, firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, /* ✅ R8 FIX (2026-09-30): publish marker — admin publish karte hi
+  return { id: m.id, name: m.title, title: m.title, status: m.status||'upcoming', mode: m.mode||'solo', gameMode: m.mode||'solo', map: m.map||'Bermuda', entryFee: m.entry_fee||0, entryType: _normEntry, prizeType: _normPrize, firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, /* ✅ D6 FIX (2026-10-07): stream link + spectator count yahan se GAYAB the.
+       Yahi ek jagah hai jahan matches ki DB row se MT banta hai — pehle
+       stream_link/youtube_link copy hi nahi hote the, is liye:
+         (1) "👀 Watch & Earn Coins" button (screens/matches.js) KABHI
+             dikhta hi nahi tha (t.streamLink hamesha undefined),
+         (2) Live Matches list se Watch dabane par bhi startWatching() ka
+             guard "Is match ka live stream available nahi hai" toast
+             dikha kar laut jata tha — yaani Watch & Earn poora feature
+             user panel se pahunch hi nahi sakta tha, chahe admin ne
+             match ka stream link set kiya ho.
+       Ab asli DB columns (snake_case) camelCase me bhi aate hain, aur
+       spectator_count ka bhi wahi haal tha — "X watching" count kabhi
+       nahi dikhta tha (renderSpectatorCount). */
+    streamLink: m.stream_link||m.youtube_link||'', youtubeLink: m.youtube_link||'', streamTitle: m.stream_title||'', spectatorCount: m.spectator_count||0, /* ✅ R8 FIX (2026-09-30): publish marker — admin publish karte hi
        matches.result_published_at set hota hai. Pehle ye field MT me aata
        hi nahi tha, isliye user panel ko kabhi pata nahi chalta tha ki
        result publish ho gaya (View Result button ki shart poori nahi hoti). */
