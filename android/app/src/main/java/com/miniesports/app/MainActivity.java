@@ -137,8 +137,21 @@ public class MainActivity extends AppCompatActivity {
            Camera ki zaroorat sirf ADMIN panel ko OCR ke liye hai, aur woh
            alag web-app hai — uski permission wahan browser handle karta hai. */
         java.util.ArrayList<String> _needed = new java.util.ArrayList<>();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+        /* ✅ D7 FIX (2026-10-07, CI-proof): Android 12+ (API 31+) ka rule —
+           agar app ka targetSdk >= 31 hai to ACCESS_FINE_LOCATION AKELA
+           maangna system chupchap IGNORE kar deta hai (koi dialog hi nahi
+           aata, request silently drop). Live proof: hamara
+           location-permission-e2e job API 34 par 16 koshish (~80s) tak
+           dekhta raha — focus pura waqt MainActivity par hi raha, ek bhi
+           permissioncontroller window nahi aayi. Matlab Android 12+ phones
+           par location kabhi grant hi nahi hota tha aur city auto-detect
+           (core/modal.js) chupchap fail ho jata tha.
+           Ab COARSE + FINE DONO ek saath maangte hain (dono manifest me
+           declared hain) — yahi Android 12+ ka sarkaari tareeka hai. */
+        boolean _fineMissing = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != android.content.pm.PackageManager.PERMISSION_GRANTED;
+        if (_fineMissing) {
+            _needed.add(Manifest.permission.ACCESS_COARSE_LOCATION);
             _needed.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
         if (Build.VERSION.SDK_INT >= 33 &&
@@ -922,7 +935,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onGeolocationPermissionsShowPrompt(String origin,
-                    GeolocationPermissions.Callback cb) { cb.invoke(origin, true, false); }
+                    GeolocationPermissions.Callback cb) {
+                /* ✅ D7 FIX (2026-10-07): pehle HAR origin ko bina poochhe
+                   true kar diya jata tha — redirect/ads wala koi bhi page
+                   location maang sakta tha. Ab sirf apne hi hosts allow,
+                   baaki deny (WebView ka origin whitelist). */
+                boolean _ours = origin != null && (origin.contains("deepsilence10161-source.github.io")
+                        || origin.contains("deepsilence10161.workers.dev")
+                        || origin.startsWith("file://"));
+                cb.invoke(origin, _ours, false);
+            }
 
             @Override
             public boolean onShowFileChooser(WebView wv, ValueCallback<Uri[]> cb,

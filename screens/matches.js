@@ -328,13 +328,23 @@ function showDet(id) {
         'style="width:100%;margin-top:8px;padding:12px;border-radius:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.2);color:var(--green);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">' +
         '<i class="fas fa-users"></i> Akele ho? Auto ' + (_isSquad?'Squad':'Duo') + ' Join Karo!</button>';
     }
+  }
 
-    // ── Watch & Earn button for live ──
-    if ((t.streamLink || t.youtubeLink) && effSt(t) === 'live' && window.CFG && window.CFG.watchEarnEnabled) {
-      h += '<button onclick="if(window.startWatching)startWatching(\'' + id + '\')" ' +
-        'style="width:100%;margin-top:8px;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(255,68,68,.12),rgba(204,0,0,.08));border:1px solid rgba(255,68,68,.25);color:#ff6b6b;font-size:13px;font-weight:800;cursor:pointer">' +
-        '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4444;margin-right:7px;vertical-align:middle"></span>👀 Watch & Earn Coins</button>';
-    }
+  /* ── ✅ D7 FIX (2026-10-07): Watch & Earn button ──────────────────
+     Yeh block PEHLE upar wale `if (tp !== 'solo' && !hasJ(id))` ke ANDAR
+     pada tha (QR/Auto-Squad ke saath) — us ka matlab tha:
+       • solo live match me button KABHI nahi dikhta tha,
+       • jo match tum khel rahe ho (hasJ true) us me bhi nahi dikhta tha.
+     Yaani Watch & Earn sirf non-solo + non-joined case me hi milta tha,
+     jabki live match dekhne wale asli log wahi joined/solo players hote
+     hain (aur _toMT mapper bhi pehle stream link gira deta tha — dono
+     mila kar feature user panel se lagbhag pahunch hi nahi sakta tha).
+     Ab yeh block top-level par hai: sirf 3 asli shartein — match ka
+     stream link ho, match abhi LIVE ho, aur watchEarn config me ON ho. */
+  if ((t.streamLink || t.youtubeLink) && effSt(t) === 'live' && window.CFG && window.CFG.watchEarnEnabled) {
+    h += '<button onclick="if(window.startWatching)startWatching(\'' + id + '\')" ' +
+      'style="width:100%;margin-top:8px;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(255,68,68,.12),rgba(204,0,0,.08));border:1px solid rgba(255,68,68,.25);color:#ff6b6b;font-size:13px;font-weight:800;cursor:pointer">' +
+      '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4444;margin-right:7px;vertical-align:middle"></span>👀 Watch & Earn Coins</button>';
   }
 
   openModal('Match Details', h);
