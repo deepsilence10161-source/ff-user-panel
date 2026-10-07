@@ -606,7 +606,16 @@ waitFor(function(){return window.U&&window._supa;}, function(){
       .catch(function(e){ console.error('[_checkStreakFixed] failed:', e && e.message); });
   };
   if(window.f06Streak) window.f06Streak.check=window._checkStreakFixed;
-  waitFor(function(){return window.UD;},function(){setTimeout(window._checkStreakFixed,2000);});
+  /* ✅ FIX (gehri audit, 2026-10-07): yahan pehle `waitFor(UD → setTimeout(_checkStreakFixed, 2000))`
+     tha — yani app kholte hi, login ke 2 second baad, check-in apne-aap (bina user ke click)
+     ho jata tha. Live me pakda gaya (asli RPC-stack proof): naya user jab wallet kholta tha to
+     button pehle se "Checked In Today" likha hota tha, coins chup-chaap +5 ho chuke hote the,
+     aur asli Daily Check-In button dead ho gaya tha — user kabhi khud check-in kar hi nahi sakta
+     tha (UI ka poora 7-din cycle bekaar). Ab check-in SIRF user ke click par hota hai
+     (window.doCheckIn, wallet ka button) — jo process_daily_checkin RPC row-lock karke chalata
+     hai, isliye ek din me ek hi baar reward mil sakta hai. _checkStreakFixed function khud
+     bacha hua hai (window.f06Streak.check) — koi UI ise jaan-boojh kar bula sake to chalega,
+     par login par apne-aap nahi. */
 },60);
 
 /* ════════════════════════════════════════════

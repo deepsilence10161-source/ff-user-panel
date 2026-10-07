@@ -1155,8 +1155,13 @@
            hi nahi aur checkinStreakBonus7 server padhta hi nahi tha (dono dead). */
         var tierRewards = window._adminDailyBonusRewards || [5, 7, 10, 12, 15, 20, 30];
         var milestoneBonus = window._adminDay30Bonus || 100;
+        /* ✅ FIX (gehri audit, 2026-10-07): p_milestone_days pehle 7 tha, jabki asli
+           check-in path (features-user.js → window.doCheckIn) 30 bhejta hai — aur UI
+           ("har 30 din mein milestone bonus") bhi 30 kehta hai. Yahan 7 bhejne se agar
+           ye function kabhi wire ho jata to galat dinon par bonus deta. Ab dono ek hi
+           value (30) bhejte hain — duplicate logic ka aakhri mismatch bhi gaya. */
         var { data, error } = await window._supa.rpc('process_daily_checkin', {
-          p_tier_rewards: tierRewards, p_milestone_bonus: milestoneBonus, p_milestone_days: 7
+          p_tier_rewards: tierRewards, p_milestone_bonus: milestoneBonus, p_milestone_days: 30
         });
         if (error) return _err('checkin.doCheckIn', error);
         if (data && data.success === false) return { error: data.error };
