@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
+import android.util.Log;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -99,6 +100,67 @@ public class MainActivity extends AppCompatActivity {
     private final AtomicBoolean isApkDownloading = new AtomicBoolean(false);
     private volatile File pendingInstallApkFile = null;
 
+    /* ── D7 (2026-10-07): permission-request observability + retry ──
+       TAG logcat me dikhta hai (CI ka location-permission-e2e job logcat
+       dump karta hai), aur permAskCount duplicate prompt rokta hai. */
+    private static final String TAG = "MiniEsportsApp";
+    private final android.os.Handler permHandler =
+            new android.os.Handler(android.os.Looper.getMainLooper());
+    private int permAskCount = 0;
+
+    /* ✅ D7 FIX (2026-10-07, CI-proof): Android 12+ (API 31+) ka rule — agar
+       app ka targetSdk >= 31 hai to ACCESS_FINE_LOCATION AKELA maangna system
+       chupchap IGNORE kar deta hai (koi dialog nahi). Saath me onCreate ke
+       waqt bhi kuch ROMs request drop kar dete hain. Isliye:
+         (1) COARSE + FINE DONO ek saath maangte hain (Android 12+ ka
+             sarkaari tareeka),
+         (2) requests onCreate + 4s + 12s par retry hoti hain (sirf tab jab
+             koi system dialog saamne na ho),
+         (3) har check logcat me likhta hai — CI se pakka pata chalta hai
+             ki app ne maanga tha ya nahi.
+       Live proof (run 37663353788/37665593158): API 34 par 16 koshish (~80s)
+       tak ek bhi permissioncontroller window nahi aayi thi, focus pura waqt
+       MainActivity par — yaani location kabhi grant hi nahi hota tha aur city
+       auto-detect (core/modal.js) chupchap fail jata tha. */
+    private java.util.ArrayList<String> _missingCorePerms() {
+        java.util.ArrayList<String> needed = new java.util.ArrayList<>();
+        boolean fineMissing = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != android.content.pm.PackageManager.PERMISSION_GRANTED;
+        if (fineMissing) {
+            needed.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            needed.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= 33 &&
+                ActivityCompat.checkSelfPermission(this, "android.permission.POST_NOTIFICATIONS")
+                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            needed.add("android.permission.POST_NOTIFICATIONS");
+        }
+        return needed;
+    }
+
+    private void _askCorePerms(java.util.ArrayList<String> needed, String from) {
+        if (needed == null || needed.isEmpty()) return;
+        if (isFinishing() || isDestroyed()) return;
+        if (permAskCount >= 3) return;
+        permAskCount++;
+        Log.i(TAG, "perm-ask(" + from + ", #" + permAskCount + "): " + needed);
+        ActivityCompat.requestPermissions(this, needed.toArray(new String[0]), PERMISSION_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] results) {
+        super.onRequestPermissionsResult(code, perms, results);
+        if (code == PERMISSION_REQUEST) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < (perms == null ? 0 : perms.length); i++) {
+                sb.append(perms[i]).append("=")
+                  .append(i < results.length && results[i] == android.content.pm.PackageManager.PERMISSION_GRANTED ? "granted" : "denied")
+                  .append(" ");
+            }
+            Log.i(TAG, "perm-result: " + sb);
+        }
+    }
+
     // =========================================================
     // URLs
     // =========================================================
@@ -136,32 +198,25 @@ public class MainActivity extends AppCompatActivity {
                aur NOTIFICATION (Android 13+ par POST_NOTIFICATIONS).
            Camera ki zaroorat sirf ADMIN panel ko OCR ke liye hai, aur woh
            alag web-app hai — uski permission wahan browser handle karta hai. */
-        java.util.ArrayList<String> _needed = new java.util.ArrayList<>();
-        /* ✅ D7 FIX (2026-10-07, CI-proof): Android 12+ (API 31+) ka rule —
-           agar app ka targetSdk >= 31 hai to ACCESS_FINE_LOCATION AKELA
-           maangna system chupchap IGNORE kar deta hai (koi dialog hi nahi
-           aata, request silently drop). Live proof: hamara
-           location-permission-e2e job API 34 par 16 koshish (~80s) tak
-           dekhta raha — focus pura waqt MainActivity par hi raha, ek bhi
-           permissioncontroller window nahi aayi. Matlab Android 12+ phones
-           par location kabhi grant hi nahi hota tha aur city auto-detect
-           (core/modal.js) chupchap fail ho jata tha.
-           Ab COARSE + FINE DONO ek saath maangte hain (dono manifest me
-           declared hain) — yahi Android 12+ ka sarkaari tareeka hai. */
-        boolean _fineMissing = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != android.content.pm.PackageManager.PERMISSION_GRANTED;
-        if (_fineMissing) {
-            _needed.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            _needed.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (Build.VERSION.SDK_INT >= 33 &&
-                ActivityCompat.checkSelfPermission(this, "android.permission.POST_NOTIFICATIONS")
-                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            _needed.add("android.permission.POST_NOTIFICATIONS");
-        }
-        if (!_needed.isEmpty()) {
-            ActivityCompat.requestPermissions(this, _needed.toArray(new String[0]), PERMISSION_REQUEST);
-        }
+        java.util.ArrayList<String> _needed = _missingCorePerms();
+        Log.i(TAG, "perm-check(onCreate): missing=" + _needed + " askCount=" + permAskCount);
+        _askCorePerms(_needed, "onCreate");
+        /* ✅ D7-FOLLOW-UP (2026-10-07): kuch ROMs/API-34 emulator par
+           onCreate ke waqt request chupchap drop ho jati hai (koi dialog
+           hi nahi). 4s aur 12s baad dobara check karo — par tab HI maango
+           jab koi system dialog saamne na ho (hasWindowFocus true), warna
+           user ko do baar prompt dikh sakta hai. Log se CI me saaf pata
+           chalega ki app ne request bheji thi ya nahi. */
+        permHandler.postDelayed(() -> {
+            java.util.ArrayList<String> n = _missingCorePerms();
+            Log.i(TAG, "perm-check(4s): missing=" + n + " askCount=" + permAskCount + " focus=" + hasWindowFocus());
+            if (!n.isEmpty() && permAskCount < 3 && hasWindowFocus()) _askCorePerms(n, "retry-4s");
+        }, 4000);
+        permHandler.postDelayed(() -> {
+            java.util.ArrayList<String> n = _missingCorePerms();
+            Log.i(TAG, "perm-check(12s): missing=" + n + " askCount=" + permAskCount + " focus=" + hasWindowFocus());
+            if (!n.isEmpty() && permAskCount < 3 && hasWindowFocus()) _askCorePerms(n, "retry-12s");
+        }, 12000);
 
         MobileAds.initialize(this, status -> {});
 
@@ -1242,6 +1297,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        /* ✅ D7: agar onCreate ka request kisi wajah se fire hi nahi hua
+           (permAskCount 0), to ab maango — warna duplicate prompt se bachne
+           ke liye chhod do (4s/12s wale retry sambhal lenge). */
+        if (permAskCount == 0) _askCorePerms(_missingCorePerms(), "onResume");
         if (bannerAdView != null) bannerAdView.resume();
         if (pendingInstallApkFile != null && pendingInstallApkFile.exists()) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {

@@ -418,6 +418,9 @@ jobs:
           ls -lh notif-permission-screen.png
 
           if [ -z "$FOUND" ]; then
+            echo "--- asli kaaran: launch ke baad granted flags + logcat ---"
+            adbt shell dumpsys package "$PKG" | grep -E "ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION" | grep -o "granted=[a-z]*" | head -4 || true
+            adbt logcat -d 2>/dev/null | grep -iE "grantpermission|permission.*request|ActivityManager.*permission|appop" | tail -12 || true
             echo "--- dump me jo text mila ---"
             grep -o 'text="[^"]*"' notif-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -12 || true
             echo "❌ Notification dialog nahi mila! (screenshot dekho: notif-permission-screen.png)"
@@ -571,6 +574,11 @@ jobs:
           adbt shell pm revoke "$PKG" android.permission.ACCESS_COARSE_LOCATION || true
           adbt shell pm grant "$PKG" android.permission.POST_NOTIFICATIONS || true
           adbt shell dumpsys package "$PKG" | grep -A2 "android.permission.ACCESS_FINE_LOCATION" | head -4
+          # ✅ D7 (2026-10-07): launch se PEHLE asli granted-flag bhi chhapo —
+          # agar revoke chupchap fail hua to app request hi nahi karega aur
+          # "dialog nahi mila" ka asli karan yahin pata chalega.
+          echo "--- launch se pehle granted flags ---"
+          adbt shell dumpsys package "$PKG" | grep -E "ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|POST_NOTIFICATIONS" | grep -o "granted=[a-z]*" | head -6
 
           echo "=== Launch app ==="
           adbt shell settings put global hide_error_dialogs 1 || true
@@ -615,6 +623,9 @@ jobs:
           ls -lh loc-permission-screen.png
 
           if [ -z "$FOUND" ]; then
+            echo "--- asli kaaran: launch ke baad granted flags + logcat ---"
+            adbt shell dumpsys package "$PKG" | grep -E "ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION" | grep -o "granted=[a-z]*" | head -4 || true
+            adbt logcat -d 2>/dev/null | grep -iE "grantpermission|permission.*request|ActivityManager.*permission|appop" | tail -12 || true
             echo "--- dump me jo text mila ---"
             grep -o 'text="[^"]*"' loc-ui-dump.xml 2>/dev/null | sed 's/text="//;s/"$//' | head -14 || true
             echo "❌ Location dialog nahi mila! (screenshot dekho: loc-permission-screen.png)"
