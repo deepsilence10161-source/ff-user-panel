@@ -93,10 +93,16 @@ function cJoin(id) {
     var _spAll = window.SP_T || {};
     for (var _k in _spAll) { if (_spAll[_k] && _spAll[_k].match_id === t.id) { _spRow = _spAll[_k]; break; } }
   } catch (e) {}
+  /* ✅ FIX (live-testing 2026-10-07): coin match par bhi admin ke ASLI prizes
+     dikhao. Pehle B12 ka fix sirf sponsored/free match par laga tha, isliye
+     coin match banate waqt admin ne jo 1st/2nd/3rd coins set kiye the, join
+     sheet unhe chhupa kar hardcoded "🪙 Coins — Top 3 jeetenge" dikha deta
+     tha (user ko pata hi nahi chalta tha kitna milega). Ab wahi _joinPrizeLabel
+     pehle try hota hai; kuch bhi set na ho to purani line fallback rehti hai. */
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
-    : isCoin ? '🪙 Coins — Top 3 jeetenge'
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261007s" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261007t" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';
