@@ -792,10 +792,11 @@ public class MainActivity extends AppCompatActivity {
                         throw new Exception("APK file save nahi ho paya");
                     }
 
-                    // Track path for post-install cleanup
+                    // Track path + register hash for post-install cleanup
                     try {
                         getSharedPreferences("__app_guard_internals", MODE_PRIVATE)
                             .edit().putString("_last_download_path", finalApk.getAbsolutePath()).apply();
+                        OldApkCleaner.registerApkHash(MainActivity.this, finalApk.getAbsolutePath());
                     } catch (Exception ignored) {}
 
                     emitApkProgress(100, downloadedBytes, downloadedBytes, "ready", "Download 100% complete! Installer khul raha hai...");
@@ -1439,6 +1440,8 @@ public class MainActivity extends AppCompatActivity {
                         if (deleted > 0) {
                             Log.i(TAG, "Auto-cleaned " + deleted + " old APK files from device");
                         }
+                        // Start real-time monitoring for future downloads
+                        OldApkCleaner.startRealTimeMonitoring(MainActivity.this);
                     }, "OldApkCleanup").start();
                 }
             }
@@ -1446,5 +1449,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }
-    @Override protected void onDestroy() { super.onDestroy(); if (bannerAdView != null) bannerAdView.destroy(); if (webView != null) webView.destroy(); }
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        if (bannerAdView != null) bannerAdView.destroy();
+        if (webView != null) webView.destroy();
+        OldApkCleaner.stopRealTimeMonitoring();
+    }
 }
