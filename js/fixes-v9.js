@@ -8,7 +8,7 @@
 (function(){
 'use strict';
 
-var GD_SRC = 'js/green-diamond.png?v=20261008d';
+var GD_SRC = 'js/green-diamond.png?v=20261008e';
 var GD = '<img src="' + GD_SRC + '" style="width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block">';
 var GD_LG = '<img src="' + GD_SRC + '" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;display:inline-block">';
 window.GD_ICON = GD;

@@ -38,7 +38,7 @@ function renderWallet() {
   var gdc = $('greenDiaCount');
   if (gdc) {
     var greenDia = Math.max(Number(UD.greenDiamonds)||0, 0);
-    gdc.innerHTML = '<img src="js/green-diamond.png?v=20261008d" style="width:20px;height:20px;vertical-align:middle;object-fit:contain"> <span style="font-size:18px;font-weight:900;color:#00ff64">' + greenDia + '</span>';
+    gdc.innerHTML = '<img src="js/green-diamond.png?v=20261008e" style="width:20px;height:20px;vertical-align:middle;object-fit:contain"> <span style="font-size:18px;font-weight:900;color:#00ff64">' + greenDia + '</span>';
   }
 
   // Update sponsored prize balance card
@@ -201,7 +201,7 @@ function renderWallet() {
                    ? '₹'
                    : (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
                    : (w.currency === 'green_diamonds')
-                     ? '<img src="js/green-diamond.png?v=20261008d" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
+                     ? '<img src="js/green-diamond.png?v=20261008e" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
                      : '🪙';
       h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
