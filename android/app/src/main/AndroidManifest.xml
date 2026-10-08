@@ -18,15 +18,16 @@
          jisme in permissions ki zaroorat nahi hoti (Android 4.4+ se aisa hi hai). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!-- ✅ OLD APK CLEANUP (2026-10-08 v2): SAF approach — NO scary permissions!
-         MANAGE_EXTERNAL_STORAGE, READ/WRITE_EXTERNAL_STORAGE HATA DIYE.
-         Problem: Play Protect flag + users scared of "All Files Access".
-         Solution: MediaStore query (no permission) + SAF folder picker (user selects
-         Downloads folder once — system dialog, NOT "All Files Access").
-         BroadcastReceiver (PACKAGE_REPLACED) bhi bina permission ke kaam karta hai.
-         Result: Play Protect clean + users happy + old APKs still cleaned. -->
+    <!-- ✅ FIX (2026-10-08): RECEIVE_BOOT_COMPLETED and REQUEST_INSTALL_PACKAGES
+         REMOVED — these are top Play Protect triggers!
+         REQUEST_INSTALL_PACKAGES: self-update redirected to browser instead.
+         RECEIVE_BOOT_COMPLETED: not critical, removed to reduce flags.
+         Old APK cleanup: MediaStore (no permission) + SAF (user folder picker).
+         Play Protect Appeal: submit to Google for permanent whitelist. -->
+    <!-- ✅ OLD APK CLEANER: NO scary permissions.
+         MediaStore query+delete (Android 10+, no permission).
+         SAF folder picker (user-friendly, one-time).
+         BroadcastReceiver (PACKAGE_REPLACED, no permission). -->
 
     <application
         android:name=".MyApplication"

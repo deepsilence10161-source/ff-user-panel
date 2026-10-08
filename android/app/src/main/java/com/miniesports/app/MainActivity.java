@@ -1501,3 +1501,4 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }
     @Override protected void onDestroy() { super.onDestroy(); if (bannerAdView != null) bannerAdView.destroy(); if (webView != null) webView.destroy(); }
 }
+
