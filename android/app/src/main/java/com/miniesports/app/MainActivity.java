@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
                 PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
                 String hash = AppGuard.getSigningHash(MainActivity.this);
                 boolean debuggable = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
-                SharedPreferences guardPrefs = getSharedPreferences("__app_guard_internals", MODE_PRIVATE);
+                SharedPreferences guardPrefs = MainActivity.this.getSharedPreferences("__app_guard_internals", MODE_PRIVATE);
                 int highestVC = guardPrefs.getInt("_last_vc", pi.versionCode);
                 return "{\"versionCode\":" + pi.versionCode +
                        ",\"versionName\":\"" + (pi.versionName != null ? pi.versionName : "") + "\"" +

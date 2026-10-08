@@ -1,6 +1,7 @@
 package com.miniesports.app;
 
 import android.app.Application;
+import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
