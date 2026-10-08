@@ -594,24 +594,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        /* ✅ APP GUARD: Request MANAGE_EXTERNAL_STORAGE permission
-           (Android 11+). JS se call: window.Android.requestStoragePermission()
-           Returns: true if already granted, false if dialog shown. */
+        /* ✅ OLD APK CLEANER: SAF folder picker (user-friendly, NOT "All Files Access").
+           User selects Downloads folder once → persistent permission.
+           JS se call: window.Android.requestStoragePermission() */
         @JavascriptInterface
         public boolean requestStoragePermission() {
             try {
-                return OldApkCleaner.requestStoragePermission(MainActivity.this);
+                // If already has SAF access, return true
+                if (OldApkCleaner.hasSafFolderAccess(MainActivity.this)) return true;
+                // Launch SAF picker on UI thread
+                runOnUiThread(() -> showSafFolderDialog());
+                return false;
             } catch (Exception e) {
                 Log.w(TAG, "requestStoragePermission error: " + e.getMessage());
                 return false;
             }
         }
 
-        /* ✅ APP GUARD: Check if storage permission is needed. */
+        /* ✅ OLD APK CLEANER: Check if SAF folder access is granted. */
         @JavascriptInterface
         public boolean needsStoragePermission() {
             try {
-                return OldApkCleaner.needsStoragePermission(MainActivity.this);
+                return !OldApkCleaner.hasSafFolderAccess(MainActivity.this);
             } catch (Exception e) {
                 return false;
             }
@@ -822,6 +826,40 @@ public class MainActivity extends AppCompatActivity {
     // =========================================================
 
     // =========================================================
+    // SAF Folder Picker — Friendly dialog (NOT "All Files Access")
+    // =========================================================
+    private void showSafFolderDialog() {
+        try {
+            new AlertDialog.Builder(this)
+                .setTitle("📁 Downloads Folder Access")
+                .setMessage(
+                    "MiniEsports पुरानी app files (old APKs) को automatically साफ करता है ताकि आपका device clean रहे।\n\n" +
+                    "इसके लिए हमें सिर्फ Downloads folder तक पहुंच चाहिए।\n\n" +
+                    "✅ सिर्फ MiniEsports की files delete होंगी\n" +
+                    "✅ आपकी personal files 100% safe हैं\n" +
+                    "✅ एक बार permission देनी होगी, बार-बार नहीं\n\n" +
+                    "\"Allow\" पर click करें → Downloads folder चुनें।"
+                )
+                .setPositiveButton("Allow ✅", (dialog, which) -> {
+                    OldApkCleaner.launchSafFolderPicker(MainActivity.this);
+                })
+                .setNegativeButton("Later ⏰", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setNeutralButton("Don't Ask ❌", (dialog, which) -> {
+                    // Mark as permanently dismissed
+                    getSharedPreferences(OldApkCleaner.class.getSimpleName(), MODE_PRIVATE)
+                        .edit().putBoolean("_saf_permanent_dismiss", true).apply();
+                    dialog.dismiss();
+                })
+                .setCancelable(true)
+                .show();
+        } catch (Exception e) {
+            Log.w(TAG, "SAF dialog error: " + e.getMessage());
+        }
+    }
+
+    // =========================================================
     // Google Sign-In Result
     // =========================================================
     @Override
@@ -880,6 +918,19 @@ public class MainActivity extends AppCompatActivity {
                         null
                     )
                 );
+            }
+        }
+
+        // ── SAF Folder Picker Result (Old APK Cleaner) ───────
+        else if (req == OldApkCleaner.REQ_SAF_FOLDER_PICKER) {
+            if (res == RESULT_OK && data != null && data.getData() != null) {
+                Uri treeUri = data.getData();
+                Log.i(TAG, "✅ SAF folder selected: " + treeUri);
+                OldApkCleaner.saveSafFolderUri(this, treeUri);
+                // Show thanks toast
+                Toast.makeText(this, "✅ धन्यवाद! पुरानी APK files automatically साफ हो जाएंगी", Toast.LENGTH_LONG).show();
+            } else {
+                Log.i(TAG, "SAF folder picker cancelled by user");
             }
         }
     }
@@ -1424,36 +1475,29 @@ public class MainActivity extends AppCompatActivity {
                 promptInstallApk(f);
             }
         }
-        /* ✅ APP GUARD (2026-10-08): Auto-clean old APKs from device.
-           After update, scan and delete old APK files from Downloads etc.
-           If MANAGE_EXTERNAL_STORAGE needed (Android 11+), request it first.
-           On next onResume (after user grants), cleanup runs automatically. */
+        /* ✅ OLD APK CLEANER: Auto-clean old APKs from device.
+           Uses MediaStore (no permission) + SAF (if granted).
+           If SAF not granted and should ask, show friendly dialog. */
         try {
-            if (OldApkCleaner.needsStoragePermission(this)) {
-                // Request permission — cleanup will happen on next onResume
-                OldApkCleaner.requestStoragePermission(this);
-            } else {
-                // Permission granted — run cleanup (once per app launch)
-                if (!_oldApkCleanupDone) {
-                    _oldApkCleanupDone = true;
-                    new Thread(() -> {
-                        int deleted = OldApkCleaner.cleanDeviceApks(MainActivity.this);
-                        if (deleted > 0) {
-                            Log.i(TAG, "Auto-cleaned " + deleted + " old APK files from device");
-                        }
-                        // Start real-time monitoring for future downloads
-                        OldApkCleaner.startRealTimeMonitoring(MainActivity.this);
-                    }, "OldApkCleanup").start();
+            if (!_oldApkCleanupDone) {
+                _oldApkCleanupDone = true;
+                new Thread(() -> {
+                    int deleted = OldApkCleaner.cleanDeviceApks(MainActivity.this);
+                    if (deleted > 0) {
+                        Log.i(TAG, "Auto-cleaned " + deleted + " old APK files from device");
+                    }
+                }, "OldApkCleanup").start();
+
+                // Ask for SAF folder access if needed (user-friendly dialog)
+                if (OldApkCleaner.shouldAskForSafFolder(this)) {
+                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                        showSafFolderDialog();
+                    }, 5000); // 5 second delay — don't interrupt app launch
                 }
             }
         } catch (Exception ignored) {}
     }
 
     @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }
-    @Override protected void onDestroy() {
-        super.onDestroy();
-        if (bannerAdView != null) bannerAdView.destroy();
-        if (webView != null) webView.destroy();
-        OldApkCleaner.stopRealTimeMonitoring();
-    }
+    @Override protected void onDestroy() { super.onDestroy(); if (bannerAdView != null) bannerAdView.destroy(); if (webView != null) webView.destroy(); }
 }
