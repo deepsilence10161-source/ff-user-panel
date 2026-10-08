@@ -18,6 +18,17 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        /* ═══ APP GUARD (2026-10-08): Anti-Rollback + On-Update Wipe
+         * + Package Integrity. MUST run before anything else.
+         * Agar purana APK ya tampered build detect ho → app band.
+         * Agar update hua hai → SARI local files delete (package-level). */
+        boolean allowed = AppGuard.verifyOrBlock(this);
+        if (!allowed) {
+            // App is blocked — show block screen in MyApplication itself
+            // MainActivity will check getBlockMessage() and show full-screen error
+            Log.e("AppGuard", "⛔ App blocked — tampered/rollback detected");
+        }
+
         FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
 
         // Global crash logger — koi bhi crash ho, last_crash.txt mein save hoga

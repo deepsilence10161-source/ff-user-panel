@@ -179,6 +179,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /* ═══ APP GUARD (2026-10-08): Check if app is blocked ═══ */
+        String blockMsg = AppGuard.getBlockMessage(this);
+        if (blockMsg != null) {
+            showBlockScreen(blockMsg);
+            return; // Don't continue loading the app
+        }
+
         showLastCrashIfAny();
         setContentView(R.layout.activity_main);
 
@@ -337,6 +345,23 @@ public class MainActivity extends AppCompatActivity {
            report a DIFFERENT hash here even if its versionName was edited
            to claim it's up to date. Optional: only enforced if
            window.CFG.appExpectedSigningHash is set in Admin Panel. */
+        @JavascriptInterface
+        public String getPackageIntegrityStatus() {
+            try {
+                PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String hash = AppGuard.getSigningHash(MainActivity.this);
+                boolean debuggable = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+                SharedPreferences guardPrefs = getSharedPreferences("__app_guard_internals", MODE_PRIVATE);
+                int highestVC = guardPrefs.getInt("_last_vc", pi.versionCode);
+                return "{\"versionCode\":" + pi.versionCode +
+                       ",\"versionName\":\"" + (pi.versionName != null ? pi.versionName : "") + "\"" +
+                       ",\"signingHash\":\"" + hash + "\"" +
+                       ",\"packageName\":\"" + getPackageName() + "\"" +
+                       ",\"isDebuggable\":" + debuggable +
+                       ",\"highestVersionCode\":" + highestVC + "}";
+            } catch (Exception e) { return "{\"error\":\"" + e.getMessage() + "\"}"; }
+        }
+
         @JavascriptInterface
         public String getSigningHash() {
             try {
@@ -1151,6 +1176,49 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .show();
         } catch (Exception ignored) { }
+    }
+
+    private void showBlockScreen(String message) {
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setGravity(android.view.Gravity.CENTER);
+        layout.setBackgroundColor(0xFF0A0D14);
+        layout.setPadding(48, 48, 48, 48);
+        android.widget.TextView icon = new android.widget.TextView(this);
+        icon.setText("\u26D4");
+        icon.setTextSize(64);
+        icon.setGravity(android.view.Gravity.CENTER);
+        layout.addView(icon);
+        android.widget.TextView title = new android.widget.TextView(this);
+        title.setText("Update Required");
+        title.setTextSize(24);
+        title.setTextColor(0xFFFF4444);
+        title.setGravity(android.view.Gravity.CENTER);
+        title.setPadding(0, 32, 0, 16);
+        layout.addView(title);
+        android.widget.TextView msg = new android.widget.TextView(this);
+        msg.setText(message);
+        msg.setTextSize(16);
+        msg.setTextColor(0xFFCCCCCC);
+        msg.setGravity(android.view.Gravity.CENTER);
+        msg.setPadding(0, 0, 0, 32);
+        layout.addView(msg);
+        android.widget.Button btn = new android.widget.Button(this);
+        btn.setText("Update Now");
+        btn.setBackgroundColor(0xFF00D4FF);
+        btn.setTextColor(0xFF00212B);
+        btn.setTextSize(18);
+        btn.setPadding(32, 16, 32, 16);
+        btn.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://github.com/deepsilence10161-source/ff-user-panel/releases/latest")));
+            } catch (Exception e) {
+                Toast.makeText(this, "Browser nahi khula", Toast.LENGTH_SHORT).show();
+            }
+        });
+        layout.addView(btn);
+        setContentView(layout);
     }
 
     private boolean isOnline() {

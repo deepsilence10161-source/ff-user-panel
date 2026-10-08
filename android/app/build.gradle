@@ -93,6 +93,7 @@ android {
 
     buildTypes {
         release {
+            debuggable false
             signingConfig   signingConfigs.release
             minifyEnabled   false
             shrinkResources false
