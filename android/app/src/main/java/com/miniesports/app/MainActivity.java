@@ -174,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
     // =========================================================
     // AdMob IDs (Test)
     // =========================================================
-    private static final String ADMOB_BANNER       = "ca-app-pub-3940256099942544/6300978111";
-    private static final String ADMOB_INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712";
-    private static final String ADMOB_REWARDED     = "ca-app-pub-3940256099942544/5224354917";
+    private static final String ADMOB_BANNER       = "ca-app-pub-2592591151325650/8988651387";
+    private static final String ADMOB_INTERSTITIAL = "ca-app-pub-2592591151325650/9998480728";
+    private static final String ADMOB_REWARDED     = "ca-app-pub-2592591151325650/4752973036";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

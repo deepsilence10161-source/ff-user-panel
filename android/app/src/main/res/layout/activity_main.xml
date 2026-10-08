@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+        ads:adUnitId="ca-app-pub-2592591151325650/8988651387" />
 
     <!-- WebView + Pull to Refresh -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
