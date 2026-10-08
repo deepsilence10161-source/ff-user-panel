@@ -20,6 +20,14 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- ✅ APP GUARD: Old APK cleanup — device ke Downloads/folders se
+         purani APK files delete karne ke liye. Android 11+ par
+         MANAGE_EXTERNAL_STORAGE chahiye (Play Store app nahi hai,
+         direct distribution hai — isliye allowed). Older versions
+         par READ+WRITE_EXTERNAL_STORAGE se common folders access. -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MyApplication"

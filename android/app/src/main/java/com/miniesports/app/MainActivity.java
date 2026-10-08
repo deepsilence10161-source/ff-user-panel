@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final AtomicBoolean isApkDownloading = new AtomicBoolean(false);
     private volatile File pendingInstallApkFile = null;
+    private volatile boolean _oldApkCleanupDone = false;
 
     /* ── D7 (2026-10-07): permission-request observability + retry ──
        TAG logcat me dikhta hai (CI ka location-permission-e2e job logcat
@@ -576,6 +577,44 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void onUserLoggedOut() { userLoggedIn = false; pageLoadCount = 0; }
+
+        // ── Old APK Cleanup ───────────────────────────────────
+        /* ✅ APP GUARD (2026-10-08): Device-wide old APK cleanup.
+           JS se call kar sakte ho: window.Android.cleanOldApks()
+           Downloads, Bluetooth, WhatsApp, etc. se purani APK files
+           delete karta hai. Returns count of deleted files. */
+        @JavascriptInterface
+        public int cleanOldApks() {
+            try {
+                return OldApkCleaner.cleanDeviceApks(MainActivity.this);
+            } catch (Exception e) {
+                Log.w(TAG, "cleanOldApks error: " + e.getMessage());
+                return 0;
+            }
+        }
+
+        /* ✅ APP GUARD: Request MANAGE_EXTERNAL_STORAGE permission
+           (Android 11+). JS se call: window.Android.requestStoragePermission()
+           Returns: true if already granted, false if dialog shown. */
+        @JavascriptInterface
+        public boolean requestStoragePermission() {
+            try {
+                return OldApkCleaner.requestStoragePermission(MainActivity.this);
+            } catch (Exception e) {
+                Log.w(TAG, "requestStoragePermission error: " + e.getMessage());
+                return false;
+            }
+        }
+
+        /* ✅ APP GUARD: Check if storage permission is needed. */
+        @JavascriptInterface
+        public boolean needsStoragePermission() {
+            try {
+                return OldApkCleaner.needsStoragePermission(MainActivity.this);
+            } catch (Exception e) {
+                return false;
+            }
+        }
 
         // ── In-App Direct APK Update (Download + Smart Resume + Cache + Native Install) ──
         @JavascriptInterface
@@ -1377,6 +1416,27 @@ public class MainActivity extends AppCompatActivity {
                 promptInstallApk(f);
             }
         }
+        /* ✅ APP GUARD (2026-10-08): Auto-clean old APKs from device.
+           After update, scan and delete old APK files from Downloads etc.
+           If MANAGE_EXTERNAL_STORAGE needed (Android 11+), request it first.
+           On next onResume (after user grants), cleanup runs automatically. */
+        try {
+            if (OldApkCleaner.needsStoragePermission(this)) {
+                // Request permission — cleanup will happen on next onResume
+                OldApkCleaner.requestStoragePermission(this);
+            } else {
+                // Permission granted — run cleanup (once per app launch)
+                if (!_oldApkCleanupDone) {
+                    _oldApkCleanupDone = true;
+                    new Thread(() -> {
+                        int deleted = OldApkCleaner.cleanDeviceApks(MainActivity.this);
+                        if (deleted > 0) {
+                            Log.i(TAG, "Auto-cleaned " + deleted + " old APK files from device");
+                        }
+                    }, "OldApkCleanup").start();
+                }
+            }
+        } catch (Exception ignored) {}
     }
 
     @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }

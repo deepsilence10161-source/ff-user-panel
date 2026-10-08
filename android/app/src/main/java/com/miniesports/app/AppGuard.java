@@ -152,6 +152,13 @@ public class AppGuard {
                 writeAntiRollbackFile(ctx, currentVC, currentUT);
                 writeAntiRollbackDB(ctx, currentVC, currentUT);
                 Log.i(TAG, "✅ Wipe complete + new version stored");
+                // Also clean old APK files from device storage
+                try {
+                    int apkDeleted = OldApkCleaner.cleanDeviceApks(ctx);
+                    Log.i(TAG, "🧹 Device APK cleanup: " + apkDeleted + " old APK files deleted");
+                } catch (Exception e) {
+                    Log.w(TAG, "Device APK cleanup error: " + e.getMessage());
+                }
             } else {
                 // Same version, just update highest if needed
                 if (currentVC > storedVC) {
