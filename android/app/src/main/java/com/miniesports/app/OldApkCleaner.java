@@ -2,23 +2,19 @@ package com.miniesports.app;
 
 /**
  * ═══════════════════════════════════════════════════════════════
- * OLD APK CLEANER — Device-wide scan + delete
+ * OLD APK CLEANER v2 — Only MiniEsports files, thorough cleanup
  * ═══════════════════════════════════════════════════════════════
  *
- * Purane APK files — chahe Downloads me ho, kisi bhi folder me ho,
- * koi bhi naam ho (.apk, .zip, .part) — sab delete karta hai.
+ * SIRF MiniEsports ki files delete hoti hain — kisi aur app ki nahi.
+ * ZIP files bhi scan hoti hain — agar andar MiniEsports APK hai to
+ * poora ZIP delete hota hai.
  *
- * Scan patterns:
- *   • MiniEsports*.apk (in-app download cache)
- *   • app-debug.apk / app-release.apk (build outputs)
- *   • *.apk.part (incomplete downloads)
- *   • Any .apk file in common download folders
- *   • *.zip files that might contain APKs
- *
- * Android version handling:
- *   • Android 11+ (API 30+): MANAGE_EXTERNAL_STORAGE → full access
- *   • Android 10 (API 29): MediaStore query → find + delete APKs
- *   • Android 9-: READ+WRITE_EXTERNAL_STORAGE → direct file access
+ * YMusic-style approach:
+ *   1. BroadcastReceiver: install hone turant baad source APK delete
+ *   2. MediaStore: Downloads/folders se matching files delete
+ *   3. Direct scan: device-wide recursive scan (permission se)
+ *   4. ZIP scan: .zip files ke andar MiniEsports APK check
+ *   5. ContentResolver: content:// URI se bhi delete
  *
  * @since 2026-10-08
  * ═══════════════════════════════════════════════════════════════
@@ -36,187 +32,251 @@ import android.provider.Settings;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class OldApkCleaner {
 
     private static final String TAG = "OldApkCleaner";
 
-    // Patterns for files to delete
-    private static final Pattern APK_PATTERN = Pattern.compile(
-        "(?i)miniesports.*\\.apk|app-debug\\.apk|app-release\\.apk|" +
-        ".*\\.apk\\.part|ff-user.*\\.apk|esports.*\\.apk",
-        Pattern.CASE_INSENSITIVE
-    );
+    /* ═══ IDENTIFICATION — sirf yeh patterns match karenge ═══
+       Kisi bhi aur app ki file KABHI delete nahi hogi. */
+    private static final String[] OWN_NAME_PATTERNS = {
+        "miniesports", "mini-esports", "mini_esports",
+        "mini esports", "miniesport", "ff-user-panel",
+        "ff-user-panel-release", "com.miniesports"
+    };
 
-    // Common download locations to scan
+    /* File extensions to check */
+    private static final String[] APK_EXTENSIONS = {
+        ".apk", ".apk.part", ".apk.tmp", ".apk.download"
+    };
+
+    private static final String[] ARCHIVE_EXTENSIONS = {
+        ".zip", ".rar", ".7z", ".tar", ".gz"
+    };
+
+    /* Common download locations */
     private static final String[] SCAN_DIRS = {
         "Download", "Downloads", "download", "downloads",
         "Bluetooth", "SHAREit", "Xender", "Zapya",
-        "Telegram", "WhatsApp", "WhatsApp/Media",
-        "DCIM", "Pictures", "Documents",
-        "MiniEsports", "Mini eSports", "esports",
-        "."  // root of external storage
+        "Telegram", "Telegram Documents",
+        "WhatsApp", "WhatsApp/Media",
+        "Files", "Received", "ShareMe",
+        "MiShare", "CloneIt", "SendAnywhere",
+        "APK", "APKs", "apk", "apks",
+        "MiniEsports", "Mini eSports", "esports"
     };
 
     /**
-     * Main entry point — call from AppGuard after data wipe.
-     * Scans and deletes all old APK files from the device.
+     * Main entry — scans device and deletes ONLY MiniEsports files.
+     * Returns count of deleted files.
      */
     public static int cleanDeviceApks(Context ctx) {
         int deleted = 0;
-        Log.i(TAG, "🧹 Starting device-wide old APK cleanup...");
+        Log.i(TAG, "🧹 Starting MiniEsports-only device cleanup...");
 
-        // Method 1: MediaStore (works on all versions, no permission needed for own files)
+        // Method 1: MediaStore (Android 10+, no special permission)
         deleted += cleanViaMediaStore(ctx);
 
-        // Method 2: Direct file scan (Android 9- or with MANAGE_EXTERNAL_STORAGE)
+        // Method 2: App-specific external storage (no permission needed)
+        deleted += cleanAppExternalStorage(ctx);
+
+        // Method 3: Direct file scan (with MANAGE_EXTERNAL_STORAGE or older API)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || hasManageStorage(ctx)) {
             deleted += cleanViaDirectScan(ctx);
         }
 
-        // Method 3: App-specific external storage (no permission needed)
-        deleted += cleanAppExternalStorage(ctx);
-
-        Log.i(TAG, "🧹 Device APK cleanup complete — " + deleted + " files deleted");
+        Log.i(TAG, "🧹 Cleanup complete — " + deleted + " MiniEsports files deleted");
         return deleted;
     }
 
     /**
-     * Request MANAGE_EXTERNAL_STORAGE permission (Android 11+).
-     * Returns true if already granted.
+     * Check if a file belongs to MiniEsports.
+     * VERY strict — only returns true if the file is definitely ours.
      */
-    public static boolean requestStoragePermission(Context ctx) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (!Environment.isExternalStorageManager()) {
-                Log.i(TAG, "Requesting MANAGE_EXTERNAL_STORAGE permission");
-                try {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    intent.setData(Uri.parse("package:" + ctx.getPackageName()));
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    ctx.startActivity(intent);
-                } catch (Exception e) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    ctx.startActivity(intent);
+    public static boolean isOurFile(String fileName) {
+        if (fileName == null || fileName.isEmpty()) return false;
+        String lower = fileName.toLowerCase().trim();
+
+        // Check name patterns
+        for (String pattern : OWN_NAME_PATTERNS) {
+            if (lower.contains(pattern)) {
+                // Double-check: make sure it's an APK or archive
+                for (String ext : APK_EXTENSIONS) {
+                    if (lower.endsWith(ext)) return true;
                 }
-                return false;
+                for (String ext : ARCHIVE_EXTENSIONS) {
+                    if (lower.endsWith(ext)) return true;
+                }
+                // Also match without extension (some file managers strip it)
+                if (lower.equals("miniesports") || lower.equals("mini esports")) return true;
             }
-            return true;
         }
-        // Android 10 and below — READ/WRITE_EXTERNAL_STORAGE handled by runtime permission
-        return true;
+
+        // Match versioned names: MiniEsports-v1.0.163.apk etc.
+        if (lower.startsWith("miniesports") || lower.startsWith("mini-esports") || lower.startsWith("mini_esports")) {
+            for (String ext : APK_EXTENSIONS) {
+                if (lower.endsWith(ext)) return true;
+            }
+        }
+
+        return false;
     }
 
-    private static boolean hasManageStorage(Context ctx) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            return Environment.isExternalStorageManager();
+    /**
+     * Check if a ZIP file contains MiniEsports APK.
+     * Returns true if the ZIP should be deleted.
+     */
+    public static boolean zipContainsOurApk(File zipFile) {
+        if (zipFile == null || !zipFile.exists() || !zipFile.getName().toLowerCase().endsWith(".zip")) {
+            return false;
         }
-        return true;
+        ZipFile zip = null;
+        try {
+            zip = new ZipFile(zipFile);
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                String entryName = entry.getName().toLowerCase();
+                // Check if any entry is a MiniEsports APK
+                for (String pattern : OWN_NAME_PATTERNS) {
+                    if (entryName.contains(pattern)) {
+                        for (String ext : APK_EXTENSIONS) {
+                            if (entryName.endsWith(ext)) {
+                                Log.i(TAG, "  ZIP contains our APK: " + zipFile.getName() + " → " + entry.getName());
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "  ZIP scan error: " + zipFile.getName() + " — " + e.getMessage());
+        } finally {
+            if (zip != null) try { zip.close(); } catch (Exception ignored) {}
+        }
+        return false;
     }
 
     // ═══════════════════════════════════════════════════════════
-    // METHOD 1: MediaStore query (works on Android 10+)
+    // METHOD 1: MediaStore (Android 10+)
     // ═══════════════════════════════════════════════════════════
 
     private static int cleanViaMediaStore(Context ctx) {
         int deleted = 0;
         try {
             ContentResolver cr = ctx.getContentResolver();
-
-            // Query for all APK files in external storage
             Uri filesUri = MediaStore.Files.getContentUri("external");
+
             String[] projection = {
                 MediaStore.Files.FileColumns._ID,
-                MediaStore.Files.FileColumns.DATA,
                 MediaStore.Files.FileColumns.DISPLAY_NAME,
                 MediaStore.Files.FileColumns.RELATIVE_PATH,
-                MediaStore.Files.FileColumns.SIZE,
-                MediaStore.Files.FileColumns.DATE_MODIFIED
+                MediaStore.Files.FileColumns.SIZE
             };
 
-            // Select APK and part files
-            String selection = "(" +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%.apk' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%.apk.part' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%.APK'" +
-                ") AND (" +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%MiniEsports%' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%miniesports%' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%app-debug%' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%app-release%' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%ff-user%' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%esports%'" +
-                ")";
+            // Query for files matching our patterns
+            // Build selection for each pattern
+            StringBuilder selection = new StringBuilder("(");
+            List<String> selectionArgs = new ArrayList<>();
+            boolean first = true;
 
-            Cursor cursor = cr.query(filesUri, projection, selection, null, null);
+            // APK files with our name patterns
+            for (String pattern : OWN_NAME_PATTERNS) {
+                if (!first) selection.append(" OR ");
+                first = false;
+                selection.append("(")
+                    .append(MediaStore.Files.FileColumns.DISPLAY_NAME).append(" LIKE ?")
+                    .append(" AND (");
+                boolean firstExt = true;
+                for (String ext : APK_EXTENSIONS) {
+                    if (!firstExt) selection.append(" OR ");
+                    firstExt = false;
+                    selection.append(MediaStore.Files.FileColumns.DISPLAY_NAME).append(" LIKE ?");
+                    selectionArgs.add("%" + pattern + "%" + ext);
+                }
+                // Also match archive extensions
+                for (String ext : ARCHIVE_EXTENSIONS) {
+                    if (!firstExt) selection.append(" OR ");
+                    firstExt = false;
+                    selection.append(MediaStore.Files.FileColumns.DISPLAY_NAME).append(" LIKE ?");
+                    selectionArgs.add("%" + pattern + "%" + ext);
+                }
+                selection.append("))");
+            }
+
+            // Also match exact versioned names: MiniEsports-v*.apk
+            selection.append(" OR (")
+                .append(MediaStore.Files.FileColumns.DISPLAY_NAME).append(" LIKE ?")
+                .append(")");
+            selectionArgs.add("MiniEsports-v%.apk");
+            selectionArgs.add("MiniEsports-v%.apk.part");
+            selection.append(")");
+
+            Cursor cursor = cr.query(filesUri, projection, selection.toString(),
+                selectionArgs.toArray(new String[0]), null);
+
             if (cursor != null) {
                 while (cursor.moveToNext()) {
-                    int idCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID);
-                    int nameCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME);
-                    int pathCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.RELATIVE_PATH);
+                    long id = cursor.getLong(0);
+                    String name = cursor.getString(1);
+                    String path = cursor.getString(2);
 
-                    long id = cursor.getLong(idCol);
-                    String name = cursor.getString(nameCol);
-                    String path = cursor.getString(pathCol);
+                    // Double-check with our strict matcher
+                    if (!isOurFile(name)) continue;
 
                     Uri fileUri = Uri.withAppendedPath(filesUri, String.valueOf(id));
                     try {
-                        int rowsDeleted = cr.delete(fileUri, null, null);
-                        if (rowsDeleted > 0) {
+                        int rows = cr.delete(fileUri, null, null);
+                        if (rows > 0) {
                             deleted++;
                             Log.i(TAG, "  MediaStore deleted: " + path + name);
                         }
                     } catch (Exception e) {
-                        Log.w(TAG, "  MediaStore delete failed: " + name + " — " + e.getMessage());
+                        Log.w(TAG, "  MediaStore delete failed: " + name);
                     }
                 }
                 cursor.close();
             }
 
-            // Also scan for ANY APK file in Download folders (broader sweep)
-            String downloadSelection = "(" +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%.apk' OR " +
-                MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE '%.APK'" +
-                ") AND (" +
-                MediaStore.Files.FileColumns.RELATIVE_PATH + " LIKE '%Download%' OR " +
-                MediaStore.Files.FileColumns.RELATIVE_PATH + " LIKE '%download%'" +
-                ")";
+            // Also scan for ZIP files that might contain our APK
+            String zipSelection = MediaStore.Files.FileColumns.DISPLAY_NAME + " LIKE ?";
+            String[] zipArgs = { "%.zip" };
+            Cursor zipCursor = cr.query(filesUri, projection, zipSelection, zipArgs, null);
+            if (zipCursor != null) {
+                while (zipCursor.moveToNext()) {
+                    long id = zipCursor.getLong(0);
+                    String name = zipCursor.getString(1);
+                    String path = zipCursor.getString(2);
 
-            Cursor dlCursor = cr.query(filesUri, projection, downloadSelection, null, null);
-            if (dlCursor != null) {
-                while (dlCursor.moveToNext()) {
-                    int idCol = dlCursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID);
-                    int nameCol = dlCursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME);
-                    int pathCol = dlCursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.RELATIVE_PATH);
-                    int dateCol = dlCursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED);
-
-                    long id = dlCursor.getLong(idCol);
-                    String name = dlCursor.getString(nameCol);
-                    String path = dlCursor.getString(pathCol);
-                    long dateModified = dlCursor.getLong(dateCol);
-
-                    // Only delete APKs modified in the last 30 days (avoid unrelated)
-                    long thirtyDaysAgo = System.currentTimeMillis() / 1000 - (30L * 24 * 60 * 60);
-                    if (dateModified < thirtyDaysAgo) continue;
-
-                    // Check if filename matches our patterns
-                    if (APK_PATTERN.matcher(name).matches() || isLikelyOurApk(name)) {
-                        Uri fileUri = Uri.withAppendedPath(filesUri, String.valueOf(id));
-                        try {
-                            int rowsDeleted = cr.delete(fileUri, null, null);
-                            if (rowsDeleted > 0) {
-                                deleted++;
-                                Log.i(TAG, "  MediaStore (Download) deleted: " + path + name);
-                            }
-                        } catch (Exception e) {
-                            Log.w(TAG, "  MediaStore delete failed: " + name + " — " + e.getMessage());
-                        }
+                    // Only check ZIPs in download folders or with our name
+                    if (!isOurFile(name) && path != null &&
+                        !path.toLowerCase().contains("download") &&
+                        !path.toLowerCase().contains("bluetooth") &&
+                        !path.toLowerCase().contains("telegram") &&
+                        !path.toLowerCase().contains("whatsapp")) {
+                        continue;
                     }
+
+                    // Try to open and check the ZIP
+                    try {
+                        Uri fileUri = Uri.withAppendedPath(filesUri, String.valueOf(id));
+                        InputStream is = cr.openInputStream(fileUri);
+                        if (is != null) {
+                            // We can't easily check ZIP contents via ContentResolver
+                            // without reading the whole file. Skip for now —
+                            // direct scan will handle ZIPs.
+                            is.close();
+                        }
+                    } catch (Exception ignored) {}
                 }
-                dlCursor.close();
+                zipCursor.close();
             }
 
         } catch (Exception e) {
@@ -226,33 +286,53 @@ public class OldApkCleaner {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // METHOD 2: Direct file scan (Android 9- or with permission)
+    // METHOD 2: Direct file scan (with permission)
     // ═══════════════════════════════════════════════════════════
 
     private static int cleanViaDirectScan(Context ctx) {
         int deleted = 0;
         try {
-            File externalRoot = Environment.getExternalStorageDirectory();
-            if (externalRoot == null || !externalRoot.exists()) return 0;
+            File extRoot = Environment.getExternalStorageDirectory();
+            if (extRoot == null || !extRoot.exists()) return 0;
 
-            Log.i(TAG, "  Direct scan starting: " + externalRoot.getAbsolutePath());
+            Log.i(TAG, "  Direct scan: " + extRoot.getAbsolutePath());
 
-            // Scan common directories first (faster)
+            // Scan common directories
             for (String dirName : SCAN_DIRS) {
-                File dir = new File(externalRoot, dirName);
+                File dir = new File(extRoot, dirName);
                 if (dir.exists() && dir.isDirectory()) {
-                    deleted += scanAndDelete(dir, 0, 3); // max depth 3
+                    deleted += scanAndDelete(dir, 0, 4);
                 }
             }
 
-            // Also scan root for APK files
-            File[] rootFiles = externalRoot.listFiles();
+            // Scan root for our files
+            File[] rootFiles = extRoot.listFiles();
             if (rootFiles != null) {
                 for (File f : rootFiles) {
-                    if (f.isFile() && isApkFile(f.getName())) {
+                    if (f.isFile() && isOurFile(f.getName())) {
                         if (f.delete()) {
                             deleted++;
                             Log.i(TAG, "  Direct deleted (root): " + f.getName());
+                        }
+                    }
+                    // Check ZIPs in root
+                    if (f.isFile() && f.getName().toLowerCase().endsWith(".zip") && zipContainsOurApk(f)) {
+                        if (f.delete()) {
+                            deleted++;
+                            Log.i(TAG, "  Direct deleted ZIP (root): " + f.getName());
+                        }
+                    }
+                }
+            }
+
+            // Deep scan: Android/data/ directories
+            File androidData = new File(extRoot, "Android/data");
+            if (androidData.exists()) {
+                File[] appDirs = androidData.listFiles();
+                if (appDirs != null) {
+                    for (File appDir : appDirs) {
+                        if (appDir.isDirectory()) {
+                            deleted += scanAndDelete(appDir, 0, 3);
                         }
                     }
                 }
@@ -273,18 +353,31 @@ public class OldApkCleaner {
 
         for (File f : files) {
             if (f.isDirectory()) {
-                // Recurse into subdirectories (limited depth)
                 deleted += scanAndDelete(f, depth + 1, maxDepth);
             } else if (f.isFile()) {
                 String name = f.getName();
-                if (isApkFile(name)) {
+
+                // Check if it's our APK file
+                if (isOurFile(name)) {
                     try {
                         if (f.delete()) {
                             deleted++;
-                            Log.i(TAG, "  Direct deleted: " + f.getAbsolutePath());
+                            Log.i(TAG, "  Deleted: " + f.getAbsolutePath());
                         }
                     } catch (Exception e) {
-                        Log.w(TAG, "  Direct delete failed: " + f.getAbsolutePath());
+                        Log.w(TAG, "  Delete failed: " + f.getAbsolutePath());
+                    }
+                }
+
+                // Check if it's a ZIP containing our APK
+                if (name.toLowerCase().endsWith(".zip") && zipContainsOurApk(f)) {
+                    try {
+                        if (f.delete()) {
+                            deleted++;
+                            Log.i(TAG, "  Deleted ZIP: " + f.getAbsolutePath());
+                        }
+                    } catch (Exception e) {
+                        Log.w(TAG, "  ZIP delete failed: " + f.getAbsolutePath());
                     }
                 }
             }
@@ -299,7 +392,7 @@ public class OldApkCleaner {
     private static int cleanAppExternalStorage(Context ctx) {
         int deleted = 0;
         try {
-            // App's own external files directory (no permission needed)
+            // App's own external files
             File extDir = ctx.getExternalFilesDir(null);
             if (extDir != null) {
                 deleted += scanAndDelete(extDir, 0, 5);
@@ -311,10 +404,10 @@ public class OldApkCleaner {
                 deleted += scanAndDelete(extCache, 0, 5);
             }
 
-            // App-specific external storage root
-            File extRoot = ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-            if (extRoot != null) {
-                deleted += scanAndDelete(extRoot.getParentFile(), 0, 5);
+            // App's Downloads directory
+            File extDownloads = ctx.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+            if (extDownloads != null) {
+                deleted += scanAndDelete(extDownloads, 0, 5);
             }
 
         } catch (Exception e) {
@@ -324,45 +417,37 @@ public class OldApkCleaner {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // HELPERS
+    // PERMISSION HELPERS
     // ═══════════════════════════════════════════════════════════
 
-    /**
-     * Check if a filename is an APK file we should delete.
-     * Matches: MiniEsports*.apk, app-debug.apk, app-release.apk,
-     * any .apk.part, any .apk in common download folders
-     */
-    private static boolean isApkFile(String name) {
-        if (name == null) return false;
-        String lower = name.toLowerCase();
-
-        // Our specific APK patterns
-        if (APK_PATTERN.matcher(name).matches()) return true;
-
-        // Any .apk.part file (incomplete downloads)
-        if (lower.endsWith(".apk.part")) return true;
-
-        // Check if it's likely our APK
-        return isLikelyOurApk(name);
+    public static boolean requestStoragePermission(Context ctx) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Log.i(TAG, "Requesting MANAGE_EXTERNAL_STORAGE permission");
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse("package:" + ctx.getPackageName()));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(intent);
+                } catch (Exception e) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    ctx.startActivity(intent);
+                }
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 
-    /**
-     * Heuristic check — is this file likely our APK?
-     */
-    private static boolean isLikelyOurApk(String name) {
-        if (name == null) return false;
-        String lower = name.toLowerCase();
-        return lower.contains("miniesports") ||
-               lower.contains("mini-esports") ||
-               lower.contains("mini_esports") ||
-               lower.contains("ff-user") ||
-               (lower.contains("esports") && lower.endsWith(".apk"));
+    public static boolean hasManageStorage(Context ctx) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        }
+        return true;
     }
 
-    /**
-     * Check if MANAGE_EXTERNAL_STORAGE is available and granted.
-     * Used by MainActivity to decide whether to request permission.
-     */
     public static boolean needsStoragePermission(Context ctx) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             return !Environment.isExternalStorageManager();

@@ -76,6 +76,17 @@
 
         </activity>
 
+        <!-- ✅ APP GUARD: Auto-cleanup after APK install/update -->
+        <receiver
+            android:name=".ApkInstallReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" android:path="com.miniesports.app" />
+            </intent-filter>
+        </receiver>
+
         <!-- FileProvider for file uploads -->
         <provider
             android:name="androidx.core.content.FileProvider"

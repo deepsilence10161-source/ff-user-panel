@@ -792,6 +792,12 @@ public class MainActivity extends AppCompatActivity {
                         throw new Exception("APK file save nahi ho paya");
                     }
 
+                    // Track path for post-install cleanup
+                    try {
+                        getSharedPreferences("__app_guard_internals", MODE_PRIVATE)
+                            .edit().putString("_last_download_path", finalApk.getAbsolutePath()).apply();
+                    } catch (Exception ignored) {}
+
                     emitApkProgress(100, downloadedBytes, downloadedBytes, "ready", "Download 100% complete! Installer khul raha hai...");
                     runOnUiThread(() -> promptInstallApk(finalApk));
 
