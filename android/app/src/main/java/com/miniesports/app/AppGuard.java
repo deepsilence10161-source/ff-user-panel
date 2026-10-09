@@ -307,13 +307,18 @@ public class AppGuard {
 
         int deleted = 0;
 
-        // 1. SharedPreferences — delete ALL except our guard prefs
+        // 1. SharedPreferences — delete ALL except guard + cleanup-policy prefs
         File prefsDir = new File(ctx.getApplicationInfo().dataDir, "shared_prefs");
         if (prefsDir.exists() && prefsDir.isDirectory()) {
             File[] prefsFiles = prefsDir.listFiles();
             if (prefsFiles != null) {
                 for (File f : prefsFiles) {
                     if (f.getName().contains(PREFS_NAME)) continue; // preserve guard
+                    /* ✅ v5.1 (perfection-audit): SafeCleaner ki verdict +
+                       tracked-path registry kabhi mat mitao — warna wipe ke
+                       beech me hi registry udd jati thi (order-dependent bug)
+                       aur boot-path ka fail-safe verdict bhi reset ho jata. */
+                    if (f.getName().contains("__cleanup_policy")) continue; // preserve SafeCleaner
                     if (f.delete()) deleted++;
                     Log.d(TAG, "  Deleted prefs: " + f.getName());
                 }

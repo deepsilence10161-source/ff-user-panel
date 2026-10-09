@@ -43,23 +43,16 @@ package com.miniesports.app;
  * ═══════════════════════════════════════════════════════════════════
  */
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.security.MessageDigest;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -200,15 +193,16 @@ public final class SafeCleaner {
     private static int runSafeCleanup(Context ctx, Policy p) {
         AtomicInteger deleted = new AtomicInteger(0);
         try {
-            // A. Post-update wipe (old code files / caches) — app-private ONLY
+            // (1) updates/ folder ke purane installer APKs — app-private ONLY
+            deleted.addAndGet(cleanUpdatesDir(ctx));
+            // (2) Tracked own downloads (exact path + strict name) — app-private
+            deleted.addAndGet(cleanTrackedOwnDownloads(ctx));
+            // (3) Post-update wipe (old code files / caches) — app-private ONLY,
+            //     SABSE LAST me (taki registry/updates safai pehle ho jaye)
             if (p.onUpdateWipe && AppGuard.isWipePending(ctx)) {
                 deleted.addAndGet(AppGuard.performFullWipe(ctx));
                 AppGuard.markWipeDone(ctx);
             }
-            // B. updates/ folder ke purane installer APKs — app-private ONLY
-            deleted.addAndGet(cleanUpdatesDir(ctx));
-            // C. Tracked own downloads (exact path + strict name) — best-effort
-            deleted.addAndGet(cleanTrackedOwnDownloads(ctx));
         } catch (Exception e) {
             Log.w(TAG, "Safe cleanup error (kuch bhi toota nahi): " + e.getMessage());
         }
@@ -216,7 +210,9 @@ public final class SafeCleaner {
         return deleted.get();
     }
 
-    /** Sirf app ke updates/ dir ke files (app-private, koi permission nahi). */
+    /** Sirf app ke updates/ dir ke files (app-private, koi permission nahi).
+     *  ✅ v5.1: 30 minute se naye .part/.tmp (download chal raha ho) nahi
+     *  chhute — download-in-progress kabhi delete nahi hoga. */
     private static int cleanUpdatesDir(Context ctx) {
         int deleted = 0;
         try {
@@ -225,8 +221,16 @@ public final class SafeCleaner {
             File dir = new File(base, "updates");
             File[] files = dir.listFiles();
             if (files == null) return 0;
+            long now = System.currentTimeMillis();
             for (File f : files) {
-                if (f.isFile() && safeDelete(ctx, f)) {
+                if (!f.isFile()) continue;
+                String lower = f.getName().toLowerCase();
+                if ((lower.endsWith(".part") || lower.endsWith(".tmp") || lower.endsWith(".download"))
+                        && (now - f.lastModified() < 30L * 60L * 1000L)) {
+                    Log.i(TAG, "  updates/: skip (download-in-progress) " + f.getName());
+                    continue;
+                }
+                if (safeDelete(ctx, f)) {
                     deleted++;
                     Log.i(TAG, "  updates/: " + f.getName());
                 }
@@ -267,9 +271,11 @@ public final class SafeCleaner {
                     remaining.remove(path);
                     continue;
                 }
-                // App-private file = seedha delete; shared = best-effort
+                // App-private file = seedha delete. Shared-storage file ke liye
+                // f.delete() platform (Android 11+) par fail hota hai — chhod do.
+                // ✅ v5.1: MediaStore fallback HATA diya (theoretical same-name
+                // risk tha) — ab sirf exact app-private/tracked delete.
                 boolean gone = safeDelete(ctx, f);
-                if (!gone) gone = tryDeleteViaMediaStoreOwnRow(ctx, f.getName());
                 if (gone) {
                     deleted++;
                     remaining.remove(path);
@@ -390,44 +396,8 @@ public final class SafeCleaner {
     }
 
     // ═══════════════════════════════════════════════════════════
-    // BEST-EFFORT shared delete — sirf OWN MediaStore row (R2/R3)
-    // ═══════════════════════════════════════════════════════════
-
-    /**
-     * Sirf exact DISPLAY_NAME ki row delete karta hai AUR woh bhi tabhi jab
-     * file hamari strict naam allowlist me ho. Koi LIKE-pattern nahi,
-     * koi bulk delete nahi. SecurityException/IllegalStateException par
-     * chupchap false (Android 11+ par doosre app ki file milegi hi nahi).
-     */
-    private static boolean tryDeleteViaMediaStoreOwnRow(Context ctx, String displayName) {
-        if (!isOurInstallerName(displayName)) return false;
-        Cursor cursor = null;
-        try {
-            ContentResolver cr = ctx.getContentResolver();
-            Uri filesUri = MediaStore.Files.getContentUri("external");
-            cursor = cr.query(filesUri,
-                    new String[]{MediaStore.Files.FileColumns._ID},
-                    MediaStore.Files.FileColumns.DISPLAY_NAME + " = ?",
-                    new String[]{displayName}, null);
-            boolean any = false;
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    long id = cursor.getLong(0);
-                    Uri fileUri = Uri.withAppendedPath(filesUri, String.valueOf(id));
-                    int rows = cr.delete(fileUri, null, null);
-                    if (rows > 0) any = true;
-                }
-            }
-            return any;
-        } catch (Exception e) {
-            // Expected on Android 11+ for files we don't own — skip silently.
-            return false;
-        } finally {
-            if (cursor != null) try { cursor.close(); } catch (Exception ignored) {}
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════
     // PURANE (LEGACY) HELPERS — hata diye gaye hain; koi call nahi
+    // (MediaStore delete fallback v5.1 me HATA — sirf app-private delete
+    //  bacha hai; theoretical same-name shared-storage risk khatam.)
     // ═══════════════════════════════════════════════════════════
 }

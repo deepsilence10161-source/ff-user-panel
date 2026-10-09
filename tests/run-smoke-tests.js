@@ -769,7 +769,47 @@ console.log('\n── TEST 21: apk_cleanup server policy — shape + SSOT ──
 setTimeout(function () {
   /* Async gate checks (Promise microtasks flush ho chuke hain) */
   while (_asyncChecks.length) { (_asyncChecks.shift())(); }
-  console.log('\n══════════════════════════════');
+  /* ── TEST 22: v5.1 perfection-audit — 4 dheele sire band (2026-10-09) ──
+   1) cleanup-bridge origin guard (bahari page delete trigger na kare)
+   2) MediaStore-delete fallback HATA (theoretical same-name risk khatam)
+   3) wipe me __cleanup_policy registry preserved (order-bug band)
+   4) download-in-progress .part guard */
+console.log('\n── TEST 22: v5.1 perfection-audit — koi jugad/loose sire nahi ──');
+{
+  const strip22 = (src) => src
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/\/\/[^\n]*/g, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ');
+  const sc22 = strip22(fs.readFileSync(path.join(REPO, 'android/app/src/main/java/com/miniesports/app/SafeCleaner.java'), 'utf8'));
+  const ag22 = strip22(fs.readFileSync(path.join(REPO, 'android/app/src/main/java/com/miniesports/app/AppGuard.java'), 'utf8'));
+  const ma22 = strip22(fs.readFileSync(path.join(REPO, 'android/app/src/main/java/com/miniesports/app/MainActivity.java'), 'utf8'));
+
+  ok(ma22.indexOf('isTrustedCleanupOrigin') !== -1
+     && ma22.indexOf('deepsilence10161-source.github.io') !== -1
+     && /runPostUpdateCleanup[\s\S]{0,400}isTrustedCleanupOrigin/.test(ma22),
+     '22a: cleanup-bridge origin guard — sirf official app host se cleanup call hoga');
+  ok(/cleanOldApks[\s\S]{0,400}isTrustedCleanupOrigin/.test(ma22)
+     && /downloadAndInstallApk[\s\S]{0,600}isTrustedCleanupOrigin/.test(ma22),
+     '22b: cleanOldApks + downloadAndInstallApk par bhi origin guard');
+
+  ok(sc22.indexOf('MediaStore') === -1 && sc22.indexOf('ContentResolver') === -1
+     && sc22.indexOf('tryDeleteViaMediaStoreOwnRow') === -1,
+     '22c: SafeCleaner me koi MediaStore-delete/query NAHI — sirf app-private File.delete');
+
+  ok(ag22.indexOf('__cleanup_policy') !== -1,
+     '22d: performFullWipe __cleanup_policy (verdict + tracked registry) preserve karta hai');
+
+  ok(sc22.indexOf('download-in-progress') !== -1,
+     '22e: updates/ me naye .part/.tmp (download-in-progress) skip — download race safe');
+
+  /* Deletion ke sabhi zinda paths — ek hi allowlist se guzarte hain */
+  const deleteCalls = (sc22.match(/\.delete\(\)/g) || []).length;
+  const viaSafeDelete = (sc22.match(/safeDelete\(/g) || []).length;
+  ok(deleteCalls <= 2 && viaSafeDelete >= 3,
+     '22f: SafeCleaner me delete() sirf safeDelete/allowlist ke andar (calls=' + deleteCalls + ', safeDelete-refs=' + viaSafeDelete + ')');
+}
+
+console.log('\n══════════════════════════════');
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
   if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
   process.exit(FAIL ? 1 : 0);

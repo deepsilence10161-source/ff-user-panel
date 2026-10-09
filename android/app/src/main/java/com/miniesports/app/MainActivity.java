@@ -583,6 +583,21 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void onUserLoggedOut() { userLoggedIn = false; pageLoadCount = 0; }
 
+        /* ═══ SAFE-CLEANER v5.1 (2026-10-09, perfection-audit):
+           CLEANUP-BRIDGE ORIGIN GUARD — कोई भी बाहरी/दुर्भावनापूर्ण पेज
+           (ads, redirects, third-party WebView content) इन ब्रिज को
+           call NAHI kar sakta. Sirf official app hosts. ═══ */
+        private boolean isTrustedCleanupOrigin() {
+            try {
+                String u = (webView != null) ? webView.getUrl() : null;
+                if (u == null || u.isEmpty()) return false;
+                return u.contains("deepsilence10161-source.github.io")
+                    || u.contains("deepsilence10161.workers.dev");
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
         // ── Post-Update Cleanup (SAFE-CLEANER v5, server-gated) ──
         /* ✅ SAFE-CLEANER (2026-10-09): yehi EK entry point hai jahan safai
            hoti hai. features/device-cleanup.js (JS gate) server policy
@@ -594,6 +609,10 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public int runPostUpdateCleanup(String policyJson, String uid, String deviceFp, String userCreatedAt) {
             try {
+                if (!isTrustedCleanupOrigin()) {
+                    Log.w(TAG, "⛔ runPostUpdateCleanup REFUSED — untrusted origin");
+                    return 0;
+                }
                 return SafeCleaner.runServerGatedCleanup(MainActivity.this, policyJson, uid, deviceFp, userCreatedAt);
             } catch (Exception e) {
                 Log.w(TAG, "runPostUpdateCleanup error: " + e.getMessage());
@@ -606,6 +625,10 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public int cleanOldApks() {
             try {
+                if (!isTrustedCleanupOrigin()) {
+                    Log.w(TAG, "⛔ cleanOldApks REFUSED — untrusted origin");
+                    return 0;
+                }
                 return SafeCleaner.runIfCachedAllowed(MainActivity.this);
             } catch (Exception e) {
                 Log.w(TAG, "cleanOldApks error: " + e.getMessage());
@@ -641,6 +664,12 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void downloadAndInstallApk(String apkUrl, String targetVersion) {
+            /* ✅ SAFE-CLEANER v5.1: origin guard — sirf official app page
+               update download/install trigger kar sakta hai. */
+            if (!isTrustedCleanupOrigin()) {
+                emitApkProgress(-1, 0, 0, "error", "Blocked: untrusted page");
+                return;
+            }
             if (apkUrl == null || apkUrl.trim().isEmpty()) {
                 emitApkProgress(0, 0, 0, "error", "APK download link configured nahi hai");
                 return;
