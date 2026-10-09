@@ -3,6 +3,49 @@
 
 ---
 
+## 🔴 2026-10-09 — SAFE-CLEANER v5: owner-incident ke baad poora cleanup system redesign (E2E-verified)
+**Files:** `android/.../SafeCleaner.java` (NEW), `android/.../OldApkCleaner.java` (DELETED), `android/.../AppGuard.java`, `android/.../ApkInstallReceiver.java`, `android/.../MainActivity.java`, `android/.../MyApplication.java`, `android/.../AndroidManifest.xml`, `features/device-cleanup.js` (NEW), `index.html`, `sw.js`, `supabase/apk-cleanup-policy.sql` (NEW), `tests/run-smoke-tests.js`
+
+### Problem (live incident, 2026-10-08)
+"Update ke baad purani code-files saf karo" feature ke tehat `OldApkCleaner`
+ne device-wide scan chalaya: `MANAGE_EXTERNAL_STORAGE` + DCIM/Pictures/
+Documents/root scan + loose patterns (`app-debug.apk`, `app-release.apk`,
+koi bhi `*.apk.part`, `esports*.apk`) + SAF folder picker. **Owner ke device
+se bhi files delete ho gayi.** Teen bimariyan: naam-pattern par bharosa,
+bina server-control shared-storage delete, aur permission prompts.
+
+### Fix — SAFE-CLEANER v5 (4 lohe ke niyam)
+- **R1 SERVER-SIDE FAISLA:** safai SIRF Supabase `app_settings.key='apk_cleanup'`
+  policy se chalti hai (`enabled`, `onUpdateWipe`, `exemptUids`,
+  `exemptDeviceFps`, `exemptRegisteredBefore`). Policy nahi/offline/galat
+  JSON = **fail-safe = ZERO deletion** (verdict cache default "unknown").
+- **R2 SIRF APP-PRIVATE + PROVED-OWN:** deletion sirf app ke apne dirs
+  (filesDir/cache/codeCache/externalFiles/externalCache) + tracked own
+  downloads (exact path + strict naam `MiniEsports*.apk`). Hard allowlist
+  (`safeDelete` → "REFUSED (outside allowlist)") — naam-pattern scan
+  HAMESHA ke liye khatam. `performFullWipe` bhi ab sirf server-gated path
+  se (boot par turant wipe band).
+- **R3 ZERO PERMISSION, ZERO PROMPT:** SAF folder picker + dialog poora hata,
+  `requestStoragePermission()` hamesha `false`, MANAGE/READ/WRITE_EXTERNAL
+  _STORAGE kahin nahi, `requestLegacyExternalStorage` nahi.
+- **R4 OWNER PROTECTION:** exemptUids/exemptDeviceFps/exemptRegisteredBefore
+  (server policy) match par EK file bhi delete nahi — JS gate aur native
+  dono taraf check (defense in depth). `created_at` unknown = fail-safe exempt.
+
+### Server setup (live, 2026-10-09)
+`app_settings.apk_cleanup` row insert ho chuki hai: sabhi 5 existing accounts
++ 3 device-fps + `exemptRegisteredBefore=2026-10-10` exempt. Naye
+registrations par update-ke-baad safai hoti hai. (Exemption badalni ho to
+sirf yeh row edit karo — `supabase/apk-cleanup-policy.sql`.)
+
+### Verification (E2E method)
+- smoke `tests/run-smoke-tests.js` → **170/0** (TEST 19 = Java safety
+  invariants: scanner/picker/permissions sab ZERO; TEST 20 = asli
+  `device-cleanup.js` fail-safe matrix VM me; TEST 21 = server policy SSOT).
+- CI: release APK build + Android 14 emulator E2E (install + launch +
+  no-permission-prompts + fail-safe proof) — build-apk.yml.
+
+---
 
 ## 🟢 2026-09-23x — R3 Phase-16: AUTO-VERSION (manual version bump ख़त्म)
 **Files:** `android/app/build.gradle`, `.github/workflows/build-apk.yml`, `tests/run-smoke-tests.js`

@@ -22,11 +22,14 @@
          REMOVED — these are top Play Protect triggers!
          REQUEST_INSTALL_PACKAGES: self-update redirected to browser instead.
          RECEIVE_BOOT_COMPLETED: not critical, removed to reduce flags.
-         Old APK cleanup: MediaStore (no permission) + SAF (user folder picker).
-         Play Protect Appeal: submit to Google for permanent whitelist. -->
-    <!-- ✅ OLD APK CLEANER: NO scary permissions.
-         MediaStore query+delete (Android 10+, no permission).
-         SAF folder picker (user-friendly, one-time).
+         ✅ SAFE-CLEANER (2026-10-09): purana device-wide OldApkCleaner + SAF
+         folder picker POORA hata diya gaya (owner incident ke baad). Ab
+         post-update safai sirf app-private storage + tracked own downloads
+         par hoti hai, server policy (Supabase apk_cleanup) ke gate se.
+         File-access ki KOI permission nahi — MANAGE_EXTERNAL_STORAGE,
+         READ/WRITE_EXTERNAL_STORAGE kisi bhi roop me nahi, koi picker/dailog nahi. -->
+    <!-- ✅ SAFE-CLEANER v5: zero file-access permission.
+         Post-install cleanup: SafeCleaner (server-gated, app-private only).
          BroadcastReceiver (PACKAGE_REPLACED, no permission). -->
 
     <application

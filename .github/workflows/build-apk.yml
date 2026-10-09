@@ -182,6 +182,12 @@ jobs:
           #!/usr/bin/env bash
           set -e
           PKG="com.miniesports.app"
+          echo "=== 0. SAFE-CLEANER v5: decoy files plant karo (survival proof) ==="
+          adb shell mkdir -p /sdcard/Download /sdcard/DCIM
+          adb shell "echo FAKE-APK-CONTENT > /sdcard/Download/MiniEsports-vOLD-test.apk"
+          adb shell "echo USER-DOCUMENT > /sdcard/Download/user-document-important.zip"
+          adb shell "echo USER-PHOTO > /sdcard/DCIM/user-photo.jpg"
+          echo "✅ Decoys planted: Download/MiniEsports-vOLD-test.apk, Download/user-document-important.zip, DCIM/user-photo.jpg"
           echo "=== 1. Installing Release APK on Live Android Emulator ==="
           adb install -r apk-out/app-release.apk
           adb shell pm list packages | grep "$PKG"
@@ -253,6 +259,42 @@ jobs:
             exit 1
           fi
           echo "✅ Screenshot me asli content hai"
+
+          echo "=== 11. SAFE-CLEANER v5 (2026-10-09): fail-safe + owner-safety LIVE proof ==="
+          echo "--- 11a. ZERO file-storage permission declared ---"
+          if adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p' | grep -qiE "READ_EXTERNAL_STORAGE|WRITE_EXTERNAL_STORAGE|MANAGE_EXTERNAL_STORAGE"; then
+            echo "❌ File-storage permission declared hai! (user se file-access maang sakti hai)"
+            adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p'
+            exit 1
+          fi
+          echo "✅ 11a: ZERO file-storage permissions (na READ/WRITE_EXTERNAL_STORAGE, na MANAGE_EXTERNAL_STORAGE)"
+
+          echo "--- 11b. Koi storage-permission dialog/picker nahi (SAF regression guard) ---"
+          if [ -f emulator-ui-dump.xml ] && grep -qiE "Downloads Folder Access|All Files Access|Allow access to all files|MANAGE_EXTERNAL_STORAGE" emulator-ui-dump.xml; then
+            echo "❌ Storage permission dialog/picker dikh raha hai — fail-safe toota!"
+            exit 1
+          fi
+          echo "✅ 11b: koi storage permission dialog/picker nahi"
+
+          echo "--- 11c. Decoy files zinda (fail-safe proof — kuch bhi delete nahi hua) ---"
+          for f in /sdcard/Download/MiniEsports-vOLD-test.apk /sdcard/Download/user-document-important.zip /sdcard/DCIM/user-photo.jpg; do
+            if timeout 15 adb shell "test -f $f && echo EXISTS" | grep -q EXISTS; then
+              echo "  alive: $f"
+            else
+              echo "❌ Decoy file gayab: $f — cleanup galat file chhu gaya!"
+              exit 1
+            fi
+          done
+          echo "✅ 11c: saari decoy files zinda — owner/user files 100% untouched (fail-safe)"
+
+          echo "--- 11d. Logcat: sirf SafeCleaner gate, koi device-wide scan nahi ---"
+          adb logcat -d | grep -iE "SafeCleaner|PostInstallCleanup" | head -10 || true
+          if adb logcat -d | grep -qE "CLEANUP STARTING|MediaStore deleted:|SAF folder"; then
+            echo "❌ Purana device-wide cleaner chala!"
+            exit 1
+          fi
+          echo "✅ 11d: sirf SafeCleaner gated path — koi device-wide scan nahi"
+          echo "✅ SAFE-CLEANER v5 E2E VERIFIED (fail-safe + zero-permission + owner-safety)!"
           echo "✅ LIVE ANDROID EMULATOR APK E2E VERIFIED (deep audit ke saath)!"
           EOF
           chmod +x /tmp/e2e-emulator.sh
