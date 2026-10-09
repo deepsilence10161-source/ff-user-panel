@@ -183,10 +183,30 @@ jobs:
           set -e
           PKG="com.miniesports.app"
           echo "=== 0. SAFE-CLEANER v5: decoy files plant karo (survival proof) ==="
-          adb shell mkdir -p /sdcard/Download /sdcard/DCIM
-          adb shell "echo FAKE-APK-CONTENT > /sdcard/Download/MiniEsports-vOLD-test.apk"
-          adb shell "echo USER-DOCUMENT > /sdcard/Download/user-document-important.zip"
-          adb shell "echo USER-PHOTO > /sdcard/DCIM/user-photo.jpg"
+          # ✅ FIX (run 37968382858): boot ke 170ms baad hi shell-redirect se file
+          # banane par FUSE/MediaProvider ready na hone se EPERM aaya tha. Ab:
+          # 10s warm-up + adb push (sync protocol) + 5 retries.
+          sleep 10
+          echo "FAKE-APK-CONTENT" > /tmp/decoy-apk.bin
+          echo "USER-DOCUMENT"    > /tmp/decoy-doc.bin
+          echo "USER-PHOTO"       > /tmp/decoy-img.bin
+          PLANTED=0
+          for i in 1 2 3 4 5; do
+            timeout 20 adb shell mkdir -p /sdcard/Download || true
+            timeout 20 adb shell mkdir -p /sdcard/DCIM || true
+            ok1=0; ok2=0; ok3=0
+            timeout 20 adb push /tmp/decoy-apk.bin /sdcard/Download/MiniEsports-vOLD-test.apk && ok1=1 || true
+            timeout 20 adb push /tmp/decoy-doc.bin /sdcard/Download/user-document-important.zip && ok2=1 || true
+            timeout 20 adb push /tmp/decoy-img.bin /sdcard/DCIM/user-photo.jpg && ok3=1 || true
+            if [ "$ok1" = 1 ] && [ "$ok2" = 1 ] && [ "$ok3" = 1 ]; then PLANTED=1; break; fi
+            echo "retry $i (decoy push incomplete: $ok1/$ok2/$ok3)..."
+            sleep 5
+          done
+          if [ "$PLANTED" != 1 ]; then
+            echo "❌ Decoy files plant hi nahi hui — survival proof adhura!"
+            exit 1
+          fi
+          timeout 15 adb shell ls -la /sdcard/Download /sdcard/DCIM || true
           echo "✅ Decoys planted: Download/MiniEsports-vOLD-test.apk, Download/user-document-important.zip, DCIM/user-photo.jpg"
           echo "=== 1. Installing Release APK on Live Android Emulator ==="
           adb install -r apk-out/app-release.apk
