@@ -102,7 +102,7 @@ function cJoin(id) {
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261009a" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261009b" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';
