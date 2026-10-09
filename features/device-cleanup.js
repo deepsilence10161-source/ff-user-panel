@@ -106,7 +106,7 @@
     }
   }
 
-  /* ── Users-table se created_at (exemptRegisteredBefore proof ke liye) ── */
+  /* ── Users-table se created_at + device_fp (exemptRegisteredBefore proof) ── */
   function _fetchCreatedAt(uid) {
     try {
       if (!window._supa || !uid) return Promise.resolve('');
@@ -118,6 +118,20 @@
     } catch (e) {
       return Promise.resolve('');
     }
+  }
+
+  /* ── device_fp: DFP_ fingerprint (js/device-identity.js ka generator) ── */
+  function _fetchDeviceFp() {
+    try {
+      if (window.UD && window.UD.deviceFp) return Promise.resolve(String(window.UD.deviceFp));
+      if (window.UD && window.UD.device_fp) return Promise.resolve(String(window.UD.device_fp));
+      if (window.generateAdvancedFingerprint && typeof window.generateAdvancedFingerprint === 'function') {
+        return Promise.resolve(window.generateAdvancedFingerprint())
+          .then(function (fp) { return String(fp || ''); })
+          .catch(function () { return ''; });
+      }
+    } catch (e) {}
+    return Promise.resolve('');
   }
 
   /* ── MAIN GATE — ek baar per (version + user), tabhi jab faisla definitive ── */
@@ -135,23 +149,16 @@
         if (localStorage.getItem(DONE_FLAG) === doneKey) return;
       } catch (e) {}
 
-      /* device_fp: wohi fingerprint jo app users table me rakhta hai */
-      var deviceFp = '';
-      try {
-        if (window.UD && window.UD.deviceFp) deviceFp = String(window.UD.deviceFp);
-        else if (window._getDeviceFp && typeof window._getDeviceFp === 'function') {
-          deviceFp = String(window._getDeviceFp() || '');
-        }
-      } catch (e) {}
-
       Promise.all([
         Promise.resolve(window._supa.from('app_settings').select('value').eq('key', POLICY_KEY).maybeSingle())
           .then(function (r) { return (r && r.data && r.data.value) ? r.data.value : null; })
           .catch(function () { return null; }),
-        _fetchCreatedAt(uid)
+        _fetchCreatedAt(uid),
+        _fetchDeviceFp()
       ]).then(function (res) {
         var pol = res[0];
         var createdAt = res[1] || '';
+        var deviceFp = res[2] || '';
         if (!pol) return; // fail-safe: policy nahi mila — retry agle launch par
 
         var verdict = _decide(pol, uid, deviceFp, createdAt);
