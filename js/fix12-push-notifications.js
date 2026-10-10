@@ -157,8 +157,8 @@
       if ('serviceWorker' in navigator && window._swRegistration) {
         window._swRegistration.showNotification(title, {
           body:    body,
-          icon:    opts.icon    || 'icons/icon-192x192.png?v=20261008f',
-          badge:   opts.badge   || 'icons/icon-96x96.png?v=20261008f',
+          icon:    opts.icon    || 'icons/icon-192x192.png?v=20261010a',
+          badge:   opts.badge   || 'icons/icon-96x96.png?v=20261010a',
           vibrate: opts.vibrate || [200, 100, 200],
           tag:     opts.tag     || 'mes-notif',
           data:    opts.data    || {},
@@ -168,8 +168,8 @@
         /* Fallback: basic Notification API */
         var n = new Notification(title, {
           body:    body,
-          icon:    opts.icon  || 'icons/icon-192x192.png?v=20261008f',
-          badge:   opts.badge || 'icons/icon-96x96.png?v=20261008f',
+          icon:    opts.icon  || 'icons/icon-192x192.png?v=20261010a',
+          badge:   opts.badge || 'icons/icon-96x96.png?v=20261010a',
           tag:     opts.tag   || 'mes-notif'
         });
         setTimeout(function() { n.close(); }, opts.duration || 8000);

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MiniEsports Download</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#050507; color:#e0e0e0; min-height:100vh; padding:20px; line-height:1.6; }
+.container { max-width:480px; margin:0 auto; }
+
+/* Header */
+.header { text-align:center; padding:30px 0 20px; }
+.logo { width:80px; height:80px; margin:0 auto 15px; border-radius:20px; background:linear-gradient(135deg,#1a1a3a,#0a0a2a); border:2px solid rgba(0,212,255,.4); box-shadow:0 0 30px rgba(0,212,255,.2); display:flex; align-items:center; justify-content:center; }
+.logo img { width:60px; height:60px; border-radius:14px; }
+.title { font-size:24px; font-weight:800; background:linear-gradient(90deg,#00d4ff,#00ff64); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.subtitle { font-size:14px; color:rgba(255,255,255,.5); margin-top:5px; }
+.version { display:inline-block; padding:4px 12px; border-radius:12px; background:rgba(0,255,100,.1); border:1px solid rgba(0,255,100,.2); color:#00ff64; font-size:12px; font-weight:600; margin-top:10px; }
+
+/* Steps */
+.steps { margin:20px 0; }
+.step { background:linear-gradient(135deg,rgba(15,15,35,.9),rgba(10,10,25,.9)); border:1px solid rgba(0,212,255,.12); border-radius:14px; padding:16px; margin-bottom:12px; display:flex; gap:14px; align-items:flex-start; }
+.step-num { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#00d4ff,#0088ff); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; color:#000; flex-shrink:0; }
+.step-content { flex:1; }
+.step-title { font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
+.step-desc { font-size:13px; color:rgba(255,255,255,.5); }
+.step-btn { display:inline-block; margin-top:8px; padding:8px 16px; border-radius:10px; background:rgba(0,212,255,.15); border:1px solid rgba(0,212,255,.3); color:#00d4ff; font-size:12px; font-weight:600; text-decoration:none; cursor:pointer; }
+
+/* Download Button */
+.download-section { text-align:center; padding:20px 0; }
+.download-btn { display:inline-block; padding:18px 50px; border-radius:16px; background:linear-gradient(135deg,#00ff64,#00cc50); color:#000; font-size:18px; font-weight:800; text-decoration:none; box-shadow:0 0 30px rgba(0,255,100,.3); position:relative; overflow:hidden; }
+.download-btn::after { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(45deg,transparent,rgba(255,255,255,.3),transparent); animation:shine 2s linear infinite; }
+@keyframes shine { to { transform:translateX(200%); } }
+.download-size { font-size:12px; color:rgba(255,255,255,.4); margin-top:10px; }
+
+/* Device Detection */
+.device-info { background:rgba(0,212,255,.05); border:1px solid rgba(0,212,255,.15); border-radius:12px; padding:14px; margin:15px 0; text-align:center; }
+.device-name { font-size:14px; font-weight:600; color:#00d4ff; }
+
+/* Security Tips */
+.tips { margin:20px 0; }
+.tip { background:rgba(255,215,0,.05); border:1px solid rgba(255,215,0,.15); border-radius:10px; padding:12px; margin-bottom:10px; display:flex; gap:10px; align-items:flex-start; }
+.tip-icon { font-size:18px; flex-shrink:0; }
+.tip-text { font-size:12px; color:rgba(255,255,255,.6); }
+
+/* Status */
+.status { text-align:center; padding:15px; }
+.status-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#00ff64; margin-right:6px; animation:blink 1.5s infinite; }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+.status-text { font-size:12px; color:rgba(255,255,255,.4); }
+
+/* Footer */
+.footer { text-align:center; padding:30px 0; font-size:11px; color:rgba(255,255,255,.2); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+  <div class="logo">
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="18" stroke="url(#g1)" stroke-width="2" fill="none"/>
+      <circle cx="30" cy="30" r="10" stroke="url(#g1)" stroke-width="1.5" fill="none" opacity=".5"/>
+      <circle cx="30" cy="30" r="3" fill="#00d4ff"/>
+      <line x1="30" y1="10" x2="30" y2="22" stroke="#00d4ff" stroke-width="1.5"/>
+      <line x1="30" y1="38" x2="30" y2="50" stroke="#00d4ff" stroke-width="1.5"/>
+      <line x1="10" y1="30" x2="22" y2="30" stroke="#00d4ff" stroke-width="1.5"/>
+      <line x1="38" y1="30" x2="50" y2="30" stroke="#00d4ff" stroke-width="1.5"/>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#ff00aa"/></linearGradient></defs>
+    </svg>
+  </div>
+  <div class="title">MiniEsports Download</div>
+  <div class="subtitle">Free Fire Tournament Platform</div>
+  <div class="version">v1.0.181 | 9.3MB</div>
+</div>
+
+<div class="device-info">
+  <div class="device-name" id="deviceName">Detecting device...</div>
+</div>
+
+<!-- STEP 1: Permission -->
+<div class="steps">
+  <div class="step" id="step1">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">Chrome ko Permission Do</div>
+      <div class="step-desc" id="step1Desc">APK download karne ke liye Chrome ko "Install Unknown Apps" permission chahiye.</div>
+      <a class="step-btn" id="step1Btn" href="#" onclick="openSettings(); return false;">⚙️ Settings Kholein</a>
+    </div>
+  </div>
+
+  <!-- STEP 2: Oppo Extra Security -->
+  <div class="step" id="step2Oppo" style="display:none;">
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">2</div>
+    <div class="step-content">
+      <div class="step-title">Oppo Security Guard Band Karo</div>
+      <div class="step-desc">ColorOS ki extra security APK download block karti hai. Phone Manager ko band karo.</div>
+      <div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.4);">
+        Settings → Apps → Phone Manager → Force Stop<br>
+        Settings → Apps → App Market → Settings → Services → Sab OFF
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Samsung Extra Security -->
+  <div class="step" id="step2Samsung" style="display:none;">
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">2</div>
+    <div class="step-content">
+      <div class="step-title">Samsung Auto Blocker OFF Karo</div>
+      <div class="step-desc">Samsung ki security APK install block karti hai.</div>
+      <div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.4);">
+        Settings → Security & Privacy → Auto Blocker → OFF
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: Xiaomi Extra Security -->
+  <div class="step" id="step2Xiaomi" style="display:none;">
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">2</div>
+    <div class="step-content">
+      <div class="step-title">Xiaomi GetApps Verification OFF Karo</div>
+      <div class="step-desc">MIUI/HyperOS ki security APK install block karti hai.</div>
+      <div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.4);">
+        Settings → Security → GetApps Verification → OFF
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Download -->
+  <div class="step" id="step3">
+    <div class="step-num" style="background:linear-gradient(135deg,#00ff64,#00cc50);">3</div>
+    <div class="step-content">
+      <div class="step-title">Download Karein</div>
+      <div class="step-desc">Neeche button dabayein. Download hone ke baad notification bar mein dikhega.</div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Install -->
+  <div class="step" id="step4">
+    <div class="step-num" style="background:linear-gradient(135deg,#00ff64,#00cc50);">4</div>
+    <div class="step-content">
+      <div class="step-title">Install Karein</div>
+      <div class="step-desc">Download complete hone ke baad → Notification bar → "MiniEsports" pe tap karein → Install → Done!</div>
+    </div>
+  </div>
+</div>
+
+<div class="download-section">
+  <a class="download-btn" href="https://d.apkpure.net/b/APK/com.miniesports.app?version=latest" id="downloadBtn">
+    ⬇️ DOWNLOAD APK
+  </a>
+  <div class="download-size">MiniEsports v1.0.181 | 9.3MB | Android 5.0+</div>
+  <div style="margin-top:12px;">
+    <a href="https://github.com/deepsilence10161-source/ff-user-panel/releases/latest/download/MiniEsports.apk" style="font-size:12px;color:rgba(0,212,255,.5);text-decoration:underline;">Mirror Link (GitHub)</a>
+  </div>
+</div>
+
+<div class="tips">
+  <div class="tip">
+    <span class="tip-icon">🛡️</span>
+    <span class="tip-text">Ye app 100% safe hai. Play Protect warning aaye to "More Details" → "Install Anyway" click karein.</span>
+  </div>
+  <div class="tip">
+    <span class="tip-icon">🔄</span>
+    <span class="tip-text">Permission ek baar deni hai. Baad mein har update automatically install hoga.</span>
+  </div>
+  <div class="tip">
+    <span class="tip-icon">📞</span>
+    <span class="tip-text">Problem aaye to WhatsApp karein: [Support Number]</span>
+  </div>
+</div>
+
+<div class="status">
+  <span class="status-dot"></span>
+  <span class="status-text">Latest version: v1.0.181 | Updated: Oct 2026</span>
+</div>
+
+<div class="footer">
+  © 2026 MiniEsports — India ka #1 Free Fire Tournament Platform
+</div>
+
+</div>
+
+<script>
+// Device Detection
+function detectDevice() {
+  const ua = navigator.userAgent;
+  let device = 'Android Device';
+  let brand = 'other';
+  
+  if (ua.includes('OPPO') || ua.includes('Oppo') || ua.includes('CPH') || ua.includes('PCHM')) {
+    device = 'Oppo Device (ColorOS)';
+    brand = 'oppo';
+  } else if (ua.includes('Samsung') || ua.includes('SM-')) {
+    device = 'Samsung Device (One UI)';
+    brand = 'samsung';
+  } else if (ua.includes('Xiaomi') || ua.includes('Redmi') || ua.includes('POCO') || ua.includes('M2')) {
+    device = 'Xiaomi/Redmi/POCO (HyperOS)';
+    brand = 'xiaomi';
+  } else if (ua.includes('Vivo') || ua.includes('vivo')) {
+    device = 'Vivo Device (Funtouch)';
+    brand = 'vivo';
+  } else if (ua.includes('Realme') || ua.includes('RMX')) {
+    device = 'Realme Device (Realme UI)';
+    brand = 'realme';
+  } else if (ua.includes('OnePlus') || ua.includes('ONEPLUS') || ua.includes('KB2')) {
+    device = 'OnePlus (OxygenOS)';
+    brand = 'oneplus';
+  } else if (ua.includes('Pixel')) {
+    device = 'Google Pixel';
+    brand = 'pixel';
+  } else if (ua.includes('Huawei') || ua.includes('HUAWEI') || ua.includes('HW-')) {
+    device = 'Huawei Device (HarmonyOS)';
+    brand = 'huawei';
+  }
+  
+  document.getElementById('deviceName').textContent = '📱 ' + device;
+  
+  // Show brand-specific steps
+  if (brand === 'oppo' || brand === 'oneplus' || brand === 'realme') {
+    document.getElementById('step2Oppo').style.display = 'flex';
+  } else if (brand === 'samsung') {
+    document.getElementById('step2Samsung').style.display = 'flex';
+  } else if (brand === 'xiaomi') {
+    document.getElementById('step2Xiaomi').style.display = 'flex';
+  }
+  
+  // Update step descriptions based on brand
+  updateStepDescriptions(brand);
+}
+
+function updateStepDescriptions(brand) {
+  const desc1 = document.getElementById('step1Desc');
+  const btn1 = document.getElementById('step1Btn');
+  
+  switch(brand) {
+    case 'oppo':
+    case 'oneplus':
+    case 'realme':
+      desc1.textContent = 'Settings → Passwords & Security → System Security → Install Unknown Apps → Chrome → ON';
+      break;
+    case 'samsung':
+      desc1.textContent = 'Settings → Security & Privacy → More Security Settings → Install Unknown Apps → Chrome → ON';
+      break;
+    case 'xiaomi':
+      desc1.textContent = 'Settings → Apps → Manage Apps → Install Unknown Apps → Chrome → ON';
+      break;
+    case 'vivo':
+      desc1.textContent = 'Settings → More Settings → Permission Management → Install Unknown Apps → Chrome → ON';
+      break;
+    case 'huawei':
+      desc1.textContent = 'Settings → Security → More Settings → Install apps from external sources → Chrome → ON';
+      break;
+    default:
+      desc1.textContent = 'Settings → Apps → Special App Access → Install Unknown Apps → Chrome → ON';
+  }
+}
+
+function openSettings() {
+  // Try to open Android settings directly
+  try {
+    window.location.href = 'android-app://com.android.settings/.SecuritySettings';
+  } catch(e) {
+    try {
+      window.location.href = 'intent:#Intent;action=android.settings.SECURITY_SETTINGS;end';
+    } catch(e2) {
+      alert('Settings kholein:\n\n1. Phone Settings kholein\n2. Security ya Passwords & Security\n3. Install Unknown Apps\n4. Chrome → Allow');
+    }
+  }
+}
+
+// Initialize
+detectDevice();
+</script>
+
+</body>
+</html>
