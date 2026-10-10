@@ -41,6 +41,14 @@ jobs:
         run: |
           node scripts/version-sync.mjs --check --require-if-changed
 
+      # ✅ ASSET TASK (2026-10-10): web tests bhi hard gate — smoke (feature
+      # regressions) + asset-e2e (59 images: catalog↔files 1:1, PNG valid,
+      # wiring, unlock logic). Fail = build yahin rukegi.
+      - name: Web Tests (smoke + 59-asset E2E)
+        run: |
+          node tests/run-smoke-tests.js
+          node tests/asset-e2e.js
+
       - name: Show auto-computed version
         run: |
           CNT="$(git rev-list --count HEAD)"
@@ -314,6 +322,22 @@ jobs:
             exit 1
           fi
           echo "✅ 11d: sirf SafeCleaner gated path — koi device-wide scan nahi"
+          echo "--- 12. ASSET E2E: 59 images LIVE render inside app WebView ---"
+          adb logcat -c
+          adb shell am start -W -n "$PKG/.MainActivity" -a android.intent.action.VIEW \
+            -d "https://deepsilence10161-source.github.io/ff-user-panel/asset-e2e.html" >/dev/null || true
+          for i in $(seq 1 25); do
+            if adb logcat -d | grep -q "ASSET-E2E-RESULT"; then break; fi
+            sleep 2
+          done
+          if adb logcat -d | grep -q "ASSET-E2E-RESULT: 59/59 OK"; then
+            echo "✅ 12: 59/59 images live-loaded + rendered inside app WebView"
+          else
+            echo "❌ ASSET E2E fail — logcat:"
+            adb logcat -d | grep -i "ASSET-E2E" || true
+            adb logcat -d | tail -n 40 || true
+            exit 1
+          fi
           echo "✅ SAFE-CLEANER v5 E2E VERIFIED (fail-safe + zero-permission + owner-safety)!"
           echo "✅ LIVE ANDROID EMULATOR APK E2E VERIFIED (deep audit ke saath)!"
           EOF
@@ -329,6 +353,50 @@ jobs:
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: bash /tmp/e2e-emulator.sh
+
+  # ✅ ASSET TASK (2026-10-10): har image ki LIVE HTTP proof — Pages par
+  # deploy hone ke turant baad retry loop chalta hai (Pages deploy lag hoti
+  # hai). 59 URLs: 200 + PNG signature + IHDR. Ek bhi image missing/invalid
+  # = FAIL. Yeh asset-e2e.html ke in-app render proof ka alag, independent
+  # saboot hai — dono chahiye.
+  live-asset-check:
+    name: Live Assets HTTP Check (59 images on Pages)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify all 59 assets live + valid on GitHub Pages
+        run: |
+          node -e "
+            const fs = require('fs');
+            const src = fs.readFileSync('js/features/asset-catalog.js', 'utf8');
+            const paths = [...new Set([...src.matchAll(/img: '([^']+)'/g)].map(m => m[1]))];
+            console.error('catalog me ' + paths.length + ' unique img paths');
+            if (paths.length !== 59) { console.error('ummeed 59 thi!'); process.exit(1); }
+            fs.writeFileSync('/tmp/asset-paths.txt', paths.join('\n'));
+          "
+          BASE="https://deepsilence10161-source.github.io/ff-user-panel"
+          for attempt in $(seq 1 30); do
+            FAILS=0
+            while read -r p; do
+              CODE=$(curl -sL -o /tmp/img.bin -w "%{http_code}" "$BASE/$p")
+              SIG=$(head -c8 /tmp/img.bin | xxd -p 2>/dev/null || echo none)
+              if [ "$CODE" != "200" ] || [ "$SIG" != "89504e470d0a1a0a" ]; then
+                FAILS=$((FAILS+1))
+                echo "  MISS(code=$CODE sig=$SIG): $p"
+              fi
+            done < /tmp/asset-paths.txt
+            if [ "$FAILS" -eq 0 ]; then
+              echo "✅ ALL 59 IMAGES LIVE on Pages — 200 + valid PNG (attempt $attempt)"
+              exit 0
+            fi
+            echo "attempt $attempt: $FAILS missing/invalid — 10s wait (Pages deploy ho rahi hogi)"
+            sleep 10
+          done
+          echo "❌ 59 images live-check fail (upar MISS list)"
+          exit 1
 
   # ✅ (2026-10-06) Notification permission ka ASLI saboot.
   # POST_NOTIFICATIONS runtime permission sirf Android 13+ (API 33+) par hoti hai —

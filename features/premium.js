@@ -9,7 +9,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261009c" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261010a" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho, code change
    na karna pade". price and gdBonus now come from window.CFG.premium
@@ -29,11 +29,11 @@ function _buildTiers(){
   var _premPrices  = _premCfg.prices  || {};
   var _premBonuses = _premCfg.bonuses || {};
   return [
-    {tier:1,price:_premPrices[1]||49,label:'Silver',icon:'🥈',color:'#e0e0e0',glow:'rgba(224,224,224,.5)',bg:'rgba(224,224,224,.06)',border:'rgba(224,224,224,.25)',coinBonus:_premBonuses[1]||50,
+    {tier:1,price:_premPrices[1]||49,label:'Silver',icon:'🥈',img:'assets/img/premium/silver.png',color:'#e0e0e0',glow:'rgba(224,224,224,.5)',bg:'rgba(224,224,224,.06)',border:'rgba(224,224,224,.25)',coinBonus:_premBonuses[1]||50,
      perks:[{i:'🚫',t:'No Ads — match join karte waqt koi ad nahi'},{i:'🥈',t:'Premium Silver Badge — profile par dikh'},{i:'🖼️',t:'Profile Photo & Banner Change — apni photo/banner lagao'},{i:'🪙',t:(_premBonuses[1]||50)+' Coins bonus har mahine'}]},
-    {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',coinBonus:_premBonuses[2]||150,best:true,
+    {tier:2,price:_premPrices[2]||99,label:'Gold',icon:'🥇',img:'assets/img/premium/gold.png',color:'#ffd700',glow:'rgba(255,215,0,.55)',bg:'rgba(255,215,0,.07)',border:'rgba(255,215,0,.3)',coinBonus:_premBonuses[2]||150,best:true,
      perks:[{i:'✅',t:'Silver ke saare features shaamil'},{i:'🎮',t:'Creator Program Unlock — apne matches host karo, referral commission kamao'},{i:'📡',t:'Live Stream Slot — apna YouTube/Insta stream link app mein dikhao'},{i:'🪙',t:(_premBonuses[2]||150)+' Coins bonus har mahine'}]},
-    {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',coinBonus:_premBonuses[3]||400,
+    {tier:3,price:_premPrices[3]||199,label:'Diamond',icon:'💎',img:'assets/img/premium/diamond.png',color:'#b964ff',glow:'rgba(185,100,255,.55)',bg:'rgba(185,100,255,.07)',border:'rgba(185,100,255,.3)',coinBonus:_premBonuses[3]||400,
      perks:[{i:'✅',t:'Gold ke saare features shaamil'},{i:'🎨',t:'Custom Profile Theme — animated border + glow'},{i:'🪙',t:(_premBonuses[3]||400)+' Coins bonus har mahine'}]}
   ];
 }
@@ -95,7 +95,7 @@ function _renderPremModal(){
     h+='<div class="'+(iBest?'prem-tier-shine':'')+'" style="background:'+t.bg+';border:'+(isA?'2px':'1.5px')+' solid '+(isA?t.color:t.border)+';border-radius:18px;padding:'+(iBest?'26px 16px 16px':'16px')+';box-shadow:'+(iBest?'0 0 24px '+t.glow+',0 6px 28px rgba(0,0,0,.5)':'0 0 12px rgba(0,0,0,.3)')+';">';
     h+='<div class="prem-tier-crown" style="filter:drop-shadow(0 0 8px '+t.color+')">👑</div>';
     h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
-    h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+t.icon+'</div>';
+    h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+(t.img?'<img src="'+t.img+'?v=20261010a" style="width:32px;height:32px;object-fit:contain" alt="">':t.icon)+'</div>';
     h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
     if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">✅ Active Plan</div>';
     /* ✅ BUG Z2 FIX (2026-10-02): Active plan par koi button hi nahi tha —

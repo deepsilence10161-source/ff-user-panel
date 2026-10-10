@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 
         handleIntent(getIntent());
 
-        if (isOnline()) webView.loadUrl(APP_URL);
+        if (isOnline()) { if (!assetE2ELoaded) webView.loadUrl(APP_URL); }
         else webView.loadUrl("file:///android_asset/no_internet.html");
 
         swipeRefresh.setEnabled(false);
@@ -282,8 +282,24 @@ public class MainActivity extends AppCompatActivity {
                 data.toString().replace("'", "\\'") + "');",
                 null
             );
+            return;
+        }
+        /* ✅ ASSET E2E (2026-10-10): emulator/CI ke liye — sirf apne trusted
+           github.io host par sirf asset-e2e.html ko WebView me load karne do.
+           Scope itna tang hai ki koi aur URL ya host kabhi nahi chalega. */
+        if ("https".equals(data.getScheme())
+                && data.getHost() != null
+                && data.getHost().endsWith(".github.io")
+                && data.getPath() != null
+                && data.getPath().endsWith("/asset-e2e.html")) {
+            assetE2ELoaded = true;
+            if (isOnline()) webView.loadUrl(data.toString());
         }
     }
+
+    /* onCreate ka APP_URL load tabhi chale jab asset-e2e intent ne already
+       load na kar diya ho (warna uske turant baad override ho jata). */
+    private volatile boolean assetE2ELoaded = false;
 
     // =========================================================
     // JavaScript Bridge

@@ -141,12 +141,12 @@ window.RANK_FORMULA = 'Wins×40 + Kills×2 + Matches×1 + WinStreak×10';
 
 /* ── Rank tier definitions ── */
 window.RANK_TIERS = [
-  { name: 'Bronze',   min: 0,    max: 300,  emoji: '🏅', color: '#cd7f32', bg: 'rgba(205,127,50,.13)'  },
-  { name: 'Silver',   min: 301,  max: 600,  emoji: '🥈', color: '#c0c0c0', bg: 'rgba(192,192,192,.13)' },
-  { name: 'Gold',     min: 601,  max: 1000, emoji: '🥇', color: '#ffd700', bg: 'rgba(255,215,0,.14)'   },
-  { name: 'Platinum', min: 1001, max: 1500, emoji: '🔷', color: '#e0e0ff', bg: 'rgba(180,180,255,.13)' },
-  { name: 'Diamond',  min: 1501, max: 2000, emoji: '💎', color: '#00d4ff', bg: 'rgba(0,212,255,.15)'   },
-  { name: 'Legend',   min: 2001, max: 9999, emoji: '👑', color: '#b964ff', bg: 'rgba(185,100,255,.15)' }
+  { name: 'Bronze',   min: 0,    max: 300,  emoji: '🏅', color: '#cd7f32', bg: 'rgba(205,127,50,.13)',  img: 'assets/img/ranks/bronze.png'   },
+  { name: 'Silver',   min: 301,  max: 600,  emoji: '🥈', color: '#c0c0c0', bg: 'rgba(192,192,192,.13)', img: 'assets/img/ranks/silver.png'   },
+  { name: 'Gold',     min: 601,  max: 1000, emoji: '🥇', color: '#ffd700', bg: 'rgba(255,215,0,.14)',   img: 'assets/img/ranks/gold.png'     },
+  { name: 'Platinum', min: 1001, max: 1500, emoji: '🔷', color: '#e0e0ff', bg: 'rgba(180,180,255,.13)', img: 'assets/img/ranks/platinum.png' },
+  { name: 'Diamond',  min: 1501, max: 2000, emoji: '💎', color: '#00d4ff', bg: 'rgba(0,212,255,.15)',   img: 'assets/img/ranks/diamond.png'  },
+  { name: 'Legend',   min: 2001, max: 9999, emoji: '👑', color: '#b964ff', bg: 'rgba(185,100,255,.15)', img: 'assets/img/ranks/legend.png'   }
 ];
 
 /* BUG #27 FIX (2026-07): mentor.js, squad-finder.js, friends.js, skill-matchmaking.js,
@@ -175,13 +175,14 @@ window.showHowRankWorks = function() {
   h += '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">';
   window.RANK_TIERS.forEach(function(t) {
     h += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:' + t.bg + ';border:1px solid ' + t.color + '44">';
-    h += '<div style="font-size:22px">' + t.emoji + '</div>';
+    h += '<div style="font-size:22px"><img src="' + t.img + '?v=20261010a" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
     h += '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:' + t.color + '">' + t.name + '</div>';
     h += '<div style="font-size:11px;color:#666">' + (t.min === 0 ? '0' : t.min) + ' – ' + (t.max >= 9999 ? '∞' : t.max) + ' points</div></div>';
     h += '</div>';
   });
   h += '</div>';
   h += '<div style="font-size:11px;color:#555;text-align:center;line-height:1.6">🗓 Weekly reset every Monday<br>📅 Season reset every 1st of month<br>🏆 Top 3 get special badges · Top 10 get titles</div>';
+  h += '<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:11px;border-radius:12px;border:1px solid rgba(255,215,0,.35);background:rgba(255,215,0,.08);color:#ffd700;font-size:12px;font-weight:800;cursor:pointer;margin-top:10px">🏆 My Collection (Titles + Badges)</button>';
   if (window.openModal) openModal('🏆 How Rank Works', h);
 };
 
