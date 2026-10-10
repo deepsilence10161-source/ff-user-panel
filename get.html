@@ -8,22 +8,14 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:#050507; color:#e0e0e0; min-height:100vh; padding:20px; line-height:1.6; }
 .container { max-width:500px; margin:0 auto; }
-
-/* Header */
 .header { text-align:center; padding:30px 0 20px; }
 .logo { width:100px; height:100px; margin:0 auto 15px; border-radius:25px; background:linear-gradient(135deg,#1a1a3a,#0a0a2a); border:3px solid #00d4ff; box-shadow:0 0 30px rgba(0,212,255,.3); display:flex; align-items:center; justify-content:center; }
 .title { font-size:28px; font-weight:800; background:linear-gradient(90deg,#00d4ff,#00ff64); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 .subtitle { font-size:14px; color:rgba(255,255,255,.5); margin-top:5px; }
 .version { display:inline-block; padding:6px 16px; border-radius:15px; background:rgba(0,255,100,.1); border:1px solid rgba(0,255,100,.3); color:#00ff64; font-size:14px; margin:10px 0 20px; }
-
-/* Buttons */
 .btn { display:block; width:100%; padding:18px; margin:12px 0; border-radius:16px; font-size:17px; font-weight:700; text-decoration:none; border:none; cursor:pointer; text-align:center; }
 .btn-primary { background:linear-gradient(135deg,#00ff64,#00cc50); color:#000; box-shadow:0 0 30px rgba(0,255,100,.3); }
 .btn-secondary { background:rgba(0,212,255,.1); border:2px solid rgba(0,212,255,.3); color:#00d4ff; }
-.btn-play { background:linear-gradient(135deg,#4285f4,#34a853); color:#fff; }
-.btn-small { padding:12px; font-size:14px; }
-
-/* Steps */
 .step-box { background:linear-gradient(135deg,rgba(15,15,35,.9),rgba(10,10,25,.9)); border:1px solid rgba(0,212,255,.12); border-radius:14px; padding:16px; margin:12px 0; }
 .step-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
 .step-num { width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,#00d4ff,#0088ff); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:#000; }
@@ -31,35 +23,22 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
 .step-content { font-size:13px; color:rgba(255,255,255,.6); padding-left:42px; }
 .step-content ol { padding-left:18px; }
 .step-content li { margin:6px 0; }
-
-/* Recommended badge */
 .recommended { display:inline-block; padding:3px 10px; border-radius:10px; background:rgba(0,255,100,.15); border:1px solid rgba(0,255,100,.3); color:#00ff64; font-size:11px; font-weight:600; margin-left:8px; }
-
-/* Warning */
 .warning { background:rgba(255,159,28,.05); border:1px solid rgba(255,159,28,.15); border-radius:12px; padding:14px; margin:12px 0; }
 .warning h4 { color:#ff9f1c; font-size:14px; margin-bottom:8px; }
 .warning p { font-size:12px; color:rgba(255,255,255,.5); line-height:1.5; }
-
-/* Info */
 .info { background:rgba(0,212,255,.05); border:1px solid rgba(0,212,255,.1); border-radius:12px; padding:14px; margin:12px 0; }
 .info h4 { color:#00d4ff; font-size:14px; margin-bottom:8px; }
 .info p { font-size:12px; color:rgba(255,255,255,.5); }
-
-/* Divider */
 .divider { height:1px; background:rgba(255,255,255,.08); margin:20px 0; }
-
-/* Footer */
 .footer { text-align:center; padding:30px 0; font-size:11px; color:rgba(255,255,255,.2); }
-
-/* Device detect */
 .device-box { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:10px; text-align:center; font-size:13px; color:rgba(255,255,255,.4); margin:10px 0; }
+.badge-ok { display:inline-block; padding:2px 8px; border-radius:8px; background:rgba(0,255,100,.15); color:#00ff64; font-size:11px; font-weight:600; }
 </style>
 </head>
 <body>
-
 <div class="container">
 
-<!-- HEADER -->
 <div class="header">
   <div class="logo">
     <svg width="70" height="70" viewBox="0 0 60 60" fill="none">
@@ -77,94 +56,111 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
   <div class="version">v1.0.181 | 9.3MB | Android 5.0+</div>
 </div>
 
-<!-- METHOD 1: PWA Install (RECOMMENDED - NO PERMISSION NEEDED) -->
+<!-- METHOD 1: Direct Download -->
 <div class="step-box" style="border-color:rgba(0,255,100,.3); background:linear-gradient(135deg,rgba(0,255,100,.05),rgba(10,10,25,.9));">
   <div class="step-header">
     <div class="step-num" style="background:linear-gradient(135deg,#00ff64,#00cc50);">1</div>
-    <div class="step-title">Home Screen par Add Karein <span class="recommended">✅ BEST - No Permission</span></div>
+    <div class="step-title">APK Download Karein <span class="recommended">✅ Direct Link</span></div>
   </div>
   <div class="step-content">
-    <p style="margin-bottom:10px;">Sabse easy tarika — Chrome se seedha install, koi permission nahi!</p>
-    <ol>
-      <li>Neeche <strong>"Open MiniEsports"</strong> button dabayein</li>
-      <li>App khulega → Chrome ka <strong>menu (3 dots ⋮)</strong> dabayein</li>
-      <li><strong>"Add to Home Screen"</strong> ya <strong>"Install App"</strong> select karein</li>
-      <li><strong>"Add"</strong> ya <strong>"Install"</strong> dabayein</li>
-      <li><strong>DONE!</strong> ✅ Home screen par app icon aa jaega</li>
-      <li>Ab app <strong>Play Store jaisa</strong> khulega — bina Chrome ke!</li>
-    </ol>
-    <p style="margin-top:10px; color:#00ff64; font-weight:600;">✅ Koi permission nahi mangi jaegi<br>✅ Koi settings change nahi karni<br>✅ Sab devices pe kaam karta hai<br>✅ Play Store jaisa experience</p>
+    <p>Button dabayein → APK file download hogi → Install karein</p>
   </div>
 </div>
 
-<!-- PWA Open Button -->
-<a class="btn btn-primary" href="https://deepsilence10161-source.github.io/ff-user-panel/" id="pwaBtn">
-  🚀 Open MiniEsports & Install
+<a class="btn btn-primary" href="https://d.apkpure.net/b/APK/com.miniesports.app?version=latest">
+  ⬇️ DOWNLOAD APK
 </a>
 
-<!-- PWA Auto-detect -->
-<script>
-if ('serviceWorker' in navigator) {
-  // Check if already installed as PWA
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    document.getElementById('pwaBtn').textContent = '✅ App Already Installed!';
-    document.getElementById('pwaBtn').style.background = 'rgba(0,255,100,.2)';
-    document.getElementById('pwaBtn').style.color = '#00ff64';
-  }
-}
-</script>
+<a class="btn btn-secondary" href="https://github.com/deepsilence10161-source/ff-user-panel/releases/latest/download/MiniEsports.apk" style="font-size:14px; padding:14px;">
+  ⬇️ Backup Download (GitHub)
+</a>
 
 <div class="divider"></div>
 
-<!-- METHOD 2: APKPure Direct Download -->
+<!-- STEP 2: Install Permission -->
 <div class="step-box">
   <div class="step-header">
     <div class="step-num">2</div>
-    <div class="step-title">APKPure se Seedha Download</div>
+    <div class="step-title">Install Permission Allow Karein</div>
   </div>
   <div class="step-content">
-    <p>Agar PWA install nahi karna chahte to APK file download karein:</p>
+    <p>APK download hone ke baad, install karne se pehle <strong>ek baar</strong> permission deni hogi:</p>
+    <ol>
+      <li>Download complete hone ke baad <strong>notification bar</strong> niche swipe karein</li>
+      <li>"MiniEsports" file pe <strong>tap karein</strong></li>
+      <li><strong>"Install blocked"</strong> ya <strong>"Permission required"</strong> dikhega</li>
+      <li><strong>"Settings"</strong> ya <strong>"Allow"</strong> button dabayein</li>
+      <li>Settings khulega → <strong>"Allow from this source"</strong> ON karein</li>
+      <li>Wapas aayein → <strong>"Install"</strong> dabayein</li>
+      <li><strong>DONE!</strong> ✅ Ye permission ek baar deni hai, baad mein kabhi nahi</li>
+    </ol>
   </div>
 </div>
 
-<a class="btn btn-secondary" href="https://d.apkpure.net/b/APK/com.miniesports.app?version=latest">
-  ⬇️ Download APK (APKPure)
-</a>
-
-<!-- METHOD 3: GitHub Mirror -->
-<div class="step-box">
+<!-- Device-specific guides -->
+<div class="step-box" id="oppoGuide" style="display:none;">
   <div class="step-header">
-    <div class="step-num">3</div>
-    <div class="step-title">GitHub Mirror (Backup)</div>
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">📱</div>
+    <div class="step-title">Oppo/OnePlus/Realme Guide</div>
   </div>
   <div class="step-content">
-    <p>Backup link — agar APKPure kaam na kare:</p>
+    <ol>
+      <li><strong>Settings</strong> kholein</li>
+      <li><strong>Passwords & Security</strong> → <strong>System Security</strong></li>
+      <li><strong>Install Unknown Apps</strong> → <strong>Chrome</strong> → <strong>Allow</strong></li>
+      <li>Wapas download page pe aayein → Download dabayein → Install karein</li>
+    </ol>
   </div>
 </div>
 
-<a class="btn btn-secondary btn-small" href="https://github.com/deepsilence10161-source/ff-user-panel/releases/latest/download/MiniEsports.apk">
-  ⬇️ Download APK (GitHub)
-</a>
+<div class="step-box" id="samsungGuide" style="display:none;">
+  <div class="step-header">
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">📱</div>
+    <div class="step-title">Samsung Guide</div>
+  </div>
+  <div class="step-content">
+    <ol>
+      <li><strong>Settings</strong> → <strong>Security & Privacy</strong></li>
+      <li><strong>Auto Blocker</strong> → <strong>OFF</strong></li>
+      <li><strong>More Security Settings</strong> → <strong>Install Unknown Apps</strong></li>
+      <li><strong>Chrome</strong> → <strong>Allow</strong></li>
+      <li>Wapas download page pe aayein → Download dabayein → Install karein</li>
+    </ol>
+  </div>
+</div>
+
+<div class="step-box" id="xiaomiGuide" style="display:none;">
+  <div class="step-header">
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">📱</div>
+    <div class="step-title">Xiaomi/Redmi/POCO Guide</div>
+  </div>
+  <div class="step-content">
+    <ol>
+      <li><strong>Settings</strong> → <strong>Apps</strong> → <strong>Manage Apps</strong></li>
+      <li><strong>Install Unknown Apps</strong> → <strong>Chrome</strong> → <strong>Allow</strong></li>
+      <li>Wapas download page pe aayein → Download dabayein → Install karein</li>
+    </ol>
+  </div>
+</div>
+
+<div class="step-box" id="vivoGuide" style="display:none;">
+  <div class="step-header">
+    <div class="step-num" style="background:linear-gradient(135deg,#ff9f1c,#ff6b35);">📱</div>
+    <div class="step-title">Vivo/iQOO Guide</div>
+  </div>
+  <div class="step-content">
+    <ol>
+      <li><strong>Settings</strong> → <strong>More Settings</strong></li>
+      <li><strong>Permission Management</strong> → <strong>Install Unknown Apps</strong></li>
+      <li><strong>Chrome</strong> → <strong>Allow</strong></li>
+      <li>Wapas download page pe aayein → Download dabayein → Install karein</li>
+    </ol>
+  </div>
+</div>
 
 <div class="divider"></div>
 
-<!-- INSTALL GUIDE (if direct download) -->
-<div class="warning">
-  <h4>⚠️ Direct Download ke Baad Install Guide:</h4>
-  <p>
-    Agar aapne direct APK download kiya hai (Method 2 ya 3) to install ke liye:<br><br>
-    <strong>Oppo/OnePlus/Realme:</strong><br>
-    Settings → Passwords & Security → System Security → Install Unknown Apps → Chrome → Allow<br><br>
-    <strong>Samsung:</strong><br>
-    Settings → Security & Privacy → Auto Blocker → OFF<br>
-    Settings → Security & Privacy → More Security Settings → Install Unknown Apps → Chrome → Allow<br><br>
-    <strong>Xiaomi/Redmi/POCO:</strong><br>
-    Settings → Apps → Manage Apps → Install Unknown Apps → Chrome → Allow<br><br>
-    <strong>Isliye APKPure App (Method 1) best hai — koi settings change nahi karni padti!</strong>
-  </p>
-</div>
-
-<!-- SAFETY INFO -->
+<!-- SAFETY -->
 <div class="info">
   <h4>🛡️ Ye App 100% Safe Hai:</h4>
   <p>
@@ -172,16 +168,12 @@ if ('serviceWorker' in navigator) {
     ✅ Koi hacking nahi karta<br>
     ✅ Sirf Free Fire tournament platform hai<br>
     ✅ Play Protect warning aaye to "More Details" → "Install Anyway"<br>
-    ✅ Google Play Store par nahi hai isliye warning aata hai — safe hai
+    ✅ Permission ek baar deni hai — baad mein automatic hogi
   </p>
 </div>
 
-<!-- DEVICE INFO -->
-<div class="device-box" id="deviceInfo">
-  📱 Detecting your device...
-</div>
+<div class="device-box" id="deviceInfo">📱 Detecting your device...</div>
 
-<!-- FOOTER -->
 <div class="footer">
   © 2026 MiniEsports — India ka #1 Free Fire Tournament Platform<br>
   Safe & Secure | No Virus | No Hacking
@@ -192,12 +184,29 @@ if ('serviceWorker' in navigator) {
 <script>
 var ua = navigator.userAgent;
 var device = 'Android Device';
-if (ua.indexOf('OPPO') > -1 || ua.indexOf('Oppo') > -1) device = '📱 Oppo Device — APKPure App use karein (Method 1)';
-else if (ua.indexOf('Samsung') > -1) device = '📱 Samsung Device — APKPure App use karein (Method 1)';
-else if (ua.indexOf('Xiaomi') > -1 || ua.indexOf('Redmi') > -1) device = '📱 Xiaomi/Redmi — APKPure App use karein (Method 1)';
-else if (ua.indexOf('Vivo') > -1) device = '📱 Vivo Device — APKPure App use karein (Method 1)';
-else if (ua.indexOf('Realme') > -1) device = '📱 Realme Device — APKPure App use karein (Method 1)';
-else if (ua.indexOf('OnePlus') > -1) device = '📱 OnePlus — APKPure App use karein (Method 1)';
+if (ua.indexOf('OPPO') > -1 || ua.indexOf('Oppo') > -1 || ua.indexOf('CPH') > -1) {
+  device = '📱 Oppo Device Detected';
+  document.getElementById('oppoGuide').style.display = 'block';
+} else if (ua.indexOf('Samsung') > -1 || ua.indexOf('SM-') > -1) {
+  device = '📱 Samsung Device Detected';
+  document.getElementById('samsungGuide').style.display = 'block';
+} else if (ua.indexOf('Xiaomi') > -1 || ua.indexOf('Redmi') > -1 || ua.indexOf('POCO') > -1) {
+  device = '📱 Xiaomi/Redmi/POCO Detected';
+  document.getElementById('xiaomiGuide').style.display = 'block';
+} else if (ua.indexOf('Vivo') > -1 || ua.indexOf('vivo') > -1) {
+  device = '📱 Vivo/iQOO Device Detected';
+  document.getElementById('vivoGuide').style.display = 'block';
+} else if (ua.indexOf('Realme') > -1 || ua.indexOf('RMX') > -1) {
+  device = '📱 Realme Device Detected';
+  document.getElementById('oppoGuide').style.display = 'block';
+} else if (ua.indexOf('OnePlus') > -1 || ua.indexOf('ONEPLUS') > -1) {
+  device = '📱 OnePlus Device Detected';
+  document.getElementById('oppoGuide').style.display = 'block';
+} else if (ua.indexOf('Pixel') > -1) {
+  device = '📱 Google Pixel Detected';
+} else {
+  device = '📱 Android Device Detected';
+}
 document.getElementById('deviceInfo').innerHTML = device;
 </script>
 
