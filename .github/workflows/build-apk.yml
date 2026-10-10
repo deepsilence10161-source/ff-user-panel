@@ -369,14 +369,10 @@ jobs:
 
       - name: Verify all 59 assets live + valid on GitHub Pages
         run: |
-          node -e "
-            const fs = require('fs');
-            const src = fs.readFileSync('js/features/asset-catalog.js', 'utf8');
-            const paths = [...new Set([...src.matchAll(/img: '([^']+)'/g)].map(m => m[1]))];
-            console.error('catalog me ' + paths.length + ' unique img paths');
-            if (paths.length !== 59) { console.error('ummeed 59 thi!'); process.exit(1); }
-            fs.writeFileSync('/tmp/asset-paths.txt', paths.join('\n'));
-          "
+          grep -oE "'[a-z0-9]+/[a-z0-9-]+\.png'" js/features/asset-catalog.js | tr -d "'" | sed 's|^|assets/img/|' | sort -u > /tmp/asset-paths.txt
+          COUNT=$(wc -l < /tmp/asset-paths.txt | tr -d ' ')
+          echo "catalog me $COUNT unique img paths"
+          test "$COUNT" = "59" || { echo "ummeed 59 thi!"; exit 1; }
           BASE="https://deepsilence10161-source.github.io/ff-user-panel"
           for attempt in $(seq 1 30); do
             FAILS=0
@@ -389,13 +385,13 @@ jobs:
               fi
             done < /tmp/asset-paths.txt
             if [ "$FAILS" -eq 0 ]; then
-              echo "✅ ALL 59 IMAGES LIVE on Pages — 200 + valid PNG (attempt $attempt)"
+              echo "ALL 59 IMAGES LIVE on Pages - 200 + valid PNG (attempt $attempt)"
               exit 0
             fi
-            echo "attempt $attempt: $FAILS missing/invalid — 10s wait (Pages deploy ho rahi hogi)"
+            echo "attempt $attempt: $FAILS missing/invalid - 10s wait (Pages deploy ho rahi hogi)"
             sleep 10
           done
-          echo "❌ 59 images live-check fail (upar MISS list)"
+          echo "59 images live-check fail (upar MISS list)"
           exit 1
 
   # ✅ (2026-10-06) Notification permission ka ASLI saboot.
