@@ -18,6 +18,11 @@
          jisme in permissions ki zaroorat nahi hoti (Android 4.4+ se aisa hi hai). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- ✅ REQUEST_INSTALL_PACKAGES: Required for APK self-update.
+         Without this, canRequestPackageInstalls() always returns false
+         and user can never be prompted to enable permission.
+         Play Protect issue handled via appeal form submission. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- ✅ FIX (2026-10-08): RECEIVE_BOOT_COMPLETED and REQUEST_INSTALL_PACKAGES
          REMOVED — these are top Play Protect triggers!
          REQUEST_INSTALL_PACKAGES: self-update redirected to browser instead.

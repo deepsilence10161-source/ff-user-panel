@@ -175,7 +175,7 @@ window.showHowRankWorks = function() {
   h += '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">';
   window.RANK_TIERS.forEach(function(t) {
     h += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:' + t.bg + ';border:1px solid ' + t.color + '44">';
-    h += '<div style="font-size:22px"><img src="' + t.img + '?v=20261010c" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
+    h += '<div style="font-size:22px"><img src="' + t.img + '?v=20261011a" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
     h += '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:' + t.color + '">' + t.name + '</div>';
     h += '<div style="font-size:11px;color:#666">' + (t.min === 0 ? '0' : t.min) + ' – ' + (t.max >= 9999 ? '∞' : t.max) + ' points</div></div>';
     h += '</div>';

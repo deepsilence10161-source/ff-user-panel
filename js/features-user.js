@@ -255,7 +255,7 @@ window.applyDynamicWallpaper = function() {
                 try {
                   new Notification('⚡ Match shuru hone wala hai!', {
                     body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
-                    icon: 'icons/icon-192x192.png?v=20261010c'
+                    icon: 'icons/icon-192x192.png?v=20261011a'
                   });
                 } catch (e) {}
               }, _ms);
@@ -715,7 +715,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261010c'
+                    icon: 'icons/icon-192x192.png?v=20261011a'
                   });
                 }
                 break;

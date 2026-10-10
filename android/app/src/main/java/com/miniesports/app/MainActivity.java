@@ -1423,12 +1423,42 @@ public class MainActivity extends AppCompatActivity {
                     pendingInstallApkFile = apkFile;
                     emitApkProgress(100, apkFile.length(), apkFile.length(), "permission",
                         "Install permission allow karein — wapas aate hi install shuru hoga");
-                    Toast.makeText(this, "Please allow 'Install Unknown Apps' for Mini eSports", Toast.LENGTH_LONG).show();
-                    Intent permIntent = new Intent(
-                        Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                        Uri.parse("package:" + getPackageName())
-                    );
-                    startActivityForResult(permIntent, INSTALL_PERMISSION_REQUEST);
+
+                    // Show friendly Hindi dialog explaining why we need permission
+                    new AlertDialog.Builder(this)
+                        .setTitle("🔐 Install Permission Required")
+                        .setMessage(
+                            "App update ke liye 'Install Unknown Apps' permission chahiye.\n\n" +
+                            "✅ Ye permission sirf ek baar deni hai\n" +
+                            "✅ 100% safe hai — sirf MiniEsports update ke liye\n" +
+                            "✅ Koi hacking ya virus nahi hai\n\n" +
+                            "\"Allow\" dabane ke baad:\n" +
+                            "→ Settings khulega\n" +
+                            "→ MiniEsports ke liye permission ON karein\n" +
+                            "→ Wapas aate hi update install ho jaega"
+                        )
+                        .setPositiveButton("Allow ✅", (dialog, which) -> {
+                            try {
+                                Intent permIntent = new Intent(
+                                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                    Uri.parse("package:" + getPackageName())
+                                );
+                                startActivityForResult(permIntent, INSTALL_PERMISSION_REQUEST);
+                            } catch (Exception e) {
+                                // Fallback: open general Install Unknown Apps settings
+                                try {
+                                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_SOURCES);
+                                    startActivityForResult(intent, INSTALL_PERMISSION_REQUEST);
+                                } catch (Exception e2) {
+                                    Toast.makeText(this, "Settings kholein → Security → Install Unknown Apps → Allow", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .setCancelable(false)
+                        .show();
                     return;
                 }
             }

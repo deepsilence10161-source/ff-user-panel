@@ -9,7 +9,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261010c" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261011a" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho, code change
    na karna pade". price and gdBonus now come from window.CFG.premium
@@ -95,7 +95,7 @@ function _renderPremModal(){
     h+='<div class="'+(iBest?'prem-tier-shine':'')+'" style="background:'+t.bg+';border:'+(isA?'2px':'1.5px')+' solid '+(isA?t.color:t.border)+';border-radius:18px;padding:'+(iBest?'26px 16px 16px':'16px')+';box-shadow:'+(iBest?'0 0 24px '+t.glow+',0 6px 28px rgba(0,0,0,.5)':'0 0 12px rgba(0,0,0,.3)')+';">';
     h+='<div class="prem-tier-crown" style="filter:drop-shadow(0 0 8px '+t.color+')">👑</div>';
     h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
-    h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+(t.img?'<img src="'+t.img+'?v=20261010c" style="width:32px;height:32px;object-fit:contain" alt="">':t.icon)+'</div>';
+    h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+(t.img?'<img src="'+t.img+'?v=20261011a" style="width:32px;height:32px;object-fit:contain" alt="">':t.icon)+'</div>';
     h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
     if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">✅ Active Plan</div>';
     /* ✅ BUG Z2 FIX (2026-10-02): Active plan par koi button hi nahi tha —
