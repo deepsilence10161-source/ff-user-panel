@@ -253,12 +253,12 @@ window.showPlayerTitles = function() {
     var label = t.title.substring(t.title.indexOf(' ')+1);
     if (t.unlocked) {
       h += '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.2);border-radius:12px;margin-bottom:8px">';
-      h += '<div style="font-size:24px">' + (t.img ? '<img src="' + t.img + '?v=20261010a" style="width:34px;height:34px;object-fit:contain" alt="">' : emoji) + '</div>';
+      h += '<div style="font-size:24px">' + (t.img ? '<img src="' + t.img + '?v=20261010c" style="width:34px;height:34px;object-fit:contain" alt="">' : emoji) + '</div>';
       h += '<div><div style="font-weight:700;color:var(--txt)">' + label + '</div><div style="font-size:11px;color:var(--txt2)">' + t.desc + '</div></div>';
       h += '</div>';
     } else {
       h += '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;margin-bottom:8px;opacity:.55">';
-      h += '<div style="font-size:22px;filter:grayscale(1)">' + (t.img ? '<img src="' + t.img + '?v=20261010a" style="width:30px;height:30px;object-fit:contain;opacity:.55" alt="">' : '🔒') + '</div>';
+      h += '<div style="font-size:22px;filter:grayscale(1)">' + (t.img ? '<img src="' + t.img + '?v=20261010c" style="width:30px;height:30px;object-fit:contain;opacity:.55" alt="">' : '🔒') + '</div>';
       h += '<div style="flex:1"><div style="font-weight:700;color:var(--txt2)">' + label + '</div><div style="font-size:11px;color:var(--txt2)">' + t.desc + '</div></div>';
       if (t.need) h += '<div style="font-size:10px;color:var(--txt2);font-weight:700;white-space:nowrap">' + t.needVal + '/' + t.need + '</div>';
       h += '</div>';
