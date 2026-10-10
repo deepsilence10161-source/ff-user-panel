@@ -19,10 +19,14 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        /* ═══ APP GUARD (2026-10-08): Anti-Rollback + On-Update Wipe
-         * + Package Integrity. MUST run before anything else.
+        /* ═══ APP GUARD (2026-10-08, revised 2026-10-09): Anti-Rollback +
+         * On-Update Wipe (ab server-gated) + Package Integrity.
+         * MUST run before anything else.
          * Agar purana APK ya tampered build detect ho → app band.
-         * Agar update hua hai → SARI local files delete (package-level). */
+         * Agar update hua hai → safai PENDING banti hai; asli safai sirf
+         * SafeCleaner (server policy + owner exemption ke baad) karta hai —
+         * pehle yahin turant poora data wipe + device-wide cleanup hota tha
+         * jisse owner ke device ki files bhi udd gayi (incident 2026-10-08). */
         boolean allowed = AppGuard.verifyOrBlock(this);
         if (!allowed) {
             // App is blocked — show block screen in MyApplication itself

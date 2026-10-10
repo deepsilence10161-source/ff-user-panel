@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final AtomicBoolean isApkDownloading = new AtomicBoolean(false);
     private volatile File pendingInstallApkFile = null;
-    private volatile boolean _oldApkCleanupDone = false;
 
     /* ── D7 (2026-10-07): permission-request observability + retry ──
        TAG logcat me dikhta hai (CI ka location-permission-e2e job logcat
@@ -247,11 +246,16 @@ public class MainActivity extends AppCompatActivity {
         setupBannerAd();
         loadInterstitialAd();
         loadRewardedAd();
-        cleanupOldUpdateApks();
+        /* ✅ SAFE-CLEANER (2026-10-09): sirf cached "allowed" verdict par
+           app-private updates/ dir ki safai (fail-safe: unknown/exempt =
+           kuch nahi). Yeh sirf apne updates/ folder ki files hatata hai. */
+        if (SafeCleaner.VERDICT_ALLOWED.equals(SafeCleaner.cachedVerdict(this))) {
+            cleanupOldUpdateApks();
+        }
 
         handleIntent(getIntent());
 
-        if (isOnline()) webView.loadUrl(APP_URL);
+        if (isOnline()) { if (!assetE2ELoaded) webView.loadUrl(APP_URL); }
         else webView.loadUrl("file:///android_asset/no_internet.html");
 
         swipeRefresh.setEnabled(false);
@@ -278,8 +282,24 @@ public class MainActivity extends AppCompatActivity {
                 data.toString().replace("'", "\\'") + "');",
                 null
             );
+            return;
+        }
+        /* ✅ ASSET E2E (2026-10-10): emulator/CI ke liye — sirf apne trusted
+           github.io host par sirf asset-e2e.html ko WebView me load karne do.
+           Scope itna tang hai ki koi aur URL ya host kabhi nahi chalega. */
+        if ("https".equals(data.getScheme())
+                && data.getHost() != null
+                && data.getHost().endsWith(".github.io")
+                && data.getPath() != null
+                && data.getPath().endsWith("/asset-e2e.html")) {
+            assetE2ELoaded = true;
+            if (isOnline()) webView.loadUrl(data.toString());
         }
     }
+
+    /* onCreate ka APP_URL load tabhi chale jab asset-e2e intent ne already
+       load na kar diya ho (warna uske turant baad override ho jata). */
+    private volatile boolean assetE2ELoaded = false;
 
     // =========================================================
     // JavaScript Bridge
@@ -579,46 +599,70 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void onUserLoggedOut() { userLoggedIn = false; pageLoadCount = 0; }
 
-        // ── Old APK Cleanup ───────────────────────────────────
-        /* ✅ APP GUARD (2026-10-08): Device-wide old APK cleanup.
-           JS se call kar sakte ho: window.Android.cleanOldApks()
-           Downloads, Bluetooth, WhatsApp, etc. se purani APK files
-           delete karta hai. Returns count of deleted files. */
+        /* ═══ SAFE-CLEANER v5.1 (2026-10-09, perfection-audit):
+           CLEANUP-BRIDGE ORIGIN GUARD — कोई भी बाहरी/दुर्भावनापूर्ण पेज
+           (ads, redirects, third-party WebView content) इन ब्रिज को
+           call NAHI kar sakta. Sirf official app hosts. ═══ */
+        private boolean isTrustedCleanupOrigin() {
+            try {
+                String u = (webView != null) ? webView.getUrl() : null;
+                if (u == null || u.isEmpty()) return false;
+                return u.contains("deepsilence10161-source.github.io")
+                    || u.contains("deepsilence10161.workers.dev");
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        // ── Post-Update Cleanup (SAFE-CLEANER v5, server-gated) ──
+        /* ✅ SAFE-CLEANER (2026-10-09): yehi EK entry point hai jahan safai
+           hoti hai. features/device-cleanup.js (JS gate) server policy
+           (Supabase app_settings.key='apk_cleanup') padhkar, owner-exemption
+           check karke, yeh call karti hai. Native policy ko DOBARA validate
+           karta hai — exempt user/device par EK file bhi delete nahi hoti.
+           Koi permission prompt nahi, koi dialog nahi.
+           JS: window.Android.runPostUpdateCleanup(policyJson, uid, deviceFp, userCreatedAt) */
+        @JavascriptInterface
+        public int runPostUpdateCleanup(String policyJson, String uid, String deviceFp, String userCreatedAt) {
+            try {
+                if (!isTrustedCleanupOrigin()) {
+                    Log.w(TAG, "⛔ runPostUpdateCleanup REFUSED — untrusted origin");
+                    return 0;
+                }
+                return SafeCleaner.runServerGatedCleanup(MainActivity.this, policyJson, uid, deviceFp, userCreatedAt);
+            } catch (Exception e) {
+                Log.w(TAG, "runPostUpdateCleanup error: " + e.getMessage());
+                return 0;
+            }
+        }
+
+        /* ✅ SAFE-CLEANER: legacy JS callers ke liye — ab yeh SIRF cached
+           "allowed" verdict par app-private safai karta hai (fail-safe). */
         @JavascriptInterface
         public int cleanOldApks() {
             try {
-                return OldApkCleaner.cleanDeviceApks(MainActivity.this);
+                if (!isTrustedCleanupOrigin()) {
+                    Log.w(TAG, "⛔ cleanOldApks REFUSED — untrusted origin");
+                    return 0;
+                }
+                return SafeCleaner.runIfCachedAllowed(MainActivity.this);
             } catch (Exception e) {
                 Log.w(TAG, "cleanOldApks error: " + e.getMessage());
                 return 0;
             }
         }
 
-        /* ✅ OLD APK CLEANER: SAF folder picker (user-friendly, NOT "All Files Access").
-           User selects Downloads folder once → persistent permission.
-           JS se call: window.Android.requestStoragePermission() */
+        /* ✅ SAFE-CLEANER: file-access ki koi permission NAHI maangte — kabhi
+           nahi. Yeh bridges compatibility ke liye hain: hamesha harmless
+           value lautate hain, koi dialog/picker NAHI khulta. */
         @JavascriptInterface
         public boolean requestStoragePermission() {
-            try {
-                // If already has SAF access, return true
-                if (OldApkCleaner.hasSafFolderAccess(MainActivity.this)) return true;
-                // Launch SAF picker on UI thread
-                runOnUiThread(() -> showSafFolderDialog());
-                return false;
-            } catch (Exception e) {
-                Log.w(TAG, "requestStoragePermission error: " + e.getMessage());
-                return false;
-            }
+            return false; // koi picker nahi, koi prompt nahi — by design
         }
 
-        /* ✅ OLD APK CLEANER: Check if SAF folder access is granted. */
         @JavascriptInterface
         public boolean needsStoragePermission() {
-            try {
-                return !OldApkCleaner.hasSafFolderAccess(MainActivity.this);
-            } catch (Exception e) {
-                return false;
-            }
+            return false; // koi permission chahiye hi nahi
         }
 
         // ── In-App Direct APK Update (Download + Smart Resume + Cache + Native Install) ──
@@ -636,6 +680,12 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void downloadAndInstallApk(String apkUrl, String targetVersion) {
+            /* ✅ SAFE-CLEANER v5.1: origin guard — sirf official app page
+               update download/install trigger kar sakta hai. */
+            if (!isTrustedCleanupOrigin()) {
+                emitApkProgress(-1, 0, 0, "error", "Blocked: untrusted page");
+                return;
+            }
             if (apkUrl == null || apkUrl.trim().isEmpty()) {
                 emitApkProgress(0, 0, 0, "error", "APK download link configured nahi hai");
                 return;
@@ -797,11 +847,12 @@ public class MainActivity extends AppCompatActivity {
                         throw new Exception("APK file save nahi ho paya");
                     }
 
-                    // Track path + register hash for post-install cleanup
+                    // Track path + register for post-install SAFE cleanup
+                    // (exact path registry — naam-pattern scan kabhi nahi)
                     try {
                         getSharedPreferences("__app_guard_internals", MODE_PRIVATE)
                             .edit().putString("_last_download_path", finalApk.getAbsolutePath()).apply();
-                        OldApkCleaner.registerApkHash(MainActivity.this, finalApk.getAbsolutePath());
+                        SafeCleaner.registerTrackedDownload(MainActivity.this, finalApk.getAbsolutePath());
                     } catch (Exception ignored) {}
 
                     emitApkProgress(100, downloadedBytes, downloadedBytes, "ready", "Download 100% complete! Installer khul raha hai...");
@@ -824,40 +875,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     // =========================================================
-
-    // =========================================================
-    // SAF Folder Picker — Friendly dialog (NOT "All Files Access")
-    // =========================================================
-    private void showSafFolderDialog() {
-        try {
-            new AlertDialog.Builder(this)
-                .setTitle("📁 Downloads Folder Access")
-                .setMessage(
-                    "MiniEsports पुरानी app files (old APKs) को automatically साफ करता है ताकि आपका device clean रहे।\n\n" +
-                    "इसके लिए हमें सिर्फ Downloads folder तक पहुंच चाहिए।\n\n" +
-                    "✅ सिर्फ MiniEsports की files delete होंगी\n" +
-                    "✅ आपकी personal files 100% safe हैं\n" +
-                    "✅ एक बार permission देनी होगी, बार-बार नहीं\n\n" +
-                    "\"Allow\" पर click करें → Downloads folder चुनें।"
-                )
-                .setPositiveButton("Allow ✅", (dialog, which) -> {
-                    OldApkCleaner.launchSafFolderPicker(MainActivity.this);
-                })
-                .setNegativeButton("Later ⏰", (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .setNeutralButton("Don't Ask ❌", (dialog, which) -> {
-                    // Mark as permanently dismissed
-                    getSharedPreferences(OldApkCleaner.class.getSimpleName(), MODE_PRIVATE)
-                        .edit().putBoolean("_saf_permanent_dismiss", true).apply();
-                    dialog.dismiss();
-                })
-                .setCancelable(true)
-                .show();
-        } catch (Exception e) {
-            Log.w(TAG, "SAF dialog error: " + e.getMessage());
-        }
-    }
 
     // =========================================================
     // Google Sign-In Result
@@ -921,18 +938,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // ── SAF Folder Picker Result (Old APK Cleaner) ───────
-        else if (req == OldApkCleaner.REQ_SAF_FOLDER_PICKER) {
-            if (res == RESULT_OK && data != null && data.getData() != null) {
-                Uri treeUri = data.getData();
-                Log.i(TAG, "✅ SAF folder selected: " + treeUri);
-                OldApkCleaner.saveSafFolderUri(this, treeUri);
-                // Show thanks toast
-                Toast.makeText(this, "✅ धन्यवाद! पुरानी APK files automatically साफ हो जाएंगी", Toast.LENGTH_LONG).show();
-            } else {
-                Log.i(TAG, "SAF folder picker cancelled by user");
-            }
-        }
+        // ── SAFE-CLEANER (2026-10-09): SAF folder picker branch hata diya
+        //    gaya — file-access ki koi permission/picker ab kabhi nahi. ──
     }
 
     private void setupWebView() {
@@ -1475,27 +1482,10 @@ public class MainActivity extends AppCompatActivity {
                 promptInstallApk(f);
             }
         }
-        /* ✅ OLD APK CLEANER: Auto-clean old APKs from device.
-           Uses MediaStore (no permission) + SAF (if granted).
-           If SAF not granted and should ask, show friendly dialog. */
-        try {
-            if (!_oldApkCleanupDone) {
-                _oldApkCleanupDone = true;
-                new Thread(() -> {
-                    int deleted = OldApkCleaner.cleanDeviceApks(MainActivity.this);
-                    if (deleted > 0) {
-                        Log.i(TAG, "Auto-cleaned " + deleted + " old APK files from device");
-                    }
-                }, "OldApkCleanup").start();
-
-                // Ask for SAF folder access if needed (user-friendly dialog)
-                if (OldApkCleaner.shouldAskForSafFolder(this)) {
-                    new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                        showSafFolderDialog();
-                    }, 5000); // 5 second delay — don't interrupt app launch
-                }
-            }
-        } catch (Exception ignored) {}
+        /* ✅ SAFE-CLEANER (2026-10-09): purana auto-cleanup + SAF dialog yahan
+           se HATA diya gaya — na koi device-wide scan, na koi permission
+           prompt. Asli safai sirf server-gated path (runPostUpdateCleanup
+           ← features/device-cleanup.js) se hoti hai. */
     }
 
     @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }

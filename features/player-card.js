@@ -99,6 +99,7 @@ function _renderPlayerCard(data){
   h+='</div>'; /* /playerCardVisual */
   if (_isVipTarget) h+='</div>'; /* close rainbow wrapper (Bug 10) */
   /* Share buttons */
+  h+='<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,215,0,.35);background:rgba(255,215,0,.08);color:#ffd700;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fas fa-trophy"></i> My Collection (Titles + Badges)</button>';
   h+='<button onclick="window.sharePlayerCard()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fab fa-whatsapp"></i> WhatsApp pe Share Karo</button>';
   h+='<button onclick="window.sharePlayerCardGeneric()" style="width:100%;padding:12px;border-radius:13px;border:1px solid var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer"><i class="fas fa-share-alt"></i> Kisi bhi app se share karo</button>';
   h+='<p style="text-align:center;font-size:11px;color:var(--txt2);margin-top:8px">💡 Screenshot leke bhi share kar sakte ho!</p>';

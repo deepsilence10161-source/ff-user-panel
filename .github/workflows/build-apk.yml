@@ -41,6 +41,14 @@ jobs:
         run: |
           node scripts/version-sync.mjs --check --require-if-changed
 
+      # ✅ ASSET TASK (2026-10-10): web tests bhi hard gate — smoke (feature
+      # regressions) + asset-e2e (59 images: catalog↔files 1:1, PNG valid,
+      # wiring, unlock logic). Fail = build yahin rukegi.
+      - name: Web Tests (smoke + 59-asset E2E)
+        run: |
+          node tests/run-smoke-tests.js
+          node tests/asset-e2e.js
+
       - name: Show auto-computed version
         run: |
           CNT="$(git rev-list --count HEAD)"
@@ -182,6 +190,32 @@ jobs:
           #!/usr/bin/env bash
           set -e
           PKG="com.miniesports.app"
+          echo "=== 0. SAFE-CLEANER v5: decoy files plant karo (survival proof) ==="
+          # ✅ FIX (run 37968382858): boot ke 170ms baad hi shell-redirect se file
+          # banane par FUSE/MediaProvider ready na hone se EPERM aaya tha. Ab:
+          # 10s warm-up + adb push (sync protocol) + 5 retries.
+          sleep 10
+          echo "FAKE-APK-CONTENT" > /tmp/decoy-apk.bin
+          echo "USER-DOCUMENT"    > /tmp/decoy-doc.bin
+          echo "USER-PHOTO"       > /tmp/decoy-img.bin
+          PLANTED=0
+          for i in 1 2 3 4 5; do
+            timeout 20 adb shell mkdir -p /sdcard/Download || true
+            timeout 20 adb shell mkdir -p /sdcard/DCIM || true
+            ok1=0; ok2=0; ok3=0
+            timeout 20 adb push /tmp/decoy-apk.bin /sdcard/Download/MiniEsports-vOLD-test.apk && ok1=1 || true
+            timeout 20 adb push /tmp/decoy-doc.bin /sdcard/Download/user-document-important.zip && ok2=1 || true
+            timeout 20 adb push /tmp/decoy-img.bin /sdcard/DCIM/user-photo.jpg && ok3=1 || true
+            if [ "$ok1" = 1 ] && [ "$ok2" = 1 ] && [ "$ok3" = 1 ]; then PLANTED=1; break; fi
+            echo "retry $i (decoy push incomplete: $ok1/$ok2/$ok3)..."
+            sleep 5
+          done
+          if [ "$PLANTED" != 1 ]; then
+            echo "❌ Decoy files plant hi nahi hui — survival proof adhura!"
+            exit 1
+          fi
+          timeout 15 adb shell ls -la /sdcard/Download /sdcard/DCIM || true
+          echo "✅ Decoys planted: Download/MiniEsports-vOLD-test.apk, Download/user-document-important.zip, DCIM/user-photo.jpg"
           echo "=== 1. Installing Release APK on Live Android Emulator ==="
           adb install -r apk-out/app-release.apk
           adb shell pm list packages | grep "$PKG"
@@ -253,6 +287,58 @@ jobs:
             exit 1
           fi
           echo "✅ Screenshot me asli content hai"
+
+          echo "=== 11. SAFE-CLEANER v5 (2026-10-09): fail-safe + owner-safety LIVE proof ==="
+          echo "--- 11a. ZERO file-storage permission declared ---"
+          if adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p' | grep -qiE "READ_EXTERNAL_STORAGE|WRITE_EXTERNAL_STORAGE|MANAGE_EXTERNAL_STORAGE"; then
+            echo "❌ File-storage permission declared hai! (user se file-access maang sakti hai)"
+            adb shell dumpsys package "$PKG" | sed -n '/requested permissions:/,/install permissions:/p'
+            exit 1
+          fi
+          echo "✅ 11a: ZERO file-storage permissions (na READ/WRITE_EXTERNAL_STORAGE, na MANAGE_EXTERNAL_STORAGE)"
+
+          echo "--- 11b. Koi storage-permission dialog/picker nahi (SAF regression guard) ---"
+          if [ -f emulator-ui-dump.xml ] && grep -qiE "Downloads Folder Access|All Files Access|Allow access to all files|MANAGE_EXTERNAL_STORAGE" emulator-ui-dump.xml; then
+            echo "❌ Storage permission dialog/picker dikh raha hai — fail-safe toota!"
+            exit 1
+          fi
+          echo "✅ 11b: koi storage permission dialog/picker nahi"
+
+          echo "--- 11c. Decoy files zinda (fail-safe proof — kuch bhi delete nahi hua) ---"
+          for f in /sdcard/Download/MiniEsports-vOLD-test.apk /sdcard/Download/user-document-important.zip /sdcard/DCIM/user-photo.jpg; do
+            if timeout 15 adb shell "test -f $f && echo EXISTS" | grep -q EXISTS; then
+              echo "  alive: $f"
+            else
+              echo "❌ Decoy file gayab: $f — cleanup galat file chhu gaya!"
+              exit 1
+            fi
+          done
+          echo "✅ 11c: saari decoy files zinda — owner/user files 100% untouched (fail-safe)"
+
+          echo "--- 11d. Logcat: sirf SafeCleaner gate, koi device-wide scan nahi ---"
+          adb logcat -d | grep -iE "SafeCleaner|PostInstallCleanup" | head -10 || true
+          if adb logcat -d | grep -qE "CLEANUP STARTING|MediaStore deleted:|SAF folder"; then
+            echo "❌ Purana device-wide cleaner chala!"
+            exit 1
+          fi
+          echo "✅ 11d: sirf SafeCleaner gated path — koi device-wide scan nahi"
+          echo "--- 12. ASSET E2E: 59 images LIVE render inside app WebView ---"
+          adb logcat -c
+          adb shell am start -W -n "$PKG/.MainActivity" -a android.intent.action.VIEW \
+            -d "https://deepsilence10161-source.github.io/ff-user-panel/asset-e2e.html" >/dev/null || true
+          for i in $(seq 1 25); do
+            if adb logcat -d | grep -q "ASSET-E2E-RESULT"; then break; fi
+            sleep 2
+          done
+          if adb logcat -d | grep -q "ASSET-E2E-RESULT: 59/59 OK"; then
+            echo "✅ 12: 59/59 images live-loaded + rendered inside app WebView"
+          else
+            echo "❌ ASSET E2E fail — logcat:"
+            adb logcat -d | grep -i "ASSET-E2E" || true
+            adb logcat -d | tail -n 40 || true
+            exit 1
+          fi
+          echo "✅ SAFE-CLEANER v5 E2E VERIFIED (fail-safe + zero-permission + owner-safety)!"
           echo "✅ LIVE ANDROID EMULATOR APK E2E VERIFIED (deep audit ke saath)!"
           EOF
           chmod +x /tmp/e2e-emulator.sh
@@ -267,6 +353,50 @@ jobs:
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: bash /tmp/e2e-emulator.sh
+
+  # ✅ ASSET TASK (2026-10-10): har image ki LIVE HTTP proof — Pages par
+  # deploy hone ke turant baad retry loop chalta hai (Pages deploy lag hoti
+  # hai). 59 URLs: 200 + PNG signature + IHDR. Ek bhi image missing/invalid
+  # = FAIL. Yeh asset-e2e.html ke in-app render proof ka alag, independent
+  # saboot hai — dono chahiye.
+  live-asset-check:
+    name: Live Assets HTTP Check (59 images on Pages)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify all 59 assets live + valid on GitHub Pages
+        run: |
+          node -e "
+            const fs = require('fs');
+            const src = fs.readFileSync('js/features/asset-catalog.js', 'utf8');
+            const paths = [...new Set([...src.matchAll(/img: '([^']+)'/g)].map(m => m[1]))];
+            console.error('catalog me ' + paths.length + ' unique img paths');
+            if (paths.length !== 59) { console.error('ummeed 59 thi!'); process.exit(1); }
+            fs.writeFileSync('/tmp/asset-paths.txt', paths.join('\n'));
+          "
+          BASE="https://deepsilence10161-source.github.io/ff-user-panel"
+          for attempt in $(seq 1 30); do
+            FAILS=0
+            while read -r p; do
+              CODE=$(curl -sL -o /tmp/img.bin -w "%{http_code}" "$BASE/$p")
+              SIG=$(head -c8 /tmp/img.bin | xxd -p 2>/dev/null || echo none)
+              if [ "$CODE" != "200" ] || [ "$SIG" != "89504e470d0a1a0a" ]; then
+                FAILS=$((FAILS+1))
+                echo "  MISS(code=$CODE sig=$SIG): $p"
+              fi
+            done < /tmp/asset-paths.txt
+            if [ "$FAILS" -eq 0 ]; then
+              echo "✅ ALL 59 IMAGES LIVE on Pages — 200 + valid PNG (attempt $attempt)"
+              exit 0
+            fi
+            echo "attempt $attempt: $FAILS missing/invalid — 10s wait (Pages deploy ho rahi hogi)"
+            sleep 10
+          done
+          echo "❌ 59 images live-check fail (upar MISS list)"
+          exit 1
 
   # ✅ (2026-10-06) Notification permission ka ASLI saboot.
   # POST_NOTIFICATIONS runtime permission sirf Android 13+ (API 33+) par hoti hai —

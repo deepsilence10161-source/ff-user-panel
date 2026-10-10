@@ -10,10 +10,14 @@ package com.miniesports.app;
  * de, ya koi bhi chalaki kare — naya APK hi chalega.
  *
  * LAYERS:
- *   1. On-Update Data Wipe: jab bhi APK update hota hai (versionCode
- *      badalta hai), SARI local files delete — SharedPreferences,
- *      databases, WebView storage, cache, files dir, external files.
- *      Package name ke under ki HAR cheez.
+ *   1. On-Update Data Wipe (ab SERVER-GATED): jab bhi APK update hota hai
+ *      (versionCode badalta hai), safai PENDING banti hai — turant nahi
+ *      hoti. Asli safai sirf SafeCleaner.runServerGatedCleanup se hoti
+ *      hai (server policy + owner exemption check ke baad). Wipe scope:
+ *      SharedPreferences, databases, WebView storage, cache, files dir,
+ *      external files — sirf package ke under ki app-private cheezein.
+ *      User ki personal files kabhi nahi. (2026-10-09: incident ke baad
+ *      device-wide OldApkCleaner HATA diya gaya.)
  *
  *   2. Anti-Rollback: highest versionCode 3 jagah store hota hai
  *      (SharedPreferences, encrypted file, SQLite). Kisi ek se bhi
@@ -66,6 +70,11 @@ public class AppGuard {
     private static final String KEY_LAST_VERSION_CODE = "_last_vc";
     private static final String KEY_LAST_UPDATE_TIME = "_last_ut";
     private static final String KEY_WIPE_DONE_FOR = "_wipe_done_for";
+    /* ✅ SAFE-CLEANER (2026-10-09): update par safai ab turant nahi hoti —
+       yeh pending flag banta hai, aur sirf SafeCleaner (server-gated) ise
+       chukata hai. Owner-exempt devices par yeh flag laga reh sakta hai,
+       kuch delete nahi hota. */
+    private static final String KEY_WIPE_PENDING = "_wipe_pending";
 
     // ── Tamper-resistant backup file (separate from SharedPreferences) ──
     private static final String ANTI_ROLLBACK_FILE = ".integrity_check.dat";
@@ -139,26 +148,25 @@ public class AppGuard {
             String lastWipeKey = prefs.getString(KEY_WIPE_DONE_FOR, "");
 
             if (isUpdate && !wipeKey.equals(lastWipeKey)) {
+                /* ✅ SAFE-CLEANER (2026-10-09, incident-ke-baad redesign):
+                   Pehle yahin turant performFullWipe + device-wide
+                   OldApkCleaner chalta tha — owner ke device se bhi files
+                   udd gayi thin. Ab sirf PENDING flag lagta hai; asli safai
+                   SIRF server-gated path (SafeCleaner.runServerGatedCleanup
+                   ← features/device-cleanup.js) se hoti hai, jahan server
+                   policy + owner-exemption check hota hai. Fail-safe: koi
+                   JS/server na chale = koi deletion nahi. */
                 Log.i(TAG, "🔄 UPDATE detected! VC: " + storedVC + " → " + currentVC +
-                           " | Wiping ALL app data for package: " + ctx.getPackageName());
-                performFullWipe(ctx);
-                // Re-store after wipe (wipe clears prefs too)
-                SharedPreferences newPrefs = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                newPrefs.edit()
+                           " | cleanup PENDING (server policy ke bina kuch delete nahi hoga)");
+                prefs.edit().putString(KEY_WIPE_PENDING, wipeKey).apply();
+                prefs.edit()
                     .putInt(KEY_LAST_VERSION_CODE, currentVC)
                     .putLong(KEY_LAST_UPDATE_TIME, currentUT)
                     .putString(KEY_WIPE_DONE_FOR, wipeKey)
                     .apply();
                 writeAntiRollbackFile(ctx, currentVC, currentUT);
                 writeAntiRollbackDB(ctx, currentVC, currentUT);
-                Log.i(TAG, "✅ Wipe complete + new version stored");
-                // Also clean old APK files from device storage
-                try {
-                    int apkDeleted = OldApkCleaner.cleanDeviceApks(ctx);
-                    Log.i(TAG, "🧹 Device APK cleanup: " + apkDeleted + " old APK files deleted");
-                } catch (Exception e) {
-                    Log.w(TAG, "Device APK cleanup error: " + e.getMessage());
-                }
+                Log.i(TAG, "✅ Version stored + wipe pending set");
             } else {
                 // Same version, just update highest if needed
                 if (currentVC > storedVC) {
@@ -256,6 +264,27 @@ public class AppGuard {
     // LAYER 2: FULL DATA WIPE (package-level)
     // ═══════════════════════════════════════════════════════════
 
+    /* ═══ SAFE-CLEANER API — sirf SafeCleaner se call hota hai ═══ */
+
+    /** Kya update ke baad safai pending hai? */
+    static boolean isWipePending(Context ctx) {
+        try {
+            String pending = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .getString(KEY_WIPE_PENDING, "");
+            return !pending.isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /** Safai ho gayi — pending flag hatao. */
+    static void markWipeDone(Context ctx) {
+        try {
+            ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    .edit().remove(KEY_WIPE_PENDING).apply();
+        } catch (Exception ignored) {}
+    }
+
     /**
      * Deletes ALL data belonging to this package:
      * - SharedPreferences (all .xml files)
@@ -267,20 +296,29 @@ public class AppGuard {
      * - External files (getExternalFilesDir)
      * - External cache (getExternalCacheDir)
      *
+     * ⚠️ SIRF APP-PRIVATE directories — is function ka koi bhi path user ki
+     * personal files (DCIM/Pictures/Downloads/Documents) tak NAHI jata.
+     * Yeh ab sirf SafeCleaner ke server-gated path se chalta hai.
+     *
      * Preserves ONLY the anti-rollback files so rollback detection works.
      */
-    private static void performFullWipe(Context ctx) {
+    static int performFullWipe(Context ctx) {
         Log.i(TAG, "🧹 FULL WIPE starting for: " + ctx.getPackageName());
 
         int deleted = 0;
 
-        // 1. SharedPreferences — delete ALL except our guard prefs
+        // 1. SharedPreferences — delete ALL except guard + cleanup-policy prefs
         File prefsDir = new File(ctx.getApplicationInfo().dataDir, "shared_prefs");
         if (prefsDir.exists() && prefsDir.isDirectory()) {
             File[] prefsFiles = prefsDir.listFiles();
             if (prefsFiles != null) {
                 for (File f : prefsFiles) {
                     if (f.getName().contains(PREFS_NAME)) continue; // preserve guard
+                    /* ✅ v5.1 (perfection-audit): SafeCleaner ki verdict +
+                       tracked-path registry kabhi mat mitao — warna wipe ke
+                       beech me hi registry udd jati thi (order-dependent bug)
+                       aur boot-path ka fail-safe verdict bhi reset ho jata. */
+                    if (f.getName().contains("__cleanup_policy")) continue; // preserve SafeCleaner
                     if (f.delete()) deleted++;
                     Log.d(TAG, "  Deleted prefs: " + f.getName());
                 }
@@ -301,10 +339,10 @@ public class AppGuard {
         }
 
         // 3. WebView storage
-        deleteRecursive(new File(ctx.getApplicationInfo().dataDir, "app_webview"), deleted);
-        deleteRecursive(new File(ctx.getApplicationInfo().dataDir, "app_hws_webview"), deleted);
+        deleted += deleteRecursive(new File(ctx.getApplicationInfo().dataDir, "app_webview"));
+        deleted += deleteRecursive(new File(ctx.getApplicationInfo().dataDir, "app_hws_webview"));
         File webViewCache = new File(ctx.getCacheDir(), "WebView");
-        deleteRecursive(webViewCache, deleted);
+        deleted += deleteRecursive(webViewCache);
 
         // 4. Internal files (except anti-rollback file)
         File filesDir = ctx.getFilesDir();
@@ -315,7 +353,7 @@ public class AppGuard {
                     if (f.getName().equals(ANTI_ROLLBACK_FILE)) continue; // preserve
                     if (f.getName().equals("last_crash.txt")) continue; // preserve for crash report
                     if (f.isDirectory()) {
-                        deleteRecursive(f, deleted);
+                        deleted += deleteRecursive(f);
                     } else {
                         if (f.delete()) deleted++;
                     }
@@ -325,36 +363,39 @@ public class AppGuard {
 
         // 5. Cache
         File cacheDir = ctx.getCacheDir();
-        if (cacheDir.exists()) deleteRecursive(cacheDir, deleted);
+        if (cacheDir.exists()) deleted += deleteRecursive(cacheDir);
 
         // 6. Code cache
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             File codeCache = ctx.getCodeCacheDir();
-            if (codeCache.exists()) deleteRecursive(codeCache, deleted);
+            if (codeCache.exists()) deleted += deleteRecursive(codeCache);
         }
 
         // 7. External files
         File extFiles = ctx.getExternalFilesDir(null);
-        if (extFiles != null && extFiles.exists()) deleteRecursive(extFiles, deleted);
+        if (extFiles != null && extFiles.exists()) deleted += deleteRecursive(extFiles);
 
         // 8. External cache
         File extCache = ctx.getExternalCacheDir();
-        if (extCache != null && extCache.exists()) deleteRecursive(extCache, deleted);
+        if (extCache != null && extCache.exists()) deleted += deleteRecursive(extCache);
 
         Log.i(TAG, "🧹 FULL WIPE complete — " + deleted + " items deleted");
+        return deleted;
     }
 
-    private static void deleteRecursive(File file, int counter) {
-        if (file == null || !file.exists()) return;
+    private static int deleteRecursive(File file) {
+        if (file == null || !file.exists()) return 0;
+        int deleted = 0;
         if (file.isDirectory()) {
             File[] children = file.listFiles();
             if (children != null) {
                 for (File child : children) {
-                    deleteRecursive(child, counter);
+                    deleted += deleteRecursive(child);
                 }
             }
         }
-        file.delete();
+        if (file.delete()) deleted++;
+        return deleted;
     }
 
     // ═══════════════════════════════════════════════════════════

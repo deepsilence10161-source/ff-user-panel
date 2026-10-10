@@ -507,6 +507,7 @@ function _getCosmetics() {
     frame_fire:   'Jalti Fire border',
     frame_galaxy: 'Galaxy purple glow',
     frame_gold:   'Gold champion border',
+    frame_glow:   'Royal Glow — gold-purple avatar frame',
     tag_beast:    '⚡ BEAST MODE tag',
     tag_pro:      '🎯 PRO PLAYER tag',
     tag_king:     '👑 KING tag',
@@ -531,6 +532,9 @@ function _getCosmetics() {
       { id:'tag_king',     name:'👑 KING',         price:50,  icon:'👑', desc:DESC.tag_king,     type:'tag'   },
       { id:'vip_slot',     name:'VIP Slot Pass',   price:200, icon:'⭐', desc:DESC.vip_slot,     type:'vip'   }
     ];
+  }
+  if (!base.some(function(x){ return x.id === 'frame_glow'; })) {
+    base.push({ id:'frame_glow', name:'Royal Glow Frame', price:120, icon:'✨', desc:DESC.frame_glow, type:'frame', img:'assets/img/frames/glow.png' });
   }
   return base.concat(_getBpCosmetics());
 }
@@ -743,6 +747,7 @@ var _COS_FRAME_COLORS = {
   frame_fire:   '#ff6b2b',
   frame_galaxy: '#b964ff',
   frame_gold:   '#ffd700',
+  frame_glow:   '#e0b0ff',
   /* R29F: Battle Pass theme-frame colors (equip → profile avatar ring) */
   frame_bp_prem_13: '#4287f5', /* Blue Flame */
   frame_bp_prem_23: '#9b59f0', /* Purple Haze */

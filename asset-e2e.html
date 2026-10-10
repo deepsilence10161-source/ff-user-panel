@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASSET E2E</title>
+<style>
+  body { background:#0a0a1a; color:#eee; font-family:sans-serif; padding:16px; }
+  .ok { color:#00ff9c; } .fail { color:#ff6b6b; }
+  img { width:72px; height:72px; object-fit:contain; background:#111; border-radius:10px; margin:3px; }
+  .row { display:flex; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<h2 style="color:#ffd700">ASSET E2E — har image ki live load testing</h2>
+<div id="assetE2EResult" style="font-size:18px;font-weight:900;padding:12px;color:#ffd700">RUNNING...</div>
+<div class="row" id="grid"></div>
+<script>
+/* Self-contained: asset-catalog.js ko load kiye bina bhi 59 img files
+   khud verify kar leta hai (CI curl-check ke saath double proof). */
+(function(){
+  var V = '20261010a';
+  var list = [
+    ['ranks/bronze.png'],['ranks/silver.png'],['ranks/gold.png'],['ranks/platinum.png'],['ranks/diamond.png'],['ranks/legend.png'],
+    ['premium/silver.png'],['premium/gold.png'],['premium/diamond.png'],
+    ['titles/veteran.png'],['titles/champion.png'],['titles/arena-king.png'],['titles/immortal.png'],['titles/mythic.png'],
+    ['titles/shadow-hunter.png'],['titles/death-bringer.png'],['titles/titan.png'],['titles/reaper.png'],['titles/destroyer.png'],
+    ['titles/supreme.png'],['titles/apex.png'],['titles/cosmic.png'],['titles/infinity.png'],['titles/lone-wolf.png'],
+    ['titles/phoenix.png'],['titles/unstoppable.png'],
+    ['badges/hunter.png'],['badges/kill-machine.png'],['badges/predator.png'],['badges/god-of-war.png'],['badges/mvp.png'],
+    ['badges/elite-fighter.png'],['badges/king-of-arena.png'],['badges/royal-legend.png'],['badges/eternal-champion.png'],
+    ['badges/the-conqueror.png'],['badges/top-10.png'],['badges/top-5.png'],['badges/podium-master.png'],['badges/one-man-army.png'],
+    ['badges/win-streak.png'],['badges/week-warrior.png'],['badges/grinder.png'],['badges/survivor.png'],['badges/rising-star.png'],
+    ['badges/legend-born.png'],['badges/rank-climber.png'],['badges/legend-winner.png'],['badges/comeback-king.png'],
+    ['special/top3-champion.png'],['special/season-champion.png'],['special/clan-war-champion.png'],
+    ['frames/glow.png'],
+    ['icons/crown.png'],['icons/trophy.png'],['icons/coin.png'],['icons/diamond.png'],['icons/fire.png'],['icons/xp.png']
+  ];
+  var grid = document.getElementById('grid');
+  var ok = 0, fail = [], done = 0;
+  list.forEach(function(item){
+    var p = item[0];
+    var img = document.createElement('img');
+    img.alt = p;
+    function fin(pass){
+      done++;
+      if (pass) ok++; else { fail.push(p); img.style.outline = '2px solid #ff6b6b'; }
+      if (done === list.length) {
+        var pass = fail.length === 0;
+        var line = 'ASSET-E2E-RESULT: ' + ok + '/' + list.length + (pass ? ' OK' : ' FAIL(' + fail.join(',') + ')');
+        var el = document.getElementById('assetE2EResult');
+        el.textContent = line;
+        el.className = pass ? 'ok' : 'fail';
+        try { console.error(line); } catch(e) {}
+      }
+    }
+    img.onload = function(){ fin(img.naturalWidth > 0); };
+    img.onerror = function(){ fin(false); };
+    img.src = 'assets/img/' + p + '?v=' + V;
+    grid.appendChild(img);
+  });
+})();
+</script>
+</body>
+</html>
