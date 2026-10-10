@@ -77,53 +77,65 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
   <div class="version">v1.0.181 | 9.3MB | Android 5.0+</div>
 </div>
 
-<!-- METHOD 1: APKPure App (RECOMMENDED) -->
+<!-- METHOD 1: PWA Install (RECOMMENDED - NO PERMISSION NEEDED) -->
 <div class="step-box" style="border-color:rgba(0,255,100,.3); background:linear-gradient(135deg,rgba(0,255,100,.05),rgba(10,10,25,.9));">
   <div class="step-header">
     <div class="step-num" style="background:linear-gradient(135deg,#00ff64,#00cc50);">1</div>
-    <div class="step-title">APKPure App se Install Karein <span class="recommended">✅ BEST</span></div>
+    <div class="step-title">Home Screen par Add Karein <span class="recommended">✅ BEST - No Permission</span></div>
   </div>
   <div class="step-content">
-    <p style="margin-bottom:10px;">Sabse easy aur safe tarika — koi settings change nahi karni padegi!</p>
+    <p style="margin-bottom:10px;">Sabse easy tarika — Chrome se seedha install, koi permission nahi!</p>
     <ol>
-      <li><strong>Google Play Store</strong> kholein</li>
-      <li><strong>"APKPure"</strong> search karein</li>
-      <li>APKPure app <strong>Install</strong> karein (FREE)</li>
-      <li>APKPure app <strong>Open</strong> karein</li>
-      <li><strong>"MiniEsports"</strong> search karein</li>
-      <li><strong>Install</strong> button dabayein</li>
-      <li><strong>DONE!</strong> ✅ App install ho jaega</li>
+      <li>Neeche <strong>"Open MiniEsports"</strong> button dabayein</li>
+      <li>App khulega → Chrome ka <strong>menu (3 dots ⋮)</strong> dabayein</li>
+      <li><strong>"Add to Home Screen"</strong> ya <strong>"Install App"</strong> select karein</li>
+      <li><strong>"Add"</strong> ya <strong>"Install"</strong> dabayein</li>
+      <li><strong>DONE!</strong> ✅ Home screen par app icon aa jaega</li>
+      <li>Ab app <strong>Play Store jaisa</strong> khulega — bina Chrome ke!</li>
     </ol>
+    <p style="margin-top:10px; color:#00ff64; font-weight:600;">✅ Koi permission nahi mangi jaegi<br>✅ Koi settings change nahi karni<br>✅ Sab devices pe kaam karta hai<br>✅ Play Store jaisa experience</p>
   </div>
 </div>
 
-<!-- APKPure App Link -->
-<a class="btn btn-play" href="https://play.google.com/store/apps/details?id=com.apkpure.aegon" target="_blank">
-  📦 APKPure App - Play Store se Install Karein
+<!-- PWA Open Button -->
+<a class="btn btn-primary" href="https://deepsilence10161-source.github.io/ff-user-panel/" id="pwaBtn">
+  🚀 Open MiniEsports & Install
 </a>
+
+<!-- PWA Auto-detect -->
+<script>
+if ('serviceWorker' in navigator) {
+  // Check if already installed as PWA
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    document.getElementById('pwaBtn').textContent = '✅ App Already Installed!';
+    document.getElementById('pwaBtn').style.background = 'rgba(0,255,100,.2)';
+    document.getElementById('pwaBtn').style.color = '#00ff64';
+  }
+}
+</script>
 
 <div class="divider"></div>
 
-<!-- METHOD 2: Direct APKPure Link -->
+<!-- METHOD 2: APKPure Direct Download -->
 <div class="step-box">
   <div class="step-header">
     <div class="step-num">2</div>
     <div class="step-title">APKPure se Seedha Download</div>
   </div>
   <div class="step-content">
-    <p>Agar APKPure app nahi install karna chahte to seedha download karein:</p>
+    <p>Agar PWA install nahi karna chahte to APK file download karein:</p>
   </div>
 </div>
 
 <a class="btn btn-secondary" href="https://d.apkpure.net/b/APK/com.miniesports.app?version=latest">
-  ⬇️ Download APK (APKPure Direct)
+  ⬇️ Download APK (APKPure)
 </a>
 
 <!-- METHOD 3: GitHub Mirror -->
 <div class="step-box">
   <div class="step-header">
     <div class="step-num">3</div>
-    <div class="step-title">GitHub Mirror</div>
+    <div class="step-title">GitHub Mirror (Backup)</div>
   </div>
   <div class="step-content">
     <p>Backup link — agar APKPure kaam na kare:</p>
@@ -131,7 +143,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
 </div>
 
 <a class="btn btn-secondary btn-small" href="https://github.com/deepsilence10161-source/ff-user-panel/releases/latest/download/MiniEsports.apk">
-  ⬇️ Download APK (GitHub Mirror)
+  ⬇️ Download APK (GitHub)
 </a>
 
 <div class="divider"></div>
