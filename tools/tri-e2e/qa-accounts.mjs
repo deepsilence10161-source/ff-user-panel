@@ -166,6 +166,19 @@ async function create(runid) {
   const file = path.join(STATE_DIR, `${runid}.json`);
   fs.writeFileSync(file, JSON.stringify(state, null, 2));
 
+  /* ✅ 2026-10-12: dono players ki users row pehle se marker IGN ke saath.
+     Kyun: admin panel ki "Joined Players" table player ka naam
+     `ign_at_join` ya users table ke ign se dikhati hai. QC ke liye har run ka
+     player pehchanna zaroori hai — warna sab "Player" dikhte hain.
+     (users_ign_length_check ≤20 — marker 15 chars ka hai.) */
+  log('Supabase: QA players ki users row (marker IGN)…');
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds)
+             values ('${p.localId}', 'QA-TRI ${runid}', false, 0, 0)
+             on conflict (id) do update set ign = excluded.ign;`);
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds)
+             values ('${p2.localId}', 'QA-TRI2 ${runid}', false, 0, 0)
+             on conflict (id) do update set ign = excluded.ign;`);
+
   /* QA admin ko admin haq — dono jagah (gate + RLS). Sirf isi runid ke liye. */
   log('Supabase: QA admin ko admins row + users.is_admin…');
   /* ⚠️ admins.uid → users.id FK hai, isliye PEHLE users row, phir admins. */

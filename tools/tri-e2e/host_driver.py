@@ -358,20 +358,31 @@ def main():
         def h7c():
             want1 = ST["markers"]["ignTag"]        # P1  (QA-TRI <runid>)
             want2 = ST["markers"]["ignTag2"]       # P2  (QA-TRI2 <runid>)
+            u1, u2 = ST["player"]["uid"], ST["player2"]["uid"]
             admin.evaluate("() => { if (window.showSection) window.showSection('joinedPlayers'); else if (window.loadJoinedPlayers) window.loadJoinedPlayers(); }")
             admin.wait_for_timeout(1500)
 
+            # ⚠️ Naam par match karna kamzor hai (naam join-row/users se aata hai).
+            #    Table ki har row par `data-uid` hota hai — usi se pakka check.
             def _tbl():
                 try:
                     admin.evaluate("() => { if (window.loadJoinedPlayers) window.loadJoinedPlayers(); }")
+                    n1 = admin.locator(f'#joinedPlayersTable tr[data-uid="{u1}"]').count()
+                    n2 = admin.locator(f'#joinedPlayersTable tr[data-uid="{u2}"]').count()
                     t = admin.inner_text("#joinedPlayersTable")
                 except Exception:
+                    n1 = n2 = 0
                     t = ""
-                return t if (want1 in t and want2 in t) else None
+                if n1 >= 1 and n2 >= 1:
+                    return {"rows": [n1, n2], "text": t}
+                return None
 
-            txt = poll(_tbl, timeout=180, every=6, what="admin Joined Players me dono QA players")
+            hit = poll(_tbl, timeout=240, every=6, what="admin Joined Players me dono players (data-uid)")
             shot(admin, "h7c-admin-joined-players.png")
-            return f"admin panel (Joined Players) me dono players dikhe: {want1} + {want2} (table text len {len(txt)})"
+            names = [w for w in (want1, want2) if w in hit["text"]]
+            return (f"admin panel (Joined Players) me dono players ki row mili "
+                    f"(data-uid {u1[:8]} x{hit['rows'][0]}, {u2[:8]} x{hit['rows'][1]})"
+                    + (f"; IGN marker bhi dikha: {names}" if names else ""))
 
         step("H7c Admin panel: Joined Players me dono (P1 APK + P2 web)", h7c, critical=True)
 
@@ -495,17 +506,23 @@ def main():
         # ── H11b: P1 (user web) ke match me DO players dikhein ─────────────
         def h11b():
             mid = MATCH["row"]["id"]
-            rows = poll(lambda: (lambda r: r if len(r) >= 2 else None)(
-                user.evaluate("""async (id) => { const {data} = await window._supa.from('join_requests')
-                     .select('user_id,status').eq('match_id', id); return data || []; }""", mid)),
-                timeout=180, every=6, what="match me 2 players (DB)")
+            # ⚠️ join_requests par RLS hai — ek player doosre player ki row nahi
+            #    dekh sakta (sirf apni + admin sab). Isliye "2 players" ka pakka
+            #    signal matches.filled_slots hai (wo sabko dikhta hai) + apni row.
+            fs = poll(lambda: (lambda v: int(v) if v is not None and int(v) >= 2 else None)(
+                user.evaluate("""async (id) => { const {data} = await window._supa.from('matches')
+                     .select('filled_slots').eq('id', id).maybeSingle(); return data ? data.filled_slots : null; }""", mid)),
+                timeout=240, every=6, what="match filled_slots >= 2 (dono players)")
+            mine = poll(lambda: user.evaluate("""async (id) => { const {data} = await window._supa.from('join_requests')
+                     .select('id').eq('match_id', id).eq('user_id', window.U.uid); return (data||[]).length ? true : null; }""", mid),
+                timeout=120, every=5, what="P1 ki apni join row")
             user.evaluate("() => { if (window.loadMatches) window.loadMatches(); }")
-            filled = poll(lambda: (lambda v: v if v is not None and int(v) >= 2 else None)(
+            card = poll(lambda: (lambda v: v if v is not None and int(v) >= 2 else None)(
                 user.evaluate("(id) => (window.MT && window.MT[id]) ? Number(window.MT[id].filledSlots || 0) : None", mid)),
                 timeout=180, every=6, what="match card par 2 players")
             shot(user, "h11b-user-web-2-players.png")
-            VALUES["joined_players"] = str(len(rows))
-            return f"match #{mid[:8]} me {len(rows)} players (card: {filled}/slots) — dono QA players"
+            VALUES["joined_players"] = str(fs)
+            return f"match #{mid[:8]} filled_slots={fs} (card: {card}) — P1 (web) + P2 (web) dono andar"
 
         step("H11b User web (P1): match me dono players dikhe", h11b, critical=True)
 

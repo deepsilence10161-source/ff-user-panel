@@ -255,16 +255,40 @@
       }, 4000, 420000, 'admin ka match (host driver se)')
         .then(function (title) {
           VALUES.match_title = title;
-          w.eval("if (window.renderHome) renderHome(); if (window.loadMatches) loadMatches();");
-          return poll(function () {
+          function _nudge() {
+            w.eval("try{ if (window.showScreen) showScreen('home'); }catch(e){}" +
+                   "try{ if (window.renderHome) renderHome(); }catch(e){}" +
+                   "try{ if (window.loadMatches) loadMatches(); }catch(e){}" +
+                   "try{ if (window.refreshMatches) refreshMatches(); }catch(e){}");
+          }
+          function _seen() {
             var w2 = W();
             var inModel = false;
             try {
               var arr = w2.MATCHES || w2._matches || [];
-              inModel = arr.some(function (m) { return (m.title || m.name || '') === title; });
+              inModel = (Array.isArray(arr) ? arr : Object.values(arr)).some(function (m) {
+                return ((m && (m.title || m.name)) || '') === title; });
             } catch (e) {}
-            return (inModel || w2.document.body.innerText.indexOf(title) >= 0) ? true : null;
-          }, 2500, 120000, 'match app me render');
+            if (!inModel) { try { var mt = w2.MT || {}; inModel = Object.keys(mt).some(function (k) { return (mt[k] && mt[k].title) === title; }); } catch (e) {} }
+            var body = (w2.document.body && w2.document.body.innerText) || '';
+            return (inModel || body.indexOf(title) >= 0) ? true : null;
+          }
+          _nudge();
+          return poll(function () { _nudge(); return _seen(); }, 3000, 120000, 'match app me render')
+            .catch(function () {
+              /* App ka data-layer refresh kabhi UI tak nahi pahunchta (screen
+                 already rendered). Tab asli user ki tarah: page reload —
+                 session persistence LOCAL hai, isliye login nahi tootega. */
+              return bootApp().then(function () {
+                return poll(function () { try { return W()._supa ? true : null; } catch (e) { return null; } }, 1000, 60000, 'app dobara load');
+              }).then(function () {
+                return poll(function () {
+                  var w2 = W();
+                  try { if (w2.loadMatches) w2.eval('loadMatches()'); } catch (e) {}
+                  return _seen();
+                }, 3000, 150000, 'match app me render (reload ke baad)');
+              });
+            });
         })
         .then(function () { return 'match APK me dikha: “' + String(VALUES.match_title).slice(0, 40) + '”'; });
     }],
@@ -344,11 +368,14 @@
   STEPS.push(['10/10 APK par match me 2 players (P2 web se join)', function () {
     var w = W();
     return poll(function () {
-      return w._supa.from('join_requests').select('user_id,status').eq('match_id', VALUES.match_id)
-        .then(function (r) { return (r.data && r.data.length >= 2) ? r.data : null; });
-    }, 4000, 420000, 'doosra player (P2, host driver se)')
-      .then(function (rows) {
-        VALUES.joined_players = String(rows.length);
+      /* ⚠️ join_requests par RLS hai — P1 doosre player (P2) ki row NAHI dekh
+         sakta. Isliye "2 players" ka pakka signal matches.filled_slots hai
+         (sabko dikhta hai) + apni row ka hona. */
+      return w._supa.from('matches').select('filled_slots').eq('id', VALUES.match_id).maybeSingle()
+        .then(function (r) { return (r.data && Number(r.data.filled_slots) >= 2) ? Number(r.data.filled_slots) : null; });
+    }, 4000, 420000, 'doosra player (P2, host driver se) — match slots')
+      .then(function (rooms) {
+        VALUES.joined_players = String(rooms);
         w.eval("if (window.loadMatches) loadMatches(); if (window.renderHome) renderHome();");
         return poll(function () {
           var w2 = W();
