@@ -557,8 +557,10 @@ def main():
                 raise RuntimeError("Joined Players me dono players nahi mile — diag=" +
                                    json.dumps(diag, ensure_ascii=False)[:420])
             shot(admin, "h11c-admin-joined-players.png")
-            p1name = ST["markers"]["ignTag"] in hit.get("text", "")
-            p2name = ST["markers"]["ignTag2"] in hit.get("text", "")
+            # IGN marker ka check — table text me (case-insensitive)
+            _t = (hit.get("text", "") or "").upper()
+            p1name = ST["markers"]["ignTag"].upper() in _t
+            p2name = ST["markers"]["ignTag2"].upper() in _t
             return (f"admin panel (Joined Players) me dono ki live row mili "
                     f"({u1[:8]} + {u2[:8]}, table rows={hit['rows']}, match ki JRs={hit['mine_in_jr']}, filled_slots={fs})"
                     + f"; IGN: P1={'✔' if p1name else '—'} P2={'✔' if p2name else '—'}")
