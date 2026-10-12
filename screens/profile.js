@@ -109,7 +109,7 @@ function renderProfile() {
   h += '<input type="file" id="profImgIn" accept="image/*" style="display:none" onchange="uploadProfImg(this)">';
   h += '</div>';
   /* Name plate — wings + ⚡ + naam (premium par 👑), equipped tag prefix wahi */
-  h += '<div class="pf2-plate"><span class="pf2-bolt">⚡</span>' + (_eqTag ? '<span style="font-size:16px;font-weight:900;color:' + _pf2Ring + '">' + _eqTag + '</span>' : '') + '<span class="pf2-name">' + (window.escHtml ? window.escHtml(UD.ign || UD.displayName || 'Player') : (UD.ign || UD.displayName || 'Player')) + '</span>' + (_premActive ? '<span class="pf2-crown">👑</span>' : '') + '</div>';
+  h += '<div class="pf2-plate"><span class="pf2-bolt">⚡</span>' + (_eqTag ? '<span style="font-size:16px;font-weight:900;color:' + _pf2Ring + '">' + _eqTag + '</span>' : '') + '<span class="pf2-name">' + (window.escHtml ? window.escHtml(UD.ign || UD.displayName || 'Player') : (UD.ign || UD.displayName || 'Player')) + '</span>' + (_premActive ? '<span class="pf2-crown">👑</span>' : '') + (window.premiumRibbonHtml ? premiumRibbonHtml(20) : '') + '</div>';
   h += premPlate;
   if (chips) h += '<div class="pf2-chips">' + chips + '</div>';
   /* UID pill + copy (copyTxt core/utils.js ka asli helper hai) */
@@ -117,11 +117,20 @@ function renderProfile() {
   /* Footer row — hexagon Lv badge + rank plate + XP bar (asli lv/xp formula) */
   h += '<div class="pf2-foot">';
   h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
-  h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66">' + rk.emoji + ' ' + rk.badge + '</div>';
+  h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66;display:inline-flex;align-items:center;gap:5px">' +
+       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012a" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+       rk.emoji + ' ' + rk.badge + '</div>';
   h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
   h += '</div>';
   h += '</div></div>';
   if (_premActive) h += '</div>'; /* end rainbow wrapper */
+
+  /* ✅ USER-ATTRACTION (2026-10-12, badge-engine.js): khule badges ki
+     image-row — jo mehnat se kamaya wo PROFILE par dikhe (warna badge
+     sirf gallery me pada reh jata tha aur kamane ka matlab hi nahi
+     banta). 0 badge par khali jagah nahi — "pehla badge" ka progress.
+     Fail-safe: function na mile to kuch nahi badalta. */
+  if (window.renderBadgeShowcaseRow) { try { h += renderBadgeShowcaseRow(st); } catch (e) {} }
 
   var _pm = Number(st.matches||0), _pw = Number(st.wins||0), _pk = Number(st.kills||0);
   var _pwr = _pm > 0 ? Math.round((_pw/_pm)*100) : 0;

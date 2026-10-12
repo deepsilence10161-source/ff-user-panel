@@ -44,10 +44,11 @@ jobs:
       # ✅ ASSET TASK (2026-10-10): web tests bhi hard gate — smoke (feature
       # regressions) + asset-e2e (59 images: catalog↔files 1:1, PNG valid,
       # wiring, unlock logic). Fail = build yahin rukegi.
-      - name: Web Tests (smoke + 59-asset E2E)
+      - name: Web Tests (smoke + 60-asset E2E + screen E2E)
         run: |
           node tests/run-smoke-tests.js
           node tests/asset-e2e.js
+          node tests/screen-e2e.js
 
       - name: Show auto-computed version
         run: |

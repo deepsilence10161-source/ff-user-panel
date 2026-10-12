@@ -1,0 +1,147 @@
+name: E2E Emulator (har screen live test)
+
+# ================================================================
+#  MINI eSPORTS — EMULATOR E2E   (2026-10-12)
+# ================================================================
+#  KYU: "har kaam ka e2e live proof" niyam ka hissa. Ye workflow asli
+#  Android emulator (hardware-accelerated KVM) par:
+#    1. repo se debug APK build karta hai (gradle assembleDebug)
+#    2. emulator par install + launch karta hai (app live GitHub Pages
+#       UI load karta hai — wahi jo users dekhte hain)
+#    3. har bottom-nav screen ka screenshot leta hai
+#    4. asset-e2e.html (60 images) aur screen-e2e.html (har badge /
+#       ribbon / gallery render) ko intent se chala kar unka
+#       deterministic PASS/FAIL logcat se uthata hai
+#    5. sab screenshots + logcat artifacts me upload karta hai
+#
+#  TRIGGER: push (main) par Build APK ke BAAD, ya manually
+#  (Actions → Run workflow). Manual me koi bhi release APK E2E ke
+#  liye chuna ja sakta hai (input).
+#
+#  NOTE: GitHub ka ubuntu-latest runner /dev/kvm deta hai — isliye
+#  neeche KVM udev permission step zaroori hai (warna emulator
+#  software-mode me chalta hai aur bahut slow hota hai).
+# ================================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      apk_url:
+        description: 'APK URL (khaali chhodo = repo se debug build)'
+        required: false
+        default: ''
+  push:
+    branches: [ main ]
+    paths:                      # sirf tab jab UI/native kuch badla ho
+      - 'js/**'
+      - 'features/**'
+      - 'screens/**'
+      - 'core/**'
+      - 'index.html'
+      - 'asset-e2e.html'
+      - 'screen-e2e.html'
+      - 'android/**'
+      - '.github/scripts/emulator-e2e.sh'
+      - '.github/workflows/e2e-emulator.yml'
+
+concurrency:
+  group: e2e-emulator-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ── Web tests pehle (fast fail — emulator se pehle sasta filter) ──
+      - name: Web Tests (smoke + asset + screen E2E)
+        run: |
+          node tests/run-smoke-tests.js
+          node tests/asset-e2e.js
+          node tests/screen-e2e.js
+
+      # ── GitHub Pages live hona chahiye (E2E pages wahin se load hote hain) ──
+      - name: GitHub Pages ka intezar (E2E pages live hon)
+        run: |
+          BASE=https://deepsilence10161-source.github.io/ff-user-panel
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$BASE/screen-e2e.html" || true)
+            code2=$(curl -s -o /dev/null -w '%{http_code}' "$BASE/asset-e2e.html" || true)
+            echo "try $i: screen-e2e=$code asset-e2e=$code2"
+            [ "$code" = "200" ] && [ "$code2" = "200" ] && exit 0
+            sleep 10
+          done
+          echo "::error::GitHub Pages par E2E pages 5 min me live nahi hue"
+          exit 1
+
+      # ── APK: input URL, warna repo se debug build ──
+      - name: APK laao / build karo
+        run: |
+          if [ -n "${{ github.event.inputs.apk_url }}" ]; then
+            curl -fL -o MiniEsports.apk "${{ github.event.inputs.apk_url }}"
+          else
+            echo "Debug APK build (gradle assembleDebug)…"
+          fi
+          ls -la *.apk 2>/dev/null || echo "APK abhi build hoga"
+
+      - name: Setup JDK 17
+        if: ${{ github.event.inputs.apk_url == '' }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - name: Setup Gradle
+        if: ${{ github.event.inputs.apk_url == '' }}
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.2'
+
+      - name: Debug APK build
+        if: ${{ github.event.inputs.apk_url == '' }}
+        working-directory: android
+        run: gradle assembleDebug --no-daemon
+
+      - name: APK ko root me laao (script isi path se uthata hai)
+        run: |
+          if [ ! -f MiniEsports.apk ]; then
+            cp android/app/build/outputs/apk/debug/app-debug.apk MiniEsports.apk
+          fi
+          ls -la MiniEsports.apk
+
+      # ── KVM (emulator hardware acceleration) ──
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm || true
+
+      # ── Emulator + poora E2E ──
+      - name: Emulator E2E (install → launch → screens → asset/screen E2E)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          avd-name: e2e_avd
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot-save -camera-back none
+          script: bash .github/scripts/emulator-e2e.sh
+
+      # ── Saboot (screenshots + logcat) — FAIL hua to bhi upload ──
+      - name: Artifacts upload (screens + logs)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-emulator-proof
+          path: e2e-artifacts/
+          if-no-files-found: warn
+          retention-days: 30

@@ -321,6 +321,12 @@ function renderHome() {
      the sponsored block, matching where normal match cards sit. */
   if (window.renderFilterChips) topHtml += renderFilterChips();
   topHtml += _sponsoredBlockHtml;
+  /* ✅ USER-ATTRACTION (2026-10-12, badge-engine.js): "🎯 Agla Inaam"
+     strip — sabse kareeb wala locked badge/title + progress. Near-miss
+     hook: jo player 90% paas hai wo khelna band nahi karta. Dikhane
+     ka data pehle se maujood tha (_assetProgress); ab screen par hai.
+     Fail-safe: function na ho to '' (purana home waisa hi). */
+  if (window.renderNextRewardStrip) { try { topHtml += renderNextRewardStrip(); } catch (e) {} }
   // Recommended widget removed
 
   var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ' + hCF + ' matches ' + hSF + '</p></div>');
@@ -499,7 +505,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261011a" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261012a" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

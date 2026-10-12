@@ -10,7 +10,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261011a" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261012a" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho". Was a
@@ -27,17 +27,17 @@ var TIERS_DATA=[
   {t:2, free:{type:'gd',v:5}, prem:{type:'gd',v:10,label:'10 '+GDI(13)}},
   {t:3, free:{type:'gd',v:5}, prem:{type:'gd',v:10}},
   {t:4, free:{type:'gd',v:5}, prem:{type:'gd',v:10}},
-  {t:5, free:{type:'badge',v:'🥉 Bronze Warrior',label:'Bronze Warrior Badge'}, prem:{type:'badge',v:'🌟 Chosen One',label:'Chosen One Badge'}},
+  {t:5, free:{type:'badge',v:'🥉 Bronze Warrior',label:'Bronze Warrior Badge',img:'assets/img/ranks/bronze.png'}, prem:{type:'badge',v:'🌟 Chosen One',label:'Chosen One Badge'}},
   {t:6, free:{type:'gd',v:8}, prem:{type:'gd',v:15}},
   {t:7, free:{type:'gd',v:8}, prem:{type:'gd',v:15}},
-  {t:8, free:{type:'gd',v:8}, prem:{type:'emoji',v:'🔥 Fire Pack',label:'Fire Emoji Pack'}},
+  {t:8, free:{type:'gd',v:8}, prem:{type:'emoji',v:'🔥 Fire Pack',label:'Fire Emoji Pack',img:'assets/img/icons/fire.png'}},
   {t:9, free:{type:'gd',v:8}, prem:{type:'gd',v:15}},
   {t:10,free:{type:'gd',v:10,label:'10 '+GDI(13)},prem:{type:'gd',v:20,label:'20 '+GDI(13)}},
   {t:11,free:{type:'gd',v:8},prem:{type:'gd',v:15}},
   {t:12,free:{type:'gd',v:8},prem:{type:'gd',v:15}},
   {t:13,free:{type:'gd',v:8},prem:{type:'theme',v:'🔵 Blue Flame Border',label:'Blue Flame Border'}},
   {t:14,free:{type:'gd',v:8},prem:{type:'gd',v:15}},
-  {t:15,free:{type:'badge',v:'🎖️ Participant',label:'Participant Badge'},prem:{type:'badge',v:'🥈 Silver Fighter',label:'Silver Fighter Badge'}},
+  {t:15,free:{type:'badge',v:'🎖️ Participant',label:'Participant Badge'},prem:{type:'badge',v:'🥈 Silver Fighter',label:'Silver Fighter Badge',img:'assets/img/ranks/silver.png'}},
   {t:16,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
   {t:17,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
   {t:18,free:{type:'gd',v:10},prem:{type:'emoji',v:'⚡ Lightning Pack',label:'Lightning Emoji Pack'}},
@@ -47,12 +47,12 @@ var TIERS_DATA=[
   {t:22,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
   {t:23,free:{type:'gd',v:10},prem:{type:'theme',v:'🟣 Purple Haze Border',label:'Purple Haze Border'}},
   {t:24,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
-  {t:25,free:{type:'gd',v:15,label:'15 '+GDI(13)},prem:{type:'badge',v:'🥇 Gold Champion',label:'Gold Champion Badge'}},
+  {t:25,free:{type:'gd',v:15,label:'15 '+GDI(13)},prem:{type:'badge',v:'🥇 Gold Champion',label:'Gold Champion Badge',img:'assets/img/ranks/gold.png'}},
   {t:26,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
   {t:27,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
-  {t:28,free:{type:'gd',v:12},prem:{type:'emoji',v:'👑 Crown Pack',label:'Crown Emoji Pack'}},
+  {t:28,free:{type:'gd',v:12},prem:{type:'emoji',v:'👑 Crown Pack',label:'Crown Emoji Pack',img:'assets/img/icons/crown.png'}},
   {t:29,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
-  {t:30,free:{type:'badge',v:'💪 Grinder',label:'Grinder Badge'},prem:{type:'gd',v:30,label:'30 '+GDI(13)}},
+  {t:30,free:{type:'badge',v:'💪 Grinder',label:'Grinder Badge',img:'assets/img/badges/grinder.png'},prem:{type:'gd',v:30,label:'30 '+GDI(13)}},
   {t:31,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
   {t:32,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
   {t:33,free:{type:'gd',v:12},prem:{type:'theme',v:'🟡 Golden Frame',label:'Golden Frame Theme'}},
@@ -62,17 +62,17 @@ var TIERS_DATA=[
   {t:37,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
   {t:38,free:{type:'gd',v:15},prem:{type:'theme',v:'🌊 Ocean Wave Border',label:'Ocean Wave Border'}},
   {t:39,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
-  {t:40,free:{type:'gd',v:20,label:'20 '+GDI(13)},prem:{type:'badge',v:'💎 Platinum Pro',label:'Platinum Pro Badge'}},
+  {t:40,free:{type:'gd',v:20,label:'20 '+GDI(13)},prem:{type:'badge',v:'💎 Platinum Pro',label:'Platinum Pro Badge',img:'assets/img/ranks/platinum.png'}},
   {t:41,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:42,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
-  {t:43,free:{type:'gd',v:15},prem:{type:'emoji',v:'🔴 Fire God Pack',label:'Fire God Emoji Pack'}},
+  {t:43,free:{type:'gd',v:15},prem:{type:'emoji',v:'🔴 Fire God Pack',label:'Fire God Emoji Pack',img:'assets/img/icons/fire.png'}},
   {t:44,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:45,free:{type:'badge',v:'🎯 Dedicated',label:'Dedicated Badge'},prem:{type:'gd',v:40,label:'40 '+GDI(13)}},
   {t:46,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:47,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:48,free:{type:'gd',v:15},prem:{type:'theme',v:'🌌 Galaxy Border',label:'Galaxy Animated Border'}},
   {t:49,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
-  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'🏆 Season Legend',label:'Season Legend Title + 50 '+GDI(13)}}
+  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'🏆 Season Legend',label:'Season Legend Title + 50 '+GDI(13),img:'assets/img/special/season-champion.png'}}
 ];
 
 /* Get current season ID as text '2026_06'
@@ -169,6 +169,20 @@ window.awardPassXP=function(uid,xp){
   }, 500);
 };
 
+/* ── Reward label with REAL ART (2026-10-12, user-attraction) ──
+   Ye SIRF DISPLAY hai: server (claim_battle_pass_tier RPC) jo grant karta
+   hai wo bilkul nahi badla — bas tier grid me wahi inaam ab asli image
+   ke saath dikhta hai jahaan art ka matlab 100% match karta hai
+   (Bronze Warrior→bronze rank kala, Grinder→grinder badge kala, etc.).
+   img na ho to purana emoji-text jaisa hi chalta hai. */
+function _bpRewardLabel(r, sz) {
+  try {
+    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261012a" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
+    var lbl = r.label || (r.type === 'gd' ? GDI(11) + ' ' + r.v : (r.v || ''));
+    return img + lbl;
+  } catch (e) { return (r && (r.label || r.v)) || ''; }
+}
+
 /* ── Show Battle Pass UI ── */
 window.showBattlePass=function(){
   if(!window.U||!window.UD){if(window.toast)toast('Pehle login karo!','err');return;}
@@ -223,7 +237,7 @@ window.showBattlePass=function(){
       var fc=claimedF[String(td.t)];
       h+='<div style="background:'+(hasPrem?'rgba(255,255,255,.04)':'rgba(255,255,255,.02)')+';border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 9px">';
       h+='<div style="font-size:9px;color:#555;margin-bottom:3px;font-weight:700">FREE</div>';
-      var fLabel=td.free.label||(td.free.type==='gd'?GDI(11)+' '+td.free.v:'');
+      var fLabel=_bpRewardLabel(td.free, 17);
       h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+fLabel+'</div>';
       /* ✅ R3 fix (2026-09-20d): free-track claim sirf unlocked maangta hai — hasPrem sirf prem-track ke liye (RPC bhi free-track par premium nahi maangta) */
       if(unlocked&&!fc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'free\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radius:6px;border:none;background:rgba(0,255,100,.15);color:#00ff64;cursor:pointer;font-weight:700">CLAIM</button>';
@@ -234,7 +248,7 @@ window.showBattlePass=function(){
       var pc=claimedP[String(td.t)];
       h+='<div style="background:'+(hasPrem?'rgba(185,100,255,.07)':'rgba(255,255,255,.03)')+';border:1px solid '+(hasPrem?'rgba(185,100,255,.2)':'rgba(255,255,255,.06)')+';border-radius:10px;padding:7px 9px">';
       h+='<div style="font-size:9px;color:'+(hasPrem?'#b964ff55':'#444')+';margin-bottom:3px;font-weight:700">PREMIUM</div>';
-      var pLabel=td.prem.label||(td.prem.type==='gd'?GDI(11)+' '+td.prem.v:(td.prem.v||''));
+      var pLabel=_bpRewardLabel(td.prem, 17);
       h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+pLabel+'</div>';
       if(hasPrem&&unlocked&&!pc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'prem\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radius:6px;border:none;background:rgba(185,100,255,.2);color:#b964ff;cursor:pointer;font-weight:700">CLAIM</button>';
       else if(hasPrem&&pc)       h+='<div style="margin-top:4px;font-size:9px;color:#b964ff;font-weight:700">✓ Claimed</div>';

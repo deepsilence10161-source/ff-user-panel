@@ -284,14 +284,18 @@ public class MainActivity extends AppCompatActivity {
             );
             return;
         }
-        /* ✅ ASSET E2E (2026-10-10): emulator/CI ke liye — sirf apne trusted
-           github.io host par sirf asset-e2e.html ko WebView me load karne do.
-           Scope itna tang hai ki koi aur URL ya host kabhi nahi chalega. */
+        /* ✅ ASSET E2E (2026-10-10) + SCREEN E2E (2026-10-12): emulator/CI
+           ke liye — sirf apne trusted github.io host par sirf ye do E2E
+           pages load ho sakte hain (asset-e2e.html = 60 images ka live
+           load proof; screen-e2e.html = har screen ka render + wiring
+           proof). Scope itna tang hai ki koi aur URL ya host kabhi nahi
+           chalega. */
         if ("https".equals(data.getScheme())
                 && data.getHost() != null
                 && data.getHost().endsWith(".github.io")
                 && data.getPath() != null
-                && data.getPath().endsWith("/asset-e2e.html")) {
+                && (data.getPath().endsWith("/asset-e2e.html")
+                    || data.getPath().endsWith("/screen-e2e.html"))) {
             assetE2ELoaded = true;
             if (isOnline()) webView.loadUrl(data.toString());
         }
@@ -943,6 +947,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupWebView() {
+        /* ✅ E2E (2026-10-12): sirf DEBUG build me WebView remote-debugging
+           ON — CI emulator isse har modal/screen ko CDP se chala kar
+           screenshot le sakta hai. RELEASE build me ye KABHI enable nahi
+           hota (users ke liye security waisi hi rehti hai). */
+        if (BuildConfig.DEBUG) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
         WebSettings s = webView.getSettings();
 
         // ── Core JS / Storage ────────────────────────────────

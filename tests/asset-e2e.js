@@ -33,14 +33,14 @@ const ctx = {
 ctx.window = ctx; ctx.globalThis = ctx;
 vm.runInNewContext(fs.readFileSync(path.join(REPO, 'js/features/asset-catalog.js'), 'utf8'), ctx, { filename: 'asset-catalog.js' });
 
-console.log('\n── ASSET 1: catalog — 59 items, no duplicate, no orphan ──');
+console.log('\n── ASSET 1: catalog — 60 items, no duplicate, no orphan ──');
 const cat = ctx.ASSET_CATALOG;
 ok(!!cat, 'catalog load hua');
 const all = ctx._assetAll();
-ok(all.length === 59, 'total 59 items (milé ' + all.length + ')');
-ok(cat.ranks.length === 6 && cat.premium.length === 3 && cat.titles.length === 17 &&
+ok(all.length === 60, 'total 60 items (milé ' + all.length + ')');
+ok(cat.ranks.length === 6 && cat.premium.length === 4 && cat.titles.length === 17 &&
    cat.badges.length === 23 && cat.special.length === 3 && cat.cosmetic.length === 1 && cat.icons.length === 6,
-   'har kind ka count sahi (6/3/17/23/3/1/6)');
+   'har kind ka count sahi (6/4/17/23/3/1/6)');
 
 const ids = all.map(x => x.id);
 const imgs = all.map(x => x.img);
@@ -55,7 +55,7 @@ const diskImgs = [];
     else if (f.endsWith('.png')) diskImgs.push('assets/img/' + path.relative(path.join(REPO, 'assets/img'), p).split(path.sep).join('/'));
   });
 })(path.join(REPO, 'assets/img'));
-ok(diskImgs.length === 59, 'disk par bhi 59 PNG (milé ' + diskImgs.length + ')');
+ok(diskImgs.length === 60, 'disk par bhi 60 PNG (milé ' + diskImgs.length + ')');
 const missing = imgs.filter(i => !diskImgs.includes(i));
 const orphans = diskImgs.filter(i => !imgs.includes(i));
 ok(missing.length === 0, 'catalog ki har img file hai' + (missing.length ? ' — MISSING: ' + missing.join(',') : ''));
@@ -75,7 +75,7 @@ all.forEach(it => {
   if (info && info.bytes > budget) { bigFiles++; console.log('    big:', it.id, Math.round(info.bytes / 1024) + 'KB'); }
   totalBytes += buf.length;
 });
-ok(badPng === 0, 'sare 59 valid PNG, square, sane dimensions');
+ok(badPng === 0, 'sare 60 valid PNG, square, sane dimensions');
 ok(bigFiles === 0, 'har file budget me (badges/titles/icons < 150KB, frame < 300KB)');
 ok(totalBytes < 5 * 1024 * 1024, 'kul assets < 5MB (ab ' + Math.round(totalBytes / 1024) + 'KB)');
 
@@ -83,7 +83,7 @@ console.log('\n── ASSET 3: E2E page + wiring ──');
 const e2e = fs.readFileSync(path.join(REPO, 'asset-e2e.html'), 'utf8');
 ok(e2e.indexOf('ASSET-E2E-RESULT') !== -1, 'asset-e2e.html result line print karta hai');
 const e2eMissing = imgs.map(i => i.replace('assets/img/', '')).filter(p => e2e.indexOf(p) === -1);
-ok(e2eMissing.length === 0, 'asset-e2e.html sab 59 paths list karta hai' + (e2eMissing.length ? ' — ' + e2eMissing.join(',') : ''));
+ok(e2eMissing.length === 0, 'asset-e2e.html sab 60 paths list karta hai' + (e2eMissing.length ? ' — ' + e2eMissing.join(',') : ''));
 
 const idx = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');
 ok(idx.indexOf('js/features/asset-catalog.js?v=') !== -1, 'index.html me asset-catalog.js wired (cache-bust ke saath)');

@@ -389,7 +389,9 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
       h += '<div class="pod-name">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + '</div>';
       h += '<div class="pod-earn" style="color:' + col + ';font-weight:900">' + valLabel + '</div>';
       /* Rank badge under score */
-      h += '<div style="font-size:10px;padding:2px 7px;border-radius:10px;background:' + rkBadge.bg + ';color:' + rkBadge.color + ';border:1px solid ' + rkBadge.color + '44;margin:2px 0 4px">' + rkBadge.emoji + ' ' + rkBadge.badge + '</div>';
+      h += '<div style="font-size:10px;padding:2px 7px;border-radius:10px;background:' + rkBadge.bg + ';color:' + rkBadge.color + ';border:1px solid ' + rkBadge.color + '44;margin:2px 0 4px;display:inline-flex;align-items:center;gap:4px">' +
+           (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rkBadge.pts) + '?v=20261012a" alt="" style="width:15px;height:15px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+           rkBadge.emoji + ' ' + rkBadge.badge + '</div>';
       h += '<div class="pod-pedestal">' + podNums[i] + '</div></div>';
     }
     h += '</div>';
@@ -424,7 +426,12 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
     var _wr = _m > 0 ? Math.round((_w/_m)*100) : 0;
     var _kd = _m > 0 ? (_k/_m).toFixed(1) : '0.0';
     h += '<div class="rs">K:' + _k + ' · W:' + _w + ' · <span style="color:#00ff9c">WR:' + _wr + '%</span> · <span style="color:#ff9f1c">K/M:' + _kd + '</span></div></div>';
-    h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44">' + rk.emoji + ' ' + rk.badge + '</span>';
+    /* ✅ 2026-10-12: leaderboard row par asli rank badge IMAGE (jo kalayein
+       assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
+       RP-based hai aur fail-safe (na mile to emoji waisa hi). */
+    h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012a" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
   if (!users.length) h += '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ranked players yet</p></div>';

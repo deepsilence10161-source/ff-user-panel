@@ -1,12 +1,16 @@
 /* ================================================================
    ASSET CATALOG — js/features/asset-catalog.js  (v1 · 2026-10-10)
    ================================================================
-   59 real art assets (Drive → assets/img/) ka SINGLE SOURCE OF TRUTH.
+   60 real art assets (Drive → assets/img/) ka SINGLE SOURCE OF TRUTH.
    Har item: id, kind, name, img, desc, unlock condition (code-verified
    stats). Koi duplicate NAHI — har concept ki ek hi image.
 
-   Kinds: rank(6) · premium(3) · title(17) · badge(23) · special(3)
+   Kinds: rank(6) · premium(4) · title(17) · badge(23) · special(3)
           cosmetic(1) · icon(6)
+
+   (2026-10-12: premium(4) — Drive ki "Premium(Badge).png" (sunehra
+    PREMIUM ribbon) ab assets/img/premium/ribbon.png ke roop me live hai;
+    badge-engine.js ise profile/player-card me IGN ke aage lagata hai.)
 
    Systems (sab code me asli hain):
      rank    → js/rank-system.js (RANK_TIERS, rank_points)
@@ -73,7 +77,8 @@
     premium: [
       { id: 'prem_silver', name: 'Premium Silver', img: BASE + 'premium/silver.png', desc: '₹49/month — No Ads, Badge, Photo/Banner', need: { stat: 'premium', need: 1 } },
       { id: 'prem_gold', name: 'Premium Gold', img: BASE + 'premium/gold.png', desc: '₹99/month — + Creator, Live Stream', need: { stat: 'premium', need: 2 } },
-      { id: 'prem_diamond', name: 'Premium Diamond', img: BASE + 'premium/diamond.png', desc: '₹199/month — + Custom Theme', need: { stat: 'premium', need: 3 } }
+      { id: 'prem_diamond', name: 'Premium Diamond', img: BASE + 'premium/diamond.png', desc: '₹199/month — + Custom Theme', need: { stat: 'premium', need: 3 } },
+      { id: 'prem_ribbon', name: 'Premium Ribbon', img: BASE + 'premium/ribbon.png', desc: 'IGN ke aage sunehra PREMIUM ribbon (profile + share card)', need: { stat: 'premium', need: 1 } }
     ],
     titles: [
       { id: 'title_veteran', name: 'Veteran', img: BASE + 'titles/veteran.png', desc: '10+ wins', need: { stat: 'wins', need: 10 } },

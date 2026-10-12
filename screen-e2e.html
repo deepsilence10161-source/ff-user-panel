@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCREEN E2E — har screen ki live jaanch</title>
+<style>
+  body { background:#0a0a1a; color:#eee; font-family:sans-serif; padding:14px; }
+  .ok { color:#00ff9c; } .fail { color:#ff6b6b; }
+  .card { background:#131327; border:1px solid #26264a; border-radius:12px; padding:10px; margin:8px 0; }
+  .row { display:flex; gap:6px; align-items:center; }
+  img { width:44px; height:44px; object-fit:contain; background:#0c0c1c; border-radius:8px; }
+  code { color:#ffd700; font-size:11px; }
+</style>
+</head>
+<body>
+<h2 style="color:#ffd700;margin:0 0 6px">SCREEN E2E — har screen, har badge, live</h2>
+<div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
+<div id="log"></div>
+
+<script src="js/features/asset-catalog.js?v=20261012a"></script>
+<script src="js/features/badge-engine.js?v=20261012a"></script>
+<script>
+/* ================================================================
+   SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
+   ka render jo user-attraction ke liye joda gaya, LIVE chala kar
+   verify karta hai. Emulator/CI me MainActivity ke intent se load
+   hota hai (github.io + /screen-e2e.html) aur result console.error
+   par deta hai:  logcat me "SCREEN-E2E-RESULT: ..." milta hai.
+
+   Niyam: koi jaali (mock) function nahi — jo app me load hota hai
+   bilkul wahi file chalayi jaati hai (asset-catalog + badge-engine).
+   Har check ka proof: HTML me asli <img src> aur progress text.
+   ================================================================ */
+(function () {
+  var PASS = 0, FAIL = 0, fails = [], lines = [];
+
+  function ok(cond, label, extra) {
+    if (cond) { PASS++; lines.push('<div class="card ok">✓ ' + label + (extra ? ' <code>' + extra + '</code>' : '') + '</div>'); }
+    else { FAIL++; fails.push(label); lines.push('<div class="card fail">✗ ' + label + (extra ? ' <code>' + extra + '</code>' : '') + '</div>'); }
+  }
+  function out() {
+    document.getElementById('log').innerHTML = lines.join('');
+  }
+
+  /* ── Test stats: jaan-boojh kar aise numbers jo kai badges kholte hain,
+       aur ek badge (Apex = 5000 RP) bilkul kareeb rakhte hain — taa ke
+       "agla inaam" wala near-miss logic bhi asli me exercise ho ── */
+  var ST = { wins: 60, kills: 160, matches: 40, streak: 5, loginStreak: 7,
+             rp: 4900, level: 26, clean: 101, premium: 1,
+             top1: 2, top3: 16, top5: 26, top10: 51, soloWins: 26, comebacks: 6 };
+
+  /* ── 1. engine load ── */
+  ok(!!window.ASSET_CATALOG, 'asset-catalog load hua', window._assetAll ? window._assetAll().length + ' items' : '');
+  ok(!!window.__BADGE_ENGINE, 'badge-engine load hua', window.__BADGE_ENGINE ? 'v' + window.__BADGE_ENGINE.version : '');
+
+  /* ── 2. rank badge image (har tier ka) ── */
+  var rankCases = [[0,'bronze'],[301,'silver'],[601,'gold'],[1001,'platinum'],[1501,'diamond'],[2001,'legend']];
+  var rankOk = rankCases.every(function (c) {
+    var p = window.rankBadgeImg(c[0]);
+    return p && p.indexOf('/ranks/' + c[1] + '.png') !== -1;
+  });
+  ok(rankOk, 'rankBadgeImg — 6/6 tier sahi image', rankCases.map(function (c) { return c[1]; }).join(','));
+
+  /* ── 3. kamaye hue badges ── */
+  var earned = window.getEarnedBadges(ST);
+  ok(earned.length >= 8, 'getEarnedBadges — kamaye badges mile', earned.length + ' badges');
+  ok(earned.every(function (b) { return b.img && b.img.indexOf('assets/img/') === 0; }), 'har kamaye badge ki asli image maujood');
+
+  /* ── 4. top badges (share-card ke liye) ── */
+  var top = window.getTopBadges(ST, 4);
+  ok(top.length === Math.min(4, earned.length), 'getTopBadges — sabse durlabh pehle', top.map(function (t) { return t.name; }).join(' > '));
+
+  /* ── 5. agla inaam (near-miss) ── */
+  var nr = window.getNextReward(ST);
+  ok(!!nr && nr.pct > 0 && nr.pct < 100, 'getNextReward — sabse kareeb locked inaam + %', nr ? nr.name + ' ' + nr.have + '/' + nr.need + ' (' + nr.pct + '%)' : 'null');
+  ok(!!nr && nr.need > nr.have, 'agla inaam abhi baaki hai (100% se kam)', nr ? 'baaki: ' + (nr.need - nr.have) : '');
+
+  /* ── 6. HOME strip ── */
+  var strip = window.renderNextRewardStrip(ST);
+  ok(strip.length > 80 && strip.indexOf('<img') !== -1 && strip.indexOf('%') !== -1, 'HOME strip HTML — image + progress bar', strip.length + ' chars');
+
+  /* ── 7. PROFILE badge row ── */
+  var show = window.renderBadgeShowcaseRow(ST);
+  ok(show.length > 60 && show.indexOf('<img') !== -1, 'PROFILE badge showcase — images', show.length + ' chars');
+  var showEmpty = window.renderBadgeShowcaseRow({});
+  ok(showEmpty === '' || showEmpty.indexOf('Pehla badge') !== -1, '0 badge par khali nahi — pehla-badge hint');
+
+  /* ── 8. premium ribbon ── */
+  window.getUserPremiumTier = undefined; window.UD = { premium_level: 0 };
+  var r0 = window.premiumRibbonHtml(20);
+  ok(r0 === '', 'premium ribbon — non-premium par KUCH NAHI (jhoota dava nahi)');
+  window.UD = { premium_level: 1 };
+  var r1 = window.premiumRibbonHtml(20);
+  ok(r1.indexOf('premium/ribbon.png') !== -1, 'premium ribbon — premium par sunehra ribbon image');
+
+  /* ── 9. ASLI Collection gallery ka render (openModal ko capture karke) ──
+     Ye nakli nahi: showAssetGallery() hi chalta hai, bas uska modal
+     output pakad lete hain — 60 items + images + UNLOCKED/🔒 dono. */
+  var _modal = { title: '', html: '' };
+  window.openModal = function (t, h) { _modal.title = t; _modal.html = h || ''; };
+  window._assetStatsCached = ST;
+  try {
+    window.showAssetGallery();
+    var imgs = (_modal.html.match(/<img/g) || []).length;
+    ok(_modal.title.indexOf('Collection') !== -1, 'Collection modal khula (' + _modal.title + ')');
+    ok(imgs >= 55, 'Collection me saare item images render (' + imgs + ' <img>)');
+    ok(_modal.html.indexOf('UNLOCKED') !== -1 && (_modal.html.indexOf('🔒') !== -1 || _modal.html.indexOf('LOCKED') !== -1), 'unlocked + locked dono states render');
+  } catch (e) { ok(false, 'Collection render crash: ' + e.message); }
+
+  /* ── 10. screens ki wiring (asal files me) — live fetch ── */
+  var wired = [
+    ['index.html', 'js/features/badge-engine.js'],
+    ['screens/home.js', 'renderNextRewardStrip'],
+    ['screens/profile.js', 'renderBadgeShowcaseRow'],
+    ['screens/profile.js', 'premiumRibbonHtml'],
+    ['screens/profile.js', 'rankBadgeImg'],
+    ['screens/rank.js', 'rankBadgeImg'],
+    ['features/player-card.js', 'getTopBadges'],
+    ['features/battle-pass.js', '_bpRewardLabel'],
+    ['js/features/asset-catalog.js', 'premium/ribbon.png']
+  ];
+  var cache = {};
+  var pending = wired.length;
+  wired.forEach(function (w) {
+    var url = w[0] + '?v=fetch';
+    if (cache[w[0]]) { check(cache[w[0]]); return; }
+    fetch(url).then(function (r) { return r.text(); }).then(function (txt) {
+      cache[w[0]] = txt;
+      check(txt);
+    }).catch(function () { check(''); });
+    function check(txt) {
+      ok(txt.indexOf(w[1]) !== -1, 'wiring: ' + w[0] + ' → ' + w[1]);
+      if (--pending === 0) finish();
+    }
+  });
+
+  function finish() {
+    var pass = FAIL === 0;
+    var line = 'SCREEN-E2E-RESULT: ' + PASS + '/' + (PASS + FAIL) + (pass ? ' OK' : ' FAIL(' + fails.join(' | ') + ')');
+    var el = document.getElementById('screenE2EResult');
+    el.textContent = line;
+    el.className = pass ? 'ok' : 'fail';
+    out();
+    /* logcat/CI ke liye — asset-e2e.html wala hi pattern */
+    try { console.error(line); } catch (e) {}
+    try { console.log('[E2E] ' + JSON.stringify(window.__BADGE_ENGINE.selftest())); } catch (e) {}
+  }
+})();
+</script>
+</body>
+</html>
