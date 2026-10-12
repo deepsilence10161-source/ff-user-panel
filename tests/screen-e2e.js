@@ -182,8 +182,11 @@ console.log('\n── SCREEN 9: Season Pass ki 5 asli kalaayein + cosmetics stor
      'frame_glow art bhi ab store me dikhta hai (pehle sirf ✨)');
 
   const seHtml = fs.readFileSync(path.join(REPO, 'screen-e2e.html'), 'utf8');
-  ok(seHtml.indexOf('bpArtProof') !== -1 && seHtml.indexOf('__BP.label(r, 34)') !== -1,
-     'screen-e2e.html — visual proof cards asli label/iconHtml se bante hain');
+  ok(seHtml.indexOf('bpArtProof') !== -1 && seHtml.indexOf('window.__BP.label(r,') !== -1
+     && seHtml.indexOf('window.__COSHOP.iconHtml(it)') !== -1,
+     'screen-e2e.html — visual proof cards asli label/iconHtml se bante hain (RESULT ke neeche, screenshot ke liye)');
+  ok(seHtml.indexOf("document.body.insertBefore(vis, _logEl)") !== -1,
+     'screen-e2e.html — cards RESULT ke theek neeche lagte hain (top viewport = screenshot me dikhega)');
 
   /* Purana/stale DB row (bina img, purana naam) — art map phir bhi kaam kare */
   const c2 = mkCtx([{ tier: 25, freeGd: 15, permGd: 0,
