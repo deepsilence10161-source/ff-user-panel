@@ -87,7 +87,10 @@ async function fbDelete(email, password) {
 /* ── QA data rows jo is runid ke hain (sirf inhi ko chhedna hai) ───────── */
 function cleanupSql(runid) {
   const tag = `%QA-TEST TRI ${runid}%`;
-  const ign = `%QA-TRI ${runid}%`;
+  /* ⚠️ P2 ka IGN `QA-TRI2 <runid>` hai — isliye pattern `%QA-TRI%<runid>%`
+     (pehle `%QA-TRI <runid>%` tha jo QA-TRI2 ko miss kar deta tha → P2 ki
+     users row DB me padi reh jati thi). */
+  const ign = `%QA-TRI%${runid}%`;
   const utr = `TRIRUN${runid}`;
   const emailLike = `qa-tri-${runid}-%`;
   return [
@@ -106,7 +109,10 @@ function cleanupSql(runid) {
 }
 const RESIDUE_SQL = (runid) => {
   const tag = `%QA-TEST TRI ${runid}%`, utr = `TRIRUN${runid}`, emailLike = `qa-tri-${runid}-%`;
-  const ign = `%QA-TRI ${runid}%`;
+  /* ⚠️ P2 ka IGN `QA-TRI2 <runid>` hai — isliye pattern `%QA-TRI%<runid>%`
+     (pehle `%QA-TRI <runid>%` tha jo QA-TRI2 ko miss kar deta tha → P2 ki
+     users row DB me padi reh jati thi). */
+  const ign = `%QA-TRI%${runid}%`;
   return `select
     (select count(*) from users where ign like '${ign}') as users,
     (select count(*) from admins where email like '${emailLike}') as admins,
@@ -207,7 +213,10 @@ async function cleanup(runid) {
     try { await sql(q); } catch (e) { console.warn('  ⚠️ SQL skip: ' + e.message.slice(0, 160)); }
   }
   if (st) {
+    /* ⚠️ purane state files (P2 se pehle ke) me player2 nahi hota — us par
+       crash nahi hona chahiye, warna cleanup baaki accounts bhi chhod deta. */
     for (const who of ['player', 'player2', 'admin']) {
+      if (!st[who]) { log(`Firebase: ${who} state me nahi (purana run) — skip`); continue; }
       const r = await fbDelete(st[who].email, st[who].password);
       log(`Firebase: ${who} account delete → ${r.deleted ? 'OK' : 'skip (' + (r.why || r.body) + ')'}`);
     }
