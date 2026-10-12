@@ -302,7 +302,8 @@ public class MainActivity extends AppCompatActivity {
                 && data.getHost().endsWith(".github.io")
                 && data.getPath() != null
                 && (data.getPath().endsWith("/asset-e2e.html")
-                    || data.getPath().endsWith("/screen-e2e.html"))) {
+                    || data.getPath().endsWith("/screen-e2e.html")
+                    || data.getPath().endsWith("/tri-e2e.html"))) {
             assetE2ELoaded = true;
             boolean online = isOnline();
             Log.i(TAG_E2E, "E2E intent match: " + data + " online=" + online);

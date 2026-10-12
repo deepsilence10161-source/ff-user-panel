@@ -1,0 +1,169 @@
+name: TRI E2E (Admin Panel ↔ User Panel web ↔ APK)
+
+# ══════════════════════════════════════════════════════════════════════════
+#  TEENO SURFACES KA LIVE FLOW — ek hi run me, ek hi QA account par:
+#
+#    1. User Panel APK      (asli release APK, emulator, asli WebView)
+#    2. User Panel web      (asli GitHub Pages site, Playwright/Chrome)
+#    3. Admin Panel         (asli GitHub Pages admin site, Playwright/Chrome)
+#
+#  Directions jo yahan prove hote hain:
+#    APK → Admin panel (support ticket admin ki live list me + reply)
+#    Admin → APK        (reply, coins credit, match, notification, KYC)
+#    User web → Admin   (KYC request admin ki queue me)
+#    Admin → User web   (coins credit, KYC approved, match, notification)
+#    Web ↔ APK          (ek hi account ke values dono taraf barabar — compare)
+#
+#  QA data run-id se tagged hota hai aur run ke ant me poora delete +
+#  residue check (0 rows) — production DB saaf rehti hai.
+# ══════════════════════════════════════════════════════════════════════════
+
+on:
+  workflow_run:
+    workflows: ["Build Mini eSports APK"]
+    types: [completed]
+  workflow_dispatch:
+
+concurrency:
+  group: tri-e2e-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ── gate: sirf tab chalao jab is commit me tri-e2e se juda kuch badla ho ──
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+    steps:
+      - id: decide
+        name: Kya ye run karna hai?
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "run=true" >> $GITHUB_OUTPUT; echo "manual dispatch" ; exit 0
+          fi
+          if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+            echo "run=false" >> $GITHUB_OUTPUT; echo "build fail tha — skip"; exit 0
+          fi
+          SHA="${{ github.event.workflow_run.head_sha }}"
+          FILES="$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+            "https://api.github.com/repos/${{ github.repository }}/commits/$SHA" | grep -o '"filename": *"[^"]*"' | head -60)"
+          echo "$FILES" | head -20
+          if echo "$FILES" | grep -q "tri-e2e"; then
+            echo "run=true" >> $GITHUB_OUTPUT; echo "tri-e2e se juda change mila"
+          else
+            echo "run=false" >> $GITHUB_OUTPUT; echo "isi commit me tri-e2e change nahi — skip"
+          fi
+
+  tri-e2e:
+    name: TRI E2E — teeno surfaces ek saath (live)
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Checkout (tri-e2e tooling + state)
+        uses: actions/checkout@v4
+
+      - name: Release APK laao (usi build run se)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p apk-out
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            RID="${{ github.event.workflow_run.id }}"
+          else
+            RID="$(gh run list --repo ${{ github.repository }} --workflow build-apk.yml --status success --limit 1 --json databaseId -q '.[0].databaseId')"
+          fi
+          echo "build run id: $RID"
+          gh run download "$RID" --repo ${{ github.repository }} -n MiniEsports-APK -D apk-out
+          ls -la apk-out
+
+      - name: Python + Playwright (asli Chrome)
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+
+      - name: QA accounts banao (Firebase + admins row) — run ke ant me delete
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          TRI_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          RUNID="r$(date -u +%H%M%S)"
+          echo "RUNID=$RUNID" >> $GITHUB_ENV
+          node tools/tri-e2e/qa-accounts.mjs create --run "$RUNID" | tee /tmp/qa-create.txt
+          python3 - <<'PY' >> $GITHUB_ENV
+          import json
+          st = json.load(open([f for f in __import__('glob').glob('tools/tri-e2e/.state/*.json')][-1]))
+          print("TRI_EMAIL=" + st["player"]["email"])
+          print("TRI_PASS=" + st["player"]["password"])
+          print("TRI_RUNID=" + st["runid"])
+          PY
+          echo "QA accounts ready (creds env me, log me nahi)"
+
+      - name: TRI E2E — APK + Admin Panel + User Panel web (live)
+        env:
+          OUT_DIR: /tmp/tri-out
+          APK_PATH: apk-out/app-release.apk
+          WAIT_APK: '600'
+          APK_WAIT: '1500'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          disable-animations: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: bash tools/tri-e2e/emulator-run.sh
+
+      - name: Cross-surface compare (APK ↔ User Panel web)
+        if: always()
+        run: |
+          python3 tools/tri-e2e/compare_values.py \
+            --apk /tmp/tri-out/apk-values.json \
+            --web /tmp/tri-out/host_out.json \
+            --out /tmp/tri-out/cross-surface.json || echo "COMPARE_FAIL=1" >> $GITHUB_ENV
+
+      - name: QA cleanup (residue 0) — hamesha
+        if: always()
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          TRI_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          if [ -n "${{ env.RUNID }}" ]; then
+            node tools/tri-e2e/qa-accounts.mjs cleanup --run "${{ env.RUNID }}" || echo "CLEANUP_FAIL=1" >> $GITHUB_ENV
+          else
+            echo "runid nahi mila — cleanup skip"
+          fi
+
+      - name: Artifacts (markers, screenshots, dono taraf ke results)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tri-e2e-proof-${{ env.RUNID || github.run_id }}
+          path: |
+            /tmp/tri-out/host_out.json
+            /tmp/tri-out/host-driver.log
+            /tmp/tri-out/cross-surface.json
+            /tmp/tri-out/apk-values.json
+            /tmp/tri-out/apk-markers.txt
+            /tmp/tri-out/apk-logcat.txt
+            /tmp/tri-out/*.png
+            /tmp/tri-out/web-shots/*.png
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Final verdict
+        if: always()
+        run: |
+          echo "════════ TRI E2E VERDICT ════════"
+          cat /tmp/tri-out/host_out.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print('HOST (admin+web):', d['ok'], '/', d['total'])" 2>/dev/null || true
+          grep -a "TRI-E2E-RESULT" /tmp/tri-out/apk-markers.txt 2>/dev/null | tail -1 || echo "APK result: nahi mila"
+          cat /tmp/tri-out/cross-surface.json 2>/dev/null || true
+          if [ -n "${COMPARE_FAIL:-}" ]; then echo "❌ cross-surface compare fail"; exit 1; fi
