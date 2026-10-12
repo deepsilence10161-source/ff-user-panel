@@ -42,7 +42,7 @@ jobs:
           node scripts/version-sync.mjs --check --require-if-changed
 
       # ✅ ASSET TASK (2026-10-10): web tests bhi hard gate — smoke (feature
-      # regressions) + asset-e2e (59 images: catalog↔files 1:1, PNG valid,
+      # regressions) + asset-e2e (60 images: catalog↔files 1:1, PNG valid,
       # wiring, unlock logic). Fail = build yahin rukegi.
       - name: Web Tests (smoke + 60-asset E2E + screen E2E)
         run: |
@@ -323,7 +323,7 @@ jobs:
             exit 1
           fi
           echo "✅ 11d: sirf SafeCleaner gated path — koi device-wide scan nahi"
-          echo "--- 12. ASSET E2E: 59 images LIVE render inside app WebView ---"
+          echo "--- 12. ASSET E2E: saari catalog images LIVE render inside app WebView ---"
           adb logcat -c
           adb shell am start -W -n "$PKG/.MainActivity" -a android.intent.action.VIEW \
             -d "https://deepsilence10161-source.github.io/ff-user-panel/asset-e2e.html" >/dev/null || true
@@ -331,8 +331,8 @@ jobs:
             if adb logcat -d | grep -q "ASSET-E2E-RESULT"; then break; fi
             sleep 2
           done
-          if adb logcat -d | grep -q "ASSET-E2E-RESULT: 59/59 OK"; then
-            echo "✅ 12: 59/59 images live-loaded + rendered inside app WebView"
+          if adb logcat -d | grep -q "ASSET-E2E-RESULT: 60/60 OK"; then
+            echo "✅ 12: 60/60 images live-loaded + rendered inside app WebView"
           else
             echo "❌ ASSET E2E fail — logcat:"
             adb logcat -d | grep -i "ASSET-E2E" || true
@@ -357,23 +357,27 @@ jobs:
 
   # ✅ ASSET TASK (2026-10-10): har image ki LIVE HTTP proof — Pages par
   # deploy hone ke turant baad retry loop chalta hai (Pages deploy lag hoti
-  # hai). 59 URLs: 200 + PNG signature + IHDR. Ek bhi image missing/invalid
+  # hai). Saari catalog URLs: 200 + PNG signature + IHDR. Ek bhi missing/invalid
   # = FAIL. Yeh asset-e2e.html ke in-app render proof ka alag, independent
   # saboot hai — dono chahiye.
   live-asset-check:
-    name: Live Assets HTTP Check (59 images on Pages)
+    name: Live Assets HTTP Check (saari catalog images on Pages)
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
-      - name: Verify all 59 assets live + valid on GitHub Pages
+      - name: Verify all catalog assets live + valid on GitHub Pages
         run: |
           grep -oE "'[a-z0-9]+/[a-z0-9-]+\.png'" js/features/asset-catalog.js | tr -d "'" | sed 's|^|assets/img/|' | sort -u > /tmp/asset-paths.txt
           COUNT=$(wc -l < /tmp/asset-paths.txt | tr -d ' ')
-          echo "catalog me $COUNT unique img paths"
-          test "$COUNT" = "59" || { echo "ummeed 59 thi!"; exit 1; }
+          # DYNAMIC (2026-10-12): expected = catalog ki item lines, hardcode nahi —
+          # nayi kala jodne par ye check khud adjust ho jata hai (59 hardcode ne
+          # 60vi image par build tod diya tha).
+          EXPECTED=$(grep -c "img: BASE + '" js/features/asset-catalog.js)
+          echo "catalog me $COUNT unique img paths (expected $EXPECTED)"
+          test "$COUNT" = "$EXPECTED" || { echo "catalog paths ($COUNT) != catalog items ($EXPECTED)!"; exit 1; }
           BASE="https://deepsilence10161-source.github.io/ff-user-panel"
           for attempt in $(seq 1 30); do
             FAILS=0
@@ -386,13 +390,13 @@ jobs:
               fi
             done < /tmp/asset-paths.txt
             if [ "$FAILS" -eq 0 ]; then
-              echo "ALL 59 IMAGES LIVE on Pages - 200 + valid PNG (attempt $attempt)"
+              echo "ALL $COUNT IMAGES LIVE on Pages - 200 + valid PNG (attempt $attempt)"
               exit 0
             fi
             echo "attempt $attempt: $FAILS missing/invalid - 10s wait (Pages deploy ho rahi hogi)"
             sleep 10
           done
-          echo "59 images live-check fail (upar MISS list)"
+          echo "$COUNT images live-check fail (upar MISS list)"
           exit 1
 
   # ✅ (2026-10-06) Notification permission ka ASLI saboot.
