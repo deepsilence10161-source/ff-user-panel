@@ -76,6 +76,15 @@ if grep -qE "Uncaught (TypeError|ReferenceError|SyntaxError)" "$LOGS/app-session
   grep -E "Uncaught (TypeError|ReferenceError|SyntaxError)" "$LOGS/app-session.txt" | head -20
   fail "app UI me JS exception aayi (logcat me Uncaught)"
 fi
+# ✅ APK-GUARD CHECK (2026-10-12): app ka apna anti-tamper guard debug/
+# tampered build ko block karta hai ("AppGuard: ⛔ BLOCKED: app is
+# debuggable"). Aisa ho to saaf message ke saath fail — warna 5 minute
+# baad "marker nahi mila" jaisa dhundhla error aata hai.
+if grep -q "AppGuard" "$LOGS/app-session.txt"; then
+  echo "--- AppGuard lines ---"
+  grep "AppGuard" "$LOGS/app-session.txt" | head -5
+  fail "AppGuard ne app block kiya — debug/tampered APK hai. Release APK install karo (Build APK workflow ka MiniEsports-APK artifact)."
+fi
 if grep -oE "renderHome: [0-9]+ matches" "$LOGS/app-session.txt" | tail -1 | grep -q "renderHome"; then
   echo "✓ live UI load hui: $(grep -oE 'renderHome: [0-9]+ matches' "$LOGS/app-session.txt" | tail -1)"
 else

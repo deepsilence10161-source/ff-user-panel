@@ -5,18 +5,23 @@ name: E2E Emulator (har screen live test)
 # ================================================================
 #  KYU: "har kaam ka e2e live proof" niyam ka hissa. Ye workflow asli
 #  Android emulator (hardware-accelerated KVM) par:
-#    1. repo se debug APK build karta hai (gradle assembleDebug)
-#    2. emulator par install + launch karta hai (app live GitHub Pages
-#       UI load karta hai — wahi jo users dekhte hain)
+#    1. WAHI RELEASE APK install karta hai jo users ko jaati hai
+#       (Build APK workflow ka artifact MiniEsports-APK)
+#    2. app launch karke live GitHub Pages UI load karta hai
 #    3. har bottom-nav screen ka screenshot leta hai
 #    4. asset-e2e.html (60 images) aur screen-e2e.html (har badge /
 #       ribbon / gallery render) ko intent se chala kar unka
 #       deterministic PASS/FAIL logcat se uthata hai
 #    5. sab screenshots + logcat artifacts me upload karta hai
 #
-#  TRIGGER: push (main) par Build APK ke BAAD, ya manually
-#  (Actions → Run workflow). Manual me koi bhi release APK E2E ke
-#  liye chuna ja sakta hai (input).
+#  ⚠️ 2026-10-12 KA BADA SABAK: pehle yahan DEBUG APK build hoti thi.
+#  App ka apna anti-tamper guard debug build ko BLOCK kar deta hai:
+#     "AppGuard: ⛔ BLOCKED: app is debuggable — tampered build"
+#  Isliye ab sirf RELEASE APK test hoti hai — wo bhi bilkul wahi file
+#  jo GitHub Releases par users ko milti hai.
+#
+#  TRIGGER: Build Mini eSports APK workflow poora hone par (success),
+#  ya manually (Actions → Run workflow; apk_url se koi bhi APK).
 #
 #  NOTE: GitHub ka ubuntu-latest runner /dev/kvm deta hai — isliye
 #  neeche KVM udev permission step zaroori hai (warna emulator
@@ -24,41 +29,33 @@ name: E2E Emulator (har screen live test)
 # ================================================================
 
 on:
+  workflow_run:
+    workflows: ["Build Mini eSports APK"]     # usi commit ki release APK test hogi
+    types: [completed]
   workflow_dispatch:
     inputs:
       apk_url:
-        description: 'APK URL (khaali chhodo = repo se debug build)'
+        description: 'APK URL (khaali chhodo = latest release APK)'
         required: false
         default: ''
-  push:
-    branches: [ main ]
-    paths:                      # sirf tab jab UI/native kuch badla ho
-      - 'js/**'
-      - 'features/**'
-      - 'screens/**'
-      - 'core/**'
-      - 'index.html'
-      - 'asset-e2e.html'
-      - 'screen-e2e.html'
-      - 'sw.js'
-      - 'android/**'
-      - '.github/scripts/emulator-e2e.sh'
-      - '.github/workflows/e2e-emulator.yml'
 
 concurrency:
-  group: e2e-emulator-${{ github.ref }}
+  group: e2e-emulator-${{ github.event.workflow_run.head_sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
   e2e:
+    # Build APK fail hui ho to E2E ka koi matlab nahi
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
     steps:
-      - name: Checkout
+      - name: Checkout (jis commit ki APK test karni hai)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       # ── Web tests pehle (fast fail — emulator se pehle sasta filter) ──
       - name: Web Tests (smoke + asset + screen E2E)
@@ -81,43 +78,34 @@ jobs:
           echo "::error::GitHub Pages par E2E pages 5 min me live nahi hue"
           exit 1
 
-      # ── APK: input URL, warna repo se debug build ──
-      - name: APK laao / build karo
-        run: |
-          if [ -n "${{ github.event.inputs.apk_url }}" ]; then
-            curl -fL -o MiniEsports.apk "${{ github.event.inputs.apk_url }}"
-          else
-            echo "Debug APK build (gradle assembleDebug)…"
-          fi
-          ls -la *.apk 2>/dev/null || echo "APK abhi build hoga"
-
-      - name: Setup JDK 17
-        if: ${{ github.event.inputs.apk_url == '' }}
-        uses: actions/setup-java@v4
+      # ── ASLI release APK: Build APK workflow ke artifact se ──
+      - name: Release APK download (Build APK ka MiniEsports-APK)
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
         with:
-          java-version: '17'
-          distribution: temurin
-
-      - name: Setup Gradle
-        if: ${{ github.event.inputs.apk_url == '' }}
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '8.2'
-
-      - name: Debug APK build
-        if: ${{ github.event.inputs.apk_url == '' }}
-        working-directory: android
-        run: gradle assembleDebug --no-daemon
+          name: MiniEsports-APK
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: apk-dl
 
       - name: APK ko root me laao (script isi path se uthata hai)
         run: |
-          # ✅ FIX (2026-10-12): repo me ek purani MiniEsports.apk COMMITTED hai
-          # (get.html ka self-hosted download). Pehle "if [ ! -f ]" tha, isliye
-          # fresh debug APK kabhi copy hi nahi hoti thi aur emulator purani APK
-          # test karta rehta tha (isi wajah se screen-e2e branch wali nayi native
-          # lines wahan maujood hi nahi thi). Ab hamesha overwrite.
+          # ⚠️ Repo me ek purani MiniEsports.apk COMMITTED hai (get.html ka
+          # self-hosted download) — usse pehle saaf karo, warna galat file
+          # test ho jaati hai (2026-10-12 ko yahi hua tha).
           rm -f MiniEsports.apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk MiniEsports.apk
+          if [ -n "${{ github.event.inputs.apk_url }}" ]; then
+            echo "Manual APK URL se aa rahi hai…"
+            curl -fL -o MiniEsports.apk "${{ github.event.inputs.apk_url }}"
+          elif [ -d apk-dl ]; then
+            f=$(find apk-dl -name "*.apk" | head -1)
+            echo "Build APK artifact se: $f"
+            cp "$f" MiniEsports.apk
+          else
+            echo "Latest GitHub Release se aa rahi hai…"
+            curl -fL -o MiniEsports.apk \
+              "https://github.com/${{ github.repository }}/releases/latest/download/MiniEsports.apk"
+          fi
           ls -la MiniEsports.apk
           sha256sum MiniEsports.apk
 
