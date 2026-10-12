@@ -950,8 +950,14 @@ public class MainActivity extends AppCompatActivity {
         /* ✅ E2E (2026-10-12): sirf DEBUG build me WebView remote-debugging
            ON — CI emulator isse har modal/screen ko CDP se chala kar
            screenshot le sakta hai. RELEASE build me ye KABHI enable nahi
-           hota (users ke liye security waisi hi rehti hai). */
-        if (BuildConfig.DEBUG) {
+           hota (users ke liye security waisi hi rehti hai).
+           NOTE: BuildConfig.DEBUG yahan NAHI use kiya — AGP 8 me
+           buildFeatures.buildConfig default OFF hai (compile error deta
+           hai: 'cannot find symbol BuildConfig'). Repo ka apna pattern
+           (line ~379) hi liya: ApplicationInfo flags se debuggable check. */
+        boolean isDebuggable = (getApplicationInfo().flags
+                & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        if (isDebuggable) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
         WebSettings s = webView.getSettings();
@@ -1458,7 +1464,17 @@ public class MainActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 // Fallback: open general Install Unknown Apps settings
                                 try {
-                                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_SOURCES);
+                                    /* ✅ COMPILE FIX (2026-10-12): pehle yahan
+                                       Settings.ACTION_MANAGE_UNKNOWN_SOURCES tha —
+                                       wo ek HIDDEN/system API hai jo public SDK
+                                       (compileSdk 34) me maujood hi nahi, isliye
+                                       javac 'cannot find symbol' deta tha aur APK
+                                       build hi fail ho jati thi (10-10 ki dono
+                                       builds version-gate par ruki thi, isliye ye
+                                       kabhi pakda nahi gaya). Ab public constant:
+                                       ACTION_SECURITY_SETTINGS (API 1+, wahi screen
+                                       jahan OEMs 'Install unknown apps' rakhte hain). */
+                                    Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
                                     startActivityForResult(intent, INSTALL_PERMISSION_REQUEST);
                                 } catch (Exception e2) {
                                     Toast.makeText(this, "Settings kholein → Security → Install Unknown Apps → Allow", Toast.LENGTH_LONG).show();
