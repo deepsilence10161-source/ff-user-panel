@@ -88,8 +88,17 @@ done
 #    intent" wale route se zyada deterministic hai (pichhli run me warm
 #    route par page load hua hi nahi tha). Diagnostics: MINIESPORTS-E2E
 #    tag ki lines har kadam ka proof deti hain.
-run_e2e_page () {   # $1 = page (e.g. asset-e2e.html)  $2 = marker prefix
-  local page="$1" MARK="$2" log="$LOGS/$MARK.txt" line="" boot="" onpf=""
+run_e2e_page () {   # $1 = page (e.g. asset-e2e.html)  $2 = marker prefix  $3 = screenshot file
+  # NOTE (2026-10-12): HAR local apni line par — bash 5 me ek hi "local"
+  # statement ke andar aage wale variable ($MARK) set -u par "unbound
+  # variable" deta hai (run 38208795592 isi par fail hua tha).
+  local page="$1"
+  local MARK="$2"
+  local shot="$3"
+  local log="$LOGS/$MARK.txt"
+  local line=""
+  local boot=""
+  local onpf=""
   adb shell am force-stop $PKG
   sleep 2
   adb logcat -c || true
@@ -110,7 +119,7 @@ run_e2e_page () {   # $1 = page (e.g. asset-e2e.html)  $2 = marker prefix
   fi
   echo "  → $line"
   echo "$line" | grep -q " OK" || fail "$MARK FAIL: $line"
-  adb shell screencap -p "/sdcard/e2e-$MARK.png" && adb pull "/sdcard/e2e-$MARK.png" "$SHOTS/$3" >/dev/null
+  adb shell screencap -p "/sdcard/e2e-$MARK.png" && adb pull "/sdcard/e2e-$MARK.png" "$SHOTS/$shot" >/dev/null
 }
 
 say "6) ASSET E2E — 60 images ka live load (cold start intent)"
