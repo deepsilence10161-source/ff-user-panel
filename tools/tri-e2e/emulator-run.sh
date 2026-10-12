@@ -55,9 +55,24 @@ adb logcat -c || true
 adb shell am force-stop "$PKG" || true
 sleep 2
 echo "── tri-e2e page launch (asli APK, asli WebView) ──"
-adb shell "am start -a android.intent.action.VIEW -d '$URL'" > "$OUT_DIR/am-start.txt" 2>&1 || true
-sleep 8
-adb shell dumpsys window 2>/dev/null | grep -m1 mCurrentFocus || true
+# ⚠️ SIRF -a VIEW -d <https url> dene par Android intent CHROME ko de deta hai
+#    (pehle CI run me exactly yahi hua: FirstRunActivity focus me aa gaya aur
+#    APK page kabhi khula hi nahi). Isliye component EXPLICIT dena zaroori hai
+#    — wahi tareeka jo existing asset-e2e/screen-e2e E2E use karta hai.
+ACT="$PKG/.MainActivity"
+launch() {
+  adb shell am start -W -S -n "$ACT" -a android.intent.action.VIEW -d "$1" 2>&1 | sed 's/^/    am: /'
+}
+launch "$URL" > "$OUT_DIR/am-start.txt" 2>&1 || true
+sleep 12
+FOCUS="$(adb shell dumpsys window 2>/dev/null | grep -m1 mCurrentFocus || true)"
+echo "focus: $FOCUS"
+case "$FOCUS" in
+  *"$PKG"*) echo "✅ hamara app focus me hai" ;;
+  *) echo "⚠️ focus hamare app par nahi — dobara launch (ek hi retry)"
+     launch "$URL" >> "$OUT_DIR/am-start.txt" 2>&1 || true
+     sleep 12 ;;
+esac
 
 # ── 4. logcat markers + intzaar (TRI-E2E-RESULT / STEP / VALUES) ─────────
 LOG="$OUT_DIR/apk-logcat.txt"
@@ -69,6 +84,7 @@ DEADLINE=$(( $(date +%s) + ${APK_WAIT:-1500} ))
 LAST_SHOT=0
 while [ "$(date +%s)" -lt "$DEADLINE" ]; do
   grep -a "TRI-E2E-" "$LOG" 2>/dev/null | sed 's/.*chromium: //' | sort -u > "$MARK" || true
+  grep -a "chromium: [INFO:CONSOLE" "$LOG" 2>/dev/null | sed 's/.*chromium: //' | sort -u > "$OUT_DIR/apk-console.txt" || true
   RESULT="$(grep -a -m1 "TRI-E2E-RESULT" "$LOG" 2>/dev/null | tail -1)"
   # live proof screenshots — har ~3 min me ek
   NOW=$(date +%s)
