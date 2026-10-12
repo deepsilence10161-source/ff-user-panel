@@ -186,6 +186,39 @@
     ok(window.__COSHOP.iconHtml({ icon: '🎖️' }) === '🎖️', 'img na ho to purana emoji (fail-safe)');
   }
 
+  /* ── VISUAL proof (2026-10-12b): ye cards ASLI code se bane hain —
+     __BP.label (tier grid) aur __COSHOP.iconHtml (store card) — aur page
+     par render hote hain, taaki emulator ke screenshot me 5 season-title
+     kalaayein AANKHON se dikhein (sirf JSON nahi). */
+  try {
+    var vis = document.createElement('div');
+    vis.id = 'bpArtProof';
+    var vh = '<h3 style="color:#ffd700;margin:10px 0 6px">Season Pass — 5 asli kalaayein (asli code se render)</h3><div style="display:flex;flex-wrap:wrap;gap:8px">';
+    if (window.__BP && tdAll.length === 50) {
+      BP_ART.forEach(function (c) {
+        var td = tdAll[c[0] - 1];
+        var r = (c[0] === 45) ? td.free : td.prem;
+        vh += '<div class="card" style="min-width:150px;text-align:center">' + window.__BP.label(r, 34) +
+              '<div style="font-size:10px;color:#888;margin-top:4px">Tier ' + c[0] + (c[0] === 45 ? ' · FREE' : ' · PREMIUM') + '</div></div>';
+      });
+    }
+    vh += '</div><h3 style="color:#ffd700;margin:10px 0 6px">Cosmetics Store — wahi 5 (asli store card HTML)</h3><div style="display:flex;flex-wrap:wrap;gap:8px">';
+    if (window.__COSHOP) {
+      var bpVis = window.__COSHOP.bpList();
+      BP_ART.forEach(function (c) {
+        var it = bpVis.filter(function (x) { return x.id === BP_KEY[c[0]]; })[0];
+        if (!it) return;
+        vh += '<div class="card" style="min-width:130px;text-align:center">' +
+              '<div style="font-size:28px;min-height:32px;display:flex;align-items:center;justify-content:center">' + window.__COSHOP.iconHtml(it) + '</div>' +
+              '<div style="font-size:11px;font-weight:800">' + it.name + '</div></div>';
+      });
+    }
+    vh += '</div>';
+    vis.innerHTML = vh;
+    document.body.appendChild(vis);
+    ok(!!document.getElementById('bpArtProof'), 'visual proof cards page par render (screenshot me dikhega)');
+  } catch (e) { ok(false, 'visual proof render crash: ' + e.message); }
+
   beat('11/11 wiring fetch (11 files)');
   /* ── 10. screens ki wiring (asal files me) — live fetch ── */
   var wired = [

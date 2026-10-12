@@ -834,6 +834,8 @@ console.log('\n── TEST 23: BP season-title arts (t25/35/40/45/50) + store im
      '23d: screen-e2e.html dono asli files live load karta hai (mock nahi)');
   ok(FIVE23.every((c) => fs.existsSync(path.join(REPO, 'assets/img/titles/' + c[1] + '.png'))),
      '23e: paanchon kala file repo me maujood');
+  ok(se23.indexOf('bpArtProof') !== -1 && se23.indexOf('__COSHOP.iconHtml') !== -1,
+     '23f: screen-e2e.html asli code se visual cards render karta hai (screenshot proof)');
 }
 
 console.log('\n══════════════════════════════');

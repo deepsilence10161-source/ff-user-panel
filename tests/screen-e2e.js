@@ -181,6 +181,10 @@ console.log('\n── SCREEN 9: Season Pass ki 5 asli kalaayein + cosmetics stor
        .indexOf('<img src="assets/img/frames/glow.png') !== -1,
      'frame_glow art bhi ab store me dikhta hai (pehle sirf ✨)');
 
+  const seHtml = fs.readFileSync(path.join(REPO, 'screen-e2e.html'), 'utf8');
+  ok(seHtml.indexOf('bpArtProof') !== -1 && seHtml.indexOf('__BP.label(r, 34)') !== -1,
+     'screen-e2e.html — visual proof cards asli label/iconHtml se bante hain');
+
   /* Purana/stale DB row (bina img, purana naam) — art map phir bhi kaam kare */
   const c2 = mkCtx([{ tier: 25, freeGd: 15, permGd: 0,
     premCos: { key: 'tag_bp_prem_25', icon: '🥇', name: '🥇 Gold Champion', type: 'badge' } }]);
