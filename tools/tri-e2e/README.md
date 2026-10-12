@@ -92,3 +92,21 @@ node tools/tri-e2e/qa-accounts.mjs cleanup --run $RUNID   # अंत में 
   एडमिन का सर्वर-साइड क्रेडिट + लेजर।
 - **Paytm इंस्टेंट चेकआउट** असली पेमेंट गेटवे है — CI में नहीं चलाया जाता।
 - **ग्लोबल ब्रॉडकास्ट** असली यूज़र्स को भी भेजता है — इसलिए टेस्ट में **टार्गेटेड** नोटिफ़िकेशन इस्तेमाल होती है।
+
+---
+
+## ⚠️ CI-only traps jo pehle 3 runs me mile (ab fix, dobara na pade)
+
+1. **APK launch: `-n` component dena zaroori hai.** Sirf `-a android.intent.action.VIEW -d <https url>`
+   dene par Android wo intent **Chrome** ko de deta hai (`mCurrentFocus=chrome/FirstRunActivity`)
+   aur hamara page kabhi khulta hi nahi. Sahi: `am start -W -S -n com.miniesports.app/.MainActivity -a VIEW -d <url>`.
+2. **URL ko device shell ke liye single-quote karo.** `adb shell` command ko device par
+   **dobara parse** karta hai — URL ka `&` command todh deta hai, isliye fragment adhoora
+   pahunchta tha (email/parole dono gayab → step 1 "creds nahi mile"). Sahi:
+   `adb shell "am start ... -d '$URL'"`. Script ke andar `loadUrl called:` log se ye
+   check bhi hota hai ki `#run=…&e=…&p=…` poora pahuncha.
+3. **Runtime permission dialog focus chura leta hai.** `pm grant` (location / notifications /
+   camera / mic) se pehle hi de do; phir bhi dialog aaye to `input keyevent 4` (BACK) —
+   sirf tab jab focus `permissioncontroller` par ho, warna BACK app hi band kar dega.
+4. CI artifact names: `tri-e2e-proof-<runid>` (30 din) — markers, screenshots,
+   apk-console.txt, dono taraf ke results + host_out.json.

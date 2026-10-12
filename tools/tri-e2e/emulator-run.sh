@@ -50,34 +50,59 @@ echo "── APK install: $APK_PATH ──"
 adb install -r "$APK_PATH" || { echo "❌ APK install fail"; kill $HOST_PID; exit 1; }
 adb shell pm list packages | grep -q "$PKG" && echo "installed: $PKG"
 
-# ── 3. logcat clear + app launch (E2E page intent) ───────────────────────
+# ── 3. logcat + app launch (E2E page intent) ─────────────────────────────
 adb logcat -c || true
 adb shell am force-stop "$PKG" || true
 sleep 2
+LOG="$OUT_DIR/apk-logcat.txt"
+: > "$LOG"
+( adb logcat -v time > "$LOG" 2>/dev/null ) &
+LOGCAT_PID=$!
+sleep 1
 echo "── tri-e2e page launch (asli APK, asli WebView) ──"
-# ⚠️ SIRF -a VIEW -d <https url> dene par Android intent CHROME ko de deta hai
-#    (pehle CI run me exactly yahi hua: FirstRunActivity focus me aa gaya aur
-#    APK page kabhi khula hi nahi). Isliye component EXPLICIT dena zaroori hai
-#    — wahi tareeka jo existing asset-e2e/screen-e2e E2E use karta hai.
+# ⚠️ 1) Component EXPLICIT (-n) ZAROORI hai — sirf action VIEW + https URL dene
+#       par Android intent CHROME ko de deta hai (CI run 1: page khula hi nahi,
+#       focus chrome FirstRunActivity par tha).
+# ⚠️ 2) URL ko DEVICE SHELL ke liye single-quote me dena ZAROORI hai — `adb shell`
+#       device par command dobara parse karta hai, aur URL ka `&` command todh deta
+#       hai (CI run 3: fragment adhoora pahuncha — email mila, password nahi).
+# ⚠️ 3) Runtime permission dialog focus chura leta hai — pehle pm grant se
+#       suppress, phir bhi aaye to BACK.
 ACT="$PKG/.MainActivity"
+for P in ACCESS_FINE_LOCATION ACCESS_COARSE_LOCATION POST_NOTIFICATIONS CAMERA RECORD_AUDIO; do
+  adb shell pm grant "$PKG" "android.permission.$P" >/dev/null 2>&1 || true
+done
 launch() {
-  adb shell am start -W -S -n "$ACT" -a android.intent.action.VIEW -d "$1" 2>&1 | sed 's/^/    am: /'
+  adb shell "am start -W -S -n $ACT -a android.intent.action.VIEW -d '$1'" 2>&1 | sed 's/^/    am: /'
 }
+focus_now() { adb shell dumpsys window 2>/dev/null | grep -m1 mCurrentFocus || true; }
 launch "$URL" > "$OUT_DIR/am-start.txt" 2>&1 || true
 sleep 12
-FOCUS="$(adb shell dumpsys window 2>/dev/null | grep -m1 mCurrentFocus || true)"
-echo "focus: $FOCUS"
+FOCUS="$(focus_now)"; echo "focus: $FOCUS"
+case "$FOCUS" in
+  *permissioncontroller*)
+     echo "⚠️ permission dialog — BACK se hata rahe hain"
+     adb shell input keyevent 4 >/dev/null 2>&1 || true
+     sleep 4
+     FOCUS="$(focus_now)"; echo "focus: $FOCUS" ;;
+esac
 case "$FOCUS" in
   *"$PKG"*) echo "✅ hamara app focus me hai" ;;
   *) echo "⚠️ focus hamare app par nahi — dobara launch (ek hi retry)"
      launch "$URL" >> "$OUT_DIR/am-start.txt" 2>&1 || true
-     sleep 12 ;;
+     sleep 14 ;;
+esac
+# fragment sach me poora pahuncha? MainActivity "loadUrl called:" log karti hai.
+sleep 3
+LOADED="$(grep -a 'loadUrl called:' "$LOG" 2>/dev/null | tail -1 || true)"
+case "$LOADED" in
+  *"#run="*"&e="*"&p="*) echo "✅ URL fragment (run/e/p) app tak poora pahuncha" ;;
+  *) echo "⚠️ URL fragment adhoora lagta hai — dobara launch"
+     launch "$URL" >> "$OUT_DIR/am-start.txt" 2>&1 || true
+     sleep 14 ;;
 esac
 
-# ── 4. logcat markers + intzaar (TRI-E2E-RESULT / STEP / VALUES) ─────────
-LOG="$OUT_DIR/apk-logcat.txt"
-( adb logcat -v time > "$LOG" 2>/dev/null ) &
-LOGCAT_PID=$!
+# ── 4. markers ka intzaar (TRI-E2E-RESULT / STEP / VALUES) ───────────────
 MARK="$OUT_DIR/apk-markers.txt"
 RESULT=""
 DEADLINE=$(( $(date +%s) + ${APK_WAIT:-1500} ))
