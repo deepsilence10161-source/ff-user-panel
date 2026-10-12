@@ -28,7 +28,38 @@
   var SUPA_URL = window._SUPA_URL || 'https://hddhkculuyrfoevxmlwy.supabase.co';
   var SUPA_KEY = window._SUPA_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
 
+  /* ── SDK FALLBACK LOADER (2026-10-12) ─────────────────────────────────
+     index.html ab SDK ko LOCAL vendor/supabase.min.js se load karta hai.
+     Agar wo file kisi wajah se na aaye (ya purane WebView me parse fail ho),
+     to yahan se CDN par try karte hain — warna _supa banta hi nahi rehta aur
+     poora app boot 15s ke hard ceiling par login screen par atak jata hai
+     (asli CI emulator me yahi hua tha: WebView 83 + CDN bundle = SyntaxError). */
+  var _sdkFallbackTried = 0, _sdkFallbackLoading = false;
+  var _SDK_FALLBACKS = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+    'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'
+  ];
+  function _loadSdkFallback() {
+    if (_sdkFallbackLoading || _sdkFallbackTried >= _SDK_FALLBACKS.length) return;
+    _sdkFallbackLoading = true;
+    var url = _SDK_FALLBACKS[_sdkFallbackTried++];
+    try {
+      var el = document.createElement('script');
+      el.src = url;
+      el.onload = function() {
+        _sdkFallbackLoading = false;
+        console.warn('[DB] Supabase SDK CDN fallback load:', _sdkFallbackTried, url);
+      };
+      el.onerror = function() {
+        _sdkFallbackLoading = false;
+        _loadSdkFallback();
+      };
+      (document.head || document.documentElement).appendChild(el);
+    } catch (e) { _sdkFallbackLoading = false; }
+  }
+
   /* Wait for Supabase SDK to load */
+  var _initTries = 0;
   function _initClient() {
     if (window.supabase && window.supabase.createClient) {
       window._supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
@@ -39,6 +70,9 @@
         window._supaReadyCbs = [];
       }
     } else {
+      _initTries++;
+      /* 5s (25 tries) ke baad CDN fallback, aur 15s par dobara (doosra CDN) */
+      if (_initTries === 25 || _initTries === 75) _loadSdkFallback();
       setTimeout(_initClient, 200);
     }
   }
