@@ -216,7 +216,11 @@
         h += '<div style="font-size:10px;font-weight:800;color:#888;letter-spacing:.4px;flex-shrink:0">MY<br>BADGES</div>';
         h += '<div style="display:flex;align-items:center;gap:4px;flex:1;overflow:hidden">';
         show.forEach(function (b) {
-          h += '<span title="' + _esc(b.name) + '" style="display:inline-flex">' + _img(b.img, 30, 'flex-shrink:0') + '</span>';
+          /* 2026-10-12b: tap karo → wahi badge profile par EQUIP (badge_<id>
+             row user_cosmetics me — wahi table/RLS jo tags ke liye live hai) */
+          h += '<span onclick="window.equipBadge&&window.equipBadge(\'' + b.id + '\')" title="' +
+               _esc(b.name) + ' — equip karne ke liye tap karo" style="display:inline-flex;cursor:pointer">' +
+               _img(b.img, 30, 'flex-shrink:0') + '</span>';
         });
         if (earned.length > show.length) {
           h += '<span style="font-size:11px;font-weight:800;color:#ffd700;flex-shrink:0">+' + (earned.length - show.length) + '</span>';
@@ -238,6 +242,102 @@
       }
       return h;
     } catch (e) { return ''; }
+  };
+
+  /* ══════════════════════════════════════════════════════════════
+     EQUIP BADGE (2026-10-12b) — "jo kamaya, wo profile par chamke"
+     ══════════════════════════════════════════════════════════════
+     Storage: user_cosmetics row `badge_<id>` (wahi table, wahi RLS
+     "uc_own" jo tags/frames ke liye pehle se live hai — koi naya column
+     ya migration NAHI chahiye; UNIQUE(user_id, cosmetic_key) upsert deta
+     hai). Izat ka niyam: chip sirf tab dikhta hai jab wo badge ASLI stats
+     se abhi kamaya hua ho — warna kuch nahi (jhoota badge nahi). */
+
+  window.getEquippedBadge = function (st) {
+    try {
+      st = st || window._bdgStats();
+      var owned = (window.UD && window.UD.cosmetics) || {};
+      var pick = null;
+      Object.keys(owned).forEach(function (k) {
+        if (k.indexOf('badge_') !== 0) return;
+        if (owned[k] && owned[k].is_equipped) pick = k.slice(6);
+      });
+      if (!pick) return null;
+      var earned = window.getEarnedBadges(st);
+      for (var i = 0; i < earned.length; i++) if (earned[i].id === pick) return earned[i];
+      return null;   /* stats badal gaye — ab kamaya nahi, isliye nahi dikhate */
+    } catch (e) { return null; }
+  };
+
+  window.renderEquippedBadgeChip = function (st) {
+    try {
+      var b = window.getEquippedBadge(st);
+      if (!b) return '';
+      return '<div style="display:flex;align-items:center;gap:9px;margin:0 0 10px;padding:8px 12px;' +
+        'background:linear-gradient(135deg,rgba(0,212,255,.10),rgba(185,100,255,.08));' +
+        'border:1px solid rgba(0,212,255,.3);border-radius:14px">' +
+        _img(b.img, 30, 'filter:drop-shadow(0 0 6px rgba(0,212,255,.45))') +
+        '<div style="flex:1;min-width:0">' +
+        '<div style="font-size:9px;font-weight:900;color:#00d4ff;letter-spacing:.5px">⭐ EQUIPPED BADGE</div>' +
+        '<div style="font-size:12.5px;font-weight:800;color:#eee;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' +
+        _esc(b.name) + '</div></div>' +
+        '<button onclick="window.equipBadge(\'' + b.id + '\',this)" style="background:rgba(255,255,255,.06);' +
+        'border:1px solid rgba(255,255,255,.22);color:#ccc;font-size:10px;font-weight:800;padding:5px 10px;' +
+        'border-radius:9px;cursor:pointer">Hatao</button></div>';
+    } catch (e) { return ''; }
+  };
+
+  window.equipBadge = function (id, btnEl, st) {
+    try {
+      if (!window._supa || !window.U || !window.UD) { if (window.toast) toast('Pehle login karo!', 'err'); return false; }
+      st = st || window._bdgStats();
+      var earned = window.getEarnedBadges(st), hit = null;
+      for (var i = 0; i < earned.length; i++) if (earned[i].id === id) hit = earned[i];
+      if (!hit) {   /* IZAT ka niyam — bina kamaye equip nahi */
+        if (window.toast) toast('Ye badge abhi kamaya nahi — pehle unlock karo!', 'err');
+        return false;
+      }
+      var key = 'badge_' + id, uid = window.U.uid;
+      var owned = window.UD.cosmetics || (window.UD.cosmetics = {});
+      var wasOn = !!(owned[key] && owned[key].is_equipped);
+      function applyLocal(on) {
+        Object.keys(owned).forEach(function (k) { if (k.indexOf('badge_') === 0) owned[k].is_equipped = false; });
+        if (!owned[key]) owned[key] = {};
+        owned[key].is_equipped = !!on;
+        try {
+          if (window._supaCosmetics) {
+            Object.keys(window._supaCosmetics).forEach(function (k) {
+              if (k.indexOf('badge_') === 0) window._supaCosmetics[k].is_equipped = false;
+            });
+            if (window._supaCosmetics[key]) window._supaCosmetics[key].is_equipped = !!on;
+          }
+        } catch (e) {}
+        if (window.renderProfile) setTimeout(function () { try { renderProfile(); } catch (e) {} }, 250);
+      }
+      if (wasOn) {   /* dobara tap = hatao */
+        applyLocal(false);
+        window._supa.from('user_cosmetics').update({ is_equipped: false })
+          .eq('user_id', uid).eq('cosmetic_key', key)
+          .then(function (r) { if (r && r.error && window.toast) toast('Hataya nahi — network?', 'err'); });
+        return true;
+      }
+      /* pehle saare badge_* hatао, phir yahi lagao (upsert = row na ho to ban jaye) */
+      applyLocal(true);
+      window._supa.from('user_cosmetics').update({ is_equipped: false })
+        .eq('user_id', uid).like('cosmetic_key', 'badge_%')
+        .then(function () {
+          window._supa.from('user_cosmetics')
+            .upsert({ user_id: uid, cosmetic_key: key, is_equipped: true }, { onConflict: 'user_id,cosmetic_key' })
+            .then(function (r) {
+              if (r && r.error) { applyLocal(false); if (window.toast) toast('Equip nahi hua — retry karo.', 'err'); }
+              else if (window.toast) toast('⭐ ' + hit.name + ' profile par lag gaya!', 'ok');
+            });
+        });
+      return true;
+    } catch (e) {
+      if (window.toast) toast('Equip fail: ' + e.message, 'err');
+      return false;
+    }
   };
 
   /* ── Premium ribbon (naam ke aage sunehra badge) ──

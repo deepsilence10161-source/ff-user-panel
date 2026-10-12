@@ -838,6 +838,23 @@ console.log('\n── TEST 23: BP season-title arts (t25/35/40/45/50) + store im
      '23f: screen-e2e.html asli code se visual cards render karta hai (screenshot proof)');
 }
 
+console.log('\n── TEST 24: badge equip wiring (har jagah dikhane ke liye) ──');
+{
+  const be24 = fs.readFileSync(path.join(REPO, 'js/features/badge-engine.js'), 'utf8');
+  const pr24 = fs.readFileSync(path.join(REPO, 'screens/profile.js'), 'utf8');
+  const pc24 = fs.readFileSync(path.join(REPO, 'features/player-card.js'), 'utf8');
+  const se24 = fs.readFileSync(path.join(REPO, 'screen-e2e.html'), 'utf8');
+  ok(be24.indexOf('window.equipBadge') !== -1 && be24.indexOf('window.getEquippedBadge') !== -1
+     && be24.indexOf('window.renderEquippedBadgeChip') !== -1,
+     '24a: badge-engine me equip/get/chip teeno functions');
+  ok(be24.indexOf('badge_') !== -1 && be24.indexOf('user_cosmetics') !== -1,
+     '24b: storage user_cosmetics badge_<id> (naya column nahi)');
+  ok(pr24.indexOf('renderEquippedBadgeChip') !== -1, '24c: profile hero me equipped chip call');
+  ok(pc24.indexOf('getEquippedBadge') !== -1, '24d: share-card (player-card) par equipped badge pehle');
+  ok(se24.indexOf('badge EQUIP') !== -1 && se24.indexOf('window.equipBadge') !== -1,
+     '24e: screen-e2e.html me equip ka live E2E step');
+}
+
 console.log('\n══════════════════════════════');
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
   if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

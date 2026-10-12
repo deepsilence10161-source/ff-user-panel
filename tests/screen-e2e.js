@@ -196,6 +196,52 @@ console.log('\n── SCREEN 9: Season Pass ki 5 asli kalaayein + cosmetics stor
      'stale DB row (img ke bina) par bhi art map chalta hai — veteran.png');
 }
 
+console.log('\n── SCREEN 10: badge EQUIP (kamaya hua badge profile par) ──');
+{
+  /* ASLI badge-engine.js (upar ctx me load hai) + DB stub (emulator/login
+     ke bina asli row nahi ban sakti — logic 100% asli function ka). */
+  const _sS = ctx._supa, _sU = ctx.U, _sUD = ctx.UD, _sT = ctx.toast;
+  const calls = [];
+  function mkChain(rec) {
+    const api = { update: (v) => { rec.op = 'update'; rec.val = v; return api; },
+                  upsert: (v, o) => { rec.op = 'upsert'; rec.val = v; rec.opt = o; return api; },
+                  eq: () => api, like: () => api, select: () => api,
+                  /* 2026-10-12b: sync-then — logic (kaunse DB ops) turant
+                     verify ho sake; asli supabase async hi hai. */
+                  then: (cb) => { cb({ error: null }); return Promise.resolve({ error: null }); } };
+    return api;
+  }
+  try {
+    ctx._supa = { from: (tbl) => { const rec = { tbl }; calls.push(rec); return mkChain(rec); } };
+    ctx.U = { uid: 'node-e2e-user' };
+    ctx.UD = { cosmetics: {}, stats: ST };
+    ctx.toast = () => '';
+    ok(ctx.getEquippedBadge(ST) === null, 'kuch equip nahi → null (jhoota chip nahi)');
+    ok(ctx.renderEquippedBadgeChip(ST) === '', 'chip khaali jab kuch equip nahi');
+    ok(ctx.equipBadge('title_apex', null, ST) === false && calls.length === 0,
+       'bina kamaye equip BLOCK — koi DB write nahi (AP 4900/5000)');
+    const first = ctx.getEarnedBadges(ST)[0];
+    ok(ctx.equipBadge(first.id, null, ST) === true && calls.length === 2
+       && calls[0].op === 'update' && calls[1].op === 'upsert'
+       && calls[1].val.cosmetic_key === 'badge_' + first.id && calls[1].val.is_equipped === true
+       && calls[1].opt.onConflict === 'user_id,cosmetic_key',
+       'kamaya badge equip — purane badge_* off + upsert (badge_' + first.id + ')');
+    ok(ctx.UD.cosmetics['badge_' + first.id].is_equipped === true, 'local state turant on');
+    const chip = ctx.renderEquippedBadgeChip(ST);
+    ok(chip.indexOf(first.img) !== -1 && chip.indexOf('EQUIPPED BADGE') !== -1, 'chip me asli art + label');
+    ok(ctx.getEquippedBadge(ST).id === first.id, 'getEquippedBadge wahi badge deta hai');
+    ok(ctx.renderBadgeShowcaseRow(ST).indexOf('equipBadge(') !== -1, 'showcase badges tap-able');
+    calls.length = 0;
+    ok(ctx.equipBadge(first.id, null, ST) === true && calls.length === 1 && calls[0].val.is_equipped === false,
+       'dobara tap = hatao (ek update)');
+    ok(ctx.renderEquippedBadgeChip(ST) === '', 'hatane par chip gayab');
+    /* stats gir gaye → ab kamaya nahi → chip nahi (IZAT ka niyam) */
+    ctx.UD.cosmetics['badge_' + first.id].is_equipped = true;
+    ok(ctx.getEquippedBadge({}) === null && ctx.renderEquippedBadgeChip({}) === '',
+       'stats khatam → equipped badge dikhta NAHI (jhoota badge kabhi nahi)');
+  } finally { ctx._supa = _sS; ctx.U = _sU; ctx.UD = _sUD; ctx.toast = _sT; }
+}
+
 console.log('\n══════════════════════════════');
 console.log('SCREEN-E2E PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

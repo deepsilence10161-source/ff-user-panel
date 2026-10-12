@@ -118,7 +118,7 @@ function renderProfile() {
   h += '<div class="pf2-foot">';
   h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
   h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66;display:inline-flex;align-items:center;gap:5px">' +
-       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012f" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012g" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
        rk.emoji + ' ' + rk.badge + '</div>';
   h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
   h += '</div>';
@@ -131,6 +131,11 @@ function renderProfile() {
      banta). 0 badge par khali jagah nahi — "pehla badge" ka progress.
      Fail-safe: function na mile to kuch nahi badalta. */
   if (window.renderBadgeShowcaseRow) { try { h += renderBadgeShowcaseRow(st); } catch (e) {} }
+  /* ✅ 2026-10-12b (badge-engine): EQUIPPED badge chip — showcase row me
+     kisi badge par tap karo to wo yahan ⭐ chip ban kar sabse upar dikhta
+     hai. Storage user_cosmetics `badge_<id>`; sirf kamaya hua dikhta hai
+     (jhoota badge kabhi nahi). Fail-safe: function na mile to kuch nahi. */
+  if (window.renderEquippedBadgeChip) { try { h += renderEquippedBadgeChip(st); } catch (e) {} }
 
   var _pm = Number(st.matches||0), _pw = Number(st.wins||0), _pk = Number(st.kills||0);
   var _pwr = _pm > 0 ? Math.round((_pw/_pm)*100) : 0;

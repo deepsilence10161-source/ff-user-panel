@@ -18,12 +18,12 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261012f"></script>
-<script src="js/features/badge-engine.js?v=20261012f"></script>
+<script src="js/features/asset-catalog.js?v=20261012g"></script>
+<script src="js/features/badge-engine.js?v=20261012g"></script>
 <!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
      ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
-<script src="features/battle-pass.js?v=20261012f"></script>
-<script src="features/growth.js?v=20261012f"></script>
+<script src="features/battle-pass.js?v=20261012g"></script>
+<script src="features/growth.js?v=20261012g"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -86,12 +86,12 @@
              rp: 4900, level: 26, clean: 101, premium: 1,
              top1: 2, top3: 16, top5: 26, top10: 51, soloWins: 26, comebacks: 6 };
 
-  beat('1/11 engine load');
+  beat('1/12 engine load');
   /* ── 1. engine load ── */
   ok(!!window.ASSET_CATALOG, 'asset-catalog load hua', window._assetAll ? window._assetAll().length + ' items' : '');
   ok(!!window.__BADGE_ENGINE, 'badge-engine load hua', window.__BADGE_ENGINE ? 'v' + window.__BADGE_ENGINE.version : '');
 
-  beat('2/11 rank badges');
+  beat('2/12 rank badges');
   /* ── 2. rank badge image (har tier ka) ── */
   var rankCases = [[0,'bronze'],[301,'silver'],[601,'gold'],[1001,'platinum'],[1501,'diamond'],[2001,'legend']];
   var rankOk = rankCases.every(function (c) {
@@ -100,36 +100,36 @@
   });
   ok(rankOk, 'rankBadgeImg — 6/6 tier sahi image', rankCases.map(function (c) { return c[1]; }).join(','));
 
-  beat('3/11 earned badges');
+  beat('3/12 earned badges');
   /* ── 3. kamaye hue badges ── */
   var earned = window.getEarnedBadges(ST);
   ok(earned.length >= 8, 'getEarnedBadges — kamaye badges mile', earned.length + ' badges');
   ok(earned.every(function (b) { return b.img && b.img.indexOf('assets/img/') === 0; }), 'har kamaye badge ki asli image maujood');
 
-  beat('4/11 top badges');
+  beat('4/12 top badges');
   /* ── 4. top badges (share-card ke liye) ── */
   var top = window.getTopBadges(ST, 4);
   ok(top.length === Math.min(4, earned.length), 'getTopBadges — sabse durlabh pehle', top.map(function (t) { return t.name; }).join(' > '));
 
-  beat('5/11 agla inaam');
+  beat('5/12 agla inaam');
   /* ── 5. agla inaam (near-miss) ── */
   var nr = window.getNextReward(ST);
   ok(!!nr && nr.pct > 0 && nr.pct < 100, 'getNextReward — sabse kareeb locked inaam + %', nr ? nr.name + ' ' + nr.have + '/' + nr.need + ' (' + nr.pct + '%)' : 'null');
   ok(!!nr && nr.need > nr.have, 'agla inaam abhi baaki hai (100% se kam)', nr ? 'baaki: ' + (nr.need - nr.have) : '');
 
-  beat('6/11 HOME strip');
+  beat('6/12 HOME strip');
   /* ── 6. HOME strip ── */
   var strip = window.renderNextRewardStrip(ST);
   ok(strip.length > 80 && strip.indexOf('<img') !== -1 && strip.indexOf('%') !== -1, 'HOME strip HTML — image + progress bar', strip.length + ' chars');
 
-  beat('7/11 PROFILE row');
+  beat('7/12 PROFILE row');
   /* ── 7. PROFILE badge row ── */
   var show = window.renderBadgeShowcaseRow(ST);
   ok(show.length > 60 && show.indexOf('<img') !== -1, 'PROFILE badge showcase — images', show.length + ' chars');
   var showEmpty = window.renderBadgeShowcaseRow({});
   ok(showEmpty === '' || showEmpty.indexOf('Pehla badge') !== -1, '0 badge par khali nahi — pehla-badge hint');
 
-  beat('8/11 premium ribbon');
+  beat('8/12 premium ribbon');
   /* ── 8. premium ribbon ── */
   window.getUserPremiumTier = undefined; window.UD = { premium_level: 0 };
   var r0 = window.premiumRibbonHtml(20);
@@ -138,7 +138,7 @@
   var r1 = window.premiumRibbonHtml(20);
   ok(r1.indexOf('premium/ribbon.png') !== -1, 'premium ribbon — premium par sunehra ribbon image');
 
-  beat('9/11 Collection gallery render');
+  beat('9/12 Collection gallery render');
   /* ── 9. ASLI Collection gallery ka render (openModal ko capture karke) ──
      Ye nakli nahi: showAssetGallery() hi chalta hai, bas uska modal
      output pakad lete hain — 60 items + images + UNLOCKED/🔒 dono. */
@@ -153,7 +153,7 @@
     ok(_modal.html.indexOf('UNLOCKED') !== -1 && (_modal.html.indexOf('🔒') !== -1 || _modal.html.indexOf('LOCKED') !== -1), 'unlocked + locked dono states render');
   } catch (e) { ok(false, 'Collection render crash: ' + e.message); }
 
-  beat('10/11 BP season-title arts (t25/35/40/45/50)');
+  beat('10/12 BP season-title arts (t25/35/40/45/50)');
   /* ── 10. Season Pass ki 5 asli kalaayein (yojna 2.6) — ASLI files se ──
      features/battle-pass.js + features/growth.js upar live load hue hain;
      yahan unke read-only hooks se grid/store ka output check hota hai. */
@@ -223,7 +223,57 @@
     ok(!!document.getElementById('bpArtProof'), 'visual proof cards page par render (screenshot me dikhega)');
   } catch (e) { ok(false, 'visual proof render crash: ' + e.message); }
 
-  beat('11/11 wiring fetch (11 files)');
+  beat('11/12 badge EQUIP (kamaya hua badge profile par)');
+  /* ── 11. Badge equip — ASLI functions (badge-engine.js) ──
+     IZAT ka niyam bhi yahin test hota hai: bina kamaye equip NAHI.
+     DB stub sirf isliye ki emulator me Google login nahi hota (asli
+     user_cosmetics row nahi ban sakti) — logic 100% asli function ka. */
+  ok(typeof window.equipBadge === 'function' && typeof window.getEquippedBadge === 'function'
+     && typeof window.renderEquippedBadgeChip === 'function', 'equip functions maujood (equipBadge / getEquippedBadge / chip)');
+  var _sS = window._supa, _sU = window.U, _sUD = window.UD, _sT = window.toast, _sR = window.renderProfile;
+  try {
+    var _dbCalls = [];
+    function _mkChain(rec) {
+      var api = { update: function (v) { rec.op = 'update'; rec.val = v; return api; },
+                  upsert: function (v, o) { rec.op = 'upsert'; rec.val = v; rec.opt = o; return api; },
+                  eq: function () { return api; }, like: function () { return api; }, select: function () { return api; },
+                  /* sync-then: logic (kaunse DB ops chale) turant verify ho —
+                     asli supabase async hai, par yahan sequencing test karni hai */
+                  then: function (cb) { cb({ error: null }); return { then: function () {} }; } };
+      return api;
+    }
+    window._supa = { from: function (tbl) { var rec = { tbl: tbl }; _dbCalls.push(rec); return _mkChain(rec); } };
+    window.U = { uid: 'screen-e2e-user' };
+    window.UD = { cosmetics: {}, stats: ST };
+    window.toast = function () {};
+    window.renderProfile = null;
+
+    ok(window.getEquippedBadge(ST) === null, 'kuch equip nahi → null (koi jhoota chip nahi)');
+    ok(window.renderEquippedBadgeChip(ST) === '', 'chip khaali jab kuch equip nahi');
+    var _notEarned = window.equipBadge('title_apex', null, ST);   /* RP 4900 < 5000 → kamaya nahi */
+    ok(_notEarned === false && _dbCalls.length === 0, 'bina kamaye equip BLOCK (koi DB write nahi)');
+    var _first = window.getEarnedBadges(ST)[0];
+    var _okEq = window.equipBadge(_first.id, null, ST);
+    ok(_okEq === true && _dbCalls.length === 2 && _dbCalls[0].op === 'update' && _dbCalls[1].op === 'upsert'
+       && _dbCalls[1].val && _dbCalls[1].val.cosmetic_key === 'badge_' + _first.id && _dbCalls[1].val.is_equipped === true
+       && _dbCalls[1].opt && _dbCalls[1].opt.onConflict === 'user_id,cosmetic_key',
+       'kamaya badge equip — pehle purane badge_* off, phir upsert (badge_' + _first.id + ')');
+    ok(window.UD.cosmetics['badge_' + _first.id] && window.UD.cosmetics['badge_' + _first.id].is_equipped === true,
+       'local state turant on (UI network ka intezar nahi karta)');
+    var _chip = window.renderEquippedBadgeChip(ST);
+    ok(_chip.indexOf(_first.img) !== -1 && _chip.indexOf('EQUIPPED BADGE') !== -1, 'profile chip — asli art + label');
+    ok(!!(window.getEquippedBadge(ST) && window.getEquippedBadge(ST).id === _first.id), 'getEquippedBadge wahi badge lauta raha hai');
+    ok(window.renderBadgeShowcaseRow(ST).indexOf('equipBadge(') !== -1, 'showcase row ka har badge tap-able (equip)');
+    _dbCalls.length = 0;
+    var _off = window.equipBadge(_first.id, null, ST);
+    ok(_off === true && _dbCalls.length === 1 && _dbCalls[0].op === 'update' && _dbCalls[0].val.is_equipped === false,
+       'dobara tap = hatao (ek update, is_equipped=false)');
+    ok(window.renderEquippedBadgeChip(ST) === '', 'hatane par chip gayab');
+  } finally {
+    window._supa = _sS; window.U = _sU; window.UD = _sUD; window.toast = _sT; window.renderProfile = _sR;
+  }
+
+  beat('12/12 wiring fetch (13 files)');
   /* ── 10. screens ki wiring (asal files me) — live fetch ── */
   var wired = [
     ['index.html', 'js/features/badge-engine.js'],
@@ -235,6 +285,8 @@
     ['features/player-card.js', 'getTopBadges'],
     ['features/battle-pass.js', '_bpRewardLabel'],
     ['features/battle-pass.js', 'assets/img/titles/veteran.png'],
+    ['js/features/badge-engine.js', 'window.equipBadge'],
+    ['screens/profile.js', 'renderEquippedBadgeChip'],
     ['features/growth.js', '_BP_COS_ART'],
     ['js/features/asset-catalog.js', 'premium/ribbon.png']
   ];
