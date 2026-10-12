@@ -18,8 +18,8 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261012a"></script>
-<script src="js/features/badge-engine.js?v=20261012a"></script>
+<script src="js/features/asset-catalog.js?v=20261012b"></script>
+<script src="js/features/badge-engine.js?v=20261012b"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -34,6 +34,38 @@
    ================================================================ */
 (function () {
   var PASS = 0, FAIL = 0, fails = [], lines = [];
+  var DONE = false, LASTSTEP = 'script start';
+
+  /* ✅ HARDENING (2026-10-12): CI emulator me pichhli baar ye page load
+     hote hue bhi RESULT marker 120s me nahi aaya (root cause tab tak
+     saaf nahi tha). Ab har step ka heartbeat logcat me jata hai
+     (SCREEN-E2E-STEP), aur ek watchdog (60s) + window.onerror +
+     unhandledrejection = marker HAR HAAL me aayega. Koi check hataayi
+     NAHI gayi — sirf guarantee ki fail ho to saaf reason ke saath fail
+     ho, aur atke to "watchdog: atka — <step>" likh kar fail ho. */
+  function beat(msg) {
+    LASTSTEP = msg;
+    try { console.error('SCREEN-E2E-STEP: ' + msg); } catch (e) {}
+  }
+  try { console.error('SCREEN-E2E-BOOT: started'); } catch (e) {}
+  try {
+    window.addEventListener('error', function (ev) {
+      beat('window error: ' + (ev && ev.message ? ev.message : 'unknown'));
+    });
+    window.addEventListener('unhandledrejection', function (ev) {
+      var r = ev && ev.reason;
+      beat('promise reject: ' + (r && r.message ? r.message : String(r)));
+    });
+  } catch (e) {}
+  if (typeof setTimeout === 'function') {
+    setTimeout(function () {
+      if (!DONE) {
+        FAIL++;
+        fails.push('watchdog 60s — is step par atka: ' + LASTSTEP);
+        finish('watchdog');
+      }
+    }, 60000);
+  }
 
   function ok(cond, label, extra) {
     if (cond) { PASS++; lines.push('<div class="card ok">✓ ' + label + (extra ? ' <code>' + extra + '</code>' : '') + '</div>'); }
@@ -50,10 +82,12 @@
              rp: 4900, level: 26, clean: 101, premium: 1,
              top1: 2, top3: 16, top5: 26, top10: 51, soloWins: 26, comebacks: 6 };
 
+  beat('1/10 engine load');
   /* ── 1. engine load ── */
   ok(!!window.ASSET_CATALOG, 'asset-catalog load hua', window._assetAll ? window._assetAll().length + ' items' : '');
   ok(!!window.__BADGE_ENGINE, 'badge-engine load hua', window.__BADGE_ENGINE ? 'v' + window.__BADGE_ENGINE.version : '');
 
+  beat('2/10 rank badges');
   /* ── 2. rank badge image (har tier ka) ── */
   var rankCases = [[0,'bronze'],[301,'silver'],[601,'gold'],[1001,'platinum'],[1501,'diamond'],[2001,'legend']];
   var rankOk = rankCases.every(function (c) {
@@ -62,30 +96,36 @@
   });
   ok(rankOk, 'rankBadgeImg — 6/6 tier sahi image', rankCases.map(function (c) { return c[1]; }).join(','));
 
+  beat('3/10 earned badges');
   /* ── 3. kamaye hue badges ── */
   var earned = window.getEarnedBadges(ST);
   ok(earned.length >= 8, 'getEarnedBadges — kamaye badges mile', earned.length + ' badges');
   ok(earned.every(function (b) { return b.img && b.img.indexOf('assets/img/') === 0; }), 'har kamaye badge ki asli image maujood');
 
+  beat('4/10 top badges');
   /* ── 4. top badges (share-card ke liye) ── */
   var top = window.getTopBadges(ST, 4);
   ok(top.length === Math.min(4, earned.length), 'getTopBadges — sabse durlabh pehle', top.map(function (t) { return t.name; }).join(' > '));
 
+  beat('5/10 agla inaam');
   /* ── 5. agla inaam (near-miss) ── */
   var nr = window.getNextReward(ST);
   ok(!!nr && nr.pct > 0 && nr.pct < 100, 'getNextReward — sabse kareeb locked inaam + %', nr ? nr.name + ' ' + nr.have + '/' + nr.need + ' (' + nr.pct + '%)' : 'null');
   ok(!!nr && nr.need > nr.have, 'agla inaam abhi baaki hai (100% se kam)', nr ? 'baaki: ' + (nr.need - nr.have) : '');
 
+  beat('6/10 HOME strip');
   /* ── 6. HOME strip ── */
   var strip = window.renderNextRewardStrip(ST);
   ok(strip.length > 80 && strip.indexOf('<img') !== -1 && strip.indexOf('%') !== -1, 'HOME strip HTML — image + progress bar', strip.length + ' chars');
 
+  beat('7/10 PROFILE row');
   /* ── 7. PROFILE badge row ── */
   var show = window.renderBadgeShowcaseRow(ST);
   ok(show.length > 60 && show.indexOf('<img') !== -1, 'PROFILE badge showcase — images', show.length + ' chars');
   var showEmpty = window.renderBadgeShowcaseRow({});
   ok(showEmpty === '' || showEmpty.indexOf('Pehla badge') !== -1, '0 badge par khali nahi — pehla-badge hint');
 
+  beat('8/10 premium ribbon');
   /* ── 8. premium ribbon ── */
   window.getUserPremiumTier = undefined; window.UD = { premium_level: 0 };
   var r0 = window.premiumRibbonHtml(20);
@@ -94,6 +134,7 @@
   var r1 = window.premiumRibbonHtml(20);
   ok(r1.indexOf('premium/ribbon.png') !== -1, 'premium ribbon — premium par sunehra ribbon image');
 
+  beat('9/10 Collection gallery render');
   /* ── 9. ASLI Collection gallery ka render (openModal ko capture karke) ──
      Ye nakli nahi: showAssetGallery() hi chalta hai, bas uska modal
      output pakad lete hain — 60 items + images + UNLOCKED/🔒 dono. */
@@ -108,6 +149,7 @@
     ok(_modal.html.indexOf('UNLOCKED') !== -1 && (_modal.html.indexOf('🔒') !== -1 || _modal.html.indexOf('LOCKED') !== -1), 'unlocked + locked dono states render');
   } catch (e) { ok(false, 'Collection render crash: ' + e.message); }
 
+  beat('10/10 wiring fetch (9 files)');
   /* ── 10. screens ki wiring (asal files me) — live fetch ── */
   var wired = [
     ['index.html', 'js/features/badge-engine.js'],
@@ -122,22 +164,39 @@
   ];
   var cache = {};
   var pending = wired.length;
+  /* Timeout-wala fetch: agar koi file load hi na ho (network/SW issue) to
+     12s me FAIL ho kar aage badho — marker kabhi na atke. */
+  function fetchTxt(url, ms) {
+    ms = ms || 12000;
+    return new Promise(function (res, rej) {
+      var t = setTimeout(function () { rej(new Error('timeout ' + ms + 'ms')); }, ms);
+      fetch(url).then(function (r) { return r.text(); }).then(
+        function (txt) { clearTimeout(t); res(txt); },
+        function (err) { clearTimeout(t); rej(err || new Error('fetch fail')); }
+      );
+    });
+  }
   wired.forEach(function (w) {
     var url = w[0] + '?v=fetch';
+    beat('fetch: ' + w[0]);
     if (cache[w[0]]) { check(cache[w[0]]); return; }
-    fetch(url).then(function (r) { return r.text(); }).then(function (txt) {
+    fetchTxt(url, 12000).then(function (txt) {
       cache[w[0]] = txt;
       check(txt);
-    }).catch(function () { check(''); });
-    function check(txt) {
-      ok(txt.indexOf(w[1]) !== -1, 'wiring: ' + w[0] + ' → ' + w[1]);
+    }).catch(function (e) { check('', e && e.message); });
+    function check(txt, why) {
+      ok(txt.indexOf(w[1]) !== -1, 'wiring: ' + w[0] + ' → ' + w[1], why ? ('fetch fail: ' + why) : '');
       if (--pending === 0) finish();
     }
   });
 
-  function finish() {
+  function finish(note) {
+    if (DONE) return;   /* marker sirf EK baar — watchdog/error race me bhi */
+    DONE = true;
+    beat('finish');
     var pass = FAIL === 0;
     var line = 'SCREEN-E2E-RESULT: ' + PASS + '/' + (PASS + FAIL) + (pass ? ' OK' : ' FAIL(' + fails.join(' | ') + ')');
+    if (note) line += ' [' + note + ']';
     var el = document.getElementById('screenE2EResult');
     el.textContent = line;
     el.className = pass ? 'ok' : 'fail';

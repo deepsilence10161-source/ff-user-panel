@@ -266,9 +266,16 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh.setOnChildScrollUpCallback((parent, child) -> true);
     }
 
+    /* ✅ E2E DIAGNOSTICS (2026-10-12): CI emulator logcat me ye tag dhoondh
+       kar pata chalta hai ki intent aaya, kaunsa URL, aur page load hua ya
+       nahi. Sirf logging hai — app ka behaviour bilkul same. */
+    private static final String TAG_E2E = "MINIESPORTS-E2E";
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Log.i(TAG_E2E, "onNewIntent: " + (intent != null && intent.getData() != null
+                ? intent.getData().toString() : "no-data"));
         handleIntent(intent);
     }
 
@@ -297,7 +304,14 @@ public class MainActivity extends AppCompatActivity {
                 && (data.getPath().endsWith("/asset-e2e.html")
                     || data.getPath().endsWith("/screen-e2e.html"))) {
             assetE2ELoaded = true;
-            if (isOnline()) webView.loadUrl(data.toString());
+            boolean online = isOnline();
+            Log.i(TAG_E2E, "E2E intent match: " + data + " online=" + online);
+            if (online) {
+                webView.loadUrl(data.toString());
+                Log.i(TAG_E2E, "loadUrl called: " + data);
+            } else {
+                Log.w(TAG_E2E, "offline — E2E page load skip: " + data);
+            }
         }
     }
 
@@ -1012,6 +1026,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView v, String url) {
+                /* E2E diagnostics: kaunsa page load hua — CI logcat me proof.
+                   Query/fragment jaan-boojh kar strip: auth callback URLs me
+                   #access_token hota hai, wo logcat me KABHI nahi jana chahiye. */
+                Log.i(TAG_E2E, "onPageFinished: "
+                        + (url == null ? "null" : url.split("[?#]")[0]));
                 progressBar.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
                 if (userLoggedIn) {

@@ -83,34 +83,42 @@ for name in home rank matches wallet profile; do
   i=$((i+1))
 done
 
-say "6) ASSET E2E — 60 images ka live load (intent se)"
-adb logcat -c || true
-adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "$BASE/asset-e2e.html" >/dev/null
-for i in $(seq 1 24); do
-  sleep 5
-  adb logcat -d > "$LOGS/asset-e2e.txt" || true
-  line=$(grep -oE "ASSET-E2E-RESULT: [^\"']*" "$LOGS/asset-e2e.txt" | tail -1)
-  [ -n "$line" ] && break
-done
-[ -n "${line:-}" ] || fail "ASSET-E2E-RESULT marker 120s me nahi mila"
-echo "  → $line"
-echo "$line" | grep -q " OK" || fail "Asset E2E FAIL: $line"
-adb shell screencap -p /sdcard/e2e-assets.png && adb pull /sdcard/e2e-assets.png "$SHOTS/07-asset-e2e.png" >/dev/null
+# ── E2E page ko COLD START se kholo (force-stop → intent): onCreate →
+#    handleIntent E2E branch → loadUrl. Ye "currently running instance ko
+#    intent" wale route se zyada deterministic hai (pichhli run me warm
+#    route par page load hua hi nahi tha). Diagnostics: MINIESPORTS-E2E
+#    tag ki lines har kadam ka proof deti hain.
+run_e2e_page () {   # $1 = page (e.g. asset-e2e.html)  $2 = marker prefix
+  local page="$1" MARK="$2" log="$LOGS/$MARK.txt" line="" boot="" onpf=""
+  adb shell am force-stop $PKG
+  sleep 2
+  adb logcat -c || true
+  adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "$BASE/$page" >/dev/null
+  for i in $(seq 1 30); do          # 30 x 5s = 150s tak intezaar
+    sleep 5
+    adb logcat -d > "$log" || true
+    line=$(grep -oE "$MARK-RESULT: [^\"']*" "$log" | tail -1)
+    [ -n "$line" ] && break
+  done
+  boot=$(grep -oE "$MARK-BOOT: [^\"']*" "$log" | tail -1 || true)
+  onpf=$(grep -oE "MINIESPORTS-E2E.*onPageFinished: .*" "$log" | tail -1 || true)
+  if [ -z "$line" ]; then
+    echo "--- diagnostics ($page): boot='${boot:-nahi}' | $onpf"
+    echo "--- MINIESPORTS-E2E / chromium lines (aakhri 40) ---"
+    grep -E "MINIESPORTS-E2E|chromium.*CONSOLE|$MARK" "$log" | tail -40 || true
+    fail "$MARK-RESULT marker 150s me nahi mila${boot:+ (page boot hua: $boot)}"
+  fi
+  echo "  → $line"
+  echo "$line" | grep -q " OK" || fail "$MARK FAIL: $line"
+  adb shell screencap -p "/sdcard/e2e-$MARK.png" && adb pull "/sdcard/e2e-$MARK.png" "$SHOTS/$3" >/dev/null
+}
 
-say "7) SCREEN E2E — har screen/badge/cosmetic ka live render (intent se)"
-adb logcat -c || true
-adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "$BASE/screen-e2e.html" >/dev/null
-for i in $(seq 1 24); do
-  sleep 5
-  adb logcat -d > "$LOGS/screen-e2e.txt" || true
-  line2=$(grep -oE "SCREEN-E2E-RESULT: [^\"']*" "$LOGS/screen-e2e.txt" | tail -1)
-  [ -n "$line2" ] && break
-done
-[ -n "${line2:-}" ] || fail "SCREEN-E2E-RESULT marker 120s me nahi mila"
-echo "  → $line2"
-echo "$line2" | grep -q " OK" || fail "Screen E2E FAIL: $line2"
-adb shell screencap -p /sdcard/e2e-screens.png && adb pull /sdcard/e2e-screens.png "$SHOTS/08-screen-e2e.png" >/dev/null
-grep -oE '\[E2E\] \{.*\}' "$LOGS/screen-e2e.txt" | tail -1 > "$LOGS/badge-engine-selftest.json" || true
+say "6) ASSET E2E — 60 images ka live load (cold start intent)"
+run_e2e_page asset-e2e.html ASSET-E2E 07-asset-e2e.png
+
+say "7) SCREEN E2E — har screen/badge/cosmetic ka live render (cold start intent)"
+run_e2e_page screen-e2e.html SCREEN-E2E 08-screen-e2e.png
+grep -oE '\[E2E\] \{.*\}' "$LOGS/SCREEN-E2E.txt" | tail -1 > "$LOGS/badge-engine-selftest.json" || true
 
 say "8) Aakhri logcat (full session)"
 adb logcat -d > "$LOGS/final-logcat.txt" || true

@@ -40,6 +40,7 @@ on:
       - 'index.html'
       - 'asset-e2e.html'
       - 'screen-e2e.html'
+      - 'sw.js'
       - 'android/**'
       - '.github/scripts/emulator-e2e.sh'
       - '.github/workflows/e2e-emulator.yml'

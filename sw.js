@@ -24,7 +24,7 @@
    LOCAL_FILES, not just this one, or the exact same "fix doesn't seem
    to apply" pattern will keep recurring for any JS change, not just
    WhatsApp. */
-var CACHE_VER    = 'me-v2-20261012a';
+var CACHE_VER    = 'me-v5-20261012b';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is
@@ -51,7 +51,7 @@ var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
    was silently doing nothing useful for months. Must ALWAYS be kept
    equal to whatever ?v= suffix index.html's local <script>/<link>
    tags use, updated together on every release from now on. */
-var ASSET_VER = '20261012a';
+var ASSET_VER = '20261012b';
 
 var LOCAL_FILES = [
   '','index.html','styles.css','style.css','manifest.json','js/green-diamond.png',
@@ -182,7 +182,16 @@ function cacheFirst(req, name){
 }
 function networkFirst(req){
   return fetch(req, { cache: 'no-cache' }).then(function(r){
-    if(r&&r.status===200) caches.open(CACHE_STATIC).then(function(c){ c.put(req,r.clone()); });
+    if(r&&r.status===200){
+      /* ✅ BUG FIX (2026-10-12): pehle r.clone() caches.open().then() ke
+         ANDAR hota tha — tab tak response ka body page consume kar chuka
+         hota, clone reject hota aur har load par console me gandha
+         "Uncaught (in promise) TypeError: Response body is already used"
+         aata tha + cache write silently fail hoti thi (offline fallback
+         bhi kamzor). Ab clone turant (sync) hota hai, phir save. */
+      var cp = r.clone();
+      caches.open(CACHE_STATIC).then(function(c){ c.put(req, cp); });
+    }
     return r;
   }).catch(function(){ return caches.match(req); });
 }
