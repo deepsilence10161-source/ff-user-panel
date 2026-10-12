@@ -38,6 +38,9 @@ for i in $(seq 1 60); do
   sleep 5
 done
 [ "$boot" = "1" ] || fail "emulator 5 min me boot nahi hua"
+# 2M default buffer is emulator par jaldi rotate ho jata hai — E2E
+# diagnostics (MINIESPORTS-E2E / chromium CONSOLE) kho jaate the. 16M.
+adb logcat -G 16M >/dev/null 2>&1 || true
 adb shell settings put global window_animation_scale 0
 adb shell settings put global transition_animation_scale 0
 adb shell settings put global animator_duration_scale 0
@@ -46,6 +49,10 @@ adb shell wm density
 
 say "2) APK install ($apk_path)"
 adb install -r -d "$apk_path" || fail "APK install fail"
+# ✅ E2E determinism: notification-permission dialog pehle se grant karo —
+# warna OneSignal ka "Allow notifications?" prompt har cold start par app
+# ke upar modal ban kar baith jata hai (aur screenshots bhi dhundhla karta).
+adb shell pm grant $PKG android.permission.POST_NOTIFICATIONS 2>/dev/null || true
 
 say "3) App launch (live GitHub Pages UI)"
 adb logcat -c || true
@@ -88,7 +95,7 @@ done
 #    intent" wale route se zyada deterministic hai (pichhli run me warm
 #    route par page load hua hi nahi tha). Diagnostics: MINIESPORTS-E2E
 #    tag ki lines har kadam ka proof deti hain.
-run_e2e_page () {   # $1 = page (e.g. asset-e2e.html)  $2 = marker prefix  $3 = screenshot file
+run_e2e_page () {   # $1 = page  $2 = marker prefix  $3 = screenshot file
   # NOTE (2026-10-12): HAR local apni line par — bash 5 me ek hi "local"
   # statement ke andar aage wale variable ($MARK) set -u par "unbound
   # variable" deta hai (run 38208795592 isi par fail hua tha).
@@ -99,24 +106,40 @@ run_e2e_page () {   # $1 = page (e.g. asset-e2e.html)  $2 = marker prefix  $3 = 
   local line=""
   local boot=""
   local onpf=""
-  adb shell am force-stop $PKG
-  sleep 2
+  local lpid=""
+  local attempt=""
+
+  echo "  attempt 1: $page"
+  adb shell pm grant $PKG android.permission.POST_NOTIFICATIONS 2>/dev/null || true
   adb logcat -c || true
-  adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "$BASE/$page" >/dev/null
-  for i in $(seq 1 30); do          # 30 x 5s = 150s tak intezaar
-    sleep 5
-    adb logcat -d > "$log" || true
-    line=$(grep -oE "$MARK-RESULT: [^\"']*" "$log" | tail -1)
+  # लगातार capture (background) — -d wale dumps rotate hokar diagnostics
+  # kho dete the. File append-only rehti hai, kuch nahi khota.
+  adb logcat > "$log" 2>/dev/null &
+  lpid=$!
+  for attempt in 1 2; do
+    [ "$attempt" = "2" ] && echo "  attempt 2 (dobara cold start): $page"
+    # -S = pehle force-stop, phir start (race-free); -W = result print karo
+    adb shell am start -W -S -n "$ACT" -a android.intent.action.VIEW -d "$BASE/$page" 2>&1 | sed 's/^/    am: /' || true
+    for i in $(seq 1 12); do          # per attempt 12 x 5s = 60s
+      sleep 5
+      line=$(grep -oE "$MARK-RESULT: [^\"']*" "$log" | tail -1)
+      [ -n "$line" ] && break
+    done
     [ -n "$line" ] && break
   done
+  sleep 1
+  [ -n "$lpid" ] && kill "$lpid" 2>/dev/null || true
   boot=$(grep -oE "$MARK-BOOT: [^\"']*" "$log" | tail -1 || true)
   onpf=$(grep -oE "MINIESPORTS-E2E.*onPageFinished: .*" "$log" | tail -1 || true)
   if [ -z "$line" ]; then
-    echo "--- diagnostics ($page): boot='${boot:-nahi}' | $onpf"
-    echo "--- MINIESPORTS-E2E / chromium lines (aakhri 40) ---"
+    echo "--- diagnostics ($page): boot='${boot:-nahi}' | ${onpf:-page-load line nahi mili}"
+    echo "--- top activity + MINIESPORTS-E2E / chromium (aakhri 40) ---"
+    adb shell dumpsys activity activities 2>/dev/null | grep -E "mResumedActivity|topResumedActivity|Hist" | head -5 || true
     grep -E "MINIESPORTS-E2E|chromium.*CONSOLE|$MARK" "$log" | tail -40 || true
-    fail "$MARK-RESULT marker 150s me nahi mila${boot:+ (page boot hua: $boot)}"
+    fail "$MARK-RESULT marker 2 attempts (150s) me nahi mila${boot:+ (page boot hua: $boot)}"
   fi
+  # marker asli E2E page hi se aaya ho (source check)
+  grep -q "source: https://[^ ]*/$page" "$log" || fail "$MARK marker kisi aur page se aaya (source check fail)"
   echo "  → $line"
   echo "$line" | grep -q " OK" || fail "$MARK FAIL: $line"
   adb shell screencap -p "/sdcard/e2e-$MARK.png" && adb pull "/sdcard/e2e-$MARK.png" "$SHOTS/$shot" >/dev/null
