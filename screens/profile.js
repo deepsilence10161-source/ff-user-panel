@@ -118,7 +118,7 @@ function renderProfile() {
   h += '<div class="pf2-foot">';
   h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
   h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66;display:inline-flex;align-items:center;gap:5px">' +
-       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012l" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012m" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
        rk.emoji + ' ' + rk.badge + '</div>';
   h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
   h += '</div>';
@@ -1115,13 +1115,31 @@ function submitSupport() {
        admin ticket-list mein sabse upar dikhega. Data-layer same hai. */
     var _isPrem = window.isPremiumActive ? isPremiumActive(3) : false; /* Diamond */
     var _subject = (_isPrem ? '🔷 PRIORITY — ' : '') + (type || 'general');
-    window._supa.from('support_tickets').insert({
-      user_id: window.U.uid, subject: _subject,
-      status: 'open', message: msg.trim(),
-      user_ign: window.UD.ign || '', user_ff_uid: window.UD.ffUid || window.UD.ff_uid || ''
-    }).then(function() {
-      closeModal(); toast('✅ Ticket submitted! Hum jald jawab denge.', 'ok');
-    }).catch(function() { toast('Submit nahi hua, dobara try karo', 'err'); });
+    /* ✅ FIX (2026-10-12, CI emulator me live pakda gaya): support_tickets ki
+       RLS policy `auth.jwt()->>'sub' = user_id` maangti hai. Login ke turant
+       baad Supabase client ke paas kabhi-kabhi Firebase token abhi sync nahi
+       hua hota (sync async hai) — us window me insert RLS se reject ho jata
+       tha aur user ko "Submit nahi hua" milta tha. Ab 3 koshish, 1.5s ke
+       gap se, aur fail par ASLI error message dikhta hai. */
+    var _attempt = 0;
+    function _doInsert() {
+      _attempt++;
+      window._supa.from('support_tickets').insert({
+        user_id: window.U.uid, subject: _subject,
+        status: 'open', message: msg.trim(),
+        user_ign: window.UD.ign || '', user_ff_uid: window.UD.ffUid || window.UD.ff_uid || ''
+      }).then(function(r) {
+        if (r && r.error) {
+          if (_attempt < 3) { setTimeout(_doInsert, 1500); return; }
+          toast('Submit nahi hua: ' + (r.error.message || 'RLS/no-token'), 'err'); return;
+        }
+        closeModal(); toast('✅ Ticket submitted! Hum jald jawab denge.', 'ok');
+      }).catch(function(e) {
+        if (_attempt < 3) { setTimeout(_doInsert, 1500); return; }
+        toast('Submit nahi hua, dobara try karo', 'err');
+      });
+    }
+    _doInsert();
   } else {
     /* Fallback to Firebase RTDB chat */
     if (window.db && window.U) {

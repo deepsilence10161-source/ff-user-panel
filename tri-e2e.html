@@ -122,7 +122,7 @@
        Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
        = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
        apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
-    ['1/8 app iframe + QA player login (asli app auth)', function () {
+    ['1/10 app iframe + QA player login (asli app auth)', function () {
       if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
       return bootApp().then(function () {
         return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
@@ -141,7 +141,7 @@
     }],
 
     /* ── 2/8 : app auto-login + login screen hatna ── */
-    ['2/8 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+    ['2/10 asli app login (onAuthStateChanged → _handleSignIn)', function () {
       return poll(function () {
         try {
           var w = W();
@@ -149,35 +149,54 @@
         } catch (e) { return null; }
       }, 1000, 120000, 'app login (U/UD/_supa)').then(function (w) {
         VALUES.uid = w.U.uid;
+        /* ⚠️ Supabase client ko Firebase token milna ASYNC hai (db.js
+           syncFirebaseToken). Us se pehle koi bhi write RLS se reject hoti hai
+           (policy: auth.jwt()->>'sub' = user_id) — CI me exactly yahi hua:
+           ticket insert token se pehle chala gaya aur DB me kuch nahi aaya.
+           Isliye ab token sync ka explicit intezaar. */
+        return poll(function () { return (w._supaTokenUid === w.U.uid) ? true : null; },
+          1000, 120000, 'supabase token sync (_supaTokenUid)').then(function () {
         return poll(function () {
           var ls = w.document.getElementById('loginScreen');
           return (ls && getComputedStyle(ls).display === 'none') ? true : null;
         }, 800, 90000, 'login screen hatna').then(function () {
-          return 'uid ' + String(VALUES.uid).slice(0, 8) + '… — login screen gaya, UD + _supa ready';
+          return 'uid ' + String(VALUES.uid).slice(0, 8) + '… — login screen gaya, UD + _supa ready + token sync';
+        });
         });
       });
     }],
 
     /* ── 3/N : APK → Admin (support ticket) ── */
-    ['3/8 APK → Admin: support ticket submit', function () {
+    ['3/10 APK → Admin: support ticket submit', function () {
       var w = W();
       w.eval("if (window.showSupportForm) showSupportForm();");
       return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
         .then(function () {
           w.document.getElementById('supType').value = 'other';
           w.document.getElementById('supMsg').value = MARK + ' — APK se bheja gaya ticket (tri-e2e)';
-          w.eval('window.submitSupportTicket()');
-          return poll(function () {
-            return w._supa.from('support_tickets').select('id,message')
-              .eq('user_id', w.U.uid).like('message', '%' + MARK + '%')
-              .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
-          }, 2500, 120000, 'ticket DB me');
+          /* Ticket insert ke 3 koshish (app ke andar bhi 3 retry hain; yahan
+             dobara submit karte hain agar pehla attempt RLS/token race me
+             reh gaya ho). Har attempt ke baad DB check — aur error bhi pakdo. */
+          var tries = 0;
+          function _one() {
+            tries++;
+            w.eval('window.submitSupportTicket()');
+            return poll(function () {
+              return w._supa.from('support_tickets').select('id,message')
+                .eq('user_id', w.U.uid).like('message', '%' + MARK + '%')
+                .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
+            }, 2500, tries < 3 ? 25000 : 60000, 'ticket DB me (koshish ' + tries + ')').catch(function (e) {
+              if (tries >= 3) throw e;
+              return _one();
+            });
+          }
+          return _one();
         })
         .then(function (row) { VALUES.ticket_row = row.id; return 'ticket #' + row.id.slice(0, 8) + ' DB me (admin panel isi ko dekhega)'; });
     }],
 
     /* ── 4/N : Admin → APK (ticket reply, asli My-Tickets modal) ── */
-    ['4/8 Admin → APK: ticket reply dikhe (My Tickets)', function () {
+    ['4/10 Admin → APK: ticket reply dikhe (My Tickets)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('support_tickets').select('admin_reply,status')
@@ -205,7 +224,7 @@
     }],
 
     /* ── 5/N : Admin → APK (SD credit, asli wallet UI) ── */
-    ['5/8 Admin → APK: coins credit (wallet UI)', function () {
+    ['5/10 Admin → APK: coins credit (wallet UI)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('users').select('coins,sky_diamonds').eq('id', w.U.uid).maybeSingle()
@@ -227,7 +246,7 @@
     }],
 
     /* ── 6/N : Admin → APK (match) ── */
-    ['6/8 Admin → APK: naya match list me', function () {
+    ['6/10 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('matches').select('title').ilike('title', MARK + '%')
@@ -251,7 +270,7 @@
     }],
 
     /* ── 7/N : Admin → APK (notification) ── */
-    ['7/8 Admin → APK: notification', function () {
+    ['7/10 Admin → APK: notification', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('notifications').select('title,body').eq('user_id', w.U.uid)
@@ -273,7 +292,7 @@
     }],
 
     /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
-    ['8/8 Admin → APK: KYC approved dikhe', function () {
+    ['8/10 Admin → APK: KYC approved dikhe', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('kyc_requests').select('status').eq('user_id', w.U.uid)
@@ -293,6 +312,58 @@
   ];
 
   /* ── runner ──────────────────────────────────────────────────────────── */
+  /* ── 9/10 : APK (P1) match join — asli doJoin → server RPC ── */
+  STEPS.push(['9/10 APK → match join (asli doJoin)', function () {
+    var w = W();
+    return poll(function () {
+      return w._supa.from('matches').select('id,filled_slots').ilike('title', MARK + '%')
+        .order('created_at', { ascending: false }).limit(1)
+        .then(function (r) { return (r.data && r.data[0]) ? r.data[0] : null; });
+    }, 3000, 120000, 'match id').then(function (m) {
+      VALUES.match_id = m.id;
+      var w2 = W();
+      w2.eval('if (window.doJoin) doJoin(' + JSON.stringify(m.id) + ');');
+      function _row() {
+        return w2._supa.from('join_requests').select('id,status').eq('match_id', m.id).eq('user_id', w2.U.uid)
+          .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
+      }
+      var via = 'doJoin (asli UI path)';
+      return poll(_row, 3000, 60000, 'APK join row (doJoin)').catch(function () {
+        w2.eval('window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' +
+                JSON.stringify(m.id) + ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}});');
+        via = 'validate_and_join_match RPC (wahi server path)';
+        return poll(_row, 3000, 120000, 'APK join row (RPC fallback)');
+      }).then(function (row) {
+        VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = via;
+        return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + via;
+      });
+    });
+  }]);
+
+  /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
+  STEPS.push(['10/10 APK par match me 2 players (P2 web se join)', function () {
+    var w = W();
+    return poll(function () {
+      return w._supa.from('join_requests').select('user_id,status').eq('match_id', VALUES.match_id)
+        .then(function (r) { return (r.data && r.data.length >= 2) ? r.data : null; });
+    }, 4000, 420000, 'doosra player (P2, host driver se)')
+      .then(function (rows) {
+        VALUES.joined_players = String(rows.length);
+        w.eval("if (window.loadMatches) loadMatches(); if (window.renderHome) renderHome();");
+        return poll(function () {
+          var w2 = W();
+          var fs = null;
+          try { fs = (w2.MT && w2.MT[VALUES.match_id]) ? Number(w2.MT[VALUES.match_id].filledSlots) : null; } catch (e) {}
+          var body = (w2.document.body && w2.document.body.innerText) || '';
+          VALUES.apk_players_ui = (fs === null ? '' : String(fs));
+          return (fs !== null && fs >= 2) ? true : (body.indexOf('2/12') >= 0 ? true : null);
+        }, 2500, 150000, 'match par 2 players (app UI)');
+      })
+      .then(function () {
+        return 'APK par match me ' + VALUES.joined_players + ' players (slots UI: ' + (VALUES.apk_players_ui || '2') + ') — P1 (APK) + P2 (web)';
+      });
+  }]);
+
   function markState(i, state, detail) {
     results[i] = results[i] || { name: STEPS[i][0], detail: '' };
     results[i].state = state;

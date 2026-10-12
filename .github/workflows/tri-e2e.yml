@@ -114,6 +114,8 @@ jobs:
           st = json.load(open([f for f in __import__('glob').glob('tools/tri-e2e/.state/*.json')][-1]))
           print("TRI_EMAIL=" + st["player"]["email"])
           print("TRI_PASS=" + st["player"]["password"])
+          print("TRI_EMAIL2=" + st["player2"]["email"])
+          print("TRI_PASS2=" + st["player2"]["password"])
           print("TRI_RUNID=" + st["runid"])
           PY
           echo "QA accounts ready (creds env me, log me nahi)"

@@ -125,11 +125,17 @@ async function create(runid) {
   const SALT = process.env.TRI_SALT || 'local-dev-salt';
   const pw = (email) => crypto.createHmac('sha256', SALT).update(email).digest('base64url').slice(0, 20) + 'Aa1!';
   const playerEmail = `qa-tri-${runid}-p@fft.com`;
+  /* ✅ 2026-10-12: DOOSRA player — user ↔ user flow prove karne ke liye
+     (dono players ek hi match join karte hain, admin panel ke Joined Players
+     me dono dikhte hain, APK ka pehla player dono ko apne match me dekhta hai). */
+  const player2Email = `qa-tri-${runid}-q@fft.com`;
   const adminEmail = `qa-tri-${runid}-a@fft.com`;
-  const playerPass = pw(playerEmail), adminPass = pw(adminEmail);
+  const playerPass = pw(playerEmail), player2Pass = pw(player2Email), adminPass = pw(adminEmail);
 
-  log('Firebase: QA player account banaya ja raha hai…');
+  log('Firebase: QA player (P1) account banaya ja raha hai…');
   const p = await fbSignUp(playerEmail, playerPass);
+  log('Firebase: QA player (P2) account banaya ja raha hai…');
+  const p2 = await fbSignUp(player2Email, player2Pass);
   log('Firebase: QA admin account banaya ja raha hai…');
   const a = await fbSignUp(adminEmail, adminPass);
 
@@ -137,8 +143,9 @@ async function create(runid) {
      isliye credentials ab har haal me save hone chahiye. */
   const state = {
     runid, createdAt: new Date().toISOString(),
-    player: { email: playerEmail, password: playerPass, uid: p.localId },
-    admin:  { email: adminEmail,  password: adminPass,  uid: a.localId },
+    player:  { email: playerEmail,  password: playerPass,  uid: p.localId },
+    player2: { email: player2Email, password: player2Pass, uid: p2.localId },
+    admin:   { email: adminEmail,   password: adminPass,   uid: a.localId },
     markers: {
       ticketSubject: `QA-TEST TRI ${runid} — payment issue`,
       ticketMessage: `QA-TEST TRI ${runid} — APK se bheja gaya ticket (tri-e2e)`,
@@ -152,6 +159,7 @@ async function create(runid) {
       utr: `TRIRUN${runid}`,
       /* users.ign par 20-char ka DB check hai — isliye chhota tag. */
       ignTag: `QA-TRI ${runid}`,
+      ignTag2: `QA-TRI2 ${runid}`,
       sdAmount: 10, sdPrice: 10, coinAmount: 25,
     },
   };
@@ -170,8 +178,8 @@ async function create(runid) {
 
   log('state file: ' + file);
   console.log('QA-TRI-STATE: ' + JSON.stringify({
-    runid, player_uid: state.player.uid, admin_uid: state.admin.uid,
-    player_email: playerEmail, admin_email: adminEmail,
+    runid, player_uid: state.player.uid, player2_uid: state.player2.uid, admin_uid: state.admin.uid,
+    player_email: playerEmail, player2_email: player2Email, admin_email: adminEmail,
   }));
   return state;
 }
@@ -186,7 +194,7 @@ async function cleanup(runid) {
     try { await sql(q); } catch (e) { console.warn('  ⚠️ SQL skip: ' + e.message.slice(0, 160)); }
   }
   if (st) {
-    for (const who of ['player', 'admin']) {
+    for (const who of ['player', 'player2', 'admin']) {
       const r = await fbDelete(st[who].email, st[who].password);
       log(`Firebase: ${who} account delete → ${r.deleted ? 'OK' : 'skip (' + (r.why || r.body) + ')'}`);
     }

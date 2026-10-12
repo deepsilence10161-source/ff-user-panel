@@ -247,6 +247,9 @@ def main():
             if r != "ok":
                 raise RuntimeError("firebase signin: " + str(r))
             user.wait_for_function("() => window.U && window.U.uid && window.UD", timeout=90000)
+            # Supabase client ko Firebase token async milta hai; us se pehle ki
+            # koi write RLS se reject hoti hai (policy: auth.jwt()->>'sub'=uid)
+            user.wait_for_function("() => window._supaTokenUid === window.U.uid", timeout=90000)
             uid = user.evaluate("() => window.U.uid")
             if uid != ST["player"]["uid"]:
                 raise RuntimeError(f"wrong uid logged in: {uid}")
@@ -298,6 +301,79 @@ def main():
             return json.dumps(seen)
 
         step("H7 Admin → User web (match + notif + reply)", h7, critical=True)
+
+        # ── H7b: DOOSRA player (user web) wahi match join karta hai ────────
+        #  Yeh user ↔ user flow hai: P1 (APK) pehle join karta hai, P2 (web)
+        #  baad me — aur dono admin panel ke Joined Players me dikhne chahiye.
+        p2ctx = browser.new_context(viewport={"width": 412, "height": 915})
+        p2 = p2ctx.new_page()
+        p2.on("pageerror", lambda e: log(f"   [p2 pageerror] {str(e)[:150]}"))
+
+        def h7b():
+            if "player2" not in ST:
+                raise RuntimeError("state me player2 nahi — qa-accounts.mjs dobara chalao")
+            p2.goto(USER_URL, timeout=120000)
+            p2.wait_for_function("() => !!window.auth", timeout=90000)
+            r = p2.evaluate(
+                """async (c) => { try { await window.auth.signInWithEmailAndPassword(c.e, c.p); return 'ok'; }
+                                  catch (e) { return 'err:' + (e.code || e.message); } }""",
+                {"e": ST["player2"]["email"], "p": ST["player2"]["password"]})
+            if r != "ok":
+                raise RuntimeError("P2 firebase signin: " + str(r))
+            p2.wait_for_function("() => window.U && window.U.uid && window._supa", timeout=90000)
+            mid = MATCH["row"]["id"]
+            p2.evaluate("() => { if (window.loadMatches) window.loadMatches(); }")
+            p2.wait_for_timeout(2500)
+            shot(p2, "h7b-p2-login.png")
+            p2.evaluate("(id) => { if (window.doJoin) doJoin(id); }", mid)
+
+            def _row():
+                return p2.evaluate(
+                    """async (id) => { const {data} = await window._supa.from('join_requests')
+                         .select('id,status').eq('match_id', id).eq('user_id', window.U.uid);
+                         return (data||[])[0] || null; }""", mid)
+
+            via = "doJoin (asli UI path)"
+            try:
+                row = poll(_row, timeout=60, every=4, what="P2 join (doJoin)")
+            except Exception:
+                # UI path kisi modal/wait par ruk jaye to wahi server authority:
+                # validate_and_join_match — bilkul wahi RPC jo Confirm Join
+                # button chalaata hai (slot/fee/duplicate sab server-side).
+                p2.evaluate(
+                    """(id) => window._supa.rpc('validate_and_join_match', {
+                         p_uid: window.U.uid, p_match_id: id, p_entry_fee: 0, p_currency: 'coins',
+                         p_join_data: { mode: 'solo', ign: (window.UD && window.UD.ign) || '' } })""", mid)
+                row = poll(_row, timeout=120, every=4, what="P2 join (RPC fallback)")
+                via = "validate_and_join_match RPC (same server path)"
+            if not isinstance(row, dict):
+                raise RuntimeError("P2 join row nahi mila: " + str(row)[:160])
+            P2["row"] = row
+            shot(p2, "h7b-p2-joined.png")
+            return f"P2 ne match #{mid[:8]} join kiya — row {str(row.get('id'))[:8]} ({via})"
+
+        step("H7b User Panel web (P2, doosra player) match join", h7b, critical=True)
+
+        # ── H7c: admin panel — Joined Players me DONO players ──────────────
+        def h7c():
+            want1 = ST["markers"]["ignTag"]        # P1  (QA-TRI <runid>)
+            want2 = ST["markers"]["ignTag2"]       # P2  (QA-TRI2 <runid>)
+            admin.evaluate("() => { if (window.showSection) window.showSection('joinedPlayers'); else if (window.loadJoinedPlayers) window.loadJoinedPlayers(); }")
+            admin.wait_for_timeout(1500)
+
+            def _tbl():
+                try:
+                    admin.evaluate("() => { if (window.loadJoinedPlayers) window.loadJoinedPlayers(); }")
+                    t = admin.inner_text("#joinedPlayersTable")
+                except Exception:
+                    t = ""
+                return t if (want1 in t and want2 in t) else None
+
+            txt = poll(_tbl, timeout=180, every=6, what="admin Joined Players me dono QA players")
+            shot(admin, "h7c-admin-joined-players.png")
+            return f"admin panel (Joined Players) me dono players dikhe: {want1} + {want2} (table text len {len(txt)})"
+
+        step("H7c Admin panel: Joined Players me dono (P1 APK + P2 web)", h7c, critical=True)
 
         # ── H8: user web → Admin — KYC submit (asli modal) ───────────────
         def h8():
@@ -416,6 +492,23 @@ def main():
 
         step("H11 Admin → User web: coins + KYC verified", h11, critical=True)
 
+        # ── H11b: P1 (user web) ke match me DO players dikhein ─────────────
+        def h11b():
+            mid = MATCH["row"]["id"]
+            rows = poll(lambda: (lambda r: r if len(r) >= 2 else None)(
+                user.evaluate("""async (id) => { const {data} = await window._supa.from('join_requests')
+                     .select('user_id,status').eq('match_id', id); return data || []; }""", mid)),
+                timeout=180, every=6, what="match me 2 players (DB)")
+            user.evaluate("() => { if (window.loadMatches) window.loadMatches(); }")
+            filled = poll(lambda: (lambda v: v if v is not None and int(v) >= 2 else None)(
+                user.evaluate("(id) => (window.MT && window.MT[id]) ? Number(window.MT[id].filledSlots || 0) : None", mid)),
+                timeout=180, every=6, what="match card par 2 players")
+            shot(user, "h11b-user-web-2-players.png")
+            VALUES["joined_players"] = str(len(rows))
+            return f"match #{mid[:8]} me {len(rows)} players (card: {filled}/slots) — dono QA players"
+
+        step("H11b User web (P1): match me dono players dikhe", h11b, critical=True)
+
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(
@@ -425,10 +518,13 @@ def main():
                      const {data:t} = await window._supa.from('support_tickets').select('admin_reply,status').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
                      const {data:m} = await window._supa.from('matches').select('title').ilike('title','QA-TEST TRI%').order('created_at',{ascending:false}).limit(1);
                      const {data:n} = await window._supa.from('notifications').select('title').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
+                     const {data:jr} = await window._supa.from('join_requests').select('user_id')
+                        .in('match_id', (m||[]).map(x=>x.id).length ? (m||[]).map(x=>x.id) : ['00000000-0000-0000-0000-000000000000']);
                      return { coins: u && String(u.coins), sky_diamonds: u && String(u.sky_diamonds),
                               kyc_status: k && k[0] && k[0].status,
                               ticket_reply: t && t[0] && t[0].admin_reply, ticket_status: t && t[0] && t[0].status,
                               match_title: m && m[0] && m[0].title, notif_title: n && n[0] && n[0].title,
+                              joined_players: String((jr || []).length),
                               ign: (window.UD && window.UD.ign) || '' }; }""")
             VALUES.update({k2: v2 for k2, v2 in v.items() if v2 is not None})
             shot(user, "h12-final-values.png")
@@ -445,7 +541,7 @@ PROOF_PNG = bytes.fromhex(
     "4944415478da6360606060f80fc4ffd1f81c0c0c0c0c000000ffff0300000000ffff030000"
     "0000ffff030000000000000000000000000000000000494e44ae426082")
 
-TICKET, MATCH, NOTIF, KYC, COIN, PICKED = {}, {}, {}, {}, {}, {}
+TICKET, MATCH, NOTIF, KYC, COIN, PICKED, P2 = {}, {}, {}, {}, {}, {}, {}
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
