@@ -548,6 +548,35 @@ jobs:
             done
           fi
 
+          # ✅ (2026-10-12b) RETRY (flake ka ilaaj): run 38217502110 me emulator
+          # ke ANR chakkar me notification dialog pehli launch par nahi mila
+          # (wahi APK/codepath pichhle do runs me pass tha). Ab dialog na mile to
+          # app force-stop karke DOBARA launch karke poora check dobara — check
+          # honest hai (dialog ASLI me aana zaroori hai, tabhi pass hota hai).
+          if [ -z "$FOUND" ]; then
+            echo "🔁 dialog pehli koshish me nahi mila — force-stop + dobara launch (retry)"
+            adbt shell am force-stop "$PKG" >/dev/null 2>&1 || true
+            sleep 3
+            adbt shell am start -n "$PKG/.MainActivity" >/dev/null 2>&1 || true
+            sleep 14
+            for i in $(seq 1 8); do
+              FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
+              echo "   retry koshish $i: focus = ${FOCUS:-'-'}"
+              case "$FOCUS" in
+                *permissioncontroller*)
+                  adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+                  adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+                  if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="retry+dump"; else FOUND="retry"; fi
+                  break ;;
+                *"isn't responding"*|*"Not Responding"*|*"Application Error"*|*"ANR"*)
+                  echo "   ⚠️ retry me ANR upar — BACK"
+                  adbt shell input keyevent 4 >/dev/null 2>&1 || true
+                  sleep 3 ;;
+                *) sleep 4 ;;
+              esac
+            done
+          fi
+
           adbt exec-out screencap -p > notif-permission-screen.png
           ls -lh notif-permission-screen.png
 
