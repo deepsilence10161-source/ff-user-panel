@@ -98,6 +98,19 @@ setTimeout(function() {
    not. */
 setTimeout(function() {
   if (window._bootCalled) return; /* already booted normally — no-op */
+  /* ✅ FIX (2026-10-12, CI emulator me live pakda gaya): agar user PEHLE SE
+     sign-in hai to login screen dikhana bug hai. Slow device par boot 15s se
+     zyada le sakti hai, aur tab yeh ceiling login screen ko app ke upar
+     wapas le aati thi — login ho chuka hota tha, par user ko lagta tha ki
+     login nahi hua (aur E2E ka "login screen hatna" step 90s par fail).
+     Signed-in hone par hum boot ko booted mark karke chhod dete hain. */
+  var _signedIn = false;
+  try { _signedIn = !!(window.U || (window.auth && window.auth.currentUser)); } catch(e) {}
+  if (_signedIn) {
+    window._bootCalled = true;
+    console.log('[Boot] 15s ceiling hit — user signed in hai, login screen skip (boot mark done)');
+    return;
+  }
   console.warn('[Boot] 15s hard ceiling hit — boot() never completed, forcing login screen as a safe fallback');
   _hideSplash();
   var ls = $('loginScreen');

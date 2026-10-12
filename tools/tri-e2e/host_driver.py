@@ -308,9 +308,28 @@ def main():
             user.fill("#_mes_pan", "ABCDE1234F")
             user.fill("#_mes_aadhaar", "123456789012")
             user.fill("#_mes_kycname", "QA TRITEST PLAYER")
-            user.check("#_mes_kyc_cbx")
+            # ⚠️ Playwright ka check() yahan flaky tha (CI: "waiting for element
+            #    to be visible, enabled and stable" 30s timeout — modal ke
+            #    animation/scroll ki wajah se). Asli user bhi checkbox ko click
+            #    hi karta hai, isliye JS se native click + verify.
+            st = user.evaluate("""() => {
+                const cb = document.getElementById('_mes_kyc_cbx');
+                if (!cb) return 'no-cb';
+                cb.scrollIntoView({ block: 'center' });
+                if (!cb.checked) cb.click();
+                return cb.checked ? 'checked' : 'unchecked';
+            }""")
+            if st != 'checked':
+                user.evaluate("""() => { const l = document.querySelector('label[for=\"_mes_kyc_cbx\"]'); if (l) l.click(); }""")
+                st = user.evaluate("""() => { const cb = document.getElementById('_mes_kyc_cbx'); return (cb && cb.checked) ? 'checked' : 'unchecked'; }""")
+            if st != 'checked':
+                raise RuntimeError("KYC checkbox tick nahi hua: " + str(st))
             shot(user, "h8a-kyc-form.png")
-            user.click("text=Submit KYC")
+            user.evaluate("""() => {
+                const b = [...document.querySelectorAll('button')].find(x => /Submit KYC/i.test(x.textContent || ''));
+                if (b) b.click();
+                else if (window.mesSubmitKYC && window.U) window.mesSubmitKYC(window.U.uid);
+            }""")
             row = poll(lambda: user.evaluate(
                 """async () => { const {data}=await window._supa.from('kyc_requests')
                      .select('id,status,user_id,document_type').eq('user_id', window.U.uid)
