@@ -54,10 +54,25 @@
         try { console.error(line); } catch(e) {}
       }
     }
-    img.onload = function(){ fin(img.naturalWidth > 0); };
-    img.onerror = function(){ fin(false); };
-    img.src = 'assets/img/' + p + '?v=' + V;
-    grid.appendChild(img);
+    /* ✅ 2026-10-12: har image ke liye 3 koshish. Emulator me ek hi request
+       (jaise badges/mvp.png) network hiccup par timeout ho jati thi aur poora
+       asset E2E 59/60 par fail ho jata tha — jabki file Pages par 200 OK thi.
+       Ab har attempt alag cache-buster ke saath, aur 12s timeout par retry. */
+    var attempt = 0;
+    function tryLoad(t){
+      attempt++;
+      var done = false;
+      var to = setTimeout(function(){
+        if (done) return; done = true;
+        if (attempt < 3) tryLoad(t + 1); else fin(false);
+      }, 12000);
+      img.onload = function(){ if (done) return; done = true; clearTimeout(to); fin(img.naturalWidth > 0); };
+      img.onerror = function(){ if (done) return; done = true; clearTimeout(to);
+        if (attempt < 3) tryLoad(t + 1); else fin(false); };
+      img.src = 'assets/img/' + p + '?v=' + V + '&t=' + attempt;
+      if (attempt === 1) grid.appendChild(img);
+    }
+    tryLoad(1);
   });
 })();
 </script>

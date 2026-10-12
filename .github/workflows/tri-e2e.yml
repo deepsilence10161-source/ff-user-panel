@@ -41,17 +41,29 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "run=true" >> $GITHUB_OUTPUT; echo "manual dispatch" ; exit 0
           fi
+          # ✅ 2026-10-12: build run ka doosra job (jaise asset E2E flake) fail ho
+          # par APK job theek ho, to bhi tri chalao — APK artifact se check karte hain.
           if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
-            echo "run=false" >> $GITHUB_OUTPUT; echo "build fail tha — skip"; exit 0
+            ART="$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts")"
+            if echo "$ART" | grep -q "MiniEsports-APK"; then
+              echo "build run fail tha PAR APK artifact maujood hai — tri chalao"
+            else
+              echo "run=false" >> $GITHUB_OUTPUT; echo "build fail + APK artifact nahi — skip"; exit 0
+            fi
           fi
           SHA="${{ github.event.workflow_run.head_sha }}"
           FILES="$(curl -s -H "Authorization: Bearer ${{ github.token }}" \
             "https://api.github.com/repos/${{ github.repository }}/commits/$SHA" | grep -o '"filename": *"[^"]*"' | head -60)"
           echo "$FILES" | head -20
-          if echo "$FILES" | grep -q "tri-e2e"; then
-            echo "run=true" >> $GITHUB_OUTPUT; echo "tri-e2e se juda change mila"
+          # ✅ 2026-10-12: pehle sirf "tri-e2e" filename par chalta tha, isliye
+          # app-side fix (index.html / core/db.js / vendor/) aane par tri skip ho
+          # gaya tha — jabki asli app code hi badla tha. Ab app ko chhune wale
+          # saare paths tri trigger karte hain.
+          if echo "$FILES" | grep -qE "tri-e2e|index\.html|core/|vendor/|screens/|js/|features/|assets/img/|android/|\.github/workflows/"; then
+            echo "run=true" >> $GITHUB_OUTPUT; echo "app/tri ko chhune wala change mila"
           else
-            echo "run=false" >> $GITHUB_OUTPUT; echo "isi commit me tri-e2e change nahi — skip"
+            echo "run=false" >> $GITHUB_OUTPUT; echo "sirf docs/other change — skip"
           fi
 
   tri-e2e:
