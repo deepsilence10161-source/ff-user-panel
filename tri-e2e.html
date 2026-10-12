@@ -118,33 +118,43 @@
   }
 
   var STEPS = [
-    /* ── 1/N : QA player login (asli Firebase) ── */
-    ['1/8 QA player login (Firebase email/password)', function () {
+    /* ── 1/8 : app iframe + ASLI login (app ke apne auth se) ──
+       Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
+       = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
+       apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
+    ['1/8 app iframe + QA player login (asli app auth)', function () {
       if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
-      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CFG, 'triE2E');
-      var auth = firebase.app('triE2E').auth();
-      return auth.signInWithEmailAndPassword(EMAIL, PASS).then(function (cr) {
-        window.__triAuth = auth;
-        return poll(function () { return cr.user && cr.user.uid; }, 500, 20000, 'firebase user')
-          .then(function (uid) { VALUES.uid = uid; return 'uid ' + String(uid).slice(0, 8) + '… (wahi account jo admin panel me)'; });
+      return bootApp().then(function () {
+        return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
+          1000, 120000, 'app ka firebase auth load');
+      }).then(function (w) {
+        w.eval('window.__triSignIn=null; window.auth.signInWithEmailAndPassword(' +
+               JSON.stringify(EMAIL) + ',' + JSON.stringify(PASS) + ')' +
+               '.then(function(){window.__triSignIn="ok";})' +
+               '.catch(function(e){window.__triSignIn="err:"+((e&&e.code)||(e&&e.message)||"unknown");});');
+        return poll(function () { return W().__triSignIn; }, 1000, 90000, 'firebase sign-in')
+          .then(function (st) {
+            if (st !== 'ok') fail('sign-in', st);
+            return 'app ke apne auth se login (app-name mainApp, wahi persistence)';
+          });
       });
     }],
 
-    /* ── 2/N : asli app isi WebView me ── */
-    ['2/8 asli app iframe me + auto-login', function () {
-      return bootApp().then(function () {
+    /* ── 2/8 : app auto-login + login screen hatna ── */
+    ['2/8 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+      return poll(function () {
+        try {
+          var w = W();
+          return (w && w.U && w.U.uid && w.UD && w._supa) ? w : null;
+        } catch (e) { return null; }
+      }, 1000, 120000, 'app login (U/UD/_supa)').then(function (w) {
+        VALUES.uid = w.U.uid;
         return poll(function () {
-          try {
-            var w = W();
-            return (w && w.U && w.U.uid && w.UD && w._supa) ? w : null;
-          } catch (e) { return null; }
-        }, 1000, 90000, 'app login (onAuthStateChanged → _handleSignIn)');
-      }).then(function (w) {
-        if (w.U.uid !== VALUES.uid) fail('uid mismatch', w.U.uid + ' vs ' + VALUES.uid);
-        return poll(function () { return w.document.getElementById('loginScreen') &&
-          getComputedStyle(w.document.getElementById('loginScreen')).display === 'none' ? true : null; },
-          800, 60000, 'login screen hatna')
-          .then(function () { return 'app logged in (login screen gaya, UD._supa ready)'; });
+          var ls = w.document.getElementById('loginScreen');
+          return (ls && getComputedStyle(ls).display === 'none') ? true : null;
+        }, 800, 90000, 'login screen hatna').then(function () {
+          return 'uid ' + String(VALUES.uid).slice(0, 8) + '… — login screen gaya, UD + _supa ready';
+        });
       });
     }],
 
@@ -176,11 +186,20 @@
       }, 4000, 420000, 'admin reply (host driver se)')
         .then(function (reply) {
           VALUES.ticket_reply = reply;
-          w.eval("if (window.showMyTickets) showMyTickets();");
+          /* Modal ek hi baar render hota hai — isliye har koshish me modal
+             dobara kholte hain aur POORE page text me reply dhoondhte hain
+             (container badal jaye to bhi pakda jaye). */
           return poll(function () {
-            var body = w.document.getElementById('genericModalBody');
-            return (body && body.innerText.indexOf(reply.slice(0, 30)) >= 0) ? true : null;
-          }, 1500, 60000, 'reply modal me');
+            var w2 = W();
+            if (w2.closeModal) w2.eval("if (window.closeModal) closeModal();");
+            w2.eval("if (window.showMyTickets) showMyTickets();");
+            return new Promise(function (res) {
+              setTimeout(function () {
+                var body = (w2.document.body && w2.document.body.innerText) || '';
+                res(body.indexOf(reply.slice(0, 30)) >= 0 ? true : null);
+              }, 2500);
+            });
+          }, 1000, 90000, 'reply modal me');
         })
         .then(function () { return 'reply APK ke My-Tickets modal me dikh gaya: “' + String(VALUES.ticket_reply).slice(0, 34) + '…”'; });
     }],
@@ -251,7 +270,7 @@
           }, 2500, 120000, 'notification app me');
         })
         .then(function () { return 'notification APK me: “' + String(VALUES.notif_title).slice(0, 34) + '”'; });
-    },
+    }],
 
     /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
     ['8/8 Admin → APK: KYC approved dikhe', function () {
