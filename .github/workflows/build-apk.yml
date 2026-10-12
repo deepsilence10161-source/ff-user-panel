@@ -382,8 +382,11 @@ jobs:
           for attempt in $(seq 1 30); do
             FAILS=0
             while read -r p; do
-              CODE=$(curl -sL -o /tmp/img.bin -w "%{http_code}" "$BASE/$p")
-              SIG=$(head -c8 /tmp/img.bin | xxd -p 2>/dev/null || echo none)
+              # ✅ FIX (2026-10-12): curl non-fatal — ek SSL/network hiccup
+              # (curl exit 35) bash -e ke saath poora step gira deta tha aur
+              # 30x retry loop tak baat hi nahi pahunchti thi (run 38213407083).
+              CODE=$(curl -sL -o /tmp/img.bin -w "%{http_code}" "$BASE/$p" 2>/dev/null || echo 000)
+              SIG=$(head -c8 /tmp/img.bin 2>/dev/null | xxd -p 2>/dev/null || echo none)
               if [ "$CODE" != "200" ] || [ "$SIG" != "89504e470d0a1a0a" ]; then
                 FAILS=$((FAILS+1))
                 echo "  MISS(code=$CODE sig=$SIG): $p"
