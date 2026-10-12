@@ -355,68 +355,6 @@ def main():
         step("H7b User Panel web (P2, doosra player) match join", h7b, critical=True)
 
         # ── H7c: admin panel — Joined Players me DONO players ──────────────
-        def h7c():
-            want1 = ST["markers"]["ignTag"]        # P1  (QA-TRI <runid>)
-            want2 = ST["markers"]["ignTag2"]       # P2  (QA-TRI2 <runid>)
-            u1, u2 = ST["player"]["uid"], ST["player2"]["uid"]
-            mid = MATCH["row"]["id"]
-            diag = {}
-
-            admin.evaluate("""() => {
-                try { if (window.showSection) showSection('joinedPlayers'); } catch(e){}
-                try { if (window.loadTournaments) loadTournaments(); } catch(e){}
-            }""")
-            admin.wait_for_timeout(4000)
-
-            def _tbl():
-                try:
-                    admin.evaluate("""() => {
-                        try { const f=document.getElementById('joinedTournamentFilter'); if (f) f.value='all'; } catch(e){}
-                        try { if (window.loadJoinedPlayers) loadJoinedPlayers(); } catch(e){}
-                    }""")
-                    admin.wait_for_timeout(1200)
-                    st = admin.evaluate("""(o) => {
-                        const t = document.getElementById('joinedPlayersTable');
-                        const rows = t ? [...t.querySelectorAll('tr[data-uid]')] : [];
-                        const jr = window.allJoinRequests || {};
-                        const mine = Object.keys(jr).filter(k => (jr[k].tournamentId||jr[k].matchId) === o.mid);
-                        return {
-                          rows: rows.length,
-                          uids: rows.map(r => r.getAttribute('data-uid')),
-                          hasTable: !!t,
-                          sec: window.currentSection || '',
-                          jr_count: Object.keys(jr).length,
-                          tr_count: Object.keys(window.allTournaments||{}).length,
-                          mine_in_jr: mine.length,
-                          mine_status: mine.slice(0,4).map(k => jr[k].status || '?'),
-                          filter: (document.getElementById('joinedTournamentFilter')||{}).value || '',
-                          text: t ? (t.innerText || '').slice(0, 320) : ''
-                        };
-                    }""", {"mid": mid})
-                    diag.clear(); diag.update(st)
-                    if o_ok(st, u1, u2):
-                        return st
-                    if not st.get("jr_count"):
-                        admin.evaluate("() => { try { if (window.loadTournaments) loadTournaments(); } catch(e){} }")
-                except Exception as e:
-                    diag["err"] = str(e)[:150]
-                return None
-
-            def o_ok(st, a, b):
-                return bool(st.get("rows")) and a in st.get("uids", []) and b in st.get("uids", [])
-
-            try:
-                hit = poll(_tbl, timeout=240, every=6, what="admin Joined Players me dono players (data-uid)")
-            except Exception:
-                raise RuntimeError("Joined Players me dono players nahi mile — diag=" +
-                                   json.dumps(diag, ensure_ascii=False)[:420])
-            shot(admin, "h7c-admin-joined-players.png")
-            names = [w for w in (want1, want2) if w in hit.get("text", "")]
-            return (f"admin panel (Joined Players) me dono players ki live row mili "
-                    f"({u1[:8]} + {u2[:8]}, table rows={hit['rows']}, match ki JRs={hit['mine_in_jr']})"
-                    + (f"; IGN marker bhi dikha: {names}" if names else ""))
-
-        step("H7c Admin panel: Joined Players me dono (P1 APK + P2 web)", h7c, critical=True)
 
         # ── H8: user web → Admin — KYC submit (asli modal) ───────────────
         def h8():
@@ -544,7 +482,7 @@ def main():
             fs = poll(lambda: (lambda v: int(v) if v is not None and int(v) >= 2 else None)(
                 user.evaluate("""async (id) => { const {data} = await window._supa.from('matches')
                      .select('filled_slots').eq('id', id).maybeSingle(); return data ? data.filled_slots : null; }""", mid)),
-                timeout=240, every=6, what="match filled_slots >= 2 (dono players)")
+                timeout=330, every=6, what="match filled_slots >= 2 (dono players)")
             mine = poll(lambda: user.evaluate("""async (id) => { const {data} = await window._supa.from('join_requests')
                      .select('id').eq('match_id', id).eq('user_id', window.U.uid); return (data||[]).length ? true : null; }""", mid),
                 timeout=120, every=5, what="P1 ki apni join row")
@@ -557,6 +495,75 @@ def main():
             return f"match #{mid[:8]} filled_slots={fs} (card: {card}) — P1 (web) + P2 (web) dono andar"
 
         step("H11b User web (P1): match me dono players dikhe", h11b, critical=True)
+
+        # ── H11c: admin panel — Joined Players me DONO players ────────────
+        #  ⚠️ Pehle yeh check H7b ke turant baad tha — par P1 (APK) ka join
+        #  us waqt tak hota hi nahi (APK step 9, jo khud host H8/H9 ka
+        #  intezaar karta hai). Isse DONO taraf ka circular wait ban gaya:
+        #  host H7c P1 ke join ka, aur APK step 8/9 host H9 ka. Ab yeh check
+        #  sab ke baad aata hai, aur pehle DB se confirm karta hai ki match me
+        #  sach me 2 players hain (filled_slots = server ka sach).
+        def h11c():
+            mid = MATCH["row"]["id"]
+            u1, u2 = ST["player"]["uid"], ST["player2"]["uid"]
+            fs = poll(lambda: (lambda v: int(v) if v is not None and int(v) >= 2 else None)(
+                admin.evaluate("""async (id) => { const {data} = await window._supa.from('matches')
+                     .select('filled_slots').eq('id', id).maybeSingle(); return data ? data.filled_slots : null; }""", mid)),
+                timeout=300, every=6, what="match filled_slots >= 2 (P1 APK + P2 web)")
+
+            admin.evaluate("""() => {
+                try { if (window.showSection) showSection('joinedPlayers'); } catch(e){}
+                try { if (window.loadTournaments) loadTournaments(); } catch(e){}
+            }""")
+            admin.wait_for_timeout(3000)
+            diag = {}
+
+            def _tbl():
+                try:
+                    admin.evaluate("""() => {
+                        try { const f=document.getElementById('joinedTournamentFilter'); if (f) f.value='all'; } catch(e){}
+                        try { if (window.loadJoinedPlayers) loadJoinedPlayers(); } catch(e){}
+                    }""")
+                    admin.wait_for_timeout(1200)
+                    st = admin.evaluate("""(o) => {
+                        const t = document.getElementById('joinedPlayersTable');
+                        const rows = t ? [...t.querySelectorAll('tr[data-uid]')] : [];
+                        const jr = window.allJoinRequests || {};
+                        const mine = Object.keys(jr).filter(k => (jr[k].tournamentId||jr[k].matchId) === o.mid);
+                        return {
+                          rows: rows.length,
+                          uids: rows.map(r => r.getAttribute('data-uid')),
+                          hasTable: !!t,
+                          sec: window.currentSection || '',
+                          jr_count: Object.keys(jr).length,
+                          mine_in_jr: mine.length,
+                          mine_status: mine.slice(0,4).map(k => jr[k].status || '?'),
+                          filter: (document.getElementById('joinedTournamentFilter')||{}).value || '',
+                          text: t ? (t.innerText || '').slice(0, 320) : ''
+                        };
+                    }""", {"mid": mid})
+                    diag.clear(); diag.update(st)
+                    if st.get("rows") and u1 in st.get("uids", []) and u2 in st.get("uids", []):
+                        return st
+                    if not st.get("mine_in_jr"):
+                        admin.evaluate("() => { try { if (window.loadTournaments) loadTournaments(); } catch(e){} }")
+                except Exception as e:
+                    diag["err"] = str(e)[:150]
+                return None
+
+            try:
+                hit = poll(_tbl, timeout=240, every=6, what="admin Joined Players me dono players (data-uid)")
+            except Exception:
+                raise RuntimeError("Joined Players me dono players nahi mile — diag=" +
+                                   json.dumps(diag, ensure_ascii=False)[:420])
+            shot(admin, "h11c-admin-joined-players.png")
+            p1name = ST["markers"]["ignTag"] in hit.get("text", "")
+            p2name = ST["markers"]["ignTag2"] in hit.get("text", "")
+            return (f"admin panel (Joined Players) me dono ki live row mili "
+                    f"({u1[:8]} + {u2[:8]}, table rows={hit['rows']}, match ki JRs={hit['mine_in_jr']}, filled_slots={fs})"
+                    + f"; IGN: P1={'✔' if p1name else '—'} P2={'✔' if p2name else '—'}")
+
+        step("H11c Admin panel: Joined Players me dono (P1 APK + P2 web)", h11c, critical=True)
 
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
