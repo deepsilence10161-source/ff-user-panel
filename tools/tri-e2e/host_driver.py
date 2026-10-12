@@ -390,7 +390,7 @@ def main():
                           mine_in_jr: mine.length,
                           mine_status: mine.slice(0,4).map(k => jr[k].status || '?'),
                           filter: (document.getElementById('joinedTournamentFilter')||{}).value || '',
-                          text: t ? (t.innerText||'').replace(/[ \n\t]+/g,' ').slice(0,260) : ''
+                          text: t ? (t.innerText || '').slice(0, 320) : ''
                         };
                     }""", {"mid": mid})
                     diag.clear(); diag.update(st)
