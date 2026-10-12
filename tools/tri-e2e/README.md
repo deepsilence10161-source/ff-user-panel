@@ -110,3 +110,41 @@ node tools/tri-e2e/qa-accounts.mjs cleanup --run $RUNID   # अंत में 
    sirf tab jab focus `permissioncontroller` par ho, warna BACK app hi band kar dega.
 4. CI artifact names: `tri-e2e-proof-<runid>` (30 din) — markers, screenshots,
    apk-console.txt, dono taraf ke results + host_out.json.
+
+---
+
+## 🆕 2026-10-12 (dopahar): DOOSRA player + user ↔ user flow
+
+Ab tri-e2e me **teen QA accounts** hain (har run-id se tagged):
+
+| Account | Email | Kaun sa surface |
+|---|---|---|
+| P1 | `qa-tri-<runid>-p@fft.com` | User Panel **APK** + User Panel **web** |
+| P2 | `qa-tri-<runid>-q@fft.com` | User Panel **web** (doosra player) |
+| ADM | `qa-tri-<runid>-a@fft.com` | Admin Panel |
+
+**APK side (10 step):** 1-8 pehle jaise + `9/10` P1 ka asli `doJoin` (fallback:
+wahi `validate_and_join_match` RPC) + `10/10` APK par match me **2 players**
+(P1 + P2) — slot counter `filledSlots >= 2`.
+
+**Host side (H1…H12 + naye):**
+- `H7b` — P2 (web) wahi match join karta hai (pehle asli `doJoin`, warna wahi RPC)
+- `H7c` — **Admin Panel → Joined Players** table me **dono** players dikhte hain
+- `H11b` — P1 (web) ke match me DB me 2 join rows + card par 2 slots
+
+Yani teeno directions ab **do users ke saath**: APK ↔ web ↔ admin, aur
+web(P2) → match → admin(Joined Players) → web(P1).
+
+### ⚠️ Token-sync race (CI me mila, real bug bhi tha)
+`support_tickets` ki RLS policy: `auth.jwt()->>'sub' = user_id`. Firebase login
+ke turant baad Supabase client ko token **async** milta hai
+(`DB.auth.syncFirebaseToken` → `window._supaTokenUid`). Us window me koi bhi
+write RLS se reject hoti hai. CI me exactly yahi hua: login fast ho gaya, ticket
+insert token se pehle chala gaya, DB me kuch nahi aaya aur poora chain (host H2…)
+timeout ho gaya.
+
+- **App fix:** `submitSupport` ab 3 koshish karta hai (1.5s gap) aur fail par
+  asli error dikhata hai.
+- **Harness fix:** step 2 ab `_supaTokenUid === U.uid` ka explicit intezaar
+  karta hai; ticket step 3 koshish tak dobara submit karta hai; host H6 me bhi
+  wahi wait.
