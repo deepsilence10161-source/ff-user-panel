@@ -27,8 +27,11 @@ mkdir -p "$SHOTS" "$LOGS"
 say() { echo -e "\n\033[1;36m== $* ==\033[0m"; }
 fail() { echo -e "\033[1;31mE2E-FAIL: $*\033[0m"; exit 1; }
 
-apk_path=$(ls -1 ./*.apk 2>/dev/null | head -1)
+# ✅ सबसे NAYI apk चुनो (alphabetical head -1 nahi — repo me committed
+# MiniEsports.apk bhi hoti hai; galat file uthne par purana build test hota tha).
+apk_path=$(ls -1t ./*.apk 2>/dev/null | head -1)
 [ -n "${apk_path:-}" ] || fail "koi APK file repo root me nahi mili"
+echo "APK proof: $(ls -la "$apk_path" | awk '{print $5" bytes", $6, $7, $8}') | sha256=$(sha256sum "$apk_path" | cut -c1-16)…"
 
 say "1) Device + boot"
 adb wait-for-device
@@ -49,10 +52,14 @@ adb shell wm density
 
 say "2) APK install ($apk_path)"
 adb install -r -d "$apk_path" || fail "APK install fail"
+# Installed version ka proof (ki wahi APK laga jo humne di)
+adb shell dumpsys package $PKG 2>/dev/null | grep -E "versionName|versionCode" | head -2 | sed 's/^/  installed: /' || true
 # ✅ E2E determinism: notification-permission dialog pehle se grant karo —
 # warna OneSignal ka "Allow notifications?" prompt har cold start par app
 # ke upar modal ban kar baith jata hai (aur screenshots bhi dhundhla karta).
 adb shell pm grant $PKG android.permission.POST_NOTIFICATIONS 2>/dev/null || true
+adb shell pm grant $PKG android.permission.ACCESS_FINE_LOCATION 2>/dev/null || true
+adb shell pm grant $PKG android.permission.READ_CONTACTS 2>/dev/null || true
 
 say "3) App launch (live GitHub Pages UI)"
 adb logcat -c || true

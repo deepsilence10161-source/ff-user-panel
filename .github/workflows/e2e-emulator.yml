@@ -111,10 +111,15 @@ jobs:
 
       - name: APK ko root me laao (script isi path se uthata hai)
         run: |
-          if [ ! -f MiniEsports.apk ]; then
-            cp android/app/build/outputs/apk/debug/app-debug.apk MiniEsports.apk
-          fi
+          # ✅ FIX (2026-10-12): repo me ek purani MiniEsports.apk COMMITTED hai
+          # (get.html ka self-hosted download). Pehle "if [ ! -f ]" tha, isliye
+          # fresh debug APK kabhi copy hi nahi hoti thi aur emulator purani APK
+          # test karta rehta tha (isi wajah se screen-e2e branch wali nayi native
+          # lines wahan maujood hi nahi thi). Ab hamesha overwrite.
+          rm -f MiniEsports.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk MiniEsports.apk
           ls -la MiniEsports.apk
+          sha256sum MiniEsports.apk
 
       # ── KVM (emulator hardware acceleration) ──
       - name: Enable KVM
