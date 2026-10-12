@@ -18,8 +18,12 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261012b"></script>
-<script src="js/features/badge-engine.js?v=20261012b"></script>
+<script src="js/features/asset-catalog.js?v=20261012c"></script>
+<script src="js/features/badge-engine.js?v=20261012c"></script>
+<!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
+     ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
+<script src="features/battle-pass.js?v=20261012c"></script>
+<script src="features/growth.js?v=20261012c"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -82,12 +86,12 @@
              rp: 4900, level: 26, clean: 101, premium: 1,
              top1: 2, top3: 16, top5: 26, top10: 51, soloWins: 26, comebacks: 6 };
 
-  beat('1/10 engine load');
+  beat('1/11 engine load');
   /* ── 1. engine load ── */
   ok(!!window.ASSET_CATALOG, 'asset-catalog load hua', window._assetAll ? window._assetAll().length + ' items' : '');
   ok(!!window.__BADGE_ENGINE, 'badge-engine load hua', window.__BADGE_ENGINE ? 'v' + window.__BADGE_ENGINE.version : '');
 
-  beat('2/10 rank badges');
+  beat('2/11 rank badges');
   /* ── 2. rank badge image (har tier ka) ── */
   var rankCases = [[0,'bronze'],[301,'silver'],[601,'gold'],[1001,'platinum'],[1501,'diamond'],[2001,'legend']];
   var rankOk = rankCases.every(function (c) {
@@ -96,36 +100,36 @@
   });
   ok(rankOk, 'rankBadgeImg — 6/6 tier sahi image', rankCases.map(function (c) { return c[1]; }).join(','));
 
-  beat('3/10 earned badges');
+  beat('3/11 earned badges');
   /* ── 3. kamaye hue badges ── */
   var earned = window.getEarnedBadges(ST);
   ok(earned.length >= 8, 'getEarnedBadges — kamaye badges mile', earned.length + ' badges');
   ok(earned.every(function (b) { return b.img && b.img.indexOf('assets/img/') === 0; }), 'har kamaye badge ki asli image maujood');
 
-  beat('4/10 top badges');
+  beat('4/11 top badges');
   /* ── 4. top badges (share-card ke liye) ── */
   var top = window.getTopBadges(ST, 4);
   ok(top.length === Math.min(4, earned.length), 'getTopBadges — sabse durlabh pehle', top.map(function (t) { return t.name; }).join(' > '));
 
-  beat('5/10 agla inaam');
+  beat('5/11 agla inaam');
   /* ── 5. agla inaam (near-miss) ── */
   var nr = window.getNextReward(ST);
   ok(!!nr && nr.pct > 0 && nr.pct < 100, 'getNextReward — sabse kareeb locked inaam + %', nr ? nr.name + ' ' + nr.have + '/' + nr.need + ' (' + nr.pct + '%)' : 'null');
   ok(!!nr && nr.need > nr.have, 'agla inaam abhi baaki hai (100% se kam)', nr ? 'baaki: ' + (nr.need - nr.have) : '');
 
-  beat('6/10 HOME strip');
+  beat('6/11 HOME strip');
   /* ── 6. HOME strip ── */
   var strip = window.renderNextRewardStrip(ST);
   ok(strip.length > 80 && strip.indexOf('<img') !== -1 && strip.indexOf('%') !== -1, 'HOME strip HTML — image + progress bar', strip.length + ' chars');
 
-  beat('7/10 PROFILE row');
+  beat('7/11 PROFILE row');
   /* ── 7. PROFILE badge row ── */
   var show = window.renderBadgeShowcaseRow(ST);
   ok(show.length > 60 && show.indexOf('<img') !== -1, 'PROFILE badge showcase — images', show.length + ' chars');
   var showEmpty = window.renderBadgeShowcaseRow({});
   ok(showEmpty === '' || showEmpty.indexOf('Pehla badge') !== -1, '0 badge par khali nahi — pehla-badge hint');
 
-  beat('8/10 premium ribbon');
+  beat('8/11 premium ribbon');
   /* ── 8. premium ribbon ── */
   window.getUserPremiumTier = undefined; window.UD = { premium_level: 0 };
   var r0 = window.premiumRibbonHtml(20);
@@ -134,7 +138,7 @@
   var r1 = window.premiumRibbonHtml(20);
   ok(r1.indexOf('premium/ribbon.png') !== -1, 'premium ribbon — premium par sunehra ribbon image');
 
-  beat('9/10 Collection gallery render');
+  beat('9/11 Collection gallery render');
   /* ── 9. ASLI Collection gallery ka render (openModal ko capture karke) ──
      Ye nakli nahi: showAssetGallery() hi chalta hai, bas uska modal
      output pakad lete hain — 60 items + images + UNLOCKED/🔒 dono. */
@@ -149,7 +153,40 @@
     ok(_modal.html.indexOf('UNLOCKED') !== -1 && (_modal.html.indexOf('🔒') !== -1 || _modal.html.indexOf('LOCKED') !== -1), 'unlocked + locked dono states render');
   } catch (e) { ok(false, 'Collection render crash: ' + e.message); }
 
-  beat('10/10 wiring fetch (9 files)');
+  beat('10/11 BP season-title arts (t25/35/40/45/50)');
+  /* ── 10. Season Pass ki 5 asli kalaayein (yojna 2.6) — ASLI files se ──
+     features/battle-pass.js + features/growth.js upar live load hue hain;
+     yahan unke read-only hooks se grid/store ka output check hota hai. */
+  var BP_ART = [[25,'veteran'],[35,'champion'],[40,'immortal'],[45,'death-bringer'],[50,'reaper']];
+  var BP_KEY = {25:'tag_bp_prem_25',35:'emoji_bp_prem_35',40:'tag_bp_prem_40',45:'tag_bp_free_45',50:'tag_bp_prem_50'};
+  ok(!!window.__BP && window.__BP.tiers().length === 50, 'battle-pass TIERS_DATA load — 50 tiers',
+     window.__BP ? String(window.__BP.tiers().length) : 'hook nahi mila');
+  if (window.__BP) {
+    var tdAll = window.__BP.tiers();
+    var artOk = BP_ART.every(function (c) {
+      var td = tdAll[c[0] - 1];
+      var r = (c[0] === 45) ? td.free : td.prem;   /* t45 = FREE track (DB: tag_bp_free_45) */
+      return td && td.t === c[0] && r && r.img === 'assets/img/titles/' + c[1] + '.png';
+    });
+    ok(artOk, 'BP grid — t25/35/40/45/50 par 5/5 asli kala', BP_ART.map(function(c){return 't'+c[0];}).join(','));
+    var lblHtml = window.__BP.label(tdAll[24].prem, 17);
+    ok(lblHtml.indexOf('<img src="assets/img/titles/veteran.png') !== -1, 'tier label HTML me asli <img> (t25 Veteran)');
+    ok(tdAll[24].free.type === 'gd' && tdAll[49].free.type === 'gd', 'GD inaam waisa hi — sirf cosmetic par art laga (koi currency nahi badli)');
+  }
+  ok(!!window.__COSHOP, 'cosmetics store module load (__COSHOP hook)');
+  if (window.__COSHOP) {
+    var bpList = window.__COSHOP.bpList();
+    var storeOk = BP_ART.every(function (c) {
+      var it = bpList.filter(function (x) { return x.id === BP_KEY[c[0]]; })[0];
+      return it && it.img === 'assets/img/titles/' + c[1] + '.png';
+    });
+    ok(storeOk, 'store catalog — 5/5 BP title par asli art', bpList.length + ' items');
+    var cardHtml = window.__COSHOP.iconHtml({ icon: '🎖️', img: 'assets/img/titles/veteran.png' });
+    ok(cardHtml.indexOf('<img src="assets/img/titles/veteran.png') !== -1, 'store card asli kala render karta hai (emoji nahi)');
+    ok(window.__COSHOP.iconHtml({ icon: '🎖️' }) === '🎖️', 'img na ho to purana emoji (fail-safe)');
+  }
+
+  beat('11/11 wiring fetch (11 files)');
   /* ── 10. screens ki wiring (asal files me) — live fetch ── */
   var wired = [
     ['index.html', 'js/features/badge-engine.js'],
@@ -160,6 +197,8 @@
     ['screens/rank.js', 'rankBadgeImg'],
     ['features/player-card.js', 'getTopBadges'],
     ['features/battle-pass.js', '_bpRewardLabel'],
+    ['features/battle-pass.js', 'assets/img/titles/veteran.png'],
+    ['features/growth.js', '_BP_COS_ART'],
     ['js/features/asset-catalog.js', 'premium/ribbon.png']
   ];
   var cache = {};

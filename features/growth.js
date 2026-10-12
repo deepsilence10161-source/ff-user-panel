@@ -543,14 +543,27 @@ function _getCosmetics() {
    server battle_passes.tiers (anon-readable); static fallback = live
    2026_09 season data (same values). */
 var _bpCosCache = null;
+/* R30a (2026-10-12b): yojna-2.6 ki 5 season-title kalaayein (t25/35/40/45/50).
+   Single source = DB battle_passes.tiers (premCos/freeCos.img) — ye map
+   sirf uske liye hai jab DB row me img na ho (purana/stale cache).
+   Tier grid ke TIERS_DATA (features/battle-pass.js) se 100% same art. */
+var _BP_COS_ART = {
+  tag_bp_prem_25:   { img: 'assets/img/titles/veteran.png' },
+  emoji_bp_prem_35: { img: 'assets/img/titles/champion.png' },
+  tag_bp_prem_40:   { img: 'assets/img/titles/immortal.png' },
+  tag_bp_free_45:   { img: 'assets/img/titles/death-bringer.png' },
+  tag_bp_prem_50:   { img: 'assets/img/titles/reaper.png' }
+};
 function _getBpCosmetics() {
   if (_bpCosCache) return _bpCosCache;
   var map = [];
   function pushC(c) {
     if (!c || !c.key) return;
     var typ = c.type === 'theme' ? 'frame' : (c.type === 'badge' || c.type === 'title') ? 'tag' : (c.type === 'emoji' ? 'emoji' : 'tag');
+    var art = _BP_COS_ART[c.key];
     map.push({ id: c.key, name: c.name || c.key, icon: c.icon || '🎫', price: 0,
-      desc: 'Battle Pass Season reward', type: typ, source: 'bp' });
+      desc: 'Battle Pass Season reward', type: typ, source: 'bp',
+      img: c.img || (art && art.img) || '' });
   }
   try {
     if (window._bpSeasonTiers && window._bpSeasonTiers.length) {
@@ -566,19 +579,19 @@ function _getBpCosmetics() {
       { id:'tag_bp_prem_15',   name:'🥈 Silver Fighter',     icon:'🥈', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
       { id:'emoji_bp_prem_18', name:'⚡ Lightning Pack',     icon:'⚡', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
       { id:'frame_bp_prem_23', name:'🟣 Purple Haze Border', icon:'🟣', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
-      { id:'tag_bp_prem_25',   name:'🥇 Gold Champion',      icon:'🥇', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_prem_25',   name:'🎖️ Veteran',           icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/veteran.png' },
       { id:'emoji_bp_prem_28', name:'👑 Crown Pack',         icon:'👑', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
       { id:'frame_bp_prem_33', name:'🟡 Golden Frame',       icon:'🟡', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
-      { id:'emoji_bp_prem_35', name:'🌈 Neon Pack',          icon:'🌈', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'emoji_bp_prem_35', name:'👑 Champion',           icon:'👑', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/champion.png' },
       { id:'frame_bp_prem_38', name:'🌊 Ocean Wave Border',  icon:'🌊', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
-      { id:'tag_bp_prem_40',   name:'💎 Platinum Pro',       icon:'💎', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_prem_40',   name:'⚡ Immortal',           icon:'⚡', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/immortal.png' },
       { id:'emoji_bp_prem_43', name:'🔴 Fire God Pack',      icon:'🔴', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
       { id:'frame_bp_prem_48', name:'🌌 Galaxy Border',      icon:'🌌', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
-      { id:'tag_bp_prem_50',   name:'🏆 Season Legend',      icon:'🏆', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_prem_50',   name:'☠️ Reaper (Season Legend)', icon:'☠️', price:0, desc:'Battle Pass reward', type:'tag', source:'bp', img:'assets/img/titles/reaper.png' },
       { id:'tag_bp_free_5',    name:'🥉 Bronze Warrior',     icon:'🥉', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
       { id:'tag_bp_free_15',   name:'🎖️ Participant',       icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
       { id:'tag_bp_free_30',   name:'💪 Grinder',            icon:'💪', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
-      { id:'tag_bp_free_45',   name:'🎯 Dedicated',          icon:'🎯', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' }
+      { id:'tag_bp_free_45',   name:'💀 Death Bringer',      icon:'💀', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/death-bringer.png' }
     ];
   }
   _bpCosCache = map;
@@ -645,6 +658,18 @@ window.filterCosmetics = function(filter) {
   if (list) list.innerHTML = renderCosmeticCards(filter, (window.UD&&window.UD.cosmetics)||{}, Number((window.UD&&window.UD.skyDiamonds)||0));
 };
 
+/* R30a (2026-10-12b): cosmetic card ka icon — img ho to asli kala
+   (frame_glow + BP season titles), warna purana emoji. Fail-safe: koi
+   bhi error aaye to emoji hi dikhega. */
+function _cosIconHtml(c) {
+  try {
+    var ic = (c && c.icon) || '🎫';
+    if (!c || !c.img) return ic;
+    return '<img src="' + c.img + '?v=20261012c" alt="" loading="lazy" ' +
+      'style="max-width:48px;max-height:32px;object-fit:contain" ' +
+      'onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + ic.replace(/'/g, '') + '\'">';
+  } catch (e) { return (c && c.icon) || '🎫'; }
+}
 function renderCosmeticCards(filter, owned, mySD) {
   var items = _getCosmetics().filter(function(c) {
     if (filter === 'all') return true;
@@ -662,7 +687,7 @@ function renderCosmeticCards(filter, owned, mySD) {
     /* R28 (2026-09-22): khareeda hua item ab LAGAYA BHI JA SAKTA hai —
        "Owned" sirf mark tha, ab Apply/Remove (equip) real hai. */
     h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;text-align:center">';
-    h += '<div style="font-size:28px;margin-bottom:6px">' + c.icon + '</div>';
+    h += '<div style="font-size:28px;margin-bottom:6px;min-height:32px;display:flex;align-items:center;justify-content:center">' + _cosIconHtml(c) + '</div>';
     h += '<div style="font-size:12px;font-weight:800;margin-bottom:3px">' + c.name + '</div>';
     h += '<div style="font-size:10px;color:var(--txt2);margin-bottom:8px">' + c.desc + '</div>';
     if (isOwned) {
@@ -921,5 +946,17 @@ window.sendClanWarChallenge = function(fromId, toId, toName, fromName, btn) {
   /* fallback: agar core module kisi wajah se late ho (defensive only) */
   if (window.toast) toast('Clan war service abhi ready nahi — retry karo', 'err');
 };
+
+/* ── Test hook (2026-10-12b) — E2E ke liye READ-ONLY ──
+   Cosmetics store ke card ka icon HTML (_cosIconHtml) aur BP catalog
+   (_getBpCosmetics) bahar dete hain — emulator me asli store render
+   (5 season-title kalaayein + frame_glow art) LIVE verify hota hai. */
+try {
+  window.__COSHOP = {
+    version: '20261012c',
+    bpList: function () { return _getBpCosmetics(); },
+    iconHtml: function (c) { return _cosIconHtml(c); }
+  };
+} catch (e) {}
 
 })();

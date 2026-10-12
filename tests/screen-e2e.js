@@ -128,6 +128,67 @@ console.log('\n── SCREEN 8: fail-safety (purane screens tootein nahi) ──
   ok(guarded, f + ' — guard ke saath call (function na mile to purana behaviour)');
 });
 
+console.log('\n── SCREEN 9: Season Pass ki 5 asli kalaayein + cosmetics store art ──');
+{
+  /* ASLI files — features/battle-pass.js + features/growth.js, mock nahi */
+  function mkCtx(bpPreset) {
+    const c = {
+      console: { log() {}, warn() {}, error() {} }, Date, Promise, Math, JSON,
+      Object, Array, RegExp, String, Number, Boolean,
+      setTimeout: () => 1, clearTimeout() {}, setInterval: () => 1, clearInterval() {},
+      localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+      document: { getElementById: () => null, querySelector: () => null,
+                  createElement: () => ({ style: {}, appendChild() {} }),
+                  addEventListener() {}, body: { appendChild() {} }, head: { appendChild() {} } },
+      navigator: { userAgent: 'node-e2e' },
+      location: { href: 'https://x/screen-e2e.html', hostname: 'x', pathname: '/screen-e2e.html' },
+      fetch: () => Promise.reject(new Error('no-net')), addEventListener() {},
+    };
+    c.window = c; c.globalThis = c;
+    if (bpPreset) c._bpSeasonTiers = bpPreset;
+    vm.runInNewContext(fs.readFileSync(path.join(REPO, 'features/battle-pass.js'), 'utf8'), c, { filename: 'battle-pass.js' });
+    vm.runInNewContext(fs.readFileSync(path.join(REPO, 'features/growth.js'), 'utf8'), c, { filename: 'growth.js' });
+    return c;
+  }
+  const c = mkCtx();
+  const FIVE = [[25,'veteran'],[35,'champion'],[40,'immortal'],[45,'death-bringer'],[50,'reaper']];
+  const KEY = {25:'tag_bp_prem_25',35:'emoji_bp_prem_35',40:'tag_bp_prem_40',45:'tag_bp_free_45',50:'tag_bp_prem_50'};
+
+  ok(!!c.__BP && c.__BP.tiers().length === 50, 'TIERS_DATA load — 50 tiers');
+  const tdAll = c.__BP ? c.__BP.tiers() : [];
+  ok(FIVE.every(([t, slug]) => {
+      const td = tdAll[t-1], r = (t === 45) ? td.free : td.prem;
+      return td && td.t === t && r && r.img === 'assets/img/titles/' + slug + '.png';
+    }), 'grid: t25/35/40/45/50 par 5/5 asli kala (t45 = free track)');
+  ok(c.__BP && c.__BP.label(tdAll[24].prem, 17).indexOf('<img src="assets/img/titles/veteran.png') !== -1,
+     'tier label HTML me asli <img> (t25 Veteran)');
+  ok(tdAll[24].free.type === 'gd' && tdAll[24].free.v === 15 && tdAll[49].free.v === 20,
+     'GD inaam waisa hi (t25=15, t50=20) — sirf cosmetic par art laga');
+  ok(FIVE.every(([t, slug]) => fs.existsSync(path.join(REPO, 'assets/img/titles/' + slug + '.png'))),
+     'paanchon kala file disk par maujood');
+
+  ok(!!c.__COSHOP, 'cosmetics store module load (__COSHOP)');
+  const list = c.__COSHOP ? c.__COSHOP.bpList() : [];
+  ok(FIVE.every(([t, slug]) => {
+      const it = list.filter((x) => x.id === KEY[t])[0];
+      return it && it.img === 'assets/img/titles/' + slug + '.png';
+    }), 'store catalog — 5/5 BP title par asli art');
+  ok(c.__COSHOP && c.__COSHOP.iconHtml({ icon: '🎖️', img: 'assets/img/titles/veteran.png' })
+       .indexOf('<img src="assets/img/titles/veteran.png') !== -1,
+     'store card asli kala render karta hai');
+  ok(c.__COSHOP && c.__COSHOP.iconHtml({ icon: '🎖️' }) === '🎖️', 'img na ho to purana emoji (fail-safe)');
+  ok(c.__COSHOP && c.__COSHOP.iconHtml({ icon: '✨', img: 'assets/img/frames/glow.png' })
+       .indexOf('<img src="assets/img/frames/glow.png') !== -1,
+     'frame_glow art bhi ab store me dikhta hai (pehle sirf ✨)');
+
+  /* Purana/stale DB row (bina img, purana naam) — art map phir bhi kaam kare */
+  const c2 = mkCtx([{ tier: 25, freeGd: 15, permGd: 0,
+    premCos: { key: 'tag_bp_prem_25', icon: '🥇', name: '🥇 Gold Champion', type: 'badge' } }]);
+  const it25 = c2.__COSHOP.bpList().filter((x) => x.id === 'tag_bp_prem_25')[0];
+  ok(!!it25 && it25.img === 'assets/img/titles/veteran.png',
+     'stale DB row (img ke bina) par bhi art map chalta hai — veteran.png');
+}
+
 console.log('\n══════════════════════════════');
 console.log('SCREEN-E2E PASS: ' + PASS + ' | FAIL: ' + FAIL);
 if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }

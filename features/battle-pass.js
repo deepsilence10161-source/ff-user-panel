@@ -10,7 +10,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261012b" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261012c" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho". Was a
@@ -47,7 +47,7 @@ var TIERS_DATA=[
   {t:22,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
   {t:23,free:{type:'gd',v:10},prem:{type:'theme',v:'🟣 Purple Haze Border',label:'Purple Haze Border'}},
   {t:24,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
-  {t:25,free:{type:'gd',v:15,label:'15 '+GDI(13)},prem:{type:'badge',v:'🥇 Gold Champion',label:'Gold Champion Badge',img:'assets/img/ranks/gold.png'}},
+  {t:25,free:{type:'gd',v:15,label:'15 '+GDI(13)},prem:{type:'title',v:'🎖️ Veteran',label:'Veteran Title',img:'assets/img/titles/veteran.png'}},
   {t:26,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
   {t:27,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
   {t:28,free:{type:'gd',v:12},prem:{type:'emoji',v:'👑 Crown Pack',label:'Crown Emoji Pack',img:'assets/img/icons/crown.png'}},
@@ -57,22 +57,22 @@ var TIERS_DATA=[
   {t:32,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
   {t:33,free:{type:'gd',v:12},prem:{type:'theme',v:'🟡 Golden Frame',label:'Golden Frame Theme'}},
   {t:34,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
-  {t:35,free:{type:'gd',v:15},prem:{type:'emoji',v:'🌈 Neon Pack',label:'Neon Animated Emoji Pack'}},
+  {t:35,free:{type:'gd',v:15},prem:{type:'title',v:'👑 Champion',label:'Champion Title',img:'assets/img/titles/champion.png'}},
   {t:36,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
   {t:37,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
   {t:38,free:{type:'gd',v:15},prem:{type:'theme',v:'🌊 Ocean Wave Border',label:'Ocean Wave Border'}},
   {t:39,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
-  {t:40,free:{type:'gd',v:20,label:'20 '+GDI(13)},prem:{type:'badge',v:'💎 Platinum Pro',label:'Platinum Pro Badge',img:'assets/img/ranks/platinum.png'}},
+  {t:40,free:{type:'gd',v:20,label:'20 '+GDI(13)},prem:{type:'title',v:'⚡ Immortal',label:'Immortal Title',img:'assets/img/titles/immortal.png'}},
   {t:41,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:42,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:43,free:{type:'gd',v:15},prem:{type:'emoji',v:'🔴 Fire God Pack',label:'Fire God Emoji Pack',img:'assets/img/icons/fire.png'}},
   {t:44,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
-  {t:45,free:{type:'badge',v:'🎯 Dedicated',label:'Dedicated Badge'},prem:{type:'gd',v:40,label:'40 '+GDI(13)}},
+  {t:45,free:{type:'title',v:'💀 Death Bringer',label:'Death Bringer Title',img:'assets/img/titles/death-bringer.png'},prem:{type:'gd',v:40,label:'40 '+GDI(13)}},
   {t:46,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:47,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
   {t:48,free:{type:'gd',v:15},prem:{type:'theme',v:'🌌 Galaxy Border',label:'Galaxy Animated Border'}},
   {t:49,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
-  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'🏆 Season Legend',label:'Season Legend Title + 50 '+GDI(13),img:'assets/img/special/season-champion.png'}}
+  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'☠️ Reaper',label:'Reaper Title — Season Legend',img:'assets/img/titles/reaper.png'}}
 ];
 
 /* Get current season ID as text '2026_06'
@@ -170,6 +170,10 @@ window.awardPassXP=function(uid,xp){
 };
 
 /* ── Reward label with REAL ART (2026-10-12, user-attraction) ──
+   2026-10-12b: t25/35/40/45/50 par yojna-2.6 ki 5 asli kalaayein lagi
+   (Veteran/Champion/Immortal/Death Bringer/Reaper) — DB battle_passes.tiers
+   ke premCos/freeCos bhi 100% inhi naam/type/img se sync hain, aur
+   features/growth.js ka _BP_COS_ART map bhi yahi 5 arts store me dikhata hai.
    Ye SIRF DISPLAY hai: server (claim_battle_pass_tier RPC) jo grant karta
    hai wo bilkul nahi badla — bas tier grid me wahi inaam ab asli image
    ke saath dikhta hai jahaan art ka matlab 100% match karta hai
@@ -177,7 +181,7 @@ window.awardPassXP=function(uid,xp){
    img na ho to purana emoji-text jaisa hi chalta hai. */
 function _bpRewardLabel(r, sz) {
   try {
-    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261012b" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
+    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261012c" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
     var lbl = r.label || (r.type === 'gd' ? GDI(11) + ' ' + r.v : (r.v || ''));
     return img + lbl;
   } catch (e) { return (r && (r.label || r.v)) || ''; }
@@ -395,4 +399,18 @@ window.buySeasonPass=function(){
 };
 
 console.log('[Mini eSports] ✅ Battle Pass v1.1 loaded (Bug 65 Fixed: RTDB → Supabase)');
+
+/* ── Test hook (2026-10-12b) — E2E/screen-e2e.html ke liye READ-ONLY ──
+   badge-engine.js ke __BADGE_ENGINE.selftest() wala hi pattern: tier data
+   aur reward-label function bahar dete hain, taaki emulator me asli grid
+   ka output (5 season-title kalaayein) LIVE verify ho sake. Koi app
+   behaviour nahi badalta — sirf padhne ke liye expose. */
+try {
+  window.__BP = {
+    version: '20261012c',
+    tiers: function () { return TIERS_DATA; },
+    label: function (r, sz) { return _bpRewardLabel(r, sz); }
+  };
+  console.log('[Mini eSports] ✅ __BP test-hook ready (' + TIERS_DATA.length + ' tiers)');
+} catch (e) {}
 })();

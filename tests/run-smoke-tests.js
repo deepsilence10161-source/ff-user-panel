@@ -818,6 +818,24 @@ console.log('\n── TEST 22: v5.1 perfection-audit — koi jugad/loose sire na
      '22f: SafeCleaner me delete() sirf safeDelete/allowlist ke andar (calls=' + deleteCalls + ', safeDelete-refs=' + viaSafeDelete + ')');
 }
 
+console.log('\n── TEST 23: BP season-title arts (t25/35/40/45/50) + store img ──');
+{
+  const bp23 = fs.readFileSync(path.join(REPO, 'features/battle-pass.js'), 'utf8');
+  const gr23 = fs.readFileSync(path.join(REPO, 'features/growth.js'), 'utf8');
+  const se23 = fs.readFileSync(path.join(REPO, 'screen-e2e.html'), 'utf8');
+  const FIVE23 = [['t25','veteran'],['t35','champion'],['t40','immortal'],['t45','death-bringer'],['t50','reaper']];
+  ok(FIVE23.every((c) => bp23.indexOf('assets/img/titles/' + c[1] + '.png') !== -1),
+     '23a: battle-pass TIERS_DATA — 5/5 season-title kala grid me');
+  ok(gr23.indexOf('_BP_COS_ART') !== -1 && FIVE23.every((c) => gr23.indexOf('assets/img/titles/' + c[1] + '.png') !== -1),
+     '23b: growth.js _BP_COS_ART — wahi 5 art store catalog ke liye');
+  ok(gr23.indexOf('function _cosIconHtml') !== -1 && gr23.indexOf('_cosIconHtml(c)') !== -1,
+     '23c: store card asli kala render karta hai (emoji fallback ke saath)');
+  ok(se23.indexOf('features/battle-pass.js?v=') !== -1 && se23.indexOf('features/growth.js?v=') !== -1,
+     '23d: screen-e2e.html dono asli files live load karta hai (mock nahi)');
+  ok(FIVE23.every((c) => fs.existsSync(path.join(REPO, 'assets/img/titles/' + c[1] + '.png'))),
+     '23e: paanchon kala file repo me maujood');
+}
+
 console.log('\n══════════════════════════════');
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
   if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
