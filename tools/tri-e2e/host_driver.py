@@ -950,6 +950,143 @@ def main():
 
         step("H11d Doosra player (P2) ko leaderboard par premium ribbon", h11d, critical=True)
 
+        # ── H13 (Phase-3): DUO team — captain (P1) app ke ASLI join UI se
+        #     partner ko invite karta hai, partner (P2) apni notification ke
+        #     ASLI Accept button se consent deta hai, phir captain ka team-join
+        #     server par pass hota hai (join_match_team). Poora raasta asli hai:
+        #     cJoin → partner FF UID validate → doJoin → invite_team_members →
+        #     (P2) respond_team_invite → doJoin → join_match_team.
+        DUO = {}
+
+        def h13():
+            title = ST["markers"]["duoTitle"]
+            # 1) admin: DUO match (mode duo, 2 slots) — wahi bridge jo H4 me
+            res = admin.evaluate(
+                """async (m) => {
+                     const id = (window.rtdb && window.rtdb.ref) ? (await window.rtdb.ref('matches').push(m)).key : null;
+                     if (!id) return { error: 'bridge push fail' };
+                     await new Promise(r => setTimeout(r, 2500));
+                     const { data, error } = await window._supa.from('matches')
+                        .select('id,title,status,mode,max_slots').ilike('title', m.title).limit(1);
+                     return { key: id, row: (data||[])[0] || null, err: error ? error.message : null };
+                   }""",
+                {"title": title, "status": "upcoming", "mode": "duo", "entry_fee": 0, "entry_type": "free",
+                 "max_slots": 2, "map": "Bermuda",
+                 "scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() + 7200)) + ".000Z",
+                 "prize_pool": 0, "data": {"tri": CUR, "duo": True}})
+            if res.get("error") or not res.get("row"):
+                raise RuntimeError("duo match insert/verify fail: " + json.dumps(res)[:200])
+            DUO["row"] = res["row"]; DUO["id"] = res["row"]["id"]
+            shot(admin, "h13-duo-match-created.png")
+
+            # P2 ka FF UID (partner verify isi se hota hai)
+            ff2 = admin.evaluate(
+                """async (uid) => { const {data} = await window._supa.from('users').select('ff_uid').eq('id', uid).maybeSingle();
+                     return data ? data.ff_uid : null; }""", ST["player2"]["uid"])
+            if not ff2:
+                raise RuntimeError("P2 ka ff_uid nahi mila (users row)")
+
+            # 2) P1: ASLI join UI — cJoin → partner UID → doJoin (invite chala jayega)
+            user.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.navTo) navTo('matches'); }")
+            user.wait_for_timeout(3000)
+            user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
+            user.wait_for_timeout(1500)
+            filled = user.evaluate(
+                """(o) => { const a = document.getElementById('partnerUid1'); if (!a) return false;
+                     a.value = o.ff; a.dispatchEvent(new Event('input', { bubbles: true })); return true; }""",
+                {"ff": ff2})
+            if not filled:
+                raise RuntimeError("duo join modal me partner UID input (#partnerUid1) nahi mila")
+            shot(user, "h13-duo-join-modal.png")
+
+            def _partner_ok():
+                try:
+                    return user.evaluate("() => (window.partnerCache && window.partnerCache[1]) ? (window.partnerCache[1].ffUid || 'ok') : null")
+                except Exception:
+                    return None
+
+            poll(_partner_ok, timeout=90, every=4, what="partner FF UID verify (partnerCache[1])")
+            user.evaluate("(id) => { if (window.doJoin) doJoin(id); }", DUO["id"])
+
+            # 3) DB me invitation (captain ke invite ka server-proof)
+            def _invite():
+                return admin.evaluate(
+                    """async (id) => { const {data} = await window._supa.from('team_invitations')
+                         .select('id,member_uid,status,captain_uid').eq('match_id', id).limit(5);
+                         return (data||[])[0] || null; }""", DUO["id"])
+
+            inv = poll(_invite, timeout=120, every=5, what="team_invitations row (captain ka invite)")
+            DUO["invite"] = inv
+            shot(user, "h13-duo-invite-sent.png")
+
+            # 4) P2: apni NOTIFICATION ke asli Accept button se consent
+            p2.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.renderNotifs) renderNotifs(); }")
+            p2.wait_for_timeout(3000)
+
+            def _click_accept():
+                try:
+                    return p2.evaluate(
+                        """(mid) => {
+                             const btns = [...document.querySelectorAll('button')];
+                             const b = btns.find(x => { const oc = x.getAttribute('onclick') || '';
+                                return oc.indexOf('_respondTeamInvite') !== -1 && oc.indexOf(mid) !== -1; });
+                             if (!b) return null;
+                             b.click();
+                             return { clicked: true, label: (b.innerText || '').trim().slice(0, 16) };
+                           }""", DUO["id"])
+                except Exception:
+                    return None
+
+            hit = poll(_click_accept, timeout=150, every=6, what="P2 ki notification par Accept button")
+            shot(p2, "h13-p2-accept-invite.png")
+
+            def _inv_status():
+                return admin.evaluate(
+                    """async (id) => { const {data} = await window._supa.from('team_invitations')
+                         .select('status,member_uid').eq('match_id', id).limit(5);
+                         const rows = data || [];
+                         const acc = rows.filter(r => r.status === 'accepted');
+                         return acc.length ? { accepted: acc.length, status: acc[0].status } : null; }""", DUO["id"])
+
+            acc = poll(_inv_status, timeout=150, every=5, what="team_invitations status=accepted")
+            DUO["accepted"] = acc
+
+            # 5) P1: dobara ASLI join (ab server team authorize karega)
+            user.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.navTo) navTo('matches'); }")
+            user.wait_for_timeout(2000)
+            user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
+            user.wait_for_timeout(1500)
+            user.evaluate(
+                """(o) => { const a = document.getElementById('partnerUid1');
+                     if (a && !(window.partnerCache && window.partnerCache[1])) { a.value = o.ff; a.dispatchEvent(new Event('input', { bubbles: true })); } }""",
+                {"ff": ff2})
+            user.wait_for_timeout(2500)
+            user.evaluate("(id) => { if (window.doJoin) doJoin(id); }", DUO["id"])
+
+            def _team_joined():
+                return admin.evaluate(
+                    """async (o) => {
+                         const { data: jr } = await window._supa.from('join_requests')
+                            .select('user_id,status').eq('match_id', o.mid);
+                         const { data: m } = await window._supa.from('matches')
+                            .select('filled_slots').eq('id', o.mid).maybeSingle();
+                         const rows = jr || [];
+                         const uids = rows.map(r => r.user_id);
+                         return (uids.indexOf(o.u1) !== -1 && uids.indexOf(o.u2) !== -1)
+                            ? { rows: rows.length, statuses: rows.map(r => r.status).join(','),
+                                filled: m ? m.filled_slots : null } : null; }""",
+                    {"mid": DUO["id"], "u1": ST["player"]["uid"], "u2": ST["player2"]["uid"]})
+
+            tj = poll(_team_joined, timeout=240, every=6, what="duo match me dono players (join_match_team)")
+            shot(user, "h13-duo-team-joined.png")
+            VALUES["duo_players"] = str(tj.get("rows") or 2)
+            VALUES["duo_match_id"] = DUO["id"]
+            return (f"duo #{DUO['id'][:8]}: captain (app UI) ne invite bheja (team_invitations row ✔) → "
+                    f"partner ne notification ke Accept se consent diya (status=accepted ✔) → team join server par pass "
+                    f"(join_requests {tj.get('rows')} rows: {tj.get('statuses')}, filled_slots={tj.get('filled')}) ✔")
+
+        step("H13 Phase-3: DUO team — invite → accept → team join (live)", h13, critical=True)
+
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(
@@ -973,6 +1110,10 @@ def main():
                               premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
                               premium_banner: (document.getElementById('premExpiryBanner') ? 'app-banner' : ''),
                               room_id: (String(document.body.innerText||'').indexOf(ROOM['id']) !== -1) ? ROOM['id'] : '',
+                              duo_players: (function () { try {
+                                  const t = Object.values(window.MT || {}).filter(x => (x.name || x.title || '').indexOf('— Duo') !== -1)[0];
+                                  return t ? String(t.filledSlots || t.joinedSlots || '') : '';
+                                } catch (e) { return ''; } })(),
                               cosmetic_ring: (rc && rc[0] && rc[0].cosmetic_key) || '',
                               ring_medal: (document.querySelector('img.pf2-ring-art') ? 'profile-medal' : ''),
                               ign: (window.UD && window.UD.ign) || '' }; }""")

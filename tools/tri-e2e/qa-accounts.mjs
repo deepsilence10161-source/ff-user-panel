@@ -172,6 +172,8 @@ async function create(runid) {
       ticketMarker: `QA-TEST TRI ${runid}`,
       ticketReply: `QA-TEST TRI ${runid} — admin reply (tri-e2e)`,
       matchTitle: `QA-TEST TRI ${runid} — Custom Room`,
+      /* 2026-10-13d (Phase-3): DUO match — team invite + accept ka E2E */
+      duoTitle: `QA-TEST TRI ${runid} — Duo`,
       notifTitle: `QA-TEST TRI ${runid}`,
       notifBody: `Admin se test notification (tri-e2e ${runid})`,
       utr: `TRIRUN${runid}`,

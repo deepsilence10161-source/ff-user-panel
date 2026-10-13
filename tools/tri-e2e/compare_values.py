@@ -16,7 +16,9 @@ KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "n
         # 2026-10-13: 9 avatar-ring cosmetics — web par kharida ring APK par bhi
         "cosmetic_ring", "ring_medal",
         # 2026-10-13 Phase-3: Room ID — creator ne web par set kiya, APK par dikha
-        "room_id"]
+        "room_id",
+        # 2026-10-13d Phase-3: DUO team — web par invite/accept ke baad APK par 2 players
+        "duo_players"]
 
 
 def main():

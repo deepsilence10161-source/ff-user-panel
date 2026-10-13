@@ -122,7 +122,7 @@
        Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
        = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
        apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
-    ['1/14 app iframe + QA player login (asli app auth)', function () {
+    ['1/15 app iframe + QA player login (asli app auth)', function () {
       if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
       return bootApp().then(function () {
         return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
@@ -141,7 +141,7 @@
     }],
 
     /* ── 2/8 : app auto-login + login screen hatna ── */
-    ['2/14 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+    ['2/15 asli app login (onAuthStateChanged → _handleSignIn)', function () {
       return poll(function () {
         try {
           var w = W();
@@ -167,7 +167,7 @@
     }],
 
     /* ── 3/N : APK → Admin (support ticket) ── */
-    ['3/14 APK → Admin: support ticket submit', function () {
+    ['3/15 APK → Admin: support ticket submit', function () {
       var w = W();
       w.eval("if (window.showSupportForm) showSupportForm();");
       return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
@@ -196,7 +196,7 @@
     }],
 
     /* ── 4/N : Admin → APK (ticket reply, asli My-Tickets modal) ── */
-    ['4/14 Admin → APK: ticket reply dikhe (My Tickets)', function () {
+    ['4/15 Admin → APK: ticket reply dikhe (My Tickets)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('support_tickets').select('admin_reply,status')
@@ -224,7 +224,7 @@
     }],
 
     /* ── 5/N : Admin → APK (SD credit, asli wallet UI) ── */
-    ['5/14 Admin → APK: coins credit (wallet UI)', function () {
+    ['5/15 Admin → APK: coins credit (wallet UI)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('users').select('coins,sky_diamonds').eq('id', w.U.uid).maybeSingle()
@@ -246,7 +246,7 @@
     }],
 
     /* ── 6/N : Admin → APK (match) ── */
-    ['6/14 Admin → APK: naya match list me', function () {
+    ['6/15 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('matches').select('title').ilike('title', MARK + '%')
@@ -294,7 +294,7 @@
     }],
 
     /* ── 7/N : Admin → APK (notification) ── */
-    ['7/14 Admin → APK: notification', function () {
+    ['7/15 Admin → APK: notification', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('notifications').select('title,body').eq('user_id', w.U.uid)
@@ -316,7 +316,7 @@
     }],
 
     /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
-    ['8/14 Admin → APK: KYC approved dikhe', function () {
+    ['8/15 Admin → APK: KYC approved dikhe', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('kyc_requests').select('status').eq('user_id', w.U.uid)
@@ -337,7 +337,7 @@
 
   /* ── runner ──────────────────────────────────────────────────────────── */
   /* ── 9/10 : APK (P1) match join — asli doJoin → server RPC ── */
-  STEPS.push(['9/14 APK → match join (asli doJoin)', function () {
+  STEPS.push(['9/15 APK → match join (asli doJoin)', function () {
     var w = W();
     return poll(function () {
       return w._supa.from('matches').select('id,filled_slots').ilike('title', MARK + '%')
@@ -365,7 +365,7 @@
   }]);
 
   /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
-  STEPS.push(['10/14 APK par match me 2 players (P2 web se join)', function () {
+  STEPS.push(['10/15 APK par match me 2 players (P2 web se join)', function () {
     var w = W();
     return poll(function () {
       /* ⚠️ join_requests par RLS hai — P1 doosre player (P2) ki row NAHI dekh
@@ -395,7 +395,7 @@
      Host ne H6b me approve_premium se P1 ko premium diya hai. Ab app me:
        (a) UD me premium aa jaye (realtime ya reload par), aur
        (b) My Matches ke "Playing As" me IGN ke aage ribbon dikhe. */
-  STEPS.push(['11/14 Premium ribbon IGN ke aage (APK)', function () {
+  STEPS.push(['11/15 Premium ribbon IGN ke aage (APK)', function () {
     function _premOf() {
       var w = W();
       var t = 0;
@@ -457,7 +457,7 @@
        (a) UD.premium.expiresAt DB se aaye,
        (b) IGN/UI ke upar fixed banner dikhe + countdown khud chale,
        (c) 12-ghante window ke bahar ho to banner bilkul na dikhe. */
-  STEPS.push(['12/14 Trial/Premium khatam hone ka countdown banner (APK)', function () {
+  STEPS.push(['12/15 Trial/Premium khatam hone ka countdown banner (APK)', function () {
     function _state() {
       try {
         var w = W();
@@ -507,7 +507,7 @@
      Host ne H6d me: admin se SD → user ne store se frame_ring_gold kharida
      → equip kiya. Ek hi account, do surfaces — APK (WebView) par bhi wahi
      equipped ring ka medal art profile par + store tile par dikhna chahiye. */
-  STEPS.push(['13/14 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
+  STEPS.push(['13/15 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
     function _state() {
       try {
         var w = W();
@@ -554,7 +554,7 @@
      P1 ne app ki creator-room UI se room ID save kiya (creator_set_room),
      admin ne release kiya. Ab APK (wahi P1 account) par wahi Room ID dikhna
      chahiye — asli RPC get_room_credentials + asli UI. */
-  STEPS.push(['14/14 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
+  STEPS.push(['14/15 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
     var roomId = 'TRIROOM' + String(RUN).slice(0, 6).toUpperCase();
     function _scan() {
       try {
@@ -587,6 +587,38 @@
       VALUES.room_id = roomId;
       if (!hit) fail('room_id', 'APK ki UI par Room ID nahi mila: ' + roomId);
       return 'APK par Room ID box dikha — "' + roomId + '" (creator ne web par set kiya tha, admin ne release kiya; asli get_room_credentials RPC se)';
+    });
+  }]);
+
+  /* ── 15/15 : Phase-3 DUO team — captain ne (web par) app ke asli join UI se
+     partner invite kiya, partner ne apni notification ke asli Accept se consent
+     diya, phir team join server (join_match_team) par pass hua. APK (wahi
+     captain account) par wahi duo match ab 2 players ke saath dikhna chahiye. ── */
+  STEPS.push(['15/15 Duo team — invite → accept → 2 players (APK)', function () {
+    var duoTitle = 'QA-TEST TRI ' + RUN + ' — Duo';
+    function _check() {
+      try {
+        var w = W();
+        var MT = w.MT || {};
+        var hit = null;
+        Object.keys(MT).forEach(function (k) {
+          var t = MT[k] || {};
+          var nm = String(t.name || t.title || '');
+          if (nm.indexOf(duoTitle) !== -1) {
+            hit = { id: k, filled: Number(t.filledSlots || t.joinedSlots || 0), nm: nm };
+          }
+        });
+        return (hit && hit.filled >= 2) ? hit : null;
+      } catch (e) { return null; }
+    }
+    try { W().eval("if (window.navTo) navTo('matches'); if (window.loadMatches) loadMatches();"); } catch (e) {}
+    return poll(function () {
+      try { W().eval("if (window.loadMatches) loadMatches();"); } catch (e) {}
+      return _check();
+    }, 6000, 240000, 'APK par duo match me 2 players').then(function (hit) {
+      VALUES.duo_title = duoTitle;
+      VALUES.duo_players = String(hit.filled);
+      return 'APK par duo match "' + duoTitle + '" me ' + hit.filled + ' players — captain ka invite + partner ka accept dono server par pass, team join live';
     });
   }]);
 
