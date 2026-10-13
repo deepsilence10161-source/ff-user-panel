@@ -340,6 +340,134 @@
     }
   };
 
+  /* ══ 3.6 लॉगिन-स्ट्रीक (daily check-in) strip — होम पर ══════════════════
+     Master plan 3.6: "Week Warrior (7-दिन लॉगिन) ... होम पर दिखाओ 7/7 दिन".
+     Asli data: users.streak_days (7 का cycle) + daily_checkins (आज की रो).
+     ईमानदारी: streak 0 → "0/7 — आज शुरू करो"; आज की रो मिली → "आज हो गया ✓"
+     (नीचे refreshLoginStreakToday() असली रो से पक्का करता है); D7 पर असली
+     Week Warrior कला (badges/week-warrior.png) — कोई झूठा unlocked badge नहीं. */
+  window.LS_TIERS = function () {
+    try {
+      var t = window._adminDailyBonusRewards;
+      if (t && t.length === 7) return t.slice(0, 7);
+    } catch (e) {}
+    return [5, 7, 10, 12, 15, 20, 30];
+  };
+
+  /* pure function — asli numbers se (test isi ko pakड़ता है) */
+  window.loginStreakNumbers = function (ud, lastCheckinISO) {
+    try {
+      ud = ud || window.UD || {};
+      if (!ud || (!ud.streak_days && !ud.loginStreak && !ud.ign)) return null;
+      var tiers = window.LS_TIERS();
+      var streak = Number(ud.streak_days != null ? ud.streak_days : ud.loginStreak) || 0;
+      var cycleDay = streak > 0 ? (((streak - 1) % 7) + 1) : 0;
+      /* aakhri check-in: bahar se (daily_checkins row) ya UD se — listeners.js
+         users.last_checkin_date ko UD.lastCheckin_date/lastCheckIn me bharta hai */
+      var _last = lastCheckinISO || ud.last_checkin_date || ud.lastCheckin_date || ud.lastCheckIn || '';
+      var doneToday = false;
+      try {
+        if (_last) {
+          var n = new Date();
+          var todayStr = n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
+          if (/^\d{4}-\d{2}-\d{2}$/.test(String(_last))) {
+            doneToday = (String(_last) === todayStr);     /* date-only (DB ka date column) */
+          } else {
+            var d = new Date(_last);
+            doneToday = d.getFullYear() === n.getFullYear() && d.getMonth() === n.getMonth() && d.getDate() === n.getDate();
+          }
+        }
+      } catch (e) { doneToday = false; }
+      /* aaj jis cell par claim karna hai (aaj ho chuka ho to koi nahi).
+         ⚠️ 7 ka CYCLE hai — 7 din poore hone par agli check-in dobara D1
+         (app bhi cycleStreak = ((streak-1)%7)+1 se yahi karta hai; jaise
+         streak 7 → newStreak 8 → cycle D1). */
+      var claimDay = doneToday ? 0 : ((cycleDay % 7) + 1);
+      var days = [];
+      for (var i = 0; i < 7; i++) {
+        days.push({
+          day: i + 1,
+          coins: Number(tiers[i]) || 0,
+          done: (i + 1) <= cycleDay,
+          today: (i + 1) === claimDay,
+          warrior: (i + 1) === 7
+        });
+      }
+      return {
+        streak: streak, cycleDay: cycleDay, doneToday: doneToday, claimDay: claimDay,
+        days: days, tiers: tiers,
+        nextCoins: claimDay ? Number(tiers[claimDay - 1]) || 0 : 0,
+        warriorEarned: cycleDay >= 7,
+        label: cycleDay + '/7 दिन'
+      };
+    } catch (e) { return null; }
+  };
+
+  window.renderLoginStreakStrip = function (ud, lastCheckinISO) {
+    try {
+      var n = window.loginStreakNumbers(ud, lastCheckinISO);
+      if (!n) return '';
+      var h = '';
+      h += '<div id="loginStreakStrip" data-streak="' + n.streak + '" data-cycle="' + n.cycleDay +
+           '" data-done-today="' + (n.doneToday ? '1' : '0') + '" ' +
+           'style="display:flex;align-items:center;gap:10px;padding:10px 12px;margin:0 0 10px;border-radius:14px;' +
+           'background:linear-gradient(135deg,rgba(255,140,0,.12),rgba(255,215,0,.06));border:1px solid rgba(255,140,0,.3)">';
+      h += '<div style="text-align:center;flex-shrink:0;min-width:44px">' +
+           _img(BASE + 'badges/week-warrior.png', 34, 'filter:drop-shadow(0 0 7px rgba(255,140,0,.45));' + (n.warriorEarned ? '' : 'opacity:.45;')) +
+           '<div style="font-size:9px;font-weight:900;color:#ff8c00;margin-top:2px">' + n.label + '</div></div>';
+      h += '<div style="flex:1;min-width:0">';
+      h += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">';
+      n.days.forEach(function (d) {
+        var bg = d.done ? 'rgba(0,255,100,.16)' : (d.today ? 'rgba(255,140,0,.28)' : 'rgba(255,255,255,.05)');
+        var bd = d.done ? 'rgba(0,255,100,.4)' : (d.today ? 'rgba(255,140,0,.65)' : 'rgba(255,255,255,.08)');
+        var fg = d.done ? '#00ff64' : (d.today ? '#ff8c00' : 'rgba(255,255,255,.45)');
+        h += '<div title="दिन ' + d.day + (d.warrior ? ' — Week Warrior' : '') + ': +🪙' + d.coins + '" ' +
+             'style="text-align:center;padding:4px 1px;border-radius:8px;background:' + bg + ';border:1px solid ' + bd + '">' +
+             '<div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:700">D' + d.day + '</div>' +
+             '<div style="font-size:10px;font-weight:900;color:' + fg + '">' + (d.done ? '✓' : '🪙' + d.coins) + '</div></div>';
+      });
+      h += '</div>';
+      h += '<div id="lsToday" style="font-size:11px;font-weight:800;color:' + (n.doneToday ? '#00ff64' : '#ff8c00') + ';margin-top:5px">' +
+           (n.doneToday ? 'आज का check-in हो गया ✓' : (n.cycleDay > 0 ? 'आज check-in karo — +🪙' + n.nextCoins : '7-दिन की streak शुरू करो — दिन 1 पे +🪙' + (n.tiers[0] || 5))) +
+           (n.warriorEarned ? ' · 🔥 Week Warrior!' : '') + '</div>';
+      h += '</div>';
+      if (!n.doneToday) {
+        h += '<button onclick="if(window.doCheckIn){window.doCheckIn();}else if(window.navTo){window.navTo(\'wallet\');}" ' +
+             'style="flex-shrink:0;padding:9px 12px;border-radius:11px;border:none;background:linear-gradient(135deg,#ffaa00,#ff6b00);' +
+             'color:#000;font-weight:900;font-size:11px;cursor:pointer;white-space:nowrap">Check-in ›</button>';
+      }
+      h += '</div>';
+      return h;
+    } catch (e) { return ''; }
+  };
+
+  /* होम render होने के बाद: आज की असली check-in रो देख कर ऊपर की पट्टी को
+     सच के साथ refresh करो (sync HTML me date nahi hoti — isliye ye bahar
+     se आता है). Fail ho to jo dikh रहा है wahi रहता है. */
+  window.refreshLoginStreakToday = function () {
+    try {
+      var el = document.getElementById('loginStreakStrip');
+      if (!el || !window._supa || !window.U || !window.U.uid) return;
+      var today = new Date();
+      var iso = '' + today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+      window._supa.from('daily_checkins').select('checkin_date,streak_day,coins_earned')
+        .eq('user_id', window.U.uid).eq('checkin_date', iso).limit(1)
+        .then(function (r) {
+          var row = r && r.data && r.data[0];
+          var now = document.getElementById('loginStreakStrip');
+          if (!now) return;
+          var lab = document.getElementById('lsToday');
+          if (row) {
+            now.setAttribute('data-done-today', '1');
+            if (lab) { lab.style.color = '#00ff64'; lab.innerHTML = 'आज का check-in हो गया ✓' + (row.coins_earned ? ' (+🪙' + row.coins_earned + ')' : ''); }
+            var btn = now.querySelector('button'); if (btn) btn.remove();
+          } else {
+            now.setAttribute('data-done-today', '0');
+          }
+        }).catch(function () {});
+    } catch (e) {}
+  };
+
   /* ── Premium ribbon (naam ke aage sunehra badge) ──
      premium_level users ke liye; baaki ke liye '' — koi jhoota dava
      nahi. Player-card jaisa "sirf apna premium" rule yahan bhi. */

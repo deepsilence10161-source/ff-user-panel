@@ -147,6 +147,61 @@ ok(gImgs >= 55, 'Collection me rendered images (' + gImgs + ')');
 ok(_modal.html.indexOf('UNLOCKED') !== -1, 'unlocked state dikhta hai');
 ok(_modal.html.indexOf('🔒') !== -1 || _modal.html.indexOf('LOCKED') !== -1, 'locked state bhi dikhta hai');
 
+console.log('\n── SCREEN 13: 3.6 check-in streak strip (asli streak_days + Week Warrior) ──');
+{
+  ok(typeof ctx.loginStreakNumbers === 'function' && typeof ctx.renderLoginStreakStrip === 'function',
+     'loginStreakNumbers + renderLoginStreakStrip maujood (badge-engine)');
+
+  /* nayaa user: 0/7 — aaj shuru karo (jhoota unlocked nahi) */
+  const n0 = ctx.loginStreakNumbers({ ign: 'Newbie', streak_days: 0 });
+  ok(n0 && n0.cycleDay === 0 && n0.label === '0/7 दिन', 'streak 0 → 0/7 (asli)');
+  ok(n0.days.length === 7 && n0.days[0].today === true && n0.days[0].done === false, 'D1 aaj ka claim-able, koi done nahi');
+  ok(n0.days[6].warrior === true && n0.warriorEarned === false, 'D7 = Week Warrior cell, abhi earn nahi hua');
+
+  /* 6-din ke baad: cycle 6, aaj D7 claim karna hai (Week Warrior kala poori) */
+  const n6 = ctx.loginStreakNumbers({ ign: 'Streaky', streak_days: 6 });
+  ok(n6.cycleDay === 6 && n6.claimDay === 7 && n6.label === '6/7 दिन', 'streak 6 → 6/7, aaj D7 ka claim');
+  const h6 = ctx.renderLoginStreakStrip({ ign: 'Streaky', streak_days: 6 });
+  ok(h6.indexOf('loginStreakStrip') !== -1 && h6.indexOf('data-cycle="6"') !== -1, 'strip HTML me data-cycle=6');
+  ok(h6.indexOf('assets/img/badges/week-warrior.png') !== -1, 'strip me ASLI Week Warrior kala (badges/week-warrior.png)');
+  ok(h6.indexOf('Check-in') !== -1, 'aaj check-in pending → button dikhta hai');
+
+  /* cycle rollover: 7 din poore → 8va din D1 par wapas (7 ka cycle) */
+  const n7 = ctx.loginStreakNumbers({ ign: 'Week', streak_days: 7 });
+  ok(n7.cycleDay === 7 && n7.warriorEarned === true && n7.claimDay === 1,
+     'streak 7 → 7/7 (Week Warrior earned) aur aaj ka claim naya cycle D1 (7 ka wrap)');
+  const n8 = ctx.loginStreakNumbers({ ign: 'Week', streak_days: 8 });
+  ok(n8.cycleDay === 1 && n8.label === '1/7 दिन', 'streak 8 → naya cycle D1 (7 ka cycle)');
+
+  /* asli date se: aaj ki check-in row mili → done today (button gayab) */
+  const todayISO = new Date().toISOString();
+  const nd = ctx.loginStreakNumbers({ ign: 'Done', streak_days: 3 }, todayISO);
+  ok(nd.doneToday === true && nd.claimDay === 0, 'aaj ki asli check-in row → done today');
+  const hd = ctx.renderLoginStreakStrip({ ign: 'Done', streak_days: 3 }, todayISO);
+  ok(hd.indexOf('data-done-today="1"') !== -1 && hd.indexOf('<button') === -1, 'done today → koi check-in button nahi');
+  /* UD ke asli field se (listeners.js: users.last_checkin_date) — sync render bhi sach */
+  const _td = (() => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); })();
+  const nu = ctx.loginStreakNumbers({ ign: 'Done', streak_days: 3, last_checkin_date: _td });
+  ok(nu.doneToday === true, 'UD.last_checkin_date = aaj → done today (bina extra query)');
+  const nu2 = ctx.loginStreakNumbers({ ign: 'Done', streak_days: 3, last_checkin_date: '2026-01-02' });
+  ok(nu2.doneToday === false, 'UD.last_checkin_date purani → aaj pending');
+  /* kal ki row → aaj pending hi rahega (jhoota "ho gaya" nahi) */
+  const yISO = new Date(Date.now() - 30 * 3600 * 1000).toISOString();
+  const ny = ctx.loginStreakNumbers({ ign: 'Done', streak_days: 3 }, yISO);
+  ok(ny.doneToday === false, 'kal ki row → aaj pending (jhoota done nahi)');
+
+  /* admin tiers asli setting se (CFG/_adminDailyBonusRewards), warna default */
+  ctx._adminDailyBonusRewards = [10, 20, 30, 40, 50, 60, 100];
+  const na = ctx.loginStreakNumbers({ ign: 'Admin', streak_days: 0 });
+  ok(na.tiers[0] === 10 && na.tiers[6] === 100, 'admin ke tier rewards strip me (jhoota default nahi)');
+  delete ctx._adminDailyBonusRewards;
+  ok(ctx.loginStreakNumbers({ ign: 'X', streak_days: 0 }).tiers[0] === 5, 'admin setting nahi → default tiers [5,7,...]');
+
+  /* login hi nahi → strip nahi (khaali) */
+  ok(ctx.renderLoginStreakStrip({}) === '', 'bina user data → strip nahi (khaali)');
+  ok(ctx.loginStreakNumbers(null) === null, 'login nahi → null (fail-safe)');
+}
+
 console.log('\n── SCREEN 7: WIRING — har screen me call maujood ──');
 const wired = [
   ['index.html', 'js/features/badge-engine.js'],
@@ -178,6 +233,12 @@ const wired = [
   ['js/fixes-v7.js', "data-uid"],
   ['js/fixes-v7.js', "premiumRibbonFor"],
   ['screen-e2e.html', '9d/12'],
+  /* 2026-10-13d (3.6): check-in streak strip — home par mount + refresh hook */
+  ['screens/home.js', 'renderLoginStreakStrip'],
+  ['screens/home.js', 'refreshLoginStreakToday'],
+  ['js/features/badge-engine.js', 'loginStreakNumbers'],
+  ['js/features/badge-engine.js', 'week-warrior.png'],
+  ['screen-e2e.html', 'loginStreakStrip'],
 ];
 wired.forEach(([f, needle]) => {
   const txt = fs.readFileSync(path.join(REPO, f), 'utf8');

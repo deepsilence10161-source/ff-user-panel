@@ -331,6 +331,10 @@ function renderHome() {
      apni position + Top-3 ka near-miss ("2 kills door"). Season ka
      endDate na ho to strip hi nahi aata (jhooti deadline kabhi nahi). */
   if (window.renderSeasonCountdownStrip) { try { topHtml += renderSeasonCountdownStrip(); } catch (e) {} }
+  /* ✅ USER-ATTRACTION (2026-10-13, master plan 3.6): 7-दिन check-in streak
+     strip — asli streak_days + Week Warrior kala; aaj ki check-in ro render ke
+     baad (refreshLoginStreakToday) se pakki hoti hai. Fail-safe: '' */
+  if (window.renderLoginStreakStrip) { try { topHtml += renderLoginStreakStrip(); } catch (e) {} }
   // Recommended widget removed
 
   var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ' + hCF + ' matches ' + hSF + '</p></div>');
@@ -352,6 +356,8 @@ function renderHome() {
        the replace above (which only carried forward whatever HTML was
        already there, not necessarily still accurate) — see fix note above. */
     if (window.renderSponsoredTournaments) window.renderSponsoredTournaments();
+    /* 3.6: streak strip par "aaj check-in ho gaya?" asli row se — DOM lagne ke BAAD */
+    if (window.refreshLoginStreakToday) { try { refreshLoginStreakToday(); } catch (e) {} }
   }
   /* Bug 24/68 Fix: match-timer.js wraps renderHome with debounced timer start.
      Direct call removed — match-timer.js handles this via its renderHome wrapper. */
@@ -509,7 +515,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261013d" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261013e" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

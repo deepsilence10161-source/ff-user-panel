@@ -390,7 +390,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
       h += '<div class="pod-earn" style="color:' + col + ';font-weight:900">' + valLabel + '</div>';
       /* Rank badge under score */
       h += '<div style="font-size:10px;padding:2px 7px;border-radius:10px;background:' + rkBadge.bg + ';color:' + rkBadge.color + ';border:1px solid ' + rkBadge.color + '44;margin:2px 0 4px;display:inline-flex;align-items:center;gap:4px">' +
-           (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rkBadge.pts) + '?v=20261013d" alt="" style="width:15px;height:15px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+           (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rkBadge.pts) + '?v=20261013e" alt="" style="width:15px;height:15px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
            rkBadge.emoji + ' ' + rkBadge.badge + '</div>';
       h += '<div class="pod-pedestal">' + podNums[i] + '</div></div>';
     }
@@ -442,7 +442,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261013d" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261013e" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }

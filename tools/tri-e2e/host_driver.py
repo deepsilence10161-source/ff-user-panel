@@ -1087,6 +1087,72 @@ def main():
 
         step("H13 Phase-3: DUO team — invite → accept → team join (live)", h13, critical=True)
 
+        # ── H14 (3.6): check-in streak — home par ASLI strip (streak_days se),
+        #     aaj ki check-in asli button se, aur DB me daily_checkins row.
+        #     Poora raasta asli: renderLoginStreakStrip → Check-in button →
+        #     doCheckIn → process_daily_checkin RPC → strip "आज हो गया ✓".
+        def h14():
+            user.evaluate("() => { if (window.navTo) navTo('home'); if (window.renderHome) renderHome(); }")
+            user.wait_for_timeout(2500)
+
+            def _strip():
+                return user.evaluate("""() => {
+                    const el = document.getElementById('loginStreakStrip');
+                    if (!el) return null;
+                    return { streak: el.getAttribute('data-streak'), cycle: el.getAttribute('data-cycle'),
+                             done: el.getAttribute('data-done-today'),
+                             warrior: !!el.querySelector('img[src*="badges/week-warrior.png"]'),
+                             btn: !!el.querySelector('button'),
+                             label: (document.getElementById('lsToday')||{}).innerText || '' }; }""")
+
+            st = poll(_strip, timeout=120, every=5, what="home par loginStreakStrip")
+            shot(user, "h14-web-streak-strip.png")
+            if not st.get("warrior"):
+                raise RuntimeError("strip me Week Warrior kala nahi mili: " + json.dumps(st)[:160])
+
+            # aaj ki check-in (agar ho chuki ho to button hi nahi hoga)
+            before = admin.evaluate(
+                """async (uid) => { const {data} = await window._supa.from('users').select('streak_days').eq('id', uid).maybeSingle();
+                     return data ? Number(data.streak_days) || 0 : 0; }""", ST["player"]["uid"])
+
+            if st.get("done") != "1":
+                clicked = user.evaluate("""() => {
+                    const el = document.getElementById('loginStreakStrip');
+                    const b = el ? el.querySelector('button') : null;
+                    if (!b) return false; b.click(); return true; }""")
+                if not clicked:
+                    raise RuntimeError("strip par Check-in button nahi mila (aur aaj check-in bhi nahi hua)")
+                shot(user, "h14-web-checkin-clicked.png")
+
+            def _dbrow():
+                return admin.evaluate(
+                    """async (uid) => {
+                         const {data:ci} = await window._supa.from('daily_checkins')
+                            .select('checkin_date,streak_day,coins_earned').eq('user_id', uid)
+                            .order('created_at', {ascending:false}).limit(1);
+                         const {data:u} = await window._supa.from('users').select('streak_days').eq('id', uid).maybeSingle();
+                         const row = (ci||[])[0];
+                         return row ? { date: row.checkin_date, day: row.streak_day, coins: row.coins_earned,
+                                        streak: u ? Number(u.streak_days)||0 : 0 } : null; }""",
+                    ST["player"]["uid"])
+
+            row = poll(_dbrow, timeout=150, every=5, what="daily_checkins row + users.streak_days")
+
+            def _done_live():
+                return user.evaluate("""() => {
+                    const el = document.getElementById('loginStreakStrip');
+                    return (el && el.getAttribute('data-done-today') === '1' && !el.querySelector('button')) ? true : null; }""")
+
+            poll(_done_live, timeout=90, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
+            shot(user, "h14-web-streak-done.png")
+            VALUES["streak_days"] = str(row.get("streak") or 0)
+            VALUES["streak_strip"] = "home-strip"
+            return (f"home par asli streak strip (Week Warrior kala ✔), check-in asli button se → "
+                    f"daily_checkins row (din {row.get('day')}, +🪙{row.get('coins')}) + users.streak_days "
+                    f"{before}→{row.get('streak')} → strip ne live 'आज हो गया ✓' dikhaya (bina reload)")
+
+        step("H14 3.6: check-in streak strip + asli check-in (home par)", h14)
+
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(
@@ -1110,6 +1176,10 @@ def main():
                               premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
                               premium_banner: (document.getElementById('premExpiryBanner') ? 'app-banner' : ''),
                               room_id: (String(document.body.innerText||'').indexOf(ROOM['id']) !== -1) ? ROOM['id'] : '',
+                              streak_days: (function () { try {
+                                  const el = document.getElementById('loginStreakStrip');
+                                  return el ? String(el.getAttribute('data-streak') || '') : '';
+                                } catch (e) { return ''; } })(),
                               duo_players: (function () { try {
                                   const t = Object.values(window.MT || {}).filter(x => (x.name || x.title || '').indexOf('— Duo') !== -1)[0];
                                   return t ? String(t.filledSlots || t.joinedSlots || '') : '';

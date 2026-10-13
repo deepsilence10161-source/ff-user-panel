@@ -18,24 +18,24 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261013d"></script>
-<script src="js/features/badge-engine.js?v=20261013d"></script>
+<script src="js/features/asset-catalog.js?v=20261013e"></script>
+<script src="js/features/badge-engine.js?v=20261013e"></script>
 <!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
      ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
-<script src="features/battle-pass.js?v=20261013d"></script>
-<script src="features/growth.js?v=20261013d"></script>
+<script src="features/battle-pass.js?v=20261013e"></script>
+<script src="features/growth.js?v=20261013e"></script>
 <!-- 2026-10-12c: Free Trial (aakhri 12 ghante ka countdown + banner) ki ASLI file.
      initTrial() yahan kuch nahi todta: U na hone par chup-chaap wait karta hai. -->
-<script src="features/free-trial.js?v=20261013d"></script>
+<script src="features/free-trial.js?v=20261013e"></script>
 <!-- 2026-10-13: Player Card (share card) ki asli file — title + clan chip ke liye -->
-<script src="features/player-card.js?v=20261013d"></script>
+<script src="features/player-card.js?v=20261013e"></script>
 <!-- 2026-10-13: season countdown strip ki asli file (3.8) -->
-<script src="features/seasonal-league.js?v=20261013d"></script>
+<script src="features/seasonal-league.js?v=20261013e"></script>
 <!-- 2026-10-13d: rank screen ke asli files — leaderboard ka ASLI renderer
      js/fixes-v7.js hi hai (uska renderRank live me jeetta hai), aur calcRk
      screens/rank.js se aata hai. Dono yahan isi liye load hote hain. -->
-<script src="screens/rank.js?v=20261013d"></script>
-<script src="js/fixes-v7.js?v=20261013d"></script>
+<script src="screens/rank.js?v=20261013e"></script>
+<script src="js/fixes-v7.js?v=20261013e"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -346,6 +346,11 @@
               '<div style="font-size:11px;font-weight:800">' + it.name + '</div></div>';
       });
     }
+    /* 🔥 (2026-10-13d, 3.6) 7-din check-in streak strip (asli HTML) */
+    try {
+      var _lh = window.renderLoginStreakStrip ? window.renderLoginStreakStrip({ ign: 'Streaky', streak_days: 6 }) : '';
+      if (_lh) vh += '</div><h3 style="color:#ff8c00;margin:8px 0 5px">7-दिन check-in streak (D7 = Week Warrior kala)</h3><div class="card" style="padding:8px">' + _lh + '</div>';
+    } catch (e) {}
     /* ⏳ (2026-10-13) season countdown + Top-3 near-miss (asli HTML) */
     try {
       var _sv = window.getCurrentSeason, _su = window.U;
@@ -646,6 +651,39 @@
       }
     }, 300);
   });
+
+  /* ── 10/12. 3.6 CHECK-IN STREAK STRIP — asli streak_days + aaj ki asli
+     check-in row (daily_checkins) se "ho gaya" state. ── */
+  beat('10/12 check-in streak strip (3.6 — Week Warrior)');
+  pending++;
+  (function () {
+    var _sU = window.U, _sSupa = window._supa;
+    var _nowISO = new Date().toISOString();
+    var n6 = window.loginStreakNumbers ? window.loginStreakNumbers({ ign: 'Streaky', streak_days: 6 }) : null;
+    ok(!!n6 && n6.cycleDay === 6 && n6.claimDay === 7, 'streak 6 → 6/7, aaj D7 ka claim (asli numbers)');
+    var h = window.renderLoginStreakStrip ? window.renderLoginStreakStrip({ ign: 'Streaky', streak_days: 6 }) : '';
+    ok(h.indexOf('assets/img/badges/week-warrior.png') !== -1, 'strip me ASLI Week Warrior kala (badges/week-warrior.png)');
+    ok(h.indexOf('data-cycle="6"') !== -1 && h.indexOf('Check-in') !== -1, 'strip par cycle + check-in button');
+    /* DOM me lagao, phir aaj ki ASLI row se refresh (asli function) */
+    var _host = document.createElement('div'); _host.id = 'lsHost'; document.body.appendChild(_host);
+    _host.innerHTML = window.renderLoginStreakStrip({ ign: 'Streaky', streak_days: 3 });
+    window.U = { uid: 'ls-uid' };
+    window._supa = { from: function (t) {
+      var api = { select: function () { return api; }, eq: function () { return api; }, limit: function () { return api; }, in: function () { return api; },
+        then: function (cb) { return Promise.resolve({ data: (t === 'daily_checkins') ? [{ checkin_date: _nowISO.slice(0, 10), streak_day: 3, coins_earned: 10 }] : [] }).then(cb); } };
+      return api; } };
+    try { window.refreshLoginStreakToday(); } catch (e) {}
+    setTimeout(function () {
+      var el = document.getElementById('loginStreakStrip');
+      ok(!!el && el.getAttribute('data-done-today') === '1', 'aaj ki ASLI check-in row → "आज हो गया ✓" (button hat gaya)');
+      ok(!!el && !el.querySelector('button'), 'done today par check-in button nahi (dobara claim ka lalach nahi)');
+      var lab = document.getElementById('lsToday');
+      ok(!!lab && lab.innerHTML.indexOf('🪙10') !== -1, 'strip par aaj ka asli reward dikhta hai (+🪙10)');
+      window.U = _sU; window._supa = _sSupa;
+      if (_host.parentNode) _host.parentNode.removeChild(_host);
+      pending--; if (pending === 0) finish();
+    }, 900);
+  })();
 
   function finish(note) {
     if (DONE) return;   /* marker sirf EK baar — watchdog/error race me bhi */

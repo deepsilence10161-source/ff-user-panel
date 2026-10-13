@@ -18,7 +18,9 @@ KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "n
         # 2026-10-13 Phase-3: Room ID — creator ne web par set kiya, APK par dikha
         "room_id",
         # 2026-10-13d Phase-3: DUO team — web par invite/accept ke baad APK par 2 players
-        "duo_players"]
+        "duo_players",
+        # 2026-10-13d 3.6: check-in streak — web par asli check-in ke baad APK par wahi streak
+        "streak_days"]
 
 
 def main():
