@@ -22,7 +22,9 @@ KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "n
         # 2026-10-13d 3.6: check-in streak — web par asli check-in ke baad APK par wahi streak
         "streak_days",
         # 2026-10-13d 3.8/11: Season Champion bada ailaan — web aur APK dono par
-        "champion_banner"]
+        "champion_banner",
+        # 2026-10-13d 3.9: badge unlock push (asli client → notification row)
+        "badge_unlock_push"]
 
 
 def main():

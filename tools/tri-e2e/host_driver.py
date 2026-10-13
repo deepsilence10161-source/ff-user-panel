@@ -1210,6 +1210,53 @@ def main():
 
         step("H15 3.8/11: Season Champion bada ailaan (web banner + kala)", h15)
 
+        # ── H16 (3.9 client): badge unlock push — stats asli users row me
+        #     badhao, home render par asli notifyNewBadges chale, aur EK
+        #     notification row bane (wahi row push trigger karti hai).
+        def h16():
+            uid = ST["player"]["uid"]
+            old = admin.evaluate("""async (uid) => { const {data} = await window._supa.from('users')
+                 .select('total_wins,total_kills,total_matches').eq('id', uid).maybeSingle(); return data || {}; }""", uid)
+            newst = {"w": 600, "k": 600, "m": max(40, int(old.get("total_matches") or 0))}
+            admin.evaluate("""async (a) => { const {error} = await window._supa.from('users')
+                 .update({ total_wins: a.w, total_kills: a.k, total_matches: a.m }).eq('id', a.uid);
+                 return { error: error ? error.message : null }; }""",
+                 {"uid": uid, "w": newst["w"], "k": newst["k"], "m": newst["m"]})
+            # asli client: UD ko sync karo (app bhi yahi karta hai) + home render
+            user.evaluate("""(a) => { if (window.UD) { window.UD.total_wins = a.w; window.UD.total_kills = a.k;
+                 window.UD.total_matches = a.m; } if (window.renderHome) renderHome();
+                 if (window.notifyNewBadges) notifyNewBadges(); }""", newst)
+
+            def _badge_notifs():
+                return admin.evaluate("""async (uid) => {
+                     const {data} = await window._supa.from('notifications')
+                       .select('type,title,ref_id').eq('user_id', uid)
+                       .in('type', ['badge_unlock','badge_near_unlock']).limit(6);
+                     const rows = data || [];
+                     return rows.length ? { n: rows.length, rows: rows.slice(0, 3) } : null; }""", uid)
+
+            hit = poll(_badge_notifs, timeout=150, every=5, what="badge unlock notification row (asli)")
+            shot(user, "h16-web-badge-unlock-notif.png")
+
+            # cleanup — QA notification rows hatao + purane stats wapas
+            admin.evaluate("""async (a) => { await window._supa.from('notifications')
+                 .delete().eq('user_id', a.uid).in('type', ['badge_unlock','badge_near_unlock']); }""", {"uid": uid})
+            admin.evaluate("""async (a) => { await window._supa.from('users')
+                 .update({ total_wins: a.w, total_kills: a.k }).eq('id', a.uid); }""",
+                 {"uid": uid, "w": int(old.get("total_wins") or 0), "k": int(old.get("total_kills") or 0)})
+            user.evaluate("""(a) => { if (window.UD) { window.UD.total_wins = a.w; window.UD.total_kills = a.k; }
+                 if (window.renderHome) renderHome(); }""",
+                 {"w": int(old.get("total_wins") or 0), "k": int(old.get("total_kills") or 0)})
+
+            first = hit["rows"][0] if hit.get("rows") else {}
+            VALUES["badge_unlock_push"] = "ok"
+            return (f"stats asli users row me badhaye (wins/kills 600) → home render par asli "
+                    f"notifyNewBadges chala → {hit.get('n')} notification row bani "
+                    f"({first.get('type')}: {str(first.get('title'))[:40]}) — push wahi trigger karta hai; "
+                    f"cleanup: rows + stats wapas")
+
+        step("H16 3.9: badge unlock push (asli client → notification row)", h16)
+
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(
