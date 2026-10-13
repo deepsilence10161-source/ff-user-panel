@@ -334,6 +334,9 @@ function renderHome() {
   /* ✅ USER-ATTRACTION (2026-10-13, master plan 3.6): 7-दिन check-in streak
      strip — asli streak_days + Week Warrior kala; aaj ki check-in ro render ke
      baad (refreshLoginStreakToday) se pakki hoti hai. Fail-safe: '' */
+  /* 3.8/11: Season Champion ka bada ailaan (3 din) — placeholder jise
+     refreshSeasonChampion() asli row se bhar deta hai */
+  topHtml += '<div id="seasonChampionBanner">' + (window.renderSeasonChampionBanner ? (function () { try { return renderSeasonChampionBanner(); } catch (e) { return ''; } })() : '') + '</div>';
   if (window.renderLoginStreakStrip) { try { topHtml += renderLoginStreakStrip(); } catch (e) {} }
   // Recommended widget removed
 
@@ -360,7 +363,9 @@ function renderHome() {
     if (window.refreshLoginStreakToday) { try { refreshLoginStreakToday();
       /* 3.9: badge unlock / near-unlock push (client wale 2 kism) — asli
          earned list ka diff se, har reward par ek hi baar (badge-engine) */
-      try { if (window.notifyNewBadges) window.notifyNewBadges(); } catch (e) {} } catch (e) {} }
+      try { if (window.notifyNewBadges) window.notifyNewBadges(); } catch (e) {}
+      /* champion banner asli row se (aur UD.season_champion flag — champion kala) */
+      try { if (window.refreshSeasonChampion) window.refreshSeasonChampion(); } catch (e) {} } catch (e) {} }
   }
   /* Bug 24/68 Fix: match-timer.js wraps renderHome with debounced timer start.
      Direct call removed — match-timer.js handles this via its renderHome wrapper. */
@@ -518,7 +523,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261013f" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261013g" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

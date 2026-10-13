@@ -18,24 +18,24 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261013f"></script>
-<script src="js/features/badge-engine.js?v=20261013f"></script>
+<script src="js/features/asset-catalog.js?v=20261013g"></script>
+<script src="js/features/badge-engine.js?v=20261013g"></script>
 <!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
      ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
-<script src="features/battle-pass.js?v=20261013f"></script>
-<script src="features/growth.js?v=20261013f"></script>
+<script src="features/battle-pass.js?v=20261013g"></script>
+<script src="features/growth.js?v=20261013g"></script>
 <!-- 2026-10-12c: Free Trial (aakhri 12 ghante ka countdown + banner) ki ASLI file.
      initTrial() yahan kuch nahi todta: U na hone par chup-chaap wait karta hai. -->
-<script src="features/free-trial.js?v=20261013f"></script>
+<script src="features/free-trial.js?v=20261013g"></script>
 <!-- 2026-10-13: Player Card (share card) ki asli file — title + clan chip ke liye -->
-<script src="features/player-card.js?v=20261013f"></script>
+<script src="features/player-card.js?v=20261013g"></script>
 <!-- 2026-10-13: season countdown strip ki asli file (3.8) -->
-<script src="features/seasonal-league.js?v=20261013f"></script>
+<script src="features/seasonal-league.js?v=20261013g"></script>
 <!-- 2026-10-13d: rank screen ke asli files — leaderboard ka ASLI renderer
      js/fixes-v7.js hi hai (uska renderRank live me jeetta hai), aur calcRk
      screens/rank.js se aata hai. Dono yahan isi liye load hote hain. -->
-<script src="screens/rank.js?v=20261013f"></script>
-<script src="js/fixes-v7.js?v=20261013f"></script>
+<script src="screens/rank.js?v=20261013g"></script>
+<script src="js/fixes-v7.js?v=20261013g"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -683,6 +683,56 @@
       if (_host.parentNode) _host.parentNode.removeChild(_host);
       pending--; if (pending === 0) finish();
     }, 900);
+  })();
+
+  /* ── 9e/12. 3.8/11 SEASON CHAMPION ka bada ailaan — ASLI row se (3 din) ── */
+  beat('9e/12 season champion bada ailaan (asli row se)');
+  pending++;
+  (function () {
+    var _scU = window.U, _scS = window._supa, _scUD = window.UD;
+    var scRow = { month_key: '2026_10', user_id: 'u-champ-page', ign: 'ChampLive', kills: 777, wins: 66,
+                  rank_points: 900, declared_at: new Date().toISOString(),
+                  banner_until: new Date(Date.now() + 26 * 3600 * 1000).toISOString() };
+    try {
+      window.__SS_SET_CHAMPION(scRow);
+      var h = window.renderSeasonChampionBanner();
+      ok(h.indexOf('assets/img/special/season-champion.png') !== -1 && h.indexOf('ChampLive') !== -1 && h.indexOf('777') !== -1,
+         'banner: ASLI champion kala + asli IGN + kills', h.length + ' chars');
+      ok(h.indexOf('data-mine="0"') !== -1, 'doosre ka champion → "tum champion ho" nahi');
+      window.__SS_SET_CHAMPION(Object.assign({}, scRow, { banner_until: new Date(Date.now() - 1000).toISOString() }));
+      ok(window.renderSeasonChampionBanner() === '', '3 din beet gaye → banner gayab (jhoota champion chipka nahi)');
+
+      /* ab refreshSeasonChampion ka asli raasta — _supa ki jagah transport stub */
+      window.UD = window.UD || {};
+      window.U = { uid: 'u-champ-page' };
+      window.__SS_SET_CHAMPION(null);
+      window._supa = { from: function (t) {
+        var api = { select: function () { return api; }, order: function () { return api; }, limit: function () { return api; },
+          eq: function () { return api; }, in: function () { return api; }, gt: function () { return api; }, is: function () { return api; },
+          insert: function () { return api; }, update: function () { return api; },
+          then: function (cb, err) { return Promise.resolve({ data: (t === 'season_champions') ? [scRow] : [] }).then(cb, err); } };
+        return api; } };
+      var host = document.createElement('div');
+      host.innerHTML = '<div id="seasonChampionBanner"></div>';
+      document.body.appendChild(host);
+      window.refreshSeasonChampion();
+      setTimeout(function () {
+        var el = document.getElementById('seasonChampionBanner');
+        ok(!!el && el.innerHTML.indexOf('tum champion ho') !== -1 && el.innerHTML.indexOf('data-mine="1"') !== -1,
+           'refresh ne ASLI row se banner bhar diya (apna champion → "tum champion ho")',
+           el ? String(el.innerHTML).slice(0, 44) : 'NULL');
+        ok(window.UD.season_champion === 1, 'apna champion → UD.season_champion = 1 (kala sach me khuli)');
+        ok(window._assetUnlocked(window.ASSET_CATALOG.special[1], { seasonChampion: window.UD.season_champion }) === true,
+           'Season Champion kala asli flag se unlock');
+        window.U = _scU; window._supa = _scS; window.UD = _scUD;
+        if (host.parentNode) host.parentNode.removeChild(host);
+        pending--; if (pending === 0) finish();
+      }, 700);
+    } catch (e) {
+      ok(false, 'champion beat threw', String(e).slice(0, 70));
+      window.U = _scU; window._supa = _scS; window.UD = _scUD;
+      pending--; if (pending === 0) finish();
+    }
   })();
 
   function finish(note) {

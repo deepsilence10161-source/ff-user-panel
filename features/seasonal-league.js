@@ -181,6 +181,7 @@ function _ssLoad(cb) {
     .then(function (r) {
       _ssRows = (r && r.data) || null;
       _ssAt = Date.now();
+      try { if (typeof _ssSetLbFlags === 'function') _ssSetLbFlags(_ssRows); } catch (e) {}
       cb(_ssRows);
     })
     .catch(function () { cb(null); });
@@ -241,6 +242,149 @@ window.renderSeasonCountdownStrip = function () {
     return h;
   } catch (e) { return ''; }
 };
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.8/11 SEASON CHAMPION KA BADA AILAAN — client taraf (2026-10-13)
+
+   Server: supabase/migrations/20261013_season_champion.sql
+     • season_champions (month_key, user_id, ign, kills, wins, rank_points,
+       declared_at, banner_until) — pg_cron har mahine ki 1 tareekh declare
+       karta hai (pichhla season, leaderboard ka #1, kills metric = wahi jo
+       rank screen aur season strip bolte hain).
+     • champion ko personal push bhi (notifications trigger).
+
+   Yahan: 3 din ka home banner — ASLI row se.
+   IZAT ka niyam:
+     • banner_until beet gaya → banner NAHI (purana "champion" chipka nahi)
+     • row na ho / ign na ho → banner NAHI (jhoota ailaan kabhi nahi)
+     • "tum champion ho" sirf tab jab user_id == apna uid
+   ══════════════════════════════════════════════════════════════════════ */
+var _scRow = null, _scAt = 0, _SC_CACHE_MS = 5 * 60 * 1000;
+
+/* test hook — sirf cache bharta hai (koi mock function nahi) */
+window.__SS_SET_CHAMPION = function (row) { _scRow = row || null; _scAt = Date.now(); };
+
+/* month_key ('YYYY_MM') → wahi label jo app baaki jagah bolti hai
+   (js/rank-system.js: seasonNum = month + (year-2026)*12 + 4) */
+window.ssSeasonLabelFromKey = function (mk) {
+  var m = /^(\d{4})_(\d{2})$/.exec(String(mk || ''));
+  if (!m) return '';
+  var yr = Number(m[1]), mo = Number(m[2]);
+  if (!mo || mo > 12) return '';
+  var n = mo + (yr - 2026) * 12 + 4;
+  if (n < 1) n = 1;
+  return 'Season ' + n + " '" + String(yr).slice(-2);
+};
+
+/* sach me kitna waqt bacha (koi jhooti deadline nahi) */
+window.championBannerNumbers = function (row, myUid, nowMs) {
+  try {
+    if (!row || !row.month_key || !row.ign) return null;
+    var end = row.banner_until ? new Date(row.banner_until).getTime() : 0;
+    var now = Number(nowMs) || Date.now();
+    if (!end || !(end > now)) return null;
+    var left = end - now;
+    return {
+      label: window.ssSeasonLabelFromKey(row.month_key),
+      ign: String(row.ign),
+      kills: Number(row.kills || 0),
+      wins: Number(row.wins || 0),
+      mine: !!(myUid && row.user_id === myUid),
+      hoursLeft: Math.max(1, Math.ceil(left / 3600000))
+    };
+  } catch (e) { return null; }
+};
+
+/* leaderboard rows se apna Top-3 status — asli position se (jhoota nahi) */
+window.ssLbFlags = function (rows, myUid) {
+  var out = { lbTop3: 0 };
+  try {
+    if (!rows || !rows.length || !myUid) return out;
+    var sorted = rows.slice().sort(function (a, b) { return Number(b.total_kills || 0) - Number(a.total_kills || 0); });
+    for (var i = 0; i < sorted.length && i < 3; i++) {
+      if (sorted[i] && sorted[i].id === myUid) { out.lbTop3 = 1; break; }
+    }
+  } catch (e) {}
+  return out;
+};
+
+function _scLoad(cb) {
+  if (!window._supa) { cb(null); return; }
+  if (_scRow && (Date.now() - _scAt) < _SC_CACHE_MS) { cb(_scRow); return; }
+  /* poll (multiple rows) phir JS me latest — .maybeSingle() bina row par bhi
+     kabhi-kabhi error deta hai, aur yahan "row nahi" ek normal haalat hai */
+  var q = window._supa.from('season_champions')
+    .select('month_key,user_id,ign,kills,wins,rank_points,declared_at,banner_until')
+    .order('declared_at', { ascending: false }).limit(3);
+  q.then(function (r) {
+    var rows = (r && r.data) || [];
+    /* sabse lamba chalta hua ailaan (kai champions ho sakte hain) */
+    var best = null;
+    rows.forEach(function (x) {
+      if (!x || !x.banner_until) return;
+      if (!best || new Date(x.banner_until) > new Date(best.banner_until)) best = x;
+    });
+    _scRow = best; _scAt = Date.now();
+    cb(_scRow);
+  }, function () { cb(null); });
+}
+
+/* banner HTML — cache se (sync). Data na ho to '' (placeholder khaali). */
+window.renderSeasonChampionBanner = function () {
+  try {
+    var n = window.championBannerNumbers(_scRow, (window.U && window.U.uid) || '');
+    if (!n) return '';
+    var daysTxt = n.hoursLeft >= 24 ? Math.ceil(n.hoursLeft / 24) + ' din' : n.hoursLeft + ' ghante';
+    var line = n.mine
+      ? '🎉 <b>tum champion ho!</b> Special kala tumhari collection me hai.'
+      : '<b>' + n.ign + '</b> — <b>' + n.kills + '</b> kills se sabse aage 🎯';
+    return '<div id="seasonChampionBanner" data-month="' + _esc(String(_scRow.month_key)) + '" data-champ="' + _esc(String(_scRow.user_id)) + '" data-mine="' + (n.mine ? '1' : '0') + '" ' +
+      'onclick="if(window.renderRank)renderRank();else if(window.navTo)navTo(\'rank\')" ' +
+      'style="display:flex;align-items:center;gap:9px;margin:8px 0;padding:10px 12px;border-radius:14px;cursor:pointer;' +
+      'background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,140,0,.10));border:1px solid rgba(255,215,0,.42)">' +
+      '<img src="assets/img/special/season-champion.png" alt="Season Champion" style="width:34px;height:34px;object-fit:contain;flex-shrink:0">' +
+      '<div style="flex:1;min-width:0">' +
+      '<div style="font-size:12px;font-weight:900;color:#ffd700;letter-spacing:.3px">🏆 ' + _esc(n.label) + ' CHAMPION</div>' +
+      '<div style="font-size:11px;color:#e8e8e8;line-height:1.45">' + line + '</div>' +
+      '<div style="font-size:9px;color:var(--txt2,#9aa);margin-top:2px">Bada ailaan · ' + daysTxt + ' aur</div>' +
+      '</div>' +
+      '<div style="font-size:10px;font-weight:900;color:#ffd700;white-space:nowrap">Rank ›</div></div>';
+  } catch (e) { return ''; }
+};
+
+function _esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+  });
+}
+
+/* home render ke baad: asli row laao, banner bharo + UD flags set karo
+   (champion kala aur leaderboard Top-3 special asli data par hi khulein) */
+window.refreshSeasonChampion = function () {
+  try {
+    _scLoad(function (row) {
+      try {
+        var UD = window.UD || {};
+        UD.season_champion = (row && window.U && row.user_id === window.U.uid) ? 1 : 0;
+        var el = document.getElementById('seasonChampionBanner');
+        var html = window.renderSeasonChampionBanner();
+        if (el) {
+          if (html) el.innerHTML = html;
+          else el.innerHTML = '';
+        }
+      } catch (e) {}
+    });
+  } catch (e) {}
+};
+
+/* leaderboard load hote waqt asli Top-3 flag bhi (sp_top3_champion kala) */
+function _ssSetLbFlags(rows) {
+  try {
+    var f = window.ssLbFlags(rows, (window.U && window.U.uid) || '');
+    var UD = window.UD || {};
+    UD.lb_top3 = f.lbTop3;
+  } catch (e) {}
+}
 
 /* ── Auto-load ── */
 if (document.readyState === 'loading') {

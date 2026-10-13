@@ -236,6 +236,9 @@ const wired = [
   ['js/features/badge-engine.js', 'badge_near_unlock'],
   ['supabase/migrations/20261013_push_alerts_3_9.sql', 'send_season_ending_alerts'],
   ['supabase/migrations/20261013_push_alerts_3_9.sql', 'send_trial_expiry_alerts'],
+  ['screens/home.js', 'refreshSeasonChampion'],
+  ['features/seasonal-league.js', 'seasonChampionBanner'],
+  ['supabase/migrations/20261013_season_champion.sql', 'declare_season_champion'],
   ['js/fixes-v7.js', "data-uid"],
   ['js/fixes-v7.js', "premiumRibbonFor"],
   ['screen-e2e.html', '9d/12'],
@@ -532,6 +535,72 @@ console.log('\n── SCREEN 14: 3.9 client push (badge unlock + near-unlock, jh
 
   /* 6) jo badge mil gaya wo near-list me nahi ("paas hai" ka dobara jhooth nahi) */
   ok(ctx.badgeNearList(st1).every(n => e1.indexOf(n.id) === -1), 'mil chuka reward near-list me nahi');
+}
+
+console.log('\n── SCREEN 15: 3.8/11 Season Champion bada ailaan + specials ka ASLI source ──');
+{
+  function mkCtx2() {
+    const c = {
+      console: { log() {}, warn() {}, error() {} }, Date, Promise, Math, JSON,
+      Object, Array, RegExp, String, Number, Boolean,
+      setTimeout: () => 1, clearTimeout() {}, setInterval: () => 1, clearInterval() {},
+      localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+      document: { getElementById: () => null, querySelector: () => null,
+                  createElement: () => ({ style: {}, appendChild() {} }),
+                  addEventListener() {}, body: { appendChild() {} }, head: { appendChild() {} } },
+      location: { href: 'https://x/screen-e2e.html', hostname: 'x', pathname: '/screen-e2e.html' },
+      navigator: { userAgent: 'node-e2e' }, fetch: () => Promise.reject(new Error('no-net')),
+    };
+    c.window = c; c.globalThis = c;
+    vm.runInNewContext(fs.readFileSync(path.join(REPO, 'features/seasonal-league.js'), 'utf8'), c, { filename: 'seasonal-league.js' });
+    return c;
+  }
+  const c2 = mkCtx2();
+  ok(typeof c2.renderSeasonChampionBanner === 'function' && typeof c2.championBannerNumbers === 'function'
+     && typeof c2.__SS_SET_CHAMPION === 'function' && typeof c2.ssLbFlags === 'function',
+     'champion banner + asli flags maujood (seasonal-league)');
+  ok(c2.ssSeasonLabelFromKey('2026_10') === "Season 14 '26" && c2.ssSeasonLabelFromKey('2026_04') === "Season 8 '26",
+     "month_key label wahi jo app bolti hai (formula ek: seasonNum = month + (yr-2026)*12 + 4)");
+  ok(c2.ssSeasonLabelFromKey('garbage') === '', 'kharab month_key → khaali label (jhoota naam nahi)');
+
+  const fut = new Date(Date.now() + 2 * 864e5).toISOString();
+  const past = new Date(Date.now() - 60000).toISOString();
+  const row = { month_key: '2026_10', user_id: 'u-champ', ign: 'Singham7', kills: 912, wins: 88, declared_at: new Date().toISOString(), banner_until: fut };
+  const n = c2.championBannerNumbers(row, 'someone-else');
+  ok(!!n && n.mine === false && n.kills === 912 && n.hoursLeft > 24 && n.hoursLeft <= 48,
+     'chalta hua ailaan (3 din me se 2 bache) — asli numbers');
+  ok(c2.championBannerNumbers(row, 'u-champ').mine === true, 'apna uid = champion → mine true');
+  ok(c2.championBannerNumbers(Object.assign({}, row, { ign: '' }), 'x') === null, 'ign na ho → koi jhoota ailaan nahi');
+  ok(c2.championBannerNumbers(Object.assign({}, row, { banner_until: past }), 'x') === null,
+     '3 din beet gaye → banner gayab (purana champion chipka nahi)');
+  ok(c2.championBannerNumbers(null, 'x') === null, 'koi champion nahi → banner nahi');
+
+  c2.__SS_SET_CHAMPION(row);
+  const h = c2.renderSeasonChampionBanner();
+  ok(h.indexOf('id="seasonChampionBanner"') !== -1 && h.indexOf('assets/img/special/season-champion.png') !== -1,
+     'banner me ASLI champion kala');
+  ok(h.indexOf('data-month="2026_10"') !== -1 && h.indexOf('data-champ="u-champ"') !== -1 && h.indexOf('data-mine="0"') !== -1,
+     'banner data-attrs (naap-ne layak, jhooth-free)');
+  ok(h.indexOf('912') !== -1 && h.indexOf('Singham7') !== -1 && h.indexOf('Season 14') !== -1 && h.indexOf('CHAMPION') !== -1,
+     'banner me asli kills + IGN + season label');
+  c2.U = { uid: 'u-champ' };
+  ok(c2.renderSeasonChampionBanner().indexOf('tum champion ho') !== -1, 'champion khud dekhe to "tum champion ho"');
+  c2.__SS_SET_CHAMPION(Object.assign({}, row, { banner_until: past }));
+  ok(c2.renderSeasonChampionBanner() === '', 'expire hone par render khaali');
+
+  const rowsLb = [{ id: 'a', total_kills: 100 }, { id: 'b', total_kills: 50 }, { id: 'c', total_kills: 40 }, { id: 'u-me', total_kills: 10 }];
+  ok(c2.ssLbFlags(rowsLb, 'b').lbTop3 === 1 && c2.ssLbFlags(rowsLb, 'u-me').lbTop3 === 0 && c2.ssLbFlags(rowsLb, '').lbTop3 === 0,
+     'lbTop3 flag asli position se (#1-3 haan, warna nahi)');
+
+  /* specials: purane jhoote shortcut band, asli source khula */
+  const spChamp = ctx.ASSET_CATALOG.special.find(x => x.id === 'sp_season_champion');
+  const spTop3 = ctx.ASSET_CATALOG.special.find(x => x.id === 'sp_top3_champion');
+  ok(spChamp.need.stat === 'seasonChampion' && spTop3.need.stat === 'lbTop3',
+     'specials ka need ab asli source (seasonChampion / lbTop3)');
+  ok(ctx._assetUnlocked(spChamp, { seasonChampion: 1 }) === true, 'asli champion → Season Champion kala khuli');
+  ok(ctx._assetUnlocked(spChamp, { top1: 9 }) === false, 'sirf 9 wins se "Season Champion" NAHI (purana jhooth band)');
+  ok(ctx._assetUnlocked(spTop3, { lbTop3: 1 }) === true, 'asli leaderboard Top-3 → Top-3 Champion kala khuli');
+  ok(ctx._assetUnlocked(spTop3, { top3: 99 }) === false, '99 top-3 finishes se "Top-3 Champion" NAHI (purana jhooth band)');
 }
 
 console.log('\n══════════════════════════════');

@@ -1153,6 +1153,63 @@ def main():
 
         step("H14 3.6: check-in streak strip + asli check-in (home par)", h14)
 
+        # ── H15 (3.8/11): Season Champion ka bada ailaan — asli table +
+        #     asli banner (web) + asli kala. Row TRI ke P1 ka (QA), 1 ghante ka
+        #     window; ant me row + UD flag reset (residue 0).
+        #     Server flow (pg_cron 1 tareekh) alag se SQL test me proved hai —
+        #     yahan CLIENT ki asli parat live chalti hai.
+        def h15():
+            mk = admin.evaluate("""() => { const d = new Date();
+                 return d.getFullYear() + '_' + String(d.getMonth() + 1).padStart(2, '0'); }""")
+            champ_ign = "QA Champion " + str(CUR)[-4:]
+            row = admin.evaluate("""async (a) => {
+                 await window._supa.from('season_champions').delete().eq('month_key', a.mk);
+                 const { error } = await window._supa.from('season_champions').insert({
+                   month_key: a.mk, user_id: a.uid, ign: a.ign, kills: 4242, wins: 99, rank_points: 1234,
+                   banner_until: new Date(Date.now() + 3600 * 1000).toISOString() });
+                 if (error) return { error: error.message };
+                 const { data } = await window._supa.from('season_champions').select('month_key,user_id,ign,kills')
+                   .eq('month_key', a.mk).limit(1);
+                 return { row: (data || [])[0] || null };
+               }""", {"mk": mk, "uid": ST["player"]["uid"], "ign": champ_ign})
+            if not row or row.get("error") or not row.get("row"):
+                raise RuntimeError("season_champions row nahi bani: " + json.dumps(row)[:160])
+
+            # web (asli user panel) — banner asli row se, apna champion
+            user.evaluate("() => { if (window.navTo) navTo('home'); if (window.renderHome) renderHome(); }")
+            user.wait_for_timeout(2000)
+            user.evaluate("() => { if (window.refreshSeasonChampion) refreshSeasonChampion(); }")
+
+            def _banner():
+                return user.evaluate("""() => {
+                     const el = document.getElementById('seasonChampionBanner');
+                     if (!el) return null;
+                     const inner = el.querySelector('#seasonChampionBanner') || el;
+                     if (inner.getAttribute('data-mine') !== '1') return null;
+                     const t = (inner.innerText || '');
+                     return { mine: inner.getAttribute('data-mine'), kills: t.indexOf('4242') !== -1,
+                              txt: t.replace(/\n/g, ' ').slice(0, 80),
+                              kala: !!(window._assetUnlocked && window.ASSET_CATALOG &&
+                                       window._assetUnlocked(window.ASSET_CATALOG.special.find(x => x.id === 'sp_season_champion'),
+                                                             window._assetStats ? window._assetStats() : { seasonChampion: 1 })) }; }""")
+
+            b = poll(_banner, timeout=120, every=5, what="web par champion banner (apna)")
+            shot(user, "h15-web-champion-banner.png")
+            if not b.get("kala"):
+                raise RuntimeError("champion banner to aaya par kala unlock nahi: " + json.dumps(b)[:160])
+
+            # cleanup — row hatao + UD flag reset + khaali render
+            admin.evaluate("""async (a) => { await window._supa.from('season_champions').delete().eq('month_key', a.mk); }""", {"mk": mk})
+            user.evaluate("""() => { try { window.__SS_SET_CHAMPION(null); window.UD.season_champion = 0;
+                 var el = document.getElementById('seasonChampionBanner'); if (el) el.innerHTML = ''; } catch (e) {} }""")
+
+            VALUES["champion_banner"] = "ok"
+            VALUES["champion_ign"] = champ_ign
+            return (f"web home par bada ailaan (apna champion → \"tum champion ho\", kills 4242), "
+                    f"Season Champion kala asli flag se unlock — row {mk} cleanup ke baad hataya")
+
+        step("H15 3.8/11: Season Champion bada ailaan (web banner + kala)", h15)
+
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(

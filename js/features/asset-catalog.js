@@ -34,7 +34,9 @@
       streak: st.streak, loginStreak: st.loginStreak, rp: st.rp,
       level: st.level, clean: st.clean,
       top1: st.top1, top3: st.top3, top5: st.top5, top10: st.top10,
-      soloWins: st.soloWins, comebacks: st.comebacks, premium: st.premium
+      soloWins: st.soloWins, comebacks: st.comebacks, premium: st.premium,
+      /* 2026-10-13: special titles ke ASLI source (pehle whitelist me nahi the) */
+      seasonChampion: st.seasonChampion, lbTop3: st.lbTop3
     };
     return Number(map[name] || 0);
   };
@@ -125,8 +127,13 @@
       { id: 'badge_comeback_king', name: 'Comeback King', img: BASE + 'badges/comeback-king.png', desc: '5+ comeback wins', need: { stat: 'comebacks', need: 5 } }
     ],
     special: [
-      { id: 'sp_top3_champion', name: 'Top-3 Champion', img: BASE + 'special/top3-champion.png', desc: 'Leaderboard Top-3 special badge (assignTop3Badges)', need: { stat: 'top3', need: 1 } },
-      { id: 'sp_season_champion', name: 'Season Champion', img: BASE + 'special/season-champion.png', desc: 'Season League winner (seasonal_league_history)', need: { stat: 'top1', need: 1 } },
+      /* ✅ 2026-10-13 (IZAT): pehle sp_top3_champion sirf "top3:1" par khul jata
+         tha (ek top-3 finish = "Top-3 Champion" special!) aur sp_season_champion
+         sirf "top1:1" par (ek win = "Season Champion"!). Ab dono ASLI source se:
+         leaderboard par apni asli #1-3 position (lbTop3) aur season_champions
+         ka asli champion (seasonChampion). */
+      { id: 'sp_top3_champion', name: 'Top-3 Champion', img: BASE + 'special/top3-champion.png', desc: 'Leaderboard par Top-3 (asli position)', need: { stat: 'lbTop3', need: 1 } },
+      { id: 'sp_season_champion', name: 'Season Champion', img: BASE + 'special/season-champion.png', desc: 'Monthly Season ka #1 (season_champions)', need: { stat: 'seasonChampion', need: 1 } },
       { id: 'sp_clan_war_champion', name: 'Clan War Champion', img: BASE + 'special/clan-war-champion.png', desc: 'Clan War winner badge', need: null }
     ],
     cosmetic: [
@@ -160,6 +167,11 @@
       loginStreak: Number(ud.streak_days || 0), rp: Number(ud.rank_points || ud.rankPoints || 0),
       level: Number(ud.level || 0), clean: Number(ud.clean_matches || 0),
       premium: Number(ud.premium_level || 0),
+      /* special titles ke ASLI source (jhoota title nahi):
+         seasonChampion → season_champions ka #1 (server declare karta hai)
+         lbTop3 → leaderboard fetch se apni asli position (features/seasonal-league.js) */
+      seasonChampion: Number(ud.season_champion || 0),
+      lbTop3: Number(ud.lb_top3 || 0),
       top1: 0, top3: 0, top5: 0, top10: 0, soloWins: 0, comebacks: 0
     };
     if (window._assetStatsCached) {

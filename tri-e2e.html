@@ -122,7 +122,7 @@
        Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
        = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
        apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
-    ['1/16 app iframe + QA player login (asli app auth)', function () {
+    ['1/17 app iframe + QA player login (asli app auth)', function () {
       if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
       return bootApp().then(function () {
         return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
@@ -141,7 +141,7 @@
     }],
 
     /* ── 2/8 : app auto-login + login screen hatna ── */
-    ['2/16 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+    ['2/17 asli app login (onAuthStateChanged → _handleSignIn)', function () {
       return poll(function () {
         try {
           var w = W();
@@ -167,7 +167,7 @@
     }],
 
     /* ── 3/N : APK → Admin (support ticket) ── */
-    ['3/16 APK → Admin: support ticket submit', function () {
+    ['3/17 APK → Admin: support ticket submit', function () {
       var w = W();
       w.eval("if (window.showSupportForm) showSupportForm();");
       return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
@@ -196,7 +196,7 @@
     }],
 
     /* ── 4/N : Admin → APK (ticket reply, asli My-Tickets modal) ── */
-    ['4/16 Admin → APK: ticket reply dikhe (My Tickets)', function () {
+    ['4/17 Admin → APK: ticket reply dikhe (My Tickets)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('support_tickets').select('admin_reply,status')
@@ -224,7 +224,7 @@
     }],
 
     /* ── 5/N : Admin → APK (SD credit, asli wallet UI) ── */
-    ['5/16 Admin → APK: coins credit (wallet UI)', function () {
+    ['5/17 Admin → APK: coins credit (wallet UI)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('users').select('coins,sky_diamonds').eq('id', w.U.uid).maybeSingle()
@@ -246,7 +246,7 @@
     }],
 
     /* ── 6/N : Admin → APK (match) ── */
-    ['6/16 Admin → APK: naya match list me', function () {
+    ['6/17 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('matches').select('title').ilike('title', MARK + '%')
@@ -294,7 +294,7 @@
     }],
 
     /* ── 7/N : Admin → APK (notification) ── */
-    ['7/16 Admin → APK: notification', function () {
+    ['7/17 Admin → APK: notification', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('notifications').select('title,body').eq('user_id', w.U.uid)
@@ -316,7 +316,7 @@
     }],
 
     /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
-    ['8/16 Admin → APK: KYC approved dikhe', function () {
+    ['8/17 Admin → APK: KYC approved dikhe', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('kyc_requests').select('status').eq('user_id', w.U.uid)
@@ -337,7 +337,7 @@
 
   /* ── runner ──────────────────────────────────────────────────────────── */
   /* ── 9/10 : APK (P1) match join — asli doJoin → server RPC ── */
-  STEPS.push(['9/16 APK → match join (asli doJoin)', function () {
+  STEPS.push(['9/17 APK → match join (asli doJoin)', function () {
     var w = W();
     return poll(function () {
       return w._supa.from('matches').select('id,filled_slots').ilike('title', MARK + '%')
@@ -365,7 +365,7 @@
   }]);
 
   /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
-  STEPS.push(['10/16 APK par match me 2 players (P2 web se join)', function () {
+  STEPS.push(['10/17 APK par match me 2 players (P2 web se join)', function () {
     var w = W();
     return poll(function () {
       /* ⚠️ join_requests par RLS hai — P1 doosre player (P2) ki row NAHI dekh
@@ -395,7 +395,7 @@
      Host ne H6b me approve_premium se P1 ko premium diya hai. Ab app me:
        (a) UD me premium aa jaye (realtime ya reload par), aur
        (b) My Matches ke "Playing As" me IGN ke aage ribbon dikhe. */
-  STEPS.push(['11/16 Premium ribbon IGN ke aage (APK)', function () {
+  STEPS.push(['11/17 Premium ribbon IGN ke aage (APK)', function () {
     function _premOf() {
       var w = W();
       var t = 0;
@@ -457,7 +457,7 @@
        (a) UD.premium.expiresAt DB se aaye,
        (b) IGN/UI ke upar fixed banner dikhe + countdown khud chale,
        (c) 12-ghante window ke bahar ho to banner bilkul na dikhe. */
-  STEPS.push(['12/16 Trial/Premium khatam hone ka countdown banner (APK)', function () {
+  STEPS.push(['12/17 Trial/Premium khatam hone ka countdown banner (APK)', function () {
     function _state() {
       try {
         var w = W();
@@ -507,7 +507,7 @@
      Host ne H6d me: admin se SD → user ne store se frame_ring_gold kharida
      → equip kiya. Ek hi account, do surfaces — APK (WebView) par bhi wahi
      equipped ring ka medal art profile par + store tile par dikhna chahiye. */
-  STEPS.push(['13/16 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
+  STEPS.push(['13/17 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
     function _state() {
       try {
         var w = W();
@@ -554,7 +554,7 @@
      P1 ne app ki creator-room UI se room ID save kiya (creator_set_room),
      admin ne release kiya. Ab APK (wahi P1 account) par wahi Room ID dikhna
      chahiye — asli RPC get_room_credentials + asli UI. */
-  STEPS.push(['14/16 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
+  STEPS.push(['14/17 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
     var roomId = 'TRIROOM' + String(RUN).slice(0, 6).toUpperCase();
     function _scan() {
       try {
@@ -594,7 +594,7 @@
      partner invite kiya, partner ne apni notification ke asli Accept se consent
      diya, phir team join server (join_match_team) par pass hua. APK (wahi
      captain account) par wahi duo match ab 2 players ke saath dikhna chahiye. ── */
-  STEPS.push(['15/16 Duo team — invite → accept → 2 players (APK)', function () {
+  STEPS.push(['15/17 Duo team — invite → accept → 2 players (APK)', function () {
     var duoTitle = 'QA-TEST TRI ' + RUN + ' — Duo';
     function _check() {
       try {
@@ -624,7 +624,7 @@
 
   /* ── 16/16 : 3.6 check-in streak — web par (captain account) asli check-in hui,
      ab APK par wahi streak strip (asli users.streak_days se) dikhna chahiye. ── */
-  STEPS.push(['16/16 Check-in streak strip (APK par wahi streak)', function () {
+  STEPS.push(['16/17 Check-in streak strip (APK par wahi streak)', function () {
     function _strip() {
       try {
         var w = W();
@@ -649,6 +649,35 @@
       VALUES.streak_days = String(s.streak);
       VALUES.streak_strip = 'home-strip';
       return 'APK home par check-in streak strip — ' + s.streak + '/7 din (Week Warrior kala ✔) · ' + s.txt;
+    });
+  }]);
+
+  /* ── 17/17 : 3.8/11 Season Champion ka bada ailaan — host driver ne asli
+     season_champions row daali hogi (P1 ka), APK home par wahi 3-din wala
+     banner + asli kala dikhni chahiye (client dono surfaces par ek jaisa). ── */
+  STEPS.push(['17/17 Season Champion bada ailaan (APK par)', function () {
+    function _champ() {
+      try {
+        var w = W(), el = w.document.getElementById('seasonChampionBanner');
+        var inner = el && el.querySelector ? (el.querySelector('#seasonChampionBanner') || el) : el;
+        if (!inner || inner.getAttribute('data-mine') !== '1') return null;
+        var t = (inner.innerText || '');
+        return {
+          mine: inner.getAttribute('data-mine'),
+          txt: t.replace(/\n/g, ' ').slice(0, 70),
+          kala: !!(w.ASSET_CATALOG && w._assetUnlocked && w._assetStats &&
+                   w._assetUnlocked(w.ASSET_CATALOG.special.find(function (x) { return x.id === 'sp_season_champion'; }), w._assetStats()))
+        };
+      } catch (e) { return null; }
+    }
+    try { W().eval("if (window.navTo) navTo('home'); if (window.renderHome) renderHome();"); } catch (e) {}
+    return poll(function () {
+      try { W().eval("if (window.renderHome) renderHome(); if (window.refreshSeasonChampion) refreshSeasonChampion();"); } catch (e) {}
+      return _champ();
+    }, 6000, 300000, 'APK home par champion banner (apna)').then(function (b) {
+      if (!b.kala) fail('champion_kala', 'APK par Season Champion kala unlock nahi hui');
+      VALUES.champion_banner = 'ok';
+      return 'APK home par bada ailaan — "' + b.txt + '" (Season Champion kala ✔)';
     });
   }]);
 
