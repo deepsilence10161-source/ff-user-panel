@@ -258,6 +258,38 @@ def main():
 
         step("H6 User Panel web login (QA player)", h6, critical=True)
 
+        # ── H6b: Admin → user: PREMIUM grant (approve_premium RPC) ─────────
+        #  Asli admin RPC (wahi jo premium request approve karne par chalta
+        #  hai). Iske baad: (a) users row par premium_level, (b) leaderboard
+        #  row par bhi (naya trigger) — yani DOOSRE players ko ribbon dikhega.
+        PREMIUM = {}
+
+        def h6b():
+            res = admin.evaluate("""async (o) => {
+                const { data, error } = await window._supa.rpc('approve_premium',
+                  { p_uid: o.uid, p_tier: 1, p_days: 30, p_grant_bp: false });
+                return { data, err: error ? error.message : null }; }""",
+                {"uid": ST["player"]["uid"]})
+            if res.get("err") or not (res.get("data") or {}).get("success"):
+                raise RuntimeError("approve_premium fail: " + json.dumps(res)[:200])
+            PREMIUM["rpc"] = res["data"]
+
+            def _row():
+                return admin.evaluate("""async (o) => {
+                    const { data: u } = await window._supa.from('users')
+                      .select('premium_level,premium_expires').eq('id', o.uid).maybeSingle();
+                    const { data: l } = await window._supa.from('leaderboard')
+                      .select('premium_level,premium_expires').eq('id', o.uid).maybeSingle();
+                    if (u && Number(u.premium_level) > 0 && l && Number(l.premium_level) > 0) return { u, l };
+                    return null; }""", {"uid": ST["player"]["uid"]})
+
+            row = poll(_row, timeout=90, every=4, what="premium users + leaderboard row")
+            shot(admin, "h6b-admin-premium-granted.png")
+            return (f"admin ne premium diya (tier 1, 30 din, RPC={json.dumps(PREMIUM['rpc'])[:60]}) — "
+                    f"users.premium_level={row['u']['premium_level']}, leaderboard.premium_level={row['l']['premium_level']} (doosron ko dikhega)")
+
+        step("H6b Admin → user: premium grant (approve_premium)", h6b, critical=True)
+
         # ── H7: user web ko admin ka data dikhta hai ──────────────────────
         def h7():
             seen = {}
@@ -567,6 +599,46 @@ def main():
 
         step("H11c Admin panel: Joined Players me dono (P1 APK + P2 web)", h11c, critical=True)
 
+        # ── H11d: P2 (DOOSRA player) ke leaderboard par P1 ke naam ke aage ──
+        #  ribbon — yehi "premium dikhta hai" ka asli saboot hai (social proof):
+        #  doosre user ki screen par, public leaderboard row se.
+        def h11d():
+            u1 = ST["player"]["uid"]
+            p2.evaluate("() => { if (window.navTo) navTo('rank'); else if (window.showScreen) showScreen('rank'); }")
+            p2.wait_for_timeout(2500)
+
+            ign1 = ST["markers"]["ignTag"]        # 'QA-TRI <runid>'
+            ign2 = ST["markers"]["ignTag2"]       # 'QA-TRI2 <runid>' (P2 khud — uski row se match nahi karna)
+
+            def _check():
+                try:
+                    return p2.evaluate("""(o) => {
+                        const rows = [...document.querySelectorAll('.rank-row, [data-uid], tr')];
+                        let rib = null, rowTxt = null, rowUid = null;
+                        for (const r of rows) {
+                          const t = (r.innerText || '');
+                          const byUid = (r.getAttribute('data-uid') || '') === o.uid;
+                          const byIgn = o.ign && t.toUpperCase().indexOf(o.ign.toUpperCase()) !== -1 && t.toUpperCase().indexOf(o.ign2.toUpperCase()) === -1;
+                          if (byUid || byIgn) {
+                            rib = r.querySelector('.prem-ribbon');
+                            rowTxt = t.slice(0, 90); rowUid = r.getAttribute('data-uid') || '(ign-match)';
+                            break;
+                          }
+                        }
+                        return rib ? { ok: true, tier: rib.getAttribute('data-premium-tier'), rowTxt, rowUid } : null;
+                    }""", {"uid": u1, "ign": ign1, "ign2": ign2})
+                except Exception:
+                    return None
+
+            hit = poll(_check, timeout=240, every=6, what="P2 ke leaderboard par P1 ke aage premium ribbon")
+            shot(p2, "h11d-p2-leaderboard-ribbon.png")
+            VALUES["premium_level"] = str(hit.get("tier") or "1")
+            VALUES["premium_ribbon"] = "leaderboard-row"
+            return (f"P2 (doosra player) ke leaderboard me P1 ke IGN ke aage premium ribbon dikha "
+                    f"(tier={hit.get('tier')}, row [{hit.get('rowUid')}]='{str(hit.get('rowTxt'))[:44]}')")
+
+        step("H11d Doosra player (P2) ko leaderboard par premium ribbon", h11d, critical=True)
+
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(
@@ -576,6 +648,7 @@ def main():
                      const {data:t} = await window._supa.from('support_tickets').select('admin_reply,status').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
                      const {data:m} = await window._supa.from('matches').select('title').ilike('title','QA-TEST TRI%').order('created_at',{ascending:false}).limit(1);
                      const {data:n} = await window._supa.from('notifications').select('title').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
+                     const {data:pr} = await window._supa.from('users').select('premium_level').eq('id', window.U.uid).maybeSingle();
                      const {data:jr} = await window._supa.from('join_requests').select('user_id')
                         .in('match_id', (m||[]).map(x=>x.id).length ? (m||[]).map(x=>x.id) : ['00000000-0000-0000-0000-000000000000']);
                      return { coins: u && String(u.coins), sky_diamonds: u && String(u.sky_diamonds),
@@ -583,6 +656,8 @@ def main():
                               ticket_reply: t && t[0] && t[0].admin_reply, ticket_status: t && t[0] && t[0].status,
                               match_title: m && m[0] && m[0].title, notif_title: n && n[0] && n[0].title,
                               joined_players: String((jr || []).length),
+                              premium_level: (pr && String(pr.premium_level)) || '',
+                              premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
                               ign: (window.UD && window.UD.ign) || '' }; }""")
             VALUES.update({k2: v2 for k2, v2 in v.items() if v2 is not None})
             shot(user, "h12-final-values.png")

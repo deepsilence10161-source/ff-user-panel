@@ -100,8 +100,17 @@ function cleanupSql(runid) {
     `delete from sd_requests where upi_ref = '${utr}' or user_id in (select id from users where ign like '${ign}') or notes like '${tag}'`,
     `delete from support_tickets where subject like '${tag}' or message like '${tag}' or user_id in (select id from users where ign like '${ign}')`,
     `delete from matches where title like '${tag}'`,
-    `delete from user_cosmetics where user_id in (select id from users where ign like '${tag}')`,
-    `delete from wallet_transactions where user_id in (select id from users where ign like '${tag}')`,
+    /* ⚠️ 2026-10-12: yahan pehle '${tag}' tha (jo QA-TEST TRI wala pattern hai) —
+       QA users ke cosmetics rows is wajah se delete hi nahi hote the. Ab wahi
+       ign pattern jo baaki sab jagah hai. */
+    `delete from user_cosmetics where user_id in (select id from users where ign like '${ign}')`,
+    `delete from wallet_transactions where user_id in (select id from users where ign like '${ign}')`,
+    /* premium grant (approve_premium) se bane rows — warna QA ka BP premium
+       leaderboard/progress me pada reh jata tha */
+    `delete from battle_pass_progress where user_id in (select id from users where ign like '${ign}')`,
+    /* ✅ leaderboard ek ALAG table hai (users delete se apne aap nahi hatta) —
+       isliye users se PEHLE iski row hatao, warna orphan row padi reh jati. */
+    `delete from leaderboard where id in (select id from users where ign like '${ign}')`,
     /* 2. users + admins rows */
     `delete from admins where email like '${emailLike}'`,
     `delete from users where ign like '${ign}'`,
@@ -178,12 +187,15 @@ async function create(runid) {
      player pehchanna zaroori hai — warna sab "Player" dikhte hain.
      (users_ign_length_check ≤20 — marker 15 chars ka hai.) */
   log('Supabase: QA players ki users row (marker IGN)…');
-  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds)
-             values ('${p.localId}', 'QA-TRI ${runid}', false, 0, 0)
-             on conflict (id) do update set ign = excluded.ign;`);
-  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds)
-             values ('${p2.localId}', 'QA-TRI2 ${runid}', false, 0, 0)
-             on conflict (id) do update set ign = excluded.ign;`);
+  /* ff_uid bhi — app ka "Playing As" block isi par render hota hai (aur ye
+     asli player ka game UID hai). users_ff_uid_key UNIQUE hai, isliye run-id
+     wala unique tag. */
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid)
+             values ('${p.localId}', 'QA-TRI ${runid}', false, 0, 0, 'R${runid}P1')
+             on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid;`);
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid)
+             values ('${p2.localId}', 'QA-TRI2 ${runid}', false, 0, 0, 'R${runid}P2')
+             on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid;`);
 
   /* QA admin ko admin haq — dono jagah (gate + RLS). Sirf isi runid ke liye. */
   log('Supabase: QA admin ko admins row + users.is_admin…');

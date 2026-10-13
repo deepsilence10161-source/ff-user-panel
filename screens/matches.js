@@ -176,7 +176,8 @@ function showDet(id) {
   if (_detFFUID) {
     h += '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1px solid rgba(0,255,156,.2);border-radius:12px">';
     h += '<div style="width:38px;height:38px;border-radius:50%;background:rgba(0,255,156,.12);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--green)">' + (UD.ign||'P').charAt(0).toUpperCase() + '</div>';
-    h += '<div style="flex:1"><div style="font-size:11px;color:var(--txt2)">Playing As</div><div style="font-size:14px;font-weight:800">' + (window.escHtml?window.escHtml(UD.ign||'Player'):(UD.ign||'Player')) + '</div><div style="font-size:12px;font-weight:700;color:var(--green)">FF UID: ' + _detFFUID + '</div></div>';
+    /* ✅ 2026-10-12: premium ribbon IGN ke aage (apna status, UD se live) */
+    h += '<div style="flex:1"><div style="font-size:11px;color:var(--txt2)">Playing As</div><div style="font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px">' + (window.escHtml?window.escHtml(UD.ign||'Player'):(UD.ign||'Player')) + (window.premiumRibbonHtml ? premiumRibbonHtml(16) : '') + '</div><div style="font-size:12px;font-weight:700;color:var(--green)">FF UID: ' + _detFFUID + '</div></div>';
     h += '<button onclick="copyTxt(\'' + _detFFUID + '\')" style="background:rgba(0,255,156,.12);border:none;color:var(--green);padding:8px 10px;border-radius:8px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i></button>';
     h += '</div>';
   }

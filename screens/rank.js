@@ -333,7 +333,7 @@ function renderRank(tab) {
   window._supa.from('leaderboard').select('*').limit(300)
     .then(function(r) {
       var users = (r.data || []).map(function(u) {
-        return { _uid: u.id, ign: u.ign||'Player', profileImage: u.avatar_url||'', rankPoints: u.rank_points||0, winStreak: 0, stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 } };
+        return { _uid: u.id, ign: u.ign||'Player', profileImage: u.avatar_url||'', rankPoints: u.rank_points||0, winStreak: 0, stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 }, /* ✅ 2026-10-12: premium ribbon IGN ke aage — leaderboard row me public premium status aata hai (migration 20261012) */premiumLevel: Number(u.premium_level||0), premiumExpires: u.premium_expires ? new Date(u.premium_expires).getTime() : 0 };
       });
       var sortKey = _rankTab;
       users.sort(function(a, b) {
@@ -390,7 +390,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
       h += '<div class="pod-earn" style="color:' + col + ';font-weight:900">' + valLabel + '</div>';
       /* Rank badge under score */
       h += '<div style="font-size:10px;padding:2px 7px;border-radius:10px;background:' + rkBadge.bg + ';color:' + rkBadge.color + ';border:1px solid ' + rkBadge.color + '44;margin:2px 0 4px;display:inline-flex;align-items:center;gap:4px">' +
-           (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rkBadge.pts) + '?v=20261012n" alt="" style="width:15px;height:15px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+           (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rkBadge.pts) + '?v=20261013a" alt="" style="width:15px;height:15px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
            rkBadge.emoji + ' ' + rkBadge.badge + '</div>';
       h += '<div class="pod-pedestal">' + podNums[i] + '</div></div>';
     }
@@ -415,10 +415,22 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
     var valStr = sortKey === 'kills' ? val + ' kills' : sortKey === 'wins' ? val + ' wins' : '🏆 ' + val + ' pts';
     var isMe = window.U && (u._uid === window.U.uid);
     var _top10title = j < 7 ? ['','🔱 Warlord','⚔️ Slayer','💫 Elite','🎯 Sniper','🔥 Blaze','🌟 Star','🎖️ Knight'][j+1] || '' : '';
-    h += '<div class="rank-row' + (isMe ? '" style="border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.05)' : '') + '">';
+    /* ✅ 2026-10-12: row par data-uid — E2E (aur debugging) ke liye pakka hook,
+       waise hi jaise admin panel ki Joined Players table ki rows par hai. */
+    h += '<div class="rank-row" data-uid="' + (u._uid || '') + '"' + (isMe ? ' style="border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.05)"' : '') + '>';
     h += '<div class="rank-num" style="color:' + (j===3?'#ffd700':j===4?'#c0c0c0':j===5?'#cd7f32':'var(--txt2)') + ';font-weight:' + (j<6?'900':'700') + '">#' + (j + 1) + '</div>';
     h += '<div class="rank-ava">' + av + '</div>';
-    h += '<div class="rank-info"><div class="rn">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + (isMe ? ' <span style="font-size:9px;color:var(--green)">YOU</span>' : '');
+    /* ✅ 2026-10-12: premium ribbon — IGN ke aage (sab players ko dikhta hai;
+       expire ho chuka premium = koi ribbon nahi, "jhoota dava nahi"). */
+    var _premRibbon = '';
+    try {
+      if (window.premiumRibbonFor && Number(u.premiumLevel||0) > 0) {
+        _premRibbon = premiumRibbonFor(u.premiumLevel, u.premiumExpires, 15);
+      } else if (isMe && window.premiumRibbonHtml) {
+        _premRibbon = premiumRibbonHtml(15);   /* apni row: UD se live */
+      }
+    } catch (e) {}
+    h += '<div class="rank-info"><div class="rn">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + _premRibbon + (isMe ? ' <span style="font-size:9px;color:var(--green)">YOU</span>' : '');
     if (_top10title) h += ' <span style="font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(255,215,0,.12);color:#ffd700;font-weight:800">' + _top10title + '</span>';
     h += '</div>';
     var _st = u.stats || {};
@@ -430,7 +442,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261012n" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261013a" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
@@ -722,7 +734,7 @@ window.loadSeasonLeaderboard = function(cb) {
   window._supa.from('leaderboard').select('*').limit(200)
     .then(function(r) {
       var users = (r.data || []).map(function(u) {
-        return { _uid: u.id, ign: u.ign || 'Player', kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0, profileImage: u.avatar_url || '', rankPoints: u.rank_points || 0, stats: { kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0 } };
+        return { _uid: u.id, ign: u.ign || 'Player', kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0, profileImage: u.avatar_url || '', rankPoints: u.rank_points || 0, stats: { kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0 }, premiumLevel: Number(u.premium_level||0), premiumExpires: u.premium_expires ? new Date(u.premium_expires).getTime() : 0 };
       });
       users.sort(function(a,b) { return (window.calcRkScore ? window.calcRkScore(b.stats||{}) - window.calcRkScore(a.stats||{}) : b.rankPoints - a.rankPoints); });
       cb(users, s);

@@ -90,6 +90,10 @@ ok(ctx.premiumRibbonHtml(20) === '', 'non-premium → khaali string');
 ctx.UD = { premium_level: 2 };
 ok(ctx.premiumRibbonHtml(20).indexOf('premium/ribbon.png') !== -1, 'premium → ribbon image');
 ok(ctx.premiumRibbonHtml(20).indexOf('height:20px') !== -1, 'ribbon size param kaam karta hai');
+console.log('\n── SCREEN 6c: premium ribbon DOOSRE player ka (leaderboard) ──');
+ok(ctx.premiumRibbonFor(0, 0, 15) === '', 'level 0 → khaali');
+ok(ctx.premiumRibbonFor(2, Date.now() + 86400000, 15).indexOf('premium/ribbon.png') !== -1, 'level 2 + expiry → ribbon');
+ok(ctx.premiumRibbonFor(3, Date.now() - 60000, 15) === '', 'expired → koi ribbon nahi (jhoota dava nahi)');
 
 console.log('\n── SCREEN 6b: ASLI Collection gallery render (stub openModal) ──');
 let _modal = { title: '', html: '' };

@@ -102,7 +102,7 @@ function cJoin(id) {
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261012n" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261013a" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';
@@ -118,7 +118,8 @@ function cJoin(id) {
   h += '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#00d4ff;line-height:1.5">';
   h += '💡 Green Diamonds sirf rank aur badges ke liye hain — withdraw nahi hota. Sky Diamonds se paid matches khelo.';
   h += '</div>';
-  if (UD.ign && UD.ffUid) h += '<div class="ci-locked"><i class="fas fa-lock"></i> Playing as: <strong>' + (window.escHtml?window.escHtml(UD.ign):UD.ign) + '</strong> (UID: ' + UD.ffUid + ')</div>';
+  /* ✅ 2026-10-12: premium ribbon IGN ke aage (apna status, UD se live) */
+  if (UD.ign && UD.ffUid) h += '<div class="ci-locked" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><i class="fas fa-lock"></i> Playing as: <strong>' + (window.escHtml?window.escHtml(UD.ign):UD.ign) + '</strong>' + (window.premiumRibbonHtml ? premiumRibbonHtml(16) : '') + '<span>(UID: ' + UD.ffUid + ')</span></div>';
 
   /* FEE SPLIT SELECTOR — only for duo/squad */
   if (tp === 'duo' || tp === 'squad') {

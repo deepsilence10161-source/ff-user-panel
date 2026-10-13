@@ -18,12 +18,12 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261012n"></script>
-<script src="js/features/badge-engine.js?v=20261012n"></script>
+<script src="js/features/asset-catalog.js?v=20261013a"></script>
+<script src="js/features/badge-engine.js?v=20261013a"></script>
 <!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
      ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
-<script src="features/battle-pass.js?v=20261012n"></script>
-<script src="features/growth.js?v=20261012n"></script>
+<script src="features/battle-pass.js?v=20261013a"></script>
+<script src="features/growth.js?v=20261013a"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -137,6 +137,17 @@
   window.UD = { premium_level: 1 };
   var r1 = window.premiumRibbonHtml(20);
   ok(r1.indexOf('premium/ribbon.png') !== -1, 'premium ribbon — premium par sunehra ribbon image');
+
+  /* ── 8b. DOOSRE player ka ribbon (leaderboard) — premiumRibbonFor ──
+     Ab leaderboard row me premium_level + premium_expires aata hai (public),
+     isliye kisi bhi player ke naam ke aage ribbon lag sakta hai. Expired
+     premium par koi ribbon NAHI — jhoota dava nahi. */
+  beat('8b/12 premium ribbon (doosre player ka)');
+  ok(window.premiumRibbonFor(0, 0, 15) === '', 'level 0 → khaali');
+  ok(window.premiumRibbonFor(2, Date.now() + 86400000, 15).indexOf('premium/ribbon.png') !== -1, 'level 2 + valid expiry → ribbon');
+  ok(window.premiumRibbonFor(3, Date.now() - 60000, 15) === '', 'expired premium → KOI ribbon nahi (jhoota dava nahi)');
+  ok(window.premiumRibbonFor(2, 0, 15).indexOf('height:15px') !== -1, 'size param kaam karta hai (expiry null = lifetime)');
+  ok(window.premiumRibbonFor(2, Date.now() + 86400000, 15).indexOf('data-premium-tier="2"') !== -1, 'tier data-attribute');
 
   beat('9/12 Collection gallery render');
   /* ── 9. ASLI Collection gallery ka render (openModal ko capture karke) ──

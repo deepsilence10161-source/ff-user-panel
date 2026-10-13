@@ -122,7 +122,7 @@
        Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
        = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
        apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
-    ['1/10 app iframe + QA player login (asli app auth)', function () {
+    ['1/12 app iframe + QA player login (asli app auth)', function () {
       if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
       return bootApp().then(function () {
         return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
@@ -141,7 +141,7 @@
     }],
 
     /* ── 2/8 : app auto-login + login screen hatna ── */
-    ['2/10 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+    ['2/12 asli app login (onAuthStateChanged → _handleSignIn)', function () {
       return poll(function () {
         try {
           var w = W();
@@ -167,7 +167,7 @@
     }],
 
     /* ── 3/N : APK → Admin (support ticket) ── */
-    ['3/10 APK → Admin: support ticket submit', function () {
+    ['3/12 APK → Admin: support ticket submit', function () {
       var w = W();
       w.eval("if (window.showSupportForm) showSupportForm();");
       return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
@@ -196,7 +196,7 @@
     }],
 
     /* ── 4/N : Admin → APK (ticket reply, asli My-Tickets modal) ── */
-    ['4/10 Admin → APK: ticket reply dikhe (My Tickets)', function () {
+    ['4/12 Admin → APK: ticket reply dikhe (My Tickets)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('support_tickets').select('admin_reply,status')
@@ -224,7 +224,7 @@
     }],
 
     /* ── 5/N : Admin → APK (SD credit, asli wallet UI) ── */
-    ['5/10 Admin → APK: coins credit (wallet UI)', function () {
+    ['5/12 Admin → APK: coins credit (wallet UI)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('users').select('coins,sky_diamonds').eq('id', w.U.uid).maybeSingle()
@@ -246,7 +246,7 @@
     }],
 
     /* ── 6/N : Admin → APK (match) ── */
-    ['6/10 Admin → APK: naya match list me', function () {
+    ['6/12 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('matches').select('title').ilike('title', MARK + '%')
@@ -294,7 +294,7 @@
     }],
 
     /* ── 7/N : Admin → APK (notification) ── */
-    ['7/10 Admin → APK: notification', function () {
+    ['7/12 Admin → APK: notification', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('notifications').select('title,body').eq('user_id', w.U.uid)
@@ -316,7 +316,7 @@
     }],
 
     /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
-    ['8/10 Admin → APK: KYC approved dikhe', function () {
+    ['8/12 Admin → APK: KYC approved dikhe', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('kyc_requests').select('status').eq('user_id', w.U.uid)
@@ -337,7 +337,7 @@
 
   /* ── runner ──────────────────────────────────────────────────────────── */
   /* ── 9/10 : APK (P1) match join — asli doJoin → server RPC ── */
-  STEPS.push(['9/10 APK → match join (asli doJoin)', function () {
+  STEPS.push(['9/12 APK → match join (asli doJoin)', function () {
     var w = W();
     return poll(function () {
       return w._supa.from('matches').select('id,filled_slots').ilike('title', MARK + '%')
@@ -365,7 +365,7 @@
   }]);
 
   /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
-  STEPS.push(['10/10 APK par match me 2 players (P2 web se join)', function () {
+  STEPS.push(['10/12 APK par match me 2 players (P2 web se join)', function () {
     var w = W();
     return poll(function () {
       /* ⚠️ join_requests par RLS hai — P1 doosre player (P2) ki row NAHI dekh
@@ -388,6 +388,66 @@
       })
       .then(function () {
         return 'APK par match me ' + VALUES.joined_players + ' players (slots UI: ' + (VALUES.apk_players_ui || '2') + ') — P1 (APK) + P2 (web)';
+      });
+  }]);
+
+  /* ── 11/12 : Premium ribbon IGN ke aage (APK par, asli UI) ──
+     Host ne H6b me approve_premium se P1 ko premium diya hai. Ab app me:
+       (a) UD me premium aa jaye (realtime ya reload par), aur
+       (b) My Matches ke "Playing As" me IGN ke aage ribbon dikhe. */
+  STEPS.push(['11/12 Premium ribbon IGN ke aage (APK)', function () {
+    function _premOf() {
+      var w = W();
+      var t = 0;
+      try { t = Number((w.UD && w.UD.premium && w.UD.premium.tier) || (w.UD && w.UD.premium_level) || 0); } catch (e) {}
+      return t;
+    }
+    function _scan() {
+      /* Teen jagah dekho — jahan bhi IGN ke aage ribbon mile (asli UI):
+         1) My Matches ka "Playing As" block  2) profile ka plate  3) fail-safe: koi bhi .prem-ribbon */
+      return new Promise(function (res) {
+        setTimeout(function () {
+          try {
+            var w2 = W();
+            var all = w2.document.querySelectorAll('.prem-ribbon');
+            var body = (w2.document.body && w2.document.body.innerText) || '';
+            if (all.length && body.indexOf('Playing As') >= 0) { res({ where: 'matches-playing-as', tier: all[0].getAttribute('data-premium-tier'), n: all.length }); return; }
+            if (all.length) { res({ where: 'screen-ribbon', tier: all[0].getAttribute('data-premium-tier'), n: all.length }); return; }
+            res(null);
+          } catch (e) { res(null); }
+        }, 2200);
+      });
+    }
+    function _ribbonInMatches() {
+      var w = W();
+      try {
+        if (w.showScreen) w.eval("if (window.showScreen) showScreen('matches'); if (window.renderMyMatches) renderMyMatches();");
+      } catch (e) {}
+      return _scan().then(function (hit) {
+        if (hit) return hit;
+        /* My Matches me block na ho (ffUid khali) — profile plate par try karo */
+        try { W().eval("if (window.closeModal) closeModal(); if (window.showScreen) showScreen('profile');"); } catch (e) {}
+        return _scan().then(function (hit2) {
+          if (hit2) return hit2;
+          try { W().eval("if (window.openProfile) openProfile();"); } catch (e) {}
+          return _scan();
+        });
+      });
+    }
+    /* 1. UD me premium (realtime ya ek reload se) */
+    return poll(function () { return _premOf() > 0 ? true : null; }, 3000, 60000, 'UD me premium (host ke approve_premium se)')
+      .catch(function () {
+        return bootApp().then(function () {
+          return poll(function () { try { return W().U && W().U.uid ? true : null; } catch (e) { return null; } }, 1500, 90000, 'reload ke baad login (persistence)');
+        }).then(function () {
+          return poll(function () { return _premOf() > 0 ? true : null; }, 3000, 90000, 'reload ke baad premium (DB se)');
+        });
+      })
+      .then(function () { VALUES.premium_level = String(_premOf()); return _ribbonInMatches(); })
+      .then(function (hit) {
+        VALUES.premium_ribbon = hit ? hit.where : '';
+        if (!hit) fail('ribbon', 'IGN ke aage .prem-ribbon kahin nahi mila (matches/profile)');
+        return 'premium level ' + VALUES.premium_level + ' — IGN ke aage ribbon dikha (' + hit.where + ', tier=' + hit.tier + ')';
       });
   }]);
 

@@ -6,7 +6,10 @@
 # ═══════════════════════════════════════════════════════════════════════════
 import argparse, json, sys
 
-KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "notif_title"]
+KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "notif_title",
+        # 2026-10-12: premium ribbon — dono taraf (APK ↔ web) ek hi premium_level
+        # dikhna chahiye (admin ne approve_premium se diya tha)
+        "premium_level", "premium_ribbon"]
 
 
 def main():

@@ -348,9 +348,31 @@
       var lvl = 0;
       if (window.getUserPremiumTier) lvl = Number(window.getUserPremiumTier()) || 0;
       else if (window.UD && window.UD.premium_level) lvl = Number(window.UD.premium_level) || 0;
+      var exp = 0;
+      try { exp = (window.UD && window.UD.premium && window.UD.premium.expiresAt) || 0; } catch (e) {}
+      return window.premiumRibbonFor(lvl, exp, px);
+    } catch (e) { return ''; }
+  };
+
+  /* ── Premium ribbon — DOOSRE players ke liye (explicit values) ──
+     Kyun: apne premium ka ribbon pehle sirf apne card par dikhta tha (users
+     RLS ki wajah se doosron ka premium padha nahi ja sakta). Ab leaderboard
+     row me premium_level + premium_expires aata hai (public read) — us se
+     kisi bhi player ke naam ke aage ribbon dikha sakte hain.
+
+     ⚠️ "jhoota dava nahi": level > 0 hona hi kaafi nahi — expires bhi check
+     hota hai. Expire ho chuka premium = koi ribbon nahi (DB me cron ka
+     intezaar nahi karte). */
+  window.premiumRibbonFor = function (level, expiresAt, px) {
+    try {
+      var lvl = Number(level) || 0;
       if (lvl <= 0) return '';
+      var exp = Number(expiresAt) || 0;
+      if (exp && exp < Date.now()) return '';
       px = Number(px) || 20;
-      return '<img src="' + BASE + 'premium/ribbon.png?v=' + VER + '" alt="Premium" title="Premium" ' +
+      var tier = lvl >= 3 ? 'Diamond' : (lvl === 2 ? 'Gold' : 'Silver');
+      return '<img class="prem-ribbon" src="' + BASE + 'premium/ribbon.png?v=' + VER + '" alt="Premium" ' +
+        'title="Premium (' + tier + ')" data-premium-tier="' + lvl + '" ' +
         'style="height:' + px + 'px;vertical-align:middle;filter:drop-shadow(0 0 6px rgba(255,215,0,.5))" ' +
         'onerror="this.style.display=\'none\'">';
     } catch (e) { return ''; }
@@ -371,7 +393,10 @@
           nextReward: next ? (next.name + ' ' + next.have + '/' + next.need) : null,
           rankImg: window.rankBadgeImg(1100),
           stripHtml: window.renderNextRewardStrip(st).length,
-          showcaseHtml: window.renderBadgeShowcaseRow(st).length
+          showcaseHtml: window.renderBadgeShowcaseRow(st).length,
+          ribbonNone: window.premiumRibbonFor(0, 0, 16),
+          ribbonTier2: window.premiumRibbonFor(2, Date.now() + 86400000, 16).indexOf('premium/ribbon.png') !== -1,
+          ribbonExpired: window.premiumRibbonFor(3, Date.now() - 1000, 16)
         };
       }
     };
