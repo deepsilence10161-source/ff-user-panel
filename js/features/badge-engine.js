@@ -532,4 +532,133 @@
       try { return window._allRewardItems ? 'ok' : 'ok'; } catch (e) { return 'ok'; }
     })());
   } catch (e) {}
+  /* ══════════════════════════════════════════════════════════════════════
+     3.9 PUSH NOTIFICATIONS — client wale 2 kism (server wale 2 DB cron me:
+     supabase/migrations/20261013_push_alerts_3_9.sql → season 24h + trial
+     expiry, dono pg_cron se).
+
+       • badge_unlock      — naya badge milte hi (match ke turant baad)
+       • badge_near_unlock — 80%+ ho chuka par abhi khula nahi ("bas thoda aur")
+
+     Push ka raasta pehle se LIVE hai (notifications INSERT → DB trigger →
+     pg_net → push-send → OneSignal) — yahan duplicate NAHI kiya, bas asli
+     notification row daali jaati hai.
+
+     JHooth NAHI:
+       • Pehli baar chala to purane saare badges sirf "dekhe hue" mark hote
+         hain — purane unlock par notification spam nahi.
+       • Har badge ke liye EK hi baar (localStorage me per-user guard).
+       • Badge mil gaya to near-list se hat jaata hai (dobara "paas ho" nahi).
+       • Login/data na ho to kuch nahi bhejte. ═════════════════════════════ */
+
+  var _STAT_LABEL = {
+    kills: 'kills', wins: 'wins', matches: 'matches', level: 'level',
+    rp: 'rank points', loginStreak: 'din ka check-in streak', winStreak: 'win streak',
+    streak: 'win streak', clean: 'clean matches', premium: 'premium din',
+    top1: 'top-1 finish', top3: 'top-3 finish', top5: 'top-5 finish',
+    top10: 'top-10 finish', soloWins: 'solo wins', comebacks: 'comebacks',
+    headshots: 'headshots', assists: 'assists', damage: 'damage',
+  };
+  function _statLabel(s) { return _STAT_LABEL[s] || String(s || '').replace(/([A-Z])/g, ' $1').toLowerCase(); }
+
+  function _bdgLsGet(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function _bdgLsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  /* asli notification row (push trigger khud bhej dega) — best effort */
+  function _bdgNotify(row) {
+    try {
+      if (!window._supa || !window.U || !window.U.uid) return false;
+      window._supa.from('notifications').insert({
+        user_id: window.U.uid, type: row.type, title: row.title, body: row.body, ref_id: row.ref_id,
+      }).then(function (r) {
+        if (r && r.error && window.console) console.warn('badge-notify:', r.error.message || r.error);
+      }, function () {});
+      return true;
+    } catch (e) { return false; }
+  }
+
+  /* locked items jinka completion 80%–99% (asli stats se) */
+  function _nearList(st) {
+    var out = [];
+    try {
+      _allRewardItems().forEach(function (w) {
+        var it = w.it;
+        if (!it || !it.need) return;
+        if (_unlocked(it, st)) return;
+        var parts = it.need.all ? it.need.all : [it.need];
+        var minPct = 101, weakest = null;
+        for (var i = 0; i < parts.length; i++) {
+          var p = parts[i], need = Number(p.need) || 0;
+          if (need <= 0) continue;
+          var have = Number(st[p.stat]) || 0;
+          var pct = Math.min(100, (have / need) * 100);
+          if (pct < minPct) { minPct = pct; weakest = { stat: p.stat, have: have, need: need }; }
+        }
+        if (!weakest || minPct >= 100 || minPct < 80) return;
+        out.push({ id: it.id, name: it.name, kind: w.kind, stat: weakest.stat,
+                   left: Math.max(1, weakest.need - weakest.have), pct: Math.floor(minPct) });
+      });
+    } catch (e) {}
+    return out;
+  }
+
+  /* ── home render ke baad lagta hai (cheap: localStorage diff) ── */
+  window.notifyNewBadges = function (st) {
+    var sent = 0;
+    try {
+      if (!window.U || !window.U.uid || !window._supa) return 0;
+      var uid = window.U.uid;
+      st = st || window._bdgStats();
+      var earned = window.getEarnedBadges(st);
+      var seenKey = 'ff_badge_seen_v1_' + uid;
+      var nearKey = 'ff_badge_near_v1_' + uid;
+
+      var earnedIds = earned.map(function (b) { return b.id; });
+      var seen = _bdgLsGet(seenKey);
+      var near = _bdgLsGet(nearKey);
+      if (!seen || !seen.length || !near) {
+        /* pehli baar (is device+account par): sirf baseline — purane badges ya
+           aadhe-adhoore rewards par EK BHI push nahi, taaki spam na ho */
+        _bdgLsSet(seenKey, earnedIds);
+        _bdgLsSet(nearKey, []);
+        return 0;
+      }
+
+      /* 1) UNLOCK — naya kaunsa badge mila (milestone, isliye sabhi fresh) */
+      var fresh = earned.filter(function (b) { return seen.indexOf(b.id) === -1; });
+      for (var i = 0; i < fresh.length; i++) {
+        var b = fresh[i];
+        if (_bdgNotify({
+          type: 'badge_unlock',
+          title: (b.kind === 'title' ? '✨ Naya title: ' : '🏅 Naya badge: ') + b.name,
+          body: (b.desc ? b.desc + ' — ' : '') + 'Collection me add ho gaya, profile par dekho!',
+          ref_id: b.id,
+        })) sent++;
+      }
+      if (fresh.length) _bdgLsSet(seenKey, seen.concat(fresh.map(function (x) { return x.id; })));
+
+      /* 2) NEAR-UNLOCK — 80%+ ho chuka, abhi khula nahi.
+         Ek render par max 2 (burst spam nahi) — baaki agle render par,
+         aur har reward ke liye zindagi me ek hi baar. */
+      near = near.filter(function (id) { return earnedIds.indexOf(id) === -1; });  /* mil gaya → hatao */
+      var nearNew = _nearList(st).filter(function (n) { return near.indexOf(n.id) === -1; });
+      var nearSent = 0;
+      for (var j = 0; j < nearNew.length && nearSent < 2; j++) {
+        var n = nearNew[j];
+        if (_bdgNotify({
+          type: 'badge_near_unlock',
+          title: '🔥 Bas thoda sa aur — ' + n.name + (n.kind === 'title' ? ' title' : ' badge') + ' paas hai!',
+          body: n.left + ' aur ' + _statLabel(n.stat) + ' chahiye (' + n.pct + '% ho chuka) — aaj hi poora karo!',
+          ref_id: n.id,
+        })) { sent++; nearSent++; }
+        near.push(n.id);
+      }
+      _bdgLsSet(nearKey, near);
+      return sent;
+    } catch (e) { return sent; }
+  };
+
+  /* test/debug ke liye asli near-list bhi expose (jhooth-free verify) */
+  window.badgeNearList = function (st) { return _nearList(st || window._bdgStats()); };
+
 })();

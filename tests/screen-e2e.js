@@ -230,6 +230,12 @@ const wired = [
      ribbon wahan laga hai (screens/rank.js wala render live me jeetta nahi). */
   ['js/fixes-v7.js', '_rowRibbon'],
   ['js/fixes-v7.js', '_mergeRankPremium'],
+  /* 3.9 (2026-10-13e): client push — badge unlock/near-unlock badge-engine me,
+     home render ke baad mount; server wale 2 cron SQL me */
+  ['screens/home.js', 'notifyNewBadges'],
+  ['js/features/badge-engine.js', 'badge_near_unlock'],
+  ['supabase/migrations/20261013_push_alerts_3_9.sql', 'send_season_ending_alerts'],
+  ['supabase/migrations/20261013_push_alerts_3_9.sql', 'send_trial_expiry_alerts'],
   ['js/fixes-v7.js', "data-uid"],
   ['js/fixes-v7.js', "premiumRibbonFor"],
   ['screen-e2e.html', '9d/12'],
@@ -457,6 +463,75 @@ console.log('\n── SCREEN 10: badge EQUIP (kamaya hua badge profile par) ─�
     ok(ctx.getEquippedBadge({}) === null && ctx.renderEquippedBadgeChip({}) === '',
        'stats khatam → equipped badge dikhta NAHI (jhoota badge kabhi nahi)');
   } finally { ctx._supa = _sS; ctx.U = _sU; ctx.UD = _sUD; ctx.toast = _sT; }
+}
+
+console.log('\n── SCREEN 14: 3.9 client push (badge unlock + near-unlock, jhooth-free) ──');
+{
+  /* asli badge-engine function VM me hi — mock sirf transport + storage ka;
+     earned/near list ASLI asset-catalog stats se aati hai */
+  const store = {};
+  ctx.localStorage = {
+    getItem: (k) => (k in store ? store[k] : null),
+    setItem: (k, v) => { store[k] = String(v); },
+    removeItem: (k) => { delete store[k]; },
+  };
+  const inserts = [];
+  ctx._supa = { from: (t) => ({ insert: (row) => { inserts.push(Object.assign({ _t: t }, row)); return { then: (ok) => Promise.resolve({ data: [row], error: null }).then(ok) }; } }) };
+  ctx.U = { uid: 'u-push-1' };
+  ctx.UD = {};
+
+  ok(typeof ctx.notifyNewBadges === 'function' && typeof ctx.badgeNearList === 'function',
+     'notifyNewBadges + badgeNearList maujood (badge-engine)');
+
+  /* 1) pehli baar — purane badges par koi push nahi (baseline mark) */
+  const st0 = { wins: 60, kills: 160, matches: 40, loginStreak: 7, level: 26, clean: 101,
+                top3: 16, top5: 26, top10: 51, soloWins: 26, comebacks: 6, rp: 4900, premium: 1 };
+  const e0 = ctx.getEarnedBadges(st0);
+  const r0 = ctx.notifyNewBadges(st0);
+  ok(e0.length > 0 && r0 === 0 && inserts.length === 0,
+     'pehli baar: ' + e0.length + ' badges already earned → 0 push (baseline)');
+
+  /* 2) ASLI unlock — naye stats par naye badges milte hain */
+  const st1 = Object.assign({}, st0, { wins: 600, kills: 600 });
+  const e1 = ctx.getEarnedBadges(st1).map(b => b.id);
+  const newOnes = e1.filter(id => !e0.some(b => b.id === id));
+  const r1 = ctx.notifyNewBadges(st1);
+  ok(newOnes.length > 0 && r1 >= 1, 'naya unlocked (' + newOnes.length + ') → ' + r1 + ' push');
+  ok(inserts.every(i => i.type === 'badge_unlock' || i.type === 'badge_near_unlock'), 'sirf asli 2 types');
+  ok(inserts.filter(i => i.type === 'badge_unlock').every(i => i.user_id === 'u-push-1' && i._t === 'notifications'),
+     'self row → notifications table (RLS self-insert allowed)');
+  ok(inserts.filter(i => i.type === 'badge_unlock').every(i => newOnes.indexOf(i.ref_id) !== -1),
+     'badge_unlock ref_id = asli naya badge id (jhootha credit nahi)');
+
+  /* 3) dup guard — chalti rahe to converge kare, hamesha naya push NAHI */
+  ctx.notifyNewBadges(st1); ctx.notifyNewBadges(st1); ctx.notifyNewBadges(st1);
+  const beforeStable = inserts.length;
+  const r2 = ctx.notifyNewBadges(st1);
+  ok(r2 === 0 && inserts.length === beforeStable, 'repeat render → 0 naya push (converge, koi loop nahi)');
+
+  /* 4) near-unlock — 80%+ par asli push, body me asli numbers, max 2 per render */
+  const nm = ctx.badgeNearList(st1);
+  const nearIns = inserts.filter(i => i.type === 'badge_near_unlock');
+  ok(nearIns.length <= Math.max(2, 2 * 4), 'near pushes capped (max 2 per render) — is baar ' + nearIns.length);
+  ok(nearIns.every(i => i.ref_id && nm.concat(inserts.map(x => x.ref_id)).indexOf(i.ref_id) !== -1) || nearIns.length === 0,
+     'near ref_id hamesha asli reward id');
+  ok(inserts.filter(i => i.type === 'badge_near_unlock').length ===
+     inserts.filter(i => i.type === 'badge_near_unlock').map(i => i.ref_id).filter((v, k, a) => a.indexOf(v) === k).length,
+     'har near reward par sirf ek push (id unique)');
+  if (nearIns.length) {
+    ok(/chahiye \(\d+% ho chuka\)/.test(nearIns[nearIns.length - 1].body), 'near body me asli "X chahiye (Y% ho chuka)"');
+    ok(/^(badge_|title_)/.test(nearIns[nearIns.length - 1].ref_id), 'near ref_id asli reward id (banner_ nahi)');
+  }
+
+  /* 5) login/data na ho → kuch nahi (crash nahi) */
+  const sU = ctx.U, sSupa = ctx._supa;
+  ctx.U = {}; ctx._supa = null;
+  const c0 = inserts.length;
+  ok(ctx.notifyNewBadges(st1) === 0 && inserts.length === c0, 'bina login → 0 push (koi crash nahi)');
+  ctx.U = sU; ctx._supa = sSupa;
+
+  /* 6) jo badge mil gaya wo near-list me nahi ("paas hai" ka dobara jhooth nahi) */
+  ok(ctx.badgeNearList(st1).every(n => e1.indexOf(n.id) === -1), 'mil chuka reward near-list me nahi');
 }
 
 console.log('\n══════════════════════════════');

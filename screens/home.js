@@ -357,7 +357,10 @@ function renderHome() {
        already there, not necessarily still accurate) — see fix note above. */
     if (window.renderSponsoredTournaments) window.renderSponsoredTournaments();
     /* 3.6: streak strip par "aaj check-in ho gaya?" asli row se — DOM lagne ke BAAD */
-    if (window.refreshLoginStreakToday) { try { refreshLoginStreakToday(); } catch (e) {} }
+    if (window.refreshLoginStreakToday) { try { refreshLoginStreakToday();
+      /* 3.9: badge unlock / near-unlock push (client wale 2 kism) — asli
+         earned list ka diff se, har reward par ek hi baar (badge-engine) */
+      try { if (window.notifyNewBadges) window.notifyNewBadges(); } catch (e) {} } catch (e) {} }
   }
   /* Bug 24/68 Fix: match-timer.js wraps renderHome with debounced timer start.
      Direct call removed — match-timer.js handles this via its renderHome wrapper. */
@@ -515,7 +518,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261013e" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261013f" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';
