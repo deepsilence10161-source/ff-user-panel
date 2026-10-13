@@ -327,6 +327,10 @@ function renderHome() {
      ka data pehle se maujood tha (_assetProgress); ab screen par hai.
      Fail-safe: function na ho to '' (purana home waisa hi). */
   if (window.renderNextRewardStrip) { try { topHtml += renderNextRewardStrip(); } catch (e) {} }
+  /* ✅ USER-ATTRACTION (2026-10-13, master plan 3.8): SEASON countdown +
+     apni position + Top-3 ka near-miss ("2 kills door"). Season ka
+     endDate na ho to strip hi nahi aata (jhooti deadline kabhi nahi). */
+  if (window.renderSeasonCountdownStrip) { try { topHtml += renderSeasonCountdownStrip(); } catch (e) {} }
   // Recommended widget removed
 
   var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ' + hCF + ' matches ' + hSF + '</p></div>');
@@ -505,7 +509,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261013b" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261013c" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

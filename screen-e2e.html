@@ -18,15 +18,24 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261013b"></script>
-<script src="js/features/badge-engine.js?v=20261013b"></script>
+<script src="js/features/asset-catalog.js?v=20261013c"></script>
+<script src="js/features/badge-engine.js?v=20261013c"></script>
 <!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
      ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
-<script src="features/battle-pass.js?v=20261013b"></script>
-<script src="features/growth.js?v=20261013b"></script>
+<script src="features/battle-pass.js?v=20261013c"></script>
+<script src="features/growth.js?v=20261013c"></script>
 <!-- 2026-10-12c: Free Trial (aakhri 12 ghante ka countdown + banner) ki ASLI file.
      initTrial() yahan kuch nahi todta: U na hone par chup-chaap wait karta hai. -->
-<script src="features/free-trial.js?v=20261013b"></script>
+<script src="features/free-trial.js?v=20261013c"></script>
+<!-- 2026-10-13: Player Card (share card) ki asli file — title + clan chip ke liye -->
+<script src="features/player-card.js?v=20261013c"></script>
+<!-- 2026-10-13: season countdown strip ki asli file (3.8) -->
+<script src="features/seasonal-league.js?v=20261013c"></script>
+<!-- 2026-10-13d: rank screen ke asli files — leaderboard ka ASLI renderer
+     js/fixes-v7.js hi hai (uska renderRank live me jeetta hai), aur calcRk
+     screens/rank.js se aata hai. Dono yahan isi liye load hote hain. -->
+<script src="screens/rank.js?v=20261013c"></script>
+<script src="js/fixes-v7.js?v=20261013c"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -42,6 +51,13 @@
 (function () {
   var PASS = 0, FAIL = 0, fails = [], lines = [];
   var DONE = false, LASTSTEP = 'script start';
+  /* 8d → 9b sequencing (dekho 9b ka note — race fix) */
+  var _p8dResolve = null, _p8d = new Promise(function (res) { _p8dResolve = res; });
+  /* ⚠️ 2026-10-13d: 9d (rank ribbon) 9b ke POORE hone par chale — 9b apna
+     UD/_supa stub async card-render ke beech me rakhta hai; agar 9d usse
+     pehle globals badal de to 9b ka card apna title chip kho deta hai
+     (yahi bug pakda gaya: title chip gayab, clan chip bacha reh gaya). */
+  var _p9bResolve = null, _p9b = new Promise(function (res) { _p9bResolve = res; });
 
   /* ✅ HARDENING (2026-10-12): CI emulator me pichhli baar ye page load
      hote hue bhi RESULT marker 120s me nahi aaya (root cause tab tak
@@ -202,6 +218,63 @@
     ok(_modal.html.indexOf('UNLOCKED') !== -1 && (_modal.html.indexOf('🔒') !== -1 || _modal.html.indexOf('LOCKED') !== -1), 'unlocked + locked dono states render');
   } catch (e) { ok(false, 'Collection render crash: ' + e.message); }
 
+  /* ── 8e. SEASON countdown strip (3.8) — asli code, asli numbers ──
+     Live app me season abhi INACTIVE hai (admin ki setting) — isliye
+     screen par strip nahi aata; yahan dono baatein verify hoti hain:
+       (a) active season par strip + #pos + Top-3 near-miss, aur
+       (b) live state (inactive) par strip bilkul nahi (jhooti deadline nahi). */
+  beat('8e/12 season countdown strip (+ Top-3 near-miss)');
+  (function () {
+    var _sSeason = window.getCurrentSeason, _sU = window.U, _sRows = window._ssRows, _sLoad = window._ssLoad;
+    var _rows = [];
+    for (var i = 1; i <= 10; i++) _rows.push({ id: i === 7 ? 'me-uid' : ('u' + i), total_kills: 100 - (i - 1) * 5, total_wins: 5, rank_points: 100 - i });
+    window.getCurrentSeason = function () { return { name: 'Season 7', daysLeft: 3, hasEnd: true, active: true, label: '3 din baaki' }; };
+    if (window.__SS_SET_ROWS) window.__SS_SET_ROWS(_rows);
+    window.U = { uid: 'me-uid' };
+    var html = window.renderSeasonCountdownStrip();
+    ok(html.indexOf('seasonCountdownStrip') !== -1 && html.indexOf('data-days-left="3"') !== -1, 'active season → strip + countdown (3 din)');
+    ok(html.indexOf('Top-3 se') !== -1 && html.indexOf('data-gap="21"') !== -1, 'Top-3 ka near-miss asli number se (21 kills)');
+    ok(html.indexOf('#7') !== -1, 'meri position strip me (#7)');
+    ok(html.indexOf('renderRank') !== -1, 'strip tap → rank screen');
+    /* asli DOM me lagao (jaise home screen karti hai) + medal jaisa render check */
+    var _host = document.createElement('div'); _host.id = 'seasonStripHost';
+    _host.innerHTML = html; document.body.appendChild(_host);
+    var _el = document.getElementById('seasonCountdownStrip');
+    ok(!!_el && _el.getAttribute('data-pos') === '7', 'strip DOM me laga (data-pos=7)');
+    if (_el) _el.remove();
+    _host.remove();
+    /* (b) live state: season INACTIVE → strip NAHI (yahi asli app me hota hai) */
+    window.getCurrentSeason = function () { return { name: 'Season 1', daysLeft: 6, hasEnd: true, active: false, label: '6 din baaki' }; };
+    ok(window.renderSeasonCountdownStrip() === '', 'season inactive (live app ka asli state) → strip nahi');
+    window.getCurrentSeason = function () { return { name: 'Season 1', daysLeft: 0, hasEnd: false, active: true }; };
+    ok(window.renderSeasonCountdownStrip() === '', 'endDate na ho → koi jhooti deadline nahi');
+    window.getCurrentSeason = _sSeason; window.U = _sU; if (window.__SS_SET_ROWS) window.__SS_SET_ROWS(_sRows);
+  })();
+
+  /* ── 9c. 9 AVATAR RINGS (master plan 3.5) — rank + premium kala se ──
+     Store me 9 naye cosmetics (frame type → equip hote hain), art asli
+     files se, price server SSOT se match. Currency sink + dikhawa. */
+  beat('9c/12 avatar rings (9 cosmetics)');
+  (function () {
+    var rings = window.__COS_RINGS || [];
+    ok(rings.length === 9, '9 rings catalog me', String(rings.length));
+    var cat = window.__COS_CATALOG ? window.__COS_CATALOG() : [];
+    var inStore = cat.filter(function (i) { return rings.some(function (r) { return r.id === i.id; }); });
+    ok(inStore.length === 9, 'store catalog me 9/9 rings dikhte hain', String(inStore.length) + '/' + cat.length);
+    ok(inStore.every(function (i) { return i.type === 'frame' && i.img && i.price > 0; }), 'sab frame type + art + price');
+    /* store card asli art render karta hai (img fail ho to emoji — fail-safe) */
+    var _card = window.__COSHOP && window.__COSHOP.iconHtml ? window.__COSHOP.iconHtml(inStore[0]) : '';
+    ok(_card.indexOf('<img src="' + inStore[0].img) !== -1, 'store card par asli kala (<img>)', inStore[0].id);
+    /* equip → avatar medal art + glow colour (asli helper) */
+    var _sCos = (window.UD && window.UD.cosmetics) || null;
+    window.UD = window.UD || {};
+    window.UD.cosmetics = { frame_ring_legend: { is_equipped: true } };
+    var fa = window.getEquippedFrameArt ? window.getEquippedFrameArt() : null;
+    ok(!!fa && fa.img === 'assets/img/ranks/legend.png' && fa.color === '#ff6b2b', 'equip Legend Ring → medal art + glow', fa ? (fa.img + ' ' + fa.color) : 'null');
+    window.UD.cosmetics = _sCos || {};
+    ok(window.getEquippedFrameArt() === null, 'kuch equipped nahi → medal nahi (jhoota nahi)');
+  })();
+
   beat('10/12 BP season-title arts (t25/35/40/45/50)');
   /* ── 10. Season Pass ki 5 asli kalaayein (yojna 2.6) — ASLI files se ──
      features/battle-pass.js + features/growth.js upar live load hue hain;
@@ -251,7 +324,18 @@
               '<div style="font-size:10px;color:#888;margin-top:4px">Tier ' + c[0] + (c[0] === 45 ? ' · FREE' : ' · PREMIUM') + '</div></div>';
       });
     }
-    vh += '</div><h3 style="color:#ffd700;margin:8px 0 5px">Cosmetics Store — wahi 5 (asli store card HTML)</h3><div style="display:flex;flex-wrap:nowrap;gap:6px">';
+    /* 2026-10-13: 9 AVATAR RINGS — asli store card HTML (art + naam + price) */
+    vh += '</div><h3 style="color:#ffd700;margin:8px 0 5px">9 Avatar Rings — rank + premium kala (asli store card HTML)</h3><div style="display:flex;flex-wrap:wrap;gap:6px">';
+    if (window.__COSHOP && window.__COS_RINGS) {
+      var _rings9 = window.__COS_RINGS;
+      _rings9.forEach(function (r) {
+        vh += '<div class="card" style="min-width:104px;max-width:124px;flex:0 0 auto;text-align:center;padding:7px">' +
+              window.__COSHOP.iconHtml({ icon: r.icon, img: r.img }) +
+              '<div style="font-size:10px;font-weight:800;margin-top:3px">' + r.name + '</div>' +
+              '<div style="font-size:9px;color:#00d4ff;margin-top:2px">💎 ' + r.price + '</div></div>';
+      });
+    }
+    vh += '</div><h3 style="color:#ffd700;margin:8px 0 5px">Cosmetics Store — season titles (asli store card HTML)</h3><div style="display:flex;flex-wrap:nowrap;gap:6px">';
     if (window.__COSHOP) {
       var bpVis = window.__COSHOP.bpList();
       BP_ART.forEach(function (c) {
@@ -262,6 +346,18 @@
               '<div style="font-size:11px;font-weight:800">' + it.name + '</div></div>';
       });
     }
+    /* ⏳ (2026-10-13) season countdown + Top-3 near-miss (asli HTML) */
+    try {
+      var _sv = window.getCurrentSeason, _su = window.U;
+      var _rs = [];
+      for (var _i = 1; _i <= 10; _i++) _rs.push({ id: _i === 7 ? 'me-uid' : ('u' + _i), total_kills: 100 - (_i - 1) * 5, total_wins: 5, rank_points: 100 - _i });
+      window.getCurrentSeason = function () { return { name: 'Season 7', daysLeft: 3, hasEnd: true, active: true, label: '3 din baaki' }; };
+      if (window.__SS_SET_ROWS) window.__SS_SET_ROWS(_rs);
+      window.U = { uid: 'me-uid' };
+      var _sh = window.renderSeasonCountdownStrip();
+      window.getCurrentSeason = _sv; window.U = _su;
+      if (_sh) vh += '</div><h3 style="color:#ffd700;margin:8px 0 5px">Season countdown + Top-3 near-miss (asli HTML)</h3><div class="card" style="padding:8px">' + _sh + '</div>';
+    } catch (e) {}
     /* ⏰ (2026-10-12c) aakhri 12 ghante ka countdown banner — ASLI render
        function se bana HTML, bas position static kiya (fixed wala RESULT ko
        dhak leta). Emulator screenshot me aankhon se dikhega. */
@@ -296,7 +392,8 @@
     function _mkChain(rec) {
       var api = { update: function (v) { rec.op = 'update'; rec.val = v; return api; },
                   upsert: function (v, o) { rec.op = 'upsert'; rec.val = v; rec.opt = o; return api; },
-                  eq: function () { return api; }, like: function () { return api; }, select: function () { return api; },
+                  eq: function () { return api; }, in: function () { return api; },
+                  like: function () { return api; }, select: function () { return api; },
                   /* sync-then: logic (kaunse DB ops chale) turant verify ho —
                      asli supabase async hai, par yahan sequencing test karni hai */
                   then: function (cb) { cb({ error: null }); return { then: function () {} }; } };
@@ -343,11 +440,18 @@
     ['screens/profile.js', 'rankBadgeImg'],
     ['screens/rank.js', 'rankBadgeImg'],
     ['features/player-card.js', 'getTopBadges'],
+    ['features/player-card.js', 'pcClanChip'],
+    ['features/player-card.js', 'getEquippedTagText'],
     ['features/battle-pass.js', '_bpRewardLabel'],
     ['features/battle-pass.js', 'assets/img/titles/veteran.png'],
     ['js/features/badge-engine.js', 'window.equipBadge'],
     ['screens/profile.js', 'renderEquippedBadgeChip'],
     ['features/growth.js', '_BP_COS_ART'],
+    ['features/growth.js', '_COS_RINGS'],
+    ['screens/home.js', 'renderSeasonCountdownStrip'],
+    ['features/seasonal-league.js', 'seasonStripNumbers'],
+    ['features/growth.js', 'getEquippedFrameArt'],
+    ['screens/profile.js', 'pf2-ring-art'],
     ['js/features/asset-catalog.js', 'premium/ribbon.png']
   ];
   var cache = {};
@@ -378,6 +482,59 @@
     }
   });
 
+  /* ── 9b. SHARE CARD (player-card.js) — equipped title chip + clan chip ──
+     Master plan 3.7: card par title/clan dikhe = dosto ko dikhe = muft
+     marketing. Dono cheezein ASLI file se render hoti hain (mock nahi). ── */
+  beat('9b/12 share card — title + clan chip');
+  pending++;
+  (function () {
+    /* ⚠️ 8d (countdown tick) se pehle nahi chalna — wo UD badalta/restore
+       karta hai; race me banner gayab ho kar 8d ka tick-check fail kar deta
+       tha. Isliye 9b 8d ke poore hone par chalta hai. */
+    _p8d.then(function () { _run9b(); });
+    function _run9b() {
+    var _sU = window.U, _sUD = window.UD, _sSupa = window._supa, _sToast = window.toast, _sEsc = window.escHtml, _sTag = window.getEquippedTagText;
+    var _mk = document.createElement('div'); _mk.id = 'modalB';
+    document.body.appendChild(_mk);
+    window.U = { uid: 'card-test-user' };
+    window.UD = { ign: 'CardTester', clanId: '11111111-2222-3333-4444-555555555555', total_wins: 60, total_kills: 160 };
+    window.toast = function () {};
+    window.escHtml = function (x) { return String(x == null ? '' : x).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); };
+    window.getEquippedTagText = function () { return '🎖️ Veteran'; };
+    window._supa = { from: function (t) {
+      var api = { select: function () { return api; }, eq: function () { return api; }, in: function () { return api; },
+        single: function () { return Promise.resolve({ data: { id: 'card-test-user', ign: 'CardTester', ff_uid: '12345678', rank_points: 4900,
+          total_wins: 60, total_kills: 160, total_matches: 40, city: 'Delhi', avatar_url: '', clan_id: '11111111-2222-3333-4444-555555555555' } }); },
+        maybeSingle: function () { return Promise.resolve({ data: (t === 'clans') ? { name: 'Delhi Dominators', emblem: '🐉', tag: 'DD', total_members: 12 } : null }); },
+        /* asli client jaisa thenable (app_settings .in(...).then(...) bhi chale) */
+        then: function (cb) { return Promise.resolve({ data: [] }).then(cb); } };
+      return api;
+    } };
+    try { window.showPlayerCard('card-test-user'); } catch (e) { ok(false, 'showPlayerCard crash: ' + e.message); }
+    setTimeout(function () {
+      var html = _mk.innerHTML || '';
+      ok(html.indexOf('playercard') !== -1 || html.indexOf('MINI ESPORTS') !== -1, 'card render hua (asli player-card.js)');
+      ok(html.indexOf('✨') !== -1 && html.indexOf('Veteran') !== -1, 'equipped TITLE chip card par (✨ Veteran)');
+      ok(html.indexOf('pcClanChip') !== -1, 'clan chip ka hook card par (data-clan ke saath)');
+      var chip = document.getElementById('pcClanChip');
+      ok(!!chip && chip.innerHTML.indexOf('DD') !== -1 && chip.innerHTML.indexOf('Delhi Dominators') !== -1,
+         'clan chip ASLI clans row se bhara (' + (chip ? chip.innerHTML.replace(/<[^>]*>/g, '') : 'chip nahi mila') + ')');
+      /* title nahi → chip bilkul nahi (jhoota title kabhi nahi) */
+      window.getEquippedTagText = function () { return ''; };
+      try { window.showPlayerCard('card-test-user'); } catch (e) {}
+      setTimeout(function () {
+        var h2 = _mk.innerHTML || '';
+        ok(h2.indexOf('✨') === -1, 'koi equipped title nahi → ✨ chip nahi (jhoota nahi)');
+        window.U = _sU; window.UD = _sUD; window._supa = _sSupa; window.toast = _sToast; window.escHtml = _sEsc; window.getEquippedTagText = _sTag;
+        if (_mk.parentNode) _mk.parentNode.removeChild(_mk);
+        if (_p9bResolve) _p9bResolve();   /* 9d ko batado: ab tum chalo */
+        pending--;
+        if (pending === 0) finish();
+      }, 260);
+    }, 260);
+    }
+  })();
+
   /* ── 8d. LIVE countdown tick — asli 1-second interval (page chalta rehta
      hai to time bhi chalta rehta hai; band nahi, asli). Isliye ye beat
      async hai aur pending counter me judta hai (jaise wiring ke fetches). ── */
@@ -400,10 +557,95 @@
       window.updatePremiumExpiryBanner();
       ok(!document.getElementById('premExpiryBanner'), 'time khatam → banner khud gaya (DOM saaf)');
       window.getUserPremiumTier = _sTier; window.UD = _sUD;
+      if (_p8dResolve) _p8dResolve();   /* 9b ko batado: ab tum chalo */
       pending--;
       if (pending === 0) finish();
     }, 2200);
   })();
+
+  /* ── 9d. LEADERBOARD row par premium ribbon (asli renderRank = fixes-v7) ──
+     ⚠️ Sabak (2026-10-13d): leaderboard ki ASLI screen js/fixes-v7.js ke
+     renderRank se banti hai — screens/rank.js wala overwrite ho jata hai.
+     Isliye ribbon ka test ASLI renderer par hota hai, warna "code me hai
+     par app me nahi" wala bug pakda hi nahi jata. Data do jagah se aata
+     hai: IGN/stats Firebase se, premium Supabase leaderboard (public read)
+     se merge hota hai. Async hai → pending counter me judta hai. ── */
+  beat('9d/12 rank row par premium ribbon (asli renderer)');
+  pending++;
+  _p9b.then(function () {   /* 9b (share card) ka async render poora ho chuka ho, tab shuru */
+    /* (9b khud _p8d par chalta hai — isliye 8d bhi ho chuka hoga) */
+    var _old = { db: window.db, supa: window._supa, U: window.U, UD: window.UD, RR: window.renderRank, calc: window.calcRk };
+    /* screen-e2e.html ek test page hai — isme #rankContent hota hi nahi;
+       asli app me ye div index.html me hai (L508). Yahan bana dete hain. */
+    var _rc = document.createElement('div'); _rc.id = 'rankContent'; document.body.appendChild(_rc);
+    window.__rankHost = _rc;
+    var _now = Date.now();
+    var _users = {
+      'P1uid': { ign: 'TRIQA P1 r021303', total_kills: 50, total_wins: 4, total_matches: 5, rank_points: 100, ff_uid: '111' },
+      'P2uid': { ign: 'TRIQA2 P2 r021303', total_kills: 40, total_wins: 3, total_matches: 5, rank_points: 90, ff_uid: '222' },
+      'P3uid': { ign: 'Expired Premium', total_kills: 30, total_wins: 2, total_matches: 5, rank_points: 80, ff_uid: '333' },
+      'P4uid': { ign: 'Normal Player', total_kills: 20, total_wins: 1, total_matches: 5, rank_points: 70, ff_uid: '444' },
+      'P5uid': { ign: 'Premium In Row', total_kills: 10, total_wins: 1, total_matches: 5, rank_points: 60, ff_uid: '555' },
+      /* ⚠️ 2026-10-13d: QA- prefix wale IGN app leaderboard par kabhi nahi
+         aate (/^QA[-_]?/i filter) — isliye TRI ke QA players ka IGN ab
+         'TRIQA ...' hai. Ye row filter ka proof hai: ye NAHI dikhni chahiye. */
+      'P6uid': { ign: 'QA-Hidden Me', total_kills: 99, total_wins: 9, total_matches: 9, rank_points: 999, ff_uid: '666' }
+    };
+    var _chain = { limitToLast: function () { return _chain; }, orderByChild: function () { return _chain; },
+      equalTo: function () { return _chain; }, startAt: function () { return _chain; }, endAt: function () { return _chain; },
+      once: function (ev, cb) { cb({ exists: function () { return true; }, forEach: function (f) { Object.keys(_users).forEach(function (k) { f({ key: k, val: function () { return _users[k]; } }); }); } }); return _chain; },
+      on: function () { return _chain; }, off: function () { return _chain; }, child: function () { return _chain; },
+      set: function () { return Promise.resolve(); }, remove: function () { return Promise.resolve(); },
+      push: function () { return { set: function () { return Promise.resolve(); }, key: 'x' }; } };
+    window.db = { ref: function () { return _chain; } };
+    window._supa = { from: function (t) {
+      var api = { select: function () { return api; }, gt: function () { return api; }, limit: function () { return api; }, eq: function () { return api; }, in: function () { return api; },
+        then: function (cb) { return Promise.resolve({ data: (t === 'leaderboard') ? [
+            { id: 'P1uid', premium_level: 1, premium_expires: new Date(_now + 6 * 3600 * 1000).toISOString() },
+            { id: 'P3uid', premium_level: 2, premium_expires: new Date(_now - 3600 * 1000).toISOString() },
+            { id: 'P5uid', premium_level: 3, premium_expires: new Date(_now + 6 * 3600 * 1000).toISOString() }
+          ] : [] }).then(cb); } };
+      return api; } };
+    window.U = { uid: 'P2uid' };
+    window.UD = { ign: 'QA-TRI2 r021303', premium_level: 0, stats: { kills: 40, wins: 3, matches: 5 } };
+
+    /* fixes-v7 ka install wait hota hai (wo window.db && window.calcRk ka intezaar karta hai) */
+    var _tries = 0;
+    var _iv = setInterval(function () {
+      _tries++;
+      if (window._v7RankInstalled || _tries > 30) {
+        clearInterval(_iv);
+        var _installed = !!window._v7RankInstalled;
+        ok(_installed && typeof window.calcRk === 'function', 'asli renderRank (fixes-v7) install hua — calcRk + window.db ready', _installed ? 'installed' : 'nahi hua');
+        if (!_installed) { window.db = _old.db; _rc.remove(); pending--; if (pending === 0) finish(); return; }
+        window.renderRank('kills');
+        setTimeout(function () {
+          var podium = document.querySelectorAll('.pod-name'), rows = document.querySelectorAll('.rank-row');
+          var _tier = function (n) { var r = n.querySelector('.prem-ribbon'); return r ? r.getAttribute('data-premium-tier') : null; };
+          var podP1 = null, podP3 = null, rowP5 = null, rowHasUid = 0, i;
+          for (i = 0; i < podium.length; i++) {
+            if ((podium[i].innerText || '').indexOf('TRIQA P1 r021303') !== -1) podP1 = podium[i];
+            if ((podium[i].innerText || '').indexOf('Expired Premium') !== -1) podP3 = podium[i];
+          }
+          for (i = 0; i < rows.length; i++) {
+            if ((rows[i].innerText || '').indexOf('Premium In Row') !== -1) rowP5 = rows[i];
+            if (rows[i].getAttribute('data-uid')) rowHasUid++;
+          }
+          ok(podium.length >= 3, 'leaderboard podium render hua (asli renderer se)', String(podium.length) + ' podium');
+          ok(!!podP1 && _tier(podP1) === '1', 'premium player ko Supabase leaderboard merge se ribbon mila (podium, tier 1)');
+          ok(!!podP3 && _tier(podP3) === null, 'expire ho chuka premium = koi ribbon nahi (jhoota badge nahi)');
+          ok(!!rowP5 && _tier(rowP5) === '3', 'row (#4+) wale premium par bhi ribbon (tier 3)');
+          ok(rows.length > 0 && rowHasUid === rows.length, 'har rank row par data-uid (E2E hook)', rowHasUid + '/' + rows.length);
+          var _allTxt = (window.__rankHost ? window.__rankHost.innerText : '') || '';
+          ok(_allTxt.indexOf('QA-Hidden Me') === -1, 'QA- prefix wala account leaderboard par nahi (app ka filter — QA row public me nahi)');
+          window.renderRank = _old.RR; window.db = _old.db; window._supa = _old.supa;
+          window.U = _old.U; window.UD = _old.UD; window.calcRk = _old.calc;
+          _rc.remove();   /* test page saaf */
+          pending--; if (pending === 0) finish();
+        }, 1400);
+      }
+    }, 300);
+  });
 
   function finish(note) {
     if (DONE) return;   /* marker sirf EK baar — watchdog/error race me bhi */

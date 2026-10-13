@@ -156,6 +156,8 @@ const wired = [
   ['screens/profile.js', 'premiumRibbonHtml'],
   ['screens/rank.js', 'rankBadgeImg'],
   ['features/player-card.js', 'getTopBadges'],
+  ['features/player-card.js', 'pcClanChip'],
+  ['features/player-card.js', 'getEquippedTagText'],
   ['features/player-card.js', 'premiumRibbonHtml'],
   ['features/battle-pass.js', '_bpRewardLabel'],
   ['js/features/asset-catalog.js', 'premium/ribbon.png'],
@@ -164,6 +166,18 @@ const wired = [
   ['features/free-trial.js', 'renderPremiumExpiryBanner'],
   ['features/free-trial.js', 'premExpiryBanner'],
   ['screen-e2e.html', 'premExpiryBanner'],
+  ['features/growth.js', '_COS_RINGS'],
+  ['features/growth.js', 'getEquippedFrameArt'],
+  ['screens/profile.js', 'pf2-ring-art'],
+  ['screens/home.js', 'renderSeasonCountdownStrip'],
+  ['features/seasonal-league.js', 'seasonStripNumbers'],
+  /* 2026-10-13d: leaderboard ka ASLI renderer js/fixes-v7.js hai — premium
+     ribbon wahan laga hai (screens/rank.js wala render live me jeetta nahi). */
+  ['js/fixes-v7.js', '_rowRibbon'],
+  ['js/fixes-v7.js', '_mergeRankPremium'],
+  ['js/fixes-v7.js', "data-uid"],
+  ['js/fixes-v7.js', "premiumRibbonFor"],
+  ['screen-e2e.html', '9d/12'],
 ];
 wired.forEach(([f, needle]) => {
   const txt = fs.readFileSync(path.join(REPO, f), 'utf8');
@@ -244,6 +258,99 @@ console.log('\n── SCREEN 9: Season Pass ki 5 asli kalaayein + cosmetics stor
   ok(!!it25 && it25.img === 'assets/img/titles/veteran.png',
      'stale DB row (img ke bina) par bhi art map chalta hai — veteran.png');
 }
+
+console.log('\n── SCREEN 11: SEASON countdown + Top-3 near-miss (asli numbers) ──');
+vm.runInNewContext(fs.readFileSync(path.join(REPO, 'features/seasonal-league.js'), 'utf8'), ctx, { filename: 'seasonal-league.js' });
+ok(typeof ctx.renderSeasonCountdownStrip === 'function', 'renderSeasonCountdownStrip maujood');
+ok(typeof ctx.seasonStripNumbers === 'function', 'seasonStripNumbers maujood');
+/* season ka endDate asli tarah set karo (getCurrentSeason se) */
+ctx._currentSeason = { name: 'Season 7', endDate: new Date(Date.now() + 3 * 86400000).toISOString(), active: true };
+ctx.loadCurrentSeason = ctx.loadCurrentSeason;  /* _season private hai — numbers function usi ko padhta hai */
+/* rows: 10 log, main #7 par (kills me) */
+const rows10 = [];
+for (let i = 1; i <= 10; i++) rows10.push({ id: i === 7 ? 'me-uid' : ('u' + i), total_kills: 100 - (i - 1) * 5, total_wins: 5, rank_points: 100 - i });
+ctx.U = { uid: 'me-uid' };
+/* _season private hai — getCurrentSeason ko stub karke sach set karo */
+ctx.getCurrentSeason = function () { return { name: 'Season 7', daysLeft: 3, hasEnd: true, active: true, label: '3 din baaki' }; };
+const n10 = ctx.seasonStripNumbers(rows10, 'me-uid');
+ok(!!n10 && n10.pos === 7, 'meri position sahi (#' + (n10 && n10.pos) + ')');
+const thirdKills = 100 - 2 * 5;               /* #3 ke kills */
+const myKills = 100 - 6 * 5;                  /* #7 ke kills */
+ok(!!n10 && n10.gap === (thirdKills - myKills + 1), 'Top-3 se doori sahi (' + (n10 && n10.gap) + ' kills = #3 ke ' + thirdKills + ' − mere ' + myKills + ' + 1)');
+ok(!!n10 && n10.daysLeft === 3 && n10.metric === 'kills', 'countdown + metric (kills, wahi jo rank ka default tab hai)');
+/* Top-3 me hoon to "door" nahi */
+const nTop = ctx.seasonStripNumbers(rows10, 'u2');
+ok(!!nTop && nTop.pos === 2 && nTop.gap === 0, 'Top-3 me ho to koi "door" nahi (pos ' + (nTop && nTop.pos) + ')');
+/* ranked nahi → sirf countdown, jhooti rank nahi */
+const nNone = ctx.seasonStripNumbers(rows10, 'kisi-aur-ka-uid');
+ok(!!nNone && nNone.pos === 0 && nNone.gap === 0 && nNone.daysLeft === 3, 'leaderboard me na ho → position claim nahi (jhooti rank kabhi nahi)');
+/* season khatam / endDate nahi → strip hi nahi */
+ctx.getCurrentSeason = function () { return { name: 'Season 7', daysLeft: 0, hasEnd: true, active: true }; };
+ok(ctx.seasonStripNumbers(rows10, 'me-uid') === null, 'season khatam (0 din) → kuch nahi');
+ctx.getCurrentSeason = function () { return { name: 'Season 7', daysLeft: 0, hasEnd: false, active: true }; };
+ok(ctx.seasonStripNumbers(rows10, 'me-uid') === null, 'endDate hi nahi → koi jhooti deadline nahi');
+/* HTML: strip me countdown + near-miss + tap → rank */
+ctx.getCurrentSeason = function () { return { name: 'Season 7', daysLeft: 3, hasEnd: true, active: true, label: '3 din baaki' }; };
+ctx._ssRows = null; ctx.U = { uid: 'me-uid' };
+const sStrip = ctx.renderSeasonCountdownStrip();
+ok(sStrip.indexOf('seasonCountdownStrip') !== -1 && sStrip.indexOf('data-days-left="3"') !== -1, 'strip HTML me countdown (data-days-left=3)');
+ok(sStrip.indexOf('din baaki') !== -1 && sStrip.indexOf('Rank dekho') !== -1, 'strip par countdown + Rank CTA');
+ok(sStrip.indexOf('renderRank') !== -1 || sStrip.indexOf("navTo('rank')") !== -1, 'tap → rank screen');
+ctx._season = null;
+ctx.getCurrentSeason = function () { return { name: 'Season 1', daysLeft: 0, label: '', active: false }; };
+ok(ctx.renderSeasonCountdownStrip() === '', 'season data na ho → khaali (fail-safe, crash nahi)');
+
+console.log('\n── SCREEN 12: leaderboard row par premium ribbon (asli renderer) ──');
+{
+  const v7 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
+  /* 1. ribbon dono jagah — podium aur row (donon mein IGN ke aage) */
+  const podRibbon = /_rowRibbon\(u, _podIsMe\)/.test(v7);
+  const rowRibbon = /_rowRibbon\(ur, isMe\)/.test(v7);
+  ok(podRibbon && rowRibbon, 'ribbon podium aur row dono me laga (IGN ke aage)');
+  /* 2. expire premium = koi ribbon nahi — ye niyam asli file me hai (premiumRibbonFor) */
+  const be = fs.readFileSync(path.join(REPO, 'js/features/badge-engine.js'), 'utf8');
+  ok(/premiumRibbonFor[\s\S]{0,600}exp < Date\.now\(\)\) return ''/.test(be),
+     'expire ho chuka premium → ribbon nahi (jhoota badge nahi — badge-engine me guard)');
+  /* 3. Supabase leaderboard merge — Firebase me premium field na ho to bhi ribbon */
+  ok(/_mergeRankPremium/.test(v7) && /from\('leaderboard'\)/.test(v7) && /gt\('premium_level', 0\)/.test(v7),
+     'premium data Supabase leaderboard se merge hota hai (public read)');
+  /* 4. merge fail ho to screen normally chale (ribbon ke bina) */
+  ok(/function _mergeRankPremium\(users, done\)/.test(v7) && /catch \(e\) \{ _fin\(\); \}/.test(v7)
+     && /if \(!window\._supa \|\| !window\._supa\.from \|\| !users \|\| !users\.length\) return _fin\(\);/.test(v7),
+     'merge fail-safe hai — _supa/data na ho ya error aaye to screen normally chalti hai (ribbon ke bina)');
+  /* 5. QA- accounts public leaderboard par nahi (app ka purana filter — toota nahi) */
+  ok(/\^QA\[-_\]\?\/i\.test\(nm\)/.test(v7), 'QA- prefix wale accounts leaderboard par nahi (filter salamat)');
+  /* 6. renderUsers chaaron render paths me merge ke saath chalta hai (cache/timeout/success) */
+  const mergeCalls = (v7.match(/_mergeRankPremium\(users/g) || []).length;
+  ok(mergeCalls >= 2, 'merge har render path me (timeout + success)', mergeCalls + ' jagah');
+}
+
+console.log('\n── SCREEN 9b: 9 AVATAR RINGS (rank + premium kala se) ──');
+/* asli growth.js file (ring catalog + art helper) */
+vm.runInNewContext(fs.readFileSync(path.join(REPO, 'features/growth.js'), 'utf8'), ctx, { filename: 'growth.js' });
+const rings = ctx.__COS_RINGS || [];
+ok(rings.length === 9, '9 rings catalog me (' + rings.length + ')');
+ok(rings.every(r => r.type === undefined || true) && rings.every(r => r.img && r.img.indexOf('assets/img/') === 0), 'har ring ka asli art path');
+ok(new Set(rings.map(r => r.img)).size === 9, '9 alag art files (duplicate nahi)');
+const missingArt = rings.filter(r => !fs.existsSync(path.join(REPO, r.img)));
+ok(missingArt.length === 0, 'saare art files disk par maujood' + (missingArt.length ? ' — MISSING: ' + missingArt.map(m => m.img).join(', ') : ''));
+ok(rings.every(r => r.price > 0), 'har ring ki keemat (currency sink) — total ' + rings.reduce((a, b) => a + b.price, 0) + ' SD');
+/* store catalog me rings dikhte hain (type frame → "frames" tab) — EK fresh call */
+ctx.CFG = { cosmetics: {} };
+const items = ctx.__COS_CATALOG ? ctx.__COS_CATALOG() : [];
+const inStore = items.filter(i => rings.some(r => r.id === i.id));
+console.log('   (store items: ' + items.length + ', rings in store: ' + inStore.length + ')');
+ok(inStore.length === 9, 'store catalog me 9/9 rings');
+ok(inStore.every(i => i.type === 'frame'), 'sab frame type (equip logic "frame" prefix par chalta hai)');
+ok(inStore.every(i => i.desc && i.desc.length > 4), 'har ring ki desc (store card par jhooth/undefined nahi)');
+ok(inStore.every(i => i.price > 0), 'store card par price (SD) dikhta hai');
+/* equip → medal art + glow colour */
+ctx.UD = { cosmetics: { frame_ring_gold: { is_equipped: true } } };
+const fa = ctx.getEquippedFrameArt();
+ok(!!fa && fa.img === 'assets/img/ranks/gold.png', 'equipped Gold Ring → medal art (asli kala)');
+ok(!!fa && fa.color === '#ffd700', 'glow colour tier ka (gold)');
+ctx.UD = { cosmetics: {} };
+ok(ctx.getEquippedFrameArt() === null, 'kuch equipped nahi → koi medal nahi (jhoota nahi)');
 
 console.log('\n── SCREEN 10: badge EQUIP (kamaya hua badge profile par) ──');
 {

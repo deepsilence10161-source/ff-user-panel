@@ -105,6 +105,17 @@ function renderProfile() {
   h += '<div class="pf2-ava-wrap">';
   var _avaInner = '<div class="pf2-ava" style="' + (_premActive ? 'border-color:rgba(255,255,255,.10)' : 'border-color:' + _pf2Ring + ';box-shadow:0 0 24px ' + _pf2Ring + 'aa') + '">' + av + '</div>';
   h += _premActive ? '<span class="rb-ring">' + _avaInner + '</span>' : _avaInner;
+  /* ✅ 2026-10-13 (master plan 3.5): equipped AVATAR RING ka medal — asli art
+     (rank/premium kala) avatar ke kone par. Koi equipped frame art na ho to
+     kuch nahi dikhta (jhoota medal kabhi nahi). */
+  var _eqFrameArt = window.getEquippedFrameArt ? window.getEquippedFrameArt() : null;
+  if (_eqFrameArt && _eqFrameArt.img) {
+    h += '<img class="pf2-ring-art" src="' + _eqFrameArt.img + '" alt="' + (_eqFrameArt.name || '') + '" title="' + (_eqFrameArt.name || '') +
+         '" style="position:absolute;left:2px;bottom:2px;width:38px;height:38px;object-fit:contain;z-index:5;' +
+         'background:radial-gradient(circle,rgba(0,0,0,.55),transparent 70%);border-radius:50%;' +
+         'filter:drop-shadow(0 0 6px ' + (_eqFrameArt.color || '#00ff9c') + ')" ' +
+         'onerror="this.style.display=\'none\'">';
+  }
   h += '<div class="prof-edit-btn" onclick="document.getElementById(\'profImgIn\').click()" title="' + (_premActive ? 'Change photo' : 'Premium feature — change photo') + '">' + (_premActive ? '<i class="fas fa-pencil-alt"></i>' : '<i class="fas fa-lock" style="font-size:11px"></i>') + '</div>';
   h += '<input type="file" id="profImgIn" accept="image/*" style="display:none" onchange="uploadProfImg(this)">';
   h += '</div>';
@@ -118,7 +129,7 @@ function renderProfile() {
   h += '<div class="pf2-foot">';
   h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
   h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66;display:inline-flex;align-items:center;gap:5px">' +
-       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261013b" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261013c" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
        rk.emoji + ' ' + rk.badge + '</div>';
   h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
   h += '</div>';

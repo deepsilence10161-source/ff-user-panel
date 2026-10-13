@@ -61,7 +61,7 @@ function _renderPlayerCard(data){
   h+='<div style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:'+ri.color+'22;border:1px solid '+ri.color+'44">';
   /* ✅ 2026-10-12: rank badge ab asli art (assets/img/ranks) — emoji
      fallback ke saath (img fail ho to emoji dikhega, layout nahi tootega) */
-  if (window.rankBadgeImg) h+='<img src="'+window.rankBadgeImg(rp)+'?v=20261013b" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">';
+  if (window.rankBadgeImg) h+='<img src="'+window.rankBadgeImg(rp)+'?v=20261013c" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">';
   h+='<span style="font-size:14px">'+ri.emoji+'</span>';
   h+='<span style="font-size:11px;font-weight:800;color:'+ri.color+'">'+ri.badge+'</span>';
   h+='</div></div>';
@@ -79,6 +79,19 @@ function _renderPlayerCard(data){
   var _ribbonHtml = '';
   if (_isSelfCard && window.premiumRibbonHtml) { try { _ribbonHtml = premiumRibbonHtml(18); } catch (e) {} }
   h+='<div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px">'+ign+(_isVipTarget?'<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700;flex-shrink:0">⭐ VIP</span>':'')+_ribbonHtml+'</div>';
+  /* ✅ 2026-10-13 (master plan 3.7 — share card = free marketing):
+     equipped cosmetic TITLE chip + CLAN chip. Title sirf apne card par
+     (equipped row private hai, RLS). Clan public (clans table public read)
+     — naam/emblem async aata hai, isliye chip baad me bhar jaata hai. */
+  var _pcTitle = '';
+  if (_isSelfCard && window.getEquippedTagText) { try { _pcTitle = String(window.getEquippedTagText() || ''); } catch (e) { _pcTitle = ''; } }
+  var _pcClanId = (window.UD && (window.UD.clanId || window.UD.clan_id)) || data.clan_id || '';
+  if (_pcTitle || _pcClanId) {
+    h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px">';
+    if (_pcTitle) h+='<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(185,100,255,.15);border:1px solid rgba(185,100,255,.45);color:#d8a6ff">✨ '+(window.escHtml?escHtml(_pcTitle):_pcTitle)+'</span>';
+    if (_pcClanId) h+='<span id="pcClanChip" data-clan="'+_pcClanId+'" style="display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.4);color:#7fe3ff">🛡️ …</span>';
+    h+='</div>';
+  }
   h+='<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">FF UID: <span style="color:rgba(255,255,255,.8)">'+ffUid+'</span></div>';
   h+='<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">📍 '+city+'</div>';
   if(streakBadge) h+='<div style="margin-top:5px;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:rgba(255,165,0,.15);border:1px solid rgba(255,165,0,.3);font-size:11px;font-weight:800;color:#ffa500">'+streakBadge+'</div>';
@@ -129,7 +142,7 @@ function _renderPlayerCard(data){
     h+='<div style="font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(255,255,255,.45)">BADGES</div>';
     h+='<div style="display:flex;align-items:center;gap:6px;flex:1">';
     _pcBadges.forEach(function(b){
-      h+='<img src="'+b.img+'?v=20261013b" alt="'+b.name+'" title="'+b.name+'" style="width:30px;height:30px;object-fit:contain" onerror="this.style.display=\'none\'">';
+      h+='<img src="'+b.img+'?v=20261013c" alt="'+b.name+'" title="'+b.name+'" style="width:30px;height:30px;object-fit:contain" onerror="this.style.display=\'none\'">';
     });
     h+='</div><div style="font-size:10px;font-weight:800;color:'+ri.color+'">'+_pcBadges[0].name+'</div>';
     h+='</div>';
@@ -154,6 +167,24 @@ function _renderPlayerCard(data){
   h+='<p style="text-align:center;font-size:11px;color:var(--txt2);margin-top:8px">💡 Screenshot leke bhi share kar sakte ho!</p>';
   h+='</div>';
   mb.innerHTML=h;
+  /* ── Clan chip fill (async) — ASLI clans row se (public read).
+     Na mile to chip hata do (jhoota clan naam kabhi nahi). ── */
+  if (_pcClanId && window._supa) {
+    try {
+      window._supa.from('clans').select('name,emblem,tag,total_members').eq('id', _pcClanId).maybeSingle()
+        .then(function (cr) {
+          var chip = document.getElementById('pcClanChip');
+          if (!chip) return;
+          var c = cr && cr.data;
+          if (!c || !c.name) { chip.remove(); return; }
+          var _em = (c.emblem || '🛡️');
+          var _tag = c.tag ? ('[' + c.tag + '] ') : '';
+          chip.innerHTML = _em + ' ' + (window.escHtml ? escHtml(_tag + c.name) : (_tag + c.name));
+          chip.title = 'Clan' + (c.total_members != null ? ' · ' + c.total_members + ' members' : '');
+        })
+        .catch(function () { var chip = document.getElementById('pcClanChip'); if (chip) chip.remove(); });
+    } catch (e) {}
+  }
 }
 
 window.sharePlayerCard = function(){
@@ -168,7 +199,9 @@ window.sharePlayerCard = function(){
      screenshot wala text) */
   var _bestBadge = '';
   try { var _bt = window.getTopBadges ? window.getTopBadges(window._assetStats(), 1) : []; if (_bt.length) _bestBadge = _bt[0].name; } catch (e) {}
-  var msg='🎮 '+ign+' | Mini eSports\n'+ri.emoji+' '+ri.badge+' ('+rp+' RP)'+(_bestBadge?('\n🎖️ '+_bestBadge+' badge'):'')+'\n🏆 '+wins+' Wins | 💀 '+kills+' Kills\n👉 Mini eSports pe aao aur mujhse takrao!\n#MinieSports #FreeFire';
+  var _myTitle='';
+  try { if (window.getEquippedTagText) _myTitle = String(window.getEquippedTagText() || ''); } catch (e) {}
+  var msg='🎮 '+ign+(_myTitle?(' '+_myTitle):'')+' | Mini eSports\n'+ri.emoji+' '+ri.badge+' ('+rp+' RP)'+(_bestBadge?('\n🎖️ '+_bestBadge+' badge'):'')+'\n🏆 '+wins+' Wins | 💀 '+kills+' Kills\n👉 Mini eSports pe aao aur mujhse takrao!\n#MinieSports #FreeFire';
   /* BUG FIX (2026-08-21): wa.me instead of native whatsapp:// scheme —
      see growth.js doShareResult for why. */
   /* ✅ BUG FIX (2026-08-22): window.open(url,'_blank') is silently swallowed
@@ -187,7 +220,9 @@ window.sharePlayerCardGeneric=function(){
   var ri=_pcRankInfo(rp);
   var _bestBadge2 = '';
   try { var _bt2 = window.getTopBadges ? window.getTopBadges(window._assetStats(), 1) : []; if (_bt2.length) _bestBadge2 = _bt2[0].name; } catch (e) {}
-  var msg='🎮 '+ign+' | Mini eSports | '+ri.emoji+' '+ri.badge+' ('+rp+' RP)'+(_bestBadge2?(' | 🎖️ '+_bestBadge2):'')+' | 🏆 '+(window.UD.total_wins||0)+' Wins | 💀 '+(window.UD.total_kills||0)+' Kills';
+  var _myTitle2='';
+  try { if (window.getEquippedTagText) _myTitle2 = String(window.getEquippedTagText() || ''); } catch (e) {}
+  var msg='🎮 '+ign+(_myTitle2?(' '+_myTitle2):'')+' | Mini eSports | '+ri.emoji+' '+ri.badge+' ('+rp+' RP)'+(_bestBadge2?(' | 🎖️ '+_bestBadge2):'')+' | 🏆 '+(window.UD.total_wins||0)+' Wins | 💀 '+(window.UD.total_kills||0)+' Kills';
   if(navigator.share){
     navigator.share({title:'My Mini eSports Card',text:msg}).catch(function(err){
       if(err&&err.name!=='AbortError'){ _fallbackCopy(msg); }

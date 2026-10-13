@@ -398,6 +398,90 @@ def main():
 
         step("H6c Admin → user: aakhri 12 ghante ka countdown banner (live)", h6c, critical=True)
 
+        # ── H6d: admin SD deta hai → user asli cosmetics store se RING kharidta
+        #        hai (purchase_cosmetic RPC, server price) → equip → profile
+        #        par medal art. Ye naye 9 avatar-ring cosmetics ka live proof
+        #        hai (master plan 3.5) — paisa/currency asli me katta hai.
+        RING = {"key": "frame_ring_gold", "price": 100, "art": "assets/img/ranks/gold.png"}
+
+        def h6d():
+            # 1) admin: sky diamonds credit (asli admin RPC — wallet adjust)
+            cr = admin.evaluate("""async (o) => {
+                const { data, error } = await window._supa.rpc('admin_adjust_wallet',
+                  { p_uid: o.uid, p_col: 'sky_diamonds', p_amount: o.amt, p_reason: 'TRI E2E avatar-ring test' });
+                return { data, err: error ? error.message : null }; }""",
+                {"uid": ST["player"]["uid"], "amt": 300})
+            if cr.get("err") or not (cr.get("data") or {}).get("success"):
+                raise RuntimeError("SD credit fail: " + json.dumps(cr)[:200])
+
+            # 2) user: balance aaye (DB se) → store kholo
+            user.reload(wait_until="domcontentloaded")
+            user.wait_for_function("() => window.U && window.U.uid && window.UD", timeout=90000)
+            user.wait_for_function("() => Number(window.UD.skyDiamonds||0) >= 100", timeout=90000)
+            sd_before = user.evaluate("() => Number(window.UD.skyDiamonds||0)")
+            user.evaluate("() => { if (window.showCosmeticsStore) showCosmeticsStore(); }")
+            user.wait_for_timeout(2000)
+            shot(user, "h6d-store-rings.png")
+
+            # 3) asli UI button click (confirm() accept karke) — frame_ring_gold
+            user.on("dialog", lambda d: d.accept())
+            btn = user.query_selector("button[onclick*=\"buyCosmetic('frame_ring_gold'\"]")
+            if not btn:
+                # frames tab par switch karke dobara dekho (store default 'all' kholta hai)
+                user.evaluate("() => { if (window.renderCosmeticsStore) {} }")
+                try:
+                    user.click("text=Frames", timeout=6000)
+                except Exception:
+                    pass
+                user.wait_for_timeout(1200)
+                btn = user.query_selector("button[onclick*=\"buyCosmetic('frame_ring_gold'\"]")
+            if not btn:
+                raise RuntimeError("store me frame_ring_gold ka buy button nahi mila")
+            btn.click()
+            time.sleep(3)
+
+            # 4) DB se verify: user_cosmetics row + balance kata
+            def _bought():
+                r = user.evaluate("""async (o) => {
+                    const { data: c } = await window._supa.from('user_cosmetics')
+                       .select('cosmetic_key').eq('user_id', o.uid).eq('cosmetic_key', o.key);
+                    const { data: u } = await window._supa.from('users')
+                       .select('sky_diamonds').eq('id', o.uid).maybeSingle();
+                    return { rows: (c||[]).length, sd: u ? Number(u.sky_diamonds) : null }; }""",
+                    {"uid": ST["player"]["uid"], "key": RING["key"]})
+                return r if (r["rows"] == 1 and r["sd"] == sd_before - RING["price"]) else None
+
+            bought = poll(_bought, timeout=60, every=4, what="ring purchase (DB row + balance debit)")
+            shot(user, "h6d-ring-bought.png")
+
+            # 5) equip → profile par medal (asli UI/markup)
+            user.evaluate("""async (k) => {
+                if (window.toggleCosmeticEquip) await window.toggleCosmeticEquip(k);
+                if (window.closeModal) closeModal();
+                if (window.showScreen) showScreen('profile');
+                if (window.renderProfile) renderProfile(); }""", RING["key"])
+            user.wait_for_timeout(2500)
+
+            def _medal():
+                try:
+                    return user.evaluate("""() => {
+                        const el = document.querySelector('img.pf2-ring-art');
+                        return el ? { src: el.getAttribute('src') || '', alt: el.getAttribute('alt') || '' } : null; }""")
+                except Exception:
+                    return None
+
+            med = poll(_medal, timeout=90, every=4, what="profile par equipped ring ka medal art")
+            if RING["art"] not in (med.get("src") or ""):
+                raise RuntimeError("medal art galat: " + json.dumps(med)[:160])
+            shot(user, "h6d-profile-ring-medal.png")
+            VALUES["cosmetic_ring"] = RING["key"]
+            VALUES["ring_medal"] = "profile-medal"
+            return (f"admin ne 300 SD diya → user ne store se '{RING['key']}' kharida "
+                    f"(SD {sd_before} → {bought['sd']}, user_cosmetics row ✔) → equip → profile par medal art "
+                    f"({med['src'].split('/')[-1]}) ✔")
+
+        step("H6d Admin SD → user rings kharidta + equip karta hai (live store)", h6d, critical=True)
+
         # ── H7: user web ko admin ka data dikhta hai ──────────────────────
         def h7():
             seen = {}
@@ -592,6 +676,88 @@ def main():
             shot(admin, "h10-admin-gave-coins.png")
             return f"admin ne 🪙{ST['markers']['coinAmount']} diye: {before['coins']} → {after['coins']} (ledger: {json.dumps(tx, ensure_ascii=False)[:80]})"
 
+        # ── H9b (Phase-3): ROOM ID/password — creator (asli app UI) set karta
+        #        hai, joda hua player (P2) usi ko asli RPC se dekhta hai.
+        #  Raasta: admin match ka creator_uid = P1 (asli admin write, RLS
+        #  matches_admin_write) → P1 app ki apni creator-room-entry UI se
+        #  Room ID/password save karta hai (creator_set_room RPC) → admin room
+        #  release karta hai (room_status='released' + released_at past) →
+        #  P2 (join kiya hua player) get_room_credentials se wahi Room ID UI
+        #  me dekhta hai.
+        ROOM = {"id": "TRIROOM" + str(CUR)[:6].upper(), "pw": "TRIPW" + str(CUR)[-4:].upper()}
+
+        def h9b():
+            mid = MATCH["row"]["id"]
+            # 1) admin: P1 ko match ka creator banao (asli admin-panel write)
+            r1 = admin.evaluate("""async (o) => {
+                const { error } = await window._supa.from('matches')
+                  .update({ creator_uid: o.uid }).eq('id', o.mid);
+                return error ? error.message : null; }""",
+                {"uid": ST["player"]["uid"], "mid": mid})
+            if r1:
+                raise RuntimeError("creator_uid set fail: " + str(r1)[:140])
+
+            # 2) P1 (creator) — APP KI APNI UI se room ID save karo
+            user.evaluate("(id) => { if (window.showCreatorRoomEntry) showCreatorRoomEntry(id); }", mid)
+            user.wait_for_timeout(1200)
+            ok_ui = user.evaluate("""(o) => {
+                const a = document.getElementById('crRoomId'), b = document.getElementById('crRoomPw');
+                if (!a || !b) return false;
+                a.value = o.id; b.value = o.pw;
+                return true; }""", ROOM)
+            if not ok_ui:
+                raise RuntimeError("creator room-entry UI ke input nahi mile (crRoomId/crRoomPw)")
+            shot(user, "h9b-creator-room-ui.png")
+            user.evaluate("(id) => { if (window.submitCreatorRoomId) submitCreatorRoomId(id); }", mid)
+
+            def _saved():
+                return admin.evaluate("""async (mid) => {
+                    const { data } = await window._supa.from('match_rooms')
+                       .select('room_id,room_password').eq('match_id', mid).maybeSingle();
+                    return data || null; }""", mid)
+
+            saved = poll(_saved, timeout=90, every=4, what="match_rooms row (creator_set_room ke baad)")
+            if (saved.get("room_id") or "").strip() != ROOM["id"]:
+                raise RuntimeError("DB me room_id match nahi: " + json.dumps(saved)[:160])
+
+            # 3) admin: room release (jaise release_due_rooms/cron karta hai)
+            r3 = admin.evaluate("""async (mid) => {
+                const { error } = await window._supa.from('matches').update({
+                    room_status: 'released',
+                    room_released_at: new Date(Date.now() - 60000).toISOString(),
+                    room_release_minutes: 5 }).eq('id', mid);
+                return error ? error.message : null; }""", mid)
+            if r3:
+                raise RuntimeError("room release fail: " + str(r3)[:140])
+
+            # 4) P2 (joined player) — wahi Room ID apni UI me dekhe
+            p2.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.showScreen) showScreen('matches'); }")
+            p2.wait_for_timeout(2500)
+
+            def _player_sees():
+                try:
+                    return p2.evaluate("""(id) => {
+                        const t = (document.body.innerText || '');
+                        return t.indexOf(id) !== -1 ? { seen: true, txt: t.slice(0, 0) } : null; }""", ROOM["id"])
+                except Exception:
+                    return None
+
+            # pehle asli room-open path (RPC), phir text scan
+            p2.evaluate("(id) => { if (window._showRoomViaRpc) _showRoomViaRpc(id); }", mid)
+            try:
+                seen = poll(_player_sees, timeout=120, every=5, what="P2 ki UI par Room ID")
+            except Exception:
+                # dialog band ho gaya ho / screen badal gaya — dobara kholo aur scan
+                p2.evaluate("(id) => { if (window._showRoomViaRpc) _showRoomViaRpc(id); }", mid)
+                seen = poll(_player_sees, timeout=90, every=5, what="P2 ki UI par Room ID (dobara)")
+            shot(p2, "h9b-p2-room-visible.png")
+            VALUES["room_id"] = ROOM["id"]
+            VALUES["room_pw"] = ROOM["pw"]
+            return (f"creator (app UI) ne Room ID '{ROOM['id']}' + password set kiya (DB match_rooms ✔), "
+                    f"admin ne release kiya, aur jode hue player (P2) ko wahi Room ID uski UI me dikha ✔")
+
+        step("H9b Phase-3: Room ID/password — creator se player tak (live)", h9b, critical=True)
+
         step("H10 Admin → user: coins credit (admin_set_coins + ledger)", h10, critical=True)
 
         # ── H11: user web par dono cheezein dikhein ──────────────────────
@@ -714,35 +880,72 @@ def main():
             u1 = ST["player"]["uid"]
             p2.evaluate("() => { if (window.navTo) navTo('rank'); else if (window.showScreen) showScreen('rank'); }")
             p2.wait_for_timeout(2500)
+            shot(p2, "h11d-p2-rank-open.png")
 
-            ign1 = ST["markers"]["ignTag"]        # 'QA-TRI <runid>'
-            ign2 = ST["markers"]["ignTag2"]       # 'QA-TRI2 <runid>' (P2 khud — uski row se match nahi karna)
+            ign1 = ST["markers"]["ignTag"]        # 'TRIQA <runid>'
+            ign2 = ST["markers"]["ignTag2"]       # 'TRIQA2 <runid>' (P2 khud — uski row se match nahi karna)
+            #  ⚠️ 2026-10-13d: pehle IGN 'QA-TRI ...' tha — app ka leaderboard
+            #  filter (/^QA[-_]?/i) QA accounts chhupa deta hai, isliye P1 ki
+            #  row kabhi render hi nahi hoti thi aur ye step hamesha time out
+            #  hota tha (fail ka asli reason ribbon code nahi, prefix tha).
+            #  Ab IGN 'TRIQA ...' hai → row asli leaderboard par dikhti hai.
 
             def _check():
                 try:
                     return p2.evaluate("""(o) => {
-                        const rows = [...document.querySelectorAll('.rank-row, [data-uid], tr')];
-                        let rib = null, rowTxt = null, rowUid = null;
-                        for (const r of rows) {
+                        /* Leaderboard ki asli screen js/fixes-v7.js ke renderRank se
+                           banti hai: podium (.pod-name) + rows (.rank-row[data-uid]).
+                           Row dono jagah dhoondho — data-uid se (pakka), IGN text se
+                           (fallback). Ribbon .prem-ribbon <img> hai. */
+                        const holders = [...document.querySelectorAll('.rank-row[data-uid], .rank-row, .pod-name')];
+                        let rib = null, rowTxt = null, rowUid = null, seen = false, qaLeak = false;
+                        for (const r of holders) {
                           const t = (r.innerText || '');
-                          const byUid = (r.getAttribute('data-uid') || '') === o.uid;
-                          const byIgn = o.ign && t.toUpperCase().indexOf(o.ign.toUpperCase()) !== -1 && t.toUpperCase().indexOf(o.ign2.toUpperCase()) === -1;
+                          const uid = r.closest('[data-uid]') ? r.closest('[data-uid]').getAttribute('data-uid') : (r.getAttribute('data-uid') || '');
+                          const byUid = uid === o.uid;
+                          const byIgn = o.ign && t.toUpperCase().indexOf(o.ign.toUpperCase()) !== -1
+                                        && t.toUpperCase().indexOf(o.ign2.toUpperCase()) === -1;
                           if (byUid || byIgn) {
-                            rib = r.querySelector('.prem-ribbon');
-                            rowTxt = t.slice(0, 90); rowUid = r.getAttribute('data-uid') || '(ign-match)';
+                            seen = true;
+                            const box = r.closest('[data-uid]') || r;
+                            rib = box.querySelector('.prem-ribbon') || r.querySelector('.prem-ribbon');
+                            rowTxt = t.slice(0, 90); rowUid = uid || '(ign-match)';
                             break;
                           }
                         }
-                        return rib ? { ok: true, tier: rib.getAttribute('data-premium-tier'), rowTxt, rowUid } : null;
+                        /* QA- wale IGN kabhi render nahi hone chahiye (app ka filter) */
+                        qaLeak = [...document.querySelectorAll('.rank-row, .pod-name')]
+                                   .some(x => /^QA[-_]?/i.test((x.innerText || '').trim()));
+                        return { seen: seen, qaLeak: qaLeak,
+                                 ok: !!rib, tier: rib ? rib.getAttribute('data-premium-tier') : null,
+                                 rowTxt: rowTxt, rowUid: rowUid };
                     }""", {"uid": u1, "ign": ign1, "ign2": ign2})
                 except Exception:
                     return None
 
-            hit = poll(_check, timeout=240, every=6, what="P2 ke leaderboard par P1 ke aage premium ribbon")
+            def _ready():
+                r = _check()
+                if not r:
+                    return None
+                # row mil gayi par ribbon nahi → data ka issue hai, ye bhi report karo
+                if r.get("seen") and not r.get("ok"):
+                    return None
+                return r if r.get("ok") else None
+
+            try:
+                hit = poll(_ready, timeout=240, every=6, what="P2 ke leaderboard par P1 ke aage premium ribbon")
+            except Exception as _e:
+                diag = _check() or {}
+                raise RuntimeError(
+                    ("leaderboard par row mili par ribbon nahi (merge/DB issue): " + json.dumps(diag)[:220])
+                    if diag.get("seen") else
+                    ("P1 ki row hi leaderboard par nahi aayi (RTDB mirror/QA filter): " + json.dumps(diag)[:220]))
             shot(p2, "h11d-p2-leaderboard-ribbon.png")
+            if hit.get("qaLeak"):
+                raise RuntimeError("QA- prefix wala IGN leaderboard par dikh gaya — app ka filter toot gaya")
             VALUES["premium_level"] = str(hit.get("tier") or "1")
             VALUES["premium_ribbon"] = "leaderboard-row"
-            return (f"P2 (doosra player) ke leaderboard me P1 ke IGN ke aage premium ribbon dikha "
+            return (f"P2 (doosra player) ke leaderboard me P1 ke row par premium ribbon dikha "
                     f"(tier={hit.get('tier')}, row [{hit.get('rowUid')}]='{str(hit.get('rowTxt'))[:44]}')")
 
         step("H11d Doosra player (P2) ko leaderboard par premium ribbon", h11d, critical=True)
@@ -757,6 +960,8 @@ def main():
                      const {data:m} = await window._supa.from('matches').select('title').ilike('title','QA-TEST TRI%').order('created_at',{ascending:false}).limit(1);
                      const {data:n} = await window._supa.from('notifications').select('title').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
                      const {data:pr} = await window._supa.from('users').select('premium_level').eq('id', window.U.uid).maybeSingle();
+                     const {data:rc} = await window._supa.from('user_cosmetics').select('cosmetic_key')
+                        .eq('user_id', window.U.uid).eq('cosmetic_key','frame_ring_gold');
                      const {data:jr} = await window._supa.from('join_requests').select('user_id')
                         .in('match_id', (m||[]).map(x=>x.id).length ? (m||[]).map(x=>x.id) : ['00000000-0000-0000-0000-000000000000']);
                      return { coins: u && String(u.coins), sky_diamonds: u && String(u.sky_diamonds),
@@ -767,6 +972,9 @@ def main():
                               premium_level: (pr && String(pr.premium_level)) || '',
                               premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
                               premium_banner: (document.getElementById('premExpiryBanner') ? 'app-banner' : ''),
+                              room_id: (String(document.body.innerText||'').indexOf(ROOM['id']) !== -1) ? ROOM['id'] : '',
+                              cosmetic_ring: (rc && rc[0] && rc[0].cosmetic_key) || '',
+                              ring_medal: (document.querySelector('img.pf2-ring-art') ? 'profile-medal' : ''),
                               ign: (window.UD && window.UD.ign) || '' }; }""")
             VALUES.update({k2: v2 for k2, v2 in v.items() if v2 is not None})
             shot(user, "h12-final-values.png")

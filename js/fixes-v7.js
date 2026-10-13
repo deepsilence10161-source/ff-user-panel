@@ -52,6 +52,11 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       o.ffUid       = u.ff_uid || '';
       o.rankPoints  = Number(u.rank_points || 0);
       o.winStreak   = Number(u.win_streak || u.winStreak || 0);
+      /* ✅ 2026-10-13d: premium ribbon ke liye. Firebase mirror me premium
+         fields ho to yahin se, warna _mergeRankPremium() Supabase
+         leaderboard (public read) se bhar deta hai. */
+      o.premiumLevel   = Number(u.premium_level || 0);
+      o.premiumExpires = u.premium_expires ? (Date.parse(u.premium_expires) || 0) : 0;
       o.stats = {
         matches: Number(u.total_matches || u.matches || 0),
         wins:    Number(u.total_wins    || u.wins   || 0),
@@ -119,6 +124,49 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       '</div>';
   }
 
+  /* ── Premium ribbon (IGN ke aage) ──────────────────────────────────
+     ⚠️ ZAROORI SABAK (2026-10-13d): leaderboard ki ASLI screen YAHI file
+     banati hai (window.renderRank neeche). screens/rank.js me bhi ribbon
+     code hai, par wo screen live me render hI nahi hota (uska renderRank
+     is file se overwrite ho jata hai) — isliye ribbon yahan must hai,
+     warna feature "code me hai par app me nahi". ─────────────────────── */
+  function _rowRibbon(u, isMe) {
+    try {
+      var lvl = Number((u && u.premiumLevel) || 0);
+      if (window.premiumRibbonFor && lvl > 0) return window.premiumRibbonFor(lvl, (u && u.premiumExpires) || 0, 14);
+      /* apni row: UD se live (doosron ka premium public leaderboard se aata hai) */
+      if (isMe && window.premiumRibbonHtml) return window.premiumRibbonHtml(14);
+    } catch (e) {}
+    return '';
+  }
+
+  /* Supabase leaderboard se premium_level/premium_expires merge — sirf
+     premium rows (chhota payload). Fail ho to chup-chaap chor do: ribbon
+     na dikhe, baaki screen normally chalti rahe ("jhoota ribbon" nahi). */
+  function _mergeRankPremium(users, done) {
+    var _fin = function () { try { done(); } catch (e) {} };
+    try {
+      if (!window._supa || !window._supa.from || !users || !users.length) return _fin();
+      window._supa.from('leaderboard').select('id,premium_level,premium_expires')
+        .gt('premium_level', 0).limit(1000)
+        .then(function (r) {
+          var rows = (r && r.data) || [];
+          if (rows.length) {
+            var map = {};
+            for (var i = 0; i < rows.length; i++) map[rows[i].id] = rows[i];
+            for (var j = 0; j < users.length; j++) {
+              var m = map[users[j]._uid];
+              if (m && !(Number(users[j].premiumLevel) > 0)) {
+                users[j].premiumLevel   = Number(m.premium_level || 0);
+                users[j].premiumExpires = m.premium_expires ? (Date.parse(m.premium_expires) || 0) : 0;
+              }
+            }
+          }
+          _fin();
+        }).catch(function () { _fin(); });
+    } catch (e) { _fin(); }
+  }
+
   /* ── Render the full leaderboard with users array ── */
   function renderUsers(rc, users) {
     var curTab = window._rankTab || 'kills';
@@ -152,7 +200,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       var myIdx = _myIdxForCard;
       h += '<div style="background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px">';
       h += '<div style="font-size:26px;font-weight:900;color:#00ff9c;min-width:42px;text-align:center">' + (myIdx >= 0 ? '#' + (myIdx + 1) : '–') + '</div>';
-      h += '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + (me.ign || me.displayName || 'You') + ' <span style="font-size:9px;background:rgba(0,255,156,.15);color:#00ff9c;padding:1px 5px;border-radius:4px">YOU</span></div>';
+      h += '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + (me.ign || me.displayName || 'You') + _rowRibbon({ premiumLevel: 0 }, true) + ' <span style="font-size:9px;background:rgba(0,255,156,.15);color:#00ff9c;padding:1px 5px;border-radius:4px">YOU</span></div>';
       h += '<div style="font-size:11px;color:#aaa;margin-top:2px">K:' + (mySt.kills||0) + ' W:' + (mySt.wins||0) + ' M:' + (mySt.matches||0) + '</div></div>';
       h += '<span style="padding:4px 10px;border-radius:8px;background:' + myRk.bg + ';color:' + myRk.color + ';font-size:11px;font-weight:700">' + myRk.emoji + ' ' + myRk.badge + '</span>';
       h += '</div>';
@@ -180,7 +228,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
         if (CLASSES[i]==='p1') h += '<div class="pod-crown" style="animation:podCrown 1.5s ease-in-out infinite">👑</div>';
         h += '<div class="pod-ava" style="border-color:' + col + ';box-shadow:0 0 20px ' + col + '99' + (_podIsMe?',0 0 0 2px #00ff9c':'') + '">' + av + '</div>';
         h += '<div class="pod-medal">' + MEDALS[i] + '</div>';
-        h += '<div class="pod-name">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + (_podIsMe?' <span style="font-size:8px;color:#00ff9c">(YOU)</span>':'') + '</div>';
+        h += '<div class="pod-name">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + _rowRibbon(u, _podIsMe) + (_podIsMe?' <span style="font-size:8px;color:#00ff9c">(YOU)</span>':'') + '</div>';
         h += '<div class="pod-earn" style="color:' + col + ';font-weight:900">' + valStr(v2) + '</div>';
         h += '<div style="font-size:9px;padding:2px 6px;border-radius:8px;background:' + rk2.bg + ';color:' + rk2.color + ';margin:2px 0 4px">' + rk2.emoji + ' ' + rk2.badge + '</div>';
         h += '<div class="pod-pedestal">' + NUMS[i] + '</div></div>';
@@ -200,10 +248,12 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       var kd = m2>0 ? (k2/m2).toFixed(1) : '0.0';
       var isMe = window.U && ur._uid === window.U.uid;
       var numCol = j===3?'#ffd700':j===4?'#c0c0c0':j===5?'#cd7f32':'var(--txt2)';
-      h += '<div class="rank-row" style="' + (isMe?'border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.04)':'') + '">';
+      /* ✅ 2026-10-13d: data-uid — E2E isi se row pakadta hai (waise hi
+         jaise admin panel ki Joined Players table me hai). */
+      h += '<div class="rank-row" data-uid="' + (ur._uid || '') + '" style="' + (isMe?'border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.04)':'') + '">';
       h += '<div class="rank-num" style="color:' + numCol + ';font-weight:' + (j<6?'900':'600') + '">#' + (j+1) + '</div>';
       h += '<div class="rank-ava">' + av2 + '</div>';
-      h += '<div class="rank-info"><div class="rn">' + (ur.ign||ur.displayName||'Player') + (isMe?' <span style="font-size:9px;color:#00ff9c">YOU</span>':'') + '</div>';
+      h += '<div class="rank-info"><div class="rn">' + (ur.ign||ur.displayName||'Player') + _rowRibbon(ur, isMe) + (isMe?' <span style="font-size:9px;color:#00ff9c">YOU</span>':'') + '</div>';
       h += '<div class="rs">K:' + k2 + ' W:' + w2 + ' <span style="color:#00ff9c">WR:' + wr + '%</span> <span style="color:#ff9f1c">K/M:' + kd + '</span></div></div>';
       h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</span>';
       h += '<div class="rank-earn" style="color:' + (curTab==='kills'?'#ff6b6b':curTab==='wins'?'#ffd700':'#00d4ff') + '">' + valStr(v3) + '</div>';
@@ -249,8 +299,10 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       _fetchInProgress = false;
       /* Use cached if available, otherwise empty */
       var users = _cachedUsers ? sortUsers(_cachedUsers) : [];
-      renderUsers(rc, users);
-      if (onComplete) onComplete();
+      _mergeRankPremium(users, function () {
+        renderUsers(rc, sortUsers(users));
+        if (onComplete) onComplete();
+      });
     }, 8000);
 
     window.db.ref('users').limitToLast(300).once('value', function(snap) {
@@ -276,9 +328,11 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       _cachedUsers = users;
       _cacheTime = Date.now();
 
-      var sorted = sortUsers(users);
-      renderUsers(rc, sorted);
-      if (onComplete) onComplete();
+      /* premium ribbon ka data Supabase leaderboard se merge, phir render */
+      _mergeRankPremium(users, function () {
+        renderUsers(rc, sortUsers(users));
+        if (onComplete) onComplete();
+      });
 
     }, function(err) {
       /* Firebase error */

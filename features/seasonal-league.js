@@ -155,6 +155,93 @@ window.showSeasonHistory = function() {
   if (window.renderSeasonHistory) renderSeasonHistory([]);
 };
 
+/* ══════════════════════════════════════════════════════════════════
+   3.8 SEASON ENERGY (2026-10-13) — home par season countdown + apni
+   position + Top-3 ka near-miss.
+   ──────────────────────────────────────────────────────────────────
+   KYUN: season sirf "X din baaki" nahi hona chahiye — player ko ye bhi
+   dikhna chahiye ki WO kahan khada hai aur kitna door hai ("tum #7 par
+   ho · Top-3 se 2 kills door"). Yahi near-miss khelte rehne ki wajah
+   banta hai (aur season pass kharidne ki).
+   IZAT ka niyam: jo naapa nahi ja sakta wo NAHI likhte —
+     • endDate nahi → strip hi nahi (jhooti deadline kabhi nahi)
+     • season khatam (0 din) → strip nahi
+     • apni row leaderboard me nahi mili → sirf countdown dikhega,
+       position/near-miss nahi (jhooti rank kabhi nahi)
+   Metric: leaderboard ka default tab KILLS hai — wahi use hota hai,
+   taaki home aur rank screen ek hi baat bolein.
+   ══════════════════════════════════════════════════════════════════ */
+var _ssRows = null, _ssAt = 0;
+var _SS_CACHE_MS = 5 * 60 * 1000;
+
+function _ssLoad(cb) {
+  if (!window._supa) { cb(null); return; }
+  if (_ssRows && (Date.now() - _ssAt) < _SS_CACHE_MS) { cb(_ssRows); return; }
+  window._supa.from('leaderboard').select('id,total_kills,total_wins,rank_points').limit(300)
+    .then(function (r) {
+      _ssRows = (r && r.data) || null;
+      _ssAt = Date.now();
+      cb(_ssRows);
+    })
+    .catch(function () { cb(null); });
+}
+
+/* saare numbers yahin bante hain — test bhi isi ko bulata hai */
+window.seasonStripNumbers = function (rows, myUid) {
+  var s = window.getCurrentSeason ? window.getCurrentSeason() : null;
+  if (!s || !s.hasEnd || !s.active || s.daysLeft <= 0) return null;
+  var out = { name: s.name, daysLeft: s.daysLeft, pos: 0, gap: 0, metric: 'kills', total: 0 };
+  if (!rows || !rows.length) return out;
+  var sorted = rows.slice().sort(function (a, b) { return Number(b.total_kills || 0) - Number(a.total_kills || 0); });
+  out.total = sorted.length;
+  var myIdx = -1;
+  for (var i = 0; i < sorted.length; i++) { if (sorted[i].id === myUid) { myIdx = i; break; } }
+  if (myIdx < 0) return out;              /* ranked nahi — sirf countdown */
+  if (myIdx < 3) { out.pos = myIdx + 1; return out; }   /* pehle se Top-3 me */
+  var third = Number(sorted[2].total_kills || 0);
+  out.pos = myIdx + 1;
+  out.gap = Math.max(1, third - Number(sorted[myIdx].total_kills || 0) + 1); /* Top-3 me aane ke liye kam se kam kitne kills chahiye */
+  return out;
+};
+
+/* Test hook (read-only vyavhaar): rows cache seedha set karo — E2E page
+   asli strip HTML ko asli numbers ke saath render kar sake (koi mock
+   function nahi, sirf cache bhar rahe hain jo DB se bharta hai). */
+window.__SS_SET_ROWS = function (rows) { _ssRows = rows || null; _ssAt = Date.now(); };
+
+window.renderSeasonCountdownStrip = function () {
+  try {
+    var n = window.seasonStripNumbers(_ssRows, (window.U && window.U.uid) || '');
+    if (!n) return '';
+    var bits = ['⏳ <b style="color:#ffd700">' + n.name + '</b> — <b>' + n.daysLeft + '</b> din baaki'];
+    if (n.pos && n.pos <= 3) bits.push('tum #' + n.pos + ' par ho (Top-3 me!) 🏅');
+    else if (n.pos && n.gap > 0) bits.push('tum #' + n.pos + ' par ho · Top-3 se <b>' + n.gap + '</b> kills door');
+    var h = '<div id="seasonCountdownStrip" data-days-left="' + n.daysLeft + '" data-pos="' + (n.pos || 0) + '" data-gap="' + (n.gap || 0) + '" ' +
+      'onclick="if(window.renderRank)renderRank();else if(window.navTo)navTo(\'rank\')" ' +
+      'style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:9px 11px;border-radius:12px;cursor:pointer;' +
+      'background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(255,215,0,.06));border:1px solid rgba(0,255,156,.22)">' +
+      '<div style="flex:1;min-width:0;font-size:11px;color:#ddd;line-height:1.5">' + bits.join(' · ') + '</div>' +
+      '<div style="font-size:10px;font-weight:900;color:#00ff9c;white-space:nowrap">Rank dekho ›</div></div>';
+    /* position async aati hai (leaderboard fetch) — strip turant, number baad me */
+    _ssLoad(function (rows) {
+      try {
+        var el = document.getElementById('seasonCountdownStrip');
+        if (!el) return;
+        var n2 = window.seasonStripNumbers(rows, (window.U && window.U.uid) || '');
+        if (!n2) { el.remove(); return; }
+        el.setAttribute('data-pos', String(n2.pos || 0));
+        el.setAttribute('data-gap', String(n2.gap || 0));
+        var b2 = ['⏳ <b style="color:#ffd700">' + n2.name + '</b> — <b>' + n2.daysLeft + '</b> din baaki'];
+        if (n2.pos && n2.pos <= 3) b2.push('tum #' + n2.pos + ' par ho (Top-3 me!) 🏅');
+        else if (n2.pos && n2.gap > 0) b2.push('tum #' + n2.pos + ' par ho · Top-3 se <b>' + n2.gap + '</b> kills door');
+        var txt = el.querySelector('div');
+        if (txt) txt.innerHTML = b2.join(' · ');
+      } catch (e) {}
+    });
+    return h;
+  } catch (e) { return ''; }
+};
+
 /* ── Auto-load ── */
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', function() { setTimeout(window.loadCurrentSeason, 1500); });

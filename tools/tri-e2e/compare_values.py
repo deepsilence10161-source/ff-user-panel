@@ -12,7 +12,11 @@ KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "n
         "premium_level", "premium_ribbon",
         # 2026-10-13: aakhri 12 ghante ka countdown banner — APK aur web
         # dono par ek hi jagah (DB ki premium_expires) se aana chahiye
-        "premium_banner"]
+        "premium_banner",
+        # 2026-10-13: 9 avatar-ring cosmetics — web par kharida ring APK par bhi
+        "cosmetic_ring", "ring_medal",
+        # 2026-10-13 Phase-3: Room ID — creator ne web par set kiya, APK par dikha
+        "room_id"]
 
 
 def main():

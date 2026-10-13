@@ -508,6 +508,17 @@ function _getCosmetics() {
     frame_galaxy: 'Galaxy purple glow',
     frame_gold:   'Gold champion border',
     frame_glow:   'Royal Glow — gold-purple avatar frame',
+    /* 2026-10-13 (master plan 3.5): 9 AVATAR RINGS — rank + premium kala se.
+       Avatar ke kone par medal (asli art) + tier ka glow ring. */
+    frame_ring_bronze:       'Rank Ring — Bronze (avatar medal)',
+    frame_ring_silver:       'Rank Ring — Silver (avatar medal)',
+    frame_ring_gold:         'Rank Ring — Gold (avatar medal)',
+    frame_ring_platinum:     'Rank Ring — Platinum (avatar medal)',
+    frame_ring_diamond:      'Rank Ring — Diamond (avatar medal)',
+    frame_ring_legend:       'Rank Ring — Legend (avatar medal)',
+    frame_ring_prem_silver:  'Premium Ring — Silver (avatar medal)',
+    frame_ring_prem_gold:    'Premium Ring — Gold (avatar medal)',
+    frame_ring_prem_diamond: 'Premium Ring — Diamond (avatar medal)',
     tag_beast:    '⚡ BEAST MODE tag',
     tag_pro:      '🎯 PRO PLAYER tag',
     tag_king:     '👑 KING tag',
@@ -536,6 +547,20 @@ function _getCosmetics() {
   if (!base.some(function(x){ return x.id === 'frame_glow'; })) {
     base.push({ id:'frame_glow', name:'Royal Glow Frame', price:120, icon:'✨', desc:DESC.frame_glow, type:'frame', img:'assets/img/frames/glow.png' });
   }
+  /* 2026-10-13 (master plan 3.5): 9 avatar-ring cosmetics.
+     ⚠️ SSOT: naam/price server se aate hain (app_settings.live_config.cosmetics
+     — purchase_cosmetic RPC wahi price lagata hai), par art/map client me hai,
+     aur agar server config me item na ho to bhi ye store me dikhein
+     (fail-safe; warna user ko "kharidne" par unknown_cosmetic milta — jaise
+     frame_glow ke saath hota tha). Prices server se 100% match. */
+  _COS_RINGS.forEach(function (r) {
+    if (!base.some(function (x) { return x.id === r.id; })) {
+      base.push({ id: r.id, name: r.name, price: r.price, icon: r.icon, desc: DESC[r.id] || 'Avatar ring', type: 'frame', img: r.img });
+    } else {
+      /* server se aaya item — art add karo (server me img nahi hota) */
+      base.forEach(function (b) { if (b.id === r.id) { b.img = r.img; if (!b.desc) b.desc = DESC[r.id] || 'Avatar ring'; } });
+    }
+  });
   return base.concat(_getBpCosmetics());
 }
 
@@ -665,7 +690,7 @@ function _cosIconHtml(c) {
   try {
     var ic = (c && c.icon) || '🎫';
     if (!c || !c.img) return ic;
-    return '<img src="' + c.img + '?v=20261013b" alt="" loading="lazy" ' +
+    return '<img src="' + c.img + '?v=20261013c" alt="" loading="lazy" ' +
       'style="max-width:48px;max-height:32px;object-fit:contain" ' +
       'onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + ic.replace(/'/g, '') + '\'">';
   } catch (e) { return (c && c.icon) || '🎫'; }
@@ -778,8 +803,33 @@ var _COS_FRAME_COLORS = {
   frame_bp_prem_23: '#9b59f0', /* Purple Haze */
   frame_bp_prem_33: '#f0c040', /* Golden */
   frame_bp_prem_38: '#2ec8ff', /* Ocean Wave */
-  frame_bp_prem_48: '#b964ff'  /* Galaxy */
+  frame_bp_prem_48: '#b964ff', /* Galaxy */
+  /* 2026-10-13 (master plan 3.5): 9 avatar rings */
+  frame_ring_bronze:       '#cd7f32',
+  frame_ring_silver:       '#c9d4e4',
+  frame_ring_gold:         '#ffd700',
+  frame_ring_platinum:     '#7fe3ff',
+  frame_ring_diamond:      '#00d4ff',
+  frame_ring_legend:       '#ff6b2b',
+  frame_ring_prem_silver:  '#e0e0e0',
+  frame_ring_prem_gold:    '#ffb800',
+  frame_ring_prem_diamond: '#57d9ff'
 };
+/* ── 9 avatar rings (rank + premium art) — price server se match ── */
+var _COS_RINGS = [
+  { id:'frame_ring_bronze',       name:'Bronze Ring',          icon:'🥉', price:60,  img:'assets/img/ranks/bronze.png' },
+  { id:'frame_ring_silver',       name:'Silver Ring',          icon:'🥈', price:80,  img:'assets/img/ranks/silver.png' },
+  { id:'frame_ring_gold',         name:'Gold Ring',            icon:'🥇', price:100, img:'assets/img/ranks/gold.png' },
+  { id:'frame_ring_platinum',     name:'Platinum Ring',        icon:'💠', price:130, img:'assets/img/ranks/platinum.png' },
+  { id:'frame_ring_diamond',      name:'Diamond Ring',         icon:'💎', price:160, img:'assets/img/ranks/diamond.png' },
+  { id:'frame_ring_legend',       name:'Legend Ring',          icon:'👑', price:200, img:'assets/img/ranks/legend.png' },
+  { id:'frame_ring_prem_silver',  name:'Premium Silver Ring',  icon:'⚪', price:120, img:'assets/img/premium/silver.png' },
+  { id:'frame_ring_prem_gold',    name:'Premium Gold Ring',    icon:'🟡', price:180, img:'assets/img/premium/gold.png' },
+  { id:'frame_ring_prem_diamond', name:'Premium Diamond Ring', icon:'🔷', price:250, img:'assets/img/premium/diamond.png' }
+];
+window.__COS_RINGS = _COS_RINGS;   /* test hook (read-only) */
+/* test hook: poora cosmetics catalog (store wahi function use karta hai) */
+window.__COS_CATALOG = function () { try { return _getCosmetics(); } catch (e) { return []; } };
 window.getEquippedCosmetic = function(typ) {
   var owned = (window.UD && window.UD.cosmetics) || {};
   var hit = null;
@@ -807,6 +857,20 @@ window.getEquippedFrameColor = function() {
   var f = window.getEquippedCosmetic('frame');
   if (!f) return null;
   return _COS_FRAME_COLORS[f.id] || '#00ff9c';
+};
+/* 2026-10-13: equipped frame ka ART (medal) — profile avatar ke kone par
+   dikhta hai. Catalog se img leta hai (BP frames ke paas bhi img hota hai). */
+window.getEquippedFrameArt = function() {
+  var f = window.getEquippedCosmetic('frame');
+  if (!f) return null;
+  var img = '', name = f.name;
+  try {
+    var items = _getCosmetics();
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === f.id) { img = items[i].img || ''; name = items[i].name || name; break; }
+    }
+  } catch (e) {}
+  return { id: f.id, name: name, img: img, color: _COS_FRAME_COLORS[f.id] || '#00ff9c' };
 };
 window.getEquippedTagText = function() {
   var t = window.getEquippedCosmetic('tag');

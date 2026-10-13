@@ -87,10 +87,14 @@ async function fbDelete(email, password) {
 /* ── QA data rows jo is runid ke hain (sirf inhi ko chhedna hai) ───────── */
 function cleanupSql(runid) {
   const tag = `%QA-TEST TRI ${runid}%`;
-  /* ⚠️ P2 ka IGN `QA-TRI2 <runid>` hai — isliye pattern `%QA-TRI%<runid>%`
-     (pehle `%QA-TRI <runid>%` tha jo QA-TRI2 ko miss kar deta tha → P2 ki
-     users row DB me padi reh jati thi). */
-  const ign = `%QA-TRI%${runid}%`;
+  /* ⚠️ 2026-10-13d: IGN ab `TRIQA <runid>` / `TRIQA2 <runid>` hai.
+     Kyun badla: app ke leaderboard me `/^QA[-_]?/i` wala filter QA-* IGN
+     wale accounts chhupa deta hai — yani QA-TRI wale players live
+     leaderboard par dikhte hi nahi the, isliye "premium ribbon doosre
+     player ki screen par" (H11d) kabhi pass ho hi nahi sakta tha. Naya
+     prefix QA se shuru nahi hota → player asli leaderboard par dikhta hai.
+     Pattern `%TRIQA%<runid>%` dono (P1 + P2) ko pakadta hai. */
+  const ign = `%TRIQA%${runid}%`;
   const utr = `TRIRUN${runid}`;
   const emailLike = `qa-tri-${runid}-%`;
   return [
@@ -118,10 +122,9 @@ function cleanupSql(runid) {
 }
 const RESIDUE_SQL = (runid) => {
   const tag = `%QA-TEST TRI ${runid}%`, utr = `TRIRUN${runid}`, emailLike = `qa-tri-${runid}-%`;
-  /* ⚠️ P2 ka IGN `QA-TRI2 <runid>` hai — isliye pattern `%QA-TRI%<runid>%`
-     (pehle `%QA-TRI <runid>%` tha jo QA-TRI2 ko miss kar deta tha → P2 ki
-     users row DB me padi reh jati thi). */
-  const ign = `%QA-TRI%${runid}%`;
+  /* 2026-10-13d: IGN `TRIQA <runid>` / `TRIQA2 <runid>` (QA- filter se bachne
+     ke liye — dekho cleanup ka note). Pattern dono ko pakadta hai. */
+  const ign = `%TRIQA%${runid}%`;
   return `select
     (select count(*) from users where ign like '${ign}') as users,
     (select count(*) from admins where email like '${emailLike}') as admins,
@@ -173,8 +176,8 @@ async function create(runid) {
       notifBody: `Admin se test notification (tri-e2e ${runid})`,
       utr: `TRIRUN${runid}`,
       /* users.ign par 20-char ka DB check hai — isliye chhota tag. */
-      ignTag: `QA-TRI ${runid}`,
-      ignTag2: `QA-TRI2 ${runid}`,
+      ignTag: `TRIQA ${runid}`,
+      ignTag2: `TRIQA2 ${runid}`,
       sdAmount: 10, sdPrice: 10, coinAmount: 25,
     },
   };
@@ -191,17 +194,17 @@ async function create(runid) {
      asli player ka game UID hai). users_ff_uid_key UNIQUE hai, isliye run-id
      wala unique tag. */
   await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid)
-             values ('${p.localId}', 'QA-TRI ${runid}', false, 0, 0, 'R${runid}P1')
+             values ('${p.localId}', 'TRIQA ${runid}', false, 0, 0, 'R${runid}P1')
              on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid;`);
   await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid)
-             values ('${p2.localId}', 'QA-TRI2 ${runid}', false, 0, 0, 'R${runid}P2')
+             values ('${p2.localId}', 'TRIQA2 ${runid}', false, 0, 0, 'R${runid}P2')
              on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid;`);
 
   /* QA admin ko admin haq — dono jagah (gate + RLS). Sirf isi runid ke liye. */
   log('Supabase: QA admin ko admins row + users.is_admin…');
   /* ⚠️ admins.uid → users.id FK hai, isliye PEHLE users row, phir admins. */
   await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds)
-             values ('${a.localId}', 'QA-TRI ${runid} ADM', true, 0, 0)
+             values ('${a.localId}', 'TRIQA ${runid} ADM', true, 0, 0)
              on conflict (id) do update set is_admin = true, ign = excluded.ign;`);
   await sql(`insert into admins (uid, email, display_name, role, added_by, is_active)
              values ('${a.localId}', '${adminEmail}', 'QA TRI ${runid}', 'admin', 'tri-e2e', true)

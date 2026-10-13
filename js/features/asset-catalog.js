@@ -130,7 +130,7 @@
       { id: 'sp_clan_war_champion', name: 'Clan War Champion', img: BASE + 'special/clan-war-champion.png', desc: 'Clan War winner badge', need: null }
     ],
     cosmetic: [
-      { id: 'frame_glow', name: 'Royal Glow Frame', img: BASE + 'frames/glow.png', desc: 'Profile avatar glow frame (cosmetics store — frame type)', need: null }
+      { id: 'frame_glow', name: 'Royal Glow Frame', img: BASE + 'frames/glow.png', desc: 'Profile avatar glow frame (cosmetics store — frame type)', need: null },
     ],
     icons: [
       { id: 'icon_crown', name: 'Crown', img: BASE + 'icons/crown.png', desc: 'UI icon — Legend/king', need: null },
