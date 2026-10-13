@@ -290,6 +290,114 @@ def main():
 
         step("H6b Admin → user: premium grant (approve_premium)", h6b, critical=True)
 
+        # ── H6c: aakhri 12 ghante ka countdown banner (live DB → user UI) ──
+        #  Admin panel se premium_expires badalte hain (RLS: is_caller_admin()
+        #  wahi raasta jo panel use karta hai) aur USER ki asli UI par dekhte
+        #  hain: (1) 6 ghante bache → banner + chalta hua countdown,
+        #  (2) 30 ghante bache → banner GAYAB (12h window ke bahar — jhoota
+        #  countdown kabhi nahi), (3) wapas 6 ghante → banner phir aa jaye.
+        #  Ant me 6 ghante hi chhodte hain (APK step 12 isi par check karta hai).
+        BANNER = {}
+
+        def h6c():
+            def set_exp(hours):
+                return admin.evaluate("""async (o) => {
+                    const iso = new Date(Date.now() + o.h * 3600 * 1000).toISOString();
+                    const { data, error } = await window._supa.from('users')
+                      .update({ premium_expires: iso }).eq('id', o.uid)
+                      .select('premium_level,premium_expires');
+                    if (error) return { err: error.message };
+                    const { data: lb } = await window._supa.from('leaderboard')
+                      .select('premium_level,premium_expires').eq('id', o.uid).maybeSingle();
+                    return { data, lb }; }""", {"uid": ST["player"]["uid"], "h": hours})
+
+            def reload_user():
+                user.reload(wait_until="domcontentloaded")
+                user.wait_for_function("() => window.U && window.U.uid && window.UD", timeout=90000)
+                user.wait_for_function("() => window._supaTokenUid === window.U.uid", timeout=90000)
+
+            def banner_state():
+                return user.evaluate("""() => {
+                    const el = document.getElementById('premExpiryBanner');
+                    const cnt = document.getElementById('premExpiryCount');
+                    const ud = (window.UD && window.UD.premium && window.UD.premium.expiresAt) || 0;
+                    return { has: !!el, ms: el ? Number(el.getAttribute('data-ms-left') || 0) : null,
+                             txt: (cnt && cnt.textContent) || '',
+                             cta: el ? !!el.querySelector('button') : false,
+                             udExp: Number(ud) || 0 }; }""")
+
+            won = []
+            # (1) 6 ghante bache → banner
+            r1 = set_exp(6)
+            if r1.get("err"):
+                raise RuntimeError("expiry set fail: " + r1["err"])
+            reload_user()
+
+            def _due():
+                b = banner_state()
+                if b["has"] and b["ms"] and b["ms"] <= 12 * 3600 * 1000:
+                    return b
+                # UI ko apna state check karne ka mauka (asli function)
+                user.evaluate("() => { if (window.checkTrialState) window.checkTrialState(); }")
+                return None
+
+            b1 = poll(_due, timeout=120, every=4, what="6h bache par countdown banner")
+            BANNER["pos"] = b1
+            VALUES["premium_banner"] = "app-banner"
+            VALUES["premium_expires_ms"] = str(b1["ms"])
+            shot(user, "h6c-user-web-countdown-banner.png")
+            won.append(f"6h → banner (data-ms-left={b1['ms']}, '{b1['txt']}', CTA={b1['cta']})")
+            if not re.match(r"^\d\d:\d\d:\d\d$", str(b1.get("txt") or "")):
+                raise RuntimeError("countdown format galat: " + str(b1.get("txt")))
+            if not b1.get("cta"):
+                raise RuntimeError("banner par continue/CTA button nahi mila")
+            if not (b1.get("udExp") or 0) > time.time() * 1000:
+                raise RuntimeError("UD.premium.expiresAt future me nahi (DB se aaya hi nahi)")
+
+            # countdown apne aap chalta hai? (2.2s baad wahi text nahi hona chahiye)
+            t0 = b1["txt"]
+            time.sleep(2.4)
+            b1b = banner_state()
+            if not b1b["has"] or b1b["txt"] == t0:
+                raise RuntimeError(f"countdown chal nahi raha ({t0} → {b1b['txt']})")
+            won.append(f"live tick {t0} → {b1b['txt']}")
+
+            # (2) 30 ghante bache → banner nahi
+            set_exp(30)
+            reload_user()
+            time.sleep(3)
+            user.evaluate("() => { if (window.checkTrialState) window.checkTrialState(); }")
+            time.sleep(1.5)
+            b2 = banner_state()
+            if b2["has"]:
+                raise RuntimeError("30 ghante bache hone par bhi banner dikh raha (jhoota countdown)")
+            won.append("30h → banner gayab ✔")
+            if b2["udExp"] <= time.time() * 1000:
+                raise RuntimeError("30h par bhi UD.premium.expiresAt purana hi reh gaya")
+
+            # (3) wapas 6 ghante → banner phir aa jaye (aur APK ke liye yahi chhodo)
+            set_exp(6)
+            reload_user()
+
+            def _back():
+                b = banner_state()
+                if b["has"]:
+                    return b
+                user.evaluate("() => { if (window.checkTrialState) window.checkTrialState(); }")
+                return None
+
+            b3 = poll(_back, timeout=120, every=4, what="wapas 6h par banner")
+            shot(user, "h6c-user-web-banner-back.png")
+            won.append(f"wapas 6h → banner aa gaya ('{b3['txt']}')")
+
+            # leaderboard bhi update hua? (trigger premium_expires ko bhi sync karta hai)
+            lb = (r1.get("lb") or {})
+            lbexp = lb.get("premium_expires")
+            lbnote = "leaderboard.premium_expires " + ("sync hua" if lbexp else "khali (chhoti expiry par bhi row update)")
+            return " | ".join(won) + " | " + lbnote
+
+        step("H6c Admin → user: aakhri 12 ghante ka countdown banner (live)", h6c, critical=True)
+
         # ── H7: user web ko admin ka data dikhta hai ──────────────────────
         def h7():
             seen = {}
@@ -658,6 +766,7 @@ def main():
                               joined_players: String((jr || []).length),
                               premium_level: (pr && String(pr.premium_level)) || '',
                               premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
+                              premium_banner: (document.getElementById('premExpiryBanner') ? 'app-banner' : ''),
                               ign: (window.UD && window.UD.ign) || '' }; }""")
             VALUES.update({k2: v2 for k2, v2 in v.items() if v2 is not None})
             shot(user, "h12-final-values.png")

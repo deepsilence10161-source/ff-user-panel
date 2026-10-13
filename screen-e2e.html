@@ -18,12 +18,15 @@
 <div id="screenE2EResult" style="font-size:17px;font-weight:900;padding:10px;color:#ffd700">RUNNING...</div>
 <div id="log"></div>
 
-<script src="js/features/asset-catalog.js?v=20261013a"></script>
-<script src="js/features/badge-engine.js?v=20261013a"></script>
+<script src="js/features/asset-catalog.js?v=20261013b"></script>
+<script src="js/features/badge-engine.js?v=20261013b"></script>
 <!-- 2026-10-12b: Battle Pass (5 season-title kalaayein) + cosmetics store
      ki ASLI files — mock nahi. Inka __BP/__COSHOP test-hook read-only hai. -->
-<script src="features/battle-pass.js?v=20261013a"></script>
-<script src="features/growth.js?v=20261013a"></script>
+<script src="features/battle-pass.js?v=20261013b"></script>
+<script src="features/growth.js?v=20261013b"></script>
+<!-- 2026-10-12c: Free Trial (aakhri 12 ghante ka countdown + banner) ki ASLI file.
+     initTrial() yahan kuch nahi todta: U na hone par chup-chaap wait karta hai. -->
+<script src="features/free-trial.js?v=20261013b"></script>
 <script>
 /* ================================================================
    SCREEN E2E (2026-10-12) — asli app pages ke bina bhi, har us screen
@@ -149,6 +152,41 @@
   ok(window.premiumRibbonFor(2, 0, 15).indexOf('height:15px') !== -1, 'size param kaam karta hai (expiry null = lifetime)');
   ok(window.premiumRibbonFor(2, Date.now() + 86400000, 15).indexOf('data-premium-tier="2"') !== -1, 'tier data-attribute');
 
+  beat('8c/12 trial aakhri 12 ghante — countdown banner');
+  /* ── 8c. Premium expiry banner (trial ke aakhri 12 ghante) ──
+     Sirf 12 ghante ya kam bachein tab dikhta hai; zyada waqt = khaali;
+     koi premium nahi = khaali (jhoota countdown kabhi nahi). */
+  window.getUserPremiumTier = function () { return 2; };
+  window.UD = { premium: { tier: 2, expiresAt: Date.now() + (6 * 3600 * 1000) } };
+  var b1 = window.renderPremiumExpiryBanner();
+  ok(b1.indexOf('id="premExpiryBanner"') !== -1, '12h ke andar → banner HTML');
+  ok(b1.indexOf('premExpiryCount') !== -1 && /\d\d:\d\d:\d\d/.test(b1), 'countdown H:M:S format me');
+  ok(b1.indexOf('continue') !== -1, 'banner par CTA button');
+  window.UD = { premium: { tier: 2, expiresAt: Date.now() + (20 * 3600 * 1000) } };
+  ok(window.renderPremiumExpiryBanner() === '', '20 ghante bache → banner NAHI (window ke bahar)');
+  window.UD = { premium: { tier: 2, expiresAt: Date.now() - 60000 } };
+  ok(window.renderPremiumExpiryBanner() === '', 'expire ho chuka → banner NAHI');
+  window.getUserPremiumTier = function () { return 0; };
+  window.UD = { premium: { tier: 0, expiresAt: Date.now() + (3 * 3600 * 1000) } };
+  ok(window.renderPremiumExpiryBanner() === '', 'koi premium nahi → banner NAHI (jhoota countdown kabhi nahi)');
+  /* asli DOM me lagne + tick hone ka check */
+  window.getUserPremiumTier = function () { return 1; };
+  window.UD = { premium: { tier: 1, expiresAt: Date.now() + (11 * 3600 * 1000) } };
+  var _shown = window.updatePremiumExpiryBanner();
+  var _el = document.getElementById('premExpiryBanner');
+  ok(_shown === true && !!_el, 'banner DOM me laga');
+  var _left1 = _el ? Number(_el.getAttribute('data-ms-left')) : 0;
+  ok(_left1 > (10.5 * 3600 * 1000) && _left1 <= (11 * 3600 * 1000), 'data-ms-left ~11 ghante', String(_left1));
+  var _cntTxt = (document.getElementById('premExpiryCount') || {}).textContent || '';
+  ok(/^\d\d:\d\d:\d\d$/.test(_cntTxt), 'banner par live time chal raha hai (' + _cntTxt + ')');
+  ok(_el && _el.style.position === 'fixed' && Number(_el.style.zIndex) >= 9990, 'banner fixed + sabse upar (z-index)');
+  /* expiry khatam → banner khud hat jaye (live DOM par) */
+  window.UD = { premium: { tier: 1, expiresAt: Date.now() - 1000 } };
+  ok(window.updatePremiumExpiryBanner() === false && !document.getElementById('premExpiryBanner'),
+     'expiry ke baad banner khud hat gaya (DOM saaf)');
+  /* RESULT ko dhakne se bachane ke liye live fixed banner hata diya —
+     uski shakal screenshot me VISUAL card ke roop me neeche dikhti hai. */
+
   beat('9/12 Collection gallery render');
   /* ── 9. ASLI Collection gallery ka render (openModal ko capture karke) ──
      Ye nakli nahi: showAssetGallery() hi chalta hai, bas uska modal
@@ -223,6 +261,17 @@
               '<div style="font-size:28px;min-height:32px;display:flex;align-items:center;justify-content:center">' + window.__COSHOP.iconHtml(it) + '</div>' +
               '<div style="font-size:11px;font-weight:800">' + it.name + '</div></div>';
       });
+    }
+    /* ⏰ (2026-10-12c) aakhri 12 ghante ka countdown banner — ASLI render
+       function se bana HTML, bas position static kiya (fixed wala RESULT ko
+       dhak leta). Emulator screenshot me aankhon se dikhega. */
+    if (b1 && b1.indexOf('premExpiryBanner') !== -1) {
+      vh += '</div><h3 style="color:#ffd700;margin:8px 0 5px">Trial/Premium khatam hone se pehle — live countdown banner (asli HTML)</h3>';
+      vh += '<div class="card" style="padding:0;overflow:hidden">' +
+            b1.replace('position:fixed;left:0;right:0;top:0;z-index:9997;', 'position:static;')
+                .replace('id="premExpiryBanner"', 'data-visual-clone="1"')
+                .replace('id="premExpiryCount"', 'data-visual-count="1"') +
+            '</div>';
     }
     vh += '</div>';
     vis.innerHTML = vh;
@@ -328,6 +377,33 @@
       if (--pending === 0) finish();
     }
   });
+
+  /* ── 8d. LIVE countdown tick — asli 1-second interval (page chalta rehta
+     hai to time bhi chalta rehta hai; band nahi, asli). Isliye ye beat
+     async hai aur pending counter me judta hai (jaise wiring ke fetches). ── */
+  beat('8d/12 countdown live tick (asli 1s interval)');
+  pending++;
+  (function () {
+    var _sTier = window.getUserPremiumTier, _sUD = window.UD;
+    window.getUserPremiumTier = function () { return 1; };
+    window.UD = { premium: { tier: 1, expiresAt: Date.now() + (11 * 3600 * 1000) } };
+    window.startPremiumExpiryTicker();     /* asli ticker */
+    window.updatePremiumExpiryBanner();    /* banner live DOM me */
+    var _b = document.getElementById('premExpiryBanner');
+    var _t0 = (document.getElementById('premExpiryCount') || {}).textContent || '';
+    ok(!!_b && /^\d\d:\d\d:\d\d$/.test(_t0), 'banner DOM me + countdown chalu (' + _t0 + ')');
+    setTimeout(function () {
+      var _b2 = document.getElementById('premExpiryBanner');
+      var _t1 = (document.getElementById('premExpiryCount') || {}).textContent || '';
+      ok(!!_b2 && _t1 && _t1 !== _t0, 'countdown KHUD badla bina reload (' + _t0 + ' → ' + _t1 + ')');
+      window.UD = { premium: { tier: 1, expiresAt: Date.now() - 1000 } };
+      window.updatePremiumExpiryBanner();
+      ok(!document.getElementById('premExpiryBanner'), 'time khatam → banner khud gaya (DOM saaf)');
+      window.getUserPremiumTier = _sTier; window.UD = _sUD;
+      pending--;
+      if (pending === 0) finish();
+    }, 2200);
+  })();
 
   function finish(note) {
     if (DONE) return;   /* marker sirf EK baar — watchdog/error race me bhi */

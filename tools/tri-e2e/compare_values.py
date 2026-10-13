@@ -9,7 +9,10 @@ import argparse, json, sys
 KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "notif_title",
         # 2026-10-12: premium ribbon — dono taraf (APK ↔ web) ek hi premium_level
         # dikhna chahiye (admin ne approve_premium se diya tha)
-        "premium_level", "premium_ribbon"]
+        "premium_level", "premium_ribbon",
+        # 2026-10-13: aakhri 12 ghante ka countdown banner — APK aur web
+        # dono par ek hi jagah (DB ki premium_expires) se aana chahiye
+        "premium_banner"]
 
 
 def main():

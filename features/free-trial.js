@@ -183,26 +183,154 @@ function _showTrialPrompt(onShowFull) {
   if (window.openModal) openModal('🎁 Free Trial', h);
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   TRIAL/PREMIUM KE AAKHRI 12 GHANTE — live countdown + banner
+   ──────────────────────────────────────────────────────────────────
+   KYUN: trial 3 din ka hai; aakhri 12 ghante hi wo waqt hota hai jab
+   user sabse zyada convert karta hai — par app me sirf ek toast aata tha
+   (aur wo bhi din-level par). Ab: jab tak premium/trial expire hone me
+   12 ghante ya kam bachein, screen par ek banner rehta hai jo SECOND-BY-
+   SECOND countdown dikhata hai, saath "₹49 me continue karo" CTA.
+
+   Kahan se aata hai time? — pehle UD.premium.expiresAt (server ki
+   premium_expires, jo listeners.js set karta hai — ASLI source of
+   truth). Na mile to local trial record se (startedAt + TRIAL_DAYS).
+   Dono na hon → kuch nahi dikhata (jhoota countdown kabhi nahi).
+   ══════════════════════════════════════════════════════════════════ */
+var EXPIRY_WINDOW_MS = 12 * 60 * 60 * 1000;
+
+window.getPremiumExpiryAt = function() {
+  try {
+    var udExp = (window.UD && window.UD.premium && window.UD.premium.expiresAt) || 0;
+    if (udExp) return Number(udExp);
+    var t = window.getTrialStatus && window.getTrialStatus();
+    if (t && t.startedAt) return Number(t.startedAt) + (TRIAL_DAYS * 24 * 60 * 60 * 1000);
+  } catch (e) {}
+  return 0;
+};
+
+/* kitne ms bache hain (0 = khatam ya koi premium nahi) */
+window.getPremiumMsLeft = function() {
+  var exp = window.getPremiumExpiryAt();
+  if (!exp) return 0;
+  var tier = window.getUserPremiumTier ? Number(window.getUserPremiumTier()) || 0 : 0;
+  if (tier <= 0) return 0;
+  return Math.max(0, exp - Date.now());
+};
+
+function _fmtLeft(ms) {
+  var s = Math.floor(ms / 1000);
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  function p2(n) { return (n < 10 ? '0' : '') + n; }
+  return p2(h) + ':' + p2(m) + ':' + p2(sec);
+}
+
+/* banner ka HTML — E2E ke liye id + data-ms-left (aur 0 par khaali) */
+window.renderPremiumExpiryBanner = function() {
+  try {
+    var left = window.getPremiumMsLeft();
+    if (left <= 0 || left > EXPIRY_WINDOW_MS) return '';
+    var tier = window.getUserPremiumTier ? Number(window.getUserPremiumTier()) || 0 : 0;
+    var tname = tier >= 3 ? 'Diamond' : (tier === 2 ? 'Gold' : 'Silver');
+    return '<div id="premExpiryBanner" data-ms-left="' + left + '" data-tier="' + tier + '" ' +
+      'style="position:fixed;left:0;right:0;top:0;z-index:9997;display:flex;align-items:center;gap:8px;' +
+      'padding:8px 12px;background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,140,0,.12));' +
+      'border-bottom:1px solid rgba(255,215,0,.35);backdrop-filter:blur(10px);font-size:12px;color:#ffd700">' +
+      '<span style="font-size:15px">⏰</span>' +
+      '<span style="font-weight:800">' + tname + ' khatam hone me</span>' +
+      '<span id="premExpiryCount" style="font-family:monospace;font-weight:900;font-size:13px;color:#fff">' + _fmtLeft(left) + '</span>' +
+      '<button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade()" style="margin-left:auto;padding:6px 12px;border:none;' +
+      'border-radius:9px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:11px;font-weight:900;cursor:pointer">' +
+      '₹49 me continue</button>' +
+      '</div>';
+  } catch (e) { return ''; }
+};
+
+/* banner lagao/hatao (aur har second countdown update) */
+window.updatePremiumExpiryBanner = function() {
+  try {
+    var el = document.getElementById('premExpiryBanner');
+    var html = window.renderPremiumExpiryBanner();
+    if (!html) {
+      if (el) el.remove();
+      /* window ke bahar nikal gaya par premium abhi bhi hai → agla din-level
+         check isko dobara laga dega */
+      return false;
+    }
+    if (!el) {
+      var wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      el = wrap.firstChild;
+      /* header ke NEECHE lagao (uske upar nahi) — warna header dhak jata */
+      try {
+        var hdr = document.getElementById('header');
+        el.style.top = ((hdr && hdr.offsetHeight) ? Math.round(hdr.getBoundingClientRect().height) : 0) + 'px';
+      } catch (e) {}
+      document.body.appendChild(el);
+    } else {
+      var cnt = document.getElementById('premExpiryCount');
+      var left = window.getPremiumMsLeft();
+      el.setAttribute('data-ms-left', String(left));
+      if (cnt) cnt.textContent = _fmtLeft(left);
+    }
+    return true;
+  } catch (e) { return false; }
+};
+
+/* har second tick — banner laga ho to use update karo; na ho to har 15
+   second me ek nazar (agar 12-ghante ki window me ab dakhil hue ho to
+   banner ≤15s me khud aa jaye, 30-min wale poll ka intezaar na karna pade).
+   ⚠️ Test hook: window.startPremiumExpiryTicker — vyavhaar wahi rehta hai. */
+function _startExpiryTicker() {
+  if (window._premExpiryTicker) return;
+  var n = 0;
+  window._premExpiryTicker = setInterval(function() {
+    n++;
+    /* banner laga ho to har second update (countdown chalta rahe) */
+    if (document.getElementById('premExpiryBanner')) { window.updatePremiumExpiryBanner(); return; }
+    /* na laga ho to har 15s ek nazar — agar ab 12-ghante ki window me dakhil
+       hue ho to banner ≤15s me khud aa jaye. */
+    if (n % 15 === 0) window.updatePremiumExpiryBanner();
+    /* har minute poora state check — admin ne premium_expires badla (realtime
+       → UD turant update hota hai) to banner bhi ~1 minute me aa/jaata hai,
+       warna 30-min wale poll ka intezaar karna padta. */
+    if (n % 60 === 0) window.checkTrialState();
+  }, 1000);
+}
+/* Test hooks (vyavhaar wahi): ticker + poora state check bahar se bhi call ho sake */
+window.startPremiumExpiryTicker = _startExpiryTicker;
+window.checkTrialState = checkTrialState;
+
 /* ── Periodic Check: apply/remove perks, show expiry modal ── */
 function checkTrialState() {
   var uid = window.U && window.U.uid;
   if (!uid) return;
 
-  /* Real premium overrides trial */
+  /* Real premium ho (ya trial) → pehle banner ka hisaab */
   var realTier = window.getUserPremiumTier ? window.getUserPremiumTier() : 0;
-  if (realTier > 0) { _removeTrialPerks(); return; }
+  if (realTier > 0) {
+    _removeTrialPerks();
+    /* ✅ 2026-10-12: aakhri 12 ghante ka live countdown banner (trial ho ya
+       khareeda hua premium — dono par). Window ke bahar = banner hata do. */
+    _startExpiryTicker();
+    window.updatePremiumExpiryBanner();
+    return;
+  }
+  /* koi premium nahi → banner bhi nahi (jhoota countdown kabhi nahi) */
+  window.updatePremiumExpiryBanner();
 
   if (window.isTrialActive()) {
     _applyTrialPerks();
 
-    /* Final-day reminder (trial ab 3 din ka hai) */
+    /* Final-day reminder — ab banner me live countdown dikhta hai; toast
+       sirf tab jab banner ki window (12h) shuru ho chuki ho aur pehli baar. */
     var t = window.getTrialStatus();
     if (t && !t.reminderSent) {
-      var daysPassed = Math.floor((Date.now() - t.startedAt) / (24 * 60 * 60 * 1000));
-      if (daysPassed >= TRIAL_DAYS - 1) {
+      var _left = window.getPremiumMsLeft();
+      if (_left > 0 && _left <= EXPIRY_WINDOW_MS) {
         t.reminderSent = true;
         localStorage.setItem(TRIAL_KEY + uid, JSON.stringify(t));
-        if (window.toast) toast('⏰ Trial aakhri din par hai — ₹49 mein continue karo!', 'inf');
+        if (window.toast) toast('⏰ ' + Math.max(1, Math.round(_left / 3600000)) + ' ghante bache — ₹49 mein continue karo!', 'inf');
       }
     }
   } else if (window.isTrialExpired()) {
@@ -240,7 +368,8 @@ function initTrial() {
   wrapGetTier();
   injectTrialButton();
   checkTrialState();
-  /* Check every 30 min */
+  _startExpiryTicker();
+  /* Check every 30 min (banner khud har second update hota hai) */
   setInterval(checkTrialState, 30 * 60 * 1000);
   console.log('[Mini eSports] Free Trial System v1.0 ✅');
 }

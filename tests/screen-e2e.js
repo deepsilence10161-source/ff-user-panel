@@ -95,6 +95,47 @@ ok(ctx.premiumRibbonFor(0, 0, 15) === '', 'level 0 → khaali');
 ok(ctx.premiumRibbonFor(2, Date.now() + 86400000, 15).indexOf('premium/ribbon.png') !== -1, 'level 2 + expiry → ribbon');
 ok(ctx.premiumRibbonFor(3, Date.now() - 60000, 15) === '', 'expired → koi ribbon nahi (jhoota dava nahi)');
 
+console.log('\n── SCREEN 6d: trial/premium aakhri 12 ghante — countdown + banner ──');
+/* asli free-trial.js file VM me (DOM stubs ke saath) */
+vm.runInNewContext(fs.readFileSync(path.join(REPO, 'features/free-trial.js'), 'utf8'), ctx, { filename: 'free-trial.js' });
+ok(typeof ctx.renderPremiumExpiryBanner === 'function', 'renderPremiumExpiryBanner maujood');
+ok(typeof ctx.updatePremiumExpiryBanner === 'function', 'updatePremiumExpiryBanner maujood');
+ok(typeof ctx.getPremiumMsLeft === 'function', 'getPremiumMsLeft maujood');
+ok(typeof ctx.getPremiumExpiryAt === 'function', 'getPremiumExpiryAt maujood');
+ok(typeof ctx.startPremiumExpiryTicker === 'function', 'ticker hook maujood (window.startPremiumExpiryTicker)');
+ctx.getUserPremiumTier = () => 2;
+ctx.UD = { premium: { tier: 2, expiresAt: Date.now() + (6 * 3600 * 1000) } };
+const bn = ctx.renderPremiumExpiryBanner();
+ok(bn.indexOf('id="premExpiryBanner"') !== -1, '12h ke andar → banner HTML mila');
+ok(bn.indexOf('premExpiryCount') !== -1 && /\d\d:\d\d:\d\d/.test(bn), 'live countdown H:M:S format me');
+ok(bn.indexOf('49') !== -1 && bn.indexOf('showPremiumUpgrade') !== -1, 'CTA button (₹49 / upgrade)');
+ok(bn.indexOf('Gold') !== -1, 'tier ka sahi naam (Gold)');
+const msLeft = ctx.getPremiumMsLeft();
+ok(msLeft > 5.5 * 3600 * 1000 && msLeft <= 6 * 3600 * 1000, 'getPremiumMsLeft sahi (~6h, mila ' + Math.round(msLeft / 3600000 * 10) / 10 + 'h)');
+ctx.UD = { premium: { tier: 2, expiresAt: Date.now() + (20 * 3600 * 1000) } };
+ok(ctx.renderPremiumExpiryBanner() === '', '20 ghante bache → banner NAHI (window ke bahar)');
+ctx.UD = { premium: { tier: 2, expiresAt: Date.now() - 1000 } };
+ok(ctx.renderPremiumExpiryBanner() === '', 'expire ho chuka → banner NAHI (jhoota dava nahi)');
+ctx.getUserPremiumTier = () => 0;
+ctx.UD = { premium: { tier: 0, expiresAt: Date.now() + (3 * 3600 * 1000) } };
+ok(ctx.renderPremiumExpiryBanner() === '', 'koi premium nahi → banner NAHI');
+/* trial record se hisaab — server data na ho to bhi kaam kare */
+ctx.U = { uid: 'trial-user-1' };
+const _tStart = Date.now() - (3 * 24 * 3600 * 1000) + (5 * 3600 * 1000); /* 5 ghante bache */
+ctx.localStorage = { getItem: (k) => (String(k).indexOf('_mes_trial_') === 0 ? JSON.stringify({ startedAt: _tStart, uid: 'trial-user-1', plan: 'silver_trial', reminderSent: false }) : null), setItem() {}, removeItem() {} };
+ctx.getUserPremiumTier = () => 1; /* trial = Silver */
+ctx.UD = {};
+ok(ctx.isTrialActive() === true, 'trial active (5 ghante bache)');
+const expAt = ctx.getPremiumExpiryAt();
+ok(Math.abs(expAt - (_tStart + 3 * 24 * 3600 * 1000)) < 5000, 'trial se expiry nikali (UD khaali hone par bhi)');
+const bn2 = ctx.renderPremiumExpiryBanner();
+ok(bn2.indexOf('Silver') !== -1 && bn2.indexOf('premExpiryBanner') !== -1, 'trial ke aakhri 5 ghante → banner (Silver)');
+ctx.localStorage = { getItem: (k) => (String(k).indexOf('_mes_trial_') === 0 ? JSON.stringify({ startedAt: Date.now() - (24 * 3600 * 1000), uid: 'trial-user-1' }) : null), setItem() {}, removeItem() {} };
+ok(ctx.renderPremiumExpiryBanner() === '', 'trial me 2 din bache → banner NAHI (12h window ke bahar)');
+ctx.U = {}; ctx.UD = {}; ctx.localStorage = { getItem: () => null, setItem() {}, removeItem() {} };
+ctx.getUserPremiumTier = () => 0;
+ok(ctx.renderPremiumExpiryBanner() === '', 'koi data nahi → crash nahi, khaali (fail-safe)');
+
 console.log('\n── SCREEN 6b: ASLI Collection gallery render (stub openModal) ──');
 let _modal = { title: '', html: '' };
 ctx.openModal = (t, h) => { _modal.title = t || ''; _modal.html = h || ''; };
@@ -119,6 +160,10 @@ const wired = [
   ['features/battle-pass.js', '_bpRewardLabel'],
   ['js/features/asset-catalog.js', 'premium/ribbon.png'],
   ['asset-e2e.html', 'premium/ribbon.png'],
+  ['index.html', 'features/free-trial.js'],
+  ['features/free-trial.js', 'renderPremiumExpiryBanner'],
+  ['features/free-trial.js', 'premExpiryBanner'],
+  ['screen-e2e.html', 'premExpiryBanner'],
 ];
 wired.forEach(([f, needle]) => {
   const txt = fs.readFileSync(path.join(REPO, f), 'utf8');

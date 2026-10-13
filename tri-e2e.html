@@ -451,6 +451,58 @@
       });
   }]);
 
+  /* ── 12/12 : aakhri 12 ghante ka countdown banner (APK par, asli UI) ──
+     Host ne H6c me P1 ki premium_expires 6 ghante aage set ki hai (asli
+     admin update, RLS is_caller_admin). Ab APK (WebView) me:
+       (a) UD.premium.expiresAt DB se aaye,
+       (b) IGN/UI ke upar fixed banner dikhe + countdown khud chale,
+       (c) 12-ghante window ke bahar ho to banner bilkul na dikhe. */
+  STEPS.push(['12/12 Trial/Premium khatam hone ka countdown banner (APK)', function () {
+    function _state() {
+      try {
+        var w = W();
+        /* app ka apna state check (asli app me init par + har minute chalta hai) */
+        w.eval("if (window.checkTrialState) window.checkTrialState(); if (window.updatePremiumExpiryBanner) window.updatePremiumExpiryBanner();");
+        var el = w.document.getElementById('premExpiryBanner');
+        var cnt = w.document.getElementById('premExpiryCount');
+        var ud = 0;
+        try { ud = Number((w.UD && w.UD.premium && w.UD.premium.expiresAt) || 0); } catch (e) {}
+        return { has: !!el, ms: el ? Number(el.getAttribute('data-ms-left') || 0) : 0,
+                 txt: (cnt && cnt.textContent) || '', udExp: ud,
+                 pos: el ? el.style.position : '', z: el ? Number(el.style.zIndex || 0) : 0 };
+      } catch (e) { return { has: false }; }
+    }
+    function _due() {
+      var b = _state();
+      return (b.has && b.ms > 0 && b.ms <= 12 * 3600 * 1000) ? b : null;
+    }
+    return poll(function () { return _due(); }, 3000, 150000, 'APK par countdown banner (host ne H6c me 6h ki expiry set ki)')
+      .catch(function () {
+        /* UD purane 30-din wale expiry par atka ho sakta hai — ek asli reload */
+        return bootApp().then(function () {
+          return poll(function () { try { return W().U && W().U.uid ? true : null; } catch (e) { return null; } }, 1500, 90000, 'reload ke baad login (persistence)');
+        }).then(function () {
+          return poll(function () { return _due(); }, 3000, 90000, 'reload ke baad banner (DB se)');
+        });
+      })
+      .then(function (b) {
+        VALUES.premium_banner = 'app-banner';
+        VALUES.premium_expires_ms = String(b.ms);
+        if (!/^\d\d:\d\d:\d\d$/.test(b.txt)) fail('banner_time', 'countdown format galat: ' + b.txt);
+        if (b.pos !== 'fixed' || b.z < 9990) fail('banner_css', 'banner fixed/z-index sahi nahi (' + b.pos + '/' + b.z + ')');
+        if (!b.udExp || b.udExp < Date.now()) fail('banner_ud', 'UD.premium.expiresAt DB se nahi aaya');
+        var t0 = b.txt;
+        /* countdown khud chalta hai? 2.4s baad wahi text nahi hona chahiye */
+        return new Promise(function (res) {
+          setTimeout(function () { res(_state()); }, 2400);
+        }).then(function (b2) {
+          if (!b2.has) fail('banner_gone', 'countdown dekhne se pehle hi banner gayab ho gaya');
+          else if (b2.txt === t0) fail('banner_tick', 'countdown rukka hua hai (' + t0 + ')');
+          return 'APK par IGN ke upar fixed banner — countdown ' + t0 + ' (2.4s baad ' + b2.txt + '), CTA + data-ms-left=' + b.ms + ' (asli DB expiry se)';
+        });
+      });
+  }]);
+
   function markState(i, state, detail) {
     results[i] = results[i] || { name: STEPS[i][0], detail: '' };
     results[i].state = state;
