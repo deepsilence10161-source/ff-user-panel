@@ -79,7 +79,11 @@ const committedFiles = git('git diff --name-only HEAD^ HEAD').split('\n').filter
 const isCacheable = (f) =>
   CACHE_EXT.has(path.extname(f).toLowerCase()) &&
   !f.startsWith('tests/') && !f.startsWith('docs/') &&
-  !f.startsWith('scripts/') && !f.startsWith('.githooks/') && !f.startsWith('.github/');
+  !f.startsWith('scripts/') && !f.startsWith('.githooks/') && !f.startsWith('.github/') &&
+  /* ✅ (2026-10-13d): tools/ = E2E tooling (tri-e2e host driver/page, qa-accounts) —
+     users ko serve nahi hota. Pehle ye count hota tha, isliye sirf tooling badalne
+     wale commit par bhi gate "stamp bump karo" maangta tha (aur CI APK fail ho jata tha). */
+  !f.startsWith('tools/');
 
 /* ══════════════════════════════════════════════════════════════════════════
    MASK BUILDER — कमेंट को हटाकर वैसी ही लंबाई का "अंधा" टेक्स्ट बनाता है।
