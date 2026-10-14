@@ -151,13 +151,41 @@ def main():
                 return r
             tk = poll(ticket_in_db, timeout=wait, every=5, what="APK ka support ticket DB me")
             TICKET["row"] = tk
-            admin.evaluate("() => loadSupportTickets('open')")
-            poll(lambda: (tk.get("user_id") or "")[:6] in admin.inner_text("#supportTicketsList")
-                         or "QA-TRI" in admin.inner_text("#supportTicketsList"),
-                 timeout=90, every=4, what="admin list render")
-            txt = admin.inner_text("#supportTicketsList")
+
+            # ⚠️ 2026-10-13 (TRI 38362119910/38365319525 me H2 fail hone ke baad
+            # pakda gaya): admin list (js/admin-inline-d.js) chat-list hai —
+            # row par IGN dikhta hai (user_ign = submit ke waqt ka IGN), uid
+            # SIRF tab jab IGN khaali ho. Purana check sirf uid[:6] dhoondhta
+            # tha (aur "QA-TRI" — jo asli marker "QA-TEST TRI <run>" me kabhi
+            # nahi hota), isliye IGN set hone par ticket dikhte hue bhi FAIL.
+            # Ab: har round list DOBARA load (ticket baad me aaye to bhi mile)
+            # + marker/uid/ign/id sab par match + fail par asli list text.
+            mark = (ST["markers"].get("ticketMarker") or "").strip()
+            keys = [k for k in [mark, (tk.get("user_id") or "")[:6], (tk.get("id") or "")[:8],
+                                (tk.get("user_ign") or "").strip()] if k]
+
+            def _list_seen():
+                try:
+                    admin.evaluate("() => window.loadSupportTickets && loadSupportTickets('open')")
+                except Exception:
+                    pass
+                txt = admin.inner_text("#supportTicketsList") or ""
+                hit = next((k for k in keys if k in txt), None)
+                return {"txt": txt, "hit": hit} if hit else None
+
+            try:
+                seen = poll(_list_seen, timeout=120, every=4, what="admin list render")
+            except Exception as e:
+                shot(admin, "h2-admin-list-FAIL.png")
+                try:
+                    tail = (admin.inner_text("#supportTicketsList") or "")[:200].replace("\n", " ")
+                except Exception:
+                    tail = "(list nahi padhi ja saki)"
+                raise RuntimeError(f"{e} — list text: {tail!r}")
+            txt = seen["txt"]
             shot(admin, "h2-admin-sees-apk-ticket.png")
-            return f"APK ticket #{tk['id'][:8]} admin list me dikha (uid {tk['user_id'][:8]}) — list text len {len(txt)}"
+            return (f"APK ticket #{tk['id'][:8]} admin list me dikha — match '{seen['hit']}' "
+                    f"(uid {tk['user_id'][:8]}) — list text len {len(txt)}")
 
         step("H2 APK → Admin: ticket admin panel me", h2, critical=True)
 
