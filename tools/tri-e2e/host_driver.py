@@ -696,14 +696,25 @@ def main():
         # ── H7: user web ko admin ka data dikhta hai ──────────────────────
         def h7():
             seen = {}
+            # ⚠️ 2026-10-14 (TRI 38569273537 me yahi 150s timeout hua): H6d ke
+            # baad user page ASLI PROFILE tab par reh jata hai (wahan
+            # navTo('profile') hua tha). Home screen (#scrHome) tabhi dikhta
+            # hai jab wo .active ho — warna document.body.innerText se poori
+            # tarah bahar rehta hai, is liye match ka title kabhi nahi milta.
+            # Ab pehle asli home tab par (jaise user karta hai), phir data.
+            user.evaluate("() => { if (window.navTo) navTo('home'); if (window.renderHome) renderHome(); }")
+            user.wait_for_timeout(1500)
             user.evaluate("() => { if (window._loadMatches) window._loadMatches(); if (window._loadNotifs) window._loadNotifs(); }")
-            # match
+            # match — pehle home screen par (asli card), warna poore body par
             title = ST["markers"]["matchTitle"]
             def match_visible():
                 return user.evaluate(
-                    """(t) => { const m = (window.MATCHES || window._matches || []);
-                         if (m.length) return m.some(x => (x.title||x.name||'') === t);
-                         return document.body.innerText.includes(t); }""", title)
+                    """(t) => {
+                         const scr = document.getElementById('scrHome');
+                         if (scr && (scr.innerText || '').includes(t)) return { where: 'home-card' };
+                         const mt = Object.keys(window.MT || {}).some(k => ((window.MT[k].name || window.MT[k].title || '') === t));
+                         if (mt) return { where: 'MT-data' };
+                         return document.body.innerText.includes(t) ? { where: 'body' } : null; }""", title)
             poll(match_visible, timeout=150, every=5, what="user web par admin ka match")
             seen["match"] = True
             # notification
@@ -756,6 +767,10 @@ def main():
             if r != "ok":
                 raise RuntimeError("P2 firebase signin: " + str(r))
             p2.wait_for_function("() => window.U && window.U.uid && window._supa", timeout=90000)
+            # 2026-10-14: P2 ke liye bhi wahi parde hatate hain (first-login
+            # tour + referral popup) — asli UI se, bilkul P1 jaisa. Warna H13
+            # ke asli clicks P2 ke overlay ke neeche chhup jaate hain.
+            clear_state_gate(p2)
             mid = MATCH["row"]["id"]
             p2.evaluate("() => { if (window._loadMatches) window._loadMatches(); }")
             p2.wait_for_timeout(2500)
@@ -1429,6 +1444,14 @@ def main():
             old = admin.evaluate("""async (uid) => { const {data} = await window._supa.from('users')
                  .select('total_wins,total_kills,total_matches').eq('id', uid).maybeSingle(); return data || {}; }""", uid)
             newst = {"w": 600, "k": 600, "m": max(40, int(old.get("total_matches") or 0))}
+            # 2026-10-14: badge-engine ka pehla call (device+uid par) sirf
+            # BASELINE banata hai — koi push nahi (js/features/badge-engine.js:
+            # 'pehli baar … sirf baseline'). App ye kaam pehli home render par
+            # hi kar leta hai, par agar nahi hua ho to yahan ka single call
+            # sirf baseline banata aur 0 row aata → H16 bekaar timeout.
+            # Is liye pehle baseline (asli client function), phir stats badlo.
+            user.evaluate("() => { if (window.notifyNewBadges) notifyNewBadges(); }")
+            user.wait_for_timeout(1000)
             admin.evaluate("""async (a) => { const {error} = await window._supa.from('users')
                  .update({ total_wins: a.w, total_kills: a.k, total_matches: a.m }).eq('id', a.uid);
                  return { error: error ? error.message : null }; }""",
