@@ -95,24 +95,53 @@ def poll(fn, timeout=180, every=4, what="condition"):
 
 
 def clear_state_gate(page, state="Haryana"):
-    """App ka asli 'State Verification Required' gate (legal-compliance.js)
-    gate ko ASLI UI wale raaste se clear karta hai (window.mesStateOk — wahi
-    function jo asli button ka onclick chalata hai). QAbina ye, modals uske
-    peeche reh jaate hain (TRI 38540317554 me H6d isi se fail hua tha)."""
+    """App ke asli compliance gates (js/legal-compliance.js) ko ASLI UI wale
+    raaste se clear karta hai — koi shortcut nahi:
+      1. State Verification → window.mesStateOk (wahi function jo asli button
+         ka onclick chalata hai; DB me users.state save hota hai)
+      2. 18+ Age Gate      → #_mes_dob me dob bhar kar asli Confirm button
+         (mesConfirmAge → server RPC submit_age_verification)
+    Warna ye gates modals ke UPAR reh jaate hain aur cosmetics store jaise
+    flow block ho jaate hain (TRI 38540317554/38545748414 me H6d isi se fail)."""
+    out = []
     try:
         r = page.evaluate("""async (s) => {
             if (window.UD && window.UD.state) return 'already';
             if (typeof window.mesStateOk !== 'function') return 'no-gate';
             try { window.mesStateOk(s); } catch (e) { return 'err'; }
             return 'set'; }""", state)
+        out.append("state:" + r)
         if r == "set":
             try:
                 page.wait_for_function("(s) => (window.UD && window.UD.state) === s", arg=state, timeout=20000)
             except Exception:
-                return "set-save-pending"
-        return r
+                out[-1] = "state:set-save-pending"
     except Exception as e:
-        return "skip:" + str(e)[:80]
+        out.append("state:skip:" + str(e)[:60])
+
+    # age gate state ke 400ms baad khulta hai (legal-compliance.js)
+    try:
+        page.wait_for_timeout(900)
+        r2 = page.evaluate("""async () => {
+            if (window.UD && window.UD.age_verified) return 'already';
+            const inp = document.getElementById('_mes_dob');
+            if (!inp) return 'no-gate';
+            inp.value = '2000-01-01';
+            inp.dispatchEvent(new Event('input', { bubbles: true }));
+            const btn = Array.from(document.querySelectorAll('button'))
+              .find(b => (b.getAttribute('onclick') || '').indexOf('mesConfirmAge') !== -1);
+            if (!btn) return 'no-btn';
+            btn.click();
+            return 'clicked'; }""")
+        out.append("age:" + r2)
+        if r2 == "clicked":
+            try:
+                page.wait_for_function("() => window.UD && window.UD.age_verified === true", timeout=25000)
+            except Exception:
+                out[-1] = "age:verify-pending"
+    except Exception as e:
+        out.append("age:skip:" + str(e)[:60])
+    return " | ".join(out)
 
 
 def shot(page, name):
