@@ -143,6 +143,33 @@ def clear_state_gate(page, state="Haryana"):
     except Exception as e:
         out.append("age:skip:" + str(e)[:60])
 
+    # 3b. First-login onboarding tour (features-user.js checkShowTutorial) —
+    #     slide 3 ke hisaab se poora overlay modals ke upar aa jata hai
+    #     (TRI 38551529009 me "Welcome to Mini eSports!" ne store dhak diya).
+    #     Pehle wahi keys set karte hain jo app TOUR poora hone par khud lagata
+    #     hai (tutorialSeen/tutorialSeen_<uid> — dobara na khule), aur agar
+    #     khula hua mile to ASLI buttons (Next → / Let's Play!) se poora.
+    try:
+        page.evaluate("""() => { try {
+            localStorage.setItem('tutorialSeen', '1');
+            if (window.U && window.U.uid) localStorage.setItem('tutorialSeen_' + window.U.uid, '1');
+        } catch (e) {} }""")
+        r4 = 'no-tour'
+        for _ in range(8):
+            r4 = page.evaluate("""() => {
+                const btns = Array.from(document.querySelectorAll('button'));
+                const d = btns.find(b => ((b.getAttribute('onclick') || '').indexOf('_tutDone') !== -1));
+                if (d) { d.click(); return 'done'; }
+                const n = btns.find(b => ((b.getAttribute('onclick') || '').indexOf('_tutNext') !== -1));
+                if (n) { n.click(); return 'next'; }
+                return 'no-tour'; }""")
+            if r4 == 'no-tour':
+                break
+            page.wait_for_timeout(400)
+        out.append("tour:" + r4)
+    except Exception as e:
+        out.append("tour:skip:" + str(e)[:60])
+
     # 3. T&C gate (age ke baad: _runNext('age') → accepted_policy)
     try:
         r3 = page.evaluate("""async () => {
