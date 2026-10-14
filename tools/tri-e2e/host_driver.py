@@ -190,6 +190,30 @@ def clear_state_gate(page, state="Haryana"):
                 out[-1] = "tc:save-pending"
     except Exception as e:
         out.append("tc:skip:" + str(e)[:60])
+
+    # 4. referral popup (naye user ko login ke ~1.8s baad: "Kisi ka Referral
+    #    Code hai?" — z-index 99980, poora full-screen overlay; iske upar
+    #    koi bhi click (jaise store ka Buy) block ho jata hai). Asli UI ka
+    #    "Skip — Code nahi hai" dabate hain, warna H6d jaisa live step
+    #    bekaar me timeout karta hai.
+    ref = "no-popup"
+    try:
+        for _ in range(10):
+            ref = page.evaluate("""() => {
+                const ov = document.getElementById('_refCodePopup');
+                if (ov) {
+                    const s = Array.from(ov.querySelectorAll('button'))
+                        .find(b => /Skip/i.test(b.innerText || ''));
+                    if (s) { s.click(); return 'skipped'; }
+                    ov.remove(); return 'removed';
+                }
+                return (window.UD && window.UD.referralPopupDone) ? 'already' : 'wait'; }""")
+            if ref != "wait":
+                break
+            page.wait_for_timeout(600)
+    except Exception as e:
+        ref = "skip:" + str(e)[:50]
+    out.append("ref:" + ref)
     return " | ".join(out)
 
 
@@ -567,6 +591,27 @@ def main():
             if not btn:
                 raise RuntimeError("store me frame_ring_gold ka buy button nahi mila")
             btn.click()
+
+            # 2026-10-14 (root cause of TRI 38557658545 ka H6d timeout):
+            # app me ab NATIVE confirm() nahi hai — core/app-dialog.js (B3,
+            # 2026-10-06) ne window.confirm ko shim kar diya hai: wo turant
+            # `false` return karta hai aur asli sawaal app ki apni UI
+            # (#_appDlgOv) me kholta hai. "Haan, karo" dabaane par wahi
+            # button (replay) dobara chalta hai aur tab purchase RPC jaata
+            # hai. Pehle yahan sirf `page.on('dialog')` tha, jo ab kabhi
+            # fire nahi hota → click ke baad purchase ruk jaata tha aur
+            # 60s poll "DB row + balance debit timeout" deta tha.
+            # Ab bilkul asli user jaisa: #_appDlgOk ("Haan, karo") dabao.
+            user.on("dialog", lambda d: d.accept())   # safety (agar kahin native bacha ho)
+            dlg_txt = ""
+            try:
+                user.wait_for_selector("#_appDlgOv.show", timeout=15000)
+                dlg_txt = (user.inner_text("#_appDlgMsg") or "").strip().replace("\n", " ")
+                user.click("#_appDlgOk", timeout=8000)
+            except Exception as e:
+                raise RuntimeError("purchase ka app-UI confirm dialog nahi mila: " + str(e)[:160])
+            if RING["key"] not in dlg_txt and "kharidna" not in dlg_txt:
+                raise RuntimeError("confirm dialog ka text galat: " + dlg_txt[:120])
             time.sleep(3)
 
             # 4) DB se verify: user_cosmetics row + balance kata
@@ -605,8 +650,9 @@ def main():
             shot(user, "h6d-profile-ring-medal.png")
             VALUES["cosmetic_ring"] = RING["key"]
             VALUES["ring_medal"] = "profile-medal"
+            VALUES["purchase_dialog"] = dlg_txt[:70]
             return (f"admin ne 300 SD diya → user ne store se '{RING['key']}' kharida "
-                    f"(SD {sd_before} → {bought['sd']}, user_cosmetics row ✔) → equip → profile par medal art "
+                    f"(SD {sd_before} → {bought['sd']}, user_cosmetics row ✔; confirm app-UI: '{dlg_txt[:46]}') → equip → profile par medal art "
                     f"({med['src'].split('/')[-1]}) ✔")
 
         step("H6d Admin SD → user rings kharidta + equip karta hai (live store)", h6d, critical=True)
