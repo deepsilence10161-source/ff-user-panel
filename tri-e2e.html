@@ -149,6 +149,13 @@
         } catch (e) { return null; }
       }, 1000, 120000, 'app login (U/UD/_supa)').then(function (w) {
         VALUES.uid = w.U.uid;
+        /* 🛡️ (2026-10-13h) State Verification gate (legal-compliance.js) —
+           QA account par DB me state='Haryana' set hai, par agar kisi wajah se
+           gate khul jaye to asli UI wale raaste se (mesStateOk) clear karo,
+           warna baaki saare modals uske peeche block ho jaate hain. */
+        try {
+          w.eval("if (window.UD && !window.UD.state && typeof window.mesStateOk === 'function') { window.mesStateOk('Haryana'); }");
+        } catch (e) {}
         /* ⚠️ Supabase client ko Firebase token milna ASYNC hai (db.js
            syncFirebaseToken). Us se pehle koi bhi write RLS se reject hoti hai
            (policy: auth.jwt()->>'sub' = user_id) — CI me exactly yahi hua:

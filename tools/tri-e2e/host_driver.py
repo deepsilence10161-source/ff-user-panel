@@ -94,6 +94,27 @@ def poll(fn, timeout=180, every=4, what="condition"):
     raise RuntimeError(f"{what} timeout ({timeout}s) — last={str(last)[:160]}")
 
 
+def clear_state_gate(page, state="Haryana"):
+    """App ka asli 'State Verification Required' gate (legal-compliance.js)
+    gate ko ASLI UI wale raaste se clear karta hai (window.mesStateOk — wahi
+    function jo asli button ka onclick chalata hai). QAbina ye, modals uske
+    peeche reh jaate hain (TRI 38540317554 me H6d isi se fail hua tha)."""
+    try:
+        r = page.evaluate("""async (s) => {
+            if (window.UD && window.UD.state) return 'already';
+            if (typeof window.mesStateOk !== 'function') return 'no-gate';
+            try { window.mesStateOk(s); } catch (e) { return 'err'; }
+            return 'set'; }""", state)
+        if r == "set":
+            try:
+                page.wait_for_function("(s) => (window.UD && window.UD.state) === s", arg=state, timeout=20000)
+            except Exception:
+                return "set-save-pending"
+        return r
+    except Exception as e:
+        return "skip:" + str(e)[:80]
+
+
 def shot(page, name):
     try:
         pathlib.Path(ARGS.shots).mkdir(parents=True, exist_ok=True)
@@ -281,8 +302,9 @@ def main():
             uid = user.evaluate("() => window.U.uid")
             if uid != ST["player"]["uid"]:
                 raise RuntimeError(f"wrong uid logged in: {uid}")
+            gate = clear_state_gate(user)
             shot(user, "h6-user-web-login.png")
-            return f"user web login OK (uid {uid[:8]})"
+            return f"user web login OK (uid {uid[:8]}) — state gate: {gate}"
 
         step("H6 User Panel web login (QA player)", h6, critical=True)
 
@@ -446,6 +468,7 @@ def main():
             user.reload(wait_until="domcontentloaded")
             user.wait_for_function("() => window.U && window.U.uid && window.UD", timeout=90000)
             user.wait_for_function("() => Number(window.UD.skyDiamonds||0) >= 100", timeout=90000)
+            clear_state_gate(user)      # reload ke baad gate dobara aa sakta hai
             sd_before = user.evaluate("() => Number(window.UD.skyDiamonds||0)")
             user.evaluate("() => { if (window.showCosmeticsStore) showCosmeticsStore(); }")
             user.wait_for_timeout(2000)

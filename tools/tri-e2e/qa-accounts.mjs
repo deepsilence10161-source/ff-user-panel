@@ -195,12 +195,17 @@ async function create(runid) {
   /* ff_uid bhi — app ka "Playing As" block isi par render hota hai (aur ye
      asli player ka game UID hai). users_ff_uid_key UNIQUE hai, isliye run-id
      wala unique tag. */
-  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid)
-             values ('${p.localId}', 'TRIQA ${runid}', false, 0, 0, 'R${runid}P1')
-             on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid;`);
-  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid)
-             values ('${p2.localId}', 'TRIQA2 ${runid}', false, 0, 0, 'R${runid}P2')
-             on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid;`);
+  /* ✅ 2026-10-13h: state='Haryana' bhi set — warna app ka asli
+     'State Verification Required' gate (legal-compliance.js) user web aur
+     APK dono par khulta hai aur uske peeche saare modals (cosmetics store
+     etc.) block ho jaate hain — TRI 38540317554 me H6d isi se fail hua.
+     QA player Haryana ka hai (India-only app; banned states: TS/AP/TN). */
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid, state)
+             values ('${p.localId}', 'TRIQA ${runid}', false, 0, 0, 'R${runid}P1', 'Haryana')
+             on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid, state = 'Haryana';`);
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid, state)
+             values ('${p2.localId}', 'TRIQA2 ${runid}', false, 0, 0, 'R${runid}P2', 'Haryana')
+             on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid, state = 'Haryana';`);
 
   /* QA admin ko admin haq — dono jagah (gate + RLS). Sirf isi runid ke liye. */
   log('Supabase: QA admin ko admins row + users.is_admin…');
