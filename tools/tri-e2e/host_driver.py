@@ -628,31 +628,67 @@ def main():
             bought = poll(_bought, timeout=60, every=4, what="ring purchase (DB row + balance debit)")
             shot(user, "h6d-ring-bought.png")
 
-            # 5) equip → profile par medal (asli UI/markup)
-            user.evaluate("""async (k) => {
-                if (window.toggleCosmeticEquip) await window.toggleCosmeticEquip(k);
-                if (window.closeModal) closeModal();
-                if (window.showScreen) showScreen('profile');
-                if (window.renderProfile) renderProfile(); }""", RING["key"])
+            # 5) equip → profile par medal — 2026-10-14: dono taraf ASLI UI.
+            #    (a) store ke 'Apply' button par asli click (purchase ke baad
+            #        store khud re-render hota hai → us item ka button "Apply"
+            #        ban jata hai = toggleCosmeticEquip).
+            apply_btn = None
+            for _ in range(20):
+                apply_btn = user.query_selector(
+                    "button[onclick*=\"toggleCosmeticEquip('" + RING["key"] + "'\"]")
+                if apply_btn:
+                    break
+                user.wait_for_timeout(800)
+            if not apply_btn:
+                raise RuntimeError("store me ring ka 'Apply' button nahi mila")
+            apply_btn.click()
+            time.sleep(2)
+
+            #    (b) DB se sach: is_equipped = true
+            def _equipped():
+                return user.evaluate("""async (o) => {
+                    const { data } = await window._supa.from('user_cosmetics')
+                      .select('is_equipped').eq('user_id', o.uid)
+                      .eq('cosmetic_key', o.key).maybeSingle();
+                    return (data && data.is_equipped === true) ? 'ok' : null; }""",
+                    {"uid": ST["player"]["uid"], "key": RING["key"]})
+            poll(_equipped, timeout=60, every=4, what="ring ka is_equipped=true (DB)")
+
+            #    (c) modal band → ASLI profile tab tap. ⚠️ Pehle yahan
+            #        showScreen('profile') bulaya ja raha tha — aisa koi
+            #        function app me hi nahi hai (asli router core/router.js
+            #        me navTo hai), is liye profile screen khulti hi nahi thi
+            #        aur medal art ka 90s timeout aata tha (TRI 38564900102).
+            user.evaluate("() => { if (window.closeModal) closeModal(); }")
+            user.wait_for_timeout(800)
+            try:
+                user.click('.nav-item[data-nav="profile"]', timeout=10000)
+            except Exception:
+                user.evaluate("() => { if (window.navTo) navTo('profile'); }")
             user.wait_for_timeout(2500)
 
             def _medal():
                 try:
                     return user.evaluate("""() => {
                         const el = document.querySelector('img.pf2-ring-art');
-                        return el ? { src: el.getAttribute('src') || '', alt: el.getAttribute('alt') || '' } : null; }""")
+                        if (!el || !el.offsetWidth) return null;   /* sirf asli dikhta hua art */
+                        return { src: el.getAttribute('src') || '', alt: el.getAttribute('alt') || '',
+                                 w: el.offsetWidth, h: el.offsetHeight }; }""")
                 except Exception:
                     return None
 
             med = poll(_medal, timeout=90, every=4, what="profile par equipped ring ka medal art")
-            if RING["art"] not in (med.get("src") or ""):
-                raise RuntimeError("medal art galat: " + json.dumps(med)[:160])
+            if RING["art"] not in (med.get("src") or "") or (med.get("w") or 0) < 20:
+                raise RuntimeError("medal art galat/chhupa hua: " + json.dumps(med)[:160])
             shot(user, "h6d-profile-ring-medal.png")
             VALUES["cosmetic_ring"] = RING["key"]
             VALUES["ring_medal"] = "profile-medal"
             VALUES["purchase_dialog"] = dlg_txt[:70]
+            VALUES["ring_equipped"] = "user_cosmetics.is_equipped=true (Apply button se)"
             return (f"admin ne 300 SD diya → user ne store se '{RING['key']}' kharida "
-                    f"(SD {sd_before} → {bought['sd']}, user_cosmetics row ✔; confirm app-UI: '{dlg_txt[:46]}') → equip → profile par medal art "
+                    f"(SD {sd_before} → {bought['sd']}, user_cosmetics row ✔; confirm app-UI: '{dlg_txt[:46]}') "
+                    f"→ store ke 'Apply' se equip (DB is_equipped=true ✔) → asli profile tab "
+                    f"(navTo) par medal art "
                     f"({med['src'].split('/')[-1]}) ✔")
 
         step("H6d Admin SD → user rings kharidta + equip karta hai (live store)", h6d, critical=True)
