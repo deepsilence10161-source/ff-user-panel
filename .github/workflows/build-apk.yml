@@ -782,11 +782,42 @@ jobs:
             done
           fi
 
+          # ✅ (2026-10-14b) RETRY — notif script me ye pehle se hai aur aaj
+          # usi ne bacha liya (38550798993 me notif ✅, yahi flake location par
+          # aaya aur ye job retry ke bina FAIL ho gaya). Emulator kabhi-kabhi
+          # pehli launch par app ko aage nahi laata (focus launcher par atka
+          # rehta hai) — force-stop + dobara launch se theek ho jata hai.
+          # Check wahi asli rehta hai: permissioncontroller ka dialog + Allow
+          # tap + granted=true. Kuch bhi dheela nahi kiya gaya.
+          if [ -z "$FOUND" ]; then
+            echo "🔁 dialog pehli koshish me nahi mila — force-stop + dobara launch (retry)"
+            adbt shell am force-stop "$PKG" >/dev/null 2>&1 || true
+            sleep 3
+            adbt shell am start -n "$PKG/.MainActivity" >/dev/null 2>&1 || true
+            for i in $(seq 1 12); do
+              FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
+              echo "   retry koshish $i: focus = ${FOCUS:-'-'}"
+              case "$FOCUS" in
+                *permissioncontroller*)
+                  adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
+                  adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
+                  if [ -s loc-ui-dump.xml ] && grep -qiE "while using|allow|only this time" loc-ui-dump.xml; then FOUND="retry+dump"; else FOUND="retry"; fi
+                  break ;;
+                *"isn't responding"*|*"Not Responding"*|*"Application Error"*|*"ANR"*)
+                  adbt shell input keyevent 4 >/dev/null 2>&1 || true
+                  sleep 3 ;;
+                *)
+                  sleep 4 ;;
+              esac
+            done
+          fi
+
           adbt exec-out screencap -p > loc-permission-screen.png
           ls -lh loc-permission-screen.png
 
           if [ -z "$FOUND" ]; then
-            echo "--- asli kaaran: launch ke baad granted flags + logcat ---"
+            echo "--- asli kaaran: app ke FATAL/ANR + launch ke baad granted flags + logcat ---"
+            adbt logcat -d 2>/dev/null | grep -iE "FATAL|AndroidRuntime|force finishing|ANR in|crash" | tail -15 || true
             adbt shell dumpsys package "$PKG" | grep -E "ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION" | grep -o "granted=[a-z]*" | head -4 || true
             adbt logcat -d 2>/dev/null | grep -iE "grantpermission|permission.*request|ActivityManager.*permission|appop" | tail -12 || true
             echo "--- dump me jo text mila ---"
