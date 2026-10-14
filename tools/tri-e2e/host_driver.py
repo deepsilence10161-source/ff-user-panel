@@ -696,7 +696,7 @@ def main():
         # ── H7: user web ko admin ka data dikhta hai ──────────────────────
         def h7():
             seen = {}
-            user.evaluate("() => { if (window.loadMatches) window.loadMatches(); if (window._loadNotifs) window._loadNotifs(); }")
+            user.evaluate("() => { if (window._loadMatches) window._loadMatches(); if (window._loadNotifs) window._loadNotifs(); }")
             # match
             title = ST["markers"]["matchTitle"]
             def match_visible():
@@ -757,7 +757,7 @@ def main():
                 raise RuntimeError("P2 firebase signin: " + str(r))
             p2.wait_for_function("() => window.U && window.U.uid && window._supa", timeout=90000)
             mid = MATCH["row"]["id"]
-            p2.evaluate("() => { if (window.loadMatches) window.loadMatches(); }")
+            p2.evaluate("() => { if (window._loadMatches) window._loadMatches(); }")
             p2.wait_for_timeout(2500)
             shot(p2, "h7b-p2-login.png")
             p2.evaluate("(id) => { if (window.doJoin) doJoin(id); }", mid)
@@ -942,7 +942,7 @@ def main():
                 raise RuntimeError("room release fail: " + str(r3)[:140])
 
             # 4) P2 (joined player) — wahi Room ID apni UI me dekhe
-            p2.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.showScreen) showScreen('matches'); }")
+            p2.evaluate("() => { if (window._loadMatches) _loadMatches(); if (window.navTo) navTo('matches'); }")
             p2.wait_for_timeout(2500)
 
             def _player_sees():
@@ -1003,7 +1003,7 @@ def main():
             mine = poll(lambda: user.evaluate("""async (id) => { const {data} = await window._supa.from('join_requests')
                      .select('id').eq('match_id', id).eq('user_id', window.U.uid); return (data||[]).length ? true : null; }""", mid),
                 timeout=120, every=5, what="P1 ki apni join row")
-            user.evaluate("() => { if (window.loadMatches) window.loadMatches(); }")
+            user.evaluate("() => { if (window._loadMatches) window._loadMatches(); }")
             card = poll(lambda: (lambda v: v if v is not None and int(v) >= 2 else None)(
                 user.evaluate("(id) => (window.MT && window.MT[id]) ? Number(window.MT[id].filledSlots || 0) : None", mid)),
                 timeout=180, every=6, what="match card par 2 players")
@@ -1198,7 +1198,7 @@ def main():
                 raise RuntimeError("P2 ka ff_uid nahi mila (users row)")
 
             # 2) P1: ASLI join UI — cJoin → partner UID → doJoin (invite chala jayega)
-            user.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.navTo) navTo('matches'); }")
+            user.evaluate("() => { if (window._loadMatches) _loadMatches(); if (window.navTo) navTo('matches'); }")
             user.wait_for_timeout(3000)
             user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
             user.wait_for_timeout(1500)
@@ -1231,7 +1231,7 @@ def main():
             shot(user, "h13-duo-invite-sent.png")
 
             # 4) P2: apni NOTIFICATION ke asli Accept button se consent
-            p2.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.renderNotifs) renderNotifs(); }")
+            p2.evaluate("() => { if (window._loadMatches) _loadMatches(); if (window.renderNotifs) renderNotifs(); }")
             p2.wait_for_timeout(3000)
 
             def _click_accept():
@@ -1263,7 +1263,7 @@ def main():
             DUO["accepted"] = acc
 
             # 5) P1: dobara ASLI join (ab server team authorize karega)
-            user.evaluate("() => { if (window.loadMatches) loadMatches(); if (window.navTo) navTo('matches'); }")
+            user.evaluate("() => { if (window._loadMatches) _loadMatches(); if (window.navTo) navTo('matches'); }")
             user.wait_for_timeout(2000)
             user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
             user.wait_for_timeout(1500)
