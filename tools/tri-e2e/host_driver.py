@@ -101,6 +101,7 @@ def clear_state_gate(page, state="Haryana"):
          ka onclick chalata hai; DB me users.state save hota hai)
       2. 18+ Age Gate      → #_mes_dob me dob bhar kar asli Confirm button
          (mesConfirmAge → server RPC submit_age_verification)
+      3. T&C Gate          → dono checkbox + asli mesAcceptTC (server RPC accept_terms)
     Warna ye gates modals ke UPAR reh jaate hain aur cosmetics store jaise
     flow block ho jaate hain (TRI 38540317554/38545748414 me H6d isi se fail)."""
     out = []
@@ -141,6 +142,27 @@ def clear_state_gate(page, state="Haryana"):
                 out[-1] = "age:verify-pending"
     except Exception as e:
         out.append("age:skip:" + str(e)[:60])
+
+    # 3. T&C gate (age ke baad: _runNext('age') → accepted_policy)
+    try:
+        r3 = page.evaluate("""async () => {
+            if (window.UD && window.UD.accepted_policy) return 'already';
+            const c1 = document.getElementById('_mes_tc1'), c2 = document.getElementById('_mes_tc2');
+            if (!c1 || !c2) return 'no-gate';
+            c1.checked = true; c2.checked = true;
+            c1.dispatchEvent(new Event('change', { bubbles: true }));
+            c2.dispatchEvent(new Event('change', { bubbles: true }));
+            if (typeof window.mesAcceptTC !== 'function') return 'no-fn';
+            window.mesAcceptTC((window.U || {}).uid);
+            return 'accepted'; }""")
+        out.append("tc:" + r3)
+        if r3 == "accepted":
+            try:
+                page.wait_for_function("() => window.UD && window.UD.accepted_policy === true", timeout=25000)
+            except Exception:
+                out[-1] = "tc:save-pending"
+    except Exception as e:
+        out.append("tc:skip:" + str(e)[:60])
     return " | ".join(out)
 
 

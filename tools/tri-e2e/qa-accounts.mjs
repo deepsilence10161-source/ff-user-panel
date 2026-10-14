@@ -204,15 +204,19 @@ async function create(runid) {
      QA player 2000-01-01 ka hai (asli server RPC bhi yahi maanta: dob se age
      recompute karta hai), warna state gate ke 400ms baad age gate khulta hai
      aur uske peeche saare modals (cosmetics store etc.) block rehte hain —
-     TRI 38545748414 me H6d isi se fail hua. */
-  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at)
-             values ('${p.localId}', 'TRIQA ${runid}', false, 0, 0, 'R${runid}P1', 'Haryana', '2000-01-01', true, now())
+     TRI 38545748414 me H6d isi se fail hua.
+     ✅ 2026-10-14b: T&C gate (accepted_policy) bhi — chain poora hai:
+     state → age → T&C (legal-compliance.js _runNext). Teeno ab pehle se clear. */
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at, accepted_policy, accepted_policy_at)
+             values ('${p.localId}', 'TRIQA ${runid}', false, 0, 0, 'R${runid}P1', 'Haryana', '2000-01-01', true, now(), true, now())
              on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid, state = 'Haryana',
-               date_of_birth = '2000-01-01', age_verified = true, age_verified_at = now();`);
-  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at)
-             values ('${p2.localId}', 'TRIQA2 ${runid}', false, 0, 0, 'R${runid}P2', 'Haryana', '2000-01-01', true, now())
+               date_of_birth = '2000-01-01', age_verified = true, age_verified_at = now(),
+               accepted_policy = true, accepted_policy_at = now();`);
+  await sql(`insert into users (id, ign, is_admin, coins, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at, accepted_policy, accepted_policy_at)
+             values ('${p2.localId}', 'TRIQA2 ${runid}', false, 0, 0, 'R${runid}P2', 'Haryana', '2000-01-01', true, now(), true, now())
              on conflict (id) do update set ign = excluded.ign, ff_uid = excluded.ff_uid, state = 'Haryana',
-               date_of_birth = '2000-01-01', age_verified = true, age_verified_at = now();`);
+               date_of_birth = '2000-01-01', age_verified = true, age_verified_at = now(),
+               accepted_policy = true, accepted_policy_at = now();`);
 
   /* QA admin ko admin haq — dono jagah (gate + RLS). Sirf isi runid ke liye. */
   log('Supabase: QA admin ko admins row + users.is_admin…');
