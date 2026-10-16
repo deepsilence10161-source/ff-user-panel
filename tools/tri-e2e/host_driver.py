@@ -1270,6 +1270,23 @@ def main():
             user.wait_for_timeout(1500)
             user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
             user.wait_for_timeout(1500)
+            # ⚠️ 2026-10-16: ek run me modal khula hi nahi tha (Late re-render ne
+            # band kar diya) aur `#partnerUid1` DOM me hi nahi mila. Is liye ab
+            # modal ka intezaar (aur na mile to cJoin dobara) — 30s tak.
+            def _modal_ready():
+                try:
+                    return user.evaluate("""() => {
+                        const m = document.getElementById('manualPartnerWrap') ||
+                                  document.getElementById('partnerUid1') ||
+                                  document.getElementById('savedTeamCard');
+                        return m ? true : null; }""")
+                except Exception:
+                    return None
+            try:
+                poll(_modal_ready, timeout=30, every=3, what="duo join modal (partner field)")
+            except Exception:
+                user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
+                poll(_modal_ready, timeout=30, every=3, what="duo join modal (dobara cJoin ke baad)")
             # ⚠️ 2026-10-16 (asli wajah): agar P1 ka koi SAVED duo partner hai
             # (localStorage linked team), to join modal UID input ko
             # `#manualPartnerWrap` (display:none) ke andar chhupa deta hai aur

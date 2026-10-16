@@ -84,6 +84,23 @@
 
   function logStep(nm, detail, ok) { console.log('TRI-E2E-STEP: ' + nm + ' — ' + detail); }
   function fail(nm, err) { throw new Error(nm + ': ' + ((err && err.message) || err)); }
+
+  /* ⚠️ 2026-10-16: run 38928942155 me step 9 ka fail sirf itna bola —
+     "Cannot read property 'id' of undefined" — par kahan se aaya, pata nahi.
+     Is liye page par hi error/rejection hooks: har throw ka message + file:line
+     + poora stack console par aayega (logcat me). */
+  window.addEventListener('error', function (e) {
+    try {
+      console.log('TRI-PAGE-ERR: ' + (e && e.message) + ' @ ' + (e && e.filename) + ':' + (e && e.lineno) +
+                  '\n' + String((e && e.error && e.error.stack) || '').slice(0, 700));
+    } catch (x) {}
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    try {
+      var r = e && e.reason;
+      console.log('TRI-REJ-ERR: ' + String((r && (r.stack || r.message)) || r).slice(0, 700));
+    } catch (x) {}
+  });
   function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
   var listEl = document.getElementById('list');
@@ -591,7 +608,7 @@
                 console.log('TRI-JOIN-A: koshish ' + (i + 1) + ' (' + mode + ') fail — ' +
                             Math.round((Date.now() - t0) / 1000) + 's');
                 if (i + 1 >= JOIN_ATTEMPTS) {
-                  var d = _diag(m.id);
+                  var d = _diag(m && m.id);
                   console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d));
                   fail('join', 'har koshish ke baad bhi join row nahi bani | diag=' + JSON.stringify(d));
                 }
@@ -604,7 +621,16 @@
           });
         })
         .then(function (r) {
-          var row = r.row;
+          /* ⚠️ 2026-10-16: pehle yahan seedha `row.id` tha — agar chain ne
+             undefined diya to asli fail ka message dab jata tha aur sirf
+             "Cannot read property 'id' of undefined" dikhta tha (run
+             38928942155 me yahi hua). Ab saaf message + diag. */
+          var row = r && r.row;
+          if (!row) {
+            var d0 = _diag(m && m.id);
+            console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d0));
+            fail('join-row-read', 'join row object nahi mila (r=' + JSON.stringify(r) + ') | diag=' + JSON.stringify(d0));
+          }
           VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = r.via;
           return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + r.via;
         });
