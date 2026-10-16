@@ -1447,6 +1447,14 @@ def main():
                              btn: !!el.querySelector('button'),
                              label: (document.getElementById('lsToday')||{}).innerText || '' }; }""")
 
+            def _dbrow_pre():
+                return user.evaluate("""async () => {
+                     const d = new Date();
+                     const iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                     const {data} = await window._supa.from('daily_checkins')
+                        .select('checkin_date,streak_day').eq('user_id', window.U.uid).eq('checkin_date', iso);
+                     return (data && data[0]) || null; }""")
+
             st = poll(_strip, timeout=120, every=5, what="home par loginStreakStrip")
             shot(user, "h14-web-streak-strip.png")
             if not st.get("warrior"):
@@ -1457,7 +1465,23 @@ def main():
                 """async (uid) => { const {data} = await window._supa.from('users').select('streak_days').eq('id', uid).maybeSingle();
                      return data ? Number(data.streak_days) || 0 : 0; }""", ST["player"]["uid"])
 
-            if st.get("done") != "1":
+            # ⚠️ 2026-10-16 (asli wajah): APK bhi wahi account kholta hai — uske
+            # home render par app khud check-in kar deta hai (asli auto-claim).
+            # Aise run me web ka strip (jo pehle render hua tha) purana reh jata
+            # hai, button dabane par server "aaj ho chuka" deta hai aur strip
+            # live update nahi hoti → bekaar fail. Is liye pehle DB row dekho:
+            # row aaj ki hai to click ke bina aage badho, aur strip ka asli
+            # behaviour fresh render par saabit karo.
+            already = False
+            try:
+                pre = _dbrow_pre()
+                already = bool(pre)
+                if already:
+                    log("H14: aaj ki check-in pehle se (app ke auto-claim se) — click skip, strip fresh render par")
+            except Exception:
+                already = False
+            clicked = False
+            if st.get("done") != "1" and not already:
                 clicked = user.evaluate("""() => {
                     const el = document.getElementById('loginStreakStrip');
                     const b = el ? el.querySelector('button') : null;
@@ -1492,7 +1516,16 @@ def main():
                     const el = document.getElementById('loginStreakStrip');
                     return (el && el.getAttribute('data-done-today') === '1' && !el.querySelector('button')) ? true : null; }""")
 
-            poll(_done_live, timeout=90, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
+            try:
+                poll(_done_live, timeout=90, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
+            except Exception:
+                if already:
+                    # click hamne kiya hi nahi tha — fresh asli render par saabit karo
+                    user.evaluate("() => { if (window.renderHome) renderHome(); }")
+                    user.wait_for_timeout(2500)
+                    poll(_done_live, timeout=60, every=4, what="strip done (fresh render par)")
+                else:
+                    raise
             shot(user, "h14-web-streak-done.png")
             VALUES["streak_days"] = str(row.get("streak") or 0)
             VALUES["streak_strip"] = "home-strip"
@@ -1542,20 +1575,47 @@ def main():
             user.wait_for_timeout(2000)
             user.evaluate("() => { if (window.refreshSeasonChampion) refreshSeasonChampion(); }")
 
+            # (2026-10-16) pehle is evaluate me regex + arrow function the — ek
+            # run me "Page.evaluate: SyntaxError: Invalid regular expression:
+            # missing /" aaya aur asli wajah chhup gayi. Ab sab simple (koi regex
+            # nahi) + poora try/catch, aur na milne par SAAF wajah ("why") wapas
+            # — taaki agla fail andha na ho.
             def _banner():
                 return user.evaluate("""() => {
-                     const el = document.getElementById('seasonChampionBanner');
-                     if (!el) return null;
-                     const inner = el.querySelector('#seasonChampionBanner') || el;
-                     if (inner.getAttribute('data-mine') !== '1') return null;
-                     const t = (inner.innerText || '');
-                     return { mine: inner.getAttribute('data-mine'), kills: t.indexOf('4242') !== -1,
-                              txt: t.replace(/\n/g, ' ').slice(0, 80),
-                              kala: !!(window._assetUnlocked && window.ASSET_CATALOG &&
-                                       window._assetUnlocked(window.ASSET_CATALOG.special.find(x => x.id === 'sp_season_champion'),
-                                                             window._assetStats ? window._assetStats() : { seasonChampion: 1 })) }; }""")
+                     try {
+                       var el = document.getElementById('seasonChampionBanner');
+                       if (!el) return { why: 'element nahi mila' };
+                       var inner = el.querySelector('#seasonChampionBanner') || el;
+                       var mine = inner.getAttribute('data-mine');
+                       if (mine !== '1') {
+                         return { why: 'data-mine=' + String(mine), html: String(el.innerHTML || '').slice(0, 70) };
+                       }
+                       var t = String(inner.innerText || '');
+                       var kala = false;
+                       try {
+                         var cat = window.ASSET_CATALOG;
+                         var fn = window._assetUnlocked;
+                         var it = (cat && cat.special && cat.special.find)
+                           ? cat.special.find(function (x) { return x.id === 'sp_season_champion'; }) : null;
+                         kala = !!(fn && it && fn(it, window._assetStats ? window._assetStats() : { seasonChampion: 1 }));
+                       } catch (e2) { kala = 'err:' + String(e2 && (e2.message || e2)).slice(0, 40); }
+                       return { why: 'ok', mine: mine, kills: t.indexOf('4242') !== -1,
+                                txt: t.split('\u000a').join(' ').slice(0, 80), kala: kala };
+                     } catch (e) { return { why: 'throw ' + String(e && (e.message || e)).slice(0, 90) }; } }""")
 
-            b = poll(_banner, timeout=120, every=5, what="web par champion banner (apna)")
+            last_why = {"v": ""}
+
+            def _banner_ok():
+                r = _banner()
+                if r and r.get("why") != "ok":
+                    last_why["v"] = str(r.get("why"))[:120] + " | html=" + str(r.get("html"))[:60]
+                    return None
+                return r
+
+            try:
+                b = poll(_banner_ok, timeout=150, every=5, what="web par champion banner (apna)")
+            except Exception:
+                raise RuntimeError("champion banner nahi mila — aakhri wajah: " + last_why["v"])
             shot(user, "h15-web-champion-banner.png")
             if not b.get("kala"):
                 raise RuntimeError("champion banner to aaya par kala unlock nahi: " + json.dumps(b)[:160])

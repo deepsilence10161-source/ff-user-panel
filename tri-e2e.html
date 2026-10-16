@@ -983,10 +983,32 @@
       } catch (e) { return null; }
     }
     try { W().eval("if (window.navTo) navTo('home'); if (window.renderHome) renderHome();"); } catch (e) {}
-    return poll(function () {
-      try { W().eval("if (window.renderHome) renderHome(); if (window.refreshSeasonChampion) refreshSeasonChampion();"); } catch (e) {}
-      return _champ();
-    }, 6000, 420000, 'APK home par champion banner (apna)').then(function (b) {
+    /* (2026-10-16) Pehle yahan seedha banner ka intezaar tha. Host ka H15 jab
+       der se chalta hai (ya us run me fail ho jata hai) to APK 420s bekaar
+       intezaar karta tha aur wajah bhi nahi pata chalti thi. Ab do kadam:
+       (1) DB me asli champion row aane ka intezaar (khud APK ka client —
+           season_champions par sabko read ki ijazat hai), (2) uske BAAD banner
+           ka — taaki fail hone par wajah saaf ho. */
+    function _row() {
+      return W()._supa.from('season_champions')
+        .select('month_key,user_id,ign,kills,banner_until')
+        .order('declared_at', { ascending: false }).limit(3)
+        .then(function (r) {
+          var rows = (r && r.data) || [], best = null;
+          rows.forEach(function (x) {
+            if (!x || !x.banner_until) return;
+            if (!best || new Date(x.banner_until) > new Date(best.banner_until)) best = x;
+          });
+          return best;
+        }, function () { return null; });
+    }
+    return poll(function () { return _row(); }, 6000, 420000, 'DB me champion row (host H15 se)').then(function (row) {
+      VALUES.champion_row_ign = String(row.ign || '');
+      return poll(function () {
+        try { W().eval("if (window.renderHome) renderHome(); if (window.refreshSeasonChampion) refreshSeasonChampion();"); } catch (e) {}
+        return _champ();
+      }, 6000, 180000, 'APK home par champion banner (apna, row ke baad)');
+    }).then(function (b) {
       if (!b.kala) fail('champion_kala', 'APK par Season Champion kala unlock nahi hui');
       VALUES.champion_banner = 'ok';
       return 'APK home par bada ailaan — "' + b.txt + '" (Season Champion kala ✔)';
