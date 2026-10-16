@@ -22,7 +22,7 @@
 #    host_driver.py --run <runid> --state <state.json> --out <out.json> \
 #                   --shots <dir> [--skip-match] [--wait-apk 480]
 # ═══════════════════════════════════════════════════════════════════════════
-import argparse, json, os, re, sys, time, pathlib
+import argparse, json, os, re, sys, time, pathlib, urllib.request
 
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 
@@ -1467,15 +1467,22 @@ def main():
                 shot(user, "h14-web-checkin-clicked.png")
 
             def _dbrow():
-                return admin.evaluate(
+                # ⚠️ 2026-10-16 (asli wajah): `daily_checkins` par RLS policy
+                # `dc_own` hai — USING (auth.jwt()->>'sub' = user_id), yaani
+                # ADMIN bhi doosre ki row NAHI padh sakta (bilkul sahi design).
+                # Pehle yahan admin client se padha ja raha tha → hamesha khaali
+                # → 150s timeout. Ab wahi row ASLI USER ke apne client se padhi
+                # jati hai (jo app bhi karta hai); streak_days users se.
+                return user.evaluate(
                     """async (uid) => {
                          const {data:ci} = await window._supa.from('daily_checkins')
                             .select('checkin_date,streak_day,coins_earned').eq('user_id', uid)
                             .order('created_at', {ascending:false}).limit(1);
                          const {data:u} = await window._supa.from('users').select('streak_days').eq('id', uid).maybeSingle();
                          const row = (ci||[])[0];
-                         return row ? { date: row.checkin_date, day: row.streak_day, coins: row.coins_earned,
-                                        streak: u ? Number(u.streak_days)||0 : 0 } : null; }""",
+                         if (!row) return null;
+                         return { date: row.checkin_date, day: row.streak_day, coins: row.coins_earned,
+                                  streak: u ? Number(u.streak_days)||0 : 0 }; }""",
                     ST["player"]["uid"])
 
             row = poll(_dbrow, timeout=150, every=5, what="daily_checkins row + users.streak_days")
@@ -1504,18 +1511,31 @@ def main():
             mk = admin.evaluate("""() => { const d = new Date();
                  return d.getFullYear() + '_' + String(d.getMonth() + 1).padStart(2, '0'); }""")
             champ_ign = "QA Champion " + str(CUR)[-4:]
-            row = admin.evaluate("""async (a) => {
-                 await window._supa.from('season_champions').delete().eq('month_key', a.mk);
-                 const { error } = await window._supa.from('season_champions').insert({
-                   month_key: a.mk, user_id: a.uid, ign: a.ign, kills: 4242, wins: 99, rank_points: 1234,
-                   banner_until: new Date(Date.now() + 3600 * 1000).toISOString() });
-                 if (error) return { error: error.message };
-                 const { data } = await window._supa.from('season_champions').select('month_key,user_id,ign,kills')
-                   .eq('month_key', a.mk).limit(1);
-                 return { row: (data || [])[0] || null };
-               }""", {"mk": mk, "uid": ST["player"]["uid"], "ign": champ_ign})
-            if not row or row.get("error") or not row.get("row"):
-                raise RuntimeError("season_champions row nahi bani: " + json.dumps(row)[:160])
+            # (2026-10-16) asli wajah: `season_champions` par anon/
+            # authenticated ko KOI grant hi nahi (sirf postgres) aur RLS me
+            # admin-write `is_caller_admin()` par — asli design yahi: champion row
+            # SERVER (pg_cron/service) banata hai, client sirf padhta hai. Pehle
+            # harness client se insert karta tha → "permission denied for table
+            # season_champions" → H15 fail (aur usi par tika APK step 17 bhi).
+            # Ab row Management API (service token = asli server raasta) se
+            # banti/hatati hai — table, row, client banner, kala: sab asli.
+            def _sql(q):
+                tok = os.environ.get("SUPABASE_ACCESS_TOKEN", "")
+                if not tok:
+                    raise RuntimeError("SUPABASE_ACCESS_TOKEN nahi mila (champion row ke liye chahiye)")
+                req = urllib.request.Request(
+                    "https://api.supabase.com/v1/projects/hddhkculuyrfoevxmlwy/database/query",
+                    data=json.dumps({"query": q}).encode(),
+                    headers={"Authorization": "Bearer " + tok, "Content-Type": "application/json"})
+                return json.loads(urllib.request.urlopen(req, timeout=60).read().decode())
+
+            _sql("delete from season_champions where month_key = '" + mk + "'")
+            _sql("insert into season_champions (month_key, user_id, ign, kills, wins, rank_points, banner_until) "
+                 "values ('" + mk + "', '" + ST["player"]["uid"] + "', '" + champ_ign + "', 4242, 99, 1234, now() + interval '1 hour')")
+            chk = _sql("select month_key,ign,kills from season_champions where month_key = '" + mk + "'")
+            if not chk:
+                raise RuntimeError("season_champions row nahi bani (service SQL): " + json.dumps(chk)[:160])
+            row = {"row": chk[0]}
 
             # web (asli user panel) — banner asli row se, apna champion
             user.evaluate("() => { if (window.navTo) navTo('home'); if (window.renderHome) renderHome(); }")
@@ -1562,15 +1582,30 @@ def main():
             uid = ST["player"]["uid"]
             old = admin.evaluate("""async (uid) => { const {data} = await window._supa.from('users')
                  .select('total_wins,total_kills,total_matches').eq('id', uid).maybeSingle(); return data || {}; }""", uid)
-            newst = {"w": 600, "k": 600, "m": max(40, int(old.get("total_matches") or 0))}
+            # ⚠️ 2026-10-16 (asli wajah): pehle yahan seedha wins/kills = 600
+            # kiya jata tha — us par koi naya badge NAHI khulta, sirf
+            # "bas thoda sa aur" (near-unlock) banta hai (600/750 = 80% — ditto
+            # jo run 38940490148 me aaya: title "🔥 Bas thoda sa aur — Kill
+            # Machine badge"). Ab pehle baseline 749 kills par (asli client se)
+            # → phir 750: Kill Machine badge (need 750, asset-catalog.js) THEEK
+            # 750 par khulta hai → asli 'badge_unlock' row title ke saath:
+            # "🏅 Naya badge: Kill Machine".
             # 2026-10-14: badge-engine ka pehla call (device+uid par) sirf
             # BASELINE banata hai — koi push nahi (js/features/badge-engine.js:
             # 'pehli baar … sirf baseline'). App ye kaam pehli home render par
             # hi kar leta hai, par agar nahi hua ho to yahan ka single call
             # sirf baseline banata aur 0 row aata → H16 bekaar timeout.
             # Is liye pehle baseline (asli client function), phir stats badlo.
-            user.evaluate("() => { if (window.notifyNewBadges) notifyNewBadges(); }")
-            user.wait_for_timeout(1000)
+            # baseline: 749 kills — is par koi naya badge nahi (baseline list)
+            admin.evaluate("""async (a) => { await window._supa.from('users')
+                 .update({ total_wins: a.w, total_kills: 749, total_matches: a.m }).eq('id', a.uid); }""",
+                 {"uid": uid, "w": 600, "m": max(40, int(old.get("total_matches") or 0))})
+            user.evaluate("""() => { if (window.UD) { window.UD.total_wins = 600;
+                 window.UD.total_kills = 749; } if (window.renderHome) renderHome();
+                 if (window.notifyNewBadges) notifyNewBadges(); }""")
+            user.wait_for_timeout(1500)
+            # ab asli unlock: 750 kills
+            newst = {"w": 600, "k": 750, "m": max(40, int(old.get("total_matches") or 0))}
             admin.evaluate("""async (a) => { const {error} = await window._supa.from('users')
                  .update({ total_wins: a.w, total_kills: a.k, total_matches: a.m }).eq('id', a.uid);
                  return { error: error ? error.message : null }; }""",
@@ -1604,7 +1639,7 @@ def main():
 
             first = hit["rows"][0] if hit.get("rows") else {}
             VALUES["badge_unlock_push"] = "ok"
-            return (f"stats asli users row me badhaye (wins/kills 600) → home render par asli "
+            return (f"stats asli users row me badhaye (kills 749 baseline → 750 = asli badge need) → asli "
                     f"notifyNewBadges chala → {hit.get('n')} notification row bani "
                     f"({first.get('type')}: {str(first.get('title'))[:40]}) — push wahi trigger karta hai; "
                     f"rows APK step 18 ke liye zinda (run-end cleanup), stats wapas")
@@ -1614,7 +1649,7 @@ def main():
         # ── H12: values dump (APK ke logcat values se milane ke liye) ────
         def h12():
             v = user.evaluate(
-                """async () => {
+                """async (ROOMID) => {
                      const {data:u} = await window._supa.from('users').select('coins,sky_diamonds').eq('id', window.U.uid).maybeSingle();
                      const {data:k} = await window._supa.from('kyc_requests').select('status').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
                      const {data:t} = await window._supa.from('support_tickets').select('admin_reply,status').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
@@ -1633,7 +1668,7 @@ def main():
                               premium_level: (pr && String(pr.premium_level)) || '',
                               premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
                               premium_banner: (document.getElementById('premExpiryBanner') ? 'app-banner' : ''),
-                              room_id: (String(document.body.innerText||'').indexOf(ROOM['id']) !== -1) ? ROOM['id'] : '',
+                              room_id: (String(document.body.innerText||'').indexOf(ROOMID) !== -1) ? ROOMID : '',
                               streak_days: (function () { try {
                                   const el = document.getElementById('loginStreakStrip');
                                   return el ? String(el.getAttribute('data-streak') || '') : '';
@@ -1644,7 +1679,8 @@ def main():
                                 } catch (e) { return ''; } })(),
                               cosmetic_ring: (rc && rc[0] && rc[0].cosmetic_key) || '',
                               ring_medal: (document.querySelector('img.pf2-ring-art') ? 'profile-medal' : ''),
-                              ign: (window.UD && window.UD.ign) || '' }; }""")
+                              ign: (window.UD && window.UD.ign) || '' }; }""",
+                ROOM.get("id", ""))
             VALUES.update({k2: v2 for k2, v2 in v.items() if v2 is not None})
             shot(user, "h12-final-values.png")
             return json.dumps({k3: str(x)[:26] for k3, x in VALUES.items()}, ensure_ascii=False)

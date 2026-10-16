@@ -1011,11 +1011,20 @@
       if (!q) return null;
       return q.then(function (r) {
         var rows = (r && r.data) || [];
-        return rows.length ? { n: rows.length, t: String(rows[0].title || ''), ty: rows[0].type } : null;
+        if (!rows.length) return null;
+        /* ⚠️ 2026-10-16: same render par 'bas thoda sa aur' (near-unlock) row bhi
+           ban sakti hai — is liye sirf pehli row par na rukо, ASLI unlock row
+           dhoondo (title "🏅 Naya badge: …" / "✨ Naya title: …"). */
+        var un = rows.filter(function (x) {
+          var t = String(x.title || '');
+          return t.indexOf('Naya badge') !== -1 || t.indexOf('Naya title') !== -1;
+        });
+        if (un.length) return { n: rows.length, t: String(un[0].title || ''), ty: un[0].type, ok: true };
+        return { n: rows.length, t: String(rows[0].title || ''), ty: rows[0].type, ok: false };
       }, function () { return null; });
     }, 6000, 420000, 'APK par badge unlock notification row (asli)').then(function (b) {
-      if (b.t.indexOf('Naya badge') === -1 && b.t.indexOf('Naya title') === -1) {
-        fail('badge_unlock_title', 'notification title badge jaisa nahi: ' + b.t.slice(0, 40));
+      if (!b.ok) {
+        fail('badge_unlock_title', 'unlock row nahi mili — rows=' + b.n + ', sabse nayi: ' + b.t.slice(0, 60));
       }
       VALUES.badge_unlock_push = 'ok';
       return 'APK par badge unlock notification (' + b.ty + ' × ' + b.n + ') — "' + b.t.slice(0, 48) + '"';
