@@ -371,9 +371,68 @@
           ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}});' +
           'var done = false; p.then(function(r){ done = true; console.log("TRI-JOIN-RPC: " + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); },' +
           'function(e){ done = true; console.log("TRI-JOIN-RPC-ERR: " + String(e && (e.message || e)).slice(0,160)); });' +
-          'setTimeout(function(){ if (!done) console.log("TRI-JOIN-RPC: PENDING(30s)"); }, 30000); })();');
+          'setTimeout(function(){ if (!done) console.log("TRI-JOIN-RPC: PENDING(12s)"); }, 12000); })();');
         return true;
       } catch (e) { console.log('TRI-JOIN-A: rpc eval fail ' + String(e).slice(0, 90)); return false; }
+    }
+    /* ── network probe (2026-10-16): TRI 38886753522 me join ke 6 koshish
+       (UI 35s + RPC 31s) sab chup-chaap fail hui aur RPC ka koi jawab hi
+       log nahi hua. Server side pakka theek hai (role par statement_timeout
+       8s hai — jawab 8s me aana hi tha). Is liye yahan ek chhota saaf
+       experiment: (A) GET, (B) POST insert (wahi jo step 3 me pass hua tha),
+       (C) rpc jo maujood nahi hai (404/error bhi saboot = round trip hua),
+       (D) raw fetch POST — aur Resource Timing se dekho request gayi thi ya
+       nahi (responseStart 0 = jawab hi nahi aaya). ── */
+    function _race(p, ms, tag) {
+      return Promise.race([
+        Promise.resolve(p).then(function (r) {
+          var t = r && r.error ? ('ERR: ' + (r.error.message || r.error.code)) : 'OK';
+          if (r && r.data !== undefined && r.data !== null && r.error === null) {
+            try { t = 'OK ' + JSON.stringify(r.data).slice(0, 60); } catch (e) {}
+          }
+          return tag + ' → ' + t;
+        }, function (e) { return tag + ' → THROW ' + String(e && (e.message || e)).slice(0, 90); }),
+        sleep(ms).then(function () { return tag + ' → PENDING(' + Math.round(ms / 1000) + 's)'; })
+      ]);
+    }
+    var SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
+    function _netProbe() {
+      var w2 = W(), SU = 'https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1';
+      var tok = '';
+      try {
+        var k = Object.keys(w2.localStorage);
+        for (var i = 0; i < k.length; i++) if (k[i].indexOf('sb-') === 0 && k[i].indexOf('-auth-token') > 0) tok = 'LS:' + k[i].slice(0, 24);
+      } catch (e) {}
+      var jobs = [
+        _race(w2._supa.from('matches').select('id').limit(1), 12000, 'A-GET'),
+        _race(w2._supa.from('support_tickets').insert({ user_id: w2.U.uid, subject: MARK + ' TRI-NETPROBE', message: 'probe', status: 'open' }), 12000, 'B-POST-insert'),
+        _race(w2._supa.rpc('tri_probe_maujood_nahi_hai'), 12000, 'C-RPC-404'),
+        /* D: bilkul raw fetch — supabase-js ke bahar, seedha PostgREST ko.
+           (anon key app ka apna public client key hai — core/db.js me hi hai.) */
+        Promise.resolve().then(function () { return W().auth.currentUser.getIdToken(); }).then(function (jwt) {
+          return _race(new Promise(function (res, rej) {
+            W().fetch(SU + '/rpc/tri_probe_maujood_nahi_hai', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', apikey: SUPA_ANON, Authorization: 'Bearer ' + jwt },
+              body: '{}'
+            }).then(function (r) { res({ error: null, data: 'http ' + r.status }); }, function (e) { rej(e); });
+          }), 12000, 'D-rawfetch-POST');
+        })
+      ];
+      return Promise.all(jobs.map(function (j) { return Promise.resolve(j); })).then(function (out) {
+        out = out.map(function (x) { return typeof x === 'string' ? x : '[object]'; });
+        var res = [];
+        try {
+          res = (w2.performance.getEntriesByType('resource') || [])
+            .filter(function (e) { return e.name.indexOf('/rpc/') !== -1 || e.name.indexOf('/rest/v1/support_tickets') !== -1; })
+            .slice(-6).map(function (e) {
+              return { u: e.name.split('/rest/v1/')[1].slice(0, 26), dur: Math.round(e.duration),
+                       respStart: Math.round(e.responseStart), status: e.responseStatus || '' };
+            });
+        } catch (e) {}
+        console.log('TRI-NETPROBE: ' + JSON.stringify(out) + ' | tokenHint=' + tok + ' | timing=' + JSON.stringify(res));
+        return true;
+      });
     }
     function _diag(id) {
       var out = {};
@@ -443,6 +502,8 @@
             return Promise.resolve('validate_and_join_match RPC (wahi server path)');
           }
           var via = '';
+          return _netProbe().then(function () { return _round2(); });
+          function _round2() { return _round(0, 'ui'); }
           function _round(i, mode) {
             var t0 = Date.now();
             return _attempt(mode).then(function (v) {
@@ -459,7 +520,7 @@
               });
             });
           }
-          return _round(0, 'ui').then(function (row) {
+          return _round2().then(function (row) {
             return { row: row, via: via };
           });
         })
