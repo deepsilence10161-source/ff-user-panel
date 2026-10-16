@@ -240,7 +240,7 @@
         .then(function (u) {
           VALUES.coins = String(u.coins);
           VALUES.sky_diamonds = String(u.sky_diamonds);
-          w.eval("if (window.showScreen) showScreen('wallet');");
+          w.eval("if (window.navTo) navTo('wallet');");
           return poll(function () {
             var w2 = W(), ui = w2.document.getElementById('wCoins');
             var fromUD = w2.UD && String(w2.UD.coins);
@@ -263,9 +263,9 @@
         .then(function (title) {
           VALUES.match_title = title;
           function _nudge() {
-            w.eval("try{ if (window.showScreen) showScreen('home'); }catch(e){}" +
+            w.eval("try{ if (window.navTo) navTo('home'); }catch(e){}" +
                    "try{ if (window.renderHome) renderHome(); }catch(e){}" +
-                   "try{ if (window.loadMatches) loadMatches(); }catch(e){}" +
+                   "try{ if (window._loadMatches) _loadMatches(); }catch(e){}" +
                    "try{ if (window.refreshMatches) refreshMatches(); }catch(e){}");
           }
           function _seen() {
@@ -291,7 +291,7 @@
               }).then(function () {
                 return poll(function () {
                   var w2 = W();
-                  try { if (w2.loadMatches) w2.eval('loadMatches()'); } catch (e) {}
+                  try { if (w2._loadMatches) w2.eval('_loadMatches()'); } catch (e) {}
                   return _seen();
                 }, 3000, 150000, 'match app me render (reload ke baad)');
               });
@@ -343,34 +343,103 @@
   ];
 
   /* ── runner ──────────────────────────────────────────────────────────── */
-  /* ── 9/10 : APK (P1) match join — asli doJoin → server RPC ── */
+  /* ── 9/18 : APK (P1) match join — ASLI UI raasta.
+     ✅ 2026-10-14 (live TRI 38574154924 me step 9 fail hua):
+       • doJoin/cJoin dono `MT[id]` se chalta hain — agar app ke data-layer me
+         match na ho to wo CHUP-CHAAP return kar dete hain (koi error nahi,
+         sirf "join row timeout"). Is liye pehle asli `_loadMatches()` se
+         data laate hain, aur na aaye to asli user ki tarah page reload.
+       • join ab asli UI se: matches screen → card ka Join (cJoin) →
+         "Confirm Join" button (#confirmJoinBtn, wahi button jo user dabata hai).
+       • app ka apna confirm aaye (#_appDlgOv) to asli "Haan, karo" dabate hain.
+       • Fail par saaf diag logcat me: toast text, MT me match hai ya nahi,
+         MT count, dialog, aur DB se match ka status. ── */
   STEPS.push(['9/18 APK → match join (asli doJoin)', function () {
     var w = W();
+    function _mtReady(id) {
+      try { if (w.eval) w.eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+      try { return (w.MT && w.MT[id]) ? true : null; } catch (e) { return null; }
+    }
+    function _diag(id) {
+      var out = {};
+      try {
+        var w2 = W();
+        var tw = w2.document.getElementById('toast-wrap');
+        out.toast = tw ? (tw.innerText || '').replace(/\n/g, ' | ').slice(0, 220) : '';
+        var ov = w2.document.getElementById('_appDlgOv');
+        out.dlg = (ov && ov.classList.contains('show'))
+          ? String((w2.document.getElementById('_appDlgMsg') || {}).innerText || '').slice(0, 120) : '';
+        out.mt = (w2.MT && w2.MT[id]) ? 'yes' : 'NO';
+        out.mt_count = Object.keys(w2.MT || {}).length;
+      } catch (e) { out.err = String(e).slice(0, 90); }
+      return out;
+    }
     return poll(function () {
       return w._supa.from('matches').select('id,filled_slots').ilike('title', MARK + '%')
         .order('created_at', { ascending: false }).limit(1)
         .then(function (r) { return (r.data && r.data[0]) ? r.data[0] : null; });
     }, 3000, 120000, 'match id').then(function (m) {
       VALUES.match_id = m.id;
-      var w2 = W();
-      w2.eval('if (window.doJoin) doJoin(' + JSON.stringify(m.id) + ');');
-      function _row() {
-        return w2._supa.from('join_requests').select('id,status').eq('match_id', m.id).eq('user_id', w2.U.uid)
-          .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
-      }
-      var via = 'doJoin (asli UI path)';
-      return poll(_row, 3000, 60000, 'APK join row (doJoin)').catch(function () {
-        w2.eval('window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' +
-                JSON.stringify(m.id) + ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}});');
-        via = 'validate_and_join_match RPC (wahi server path)';
-        return poll(_row, 3000, 120000, 'APK join row (RPC fallback)');
-      }).then(function (row) {
-        VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = via;
-        return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + via;
-      });
+      return poll(function () { return _mtReady(m.id); }, 3000, 90000, 'app ke MT me match')
+        .catch(function () {
+          return bootApp().then(function () {
+            return poll(function () { try { return W()._supa ? true : null; } catch (e) { return null; } }, 1500, 60000, 'app dobara load');
+          }).then(function () { return poll(function () { return _mtReady(m.id); }, 3000, 120000, 'reload ke baad MT me match'); });
+        })
+        .then(function () {
+          var w2 = W();
+          w2.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
+          return sleep(1200).then(function () {
+            try { w2.eval("if (window.cJoin) cJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {}
+            return poll(function () {
+              var b = W().document.getElementById('confirmJoinBtn');
+              if (!b) return null;
+              b.click();
+              return 'Confirm Join button (asli UI)';
+            }, 1200, 30000, 'join modal ka Confirm Join button').catch(function () {
+              W().eval("if (window.doJoin) doJoin(" + JSON.stringify(m.id) + ");");
+              return 'doJoin (join modal na khula)';
+            });
+          });
+        })
+        .then(function (via) {
+          return sleep(1500).then(function () {
+            try {
+              var w3 = W(), ov = w3.document.getElementById('_appDlgOv');
+              if (ov && ov.classList.contains('show')) {
+                var ok = w3.document.getElementById('_appDlgOk');
+                if (ok) { ok.click(); via += ' + app-dialog OK'; }
+              }
+            } catch (e) {}
+            return via;
+          });
+        })
+        .then(function (via) {
+          function _row() {
+            return W()._supa.from('join_requests').select('id,status').eq('match_id', m.id).eq('user_id', W().U.uid)
+              .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
+          }
+          return poll(_row, 3000, 90000, 'APK join row').catch(function () {
+            W().eval('window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' + JSON.stringify(m.id) +
+                    ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}})' +
+                    '.then(function(r){ console.log("TRI-JOIN-RPC: " + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); });');
+            via = 'validate_and_join_match RPC (wahi server path)';
+            return poll(_row, 3000, 120000, 'APK join row (RPC fallback)').catch(function (e) {
+              var d = _diag(m.id);
+              try {
+                W().eval('window._supa.from("matches").select("id,status,filled_slots").ilike("title", ' + JSON.stringify(MARK + '%') +
+                         ').then(function(r){ console.log("TRI-JOIN-DB: " + JSON.stringify(r.data || r.error)); });');
+              } catch (e2) {}
+              console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d));
+              fail('join', e.message + ' | diag=' + JSON.stringify(d));
+            });
+          }).then(function (row) {
+            VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = via;
+            return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + via;
+          });
+        });
     });
   }]);
-
   /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
   STEPS.push(['10/18 APK par match me 2 players (P2 web se join)', function () {
     var w = W();
@@ -383,7 +452,7 @@
     }, 4000, 420000, 'doosra player (P2, host driver se) — match slots')
       .then(function (rooms) {
         VALUES.joined_players = String(rooms);
-        w.eval("if (window.loadMatches) loadMatches(); if (window.renderHome) renderHome();");
+        w.eval("if (window._loadMatches) _loadMatches(); if (window.renderHome) renderHome();");
         return poll(function () {
           var w2 = W();
           var fs = null;
@@ -428,12 +497,12 @@
     function _ribbonInMatches() {
       var w = W();
       try {
-        if (w.showScreen) w.eval("if (window.showScreen) showScreen('matches'); if (window.renderMyMatches) renderMyMatches();");
+        W().eval("if (window.navTo) navTo('matches'); if (window.renderMyMatches) renderMyMatches();");
       } catch (e) {}
       return _scan().then(function (hit) {
         if (hit) return hit;
         /* My Matches me block na ho (ffUid khali) — profile plate par try karo */
-        try { W().eval("if (window.closeModal) closeModal(); if (window.showScreen) showScreen('profile');"); } catch (e) {}
+        try { W().eval("if (window.closeModal) closeModal(); if (window.navTo) navTo('profile');"); } catch (e) {}
         return _scan().then(function (hit2) {
           if (hit2) return hit2;
           try { W().eval("if (window.openProfile) openProfile();"); } catch (e) {}
@@ -528,7 +597,7 @@
     }
     function _hit() {
       var w = W();
-      try { w.eval("if (window.showScreen) showScreen('profile'); if (window.renderProfile) renderProfile();"); } catch (e) {}
+      try { w.eval("if (window.navTo) navTo('profile'); if (window.renderProfile) renderProfile();"); } catch (e) {}
       return new Promise(function (res) { setTimeout(function () { res(_state()); }, 1800); });
     }
     return _hit().then(function (b) {
@@ -573,7 +642,7 @@
     function _openRoom() {
       try {
         var w = W();
-        w.eval("if (window.showScreen) showScreen('matches'); if (window.loadMatches) loadMatches();");
+        w.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
       } catch (e) {}
       return new Promise(function (res) { setTimeout(res, 2500); }).then(function () {
         try { W().eval("if (window._showRoomViaRpc && window.VALUES_MID) _showRoomViaRpc(window.VALUES_MID);"); } catch (e) {}
@@ -618,9 +687,9 @@
         return (hit && hit.filled >= 2) ? hit : null;
       } catch (e) { return null; }
     }
-    try { W().eval("if (window.navTo) navTo('matches'); if (window.loadMatches) loadMatches();"); } catch (e) {}
+    try { W().eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();"); } catch (e) {}
     return poll(function () {
-      try { W().eval("if (window.loadMatches) loadMatches();"); } catch (e) {}
+      try { W().eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
       return _check();
     }, 6000, 240000, 'APK par duo match me 2 players').then(function (hit) {
       VALUES.duo_title = duoTitle;

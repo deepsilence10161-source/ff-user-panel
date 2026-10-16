@@ -416,7 +416,27 @@ function _loadMatches() {
     _myCancelled
   ]).then(function(results) {
     var r1 = results[0], r2 = results[1], r3 = results[2];
-    if (!r1.data && !r2.data && !(r3 && r3.data)) return;
+    /* ✅ BUG FIX (2026-10-14, live TRI par pakda gaya): pehle yahan
+       `if (!r1.data && !r2.data && !(r3 && r3.data)) return;` thi — yaani
+       dono ASLI queries (upcoming/live + completed) fail ho jayein par teesri
+       chhoti query chal jaye (r3.data = khali array bhi truthy hai), to neeche
+       `for (var k in MT) delete MT[k]` POORI match list saaf kar deta tha aur
+       user ko achanak "0 matches" dikhta tha — jabki ek second pehle list
+       bhari hui thi (network ka ek jhatka kaafi tha). Live TRI me isi se APK
+       ka join bhi ruk gaya (doJoin/cJoin `MT[id]` dekh kar chalta hai; MT[id]
+       na ho to wo chup-chaap return kar deta hai — koi error nahi).
+       Ab: dono main queries fail → purani list waisi hi rehti hai; ek fail →
+       sirf merge (koi delete nahi); poora rebuild sirf jab dono theek chali hon. */
+    var _f1 = !(r1 && r1.data), _f2 = !(r2 && r2.data);
+    if (_f1 && _f2) return;                       /* dono fail — purana data bacha rahe */
+    if (_f1 || _f2) {                             /* ek fail — sirf merge, delete nahi */
+      (r1.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+      (r2.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+      ((r3 && r3.data) || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+      detectChanges(); renderHome(); renderSP(); renderMM();
+      if (window.console && console.warn) console.warn('[L2] matches ka ek query fail — purani list barqarar rakhi');
+      return;
+    }
     for (var k in MT) delete MT[k];
     (r1.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
     (r2.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
