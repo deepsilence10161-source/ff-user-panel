@@ -154,6 +154,11 @@ jobs:
 
       - name: TRI E2E — APK + Admin Panel + User Panel web (live)
         env:
+          # 2026-10-16: H15 (Season Champion banner) ko champion row banane ke liye
+          # service token chahiye — `season_champions` par anon/authenticated ko
+          # koi grant hi nahi (asli design: row server/cron banata hai, client
+          # sirf padhta hai). Isi wajah se H15 ("token nahi mila") fail hua tha.
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           OUT_DIR: /tmp/tri-out
           APK_PATH: apk-out/app-release.apk
           WAIT_APK: '600'
