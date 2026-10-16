@@ -497,6 +497,23 @@
             return W()._supa.from('join_requests').select('id,status').eq('match_id', m.id).eq('user_id', W().U.uid)
               .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
           }
+          /* ✅ 2026-10-16: parent realm se seedha PostgREST join (supabase-js ke
+             bahar). Probe D ne pakka kiya ki isi realm ka raw fetch POST jawab
+             deta hai (http 404) — is liye ye "network ka aakhri saaf raasta"
+             hai: agar ye bhi row banata hai to app/WebView ke andar wala
+             raasta hi ruk raha hai. */
+          function _parentRawJoin(mid) {
+            return Promise.resolve().then(function () { return W().auth.currentUser.getIdToken(); }).then(function (jwt) {
+              return W().fetch('https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/rpc/validate_and_join_match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', apikey: SUPA_ANON, Authorization: 'Bearer ' + jwt },
+                body: JSON.stringify({ p_uid: W().U.uid, p_match_id: mid, p_entry_fee: 0, p_currency: 'coins',
+                                       p_join_data: { mode: 'solo', ign: (W().UD && W().UD.ign) || '' } })
+              });
+            }).then(function (r) {
+              return r.text().then(function (t) { console.log('TRI-PARENT-RAW: http ' + r.status + ' ' + String(t).slice(0, 170)); });
+            }).catch(function (e) { console.log('TRI-PARENT-RAW: ERR ' + String(e && (e.message || e)).slice(0, 140)); });
+          }
           /* ek koshish: mode 'ui' = asli buttons, 'rpc' = wahi server RPC */
           function _attempt(mode) {
             if (mode === 'ui') {
@@ -526,13 +543,14 @@
             }
             _fireRpc(m.id);
             try { W().eval('window.__triFetchJoin && window.__triFetchJoin(' + JSON.stringify(m.id) + ')'); } catch (e) {}
-            console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja + iframe raw fetch');
+            _parentRawJoin(m.id);
+            console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja + iframe raw fetch + parent raw fetch');
             return Promise.resolve('validate_and_join_match RPC (wahi server path)');
           }
           var via = '';
+          _installIframeHooks();   /* ⚠️ pehle ye `return` ke BAAD likha gaya tha — chalta hi nahi tha */
           return _netProbe().then(function () { return _round2(); });
           function _round2() { return _round(0, 'ui'); }
-          _installIframeHooks();
           function _round(i, mode) {
             var t0 = Date.now();
             return _attempt(mode).then(function (v) {
