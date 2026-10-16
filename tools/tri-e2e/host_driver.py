@@ -1011,10 +1011,13 @@ def main():
             # ⚠️ join_requests par RLS hai — ek player doosre player ki row nahi
             #    dekh sakta (sirf apni + admin sab). Isliye "2 players" ka pakka
             #    signal matches.filled_slots hai (wo sabko dikhta hai) + apni row.
+            # 2026-10-16: APK step 9 ab join ki 6 koshish karta hai (har ek
+            # ~30s; emulator me ek request hang ho jaye to wo dobara bhejta
+            # hai) — is liye yahan ka intezaar 330s se badha kar 480s.
             fs = poll(lambda: (lambda v: int(v) if v is not None and int(v) >= 2 else None)(
                 user.evaluate("""async (id) => { const {data} = await window._supa.from('matches')
                      .select('filled_slots').eq('id', id).maybeSingle(); return data ? data.filled_slots : null; }""", mid)),
-                timeout=330, every=6, what="match filled_slots >= 2 (dono players)")
+                timeout=480, every=6, what="match filled_slots >= 2 (dono players)")
             mine = poll(lambda: user.evaluate("""async (id) => { const {data} = await window._supa.from('join_requests')
                      .select('id').eq('match_id', id).eq('user_id', window.U.uid); return (data||[]).length ? true : null; }""", mid),
                 timeout=120, every=5, what="P1 ki apni join row")
@@ -1213,8 +1216,14 @@ def main():
                 raise RuntimeError("P2 ka ff_uid nahi mila (users row)")
 
             # 2) P1: ASLI join UI — cJoin → partner UID → doJoin (invite chala jayega)
-            user.evaluate("() => { if (window._loadMatches) _loadMatches(); if (window.navTo) navTo('matches'); }")
-            user.wait_for_timeout(3000)
+            #  ⚠️ 2026-10-14: cJoin `MT[id]` dekh kar chalta hai — match data-
+            #  layer me na ho to wo CHUP-CHAAP return kar deta hai (koi error
+            #  nahi). Naya duo match abhi-abhi bana hai, is liye pehle usko
+            #  MT me aane ka intezaar karo (asli _loadMatches se), phir click.
+            user.evaluate("() => { if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches(); }")
+            poll(lambda: user.evaluate("(id) => (window.MT && window.MT[id]) ? true : null", DUO["id"]),
+                 timeout=120, every=4, what="user ke MT me duo match")
+            user.wait_for_timeout(1500)
             user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
             user.wait_for_timeout(1500)
             filled = user.evaluate(
@@ -1233,6 +1242,12 @@ def main():
 
             poll(_partner_ok, timeout=90, every=4, what="partner FF UID verify (partnerCache[1])")
             user.evaluate("(id) => { if (window.doJoin) doJoin(id); }", DUO["id"])
+            # app ka apna confirm (#_appDlgOv) aaye to asli 'Haan, karo'
+            try:
+                user.wait_for_selector("#_appDlgOv.show", timeout=6000)
+                user.click("#_appDlgOk", timeout=6000)
+            except Exception:
+                pass
 
             # 3) DB me invitation (captain ke invite ka server-proof)
             def _invite():

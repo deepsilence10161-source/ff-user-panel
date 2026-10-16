@@ -344,21 +344,36 @@
 
   /* ── runner ──────────────────────────────────────────────────────────── */
   /* ── 9/18 : APK (P1) match join — ASLI UI raasta.
-     ✅ 2026-10-14 (live TRI 38574154924 me step 9 fail hua):
-       • doJoin/cJoin dono `MT[id]` se chalta hain — agar app ke data-layer me
-         match na ho to wo CHUP-CHAAP return kar dete hain (koi error nahi,
-         sirf "join row timeout"). Is liye pehle asli `_loadMatches()` se
-         data laate hain, aur na aaye to asli user ki tarah page reload.
-       • join ab asli UI se: matches screen → card ka Join (cJoin) →
-         "Confirm Join" button (#confirmJoinBtn, wahi button jo user dabata hai).
-       • app ka apna confirm aaye (#_appDlgOv) to asli "Haan, karo" dabate hain.
-       • Fail par saaf diag logcat me: toast text, MT me match hai ya nahi,
-         MT count, dialog, aur DB se match ka status. ── */
+     ✅ 2026-10-14/16 (live TRI 38574154924 + 38881149079 me step 9 fail):
+       • doJoin/cJoin `MT[id]` dekh kar chalte hain — app ke data-layer me
+         match na ho to wo CHUP-CHAAP return karte hain (koi error nahi).
+         Is liye pehle asli `_loadMatches()` (+ zaroorat par asli page reload).
+       • join pehle ASLI UI se: matches screen → card ka Join (cJoin) →
+         asli "Confirm Join" button (#confirmJoinBtn) → app ka confirm aaye
+         to asli "Haan, karo" (#_appDlgOk).
+       • agar ek koshish me row na bane (emulator me ek request hang ho jati
+         hai — logcat me 'Connection reset by peer' bhi dikha), to har 30s
+         par koshish dohrai jaati hai: pehle UI, phir WAHI server wala RPC
+         (validate_and_join_match — asli join ka server authority). Har
+         koshish ka nateeja alag se log hota hai (TRI-JOIN-RPC / TRI-JOIN-A).
+       • Fail par saaf diag logcat me: toast, dialog, MT me match, MT count,
+         security wrapper laga hai ya nahi, token uid, aur DB se match status. */
   STEPS.push(['9/18 APK → match join (asli doJoin)', function () {
     var w = W();
+    var JOIN_ATTEMPTS = 6, ATTEMPT_MS = 30000;
     function _mtReady(id) {
       try { if (w.eval) w.eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
       try { return (w.MT && w.MT[id]) ? true : null; } catch (e) { return null; }
+    }
+    function _fireRpc(id) {
+      try {
+        W().eval('(function(){ var p = window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' + JSON.stringify(id) +
+          ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}});' +
+          'var done = false; p.then(function(r){ done = true; console.log("TRI-JOIN-RPC: " + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); },' +
+          'function(e){ done = true; console.log("TRI-JOIN-RPC-ERR: " + String(e && (e.message || e)).slice(0,160)); });' +
+          'setTimeout(function(){ if (!done) console.log("TRI-JOIN-RPC: PENDING(30s)"); }, 30000); })();');
+        return true;
+      } catch (e) { console.log('TRI-JOIN-A: rpc eval fail ' + String(e).slice(0, 90)); return false; }
     }
     function _diag(id) {
       var out = {};
@@ -371,6 +386,11 @@
           ? String((w2.document.getElementById('_appDlgMsg') || {}).innerText || '').slice(0, 120) : '';
         out.mt = (w2.MT && w2.MT[id]) ? 'yes' : 'NO';
         out.mt_count = Object.keys(w2.MT || {}).length;
+        out.wrapper = w2._allJoinChecksDone ? 'security' : 'core';
+        out.device_check = (typeof w2.checkDeviceJoin);
+        out.tok_uid = w2._supaTokenUid ? String(w2._supaTokenUid).slice(0, 8) : '';
+        out.uid = w2.U ? String(w2.U.uid).slice(0, 8) : '';
+        out.confirmBtn = !!w2.document.getElementById('confirmJoinBtn');
       } catch (e) { out.err = String(e).slice(0, 90); }
       return out;
     }
@@ -387,56 +407,66 @@
           }).then(function () { return poll(function () { return _mtReady(m.id); }, 3000, 120000, 'reload ke baad MT me match'); });
         })
         .then(function () {
-          var w2 = W();
-          w2.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
-          return sleep(1200).then(function () {
-            try { w2.eval("if (window.cJoin) cJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {}
-            return poll(function () {
-              var b = W().document.getElementById('confirmJoinBtn');
-              if (!b) return null;
-              b.click();
-              return 'Confirm Join button (asli UI)';
-            }, 1200, 30000, 'join modal ka Confirm Join button').catch(function () {
-              W().eval("if (window.doJoin) doJoin(" + JSON.stringify(m.id) + ");");
-              return 'doJoin (join modal na khula)';
-            });
-          });
-        })
-        .then(function (via) {
-          return sleep(1500).then(function () {
-            try {
-              var w3 = W(), ov = w3.document.getElementById('_appDlgOv');
-              if (ov && ov.classList.contains('show')) {
-                var ok = w3.document.getElementById('_appDlgOk');
-                if (ok) { ok.click(); via += ' + app-dialog OK'; }
-              }
-            } catch (e) {}
-            return via;
-          });
-        })
-        .then(function (via) {
           function _row() {
             return W()._supa.from('join_requests').select('id,status').eq('match_id', m.id).eq('user_id', W().U.uid)
               .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
           }
-          return poll(_row, 3000, 90000, 'APK join row').catch(function () {
-            W().eval('window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' + JSON.stringify(m.id) +
-                    ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}})' +
-                    '.then(function(r){ console.log("TRI-JOIN-RPC: " + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); });');
-            via = 'validate_and_join_match RPC (wahi server path)';
-            return poll(_row, 3000, 120000, 'APK join row (RPC fallback)').catch(function (e) {
-              var d = _diag(m.id);
-              try {
-                W().eval('window._supa.from("matches").select("id,status,filled_slots").ilike("title", ' + JSON.stringify(MARK + '%') +
-                         ').then(function(r){ console.log("TRI-JOIN-DB: " + JSON.stringify(r.data || r.error)); });');
-              } catch (e2) {}
-              console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d));
-              fail('join', e.message + ' | diag=' + JSON.stringify(d));
+          /* ek koshish: mode 'ui' = asli buttons, 'rpc' = wahi server RPC */
+          function _attempt(mode) {
+            if (mode === 'ui') {
+              try { W().eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();"); } catch (e) {}
+              return sleep(1200).then(function () {
+                try { W().eval("if (window.cJoin) cJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {}
+                return sleep(1200).then(function () {
+                  var clicked = false;
+                  try {
+                    var b = W().document.getElementById('confirmJoinBtn');
+                    if (b) { b.click(); clicked = true; }
+                  } catch (e) {}
+                  if (!clicked) { try { W().eval("if (window.doJoin) doJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {} }
+                  return sleep(1200).then(function () {
+                    try {
+                      var ov = W().document.getElementById('_appDlgOv');
+                      if (ov && ov.classList.contains('show')) {
+                        var ok = W().document.getElementById('_appDlgOk');
+                        if (ok) ok.click();
+                      }
+                    } catch (e) {}
+                    console.log('TRI-JOIN-A: UI path (' + (clicked ? 'Confirm Join button' : 'doJoin') + ') bheja');
+                    return 'Confirm Join button (asli UI path)';
+                  });
+                });
+              });
+            }
+            _fireRpc(m.id);
+            console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja');
+            return Promise.resolve('validate_and_join_match RPC (wahi server path)');
+          }
+          var via = '';
+          function _round(i, mode) {
+            var t0 = Date.now();
+            return _attempt(mode).then(function (v) {
+              via = (i > 0 && mode === 'rpc') ? v : (via || v);
+              return poll(_row, 3000, ATTEMPT_MS, 'join row (koshish ' + (i + 1) + ': ' + mode + ')').catch(function () {
+                console.log('TRI-JOIN-A: koshish ' + (i + 1) + ' (' + mode + ') fail — ' +
+                            Math.round((Date.now() - t0) / 1000) + 's');
+                if (i + 1 >= JOIN_ATTEMPTS) {
+                  var d = _diag(m.id);
+                  console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d));
+                  fail('join', 'har koshish ke baad bhi join row nahi bani | diag=' + JSON.stringify(d));
+                }
+                return _round(i + 1, i === 0 ? 'ui' : (i % 2 === 0 ? 'ui' : 'rpc'));
+              });
             });
-          }).then(function (row) {
-            VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = via;
-            return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + via;
+          }
+          return _round(0, 'ui').then(function (row) {
+            return { row: row, via: via };
           });
+        })
+        .then(function (r) {
+          var row = r.row;
+          VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = r.via;
+          return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + r.via;
         });
     });
   }]);
