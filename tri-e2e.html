@@ -256,16 +256,21 @@
     ['6/18 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
-        /* ⚠️ 2026-10-16: host ka room-match bhi MARK se shuru hota hai
-           ("… — Room") — wo yahan na utha liya jaye. */
+        /* ⚠️ 2026-10-16: host ka room-match ka title "… — Room" par khatam hota
+           hai (main match "… — Custom Room" par). Is liye yahan sirf "— Room"
+           par khatam hone wali row chhodi jati hai — "Room" shabd par filter
+           KABHI nahi (main title me bhi Room hai!). */
         return w._supa.from('matches').select('title').ilike('title', MARK + '%')
           .order('created_at', { ascending: false }).limit(10)
           .then(function (r) {
             var rows = (r && r.data) || [];
-            for (var i = 0; i < rows.length; i++) {
-              if (String(rows[i].title || '').indexOf('Room') === -1) return rows[i].title;
+            var i, t, fallback = null;
+            for (i = 0; i < rows.length; i++) {
+              t = String(rows[i].title || '');
+              if (t.slice(-13) === '— Custom Room') return t;   /* asli main match */
+              if (t.slice(-6) !== '— Room' && !fallback) fallback = t;
             }
-            return null;
+            return fallback;
           });
       }, 4000, 420000, 'admin ka match (host driver se)')
         .then(function (title) {
@@ -473,10 +478,16 @@
         .order('created_at', { ascending: false }).limit(10)
         .then(function (r) {
           var rows = (r && r.data) || [];
-          for (var i = 0; i < rows.length; i++) {
-            if (String(rows[i].title || '').indexOf('Room') === -1) return rows[i];
+          var i, t, fallback = null;
+          for (i = 0; i < rows.length; i++) {
+            t = String(rows[i].title || '');
+            /* main match "… — Room" par khatam hota hai, room-match
+               "… — Room" par. Is liye sirf wahi chhodo jo "— Room" par khatam
+               ho ("Room" shabd par filter galat tha — main title me bhi hai). */
+            if (t.slice(-13) === '— Custom Room') return rows[i];   /* asli main match */
+            if (t.slice(-6) !== '— Room' && !fallback) fallback = rows[i];
           }
-          return null;
+          return fallback;
         });
     }, 3000, 120000, 'match id').then(function (m) {
       VALUES.match_id = m.id;
@@ -807,7 +818,7 @@
         /* ✅ 2026-10-16 diag: pehle run me is step ka koi log nahi tha, is liye
            yahan har kadam console par — rid mila ya nahi, MT me hai ya nahi,
            aur asli RPC (get_room_credentials) ka poora jawab. */
-        return W()._supa.from('matches').select('id,title').ilike('title', MARK + ' — Room%').limit(1)
+        return W()._supa.from('matches').select('id,title').ilike('title', MARK + '%— Room').limit(1)
           .then(function (r) {
             var rid = (r && r.data && r.data[0]) ? r.data[0].id : '';
             console.log('TRI-ROOM: rid=' + rid + ' row=' + JSON.stringify((r && r.data) || null).slice(0, 140) +
@@ -833,7 +844,7 @@
            se server P1 ka join rok deta tha (SELF_PLAY_BLOCKED). Is liye pehle
            DB se us room-match ka id nikaalo, phir wahi kholo. */
         try {
-          W()._supa.from('matches').select('id').ilike('title', MARK + ' — Room%').limit(1)
+          W()._supa.from('matches').select('id').ilike('title', MARK + '%— Room').limit(1)
             .then(function (r) {
               var rid = (r && r.data && r.data[0]) ? r.data[0].id : (VALUES.match_id || '');
               try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
