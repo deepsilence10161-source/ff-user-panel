@@ -1585,7 +1585,7 @@ def main():
                      const {data:u} = await window._supa.from('users').select('coins,sky_diamonds').eq('id', window.U.uid).maybeSingle();
                      const {data:k} = await window._supa.from('kyc_requests').select('status').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
                      const {data:t} = await window._supa.from('support_tickets').select('admin_reply,status').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
-                     const {data:m} = await window._supa.from('matches').select('title').ilike('title','QA-TEST TRI%').order('created_at',{ascending:false}).limit(1);
+                     const {data:m} = await window._supa.from('matches').select('title').ilike('title','QA-TEST TRI%').not('title','ilike','%Room%').order('created_at',{ascending:false}).limit(1);
                      const {data:n} = await window._supa.from('notifications').select('title').eq('user_id', window.U.uid).order('created_at',{ascending:false}).limit(1);
                      const {data:pr} = await window._supa.from('users').select('premium_level').eq('id', window.U.uid).maybeSingle();
                      const {data:rc} = await window._supa.from('user_cosmetics').select('cosmetic_key')

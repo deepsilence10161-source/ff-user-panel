@@ -256,9 +256,17 @@
     ['6/18 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
+        /* ⚠️ 2026-10-16: host ka room-match bhi MARK se shuru hota hai
+           ("… — Room") — wo yahan na utha liya jaye. */
         return w._supa.from('matches').select('title').ilike('title', MARK + '%')
-          .order('created_at', { ascending: false }).limit(1)
-          .then(function (r) { return (r.data && r.data[0]) ? r.data[0].title : null; });
+          .order('created_at', { ascending: false }).limit(10)
+          .then(function (r) {
+            var rows = (r && r.data) || [];
+            for (var i = 0; i < rows.length; i++) {
+              if (String(rows[i].title || '').indexOf('Room') === -1) return rows[i].title;
+            }
+            return null;
+          });
       }, 4000, 420000, 'admin ka match (host driver se)')
         .then(function (title) {
           VALUES.match_title = title;
@@ -454,9 +462,22 @@
       return out;
     }
     return poll(function () {
-      return w._supa.from('matches').select('id,filled_slots').ilike('title', MARK + '%')
-        .order('created_at', { ascending: false }).limit(1)
-        .then(function (r) { return (r.data && r.data[0]) ? r.data[0] : null; });
+      /* ⚠️ 2026-10-16 (asli race pakdi): host ka H9b apna ALAG room-match bhi
+         banata hai jiska title bhi `QA-TEST TRI <run>%` se shuru hota hai
+         ("… — Room"). Pehle yahan `order created_at desc limit 1` tha, is liye
+         kabhi-kabhi wahi naya room-match utha liya jata tha — aur uska
+         creator_uid = P1 (APK wala) hone se server join rok deta tha
+         (SELF_PLAY_BLOCKED, wahi purani galti dobara). Ab 10 rows laa kar
+         jaan-boojh kar wo row chunte hain jiske title me "Room" nahi hai. */
+      return w._supa.from('matches').select('id,title,filled_slots').ilike('title', MARK + '%')
+        .order('created_at', { ascending: false }).limit(10)
+        .then(function (r) {
+          var rows = (r && r.data) || [];
+          for (var i = 0; i < rows.length; i++) {
+            if (String(rows[i].title || '').indexOf('Room') === -1) return rows[i];
+          }
+          return null;
+        });
     }, 3000, 120000, 'match id').then(function (m) {
       VALUES.match_id = m.id;
       /* ── 2026-10-16 (TRI 38893028621): probe ne saaf kar diya ki network
