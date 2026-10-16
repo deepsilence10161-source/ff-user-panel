@@ -913,8 +913,32 @@ def main():
         ROOM = {"id": "TRIROOM" + str(CUR)[:6].upper(), "pw": "TRIPW" + str(CUR)[-4:].upper()}
 
         def h9b():
-            mid = MATCH["row"]["id"]
-            # 1) admin: P1 ko match ka creator banao (asli admin-panel write)
+            # ⚠️ 2026-10-16 (asli wajah mili): pehle ye test WAHI match use karta
+            # tha jisme P1 (APK) join karta hai — par yahan `creator_uid = P1`
+            # set hota hai, aur server ka validate_and_join_match usi ko saaf
+            # rok deta hai: "Apne khud ke hosted match mein join nahi kar sakte"
+            # (SELF_PLAY_BLOCKED, HTTP 200). Isi se APK ka join (step 9) na row
+            # banata tha, na H11b (dono players) pass hota tha — har run me.
+            # Ab Room-ID test ka apna ALAG match hai, is liye main match ka
+            # creator_uid khaali rehta hai aur P1 ka join khula hai.
+            rmid = admin.evaluate(
+                """async (m) => {
+                     const id = (window.rtdb && window.rtdb.ref) ? (await window.rtdb.ref('matches').push(m)).key : null;
+                     if (!id) return { error: 'bridge push fail' };
+                     await new Promise(r => setTimeout(r, 2500));
+                     const { data, error } = await window._supa.from('matches')
+                        .select('id,title,status,mode,max_slots').ilike('title', m.title).limit(1);
+                     return { row: (data||[])[0] || null, err: error ? error.message : null };
+                   }""",
+                {"title": ST["markers"]["matchTitle"] + " — Room", "status": "upcoming", "mode": "solo",
+                 "entry_fee": 0, "entry_type": "free", "max_slots": 6, "map": "Bermuda",
+                 "scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(time.time() + 5400)) + ".000Z",
+                 "prize_pool": 0, "data": {"tri": CUR, "room_test": True}})
+            if rmid.get("err") or not rmid.get("row"):
+                raise RuntimeError("room match insert/verify fail: " + json.dumps(rmid)[:200])
+            ROOM["mid"] = rmid["row"]["id"]
+            mid = ROOM["mid"]
+            # 1) admin: P1 ko (room match ka) creator banao (asli admin-panel write)
             r1 = admin.evaluate("""async (o) => {
                 const { error } = await window._supa.from('matches')
                   .update({ creator_uid: o.uid }).eq('id', o.mid);
@@ -922,6 +946,25 @@ def main():
                 {"uid": ST["player"]["uid"], "mid": mid})
             if r1:
                 raise RuntimeError("creator_uid set fail: " + str(r1)[:140])
+
+            # 1b) P2 (joined player) room match me join kare — asli UI path
+            p2.evaluate("() => { if (window._loadMatches) _loadMatches(); }")
+            p2.wait_for_timeout(2000)
+            p2.evaluate("(id) => { if (window.doJoin) doJoin(id); }", mid)
+
+            def _p2_row():
+                return p2.evaluate(
+                    """async (id) => { const {data} = await window._supa.from('join_requests')
+                         .select('id,status').eq('match_id', id).eq('user_id', window.U.uid);
+                         return (data||[])[0] || null; }""", mid)
+            try:
+                p2row = poll(_p2_row, timeout=60, every=4, what="P2 join row (room match, doJoin)")
+            except Exception:
+                p2.evaluate("""(id) => window._supa.rpc('validate_and_join_match', {
+                     p_uid: window.U.uid, p_match_id: id, p_entry_fee: 0, p_currency: 'coins',
+                     p_join_data: { mode: 'solo', ign: (window.UD && window.UD.ign) || '' } })""", mid)
+                p2row = poll(_p2_row, timeout=120, every=4, what="P2 join row (room match, RPC fallback)")
+            ROOM["p2_join"] = str(p2row.get("id"))[:8]
 
             # 2) P1 (creator) — APP KI APNI UI se room ID save karo
             user.evaluate("(id) => { if (window.showCreatorRoomEntry) showCreatorRoomEntry(id); }", mid)
@@ -979,8 +1022,9 @@ def main():
             shot(p2, "h9b-p2-room-visible.png")
             VALUES["room_id"] = ROOM["id"]
             VALUES["room_pw"] = ROOM["pw"]
-            return (f"creator (app UI) ne Room ID '{ROOM['id']}' + password set kiya (DB match_rooms ✔), "
-                    f"admin ne release kiya, aur jode hue player (P2) ko wahi Room ID uski UI me dikha ✔")
+            return (f"room match #{ROOM['mid'][:8]} (P2 joined ✔) → creator (app UI, P1) ne Room ID "
+                    f"'{ROOM['id']}' + password set kiya (DB match_rooms ✔), admin ne release kiya, aur jode hue "
+                    f"player (P2) ko wahi Room ID uski UI me dikha ✔")
 
         step("H9b Phase-3: Room ID/password — creator se player tak (live)", h9b, critical=True)
 

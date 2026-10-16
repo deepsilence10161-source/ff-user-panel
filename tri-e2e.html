@@ -783,9 +783,20 @@
         w.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
       } catch (e) {}
       return new Promise(function (res) { setTimeout(res, 2500); }).then(function () {
-        try { W().eval("if (window._showRoomViaRpc && window.VALUES_MID) _showRoomViaRpc(window.VALUES_MID);"); } catch (e) {}
-        /* match id tri-e2e page ke VALUES se (step 9 me bhara) */
-        try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + (VALUES.match_id || '') + "');"); } catch (e) {}
+        /* ✅ 2026-10-16: Room test ab ALAG match par hota hai (host H9b
+           '…— Room' naam ka naya match banata hai) — pehle wahi main match
+           tha jisme P1 ko join karna hota hai, aur uska creator_uid set karne
+           se server P1 ka join rok deta tha (SELF_PLAY_BLOCKED). Is liye pehle
+           DB se us room-match ka id nikaalo, phir wahi kholo. */
+        try {
+          W()._supa.from('matches').select('id').ilike('title', MARK + ' — Room%').limit(1)
+            .then(function (r) {
+              var rid = (r && r.data && r.data[0]) ? r.data[0].id : (VALUES.match_id || '');
+              try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
+            });
+        } catch (e) {
+          try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + (VALUES.match_id || '') + "');"); } catch (e) {}
+        }
         return new Promise(function (res) { setTimeout(res, 2500); });
       }).then(function () { return _scan(); });
     }
