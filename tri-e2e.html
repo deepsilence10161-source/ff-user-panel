@@ -598,7 +598,16 @@
           }
           var via = '';
           _installIframeHooks();   /* ⚠️ pehle ye `return` ke BAAD likha gaya tha — chalta hi nahi tha */
-          return _netProbe().then(function () { return _round2(); });
+          /* ⚠️ 2026-10-16 (asli masking bug): pehle yahan `return
+             _netProbe().then(...)` aage se return kar deta tha — aur neeche
+             wala (chalu) `return _round2().then(function (row) { return {row,
+             via}; })` DEAD CODE ban gaya tha. Nateeja: chain ne seedha ROW
+             diya, `r.row` undefined nikla, aur asli SUCCESS (toast "Joined
+             successfully") bhi fail jaisa dikhta tha. Ab wrapper isi chain me
+             hai aur dead copy hata di. */
+          return _netProbe().then(function () { return _round2(); }).then(function (row) {
+            return { row: row, via: via };
+          });
           function _round2() { return _round(0, 'ui'); }
           function _round(i, mode) {
             var t0 = Date.now();
@@ -616,9 +625,6 @@
               });
             });
           }
-          return _round2().then(function (row) {
-            return { row: row, via: via };
-          });
         })
         .then(function (r) {
           /* ⚠️ 2026-10-16: pehle yahan seedha `row.id` tha — agar chain ne

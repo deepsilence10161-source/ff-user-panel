@@ -1286,7 +1286,23 @@ def main():
                 poll(_modal_ready, timeout=30, every=3, what="duo join modal (partner field)")
             except Exception:
                 user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
-                poll(_modal_ready, timeout=30, every=3, what="duo join modal (dobara cJoin ke baad)")
+                try:
+                    poll(_modal_ready, timeout=30, every=3, what="duo join modal (dobara cJoin ke baad)")
+                except Exception:
+                    # kyun nahi khula — cJoin ke asli guards ka jawab (log me)
+                    why = user.evaluate("""(id) => {
+                        const t = window.MT && window.MT[id];
+                        const tw = document.getElementById('toast-wrap');
+                        return { hasMT: !!t, isVO: (typeof window.isVO === 'function') ? !!window.isVO() : 'na',
+                                 isOk: (typeof window.isOk === 'function') ? !!window.isOk() : 'na',
+                                 profileStatus: (window.UD && window.UD.profileStatus) || 'na',
+                                 role: (typeof window.getJoinRole === 'function') ? String(window.getJoinRole(id)) : 'na',
+                                 hasJ: (typeof window.hasJ === 'function') ? !!window.hasJ(id) : 'na',
+                                 slots: t ? (String(t.joinedSlots||0) + '/' + String(t.maxSlots||0)) : 'na',
+                                 mode: t ? String(t.mode||t.type||'') : 'na',
+                                 modalOpen: !!(document.getElementById('modalOv') && document.getElementById('modalOv').classList.contains('show')),
+                                 toast: tw ? (tw.innerText||'').replace(/\n/g,' | ').slice(0, 160) : '' }; }""", DUO["id"])
+                    raise RuntimeError("duo join modal nahi khula — cJoin guards: " + json.dumps(why, ensure_ascii=False)[:420])
             # ⚠️ 2026-10-16 (asli wajah): agar P1 ka koi SAVED duo partner hai
             # (localStorage linked team), to join modal UID input ko
             # `#manualPartnerWrap` (display:none) ke andar chhupa deta hai aur
