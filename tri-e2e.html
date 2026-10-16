@@ -459,6 +459,33 @@
         .then(function (r) { return (r.data && r.data[0]) ? r.data[0] : null; });
     }, 3000, 120000, 'match id').then(function (m) {
       VALUES.match_id = m.id;
+      /* ── 2026-10-16 (TRI 38893028621): probe ne saaf kar diya ki network
+         theek hai (GET, POST-insert, rpc-404, raw fetch — sab jawab dete hain)
+         par join ke waqt IFRAME ka apna console chup ho jata hai aur uske
+         timers bhi nahi chalte (12s ka PENDING log bhi nahi aaya). Is liye ab
+         iframe ke ANDAR se stage-logging + ek raw-fetch join (supabase-js ke
+         bahar, seedha PostgREST) — dono cheezein iframe ke apne realm me. ── */
+      function _installIframeHooks() {
+        try {
+          W().eval('(function(){ function L(m){ try { console.log("TRI-IN-IFRAME: " + m); } catch(e){} }' +
+            ' window.__triL = L; L("hooks installed");' +
+            ' window.__triFetchJoin = function(mid){' +
+            '   L("raw fetch join START");' +
+            '   window.auth.currentUser.getIdToken().then(function(jwt){' +
+            '     L("token mila");' +
+            '     return window.fetch("https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/rpc/validate_and_join_match", {' +
+            '       method:"POST", headers:{"Content-Type":"application/json", apikey: "' + SUPA_ANON + '", Authorization: "Bearer " + jwt},' +
+            '       body: JSON.stringify({p_uid: window.U.uid, p_match_id: mid, p_entry_fee: 0, p_currency: "coins",' +
+            '         p_join_data: {mode:"solo", ign: (window.UD && window.UD.ign) || ""}}) });' +
+            '   }).then(function(r){ L("fetch response http " + r.status); return r.text(); })' +
+            '     .then(function(t){ L("body: " + String(t).slice(0, 170)); })' +
+            '     .catch(function(e){ L("ERR " + String(e && (e.message || e)).slice(0, 150)); });' +
+            ' };' +
+            ' setTimeout(function(){ L("12s timer chala (realm zinda hai)"); }, 12000);' +
+            '})();');
+          console.log('TRI-IN-IFRAME: hooks install kiye');
+        } catch (e) { console.log('TRI-IN-IFRAME: hooks fail ' + String(e).slice(0, 120)); }
+      }
       return poll(function () { return _mtReady(m.id); }, 3000, 90000, 'app ke MT me match')
         .catch(function () {
           return bootApp().then(function () {
@@ -482,7 +509,7 @@
                     var b = W().document.getElementById('confirmJoinBtn');
                     if (b) { b.click(); clicked = true; }
                   } catch (e) {}
-                  if (!clicked) { try { W().eval("if (window.doJoin) doJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {} }
+                  if (!clicked) { try { W().eval('(function(){ try { window.__triL && window.__triL("doJoin CALL se pehle"); } catch(e){}; if (window.doJoin) doJoin(' + JSON.stringify(m.id) + '); try { window.__triL && window.__triL("doJoin CALL ke baad (return aa gaya)"); } catch(e){} })();'); } catch (e) { console.log('TRI-JOIN-A: doJoin eval fail ' + String(e).slice(0,90)); } }
                   return sleep(1200).then(function () {
                     try {
                       var ov = W().document.getElementById('_appDlgOv');
@@ -498,12 +525,14 @@
               });
             }
             _fireRpc(m.id);
-            console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja');
+            try { W().eval('window.__triFetchJoin && window.__triFetchJoin(' + JSON.stringify(m.id) + ')'); } catch (e) {}
+            console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja + iframe raw fetch');
             return Promise.resolve('validate_and_join_match RPC (wahi server path)');
           }
           var via = '';
           return _netProbe().then(function () { return _round2(); });
           function _round2() { return _round(0, 'ui'); }
+          _installIframeHooks();
           function _round(i, mode) {
             var t0 = Date.now();
             return _attempt(mode).then(function (v) {
