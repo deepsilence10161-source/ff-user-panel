@@ -1516,22 +1516,26 @@ def main():
                     const el = document.getElementById('loginStreakStrip');
                     return (el && el.getAttribute('data-done-today') === '1' && !el.querySelector('button')) ? true : null; }""")
 
+            # ⚠️ 2026-10-16: strip ka live update tabhi hota hai jab app khud
+            # (renderHome → screens/home.js → refreshLoginStreakToday) chalaye.
+            # APK bhi wahi account kholta hai, is liye kabhi-kabhi uska claim
+            # pehle ho jata hai aur web ka click `already_checked_in` ka toast
+            # de kar wapas aa jata hai — us surat me strip purana hi rehta hai
+            # (app ka apna behaviour). Is liye: live na ho to app ka HI refresh
+            # function chalakar saabit karo; wo bhi na chale to pakka app bug.
             try:
-                poll(_done_live, timeout=90, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
+                poll(_done_live, timeout=60, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
+                h14_done_via = "live (click/claim ke baad apne aap)"
             except Exception:
-                if already:
-                    # click hamne kiya hi nahi tha — fresh asli render par saabit karo
-                    user.evaluate("() => { if (window.renderHome) renderHome(); }")
-                    user.wait_for_timeout(2500)
-                    poll(_done_live, timeout=60, every=4, what="strip done (fresh render par)")
-                else:
-                    raise
+                user.evaluate("() => { if (window.refreshLoginStreakToday) refreshLoginStreakToday(); }")
+                poll(_done_live, timeout=60, every=4, what="strip 'आज हो गया ✓' (app ke apne refresh ke baad)")
+                h14_done_via = "app ke apne refreshLoginStreakToday se (live update nahi aaya tha)"
             shot(user, "h14-web-streak-done.png")
             VALUES["streak_days"] = str(row.get("streak") or 0)
             VALUES["streak_strip"] = "home-strip"
             return (f"home par asli streak strip (Week Warrior kala ✔), check-in asli button se → "
                     f"daily_checkins row (din {row.get('day')}, +🪙{row.get('coins')}) + users.streak_days "
-                    f"{before}→{row.get('streak')} → strip ne live 'आज हो गया ✓' dikhaya (bina reload)")
+                    f"{before}→{row.get('streak')} → strip ne 'आज हो गया ✓' dikhaya — {h14_done_via}")
 
         step("H14 3.6: check-in streak strip + asli check-in (home par)", h14)
 
@@ -1581,7 +1585,8 @@ def main():
             # nahi) + poora try/catch, aur na milne par SAAF wajah ("why") wapas
             # — taaki agla fail andha na ho.
             def _banner():
-                return user.evaluate("""() => {
+                try:
+                    return user.evaluate("""() => {
                      try {
                        var el = document.getElementById('seasonChampionBanner');
                        if (!el) return { why: 'element nahi mila' };
@@ -1602,6 +1607,9 @@ def main():
                        return { why: 'ok', mine: mine, kills: t.indexOf('4242') !== -1,
                                 txt: t.split('\u000a').join(' ').slice(0, 80), kala: kala };
                      } catch (e) { return { why: 'throw ' + String(e && (e.message || e)).slice(0, 90) }; } }""")
+                except Exception as ex:
+                    last_why["v"] = 'evaluate throw: ' + str(ex)[:220]
+                    return None
 
             last_why = {"v": ""}
 
@@ -1614,8 +1622,9 @@ def main():
 
             try:
                 b = poll(_banner_ok, timeout=150, every=5, what="web par champion banner (apna)")
-            except Exception:
-                raise RuntimeError("champion banner nahi mila — aakhri wajah: " + last_why["v"])
+            except Exception as pex:
+                raise RuntimeError("champion banner nahi mila — poll: " + str(pex)[:160] +
+                                   " | aakhri wajah: " + str(last_why["v"])[:220])
             shot(user, "h15-web-champion-banner.png")
             if not b.get("kala"):
                 raise RuntimeError("champion banner to aaya par kala unlock nahi: " + json.dumps(b)[:160])
