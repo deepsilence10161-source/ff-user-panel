@@ -783,6 +783,29 @@
         w.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
       } catch (e) {}
       return new Promise(function (res) { setTimeout(res, 2500); }).then(function () {
+        /* ✅ 2026-10-16 diag: pehle run me is step ka koi log nahi tha, is liye
+           yahan har kadam console par — rid mila ya nahi, MT me hai ya nahi,
+           aur asli RPC (get_room_credentials) ka poora jawab. */
+        return W()._supa.from('matches').select('id,title').ilike('title', MARK + ' — Room%').limit(1)
+          .then(function (r) {
+            var rid = (r && r.data && r.data[0]) ? r.data[0].id : '';
+            console.log('TRI-ROOM: rid=' + rid + ' row=' + JSON.stringify((r && r.data) || null).slice(0, 140) +
+                        ' err=' + ((r && r.error && r.error.message) || '-'));
+            if (!rid) return null;
+            return W()._supa.rpc('get_room_credentials', { p_match_id: rid }).then(function (res) {
+              console.log('TRI-ROOM: rpc=' + JSON.stringify(res && res.data).slice(0, 180));
+              try { W().eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+              return new Promise(function (r2) { setTimeout(r2, 2000); }).then(function () {
+                var inMt = false;
+                try { inMt = !!(W().MT && W().MT[rid]); } catch (e) {}
+                console.log('TRI-ROOM: inMT=' + inMt + ' mtKeys=' + (function () {
+                  try { return Object.keys(W().MT || {}).length; } catch (e) { return 'na'; } })());
+                try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
+                return new Promise(function (r3) { setTimeout(r3, 2500); });
+              });
+            });
+          })['catch'](function (e) { console.log('TRI-ROOM: diag fail ' + String(e).slice(0, 120)); });
+      }).then(function () {
         /* ✅ 2026-10-16: Room test ab ALAG match par hota hai (host H9b
            '…— Room' naam ka naya match banata hai) — pehle wahi main match
            tha jisme P1 ko join karna hota hai, aur uska creator_uid set karne
@@ -899,7 +922,7 @@
     return poll(function () {
       try { W().eval("if (window.renderHome) renderHome(); if (window.refreshSeasonChampion) refreshSeasonChampion();"); } catch (e) {}
       return _champ();
-    }, 6000, 300000, 'APK home par champion banner (apna)').then(function (b) {
+    }, 6000, 420000, 'APK home par champion banner (apna)').then(function (b) {
       if (!b.kala) fail('champion_kala', 'APK par Season Champion kala unlock nahi hui');
       VALUES.champion_banner = 'ok';
       return 'APK home par bada ailaan — "' + b.txt + '" (Season Champion kala ✔)';
@@ -926,7 +949,7 @@
         var rows = (r && r.data) || [];
         return rows.length ? { n: rows.length, t: String(rows[0].title || ''), ty: rows[0].type } : null;
       }, function () { return null; });
-    }, 6000, 300000, 'APK par badge unlock notification row (asli)').then(function (b) {
+    }, 6000, 420000, 'APK par badge unlock notification row (asli)').then(function (b) {
       if (b.t.indexOf('Naya badge') === -1 && b.t.indexOf('Naya title') === -1) {
         fail('badge_unlock_title', 'notification title badge jaisa nahi: ' + b.t.slice(0, 40));
       }

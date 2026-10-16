@@ -1270,12 +1270,36 @@ def main():
             user.wait_for_timeout(1500)
             user.evaluate("(id) => { if (window.cJoin) cJoin(id); }", DUO["id"])
             user.wait_for_timeout(1500)
+            # ⚠️ 2026-10-16 (asli wajah): agar P1 ka koi SAVED duo partner hai
+            # (localStorage linked team), to join modal UID input ko
+            # `#manualPartnerWrap` (display:none) ke andar chhupa deta hai aur
+            # uski jagah 'Linked Partner — Auto Joined!' card dikhata hai.
+            # Is liye `#partnerUid1` milta hi nahi tha. App ka apna
+            # 'Use different partner?' link (`showManualPartner('duo')`) click
+            # karke asli manual-UID field kholna padta hai.
+            vis = user.evaluate(
+                """() => { const a = document.getElementById('partnerUid1');
+                     if (!a) return 'na';
+                     if (a.offsetParent === null) {
+                       if (window.showManualPartner) showManualPartner('duo');
+                       const w = document.getElementById('manualPartnerWrap');
+                       if (w) w.style.display = 'block';
+                     }
+                     return 'ok'; }""")
+            if vis != "ok":
+                raise RuntimeError("duo join modal me partner UID input (#partnerUid1) hai hi nahi")
+            user.wait_for_timeout(600)
             filled = user.evaluate(
                 """(o) => { const a = document.getElementById('partnerUid1'); if (!a) return false;
                      a.value = o.ff; a.dispatchEvent(new Event('input', { bubbles: true })); return true; }""",
                 {"ff": ff2})
             if not filled:
                 raise RuntimeError("duo join modal me partner UID input (#partnerUid1) nahi mila")
+            # asli screenshot par field dikhni chahiye (manual wrap khuli ho)
+            user.evaluate(
+                """() => { const a = document.getElementById('partnerUid1');
+                     const w = document.getElementById('manualPartnerWrap'); if (w) w.style.display = 'block';
+                     if (a) a.scrollIntoView({block: 'center'}); }""")
             shot(user, "h13-duo-join-modal.png")
 
             def _partner_ok():
@@ -1483,15 +1507,18 @@ def main():
             if not b.get("kala"):
                 raise RuntimeError("champion banner to aaya par kala unlock nahi: " + json.dumps(b)[:160])
 
-            # cleanup — row hatao + UD flag reset + khaali render
-            admin.evaluate("""async (a) => { await window._supa.from('season_champions').delete().eq('month_key', a.mk); }""", {"mk": mk})
-            user.evaluate("""() => { try { window.__SS_SET_CHAMPION(null); window.UD.season_champion = 0;
-                 var el = document.getElementById('seasonChampionBanner'); if (el) el.innerHTML = ''; } catch (e) {} }""")
+            # ⚠️ 2026-10-16: ye row ABHI delete NAHI hoti. APK ka step 17 (banner
+            # APK par) isi row par depend karta hai, aur wo APK host ke baad
+            # chal sakta hai. Pehle yahan turant delete hota tha — APK step 17
+            # usi wajah se 300s timeout karta. Residue ka intezaam workflow ke
+            # ant me chalta hai: `qa-accounts.mjs cleanup` (season_champions
+            # delete wahan add kiya gaya hai) → run ke baad 0 rows.
 
             VALUES["champion_banner"] = "ok"
             VALUES["champion_ign"] = champ_ign
             return (f"web home par bada ailaan (apna champion → \"tum champion ho\", kills 4242), "
-                    f"Season Champion kala asli flag se unlock — row {mk} cleanup ke baad hataya")
+                    f"Season Champion kala asli flag se unlock — row {mk} APK step 17 ke liye zinda "
+                    f"rakhi (run ke ant me QA cleanup hatayega)")
 
         step("H15 3.8/11: Season Champion bada ailaan (web banner + kala)", h15)
 
@@ -1531,9 +1558,10 @@ def main():
             hit = poll(_badge_notifs, timeout=150, every=5, what="badge unlock notification row (asli)")
             shot(user, "h16-web-badge-unlock-notif.png")
 
-            # cleanup — QA notification rows hatao + purane stats wapas
-            admin.evaluate("""async (a) => { await window._supa.from('notifications')
-                 .delete().eq('user_id', a.uid).in('type', ['badge_unlock','badge_near_unlock']); }""", {"uid": uid})
+            # ⚠️ 2026-10-16: badge notification rows ABHI delete nahi hoti —
+            # APK ka step 18 (asli notification row APK par) inhi par depend
+            # karta hai. Run ke ant me `qa-accounts.mjs cleanup` saari
+            # notifications (user ke) delete karta hai → residue 0.
             admin.evaluate("""async (a) => { await window._supa.from('users')
                  .update({ total_wins: a.w, total_kills: a.k }).eq('id', a.uid); }""",
                  {"uid": uid, "w": int(old.get("total_wins") or 0), "k": int(old.get("total_kills") or 0)})
@@ -1546,7 +1574,7 @@ def main():
             return (f"stats asli users row me badhaye (wins/kills 600) → home render par asli "
                     f"notifyNewBadges chala → {hit.get('n')} notification row bani "
                     f"({first.get('type')}: {str(first.get('title'))[:40]}) — push wahi trigger karta hai; "
-                    f"cleanup: rows + stats wapas")
+                    f"rows APK step 18 ke liye zinda (run-end cleanup), stats wapas")
 
         step("H16 3.9: badge unlock push (asli client → notification row)", h16)
 

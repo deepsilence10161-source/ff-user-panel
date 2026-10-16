@@ -115,6 +115,11 @@ function cleanupSql(runid) {
     /* ✅ leaderboard ek ALAG table hai (users delete se apne aap nahi hatta) —
        isliye users se PEHLE iski row hatao, warna orphan row padi reh jati. */
     `delete from leaderboard where id in (select id from users where ign like '${ign}')`,
+    /* ✅ 2026-10-16: season_champions — H15 (Season Champion banner) ki row
+       run ke AANT tak zinda rehti hai (APK step 17 usi par hai), is liye
+       residue ka safaya yahan aakhir me hota hai. */
+    `delete from season_champions where user_id in (select id from users where ign like '${ign}')`,
+    `delete from match_rooms where match_id in (select id from matches where title like '${tag}')`,
     /* 2. users + admins rows */
     `delete from admins where email like '${emailLike}'`,
     `delete from users where ign like '${ign}'`,
