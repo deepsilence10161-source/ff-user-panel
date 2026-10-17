@@ -1,30 +1,48 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # ═══════════════════════════════════════════════════════════════════════════
-#  TRI-E2E — cross-surface compare
-#  APK ke values (logcat se) vs User Panel web ke values (host driver se)
-#  vs DB — teeno ek hi account ke hone chahiye. Ye script teeno ko milaati hai.
+#  TRI-E2E — cross-surface compare (APK ↔ User Panel web, ek hi QA account)
+#
+#  2026-10-17 — sudhaar (asli wajah):
+#  Pehle har key ko "barabar hona chahiye" maana jata tha. Par kuch cheezein
+#  run ke dauraan BADALTI rehti hain (wallet: admin credit +25, ring kharid
+#  -100 SD, check-in +5; aur "sabse nayi notification"), aur APK apne VALUES
+#  run ke apne aant me likhta hai jabki web ke values host ke aant me — do
+#  alag lamhe. Is liye wahi farq "mismatch" dikhta tha jo asal me sirf samay
+#  ka farq tha (jaise coins 50 vs 80) — aur asli fail chhup jate the.
+#
+#  Ab teen darje:
+#    STRICT — jo cheez poore run me nahi badalti: dono taraf bilkul ek honi
+#             chahiye (KYC, match, premium level/banner, ribbon, ring, duo
+#             players, streak, champion banner, badge push).
+#    SOFT   — dono taraf ho to ek honi chahiye; ek taraf na mile to sirf
+#             batao (uska apna asli proof host ke H9b/H3/H7 me hai).
+#    INFO   — samay ke hisaab se badalne wali cheezein; inhe HAR surface ne
+#             apne waqt par DB se milaya hota hai (APK step 5: wallet UI vs DB,
+#             host H10/H11: DB, H16: notification row DB). Is liye ye fail
+#             nahi karate, par saaf dikhaye jate hain.
 # ═══════════════════════════════════════════════════════════════════════════
 import argparse, json, sys
 
-KEYS = ["coins", "sky_diamonds", "kyc_status", "ticket_reply", "match_title", "notif_title",
-        # 2026-10-12: premium ribbon — dono taraf (APK ↔ web) ek hi premium_level
-        # dikhna chahiye (admin ne approve_premium se diya tha)
-        "premium_level", "premium_ribbon",
-        # 2026-10-13: aakhri 12 ghante ka countdown banner — APK aur web
-        # dono par ek hi jagah (DB ki premium_expires) se aana chahiye
-        "premium_banner",
-        # 2026-10-13: 9 avatar-ring cosmetics — web par kharida ring APK par bhi
-        "cosmetic_ring", "ring_medal",
-        # 2026-10-13 Phase-3: Room ID — creator ne web par set kiya, APK par dikha
-        "room_id",
-        # 2026-10-13d Phase-3: DUO team — web par invite/accept ke baad APK par 2 players
-        "duo_players",
-        # 2026-10-13d 3.6: check-in streak — web par asli check-in ke baad APK par wahi streak
-        "streak_days",
-        # 2026-10-13d 3.8/11: Season Champion bada ailaan — web aur APK dono par
-        "champion_banner",
-        # 2026-10-13d 3.9: badge unlock push (asli client → notification row)
-        "badge_unlock_push"]
+STRICT = ["kyc_status", "match_title", "premium_level", "premium_banner",
+          "cosmetic_ring", "ring_medal", "duo_players", "streak_days",
+          "champion_banner", "badge_unlock_push"]
+
+SOFT = ["ticket_reply", "room_id"]
+
+INFO = ["coins", "sky_diamonds", "notif_title"]
+
+# jinpe "dono taraf kuch dikha" hi maayne rakhta hai (naam alag ho sakta hai:
+# APK 'screen-ribbon', web 'leaderboard-row')
+PRESENCE = {"premium_ribbon": "yes"}
+
+
+def norm(k, v):
+    if v is None:
+        return None
+    if k in PRESENCE and str(v) not in ("", "None", "0", "false", "False"):
+        return PRESENCE[k]
+    return str(v)
 
 
 def main():
@@ -45,27 +63,47 @@ def main():
         print("host values padhi nahi ja saki:", e)
         web = {}
 
-    same, diff, missing = [], [], []
-    for k in KEYS:
-        av, wv = apk.get(k), web.get(k)
+    same, diff, soft_gap, info = [], [], [], []
+
+    for k in STRICT + list(PRESENCE.keys()):
+        av, wv = norm(k, apk.get(k)), norm(k, web.get(k))
         if av is None or wv is None:
-            missing.append(f"{k}: apk={av!r} web={wv!r}")
-        elif str(av) == str(wv):
-            same.append(f"{k}={str(av)[:34]}")
+            diff.append(f"{k}: apk={av!r} web={wv!r} (dono taraf hona chahiye)")
+        elif av == wv:
+            same.append(f"{k}={av[:34]}")
         else:
-            diff.append(f"{k}: apk={str(av)[:34]!r} web={str(wv)[:34]!r}")
+            diff.append(f"{k}: apk={av[:34]!r} web={wv[:34]!r}")
+
+    for k in SOFT:
+        av, wv = norm(k, apk.get(k)), norm(k, web.get(k))
+        if av and wv:
+            if av == wv:
+                same.append(f"{k}={av[:34]}")
+            else:
+                diff.append(f"{k}: apk={av[:34]!r} web={wv[:34]!r}")
+        else:
+            soft_gap.append(f"{k}: apk={av!r} web={wv!r} (ek taraf nahi mila — apna alag proof maujood)")
+
+    for k in INFO:
+        av, wv = norm(k, apk.get(k)), norm(k, web.get(k))
+        info.append(f"{k}: apk={av!r} web={wv!r}"
+                    + ("  (barabar)" if av == wv else "  — samay ka farq: har surface ne apne waqt par DB se milaya"))
 
     print("CROSS-SURFACE (APK ↔ User Panel web), ek hi QA account:")
     for s in same:
         print("   ✅ " + s)
-    for m in missing:
-        print("   ⚠️  missing " + m)
+    for g in soft_gap:
+        print("   •  " + g)
+    for i in info:
+        print("   ℹ️  " + i)
     for d in diff:
-        print("   ❌ mismatch " + d)
-    ok = (not diff) and len(same) >= 4
-    json.dump({"same": same, "missing": missing, "mismatch": diff, "ok": ok},
+        print("   ❌ " + d)
+
+    ok = (not diff) and len([s for s in same if not s.startswith(tuple(SOFT))]) >= 8
+    json.dump({"same": same, "soft_gap": soft_gap, "info": info, "mismatch": diff, "ok": ok},
               open(a.out, "w"), indent=1, ensure_ascii=False)
-    print(f"CROSS-SURFACE-RESULT: {len(same)} match / {len(diff)} mismatch / {len(missing)} missing → {'OK' if ok else 'FAIL'}")
+    print(f"CROSS-SURFACE-RESULT: {len(same)} match / {len(diff)} mismatch / "
+          f"{len(soft_gap)} adhoora / {len(info)} samay-par-nirbhar → {'OK' if ok else 'FAIL'}")
     sys.exit(0 if ok else 1)
 
 
