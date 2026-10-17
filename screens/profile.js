@@ -129,7 +129,7 @@ function renderProfile() {
   h += '<div class="pf2-foot">';
   h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
   h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66;display:inline-flex;align-items:center;gap:5px">' +
-       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261017d" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261017e" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
        rk.emoji + ' ' + rk.badge + '</div>';
   h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
   h += '</div>';
