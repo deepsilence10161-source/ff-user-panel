@@ -1301,7 +1301,7 @@ def main():
                                  slots: t ? (String(t.joinedSlots||0) + '/' + String(t.maxSlots||0)) : 'na',
                                  mode: t ? String(t.mode||t.type||'') : 'na',
                                  modalOpen: !!(document.getElementById('modalOv') && document.getElementById('modalOv').classList.contains('show')),
-                                 toast: tw ? (tw.innerText||'').replace(/\n/g,' | ').slice(0, 160) : '' }; }""", DUO["id"])
+                                 toast: tw ? (tw.innerText||'').split(String.fromCharCode(10)).join(' | ').slice(0, 160) : '' }; }""", DUO["id"])
                     raise RuntimeError("duo join modal nahi khula — cJoin guards: " + json.dumps(why, ensure_ascii=False)[:420])
             # ⚠️ 2026-10-16 (asli wajah): agar P1 ka koi SAVED duo partner hai
             # (localStorage linked team), to join modal UID input ko
@@ -1523,13 +1523,45 @@ def main():
             # de kar wapas aa jata hai — us surat me strip purana hi rehta hai
             # (app ka apna behaviour). Is liye: live na ho to app ka HI refresh
             # function chalakar saabit karo; wo bhi na chale to pakka app bug.
+            # (2026-10-17) strip ka apne aap live update hona app me guarantee
+            # nahi hai: doCheckIn `already_checked_in` par sirf toast deta hai
+            # (strip apne aap refresh nahi hoti), aur strip asli kram me
+            # renderHome ke BAAD refreshLoginStreakToday() se pakki hoti hai
+            # (screens/home.js → badge-engine.js). Is liye yahan asli app jaisa
+            # hi kiya jata hai: home dobara render + app ka refresh, phir
+            # turant (1.2s) padho — aur na ho to poora diag (element, attr,
+            # button, lsToday text) fail message me, taaki wajah chhupe na.
+            def _done_probe():
+                return user.evaluate("""() => new Promise(function (res) {
+                     try { if (window.renderHome) renderHome(); } catch (e) {}
+                     setTimeout(function () {
+                       try { if (window.refreshLoginStreakToday) refreshLoginStreakToday(); } catch (e) {}
+                       setTimeout(function () {
+                         try {
+                           var el = document.getElementById('loginStreakStrip');
+                           res({ done: el ? el.getAttribute('data-done-today') : 'el-nahi',
+                                 btn: !!(el && el.querySelector('button')),
+                                 lab: String((document.getElementById('lsToday') || {}).innerText || '').slice(0, 40),
+                                 fn: typeof window.refreshLoginStreakToday });
+                         } catch (e) { res({ done: 'throw ' + String(e && (e.message || e)).slice(0, 60) }); }
+                       }, 1200);
+                     }, 800); })""")
+
+            h14_done_via = ""
+            last_done = {"v": None}
             try:
-                poll(_done_live, timeout=60, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
-                h14_done_via = "live (click/claim ke baad apne aap)"
+                poll(_done_live, timeout=45, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
+                h14_done_via = "live (apne aap, bina reload)"
             except Exception:
-                user.evaluate("() => { if (window.refreshLoginStreakToday) refreshLoginStreakToday(); }")
-                poll(_done_live, timeout=60, every=4, what="strip 'आज हो गया ✓' (app ke apne refresh ke baad)")
-                h14_done_via = "app ke apne refreshLoginStreakToday se (live update nahi aaya tha)"
+                for _i in range(6):
+                    d = _done_probe()
+                    last_done["v"] = d
+                    if d and d.get("done") == "1" and not d.get("btn"):
+                        h14_done_via = "renderHome → app ka refreshLoginStreakToday (asli kram)"
+                        break
+                    user.wait_for_timeout(1500)
+                if not h14_done_via:
+                    raise RuntimeError("strip 'आज हो गया ✓' nahi mila — diag=" + json.dumps(last_done["v"], ensure_ascii=False)[:300])
             shot(user, "h14-web-streak-done.png")
             VALUES["streak_days"] = str(row.get("streak") or 0)
             VALUES["streak_strip"] = "home-strip"
@@ -1605,7 +1637,7 @@ def main():
                          kala = !!(fn && it && fn(it, window._assetStats ? window._assetStats() : { seasonChampion: 1 }));
                        } catch (e2) { kala = 'err:' + String(e2 && (e2.message || e2)).slice(0, 40); }
                        return { why: 'ok', mine: mine, kills: t.indexOf('4242') !== -1,
-                                txt: t.split('\u000a').join(' ').slice(0, 80), kala: kala };
+                                txt: t.split(String.fromCharCode(10)).join(' ').slice(0, 80), kala: kala };
                      } catch (e) { return { why: 'throw ' + String(e && (e.message || e)).slice(0, 90) }; } }""")
                 except Exception as ex:
                     last_why["v"] = 'evaluate throw: ' + str(ex)[:220]

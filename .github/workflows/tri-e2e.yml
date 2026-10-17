@@ -105,6 +105,13 @@ jobs:
               print("preflight skip (best-effort):", str(e)[:160])
           PY
 
+      # (2026-10-17) Fast syntax gate: harness ke page.evaluate JS ko `node --check`
+      # se pehle hi jaanch lo. Ek run me Python-escape se asli newline ghus gaya
+      # tha aur 30-min run "Invalid or unexpected token" se fail hua — ye step
+      # 1 second me pakad leta hai (fail par aage bekaar nahi jate).
+      - name: Harness JS syntax check (fast fail)
+        run: python3 tools/tri-e2e/check-eval-js.py
+
       - name: Enable KVM group permissions
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
