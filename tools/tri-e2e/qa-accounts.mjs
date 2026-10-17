@@ -119,6 +119,12 @@ function cleanupSql(runid) {
        run ke AANT tak zinda rehti hai (APK step 17 usi par hai), is liye
        residue ka safaya yahan aakhir me hota hai. */
     `delete from season_champions where user_id in (select id from users where ign like '${ign}')`,
+    /* (2026-10-17) premium_monthly_bonus_claims ka FK users par NO ACTION hai —
+       premium grant (H6b) ke baad app monthly-bonus claim row bana deta hai,
+       aur us row ke rehte `delete from users` FK violation se fail ho jata tha
+       (residue: users=3). Isliye users se PEHLE yahan saaf. */
+    `delete from premium_monthly_bonus_claims where user_id in (select id from users where ign like '${ign}')`,
+    `delete from admin_alerts where user_id in (select id from users where ign like '${ign}')`,
     `delete from match_rooms where match_id in (select id from matches where title like '${tag}')`,
     /* 2. users + admins rows */
     `delete from admins where email like '${emailLike}'`,

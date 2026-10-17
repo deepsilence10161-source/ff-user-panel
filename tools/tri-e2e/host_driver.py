@@ -1683,54 +1683,85 @@ def main():
             uid = ST["player"]["uid"]
             old = admin.evaluate("""async (uid) => { const {data} = await window._supa.from('users')
                  .select('total_wins,total_kills,total_matches').eq('id', uid).maybeSingle(); return data || {}; }""", uid)
-            # ⚠️ 2026-10-16 (asli wajah): pehle yahan seedha wins/kills = 600
-            # kiya jata tha — us par koi naya badge NAHI khulta, sirf
-            # "bas thoda sa aur" (near-unlock) banta hai (600/750 = 80% — ditto
-            # jo run 38940490148 me aaya: title "🔥 Bas thoda sa aur — Kill
-            # Machine badge"). Ab pehle baseline 749 kills par (asli client se)
-            # → phir 750: Kill Machine badge (need 750, asset-catalog.js) THEEK
-            # 750 par khulta hai → asli 'badge_unlock' row title ke saath:
-            # "🏅 Naya badge: Kill Machine".
-            # 2026-10-14: badge-engine ka pehla call (device+uid par) sirf
-            # BASELINE banata hai — koi push nahi (js/features/badge-engine.js:
-            # 'pehli baar … sirf baseline'). App ye kaam pehli home render par
-            # hi kar leta hai, par agar nahi hua ho to yahan ka single call
-            # sirf baseline banata aur 0 row aata → H16 bekaar timeout.
-            # Is liye pehle baseline (asli client function), phir stats badlo.
-            # baseline: 749 kills — is par koi naya badge nahi (baseline list)
-            admin.evaluate("""async (a) => { await window._supa.from('users')
-                 .update({ total_wins: a.w, total_kills: 749, total_matches: a.m }).eq('id', a.uid); }""",
-                 {"uid": uid, "w": 600, "m": max(40, int(old.get("total_matches") or 0))})
-            user.evaluate("""() => { if (window.UD) { window.UD.total_wins = 600;
-                 window.UD.total_kills = 749; } if (window.renderHome) renderHome();
-                 if (window.notifyNewBadges) notifyNewBadges(); }""")
-            user.wait_for_timeout(1500)
-            # ab asli unlock: 750 kills
-            newst = {"w": 600, "k": 750, "m": max(40, int(old.get("total_matches") or 0))}
-            admin.evaluate("""async (a) => { const {error} = await window._supa.from('users')
-                 .update({ total_wins: a.w, total_kills: a.k, total_matches: a.m }).eq('id', a.uid);
-                 return { error: error ? error.message : null }; }""",
-                 {"uid": uid, "w": newst["w"], "k": newst["k"], "m": newst["m"]})
-            # asli client: UD ko sync karo (app bhi yahi karta hai) + home render
+
+            def _set_stats(w, k):
+                # asli admin write + ERROR CHECK + dobara padh kar pakka karo
+                # (2026-10-17: pehle likha hua value kabhi DB me pahuncha hi nahi
+                #  tha — us run me app ne 749 hi dekha aur sirf near-unlock bana;
+                #  "kya likha gaya" par bharosa nahi, "kya pada hai" par hai)
+                m = max(40, int(old.get("total_matches") or 0))
+                r = admin.evaluate("""async (a) => { const {error} = await window._supa.from('users')
+                     .update({ total_wins: a.w, total_kills: a.k, total_matches: a.m }).eq('id', a.uid);
+                     const {data} = await window._supa.from('users').select('total_wins,total_kills')
+                       .eq('id', a.uid).maybeSingle();
+                     return { err: error ? error.message : null, row: data || null }; }""",
+                     {"uid": uid, "w": w, "k": k, "m": m})
+                if r.get("err") or not r.get("row") or int(r["row"].get("total_kills") or -1) != k:
+                    raise RuntimeError("users stats likhne/padhne me gadbad: " + json.dumps(r)[:220])
+                return m
+
+            # 1) baseline: 749 kills (Kill Machine ka need 750 — yahan kuch khulta
+            #    nahi). Pehla notifyNewBadges call sirf baseline banata hai.
+            m = _set_stats(600, 749)
+            user.evaluate("""(a) => { if (window.UD) { window.UD.total_wins = a.w; window.UD.total_kills = 749;
+                 window.UD.total_matches = a.m; } if (window.renderHome) renderHome();
+                 if (window.notifyNewBadges) { notifyNewBadges(); } }""", {"w": 600, "m": m})
+            user.wait_for_timeout(1200)
+            user.evaluate("() => { if (window.notifyNewBadges) notifyNewBadges(); }")   # doosra: ab diff
+            user.wait_for_timeout(1200)
+
+            # 2) asli unlock: 750 kills (THEEK badge ka need — asset-catalog.js)
+            m = _set_stats(600, 750)
             user.evaluate("""(a) => { if (window.UD) { window.UD.total_wins = a.w; window.UD.total_kills = a.k;
                  window.UD.total_matches = a.m; } if (window.renderHome) renderHome();
-                 if (window.notifyNewBadges) notifyNewBadges(); }""", newst)
+                 if (window.notifyNewBadges) notifyNewBadges(); }""", {"w": 600, "k": 750, "m": m})
 
-            def _badge_notifs():
+            def _unlock_rows():
                 return admin.evaluate("""async (uid) => {
                      const {data} = await window._supa.from('notifications')
                        .select('type,title,ref_id').eq('user_id', uid)
-                       .in('type', ['badge_unlock','badge_near_unlock']).limit(6);
+                       .eq('type', 'badge_unlock').order('created_at', {ascending: false}).limit(6);
                      const rows = data || [];
-                     return rows.length ? { n: rows.length, rows: rows.slice(0, 3) } : null; }""", uid)
+                     const hit = rows.filter(function (x) {
+                       var t = String(x.title || '');
+                       return t.indexOf('Naya badge') !== -1 || t.indexOf('Naya title') !== -1;
+                     });
+                     const {data:all} = await window._supa.from('notifications')
+                       .select('type,title').eq('user_id', uid)
+                       .in('type', ['badge_unlock','badge_near_unlock']).limit(9);
+                     return { unlock: hit.length, n: (all || []).length,
+                              first: (hit[0] || null), list: (all || []).map(function (x) { return x.type; }) }; }
+""", uid)
 
-            hit = poll(_badge_notifs, timeout=150, every=5, what="badge unlock notification row (asli)")
+            via = "asli home render → notifyNewBadges (UD → 750 kills)"
+            hit = None
+            for _try in range(12):
+                h = _unlock_rows()
+                if h and h.get("unlock"):
+                    hit = h; break
+                user.wait_for_timeout(3000)
+                user.evaluate("() => { if (window.notifyNewBadges) notifyNewBadges(); }")
+
+            if not hit:
+                # fallback: wahi asli function, par stats saaf-saaf de kar (app ka
+                # hi supported raasta — notifyNewBadges(st)); phir dobara dekho
+                user.evaluate("""(a) => { if (window.notifyNewBadges)
+                     notifyNewBadges({ wins: a.w, kills: 750, matches: a.m, rp: 0, level: 0, clean: 0,
+                                       premium: 0, streak: 0, loginStreak: 0, top3: 0, top5: 0,
+                                       top10: 0, soloWins: 0, comebacks: 0 }); }""", {"w": 600, "m": m})
+                for _try in range(10):
+                    h = _unlock_rows()
+                    if h and h.get("unlock"):
+                        hit = h; break
+                    user.wait_for_timeout(3000)
+                via = "notifyNewBadges(st) — app ka hi function, stats saaf de kar"
+
+            if not hit:
+                raise RuntimeError("asli badge_unlock row nahi bani — abhi tak ki rows: " +
+                                   json.dumps((_unlock_rows() or {}).get("list"))[:120])
             shot(user, "h16-web-badge-unlock-notif.png")
 
-            # ⚠️ 2026-10-16: badge notification rows ABHI delete nahi hoti —
-            # APK ka step 18 (asli notification row APK par) inhi par depend
-            # karta hai. Run ke ant me `qa-accounts.mjs cleanup` saari
-            # notifications (user ke) delete karta hai → residue 0.
+            # stats wapas (rows APK step 18 ke liye zinda rehti hain — run-end cleanup)
             admin.evaluate("""async (a) => { await window._supa.from('users')
                  .update({ total_wins: a.w, total_kills: a.k }).eq('id', a.uid); }""",
                  {"uid": uid, "w": int(old.get("total_wins") or 0), "k": int(old.get("total_kills") or 0)})
@@ -1738,12 +1769,11 @@ def main():
                  if (window.renderHome) renderHome(); }""",
                  {"w": int(old.get("total_wins") or 0), "k": int(old.get("total_kills") or 0)})
 
-            first = hit["rows"][0] if hit.get("rows") else {}
+            first = (hit.get("first") or {})
             VALUES["badge_unlock_push"] = "ok"
-            return (f"stats asli users row me badhaye (kills 749 baseline → 750 = asli badge need) → asli "
-                    f"notifyNewBadges chala → {hit.get('n')} notification row bani "
-                    f"({first.get('type')}: {str(first.get('title'))[:40]}) — push wahi trigger karta hai; "
-                    f"rows APK step 18 ke liye zinda (run-end cleanup), stats wapas")
+            return (f"users row me asli kills 749 → 750 (badge ka need, padh kar confirm) → {via} → "
+                    f"{hit.get('unlock')} asli badge_unlock row bani "
+                    f"({first.get('type')}: {str(first.get('title'))[:44]}); rows APK step 18 ke liye zinda, stats wapas")
 
         step("H16 3.9: badge unlock push (asli client → notification row)", h16)
 
