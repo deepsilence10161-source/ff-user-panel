@@ -616,7 +616,7 @@ function removeTM(mode, idx) {
   }
 }
 function showProfileUpdate() {
-  if (window.showProfileUpdate_v2) { window.showProfileUpdate_v2(); return; }
+  /* Canonical profile modal renderer */
   /* ✅ BUG FIX (2026-08-25): title/button now reflect new-verification
      vs already-verified-update, same fix as ui-fixes.js's override —
      see that comment for full explanation. */
