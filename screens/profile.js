@@ -617,18 +617,19 @@ function removeTM(mode, idx) {
 }
 function showProfileUpdate() {
   /* Canonical profile modal renderer */
+  var ud = (typeof UD !== 'undefined' && UD) ? UD : (window.UD || {});
   /* ✅ BUG FIX (2026-08-25): title/button now reflect new-verification
      vs already-verified-update, same fix as ui-fixes.js's override —
      see that comment for full explanation. */
-  var _isVerifiedForModal = UD.profileStatus === 'approved' || UD.profileVerified;
+  var _isVerifiedForModal = ud.profileStatus === 'approved' || ud.profileVerified;
   var _modalTitle = _isVerifiedForModal ? 'Profile Update' : 'Profile Verification';
   var _submitLabel = _isVerifiedForModal ? 'Submit Update' : 'Submit for Verification';
-  var h = '<div class="f-group"><label>In-Game Name (IGN) <span style="font-size:10px;color:var(--txt2)">(max 20 chars)</span></label><input type="text" class="f-input" id="puIgn" maxlength="20" placeholder="Your Free Fire IGN" value="' + (UD.ign || '') + '"></div>';
+  var h = '<div class="f-group"><label>In-Game Name (IGN) <span style="font-size:10px;color:var(--txt2)">(max 20 chars)</span></label><input type="text" class="f-input" id="puIgn" maxlength="20" placeholder="Your Free Fire IGN" value="' + (ud.ign || '') + '"></div>';
   /* FF UID lock after verified */
-  var ffSet = UD.ffUid && UD.ffUid.trim().length >= 5;
-  var isVerified = UD.profileStatus === "approved" || UD.profileVerified;
+  var ffSet = ud.ffUid && ud.ffUid.trim().length >= 5;
+  var isVerified = ud.profileStatus === "approved" || ud.profileVerified;
   if (ffSet && isVerified) {
-    h += '<div class="f-group"><label>Free Fire UID <span style="color:#ffd700;font-size:10px">🔒 Locked</span></label><input type="text" class="f-input" id="puUid" value="' + (UD.ffUid||'') + '" readonly style="opacity:.6;cursor:not-allowed"></div>';
+    h += '<div class="f-group"><label>Free Fire UID <span style="color:#ffd700;font-size:10px">🔒 Locked</span></label><input type="text" class="f-input" id="puUid" value="' + (ud.ffUid||'') + '" readonly style="opacity:.6;cursor:not-allowed"></div>';
     /* BUG FIX (2026-08-21): previously said "Contact admin to change" with
        no actual way to do that in-app. Now offers a real path: Premium
        users get it free (perk), everyone else pays a small one-time fee
@@ -639,10 +640,10 @@ function showProfileUpdate() {
     h += '<button type="button" class="f-btn" style="margin-bottom:10px;background:rgba(185,100,255,.1);border:1px solid rgba(185,100,255,.3);color:#b964ff" onclick="closeModal();showChangeFfUid()"><i class="fas fa-exchange-alt"></i> FF UID Change Karo</button>';
   } else {
     h += '<div style="background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.12);border-radius:8px;padding:8px 12px;font-size:11px;color:#00ff9c;margin-bottom:6px"><i class="fas fa-info-circle"></i> FF UID set karne ke baad change nahi hogi — sahi UID daalna!</div>';
-    h += '<div class="f-group"><label>Free Fire UID (5-15 digits)</label><input type="text" class="f-input" id="puUid" placeholder="Your FF UID" value="' + (UD.ffUid || '') + '"></div>';
+    h += '<div class="f-group"><label>Free Fire UID (5-15 digits)</label><input type="text" class="f-input" id="puUid" placeholder="Your FF UID" value="' + (ud.ffUid || '') + '"></div>';
   }
-  h += '<div class="f-group"><label>WhatsApp Number <span style="font-size:10px;color:var(--txt2)">(prizes ke liye)</span></label><input type="tel" class="f-input" id="puPhone" placeholder="10-digit number" maxlength="10" value="' + (UD.phone || '') + '"></div>';
-  h += '<div class="f-group"><label>Bio <span style="font-size:10px;color:var(--txt2)">(optional)</span></label><input type="text" class="f-input" id="puBio" placeholder="About you..." maxlength="80" value="' + (window.escHtml?window.escHtml(UD.bio||''):(UD.bio||'').replace(/"/g,'&quot;')) + '"></div>';
+  h += '<div class="f-group"><label>WhatsApp Number <span style="font-size:10px;color:var(--txt2)">(prizes ke liye)</span></label><input type="tel" class="f-input" id="puPhone" placeholder="10-digit number" maxlength="10" value="' + (ud.phone || '') + '"></div>';
+  h += '<div class="f-group"><label>Bio <span style="font-size:10px;color:var(--txt2)">(optional)</span></label><input type="text" class="f-input" id="puBio" placeholder="About you..." maxlength="80" value="' + (window.escHtml?window.escHtml(ud.bio||''):(ud.bio||'').replace(/"/g,'&quot;')) + '"></div>';
   h += '<div class="f-warn"><i class="fas fa-exclamation-triangle"></i> Only real Free Fire IGN and UID allowed. Fake info = disqualified.</div>';
   h += '<button class="f-btn fb-orange" style="margin-top:14px" onclick="doProfileUpdate()">' + _submitLabel + '</button>';
   openModal(_modalTitle, h);
