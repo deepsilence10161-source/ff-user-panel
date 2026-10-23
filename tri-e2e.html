@@ -1132,6 +1132,52 @@
       var b = w.document.querySelector('#modalOv .m-close');
       if (b) b.click(); else if (w.closeModal) w.closeModal();
     }
+    var profileFeatureAudit = [];
+    function openReadOnlyProfilePanel(selector, label, titleNeedle, readySelector) {
+      var entry = w.document.querySelector('#profileContent ' + selector);
+      must(!!entry, 'Profile entry missing: ' + label);
+      if (entry.scrollIntoView) entry.scrollIntoView({ block: 'center' });
+      entry.click();
+      return poll(function () {
+        var ov = w.document.getElementById('modalOv');
+        var title = w.document.getElementById('modalT');
+        var body = w.document.getElementById('modalB');
+        var titleText = text(title), bodyText = text(body);
+        if (!ov || !ov.classList.contains('show') || titleText.toLowerCase().indexOf(titleNeedle.toLowerCase()) < 0 || !bodyText) return null;
+        if (body && body.querySelector('.fa-spin')) return null;
+        if (readySelector && !(body && body.querySelector(readySelector))) return null;
+        return { title: titleText, body: bodyText };
+      }, 500, 20000, label + ' read-only panel').then(function (state) {
+        profileFeatureAudit.push(label);
+        seen.push('profile-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+        console.log('TRI-USER-PROFILE-FEATURE: ' + label + ' — ' + state.title + ' — ' + state.body.slice(0, 80));
+        closeModal();
+        return state;
+      });
+    }
+    function runProfileReadOnlyAudit() {
+      var checks = [
+        ['[onclick*="showPlayerTitles"]', 'My Titles', 'My Titles'],
+        ['[onclick*="showBattlePass"]', 'Season Pass', 'Season Pass'],
+        ['[onclick*="showClanHome"]', 'My Clan', 'Clan'],
+        ['[onclick*="showCosmeticsStore"]', 'Cosmetics Store', 'Cosmetics Store'],
+        ['[onclick*="showPollsList"]', 'Polls', 'Polls'],
+        ['[onclick*="showReferEarn"]', 'Refer & Earn', 'Refer & Earn'],
+        ['[onclick*="showCreatorDashboard"]', 'Creator Program', 'Creator Program'],
+        ['[onclick*="showAchievementsV3"]', 'Achievements', 'Achievements'],
+        ['[onclick*="showMatchHistory"]', 'Match History', 'Match History'],
+        ['[onclick*="showPerformanceTracker"]', 'Performance Stats', 'Performance Stats'],
+        ['[onclick*="showSeasonHistory"]', 'Season History', 'Season History'],
+        ['[onclick*="showLiveSpectateList"]', 'Watch Live & Earn', 'Live Matches'],
+        ['[onclick*="showPerformanceDashboard"]', 'Performance Dashboard', 'Performance Dashboard'],
+        ['[onclick*="showMySuggestions"]', 'My Suggestions', 'My Suggestions', '#suggestTxt']
+      ];
+      return checks.reduce(function (p, item) {
+        return p.then(function () { return openReadOnlyProfilePanel(item[0], item[1], item[2], item[3]); });
+      }, Promise.resolve()).then(function () {
+        VALUES.user_profile_feature_tour = profileFeatureAudit.join(', ');
+      });
+    }
     function runTour() {
       must(!!w.U && !!w.U.uid && !!w.UD && !!w._supa, 'app authenticated session not ready');
       must(w.document.getElementById('loginScreen') && w.getComputedStyle(w.document.getElementById('loginScreen')).display === 'none', 'login screen is still visible');
@@ -1210,7 +1256,7 @@
         must(!!sheet && text(sheet).indexOf('Legal & Compliance') >= 0 && text(sheet).indexOf('My Tickets & Replies') >= 0, 'Profile settings sheet did not render expected options');
         var closer = sheet.querySelector('[onclick*="closeProfileSettings"]');
         if (closer) closer.click(); else if (w.closeProfileSettings) w.closeProfileSettings();
-        return clickHeader('Notifications');
+        return runProfileReadOnlyAudit().then(function () { return clickHeader('Notifications'); });
       }).then(function () {
         return waitScreen('notifications', 'scrNotif', '#notifList', MARK);
       }).then(function (n) {
@@ -1328,7 +1374,7 @@
         console.log('TRI-USER-ROUTE: support/chat — ' + chatState.messages);
         return clickNav('home', 'scrHome', '#homeList', MARK);
       }).then(function () {
-        VALUES.user_route_tour = 'Home, Special, Matches, Rank, Wallet, Profile, Notifications, Search, Support, Chat — all opened in authenticated APK';
+        VALUES.user_route_tour = 'Home, Special, Matches, Rank, Wallet, Profile, Notifications, Search, Support, Chat — plus ' + profileFeatureAudit.length + ' read-only Profile modules; all opened in authenticated APK';
         return { ok: true, seen: seen, uid: String(w.U.uid).slice(0, 8), chatInfoCleanup: 'admin RTDB cleanup pending' };
       });
     }
