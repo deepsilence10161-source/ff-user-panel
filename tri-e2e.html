@@ -1220,13 +1220,34 @@
         return poll(function () { return w.document.getElementById('usrSrchInput'); }, 400, 20000, 'Search Players modal');
       }).then(function (input) {
         /* Search by the unique run-id substring (avoids whitespace in the
-           live-search PostgREST OR filter) and then require the exact P2 IGN. */
-        input.value = RUN;
-        input.dispatchEvent(new w.Event('input', { bubbles: true }));
-        return poll(function () {
-          var r = w.document.getElementById('usrSrchResults');
-          return r && text(r).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0 ? text(r) : null;
-        }, 700, 30000, 'Search Players result for QA P2');
+           live-search PostgREST OR filter) and then require the exact P2 IGN.
+           Read-only probe distinguishes a hidden/missing profile row from a UI
+           event/rendering failure; it never writes or bypasses the UI assertion. */
+        var probe;
+        function probeQuery(label, query) {
+          return query.then(function (r) {
+            var rows = (r && r.data) || [];
+            var target = rows.filter(function (x) { return String(x.ign || '').toLowerCase() === p2Ign.toLowerCase(); })[0];
+            return { label: label, error: r && r.error ? String(r.error.code || '') + ': ' + String(r.error.message || '').slice(0, 140) : '', count: rows.length, p2: !!target, is_banned: target ? target.is_banned : null, profile_status: target ? target.profile_status : null };
+          }, function (e) { return { label: label, error: String(e && (e.message || e)).slice(0, 180), count: 0, p2: false }; });
+        }
+        var baseSelect = w._supa.from('user_public_profiles').select('ign,is_banned,profile_status');
+        probe = Promise.all([
+          probeQuery('same-filter-as-UI', baseSelect.or('ign.ilike.%' + RUN + '%,ff_uid.ilike.%' + RUN + '%').eq('is_banned', false).limit(10)),
+          probeQuery('P2-IGN-without-ban-filter', w._supa.from('user_public_profiles').select('ign,is_banned,profile_status').ilike('ign', '%' + p2Ign + '%').limit(10))
+        ]);
+        return probe.then(function (diagnostics) {
+          console.log('TRI-USER-SEARCH-PROBE: ' + JSON.stringify(diagnostics));
+          input.value = RUN;
+          input.dispatchEvent(new w.Event('input', { bubbles: true }));
+          return poll(function () {
+            var r = w.document.getElementById('usrSrchResults');
+            return r && text(r).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0 ? text(r) : null;
+          }, 700, 30000, 'Search Players result for QA P2').catch(function (e) {
+            var results = w.document.getElementById('usrSrchResults');
+            throw new Error(((e && e.message) || String(e)) + ' | results="' + text(results).slice(0, 180) + '" | probe=' + JSON.stringify(diagnostics));
+          });
+        });
       }).then(function () {
         var row = Array.prototype.slice.call(w.document.querySelectorAll('#usrSrchResults [onclick*="viewPublicProfile"]')).filter(function (x) { return text(x).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0; })[0];
         must(!!row, 'Search result row for QA P2 is missing');
