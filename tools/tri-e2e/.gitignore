@@ -1,2 +1,6 @@
 # QA state files me EPHEMERAL credentials hote hain — kabhi commit nahi
 .state/
+
+# Python test-run artifacts
+__pycache__/
+*.py[cod]
