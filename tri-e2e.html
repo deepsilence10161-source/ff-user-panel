@@ -1020,36 +1020,54 @@
      notification row apni list me dikhni chahiye (isi row par push trigger
      lagi hui hai — 200 push gateway alag se live-proved hai). ── */
   STEPS.push(['18/18 Badge unlock push (APK par asli row)', function () {
+    var lastRows = 'abhi tak koi notification row nahi';
     function _bn() {
       try {
         var w = W();
+        if (!w || !w._supa || !w.U || !w.U.uid) {
+          lastRows = 'app session / Supabase / UID abhi taiyar nahi';
+          return null;
+        }
         return w._supa.from('notifications')
-          .select('type,title,ref_id').eq('user_id', w.U.uid)
-          .in('type', ['badge_unlock', 'badge_near_unlock']).limit(3);
-      } catch (e) { return null; }
+          .select('type,title,ref_id,created_at').eq('user_id', w.U.uid)
+          .in('type', ['badge_unlock', 'badge_near_unlock'])
+          .order('created_at', { ascending: false }).limit(50);
+      } catch (e) {
+        lastRows = 'query throw: ' + String(e && (e.message || e)).slice(0, 100);
+        return null;
+      }
     }
     return poll(function () {
       var q = _bn();
       if (!q) return null;
       return q.then(function (r) {
+        if (r && r.error) {
+          lastRows = 'Supabase ' + String(r.error.code || '') + ': ' + String(r.error.message || '').slice(0, 120);
+          return null;
+        }
         var rows = (r && r.data) || [];
-        if (!rows.length) return null;
-        /* ⚠️ 2026-10-16: same render par 'bas thoda sa aur' (near-unlock) row bhi
-           ban sakti hai — is liye sirf pehli row par na rukо, ASLI unlock row
-           dhoondo (title "🏅 Naya badge: …" / "✨ Naya title: …"). */
+        lastRows = rows.length ? rows.slice(0, 6).map(function (x) {
+          return String(x.type || '') + ': ' + String(x.title || '').slice(0, 52);
+        }).join(' || ') : 'query safal, par abhi row nahi';
+        /* APK (yahan) near-unlock row pehle dekh sakta hai, jabki asli
+           badge_unlock web ke H16 se kuch pal baad banti hai. Kisi bhi row
+           ko milte hi poll ko safal/asantoshjanak na mano: keval asli unlock
+           milne par return karo; near-only par null dekar polling chalne do.
+           Query ko newest-first + 50 rows tak rakho, taaki purani unlock
+           row near-unlock records ki wajah se list se bahar na ho. */
         var un = rows.filter(function (x) {
           var t = String(x.title || '');
-          return t.indexOf('Naya badge') !== -1 || t.indexOf('Naya title') !== -1;
+          return x.type === 'badge_unlock' &&
+            (t.indexOf('Naya badge') !== -1 || t.indexOf('Naya title') !== -1);
         });
-        if (un.length) return { n: rows.length, t: String(un[0].title || ''), ty: un[0].type, ok: true };
-        return { n: rows.length, t: String(rows[0].title || ''), ty: rows[0].type, ok: false };
+        if (!un.length) return null;
+        return { n: rows.length, t: String(un[0].title || ''), ty: un[0].type, ok: true };
       }, function () { return null; });
     }, 6000, 420000, 'APK par badge unlock notification row (asli)').then(function (b) {
-      if (!b.ok) {
-        fail('badge_unlock_title', 'unlock row nahi mili — rows=' + b.n + ', sabse nayi: ' + b.t.slice(0, 60));
-      }
       VALUES.badge_unlock_push = 'ok';
-      return 'APK par badge unlock notification (' + b.ty + ' × ' + b.n + ') — "' + b.t.slice(0, 48) + '"';
+      return 'APK par asli badge unlock notification (' + b.ty + ' × ' + b.n + ') — "' + b.t.slice(0, 48) + '"';
+    }, function (e) {
+      fail('badge_unlock_title', ((e && e.message) || String(e)) + ' — aakhri rows: ' + lastRows.slice(0, 260));
     });
   }]);
 
