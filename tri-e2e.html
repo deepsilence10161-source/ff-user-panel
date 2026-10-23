@@ -1170,13 +1170,13 @@
       }).then(function () {
         return clickNav('rank', 'scrRank', '#rankContent', 'Rank = Wins');
       }).then(function () {
-        var tab = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick^="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('wins') >= 0; })[0];
+        var tab = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('wins') >= 0; })[0];
         must(!!tab, 'Rank Wins tab missing');
         tab.click(); must(w._rankTab === 'wins', 'Rank Wins tab did not activate');
-        var points = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick^="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('rank points') >= 0; })[0];
+        var points = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('points') >= 0; })[0];
         must(!!points, 'Rank Points tab missing');
         points.click(); must(w._rankTab === 'rankpoints', 'Rank Points tab did not activate');
-        var kills = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick^="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('kills') >= 0; })[0];
+        var kills = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('kills') >= 0; })[0];
         must(!!kills, 'Rank Kills tab missing');
         kills.click(); must(w._rankTab === 'kills', 'Rank Kills tab did not reset');
         return clickNav('wallet', 'scrWallet', '#walletMain', 'Sky Diamond Balance');
