@@ -1219,7 +1219,9 @@
         clickHeader('Search Matches');
         return poll(function () { return w.document.getElementById('usrSrchInput'); }, 400, 20000, 'Search Players modal');
       }).then(function (input) {
-        input.value = p2Ign;
+        /* Search by the unique run-id substring (avoids whitespace in the
+           live-search PostgREST OR filter) and then require the exact P2 IGN. */
+        input.value = RUN;
         input.dispatchEvent(new w.Event('input', { bubbles: true }));
         return poll(function () {
           var r = w.document.getElementById('usrSrchResults');
