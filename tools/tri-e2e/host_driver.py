@@ -1818,6 +1818,55 @@ def main():
 
         step("H12 web ke final values (APK se milane ke liye)", h12)
 
+        # ── H17: authenticated APK route-tour ke baad QA chat RTDB cleanup ──
+        # Step 19 APK ke andar asli support chat kholta hai (koi message nahi
+        # bhejta), jisse support/{uid}/info ban sakta hai. Logcat marker ka
+        # intezaar karke admin ke asli RTDB session se sirf isi naye QA UID ka
+        # subtree delete karte hain aur read-back se 0 residue pakka karte hain.
+        def h17():
+            marker = "TRI-USER-ROUTE-TOUR-DONE:"
+            log_path = os.path.join(os.path.dirname(os.path.abspath(ARGS.out)), "apk-logcat.txt")
+
+            def _route_tour_done():
+                try:
+                    size = os.path.getsize(log_path)
+                    with open(log_path, "rb") as f:
+                        f.seek(max(0, size - 160000))
+                        tail = f.read().decode("utf-8", "ignore")
+                    hits = [ln for ln in tail.splitlines() if marker in ln]
+                    return hits[-1] if hits else None
+                except Exception:
+                    return None
+
+            marker_line = None
+            marker_error = ""
+            try:
+                marker_line = poll(_route_tour_done, timeout=600, every=3, what="APK authenticated route-tour completion marker")
+            except Exception as e:
+                marker_error = str(e)[:140]
+
+            uid = ST["player"]["uid"]
+            cleanup = admin.evaluate("""async (uid) => {
+                if (!window.rtdb || !window.rtdb.ref) return {error:'admin RTDB client missing'};
+                const ref = window.rtdb.ref('support/' + uid);
+                const before = await ref.once('value');
+                await ref.remove();
+                const after = await ref.once('value');
+                return {before:before.exists(), after:after.exists()};
+            }""", uid)
+            if cleanup.get("error") or cleanup.get("after"):
+                raise RuntimeError("QA support RTDB cleanup/read-back failed: " + json.dumps(cleanup)[:220])
+            shot(admin, "h17-qa-support-chat-cleanup.png")
+            if not marker_line:
+                raise RuntimeError("route-tour completion marker nahi mila; RTDB path cleanup phir bhi hua: " + marker_error)
+            normalized_marker = marker_line.replace(chr(92), "").replace(" ", "")
+            if '"ok":false' in normalized_marker:
+                raise RuntimeError("APK route tour failed; QA RTDB subtree cleaned: " + marker_line[-240:])
+            return ("APK logged-in route-tour marker mila; sirf QA UID support/{uid} remove + read-back absent "
+                    "(pehle maujood=" + str(bool(cleanup.get("before"))) + ")")
+
+        step("H17 APK user-route tour ke baad support-chat RTDB cleanup", h17, critical=True)
+
         browser.close()
     finish(0)
 

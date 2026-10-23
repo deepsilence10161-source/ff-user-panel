@@ -151,4 +151,23 @@ if [ -z "$RESULT" ]; then
   echo "❌ APK side ne TRI-E2E-RESULT nahi diya (timeout) — logcat:"
   grep -a "TRI-E2E\|chromium: \[INFO:CONSOLE" "$LOG" 2>/dev/null | tail -20 || true
 fi
-exit $HOST_RC
+APK_RC=1
+if [[ "$RESULT" =~ TRI-E2E-RESULT:[[:space:]]*([0-9]+)/([0-9]+)[[:space:]]OK ]]; then
+  APK_OK="${BASH_REMATCH[1]}"
+  APK_TOTAL="${BASH_REMATCH[2]}"
+  if [ "$APK_TOTAL" -gt 0 ] && [ "$APK_OK" -eq "$APK_TOTAL" ]; then
+    APK_RC=0
+    echo "✅ APK authenticated UI checks: $APK_OK/$APK_TOTAL"
+  else
+    echo "❌ APK authenticated UI checks failed: $APK_OK/$APK_TOTAL"
+  fi
+else
+  echo "❌ APK result marker missing/invalid"
+fi
+
+if [ "$HOST_RC" -ne 0 ] || [ "$APK_RC" -ne 0 ]; then
+  echo "❌ TRI verdict failed (host=$HOST_RC apk=$APK_RC)"
+  exit 1
+fi
+echo "✅ TRI host + authenticated APK UI checks passed"
+exit 0

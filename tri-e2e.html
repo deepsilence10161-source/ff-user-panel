@@ -56,7 +56,10 @@
         refresh, My-Tickets modal — sab real code paths.
      4. Admin panel ke actions ka intezaar (DB poll) — reply, wallet credit,
         match, notification — aur unhe APK me verify karna.
-     5. Logcat me saaf markers + aakhir me TRI-E2E-RESULT + TRI-E2E-VALUES.
+     5. Login ke baad asli user nav-tour: Home, Special, Matches, Rank, Wallet,
+        Profile, Notifications, Search, Support aur Chat; paise/message submit nahi.
+     6. Logcat me saaf markers + aakhir me TRI-E2E-RESULT + TRI-E2E-VALUES; QA
+        chat ka RTDB subtree run-end se pehle admin session se saaf hota hai.
 
    Credentials URL ke #fragment me aate hain (server ko nahi jaate) — QA
    account har run me naya banta hai aur run ke ant me delete ho jaata hai.
@@ -139,7 +142,7 @@
        Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
        = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
        apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
-    ['1/18 app iframe + QA player login (asli app auth)', function () {
+    ['1/19 app iframe + QA player login (asli app auth)', function () {
       if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
       return bootApp().then(function () {
         return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
@@ -158,7 +161,7 @@
     }],
 
     /* ── 2/8 : app auto-login + login screen hatna ── */
-    ['2/18 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+    ['2/19 asli app login (onAuthStateChanged → _handleSignIn)', function () {
       return poll(function () {
         try {
           var w = W();
@@ -191,7 +194,7 @@
     }],
 
     /* ── 3/N : APK → Admin (support ticket) ── */
-    ['3/18 APK → Admin: support ticket submit', function () {
+    ['3/19 APK → Admin: support ticket submit', function () {
       var w = W();
       w.eval("if (window.showSupportForm) showSupportForm();");
       return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
@@ -220,7 +223,7 @@
     }],
 
     /* ── 4/N : Admin → APK (ticket reply, asli My-Tickets modal) ── */
-    ['4/18 Admin → APK: ticket reply dikhe (My Tickets)', function () {
+    ['4/19 Admin → APK: ticket reply dikhe (My Tickets)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('support_tickets').select('admin_reply,status')
@@ -248,7 +251,7 @@
     }],
 
     /* ── 5/N : Admin → APK (SD credit, asli wallet UI) ── */
-    ['5/18 Admin → APK: coins credit (wallet UI)', function () {
+    ['5/19 Admin → APK: coins credit (wallet UI)', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('users').select('coins,sky_diamonds').eq('id', w.U.uid).maybeSingle()
@@ -270,7 +273,7 @@
     }],
 
     /* ── 6/N : Admin → APK (match) ── */
-    ['6/18 Admin → APK: naya match list me', function () {
+    ['6/19 Admin → APK: naya match list me', function () {
       var w = W();
       return poll(function () {
         /* ⚠️ 2026-10-16: host ka room-match ka title "… — Room" par khatam hota
@@ -331,7 +334,7 @@
     }],
 
     /* ── 7/N : Admin → APK (notification) ── */
-    ['7/18 Admin → APK: notification', function () {
+    ['7/19 Admin → APK: notification', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('notifications').select('title,body').eq('user_id', w.U.uid)
@@ -353,7 +356,7 @@
     }],
 
     /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
-    ['8/18 Admin → APK: KYC approved dikhe', function () {
+    ['8/19 Admin → APK: KYC approved dikhe', function () {
       var w = W();
       return poll(function () {
         return w._supa.from('kyc_requests').select('status').eq('user_id', w.U.uid)
@@ -373,7 +376,7 @@
   ];
 
   /* ── runner ──────────────────────────────────────────────────────────── */
-  /* ── 9/18 : APK (P1) match join — ASLI UI raasta.
+  /* ── 9/19 : APK (P1) match join — ASLI UI raasta.
      ✅ 2026-10-14/16 (live TRI 38574154924 + 38881149079 me step 9 fail):
        • doJoin/cJoin `MT[id]` dekh kar chalte hain — app ke data-layer me
          match na ho to wo CHUP-CHAAP return karte hain (koi error nahi).
@@ -388,7 +391,7 @@
          koshish ka nateeja alag se log hota hai (TRI-JOIN-RPC / TRI-JOIN-A).
        • Fail par saaf diag logcat me: toast, dialog, MT me match, MT count,
          security wrapper laga hai ya nahi, token uid, aur DB se match status. */
-  STEPS.push(['9/18 APK → match join (asli doJoin)', function () {
+  STEPS.push(['9/19 APK → match join (asli doJoin)', function () {
     var w = W();
     var JOIN_ATTEMPTS = 6, ATTEMPT_MS = 30000;
     function _mtReady(id) {
@@ -643,7 +646,7 @@
     });
   }]);
   /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
-  STEPS.push(['10/18 APK par match me 2 players (P2 web se join)', function () {
+  STEPS.push(['10/19 APK par match me 2 players (P2 web se join)', function () {
     var w = W();
     return poll(function () {
       /* ⚠️ join_requests par RLS hai — P1 doosre player (P2) ki row NAHI dekh
@@ -673,7 +676,7 @@
      Host ne H6b me approve_premium se P1 ko premium diya hai. Ab app me:
        (a) UD me premium aa jaye (realtime ya reload par), aur
        (b) My Matches ke "Playing As" me IGN ke aage ribbon dikhe. */
-  STEPS.push(['11/18 Premium ribbon IGN ke aage (APK)', function () {
+  STEPS.push(['11/19 Premium ribbon IGN ke aage (APK)', function () {
     function _premOf() {
       var w = W();
       var t = 0;
@@ -735,7 +738,7 @@
        (a) UD.premium.expiresAt DB se aaye,
        (b) IGN/UI ke upar fixed banner dikhe + countdown khud chale,
        (c) 12-ghante window ke bahar ho to banner bilkul na dikhe. */
-  STEPS.push(['12/18 Trial/Premium khatam hone ka countdown banner (APK)', function () {
+  STEPS.push(['12/19 Trial/Premium khatam hone ka countdown banner (APK)', function () {
     function _state() {
       try {
         var w = W();
@@ -785,7 +788,7 @@
      Host ne H6d me: admin se SD → user ne store se frame_ring_gold kharida
      → equip kiya. Ek hi account, do surfaces — APK (WebView) par bhi wahi
      equipped ring ka medal art profile par + store tile par dikhna chahiye. */
-  STEPS.push(['13/18 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
+  STEPS.push(['13/19 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
     function _state() {
       try {
         var w = W();
@@ -832,7 +835,7 @@
      P1 ne app ki creator-room UI se room ID save kiya (creator_set_room),
      admin ne release kiya. Ab APK (wahi P1 account) par wahi Room ID dikhna
      chahiye — asli RPC get_room_credentials + asli UI. */
-  STEPS.push(['14/18 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
+  STEPS.push(['14/19 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
     var roomId = 'TRIROOM' + String(RUN).slice(0, 6).toUpperCase();
     function _scan() {
       try {
@@ -906,7 +909,7 @@
      partner invite kiya, partner ne apni notification ke asli Accept se consent
      diya, phir team join server (join_match_team) par pass hua. APK (wahi
      captain account) par wahi duo match ab 2 players ke saath dikhna chahiye. ── */
-  STEPS.push(['15/18 Duo team — invite → accept → 2 players (APK)', function () {
+  STEPS.push(['15/19 Duo team — invite → accept → 2 players (APK)', function () {
     var duoTitle = 'QA-TEST TRI ' + RUN + ' — Duo';
     function _check() {
       try {
@@ -936,7 +939,7 @@
 
   /* ── 16/16 : 3.6 check-in streak — web par (captain account) asli check-in hui,
      ab APK par wahi streak strip (asli users.streak_days se) dikhna chahiye. ── */
-  STEPS.push(['16/18 Check-in streak strip (APK par wahi streak)', function () {
+  STEPS.push(['16/19 Check-in streak strip (APK par wahi streak)', function () {
     function _strip() {
       try {
         var w = W();
@@ -967,7 +970,7 @@
   /* ── 17/17 : 3.8/11 Season Champion ka bada ailaan — host driver ne asli
      season_champions row daali hogi (P1 ka), APK home par wahi 3-din wala
      banner + asli kala dikhni chahiye (client dono surfaces par ek jaisa). ── */
-  STEPS.push(['17/18 Season Champion bada ailaan (APK par)', function () {
+  STEPS.push(['17/19 Season Champion bada ailaan (APK par)', function () {
     function _champ() {
       try {
         var w = W(), el = w.document.getElementById('seasonChampionBanner');
@@ -1015,11 +1018,11 @@
     });
   }]);
 
-  /* ── 18/18 : 3.9 badge unlock push — host driver ne asli users row ke stats
+  /* ── 18/19 : 3.9 badge unlock push — host driver ne asli users row ke stats
      badha kar asli notifyNewBadges chalaya; APK (wahi account) ko wo asli
      notification row apni list me dikhni chahiye (isi row par push trigger
      lagi hui hai — 200 push gateway alag se live-proved hai). ── */
-  STEPS.push(['18/18 Badge unlock push (APK par asli row)', function () {
+  STEPS.push(['18/19 Badge unlock push (APK par asli row)', function () {
     var lastRows = 'abhi tak koi notification row nahi';
     function _bn() {
       try {
@@ -1068,6 +1071,234 @@
       return 'APK par asli badge unlock notification (' + b.ty + ' × ' + b.n + ') — "' + b.t.slice(0, 48) + '"';
     }, function (e) {
       fail('badge_unlock_title', ((e && e.message) || String(e)) + ' — aakhri rows: ' + lastRows.slice(0, 260));
+    });
+  }]);
+
+  /* ── 19/19 : login ke baad poora user-route tour (asli APK WebView app) ──
+     Sirf harness result dekhna kaafi nahi: P1 ke apne authenticated app UI me
+     har main route ko actual nav/button click se kholte hain, visible DOM check
+     karte hain aur koi purchase/withdrawal/message submit nahi karte. Notifications
+     kholne se QA account ke read flags badlenge; run-end cleanup us data ko hataata
+     hai. Chat kholne par app apna support/{uid}/info sync karta hai; akhir me
+     host driver QA UID ka poora RTDB subtree saaf karke read-back confirm karta hai. */
+  STEPS.push(['19/19 Logged-in user route tour (Home → Chat, asli APK UI)', function () {
+    var w = W(), seen = [], p2Ign = 'TRIQA2 ' + RUN;
+    function must(ok, msg) { if (!ok) throw new Error(msg); }
+    function text(el) { return String(el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim(); }
+    function visibleScreen(id) {
+      var e = w.document.getElementById(id);
+      return !!(e && e.classList.contains('active') && w.getComputedStyle(e).display !== 'none');
+    }
+    function waitScreen(name, id, contentSelector, checkText) {
+      return poll(function () {
+        try {
+          if (!visibleScreen(id)) return null;
+          var c = contentSelector ? w.document.querySelector(contentSelector) : w.document.getElementById(id);
+          var t = text(c);
+          if (!c || !t) return null;
+          if (checkText && t.toLowerCase().indexOf(checkText.toLowerCase()) < 0) return null;
+          return { name: name, text: t.slice(0, 90) };
+        } catch (e) { return null; }
+      }, 500, 30000, name + ' signed-in screen');
+    }
+    function clickNav(name, id, selector, checkText) {
+      var b = w.document.querySelector('#bottomNav [data-nav="' + name + '"]');
+      must(!!b, 'bottom-nav button missing: ' + name);
+      b.click();
+      return waitScreen(name, id, selector, checkText).then(function (v) {
+        seen.push(name);
+        console.log('TRI-USER-ROUTE: ' + name + ' — ' + v.text);
+        return v;
+      });
+    }
+    function chooseDropdown(id, contains) {
+      var d = w.document.getElementById(id);
+      must(!!d, 'filter missing: ' + id);
+      d.click();
+      var pop = d.querySelector('.dd-popover');
+      must(!!pop, 'filter popover did not open: ' + id);
+      var opts = Array.prototype.slice.call(pop.children || []);
+      var opt = opts.filter(function (x) { return text(x).toLowerCase().indexOf(contains.toLowerCase()) >= 0; })[0];
+      must(!!opt, 'filter option missing: ' + contains + ' in ' + id);
+      opt.click();
+      return text(d.querySelector('.dd-current'));
+    }
+    function clickHeader(label) {
+      var b = w.document.querySelector('#header [aria-label="' + label + '"]');
+      must(!!b, 'header action missing: ' + label);
+      b.click();
+    }
+    function closeModal() {
+      var b = w.document.querySelector('#modalOv .m-close');
+      if (b) b.click(); else if (w.closeModal) w.closeModal();
+    }
+    function runTour() {
+      must(!!w.U && !!w.U.uid && !!w.UD && !!w._supa, 'app authenticated session not ready');
+      must(w.document.getElementById('loginScreen') && w.getComputedStyle(w.document.getElementById('loginScreen')).display === 'none', 'login screen is still visible');
+      return clickNav('home', 'scrHome', '#homeList', MARK).then(function () {
+        var cats = ['paid', 'coin', 'ad', 'all'];
+        cats.forEach(function (cat) {
+          var p = w.document.querySelector('#homeCat [data-cat="' + cat + '"]');
+          must(!!p, 'home category missing: ' + cat);
+          p.click();
+          must(p.classList.contains('active'), 'home category did not activate: ' + cat);
+        });
+        must(chooseDropdown('homeStatusDd', 'live').toLowerCase().indexOf('live') >= 0, 'Home Live filter did not apply');
+        must(chooseDropdown('homeStatusDd', 'upcoming').toLowerCase().indexOf('upcoming') >= 0, 'Home Upcoming filter did not reset');
+        must(chooseDropdown('homeRankDd', 'bronze').toLowerCase().indexOf('bronze') >= 0, 'Home Bronze filter did not apply');
+        must(chooseDropdown('homeRankDd', 'all ranks').toLowerCase().indexOf('all ranks') >= 0, 'Home rank filter did not reset');
+        return clickNav('matches', 'scrMatches', '#mmList', MARK);
+      }).then(function () {
+        must(chooseDropdown('mmStatusDd', 'completed').toLowerCase().indexOf('completed') >= 0, 'My Matches Completed filter did not apply');
+        must(chooseDropdown('mmStatusDd', 'upcoming').toLowerCase().indexOf('upcoming') >= 0, 'My Matches Upcoming filter did not reset');
+        var banner = w.document.getElementById('specialBanner');
+        must(!!banner, 'Special Tournaments entry missing from Matches');
+        banner.click();
+        return waitScreen('special', 'scrSpecial', '#specialList').then(function (s) {
+          var monthly = Array.prototype.slice.call(w.document.querySelectorAll('#scrSpecial .sp-tog-btn')).filter(function (b) { return text(b).indexOf('Monthly Special') >= 0; })[0];
+          var weekly = Array.prototype.slice.call(w.document.querySelectorAll('#scrSpecial .sp-tog-btn')).filter(function (b) { return text(b).indexOf('Sunday Special') >= 0; })[0];
+          must(!!monthly && !!weekly, 'Sunday/Monthly Special toggles missing');
+          monthly.click();
+          must(monthly.classList.contains('active'), 'Monthly Special toggle did not activate');
+          must(text(w.document.getElementById('specialList')).length > 0, 'Monthly Special list is blank');
+          weekly.click();
+          must(weekly.classList.contains('active'), 'Sunday Special toggle did not reset');
+          seen.push('special');
+          console.log('TRI-USER-ROUTE: special — ' + s.text);
+          return clickNav('matches', 'scrMatches', '#mmList', MARK);
+        });
+      }).then(function () {
+        return clickNav('rank', 'scrRank', '#rankContent', 'Rank = Wins');
+      }).then(function () {
+        var tab = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick^="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('wins') >= 0; })[0];
+        must(!!tab, 'Rank Wins tab missing');
+        tab.click(); must(w._rankTab === 'wins', 'Rank Wins tab did not activate');
+        var points = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick^="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('rank points') >= 0; })[0];
+        must(!!points, 'Rank Points tab missing');
+        points.click(); must(w._rankTab === 'rankpoints', 'Rank Points tab did not activate');
+        var kills = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick^="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('kills') >= 0; })[0];
+        must(!!kills, 'Rank Kills tab missing');
+        kills.click(); must(w._rankTab === 'kills', 'Rank Kills tab did not reset');
+        return clickNav('wallet', 'scrWallet', '#walletMain', 'Sky Diamond Balance');
+      }).then(function () {
+        must(!!w.document.getElementById('wTotal') && !!w.document.getElementById('wCoins') && !!w.document.getElementById('greenDiaCount'), 'Wallet balances are incomplete');
+        /* Balance/history are read only here; Buy, Check-In and Withdraw are deliberately untouched. */
+        var history = w.document.querySelector('#walletMain [onclick*="showCoinHistory"]');
+        must(!!history, 'Wallet Coin History action missing');
+        history.click();
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('Coin History') >= 0 && b && text(b) ? true : null;
+        }, 500, 20000, 'Coin History read-only modal');
+      }).then(function () {
+        closeModal();
+        var summary = w.document.querySelector('#walletMain [onclick*="showTransactionSummary"]');
+        must(!!summary, 'Wallet Transaction Summary action missing');
+        summary.click();
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('Transaction Summary') >= 0 && b && text(b).indexOf('Net Position') >= 0 ? true : null;
+        }, 500, 15000, 'Transaction Summary read-only modal');
+      }).then(function () {
+        closeModal();
+        return clickNav('profile', 'scrProfile', '#profileContent', w.UD.ign);
+      }).then(function () {
+        var gear = w.document.querySelector('#profileContent [onclick*="showProfileSettings"]');
+        must(!!gear, 'Profile settings control missing');
+        gear.click();
+        var sheet = w.document.getElementById('profSettingsSheet');
+        must(!!sheet && text(sheet).indexOf('Legal & Compliance') >= 0 && text(sheet).indexOf('My Tickets & Replies') >= 0, 'Profile settings sheet did not render expected options');
+        var closer = sheet.querySelector('[onclick*="closeProfileSettings"]');
+        if (closer) closer.click(); else if (w.closeProfileSettings) w.closeProfileSettings();
+        return clickHeader('Notifications');
+      }).then(function () {
+        return waitScreen('notifications', 'scrNotif', '#notifList', MARK);
+      }).then(function (n) {
+        seen.push('notifications');
+        console.log('TRI-USER-ROUTE: notifications — ' + n.text);
+        clickHeader('Search Matches');
+        return poll(function () { return w.document.getElementById('usrSrchInput'); }, 400, 20000, 'Search Players modal');
+      }).then(function (input) {
+        input.value = p2Ign;
+        input.dispatchEvent(new w.Event('input', { bubbles: true }));
+        return poll(function () {
+          var r = w.document.getElementById('usrSrchResults');
+          return r && text(r).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0 ? text(r) : null;
+        }, 700, 30000, 'Search Players result for QA P2');
+      }).then(function () {
+        var row = Array.prototype.slice.call(w.document.querySelectorAll('#usrSrchResults [onclick*="viewPublicProfile"]')).filter(function (x) { return text(x).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0; })[0];
+        must(!!row, 'Search result row for QA P2 is missing');
+        row.click();
+        return poll(function () {
+          var title = w.document.getElementById('modalT'), body = w.document.getElementById('modalB');
+          return title && text(title).indexOf(p2Ign) >= 0 && body && /Matches/.test(text(body)) && /Wins/.test(text(body)) ? true : null;
+        }, 700, 30000, 'public player profile modal');
+      }).then(function () {
+        seen.push('search');
+        console.log('TRI-USER-ROUTE: search — QA P2 public profile opened');
+        closeModal();
+        clickHeader('Help and Support');
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('Help & Support') >= 0 && b && /Support Chat/.test(text(b)) && /Submit Support Ticket/.test(text(b)) ? b : null;
+        }, 400, 20000, 'Help & Support modal');
+      }).then(function (body) {
+        var tickets = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('My Tickets & Replies') >= 0; })[0];
+        must(!!tickets, 'My Tickets & Replies entry missing');
+        tickets.click();
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('My Tickets') >= 0 && b && text(b).indexOf(MARK) >= 0 ? text(b) : null;
+        }, 700, 30000, 'My Tickets and admin reply');
+      }).then(function (ticketsText) {
+        must(ticketsText.indexOf('Admin Reply') >= 0 || ticketsText.indexOf('replied') >= 0 || ticketsText.indexOf('Replied') >= 0, 'ticket exists but admin reply is not visible');
+        seen.push('support-tickets');
+        console.log('TRI-USER-ROUTE: support tickets — ' + ticketsText.slice(0, 90));
+        closeModal();
+        clickHeader('Help and Support');
+        return poll(function () {
+          var b = w.document.getElementById('modalB');
+          return b && /Submit Support Ticket/.test(text(b)) ? b : null;
+        }, 400, 15000, 'Help modal before support form');
+      }).then(function (body) {
+        var submit = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Submit Support Ticket') >= 0; })[0];
+        must(!!submit, 'Support Ticket entry missing');
+        submit.click();
+        return poll(function () { return w.document.getElementById('supMsg') && w.document.getElementById('supType') ? true : null; }, 400, 15000, 'Support Ticket form');
+      }).then(function () {
+        must(!!w.document.querySelector('#modalB textarea#supMsg'), 'Support Ticket message field missing');
+        closeModal();
+        clickHeader('Help and Support');
+        return poll(function () {
+          var b = w.document.getElementById('modalB');
+          return b && /Support Chat/.test(text(b)) ? b : null;
+        }, 400, 15000, 'Help modal before Chat');
+      }).then(function (body) {
+        var chat = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Support Chat') >= 0; })[0];
+        must(!!chat, 'Support Chat entry missing');
+        chat.click();
+        return poll(function () {
+          var msgs = w.document.getElementById('chatMsgs'), inp = w.document.getElementById('chatIn');
+          return visibleScreen('scrChat') && msgs && inp && text(msgs) ? { messages: text(msgs).slice(0, 90) } : null;
+        }, 700, 30000, 'Support Chat screen and message area');
+      }).then(function (chatState) {
+        seen.push('support', 'chat');
+        console.log('TRI-USER-ROUTE: support/chat — ' + chatState.messages);
+        return clickNav('home', 'scrHome', '#homeList', MARK);
+      }).then(function () {
+        VALUES.user_route_tour = 'Home, Special, Matches, Rank, Wallet, Profile, Notifications, Search, Support, Chat — all opened in authenticated APK';
+        return { ok: true, seen: seen, uid: String(w.U.uid).slice(0, 8), chatInfoCleanup: 'admin RTDB cleanup pending' };
+      });
+    }
+    var run;
+    try { run = runTour(); } catch (e) { run = Promise.reject(e); }
+    return Promise.resolve(run).then(function (out) {
+      console.log('TRI-USER-ROUTE-TOUR-DONE: ' + JSON.stringify(out));
+      return 'authenticated user routes visited: ' + seen.join(', ') + ' (wallet purchase/withdrawal and chat send not used)';
+    }, function (e) {
+      var msg = String(e && (e.message || e) || 'route tour failed').slice(0, 260);
+      console.log('TRI-USER-ROUTE-TOUR-DONE: ' + JSON.stringify({ ok: false, seen: seen, error: msg }));
+      throw e;
     });
   }]);
 
