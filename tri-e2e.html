@@ -1238,8 +1238,20 @@
         ]);
         return probe.then(function (diagnostics) {
           console.log('TRI-USER-SEARCH-PROBE: ' + JSON.stringify(diagnostics));
-          input.value = RUN;
-          input.dispatchEvent(new w.Event('input', { bubbles: true }));
+          var liveInput = w.document.getElementById('usrSrchInput') || input;
+          liveInput.value = RUN;
+          var inputMethod = 'input.oninput';
+          if (typeof liveInput.oninput === 'function') {
+            /* WebView 83 can ignore a cross-frame synthetic input dispatch;
+               invoke the actual inline handler that a typed input calls. */
+            liveInput.oninput.call(liveInput, new w.Event('input', { bubbles: true }));
+          } else if (typeof w.liveSearchUsers === 'function') {
+            inputMethod = 'liveSearchUsers fallback';
+            w.liveSearchUsers(liveInput.value);
+          } else {
+            throw new Error('Search input handler missing: oninput=' + typeof liveInput.oninput + ', liveSearchUsers=' + typeof w.liveSearchUsers);
+          }
+          console.log('TRI-USER-SEARCH-INPUT: ' + JSON.stringify({ attached: !!(w.document.documentElement && w.document.documentElement.contains(liveInput)), oninput: typeof liveInput.oninput, method: inputMethod, immediate: text(w.document.getElementById('usrSrchResults')).slice(0, 60) }));
           return poll(function () {
             var r = w.document.getElementById('usrSrchResults');
             return r && text(r).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0 ? text(r) : null;
