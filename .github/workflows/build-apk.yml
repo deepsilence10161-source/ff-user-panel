@@ -766,6 +766,13 @@ jobs:
                 adbt shell input keyevent 4 >/dev/null 2>&1 || true
                 sleep 3 ;;
               *)
+                # System dialog kabhi screenshot/UI me aa jata hai par focus
+                # abhi launcher batata hai. Accessibility tree bhi har poll padho.
+                adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
+                adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
+                if [ -s loc-ui-dump.xml ] && grep -qiE 'Allow.*location|while using the app|only this time' loc-ui-dump.xml; then
+                  FOUND="uiautomator-text"; echo "   permission prompt accessibility tree me mila (focus lag tha)"; break
+                fi
                 sleep 4 ;;
             esac
           done
@@ -807,6 +814,12 @@ jobs:
                   adbt shell input keyevent 4 >/dev/null 2>&1 || true
                   sleep 3 ;;
                 *)
+                  # Retry branch me bhi focus launcher ho sakta hai, jabki prompt visible ho.
+                  adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
+                  adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
+                  if [ -s loc-ui-dump.xml ] && grep -qiE 'Allow.*location|while using the app|only this time' loc-ui-dump.xml; then
+                    FOUND="retry+uiautomator-text"; echo "   retry prompt accessibility tree me mila"; break
+                  fi
                   sleep 4 ;;
               esac
             done
