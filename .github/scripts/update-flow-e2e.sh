@@ -58,7 +58,7 @@ for m in re.finditer(r'<node[^>]*>', xml):
     t = re.search(r'text="([^"]*)"', n); d = re.search(r'content-desc="([^"]*)"', n)
     b = re.search(r'bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', n)
     if not b: continue
-    s = (t.group(1) if t else '') + ' ' + (d.group(1) if d else '')
+    s = ((t.group(1) if t else '') + ' ' + (d.group(1) if d else '')).strip()
     if re.search(pat, s, re.I):
         x = (int(b.group(1)) + int(b.group(3))) // 2
         y = (int(b.group(2)) + int(b.group(4))) // 2
