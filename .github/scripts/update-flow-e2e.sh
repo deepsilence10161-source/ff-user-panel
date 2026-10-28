@@ -120,7 +120,7 @@ adb shell am force-stop $PKG >/dev/null 2>&1 || true
 sleep 2
 adb shell am start -n $ACT >/dev/null
 WAITG=""
-for i in $(seq 1 40); do
+for i in $(seq 1 5); do   # pre-update gate band hota hai — lamba wait bekar
   if adb logcat -d | grep -q "Cleanup ALLOWED (server policy)"; then WAITG=yes; break; fi
   sleep 4
 done
@@ -199,7 +199,13 @@ PRE_TOTAL=$(( ${PRE_EXT:-0} + ${PRE_INT:-0} ))
 echo "  install ke baad, relaunch se PEHLE updates/ me APKs: $PRE_TOTAL"
 [ "${PRE_TOTAL:-0}" -ge 1 ] || fail "D0: install ke baad updates/ me APK mili hi nahi — in-app download proof adhoora"
 adb shell am start -n $ACT >/dev/null   # naye version ka pehla launch = cleanup hook
-sleep 20
+# device-cleanup.js ka MAIN GATE sirf version badalne par khulta hai aur
+# Supabase policy fetch + faisla me ~1 min lag sakta hai — loop se rukoo.
+for i in $(seq 1 30); do
+  if adb logcat -d | grep -q "Cleanup ALLOWED (server policy)"; then break; fi
+  sleep 3
+done
+sleep 5
 adb logcat -d > "$ART/logs/logcat-full.txt"
 grep -q "Cleanup ALLOWED (server policy)" "$ART/logs/logcat-full.txt" \
   && pass "D1: server verdict ALLOWED session me cached tha (R1 gate satisfied)" \
