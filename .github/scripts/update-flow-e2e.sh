@@ -28,6 +28,16 @@ say()  { echo -e "\n\033[1;36m== $* ==\033[0m"; }
 fail() { echo -e "\033[1;31mUPDATE-FLOW-FAIL: $*\033[0m"; adb logcat -d > "$ART/logs/logcat-fail.txt" 2>/dev/null || true; exit 1; }
 pass() { echo -e "\033[1;32mPROOF-OK: $*\033[0m"; }
 
+dismiss_anr() { # slow emulator par ANR/system dialog screen chhupa deta hai — pehle hatoo
+  adb shell uiautomator dump /sdcard/ui0.xml >/dev/null 2>&1
+  adb pull /sdcard/ui0.xml /tmp/ui0.xml >/dev/null 2>&1 || return 0
+  if grep -qE "isn't responding|Close app|System UI" /tmp/ui0.xml 2>/dev/null; then
+    echo "  (ANR/system dialog mila — Wait tap karke hataya)"
+    tap_text "^Wait$" >/dev/null 2>&1 || tap_text "^Close app$" >/dev/null 2>&1 || true
+    sleep 3
+  fi
+}
+
 tap_text() { # tap_text <regex>  — uiautomator dump me text/description match ka center tap
   local pat="$1"
   adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1
@@ -98,7 +108,13 @@ adb shell dumpsys package $PKG | grep -q "android.permission.REQUEST_INSTALL_PAC
 say "4) PROOF B — Settings toggle page par humara switch maujood"
 adb shell am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d "package:$PKG" >/dev/null
 sleep 4
-if tap_text "Allow from this source|Allow app installs|Unknown app source"; then
+B_OK=""
+for i in $(seq 1 8); do
+  dismiss_anr
+  if tap_text "Allow from this source|Allow app installs|Unknown app source"; then B_OK=yes; break; fi
+  sleep 3
+done
+if [ -n "$B_OK" ]; then
   pass "B: toggle page par switch mila aur tap hua (ek-baari permission)"
 else
   adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1; adb pull /sdcard/ui.xml "$ART/dumps/toggle-page.xml" >/dev/null 2>&1
@@ -118,6 +134,7 @@ adb logcat -d | grep -q "update deep-link accepted" && pass "deep-link allowlist
 say "6) In-app download (app-private updates/) → system installer"
 FOUND=""
 for i in $(seq 1 40); do
+  dismiss_anr
   if tap_text "^(Install|Update|Install anyway|Update anyway)$"; then FOUND=yes; break; fi
   sleep 3
 done
