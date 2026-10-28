@@ -279,11 +279,60 @@ public class MainActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    /* ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update?url=<https-apk>&v=<tag>
+       ke liye STRICT host allowlist. Browser-download wali flow me APK file
+       Downloads me phans jaati hai (Android 11+ scoped storage — koi bhi app
+       doosre browser ki file delete NAHI kar sakti, ye platform ka niyam hai)
+       aur browser ka "unknown apps" dialog bar-bar aata hai. Isliye web pages
+       par "App me update karein" button isi deep-link par bhejta hai: download
+       app-private updates/ me hota hai aur install ke baad SafeCleaner use
+       hata deta hai. Allowlist se bahar ka URL yahan se aage badhta hi nahi. */
+    private static boolean isAllowedUpdateUrl(String url) {
+        if (url == null || url.trim().isEmpty()) return false;
+        try {
+            Uri u = Uri.parse(url.trim());
+            if (!"https".equals(u.getScheme())) return false;
+            if (!url.toLowerCase().endsWith(".apk")) return false;
+            String host = u.getHost();
+            if (host == null) return false;
+            String path = u.getPath() == null ? "" : u.getPath();
+            if (host.equals("deepsilence10161-source.github.io")
+                    || host.equals("deepsilence10161.workers.dev")) {
+                return true;
+            }
+            if (host.equals("github.com")
+                    || host.equals("objects.githubusercontent.com")
+                    || host.endsWith(".githubusercontent.com")) {
+                return path.startsWith("/deepsilence10161-source/ff-user-panel/");
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void handleIntent(Intent intent) {
         if (intent == null) return;
         Uri data = intent.getData();
         if (data == null) return;
         if (DEEP_LINK_SCHEME.equals(data.getScheme())) {
+            /* ✅ DEEP-LINK UPDATE (2026-10-29): update branch auth branch se
+               pehle — host allowlist pass hone par wahi native in-app
+               downloader chalta hai jo WebView update flow use karta hai. */
+            if ("update".equals(data.getHost())) {
+                String url = data.getQueryParameter("url");
+                String ver = data.getQueryParameter("v");
+                if (isAllowedUpdateUrl(url)) {
+                    Log.i(TAG_E2E, "update deep-link accepted: " + url);
+                    new AndroidBridge().downloadAndInstallTrusted(url, ver, true);
+                } else {
+                    Log.w(TAG_E2E, "update deep-link REFUSED by host allowlist: " + url);
+                    Toast.makeText(this,
+                        "Update link official source ka nahi hai — security ke liye block kiya gaya",
+                        Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
             webView.evaluateJavascript(
                 "if (window._onAuthDeepLink) window._onAuthDeepLink('" +
                 data.toString().replace("'", "\\'") + "');",
@@ -701,7 +750,17 @@ public class MainActivity extends AppCompatActivity {
         public void downloadAndInstallApk(String apkUrl, String targetVersion) {
             /* ✅ SAFE-CLEANER v5.1: origin guard — sirf official app page
                update download/install trigger kar sakta hai. */
-            if (!isTrustedCleanupOrigin()) {
+            downloadAndInstallTrusted(apkUrl, targetVersion, isTrustedCleanupOrigin());
+        }
+
+        /* ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update native handler
+           isi entry-point ko trusted=true ke saath call karta hai — URL ki
+           host-allowlist MainActivity.isAllowedUpdateUrl() me verify ho chuki
+           hoti hai. JavaScript path ka WebView-origin guard (upar wala method)
+           bilkul pehle jaisa strict laagoo hai; trusted flag native side par
+           SIRF allowlist se aata hai, kahin se nahi. */
+        public void downloadAndInstallTrusted(String apkUrl, String targetVersion, boolean trusted) {
+            if (!trusted) {
                 emitApkProgress(-1, 0, 0, "error", "Blocked: untrusted page");
                 return;
             }

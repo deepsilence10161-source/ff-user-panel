@@ -1,0 +1,77 @@
+name: Update Flow E2E (download → install → auto-delete)
+
+# ================================================================
+#  MINI eSPORTS — UPDATE-FLOW E2E   (2026-10-29)
+# ================================================================
+#  KYU: user-panel ke download/update system ka POORA user-flow asli
+#  Android emulator par prove karna — exactly wahi rasta jo user
+#  leta hai:
+#    1. purana release APK install (jo aaj users ke phone me hai)
+#    2. app launch → server policy (Supabase apk_cleanup) verdict cache
+#    3. ek-baari "install unknown apps" toggle (appops se simulate —
+#       user wahi ek baar Settings me karta hai)
+#    4. miniesports://update deep-link (web page ka "App me update
+#       karein" button) → in-app downloader → app-private updates/
+#    5. system installer → Update tap → naya APK install
+#    6. PROOF: install ke baad updates/ ka APK auto-delete (logcat +
+#       adb root ls), /sdcard/Download me koi MiniEsports file NAHI,
+#       aur galat host ka deep-link allowlist se REFUSED
+#
+#  Ye workflow build NAHI karta — jis commit par dispatch kiya jaye,
+#  usi commit ki live GitHub Pages APK (committed MiniEsports.apk)
+#  naya version hoti hai aur pichhli release purana version.
+#
+#  TRIGGER: manual (Actions → Run workflow). Merge ke baad main SHA
+#  par chalaya jata hai taaki base=naya build, old=pichhli release ho.
+# ================================================================
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_apk_url:
+        description: 'Naye APK ka public URL (khaali = live GitHub Pages APK)'
+        required: false
+        default: ''
+
+concurrency:
+  group: update-flow-e2e-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  update-flow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm || true
+
+      - name: Update-Flow E2E (old APK → deep-link update → install → auto-delete proofs)
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_APK_URL: ${{ github.event.inputs.new_apk_url }}
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          avd-name: upd_avd
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot-save -camera-back none
+          script: bash .github/scripts/update-flow-e2e.sh
+
+      - name: Artifacts upload (logs + dumps)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: update-flow-proof
+          path: e2e-artifacts/
+          if-no-files-found: warn
+          retention-days: 30

@@ -23,10 +23,14 @@
          and user can never be prompted to enable permission.
          Play Protect issue handled via appeal form submission. -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!-- ✅ FIX (2026-10-08): RECEIVE_BOOT_COMPLETED and REQUEST_INSTALL_PACKAGES
-         REMOVED — these are top Play Protect triggers!
-         REQUEST_INSTALL_PACKAGES: self-update redirected to browser instead.
-         RECEIVE_BOOT_COMPLETED: not critical, removed to reduce flags.
+    <!-- ✅ FIX (2026-10-08, corrected 2026-10-29): RECEIVE_BOOT_COMPLETED hi
+         REMOVED hua tha (Play Protect trigger). REQUEST_INSTALL_PACKAGES
+         UPAR line 25 par ACTIVE hai aur rahega — in-app updater ke liye ye
+         zaroori hai: iske bina canRequestPackageInstalls() hamesha false
+         rahta hai, Settings me humara toggle dikhta hi nahi aur user ek
+         an-suljhane wale permission-dialog loop me phans jata hai (yahi
+         10-08 wali galat comment ki wajah se confusion tha). Ek baar toggle
+         ON hone ke baad dobara koi dialog nahi aata (YMusic-pattern).
          ✅ SAFE-CLEANER (2026-10-09): purana device-wide OldApkCleaner + SAF
          folder picker POORA hata diya gaya (owner incident ke baad). Ab
          post-update safai sirf app-private storage + tracked own downloads
@@ -80,6 +84,20 @@
                 <data
                     android:scheme="miniesports"
                     android:host="auth" />
+            </intent-filter>
+
+            <!-- ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update?url=<https-apk>
+                 — web pages (get.html/download.html) ka "App me update karein"
+                 button. Custom scheme hai, isliye autoVerify ki zaroorat nahi;
+                 URL ki asli suraksha MainActivity.isAllowedUpdateUrl() allowlist
+                 se aati hai (sirf official hosts + .apk). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="miniesports"
+                    android:host="update" />
             </intent-filter>
 
         </activity>

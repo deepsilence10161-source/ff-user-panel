@@ -21,6 +21,14 @@ import android.util.Log;
  *
  * Zero permissions, zero prompts — receiver ke paas koi permission nahi
  * chahiye aur na hi koi leta hai.
+ *
+ * ✅ NOTE (2026-10-29, official Android docs se verified): API 26+ par
+ * manifest-registered receivers ko ACTION_PACKAGE_ADDED / PACKAGE_REPLACED
+ * MILTE HI NAHI (ye implicit-broadcast exceptions list me nahi hain).
+ * Isliye asli post-update cleanup path MainActivity.onCreate ka launch-hook
+ * hai (SafeCleaner.cachedVerdict gate ke saath); yeh receiver sirf API 24-25
+ * devices par immediate cleanup deta hai. Dono paths fail-safe hain:
+ * verdict unknown/exempt = kuch bhi delete nahi.
  */
 public class ApkInstallReceiver extends BroadcastReceiver {
     private static final String TAG = "ApkInstallReceiver";
