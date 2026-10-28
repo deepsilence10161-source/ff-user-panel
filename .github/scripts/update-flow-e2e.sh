@@ -32,7 +32,11 @@ dismiss_anr() { # slow emulator par ANR/system dialog screen chhupa deta hai —
   adb shell uiautomator dump /sdcard/ui0.xml >/dev/null 2>&1
   adb pull /sdcard/ui0.xml /tmp/ui0.xml >/dev/null 2>&1 || return 0
   if grep -qE "isn't responding|Close app|System UI" /tmp/ui0.xml 2>/dev/null; then
-    echo "  (ANR/system dialog mila — Wait tap karke hataya)"
+    # ANR dialog launcher process ka hota hai — "Wait" se bar-bar wapas aata
+    # hai; launcher force-stop karo (Settings/app ko kuch nahi hota), phir
+    # bacha-kucha dialog tap se hatao.
+    echo "  (ANR/system dialog mila — launcher force-stop + dialog tap)"
+    adb shell am force-stop com.google.android.apps.nexuslauncher >/dev/null 2>&1 || true
     tap_text "^Wait$" >/dev/null 2>&1 || tap_text "^Close app$" >/dev/null 2>&1 || true
     sleep 3
   fi
@@ -90,6 +94,9 @@ adb logcat -G 16M >/dev/null 2>&1 || true
 adb shell settings put global window_animation_scale 0
 adb shell settings put global transition_animation_scale 0
 adb shell settings put global animator_duration_scale 0
+# slow emulator par Pixel Launcher ANR dialog poore flow ko dhak deta tha —
+# proactive force-stop (app/Settings isse prabhavit nahi hote).
+adb shell am force-stop com.google.android.apps.nexuslauncher >/dev/null 2>&1 || true
 adb install -r -d old-base.apk || fail "old base APK install fail"
 OLD_VC=$(adb shell dumpsys package $PKG | grep -m1 versionCode | tr -d '\r')
 echo "  installed base: $OLD_VC ($OLD_TAG)"
