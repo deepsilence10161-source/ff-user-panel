@@ -17,8 +17,10 @@ set -uo pipefail
 PKG=com.miniesports.app
 ACT=$PKG/.MainActivity
 REPO=${GITHUB_REPOSITORY:-deepsilence10161-source/ff-user-panel}
-PAGES_APK="https://deepsilence10161-source.github.io/ff-user-panel/MiniEsports.apk"
-NEW_URL="${NEW_APK_URL:-$PAGES_APK}"
+# ✅ NEW = LATEST GitHub Release (public URL — wahi jo users ko milti hai).
+# Pages par committed MiniEsports.apk build-apk commit-back NAHI karta, isliye
+# wo stale reh sakti hai; release asset har main-build par fresh publish hoti hai.
+NEW_URL="${NEW_APK_URL:-https://github.com/$REPO/releases/latest/download/MiniEsports.apk}"
 ART=e2e-artifacts
 mkdir -p "$ART/logs" "$ART/dumps"
 
