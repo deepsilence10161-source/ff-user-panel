@@ -101,11 +101,29 @@ adb install -r -d old-base.apk || fail "old base APK install fail"
 OLD_VC=$(adb shell dumpsys package $PKG | grep -m1 versionCode | tr -d '\r')
 echo "  installed base: $OLD_VC ($OLD_TAG)"
 
-say "2) App launch → server policy verdict cache (SafeCleaner R1)"
+say "2) App launch (logged-out baseline)"
 adb shell pm grant $PKG android.permission.POST_NOTIFICATIONS 2>/dev/null || true
 adb shell am start -n $ACT >/dev/null
-sleep 35   # live site load + device-cleanup.js policy fetch
-adb logcat -d | grep -E "SafeCleaner|device-cleanup|MINIESPORTS-E2E" | tail -15 || true
+sleep 20   # live site load
+
+say "2b) QA login (tri-e2e page fragment — same origin, shared session) → server verdict cache"
+# SafeCleaner R1: cleanup verdict sirf logged-in identity par definitive hota
+# hai. tri-e2e.html fragment-login wahi session banata hai jo app ka normal
+# page use karta hai (same github.io origin → shared localStorage).
+[ -n "${TRI_EMAIL:-}" ] || fail "TRI_EMAIL env nahi mila (workflow QA step)"
+FRAG="run=${TRI_RUNID}&e=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$TRI_EMAIL")&p=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$TRI_PASS")"
+adb shell "am start -n $ACT -a android.intent.action.VIEW -d 'https://deepsilence10161-source.github.io/ff-user-panel/tri-e2e.html#${FRAG}'" >/dev/null
+WAITG=""
+for i in $(seq 1 30); do
+  if adb logcat -d | grep -q "Cleanup ALLOWED (server policy)"; then WAITG=yes; break; fi
+  sleep 4
+done
+if [ -n "$WAITG" ]; then
+  pass "G: QA login hua + server policy verdict ALLOWED cache hua (SafeCleaner R1)"
+else
+  adb logcat -d | grep -E "SafeCleaner|EXEMPT|identity" | tail -8 || true
+  fail "G: tri-page login se verdict ALLOWED nahi mila (login/policy issue)"
+fi
 
 say "3) PROOF A — REQUEST_INSTALL_PACKAGES manifest me declared"
 adb shell dumpsys package $PKG | grep -q "android.permission.REQUEST_INSTALL_PACKAGES" \
@@ -161,20 +179,29 @@ echo "  base: $OLD_VC  →  now: $NEW_VC"
 [ "$NEW_VC" != "$OLD_VC" ] || fail "C: versionCode badla nahi — install poora nahi hua"
 pass "C: versionCode update hua ($OLD_VC → $NEW_VC)"
 
-say "8) PROOF D — post-install auto-delete (updates/ khaali, logcat gate)"
+say "8) PROOF D — post-install auto-delete (pre/post count, root ls)"
+# API 26+ par manifest receiver dead hota hai (official docs) — asli cleanup
+# hook naye version ka pehla launch (onCreate) hai, isliye proof = relaunch
+# se PEHLE file maujood, relaunch ke BAAD gayab.
+adb root >/dev/null 2>&1; sleep 3
+PRE_EXT=$(adb shell ls /sdcard/Android/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true)
+PRE_INT=$(adb shell ls /data/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true)
+PRE_TOTAL=$(( ${PRE_EXT:-0} + ${PRE_INT:-0} ))
+echo "  install ke baad, relaunch se PEHLE updates/ me APKs: $PRE_TOTAL"
+[ "${PRE_TOTAL:-0}" -ge 1 ] || fail "D0: install ke baad updates/ me APK mili hi nahi — in-app download proof adhoora"
 adb shell am start -n $ACT >/dev/null   # naye version ka pehla launch = cleanup hook
 sleep 20
 adb logcat -d > "$ART/logs/logcat-full.txt"
-grep -E "Post-install gated cleanup: [1-9]" "$ART/logs/logcat-full.txt" \
-  && pass "D1: logcat me gated cleanup ≥1 delete" \
-  || fail "D1: 'Post-install gated cleanup: [1-9]' logcat me nahi mila"
-adb root >/dev/null 2>&1; sleep 3
+grep -q "Cleanup ALLOWED (server policy)" "$ART/logs/logcat-full.txt" \
+  && pass "D1: server verdict ALLOWED session me cached tha (R1 gate satisfied)" \
+  || fail "D1: verdict ALLOWED logcat me nahi mila"
 LEFT_EXT=$(adb shell ls /sdcard/Android/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true)
 LEFT_INT=$(adb shell ls /data/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true)
-echo "  updates/ me bache APKs — external: ${LEFT_EXT:-0}, internal: ${LEFT_INT:-0}"
-[ "${LEFT_EXT:-0}" = "0" ] && [ "${LEFT_INT:-0}" = "0" ] \
-  && pass "D2: updates/ folder khaali — APK auto-delete hua" \
-  || fail "D2: updates/ me ab bhi APK padi hai"
+LEFT_TOTAL=$(( ${LEFT_EXT:-0} + ${LEFT_INT:-0} ))
+echo "  relaunch ke BAAD updates/ me APKs: $LEFT_TOTAL"
+[ "${LEFT_TOTAL:-0}" = "0" ] \
+  && pass "D2: updates/ khaali — install ke baad APK auto-delete hua ($PRE_TOTAL → 0)" \
+  || fail "D2: updates/ me ab bhi $LEFT_TOTAL APK padi hai"
 
 say "9) PROOF E — Downloads folder me koi MiniEsports file NAHI"
 DL=$(adb shell ls /sdcard/Download 2>/dev/null | grep -ci "miniesports" || true)
