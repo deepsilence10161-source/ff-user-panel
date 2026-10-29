@@ -40,3 +40,11 @@ const r2 = await fetch(`https://api.supabase.com/v1/projects/${SB_REF}/database/
   body: JSON.stringify({ query: "SELECT policyname, cmd, roles, qual FROM pg_policies WHERE schemaname='public' AND tablename='app_settings'" }),
 });
 console.log('• app_settings policies ab: ' + (await r2.text()).slice(0, 600));
+
+/* post-check 2: apk_cleanup row maujood hai ya nahi */
+const r3 = await fetch(`https://api.supabase.com/v1/projects/${SB_REF}/database/query`, {
+  method: 'POST',
+  headers: { Authorization: 'Bearer ' + TOKEN, 'Content-Type': 'application/json' },
+  body: JSON.stringify({ query: "SELECT key, updated_by, (value::jsonb->>'enabled') AS enabled FROM app_settings WHERE key='apk_cleanup'" }),
+});
+console.log('• apk_cleanup row: ' + (await r3.text()).slice(0, 300));
