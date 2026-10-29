@@ -801,9 +801,30 @@ console.log('\n── TEST 22: v5.1 perfection-audit — koi jugad/loose sire na
      && /downloadAndInstallApk[\s\S]{0,600}isTrustedCleanupOrigin/.test(ma22),
      '22b: cleanOldApks + downloadAndInstallApk par bhi origin guard');
 
-  ok(sc22.indexOf('MediaStore') === -1 && sc22.indexOf('ContentResolver') === -1
+  /* ✅ 22c v2 (2026-10-29, owner order "residue local storage me abhi bhi"):
+     MediaStore ab SafeCleaner me maujood hai — lekin SIRF ek tang,
+     owner-limited residue sweep ke roop me. Naya precise invariant:
+     (a) MediaStore/ContentResolver ka usage sirf cleanOwnSharedRows ke
+     andar (imports ke alawa kahin nahi),
+     (b) OWNER_PACKAGE_NAME == apna package guard ke bina koi row kill-list
+     me nahi ja sakti (browser/WhatsApp files untouchable),
+     (c) delete sirf per-row ContentUris Uri par (koi bulk selection NAHI),
+     (d) purana broad helper tryDeleteViaMediaStoreOwnRow ab bhi gayab. */
+  const swStart = sc22.indexOf('cleanOwnSharedRows');
+  const swEnd = sc22.indexOf('registerTrackedDownload', swStart === -1 ? 0 : swStart);
+  const swBody = (swStart === -1 || swEnd === -1) ? '' : sc22.slice(swStart, swEnd);
+  const scNoSweep = (sc22.slice(0, swStart === -1 ? 0 : swStart)
+                     + sc22.slice(swEnd === -1 ? sc22.length : swEnd))
+                    .replace(/^import[^\n]*$/gm, ' ');
+  ok(swStart !== -1
+     && scNoSweep.indexOf('MediaStore') === -1
+     && scNoSweep.indexOf('ContentResolver') === -1
+     && swBody.indexOf('OWNER_PACKAGE_NAME') !== -1
+     && /owner\.equals\(ctx\.getPackageName\(\)\)/.test(swBody)
+     && swBody.indexOf('ContentUris.withAppendedId') !== -1
+     && /getContentResolver\(\)\.delete\(u, null, null\)/.test(swBody)
      && sc22.indexOf('tryDeleteViaMediaStoreOwnRow') === -1,
-     '22c: SafeCleaner me koi MediaStore-delete/query NAHI — sirf app-private File.delete');
+     '22c: MediaStore SIRF own-rows residue sweep me (owner-guard + per-row Uri) — baaki SafeCleaner app-private only');
 
   ok(ag22.indexOf('__cleanup_policy') !== -1,
      '22d: performFullWipe __cleanup_policy (verdict + tracked registry) preserve karta hai');
