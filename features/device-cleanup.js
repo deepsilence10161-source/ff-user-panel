@@ -35,11 +35,7 @@
   /* ✅ OPS TELEMETRY (2026-10-29): unconditional load-marker — emulator E2E
      me prove karna tha ki WebView ye file execute kar bhi raha hai ya nahi
      (gate silent fail kar raha tha). Koi secret nahi. */
-  try { console.warn('[cleanup-gate] script loaded v20261029e'); } catch (e) {}
-  /* Early schedule: _poll hoisted function hai; callback 3s baad chalta hai
-     (tab tak IIFE synchronously poori ho chuki hoti hai). Tail schedule ke
-     saath double-schedule harmless hai (gate idempotent, DONE-guarded). */
-  try { setTimeout(function () { _poll(); }, 3000); } catch (e) {}
+  try { console.warn('[cleanup-gate] script loaded v20261029f'); } catch (e) {}
 
   var POLICY_TABLE = 'app_settings';
   var POLICY_KEY = 'apk_cleanup';
@@ -238,6 +234,6 @@
   }
   if (typeof setTimeout === 'function') {
     setTimeout(_poll, 3000);
-    try { console.warn('[cleanup-gate] autostart scheduled v20261029e'); } catch (e) {}
+    try { console.warn('[cleanup-gate] autostart scheduled v20261029f'); } catch (e) {}
   }
 })();

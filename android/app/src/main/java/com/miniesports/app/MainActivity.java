@@ -71,6 +71,13 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
+    /* ✅ FIX (2026-10-29): WebView.getUrl() SIRF UI thread par legal hai.
+       JS-bridge thread se call karne par StrictMode violation + null/stale
+       value milti thi → isTrustedCleanupOrigin() hamesha REFUSED lautata tha
+       (cleanup-gate kabhi native tak nahi pahunch pata). Ab UI-thread
+       callbacks (onPageStarted/onPageFinished) is volatile cache me URL
+       likhte hain aur bridge thread sirf yeh cache PADHTA hai. */
+    private volatile String lastPageUrl = "";
     private SwipeRefreshLayout swipeRefresh;
     /* BUG FIX (2026-07): see setOnChildScrollUpCallback below — tracks the
        WEB PAGE's actual scroll position (reported via the JS bridge),
@@ -673,10 +680,16 @@ public class MainActivity extends AppCompatActivity {
            call NAHI kar sakta. Sirf official app hosts. ═══ */
         private boolean isTrustedCleanupOrigin() {
             try {
-                String u = (webView != null) ? webView.getUrl() : null;
+                /* ✅ FIX (2026-10-29): webView.getUrl() bridge thread se call
+                   karna illegal hai (StrictMode violation + null return) —
+                   isliye pichhla har cleanup call REFUSED ho raha tha.
+                   Ab UI-thread cache (lastPageUrl) padhte hain. */
+                String u = lastPageUrl;
                 if (u == null || u.isEmpty()) return false;
-                return u.contains("deepsilence10161-source.github.io")
+                boolean ok = u.contains("deepsilence10161-source.github.io")
                     || u.contains("deepsilence10161.workers.dev");
+                if (!ok) Log.w(TAG, "⛔ cleanup origin check fail: " + u.split("[?#]")[0]);
+                return ok;
             } catch (Exception e) {
                 return false;
             }
@@ -1081,11 +1094,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageStarted(WebView v, String url, Bitmap favicon) {
+                lastPageUrl = (url == null) ? "" : url; // UI thread — safe write
                 progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onPageFinished(WebView v, String url) {
+                lastPageUrl = (url == null) ? "" : url; // UI thread — safe write
                 /* E2E diagnostics: kaunsa page load hua — CI logcat me proof.
                    Query/fragment jaan-boojh kar strip: auth callback URLs me
                    #access_token hota hai, wo logcat me KABHI nahi jana chahiye. */
