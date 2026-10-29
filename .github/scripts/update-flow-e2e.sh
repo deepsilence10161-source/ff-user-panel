@@ -40,6 +40,15 @@ dismiss_anr() { # slow emulator par ANR/system dialog screen chhupa deta hai —
     tap_text "^Wait$" >/dev/null 2>&1 || tap_text "^Close app$" >/dev/null 2>&1 || true
     sleep 3
   fi
+  # ✅ HARDENING (2026-10-29): runtime permission dialog (location etc.)
+  # beech me aakar installer ka Install/Update button chhupa deta hai
+  # (run 40817116016 isi se fail hua). Update-flow ko location ki zarurat
+  # nahi — "Don’t allow" tap karke dialog hatao, flow aage badhe.
+  if grep -qE "access this device|While using the app|Only this time" /tmp/ui0.xml 2>/dev/null; then
+    echo "  (permission dialog mila — Don't allow tap)"
+    tap_text "^Don.t allow$" >/dev/null 2>&1 || tap_text "^Deny$" >/dev/null 2>&1 || true
+    sleep 2
+  fi
 }
 
 tap_text() { # tap_text <regex>  — uiautomator dump me text/description match ka center tap
@@ -176,6 +185,7 @@ done
 pass "installer UI aaya aur Update tap hua"
 INST=""
 for i in $(seq 1 40); do
+  dismiss_anr
   if tap_text "^(Open|Done|Finish)$"; then INST=yes; break; fi
   sleep 3
 done
