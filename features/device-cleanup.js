@@ -35,7 +35,11 @@
   /* ✅ OPS TELEMETRY (2026-10-29): unconditional load-marker — emulator E2E
      me prove karna tha ki WebView ye file execute kar bhi raha hai ya nahi
      (gate silent fail kar raha tha). Koi secret nahi. */
-  try { console.log('[cleanup-gate] script loaded v20261029c'); } catch (e) {}
+  try { console.log('[cleanup-gate] script loaded v20261029d'); } catch (e) {}
+  /* Early schedule: _poll hoisted function hai; callback 3s baad chalta hai
+     (tab tak IIFE synchronously poori ho chuki hoti hai). Tail schedule ke
+     saath double-schedule harmless hai (gate idempotent, DONE-guarded). */
+  try { setTimeout(function () { _poll(); }, 3000); } catch (e) {}
 
   var POLICY_TABLE = 'app_settings';
   var POLICY_KEY = 'apk_cleanup';
@@ -142,10 +146,19 @@
   /* ── MAIN GATE — ek baar per (version + user), tabhi jab faisla definitive ── */
   function _runGate() {
     try {
-      if (!(window.Android && window.Android.isAndroidApp && window.Android.isAndroidApp())) return;
-      if (!window._supa) return;
+      if (!(window.Android && window.Android.isAndroidApp && window.Android.isAndroidApp())) {
+        try { console.log('[cleanup-gate] skip: android bridge nahi'); } catch (e) {}
+        return;
+      }
+      if (!window._supa) {
+        try { console.log('[cleanup-gate] skip: _supa nahi'); } catch (e) {}
+        return;
+      }
       var uid = (window.U && window.U.uid) ? String(window.U.uid) : '';
-      if (!uid) return; // login hone do
+      if (!uid) {
+        try { console.log('[cleanup-gate] skip: uid nahi (logged-out)'); } catch (e) {}
+        return; // login hone do
+      }
 
       var installed = '';
       try { installed = window.Android.getAppVersion() || ''; } catch (e) {}
@@ -201,10 +214,21 @@
   var _tries = 0;
   function _poll() {
     _tries++;
-    if (window.U && window._supa) { _runGate(); return; }
-    if (_tries === 10) { try { console.warn('[cleanup-gate] 40s se U/supa ka intezar'); } catch (e) {} }
+    if (window.U && window._supa) {
+      _runGate();
+      /* faisla definitive ho chuka (DONE_FLAG laga) to polling band;
+         warna retry jaari (pol null / offline cases ke liye ~2.5 min). */
+      try {
+        var inst = (window.Android && window.Android.getAppVersion) ? (window.Android.getAppVersion() || '') : '';
+        if (localStorage.getItem(DONE_FLAG) === inst + ':' + String(window.U.uid)) return;
+      } catch (e) {}
+    }
+    if (_tries === 10) { try { console.warn('[cleanup-gate] 40s se faisla pending'); } catch (e) {} }
     if (_tries < 40) setTimeout(_poll, 4000); // max ~2.5 min wait
     else { try { console.warn('[cleanup-gate] poll timeout — gate chala hi nahi'); } catch (e) {} }
   }
-  if (typeof setTimeout === 'function') setTimeout(_poll, 3000);
+  if (typeof setTimeout === 'function') {
+    setTimeout(_poll, 3000);
+    try { console.log('[cleanup-gate] autostart scheduled v20261029d'); } catch (e) {}
+  }
 })();
