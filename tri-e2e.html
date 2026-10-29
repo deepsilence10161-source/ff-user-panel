@@ -80,6 +80,25 @@
     var i = kv.indexOf('='); if (i > 0) Q[decodeURIComponent(kv.slice(0, i))] = decodeURIComponent(kv.slice(i + 1));
   });
   var RUN = Q.run || 'norun', EMAIL = Q.e || '', PASS = Q.p || '';
+  /* ✅ QA RESCUE PROBE (2026-10-29): #qa_rescue=1 → one-shot localStorage
+     flag + iframe seedha index.html?qa_rescue=1 par (force-update overlay
+     apni user-journey khud chalegi: update click → block → rescue click →
+     deep-link). tri-e2e.html native intent-allowlist me pehle se allowed
+     hai, isliye koi production native change nahi chahiye. */
+  if (Q.qa_rescue === '1') {
+    try { localStorage.setItem('qa_rescue', '1'); } catch (e) {}
+    document.getElementById('appFrame').src = 'index.html?qa_rescue=1&v=' + Date.now();
+    /* Native emitApkProgress TOP document par evaluate hota hai — iframe
+       wali overlay tak events relay karo taaki error→rescue journey chale. */
+    window._onApkDownloadProgress = function () {
+      var f = document.getElementById('appFrame');
+      try {
+        if (f && f.contentWindow && f.contentWindow._onApkDownloadProgress) {
+          f.contentWindow._onApkDownloadProgress.apply(f.contentWindow, arguments);
+        }
+      } catch (e) {}
+    };
+  }
   var MARK = 'QA-TEST TRI ' + RUN;
   var VALUES = {};
   var results = [];

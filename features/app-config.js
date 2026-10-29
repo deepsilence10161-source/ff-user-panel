@@ -445,7 +445,12 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
      karta hai — overlay phir user-journey khud chalta hai (update button
      click → error par rescue button click → deep-link). Real users ke liye
      ye parameter kabhi present nahi hota; production behavior unchanged. */
-  var _qaRescue = /[?&]qa_rescue=1/.test(window.location.search);
+  var _qaRescue = (function () {
+    try {
+      if (localStorage.getItem('qa_rescue') === '1') { localStorage.removeItem('qa_rescue'); return true; }
+    } catch (e) {}
+    return /[?&]qa_rescue=1/.test(window.location.search);
+  })();
   var updateBtn = document.getElementById('fuUpdateBtn');
   if (_qaRescue && updateBtn) {
     setTimeout(function () { try { updateBtn.click(); } catch (e) {} }, 1500);

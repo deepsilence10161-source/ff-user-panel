@@ -193,7 +193,7 @@ if [ "$RESCUE" = "1" ]; then
   # buggy native guard block karta hai ("Blocked: untrusted page") → error
   # state par rescue button dikhta hai aur page JS use click karti hai →
   # miniesports://update deep-link → native in-app downloader (allowlist).
-  adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "https://deepsilence10161-source.github.io/ff-user-panel/index.html?qa_rescue=1" >/dev/null 2>&1
+  adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "https://deepsilence10161-source.github.io/ff-user-panel/tri-e2e.html#qa_rescue=1" >/dev/null 2>&1
   RQ=""
   for i in $(seq 1 50); do
     adb logcat -d 2>/dev/null | grep -q "QA-RESCUE. rescue click" && { RQ=yes; break; }
