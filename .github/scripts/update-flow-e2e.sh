@@ -251,20 +251,26 @@ PRE_TOTAL=$(( ${PRE_EXT:-0} + ${PRE_INT:-0} ))
 echo "  install ke baad, relaunch se PEHLE updates/ me APKs: $PRE_TOTAL"
 [ "${PRE_TOTAL:-0}" -ge 1 ] || fail "D0: install ke baad updates/ me APK mili hi nahi — in-app download proof adhoora"
 adb shell am start -n $ACT >/dev/null   # naye version ka pehla launch = cleanup hook
+# ✅ LOGCAT RESET (2026-10-29): purane buffer ki base-session lines se D-loop
+# jaldi break ho jata tha aur naye process ki cleanup/sweep lines capture se
+# pehle reh jaati thin (run 40925143291 fail). Ab sirf relaunch ke BAAD ki
+# lines ginne ke layak hain.
+adb logcat -c >/dev/null 2>&1 || true
 # device-cleanup.js ka MAIN GATE sirf version badalne par khulta hai aur
 # slow device par policy+createdAt fetch me 2-4 min lag sakte hain —
 # loop line YA updates/ khaali hone tak rukta hai (donono = cleanup proof).
 for i in $(seq 1 60); do
-  if adb logcat -d | grep -q "Cleanup ALLOWED (server policy)"; then break; fi
+  if adb logcat -d | grep -qE "Cleanup ALLOWED \(server policy\)|Safe cleanup done"; then break; fi
   LEFT_NOW=$(( $(adb shell ls /sdcard/Android/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true) + $(adb shell ls /data/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true) ))
   [ "$LEFT_NOW" = "0" ] && [ "$i" -gt 3 ] && break
   sleep 4
 done
 sleep 5
 adb logcat -d > "$ART/logs/logcat-full.txt"
-grep -q "Cleanup ALLOWED (server policy)" "$ART/logs/logcat-full.txt" \
-  && pass "D1: server verdict ALLOWED session me cached tha (R1 gate satisfied)" \
-  || fail "D1: verdict ALLOWED logcat me nahi mila"
+adb logcat -d -s SafeCleaner:V > "$ART/logs/safecleaner-only.txt" 2>/dev/null || true
+grep -qE "Cleanup ALLOWED \(server policy\)|Safe cleanup done" "$ART/logs/logcat-full.txt" \
+  && pass "D1: post-relaunch cleanup hook chala (verdict ALLOWED session me cached tha — R1 gate satisfied)" \
+  || fail "D1: relaunch ke BAAD koi SafeCleaner cleanup line logcat me nahi mili"
 LEFT_EXT=$(adb shell ls /sdcard/Android/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true)
 LEFT_INT=$(adb shell ls /data/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true)
 LEFT_TOTAL=$(( ${LEFT_EXT:-0} + ${LEFT_INT:-0} ))

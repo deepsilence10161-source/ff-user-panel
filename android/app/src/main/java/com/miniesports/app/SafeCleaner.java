@@ -330,7 +330,10 @@ public final class SafeCleaner {
                             MediaStore.MediaColumns.DISPLAY_NAME,
                             MediaStore.MediaColumns.OWNER_PACKAGE_NAME
                     }, null, null, null);
-            if (c == null) return 0;
+            if (c == null) {
+                Log.i(TAG, "🧹 shared-sweep: 0 own residue row(s) deleted (Downloads) [cursor null]");
+                return 0;
+            }
             int iId = c.getColumnIndex(MediaStore.MediaColumns._ID);
             int iName = c.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
             int iOwner = c.getColumnIndex(MediaStore.MediaColumns.OWNER_PACKAGE_NAME);
