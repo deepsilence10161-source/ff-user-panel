@@ -358,6 +358,22 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
       + (hasCached ? '⚡ Install Downloaded Update' : '⬇️ Update Now (In-App)') + '</button>';
   }
   html += '<button id="fuRetryBtn" style="width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#ccc;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px">🔄 Retry (check again)</button>';
+  /* ✅ SELF-RESCUE DEEP-LINK (2026-10-29): <= v1.0.300 purane APKs ka native
+     origin-guard bridge-thread se webView.getUrl() call karta tha (threading
+     bug) → unka overlay download hamesha "Blocked: untrusted page" par
+     atakta hai (owner screenshot 2026-10-29, installed 1.0.299). Wo purana
+     native code device par patch nahi ho sakta — LEKIN miniesports://update
+     deep-link handler unhi purane APKs me bhi maujood hai (commit 0d83f35)
+     aur wo URL ko host-allowlist (isAllowedUpdateUrl) se verify karke
+     trusted=true ke saath WAHI native in-app downloader chalata hai
+     (app-private updates/ + install ke baad auto-delete). Isliye download
+     ERROR par yeh button dikhta hai: koi browser download NAHI — app ka
+     apna native updater. Normal flow me button invisible rehta hai. */
+  if (apkUrl) {
+    html += '<a id="fuDeepLinkBtn" href="miniesports://update?url=' + encodeURIComponent(apkUrl) +
+      '&v=' + encodeURIComponent(String(targetVer)) +
+      '" style="display:none;width:100%;box-sizing:border-box;padding:13px;border-radius:14px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.35);color:#00ff9c;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px;text-decoration:none">🛠️ App ke native updater se install karein</a>';
+  }
   if (supportContact) {
     html += '<button id="fuSupportBtn" style="width:100%;padding:12px;border-radius:14px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:#25d366;font-size:13px;font-weight:700;cursor:pointer">💬 Contact Support</button>';
   }
@@ -407,12 +423,33 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
         btn.disabled = false;
         btn.style.opacity = '1';
         btn.textContent = (downloadedBytes > 0 ? '🔄 Resume Download' : '🔄 Retry Download');
+        /* ✅ SELF-RESCUE: purane APK (<=v1.0.300) ka buggy origin-guard jab
+           download block kare ("Blocked: untrusted page"), user ko app ke
+           apne deep-link native updater ka raasta do — browser download
+           NAHI, wahi trusted in-app downloader (host-allowlist verified). */
+        var rescue = document.getElementById('fuDeepLinkBtn');
+        if (rescue) rescue.style.display = 'block';
+        if (typeof _qaRescue !== 'undefined' && _qaRescue) {
+          try { console.warn('[QA-RESCUE] error state: ' + statusMsg + ' — rescue visible=' + !!rescue); } catch (e) {}
+          if (rescue) {
+            try { console.warn('[QA-RESCUE] rescue click — deep-link fire'); } catch (e) {}
+            rescue.click();
+          }
+        }
       }
     }
   };
 
   var hasNativeUpdater = !!(window.Android && typeof window.Android.downloadAndInstallApk === 'function');
+  /* ✅ QA RESCUE PROBE (2026-10-29): E2E harness index.html?qa_rescue=1 load
+     karta hai — overlay phir user-journey khud chalta hai (update button
+     click → error par rescue button click → deep-link). Real users ke liye
+     ye parameter kabhi present nahi hota; production behavior unchanged. */
+  var _qaRescue = /[?&]qa_rescue=1/.test(window.location.search);
   var updateBtn = document.getElementById('fuUpdateBtn');
+  if (_qaRescue && updateBtn) {
+    setTimeout(function () { try { updateBtn.click(); } catch (e) {} }, 1500);
+  }
   if (updateBtn) {
     updateBtn.addEventListener('click', function() {
       var curApkUrl = window.CFG.appApkUrl || apkUrl;

@@ -84,6 +84,14 @@ REL_JSON=$(gh release list -R "$REPO" --limit 3 --json tagName,createdAt,publish
 echo "$REL_JSON" | head -c 600; echo
 OLD_TAG=$(echo "$REL_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[1]['tagName'] if len(d)>1 else '')" 2>/dev/null || true)
 NEW_TAG=$(echo "$REL_JSON" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[0]['tagName'] if len(d)>0 else '')" 2>/dev/null || true)
+# ✅ RESCUE-PROOF MODE (2026-10-29): workflow input old_tag pin kare to wahi
+# base install hota hai (e.g. v1.0.300 — buggy origin-guard wala) taaki
+# overlay-block → deep-link rescue user-journey live prove ho.
+RESCUE=0
+if [ -n "${OLD_TAG_INPUT:-}" ]; then
+  OLD_TAG="$OLD_TAG_INPUT"; RESCUE=1
+  echo "  pinned old base: $OLD_TAG (RESCUE-PROOF mode)"
+fi
 [ -n "$OLD_TAG" ] || fail "purani release tag nahi mili (old base APK ke liye)"
 gh release download "$OLD_TAG" -R "$REPO" -p "MiniEsports.apk" -O old-base.apk || fail "old base APK download fail ($OLD_TAG)"
 curl -fsL -o new-pages.apk "$NEW_URL" || fail "new pages APK download fail: $NEW_URL"
@@ -178,11 +186,35 @@ fi
 adb shell appops set $PKG REQUEST_INSTALL_PACKAGES allow
 adb shell input keyevent KEYCODE_BACK; sleep 1
 
+SKIP5=""
+if [ "$RESCUE" = "1" ]; then
+  say "4b) RESCUE PROOF — buggy base ($OLD_TAG): overlay download block → deep-link rescue (page JS user-journey)"
+  # index.html?qa_rescue=1 → overlay khud update button click karta hai;
+  # buggy native guard block karta hai ("Blocked: untrusted page") → error
+  # state par rescue button dikhta hai aur page JS use click karti hai →
+  # miniesports://update deep-link → native in-app downloader (allowlist).
+  adb shell am start -n "$ACT" -a android.intent.action.VIEW -d "https://deepsilence10161-source.github.io/ff-user-panel/index.html?qa_rescue=1" >/dev/null 2>&1
+  RQ=""
+  for i in $(seq 1 50); do
+    adb logcat -d 2>/dev/null | grep -q "QA-RESCUE. rescue click" && { RQ=yes; break; }
+    sleep 3
+  done
+  if [ -n "$RQ" ]; then
+    adb logcat -d 2>/dev/null | grep -o "QA-RESCUE[^\"]*" | head -4 || true
+    pass "RESCUE: blocked download par rescue button dikha + deep-link fire hua (user-journey)"
+    SKIP5=yes
+  else
+    fail "RESCUE: 150s me rescue click log nahi mila (overlay block→rescue journey fail)"
+  fi
+fi
+
+if [ -z "$SKIP5" ]; then
 say "5) Deep-link update trigger (web page ka 'App me update karein' button)"
 ENC=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$NEW_URL")
 adb shell am start -a android.intent.action.VIEW -d "miniesports://update?url=${ENC}&v=latest" >/dev/null
 sleep 5
 adb logcat -d | grep -q "update deep-link accepted" && pass "deep-link allowlist se pass" || fail "deep-link accepted log nahi mila"
+fi # SKIP5
 
 say "6) In-app download (app-private updates/) → system installer"
 FOUND=""

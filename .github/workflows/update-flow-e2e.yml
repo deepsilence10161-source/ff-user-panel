@@ -32,6 +32,10 @@ on:
         description: 'Naye APK ka public URL (khaali = live GitHub Pages APK)'
         required: false
         default: ''
+      old_tag:
+        description: 'Old base release tag pin karo (khaali = pichhli release). Buggy-base rescue proof ke liye e.g. v1.0.300'
+        required: false
+        default: ''
 
 concurrency:
   group: update-flow-e2e-${{ github.sha }}
@@ -73,6 +77,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_APK_URL: ${{ github.event.inputs.new_apk_url }}
+          OLD_TAG_INPUT: ${{ github.event.inputs.old_tag }}
           TRI_EMAIL: ${{ env.TRI_EMAIL }}
           TRI_PASS: ${{ env.TRI_PASS }}
           TRI_RUNID: ${{ env.TRI_RUNID }}
