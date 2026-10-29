@@ -109,6 +109,12 @@ adb shell am force-stop com.google.android.apps.nexuslauncher >/dev/null 2>&1 ||
 adb install -r -d old-base.apk || fail "old base APK install fail"
 OLD_VC=$(adb shell dumpsys package $PKG | grep -m1 versionCode | tr -d '\r')
 echo "  installed base: $OLD_VC ($OLD_TAG)"
+# ✅ HARDENING (2026-10-29): app beech flow me location runtime-permission
+# dialog maangta tha jo Settings/installer UI ko dhak deta tha (run
+# 40818777937 PROOF-B fail). Test ke liye location ki zarurat nahi —
+# pehle hi grant kar do taaki dialog kabhi aaye hi na.
+adb shell pm grant $PKG android.permission.ACCESS_FINE_LOCATION >/dev/null 2>&1 || true
+adb shell pm grant $PKG android.permission.ACCESS_COARSE_LOCATION >/dev/null 2>&1 || true
 
 say "2) App launch (logged-out baseline)"
 adb shell pm grant $PKG android.permission.POST_NOTIFICATIONS 2>/dev/null || true
@@ -154,6 +160,10 @@ sleep 4
 B_OK=""
 for i in $(seq 1 8); do
   dismiss_anr
+  # ✅ HARDENING: koi dialog/system screen Settings ko dhak de to loop ki
+  # har iteration me Settings dobara foreground me lao (idempotent).
+  adb shell am start -a android.settings.MANAGE_UNKNOWN_APP_SOURCES -d "package:$PKG" >/dev/null 2>&1 || true
+  sleep 2
   if tap_text "Allow from this source|Allow app installs|Unknown app source"; then B_OK=yes; break; fi
   sleep 3
 done
