@@ -1597,19 +1597,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             emitApkProgress(-1, apkFile.length(), apkFile.length(), "error",
                 "Installer open nahi ho paya: " + (e.getMessage() != null ? e.getMessage() : "Error"));
-            /* ✅ SAFETY-NET (2026-10-29): installer intent kisi bhi wajah se
-               fail ho (jaise purane builds wala "Need to declare
-               REQUEST_INSTALL_PACKAGES" trap), user kabhi force-update
-               screen par phansa na rahe — official download page external
-               browser me khol do, wahan se browser-flow se install ho jata
-               hai. Sirf official host ka page, koi aur URL nahi. */
-            try {
-                Toast.makeText(this,
-                    "In-app installer khul nahi paya — official page browser me khul raha hai, wahan se install karein",
-                    Toast.LENGTH_LONG).show();
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://deepsilence10161-source.github.io/ff-user-panel/get.html")));
-            } catch (Exception ignored) {}
         }
     }
 
