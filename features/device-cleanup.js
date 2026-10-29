@@ -145,8 +145,16 @@
       var installed = '';
       try { installed = window.Android.getAppVersion() || ''; } catch (e) {}
       var doneKey = installed + ':' + uid;
+      /* ✅ OPS TELEMETRY (2026-10-29): gate pehle poori tarah silent tha —
+         emulator E2E me prove hua ki silent fail-safe ko debug karna
+         impossible hai. Ye console lines logcat (chromium CONSOLE) me
+         dikhti hain aur batati hain gate kahan ruka. Koi secret nahi chhapta. */
+      try { console.log('[cleanup-gate] start uid=' + String(uid).slice(0, 8) + ' installed=' + installed); } catch (e) {}
       try {
-        if (localStorage.getItem(DONE_FLAG) === doneKey) return;
+        if (localStorage.getItem(DONE_FLAG) === doneKey) {
+          try { console.log('[cleanup-gate] DONE_FLAG match — skip (' + doneKey + ')'); } catch (e) {}
+          return;
+        }
       } catch (e) {}
 
       Promise.all([
@@ -159,17 +167,23 @@
         var pol = res[0];
         var createdAt = res[1] || '';
         var deviceFp = res[2] || '';
+        try {
+          console.log('[cleanup-gate] pol=' + (pol ? 'ok' : 'NULL') +
+            ' createdAt=' + (createdAt || 'none') + ' fp=' + (deviceFp || 'none'));
+        } catch (e) {}
         if (!pol) return; // fail-safe: policy nahi mila — retry agle launch par
 
         var verdict = _decide(pol, uid, deviceFp, createdAt);
+        try { console.log('[cleanup-gate] verdict=' + verdict.reason + ' definitive=' + !!verdict.definitive); } catch (e) {}
         if (verdict.definitive) {
           try { localStorage.setItem(DONE_FLAG, doneKey); } catch (e) {}
         }
         /* Native ko hamesha bhejo — native policy ko DOBARA validate karke
            khud faisla leta hai (exempt par wahan bhi 0 deletion). */
         _applyDecision(pol, uid, deviceFp, createdAt);
-      }).catch(function () {
+      }).catch(function (err) {
         /* Fail-safe: kuch bhi fail = koi cleanup nahi. Retry agle launch par. */
+        try { console.warn('[cleanup-gate] promise fail: ' + (err && err.message ? err.message : err)); } catch (e) {}
       });
     } catch (e) {
       /* fail-safe: kuch nahi */

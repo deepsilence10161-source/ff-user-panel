@@ -61,7 +61,7 @@ function _renderPlayerCard(data){
   h+='<div style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:'+ri.color+'22;border:1px solid '+ri.color+'44">';
   /* ✅ 2026-10-12: rank badge ab asli art (assets/img/ranks) — emoji
      fallback ke saath (img fail ho to emoji dikhega, layout nahi tootega) */
-  if (window.rankBadgeImg) h+='<img src="'+window.rankBadgeImg(rp)+'?v=20261029a" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">';
+  if (window.rankBadgeImg) h+='<img src="'+window.rankBadgeImg(rp)+'?v=20261029b" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">';
   h+='<span style="font-size:14px">'+ri.emoji+'</span>';
   h+='<span style="font-size:11px;font-weight:800;color:'+ri.color+'">'+ri.badge+'</span>';
   h+='</div></div>';
@@ -142,7 +142,7 @@ function _renderPlayerCard(data){
     h+='<div style="font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(255,255,255,.45)">BADGES</div>';
     h+='<div style="display:flex;align-items:center;gap:6px;flex:1">';
     _pcBadges.forEach(function(b){
-      h+='<img src="'+b.img+'?v=20261029a" alt="'+b.name+'" title="'+b.name+'" style="width:30px;height:30px;object-fit:contain" onerror="this.style.display=\'none\'">';
+      h+='<img src="'+b.img+'?v=20261029b" alt="'+b.name+'" title="'+b.name+'" style="width:30px;height:30px;object-fit:contain" onerror="this.style.display=\'none\'">';
     });
     h+='</div><div style="font-size:10px;font-weight:800;color:'+ri.color+'">'+_pcBadges[0].name+'</div>';
     h+='</div>';

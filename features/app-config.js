@@ -358,6 +358,18 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
       + (hasCached ? '⚡ Install Downloaded Update' : '⬇️ Update Now (In-App)') + '</button>';
   }
   html += '<button id="fuRetryBtn" style="width:100%;padding:13px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#ccc;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px">🔄 Retry (check again)</button>';
+  /* ✅ EMERGENCY BROWSER ESCAPE (2026-10-29): purane APKs (jisme
+     REQUEST_INSTALL_PACKAGES declare nahi tha, e.g. 1.0.181) me in-app
+     installer kabhi khul hi nahi sakta — "Need to declare
+     android.permission.REQUEST_INSTALL_PACKAGES" aata hai aur user
+     force-update screen par PHANS jata hai (owner screenshot 2026-10-29).
+     Ye link WebView ke apk-intercept se bachta hai (kyunki ye .apk URL
+     nahi, get.html page hai) → external browser/Custom Tab me khulta hai
+     → wahan se normal browser download+install hota hai. Naye versions
+     me in-app flow preferred hai; ye sirf emergency raasta hai. */
+  if (!tampered && apkUrl) {
+    html += '<a id="fuBrowserBtn" href="https://deepsilence10161-source.github.io/ff-user-panel/get.html" style="display:block;width:100%;box-sizing:border-box;padding:13px;border-radius:14px;background:rgba(255,193,7,.08);border:1px solid rgba(255,193,7,.35);color:#ffc107;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px;text-decoration:none">🌐 Browser se install karein (emergency)</a>';
+  }
   if (supportContact) {
     html += '<button id="fuSupportBtn" style="width:100%;padding:12px;border-radius:14px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.25);color:#25d366;font-size:13px;font-weight:700;cursor:pointer">💬 Contact Support</button>';
   }
