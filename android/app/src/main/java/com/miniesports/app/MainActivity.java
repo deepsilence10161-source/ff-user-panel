@@ -1562,18 +1562,17 @@ public class MainActivity extends AppCompatActivity {
                     emitApkProgress(100, apkFile.length(), apkFile.length(), "permission",
                         "Install permission allow karein — wapas aate hi install shuru hoga");
 
-                    // Show friendly Hindi dialog explaining why we need permission
+                    /* ✅ PERMISSION DIALOG v2 (2026-10-29, owner order:
+                       "clear, short, attractive"): purana 9-line lecture
+                       hata kar 4-line crisp copy — kya, kyun, kitni baar,
+                       aur aage kya hoga. Buttons wahi (system-styled). */
                     new AlertDialog.Builder(this)
-                        .setTitle("🔐 Install Permission Required")
+                        .setTitle("🔐 Bas ek baar — Install permission")
                         .setMessage(
-                            "App update ke liye 'Install Unknown Apps' permission chahiye.\n\n" +
-                            "✅ Ye permission sirf ek baar deni hai\n" +
-                            "✅ 100% safe hai — sirf MiniEsports update ke liye\n" +
-                            "✅ Koi hacking ya virus nahi hai\n\n" +
-                            "\"Allow\" dabane ke baad:\n" +
-                            "→ Settings khulega\n" +
-                            "→ MiniEsports ke liye permission ON karein\n" +
-                            "→ Wapas aate hi update install ho jaega"
+                            "Android ke niyam se har app ko apna update install karne ke liye ek baar allow lena hota hai.\n\n" +
+                            "✅ Sirf ek baar — sirf MiniEsports ke liye\n" +
+                            "✅ Koi file, photo ya data access NAHI\n\n" +
+                            "Allow → switch ON → update turant install. Bas! 🎉"
                         )
                         .setPositiveButton("Allow ✅", (dialog, which) -> {
                             try {
@@ -1602,7 +1601,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                        .setNegativeButton("Cancel", (dialog, which) -> {
+                        .setNegativeButton("Baad me", (dialog, which) -> {
                             dialog.dismiss();
                         })
                         .setCancelable(false)

@@ -272,6 +272,11 @@ echo "  relaunch ke BAAD updates/ me APKs: $LEFT_TOTAL"
 [ "${LEFT_TOTAL:-0}" = "0" ] \
   && pass "D2: updates/ khaali — install ke baad APK auto-delete hua ($PRE_TOTAL → 0)" \
   || fail "D2: updates/ me ab bhi $LEFT_TOTAL APK padi hai"
+# ✅ PROOF S (2026-10-29, owner order): shared-storage residue sweep chala —
+# sirf OWN MediaStore rows (browser/WhatsApp files untouchable, zero permission).
+grep -q "shared-sweep:" "$ART/logs/logcat-full.txt" \
+  && pass "S: shared-storage residue sweep chala (own-rows only, zero permission)" \
+  || fail "S: shared-sweep marker logcat me nahi mila"
 
 say "9) PROOF E — Downloads folder me koi MiniEsports file NAHI"
 DL=$(adb shell ls /sdcard/Download 2>/dev/null | grep -ci "miniesports" || true)
@@ -285,4 +290,4 @@ adb logcat -d | grep -q "REFUSED by host allowlist" && pass "F: non-allowlist UR
   || fail "F: evil-host deep-link refuse nahi hua"
 
 adb logcat -d > "$ART/logs/logcat-final.txt" 2>/dev/null || true
-echo -e "\n\033[1;32mUPDATE-FLOW-E2E: SAARE PROOFS PASS (A–F)\033[0m"
+echo -e "\n\033[1;32mUPDATE-FLOW-E2E: SAARE PROOFS PASS (A–F + S)\033[0m"

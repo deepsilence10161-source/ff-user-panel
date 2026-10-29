@@ -43,16 +43,22 @@ package com.miniesports.app;
  * ═══════════════════════════════════════════════════════════════════
  */
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -197,6 +203,10 @@ public final class SafeCleaner {
             deleted.addAndGet(cleanUpdatesDir(ctx));
             // (2) Tracked own downloads (exact path + strict name) — app-private
             deleted.addAndGet(cleanTrackedOwnDownloads(ctx));
+            // (2.5) ✅ SHARED-STORAGE RESIDUE SWEEP (2026-10-29, owner order):
+            //       bahut purane versions ki shared Downloads/ residue (sirf
+            //       humari OWN MediaStore rows) — zero permission, zero risk.
+            deleted.addAndGet(cleanOwnSharedRows(ctx));
             // (3) Post-update wipe (old code files / caches) — app-private ONLY,
             //     SABSE LAST me (taki registry/updates safai pehle ho jaye)
             if (p.onUpdateWipe && AppGuard.isWipePending(ctx)) {
@@ -288,6 +298,75 @@ public final class SafeCleaner {
         } catch (Exception e) {
             Log.w(TAG, "Tracked cleanup error: " + e.getMessage());
         }
+        return deleted;
+    }
+
+    /**
+     * ✅ SHARED-STORAGE RESIDUE SWEEP (2026-10-29, owner order: "apk file local
+     * storage me abhi bhi hai update ke baad bhi"). Bahut purane versions ne
+     * shared Downloads/ me update-residue chhodi ho sakti hai (owner device
+     * screenshot: "update" folder, 9 Oct). Scoped storage (Android 10+) me
+     * sirf WO MediaStore rows delete karna legal hai jinka
+     * OWNER_PACKAGE_NAME humara apna package hai — isliye yeh sweep:
+     *   • zero permission maangta hai (own rows = own data),
+     *   • doosri apps (browser/WhatsApp/Download-manager) ki files ko
+     *     CHHUTA BHI NAHI — platform khud unhe humse bachata hai (yahi
+     *     2026-10-08 wali safety-seedhi ka doosra pillar hai),
+     *   • fail-safe: koi bhi exception = silent skip, kuch toota nahi.
+     * Jo files humari own NAHI hain (jaise browser se aayi zip) wo Android
+     * ke niyam se koi app delete nahi kar sakti — wo user ek long-press se
+     * hatata hai; humara in-app flow aaj kabhi shared storage chhuta hi nahi
+     * (E2E gate D2/E har build par prove).
+     */
+    private static int cleanOwnSharedRows(Context ctx) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return 0;
+        int deleted = 0;
+        Cursor c = null;
+        try {
+            Uri base = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+            c = ctx.getContentResolver().query(base,
+                    new String[]{
+                            MediaStore.MediaColumns._ID,
+                            MediaStore.MediaColumns.DISPLAY_NAME,
+                            MediaStore.MediaColumns.OWNER_PACKAGE_NAME
+                    }, null, null, null);
+            if (c == null) return 0;
+            int iId = c.getColumnIndex(MediaStore.MediaColumns._ID);
+            int iName = c.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+            int iOwner = c.getColumnIndex(MediaStore.MediaColumns.OWNER_PACKAGE_NAME);
+            List<Uri> kill = new ArrayList<>();
+            while (c != null && c.moveToNext()) {
+                String owner = (iOwner >= 0) ? c.getString(iOwner) : null;
+                // SAFETY: sirf humari apni rows — baaki sab UNTOUCHABLE.
+                if (owner == null || !owner.equals(ctx.getPackageName())) continue;
+                String name = (iName >= 0) ? c.getString(iName) : null;
+                if (name == null || name.isEmpty()) continue;
+                String lower = name.toLowerCase().trim();
+                boolean ours = isOurInstallerName(name)
+                        || lower.startsWith("miniesports")
+                        || lower.equals("update");
+                if (!ours) continue;
+                kill.add(ContentUris.withAppendedId(base, c.getLong(iId)));
+            }
+            try { if (c != null) c.close(); } catch (Exception ignored) {}
+            c = null;
+            for (Uri u : kill) {
+                try {
+                    if (ctx.getContentResolver().delete(u, null, null) > 0) {
+                        deleted++;
+                        Log.i(TAG, "  shared-sweep: own row deleted " + u);
+                    }
+                } catch (Exception e) {
+                    // RecoverableSecurityException (non-own row) etc. — skip.
+                    Log.w(TAG, "  shared-sweep: skip row " + u + " (" + e.getMessage() + ")");
+                }
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "shared-sweep error (kuch bhi toota nahi): " + e.getMessage());
+        } finally {
+            if (c != null) try { c.close(); } catch (Exception ignored) {}
+        }
+        Log.i(TAG, "🧹 shared-sweep: " + deleted + " own residue row(s) deleted (Downloads)");
         return deleted;
     }
 

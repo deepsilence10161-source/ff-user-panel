@@ -434,15 +434,47 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
       } else if (state === 'error') {
         btn.disabled = false;
         btn.style.opacity = '1';
-        btn.textContent = (downloadedBytes > 0 ? '🔄 Resume Download' : '🔄 Retry Download');
+        /* ✅ NO-RETRY-DRAMA (2026-10-29, owner order: "retry vala drama ab
+           nahi aana chahiye, sirf native app installer hona chahiye"):
+           error par screen ka PRIMARY action sirf native installer rahega —
+           (a) cached APK maujood ho to wahi seedha install (download hi
+           nahi), (b) warna deep-link native updater primary green button.
+           "Retry (check again)" poori tarah hidden (relaunch par re-check
+           hota hi hai), aur "Retry Download" sirf chhota sa fallback —
+           sirf sach-me network issue ke liye, primary NAHI. */
+        var rescue = document.getElementById('fuDeepLinkBtn');
+        var retryChk = document.getElementById('fuRetryBtn');
+        if (retryChk) retryChk.style.display = 'none';
+        if (hasCached) {
+          btn.textContent = '⚡ Install Downloaded Update';
+          if (rescue) rescue.style.display = 'none';
+        } else if (rescue) {
+          rescue.style.display = 'block';
+          rescue.style.background = 'linear-gradient(135deg,#00ff9c,#00d4ff)';
+          rescue.style.color = '#000';
+          rescue.style.fontSize = '15px';
+          rescue.style.fontWeight = '900';
+          rescue.style.padding = '15px';
+          rescue.style.border = 'none';
+          rescue.textContent = '⚡ Native installer se update karein';
+          if (btn.parentNode) btn.parentNode.insertBefore(rescue, btn);
+          btn.textContent = (downloadedBytes > 0
+            ? '🔄 Resume Download (sirf network issue ho to)'
+            : '🔄 Retry Download (sirf network issue ho to)');
+          btn.style.background = 'rgba(255,255,255,.06)';
+          btn.style.border = '1px solid rgba(255,255,255,.12)';
+          btn.style.color = '#ccc';
+          btn.style.fontSize = '12px';
+          btn.style.fontWeight = '700';
+        } else {
+          btn.textContent = (downloadedBytes > 0 ? '🔄 Resume Download' : '🔄 Retry Download');
+        }
         /* ✅ SELF-RESCUE: purane APK (<=v1.0.300) ka buggy origin-guard jab
            download block kare ("Blocked: untrusted page"), user ko app ke
            apne deep-link native updater ka raasta do — browser download
            NAHI, wahi trusted in-app downloader (host-allowlist verified). */
-        var rescue = document.getElementById('fuDeepLinkBtn');
-        if (rescue) rescue.style.display = 'block';
         if (typeof _qaRescue !== 'undefined' && _qaRescue) {
-          try { console.warn('[QA-RESCUE] error state: ' + statusMsg + ' — rescue visible=' + !!rescue); } catch (e) {}
+          try { console.warn('[QA-RESCUE] error state: ' + statusMsg + ' — rescue visible=' + !!(rescue && rescue.style.display !== 'none')); } catch (e) {}
           if (rescue) {
             /* ✅ LOOP GUARD (2026-10-29): pehle har error-event par click
                hota tha — ek hi broken click naya error lata aur click-loop
