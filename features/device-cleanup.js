@@ -35,7 +35,7 @@
   /* ✅ OPS TELEMETRY (2026-10-29): unconditional load-marker — emulator E2E
      me prove karna tha ki WebView ye file execute kar bhi raha hai ya nahi
      (gate silent fail kar raha tha). Koi secret nahi. */
-  try { console.log('[cleanup-gate] script loaded v20261029d'); } catch (e) {}
+  try { console.warn('[cleanup-gate] script loaded v20261029e'); } catch (e) {}
   /* Early schedule: _poll hoisted function hai; callback 3s baad chalta hai
      (tab tak IIFE synchronously poori ho chuki hoti hai). Tail schedule ke
      saath double-schedule harmless hai (gate idempotent, DONE-guarded). */
@@ -105,12 +105,16 @@
   /* ── Native bridge par faisle ko bhejo (native dobara validate karta hai) ── */
   function _applyDecision(pol, uid, deviceFp, userCreatedAt) {
     if (!(window.Android && typeof window.Android.runPostUpdateCleanup === 'function')) {
+      try { console.warn('[cleanup-gate] bridge method runPostUpdateCleanup ABSENT — native call nahi ho saka'); } catch (e) {}
       return 0; // browser/dev preview — kuch nahi karna
     }
     try {
       var json = JSON.stringify(pol || {});
-      return window.Android.runPostUpdateCleanup(json, uid || '', deviceFp || '', userCreatedAt || '') || 0;
+      var n = window.Android.runPostUpdateCleanup(json, uid || '', deviceFp || '', userCreatedAt || '') || 0;
+      try { console.warn('[cleanup-gate] native runPostUpdateCleanup returned ' + n); } catch (e) {}
+      return n;
     } catch (e) {
+      try { console.warn('[cleanup-gate] native call EXC: ' + e); } catch (e2) {}
       return 0;
     }
   }
@@ -147,16 +151,16 @@
   function _runGate() {
     try {
       if (!(window.Android && window.Android.isAndroidApp && window.Android.isAndroidApp())) {
-        try { console.log('[cleanup-gate] skip: android bridge nahi'); } catch (e) {}
+        try { console.warn('[cleanup-gate] skip: android bridge nahi'); } catch (e) {}
         return;
       }
       if (!window._supa) {
-        try { console.log('[cleanup-gate] skip: _supa nahi'); } catch (e) {}
+        try { console.warn('[cleanup-gate] skip: _supa nahi'); } catch (e) {}
         return;
       }
       var uid = (window.U && window.U.uid) ? String(window.U.uid) : '';
       if (!uid) {
-        try { console.log('[cleanup-gate] skip: uid nahi (logged-out)'); } catch (e) {}
+        try { console.warn('[cleanup-gate] skip: uid nahi (logged-out)'); } catch (e) {}
         return; // login hone do
       }
 
@@ -167,10 +171,10 @@
          emulator E2E me prove hua ki silent fail-safe ko debug karna
          impossible hai. Ye console lines logcat (chromium CONSOLE) me
          dikhti hain aur batati hain gate kahan ruka. Koi secret nahi chhapta. */
-      try { console.log('[cleanup-gate] start uid=' + String(uid).slice(0, 8) + ' installed=' + installed); } catch (e) {}
+      try { console.warn('[cleanup-gate] start uid=' + String(uid).slice(0, 8) + ' installed=' + installed); } catch (e) {}
       try {
         if (localStorage.getItem(DONE_FLAG) === doneKey) {
-          try { console.log('[cleanup-gate] DONE_FLAG match — skip (' + doneKey + ')'); } catch (e) {}
+          try { console.warn('[cleanup-gate] DONE_FLAG match — skip (' + doneKey + ')'); } catch (e) {}
           return;
         }
       } catch (e) {}
@@ -186,13 +190,13 @@
         var createdAt = res[1] || '';
         var deviceFp = res[2] || '';
         try {
-          console.log('[cleanup-gate] pol=' + (pol ? 'ok' : 'NULL') +
+          console.warn('[cleanup-gate] pol=' + (pol ? 'ok' : 'NULL') +
             ' createdAt=' + (createdAt || 'none') + ' fp=' + (deviceFp || 'none'));
         } catch (e) {}
         if (!pol) return; // fail-safe: policy nahi mila — retry agle launch par
 
         var verdict = _decide(pol, uid, deviceFp, createdAt);
-        try { console.log('[cleanup-gate] verdict=' + verdict.reason + ' definitive=' + !!verdict.definitive); } catch (e) {}
+        try { console.warn('[cleanup-gate] verdict=' + verdict.reason + ' definitive=' + !!verdict.definitive); } catch (e) {}
         if (verdict.definitive) {
           try { localStorage.setItem(DONE_FLAG, doneKey); } catch (e) {}
         }
@@ -204,7 +208,9 @@
         try { console.warn('[cleanup-gate] promise fail: ' + (err && err.message ? err.message : err)); } catch (e) {}
       });
     } catch (e) {
-      /* fail-safe: kuch nahi */
+      /* fail-safe: kuch delete nahi — lekin telemetry zaroori hai (v20261029e:
+         pehle yeh catch silent tha → gate ka sync throw invisible tha). */
+      try { console.warn('[cleanup-gate] _runGate EXC: ' + (e && e.message ? e.message : e)); } catch (e2) {}
     }
   }
 
@@ -214,6 +220,9 @@
   var _tries = 0;
   function _poll() {
     _tries++;
+    if (_tries === 1) {
+      try { console.warn('[cleanup-gate] poll tick 1 — U=' + !!window.U + ' supa=' + !!window._supa + ' bridge=' + !!(window.Android && window.Android.isAndroidApp)); } catch (e) {}
+    }
     if (window.U && window._supa) {
       _runGate();
       /* faisla definitive ho chuka (DONE_FLAG laga) to polling band;
@@ -229,6 +238,6 @@
   }
   if (typeof setTimeout === 'function') {
     setTimeout(_poll, 3000);
-    try { console.log('[cleanup-gate] autostart scheduled v20261029d'); } catch (e) {}
+    try { console.warn('[cleanup-gate] autostart scheduled v20261029e'); } catch (e) {}
   }
 })();
