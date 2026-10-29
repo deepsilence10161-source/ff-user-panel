@@ -200,10 +200,13 @@ echo "  install ke baad, relaunch se PEHLE updates/ me APKs: $PRE_TOTAL"
 [ "${PRE_TOTAL:-0}" -ge 1 ] || fail "D0: install ke baad updates/ me APK mili hi nahi — in-app download proof adhoora"
 adb shell am start -n $ACT >/dev/null   # naye version ka pehla launch = cleanup hook
 # device-cleanup.js ka MAIN GATE sirf version badalne par khulta hai aur
-# Supabase policy fetch + faisla me ~1 min lag sakta hai — loop se rukoo.
-for i in $(seq 1 30); do
+# slow device par policy+createdAt fetch me 2-4 min lag sakte hain —
+# loop line YA updates/ khaali hone tak rukta hai (donono = cleanup proof).
+for i in $(seq 1 60); do
   if adb logcat -d | grep -q "Cleanup ALLOWED (server policy)"; then break; fi
-  sleep 3
+  LEFT_NOW=$(( $(adb shell ls /sdcard/Android/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true) + $(adb shell ls /data/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true) ))
+  [ "$LEFT_NOW" = "0" ] && [ "$i" -gt 3 ] && break
+  sleep 4
 done
 sleep 5
 adb logcat -d > "$ART/logs/logcat-full.txt"
