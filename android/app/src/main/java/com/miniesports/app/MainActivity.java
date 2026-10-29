@@ -1118,6 +1118,23 @@ public class MainActivity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest req) {
                 String url = req.getUrl().toString();
 
+                /* ✅ DEEP-LINK INTERCEPT FIX (2026-10-29): apne hi
+                   miniesports:// deep-links (jaise overlay ke self-rescue
+                   button ka "miniesports://update?url=...MiniEsports.apk")
+                   ko .apk-contains rules se PEHLE pakdo. Pehle aisa deep-link
+                   niche "Direct APK update URLs" block me gir jata tha
+                   (kyunki query me "MiniEsports.apk" literal aata hai) aur
+                   raw downloader use poora "miniesports://..." string download
+                   URL samajh kar "unknown protocol" fail hota tha. Ab seedha
+                   ACTION_VIEW → manifest intent-filter → onNewIntent →
+                   handleIntent (host-allowlist + trusted downloader). */
+                if (url.startsWith(DEEP_LINK_SCHEME + "://")) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    } catch (Exception ignored) { }
+                    return true;
+                }
+
                 /* ✅ SAFETY NET (2026-08-26, now defensive-only as of
                    2026-08-29): this block is no longer the primary
                    WhatsApp-open path — the JS side now calls
@@ -1265,6 +1282,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView vv, WebResourceRequest r) {
                         String url = r.getUrl().toString();
+                        // ✅ DEEP-LINK INTERCEPT FIX (2026-10-29): popup se bhi
+                        // miniesports:// deep-link .apk-contains block se pehle
+                        // OS ko do (main WebView jaisa hi behaviour).
+                        if (url.startsWith(DEEP_LINK_SCHEME + "://")) {
+                            d.dismiss();
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                            } catch (Exception ignored) { }
+                            return true;
+                        }
                         if (url.contains("deepsilence10161-source.github.io") ||
                             url.contains("deepsilence10161.workers.dev")) {
                             d.dismiss();

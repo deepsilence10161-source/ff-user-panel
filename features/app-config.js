@@ -370,7 +370,19 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
      ERROR par yeh button dikhta hai: koi browser download NAHI — app ka
      apna native updater. Normal flow me button invisible rehta hai. */
   if (apkUrl) {
-    html += '<a id="fuDeepLinkBtn" href="miniesports://update?url=' + encodeURIComponent(apkUrl) +
+    /* ✅ DOT-ENCODING FIX (2026-10-29): purane (<=v1.0.300) native ke
+       shouldOverrideUrlLoading me ek "Direct APK update URLs" rule hai jo
+       kisi bhi URL ko sirf isliye pakad leta hai kyunki usme literal
+       "MiniEsports.apk" ya "/releases/latest/download/" substring aata hai —
+       deep-link "miniesports://update?url=...MiniEsports.apk" bhi usme gir
+       kar raw downloader ko diya jata tha → "Download fail: unknown protocol:
+       miniesports" (E2E run 40884657494 me exactly yahi reproduce hua).
+       Isliye url-param ke DOTS bhi %2E encode karte hain: href me koi
+       literal .apk matcher nahi bachta → deep-link OS intent ban kar
+       onNewIntent → handleIntent jata hai, jahan Uri.getQueryParameter()
+       %2E ko wapas "." decode kar deta hai (URL identical, allowlist pass). */
+    var _dlUrl = encodeURIComponent(apkUrl).replace(/\./g, '%2E');
+    html += '<a id="fuDeepLinkBtn" href="miniesports://update?url=' + _dlUrl +
       '&v=' + encodeURIComponent(String(targetVer)) +
       '" style="display:none;width:100%;box-sizing:border-box;padding:13px;border-radius:14px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.35);color:#00ff9c;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px;text-decoration:none">🛠️ App ke native updater se install karein</a>';
   }
@@ -432,8 +444,18 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
         if (typeof _qaRescue !== 'undefined' && _qaRescue) {
           try { console.warn('[QA-RESCUE] error state: ' + statusMsg + ' — rescue visible=' + !!rescue); } catch (e) {}
           if (rescue) {
-            try { console.warn('[QA-RESCUE] rescue click — deep-link fire'); } catch (e) {}
-            rescue.click();
+            /* ✅ LOOP GUARD (2026-10-29): pehle har error-event par click
+               hota tha — ek hi broken click naya error lata aur click-loop
+               chalu ho jata (run 40884657494 logcat me 30+ clicks). Ab max
+               3 clicks, kam-se-kam 4s gap ke saath. */
+            var _now = Date.now();
+            window._qaRescueClicks = window._qaRescueClicks || 0;
+            if (window._qaRescueClicks < 3 && (!window._qaRescueLastClick || (_now - window._qaRescueLastClick) > 4000)) {
+              window._qaRescueLastClick = _now;
+              window._qaRescueClicks += 1;
+              try { console.warn('[QA-RESCUE] rescue click #' + window._qaRescueClicks + ' — deep-link fire'); } catch (e) {}
+              rescue.click();
+            }
           }
         }
       }
