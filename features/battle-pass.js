@@ -10,7 +10,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261029b" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261029c" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho". Was a
@@ -181,7 +181,7 @@ window.awardPassXP=function(uid,xp){
    img na ho to purana emoji-text jaisa hi chalta hai. */
 function _bpRewardLabel(r, sz) {
   try {
-    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261029b" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
+    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261029c" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
     var lbl = r.label || (r.type === 'gd' ? GDI(11) + ' ' + r.v : (r.v || ''));
     return img + lbl;
   } catch (e) { return (r && (r.label || r.v)) || ''; }

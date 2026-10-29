@@ -32,6 +32,11 @@
 (function () {
   'use strict';
 
+  /* ✅ OPS TELEMETRY (2026-10-29): unconditional load-marker — emulator E2E
+     me prove karna tha ki WebView ye file execute kar bhi raha hai ya nahi
+     (gate silent fail kar raha tha). Koi secret nahi. */
+  try { console.log('[cleanup-gate] script loaded v20261029c'); } catch (e) {}
+
   var POLICY_TABLE = 'app_settings';
   var POLICY_KEY = 'apk_cleanup';
   var DONE_FLAG = '_deviceCleanupDoneFor';
@@ -197,7 +202,9 @@
   function _poll() {
     _tries++;
     if (window.U && window._supa) { _runGate(); return; }
+    if (_tries === 10) { try { console.warn('[cleanup-gate] 40s se U/supa ka intezar'); } catch (e) {} }
     if (_tries < 40) setTimeout(_poll, 4000); // max ~2.5 min wait
+    else { try { console.warn('[cleanup-gate] poll timeout — gate chala hi nahi'); } catch (e) {} }
   }
   if (typeof setTimeout === 'function') setTimeout(_poll, 3000);
 })();
