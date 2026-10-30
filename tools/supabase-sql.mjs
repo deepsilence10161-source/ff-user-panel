@@ -31,7 +31,7 @@ const r = await fetch(`https://api.supabase.com/v1/projects/${SB_REF}/database/q
 });
 const text = await r.text();
 if (!r.ok) { console.error('❌ SQL ' + r.status + ': ' + text.slice(0, 400)); process.exit(1); }
-console.log('• SQL apply result: ' + text.slice(0, 400));
+console.log('• SQL apply result: ' + text.slice(0, 8000));
 
 /* post-check: app_settings par SELECT policies dikhao (proof) */
 const r2 = await fetch(`https://api.supabase.com/v1/projects/${SB_REF}/database/query`, {
