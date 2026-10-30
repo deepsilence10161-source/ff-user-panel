@@ -277,7 +277,10 @@ window.showCreatorResultForm = function(matchId) {
       body.innerHTML = bh;
   }
   function _crLegacySelect() {
-    return window._supa.from('join_requests').select('id,user_ign,ign_at_join').eq('match_id', matchId).in('status', ['pending','joined','approved'])
+    /* ✅ BUG E fix (2026-10-30): status filter IN-list ki jagah exclusion —
+       match live hone ke baad rows ke status flip hote hain, IN-list wala
+       purana filter creator ko participants hi nahi dikhata tha. */
+    return window._supa.from('join_requests').select('id,user_ign,ign_at_join,status').eq('match_id', matchId).not('status', 'in', '(cancelled,refunded,rejected)')
       .then(function(r2) { _crRender(r2.data || []); });
   }
   window._supa.rpc('creator_get_match_participants', { p_match_id: matchId, p_uid: (window.U && window.U.uid) || null })

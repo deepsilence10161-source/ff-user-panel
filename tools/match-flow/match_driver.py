@@ -610,6 +610,8 @@ def main():
 
         # F1: creator result form (asli UI) — owner ka EXACT data stage karo
         try:
+            statdiag = rows(f"select status, count(*) as n from join_requests where match_id='{M1}' group by status")
+            log(f"  M1 jr statuses at result-time: {json.dumps(statdiag, ensure_ascii=False)}")
             rpcdiag = rpcU(cpage, "creator_get_match_participants", {"p_match_id": M1, "p_uid": uid["creator"]})
             dp = rpcdiag.get("data") or {}
             log(f"  participants RPC: ok={dp.get('ok')} n={len(dp.get('players') or [])} err={dp.get('error')} raw={json.dumps(rpcdiag, ensure_ascii=False)[:220]}")
@@ -619,7 +621,7 @@ def main():
             try:
                 cpage.wait_for_selector("._crKills", timeout=30000)
                 time.sleep(2)
-                log("  form inputs: " + cpage.evaluate("() => document.querySelectorAll('._crKills').length") +
+                log("  form inputs: " + str(cpage.evaluate("() => document.querySelectorAll('._crKills').length")) +
                     " | body html: " + str(cpage.evaluate("() => ((document.getElementById('_crResultBody')||{}).innerHTML||'').slice(0,260)")))
             except Exception:
                 bodytxt = cpage.evaluate("() => (document.getElementById('_crResultBody')||{}).innerText || document.body.innerText.slice(0,200)")
