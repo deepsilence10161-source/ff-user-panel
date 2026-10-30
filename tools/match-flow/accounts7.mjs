@@ -37,6 +37,7 @@ async function sql(q) {
   if (!r.ok) throw new Error('sql ' + r.status + ': ' + (await r.text()).slice(0, 400) + ' | q=' + q.slice(0, 120));
   return r.json();
 }
+async function sqlSafe(q) { try { return await sql(q); } catch (e) { return { skipped: String(e.message || e).slice(0, 120) }; } }
 async function fbSignUp(email, pass) {
   const r = await fetch(ID_TOOLKIT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass, returnSecureToken: true }) });
   if (!r.ok) throw new Error('firebase ' + r.status + ': ' + JSON.stringify(await r.json()).slice(0, 300));
@@ -55,7 +56,15 @@ function pwFor(email) {
   return h + 'Aa1!';
 }
 
-const args = Object.fromEntries((process.argv.slice(2).join(' ').match(/--\S+( \S+)?/g) || []).map(s => s.split(' ').map(x => x.trim())));
+const argv = process.argv.slice(2);
+const args = {};
+for (let i = 0; i < argv.length; i++) {
+  if (argv[i].startsWith('--')) {
+    const k = argv[i];
+    const v = (argv[i + 1] && !argv[i + 1].startsWith('--')) ? argv[++i] : true;
+    args[k] = v;
+  }
+}
 const RUN = args['--run'] || Date.now().toString(36);
 const OUT = args['--out'] || `/tmp/mf-state-${RUN}.json`;
 
@@ -71,14 +80,21 @@ if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
   const ids = (us || []).map(u => `'${u.id}'`).join(',');
   if (ids) {
     await sql(`delete from join_requests where user_id in (${ids}) or creator_uid in (${ids})`);
+    await sqlSafe(`delete from team_invitations where inviter_uid in (${ids})`);
+    await sqlSafe(`delete from match_chat where match_id in (select id from matches where creator_uid in (${ids}))`);
+    await sqlSafe(`delete from match_messages where match_id in (select id from matches where creator_uid in (${ids}))`);
+    await sqlSafe(`delete from match_reminders where user_id in (${ids})`);
+    await sqlSafe(`delete from match_interests where user_id in (${ids})`);
+    await sqlSafe(`delete from creator_match_ratings where match_id in (select id from matches where creator_uid in (${ids})) or user_id in (${ids})`);
     await sql(`delete from matches where creator_uid in (${ids})`);
     await sql(`delete from wallet_transactions where user_id in (${ids})`);
     await sql(`delete from admins where uid in (${ids})`);
     await sql(`delete from users where id in (${ids})`);
   }
-  // firebase accounts delete (fresh login per uid)
-  const st = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
-  if (st) for (const r of Object.values(st.accounts || {})) { try { const s = await fbSignIn(r.email, r.password); await fbDelete(s.idToken); } catch { /* signin fails = already deleted */ } }
+  // firebase accounts delete — ROSTER deterministic hai (state file optional)
+  let fbDel = 0;
+  for (const r of ROSTER) { try { const s = await fbSignIn(r.email, pwFor(r.email)); if (await fbDelete(s.idToken)) fbDel++; } catch { /* already deleted */ } }
+  console.log(`[firebase] ${fbDel}/${ROSTER.length} accounts deleted`);
   const residue = await sql(`select
     (select count(*) from users where email like 'qa-mf7-${RUN}-%') u,
     (select count(*) from admins a join users uu on uu.id=a.uid where uu.email like 'qa-mf7-${RUN}-%') adm,
@@ -99,7 +115,12 @@ let n = 0;
 for (const r of ROSTER) {
   n++;
   const password = pwFor(r.email);
-  const fb = await fbSignUp(r.email, password);
+  let fb;
+  try { fb = await fbSignUp(r.email, password); }
+  catch (e) {
+    if (String(e.message || e).includes('EMAIL_EXISTS')) { fb = await fbSignIn(r.email, password); console.log(`    (reuse: ${r.email} pehle se tha)`); }
+    else throw e;
+  }
   const uid = fb.localId;
   const ffuid = `MF7R${RUN}${r.tag.toUpperCase()}`;
   await sql(`alter table users add column if not exists is_creator boolean default false`);
@@ -107,7 +128,7 @@ for (const r of ROSTER) {
   await sql(`insert into users (id, ign, is_admin, is_creator, coins, green_diamonds, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at, accepted_policy, accepted_policy_at, profile_status)
              values ('${uid}', $ign$${r.ign}$ign$, ${r.is_admin}, ${r.is_creator}, 5000, 500, 500, '${ffuid}', 'Haryana', '2000-01-01', true, now(), true, now(), 'approved')
              on conflict (id) do update set ign = excluded.ign, is_creator = excluded.is_creator, is_admin = excluded.is_admin, coins = 5000, green_diamonds = 500, sky_diamonds = 500, ff_uid = excluded.ff_uid, profile_status = 'approved';`);
-  if (r.is_admin) await sql(`insert into admins (uid, email, is_active, created_at) values ('${uid}', '${r.email}', true, now()) on conflict (uid) do update set is_active = true`);
+  if (r.is_admin) await sql(`insert into admins (uid, email, display_name, role, added_by, is_active) values ('${uid}', '${r.email}', 'QA MF7 ${RUN}', 'admin', 'match-flow-e2e', true) on conflict (uid) do update set is_active = true, role = 'admin'`);
   state.accounts[r.tag] = { email: r.email, password, uid, ign: r.ign, ff_uid: ffuid, is_creator: r.is_creator, is_admin: r.is_admin };
   console.log(`  ✓ ${r.tag} ${r.email} uid=${uid} ign=${r.ign}`);
 }
