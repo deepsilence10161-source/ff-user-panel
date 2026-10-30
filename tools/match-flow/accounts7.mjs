@@ -78,15 +78,18 @@ if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
   console.log(`[cleanup] run=${RUN}`);
   const { data: us } = await (async () => ({ data: await sql(`select id from users where email like 'qa-mf7-${RUN}-%' or ff_uid like 'MF7R${RUN}%'`) }))();
   const ids = (us || []).map(u => `'${u.id}'`).join(',');
+  const mcols = (await sql(`select column_name from information_schema.columns where table_name='matches'`)).map(c => c.column_name);
+  const crCol = ['creator_uid', 'created_by', 'host_uid', 'creator_id', 'owner_uid'].find(c => mcols.includes(c)) || mcols.find(c => /creator|host|owner/.test(c)) || null;
+  console.log('[cleanup] matches creator-col = ' + crCol);
   if (ids) {
-    await sql(`delete from join_requests where user_id in (${ids}) or creator_uid in (${ids})`);
+    await sql(`delete from join_requests where user_id in (${ids})${crCol ? ` or match_id in (select id from matches where ${crCol} in (${ids}))` : ''}`);
     await sqlSafe(`delete from team_invitations where inviter_uid in (${ids})`);
     await sqlSafe(`delete from match_chat where match_id in (select id from matches where creator_uid in (${ids}))`);
     await sqlSafe(`delete from match_messages where match_id in (select id from matches where creator_uid in (${ids}))`);
     await sqlSafe(`delete from match_reminders where user_id in (${ids})`);
     await sqlSafe(`delete from match_interests where user_id in (${ids})`);
     await sqlSafe(`delete from creator_match_ratings where match_id in (select id from matches where creator_uid in (${ids})) or user_id in (${ids})`);
-    await sql(`delete from matches where creator_uid in (${ids})`);
+    if (crCol) await sql(`delete from matches where ${crCol} in (${ids})`);
     await sql(`delete from wallet_transactions where user_id in (${ids})`);
     await sql(`delete from admins where uid in (${ids})`);
     await sql(`delete from users where id in (${ids})`);
@@ -98,7 +101,7 @@ if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
   const residue = await sql(`select
     (select count(*) from users where email like 'qa-mf7-${RUN}-%' or ff_uid like 'MF7R${RUN}%') u,
     (select count(*) from admins a join users uu on uu.id=a.uid where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) adm,
-    (select count(*) from matches m join users uu on uu.id=m.creator_uid where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) m,
+    (select count(*) from matches m join users uu on uu.id=m.${crCol || 'creator_uid'} where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) m,
     (select count(*) from join_requests j join users uu on uu.id=j.user_id where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) jr,
     (select count(*) from wallet_transactions w join users uu on uu.id=w.user_id where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) w`);
   const R = residue?.[0] || residue;
@@ -132,6 +135,20 @@ for (const r of ROSTER) {
   state.accounts[r.tag] = { email: r.email, password, uid, ign: r.ign, ff_uid: ffuid, is_creator: r.is_creator, is_admin: r.is_admin };
   console.log(`  ✓ ${r.tag} ${r.email} uid=${uid} ign=${r.ign}`);
 }
+// creator ko ACTIVE PREMIUM — server RPC creator_create_match ka gate
+// (run 40982737163 me 'premium_required' se saare creates fail hue the).
+// ASLI source of truth = users.premium_expires (features/free-trial.js).
+const crUid = state.accounts.creator.uid;
+const premCols = await sql(`select table_name || '.' || column_name as c from information_schema.columns where column_name ilike '%premium%' and table_schema='public' order by 1`);
+console.log('[premium-cols] ' + JSON.stringify((premCols || []).map(x => x.c)));
+await sqlSafe(`update users set premium_expires = now() + interval '30 days' where id = '${crUid}'`);
+await sqlSafe(`update users set premium_level = 1 where id = '${crUid}'`);
+await sqlSafe(`update users set is_premium = true where id = '${crUid}'`);
+await sqlSafe(`update users set premium_active = true where id = '${crUid}'`);
+const crRow = await sql(`select * from users where id = '${crUid}'`);
+const crPrem = Object.fromEntries(Object.entries((crRow || [{}])[0] || {}).filter(([k]) => /premium|creator/i.test(k)));
+console.log('[creator-premium-state] ' + JSON.stringify(crPrem));
+
 // ign sanity: DB me EXACT wahi 7 ign dikhe (byte-for-byte)
 const dbIgns = await sql(`select ign from users where email like 'qa-mf7-${RUN}-p%' order by created_at`);
 const got = (dbIgns || []).map(x => x.ign);

@@ -145,6 +145,11 @@ def rpc_bad(res):
     return bool(res.get("err")) or d.get("success") is False or d.get("ok") is False
 
 
+def rpc_err_code(res):
+    d = res.get("data") or {}
+    return str(d.get("error") or res.get("err") or "")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True)
@@ -259,30 +264,36 @@ def main():
             m1 = wait_match(M1N)
             proof("MF10", f"M1 coins/solo fee=10 max=10 kill=1 prizes 30/20/10 created id={m1['id'][:8]} status={m1.get(mcol('status'))}", True)
         except Exception as e:
-            proof("MF10", f"M1 create FAIL: {str(e)[:200]}", False)
+            diag = neg_create("MF7 Solo Cup", 10, (30, 20, 10))
+            proof("MF10", f"M1 create FAIL: {str(e)[:140]}; server diag={json.dumps(diag, ensure_ascii=False)[:160]}", False)
         shot(cpage, "b-create-form.png")
 
         neg = neg_create("MF7 FeeTooBig", 51, (10, 5, 0))
-        proof("MF11", f"fee=51 server-rejected: {json.dumps(neg, ensure_ascii=False)[:160]}", rpc_bad(neg))
+        proof("MF11", f"fee=51 server-rejected: {json.dumps(neg, ensure_ascii=False)[:160]}",
+              rpc_bad(neg) and "premium" not in rpc_err_code(neg))
 
         neg2 = neg_create("MF7 PrizeCap", 10, (200, 0, 0))
-        proof("MF12", f"prize>max-collection server-rejected: {json.dumps(neg2, ensure_ascii=False)[:160]}", rpc_bad(neg2))
+        proof("MF12", f"prize>max-collection server-rejected: {json.dumps(neg2, ensure_ascii=False)[:160]}",
+              rpc_bad(neg2) and "premium" not in rpc_err_code(neg2))
 
         try:
             create_ui(cpage, M2N, "green_diamond", 20, 10, "duo", 1, (40, 20, 0), 150)
             m2 = wait_match(M2N)
             proof("MF13", f"M2 green_diamond/duo fee=20 created id={m2['id'][:8]}", True)
         except Exception as e:
-            proof("MF13", f"M2 create FAIL: {str(e)[:200]}", False)
+            diag = rpcU(cpage, "creator_create_match", {"p_title": M2N, "p_mode": "duo", "p_entry_type": "green_diamond", "p_entry_fee": 20, "p_max_slots": 10, "p_per_kill_prize": 1, "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 9000)), "p_first_prize": 40, "p_second_prize": 20, "p_third_prize": 0})
+            proof("MF13", f"M2 create FAIL: {str(e)[:140]}; server diag={json.dumps(diag, ensure_ascii=False)[:160]}", False)
         try:
             create_ui(cpage, M3N, "sky_diamond", 50, 25, "squad", 2, (100, 50, 0), 180)
             m3 = wait_match(M3N)
             proof("MF14", f"M3 sky_diamond/squad fee=50 created id={m3['id'][:8]}", True)
         except Exception as e:
-            proof("MF14", f"M3 create FAIL: {str(e)[:200]}", False)
+            diag = rpcU(cpage, "creator_create_match", {"p_title": M3N, "p_mode": "squad", "p_entry_type": "sky_diamond", "p_entry_fee": 50, "p_max_slots": 25, "p_per_kill_prize": 2, "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 10800)), "p_first_prize": 100, "p_second_prize": 50, "p_third_prize": 0})
+            proof("MF14", f"M3 create FAIL: {str(e)[:140]}; server diag={json.dumps(diag, ensure_ascii=False)[:160]}", False)
 
         neg3 = neg_create("MF7 Fourth", 10, (10, 0, 0))
-        proof("MF15", f"4th open match server-rejected (limit 3): {json.dumps(neg3, ensure_ascii=False)[:160]}", rpc_bad(neg3))
+        proof("MF15", f"4th open match server-rejected (limit 3): {json.dumps(neg3, ensure_ascii=False)[:160]}",
+              rpc_bad(neg3) and "premium" not in rpc_err_code(neg3))
 
         if not (m1 and m2 and m3):
             log("matches create nahi hue — aage ke phases skip")
