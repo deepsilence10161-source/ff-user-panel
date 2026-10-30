@@ -126,7 +126,13 @@ function _renderPremModal(){
      already claimed, so the button kept showing even after someone used
      their one-time trial (they'd only find out it was already used when
      they tapped it and got an error toast). Now also hides once claimed. */
-  if(!uT && !(window.isTrialUsed && window.isTrialUsed()))h+='<button onclick="if(window.startFreeTrial)window.startFreeTrial()" style="flex:1;padding:11px;border-radius:12px;border:1px solid rgba(224,224,224,.2);background:rgba(224,224,224,.05);color:#e0e0e0;font-size:12px;font-weight:900;cursor:pointer">🎁 3-Din FREE Trial</button>';
+  /* ✅ BUG FIX (2026-10-31, owner live report — Hunter7): expired ex-premium
+     (RAW level>0, expiry past) ko trial button NAHI — trial sirf naye users
+     ke liye hai; server start_free_trial sirf trial_used dekhta hai, warna
+     trial lete hi expired Diamond row level=1 (Silver) ban jati (data-loss).
+     Unke liye premium modal me Renew path hai (har tier tile par button). */
+  var _rawTierBtn = (window.UD && window.UD.premium && Number(window.UD.premium.tier)) || 0;
+  if(!uT && !_rawTierBtn && !(window.isTrialUsed && window.isTrialUsed()))h+='<button onclick="if(window.startFreeTrial)window.startFreeTrial()" style="flex:1;padding:11px;border-radius:12px;border:1px solid rgba(224,224,224,.2);background:rgba(224,224,224,.05);color:#e0e0e0;font-size:12px;font-weight:900;cursor:pointer">🎁 3-Din FREE Trial</button>';
   h+='</div>';
   if(window.openModal)openModal('👑 Premium Club',h);
 }

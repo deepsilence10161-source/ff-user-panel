@@ -1161,6 +1161,12 @@ body.has-web-banner .chat-container {
   transform:translateY(-50%);background:linear-gradient(90deg,rgba(190,255,210,.8),rgba(0,255,120,.10))}
 .pf2-prem::before{right:100%;margin-right:3px;clip-path:polygon(100% 50%,0 0,28% 50%,0 100%)}
 .pf2-prem::after{left:100%;margin-left:3px;clip-path:polygon(0 50%,100% 0,72% 50%,100% 100%)}
+/* ✅ BUG FIX (2026-10-31): expire ho chuke premium ki imandaar plate —
+   green glow ki jagah halka amber, text "Premium Expired — Renew karo". */
+.pf2-prem-exp{color:#ffd9b0;
+  background:linear-gradient(135deg,rgba(70,35,0,.92),rgba(120,60,10,.55));
+  box-shadow:0 0 0 2px rgba(255,150,60,.5),0 0 14px rgba(255,150,60,.22)}
+.pf2-prem-exp::before,.pf2-prem-exp::after{background:linear-gradient(90deg,rgba(255,210,160,.7),rgba(255,150,60,.10))}
 .pf2-chips{position:relative;z-index:3;display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-bottom:8px;max-width:100%}
 .pf2-uid{position:relative;z-index:3;display:flex;align-items:center;gap:8px;max-width:100%;
   padding:8px 10px 8px 14px;border-radius:12px;background:rgba(0,0,0,.42);

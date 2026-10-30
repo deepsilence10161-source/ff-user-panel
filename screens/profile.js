@@ -39,8 +39,20 @@ function renderProfile() {
   var displayUid = UD.ffUid || U.uid.substring(0, 12);
 
   /* ── Premium badge (computed early so the new header can use it) ── */
+  /* ✅ BUG FIX (2026-10-31, owner live report — Hunter7): plate/badge RAW
+     premium_level padhte the, expiry nahi — expire ho chuka Diamond bhi
+     "⭐ Premium III" dikhta tha jabki gates (isPremiumActive,
+     getUserPremiumTier) expiry check karke perks lock karte hain → ek hi
+     screen par "Premium III" + lock + trial prompt = contradiction.
+     Ab expired = imandaar "⏰ Expired" state (rank.js ribbon rule jaisa:
+     "expire ho chuka premium = koi jhoota dava nahi"). */
+  var _pTierN = Number(UD.premium && UD.premium.tier) || 0;
+  var _pExpN  = Number(UD.premium && UD.premium.expiresAt) || 0;
+  var _pExpired = _pTierN > 0 && _pExpN > 0 && _pExpN < Date.now();
   var premBadge = '';
-  if (UD.premium && UD.premium.tier) {
+  if (_pExpired) {
+    premBadge = '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(255,150,60,.12);border:1px solid rgba(255,150,60,.5);color:#ffb066;margin-left:6px;vertical-align:middle">⏰ Expired</span>';
+  } else if (UD.premium && UD.premium.tier) {
     var pt = UD.premium.tier;
     var ptLabel = pt===3?'⭐ Premium III':pt===2?'⭐ Premium II':'⭐ Premium I';
     var ptColor = pt===3?'#b964ff':pt===2?'#00d4ff':'#ffd700';
@@ -67,7 +79,12 @@ function renderProfile() {
      wahi niyam — sab kuch isi ek h string me, koi late injection nahi. */
   var _pf2Ring = _eqFrame || rk.color || '#00ff9c';
   var premPlate = '';
-  if (UD.premium && UD.premium.tier) {
+  if (_pExpired) {
+    /* ✅ BUG FIX (2026-10-31): expired premium par jhoota tier-plate nahi —
+       imandaar "Expired — Renew karo" plate ( Renew button premium modal
+       me har tier tile par hai ). */
+    premPlate = '<div class="pf2-prem pf2-prem-exp">⏰ Premium Expired — Renew karo</div>';
+  } else if (UD.premium && UD.premium.tier) {
     var _pt = Number(UD.premium.tier);
     premPlate = '<div class="pf2-prem">⭐ ' + (_pt === 3 ? 'Premium III' : _pt === 2 ? 'Premium II' : 'Premium I') + '</div>';
   }

@@ -342,6 +342,13 @@ function _showForceUpdateOverlay(installedVersion, tampered) {
     + '<div style="font-size:52px;margin-bottom:18px">' + (tampered ? '⚠️' : '📲') + '</div>'
     + '<div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">' + title + '</div>'
     + '<div style="font-size:13px;color:#999;line-height:1.7;margin-bottom:20px">' + msg + '</div>'
+    /* ✅ PLAY-PROTECT GUIDANCE (2026-10-31, owner screenshot): sideload APK
+       par Android ka standard "App scan recommended" dialog aata hai
+       (Play Protect ne app ko Play Store par "dekha" nahi hota). User
+       confuse na ho isliye overlay par hi clear hint: "Scan app" tap karo
+       — scan clean aata hai (har release same signing key, GitHub Actions
+       build) — phir install normal chalta hai. */
+    + '<div style="font-size:11px;color:#9fb3c8;line-height:1.65;margin-bottom:16px;padding:10px 12px;border-radius:12px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.18);text-align:left">🛡️ Install ke waqt Google Play Protect <b style="color:#cde4f5">"App scan recommended"</b> dikhaye? → <b style="color:#00ff9c">"Scan app"</b> tap karo — scan pass hote hi install ho jata hai. Hamara APK har release me same signing key se signed hota hai (GitHub Actions build), isliye scan clean aata hai.</div>'
     + '<div id="fuProgressWrap" style="display:' + (hasCached ? 'block' : 'none') + ';margin-bottom:16px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(0,255,156,.22);text-align:left">'
     + '  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
     + '    <span id="fuProgressMsg" style="font-size:11px;font-weight:700;color:#00ff9c">' + (hasCached ? '✅ Update already downloaded — ready to install!' : 'Preparing download...') + '</span>'

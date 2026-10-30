@@ -595,6 +595,45 @@ def main():
                         f"data={json.dumps(r6.get('data'), ensure_ascii=False)[:80]}",
               still0 and (rpc_bad(r5) or True) and (rpc_bad(r6) or True))
 
+        # ══ PHASE K: EXPIRED-PREMIUM CONSISTENCY (owner live report — Hunter7) ══
+        # Hunter7 facts (diag run 41129725938): premium_level=3,
+        # premium_expires=2026-10-15 (past), trial_used=false → profile par
+        # RAW-tier plate "Premium III" + locks + trial prompt = contradiction.
+        # Fixes: profile plate/badge expiry-aware; trial prompt/button sirf
+        # raw-tier-0 users; server trigger guard (trial sirf naye users).
+        log("PHASE K: expired-premium consistency + server trial-guard")
+        sql(f"update users set premium_level=3, premium_expires=now()-interval'1 day', trial_used=false where id='{U_UID}'")
+        re_user(up)
+        up.evaluate("() => { if (window.renderProfile) renderProfile(); return true; }")
+        up.wait_for_timeout(900)
+        plate = up.evaluate("() => { const el = document.querySelector('.pf2-prem'); return el ? el.textContent : '(none)'; }")
+        shows_iii = up.evaluate("() => document.body.innerText.includes('Premium III')")
+        rib_k = up.evaluate("() => window.premiumRibbonHtml ? window.premiumRibbonHtml(20) : 'X'")
+        act_k = up.evaluate("() => window.isPremiumActive()")
+        tier_k = up.evaluate("() => window.getUserPremiumTier()")
+        up.evaluate("() => { window.showPremiumUpgrade(); return true; }")
+        up.wait_for_timeout(1400)
+        modal_txt = up.evaluate("() => document.body.innerText")
+        trial_prompt = "FREE Trial Milega" in modal_txt
+        trial_btn = up.evaluate("() => Array.from(document.querySelectorAll('button')).some(b => b.textContent.includes('3-Din FREE Trial'))")
+        renew_btn = "Renew +30 Din" in modal_txt
+        proof("PRE24", f"EXPIRED Diamond (SQL: level=3, expires=now-1d) → plate={plate!r}, 'Premium III' dikha={shows_iii}, "
+                       f"ribbon={rib_k!r}, isPremiumActive={act_k}, tier={tier_k} | modal: trial-prompt={trial_prompt}, "
+                       f"trial-btn={trial_btn}, renew-btn={renew_btn} — plate/gate/modal sab ek jaisa sach",
+              "Premium Expired" in plate and not shows_iii and rib_k == "" and act_k is False and tier_k == 0
+              and not trial_prompt and not trial_btn and renew_btn)
+
+        r7 = rpcU(up, "start_free_trial", {})
+        e7 = rpc_err(r7)
+        st7 = user_state(U_UID)
+        lvl7 = int(st7.get("premium_level") or 0)
+        exp7 = st7.get("premium_expires")
+        tu7 = st7.get("trial_used")
+        proof("PRE25", f"expired ex-premium ka start_free_trial → SERVER GUARD (trg_trial_only_new_users): err={e7!r} "
+                       f"data={json.dumps(r7.get('data'), ensure_ascii=False)[:90]} | DB: level={lvl7} (3 hi rahe), "
+                       f"trial_used={tu7} (false) — trial se free-extension abuse band",
+              bool(e7) and "naye users" in str(e7) and lvl7 == 3 and not tu7 and bool(exp7))
+
     # ══ verdict ══════════════════════════════════════════════════════
     n_ok = sum(1 for r in RESULTS if r["ok"])
     out = {"run": RUN, "total": len(RESULTS), "ok": n_ok, "results": RESULTS}

@@ -150,7 +150,16 @@ function injectTrialButton() {
   window.showPremiumUpgrade = function() {
     /* If trial not used and not premium → show trial prompt first */
     var tier = window.getUserPremiumTier ? window.getUserPremiumTier() : 0;
-    if (!tier && !window.isTrialUsed()) {
+    /* ✅ BUG FIX (2026-10-31, owner live report — Hunter7): expire ho chuka
+       premium (RAW level>0, expiry past) bhi "trial not used" branch me
+       ghus kar "FREE Trial Milega!" prompt dekhta tha — jabki uska
+       premium_level DB me 3 pada tha. Contradiction ke alawa ye DATA-LOSS
+       path tha: start_free_trial server par sirf trial_used dekhta hai →
+       trial lete hi expired Diamond row level=1 (Silver) ban jati.
+       Ab: trial prompt SIRF unke liye jinhone premium kabhi liya hi nahi
+       (raw tier 0); expired ex-premium seedha plans modal (Renew path). */
+    var rawTier = (window.UD && window.UD.premium && Number(window.UD.premium.tier)) || 0;
+    if (!tier && !rawTier && !window.isTrialUsed()) {
       _showTrialPrompt(function() {
         /* After trial prompt, also show full premium options */
         if (_orig) _orig.apply(this, arguments);
