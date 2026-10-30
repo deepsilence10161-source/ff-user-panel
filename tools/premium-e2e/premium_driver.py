@@ -367,7 +367,7 @@ def main():
 
         # ══ PHASE G: BUY REQUEST (policy gate → plans → Gold sheet → UTR) ══
         log("PHASE G: buy request flow")
-        up.evaluate("() => window.checkPremiumMonthlyBonus = function(){}; window.showPremiumUpgrade(); return true;")
+        up.evaluate("() => { window.checkPremiumMonthlyBonus = function(){}; window.showPremiumUpgrade(); return true; }")
         pol = try_poll(lambda: up.evaluate("() => !!(document.getElementById('_policyCheck') && document.getElementById('_pBtn'))"),
                        timeout=30, every=1, what="withdrawal policy modal")
         proof("PRE12a", "policy gate modal dikha (pehli baar — 'Kharidne se pehle padho')", bool(pol))
