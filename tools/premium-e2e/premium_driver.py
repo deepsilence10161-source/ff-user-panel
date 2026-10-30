@@ -518,23 +518,45 @@ def main():
               rpc_bad(r4) and abs(c_same - c_auto) < 0.01)
 
         # ══ PHASE J: ADMIN CANCEL ════════════════════════════════════════
-        log("PHASE J: admin cancel_premium (asli UI fn → gateway)")
+        # Admin panel ka window.confirm OVERRIDE hai (js/app-dialog.js
+        # SURAKSHA-JAAL): native popup band — pehli call par app-UI dialog
+        # (#_appDlgOv) khulta hai aur confirm() false return karta hai;
+        # 'Haan' (#_appDlgOk) dabane par jawab queue hota hai aur CLICKED
+        # BUTTON replay hota hai (tab confirm()=true → asli kaam).
+        # Isliye: ASLI click event zaroori hai (evaluate se direct fn call
+        # karte hi lastEl set nahi hota aur flow early-return karta hai —
+        # prem3 run 41125584970 me yahi pakda gaya).
+        log("PHASE J: admin cancel (asli click → app-dialog 'Haan' → replay → gateway RPC)")
         admin.evaluate(TOAST_PATCH)
-        admin.evaluate("(uid) => { window.adminCancelPremium(uid); return true; }", U_UID)
+        admin.evaluate("""(uid) => {
+            const old = document.getElementById('qaCancelPremBtn'); if (old) old.remove();
+            const b = document.createElement('button');
+            b.id = 'qaCancelPremBtn';
+            b.textContent = 'QA Cancel Premium';
+            b.setAttribute('onclick', "window.adminCancelPremium('" + uid + "')");
+            document.body.appendChild(b);
+            b.click();   /* ASLI click → __appDialogLastEl set → confirm override → app dialog */
+            return true;
+        }""", U_UID)
+        dlg = try_poll(lambda: admin.evaluate("""() => { const ov = document.getElementById('_appDlgOv');
+            return (ov && ov.classList.contains('show')) ? ((document.getElementById('_appDlgMsg')||{}).textContent || 'shown') : null; }"""),
+            timeout=20, every=1, what="app-confirm dialog (_appDlgOv.show)")
+        if dlg:
+            admin.click("#_appDlgOk")   # 'Haan' → queue + replay → RPC → toast
         canc = try_poll(lambda: (lambda s: s if int(s.get("premium_level") or 0) == 0 and not s.get("premium_expires") else None)(user_state(U_UID)),
-                        timeout=45, every=3, what="premium_level=0 + expires NULL (adminCancelPremium UI fn via gateway)")
-        canc_route = "adminCancelPremium UI fn"
-        t_canc = wait_toast(admin, r"Premium cancelled|cancel failed|Error", timeout=10)
+                        timeout=60, every=3, what="premium_level=0 + expires NULL (UI click + app-dialog Haan + replay)")
+        canc_route = "asli UI click + app-dialog 'Haan' (SURAKSHA-JAAL replay)"
+        t_canc = wait_toast(admin, r"Premium cancelled|cancel failed|Error|poora nahi hua", timeout=15)
         if not canc:
-            log("⚠️ UI fn se cancel nahi hua — gateway RPC direct (FALLBACK = UI-path FAIL, sirf diagnosis)")
+            log("⚠️ UI path se cancel nahi hua — gateway RPC direct (FALLBACK = UI-path FAIL, sirf diagnosis)")
             r_fb = rpcU(admin, "cancel_premium", {"p_uid": U_UID})
             log("fallback rpc: " + json.dumps(r_fb, ensure_ascii=False)[:200])
             canc = try_poll(lambda: (lambda s: s if int(s.get("premium_level") or 0) == 0 and not s.get("premium_expires") else None)(user_state(U_UID)),
                             timeout=45, every=3, what="cancel fallback")
-            canc_route = "FALLBACK rpc direct (UI fn toota hua!)"
-        proof("PRE21", f"admin 'Cancel Premium' UI fn → cancel_premium gateway RPC LIVE: level=0, expires=NULL "
-                       f"| route={canc_route} | toast={t_canc!r}",
-              bool(canc) and canc_route == "adminCancelPremium UI fn" and bool(t_canc) and "cancelled" in str(t_canc).lower())
+            canc_route = "FALLBACK rpc direct (UI path toota hua!)"
+        proof("PRE21", f"admin 'Cancel Premium' → app-confirm dialog={str(dlg)[:60]!r} → 'Haan' → cancel_premium gateway RPC LIVE: "
+                       f"level=0, expires=NULL | route={canc_route} | toast={t_canc!r}",
+              bool(canc) and bool(dlg) and canc_route.startswith("asli UI") and bool(t_canc) and "cancelled" in str(t_canc).lower())
 
         # ══ PHASE K: post-cancel + SECURITY ══════════════════════════════
         log("PHASE K: post-cancel state + security proofs")
