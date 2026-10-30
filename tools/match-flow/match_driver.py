@@ -447,6 +447,17 @@ def main():
         proof("MF18", f"P1 duplicate join blocked (rows {n_before}→{n_after})", n_after == n_before == 1)
 
         # C4: M2 duo captain_pays — P6 captain + P7 partner (FF-UID search UI se)
+        udd = pages["p6"].evaluate("""async () => {
+          try {
+            const raw = await window._supa.from('users').select('green_diamonds').eq('id', window.U.uid).single();
+            let hasFix = null;
+            try { const t = await (await fetch('core/listeners.js?nc=' + Date.now())).text(); hasFix = t.indexOf('MATCH-FLOW-E2E FIX #3') !== -1; } catch (e) { hasFix = 'fetch-err'; }
+            return {ud_g: window.UD.greenDiamonds, ud_g_type: typeof window.UD.greenDiamonds,
+                    raw_g: raw.data ? raw.data.green_diamonds : ('err:' + (raw.error && raw.error.message)),
+                    raw_g_type: raw.data ? typeof raw.data.green_diamonds : null, listenersHasFix: hasFix};
+          } catch (e) { return {err: String(e)}; }
+        }""")
+        log("  p6 UD-green diag: " + json.dumps(udd, ensure_ascii=False))
         pre6 = {t: wallets(uid[t]) for t in ("p6", "p7")}
         try:
             picked, acc = join_team("p6", M2, ["p7"], "captain_pays")
@@ -456,7 +467,7 @@ def main():
             fc = fee_cols(jr2)
             ok = abs((dl.get("p6") or {}).get("green_diamonds", 0) + 40) < 0.01 and "p7" not in dl
             btn_ok = getattr(join_team, "last_btn", "?") == "clicked"
-            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, btn={getattr(join_team,'last_btn','?')}, invites={acc}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok and btn_ok)
+            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, btn={getattr(join_team,'last_btn','?')}, invites={acc}; UDdiag={json.dumps(udd, ensure_ascii=False)[:180]}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok and btn_ok)
             if not ok:
                 log("  p6 txs: " + json.dumps(txs(uid["p6"]), ensure_ascii=False, default=str)[:500])
         except Exception as e:
