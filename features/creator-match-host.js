@@ -251,11 +251,16 @@ window.showCreatorResultForm = function(matchId) {
   var h = '<div id="_crResultBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading players...</div>';
   if (window.openModal) openModal('🏆 Match Result', h);
 
-  window._supa.from('join_requests').select('id,user_ign,ign_at_join').eq('match_id', matchId).in('status', ['pending','joined','approved'])
-    .then(function(r) {
+  /* ✅ MATCH-FLOW-E2E FIX (2026-10-30, run 40986675005 MF32): result form
+     hamesha "Koi player nahi mila" dikhata tha — client ke PostgREST calls me
+     auth.jwt()->>'sub' NULL jata hai (A11 pattern wahi claim_match_refund me
+     document hai), isliye join_requests RLS creator ko APNE match ki rows bhi
+     nahi dikhata. Ab data SECURITY DEFINER RPC creator_get_match_participants
+     se aata hai (server creator_uid/admin verify karta hai; p_uid fallback).
+     Purana select sirf fallback hai (admin/edge cases). */
+  function _crRender(players) {
       var body = document.getElementById('_crResultBody');
       if (!body) return;
-      var players = r.data || [];
       if (!players.length) { body.innerHTML = '<div style="padding:10px;font-size:13px">Koi player nahi mila</div>'; return; }
 
       var bh = '<div style="font-size:11px;color:#888;margin-bottom:12px;text-align:left">Har player ke kills aur placement daalo. Submit karne ke baad Admin verify karega aur prize payout karega.</div>';
@@ -270,7 +275,19 @@ window.showCreatorResultForm = function(matchId) {
       bh += '</div>';
       bh += '<button onclick="submitCreatorResult(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;margin-top:14px">📤 Result Submit Karo</button>';
       body.innerHTML = bh;
-    });
+  }
+  function _crLegacySelect() {
+    return window._supa.from('join_requests').select('id,user_ign,ign_at_join').eq('match_id', matchId).in('status', ['pending','joined','approved'])
+      .then(function(r2) { _crRender(r2.data || []); });
+  }
+  window._supa.rpc('creator_get_match_participants', { p_match_id: matchId, p_uid: (window.U && window.U.uid) || null })
+    .then(function(r) {
+      var d = r && r.data;
+      if (!r.error && d && d.ok && Array.isArray(d.players)) { _crRender(d.players); return; }
+      console.warn('[CreatorResult] participants RPC nahi chala, legacy select fallback:', (r && r.error && r.error.message) || (d && d.error));
+      _crLegacySelect();
+    })
+    .catch(function(e) { console.warn('[CreatorResult] RPC error, legacy select fallback:', e && e.message); _crLegacySelect(); });
 };
 
 window.submitCreatorResult = function(matchId) {

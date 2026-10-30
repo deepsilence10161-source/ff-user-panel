@@ -491,7 +491,24 @@ def main():
         n2a = len([r for r in jr_rows(M3) if r.get("user_id") == uid["p2"]])
         proof("MF21", f"M3 re-join by existing member blocked (rows {n2b}→{n2a})", n2a == n2b)
 
-        # ══ PHASE D: room / chat / reminder / gift ═══════════════════════════
+
+        # C7: gift entry — M1 abhi 'upcoming' hai (server tabhi pending row banata hai)
+        cpre = wallets(uid["p1"])
+        mstat_pre = q1(f"select {sc} as s, filled_slots from matches where id='{M1}'") or {}
+        gift = rpcU(pages["p1"], "gift_match_entry", {"p_match_id": M1, "p_to_uid": uid["b1"]})
+        time.sleep(3)
+        gjr = q1(f"select id, status from join_requests where match_id='{M1}' and user_id='{uid['b1']}'")
+        gtick = None
+        try:
+            gtick = q1(f"select id, status from gift_tickets where to_uid='{uid['b1']}' order by created_at desc limit 1")
+        except Exception:
+            pass
+        cpost = wallets(uid["p1"])
+        charged = any(abs(cpre[k] - cpost[k]) > 0.01 for k in cpre)
+        proof("MF28", f"gift_match_entry P1→Bench1 (M1 status={mstat_pre.get('s')} filled={mstat_pre.get('filled_slots')}): resp={json.dumps(gift, ensure_ascii=False)[:100]}; p1-debit={charged}; b1-pending-join-row={json.dumps(gjr, ensure_ascii=False)[:80]}; gift_ticket={json.dumps(gtick, ensure_ascii=False)[:80]}",
+              not rpc_bad(gift) and charged and bool(gjr) and bool(gtick))
+
+        # ══ PHASE D: room / chat / reminder / ═══════════════════════════
         log("PHASE D: room flow")
         rc = mcol("room")
         ROOM_ID, ROOM_PW = f"MF777{RUN[-4:]}", f"MF888{RUN[-4:]}"
@@ -540,26 +557,6 @@ def main():
         intr = rpcU(pages["p2"], "toggle_match_interest", {"p_uid": uid["p2"], "p_match_id": M1, "p_name": M1N})
         proof("MF27", f"reminder={json.dumps(rem, ensure_ascii=False)[:90]} interest={json.dumps(intr, ensure_ascii=False)[:90]}",
               not rpc_bad(rem) and not rpc_bad(intr))
-
-        cpre = wallets(uid["p1"])
-        gift = rpcU(pages["p1"], "gift_match_entry", {"p_match_id": M1, "p_to_uid": uid["b1"]})
-        time.sleep(3)
-        gjr = q1(f"select * from join_requests where match_id='{M1}' and user_id='{uid['b1']}'")
-        cpost = wallets(uid["p1"])
-        charged = any(abs(cpre[k] - cpost[k]) > 0.01 for k in cpre)
-        # gift ka record kahan banta hai — notifications (gift_ticket) ya koi gift table?
-        gnote = q1(f"select type, title from notifications where user_id='{uid['b1']}' order by created_at desc limit 1") if "notifications" in [t for t in ["notifications"]] else None
-        try:
-            gnote = q1(f"select type, title from notifications where user_id='{uid['b1']}' order by created_at desc limit 1")
-        except Exception:
-            gnote = None
-        gtables = []
-        try:
-            gtables = [r["table_name"] for r in rows("select table_name from information_schema.tables where table_schema='public' and table_name like '%gift%'")]
-        except Exception:
-            pass
-        proof("MF28", f"gift_match_entry P1→Bench1: resp={json.dumps(gift, ensure_ascii=False)[:110]}; p1-debit={charged}; b1-join-row={bool(gjr)}; b1-latest-notif={json.dumps(gnote, ensure_ascii=False)[:90]}; gift-tables={gtables}",
-              not rpc_bad(gift) and charged and (bool(gjr) or bool(gnote)))
 
         # ══ PHASE E: cancel + refunds ════════════════════════════════════════
         log("PHASE E: cancel + refund")
