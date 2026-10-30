@@ -170,7 +170,13 @@ function _applyUser(sp) {
   UD.uid = sp.id;
   UD.coins = typeof sp.coins === 'number' ? sp.coins : (UD.coins || 0);
   UD.skyDiamonds = typeof sp.sky_diamonds === 'number' ? sp.sky_diamonds : (UD.skyDiamonds || 0);
-  UD.greenDiamonds = typeof sp.green_diamonds === 'number' ? sp.green_diamonds : (UD.greenDiamonds || 0);
+  /* ✅ MATCH-FLOW-E2E FIX #3 (2026-10-30, P0 production): green_diamonds DB
+     column numeric hai → PostgREST use JSON me STRING bhejta hai ("500") →
+     typeof === 'number' check hamesha fail → UD.greenDiamonds har user ke
+     liye 0 reh jata tha. Iska live asar: green-diamond matches ka Confirm
+     Join button hamesha disabled (run 40991873886/40994026968 MF19 diag
+     'confirmJoinBtn(p6): disabled'). Ab Number-safe parse. */
+  UD.greenDiamonds = (sp.green_diamonds != null && !isNaN(Number(sp.green_diamonds))) ? Number(sp.green_diamonds) : (UD.greenDiamonds || 0);
   /* ⚠️ R28j (2026-09-22) POLICY FIX — realMoney ka `winnings` Green
      Diamonds (non-withdrawable virtual prize) ko point karta tha, jisse
      har jagah Green Diamonds ₹-rupee "winnings" ki tarah dikhne laga

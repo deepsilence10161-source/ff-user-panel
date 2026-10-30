@@ -394,6 +394,7 @@ def main():
                 page.evaluate("(id) => window.doJoin(id)", mid)  # fallback: wahi fn jo button chalata hai
             time.sleep(6)
             acc = accept_invites(mid, partner_tags)
+            join_team.last_btn = btn
             log(f"  invites({captain_tag}→{partner_tags}): {acc}")
             log("  31s join-lock wait (Bug#18 30s in-flight timer)…")
             time.sleep(31)
@@ -454,7 +455,8 @@ def main():
             dl = wdelta(pre6, post6)
             fc = fee_cols(jr2)
             ok = abs((dl.get("p6") or {}).get("green_diamonds", 0) + 40) < 0.01 and "p7" not in dl
-            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, invites={acc}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok)
+            btn_ok = getattr(join_team, "last_btn", "?") == "clicked"
+            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, btn={getattr(join_team,'last_btn','?')}, invites={acc}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok and btn_ok)
             if not ok:
                 log("  p6 txs: " + json.dumps(txs(uid["p6"]), ensure_ascii=False, default=str)[:500])
         except Exception as e:

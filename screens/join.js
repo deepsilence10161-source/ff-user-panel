@@ -80,7 +80,7 @@ function cJoin(id) {
   var fee      = Number(t.entryFee) || 0;
   var isFree   = entryTypeRaw === 'free' || (!isCoin && !isSkyDia && !isGreen && !isAd && fee === 0);
   /* ✅ BUG FIX: was using UD.realMoney.deposited (Firebase/old) — now uses UD.skyDiamonds (Supabase) */
-  var bal = isCoin ? (UD.coins || 0) : isSkyDia ? (UD.skyDiamonds || 0) : isGreen ? (UD.greenDiamonds || 0) : 0;
+  var bal = isCoin ? Number(UD.coins || 0) : isSkyDia ? Number(UD.skyDiamonds || 0) : isGreen ? Number(UD.greenDiamonds || 0) : 0;
   var enough = fee === 0 || bal >= fee;
   var slotsNeeded = tp === 'duo' ? 2 : tp === 'squad' ? 4 : 1;
   /* Prize info based on match type */
@@ -108,7 +108,7 @@ function cJoin(id) {
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261030a" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261030b" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : isGreen ? '💚 ' + bal + ' Green Diamonds' : '';
