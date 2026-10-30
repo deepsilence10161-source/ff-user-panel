@@ -91,6 +91,7 @@ if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
     await sqlSafe(`delete from creator_match_ratings where match_id in (select id from matches where creator_uid in (${ids})) or user_id in (${ids})`);
     if (crCol) await sql(`delete from matches where ${crCol} in (${ids})`);
     await sql(`delete from wallet_transactions where user_id in (${ids})`);
+    await sqlSafe(`delete from premium_monthly_bonus_claims where user_id in (${ids})`);
     await sql(`delete from admins where uid in (${ids})`);
     await sql(`delete from users where id in (${ids})`);
   }
