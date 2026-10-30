@@ -130,6 +130,9 @@ TOAST_PATCH = """() => {
     const _t = window.toast;
     window.toast = function(m, k) { try { window.__toasts.push(String(m)); } catch (e) {}
       if (_t) return _t.apply(this, arguments); };
+    const _st = window.showToast;
+    window.showToast = function(m, k) { try { window.__toasts.push(String(m)); } catch (e) {}
+      if (_st) return _st.apply(this, arguments); };
   }
   return true;
 }"""
@@ -515,19 +518,23 @@ def main():
               rpc_bad(r4) and abs(c_same - c_auto) < 0.01)
 
         # ══ PHASE J: ADMIN CANCEL ════════════════════════════════════════
-        log("PHASE J: admin cancel_premium (gateway)")
+        log("PHASE J: admin cancel_premium (asli UI fn → gateway)")
+        admin.evaluate(TOAST_PATCH)
         admin.evaluate("(uid) => { window.adminCancelPremium(uid); return true; }", U_UID)
         canc = try_poll(lambda: (lambda s: s if int(s.get("premium_level") or 0) == 0 and not s.get("premium_expires") else None)(user_state(U_UID)),
-                        timeout=45, every=3, what="premium_level=0 + expires NULL (adminCancelPremium via gateway)")
+                        timeout=45, every=3, what="premium_level=0 + expires NULL (adminCancelPremium UI fn via gateway)")
         canc_route = "adminCancelPremium UI fn"
+        t_canc = wait_toast(admin, r"Premium cancelled|cancel failed|Error", timeout=10)
         if not canc:
-            log("UI fn se cancel nahi hua — gateway RPC direct (fallback, shim ke through)")
+            log("⚠️ UI fn se cancel nahi hua — gateway RPC direct (FALLBACK = UI-path FAIL, sirf diagnosis)")
             r_fb = rpcU(admin, "cancel_premium", {"p_uid": U_UID})
             log("fallback rpc: " + json.dumps(r_fb, ensure_ascii=False)[:200])
             canc = try_poll(lambda: (lambda s: s if int(s.get("premium_level") or 0) == 0 and not s.get("premium_expires") else None)(user_state(U_UID)),
                             timeout=45, every=3, what="cancel fallback")
-            canc_route = "cancel_premium rpc direct (gateway shim)"
-        proof("PRE21", f"admin cancel → cancel_premium gateway RPC LIVE: level=0, expires=NULL ({canc_route})={bool(canc)}", bool(canc))
+            canc_route = "FALLBACK rpc direct (UI fn toota hua!)"
+        proof("PRE21", f"admin 'Cancel Premium' UI fn → cancel_premium gateway RPC LIVE: level=0, expires=NULL "
+                       f"| route={canc_route} | toast={t_canc!r}",
+              bool(canc) and canc_route == "adminCancelPremium UI fn" and bool(t_canc) and "cancelled" in str(t_canc).lower())
 
         # ══ PHASE K: post-cancel + SECURITY ══════════════════════════════
         log("PHASE K: post-cancel state + security proofs")
