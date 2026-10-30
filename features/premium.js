@@ -81,6 +81,14 @@ window.showPremiumUpgrade=function(){window.checkPolicyThenRun(_renderPremModal)
 
 function _renderPremModal(){
   var uT=window.getUserPremiumTier(),h='';
+  /* ✅ BUG FIX (2026-10-31, owner report Hunter7 + PRE24): expired ex-premium
+     user ko apne purane tier tile par "🔁 Renew +30 Din" button + "⏰ Expired"
+     chip chahiye — pehle Renew sirf ACTIVE tile par tha, expired user ko
+     sirf generic "Upgrade to X" dikhta tha (plate "Renew karo" bolti thi,
+     modal me Renew tha hi nahi = adhoora promise). */
+  var _rawTX=(window.UD&&window.UD.premium&&Number(window.UD.premium.tier))||0;
+  var _expTX=(window.UD&&window.UD.premium&&Number(window.UD.premium.expiresAt))||0;
+  var _expRenew=_rawTX>0&&_expTX>0&&_expTX<Date.now();
   var TIERS=_buildTiers(); // fresh read of window.CFG.premium every time the modal opens
   window.PREMIUM_TIERS=TIERS;
   h+='<div style="text-align:center;padding:6px 0 18px;position:relative;overflow:hidden">';
@@ -90,6 +98,7 @@ function _renderPremModal(){
   h+='<div style="font-size:12px;color:#777;margin-top:4px">Alag gaming experience — bina gambling ke</div></div>';
   TIERS.forEach(function(t){
     var isA=uT===t.tier,iBest=t.best;
+    var isR=!isA&&_expRenew&&_rawTX===t.tier;   /* expired ka purana tier = renew tile */
     h+='<div style="position:relative;margin-bottom:14px">';
     if(iBest)h+='<div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);z-index:2;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;font-size:9px;font-weight:900;padding:3px 16px;border-radius:20px;letter-spacing:.8px;white-space:nowrap;box-shadow:0 2px 10px rgba(255,215,0,.4)">⭐ SABSE POPULAR</div>';
     h+='<div class="'+(iBest?'prem-tier-shine':'')+'" style="background:'+t.bg+';border:'+(isA?'2px':'1.5px')+' solid '+(isA?t.color:t.border)+';border-radius:18px;padding:'+(iBest?'26px 16px 16px':'16px')+';box-shadow:'+(iBest?'0 0 24px '+t.glow+',0 6px 28px rgba(0,0,0,.5)':'0 0 12px rgba(0,0,0,.3)')+';">';
@@ -98,6 +107,7 @@ function _renderPremModal(){
     h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+(t.img?'<img src="'+t.img+'?v=20261030c" style="width:32px;height:32px;object-fit:contain" alt="">':t.icon)+'</div>';
     h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
     if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">✅ Active Plan</div>';
+    if(isR)h+='<div style="font-size:10px;background:rgba(255,150,60,.16);color:#ffb066;padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">⏰ Expired — renew karo</div>';
     /* ✅ BUG Z2 FIX (2026-10-02): Active plan par koi button hi nahi tha —
        matlab apna current tier RENEW karna UI se asambhav tha (sirf doosre
        tiers ka Upgrade button dikhta tha). Renew wahi approve_premium RPC
@@ -114,7 +124,8 @@ function _renderPremModal(){
        {50,150,400} credit karta hai (Green Diamonds nahi), copy ab sach se match */
     h+='<div style="display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:11px;background:rgba(255,190,20,.06);border:1px solid rgba(255,190,20,.18);margin-bottom:13px"><span style="font-size:15px">🪙</span> <span style="font-size:12px;color:#ffc53d;font-weight:700">'+t.coinBonus+' Coins / mahine bonus</span></div>';
     /* CTA */
-    if(!isA)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#333);color:'+(t.tier===1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px '+t.glow+';letter-spacing:.3px">Upgrade to '+t.label+' →</button>';
+    if(isR)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#ff8c00);color:'+(t.tier===1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px '+t.glow+';letter-spacing:.3px">🔁 Renew +30 Din — ₹'+t.price+'</button>';
+    else if(!isA)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#333);color:'+(t.tier===1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px '+t.glow+';letter-spacing:.3px">Upgrade to '+t.label+' →</button>';
     else h+='<div style="text-align:center;font-size:12px;color:'+t.color+';font-weight:700;padding:10px;background:'+t.color+'10;border-radius:11px">✅ Yeh tumhara current plan hai</div>';
     h+='</div></div>';
   });
