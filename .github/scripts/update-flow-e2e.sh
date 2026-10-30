@@ -259,10 +259,26 @@ adb logcat -c >/dev/null 2>&1 || true
 # device-cleanup.js ka MAIN GATE sirf version badalne par khulta hai aur
 # slow device par policy+createdAt fetch me 2-4 min lag sakte hain —
 # loop line YA updates/ khaali hone tak rukta hai (donono = cleanup proof).
-for i in $(seq 1 60); do
+# ✅ v2 D-LOOP (2026-10-30, run 41087563817 fail se seekha): transient
+# 'adb shell ls' fail (device busy right after am start) ko 0 APK mat maano —
+# warna false early-break aur D1 window gate-line se pehle band ho jata hai.
+# Ab: ls fail/err-text = UNKNOWN (-1), aur zero-break ke liye 2 lagataar reads.
+read_apks () {
+  local out; out=$(adb shell ls "$1" 2>/dev/null) || { echo -1; return; }
+  case "$out" in *"No such file"*|*"Permission denied"*|*"errno"*) echo -1; return;; esac
+  echo "$out" | grep -c "\.apk" || true
+}
+ZERO_STREAK=0
+for i in $(seq 1 75); do
   if adb logcat -d | grep -qE "Cleanup ALLOWED \(server policy\)|Safe cleanup done"; then break; fi
-  LEFT_NOW=$(( $(adb shell ls /sdcard/Android/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true) + $(adb shell ls /data/data/$PKG/files/updates 2>/dev/null | grep -c "\.apk" || true) ))
-  [ "$LEFT_NOW" = "0" ] && [ "$i" -gt 3 ] && break
+  A=$(read_apks /sdcard/Android/data/$PKG/files/updates); B=$(read_apks /data/data/$PKG/files/updates)
+  if [ "$A" -lt 0 ] 2>/dev/null || [ "$B" -lt 0 ] 2>/dev/null; then
+    LEFT_NOW=-1
+  else
+    LEFT_NOW=$(( ${A:-0} + ${B:-0} ))
+    if [ "$LEFT_NOW" = "0" ]; then ZERO_STREAK=$((ZERO_STREAK+1)); else ZERO_STREAK=0; fi
+  fi
+  [ "$LEFT_NOW" = "0" ] && [ "$ZERO_STREAK" -ge 2 ] && [ "$i" -gt 5 ] && break
   sleep 4
 done
 sleep 5
