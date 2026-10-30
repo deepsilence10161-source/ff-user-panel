@@ -147,9 +147,10 @@ jobs:
           # koi manual kaam nahi, koi secret involve nahi).
           SHA256="$(sha256sum MiniEsports.apk | cut -d' ' -f1)"
           echo "• APK SHA-256: $SHA256"
+          NOTES="$(printf 'Auto-published signed release APK (%s) for Force Update & direct download.\n\n**SHA-256:** `%s`' "$TAG" "$SHA256")"
           gh release create "$TAG" MiniEsports.apk \
             --title "Mini eSports $TAG (Official APK)" \
-            --notes "Auto-published signed release APK ($TAG) for Force Update & direct download.\n\n**SHA-256:** \`$SHA256\`" \
+            --notes "$NOTES" \
             --latest || \
           gh release upload "$TAG" MiniEsports.apk --clobber
 
