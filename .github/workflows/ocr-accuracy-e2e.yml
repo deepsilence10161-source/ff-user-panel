@@ -1,0 +1,153 @@
+name: ocr-accuracy-e2e
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  OCR-ACCURACY LIVE E2E — owner ke ASLI Free Fire screenshots (2 result +
+#  1 lobby) admin panel ke FA53 Tesseract.js v7 auto-fill pipeline me:
+#  Match Result section → match select → screenshot upload → auto OCR →
+#  rank/kills fill → ground-truth se accuracy. Lobby: OCR Verify auto-ticks.
+#  Fixtures PRIVATE repo se aate hain (secrets.FIXTURES_PAT) — owner data
+#  public repo me kabhi nahi jaata.
+# ═══════════════════════════════════════════════════════════════════════════
+on:
+  workflow_dispatch:
+    inputs:
+      run_tag:
+        description: "Run tag (khali = auto timestamp)"
+        required: false
+        default: ""
+
+concurrency:
+  group: ocr-accuracy-e2e
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.mkrun.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - id: mkrun
+        run: |
+          TAG="${{ github.event.inputs.run_tag }}"
+          [ -z "$TAG" ] && TAG="$(date -u +%m%d%H%M%S)"
+          echo "run=$TAG" >> "$GITHUB_OUTPUT"
+          echo "RUN=$TAG"
+      - name: QA accounts (7 exact IGN + creator + admin + bench)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MF_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          node tools/match-flow/accounts7.mjs --create --run "${{ steps.mkrun.outputs.run }}" --out /tmp/mf-state.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ocr-state-${{ steps.mkrun.outputs.run }}
+          path: /tmp/mf-state.json
+          retention-days: 2
+
+  drive:
+    needs: seed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: ocr-state-${{ needs.seed.outputs.run }}
+          path: /tmp/mfst
+      - name: Playwright install
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Owner screenshots decrypt-assemble (secrets = write-only, kabhi readable nahi)
+        env:
+          B64_00: ${{ secrets.FIX_B64_00 }}
+          B64_01: ${{ secrets.FIX_B64_01 }}
+          B64_02: ${{ secrets.FIX_B64_02 }}
+          B64_03: ${{ secrets.FIX_B64_03 }}
+          B64_04: ${{ secrets.FIX_B64_04 }}
+          B64_05: ${{ secrets.FIX_B64_05 }}
+          B64_06: ${{ secrets.FIX_B64_06 }}
+          B64_07: ${{ secrets.FIX_B64_07 }}
+          B64_08: ${{ secrets.FIX_B64_08 }}
+          B64_09: ${{ secrets.FIX_B64_09 }}
+          B64_10: ${{ secrets.FIX_B64_10 }}
+          B64_11: ${{ secrets.FIX_B64_11 }}
+          B64_12: ${{ secrets.FIX_B64_12 }}
+          B64_13: ${{ secrets.FIX_B64_13 }}
+          B64_14: ${{ secrets.FIX_B64_14 }}
+          B64_15: ${{ secrets.FIX_B64_15 }}
+          B64_16: ${{ secrets.FIX_B64_16 }}
+          B64_17: ${{ secrets.FIX_B64_17 }}
+          B64_18: ${{ secrets.FIX_B64_18 }}
+          B64_19: ${{ secrets.FIX_B64_19 }}
+          B64_20: ${{ secrets.FIX_B64_20 }}
+          B64_21: ${{ secrets.FIX_B64_21 }}
+          B64_22: ${{ secrets.FIX_B64_22 }}
+          B64_23: ${{ secrets.FIX_B64_23 }}
+          B64_24: ${{ secrets.FIX_B64_24 }}
+          B64_25: ${{ secrets.FIX_B64_25 }}
+          B64_26: ${{ secrets.FIX_B64_26 }}
+          B64_27: ${{ secrets.FIX_B64_27 }}
+          B64_28: ${{ secrets.FIX_B64_28 }}
+          B64_29: ${{ secrets.FIX_B64_29 }}
+          B64_30: ${{ secrets.FIX_B64_30 }}
+          B64_31: ${{ secrets.FIX_B64_31 }}
+          B64_32: ${{ secrets.FIX_B64_32 }}
+          B64_33: ${{ secrets.FIX_B64_33 }}
+          B64_34: ${{ secrets.FIX_B64_34 }}
+          B64_35: ${{ secrets.FIX_B64_35 }}
+        run: |
+          python3 - <<'PY'
+          import os, base64, json
+          parts = []
+          i = 0
+          while True:
+              v = os.environ.get(f"B64_{i:02d}", "")
+              if not v: break
+              parts.append(v); i += 1
+          open('/tmp/ocr-fixtures.tar','wb').write(base64.b64decode(''.join(parts)))
+          print("chunks:", i, "bytes:", os.path.getsize('/tmp/ocr-fixtures.tar'))
+          PY
+          mkdir -p ocr-fixtures && tar xf /tmp/ocr-fixtures.tar -C . && ls -la ocr-fixtures/
+      - name: OCR accuracy driver (asli Tesseract, asli admin UI)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          python3 tools/match-flow/ocr_driver.py \
+            --state /tmp/mfst/mf-state.json \
+            --fixtures ocr-fixtures \
+            --shots ocr-shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ocr-shots-${{ needs.seed.outputs.run }}
+          path: ocr-shots/
+          retention-days: 7
+
+  cleanup:
+    needs: [seed, drive]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: ocr-state-${{ needs.seed.outputs.run }}
+          path: /tmp/mfst
+      - name: QA accounts + residue cleanup
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MF_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          node tools/match-flow/accounts7.mjs --cleanup --run "${{ needs.seed.outputs.run }}" --out /tmp/mfst/mf-state.json || true
+          echo "MF-CLEANUP-DONE"
