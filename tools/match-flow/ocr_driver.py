@@ -145,7 +145,7 @@ def main():
                        f"{admin.evaluate('() => !!(window._FFREOCR && window.fa53Plus)')}", True)
 
         # ── Match Result section + roster ──
-        admin.evaluate("() => showSection('results')")
+        admin.evaluate("() => showSection('matchResult')")
         admin.wait_for_selector("#mrPlayerTable", timeout=30000)
         admin.wait_for_function("() => !!window.loadMatchResultSection", timeout=30000)
         admin.evaluate("""(mid) => { const s = document.getElementById('mrMatchFilter');
