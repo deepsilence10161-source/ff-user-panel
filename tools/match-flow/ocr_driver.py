@@ -192,6 +192,18 @@ def main():
             unknown = [r["name"] for r in filled if r["name"] not in GT]
             return identified, kills_ok, rank_ok, pair_ok, wrong, unknown
 
+        GT_ROWS = [{"ign": ign, "rank": r, "kills": k} for _t, ign, k, r in OWNER]
+
+        def review_rows():
+            return admin.evaluate("""() => { const box = document.getElementById('_ocrEliminationReview');
+                if (!box) return null;
+                const rows = [...box.querySelectorAll('div')].filter(d => d.querySelector('select'));
+                return rows.map(d => ({ label: (d.querySelector('span') || {}).textContent || '',
+                    sel: d.querySelector('select').value,
+                    selText: (d.querySelector('select').selectedOptions[0] || {}).textContent || '',
+                    kills: (d.querySelector('input[aria-label^=Kills]') || {}).value || '',
+                    rank: (d.querySelector('input[aria-label^=Rank]') || {}).value || '' })); }""")
+
         results = {}
         for idx, fname in (("RES-1", "ocr-res-1.jpg"), ("RES-2", "ocr-res-2.jpg")):
             path = os.path.join(args.fixtures, fname)
@@ -205,15 +217,41 @@ def main():
             badge = admin.evaluate("() => (document.getElementById('_ocrVerifiedBadge') || {}).textContent || ''")
             review = admin.evaluate("() => (document.getElementById('_ocrEliminationReview') || {}).innerText || ''")
             stats = admin.evaluate("() => { try { return window.fa53Plus ? window.fa53Plus.stats() : null; } catch (e) { return null; } }")
+            rev = review_rows() or []
+            # AUTO-STAGE: review box me kitni rows pehle se identify (select filled) + kills sahi
+            auto_ident = [r for r in rev if r["sel"] != ""]
+            auto_kok = sum(1 for r in auto_ident if r["selText"] in GT and int(r["kills"] or 0) == GT[r["selText"]][0])
+            auto_rank = sum(1 for r in rev if r["rank"] != "")
+            held = [r["label"].split('OCR: ')[-1] for r in rev if r["sel"] == ""]
             ident, kok, rok, pok, wrong, unknown = acc_report(idx, before, after)
             results[idx] = dict(identified=ident, kills_ok=kok, rank_ok=rok, pair_ok=pok,
                                 wrong=wrong, unknown=unknown, badge=badge.strip(),
-                                review=review[:220], stats=stats)
-            proof(f"OCR06.{idx}",
-                  f"{fname}: auto-fill {ident}/7 rows; kills {kok}/7 sahi; rank {rok}/7 sahi; "
-                  f"pair-exact {pok}/7; galat={wrong}; unknown={unknown}; badge='{badge.strip()[:60]}'; "
-                  f"review='{review[:120].replace(chr(10), ' | ')}'; stats={json.dumps(stats)[:140]}",
-                  ident >= 5)
+                                review=review[:220], stats=stats,
+                                auto_ident=len(auto_ident), auto_kills_ok=auto_kok, auto_rank=auto_rank, held=held)
+            proof(f"OCR06.{idx}.AUTO",
+                  f"{fname} AUTO-STAGE: review rows={len(rev)}; pehle-se-identified={len(auto_ident)}/7; "
+                  f"kills-prefill sahi={auto_kok}/{len(auto_ident)}; rank-auto={auto_rank} (design: badges assumed nahi hote); "
+                  f"review-gate me held={held}", len(auto_ident) >= 5)
+            # ADMIN-REVIEW SIMULATION: insaan screenshot dekhkar unverified row pick karta hai +
+            # rank bharta hai (GT order = screenshot row order), confirm + Apply
+            admin.evaluate("""(gtRows) => { const box = document.getElementById('_ocrEliminationReview');
+                const rows = [...box.querySelectorAll('div')].filter(d => d.querySelector('select'));
+                rows.forEach((d, i) => { const sel = d.querySelector('select');
+                    const r = d.querySelector('input[aria-label^=Rank]'); const want = gtRows[i]; if (!want) return;
+                    const opt = [...sel.options].find(o => o.textContent === want.ign);
+                    if (opt && sel.value === '') sel.value = opt.value;
+                    if (r && r.value === '') r.value = String(want.rank); }); }""", GT_ROWS)
+            admin.check("#_ocrReviewConfirm")
+            admin.click("#_ocrReviewApply")
+            admin.wait_for_timeout(1800)
+            final = rows_now()
+            fp = sum(1 for r in final if r["name"] in GT and int(r["kills"] or 0) == GT[r["name"]][0]
+                     and int(r["rank"] or 0) == GT[r["name"]][1])
+            fk = sum(1 for r in final if r["name"] in GT and int(r["kills"] or 0) == GT[r["name"]][0])
+            fr = sum(1 for r in final if r["name"] in GT and int(r["rank"] or 0) == GT[r["name"]][1])
+            results[idx]["post_pair"] = fp
+            proof(f"OCR06.{idx}.POST",
+                  f"{fname} REVIEW-KE-BAAD form: pair-exact {fp}/7; kills {fk}/7; rank {fr}/7", fp == 7)
             shot(admin, f"ocr-{idx.lower()}.png")
             # agla image saaf slate par
             admin.evaluate("() => { try { window.mrClearScreenshots && window.mrClearScreenshots(); } catch (e) {} }")
@@ -229,7 +267,13 @@ def main():
             admin.evaluate("""(mid) => { const s = document.getElementById('joinedTournamentFilter'); if (s) s.value = mid; }""", M1)
             admin.evaluate("() => window.loadJoinedPlayers()")
             admin.wait_for_function("() => document.querySelectorAll('#joinedPlayersTable tr').length >= 7", timeout=60000)
-            pre_ticks = admin.evaluate("() => document.querySelectorAll('#joinedPlayersTable input[type=checkbox]:checked').length")
+            # Live Attendance mode ON — verify-wraps tab aate hain (runLobby inhin ko tick karta hai)
+            try:
+                admin.locator("button:has-text('Live Attendance')").first.click(timeout=10000)
+                admin.wait_for_function("() => document.querySelectorAll('#joinedPlayersTable .verify-chk-wrap').length >= 7", timeout=20000)
+            except Exception as e:
+                log(f"  attendance mode: {str(e)[:100]}")
+            pre_ticks = admin.evaluate("() => [...document.querySelectorAll('#joinedPlayersTable .verify-chk-wrap')].filter(w => (w.style.borderColor || '').includes('00ff9c')).length")
             lpath = os.path.join(args.fixtures, "ocr-lobby.jpg")
             admin.set_input_files("#_ocrLFile", lpath)
             t0 = time.time()
@@ -239,7 +283,7 @@ def main():
                 pass
             admin.wait_for_function("() => window._ocrWorkerBusy !== true", timeout=300000)
             admin.wait_for_timeout(4000)
-            ticks = admin.evaluate("() => document.querySelectorAll('#joinedPlayersTable input[type=checkbox]:checked').length")
+            ticks = admin.evaluate("() => [...document.querySelectorAll('#joinedPlayersTable .verify-chk-wrap')].filter(w => (w.style.borderColor || '').includes('00ff9c')).length")
             lbadge = admin.evaluate("() => (document.getElementById('_ocrVerifiedBadge') || {}).textContent || ''")
             lreview = admin.evaluate("() => (document.getElementById('_ocrEliminationReview') || {}).innerText || ''")
             proof("OCR07", f"lobby OCR: auto-tick {pre_ticks} → {ticks}/7; badge='{lbadge.strip()[:60]}'; "
@@ -255,9 +299,12 @@ def main():
         tot_r = sum(v["rank_ok"] for v in results.values())
         tot_p = sum(v["pair_ok"] for v in results.values())
         denom = 7 * max(1, len(results))
-        log(f"OCR-ACC-SUMMARY: images={len(results)} identified={tot_i}/{denom} "
-            f"kills={tot_k}/{denom} rank={tot_r}/{denom} pair-exact={tot_p}/{denom} "
-            f"({round(100.0 * tot_p / denom, 1)}%)")
+        tot_ai = sum(v.get("auto_ident", 0) for v in results.values())
+        tot_ak = sum(v.get("auto_kills_ok", 0) for v in results.values())
+        tot_pp = sum(v.get("post_pair", 0) for v in results.values())
+        log(f"OCR-ACC-SUMMARY: images={len(results)} | AUTO: identified={tot_ai}/{denom} "
+            f"kills-prefill-sahi={tot_ak}/{denom} | MAIN-TABLE auto-fill pair={tot_p}/{denom} | "
+            f"REVIEW-KE-BAAD pair-exact={tot_pp}/{denom} ({round(100.0 * tot_pp / denom, 1)}%)")
         browser.close()
 
     if fails:
