@@ -610,11 +610,17 @@ def main():
 
         # F1: creator result form (asli UI) — owner ka EXACT data stage karo
         try:
+            rpcdiag = rpcU(cpage, "creator_get_match_participants", {"p_match_id": M1, "p_uid": uid["creator"]})
+            dp = rpcdiag.get("data") or {}
+            log(f"  participants RPC: ok={dp.get('ok')} n={len(dp.get('players') or [])} err={dp.get('error')} raw={json.dumps(rpcdiag, ensure_ascii=False)[:220]}")
             cpage.evaluate("() => { try { navTo('matches'); } catch (e) {} }")
             time.sleep(3)
             cpage.evaluate("(id) => window.showCreatorResultForm(id)", M1)
             try:
                 cpage.wait_for_selector("._crKills", timeout=30000)
+                time.sleep(2)
+                log("  form inputs: " + cpage.evaluate("() => document.querySelectorAll('._crKills').length") +
+                    " | body html: " + str(cpage.evaluate("() => ((document.getElementById('_crResultBody')||{}).innerHTML||'').slice(0,260)")))
             except Exception:
                 bodytxt = cpage.evaluate("() => (document.getElementById('_crResultBody')||{}).innerText || document.body.innerText.slice(0,200)")
                 log("  result-form body: " + str(bodytxt)[:200])
@@ -626,6 +632,11 @@ def main():
                 raise
             time.sleep(2)
             n_inputs = cpage.evaluate("() => document.querySelectorAll('._crKills').length")
+            time.sleep(3)
+            n_inputs2 = cpage.evaluate("() => document.querySelectorAll('._crKills').length")
+            if n_inputs2 != n_inputs:
+                log(f"  inputs settle: {n_inputs} → {n_inputs2}")
+                n_inputs = n_inputs2
             jrs1 = jr_rows(M1)
             jid_by_uid = {r.get("user_id"): r.get("id") for r in jrs1}
             fill = [{"jid": jid_by_uid.get(uid[t]), "k": k, "r": rk} for t, ign, k, rk in OWNER if uid[t] in jid_by_uid]
@@ -643,7 +654,8 @@ def main():
             staged = jr_rows(M1)
             rescols = [c for c in cols_of("join_requests") if any(x in c for x in ("kill", "place", "rank", "result"))]
             filled = sum(1 for r in staged if any(r.get(c) not in (None, "", 0, "0") for c in rescols))
-            proof("MF32", f"creator result form: {n_inputs} inputs (want ≥7); owner kill/rank data staged — cols={rescols} filled_rows={filled}/{len(staged)}",
+            who = rows(f"select user_ign, kills, placement from join_requests where match_id='{M1}' and kills is not null")
+            proof("MF32", f"creator result form: {n_inputs} inputs (want ≥7); staged cols={rescols} filled_rows={filled}/{len(staged)}; staged_who={json.dumps(who, ensure_ascii=False)[:150]}",
                   n_inputs >= 7 and filled >= 7)
         except Exception as e:
             # UI form fail (RLS/empty) → wahi server path jo UI use karti hai, direct RPC
