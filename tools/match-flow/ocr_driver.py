@@ -93,15 +93,35 @@ def main():
         M1 = (row or {}).get("id") or ""
         proof("OCR02", f"M1 create: {json.dumps(cres, ensure_ascii=False)[:140]} id={M1[:10]}", bool(M1))
         joined = 0
-        for t, ign, _k, _r in OWNER:
-            j = rpcU(cpage, "validate_and_join_match", {
+        for i, (t, ign, _k, _r) in enumerate(OWNER):
+            # join APSNI page/session se hona chahiye (server p_uid vs JWT verify karta hai)
+            pctx = browser.new_context(viewport={"width": 430, "height": 932}, locale="en-IN")
+            pp = pctx.new_page()
+            pp.goto(USER_URL, timeout=120000)
+            pp.wait_for_function("() => !!window.auth", timeout=90000)
+            rr = pp.evaluate("""async (c) => { try { await window.auth.signInWithEmailAndPassword(c.e, c.p); return 'ok'; }
+                                 catch (e) { return 'err:' + (e.code || e.message); } }""",
+                             {"e": AC[t]["email"], "p": AC[t]["password"]})
+            if rr != "ok":
+                log(f"  signin {t}: {rr}")
+                pctx.close()
+                continue
+            pp.wait_for_function("() => window.U && window._supa && window._supaTokenUid === window.U.uid", timeout=90000)
+            j = rpcU(pp, "validate_and_join_match", {
                 "p_uid": uid[t], "p_match_id": M1, "p_entry_fee": 10, "p_currency": "coins",
-                "p_join_data": json.dumps({"mode": "solo", "feeType": "each_pays"})})
+                "p_join_data": {"requestId": f"ocr-{t}", "userName": ign, "userFFUID": AC[t].get("ff_uid", ""),
+                                "ign": ign, "matchName": title, "mode": "solo", "slotsBooked": 1,
+                                "slotNumber": str(i + 1), "allSlots": json.dumps([str(i + 1)]),
+                                "feeType": "each_pays", "isTeamMember": False,
+                                "createdAt": int(time.time() * 1000)}})
             ok = (j.get("data") or {}).get("ok") is True or (j.get("data") or {}).get("success") is True
             joined += 1 if ok else 0
             if not ok:
                 log(f"  join {t}: {json.dumps(j, ensure_ascii=False)[:160]}")
-        proof("OCR03", f"7/7 solo join (server RPC): {joined}/7 ok", joined == 7)
+            pctx.close()
+        nrow = cpage.evaluate("""async (m) => { const r = await window._supa.from('join_requests').select('id').eq('match_id', m);
+                               return r.data ? r.data.length : -1; }""", M1)
+        proof("OCR03", f"7/7 solo join (player sessions se server RPC): {joined}/7 ok; join_requests rows={nrow}", joined == 7)
 
         # ── admin login ──
         actx = browser.new_context(viewport={"width": 1440, "height": 900})
