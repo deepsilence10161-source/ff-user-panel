@@ -460,6 +460,13 @@ function _toMT(m) {
       if(et==='ad'||et==='ads'||et==='adwatch') return 'ad';
       if(et==='free'||et==='freeentry')         return 'free';
       if(et==='paid'||et==='sky'||et==='skydia'||et==='skydiamond'||et==='sd') return 'paid';
+      /* ✅ MATCH-FLOW-E2E FIX #4 (2026-10-30, P0 production): green_diamond
+         entry_type yahan se 'free' bankar nikalta tha — iska live asar:
+         (1) green match ka Confirm Join button HAMESHA disabled (bal=0,
+         run 40998697401 MF19 diag: MT.entryType='free' entryFee=20),
+         (2) match card/detail par FREE label + galat prize currency
+         (_normPrize ko ent='free' milta tha → 'coin'). Ab canonical 'green'. */
+      if(et==='green'||et==='greendiamond'||et==='gd') return 'green';
       return 'free';
     })(m.entry_type);
   var _normPrize = (function(pt, isSp, ent){

@@ -108,7 +108,7 @@ function cJoin(id) {
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261030b" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261030c" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : isGreen ? '💚 ' + bal + ' Green Diamonds' : '';
@@ -348,7 +348,9 @@ function _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots) {
   var _feeType = window._feeType || 'captain_pays';
   var entryType = (t.entryType || '').toString().toLowerCase();
   var isCoin = entryType === 'coin' || entryType === 'coins';
-  var isSkyDia = entryType === 'paid' || entryType === 'sky' || entryType === 'skydiamond' || entryType === 'sd';
+  var isSkyDia = entryType === 'paid' || entryType === 'sky' || entryType === 'skydiamond' || entryType === 'sd' || entryType === 'sky_diamond';
+  /* ✅ MATCH-FLOW-E2E FIX #4b: mirror me green ko 'free' na banao */
+  var isGreenT = entryType === 'green' || entryType === 'green_diamond' || entryType === 'greendiamond' || entryType === 'gd';
   var isAdT = entryType === 'ad' || entryType === 'ads';
   var fee = Number(t.entryFee) || 0;
   for (var i = 1; i < teamArr.length; i++) {
@@ -360,7 +362,7 @@ function _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots) {
       requestId: pjid, userId: m.uid, userName: m.ign || '',
       userFFUID: m.ffUid || '', displayName: m.ign || '',
       matchId: id, matchName: t.name || '', entryFee: pEntryFee,
-      entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAdT ? 'ad' : 'free',
+      entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isGreenT ? 'green_diamond' : isAdT ? 'ad' : 'free',
       mode: tp, status: 'joined', slotsBooked: 0,
       teamMembers: JSON.stringify(teamArr.map(function(x){ return { uid: x.ffUid || x.uid, name: x.ign || '' }; })),
       captainUid: U.uid, captainName: (UD && UD.ign) || '',
