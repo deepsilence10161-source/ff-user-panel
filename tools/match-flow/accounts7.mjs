@@ -1,0 +1,124 @@
+#!/usr/bin/env node
+/**
+ * tools/match-flow/accounts7.mjs — MATCH-FLOW-E2E ke REAL test accounts.
+ * Owner ke Free Fire screenshots wale EXACT 7 usernames (Unicode/mixed-case
+ * byte-for-byte) + creator + admin + bench partners. Firebase (identitytoolkit)
+ * + Supabase users/admins rows. Sab kuch run-tag se cleanup hota hai.
+ *
+ * Usage:
+ *   node accounts7.mjs --create --run <runid> --out .state/mf-<run>.json
+ *   node accounts7.mjs --cleanup --run <runid>
+ * Env: SUPABASE_ACCESS_TOKEN, MF_SALT
+ */
+import { createHmac, randomUUID } from 'node:crypto';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const SALT = process.env.MF_SALT || 'mini-esports-mf7-salt-2026';
+const FB_KEY = process.env.FIREBASE_WEB_API_KEY || 'AIzaSyA-v9AYigDrg96D_fos0vOW3wU2GY2UYec';
+const ID_TOOLKIT = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + FB_KEY;
+const SB_URL = 'https://hddhkculuyrfoevxmlwy.supabase.co';
+const MGMT = 'https://api.supabase.com/v1/projects/hddhkculuyrfoevxmlwy/database/query';
+
+// ── owner ke screenshots se EXACT usernames (byte-for-byte, same order) ──
+const IGNS = [
+  'KESHAV\u00B7SAINi',   // KESHAV·SAINi (middle dot U+00B7)
+  'Wail160g0_9',
+  'Linox\uBAA8444..',    // Linox모444.. (Hangul U+BAA8 + trailing dots)
+  '\u0AAE\u0AC7\u0AB9\u0AC1\u0AB2\u0AB5\u0AB8\u0ABE\u0AB5\u0ABE1', // મેહુલવસાવા1 (Gujarati)
+  'hjVikram',
+  'AKGINMG',
+  'N0dc21b349c3',
+];
+
+async function sql(q) {
+  const tok = process.env.SUPABASE_ACCESS_TOKEN;
+  const r = await fetch(MGMT, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok }, body: JSON.stringify({ query: q }) });
+  if (!r.ok) throw new Error('sql ' + r.status + ': ' + (await r.text()).slice(0, 400) + ' | q=' + q.slice(0, 120));
+  return r.json();
+}
+async function fbSignUp(email, pass) {
+  const r = await fetch(ID_TOOLKIT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass, returnSecureToken: true }) });
+  if (!r.ok) throw new Error('firebase ' + r.status + ': ' + JSON.stringify(await r.json()).slice(0, 300));
+  return r.json();
+}
+async function fbSignIn(email, pass) {
+  const r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FB_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass, returnSecureToken: true }) });
+  if (!r.ok) throw new Error('signin ' + r.status);
+  return r.json();
+}
+async function fbDelete(idToken) {
+  try { const r = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${FB_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken }) }); return r.ok; } catch { return false; }
+}
+function pwFor(email) {
+  const h = createHmac('sha256', SALT).update(email).digest('base64url').slice(0, 20);
+  return h + 'Aa1!';
+}
+
+const args = Object.fromEntries((process.argv.slice(2).join(' ').match(/--\S+( \S+)?/g) || []).map(s => s.split(' ').map(x => x.trim())));
+const RUN = args['--run'] || Date.now().toString(36);
+const OUT = args['--out'] || `/tmp/mf-state-${RUN}.json`;
+
+const ROSTER = [];
+for (let i = 0; i < 7; i++) ROSTER.push({ tag: `p${i + 1}`, email: `qa-mf7-${RUN}-p${i + 1}@fft.com`, ign: IGNS[i], is_creator: false, is_admin: false });
+ROSTER.push({ tag: 'creator', email: `qa-mf7-${RUN}-creator@fft.com`, ign: `MF-Creator-${RUN}`, is_creator: true, is_admin: false });
+ROSTER.push({ tag: 'admin', email: `qa-mf7-${RUN}-admin@fft.com`, ign: `MF-Admin-${RUN}`, is_creator: false, is_admin: true });
+for (let b = 1; b <= 5; b++) ROSTER.push({ tag: `b${b}`, email: `qa-mf7-${RUN}-b${b}@fft.com`, ign: `MF-Bench${b}-${RUN}`, is_creator: false, is_admin: false });
+
+if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
+  console.log(`[cleanup] run=${RUN}`);
+  const { data: us } = await (async () => ({ data: await sql(`select id from users where email like 'qa-mf7-${RUN}-%'`) }))();
+  const ids = (us || []).map(u => `'${u.id}'`).join(',');
+  if (ids) {
+    await sql(`delete from join_requests where user_id in (${ids}) or creator_uid in (${ids})`);
+    await sql(`delete from matches where creator_uid in (${ids})`);
+    await sql(`delete from wallet_transactions where user_id in (${ids})`);
+    await sql(`delete from admins where uid in (${ids})`);
+    await sql(`delete from users where id in (${ids})`);
+  }
+  // firebase accounts delete (fresh login per uid)
+  const st = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
+  if (st) for (const r of Object.values(st.accounts || {})) { try { const s = await fbSignIn(r.email, r.password); await fbDelete(s.idToken); } catch { /* signin fails = already deleted */ } }
+  const residue = await sql(`select
+    (select count(*) from users where email like 'qa-mf7-${RUN}-%') u,
+    (select count(*) from admins a join users uu on uu.id=a.uid where uu.email like 'qa-mf7-${RUN}-%') adm,
+    (select count(*) from matches m join users uu on uu.id=m.creator_uid where uu.email like 'qa-mf7-${RUN}-%') m,
+    (select count(*) from join_requests j join users uu on uu.id=j.user_id where uu.email like 'qa-mf7-${RUN}-%') jr,
+    (select count(*) from wallet_transactions w join users uu on uu.id=w.user_id where uu.email like 'qa-mf7-${RUN}-%') w`);
+  const R = residue?.[0] || residue;
+  const zero = R && Number(R.u) === 0 && Number(R.adm) === 0 && Number(R.m) === 0 && Number(R.jr) === 0 && Number(R.w) === 0;
+  console.log(`[residue] ${JSON.stringify(R)} → ${zero ? 'CLEAN ✅' : 'RESIDUE ❌'}`);
+  console.log(zero ? 'MF-CLEANUP-OK' : 'MF-CLEANUP-FAIL');
+  process.exit(zero ? 0 : 1);
+}
+
+// ── create ──
+console.log(`[create] run=${RUN} accounts=${ROSTER.length}`);
+const state = { run: RUN, salted: true, accounts: {}, igns: IGNS };
+let n = 0;
+for (const r of ROSTER) {
+  n++;
+  const password = pwFor(r.email);
+  const fb = await fbSignUp(r.email, password);
+  const uid = fb.localId;
+  const ffuid = `MF7R${RUN}${r.tag.toUpperCase()}`;
+  await sql(`alter table users add column if not exists is_creator boolean default false`);
+  await sql(`alter table users add column if not exists green_diamonds numeric default 0`);
+  await sql(`insert into users (id, ign, is_admin, is_creator, coins, green_diamonds, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at, accepted_policy, accepted_policy_at, profile_status)
+             values ('${uid}', $ign$${r.ign}$ign$, ${r.is_admin}, ${r.is_creator}, 5000, 500, 500, '${ffuid}', 'Haryana', '2000-01-01', true, now(), true, now(), 'approved')
+             on conflict (id) do update set ign = excluded.ign, is_creator = excluded.is_creator, is_admin = excluded.is_admin, coins = 5000, green_diamonds = 500, sky_diamonds = 500, ff_uid = excluded.ff_uid, profile_status = 'approved';`);
+  if (r.is_admin) await sql(`insert into admins (uid, email, is_active, created_at) values ('${uid}', '${r.email}', true, now()) on conflict (uid) do update set is_active = true`);
+  state.accounts[r.tag] = { email: r.email, password, uid, ign: r.ign, ff_uid: ffuid, is_creator: r.is_creator, is_admin: r.is_admin };
+  console.log(`  ✓ ${r.tag} ${r.email} uid=${uid} ign=${r.ign}`);
+}
+// ign sanity: DB me EXACT wahi 7 ign dikhe (byte-for-byte)
+const dbIgns = await sql(`select ign from users where email like 'qa-mf7-${RUN}-p%' order by created_at`);
+const got = (dbIgns || []).map(x => x.ign);
+const ignOk = JSON.stringify(got) === JSON.stringify(IGNS);
+console.log(`[ign-check] db=${JSON.stringify(got)}`);
+console.log(ignOk ? 'MF-SEED-IGN-OK' : 'MF-SEED-IGN-FAIL');
+if (!ignOk) process.exit(1);
+fs.mkdirSync(path.dirname(OUT), { recursive: true });
+fs.writeFileSync(OUT, JSON.stringify(state, null, 1), 'utf8');
+console.log(`[done] state → ${OUT}`);
+console.log('MF-SEED-OK');
