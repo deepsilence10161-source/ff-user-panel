@@ -69,12 +69,18 @@ function cJoin(id) {
   if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
   var entryTypeRaw = (t.entryType || '').toString().toLowerCase();
   var isCoin   = entryTypeRaw === 'coin' || entryTypeRaw === 'coins';
-  var isSkyDia = entryTypeRaw === 'paid' || entryTypeRaw === 'sky' || entryTypeRaw === 'skydiamond' || entryTypeRaw === 'sd';
+  /* ✅ MATCH-FLOW-E2E FIX #1 (2026-10-30): 'sky_diamond' (server ka asli
+     entry_type string) is list me tha hi nahi, aur GREEN DIAMOND ka koi
+     branch hi nahi tha → bal=0 → Confirm Join button green-diamond matches
+     me HAMESHA disabled rehta (live proof: MF run 40985057330, MF19
+     'confirmJoinBtn(p6): disabled'). Ab dono currencies first-class hain. */
+  var isSkyDia = entryTypeRaw === 'paid' || entryTypeRaw === 'sky' || entryTypeRaw === 'skydiamond' || entryTypeRaw === 'sd' || entryTypeRaw === 'sky_diamond';
+  var isGreen  = entryTypeRaw === 'green' || entryTypeRaw === 'green_diamond' || entryTypeRaw === 'greendiamond' || entryTypeRaw === 'gd';
   var isAd     = entryTypeRaw === 'ad'   || entryTypeRaw === 'ads' || entryTypeRaw === 'adwatch';
   var fee      = Number(t.entryFee) || 0;
-  var isFree   = entryTypeRaw === 'free' || (!isCoin && !isSkyDia && !isAd && fee === 0);
+  var isFree   = entryTypeRaw === 'free' || (!isCoin && !isSkyDia && !isGreen && !isAd && fee === 0);
   /* ✅ BUG FIX: was using UD.realMoney.deposited (Firebase/old) — now uses UD.skyDiamonds (Supabase) */
-  var bal = isCoin ? (UD.coins || 0) : isSkyDia ? (UD.skyDiamonds || 0) : 0;
+  var bal = isCoin ? (UD.coins || 0) : isSkyDia ? (UD.skyDiamonds || 0) : isGreen ? (UD.greenDiamonds || 0) : 0;
   var enough = fee === 0 || bal >= fee;
   var slotsNeeded = tp === 'duo' ? 2 : tp === 'squad' ? 4 : 1;
   /* Prize info based on match type */
@@ -105,7 +111,7 @@ function cJoin(id) {
     : isSkyDia ? '<img src="js/green-diamond.png?v=20261029l" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
-  var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';
+  var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : isGreen ? '💚 ' + bal + ' Green Diamonds' : '';
   var h = '<div class="confirm-info">';
   h += '<div class="ci-row"><span class="cl">Match</span><span class="cv">' + (window.escHtml?window.escHtml(t.name||'Match'):(t.name||'Match')) + '</span></div>';
   h += '<div class="ci-row"><span class="cl">Mode</span><span class="cv">' + tp.toUpperCase() + '</span></div>';
@@ -452,6 +458,11 @@ async function _doJoinCore(id, t, tp) {
   var _et2   = (t.entryType || '').toString().toLowerCase();
   var isCoin  = _et2 === 'coin' || _et2 === 'coins';
   var isSkyDia= _et2 === 'paid' || _et2 === 'sky' || _et2 === 'skydiamond' || _et2 === 'sd' || _et2 === 'sky_diamond';
+  /* ✅ MATCH-FLOW-E2E FIX #2 (2026-10-30): green-diamond match ka fee
+     SKY wallet se kat raha tha (_supaCol = isCoin ? 'coins' : 'sky_diamonds'
+     — green ka branch hi nahi). Live proof: MF run 40985057330 MF19/MF30 —
+     green match join+refund sky_diamonds me gaya. GALAT WALLET = paisa bug. */
+  var isGreen = _et2 === 'green' || _et2 === 'green_diamond' || _et2 === 'greendiamond' || _et2 === 'gd';
   var isAd    = _et2 === 'ad'   || _et2 === 'ads';
   var fee = Number(t.entryFee) || 0;
   var slotsNeeded = tp === 'duo' ? 2 : tp === 'squad' ? 4 : 1;
@@ -532,7 +543,7 @@ async function _doJoinCore(id, t, tp) {
     /* ✅ Bug 23 Fix: Use server-side atomic validate_and_join_match RPC
        This prevents client-side JS bypass of entry fee deduction.
        RPC handles: balance check, duplicate join check, deduction, JR creation atomically */
-    var _supaCol = isCoin ? 'coins' : 'sky_diamonds';
+    var _supaCol = isCoin ? 'coins' : isGreen ? 'green_diamonds' : 'sky_diamonds';
     var _joinData = {
       requestId: jid, userName: UD.ign || '', userFFUID: UD.ffUid || '',
       /* ✅ R28m FIX (2026-09-22): server RPC validate_and_join_match

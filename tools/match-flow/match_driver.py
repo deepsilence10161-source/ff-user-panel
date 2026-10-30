@@ -132,6 +132,22 @@ def jr_rows(mid):
     return rows(f"select * from join_requests where match_id='{mid}'")
 
 
+def txs(uid_, n=6):
+    try:
+        return rows(f"select * from wallet_transactions where user_id='{uid_}' order by created_at desc limit {n}")
+    except Exception as e:
+        return [{"tx_dump_err": str(e)[:100]}]
+
+
+def wdelta(pre, post):
+    return {t: {k: round(post[t][k] - pre[t][k], 2) for k in pre[t] if abs(post[t][k] - pre[t][k]) > 0.001}
+            for t in pre if any(abs(post[t][k] - pre[t][k]) > 0.001 for k in pre[t])}
+
+
+def fee_cols(jrs):
+    return [{c: r.get(c) for c in r if "fee" in c.lower() or "paid" in c.lower() or "currency" in c.lower()} for r in jrs]
+
+
 def rpcU(page, fn, args):
     return page.evaluate(
         """async (a) => { try { const r = await window._supa.rpc(a.f, a.args);
@@ -337,8 +353,17 @@ def main():
                     acc.append(f"{t}:no-invite")
                     continue
                 rr = rpcU(pages[t], "respond_team_invite", {"p_invite_id": row["id"], "p_accept": True})
-                acc.append(f"{t}:{'ok' if not rpc_bad(rr) else json.dumps(rr, ensure_ascii=False)[:60]}")
+                if rpc_bad(rr) and "duplicate key" in json.dumps(rr):
+                    acc.append(f"{t}:dup-key(consent-pehle-se?)")
+                else:
+                    acc.append(f"{t}:{'ok' if not rpc_bad(rr) else json.dumps(rr, ensure_ascii=False)[:200]}")
                 time.sleep(1.2)
+            try:
+                log("  invites now: " + json.dumps(rows(
+                    f"select member_uid, status, accepted_at from team_invitations where match_id='{mid}'"),
+                    ensure_ascii=False)[:300])
+            except Exception:
+                pass
             return acc
 
         def join_team(captain_tag, mid, partner_tags, fee_type):
@@ -421,28 +446,38 @@ def main():
         proof("MF18", f"P1 duplicate join blocked (rows {n_before}→{n_after})", n_after == n_before == 1)
 
         # C4: M2 duo captain_pays — P6 captain + P7 partner (FF-UID search UI se)
-        g6, g7 = bal(uid["p6"], "green_diamonds"), bal(uid["p7"], "green_diamonds")
+        pre6 = {t: wallets(uid[t]) for t in ("p6", "p7")}
         try:
             picked, acc = join_team("p6", M2, ["p7"], "captain_pays")
             jr2 = poll(lambda: (lambda rr: rr if len(rr) >= 2 else None)(jr_rows(M2)), timeout=60, every=3, what="M2 duo rows")
-            g6a, g7a = bal(uid["p6"], "green_diamonds"), bal(uid["p7"], "green_diamonds")
-            d6, d7 = round(g6 - g6a, 2), round(g7 - g7a, 2)
-            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, invites={acc}): {len(jr2)} rows; P6 green -{d6} (want 40), P7 -{d7} (want 0)",
-                  abs(d6 - 40) < 0.01 and abs(d7) < 0.01)
+            post6 = {t: wallets(uid[t]) for t in ("p6", "p7")}
+            dl = wdelta(pre6, post6)
+            fc = fee_cols(jr2)
+            ok = abs((dl.get("p6") or {}).get("green_diamonds", 0) + 40) < 0.01 and "p7" not in dl
+            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, invites={acc}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok)
+            if not ok:
+                log("  p6 txs: " + json.dumps(txs(uid["p6"]), ensure_ascii=False, default=str)[:500])
         except Exception as e:
-            proof("MF19", f"M2 duo join FAIL: {str(e)[:200]}", False)
+            diagT = rpcU(pages["p6"], "join_match_team", {
+                "p_match_id": M2, "p_mode": "duo", "p_fee_type": "captain_pays",
+                "p_team": [{"uid": uid["p6"], "ign": IGN_OF["p6"]}, {"uid": uid["p7"], "ign": IGN_OF["p7"]}]})
+            proof("MF19", f"M2 duo join FAIL: {str(e)[:140]}; direct join_match_team diag={json.dumps(diagT, ensure_ascii=False)[:200]}", False)
 
         # C5: M3 squad each_pays — P5 captain + P2,P3,P4 partners
-        wpre = {t: bal(uid[t], "sky_diamonds") for t in ("p5", "p2", "p3", "p4")}
+        wpre = {t: wallets(uid[t]) for t in ("p5", "p2", "p3", "p4")}
         try:
             picked, acc = join_team("p5", M3, ["p2", "p3", "p4"], "each_pays")
             poll(lambda: (lambda rr: rr if len(rr) >= 4 else None)(jr_rows(M3)), timeout=60, every=3, what="M3 squad rows")
-            wpost = {t: bal(uid[t], "sky_diamonds") for t in wpre}
-            deltas = {t: round(wpre[t] - wpost[t], 2) for t in wpre}
-            ok = all(abs(v - 50) < 0.01 for v in deltas.values())
-            proof("MF20", f"M3 squad each_pays (feeUI={picked}, invites={acc}): 4 rows; sky deltas {deltas} (each 50)", ok)
+            wpost = {t: wallets(uid[t]) for t in wpre}
+            dl = {t: round(wpre[t]["sky_diamonds"] - wpost[t]["sky_diamonds"], 2) for t in wpre}
+            ok = all(abs(v - 50) < 0.01 for v in dl.values())
+            proof("MF20", f"M3 squad each_pays (feeUI={picked}, invites={acc}): 4 rows; sky deltas {dl} (each 50); full={json.dumps(wdelta(wpre, wpost), ensure_ascii=False)}", ok)
         except Exception as e:
-            proof("MF20", f"M3 squad join FAIL: {str(e)[:200]}", False)
+            diagT = rpcU(pages["p5"], "join_match_team", {
+                "p_match_id": M3, "p_mode": "squad", "p_fee_type": "each_pays",
+                "p_team": [{"uid": uid[t], "ign": IGN_OF[t]} for t in ("p5", "p2", "p3", "p4")]})
+            inv_dump = rows(f"select member_uid, status from team_invitations where match_id='{M3}'")
+            proof("MF20", f"M3 squad join FAIL: {str(e)[:120]}; direct join_match_team diag={json.dumps(diagT, ensure_ascii=False)[:200]}; invites={json.dumps(inv_dump, ensure_ascii=False)[:200]}", False)
 
         # C6: already-member P2 ka M3 re-join block
         n2b = len([r for r in jr_rows(M3) if r.get("user_id") == uid["p2"]])
@@ -522,28 +557,34 @@ def main():
         proof("MF29", f"admin cancel M2 → status={st2} resp={json.dumps(can2, ensure_ascii=False)[:110]}",
               str(st2).lower() in ("cancelled", "canceled"))
 
-        g6b, g7b = bal(uid["p6"], "green_diamonds"), bal(uid["p7"], "green_diamonds")
+        wpre2 = {t: wallets(uid[t]) for t in ("p6", "p7")}
+        claims = []
         for r in jr_rows(M2):
             who = "p6" if r.get("user_id") == uid["p6"] else "p7"
-            rpcU(pages[who], "claim_match_refund", {"p_join_id": r.get("id"), "p_uid": r.get("user_id")})
+            cr = rpcU(pages[who], "claim_match_refund", {"p_join_id": r.get("id"), "p_uid": r.get("user_id")})
+            claims.append(f"{who}:{json.dumps(cr.get('data'), ensure_ascii=False)[:80]}")
             time.sleep(1.5)
-        g6c, g7c = bal(uid["p6"], "green_diamonds"), bal(uid["p7"], "green_diamonds")
-        r6, r7 = round(g6c - g6b, 2), round(g7c - g7b, 2)
-        proof("MF30", f"M2 refunds: P6 +{r6} green (want 40 — captain_pays dono slots), P7 +{r7} (want 0)",
-              abs(r6 - 40) < 0.01 and abs(r7) < 0.01)
+        wpost2 = {t: wallets(uid[t]) for t in ("p6", "p7")}
+        dl2 = wdelta(wpre2, wpost2)
+        r6 = (dl2.get("p6") or {}).get("green_diamonds", 0)
+        proof("MF30", f"M2 refunds: claims={claims}; wallet deltas={json.dumps(dl2, ensure_ascii=False)} (want p6 green +40, p7 0)",
+              abs(r6 - 40) < 0.01 and "p7" not in dl2)
+        if abs(r6 - 40) >= 0.01:
+            log("  p6 refund txs: " + json.dumps(txs(uid["p6"]), ensure_ascii=False, default=str)[:500])
 
-        sky_pre = {t: bal(uid[t], "sky_diamonds") for t in ("p5", "p2", "p3", "p4")}
+        wpre3 = {t: wallets(uid[t]) for t in ("p5", "p2", "p3", "p4")}
         can3 = rpcU(admin, "cancel_match_with_refunds", {"p_match_id": M3})
         st3 = (q1(f"select {sc} as s from matches where id='{M3}'") or {}).get("s")
         for r in jr_rows(M3):
             u = r.get("user_id")
-            tg = next((t for t in sky_pre if uid[t] == u), None)
+            tg = next((t for t in wpre3 if uid[t] == u), None)
             if tg:
                 rpcU(pages[tg], "claim_match_refund", {"p_join_id": r.get("id"), "p_uid": u})
                 time.sleep(1.2)
-        sky_post = {t: bal(uid[t], "sky_diamonds") for t in sky_pre}
-        rd = {t: round(sky_post[t] - sky_pre[t], 2) for t in sky_pre}
-        proof("MF31", f"admin cancel M3 (status={st3}) → sky refunds {rd} (each want 50)",
+        wpost3 = {t: wallets(uid[t]) for t in wpre3}
+        dl3 = wdelta(wpre3, wpost3)
+        rd = {t: (dl3.get(t) or {}).get("sky_diamonds", 0) for t in wpre3}
+        proof("MF31", f"admin cancel M3 (status={st3}) → sky refunds {rd} (each want 50); full={json.dumps(dl3, ensure_ascii=False)}",
               str(st3).lower() in ("cancelled", "canceled") and all(abs(v - 50) < 0.01 for v in rd.values()))
 
         # ══ PHASE F: results with OWNER's real screenshot data ═══════════════
