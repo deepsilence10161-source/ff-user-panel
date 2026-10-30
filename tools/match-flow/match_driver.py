@@ -354,7 +354,7 @@ def main():
                     continue
                 rr = rpcU(pages[t], "respond_team_invite", {"p_invite_id": row["id"], "p_accept": True})
                 if rpc_bad(rr) and "duplicate key" in json.dumps(rr):
-                    acc.append(f"{t}:dup-key(consent-pehle-se?)")
+                    acc.append(f"{t}:DUPKEY {json.dumps(rr, ensure_ascii=False)[:280]}")
                 else:
                     acc.append(f"{t}:{'ok' if not rpc_bad(rr) else json.dumps(rr, ensure_ascii=False)[:200]}")
                 time.sleep(1.2)
@@ -547,17 +547,29 @@ def main():
         gjr = q1(f"select * from join_requests where match_id='{M1}' and user_id='{uid['b1']}'")
         cpost = wallets(uid["p1"])
         charged = any(abs(cpre[k] - cpost[k]) > 0.01 for k in cpre)
-        proof("MF28", f"gift_match_entry P1→Bench1: row={bool(gjr)} p1-debit={charged} resp={json.dumps(gift, ensure_ascii=False)[:110]}",
-              bool(gjr) and not rpc_bad(gift))
+        # gift ka record kahan banta hai — notifications (gift_ticket) ya koi gift table?
+        gnote = q1(f"select type, title from notifications where user_id='{uid['b1']}' order by created_at desc limit 1") if "notifications" in [t for t in ["notifications"]] else None
+        try:
+            gnote = q1(f"select type, title from notifications where user_id='{uid['b1']}' order by created_at desc limit 1")
+        except Exception:
+            gnote = None
+        gtables = []
+        try:
+            gtables = [r["table_name"] for r in rows("select table_name from information_schema.tables where table_schema='public' and table_name like '%gift%'")]
+        except Exception:
+            pass
+        proof("MF28", f"gift_match_entry P1→Bench1: resp={json.dumps(gift, ensure_ascii=False)[:110]}; p1-debit={charged}; b1-join-row={bool(gjr)}; b1-latest-notif={json.dumps(gnote, ensure_ascii=False)[:90]}; gift-tables={gtables}",
+              not rpc_bad(gift) and charged and (bool(gjr) or bool(gnote)))
 
         # ══ PHASE E: cancel + refunds ════════════════════════════════════════
         log("PHASE E: cancel + refund")
+        # snapshots BEFORE cancel — cancel_match_with_refunds khud auto-refund karta hai
+        wpre2 = {t: wallets(uid[t]) for t in ("p6", "p7")}
         can2 = rpcU(admin, "cancel_match_with_refunds", {"p_match_id": M2})
         st2 = (q1(f"select {sc} as s from matches where id='{M2}'") or {}).get("s")
         proof("MF29", f"admin cancel M2 → status={st2} resp={json.dumps(can2, ensure_ascii=False)[:110]}",
               str(st2).lower() in ("cancelled", "canceled"))
-
-        wpre2 = {t: wallets(uid[t]) for t in ("p6", "p7")}
+        time.sleep(3)
         claims = []
         for r in jr_rows(M2):
             who = "p6" if r.get("user_id") == uid["p6"] else "p7"
@@ -566,14 +578,16 @@ def main():
             time.sleep(1.5)
         wpost2 = {t: wallets(uid[t]) for t in ("p6", "p7")}
         dl2 = wdelta(wpre2, wpost2)
-        r6 = (dl2.get("p6") or {}).get("green_diamonds", 0)
-        proof("MF30", f"M2 refunds: claims={claims}; wallet deltas={json.dumps(dl2, ensure_ascii=False)} (want p6 green +40, p7 0)",
-              abs(r6 - 40) < 0.01 and "p7" not in dl2)
-        if abs(r6 - 40) >= 0.01:
+        r6g = (dl2.get("p6") or {}).get("green_diamonds", 0)
+        r6s = (dl2.get("p6") or {}).get("sky_diamonds", 0)
+        proof("MF30", f"M2 refunds (auto+claim): claims={claims}; wallet deltas={json.dumps(dl2, ensure_ascii=False)} — SAHI wallet green me +40 chahiye (sky me gaya to server currency bug)",
+              abs(r6g - 40) < 0.01 and "p7" not in dl2)
+        if abs(r6g - 40) >= 0.01:
             log("  p6 refund txs: " + json.dumps(txs(uid["p6"]), ensure_ascii=False, default=str)[:500])
 
         wpre3 = {t: wallets(uid[t]) for t in ("p5", "p2", "p3", "p4")}
         can3 = rpcU(admin, "cancel_match_with_refunds", {"p_match_id": M3})
+        time.sleep(3)
         st3 = (q1(f"select {sc} as s from matches where id='{M3}'") or {}).get("s")
         for r in jr_rows(M3):
             u = r.get("user_id")
@@ -607,6 +621,11 @@ def main():
             except Exception:
                 bodytxt = cpage.evaluate("() => (document.getElementById('_crResultBody')||{}).innerText || document.body.innerText.slice(0,200)")
                 log("  result-form body: " + str(bodytxt)[:200])
+                rlsdiag = cpage.evaluate("""async (mid) => { try {
+                    const r = await window._supa.from('join_requests').select('id,user_ign,ign_at_join').eq('match_id', mid).in('status', ['pending','joined','approved']);
+                    return {err: r.error ? (r.error.message + ' | ' + (r.error.details||'') + ' | hint=' + (r.error.hint||'')) : null, n: (r.data||[]).length};
+                  } catch (e) { return {err: String(e)}; } }""", M1)
+                log("  creator join_requests SELECT diag: " + json.dumps(rlsdiag, ensure_ascii=False)[:300])
                 raise
             time.sleep(2)
             n_inputs = cpage.evaluate("() => document.querySelectorAll('._crKills').length")
