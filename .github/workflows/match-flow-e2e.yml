@@ -93,6 +93,7 @@ jobs:
         with:
           node-version: 20
       - uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: mf-state-${{ needs.seed.outputs.run }}
           path: /tmp/mfst

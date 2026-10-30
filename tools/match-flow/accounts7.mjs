@@ -76,7 +76,7 @@ for (let b = 1; b <= 5; b++) ROSTER.push({ tag: `b${b}`, email: `qa-mf7-${RUN}-b
 
 if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
   console.log(`[cleanup] run=${RUN}`);
-  const { data: us } = await (async () => ({ data: await sql(`select id from users where email like 'qa-mf7-${RUN}-%'`) }))();
+  const { data: us } = await (async () => ({ data: await sql(`select id from users where email like 'qa-mf7-${RUN}-%' or ff_uid like 'MF7R${RUN}%'`) }))();
   const ids = (us || []).map(u => `'${u.id}'`).join(',');
   if (ids) {
     await sql(`delete from join_requests where user_id in (${ids}) or creator_uid in (${ids})`);
@@ -96,11 +96,11 @@ if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
   for (const r of ROSTER) { try { const s = await fbSignIn(r.email, pwFor(r.email)); if (await fbDelete(s.idToken)) fbDel++; } catch { /* already deleted */ } }
   console.log(`[firebase] ${fbDel}/${ROSTER.length} accounts deleted`);
   const residue = await sql(`select
-    (select count(*) from users where email like 'qa-mf7-${RUN}-%') u,
-    (select count(*) from admins a join users uu on uu.id=a.uid where uu.email like 'qa-mf7-${RUN}-%') adm,
-    (select count(*) from matches m join users uu on uu.id=m.creator_uid where uu.email like 'qa-mf7-${RUN}-%') m,
-    (select count(*) from join_requests j join users uu on uu.id=j.user_id where uu.email like 'qa-mf7-${RUN}-%') jr,
-    (select count(*) from wallet_transactions w join users uu on uu.id=w.user_id where uu.email like 'qa-mf7-${RUN}-%') w`);
+    (select count(*) from users where email like 'qa-mf7-${RUN}-%' or ff_uid like 'MF7R${RUN}%') u,
+    (select count(*) from admins a join users uu on uu.id=a.uid where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) adm,
+    (select count(*) from matches m join users uu on uu.id=m.creator_uid where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) m,
+    (select count(*) from join_requests j join users uu on uu.id=j.user_id where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) jr,
+    (select count(*) from wallet_transactions w join users uu on uu.id=w.user_id where (uu.email like 'qa-mf7-${RUN}-%' or uu.ff_uid like 'MF7R${RUN}%')) w`);
   const R = residue?.[0] || residue;
   const zero = R && Number(R.u) === 0 && Number(R.adm) === 0 && Number(R.m) === 0 && Number(R.jr) === 0 && Number(R.w) === 0;
   console.log(`[residue] ${JSON.stringify(R)} → ${zero ? 'CLEAN ✅' : 'RESIDUE ❌'}`);
@@ -125,9 +125,9 @@ for (const r of ROSTER) {
   const ffuid = `MF7R${RUN}${r.tag.toUpperCase()}`;
   await sql(`alter table users add column if not exists is_creator boolean default false`);
   await sql(`alter table users add column if not exists green_diamonds numeric default 0`);
-  await sql(`insert into users (id, ign, is_admin, is_creator, coins, green_diamonds, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at, accepted_policy, accepted_policy_at, profile_status)
-             values ('${uid}', $ign$${r.ign}$ign$, ${r.is_admin}, ${r.is_creator}, 5000, 500, 500, '${ffuid}', 'Haryana', '2000-01-01', true, now(), true, now(), 'approved')
-             on conflict (id) do update set ign = excluded.ign, is_creator = excluded.is_creator, is_admin = excluded.is_admin, coins = 5000, green_diamonds = 500, sky_diamonds = 500, ff_uid = excluded.ff_uid, profile_status = 'approved';`);
+  await sql(`insert into users (id, email, ign, is_admin, is_creator, coins, green_diamonds, sky_diamonds, ff_uid, state, date_of_birth, age_verified, age_verified_at, accepted_policy, accepted_policy_at, profile_status)
+             values ('${uid}', '${r.email}', $ign$${r.ign}$ign$, ${r.is_admin}, ${r.is_creator}, 5000, 500, 500, '${ffuid}', 'Haryana', '2000-01-01', true, now(), true, now(), 'approved')
+             on conflict (id) do update set email = excluded.email, ign = excluded.ign, is_creator = excluded.is_creator, is_admin = excluded.is_admin, coins = 5000, green_diamonds = 500, sky_diamonds = 500, ff_uid = excluded.ff_uid, profile_status = 'approved';`);
   if (r.is_admin) await sql(`insert into admins (uid, email, display_name, role, added_by, is_active) values ('${uid}', '${r.email}', 'QA MF7 ${RUN}', 'admin', 'match-flow-e2e', true) on conflict (uid) do update set is_active = true, role = 'admin'`);
   state.accounts[r.tag] = { email: r.email, password, uid, ign: r.ign, ff_uid: ffuid, is_creator: r.is_creator, is_admin: r.is_admin };
   console.log(`  ✓ ${r.tag} ${r.email} uid=${uid} ign=${r.ign}`);
