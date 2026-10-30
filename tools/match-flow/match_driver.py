@@ -458,6 +458,11 @@ def main():
           } catch (e) { return {err: String(e)}; }
         }""")
         log("  p6 UD-green diag: " + json.dumps(udd, ensure_ascii=False))
+        pages["p6"].evaluate("() => { try { navTo('matches'); } catch(e){} }")
+        pages["p6"].wait_for_function("(id) => window.MT && window.MT[id]", arg=M2, timeout=60000)
+        mtdiag = pages["p6"].evaluate("""(mid) => { const t = window.MT[mid] || {};
+          return {entryType: t.entryType, type: t.type, entryFee: t.entryFee, fee: t.fee, mode: t.mode, src: t._src, keys: Object.keys(t).slice(0, 40)}; }""", M2)
+        log("  MT[M2] diag: " + json.dumps(mtdiag, ensure_ascii=False)[:500])
         pre6 = {t: wallets(uid[t]) for t in ("p6", "p7")}
         try:
             picked, acc = join_team("p6", M2, ["p7"], "captain_pays")
@@ -467,7 +472,7 @@ def main():
             fc = fee_cols(jr2)
             ok = abs((dl.get("p6") or {}).get("green_diamonds", 0) + 40) < 0.01 and "p7" not in dl
             btn_ok = getattr(join_team, "last_btn", "?") == "clicked"
-            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, btn={getattr(join_team,'last_btn','?')}, invites={acc}; UDdiag={json.dumps(udd, ensure_ascii=False)[:180]}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok and btn_ok)
+            proof("MF19", f"M2 duo captain_pays (feeUI={picked}, btn={getattr(join_team,'last_btn','?')}, invites={acc}; UDdiag={json.dumps(udd, ensure_ascii=False)[:140]} MTdiag={json.dumps(mtdiag, ensure_ascii=False)[:220]}): {len(jr2)} rows; wallet deltas={json.dumps(dl, ensure_ascii=False)} (want p6 green -40, p7 0); jr fees={json.dumps(fc, ensure_ascii=False)[:160]}", ok and btn_ok)
             if not ok:
                 log("  p6 txs: " + json.dumps(txs(uid["p6"]), ensure_ascii=False, default=str)[:500])
         except Exception as e:
