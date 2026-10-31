@@ -144,23 +144,103 @@ var wfStep = 0, wfAmt = 0, wfScreenshot = "";
    All other data → Supabase via window.DB or window._supa */
 console.log("[Firebase] Analytics + Auth ready | Data → Supabase");
 
-/* ── Firebase Cloud Messaging (FCM) — for web push on browsers ── */
-/* OneSignal handles most push, but FCM token needed for browsers without OneSignal */
+/* ════ Firebase Cloud Messaging (FCM) — AB EK-MATRA PUSH PATH ════
+   OneSignal → FCM migration (2026-10-31): OneSignal ka free mobile-push
+   1,000 MAU par cap ho gaya tha (1-Oct-2026 se LIVE). FCM direct =
+   $0 + unlimited (research: reports/push-tools-comparison-2026-10-31.html).
+   Token flow:
+     login → _bindPushIdentity(uid)
+       • APK WebView: Android.fcmSyncToken bridge → _onNativeFcmToken(token)
+       • Browser:     messaging.getToken({vapidKey, serviceWorkerRegistration})
+     → push-token edge fn (Firebase idToken RS256 verified) → user_push_tokens
+   Background display: sw.js (FCM block). Foreground: onMessage → toast. */
 window.messaging = null;
 window.VAPID_KEY = 'BCxMf_HYHFdoRgI0-9YZZL9aU7tkoBaWEsAJXOsijzgCz1VxGCUBhSqbkqdLFpJ-TbVXR_hKb_ykENVCvQ7TGFY';
+window.PUSH_FN_URL = (window.SUPABASE_URL || 'https://hddhkculuyrfoevxmlwy.supabase.co') + '/functions/v1/push-token';
+window._PUSH_ANON_KEY = window._SUPA_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
+
+/* push-token edge fn call — Authorization: Firebase idToken (server par RS256 verify) */
+window._pushTokenCall = function(action, platform, token, cb) {
+  try {
+    var auth = window.auth && window.auth.currentUser;
+    if (!auth || !auth.getIdToken) { if (cb) cb(false); return; }
+    auth.getIdToken().then(function(idTok) {
+      fetch(window.PUSH_FN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': window._PUSH_ANON_KEY,
+          'Authorization': 'Bearer ' + idTok
+        },
+        body: JSON.stringify({ action: action, platform: platform, token: token })
+      }).then(function(r) { return r.json().catch(function() { return {}; }); })
+        .then(function(j) { if (cb) cb(!!(j && j.ok)); })
+        .catch(function() { if (cb) cb(false); });
+    }).catch(function() { if (cb) cb(false); });
+  } catch (e) { if (cb) cb(false); }
+};
+
+/* Native (APK) se token aaye → DB me upsert (bridge callback) */
+window._onNativeFcmToken = function(token) {
+  try {
+    if (token && token.length > 20) {
+      window._fcmTokenAndroid = token;
+      window._pushTokenCall('set', 'android', token);
+    }
+  } catch (e) { }
+};
+
+/* Native foreground push → in-app toast (system-tray me notification service bhi dikhata hai) */
+window._onNativePush = function(title, body, url) {
+  try { window._lastPushPayload = { data: { title: title || '', body: body || '', url: url || '' } }; } catch (e) { }
+  try { if (window.toast && title) window.toast('🔔 ' + title + (body ? ': ' + body : ''), 'inf'); } catch (e) { }
+};
+
+/* Notification tap → app khulti hai (native PendingIntent); url mile to wahi page */
+window._onPushTap = function(url) {
+  try { if (url && /^https?:\/\//.test(url)) window.location.href = url; } catch (e) { }
+};
+
+/* LOGIN bind: native bridge + web getToken + OneSignal SW cleanup (ek-baar) */
+window._bindPushIdentity = function(uid) {
+  if (!uid) return;
+  window._pushUid = uid;
+  try {
+    if (window.Android && typeof window.Android.fcmSyncToken === 'function') {
+      window.Android.fcmSyncToken('_onNativeFcmToken');
+    }
+  } catch (e) { }
+  try { if (window._getFCMToken) window._getFCMToken(); } catch (e) { }
+  try {
+    if (!localStorage.getItem('_mes_oss_sw_cleaned') && navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) {
+          var u = (r.active && r.active.scriptURL) || '';
+          if (u.indexOf('OneSignal') !== -1) { try { r.unregister(); } catch (e) { } }
+        });
+      }).catch(function() { });
+      localStorage.setItem('_mes_oss_sw_cleaned', '1');
+    }
+  } catch (e) { }
+};
+
+/* LOGOUT unbind: is device ke tokens DB se delete — अगले user को पिछले के pushes न मिलें */
+window._unbindPushIdentity = function() {
+  try { if (window._fcmTokenAndroid) window._pushTokenCall('delete', 'android', window._fcmTokenAndroid); } catch (e) { }
+  try { if (window._fcmToken) window._pushTokenCall('delete', 'web', window._fcmToken); } catch (e) { }
+};
+
 try {
   if (firebase.messaging && 'serviceWorker' in navigator) {
     window.messaging = _fireApp.messaging();
-    console.log("[Firebase] FCM Messaging ready");
-    /* Get FCM token after user grants notification permission */
+    console.log("[Firebase] FCM Messaging ready (OneSignal-migration 2026-10-31)");
+    /* WEB token: permission granted par getToken → push-token fn → user_push_tokens */
     window._getFCMToken = function() {
       if (!window.messaging) return;
-      /* ✅ Bug 37 Fix: Check permission before calling getToken */
       if (typeof Notification !== 'undefined' && Notification.permission === 'denied') {
         console.log('[FCM] Notification permission denied — skipping getToken');
         return;
       }
-      /* Request permission first if not granted */
       if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
         Notification.requestPermission().then(function(perm) {
           if (perm === 'granted') window._getFCMToken();
@@ -168,29 +248,34 @@ try {
         });
         return;
       }
-      window.messaging.getToken({ vapidKey: window.VAPID_KEY })
-        .then(function(token) {
-          if (token) {
-            console.log('[FCM] Token obtained:', token.substring(0,20) + '...');
-            /* Save to user record so admin can target them */
-            if (window.U && window._supa) {
+      navigator.serviceWorker.ready.then(function(reg) {
+        return window.messaging.getToken({ vapidKey: window.VAPID_KEY, serviceWorkerRegistration: reg });
+      }).then(function(token) {
+        if (token) {
+          console.log('[FCM] Token obtained: …' + token.slice(-6));
+          window._fcmToken = token;
+          window._pushTokenCall('set', 'web', token);
+          /* Backward-compat: purana users.fcm_token column bhi bhara jata rahega */
+          if (window.U && window._supa) {
+            try {
               window._supa.from('users').update({ fcm_token: token, fcm_updated_at: new Date().toISOString() })
                 .eq('id', window.U.uid).then(null, function(){});
-            }
-            window._fcmToken = token;
+            } catch (e) { }
           }
-        })
-        .catch(function(err) {
-          /* Notification permission denied or blocked — expected in many cases */
-          console.warn('[FCM] Token error (normal if notifications denied):', err.code || err.message);
-        });
+        }
+      }).catch(function(err) {
+        /* Notification permission denied/blocked — expected in many cases */
+        console.warn('[FCM] Token error (normal if notifications denied):', (err && (err.code || err.message)) || err);
+      });
     };
-    /* Background message handler */
+    /* Foreground message → in-app toast + E2E hook (_lastPushPayload) */
     window.messaging.onMessage(function(payload) {
       console.log('[FCM] Foreground message:', payload);
-      /* Show in-app toast for foreground messages */
-      if (window.toast && payload.notification) {
-        window.toast('🔔 ' + (payload.notification.title || 'Notification') + ': ' + (payload.notification.body || ''), 'inf');
+      try { window._lastPushPayload = payload; } catch (e) { }
+      if (window.toast && payload && (payload.notification || payload.data)) {
+        var t = (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || 'Notification';
+        var b = (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || '';
+        window.toast('🔔 ' + t + (b ? ': ' + b : ''), 'inf');
       }
     });
   }

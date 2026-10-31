@@ -10,6 +10,7 @@ on:
       - "supabase/config.toml"
       - "supabase/functions/imgbb-upload/**"
       - "supabase/functions/push-send/**"
+      - "supabase/functions/push-token/**"
 
 permissions:
   contents: read
@@ -30,6 +31,7 @@ jobs:
       ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
       ONESIGNAL_REST_KEY: ${{ secrets.ONESIGNAL_REST_KEY }}
       ONESIGNAL_TRIGGER_SECRET: ${{ secrets.ONESIGNAL_TRIGGER_SECRET }}
+      FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
       SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po' }}
 
     steps:
@@ -66,6 +68,14 @@ jobs:
         shell: bash
         run: supabase secrets set ONESIGNAL_APP_ID="$ONESIGNAL_APP_ID" ONESIGNAL_REST_KEY="$ONESIGNAL_REST_KEY" ONESIGNAL_TRIGGER_SECRET="$ONESIGNAL_TRIGGER_SECRET" --project-ref "$PROJECT_REF"
 
+      # FCM (2026-10-31): service-account key = push-send ka OAuth2 signing key.
+      # Rotation: GH repo secret FIREBASE_SERVICE_ACCOUNT_JSON badlo → yeh
+      # workflow (push/dispatch) chalega → Supabase secret apne aap sync.
+      - name: Sync Firebase FCM service-account secret
+        if: ${{ env.FIREBASE_SERVICE_ACCOUNT_JSON != '' }}
+        shell: bash
+        run: supabase secrets set FIREBASE_SERVICE_ACCOUNT_JSON="$FIREBASE_SERVICE_ACCOUNT_JSON" --project-ref "$PROJECT_REF"
+
       - name: Deploy imgbb-upload
         shell: bash
         run: supabase functions deploy imgbb-upload --project-ref "$PROJECT_REF" --no-verify-jwt
@@ -77,6 +87,13 @@ jobs:
       - name: Deploy push-send
         shell: bash
         run: supabase functions deploy push-send --project-ref "$PROJECT_REF"
+
+      # push-token (FCM migration, 2026-10-31): client token registration —
+      # verify_jwt OFF (imgbb jaisa gateway pass-through; function-level
+      # Firebase-idToken RS256 auth hi asli gate hai).
+      - name: Deploy push-token
+        shell: bash
+        run: supabase functions deploy push-token --project-ref "$PROJECT_REF" --no-verify-jwt
 
       - name: Verify deployment and gateway configuration
         shell: bash
@@ -112,3 +129,18 @@ jobs:
 
           echo "Image upload function successfully deployed."
           echo "Function-level Firebase authentication correctly active hai."
+
+          # push-token (FCM migration) ka auth-gate bhi verify karo:
+          # bina identity 401 "Login required" aana chahiye.
+          PT_URL="https://${PROJECT_REF}.supabase.co/functions/v1/push-token"
+          PT_STATUS="$(curl --silent --output "$BODY_FILE" --write-out "%{http_code}" --request POST "$PT_URL" \
+            --header "Content-Type: application/json" \
+            --header "apikey: ${SUPABASE_ANON_KEY}" \
+            --data '{"action":"set","platform":"web","token":"healthcheck-token-000000"}')"
+          PT_BODY="$(cat "$BODY_FILE")"
+          echo "push-token health: HTTP $PT_STATUS — $PT_BODY"
+          if [ "$PT_STATUS" != "401" ] || ! echo "$PT_BODY" | grep -q "Login required"; then
+            echo "::error::push-token auth gate galat jawab de raha hai (401 Login required chahiye tha)."
+            exit 1
+          fi
+          echo "push-token auth gate verified (401 Login required bina identity ke)."

@@ -179,21 +179,10 @@
   }, 200, 10000);
 
   /* =============================================================
-     BUG #24 FIX: OneSignal retry spam — replace any rapid retry
-     loops with sensible backoff (3s intervals, max 5 attempts)
+     BUG #24 (OneSignal retry backoff) — OBSOLETE (2026-10-31):
+     OneSignal → Firebase FCM migration me web SDK hi hata diya;
+     _loadOneSignalSafe ki zaroorat khatam (koi caller nahi bacha).
   ============================================================= */
-  (function() {
-    var _osLoadAttempts = 0, _osTimer = null;
-    window._loadOneSignalSafe = function() {
-      if (window.OneSignalDeferred) return; /* Already loaded */
-      if (_osLoadAttempts >= 5) return; /* Give up */
-      _osLoadAttempts++;
-      _osTimer = setTimeout(function() {
-        if (!window.OneSignalDeferred) window._loadOneSignalSafe();
-      }, 3000); /* 3s between retries, not 500ms */
-    };
-    console.log('[Fix v29] Bug #24: OneSignal retry backoff installed (3s × 5)');
-  })();
 
   /* =============================================================
      BUG #25 FIX: Room reveal — show room immediately if

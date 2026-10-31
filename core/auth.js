@@ -362,10 +362,14 @@ async function _handleSignIn(user) {
     });
   }
 
-  /* Save OneSignal tag */
-  if (window._saveOneSignalId) window._saveOneSignalId(user.uid);
-  /* R23: APK में native OneSignal-SDK से user-bind (external_id = uid) —
-     इसी से server का push-send सही user को native notification भेज पाता है। */
+  /* FCM (2026-10-31): push identity bind — native bridge token-sync +
+     web getToken → push-token edge fn → user_push_tokens table */
+  if (window._bindPushIdentity) window._bindPushIdentity(user.uid);
+  else if (window._saveOneSignalId) window._saveOneSignalId(user.uid);
+  /* TRANSITION (purane APK): unme native OneSignal SDK bundled hai — osLogin
+     se external_id bind hota hai aur server-side push-send ka OneSignal
+     fallback unhe deliver karta hai. Naye APK me yeh method hai hi nahi
+     (typeof-guard se no-op). Old-APK adoption khatam hone par block hatana. */
   try {
     if (window.Android && typeof window.Android.osLogin === 'function') {
       window.Android.osLogin(user.uid);
@@ -399,7 +403,10 @@ window.doLogout = function() {
     }
   } catch(e) {}
 
-  /* R23: native OneSignal unbind — अगले user को पिछले के pushes न मिलें */
+  /* FCM (2026-10-31): is device ke tokens DB se unbind — अगले user को
+     पिछले user के pushes न मिलें */
+  try { if (window._unbindPushIdentity) window._unbindPushIdentity(); } catch(e) {}
+  /* TRANSITION: purane APK ka native OneSignal unbind (naye APK me no-op) */
   try {
     if (window.Android && typeof window.Android.osLogout === 'function') {
       window.Android.osLogout();

@@ -1,0 +1,180 @@
+name: push-e2e (FCM live proof)
+
+# ═══════════════════════════════════════════════════════════════════
+#  PUSH-E2E — OneSignal→FCM migration ka LIVE end-to-end proof.
+#  Chain (sab ASLI, koi mock nahi):
+#    WEB leg    : Playwright browser login → FCM web token (VAPID+SW)
+#                 → push-token edge fn (RS256 verified) → DB row →
+#                 notifications INSERT → hook → pg_net → push-send →
+#                 FCM HTTP v1 → browser me LIVE receipt + toast.
+#    ANDROID leg: release APK emulator par → ASLI device FCM token
+#                 (adb-gated logcat) → token row + notification →
+#                 FCM → emulator par notification (logcat marker +
+#                 dumpsys notification proof + screenshot).
+#  Cleanup job hamesha chalta hai (0 residue).
+#  REQUIRE: Supabase secret FIREBASE_SERVICE_ACCOUNT_JSON (warna
+#  PUSH04 via=onesignal/none par FAIL karega — clear message ke saath).
+# ═══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_tag:
+        description: "Run tag (khali = auto timestamp)"
+        required: false
+        default: ""
+
+concurrency:
+  group: push-e2e
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.mkrun.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - id: mkrun
+        run: |
+          RUN="${{ github.event.inputs.run_tag }}"
+          if [ -z "$RUN" ]; then RUN="pe$(date +%Y%m%d%H%M%S)"; fi
+          echo "run=$RUN" >> "$GITHUB_OUTPUT"
+      - name: QA account banao (Firebase + state)
+        env:
+          MF_SALT: ${{ secrets.TRI_SALT }}
+        run: node tools/push-e2e/accounts_push.mjs --create --run "${{ steps.mkrun.outputs.run }}" --out /tmp/pe-state.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pe-state-${{ steps.mkrun.outputs.run }}
+          path: /tmp/pe-state.json
+          retention-days: 2
+
+  pages-ready:
+    needs: seed
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: GitHub Pages par naya FCM code live hone ka intezar
+        run: |
+          BASE=https://deepsilence10161-source.github.io/ff-user-panel
+          for i in $(seq 1 40); do
+            code=$(curl -s -o /tmp/idx.html -w '%{http_code}' "$BASE/index.html?cb=$RANDOM" || true)
+            if [ "$code" = "200" ] && grep -q "firebase-messaging-compat" /tmp/idx.html; then
+              echo "✅ Pages par FCM code LIVE (try $i)"; exit 0
+            fi
+            echo "try $i: code=$code marker=$(grep -c firebase-messaging-compat /tmp/idx.html 2>/dev/null || echo 0)"
+            sleep 15
+          done
+          echo "::error::Pages par naya code 10 min me live nahi hua"
+          exit 1
+
+  web:
+    needs: [seed, pages-ready]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: pe-state-${{ needs.seed.outputs.run }}
+          path: /tmp/pest
+      - name: Playwright install
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Push driver (asli browser + asli FCM chain)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          python3 tools/push-e2e/push_driver.py \
+            --run "${{ needs.seed.outputs.run }}" \
+            --state /tmp/pest/pe-state.json \
+            --out /tmp/pe-web-out.json \
+            --shots pe-shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pe-web-${{ needs.seed.outputs.run }}
+          path: |
+            pe-shots/
+            /tmp/pe-web-out.json
+          retention-days: 7
+
+  android:
+    needs: [seed, pages-ready]
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: pe-state-${{ needs.seed.outputs.run }}
+          path: /tmp/pest
+      - name: Latest release APK download
+        run: |
+          rm -f MiniEsports.apk
+          curl -fL -o MiniEsports.apk \
+            "https://github.com/${{ github.repository }}/releases/latest/download/MiniEsports.apk"
+          ls -la MiniEsports.apk
+          sha256sum MiniEsports.apk
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm || true
+      - name: Emulator push E2E (asli APK → FCM token → asli notification)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./tools/push-e2e/emulator_push_e2e.sh /tmp/pest/pe-state.json "${{ needs.seed.outputs.run }}"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pe-android-${{ needs.seed.outputs.run }}
+          path: |
+            pe-android.png
+            notif-dump.txt
+            /tmp/pe-android-out.txt
+          retention-days: 7
+
+  cleanup:
+    needs: [seed, web, android]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: pe-state-${{ needs.seed.outputs.run }}
+          path: /tmp/pest
+      - name: Sab QA data delete karo (0 residue)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MF_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          node tools/push-e2e/accounts_push.mjs --cleanup --run "${{ needs.seed.outputs.run }}" --state /tmp/pest/pe-state.json || true
+          node tools/push-e2e/android_seed.mjs --cleanup-android --run "${{ needs.seed.outputs.run }}" --state /tmp/pest/pe-state.json || true

@@ -50,11 +50,24 @@ public class MyApplication extends Application {
             }
         });
 
-        // OneSignal init — try-catch zaroori hai. Agar SDK fail ho (version
-        // mismatch, bad config, etc.) to bhi poora app crash nahi karega,
-        // sirf push-notification feature skip ho jayega.
-        /* R23: सारे OneSignal calls केंद्रीकृत OneSignalManager wrapper से */
-        OneSignalManager.initialize(this);
+        /* FCM (2026-10-31, OneSignal → Firebase migration): notification
+           channel — Android 8+ par FcmMessagingService isi channel
+           ("ff_push", IMPORTANCE_HIGH) par notifications dikhata hai.
+           Channel pehle se bana hona zaroori hai, warna notification
+           silently drop hoti hai. */
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= 26) {
+                android.app.NotificationManager nm = getSystemService(android.app.NotificationManager.class);
+                if (nm != null && nm.getNotificationChannel(FcmMessagingService.CHANNEL_ID) == null) {
+                    android.app.NotificationChannel ch = new android.app.NotificationChannel(
+                        FcmMessagingService.CHANNEL_ID,
+                        "Match alerts & notifications",
+                        android.app.NotificationManager.IMPORTANCE_HIGH);
+                    ch.setDescription("Mini eSports push notifications — match reminders, results, rewards");
+                    nm.createNotificationChannel(ch);
+                }
+            }
+        } catch (Throwable ignored) { }
     }
 
     private void saveCrash(String label, Throwable t) {

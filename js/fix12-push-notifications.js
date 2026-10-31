@@ -157,8 +157,8 @@
       if ('serviceWorker' in navigator && window._swRegistration) {
         window._swRegistration.showNotification(title, {
           body:    body,
-          icon:    opts.icon    || 'icons/icon-192x192.png?v=20261031b',
-          badge:   opts.badge   || 'icons/icon-96x96.png?v=20261031b',
+          icon:    opts.icon    || 'icons/icon-192x192.png?v=20261031c',
+          badge:   opts.badge   || 'icons/icon-96x96.png?v=20261031c',
           vibrate: opts.vibrate || [200, 100, 200],
           tag:     opts.tag     || 'mes-notif',
           data:    opts.data    || {},
@@ -168,8 +168,8 @@
         /* Fallback: basic Notification API */
         var n = new Notification(title, {
           body:    body,
-          icon:    opts.icon  || 'icons/icon-192x192.png?v=20261031b',
-          badge:   opts.badge || 'icons/icon-96x96.png?v=20261031b',
+          icon:    opts.icon  || 'icons/icon-192x192.png?v=20261031c',
+          badge:   opts.badge || 'icons/icon-96x96.png?v=20261031c',
           tag:     opts.tag   || 'mes-notif'
         });
         setTimeout(function() { n.close(); }, opts.duration || 8000);
@@ -205,12 +205,10 @@
     requestPermission(function(ok) {
       if (ok) {
         db.ref('users/' + U.uid).update({ notifEnabled: true, notifUpdatedAt: firebase.database.ServerValue.TIMESTAMP });
-        /* Save FCM token if available */
-        if (window.messaging) {
-          window.messaging.getToken({ vapidKey: window.VAPID_KEY }).then(function(token) {
-            if (token) db.ref('users/' + U.uid + '/fcmToken').set(token);
-          }).catch(function() {});
-        }
+        /* FCM (2026-10-31): token ab user_push_tokens me jata hai —
+           _getFCMToken → push-token edge fn (verified write). Purana
+           RTDB fcmToken write hataya (RTDB sirf support/ chat ke liye). */
+        if (window._getFCMToken) { try { window._getFCMToken(); } catch(e) {} }
       }
     });
   };

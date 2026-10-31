@@ -124,16 +124,11 @@
      Dono panels same version use karein */
 
   
-  /* ── ONESIGNAL: Save player ID after login ── */
+  /* ── PUSH identity (2026-10-31: OneSignal → FCM migration) ──
+     Purana naam sirf ALIAS hai — koi purani cached JS isse call kare to
+     naya FCM binder chale. OneSignalDeferred raasta poora khatam. */
   window._saveOneSignalId = function(uid) {
-    try {
-      if (window.OneSignalDeferred) {
-        OneSignalDeferred.push(function(OneSignal) {
-          OneSignal.login(uid).catch(function(){});
-          OneSignal.User.PushSubscription.optIn().catch(function(){});
-        });
-      }
-    } catch(e) {}
+    try { if (uid && window._bindPushIdentity) window._bindPushIdentity(uid); } catch(e) {}
   };
 
   /* ── APP URL ── */

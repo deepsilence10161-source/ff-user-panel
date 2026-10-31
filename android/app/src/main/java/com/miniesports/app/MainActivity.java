@@ -198,10 +198,10 @@ public class MainActivity extends AppCompatActivity {
         showLastCrashIfAny();
         setContentView(R.layout.activity_main);
 
-        /* R23: OneSignal verification-dialog — subscription server पर register
-           होते ही एक बार दिखता है; notification-permission सिर्फ उसके
-           "Got it" button से माँगी जाती है (launch पर नहीं)। */
-        OneSignalManager.setupPushSubscriptionObserver(this);
+        /* FCM (2026-10-31, OneSignal→Firebase migration): OneSignalManager ka
+           duplicate permission-observer HATA diya — POST_NOTIFICATIONS request
+           _missingCorePerms()/_askCorePerms() (neeche) me pehle se live hai. */
+        sInstance = new java.lang.ref.WeakReference<>(this);
         /* ── ✅ FIX (2026-10-06): launch par sirf wahi permissions maango jo
            asli me zaroori hain ────────────────────────────────────────────
            PEHLE: CAMERA + ACCESS_FINE_LOCATION + READ_EXTERNAL_STORAGE
@@ -318,8 +318,74 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* ═══ FCM PUSH (OneSignal → Firebase migration, 2026-10-31) ═══
+       Tap-forward + token-refresh + E2E gate. WebView JS bindings:
+       window._onPushTap(url) / window._onNativeFcmToken(token) /
+       window._onNativePush(title, body, url). */
+    private static java.lang.ref.WeakReference<MainActivity> sInstance;
+    private volatile String pendingPushUrl = null;
+
+    public static void onFcmTokenRefreshed(final String token) {
+        final MainActivity a = sInstance != null ? sInstance.get() : null;
+        if (a == null || token == null || token.isEmpty()) return;
+        a.runOnUiThread(() -> a.evalJs("window._onNativeFcmToken && window._onNativeFcmToken("
+                + org.json.JSONObject.quote(token) + ")"));
+    }
+
+    public static void forwardPushToWeb(final String title, final String body, final String url) {
+        final MainActivity a = sInstance != null ? sInstance.get() : null;
+        if (a == null) return;
+        a.runOnUiThread(() -> a.evalJs("window._onNativePush && window._onNativePush("
+                + org.json.JSONObject.quote(title == null ? "" : title) + ","
+                + org.json.JSONObject.quote(body == null ? "" : body) + ","
+                + org.json.JSONObject.quote(url == null ? "" : url) + ")"));
+    }
+
+    private void evalJs(String js) {
+        try { if (webView != null) webView.evaluateJavascript(js, null); } catch (Throwable ignored) { }
+    }
+
+    private void flushPendingPushToWeb() {
+        String u = pendingPushUrl;
+        if (u == null || u.isEmpty()) return;
+        try { if (webView == null || webView.getProgress() < 100) return; } catch (Throwable t) { return; }
+        pendingPushUrl = null;
+        evalJs("window._onPushTap && window._onPushTap(" + org.json.JSONObject.quote(u) + ")");
+    }
+
+    /* Notification-tap extras + E2E token-log gate (adb intent-extra,
+       30-min expiry — logcat sirf adb/shell padh sakta hai, koi app nahi). */
+    private void handlePushExtras(Intent intent) {
+        if (intent == null) return;
+        try {
+            if ("miniesports-e2e".equals(intent.getStringExtra("e2e_push_token_log"))) {
+                FcmMessagingService.enableE2eLog(this);
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(t -> {
+                        if (t.isSuccessful() && t.getResult() != null) {
+                            String tok = t.getResult();
+                            getSharedPreferences(FcmMessagingService.PREFS, MODE_PRIVATE).edit()
+                                .putString(FcmMessagingService.KEY_TOKEN, tok).apply();
+                            Log.i(FcmMessagingService.TAG_E2E, "FCM_TOKEN=" + tok);
+                        } else {
+                            Log.w(FcmMessagingService.TAG_E2E, "FCM_TOKEN_ERROR="
+                                + (t.getException() != null ? t.getException().getMessage() : "unknown"));
+                        }
+                    });
+            }
+            String pushUrl = intent.getStringExtra("push_url");
+            if (pushUrl != null && !pushUrl.isEmpty()) {
+                pendingPushUrl = pushUrl;
+                flushPendingPushToWeb(); /* page ready na ho to onPageFinished par flush */
+            }
+        } catch (Throwable ignored) { }
+    }
+
     private void handleIntent(Intent intent) {
         if (intent == null) return;
+        /* FCM: notification-tap extras + E2E gate — data-URI check se PEHLE
+           (tap intent me data nahi, sirf extras hote hain) */
+        handlePushExtras(intent);
         Uri data = intent.getData();
         if (data == null) return;
         if (DEEP_LINK_SCHEME.equals(data.getScheme())) {
@@ -398,23 +464,38 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        /* R23 (2026-09-21): OneSignal native push — WebView के user को
-           native SDK से bind/unbind करना (external_id = firebase-uid).
-           OneSignalManager.login(uid) → OneSignal.login. */
+        /* ── FCM (OneSignal → Firebase migration, 2026-10-31) ──
+           JS login par fcmSyncToken('_onNativeFcmToken') call karta hai:
+           token async fetch → window.<cb>(token) → JS push-token edge fn
+           se user_push_tokens me upsert karta hai. osLogin/osLogout naye
+           native me JAAN-BOOJH KAR nahi: purane APK (field me) apna
+           bundled OneSignal SDK chalate rehte hain aur server-side
+           push-send unke liye OneSignal fallback rakhta hai — jab tak
+           sab users update na kar lein. */
         @JavascriptInterface
-        public void osLogin(String uid) {
+        public void fcmSyncToken(final String cbName) {
+            final String cb = (cbName == null) ? "" : cbName.replaceAll("[^A-Za-z0-9_$]", "");
+            if (cb.isEmpty()) return;
             try {
-                if (uid != null && uid.length() > 10) {
-                    OneSignalManager.login(uid);
-                }
-            } catch (Exception ignored) { }
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        final String tok = (task.isSuccessful() && task.getResult() != null) ? task.getResult() : "";
+                        if (!tok.isEmpty()) {
+                            try {
+                                getSharedPreferences(FcmMessagingService.PREFS, MODE_PRIVATE).edit()
+                                    .putString(FcmMessagingService.KEY_TOKEN, tok).apply();
+                            } catch (Throwable ignored) { }
+                        }
+                        runOnUiThread(() -> evalJs("window." + cb + " && window." + cb + "("
+                                + org.json.JSONObject.quote(tok) + ")"));
+                    });
+            } catch (Throwable ignored) { }
         }
 
+        /* Pichli baar cache hua token (instant, network nahi) */
         @JavascriptInterface
-        public void osLogout() {
-            try {
-                OneSignalManager.logout();
-            } catch (Exception ignored) { }
+        public String fcmCachedToken() {
+            return FcmMessagingService.getCachedToken(MainActivity.this);
         }
 
         /* ✅ FORCE UPDATE (2026-07): returns the REAL installed APK's
@@ -1108,6 +1189,8 @@ public class MainActivity extends AppCompatActivity {
                         + (url == null ? "null" : url.split("[?#]")[0]));
                 progressBar.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
+                /* FCM: notification-tap se aayi pending URL ab JS ko do */
+                flushPendingPushToWeb();
                 if (userLoggedIn) {
                     pageLoadCount++;
                     if (pageLoadCount % INTERSTITIAL_TRIGGER == 0) showInterstitialNative();

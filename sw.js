@@ -24,7 +24,7 @@
    LOCAL_FILES, not just this one, or the exact same "fix doesn't seem
    to apply" pattern will keep recurring for any JS change, not just
    WhatsApp. */
-var CACHE_VER    = 'me-v341-20261031b';
+var CACHE_VER    = 'me-v344-20261031c';
 var CACHE_STATIC = CACHE_VER + '-static';
 var CACHE_CDN    = CACHE_VER + '-cdn';
 /* BUG FIX (2026-07): BASE was hardcoded to '/ff-user-panel/', which is
@@ -35,6 +35,55 @@ var CACHE_CDN    = CACHE_VER + '-cdn';
    (self.location) makes it correct on ANY domain automatically — this
    file is always registered at the root of wherever the app lives. */
 var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
+
+/* ═══ FCM WEB PUSH (OneSignal → Firebase migration, 2026-10-31) ═══
+   Background message handler ISI sw.js me hai — alag
+   firebase-messaging-sw.js banate to SAME SCOPE par do registrations
+   takraati (ek dusre ko replace karti). importScripts try/catch me:
+   gstatic down ho to sirf push jata hai, offline-caching zinda rehti. */
+try {
+  importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+  importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js');
+  firebase.initializeApp({
+    apiKey: "AIzaSyA-v9AYigDrg96D_fos0vOW3wU2GY2UYec",
+    authDomain: "fft-app-1e283.firebaseapp.com",
+    projectId: "fft-app-1e283",
+    storageBucket: "fft-app-1e283.firebasestorage.app",
+    messagingSenderId: "247829466483",
+    appId: "1:247829466483:web:6961488f1d3c4e3fff4906"
+  });
+  firebase.messaging().onBackgroundMessage(function(payload) {
+    var d = (payload && payload.data) || {};
+    var n = (payload && payload.notification) || {};
+    var title = d.title || n.title || 'Mini eSports';
+    var body  = d.body  || n.body  || '';
+    self.registration.showNotification(title, {
+      body: body,
+      icon:  BASE + 'icons/icon-192x192.png',
+      badge: BASE + 'icons/icon-192x192.png',
+      data: { url: d.url || '' },
+      tag: d.type || 'ff-push',
+      vibrate: [200, 100, 200]
+    });
+  });
+} catch (e) { /* push unavailable; caching intact */ }
+
+/* Notification click — app kholo/focus karo (url ho to wahi) */
+self.addEventListener('notificationclick', function(e) {
+  e.notification.close();
+  var url = (e.notification.data && e.notification.data.url) || '';
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(cs) {
+      for (var i = 0; i < cs.length; i++) {
+        if (cs[i].url && cs[i].url.indexOf(self.registration.scope) === 0) {
+          try { if (url) cs[i].navigate(url); } catch (err) { }
+          return cs[i].focus();
+        }
+      }
+      return clients.openWindow(url && /^https?:\/\//.test(url) ? url : BASE);
+    })
+  );
+});
 
 /* ✅ BUG FIX (2026-09-14, CRITICAL): ASSET_VER here was a completely
    SEPARATE variable from CACHE_VER above and from index.html's own
@@ -51,7 +100,7 @@ var BASE = self.location.href.replace(/sw\.js(\?.*)?$/, '');
    was silently doing nothing useful for months. Must ALWAYS be kept
    equal to whatever ?v= suffix index.html's local <script>/<link>
    tags use, updated together on every release from now on. */
-var ASSET_VER = '20261031b';
+var ASSET_VER = '20261031c';
 
 var LOCAL_FILES = [
   '','index.html','styles.css','style.css','manifest.json','js/green-diamond.png',
@@ -96,6 +145,7 @@ var CDN_FILES = [
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js',
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js',
   'https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js',
+  'https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
 ];
@@ -141,8 +191,7 @@ self.addEventListener('fetch', function(e){
   }
   /* CDN → Cache first (static SDKs never change) */
   if(u.includes('gstatic.com') || u.includes('cdn.jsdelivr') ||
-     u.includes('cdnjs.cloudflare') || u.includes('fonts.g') ||
-     u.includes('onesignal.com')){
+     u.includes('cdnjs.cloudflare') || u.includes('fonts.g')){
     e.respondWith(cacheFirst(e.request, CACHE_CDN)); return;
   }
   /* ✅ BUG FIX (2026-09-14): our own app JS/CSS files used to be

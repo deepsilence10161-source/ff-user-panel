@@ -124,5 +124,22 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- ═══ FCM (OneSignal → Firebase migration, 2026-10-31) ═══
+             Data-only high-priority messages → onMessageReceived foreground
+             AUR background dono me → display 100% apne control me. -->
+        <service
+            android:name=".FcmMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="ff_push" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+
     </application>
 </manifest>

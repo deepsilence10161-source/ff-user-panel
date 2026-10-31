@@ -49,36 +49,17 @@
 
 
 /* ================================================================
-   BUG 43 FIX: OneSignalDeferred not defined
-   Problem: _saveOneSignalId called window.OneSignalDeferred.push() but
-   OneSignalDeferred may not exist yet when called early in boot.
-   Fix: Safe wrapper with retry queue.
+   BUG 43 (OneSignalDeferred wrapper) — REPURPOSED (2026-10-31):
+   OneSignal → Firebase FCM migration me web SDK hi hata diya gaya.
+   Purani cached JS ab bhi _saveOneSignalId call kar sakti hai, isliye
+   naam zinda hai — par ab yeh sirf naye FCM binder ka alias hai.
+   OneSignalDeferred retry-queue poora removed.
 ================================================================ */
-(function _fixOneSignal() {
-  /* Already defined in bugfixes.js but OneSignalDeferred itself may be undefined */
+(function _fixPushAlias() {
   window._saveOneSignalId = function(uid) {
-    if (!uid) return;
-    function _doTag() {
-      if (window.OneSignalDeferred) {
-        window.OneSignalDeferred.push(function(OneSignal) {
-          try {
-            OneSignal.login(uid).catch(function(){});
-            OneSignal.User.PushSubscription.optIn().catch(function(){});
-            OneSignal.User.addTag('uid', uid);
-          } catch(e) { console.warn('[OneSignal] Tag error:', e.message); }
-        });
-      } else {
-        /* Retry up to 10 times with 500ms gap */
-        if (!window._osRetryCount) window._osRetryCount = 0;
-        if (window._osRetryCount < 10) {
-          window._osRetryCount++;
-          setTimeout(_doTag, 500);
-        }
-      }
-    }
-    _doTag();
+    try { if (uid && window._bindPushIdentity) window._bindPushIdentity(uid); } catch(e) {}
   };
-  console.log('[Fix v10] Bug 43: OneSignalDeferred safe wrapper installed');
+  console.log('[Fix v10] Bug 43: push alias (FCM) installed');
 })();
 
 

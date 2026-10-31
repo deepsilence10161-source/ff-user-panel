@@ -116,7 +116,8 @@ dependencies {
     implementation 'androidx.browser:browser:1.7.0'
     implementation 'com.google.android.gms:play-services-ads:23.0.0'
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
-    implementation 'com.onesignal:OneSignal:5.9.2'
+    /* FCM (OneSignal → Firebase migration, 2026-10-31): version firebase-bom se */
+    implementation 'com.google.firebase:firebase-messaging'
 
     // Firebase BOM — sab versions sync
     implementation platform('com.google.firebase:firebase-bom:33.1.2')
