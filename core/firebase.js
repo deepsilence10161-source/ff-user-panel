@@ -178,10 +178,31 @@ window._pushTokenCall = function(action, platform, token, cb) {
           'Authorization': 'Bearer ' + idTok
         },
         body: JSON.stringify({ action: action, platform: platform, token: token })
-      }).then(function(r) { return r.json().catch(function() { return {}; }); })
-        .then(function(j) { if (cb) cb(!!(j && j.ok)); })
-        .catch(function() { if (cb) cb(false); });
-    }).catch(function() { if (cb) cb(false); });
+      }).then(function(r) {
+        /* fcm4-run instrumentation: response status+body console par —
+           push-e2e driver console capture se exact fail-reason dikhta hai */
+        return r.text().then(function(txt) {
+          var j = {}; try { j = JSON.parse(txt); } catch (e) { }
+          try {
+            window._pushTokenLast = { status: r.status, body: txt.slice(0, 200) };
+            console.log('[FCM-token-sync]', action, platform, 'HTTP', r.status, txt.slice(0, 160));
+          } catch (e2) { }
+          if (cb) cb(!!(j && j.ok));
+        });
+      }).catch(function(err) {
+        try {
+          window._pushTokenLast = { fetchErr: String((err && err.message) || err) };
+          console.warn('[FCM-token-sync] fetch FAIL:', String((err && err.message) || err));
+        } catch (e2) { }
+        if (cb) cb(false);
+      });
+    }).catch(function(err) {
+      try {
+        window._pushTokenLast = { idTokenErr: String((err && err.message) || err) };
+        console.warn('[FCM-token-sync] getIdToken FAIL:', String((err && err.message) || err));
+      } catch (e2) { }
+      if (cb) cb(false);
+    });
   } catch (e) { if (cb) cb(false); }
 };
 

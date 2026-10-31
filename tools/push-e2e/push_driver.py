@@ -152,16 +152,30 @@ with sync_playwright() as pw:
         if row:
             break
         time.sleep(5)
+    if not row:
+        try:
+            print("🔎 PUSH03 _pushTokenLast:", json.dumps(page.evaluate("() => window._pushTokenLast || null"))[:300], flush=True)
+        except Exception:
+            pass
+        dump_consoles("PUSH03")
     proof("PUSH03", f"user_push_tokens web row={row} (edge fn verified-write)", row >= 1)
 
     # ══ PUSH04: notifications INSERT → hook → pg_net → push-send → FCM ══
+    # fcm4-run race fix: sirf APNE insert ke BAAD wale net._http_response
+    # padho (android leg ka purana via=fcm response ya koi stale fallback
+    # result na ban jaye) — max(id) baseline insert se pehle capture.
+    try:
+        pre = sql("select coalesce(max(id),0)::bigint m from net._http_response")
+        max_id = int(pre[0]["m"]) if pre else 0
+    except Exception:
+        max_id = 0
     sql(f"insert into public.notifications (user_id, type, title, body, ref_id) "
         f"values ('{uid}', 'e2e_push', '{TITLE}', 'FCM live E2E — web leg', 'pushe2e-{RUN}')")
     via, sent, raw = "", None, ""
     for _ in range(30):
         time.sleep(3)
         try:
-            d = sql("select content::text c from net._http_response order by id desc limit 8")
+            d = sql(f"select content::text c from net._http_response where id > {max_id} order by id desc limit 8")
             for rr in d:
                 c = rr.get("c") or ""
                 if '"via"' in c:
