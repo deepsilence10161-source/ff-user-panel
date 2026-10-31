@@ -28,12 +28,24 @@ MGMT = "https://api.supabase.com/v1/projects/hddhkculuyrfoevxmlwy/database/query
 SBT = os.environ.get("SUPABASE_ACCESS_TOKEN") or ""
 
 
-def sql(q):
-    req = urllib.request.Request(
-        MGMT, data=json.dumps({"query": q}).encode(),
-        headers={"Content-Type": "application/json", "Authorization": "Bearer " + SBT})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode())
+def sql(q, tries=4):
+    # fcm6-run seekh: Management API ne ek baar transient 502 diya aur
+    # bina-retry wale INSERT par driver crash ho gaya. 5xx/network par retry.
+    last = None
+    for a in range(tries):
+        try:
+            req = urllib.request.Request(
+                MGMT, data=json.dumps({"query": q}).encode(),
+                headers={"Content-Type": "application/json", "Authorization": "Bearer " + SBT})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.loads(r.read().decode())
+        except Exception as e:
+            last = e
+            code = getattr(e, "code", None)
+            if code is not None and code < 500:
+                raise   # 4xx = retry bekar (syntax/auth) — turant upar bhejo
+            time.sleep(2 + a * 3)
+    raise last
 
 
 argv = sys.argv[1:]
