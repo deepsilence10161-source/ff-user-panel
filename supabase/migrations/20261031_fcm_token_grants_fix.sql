@@ -22,7 +22,7 @@ SELECT json_build_object(
   'tbl_ins', has_table_privilege('service_role','public.user_push_tokens','INSERT'),
   'tbl_sel', has_table_privilege('service_role','public.user_push_tokens','SELECT'),
   'tbl_del', has_table_privilege('service_role','public.user_push_tokens','DELETE'),
-  'seq_use', has_sequence_privilege('public.user_push_tokens_id_seq','service_role','USAGE')
+  'seq_use', has_sequence_privilege('service_role','public.user_push_tokens_id_seq','USAGE')
 ) AS before_state;
 
 -- ── 2) GRANT fix ──
@@ -45,7 +45,7 @@ SELECT json_build_object(
   'tbl_ins', has_table_privilege('service_role','public.user_push_tokens','INSERT'),
   'tbl_sel', has_table_privilege('service_role','public.user_push_tokens','SELECT'),
   'tbl_del', has_table_privilege('service_role','public.user_push_tokens','DELETE'),
-  'seq_use', has_sequence_privilege('public.user_push_tokens_id_seq','service_role','USAGE'),
+  'seq_use', has_sequence_privilege('service_role','public.user_push_tokens_id_seq','USAGE'),
   'anon_ins_MUST_be_false',  has_table_privilege('anon','public.user_push_tokens','INSERT'),
   'auth_ins_MUST_be_false',  has_table_privilege('authenticated','public.user_push_tokens','INSERT'),
   'rls_enabled', (SELECT relrowsecurity FROM pg_class WHERE oid='public.user_push_tokens'::regclass),
