@@ -60,7 +60,7 @@ if (action === "list") {
   const val = rows?.[0]?.hook_secret;
   if (!val || String(val).length < 8) { console.error("hook_secret nahi mila (ya chhota hai)"); process.exit(1); }
   const r = await fetch(`${API}/secrets`, {
-    method: "POST", headers: H, body: JSON.stringify({ PUSH_TRIGGER_SECRET: String(val) }),
+    method: "POST", headers: H, body: JSON.stringify([{ name: "PUSH_TRIGGER_SECRET", value: String(val) }]),
   });
   const okTxt = r.ok ? "OK" : (await r.text()).slice(0, 200);
   console.log(`PUSH_TRIGGER_SECRET set → HTTP ${r.status} ${okTxt} (value length=${String(val).length}, printed nahi)`);
