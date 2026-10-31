@@ -69,9 +69,20 @@ def proof(tag, detail, ok):
 
 
 with sync_playwright() as pw:
-    HEADED = os.environ.get("PUSH_E2E_HEADED", "1") == "1"   # headless Chromium me Push API unreliable — xvfb + headed default
-    browser = pw.chromium.launch(headless=not HEADED, args=["--no-sandbox", "--disable-dev-shm-usage"])
-    ctx = browser.new_context(viewport={"width": 430, "height": 932}, locale="en-IN")
+    HEADED = os.environ.get("PUSH_E2E_HEADED", "1") == "1"   # xvfb + headed default
+    if HEADED:
+        # fcm2 run ki seekh: Playwright new_context() = INCOGNITO profile,
+        # aur Chrome incognito me Push API support hi nahi karta
+        # (crbug.com/41124656 → DOMException code 20 "permission denied").
+        # Persistent user-data-dir = normal window → push subscribe chalta hai.
+        ctx = pw.chromium.launch_persistent_context(
+            "/tmp/pe-profile", headless=False,
+            args=["--no-sandbox", "--disable-dev-shm-usage"],
+            viewport={"width": 430, "height": 932}, locale="en-IN")
+        browser = ctx   # close() dono par kaam karta hai
+    else:
+        browser = pw.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+        ctx = browser.new_context(viewport={"width": 430, "height": 932}, locale="en-IN")
     ctx.grant_permissions(["notifications"], origin=ORIGIN)
     page = ctx.new_page()
     page.on("dialog", lambda d: d.accept())
