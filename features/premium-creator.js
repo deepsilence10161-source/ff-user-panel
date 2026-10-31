@@ -253,6 +253,23 @@ window.showCreatorDashboard = function() {
 };
 
 function showCreatorSignup() {
+  /* GROWTH MODE (2026-11-01, owner decision): app_settings.creator_system.creatorFreeMode
+     == 1 → Creator Program temporarily FREE (no Gold Premium gate) — chhote
+     creators/YouTubers laane ke liye taaki app grow kare. Admin panel → App
+     Settings → Creator section me toggle hai (0 = wapas normal/paid gate).
+     Flag on-demand read hota hai (signup kholte waqt) — realtime ki zaroorat
+     nahi, signup roz ka flow nahi. */
+  if (!window._supa) { toast('Service unavailable', 'err'); return; }
+  window._supa.from('app_settings').select('value').eq('key', 'creator_system').maybeSingle()
+    .then(function (sr) {
+      var v = (sr && sr.data && sr.data.value) || {};
+      window.__creatorFreeMode = Number(v.creatorFreeMode || 0) === 1;
+      _showCreatorSignupGated();
+    })
+    .catch(function () { window.__creatorFreeMode = false; _showCreatorSignupGated(); });
+}
+
+function _showCreatorSignupGated() {
   /* GATED (2026-08, confirmed by product decision): Creator Program is
      a Premium perk — you must already be a paying Premium member to
      apply. This makes sense two ways: (1) it filters signups to people
@@ -262,7 +279,7 @@ function showCreatorSignup() {
      perks. Match-hosting privileges (creator_create_match RPC) don't
      independently re-check Premium status — being an approved creator
      already implies it, since approval only happens after this gate. */
-  var _premActive = window.isPremiumActive ? isPremiumActive(2) : false;
+  var _premActive = window.__creatorFreeMode || (window.isPremiumActive ? isPremiumActive(2) : false);
   if (!_premActive) {
     var gh = '<div style="text-align:center;padding:8px 0">';
     gh += '<div style="font-size:48px;margin-bottom:12px">👑</div>';
@@ -343,7 +360,13 @@ function _renderCreatorSignupForm() {
   h += '<select id="creatorFollowers" class="f-input"><option value="1k-5k">1K–5K</option><option value="5k-10k">5K–10K</option><option value="10k-50k">10K–50K</option><option value="50k+">50K+</option></select></div>';
   h += '<button onclick="submitCreatorSignup()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer"><i class="fas fa-rocket"></i> Creator Program Join Karo</button>';
   h += '</div>';
-  if (window.openModal) openModal('🔵 Creator Program', h);
+  /* GROWTH MODE banner (2026-11-01): free_mode ON → sabse upar FREE badge */
+  if (window.__creatorFreeMode) {
+    h = '<div style="background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.12));border:1px solid rgba(0,255,156,.35);border-radius:12px;padding:10px 12px;margin-bottom:12px;text-align:center">' +
+        '<div style="font-size:15px;font-weight:900;color:#00ff9c">🆓 CREATOR MODE FREE — LIMITED TIME!</div>' +
+        '<div style="font-size:11px;color:var(--txt2);margin-top:4px">Abhi Gold Premium ki zaroorat NAHI — seedha apply karo, apne matches host karo, commission kamao. Baad me ye wapas paid ho jayega, isliye abhi join kar lo.</div></div>' + h;
+  }
+  if (window.openModal) openModal(window.__creatorFreeMode ? '🆓 Creator Program (FREE)' : '🔵 Creator Program', h);
 }
 
 window.submitCreatorSignup = function() {
