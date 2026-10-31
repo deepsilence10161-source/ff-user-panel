@@ -66,10 +66,11 @@ jobs:
             code=$(curl -s -o /tmp/idx.html -w '%{http_code}' "$BASE/index.html?cb=$RANDOM" || true)
             fbcode=$(curl -s -o /tmp/fb.js -w '%{http_code}' "$BASE/core/firebase.js?cb=$RANDOM" || true)
             fb=$(grep -c "_fcmStage" /tmp/fb.js 2>/dev/null || echo 0)
-            if [ "$code" = "200" ] && grep -q "firebase-messaging-compat" /tmp/idx.html && [ "$fbcode" = "200" ] && [ "$fb" -ge 1 ]; then
-              echo "✅ Pages par FCM code LIVE — index + firebase.js diag markers (try $i)"; exit 0
+            vk=$(grep -c "BCgrRXslxWdh" /tmp/fb.js 2>/dev/null || echo 0)
+            if [ "$code" = "200" ] && grep -q "firebase-messaging-compat" /tmp/idx.html && [ "$fbcode" = "200" ] && [ "$fb" -ge 1 ] && [ "$vk" -ge 1 ]; then
+              echo "✅ Pages par FCM code LIVE — index + diag markers + NAYA VAPID key (try $i)"; exit 0
             fi
-            echo "try $i: index=$code marker=$(grep -c firebase-messaging-compat /tmp/idx.html 2>/dev/null || echo 0) | firebase.js=$fbcode _fcmStage=$fb"
+            echo "try $i: index=$code marker=$(grep -c firebase-messaging-compat /tmp/idx.html 2>/dev/null || echo 0) | firebase.js=$fbcode _fcmStage=$fb vapid-new=$vk"
             sleep 15
           done
           echo "::error::Pages par naya code 10 min me live nahi hua"

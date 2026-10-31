@@ -155,7 +155,12 @@ console.log("[Firebase] Analytics + Auth ready | Data → Supabase");
      → push-token edge fn (Firebase idToken RS256 verified) → user_push_tokens
    Background display: sw.js (FCM block). Foreground: onMessage → toast. */
 window.messaging = null;
-window.VAPID_KEY = 'BCxMf_HYHFdoRgI0-9YZZL9aU7tkoBaWEsAJXOsijzgCz1VxGCUBhSqbkqdLFpJ-TbVXR_hKb_ykENVCvQ7TGFY';
+/* Web Push certificate (VAPID public key) — Firebase Console → Project
+   Settings → Cloud Messaging → Web Push certificates se 2026-10-31 ko
+   copy kiya gaya (owner ne generate kiya). Purani key (BCxMf_…) project
+   me registered hi nahi thi — fcmregistrations 401 de raha tha
+   (API-level H1–H9 matrix se confirm; run fcm3 ki PUSH02 fail isi se). */
+window.VAPID_KEY = 'BCgrRXslxWdhOpeDLCrjUSqXHCZ3vCjWg7tzPj3zIQyhUYJYfVsdlsmzKKS4YGP_ME0wcgp9A1vdyycm9GVYhiE';
 window.PUSH_FN_URL = (window.SUPABASE_URL || 'https://hddhkculuyrfoevxmlwy.supabase.co') + '/functions/v1/push-token';
 window._PUSH_ANON_KEY = window._SUPA_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
 
