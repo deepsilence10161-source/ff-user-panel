@@ -69,11 +69,22 @@ def proof(tag, detail, ok):
 
 
 with sync_playwright() as pw:
-    browser = pw.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+    HEADED = os.environ.get("PUSH_E2E_HEADED", "1") == "1"   # headless Chromium me Push API unreliable — xvfb + headed default
+    browser = pw.chromium.launch(headless=not HEADED, args=["--no-sandbox", "--disable-dev-shm-usage"])
     ctx = browser.new_context(viewport={"width": 430, "height": 932}, locale="en-IN")
     ctx.grant_permissions(["notifications"], origin=ORIGIN)
     page = ctx.new_page()
     page.on("dialog", lambda d: d.accept())
+    consoles = []
+    page.on("console", lambda m: consoles.append(f"[{m.type}] {m.text[:250]}"))
+    page.on("pageerror", lambda e: consoles.append(f"[pageerror] {str(e)[:250]}"))
+
+    def dump_consoles(label, keywords=("fcm", "firebase", "push", "messaging", "service worker", "service-worker", "sw.js", "vapid")):
+        rel = [c for c in consoles if any(k in c.lower() for k in keywords)]
+        print(f"🔎 {label} — browser console ({len(rel)} relevant / {len(consoles)} total):", flush=True)
+        for c in (rel or consoles)[-40:]:
+            print("   console|", c, flush=True)
+
     page.goto(BASE, timeout=120000)
     page.wait_for_function("() => !!window.auth", timeout=90000)
 
@@ -93,11 +104,31 @@ with sync_playwright() as pw:
 
     # ══ PUSH02: FCM web token (VAPID + sw registration + getToken) ══
     try:
-        page.wait_for_function("() => !!window._fcmToken", timeout=75000)
+        page.wait_for_function("() => !!window._fcmToken", timeout=120000)
         tok_tail = page.evaluate("() => window._fcmToken.slice(-6)")
         proof("PUSH02", f"FCM web token mila (…{tok_tail}) — _bindPushIdentity→getToken live chala", True)
     except Exception as e:
-        proof("PUSH02", f"75s me window._fcmToken nahi mila: {str(e)[:150]}", False)
+        diag = {}
+        try:
+            diag = page.evaluate("""() => ({
+                stage: window._fcmStage || null, err: window._fcmError || null,
+                perm: (typeof Notification !== 'undefined') ? Notification.permission : 'no-Notification',
+                hasFirebase: typeof firebase !== 'undefined',
+                hasMsgFactory: (typeof firebase !== 'undefined') && !!firebase.messaging,
+                windowMessaging: !!window.messaging,
+                swController: !!(navigator.serviceWorker && navigator.serviceWorker.controller) })""")
+        except Exception as e2:
+            diag = {"diagErr": str(e2)[:120]}
+        try:
+            diag["swRegs"] = page.evaluate("""async () => {
+                const rs = await navigator.serviceWorker.getRegistrations();
+                return rs.map(r => ({ scope: r.scope, active: !!r.active, waiting: !!r.waiting,
+                                      installing: !!r.installing, url: (r.active && r.active.scriptURL) || null })); }""")
+        except Exception:
+            pass
+        print("🔎 PUSH02 DIAG:", json.dumps(diag), flush=True)
+        dump_consoles("PUSH02")
+        proof("PUSH02", f"120s me window._fcmToken nahi mila — stage={diag.get('stage')} err={diag.get('err')}: {str(e)[:100]}", False)
 
     # ══ PUSH03: DB row (push-token fn → service_role upsert) ══
     row = 0
@@ -150,6 +181,11 @@ with sync_playwright() as pw:
             arg=TITLE, timeout=90000)
         proof("PUSH05", f"browser me FCM push LIVE receive hua — title '{TITLE}' (onMessage)", True)
     except Exception as e:
+        dump_consoles("PUSH05")
+        try:
+            print("🔎 PUSH05 lastPayload:", json.dumps(page.evaluate("() => window._lastPushPayload || null"))[:300], flush=True)
+        except Exception:
+            pass
         proof("PUSH05", f"90s me foreground receipt nahi: {str(e)[:150]}", False)
 
     try:

@@ -64,10 +64,12 @@ jobs:
           BASE=https://deepsilence10161-source.github.io/ff-user-panel
           for i in $(seq 1 40); do
             code=$(curl -s -o /tmp/idx.html -w '%{http_code}' "$BASE/index.html?cb=$RANDOM" || true)
-            if [ "$code" = "200" ] && grep -q "firebase-messaging-compat" /tmp/idx.html; then
-              echo "✅ Pages par FCM code LIVE (try $i)"; exit 0
+            fbcode=$(curl -s -o /tmp/fb.js -w '%{http_code}' "$BASE/core/firebase.js?cb=$RANDOM" || true)
+            fb=$(grep -c "_fcmStage" /tmp/fb.js 2>/dev/null || echo 0)
+            if [ "$code" = "200" ] && grep -q "firebase-messaging-compat" /tmp/idx.html && [ "$fbcode" = "200" ] && [ "$fb" -ge 1 ]; then
+              echo "✅ Pages par FCM code LIVE — index + firebase.js diag markers (try $i)"; exit 0
             fi
-            echo "try $i: code=$code marker=$(grep -c firebase-messaging-compat /tmp/idx.html 2>/dev/null || echo 0)"
+            echo "try $i: index=$code marker=$(grep -c firebase-messaging-compat /tmp/idx.html 2>/dev/null || echo 0) | firebase.js=$fbcode _fcmStage=$fb"
             sleep 15
           done
           echo "::error::Pages par naya code 10 min me live nahi hua"
@@ -90,11 +92,12 @@ jobs:
         run: |
           python3 -m pip install --quiet playwright
           python3 -m playwright install --with-deps chromium
-      - name: Push driver (asli browser + asli FCM chain)
+      - name: Push driver (asli browser + asli FCM chain — headed under xvfb)
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PUSH_E2E_HEADED: "1"
         run: |
-          python3 tools/push-e2e/push_driver.py \
+          xvfb-run -a python3 tools/push-e2e/push_driver.py \
             --run "${{ needs.seed.outputs.run }}" \
             --state /tmp/pest/pe-state.json \
             --out /tmp/pe-web-out.json \
@@ -153,6 +156,7 @@ jobs:
           path: |
             pe-android.png
             notif-dump.txt
+            logcat-full.txt
             /tmp/pe-android-out.txt
           retention-days: 7
 

@@ -233,25 +233,31 @@ window._unbindPushIdentity = function() {
 try {
   if (firebase.messaging && 'serviceWorker' in navigator) {
     window.messaging = _fireApp.messaging();
+    window._fcmStage = 'init';
     console.log("[Firebase] FCM Messaging ready (OneSignal-migration 2026-10-31)");
     /* WEB token: permission granted par getToken → push-token fn → user_push_tokens */
     window._getFCMToken = function() {
-      if (!window.messaging) return;
+      if (!window.messaging) { window._fcmStage = 'no-messaging'; return; }
       if (typeof Notification !== 'undefined' && Notification.permission === 'denied') {
+        window._fcmStage = 'perm-denied';
         console.log('[FCM] Notification permission denied — skipping getToken');
         return;
       }
       if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+        window._fcmStage = 'perm-request';
         Notification.requestPermission().then(function(perm) {
           if (perm === 'granted') window._getFCMToken();
           else console.log('[FCM] Permission not granted by user');
         });
         return;
       }
+      window._fcmStage = 'sw-wait';
       navigator.serviceWorker.ready.then(function(reg) {
+        window._fcmStage = 'get-token';
         return window.messaging.getToken({ vapidKey: window.VAPID_KEY, serviceWorkerRegistration: reg });
       }).then(function(token) {
         if (token) {
+          window._fcmStage = 'done';
           console.log('[FCM] Token obtained: …' + token.slice(-6));
           window._fcmToken = token;
           window._pushTokenCall('set', 'web', token);
@@ -262,9 +268,13 @@ try {
                 .eq('id', window.U.uid).then(null, function(){});
             } catch (e) { }
           }
-        }
+        } else { window._fcmStage = 'empty-token'; }
       }).catch(function(err) {
         /* Notification permission denied/blocked — expected in many cases */
+        window._fcmStage = 'error';
+        try {
+          window._fcmError = (((err && err.code) ? err.code + ': ' : '') + ((err && err.message) || String(err))).slice(0, 300);
+        } catch (e2) { }
         console.warn('[FCM] Token error (normal if notifications denied):', (err && (err.code || err.message)) || err);
       });
     };
@@ -281,4 +291,5 @@ try {
   }
 } catch(e) {
   console.warn("[Firebase] FCM init failed (expected in some browsers):", e.message);
+  try { window._fcmStage = 'init-fail'; window._fcmError = ('init-fail: ' + (e && e.message || e)).slice(0, 300); } catch (e2) { }
 }
