@@ -119,8 +119,8 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
        normal list, error/retry, empty — isi ek jagah se aa jaate hain). */
     return buildRankTools() +
       '<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(185,100,255,.07),rgba(0,212,255,.04));border:1px solid rgba(185,100,255,.15);border-radius:12px;padding:8px 14px;margin-bottom:10px">' +
-      '<div style="font-size:11px;font-weight:800;color:#b964ff">🏆 ' + (season.name || 'Season') + '<span style="font-size:10px;color:#666;font-weight:600"> · ' + (season.label || '') + '</span></div>' +
-      '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#666;font-weight:600"> days left</span></div>' +
+      '<div style="font-size:11px;font-weight:800;color:#b964ff">🏆 ' + (season.name || 'Season') + '</div>' +
+      '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#666;font-weight:600"> din baaki</span></div>' +
       '</div>';
   }
 
@@ -220,7 +220,8 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
         var u = users[ORDER[i]];
         var posIdx = ['p2','p1','p3'].indexOf(CLASSES[i]);
         var col = COLORS[posIdx] || '#ffd700';
-        var av = u.profileImage ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (u.ign||u.displayName||'?').charAt(0).toUpperCase();
+        var _del7 = (u.ign||u.displayName||'') === '[deleted]';
+        var av = _del7 ? '<i class="fas fa-user" style="opacity:.4;font-size:15px;line-height:1"></i>' : (u.profileImage ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (u.ign||u.displayName||'?').charAt(0).toUpperCase());
         var rk2 = window.calcRk ? window.calcRk(u.stats||{}) : {badge:'',emoji:'🎮',color:'#fff',bg:'rgba(0,0,0,.1)'};
         var v2 = getVal(u);
         var _podIsMe = window.U && u._uid === window.U.uid;
@@ -240,7 +241,8 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
     for (var j = 3; j < users.length; j++) {
       var ur = users[j];
       var rk = window.calcRk ? window.calcRk(ur.stats||{}) : {badge:'Player',emoji:'🎮',color:'#888',bg:'rgba(255,255,255,.06)'};
-      var av2 = ur.profileImage ? '<img src="' + ur.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (ur.ign||ur.displayName||'?').charAt(0).toUpperCase();
+      var _del7b = (ur.ign||ur.displayName||'') === '[deleted]';
+      var av2 = _del7b ? '<i class="fas fa-user" style="opacity:.4;font-size:15px;line-height:1"></i>' : (ur.profileImage ? '<img src="' + ur.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (ur.ign||ur.displayName||'?').charAt(0).toUpperCase());
       var st2 = ur.stats||{};
       var v3 = getVal(ur);
       var m2=Number(st2.matches||0), w2=Number(st2.wins||0), k2=Number(st2.kills||0);

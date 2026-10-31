@@ -311,7 +311,7 @@
           var rows = r.data || [];
           var h = '<div style="padding:16px">';
           if (!rows.length) {
-            h += '<div style="text-align:center;color:#555;padding:20px;font-size:13px">No coin transactions yet</div>';
+            h += '<div style="text-align:center;color:#666;padding:30px 20px;font-size:13px"><i class="fas fa-coins" style="font-size:28px;opacity:.35;display:block;margin:0 auto 10px"></i>No coin transactions yet</div>';
           } else {
             rows.forEach(function(t) {
               var credit = t.txn_type === 'credit';

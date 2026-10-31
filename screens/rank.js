@@ -306,10 +306,10 @@ function renderRank(tab) {
     'background:linear-gradient(135deg,rgba(185,100,255,.09),rgba(0,212,255,.06));' +
     'border:1px solid rgba(185,100,255,.2);border-radius:14px;padding:12px 16px;margin-bottom:12px;cursor:pointer" onclick="window.showHowRankWorks&&showHowRankWorks()">' +
     '<div><div style="font-size:13px;font-weight:900;color:#b964ff">' + season.name + '</div>' +
-    '<div style="font-size:10px;color:#666;margin-top:1px">' + season.label + ' · Resets monthly</div></div>' +
+    '<div style="font-size:10px;color:#666;margin-top:1px">Resets monthly</div></div>' +
     '<div style="text-align:right">' +
     '<div style="font-size:16px;font-weight:900;color:#00d4ff">' + season.daysLeft + '</div>' +
-    '<div style="font-size:10px;color:#666">days left</div></div>' +
+    '<div style="font-size:10px;color:#666">din baaki</div></div>' +
     '</div>';
 
   /* ✅ B28 (2026-10-07): Clan War / City Championship / Mentor Hub — teeno
@@ -378,7 +378,8 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
       var posIdx = ['p2','p1','p3'].indexOf(podClasses[i]); // 0=silver,1=gold,2=bronze
       var col = podColors[posIdx] || '#ffd700';
       var glow = podGlows[posIdx] || 'rgba(255,215,0,.8)';
-      var av = u.profileImage ? '<img src="' + u.profileImage + '">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase();
+      var _isDel = (u.ign || u.displayName || '') === '[deleted]';
+      var av = _isDel ? '<i class="fas fa-user" style="opacity:.4;font-size:24px;line-height:1"></i>' : (u.profileImage ? '<img src="' + u.profileImage + '">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
       var val = _rankVal(u, sortKey);
       var valLabel = _rankValStr(val, sortKey);
       var rkBadge = calcRk(u.stats || {});
@@ -400,7 +401,8 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
   for (var j = 3; j < users.length; j++) {
     var u = users[j];
     var rk = calcRk(u.stats || {});
-    var av = u.profileImage ? '<img src="' + u.profileImage + '">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase();
+    var _isDelR = (u.ign || u.displayName || '') === '[deleted]';
+    var av = _isDelR ? '<i class="fas fa-user" style="opacity:.4;font-size:16px;line-height:1"></i>' : (u.profileImage ? '<img src="' + u.profileImage + '">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
     var _stR = u.stats || {};
     var val;
     if (sortKey === 'kills') {

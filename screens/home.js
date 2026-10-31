@@ -340,7 +340,7 @@ function renderHome() {
   if (window.renderLoginStreakStrip) { try { topHtml += renderLoginStreakStrip(); } catch (e) {} }
   // Recommended widget removed
 
-  var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ' + hCF + ' matches ' + hSF + '</p></div>');
+  var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>' + (String(hCF).toLowerCase() === 'all' ? 'No matches ' : 'No ' + hCF + ' matches ') + (String(hSF).toLowerCase() === 'upcoming' ? 'right now — naya match jald aayega!' : hSF) + '</p></div>');
   /* ✅ FIX (live-testing, User Desktop click failure on match-card badges
      e.g. "Solo"): renderHome() fires on every realtime match update (see
      core/listeners.js) and always did a full l.innerHTML replace, even
@@ -637,7 +637,11 @@ function updateCD(list) {
   if (cdInt) clearInterval(cdInt);
   var next = null;
   list.forEach(function(t) { var mt = Number(t.matchTime); if (mt && mt > (window.serverNow?window.serverNow():Date.now()) && (!next || mt < next)) next = mt; });
-  if (!next) { $('cdD').textContent = '00'; $('cdH').textContent = '00'; $('cdM').textContent = '00'; $('cdS').textContent = '00'; return; }
+  var _cdw = document.querySelector('.cd-wrap');
+  var _cdn = $('cdEmptyNote');
+  if (!_cdn && _cdw) { _cdn = document.createElement('div'); _cdn.id = 'cdEmptyNote'; _cdn.style.cssText = 'text-align:center;color:#8888aa;font-size:12px;padding:2px 0 14px'; _cdw.parentNode.insertBefore(_cdn, _cdw); }
+  if (!next) { if (_cdw) _cdw.style.display = 'none'; if (_cdn) { _cdn.style.display = 'block'; _cdn.innerHTML = '⏳ Abhi koi special scheduled nahi — next special announce hote hi countdown yahan chalega!'; } return; }
+  if (_cdw) _cdw.style.display = ''; if (_cdn) _cdn.style.display = 'none';
   function tick() {
     var diff = next - (window.serverNow?window.serverNow():Date.now());
     if (diff <= 0) { $('cdD').textContent = '00'; $('cdH').textContent = '00'; $('cdM').textContent = '00'; $('cdS').textContent = '00'; clearInterval(cdInt); return; }

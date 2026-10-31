@@ -571,7 +571,7 @@ window.applyDynamicWallpaper = function() {
         if (cur < steps.length - 1) h += '<button onclick="window._tutNext()" style="width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer">Next →</button>';
         else h += '<button onclick="window._tutDone()" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#00cc7a);color:#000;font-weight:800;border:none;cursor:pointer">🎮 Let\'s Play!</button>';
         h += '</div>';
-        if (window.showModal) showModal('', h);
+        if (window.showModal) showModal('🎮 Quick Tour', h);
       }
       window._tutNext = function () { cur++; showStep(); };
       window._tutDone = function () {

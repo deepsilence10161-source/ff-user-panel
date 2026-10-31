@@ -1,4 +1,4 @@
-:root{--bg:#050507;--bg2:#0c0b10;--card:#111118;--card2:#16161f;--green:#00ff6a;--yellow:#ffd700;--red:#ff2e2e;--blue:#00d4ff;--purple:#b964ff;--orange:#ff8c00;--txt:#fff;--txt2:#7a7a8e;--border:rgba(255,255,255,.06);--primary:#00ff6a}
+:root{color-scheme:dark;--bg:#050507;--bg2:#0c0b10;--card:#111118;--card2:#16161f;--green:#00ff6a;--yellow:#ffd700;--red:#ff2e2e;--blue:#00d4ff;--purple:#b964ff;--orange:#ff8c00;--txt:#fff;--txt2:#7a7a8e;--border:rgba(255,255,255,.06);--primary:#00ff6a}
   /* Dark-only theme — light/neon removed */
 
 /* Animated border ring for active/online users */
@@ -1199,3 +1199,9 @@ body.has-web-banner .chat-container {
   .pf2-name{max-width:150px;font-size:17px}
   .pf2-uid span{max-width:150px}
 }
+
+/* ===== UI-POLISH 2026-10-31 (directive 17): native checkbox theme =====
+   Age-verification + T&C sheets me browser ka default SAFED checkbox
+   dark-neon theme ke bilkul bahar dikhta tha. accent-color se tick +
+   box app-green ho jaata hai, size bhi touch-friendly. */
+input[type="checkbox"]{accent-color:var(--green);width:19px;height:19px;flex-shrink:0;cursor:pointer} /* mes-checkbox-theme */

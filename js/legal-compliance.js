@@ -67,7 +67,6 @@
     if (_stateModalOpen) return;
     _stateModalOpen = true;
     var h = '<div style="text-align:center"><div style="font-size:42px;margin-bottom:10px">🗺️</div>'
-      + '<div style="font-size:15px;font-weight:900;color:#fff;margin-bottom:8px">State Verification</div>'
       + '<div style="font-size:12px;color:#8888aa;margin-bottom:16px">Real money gaming kuch states mein restricted hai. Apna state select karo:</div>'
       + '<div style="display:grid;gap:8px;margin-bottom:12px">';
     CONFIG.bannedStates.forEach(function(s) {
@@ -191,7 +190,7 @@
           return;
         }
         if (window.UD) { window.UD.age_verified = true; }
-        _close(); _toast('Age verified! ✓','ok');
+        _close(); _toast('Age verified!','ok');
         setTimeout(function(){ _runNext('age'); }, 500);
       });
     } else {
@@ -323,7 +322,7 @@
       if (res && res.data && res.data.success === false) throw new Error(res.data.error || 'save failed');
       if (window.UD) window.UD.accepted_policy = true;
       if (window.UD) window.UD.accepted_policy_at = new Date().toISOString();
-      _close(); _toast('Welcome to Mini eSports! ✓','ok');
+      _close(); _toast('Welcome to Mini eSports!','ok');
     }).catch(function (err) {
       console.error('[TC] accept save nahi hui:', err && err.message);
       if (btn) { btn.disabled = false; btn.textContent = '✓ Accept & Continue'; }
