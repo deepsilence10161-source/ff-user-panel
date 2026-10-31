@@ -366,15 +366,10 @@ async function _handleSignIn(user) {
      web getToken → push-token edge fn → user_push_tokens table */
   if (window._bindPushIdentity) window._bindPushIdentity(user.uid);
   else if (window._saveOneSignalId) window._saveOneSignalId(user.uid);
-  /* TRANSITION (purane APK): unme native OneSignal SDK bundled hai — osLogin
-     se external_id bind hota hai aur server-side push-send ka OneSignal
-     fallback unhe deliver karta hai. Naye APK me yeh method hai hi nahi
-     (typeof-guard se no-op). Old-APK adoption khatam hone par block hatana. */
-  try {
-    if (window.Android && typeof window.Android.osLogin === 'function') {
-      window.Android.osLogin(user.uid);
-    }
-  } catch(e) {}
+  /* OneSignal TRANSITION RETIRED (2026-10-31, directive 16): osLogin bridge
+     call hata diya — naye APK me method hai hi nahi, purane APK yeh code load
+     nahi karte (assets bundled), aur server-side fallback bhi retire ho gaya
+     (push-send v4 = FCM only). Push identity = sirf _bindPushIdentity (upar). */
 
   /* Boot app */
   if (window.afterLogin) window.afterLogin(window.U);

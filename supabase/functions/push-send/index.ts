@@ -1,5 +1,5 @@
 /* ================================================================
-   supabase/functions/push-send/index.ts  (v3 — FCM, 2026-10-31)
+   supabase/functions/push-send/index.ts  (v4 — FCM ONLY, 2026-10-31)
    ────────────────────────────────────────────────────────────────
    Push bhejne ka EK-MATRA server path.
    MIGRATION: OneSignal → Firebase FCM direct ($0 + unlimited;
@@ -10,11 +10,17 @@
               hain → consistent tap behaviour). Auth: service-account
               RS256 JWT (WebCrypto) → OAuth2 access token (cached).
               Secret: FIREBASE_SERVICE_ACCOUNT_JSON.
-   FALLBACK : OneSignal (transition) — JAB user ke koi FCM token na
-              ho (purane APK abhi bhi OneSignal SDK chalate hain) AUR
-              ONESIGNAL_* secrets maujood hon. Naye APK/web par FCM
-              tokens hote hain, isliye double-send KABHI nahi hota.
-              (Old-APK adoption poori hone ke baad yeh block hat jayega.)
+   NO-FALLBACK (v4, directive 16 — OneSignal RETIREMENT 2026-10-31):
+              transition fallback HATA DIYA GAYA. Live measurements ne
+              retirement safe prove kiya: users_total=4, DB me koi
+              legacy OneSignal binding column nahi, aur ekmatra active
+              legacy user (Hunter7) ka OneSignal player exist hi nahi
+              karta tha (invalid_aliases probe, run 41161989044).
+              OneSignal ka 1,000-MAU free cap stack ki akhri
+              non-unlimited kadi thi — ab stack 100% free+unlimited.
+              Bina-token user ko push tabhi milegi jab device naya
+              APK (v1.0.344+) ya web par login kare — FCM token apne
+              aap sync hota hai (auto-updater sabko naya APK deta hai).
 
    Callers: DB-trigger (notifications INSERT → notifications_push_hook
    → pg_net) secret-header ke saath; body me hook 'tokens' array bhi
@@ -28,7 +34,7 @@
    ================================================================ */
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-const ONE = "https://onesignal.com/api/v1/notifications";
+/* OneSignal endpoint RETIRED (v4, 2026-10-31) — FCM hi ekmatra delivery path hai. */
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-push-secret",
@@ -148,7 +154,7 @@ Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: CORS });
   if (req.method !== "POST") return json({ ok: false, error: "POST only" }, 405);
 
-  const SECRET = Deno.env.get("PUSH_TRIGGER_SECRET") || Deno.env.get("ONESIGNAL_TRIGGER_SECRET");
+  const SECRET = Deno.env.get("PUSH_TRIGGER_SECRET"); // v4: legacy ONESIGNAL_TRIGGER_SECRET retired (bridge: tools/supabase-secrets.mjs)
   if (!SECRET) return json({ ok: false, error: "env missing" }, 500);
   const got = (req.headers.get("x-push-secret") || "").trim();
   if (got !== SECRET) return json({ ok: false, error: "not_authorized" }, 403);
@@ -224,36 +230,13 @@ Deno.serve(async (req: Request) => {
     return json({ ok: sent > 0, via: "fcm", sent, pruned, failed: fails });
   }
 
-  /* ── FALLBACK (transition): OneSignal — sirf bina-FCM-token users ke liye
-     (purane APK). FCM secret ya tokens maujood hue to upar se return ho
-     chuka hai — double-send impossible. ── */
-  const APP_ID = Deno.env.get("ONESIGNAL_APP_ID");
-  const REST = Deno.env.get("ONESIGNAL_REST_KEY");
-  if (!uids.length || !APP_ID || !REST) {
-    console.log(`push-send: no delivery path (fcm_secret=${sa ? "yes" : "no"} tokens=${tokens.length} uids=${uids.length} os_env=${APP_ID && REST ? "yes" : "no"})`);
-    return json({
-      ok: false, via: "none", sent: 0,
-      error: "no delivery path — user ke FCM tokens nahi aur OneSignal fallback env missing",
-    });
-  }
-  const payload: Record<string, unknown> = {
-    app_id: APP_ID,
-    include_aliases: { external_id: uids },
-    target_channel: "push",
-    headings: { en: title },
-    contents: { en: text || title },
-  };
-  if (urlOk) payload.url = urlOk;
-  try {
-    const r = await fetch(ONE, {
-      method: "POST",
-      headers: { Authorization: `Basic ${REST}`, "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const d = await r.json().catch(() => null);
-    console.log(`push-send OneSignal fallback: status=${r.status} uids=${uids.length}`);
-    return json({ ok: r.status === 200, via: "onesignal", status: r.status, onesignal: d });
-  } catch (e) {
-    return json({ ok: false, via: "onesignal", error: (e && (e as Error).message) || "upstream fail" }, 502);
-  }
+  /* ── NO-FALLBACK (v4, 2026-10-31): OneSignal transition fallback RETIRED
+     (directive 16 — stack ka akhri non-unlimited hissa). Yahan pahunchne ka
+     matlab: user ke koi fresh FCM token nahi (device par naya APK v1.0.344+
+     ya web login nahi hua). Jhootha delivery path nahi — saaf jawab. ── */
+  console.log(`push-send: no delivery path (fcm_secret=${sa ? "yes" : "no"} tokens=${tokens.length} uids=${uids.length}) — OneSignal retired`);
+  return json({
+    ok: false, via: "none", sent: 0,
+    error: "user ke FCM tokens nahi — device par naya APK (v1.0.344+) ya web login chahiye; token sync hote hi push chalegi",
+  });
 });
