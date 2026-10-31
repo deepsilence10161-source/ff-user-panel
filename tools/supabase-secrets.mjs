@@ -69,7 +69,7 @@ if (action === "list") {
 } else if (action === "delete-onesignal") {
   const names = ["ONESIGNAL_APP_ID", "ONESIGNAL_REST_KEY", "ONESIGNAL_TRIGGER_SECRET"];
   const r = await fetch(`${API}/secrets`, {
-    method: "DELETE", headers: H, body: JSON.stringify({ names }),
+    method: "DELETE", headers: H, body: JSON.stringify(names), // Management API: DELETE bhi ARRAY mangta hai (run 41168787667 ne 400 pakda)
   });
   const okTxt = r.ok ? "OK" : (await r.text()).slice(0, 200);
   console.log(`delete ${names.join(", ")} → HTTP ${r.status} ${okTxt}`);
