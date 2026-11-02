@@ -621,6 +621,101 @@ def main():
         proof("MF31", f"admin cancel M3 (status={st3}) → sky refunds {rd} (each want 50); full={json.dumps(dl3, ensure_ascii=False)}",
               str(st3).lower() in ("cancelled", "canceled") and all(abs(v - 50) < 0.01 for v in rd.values()))
 
+        # ══ PHASE G: duty-machine LIVE proofs (machine bhi real users ke saath) ══
+        log("PHASE G: duty machine — no-show clock, FULL push, chat-watch, T-15 reminder, forfeit")
+        # G0: M8 — no-show match (sched now+1m). p4,p5 join; room set; KOI confirm NAHI karega
+        M8N = f"MF7 NoShow {RUN}"
+        rpcU(cpage, "creator_create_match", {
+            "p_title": M8N, "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
+            "p_max_slots": 5, "p_per_kill_prize": 1,
+            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 60)),
+            "p_first_prize": 30, "p_second_prize": 15, "p_third_prize": 5})
+        m8r = wait_match(M8N, timeout=60)
+        M8 = (m8r or {}).get("id")
+        wpre8 = {t: wallets(uid[t]) for t in ("p4", "p5")}
+        j8 = []
+        if M8:
+            for t in ("p4", "p5"):
+                try:
+                    join_solo(pages[t], M8); j8.append(True)
+                except Exception as e:
+                    j8.append(False); log(f"  M8 join {t} fail: {str(e)[:80]}")
+            rpcU(cpage, "creator_set_room", {"p_match_id": M8, "p_room_id": f"NS{RUN[-4:]}", "p_room_password": "NSPW1"})
+        proof("MF40", f"M8 no-show match: created={M8 is not None} joins(p4,p5)={j8} room-set; koi in-room confirm NAHI (forfeit clock start)", M8 is not None and all(j8))
+
+        # G1: M6 — FULL attendance → owner '✅ Match FULL' push (ops_checkin-watch */2)
+        M6N = f"MF7 Full House {RUN}"
+        rpcU(cpage, "creator_create_match", {
+            "p_title": M6N, "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
+            "p_max_slots": 3, "p_per_kill_prize": 1,
+            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 240)),
+            "p_first_prize": 20, "p_second_prize": 10, "p_third_prize": 5})
+        m6 = wait_match(M6N, timeout=60); M6 = m6["id"]
+        for t in ("p1", "p2", "p3"):
+            try:
+                join_solo(pages[t], M6)
+            except Exception as e:
+                log(f"  M6 join {t} fail: {str(e)[:80]}")
+        rpcU(cpage, "creator_set_room", {"p_match_id": M6, "p_room_id": f"FH{RUN[-4:]}", "p_room_password": "FHPW1"})
+        conf = []
+        for t in ("p1", "p2", "p3"):
+            jr = q1(f"select id from join_requests where match_id='{M6}' and user_id='{uid[t]}'") or {}
+            cr = rpcU(pages[t], "confirm_in_room", {"p_join_id": jr.get("id")})
+            conf.append(t if not rpc_bad(cr) else f"{t}:fail")
+        def full_push():
+            return q1(f"select ref_id from notifications where ref_id='ops-full-{M6}'")
+        try:
+            poll(full_push, timeout=300, every=10, what="ops-full owner push")
+            proof("MF41", f"M6 3/3 in-room verify (confirms={conf}) → owner phone push '✅ Match FULL ho gaya'", True)
+        except Exception as e:
+            proof("MF41", f"M6 FULL push NAHI mili: {str(e)[:120]} confirms={conf}", False)
+
+        # G2: chat-watch — p2 distress msg on M6 → owner push (ops-chat-watch */3)
+        dmsg = f"yaar entry fee kat gayi par match nahi dikha, problem hai — refund dekhlo {RUN}"
+        rpcU(pages["p2"], "send_match_chat", {"p_match_id": M6, "p_uid": uid["p2"], "p_name": IGN_OF["p2"], "p_text": dmsg})
+        time.sleep(2)
+        mid = (q1("select id from match_chat order by created_at desc limit 1") or {}).get("id")
+        def chat_push():
+            return q1(f"select ref_id from notifications where ref_id='ops-chat-{mid}'")
+        try:
+            poll(chat_push, timeout=300, every=10, what="ops-chat owner push")
+            proof("MF42", f"live match-chat distress msg → owner push '💬 Match chat me problem' (ref ops-chat-{str(mid)[:8]}…)", True)
+        except Exception as e:
+            proof("MF42", f"chat-watch push NAHI: {str(e)[:120]}", False)
+
+        # G3: T-15 room reminder — M7 sched now+16m, room_id NULL → '⏰ Room time' push (*/5)
+        rpcU(cpage, "creator_create_match", {
+            "p_title": f"MF7 Remind {RUN}", "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
+            "p_max_slots": 5, "p_per_kill_prize": 1,
+            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 960)),
+            "p_first_prize": 30, "p_second_prize": 15, "p_third_prize": 5})
+        m7r = wait_match(f"MF7 Remind {RUN}", timeout=60); M7 = (m7r or {}).get("id")
+        def rem_push():
+            return q1(f"select ref_id from notifications where ref_id='ops-room-reminder-{M7}'")
+        try:
+            poll(rem_push, timeout=420, every=15, what="room-reminder owner push")
+            proof("MF43", "T-20→T-14 window: owner push '⏰ Room time ho gaya' (M7 ka room khali tha)", True)
+        except Exception as e:
+            proof("MF43", f"room-reminder push NAHI: {str(e)[:120]}", False)
+
+        # G4: M8 forfeit asserts (iss waqt sched+8min cross ho chuka hai)
+        def m8_cancelled():
+            row = q1(f"select {sc} as s from matches where id='{M8}'") or {}
+            return row if str(row.get("s", "")).lower() == "cancelled" else None
+        try:
+            poll(m8_cancelled, timeout=240, every=15, what="M8 auto-cancel (forfeit)")
+            st8 = "cancelled"
+        except Exception:
+            st8 = (q1(f"select {sc} as s from matches where id='{M8}'") or {}).get("s")
+        c8 = q1(f"select count(*) c from join_requests where match_id='{M8}' and status='cancelled'") or {}
+        u8 = q1(f"select count(*) c from notifications where ref_id like 'ops-noshow-{M8}-%' or ref_id like 'ops-empty-user-{M8}-%'") or {}
+        o8 = q1(f"select count(*) c from notifications where ref_id in ('ops-empty-{M8}','ops-noshow-report-{M8}')") or {}
+        wpost8 = {t: wallets(uid[t]) for t in ("p4", "p5")}
+        dl8 = wdelta(wpre8, wpost8)
+        zero8 = all(abs(float(v or 0)) < 0.01 for d in dl8.values() for v in d.values())
+        proof("MF44", f"M8 no-show FORFEIT: match={st8}, jr-cancelled={c8.get('c')}, user-pushes={u8.get('c')}, owner-push={o8.get('c')}, wallet-delta={json.dumps(dl8, ensure_ascii=False)} → rule: refund NAHI",
+              str(st8).lower() == "cancelled" and zero8 and int(u8.get("c") or 0) >= 2)
+
         # ══ PHASE F: results with OWNER's real screenshot data ═══════════════
         log("PHASE F: result upload + publish + correction")
         sql(f"update matches set {tc} = now() - interval '30 minutes' where id='{M1}'")
