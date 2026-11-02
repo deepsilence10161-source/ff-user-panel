@@ -70,9 +70,9 @@ const OUT = args['--out'] || `/tmp/mf-state-${RUN}.json`;
 
 const ROSTER = [];
 for (let i = 0; i < 7; i++) ROSTER.push({ tag: `p${i + 1}`, email: `qa-mf7-${RUN}-p${i + 1}@fft.com`, ign: IGNS[i], is_creator: false, is_admin: false });
-ROSTER.push({ tag: 'creator', email: `qa-mf7-${RUN}-creator@fft.com`, ign: `MF-Creator-${RUN}`, is_creator: true, is_admin: false });
-ROSTER.push({ tag: 'admin', email: `qa-mf7-${RUN}-admin@fft.com`, ign: `MF-Admin-${RUN}`, is_creator: false, is_admin: true });
-for (let b = 1; b <= 5; b++) ROSTER.push({ tag: `b${b}`, email: `qa-mf7-${RUN}-b${b}@fft.com`, ign: `MF-Bench${b}-${RUN}`, is_creator: false, is_admin: false });
+ROSTER.push({ tag: 'creator', email: `qa-mf7-${RUN}-creator@fft.com`, ign: `MFC-${RUN.slice(-6)}`, is_creator: true, is_admin: false });
+ROSTER.push({ tag: 'admin', email: `qa-mf7-${RUN}-admin@fft.com`, ign: `MFA-${RUN.slice(-6)}`, is_creator: false, is_admin: true });
+for (let b = 1; b <= 5; b++) ROSTER.push({ tag: `b${b}`, email: `qa-mf7-${RUN}-b${b}@fft.com`, ign: `MFB${b}-${RUN.slice(-6)}`, is_creator: false, is_admin: false });
 
 if (args['--cleanup'] !== undefined || process.argv.includes('--cleanup')) {
   console.log(`[cleanup] run=${RUN}`);
