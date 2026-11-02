@@ -195,9 +195,14 @@ def main():
             page = ctx.new_page()
             page.goto(USER_URL, timeout=120000)
             page.wait_for_function("() => !!window.auth", timeout=90000)
-            r = page.evaluate("""async (c) => { try { await window.auth.signInWithEmailAndPassword(c.e, c.p); return 'ok'; }
-                                 catch (e) { return 'err:' + (e.code || e.message); } }""",
-                              {"e": cred["email"], "p": cred["password"]})
+            r = "ok"
+            for _att in range(4):   # retry: Firebase transient auth glitches (run 41532888079 p4)
+                r = page.evaluate("""async (c) => { try { await window.auth.signInWithEmailAndPassword(c.e, c.p); return 'ok'; }
+                                     catch (e) { return 'err:' + (e.code || e.message); } }""",
+                                  {"e": cred["email"], "p": cred["password"]})
+                if r == "ok":
+                    break
+                time.sleep(4)
             if r != "ok":
                 raise RuntimeError(f"{tag} signin: {r}")
             page.wait_for_function("() => window.U && window.U.uid && window.UD && window._supa", timeout=90000)
