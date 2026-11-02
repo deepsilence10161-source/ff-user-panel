@@ -31,10 +31,14 @@ const IGNS = [
   'N0dc21b349c3',
 ];
 
-async function sql(q) {
+async function sql(q, att = 0) {
   const tok = process.env.SUPABASE_ACCESS_TOKEN;
   const r = await fetch(MGMT, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok }, body: JSON.stringify({ query: q }) });
-  if (!r.ok) throw new Error('sql ' + r.status + ': ' + (await r.text()).slice(0, 400) + ' | q=' + q.slice(0, 120));
+  if (!r.ok) {
+    const body = await r.text();
+    if (r.status >= 500 && att < 3) { await new Promise(res => setTimeout(res, 4000 * (att + 1))); return sql(q, att + 1); }  // transient 5xx (run 41541135948: 503 upstream timeout)
+    throw new Error('sql ' + r.status + ': ' + body.slice(0, 400) + ' | q=' + q.slice(0, 120));
+  }
   return r.json();
 }
 async function sqlSafe(q) { try { return await sql(q); } catch (e) { return { skipped: String(e.message || e).slice(0, 120) }; } }
