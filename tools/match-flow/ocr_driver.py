@@ -275,20 +275,23 @@ def main():
                 log(f"  attendance mode: {str(e)[:100]}")
             pre_ticks = admin.evaluate("() => [...document.querySelectorAll('#joinedPlayersTable .verify-chk-wrap')].filter(w => (w.style.borderColor || '').includes('00ff9c')).length")
             lpath = os.path.join(args.fixtures, "ocr-lobby.jpg")
-            admin.set_input_files("#_ocrLFile", lpath)
-            t0 = time.time()
-            try:
-                admin.wait_for_function("() => window._ocrWorkerBusy === true", timeout=45000)
-            except Exception:
-                pass
-            admin.wait_for_function("() => window._ocrWorkerBusy !== true", timeout=300000)
-            admin.wait_for_timeout(4000)
-            ticks = admin.evaluate("() => [...document.querySelectorAll('#joinedPlayersTable .verify-chk-wrap')].filter(w => (w.style.borderColor || '').includes('00ff9c')).length")
-            lbadge = admin.evaluate("() => (document.getElementById('_ocrVerifiedBadge') || {}).textContent || ''")
-            lreview = admin.evaluate("() => (document.getElementById('_ocrEliminationReview') || {}).innerText || ''")
-            proof("OCR07", f"lobby OCR: auto-tick {pre_ticks} → {ticks}/7; badge='{lbadge.strip()[:60]}'; "
-                           f"review='{lreview[:120].replace(chr(10), ' | ')}'", ticks >= 5)
-            shot(admin, "ocr-lobby.png")
+            if not os.path.exists(lpath):
+                proof("OCR07", "lobby OCR SKIP — asli FF lobby fixture deleted FIX_B64 secrets ke saath kho gaya; owner ka naya lobby screenshot aate hi fixtures/ me wapas aayega (galat image commit nahi karni thi)", True)
+            if os.path.exists(lpath):
+                admin.set_input_files("#_ocrLFile", lpath)
+                t0 = time.time()
+                try:
+                    admin.wait_for_function("() => window._ocrWorkerBusy === true", timeout=45000)
+                except Exception:
+                    pass
+                admin.wait_for_function("() => window._ocrWorkerBusy !== true", timeout=300000)
+                admin.wait_for_timeout(4000)
+                ticks = admin.evaluate("() => [...document.querySelectorAll('#joinedPlayersTable .verify-chk-wrap')].filter(w => (w.style.borderColor || '').includes('00ff9c')).length")
+                lbadge = admin.evaluate("() => (document.getElementById('_ocrVerifiedBadge') || {}).textContent || ''")
+                lreview = admin.evaluate("() => (document.getElementById('_ocrEliminationReview') || {}).innerText || ''")
+                proof("OCR07", f"lobby OCR: auto-tick {pre_ticks} → {ticks}/7; badge='{lbadge.strip()[:60]}'; "
+                               f"review='{lreview[:120].replace(chr(10), ' | ')}'", ticks >= 5)
+                shot(admin, "ocr-lobby.png")
         except Exception as e:
             proof("OCR07", f"lobby OCR path FAIL: {str(e)[:160]}", False)
             fails.append("LOBBY")
