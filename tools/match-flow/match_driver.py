@@ -628,7 +628,7 @@ def main():
         r8c = rpcU(cpage, "creator_create_match", {
             "p_title": M8N, "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
             "p_max_slots": 5, "p_per_kill_prize": 1,
-            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 150)),
+            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 1500)),
             "p_first_prize": 30, "p_second_prize": 15, "p_third_prize": 5})
         log(f"  M8 create resp: {json.dumps(r8c, ensure_ascii=False)[:220]}")
         M8 = None
@@ -645,6 +645,7 @@ def main():
                 except Exception as e:
                     j8.append(False); log(f"  M8 join {t} fail: {str(e)[:80]}")
             rpcU(cpage, "creator_set_room", {"p_match_id": M8, "p_room_id": f"NS{RUN[-4:]}", "p_room_password": "NSPW1"})
+            sql(f"update matches set {tc} = now() - interval '9 minutes' where id='{M8}'")  # lead-gate 20m → forfeit window me shift (MF24-jaisa time-shift)
         proof("MF40", f"M8 no-show match: created={M8 is not None} joins(p4,p5)={j8} room-set; koi in-room confirm NAHI (forfeit clock start) resp={json.dumps(r8c, ensure_ascii=False)[:120]}", M8 is not None and all(j8))
 
         # G1: M6 — FULL attendance → owner '✅ Match FULL' push (ops-checkin-watch */2)
@@ -652,7 +653,7 @@ def main():
         r6c = rpcU(cpage, "creator_create_match", {
             "p_title": M6N, "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
             "p_max_slots": 3, "p_per_kill_prize": 1,
-            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 240)),
+            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 1500)),
             "p_first_prize": 20, "p_second_prize": 10, "p_third_prize": 5})
         log(f"  M6 create resp: {json.dumps(r6c, ensure_ascii=False)[:220]}")
         M6 = None
@@ -672,6 +673,7 @@ def main():
                 jr = q1(f"select id from join_requests where match_id='{M6}' and user_id='{uid[t]}'") or {}
                 cr = rpcU(pages[t], "confirm_in_room", {"p_join_id": jr.get("id")})
                 conf.append(t if not rpc_bad(cr) else f"{t}:fail")
+            sql(f"update matches set {tc} = now() + interval '2 minutes' where id='{M6}'")  # FULL-push window me shift
         def full_push():
             return q1(f"select ref_id from notifications where ref_id='ops-full-{M6}'") if M6 else None
         try:
@@ -699,13 +701,15 @@ def main():
         r7c = rpcU(cpage, "creator_create_match", {
             "p_title": f"MF7 Remind {RUN}", "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
             "p_max_slots": 5, "p_per_kill_prize": 1,
-            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 960)),
+            "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 1500)),
             "p_first_prize": 30, "p_second_prize": 15, "p_third_prize": 5})
         M7 = None
         try:
             M7 = (wait_match(f"MF7 Remind {RUN}", timeout=60) or {}).get("id")
         except Exception as e:
             log(f"  M7 wait fail: {str(e)[:120]}")
+        if M7:
+            sql(f"update matches set {tc} = now() + interval '16 minutes' where id='{M7}'")  # T-20→T-14 reminder window me shift
         def rem_push():
             return q1(f"select ref_id from notifications where ref_id='ops-room-reminder-{M7}'") if M7 else None
         try:
