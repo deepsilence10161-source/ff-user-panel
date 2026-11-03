@@ -84,21 +84,21 @@ begin
 end $$;
 
 /* har MINUTE, 24/7 */
-do $$
+do $do$
 begin
   perform cron.schedule('ops-panel-watch', '* * * * *', $$select public.ops_panel_watch()$$);
 exception when others then
   raise notice 'cron schedule skip: %', sqlerrm;
-end $$;
+end $do$;
 
 /* 7 din purana health data auto-trim (free-plan disk bachao) */
-do $$
+do $do$
 begin
   perform cron.schedule('ops-health-trim', '17 3 * * *',
     $$delete from public.ops_health where checked_at < now() - interval '7 days'$$);
 exception when others then
   raise notice 'trim schedule skip: %', sqlerrm;
-end $$;
+end $do$;
 
 select json_build_object(
   'cron_watch', (select count(*) from cron.job where jobname = 'ops-panel-watch'),
