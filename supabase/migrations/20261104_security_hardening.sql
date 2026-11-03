@@ -73,5 +73,5 @@ select json_build_object(
   'anon_on_gateway', (select has_function_privilege('anon', oid, 'execute') from pg_proc where proname='admin_gateway_exec'),
   'anon_admin_fns_left', (select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and p.proname like 'admin\_%' and has_function_privilege('anon', p.oid, 'execute')),
   'mutable_sp_left', (select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and coalesce(p.proconfig,'{}')::text not like '%search_path%'),
-  'new_indexes', (select count(*) from pg_indexes where schemaname='public' and index_name in ('idx_jr_match','idx_jr_user','idx_notif_user_ts','idx_chat_match','idx_chat_user','idx_wtx_user_ts','idx_sd_user','idx_sm_ticket'))
+  'new_indexes', (select count(*) from pg_indexes where schemaname='public' and indexname in ('idx_jr_match','idx_jr_user','idx_notif_user_ts','idx_chat_match','idx_chat_user','idx_wtx_user_ts','idx_sd_user','idx_sm_ticket'))
 ) as harden_proof;
