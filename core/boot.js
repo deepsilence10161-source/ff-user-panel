@@ -259,6 +259,31 @@ function afterLogin(user) {
         return;
       }
 
+      /* ✅ ONBOARDING CARD (2026-11-03, owner-approved): naye/purane user ko
+         ek baar 3-step "kya karna hai" guide — Tariq-jaisa confusion dobara
+         na ho. Kabhi kisi khule modal (withdrawal policy etc.) ke upar nahi
+         kudta: #modalOv.show dikha to 2.5s baad retry (max 6). */
+      window._showOnboardingOnce = window._showOnboardingOnce || function (tries) {
+        try {
+          if (localStorage.getItem('ffOnbV1')) return;
+          var ov = document.getElementById('modalOv');
+          if (ov && ov.classList.contains('show')) {
+            if ((tries || 0) < 6) setTimeout(function () { window._showOnboardingOnce((tries || 0) + 1); }, 2500);
+            return;
+          }
+          if (!window.openModal) return;
+          localStorage.setItem('ffOnbV1', '1');
+          var _h = '<div style="text-align:left;padding:4px 0;font-size:13.5px;line-height:1.65;color:var(--txt2,#bbb)">';
+          _h += '<div style="margin-bottom:12px"><b style="color:var(--txt,#fff)">1️⃣ Profile me apna Free Fire IGN set karo</b><br>Wahi naam match room me use hoga — sahi IGN zaroori hai.</div>';
+          _h += '<div style="margin-bottom:12px"><b style="color:var(--txt,#fff)">2️⃣ Match join karo</b><br>Entry fee wallet se kategi; jeetne par prize turant wallet me aayega. 🏆</div>';
+          _h += '<div style="margin-bottom:12px"><b style="color:var(--txt,#fff)">3️⃣ Room time se 15 minute pehle notification aayega</b><br>Room ID + password push notification me milega — tab tak ready rehna. 🔔</div>';
+          _h += '<div style="font-size:12px;color:#888">Koi bhi problem ho → Support tab me likho, team jawab degi. 🙏</div></div>';
+          _h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-top:12px">Samajh gaya, khelte hain! 🚀</button>';
+          window.openModal('🎮 Mini eSports me swagat hai!', _h);
+        } catch (e) {}
+      };
+      if (profile) setTimeout(function () { window._showOnboardingOnce(0); }, 1500);
+
       if (profile === null) {
         /* getMe() returns null ONLY when there's genuinely no profile row
            yet (see core/db.js) — safe to treat as a brand new user. */
@@ -291,6 +316,9 @@ function afterLogin(user) {
                as elsewhere — route through _applyUser's mapping. */
             if (p && window._applyUser) window._applyUser(p); else window.UD = p || window.UD;
             _refreshUI();
+            /* ✅ ONBOARDING (new user): policy modal (2.5s) ke BAAD try karo —
+               helper khud wait-and-retry karta hai agar modal khula ho. */
+            setTimeout(function () { if (window._showOnboardingOnce) window._showOnboardingOnce(0); }, 6000);
             setTimeout(function() {
               /* BUG FIX (2026-07): getMe() used to return null for BOTH
                  "genuinely new user" and "network error on an existing
