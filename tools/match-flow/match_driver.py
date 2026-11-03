@@ -623,6 +623,7 @@ def main():
 
         # ══ PHASE G: duty-machine LIVE proofs (machine bhi real users ke saath) ══
         log("PHASE G: duty machine — no-show clock, FULL push, chat-watch, T-15 reminder, forfeit")
+        sql("update public.app_settings set value = coalesce(value,'{}'::jsonb) || '{\"maxCreatorMatches\": 6}'::jsonb where key='creator_system'")  # G me 4 matches chahiye (cap 3 → 6); baad me restore
         # G0: M8 — no-show match (sched now+2.5m). p4,p5 join; room set; KOI confirm NAHI karega
         M8N = f"MF7 NoShow {RUN}"
         r8c = rpcU(cpage, "creator_create_match", {
@@ -741,6 +742,7 @@ def main():
                   str(st8).lower() == "cancelled" and zero8 and int(u8.get("c") or 0) >= 2)
         else:
             proof("MF44", "M8 create hi nahi hua — forfeit proof skip (server resp upar MF40 me)", False)
+        sql("update public.app_settings set value = coalesce(value,'{}'::jsonb) || '{\"maxCreatorMatches\": 3}'::jsonb where key='creator_system'")  # cap restore
 
         # ══ PHASE F: results with OWNER's real screenshot data ═══════════════
         log("PHASE F: result upload + publish + correction")
