@@ -12,7 +12,9 @@ declare
 begin
   for v_prev in select * from public.ops_watch_state where req_id is not null loop
     select * into v_resp from net._http_response where id = v_prev.req_id;
-    if v_resp is not null then
+    /* composite IS NOT NULL = sab fields non-null chahiye (error_msg NULL
+       hota hai success par) — isliye scalar field se check karo. */
+    if v_resp.id is not null then
       insert into public.ops_health (target, ok, status, detail)
       values (v_prev.target, coalesce(v_resp.status, 0) = 200, v_resp.status,
               case when coalesce(v_resp.status,0) = 200 then 'ok'
