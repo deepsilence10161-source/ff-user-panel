@@ -29,10 +29,8 @@ end $$;
 select jsonb_build_object(
   'anon_definers_left', (select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace
                           where n.nspname='public' and p.prosecdef and has_function_privilege('anon', p.oid, 'execute')),
-  'auth_still_ok', jsonb_build_array(
-     has_function_privilege('authenticated','public.validate_and_join_match(uuid,text,numeric,text,jsonb)','execute'),
-     has_function_privilege('authenticated','public.claim_ad_reward()','execute'),
-     has_function_privilege('authenticated','public.claim_match_refund(uuid,text)','execute'),
-     has_function_privilege('authenticated','public.process_daily_checkin(jsonb)','execute')),
-  'admin_still_closed', has_function_privilege('authenticated','public.admin_gateway_exec(text,jsonb,text)','execute')
+  'auth_still_ok', (select coalesce(jsonb_agg(jsonb_build_array(proname, has_function_privilege('authenticated', p.oid, 'execute'))),'[]'::jsonb)
+                     from pg_proc p join pg_namespace n on n.oid=p.pronamespace
+                    where n.nspname='public' and proname in ('validate_and_join_match','claim_ad_reward','claim_match_refund','process_daily_checkin')),
+  'admin_still_closed', (select has_function_privilege('authenticated', p.oid, 'execute') from pg_proc p where proname='admin_gateway_exec')
 ) as h4_proof;
