@@ -326,7 +326,7 @@ function renderHome() {
      hook: jo player 90% paas hai wo khelna band nahi karta. Dikhane
      ka data pehle se maujood tha (_assetProgress); ab screen par hai.
      Fail-safe: function na ho to '' (purana home waisa hi). */
-  if (window.renderNextRewardStrip) { try { topHtml += renderNextRewardStrip(); } catch (e) {} }
+  /* ✅ OWNER ORDER (2026-11-03): 'agla-inaam' row PERMANENTLY removed from home. */
   /* ✅ USER-ATTRACTION (2026-10-13, master plan 3.8): SEASON countdown +
      apni position + Top-3 ka near-miss ("2 kills door"). Season ka
      endDate na ho to strip hi nahi aata (jhooti deadline kabhi nahi). */
@@ -336,8 +336,8 @@ function renderHome() {
      baad (refreshLoginStreakToday) se pakki hoti hai. Fail-safe: '' */
   /* 3.8/11: Season Champion ka bada ailaan (3 din) — placeholder jise
      refreshSeasonChampion() asli row se bhar deta hai */
-  topHtml += '<div id="seasonChampionBanner">' + (window.renderSeasonChampionBanner ? (function () { try { return renderSeasonChampionBanner(); } catch (e) { return ''; } })() : '') + '</div>';
-  if (window.renderLoginStreakStrip) { try { topHtml += renderLoginStreakStrip(); } catch (e) {} }
+  /* ✅ OWNER ORDER (2026-11-03): 'season-champion' row PERMANENTLY removed from home. */
+  /* ✅ OWNER ORDER (2026-11-03): 'checkin-strip' row PERMANENTLY removed from home. */
   // Recommended widget removed
 
   var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>' + (String(hCF).toLowerCase() === 'all' ? 'No matches ' : 'No ' + hCF + ' matches ') + (String(hSF).toLowerCase() === 'upcoming' ? 'right now — naya match jald aayega!' : hSF) + '</p></div>');
@@ -523,7 +523,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261103b" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261103c" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

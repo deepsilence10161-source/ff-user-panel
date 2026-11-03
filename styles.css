@@ -1087,21 +1087,38 @@ body.has-web-banner .chat-container {
 }
 @keyframes rbSpin { to { --rbAngle: 360deg; } }
 .rb-wrap {
+  /* ✅ OWNER FIX (2026-11-03): rainbow ring ab DOUBLE-BACKGROUND border
+     technique se — chaarوں sides EXACTLY 2px, bottom moti hone ka koi
+     chance hi nahi (padding-ring hack hata di). */
   position: relative;
   border-radius: 20px;
-  padding: 2px;
+  padding: 0;
+  background: none;
+  animation: none;
   background: conic-gradient(from var(--rbAngle, 0deg),
     #ff004d, #ff8c00, #ffd700, #00ff9c, #00d4ff, #b964ff, #ff004d);
   animation: rbSpin 4s linear infinite;
   isolation: isolate;
 }
 .rb-wrap > .rb-inner {
-  border-radius: 18px;
+  border-radius: 20px;
   position: relative;
   z-index: 1;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(160deg, #0e0e16, #0a0a12) padding-box,
+    conic-gradient(from var(--rbAngle, 0deg),
+      #ff004d, #ff8c00, #ffd700, #00ff9c, #00d4ff, #b964ff, #ff004d) border-box;
+  animation: rbSpin 4s linear infinite;
+  margin: 0 !important;
 }
 .rb-wrap.rb-glow {
-  box-shadow: 0 0 18px rgba(255, 0, 77, .25), 0 0 34px rgba(0, 212, 255, .18);
+  /* ✅ OWNER ORDER: premium match card HIGHLY stylish — breathing glow */
+  animation: rbBreath 3.2s ease-in-out infinite;
+}
+@keyframes rbBreath {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 0, 77, .28)) drop-shadow(0 0 22px rgba(0, 212, 255, .16)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(255, 140, 0, .38)) drop-shadow(0 0 34px rgba(0, 212, 255, .26)); }
 }
 .rb-ring {
   padding: 3px;
