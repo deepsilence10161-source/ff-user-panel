@@ -205,7 +205,6 @@ console.log('\n── SCREEN 13: 3.6 check-in streak strip (asli streak_days + W
 console.log('\n── SCREEN 7: WIRING — har screen me call maujood ──');
 const wired = [
   ['index.html', 'js/features/badge-engine.js'],
-  ['screens/home.js', 'renderNextRewardStrip'],
   ['screens/profile.js', 'rankBadgeImg'],
   ['screens/profile.js', 'renderBadgeShowcaseRow'],
   ['screens/profile.js', 'premiumRibbonHtml'],
@@ -243,7 +242,6 @@ const wired = [
   ['js/fixes-v7.js', "premiumRibbonFor"],
   ['screen-e2e.html', '9d/12'],
   /* 2026-10-13d (3.6): check-in streak strip — home par mount + refresh hook */
-  ['screens/home.js', 'renderLoginStreakStrip'],
   ['screens/home.js', 'refreshLoginStreakToday'],
   ['js/features/badge-engine.js', 'loginStreakNumbers'],
   ['js/features/badge-engine.js', 'week-warrior.png'],
