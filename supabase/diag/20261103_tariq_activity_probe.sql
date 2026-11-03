@@ -23,7 +23,11 @@ select json_build_object(
       select match_id, left(text,50) as text, to_char(created_at at time zone 'Asia/Kolkata','DD Mon HH12:MI AM') as at_ist
         from public.match_chat where user_id='kdH67upXNFeQ8N05BfuFrkbOCNm1' order by created_at desc limit 8) x),
   'sd_requests', (select coalesce(json_agg(to_jsonb(x)),'[]'::json) from (
-      select * from public.sd_requests where user_id='kdH67upXNFeQ8N05BfuFrkbOCNm1' limit 5) x)
+      select * from public.sd_requests where user_id='kdH67upXNFeQ8N05BfuFrkbOCNm1' limit 5) x),
+  'match_row', (select to_jsonb(x) from (
+      select m.title, m.status, m.mode, m.entry_fee, m.max_slots, m.filled_slots, m.first_prize,
+             to_char(m.scheduled_at at time zone 'Asia/Kolkata','DD Mon YYYY HH12:MI AM') as time_ist
+        from public.matches m where m.id = 'cm_c6a5d4dc-7611-4f49-aa1c-311ff2aeae21') x)
 ) as tariq_activity;
 
 /* Owner ka kal ka match — row by id, IST me */
