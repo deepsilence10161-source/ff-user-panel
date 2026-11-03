@@ -31,7 +31,7 @@ drop function if exists public.tmp_probe_reqflow2();
 
 -- (1) admin_notify v2
 create or replace function public.admin_notify(p_title text, p_body text, p_kind text default 'info')
-returns jsonb language plpgsql security definer set search_path='public' as $$
+returns json language plpgsql security definer set search_path='public' as $$
 declare v_uid text; v_n int := 0;
 begin
   insert into public.admin_notifications (title, body, kind)
@@ -41,7 +41,7 @@ begin
     values (v_uid, 'admin_alert', p_title, p_body);
     v_n := v_n + 1;
   end loop;
-  return jsonb_build_object('ok', true, 'admins_notified', v_n);
+  return json_build_object('ok', true, 'admins_notified', v_n);
 end $$;
 
 -- (2) claim_ad_reward wrapper
