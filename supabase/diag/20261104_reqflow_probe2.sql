@@ -19,7 +19,7 @@ begin
   execute 'select coalesce(jsonb_agg(jsonb_build_array(p.proname, pg_get_function_arguments(p.oid))),''[]''::jsonb) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname=''public'' and p.proname in (''approve_creator_application'',''reject_creator_application'',''approve_premium'',''cancel_premium'',''admin_notify'')' into r;
   j := jsonb_set(j,'{rpc_sigs}', coalesce(r,'[]'::jsonb));
 
-  j := jsonb_set(j,'{cols}', coalesce((select jsonb_agg(jsonb_build_array(table_name,column_name)) from information_schema.columns where table_schema='public' and table_name in ('creator_applications','premium_requests','season_pass_requests') order by table_name,ordinal_position),'[]'::jsonb));
+  j := jsonb_set(j,'{cols}', coalesce((select jsonb_agg(jsonb_build_array(table_name,column_name)) from information_schema.columns where table_schema='public' and table_name in ('creator_applications','premium_requests','season_pass_requests')),'[]'::jsonb));
 
   return j;
 end $$;
