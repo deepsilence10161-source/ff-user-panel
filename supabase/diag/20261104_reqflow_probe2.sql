@@ -14,7 +14,7 @@ begin
 
   j := jsonb_set(j,'{policies}', coalesce((select jsonb_agg(jsonb_build_array(tablename,policyname,cmd,roles::text,left(coalesce(qual,''),60),left(coalesce(with_check,''),60))) from pg_policies where schemaname='public' and tablename in ('creator_applications','premium_requests','season_pass_requests')),'[]'::jsonb));
 
-  j := jsonb_set(j,'{grants}', coalesce((select jsonb_agg(jsonb_build_array(table_name,grantee,string_agg(privilege_type,','))) from information_schema.table_privileges where table_schema='public' and table_name in ('creator_applications','premium_requests','season_pass_requests') and grantee in ('authenticated','anon') group by table_name,grantee),'[]'::jsonb));
+  j := jsonb_set(j,'{grants}', coalesce((select jsonb_agg(g) from (select jsonb_build_array(table_name,grantee,string_agg(privilege_type,',')) g from information_schema.table_privileges where table_schema='public' and table_name in ('creator_applications','premium_requests','season_pass_requests') and grantee in ('authenticated','anon') group by table_name,grantee) s),'[]'::jsonb));
 
   execute 'select coalesce(jsonb_agg(jsonb_build_array(p.proname, pg_get_function_arguments(p.oid))),''[]''::jsonb) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname=''public'' and p.proname in (''approve_creator_application'',''reject_creator_application'',''approve_premium'',''cancel_premium'',''admin_notify'')' into r;
   j := jsonb_set(j,'{rpc_sigs}', coalesce(r,'[]'::jsonb));
