@@ -29,8 +29,3 @@ select json_build_object(
              to_char(m.scheduled_at at time zone 'Asia/Kolkata','DD Mon YYYY HH12:MI AM') as time_ist
         from public.matches m where m.id = 'cm_c6a5d4dc-7611-4f49-aa1c-311ff2aeae21') x)
 ) as tariq_activity;
-
-/* Owner ka kal ka match — row by id, IST me */
-select to_jsonb(x) as match_row from (
-  select m.*, to_char(m.scheduled_at at time zone 'Asia/Kolkata','DD Mon YYYY HH12:MI AM') as time_ist
-    from public.matches m where m.id = 'cm_c6a5d4dc-7611-4f49-aa1c-311ff2aeae21') x;
