@@ -14,7 +14,7 @@ select json_build_object(
         from public.join_requests jr left join public.matches m on m.id=jr.match_id
        where jr.user_id='kdH67upXNFeQ8N05BfuFrkbOCNm1' order by jr.created_at desc limit 10) x),
   'notifs', (select coalesce(json_agg(to_jsonb(x)),'[]'::json) from (
-      select type, title, read, to_char(created_at at time zone 'Asia/Kolkata','DD Mon HH12:MI AM') as at_ist
+      select type, title, to_char(created_at at time zone 'Asia/Kolkata','DD Mon HH12:MI AM') as at_ist
         from public.notifications where user_id='kdH67upXNFeQ8N05BfuFrkbOCNm1'
        order by created_at desc limit 8) x),
   'support_tickets', (select coalesce(json_agg(to_jsonb(x)),'[]'::json) from (
@@ -25,3 +25,8 @@ select json_build_object(
   'sd_requests', (select coalesce(json_agg(to_jsonb(x)),'[]'::json) from (
       select * from public.sd_requests where user_id='kdH67upXNFeQ8N05BfuFrkbOCNm1' limit 5) x)
 ) as tariq_activity;
+
+/* Owner ka kal ka match — row by id, IST me */
+select to_jsonb(x) as match_row from (
+  select m.*, to_char(m.scheduled_at at time zone 'Asia/Kolkata','DD Mon YYYY HH12:MI AM') as time_ist
+    from public.matches m where m.id = 'cm_c6a5d4dc-7611-4f49-aa1c-311ff2aeae21') x;
