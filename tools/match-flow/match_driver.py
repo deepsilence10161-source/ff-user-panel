@@ -643,7 +643,9 @@ def main():
                 try:
                     join_solo(pages[t], M8); j8.append(True)
                 except Exception as e:
-                    j8.append(False); log(f"  M8 join {t} fail: {str(e)[:80]}")
+                    rj = rpcU(pages[t], "validate_and_join_match", {"p_uid": uid[t], "p_match_id": M8, "p_entry_fee": 10, "p_currency": "coins", "p_join_data": None})
+                    j8.append(not rpc_bad(rj) and (rj.get("data") or {}).get("success") is not False)
+                    log(f"  M8 join {t} UI-fail({str(e)[:40]}) → RPC fallback: {json.dumps(rj, ensure_ascii=False)[:120]}")
             rpcU(cpage, "creator_set_room", {"p_match_id": M8, "p_room_id": f"NS{RUN[-4:]}", "p_room_password": "NSPW1"})
             sql(f"update matches set {tc} = now() - interval '9 minutes' where id='{M8}'")  # lead-gate 20m → forfeit window me shift (MF24-jaisa time-shift)
         proof("MF40", f"M8 no-show match: created={M8 is not None} joins(p4,p5)={j8} room-set; koi in-room confirm NAHI (forfeit clock start) resp={json.dumps(r8c, ensure_ascii=False)[:120]}", M8 is not None and all(j8))
@@ -654,7 +656,7 @@ def main():
             "p_title": M6N, "p_mode": "solo", "p_entry_type": "coins", "p_entry_fee": 10,
             "p_max_slots": 3, "p_per_kill_prize": 1,
             "p_scheduled_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 1500)),
-            "p_first_prize": 20, "p_second_prize": 10, "p_third_prize": 5})
+            "p_first_prize": 15, "p_second_prize": 10, "p_third_prize": 5})  # pool cap = 3 slots x 10 = 30
         log(f"  M6 create resp: {json.dumps(r6c, ensure_ascii=False)[:220]}")
         M6 = None
         try:
@@ -667,7 +669,8 @@ def main():
                 try:
                     join_solo(pages[t], M6)
                 except Exception as e:
-                    log(f"  M6 join {t} fail: {str(e)[:80]}")
+                    rj = rpcU(pages[t], "validate_and_join_match", {"p_uid": uid[t], "p_match_id": M6, "p_entry_fee": 10, "p_currency": "coins", "p_join_data": None})
+                    log(f"  M6 join {t} UI-fail({str(e)[:40]}) → RPC fallback: {json.dumps(rj, ensure_ascii=False)[:120]}")
             rpcU(cpage, "creator_set_room", {"p_match_id": M6, "p_room_id": f"FH{RUN[-4:]}", "p_room_password": "FHPW1"})
             for t in ("p1", "p2", "p3"):
                 jr = q1(f"select id from join_requests where match_id='{M6}' and user_id='{uid[t]}'") or {}
