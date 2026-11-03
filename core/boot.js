@@ -238,6 +238,27 @@ function afterLogin(user) {
       if (_dataLoaded) return;
       _dataLoaded = true;
 
+      /* SOFT-DELETED GHOST FIX (2026-11-03, owner report): account delete
+         (is_deleted=true) ke baad bhi Firebase auth login allow karta tha →
+         user app me adhoora ghoomta, admin panel me dikhta hi nahi (filter
+         .eq is_deleted false). Ab: welcome-back restore sheet, ek tap →
+         user_restore_account RPC → reload. Restore tak aage ka load ruka. */
+      if (profile && profile.is_deleted) {
+        if (window.openModal) {
+          window.openModal('👋 Welcome back!',
+            '<div style="text-align:center;padding:6px 0">' +
+            '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:16px">Aapka account pehle delete ho chuka tha, par aap phir login kar gaye hain. Account wapas restore karein? Aapka purana data wapas mil jayega.</div>' +
+            '<button id="_restoreAcctBtn" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">✅ Haan, account restore karo</button>' +
+            '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:none;color:#aaa;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px">Abhi nahi</button></div>');
+          var _rb = document.getElementById('_restoreAcctBtn');
+          if (_rb) _rb.onclick = function () {
+            _rb.disabled = true;
+            window._supa.rpc('user_restore_account', { p_uid: user.uid }).then(function () { location.reload(); });
+          };
+        }
+        return;
+      }
+
       if (profile === null) {
         /* getMe() returns null ONLY when there's genuinely no profile row
            yet (see core/db.js) — safe to treat as a brand new user. */
