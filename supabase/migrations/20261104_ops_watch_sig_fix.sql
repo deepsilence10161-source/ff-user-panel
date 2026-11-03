@@ -16,8 +16,8 @@ begin
        hota hai success par) — isliye scalar field se check karo. */
     if v_resp.id is not null then
       insert into public.ops_health (target, ok, status, detail)
-      values (v_prev.target, coalesce(v_resp.status, 0) = 200, v_resp.status,
-              case when coalesce(v_resp.status,0) = 200 then 'ok'
+      values (v_prev.target, coalesce(v_resp.status_code, 0) = 200, v_resp.status_code,
+              case when coalesce(v_resp.status_code,0) = 200 then 'ok'
                    else coalesce(left(v_resp.error_msg, 120), 'no-response') end);
       select count(*) into v_bad
         from (select ok from public.ops_health where target = v_prev.target
