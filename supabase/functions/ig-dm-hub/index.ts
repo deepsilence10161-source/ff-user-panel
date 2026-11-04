@@ -78,6 +78,14 @@ Deno.serve(async (req) => {
       log('verify FAIL');
       return new Response('forbidden', { status: 403 });
     }
+    if (url.searchParams.get('debug') === '1') {
+      let dbOk: string = 'untested';
+      try {
+        const { data, error } = await supa.from('ig_settings').select('key').limit(1);
+        dbOk = error ? ('err:' + error.message) : ('rows:' + JSON.stringify(data));
+      } catch (e) { dbOk = 'throw:' + e; }
+      return new Response(JSON.stringify({ hasURL: !!Deno.env.get('SUPABASE_URL'), hasSR: !!Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'), dbOk }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
     return new Response('ig-dm-hub alive', { status: 200 });
   }
 
