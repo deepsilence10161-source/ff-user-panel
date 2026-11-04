@@ -12,5 +12,5 @@ select public.admin_notify('Mobile UI audit complete', '412+360px par poore admi
 select jsonb_build_object(
   'admins_left', (select count(*) from public.admins),
   'qa_mobile_left', (select count(*) from public.users where id='7T5KCAgylDQH0ey3QB5jbt3kks13'),
-  'qa_premium_rows', (select count(*) from public.premium_requests where user_uid='9QC8yMUhvGg2Y90ZiI9xNri0Pvy1')
+  'qa_premium_rows', (select count(*) from public.premium_requests where user_id='9QC8yMUhvGg2Y90ZiI9xNri0Pvy1')
 ) as cleanup_proof;
