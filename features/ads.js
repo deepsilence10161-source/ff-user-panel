@@ -68,6 +68,9 @@ window.AdManager = {
   showRewardedAd: function(onReward, onFail, context) {
     // Premium users never see ads
     if (_adIsPremium()) { if (onReward) onReward(); return; }
+    /* D34 (report#3): server-side ad session start — claim_ad_reward
+       isi session ke bina coins nahi deta. */
+    try { if (window._supa) window._supa.rpc('ad_watch_start', {}); } catch (e) {}
 
     if (isAndroid()) {
       /* ── Android WebView bridge ──

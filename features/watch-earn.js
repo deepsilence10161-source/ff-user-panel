@@ -82,6 +82,16 @@ window.startWatching = function(matchId) {
       } catch(e) {}
     }, 30000);
 
+    /* D34 (report#3): server-side watch heartbeat — isi ke bina
+       claim_watch_earn_reward reward nahi deta (spoof-proofing). */
+    try {
+      if (window._supa) window._supa.rpc('watch_earn_beat', { p_match_id: matchId });
+    } catch (e) {}
+    _pingInterval = setInterval(function () {
+      if (!_watchMatchId) return;
+      try { if (window._supa) window._supa.rpc('watch_earn_beat', { p_match_id: _watchMatchId }); } catch (e) {}
+    }, 30000);
+
     /* Coin reward timer */
     var msInterval = intervalMins * 60000;
     _watchInterval = setInterval(function() {
