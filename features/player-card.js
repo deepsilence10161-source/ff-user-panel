@@ -47,119 +47,15 @@ function _renderPlayerCard(data){
   var _cardBorder = _isVipTarget ? '' : 'border:2px solid rgba(0,212,255,.45);box-shadow:0 8px 24px rgba(0,212,255,.12)';
   /* Build the visual card */
   var h='<div id="playerCardWrap">';
-  /* Card visual */
-  if (_isVipTarget) h+='<div class="rb-wrap rb-glow" style="margin-bottom:14px">';
-  h+='<div id="playerCardVisual" style="background:linear-gradient(135deg,#0a0a1a 0%,#12122a 40%,#0f1f2e 100%);border-radius:20px;padding:0;overflow:hidden;position:relative;margin-bottom:14px;'+_cardBorder+'">';
-  /* Top glow */
-  h+='<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,'+ri.color+',transparent)"></div>';
-  /* BG blobs */
-  h+='<div style="position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,'+ri.color+'22,transparent 70%);pointer-events:none"></div>';
-  h+='<div style="position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.15),transparent 70%);pointer-events:none"></div>';
-  /* Header bar */
-  h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;position:relative">';
-  h+='<div style="font-size:10px;font-weight:900;letter-spacing:3px;color:'+ri.color+';opacity:.8">MINI ESPORTS</div>';
-  h+='<div style="display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:'+ri.color+'22;border:1px solid '+ri.color+'44">';
-  /* ✅ 2026-10-12: rank badge ab asli art (assets/img/ranks) — emoji
-     fallback ke saath (img fail ho to emoji dikhega, layout nahi tootega) */
-  if (window.rankBadgeImg) h+='<img src="'+window.rankBadgeImg(rp)+'?v=20261104a" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">';
-  h+='<span style="font-size:14px">'+ri.emoji+'</span>';
-  h+='<span style="font-size:11px;font-weight:800;color:'+ri.color+'">'+ri.badge+'</span>';
-  h+='</div></div>';
-  /* Avatar + main info */
-  h+='<div style="display:flex;align-items:center;gap:14px;padding:4px 16px 14px;position:relative">';
-  /* Avatar */
-  var avStyle='width:72px;height:72px;border-radius:18px;border:2.5px solid '+ri.color+';flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;background:'+ri.bg+';color:'+ri.color;
-  var avContent=(data.avatar_url||data.profileImage)?'<img src="'+(data.avatar_url||data.profileImage)+'" style="width:100%;height:100%;object-fit:cover">':'<span style="font-size:28px">'+ign.charAt(0).toUpperCase()+'</span>';
-  h+='<div style="'+avStyle+'">'+avContent+'</div>';
-  /* Name + FF UID */
-  h+='<div style="flex:1;min-width:0">';
-  /* ✅ 2026-10-12: premium ribbon (sirf APNE card par — premium status
-     doosron ke liye public nahi hai, RLS) — jhoota dava kabhi nahi */
-  var _isSelfCard = !!(window.U && data.id === window.U.uid);
-  var _ribbonHtml = '';
-  if (_isSelfCard && window.premiumRibbonHtml) { try { _ribbonHtml = premiumRibbonHtml(18); } catch (e) {} }
-  h+='<div style="font-size:20px;font-weight:900;color:#fff;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px">'+ign+(_isVipTarget?'<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700;flex-shrink:0">⭐ VIP</span>':'')+_ribbonHtml+'</div>';
-  /* ✅ 2026-10-13 (master plan 3.7 — share card = free marketing):
-     equipped cosmetic TITLE chip + CLAN chip. Title sirf apne card par
-     (equipped row private hai, RLS). Clan public (clans table public read)
-     — naam/emblem async aata hai, isliye chip baad me bhar jaata hai. */
-  var _pcTitle = '';
-  if (_isSelfCard && window.getEquippedTagText) { try { _pcTitle = String(window.getEquippedTagText() || ''); } catch (e) { _pcTitle = ''; } }
-  var _pcClanId = (window.UD && (window.UD.clanId || window.UD.clan_id)) || data.clan_id || '';
-  if (_pcTitle || _pcClanId) {
-    h+='<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px">';
-    if (_pcTitle) h+='<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(185,100,255,.15);border:1px solid rgba(185,100,255,.45);color:#d8a6ff">✨ '+(window.escHtml?escHtml(_pcTitle):_pcTitle)+'</span>';
-    if (_pcClanId) h+='<span id="pcClanChip" data-clan="'+_pcClanId+'" style="display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:800;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.4);color:#7fe3ff">🛡️ …</span>';
-    h+='</div>';
-  }
-  h+='<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">FF UID: <span style="color:rgba(255,255,255,.8)">'+ffUid+'</span></div>';
-  h+='<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">📍 '+city+'</div>';
-  if(streakBadge) h+='<div style="margin-top:5px;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:rgba(255,165,0,.15);border:1px solid rgba(255,165,0,.3);font-size:11px;font-weight:800;color:#ffa500">'+streakBadge+'</div>';
-  h+='</div></div>';
-  /* Stats row */
-  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.05);border-top:1px solid '+ri.color+'22;position:relative">';
-  [['⚔️',matches,'Matches'],['🏆',wins,'Wins'],['💀',kills,'Kills'],['📊',wr+'%','Win Rate']].forEach(function(s,i){
-    h+='<div style="text-align:center;padding:12px 6px;background:#0a0a1a'+(i%2===1?'':'')+'relative">';
-    h+='<div style="font-size:12px;margin-bottom:3px">'+s[0]+'</div>';
-    h+='<div style="font-size:17px;font-weight:900;color:'+ri.color+'">'+s[1]+'</div>';
-    h+='<div style="font-size:9px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:.5px">'+s[2]+'</div>';
-    h+='</div>';
-  });
-  h+='</div>';
-  /* ✅ 2026-10-12 (badge-engine): share card par kamaye hue badges ki
-     image-row — screenshot/share = free marketing; dosto ko dikhta hai
-     to wo bhi kamane aate hain. Data: public columns (wins/kills/
-     matches/RP) + apne card par poora stats (UD) — isliye kisi aur ka
-     card bhi sahi badge dikhata hai, bina koi private data maange. */
-  var _pcBadges = [];
-  try {
-    if (window.getTopBadges) {
-      var _stB = { wins:Number(data.total_wins||0), kills:Number(data.total_kills||0),
-                   matches:Number(data.total_matches||0), rp:Number(rp||0) };
-      if (_isSelfCard && window._assetStats) {
-        var _sA = window._assetStats();
-        ['wins','kills','matches','rp','streak','loginStreak','level','clean','premium',
-         'top1','top3','top5','top10','soloWins','comebacks'].forEach(function(k){
-          if (_sA[k] != null && Number(_sA[k]) > 0) _stB[k] = Number(_sA[k]);
-        });
-      }
-      _pcBadges = window.getTopBadges(_stB, 4);
-      /* 2026-10-12b: apne card par EQUIPPED badge sabse pehle (⭐) —
-         jo user ne khud chuna wo share-card par chamke. Doosre ke card
-         par unka equipped badge nahi maangte (wo private row hai). */
-      if (_isSelfCard && window.getEquippedBadge) {
-        var _eqB = window.getEquippedBadge(_stB);
-        if (_eqB) {
-          _pcBadges = _pcBadges.filter(function (x) { return x.id !== _eqB.id; });
-          _pcBadges.unshift({ id: _eqB.id, name: '⭐ ' + _eqB.name, img: _eqB.img, desc: _eqB.desc });
-          _pcBadges = _pcBadges.slice(0, 4);
-        }
-      }
-    }
-  } catch (e) { _pcBadges = []; }
-  if (_pcBadges.length) {
-    h+='<div style="display:flex;align-items:center;gap:8px;padding:10px 16px;border-top:1px solid '+ri.color+'22;position:relative">';
-    h+='<div style="font-size:9px;font-weight:900;letter-spacing:1px;color:rgba(255,255,255,.45)">BADGES</div>';
-    h+='<div style="display:flex;align-items:center;gap:6px;flex:1">';
-    _pcBadges.forEach(function(b){
-      h+='<img src="'+b.img+'?v=20261104a" alt="'+b.name+'" title="'+b.name+'" style="width:30px;height:30px;object-fit:contain" onerror="this.style.display=\'none\'">';
-    });
-    h+='</div><div style="font-size:10px;font-weight:800;color:'+ri.color+'">'+_pcBadges[0].name+'</div>';
-    h+='</div>';
-  }
-  /* RP bar */
-  h+='<div style="padding:12px 16px 14px;position:relative">';
-  var nextTier=_pcNextTier(rp);
-  var pct=Math.min(100,nextTier.pct);
-  h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">';
-  h+='<span style="font-size:10px;color:rgba(255,255,255,.5);font-weight:700">'+rp+' RP</span>';
-  h+='<span style="font-size:10px;color:'+ri.color+';font-weight:700">'+nextTier.label+'</span>';
-  h+='</div>';
-  h+='<div style="height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden">';
-  h+='<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,'+ri.color+',#00d4ff);border-radius:4px;transition:width .6s ease"></div>';
-  h+='</div></div>';
-  h+='</div>'; /* /playerCardVisual */
-  if (_isVipTarget) h+='</div>'; /* close rainbow wrapper (Bug 10) */
+  /* Card visual — D36 (04 Nov 2026): owner ki di hui design ka EXACT
+     replica — PCARD2 core (js/profile-card2-core.js) base art + same
+     coordinate table use karta hai; modal aur share-canvas dono identical. */
+  var _pc2Data = {
+    name: ign, uid: ffUid, level: 1, xp: 0, xpNeed: 10, pts: rp || 0,
+    tier: String(data.rank_tier || ri.badge || 'Bronze'),
+    stats: [matches, kills, wins, kd, wr + '%']
+  };
+  h += '<div id="pc2Host" style="margin-bottom:14px"></div>';
   /* Share buttons */
   h+='<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,215,0,.35);background:rgba(255,215,0,.08);color:#ffd700;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fas fa-trophy"></i> My Collection (Titles + Badges)</button>';
   h+='<button onclick="window.sharePlayerCard()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fab fa-whatsapp"></i> WhatsApp pe Share Karo</button>';
@@ -167,6 +63,24 @@ function _renderPlayerCard(data){
   h+='<p style="text-align:center;font-size:11px;color:var(--txt2);margin-top:8px">💡 Screenshot leke bhi share kar sakte ho!</p>';
   h+='</div>';
   mb.innerHTML=h;
+  /* PCARD2 mount + battle-pass XP async bharo */
+  try {
+    var _pc2Host = document.getElementById('pc2Host');
+    if (_pc2Host && window.PCARD2) {
+      window.PCARD2.mount(_pc2Host, _pc2Data);
+      var _pc2Uid = data.id || (window.U && window.U.uid);
+      if (window._supa && _pc2Uid) {
+        window._supa.from('battle_pass_progress').select('current_xp,current_tier').eq('user_id', _pc2Uid).maybeSingle().then(function (r) {
+          var cx = (r && r.data && Number(r.data.current_xp)) || 0;
+          var lv = ((r && r.data && Number(r.data.current_tier)) || Math.floor(cx / 100)) + 1;
+          var need = 10 * lv;
+          _pc2Data.level = lv; _pc2Data.xp = cx % need; _pc2Data.xpNeed = need;
+          var h2 = document.getElementById('pc2Host');
+          if (h2 && window.PCARD2) window.PCARD2.mount(h2, _pc2Data);
+        }).catch(function () {});
+      }
+    }
+  } catch (e) {}
   /* ── Clan chip fill (async) — ASLI clans row se (public read).
      Na mile to chip hata do (jhoota clan naam kabhi nahi). ── */
   if (_pcClanId && window._supa) {
