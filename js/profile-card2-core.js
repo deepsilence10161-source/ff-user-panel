@@ -84,10 +84,14 @@
       if (sw > allowed && sw > 0) el.style.fontSize = (parseFloat(el.style.fontSize) * allowed / sw).toFixed(2) + 'px';
     });
   }
-  function bind(wrap) {
+  function bind(wrap, handlers) {
     scaleWrap(wrap);
+    var acts = handlers || BTNS;
     wrap.querySelectorAll('[data-pc2btn]').forEach(function (el) {
-      el.addEventListener('click', function () { try { BTNS[Number(el.getAttribute('data-pc2btn'))].act(); } catch (e) {} });
+      el.addEventListener('click', function () {
+        var i = Number(el.getAttribute('data-pc2btn'));
+        try { (acts[i] || BTNS[i]).act ? (acts[i] || BTNS[i]).act() : (acts[i] || BTNS[i])(); } catch (e) {}
+      });
     });
     if (!window.__pc2Resize) {
       window.__pc2Resize = true;
@@ -96,11 +100,12 @@
       });
     }
   }
-  /* render into container (modal body etc.) */
-  function mount(container, d) {
+  /* render into container (modal body etc.); handlers = optional [fn,fn,fn]
+     jo default button-actions (gallery/gear/pencil) override karte hain */
+  function mount(container, d, handlers) {
     container.innerHTML = html(d);
     var wrap = container.querySelector('[data-pc2]');
-    if (wrap) bind(wrap);
+    if (wrap) bind(wrap, handlers);
     return wrap;
   }
 

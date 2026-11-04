@@ -105,53 +105,22 @@ function renderProfile() {
   if (_eqVip) chips += '<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700">⭐ VIP</span>';
   if (UD.title) chips += '<span class="prof-title-chip">' + UD.title + '</span>';
   var h = inviteEarnHtml;
+  /* ── D36 (04 Nov 2026, owner order): profile hero card = owner ki bheji
+     design ka EXACT replica (PCARD2 core + base art). Purana pf2-* visual
+     retired; asli data (lv/xp formula, rk, stats) wahi hai aur asli
+     handlers (banner upload, photo upload, settings) buttons se wire hain. ── */
   h += _premActive
-    ? '<div class="rb-wrap rb-glow" style="margin:0 0 14px"><div class="pf2-card rb-inner" id="pfHeroCard" style="' + bannerStyle + '">'
-    : '<div class="pf2-frame" style="margin:0 0 14px;--pf2c:' + _pf2Ring + '"><div class="pf2-card" id="pfHeroCard" style="' + bannerStyle + '">';
-  h += '<div class="pf2-dots"></div>';
-  if (!bannerImg) {
-    h += '<div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 12%,rgba(185,100,255,.28) 0%,transparent 45%),radial-gradient(circle at 92% 8%,rgba(0,212,255,.22) 0%,transparent 42%),radial-gradient(circle at 60% 105%,rgba(255,140,0,.16) 0%,transparent 45%)"></div>';
-  }
-  /* Top-right: banner-change + settings (wahi handlers, naya neon look) */
-  h += '<div class="pf2-top">';
-  h += '<div class="pf2-topbtn" onclick="document.getElementById(\'profBannerIn\').click()" title="' + (_premActive ? 'Change banner' : 'Premium feature — change banner') + '"><i class="fas fa-image"></i>' + (_premActive ? '' : '<i class="fas fa-lock" style="position:absolute;bottom:-3px;right:-3px;font-size:8px;color:#ffd700;background:#000;border-radius:50%;padding:2px"></i>') + '</div>';
-  h += '<div class="pf2-topbtn" onclick="showProfileSettings()" title="Settings"><i class="fas fa-cog"></i></div>';
-  h += '</div>';
+    ? '<div class="rb-wrap rb-glow" style="margin:0 0 14px"><div id="pc2HostProfile"></div></div>'
+    : '<div id="pc2HostProfile" style="margin:0 0 14px"></div>';
   h += '<input type="file" id="profBannerIn" accept="image/*" style="display:none" onchange="uploadBannerImg(this)">';
-  /* Avatar (centered) — premium par animated rainbow ring, warna kosmetik/rank color */
-  h += '<div class="pf2-ava-wrap">';
-  var _avaInner = '<div class="pf2-ava" style="' + (_premActive ? 'border-color:rgba(255,255,255,.10)' : 'border-color:' + _pf2Ring + ';box-shadow:0 0 24px ' + _pf2Ring + 'aa') + '">' + av + '</div>';
-  h += _premActive ? '<span class="rb-ring">' + _avaInner + '</span>' : _avaInner;
-  /* ✅ 2026-10-13 (master plan 3.5): equipped AVATAR RING ka medal — asli art
-     (rank/premium kala) avatar ke kone par. Koi equipped frame art na ho to
-     kuch nahi dikhta (jhoota medal kabhi nahi). */
-  var _eqFrameArt = window.getEquippedFrameArt ? window.getEquippedFrameArt() : null;
-  if (_eqFrameArt && _eqFrameArt.img) {
-    h += '<img class="pf2-ring-art" src="' + _eqFrameArt.img + '" alt="' + (_eqFrameArt.name || '') + '" title="' + (_eqFrameArt.name || '') +
-         '" style="position:absolute;left:2px;bottom:2px;width:38px;height:38px;object-fit:contain;z-index:5;' +
-         'background:radial-gradient(circle,rgba(0,0,0,.55),transparent 70%);border-radius:50%;' +
-         'filter:drop-shadow(0 0 6px ' + (_eqFrameArt.color || '#00ff9c') + ')" ' +
-         'onerror="this.style.display=\'none\'">';
-  }
-  h += '<div class="prof-edit-btn" onclick="document.getElementById(\'profImgIn\').click()" title="' + (_premActive ? 'Change photo' : 'Premium feature — change photo') + '">' + (_premActive ? '<i class="fas fa-pencil-alt"></i>' : '<i class="fas fa-lock" style="font-size:11px"></i>') + '</div>';
   h += '<input type="file" id="profImgIn" accept="image/*" style="display:none" onchange="uploadProfImg(this)">';
-  h += '</div>';
-  /* Name plate — wings + ⚡ + naam (premium par 👑), equipped tag prefix wahi */
-  h += '<div class="pf2-plate"><span class="pf2-bolt">⚡</span>' + (_eqTag ? '<span style="font-size:16px;font-weight:900;color:' + _pf2Ring + '">' + _eqTag + '</span>' : '') + '<span class="pf2-name">' + (window.escHtml ? window.escHtml(UD.ign || UD.displayName || 'Player') : (UD.ign || UD.displayName || 'Player')) + '</span>' + (_premActive ? '<span class="pf2-crown">👑</span>' : '') + (window.premiumRibbonHtml ? premiumRibbonHtml(20) : '') + '</div>';
-  h += premPlate;
-  if (chips) h += '<div class="pf2-chips">' + chips + '</div>';
-  /* UID pill + copy (copyTxt core/utils.js ka asli helper hai) */
-  h += '<div class="pf2-uid"><i class="fas fa-user"></i><span>UID : ' + displayUid + '</span><div class="pf2-copy" onclick="copyTxt(\'' + displayUid + '\')" title="Copy UID"><i class="fas fa-copy"></i></div></div>';
-  /* Footer row — hexagon Lv badge + rank plate + XP bar (asli lv/xp formula) */
-  h += '<div class="pf2-foot">';
-  h += '<div class="pf2-lv"><span class="c">👑</span><b>Lv ' + lv + '</b></div>';
-  h += '<div class="pf2-rank" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 0 1.5px ' + rk.color + '66;display:inline-flex;align-items:center;gap:5px">' +
-       (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261104a" alt="" style="width:18px;height:18px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
-       rk.emoji + ' ' + rk.badge + '</div>';
-  h += '<div class="pf2-xp"><div class="t">' + xp + ' / ' + maxXp + ' XP · ' + rk.pts + ' pts</div><div class="pf2-xpbar"><i style="width:' + xpPct + '%"></i></div></div>';
-  h += '</div>';
-  h += '</div></div>';
-  if (_premActive) h += '</div>'; /* end rainbow wrapper */
+  var _pm0 = Number(st.matches||0), _pw0 = Number(st.wins||0), _pk0 = Number(st.kills||0);
+  window._pc2ProfData = {
+    name: UD.ign || UD.displayName || 'Player',
+    uid: displayUid, level: lv, xp: xp, xpNeed: maxXp,
+    pts: rk.pts || 0, tier: String(rk.badge || 'Bronze'),
+    stats: [_pm0, _pk0, _pw0, (_pm0 ? (_pk0/_pm0).toFixed(1) : '0.0'), (_pm0 ? Math.round(_pw0/_pm0*100) : 0) + '%']
+  };
 
   /* ✅ USER-ATTRACTION (2026-10-12, badge-engine.js): khule badges ki
      image-row — jo mehnat se kamaya wo PROFILE par dikhe (warna badge
@@ -338,6 +307,17 @@ function renderProfile() {
   // now opened via window.mesShowLegalModal() instead of being
   // rendered inline on this page every time.
   pc.innerHTML = h;
+  /* PCARD2 mount — asli handlers: [banner, settings, photo] */
+  try {
+    var _pc2Host = document.getElementById('pc2HostProfile');
+    if (_pc2Host && window.PCARD2 && window._pc2ProfData) {
+      window.PCARD2.mount(_pc2Host, window._pc2ProfData, [
+        function () { var b = document.getElementById('profBannerIn'); if (b) b.click(); },
+        function () { if (window.showProfileSettings) window.showProfileSettings(); },
+        function () { var pi = document.getElementById('profImgIn'); if (pi) pi.click(); }
+      ]);
+    }
+  } catch (e) {}
 }
 
 var _profilePhotoUploading = false;
