@@ -505,19 +505,20 @@ console.log('\n── TEST 16: B19 streak milestone (duplicate UI/logic saaf) �
 console.log('\n── TEST 17: A12 profile hero card (rainbow frame + ring + plates + XP) ──');
 {
   const pf = fs.readFileSync(path.join(REPO, 'screens/profile.js'), 'utf8');
-  ok(pf.indexOf('pf2-card') !== -1 && pf.indexOf('id="pfHeroCard"') !== -1 && pf.indexOf('pf2-frame') !== -1,
-     'A12: naya hero card maujood (frame + card, id="pfHeroCard")');
-  ok(pf.indexOf('class="rb-wrap rb-glow"') !== -1 && pf.indexOf('rb-ring') !== -1,
-     'A12: premium par animated rainbow frame + avatar ring (pehle ka perk bacha hua)');
-  ok(pf.indexOf('pf2-plate') !== -1 && pf.indexOf('pf2-bolt') !== -1 && pf.indexOf('pf2-crown') !== -1,
-     'A12: wings wali name plate (⚡ + naam + premium par 👑)');
-  ok(pf.indexOf('pf2-prem') !== -1 && pf.indexOf('pf2-uid') !== -1 && pf.indexOf('pf2-copy') !== -1,
-     'A12: Premium plate + UID pill + copy button');
-  ok(pf.indexOf('pf2-lv') !== -1 && pf.indexOf('pf2-rank') !== -1 && pf.indexOf('pf2-xpbar') !== -1,
-     'A12: hexagon Lv badge + rank plate + XP bar');
-  ok(pf.indexOf('copyTxt(') !== -1 && pf.indexOf('showProfileSettings()') !== -1
+  const pc2 = fs.readFileSync(path.join(REPO, 'js/profile-card2-core.js'), 'utf8');
+  ok(pf.indexOf('pc2HostProfile') !== -1 && pf.indexOf('window.PCARD2') !== -1 && pc2.indexOf('pc2wrap') !== -1,
+     'A12: PCARD2 hero card wired (host + mount + core art)');
+  ok(pf.indexOf('class="rb-wrap rb-glow"') !== -1 && pc2.indexOf('pc2wrap') !== -1,
+     'A12: premium par rainbow wrapper + PCARD2 frame (pehle ka perk bacha hua)');
+  ok(pc2.indexOf('pc2lbl') !== -1 && pc2.indexOf('pc2btn') !== -1,
+     'A12: name plate + action buttons PCARD2 core me');
+  ok(pf.indexOf('_pc2ProfData') !== -1 && pf.indexOf('uid: displayUid') !== -1 && pc2.indexOf("'UID : '") !== -1,
+     'A12: UID label + data wiring (PCARD2 ko asli UID jaata hai)');
+  ok(pf.indexOf('level: lv') !== -1 && pf.indexOf('xp: xp') !== -1 && pf.indexOf('pts: rk.pts') !== -1,
+     'A12: Lv/XP/rank-points data PCARD2 ko asli jaata hai');
+  ok(pf.indexOf('PCARD2.mount') !== -1 && pf.indexOf('showProfileSettings()') !== -1
      && pf.indexOf('uploadProfImg(this)') !== -1 && pf.indexOf('uploadBannerImg(this)') !== -1,
-     'A12: purane handlers sab jude (copy/settings/photo/banner) — kuch functionality nahi gayi');
+     'A12: handlers sab jude (PCARD2 mount/settings/photo/banner) — kuch functionality nahi gayi');
   ok(pf.indexOf("document.getElementById('pfHeroCard')") !== -1
      && pf.indexOf("document.querySelector('.prof-header')") === -1,
      'A12: banner turant-preview bhi naye hook (#pfHeroCard) par');
@@ -559,33 +560,32 @@ console.log('\n── TEST 18: A12 render smoke (renderProfile asal me chalta ha
   const freeUD = { ign: 'QA Free', ffUid: '912345678', profileImage: '', bannerImage: '', stats: { matches: 7, wins: 3, kills: 25, earnings: 0 }, premium: { tier: 0 }, title: '', coins: 10, greenDiamonds: 0, skyDiamonds: 0 };
   const premUD = Object.assign({}, freeUD, { ign: 'QA Prem', premium: { tier: 2, expiresAt: Date.now() + 86400000 } });
 
-  let errF = null, htmlF = '';
+  let errF = null, htmlF = '', ctxF = null, ctxP = null;
   {
-    const { ctx, els } = renderCtx(freeUD);
-    try { loadFile(ctx, 'screens/profile.js'); ctx.renderProfile(); htmlF = els['profileContent'].innerHTML || ''; }
+    const rF = renderCtx(freeUD); ctxF = rF.ctx;
+    try { loadFile(ctxF, 'screens/profile.js'); ctxF.renderProfile(); htmlF = rF.els['profileContent'].innerHTML || ''; }
     catch (e) { errF = e.message; }
   }
   ok(!errF, 'A12: renderProfile() FREE user ke liye bina error chalta hai' + (errF ? ' (' + errF + ')' : ''));
-  ok(htmlF.indexOf('id="pfHeroCard"') !== -1 && htmlF.indexOf('pf2-plate') !== -1 && htmlF.indexOf('pf2-uid') !== -1
-     && htmlF.indexOf('pf2-lv') !== -1 && htmlF.indexOf('pf2-xpbar') !== -1,
-     'A12: FREE render me poora hero card banta hai (frame/plate/uid/lv/xp)');
-  ok(htmlF.indexOf('pf2-frame') !== -1 && htmlF.indexOf('rb-wrap') === -1 && htmlF.indexOf('pf2-prem') === -1,
-     'A12: FREE = neon frame, koi rainbow/premium plate nahi');
+  ok(htmlF.indexOf('pc2HostProfile') !== -1 && htmlF.indexOf('inviteEarnBtn') !== -1,
+     'A12: FREE render me PCARD2 host + invite button bante hain');
+  ok(htmlF.indexOf('rb-wrap') === -1,
+     'A12: FREE = koi rainbow wrapper nahi (premium perk sirf premium ko)');
   ok(htmlF.indexOf('inviteEarnBtn') !== -1,
      'A12: Invite & Earn button isi ek render string me (blink-bug wapas nahi aaya)');
-  ok(htmlF.indexOf('912345678') !== -1 && htmlF.indexOf('Lv 11') !== -1 && htmlF.indexOf('8 / 10 XP') !== -1,
-     'A12: FREE render me asli UID/Lv/XP values (712345678 wala data)');
+  const dF = ctxF && ctxF.window._pc2ProfData;
+  ok(!!dF && String(dF.uid) === '912345678' && dF.level === 11 && dF.name === 'QA Free',
+     'A12: FREE render me asli UID/Lv/name PCARD2 data me (912345678, Lv 11)');
 
   let errP = null, htmlP = '';
   {
-    const { ctx, els } = renderCtx(premUD);
-    try { loadFile(ctx, 'screens/profile.js'); ctx.renderProfile(); htmlP = els['profileContent'].innerHTML || ''; }
+    const rP = renderCtx(premUD); ctxP = rP.ctx;
+    try { loadFile(ctxP, 'screens/profile.js'); ctxP.renderProfile(); htmlP = rP.els['profileContent'].innerHTML || ''; }
     catch (e) { errP = e.message; }
   }
   ok(!errP, 'A12: renderProfile() PREMIUM user ke liye bina error chalta hai' + (errP ? ' (' + errP + ')' : ''));
-  ok(htmlP.indexOf('rb-wrap rb-glow') !== -1 && htmlP.indexOf('rb-ring') !== -1 && htmlP.indexOf('pf2-crown') !== -1
-     && htmlP.indexOf('Premium II') !== -1,
-     'A12: PREMIUM render me rainbow frame + rainbow ring + 👑 + Premium II plate');
+  ok(htmlP.indexOf('rb-wrap rb-glow') !== -1 && htmlP.indexOf('pc2HostProfile') !== -1,
+     'A12: PREMIUM render me rainbow wrapper + PCARD2 host (premium frame zinda)');
 }
 
 /* ── TEST 19: SAFE-CLEANER v5 (2026-10-09) — incident ke baad ke lohe ke niyam ──
@@ -871,7 +871,7 @@ console.log('\n── TEST 24: badge equip wiring (har jagah dikhane ke liye) �
   ok(be24.indexOf('badge_') !== -1 && be24.indexOf('user_cosmetics') !== -1,
      '24b: storage user_cosmetics badge_<id> (naya column nahi)');
   ok(pr24.indexOf('renderEquippedBadgeChip') !== -1, '24c: profile hero me equipped chip call');
-  ok(pc24.indexOf('getEquippedBadge') !== -1, '24d: share-card (player-card) par equipped badge pehle');
+  ok(pc24.indexOf('getEquippedTagText') !== -1, '24d: share-card (player-card) par equipped tag pehle');
   ok(se24.indexOf('badge EQUIP') !== -1 && se24.indexOf('window.equipBadge') !== -1,
      '24e: screen-e2e.html me equip ka live E2E step');
 }
