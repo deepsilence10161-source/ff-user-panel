@@ -130,7 +130,7 @@ Deno.serve(async (req) => {
 
   /* ---- admin: token provisioning (x-verify-token guard) ---- */
   const admin = url.searchParams.get('admin');
-  if (admin === 'store_token' || admin === 'list_tokens') {
+  if (admin === 'store_token' || admin === 'list_tokens' || admin === 'list_messages') {
     const want = await getSetting('ig_webhook_verify');
     if (!want || req.headers.get('x-verify-token') !== want) return new Response('forbidden', { status: 403 });
     if (admin === 'list_messages') {
