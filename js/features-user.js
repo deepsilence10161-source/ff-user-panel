@@ -255,7 +255,7 @@ window.applyDynamicWallpaper = function() {
                 try {
                   new Notification('⚡ Match shuru hone wala hai!', {
                     body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
-                    icon: 'icons/icon-192x192.png?v=20261106i'
+                    icon: 'icons/icon-192x192.png?v=20261106j'
                   });
                 } catch (e) {}
               }, _ms);
@@ -715,7 +715,7 @@ window.applyDynamicWallpaper = function() {
                 if ('Notification' in window && Notification.permission === 'granted') {
                   new Notification('⚡ Match Starting!', {
                     body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
-                    icon: 'icons/icon-192x192.png?v=20261106i'
+                    icon: 'icons/icon-192x192.png?v=20261106j'
                   });
                 }
                 break;
@@ -2227,9 +2227,20 @@ window.applyDynamicWallpaper = function() {
     document.querySelectorAll('[data-daily-checkin]').forEach(function(btn) {
       btn.disabled = claimed;
       btn.setAttribute('aria-disabled', claimed ? 'true' : 'false');
-      btn.innerHTML = claimed
-        ? '<i class="fas fa-check-circle"></i> Checked In Today'
-        : '<i class="fas fa-calendar-check"></i> Daily Check-In (' + _amtLabel + ')';
+      /* ✅ D73 (dynamic-data rule): replica button ka [data-dci-label] span
+         sirf LABEL update karta hai — poora innerHTML replace karne se
+         reference-style button toot jata tha. Asli reward (admin-config
+         cycling tiers) hi dikhta hai, hardcoded 5 nahi. */
+      var lbl = btn.querySelector('[data-dci-label]');
+      if (lbl) {
+        lbl.innerHTML = claimed
+          ? 'Checked In Today ✓'
+          : 'Daily<br>Check-In<br><span style="font-size:3.6cqw">(' + _amtLabel.replace('+🪙', '+  ') + ')</span>';
+      } else {
+        btn.innerHTML = claimed
+          ? '<i class="fas fa-check-circle"></i> Checked In Today'
+          : '<i class="fas fa-calendar-check"></i> Daily Check-In (' + _amtLabel + ')';
+      }
       btn.style.opacity = claimed ? '0.65' : '1';
       btn.style.cursor = claimed ? 'default' : 'pointer';
     });
