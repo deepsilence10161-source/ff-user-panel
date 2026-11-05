@@ -111,6 +111,15 @@ window.showStreamSettings = function() {
         is_live:      _isLive,
         stream_live_until: _liveUntil
       }).eq('id', uid).then(function(r) {
+        /* migration (stream_live_until column) abhi apply nahi hui to bina
+           TTL column ke retry — live toggle kabhi na toote */
+        if (r && r.error && /stream_live_until|column|42703/i.test(String(r.error.message || r.error.code || r.error))) {
+          return window._supa.from('users').update({
+            stream_link:  link  || null,
+            stream_title: title || null,
+            is_live:      _isLive
+          }).eq('id', uid).then(function(r2) { r = r2; });
+        }
         if (r && r.error) console.warn('[Stream] Supabase save error:', r.error);
         _done();
       }).catch(function(e) { console.warn('[Stream] Supabase error:', e); _done(); });
