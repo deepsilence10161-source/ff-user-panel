@@ -133,6 +133,14 @@ Deno.serve(async (req) => {
   if (admin === 'store_token' || admin === 'list_tokens') {
     const want = await getSetting('ig_webhook_verify');
     if (!want || req.headers.get('x-verify-token') !== want) return new Response('forbidden', { status: 403 });
+    if (admin === 'list_messages') {
+      const { data } = await supa
+        .from('ig_dm_messages')
+        .select('id,account,sender_psid,text,matched_key,replied_by,created_at')
+        .order('id', { ascending: false })
+        .limit(10);
+      return new Response(JSON.stringify({ ok: true, rows: data || [] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
     if (admin === 'list_tokens') {
       const { data } = await supa.from('ig_tokens').select('account,ig_user_id,expires_at,updated_at');
       const rows = (data || []).map((r: any) => ({ account: r.account, ig_user_id: r.ig_user_id, expires_at: r.expires_at, updated_at: r.updated_at }));
