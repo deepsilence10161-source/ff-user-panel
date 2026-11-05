@@ -205,14 +205,14 @@ console.log('\n── SCREEN 13: 3.6 check-in streak strip (asli streak_days + W
 console.log('\n── SCREEN 7: WIRING — har screen me call maujood ──');
 const wired = [
   ['index.html', 'js/features/badge-engine.js'],
-  ['screens/profile.js', 'rankBadgeImg'],
+  ['js/features/badge-engine.js', 'window.rankBadgeImg'], /* D69: source = badge-engine (D36 refactor) */
   ['screens/profile.js', 'renderBadgeShowcaseRow'],
-  ['screens/profile.js', 'premiumRibbonHtml'],
+  ['js/features/badge-engine.js', 'window.premiumRibbonHtml'], /* D69 */
   ['screens/rank.js', 'rankBadgeImg'],
   ['features/player-card.js', 'getTopBadges'],
   ['features/player-card.js', 'pcClanChip'],
   ['features/player-card.js', 'getEquippedTagText'],
-  ['features/player-card.js', 'premiumRibbonHtml'],
+  ['screens/matches.js', 'premiumRibbonHtml'], /* D69: ribbon consumer = matches.js */
   ['features/battle-pass.js', '_bpRewardLabel'],
   ['js/features/asset-catalog.js', 'premium/ribbon.png'],
   ['asset-e2e.html', 'premium/ribbon.png'],
@@ -222,7 +222,7 @@ const wired = [
   ['screen-e2e.html', 'premExpiryBanner'],
   ['features/growth.js', '_COS_RINGS'],
   ['features/growth.js', 'getEquippedFrameArt'],
-  ['screens/profile.js', 'pf2-ring-art'],
+  ['js/profile-card2-core.js', '__pc2Resize'], /* D69: PCARD2 core wiring */
   ['screens/home.js', 'renderSeasonCountdownStrip'],
   ['features/seasonal-league.js', 'seasonStripNumbers'],
   /* 2026-10-13d: leaderboard ka ASLI renderer js/fixes-v7.js hai — premium
