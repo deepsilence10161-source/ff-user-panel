@@ -415,7 +415,7 @@ function _arenaCard(users, sortKey) {
      arena ab owner ke mock (2a56d26a) ki patched art ke upar exact-slot
      overlays se banti hai — trophy/plaque/banners/pedestal/walls sab
      mock ki asli art; sirf avatars/names/kills/pills dynamic. */
-  var STAMP = '20261107a';
+  var STAMP = '20261107b';
   var top = (users || []).slice(0, 3);
   var COLS = [
     { n: 2, av: { l: 22.2, t: 40.0, w: 15.4 }, nm: { t: 56.4, f: 3.5 }, vl: { t: 59.9, f: 3.3 }, pl: { t: 62.8 } },
@@ -593,7 +593,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106h" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106i" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
