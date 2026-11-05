@@ -269,6 +269,199 @@ function getPlayerBadges(st, lv) {
 }
 var _rankTab = 'kills'; // kills | wins | rankpoints
 
+/* ====================================================================
+   D69 (2026-11-06): RANK ARENA — owner ke selected screenshot (portrait
+   "RANK LEADERBOARD / Top Competitors" mock) ka poori mehnat se banaya
+   inline replica. Sab CSS + SVG inline (koi external asset/file nahi)
+   taki APK offline-mode aur har preview me pixel-same dikhe.
+   Cheezein jo replica me hain: purple arena + light beams + ceiling
+   lamps, dono side hanging banners (PLAY/COMPETE/CLIMB/REPEAT &
+   SMALL/GAMES/BIG/CHAMPIONS), cursive script lines, gold trophy +
+   laurels, chamfered plaque, 2-1-3 podium (crown+wreath ring p1,
+   ribbon-medals p2/p3), metallic pedestals (p1 par laurel-wreath
+   number), crowd silhouettes + phone-lights, smoke, floor glow aur
+   MINI ESPORTS footer branding. Data asli rehta hai (ign, kills/wins/
+   pts, tier badge, avatar) — sirf shakal screenshot jaisi.
+   ==================================================================== */
+var _rkCssDone = false;
+var RK_CSS = [
+  '.rkArena{position:relative;border:2px solid rgba(232,197,101,.55);border-radius:18px;overflow:hidden;text-align:center;padding:12px 8px 8px;margin:0 0 12px;background:radial-gradient(120% 55% at 50% 0%,rgba(126,46,200,.38),transparent 62%),radial-gradient(90% 40% at 50% 100%,rgba(255,190,60,.10),transparent 65%),linear-gradient(180deg,#170a28 0%,#241143 34%,#1c0c34 62%,#0a0416 100%);box-shadow:inset 0 0 60px rgba(90,30,160,.35),0 6px 24px rgba(0,0,0,.6)}',
+  '.rkArena *{box-sizing:border-box}',
+  '.rkBeams{position:absolute;inset:0;pointer-events:none;background:conic-gradient(from 180deg at 50% -12%,transparent 41%,rgba(255,214,110,.24) 44%,transparent 47%,rgba(190,120,255,.26) 50%,transparent 53%,rgba(255,214,110,.19) 56%,transparent 59%)}',
+  '.rkLampL,.rkLampR{position:absolute;top:6px;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 14px 6px rgba(255,240,200,.7)}',
+  '.rkLampL{left:12%}.rkLampR{right:12%}',
+  '.rkBannerL{position:absolute;top:34px;left:3%;width:44px;z-index:1}',
+  '.rkBannerR{position:absolute;top:34px;right:3%;width:44px;z-index:1}',
+  '.rkScript{position:absolute;top:30%;width:19%;z-index:1;font-family:"Segoe Script","Brush Script MT","Lucida Handwriting",cursive;color:#d8b45a;font-size:10.5px;line-height:1.3;text-shadow:0 0 12px rgba(216,180,90,.55);font-weight:700}',
+  '.rkScriptL{left:2.5%;transform:rotate(-8deg)}',
+  '.rkScriptR{right:2.5%;transform:rotate(8deg)}',
+  '.rkTrophy{position:relative;z-index:2;margin:6px auto 0;width:132px;line-height:0}',
+  '.rkPlaque{position:relative;z-index:2;width:72%;max-width:330px;margin:2px auto 0;background:linear-gradient(180deg,#f4d788,#c9a24a);clip-path:polygon(4% 0,96% 0,100% 28%,100% 72%,96% 100%,4% 100%,0 72%,0 28%);padding:2px}',
+  '.rkPlaqueIn{background:linear-gradient(180deg,#2a1348,#150a26);clip-path:polygon(4% 0,96% 0,100% 28%,100% 72%,96% 100%,4% 100%,0 72%,0 28%);padding:8px 6px 7px}',
+  '.rkTitle{font-size:20px;font-weight:900;letter-spacing:1.5px;background:linear-gradient(180deg,#ffefad,#e8b13f 55%,#a86e1f);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 5px rgba(0,0,0,.8));white-space:nowrap}',
+  '.rkSub{color:#efe8fb;font-size:9.5px;letter-spacing:2.5px;margin-top:3px;font-weight:600}',
+  '.rkCrowdGlow{position:absolute;bottom:28px;left:0;right:0;height:90px;z-index:0;background:radial-gradient(60% 100% at 50% 100%,rgba(150,80,255,.28),transparent 70%)}',
+  '.rkCrowdSvg{position:absolute;left:0;right:0;bottom:46px;width:100%;height:34px;z-index:0;opacity:1}',
+  '.rkSmoke{position:absolute;bottom:34px;width:40%;height:70px;filter:blur(8px);background:radial-gradient(ellipse at center,rgba(200,160,255,.32),transparent 70%);z-index:0}',
+  '.rkSmokeL{left:-6%}.rkSmokeR{right:-6%}',
+  '.rkPod{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-top:18px;padding:0 6px}',
+  '.rkCol{flex:1;max-width:112px;display:flex;flex-direction:column;align-items:center;min-width:0}',
+  '.rkCrownSvg{width:34px;margin-bottom:2px;filter:drop-shadow(0 2px 6px rgba(255,80,80,.45))}',
+  '.rkRingWrap{position:relative;display:inline-block}',
+  '.rkRing{border-radius:50%;border:4px solid #ffd700;background:#0b0b0f;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:28px;width:84px;height:84px;box-shadow:0 0 22px rgba(255,215,0,.5),inset 0 0 10px rgba(0,0,0,.8)}',
+  '.rkRing img{width:100%;height:100%;object-fit:cover;border-radius:50%}',
+  '.rkCol.p2 .rkRing{width:56px;height:56px;border-color:#d9d9e3;box-shadow:0 0 16px rgba(217,217,227,.45);font-size:20px}',
+  '.rkCol.p3 .rkRing{width:56px;height:56px;border-color:#cd7f32;box-shadow:0 0 16px rgba(205,127,50,.5);font-size:20px}',
+  '.rkLau{position:absolute;top:2px;width:16px;height:56px}',
+  '.rkLau.L{left:-15px}.rkLau.R{right:-15px;transform:scaleX(-1)}',
+  '.rkMedalSvg{width:26px;margin-top:4px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}',
+  '.rkName{margin-top:5px;font-size:12px;font-weight:800;color:#fff;max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px #000}',
+  '.rkVal{font-size:11px;font-weight:800;margin-top:1px;text-shadow:0 1px 3px #000}',
+  '.rkCol.p1 .rkVal{color:#ffd700}.rkCol.p2 .rkVal{color:#e8e8f2}.rkCol.p3 .rkVal{color:#f2e3d2}',
+  '.rkTier{margin-top:4px;font-size:9px;font-weight:800;color:#ffd700;background:rgba(64,38,6,.8);border:1px solid rgba(255,215,0,.55);border-radius:11px;padding:2px 9px;display:inline-flex;gap:4px;align-items:center}',
+  '.rkPed{width:88%;position:relative;margin-top:9px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900}',
+  '.rkPed::before{content:"";position:absolute;top:-7px;left:0;right:0;height:14px;border-radius:50%;background:inherit;filter:brightness(1.25)}',
+  '.rkCol.p1 .rkPed{height:100px;background:linear-gradient(90deg,#6b4d00,#ffd700 30%,#fff2b0 50%,#ffd700 70%,#6b4d00);font-size:32px;color:#fff8d0;text-shadow:0 0 10px rgba(255,200,0,.8)}',
+  '.rkCol.p2 .rkPed{height:62px;background:linear-gradient(90deg,#43434e,#c9c9d4 30%,#f2f2f8 50%,#c9c9d4 70%,#43434e);font-size:24px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}',
+  '.rkCol.p3 .rkPed{height:54px;background:linear-gradient(90deg,#4a2a10,#cd7f32 30%,#f0b070 50%,#cd7f32 70%,#4a2a10);font-size:24px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}',
+  '.rkPedW{display:flex;align-items:center;gap:1px}',
+  '.rkLauS{width:12px;height:38px;opacity:.9}',
+  '.rkLauS.R{transform:scaleX(-1)}',
+  '.rkFloorGlow{position:relative;z-index:1;height:20px;margin-top:-4px;background:radial-gradient(60% 100% at 50% 0%,rgba(255,215,0,.16),transparent 70%)}',
+  '.rkFoot{position:relative;z-index:2;margin-top:8px;line-height:1.2}',
+  '.rkFootCrown{width:16px;margin:0 auto 2px;display:block}',
+  '.rkFootName{letter-spacing:5px;font-size:11px;color:#d8b45a;font-weight:700}',
+  '.rkFootTag{letter-spacing:3px;font-size:8px;color:#96703d;margin-top:3px;font-weight:600}',
+  '.rkEmpty{color:#b9a0e0;font-size:12px;padding:26px 0 34px;font-weight:700}',
+  '.rkLau svg,.rkLauS svg{width:100%;height:100%;display:block}',
+  '.rkLauS{display:block}',
+  '.rkBannerL svg,.rkBannerR svg{width:100%;height:auto;display:block}'
+].join('');
+function _rkCss() {
+  if (_rkCssDone || document.getElementById('rkArenaCss')) { _rkCssDone = true; return; }
+  var st = document.createElement('style');
+  st.id = 'rkArenaCss';
+  st.textContent = RK_CSS;
+  document.head.appendChild(st);
+  _rkCssDone = true;
+}
+var RK_DEFS = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
+  '<linearGradient id="rkGld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset=".5" stop-color="#ffd700"/><stop offset="1" stop-color="#b8860b"/></linearGradient>' +
+  '<linearGradient id="rkSil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f2f8"/><stop offset=".55" stop-color="#9a9aa8"/><stop offset="1" stop-color="#6e6e80"/></linearGradient>' +
+  '<linearGradient id="rkBrz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b070"/><stop offset=".55" stop-color="#cd7f32"/><stop offset="1" stop-color="#8a4f1d"/></linearGradient>' +
+  '<linearGradient id="rkBan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#45196e"/><stop offset="1" stop-color="#2a0f4a"/></linearGradient>' +
+  '</defs></svg>';
+function _rkLaurel(color) {
+  var leaves = [[6,50,-38],[4,40,-30],[4.5,30,-20],[6.5,20,-10],[10,11,0],[14,5,12]].map(function (l) {
+    return '<ellipse cx="' + l[0] + '" cy="' + l[1] + '" rx="4.6" ry="2.2" transform="rotate(' + l[2] + ' ' + l[0] + ' ' + l[1] + ')" fill="' + color + '"/>';
+  }).join('');
+  return '<svg viewBox="0 0 18 60" xmlns="http://www.w3.org/2000/svg"><path d="M14 58 Q3 40 7 20 Q9 9 15 2" fill="none" stroke="' + color + '" stroke-width="2.2"/>' + leaves + '</svg>';
+}
+function _rkCrownSvg(cls) {
+  return '<svg class="' + (cls || '') + '" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M3 21 L1 7 L11 13 L20 2 L29 13 L39 7 L37 21 Z" fill="url(#rkGld)" stroke="#8a5a00" stroke-width="1"/>' +
+    '<circle cx="1" cy="7" r="1.7" fill="#ffe9a3"/><circle cx="20" cy="2" r="1.7" fill="#ffe9a3"/><circle cx="39" cy="7" r="1.7" fill="#ffe9a3"/>' +
+    '<circle cx="20" cy="13" r="2.6" fill="#e23b3b"/><circle cx="10" cy="16" r="1.6" fill="#7b2ff7"/><circle cx="30" cy="16" r="1.6" fill="#7b2ff7"/>' +
+    '<rect x="3" y="19.5" width="34" height="4" rx="2" fill="url(#rkGld)" stroke="#8a5a00" stroke-width=".6"/></svg>';
+}
+function _rkMedalSvg(num, metal) {
+  var grad = metal === 's' ? 'url(#rkSil)' : 'url(#rkBrz)';
+  var ink = metal === 's' ? '#2b2b33' : '#4a2a10';
+  return '<svg class="rkMedalSvg" viewBox="0 0 34 42" xmlns="http://www.w3.org/2000/svg">' +
+    '<polygon points="10,0 16,0 17,13 12,13" fill="#3f74e0"/><polygon points="24,0 18,0 17,13 22,13" fill="#2b57b0"/>' +
+    '<circle cx="17" cy="26" r="11" fill="' + grad + '" stroke="rgba(0,0,0,.35)" stroke-width="1"/>' +
+    '<circle cx="17" cy="26" r="7.6" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1"/>' +
+    '<text x="17" y="30.5" text-anchor="middle" font-size="12" font-weight="900" fill="' + ink + '" font-family="Arial,sans-serif">' + num + '</text></svg>';
+}
+function _rkTrophySvg() {
+  var leafL = [[14,58,-40],[10,48,-35],[9,38,-25],[11,28,-15],[16,18,-5],[23,10,10]].map(function (l) {
+    return '<ellipse cx="' + l[0] + '" cy="' + l[1] + '" rx="5" ry="2.4" transform="rotate(' + l[2] + ' ' + l[0] + ' ' + l[1] + ')" fill="#d8b45a"/>';
+  }).join('');
+  return '<svg viewBox="0 0 132 74" xmlns="http://www.w3.org/2000/svg" style="width:100%">' +
+    '<g><path d="M20 66 Q6 44 18 20 Q22 12 30 6" fill="none" stroke="#d8b45a" stroke-width="2.5"/>' + leafL + '</g>' +
+    '<g transform="translate(132,0) scale(-1,1)"><path d="M20 66 Q6 44 18 20 Q22 12 30 6" fill="none" stroke="#d8b45a" stroke-width="2.5"/>' + leafL + '</g>' +
+    '<path d="M48 22 q-12 0 -10 12 q2 10 12 10" fill="none" stroke="url(#rkGld)" stroke-width="3"/>' +
+    '<path d="M84 22 q12 0 10 12 q-2 10 -12 10" fill="none" stroke="url(#rkGld)" stroke-width="3"/>' +
+    '<path d="M48 16 h36 v12 q0 16 -18 18 q-18 -2 -18 -18 z" fill="url(#rkGld)" stroke="#8a5a00" stroke-width="1"/>' +
+    '<polygon points="66,20 71,26 66,32 61,26" fill="#8b2ff7" stroke="#e8c565" stroke-width="1"/>' +
+    '<rect x="62" y="46" width="8" height="8" fill="url(#rkGld)"/>' +
+    '<rect x="54" y="54" width="24" height="6" rx="2" fill="url(#rkGld)" stroke="#8a5a00" stroke-width=".6"/>' +
+    '<rect x="50" y="60" width="32" height="6" rx="2" fill="#b8860b"/>' +
+    '</svg>';
+}
+function _rkBannerSvg(side) {
+  var words = side === 'L' ? ['PLAY', 'COMPETE', 'CLIMB', 'REPEAT'] : ['SMALL', 'GAMES', 'BIG', 'CHAMPIONS'];
+  var txt = words.map(function (w, i) {
+    return '<text x="26" y="' + (30 + i * 17) + '" text-anchor="middle" font-size="7.5" font-weight="800" letter-spacing="1" fill="#e8c565" font-family="Arial,sans-serif">' + w + '</text>';
+  }).join('');
+  return '<svg class="rkBanner' + side + '" viewBox="0 0 52 168" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M1 1 h50 v138 l-25 27 l-25 -27 z" fill="url(#rkBan)" stroke="#c9a24a" stroke-width="2"/>' +
+    '<path d="M6 6 h40 v130 l-20 21 l-20 -21 z" fill="none" stroke="rgba(232,197,101,.35)" stroke-width="1"/>' +
+    txt +
+    '<path d="M18 122 l-2 -9 l7 5 l3 -8 l3 8 l7 -5 l-2 9 z" fill="#e8c565"/>' +
+    '</svg>';
+}
+function _rkCrowdSvg() {
+  var d = 'M0 34 L0 24';
+  for (var x = 0; x < 360; x += 24) d += ' Q' + (x + 12) + ' 10 ' + (x + 24) + ' 24';
+  d += ' L360 34 Z';
+  var dots = [[40,20,'#ffd700'],[118,15,'#fff'],[208,21,'#ffd700'],[298,17,'#fff'],[340,22,'#ffd700']].map(function (c) {
+    return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="1.2" fill="' + c[2] + '" opacity=".55"/>';
+  }).join('');
+  return '<svg class="rkCrowdSvg" viewBox="0 0 360 34" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + d + '" fill="#140a26"/>' + dots + '</svg>';
+}
+function _arenaCard(users, sortKey) {
+  _rkCss();
+  var h = '<div class="rkArena">' + RK_DEFS +
+    '<div class="rkBeams"></div><div class="rkLampL"></div><div class="rkLampR"></div>' +
+    _rkBannerSvg('L') + _rkBannerSvg('R') +
+    '<div class="rkScript rkScriptL">Legends<br>Play<br>Here</div>' +
+    '<div class="rkScript rkScriptR">Gamet<br>Beyond<br>Limits</div>' +
+    '<div class="rkTrophy">' + _rkTrophySvg() + '</div>' +
+    '<div class="rkPlaque"><div class="rkPlaqueIn"><div class="rkTitle">RANK LEADERBOARD</div>' +
+    '<div class="rkSub">&mdash;&nbsp; Top Competitors &nbsp;&mdash;</div></div></div>' +
+    '<div class="rkCrowdGlow"></div>' + _rkCrowdSvg() + '<div class="rkSmoke rkSmokeL"></div><div class="rkSmoke rkSmokeR"></div>' +
+    '<div class="rkPod">';
+  var top = (users || []).slice(0, 3);
+  if (!top.length) {
+    h += '<div class="rkEmpty">🏆 No ranked players yet</div>';
+  } else {
+    /* podium order: 2nd | 1st | 3rd (screenshot jaisa) */
+    var slots = [];
+    if (top[1]) slots.push({ u: top[1], cls: 'p2', num: 2 });
+    slots.push({ u: top[0], cls: 'p1', num: 1 });
+    if (top[2]) slots.push({ u: top[2], cls: 'p3', num: 3 });
+    for (var i = 0; i < slots.length; i++) {
+      var s = slots[i], u = s.u;
+      var isDel = (u.ign || u.displayName || '') === '[deleted]';
+      var av = isDel ? '<i class="fas fa-user" style="opacity:.4;font-size:22px;line-height:1"></i>'
+        : (u.profileImage ? '<img src="' + u.profileImage + '" alt="">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
+      var val = _rankVal(u, sortKey);
+      var valLabel = _rankValStr(val, sortKey);
+      var rk = calcRk(u.stats || {});
+      h += '<div class="rkCol ' + s.cls + '">';
+      if (s.cls === 'p1') h += _rkCrownSvg('rkCrownSvg');
+      h += '<div class="rkRingWrap">';
+      if (s.cls === 'p1') h += '<span class="rkLau L">' + _rkLaurel('#e8c565') + '</span><span class="rkLau R">' + _rkLaurel('#e8c565') + '</span>';
+      h += '<div class="rkRing">' + av + '</div></div>';
+      if (s.cls !== 'p1') h += _rkMedalSvg(s.num, s.cls === 'p2' ? 's' : 'b');
+      h += '<div class="rkName">' + (window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player')) + '</div>';
+      h += '<div class="rkVal">' + valLabel + '</div>';
+      h += '<div class="rkTier">' + rk.emoji + ' ' + rk.badge + '</div>';
+      h += '<div class="rkPed">';
+      if (s.cls === 'p1') h += '<span class="rkPedW"><span class="rkLauS">' + _rkLaurel('#fff2b0') + '</span>' + s.num + '<span class="rkLauS R">' + _rkLaurel('#fff2b0') + '</span></span>';
+      else h += s.num;
+      h += '</div></div>';
+    }
+  }
+  h += '</div><div class="rkFloorGlow"></div>' +
+    '<div class="rkFoot">' + _rkCrownSvg('rkFootCrown') +
+    '<div class="rkFootName">MINI ESPORTS</div>' +
+    '<div class="rkFootTag">PLAY &bull; COMPETE &bull; BELONG</div></div>' +
+    '</div>';
+  return h;
+}
+
 function renderRank(tab) {
   if (tab) _rankTab = tab;
   var rc = $('rankContent'); if (!rc) return;
@@ -296,8 +489,8 @@ function renderRank(tab) {
       var labels = { kills: '☠️ Kills', wins: '🏆 Wins', rankpoints: '💎 Rank Points' };
       var active = t === _rankTab;
       return '<div onclick="renderRank(\'' + t + '\')" style="flex:1;padding:9px 6px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;text-align:center;' +
-        (active ? 'background:linear-gradient(135deg,rgba(0,255,156,.18),rgba(0,212,255,.1));color:#00ff9c;border:1.5px solid rgba(0,255,156,.35);box-shadow:0 0 12px rgba(0,255,156,.2)' :
-                  'background:rgba(255,255,255,.04);color:#666;border:1px solid rgba(255,255,255,.07)') +
+        (active ? 'background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(123,47,247,.12));color:#ffd700;border:1.5px solid rgba(255,215,0,.45);box-shadow:0 0 12px rgba(255,215,0,.22)' :
+                  'background:rgba(43,16,80,.35);color:#9a7dbd;border:1px solid rgba(185,100,255,.18)') +
         '">' + labels[t] + '</div>';
     }).join('') +
     '</div>';
@@ -327,7 +520,7 @@ function renderRank(tab) {
     }).join('') +
     '</div>';
 
-  rc.innerHTML = tabBar + seasonBanner + rankTools + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+  rc.innerHTML = _arenaCard([], _rankTab) + tabBar + seasonBanner + rankTools + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
 
   if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner + rankTools, false); return; }
   window._supa.from('leaderboard').select('*').limit(300)
@@ -361,43 +554,10 @@ function _rankValStr(val, sortKey) {
   return '🏆 ' + val + ' pts';
 }
 function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
-  var h = tabBar + seasonBanner;
-  var podCount = Math.min(users.length, 3);
-  if (podCount >= 1) {
-    var podOrder = podCount === 1 ? [users[0]] : podCount === 2 ? [users[1], users[0]] : [users[1], users[0], users[2]];
-    var podClasses = podCount === 1 ? ['p1'] : podCount === 2 ? ['p2','p1'] : ['p2','p1','p3'];
-    var podMedals  = podCount === 1 ? ['👑'] : podCount === 2 ? ['🥈','👑'] : ['🥈','👑','🥉'];
-    var podNums    = podCount === 1 ? ['1']  : podCount === 2 ? ['2','1']   : ['2','1','3'];
-    var podColors  = ['#c0c0c0','#ffd700','#cd7f32'];
-    var podGlows   = ['rgba(192,192,192,.6)','rgba(255,215,0,.8)','rgba(205,127,50,.6)'];
-    /* Animated podium background */
-    h += '<div class="rank-podium-wrap">';
-    h += '<div class="rank-podium">';
-    for (var i = 0; i < podCount; i++) {
-      var u = podOrder[i];
-      var posIdx = ['p2','p1','p3'].indexOf(podClasses[i]); // 0=silver,1=gold,2=bronze
-      var col = podColors[posIdx] || '#ffd700';
-      var glow = podGlows[posIdx] || 'rgba(255,215,0,.8)';
-      var _isDel = (u.ign || u.displayName || '') === '[deleted]';
-      var av = _isDel ? '<i class="fas fa-user" style="opacity:.4;font-size:24px;line-height:1"></i>' : (u.profileImage ? '<img src="' + u.profileImage + '">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
-      var val = _rankVal(u, sortKey);
-      var valLabel = _rankValStr(val, sortKey);
-      var rkBadge = calcRk(u.stats || {});
-      h += '<div class="pod-item ' + podClasses[i] + '">';
-      if (podClasses[i] === 'p1') h += '<div class="pod-crown" style="animation:podCrown 1.5s ease-in-out infinite">👑</div>';
-      h += '<div class="pod-ava" style="border-color:' + col + ';box-shadow:0 0 20px ' + glow + ',0 0 40px ' + glow.replace('.6',',.25').replace('.8',',.3') + '">' + av + '</div>';
-      h += '<div class="pod-medal">' + podMedals[i] + '</div>';
-      h += '<div class="pod-name">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + '</div>';
-      h += '<div class="pod-earn" style="color:' + col + ';font-weight:900">' + valLabel + '</div>';
-      /* Rank badge under score */
-      h += '<div style="font-size:10px;padding:2px 7px;border-radius:10px;background:' + rkBadge.bg + ';color:' + rkBadge.color + ';border:1px solid ' + rkBadge.color + '44;margin:2px 0 4px;display:inline-flex;align-items:center;gap:4px">' +
-           (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rkBadge.pts) + '?v=20261104a" alt="" style="width:15px;height:15px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
-           rkBadge.emoji + ' ' + rkBadge.badge + '</div>';
-      h += '<div class="pod-pedestal">' + podNums[i] + '</div></div>';
-    }
-    h += '</div>';
-    h += '</div>'; /* rank-podium-wrap */
-  }
+  /* ✅ D69 (2026-11-06): podium ab RANK ARENA replica (_arenaCard) ke
+     andar aata hai — owner ke selected screenshot jaisi poori screen.
+     Purana .rank-podium block hataya; data/logic wahi purana. */
+  var h = _arenaCard(users, sortKey) + tabBar + seasonBanner;
   for (var j = 3; j < users.length; j++) {
     var u = users[j];
     var rk = calcRk(u.stats || {});
