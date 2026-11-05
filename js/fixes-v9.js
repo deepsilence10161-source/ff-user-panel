@@ -8,7 +8,7 @@
 (function(){
 'use strict';
 
-var GD_SRC = 'js/green-diamond.png?v=20261106g';
+var GD_SRC = 'js/green-diamond.png?v=20261106h';
 var GD = '<img src="' + GD_SRC + '" style="width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block">';
 var GD_LG = '<img src="' + GD_SRC + '" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;display:inline-block">';
 window.GD_ICON = GD;
@@ -231,7 +231,7 @@ wait(function(){ return typeof window.renderWallet==='function' && !window._v9wa
       var gdc = document.getElementById('greenDiaCount');
       if(gdc && window.UD){
         var gd = Math.max(Number(window.UD.greenDiamonds)||0, 0);
-        gdc.innerHTML = GD_LG + ' <span style="font-size:18px;font-weight:900;color:#00ff64">' + gd + '</span>';
+        gdc.textContent = String(gd);   /* ✅ D72: gem icon card art me baked hai */
       }
     }, 80);
   };

@@ -218,24 +218,32 @@ window.showMyCreatorMatches = function() {
 window._loadShowcase = function(uid) {
   var box = document.getElementById('_showcaseBox'); if (!box) return;
   var isOwn = !!(window.U && window.U.uid === uid);
-  var head = '<div style="font-size:10px;color:#8878a8;font-weight:900;letter-spacing:1.2px;margin-bottom:8px">🎬 SHOWCASE</div>';
-  if (!window._supa) { box.innerHTML = head + '<div style="font-size:11px;color:#666">—</div>'; return; }
+  var head = '<div style="position:relative;border-radius:14px;padding:10px 12px;margin-bottom:10px;background:linear-gradient(160deg,rgba(123,47,247,.16),rgba(255,0,0,.07));border:1px solid rgba(185,100,255,.35)">' +
+    '<div style="font-size:12px;font-weight:900;letter-spacing:1.5px;background:linear-gradient(90deg,#ff4d4d,#ffd700,#b964ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🎬 SHOWCASE</div>' +
+    '<div style="font-size:9.5px;color:#8878a8;margin-top:2px">Creator ki best gameplay — tap karke YouTube par dekhein</div></div>';
+  if (!window._supa) { box.innerHTML = head; return; }
   window._supa.from('creator_showcase').select('*').eq('creator_uid', uid)
     .order('created_at', { ascending: false }).limit(6)
     .then(function(r) {
       var rows = r.data || [];
       var h = head;
       rows.forEach(function(v) {
-        h += '<div style="display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="window.open(\'' + String(v.video_url).replace(/'/g, "\\'") + '\',\'_blank\')">' +
-          '<img src="' + (v.thumb_url || '') + '" alt="" style="width:86px;height:50px;object-fit:cover;border-radius:8px;background:#000;flex-shrink:0" onerror="this.style.visibility=\'hidden\'">' +
-          '<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escCP(v.title || 'YouTube video') + '</div><div style="font-size:10px;color:#888;margin-top:2px">▶ YouTube par dekhein</div></div>' +
-          (isOwn ? '<button onclick="event.stopPropagation();window._delShowcase(\'' + v.id + '\',\'' + uid + '\')" style="background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35);color:#ff6b6b;border-radius:8px;padding:4px 8px;font-size:10px;cursor:pointer">🗑</button>' : '') +
+        h += '<div style="position:relative;display:flex;gap:10px;align-items:center;background:linear-gradient(160deg,rgba(123,47,247,.10),rgba(0,0,0,.30));border:1.5px solid rgba(185,100,255,.30);border-radius:14px;padding:8px;margin-bottom:9px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)" onclick="window.open(\'' + String(v.video_url).replace(/'/g, "\\'") + '\',\'_blank\')">' +
+          '<div style="position:relative;width:96px;height:54px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#000;border:1px solid rgba(255,255,255,.12)">' +
+            '<img src="' + (v.thumb_url || '') + '" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.visibility=\'hidden\'">' +
+            '<div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.65))"></div>' +
+            '<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:17px;border-radius:5px;background:#ff0000;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(255,0,0,.6)"><div style="width:0;height:0;border-left:7px solid #fff;border-top:4px solid transparent;border-bottom:4px solid transparent;margin-left:1px"></div></div>' +
+          '</div>' +
+          '<div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escCP(v.title || 'YouTube video') + '</div>' +
+          '<div style="font-size:9.5px;color:#ff6b6b;font-weight:700;margin-top:3px">▶ YouTube • abhi dekhein</div></div>' +
+          '<div style="color:#8878a8;font-size:16px;font-weight:900">›</div>' +
+          (isOwn ? '<button onclick="event.stopPropagation();window._delShowcase(\'' + v.id + '\',\'' + uid + '\')" style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,.55);border:1px solid rgba(255,80,80,.4);color:#ff6b6b;border-radius:8px;padding:2px 7px;font-size:10px;cursor:pointer">🗑</button>' : '') +
           '</div>';
       });
-      if (!rows.length) h += '<div style="font-size:11px;color:#666;margin-bottom:8px">' + (isOwn ? 'Apni best gameplay videos yahan lagao — followers dekhte hi seekhenge.' : 'Abhi koi video nahi') + '</div>';
-      if (isOwn) h += '<button onclick="window._addShowcase(\'' + uid + '\')" style="width:100%;padding:10px;border-radius:12px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.35);color:#ff6b6b;font-size:12px;font-weight:800;cursor:pointer">＋ Add YouTube video</button>';
+      if (!rows.length) h += '<div style="font-size:11px;color:#7768a0;margin:2px 2px 10px">' + (isOwn ? 'Apni best gameplay videos yahan lagao — followers profile se seedha dekhenge.' : 'Abhi koi video nahi') + '</div>';
+      if (isOwn) h += '<button onclick="window._addShowcase(\'' + uid + '\')" style="width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,#ff0000,#b30000);border:none;color:#fff;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(255,0,0,.35);letter-spacing:.4px">＋ Add YouTube video</button>';
       box.innerHTML = h;
-    }, function() { box.innerHTML = head + '<div style="font-size:11px;color:#666">—</div>'; });
+    }, function() { box.innerHTML = head; });
 };
 window._addShowcase = function(uid) {
   var url = prompt('YouTube video link paste karo:'); if (!url) return;

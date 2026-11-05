@@ -411,29 +411,26 @@ function _rkCrowdSvg() {
   return '<svg class="rkCrowdSvg" viewBox="0 0 360 34" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + d + '" fill="#140a26"/>' + dots + '</svg>';
 }
 function _arenaCard(users, sortKey) {
-  /* ✅ D71 (2026-11-06): owner — "rank ui bekar lag rahi, pahle jaisi karo":
-     CLASSIC podium card replica (owner ke purane app screenshot jaisi):
-     dark rounded card, 3 avatar columns (2|1|3), crown/medals, tier pill,
-     numbered pedestals. Arena hero art hataya. */
+  /* ✅ D72 (2026-11-07): owner — "new ui bana, screenshot ki EXACT ui":
+     arena ab owner ke mock (2a56d26a) ki patched art ke upar exact-slot
+     overlays se banti hai — trophy/plaque/banners/pedestal/walls sab
+     mock ki asli art; sirf avatars/names/kills/pills dynamic. */
+  var STAMP = '20261107a';
   var top = (users || []).slice(0, 3);
-  var FILLS = {1:'#a94dff',2:'#ff8c1a',3:'#58b368'};
-  var RINGS = {1:'#ffd700',2:'#d7dbe4',3:'#c77b3a'};
-  var SIZES = {1:96,2:76,3:68};
-  var PEDH  = {1:92,2:66,3:56};
-  var PEDBG = {1:'linear-gradient(180deg,#8a6a1f,#5d4517)',2:'linear-gradient(180deg,#6a6a72,#47474f)',3:'linear-gradient(180deg,#7a5a2a,#54391a)'};
-  var VALC  = {1:'#ffd700',2:'#e6e9f0',3:'#e8a15c'};
-  var h = '<div style="position:relative;border-radius:22px;background:linear-gradient(180deg,#1a1426 0%,#120e1a 55%,#0e0b14 100%);border:1px solid #241d33;padding:22px 8px 0;margin-bottom:12px;overflow:hidden">';
-  h += '<div style="position:absolute;left:50%;top:6%;transform:translateX(-50%);width:80%;height:62%;background:radial-gradient(ellipse at center,rgba(255,200,60,.13),transparent 70%);pointer-events:none"></div>';
+  var COLS = [
+    { n: 2, av: { l: 22.2, t: 40.0, w: 15.4 }, nm: { t: 56.4, f: 3.5 }, vl: { t: 59.9, f: 3.3 }, pl: { t: 62.8 } },
+    { n: 1, av: { l: 49.9, t: 34.1, w: 19.3 }, nm: { t: 48.5, f: 3.7 }, vl: { t: 52.1, f: 3.5 }, pl: { t: 55.0 } },
+    { n: 3, av: { l: 77.4, t: 41.0, w: 15.5 }, nm: { t: 57.2, f: 3.4 }, vl: { t: 60.7, f: 3.2 }, pl: { t: 63.7 } }
+  ];
+  var FILLS = {1:'#141414',2:'#ff8c1a',3:'#58b368'};
+  var VALC  = {1:'#ffd700',2:'#ffffff',3:'#ffd700'};
+  var h = '<div style="position:relative;border-radius:18px;overflow:hidden;margin-bottom:12px;container-type:inline-size;background:#0b0714 url(assets/rank/arena_bg.jpg?v=' + STAMP + ') center/cover no-repeat;aspect-ratio:1024/1536">';
   if (!top.length) {
-    h += '<div style="text-align:center;color:#777;font-size:12px;padding:46px 0">🏆 No ranked players yet</div>';
+    h += '<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#ffd700;font-size:4cqw;font-weight:900;text-shadow:0 2px 10px #000">🏆 No ranked players yet</div>';
   } else {
-    var cols = [];
-    if (top[1]) cols.push({u:top[1],n:2});
-    cols.push({u:top[0],n:1});
-    if (top[2]) cols.push({u:top[2],n:3});
-    h += '<div style="display:flex;align-items:flex-end;justify-content:center;gap:8px;position:relative">';
-    for (var i = 0; i < cols.length; i++) {
-      var c = cols[i], u = c.u;
+    for (var i = 0; i < COLS.length; i++) {
+      var c = COLS[i], u = top[c.n - 1];
+      if (!u) continue;
       var isDel = (u.ign || u.displayName || '') === '[deleted]';
       var av = isDel ? '👤' : (u.profileImage ? '<img src="' + u.profileImage + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
       var val = _rankVal(u, sortKey);
@@ -442,17 +439,11 @@ function _arenaCard(users, sortKey) {
       var _podRib = '';
       try { if (window.premiumRibbonFor && Number(u.premiumLevel || 0) > 0) _podRib = window.premiumRibbonFor(u.premiumLevel, u.premiumExpires, 12); } catch (e) {}
       var nm = window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player');
-      h += '<div style="flex:1;max-width:118px;text-align:center;min-width:0">';
-      h += c.n === 1 ? '<div style="font-size:30px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(255,215,0,.75))">👑</div>' : '<div style="height:36px"></div>';
-      h += '<div style="width:' + SIZES[c.n] + 'px;height:' + SIZES[c.n] + 'px;margin:0 auto;border-radius:50%;background:' + FILLS[c.n] + ';border:4px solid ' + RINGS[c.n] + ';box-shadow:0 0 ' + (c.n === 1 ? 26 : 14) + 'px ' + (c.n === 1 ? 'rgba(255,215,0,.65)' : c.n === 2 ? 'rgba(215,219,228,.45)' : 'rgba(199,123,58,.45)') + ';display:flex;align-items:center;justify-content:center;font-size:' + Math.round(SIZES[c.n] / 2.6) + 'px;font-weight:900;color:#fff;overflow:hidden">' + av + '</div>';
-      h += '<div style="font-size:19px;margin-top:7px;line-height:1">' + (c.n === 1 ? '👑' : c.n === 2 ? '🥈' : '🥉') + '</div>';
-      h += '<div style="font-size:14px;font-weight:800;color:#fff;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + nm + _podRib + '</div>';
-      h += '<div style="font-size:12.5px;font-weight:800;margin-top:2px;color:' + VALC[c.n] + '">' + valLabel + '</div>';
-      h += '<div style="display:inline-flex;align-items:center;gap:4px;margin-top:7px;background:rgba(120,80,30,.28);border:1px solid rgba(200,150,60,.35);color:#d9a45c;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px">' + rk.emoji + ' ' + rk.badge + '</div>';
-      h += '<div style="margin-top:10px;height:' + PEDH[c.n] + 'px;border-radius:10px 10px 0 0;background:' + PEDBG[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:rgba(255,255,255,.5)">' + c.n + '</div>';
-      h += '</div>';
+      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.av.t + '%;width:' + c.av.w + 'cqw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:' + FILLS[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:' + (c.av.w / 2.6) + 'cqw;font-weight:900;color:#fff;overflow:hidden">' + av + '</div>';
+      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.nm.t + '%;transform:translateX(-50%);max-width:26cqw;font-size:' + c.nm.f + 'cqw;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center">' + nm + _podRib + '</div>';
+      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.vl.t + '%;transform:translateX(-50%);font-size:' + c.vl.f + 'cqw;font-weight:800;color:' + VALC[c.n] + ';text-shadow:0 2px 6px #000;white-space:nowrap">' + valLabel + '</div>';
+      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.pl.t + '%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:1cqw;background:rgba(70,45,20,.72);border:1px solid rgba(200,150,60,.4);color:#d9a45c;font-size:2.7cqw;font-weight:800;padding:0.8cqw 3cqw;border-radius:20px;white-space:nowrap">' + rk.emoji + ' ' + rk.badge + '</div>';
     }
-    h += '</div>';
   }
   h += '</div>';
   return h;
@@ -602,7 +593,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106g" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106h" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
