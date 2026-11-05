@@ -411,56 +411,50 @@ function _rkCrowdSvg() {
   return '<svg class="rkCrowdSvg" viewBox="0 0 360 34" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + d + '" fill="#140a26"/>' + dots + '</svg>';
 }
 function _arenaCard(users, sortKey) {
-  _rkCss();
-  var h = '<div class="rkArena">' + RK_DEFS +
-    '<div class="rkBeams"></div><div class="rkLampL"></div><div class="rkLampR"></div>' +
-    _rkBannerSvg('L') + _rkBannerSvg('R') +
-    '<div class="rkScript rkScriptL">Legends<br>Play<br>Here</div>' +
-    '<div class="rkScript rkScriptR">Gamet<br>Beyond<br>Limits</div>' +
-    '<div class="rkTrophy">' + _rkTrophySvg() + '</div>' +
-    '<div class="rkPlaque"><div class="rkPlaqueIn"><div class="rkTitle">RANK LEADERBOARD</div>' +
-    '<div class="rkSub">&mdash;&nbsp; Top Competitors &nbsp;&mdash;</div></div></div>' +
-    '<div class="rkCrowdGlow"></div>' + _rkCrowdSvg() + '<div class="rkSmoke rkSmokeL"></div><div class="rkSmoke rkSmokeR"></div>' +
-    '<div class="rkPod">';
+  /* ✅ D71 (2026-11-06): owner — "rank ui bekar lag rahi, pahle jaisi karo":
+     CLASSIC podium card replica (owner ke purane app screenshot jaisi):
+     dark rounded card, 3 avatar columns (2|1|3), crown/medals, tier pill,
+     numbered pedestals. Arena hero art hataya. */
   var top = (users || []).slice(0, 3);
+  var FILLS = {1:'#a94dff',2:'#ff8c1a',3:'#58b368'};
+  var RINGS = {1:'#ffd700',2:'#d7dbe4',3:'#c77b3a'};
+  var SIZES = {1:96,2:76,3:68};
+  var PEDH  = {1:92,2:66,3:56};
+  var PEDBG = {1:'linear-gradient(180deg,#8a6a1f,#5d4517)',2:'linear-gradient(180deg,#6a6a72,#47474f)',3:'linear-gradient(180deg,#7a5a2a,#54391a)'};
+  var VALC  = {1:'#ffd700',2:'#e6e9f0',3:'#e8a15c'};
+  var h = '<div style="position:relative;border-radius:22px;background:linear-gradient(180deg,#1a1426 0%,#120e1a 55%,#0e0b14 100%);border:1px solid #241d33;padding:22px 8px 0;margin-bottom:12px;overflow:hidden">';
+  h += '<div style="position:absolute;left:50%;top:6%;transform:translateX(-50%);width:80%;height:62%;background:radial-gradient(ellipse at center,rgba(255,200,60,.13),transparent 70%);pointer-events:none"></div>';
   if (!top.length) {
-    h += '<div class="rkEmpty">🏆 No ranked players yet</div>';
+    h += '<div style="text-align:center;color:#777;font-size:12px;padding:46px 0">🏆 No ranked players yet</div>';
   } else {
-    /* podium order: 2nd | 1st | 3rd (screenshot jaisa) */
-    var slots = [];
-    if (top[1]) slots.push({ u: top[1], cls: 'p2', num: 2 });
-    slots.push({ u: top[0], cls: 'p1', num: 1 });
-    if (top[2]) slots.push({ u: top[2], cls: 'p3', num: 3 });
-    for (var i = 0; i < slots.length; i++) {
-      var s = slots[i], u = s.u;
+    var cols = [];
+    if (top[1]) cols.push({u:top[1],n:2});
+    cols.push({u:top[0],n:1});
+    if (top[2]) cols.push({u:top[2],n:3});
+    h += '<div style="display:flex;align-items:flex-end;justify-content:center;gap:8px;position:relative">';
+    for (var i = 0; i < cols.length; i++) {
+      var c = cols[i], u = c.u;
       var isDel = (u.ign || u.displayName || '') === '[deleted]';
-      var av = isDel ? '<i class="fas fa-user" style="opacity:.4;font-size:22px;line-height:1"></i>'
-        : (u.profileImage ? '<img src="' + u.profileImage + '" alt="">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
+      var av = isDel ? '👤' : (u.profileImage ? '<img src="' + u.profileImage + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (u.ign || u.displayName || '?').charAt(0).toUpperCase());
       var val = _rankVal(u, sortKey);
       var valLabel = _rankValStr(val, sortKey);
       var rk = calcRk(u.stats || {});
-      h += '<div class="rkCol ' + s.cls + '">';
-      if (s.cls === 'p1') h += _rkCrownSvg('rkCrownSvg');
-      h += '<div class="rkRingWrap">';
-      if (s.cls === 'p1') h += '<span class="rkLau L">' + _rkLaurel('#e8c565') + '</span><span class="rkLau R">' + _rkLaurel('#e8c565') + '</span>';
-      h += '<div class="rkRing">' + av + '</div></div>';
-      if (s.cls !== 'p1') h += _rkMedalSvg(s.num, s.cls === 'p2' ? 's' : 'b');
       var _podRib = '';
       try { if (window.premiumRibbonFor && Number(u.premiumLevel || 0) > 0) _podRib = window.premiumRibbonFor(u.premiumLevel, u.premiumExpires, 12); } catch (e) {}
-      h += '<div class="rkName">' + (window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player')) + _podRib + '</div>';
-      h += '<div class="rkVal">' + valLabel + '</div>';
-      h += '<div class="rkTier">' + rk.emoji + ' ' + rk.badge + '</div>';
-      h += '<div class="rkPed">';
-      if (s.cls === 'p1') h += '<span class="rkPedW"><span class="rkLauS">' + _rkLaurel('#fff2b0') + '</span>' + s.num + '<span class="rkLauS R">' + _rkLaurel('#fff2b0') + '</span></span>';
-      else h += s.num;
-      h += '</div></div>';
+      var nm = window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player');
+      h += '<div style="flex:1;max-width:118px;text-align:center;min-width:0">';
+      h += c.n === 1 ? '<div style="font-size:30px;line-height:1;margin-bottom:6px;filter:drop-shadow(0 0 10px rgba(255,215,0,.75))">👑</div>' : '<div style="height:36px"></div>';
+      h += '<div style="width:' + SIZES[c.n] + 'px;height:' + SIZES[c.n] + 'px;margin:0 auto;border-radius:50%;background:' + FILLS[c.n] + ';border:4px solid ' + RINGS[c.n] + ';box-shadow:0 0 ' + (c.n === 1 ? 26 : 14) + 'px ' + (c.n === 1 ? 'rgba(255,215,0,.65)' : c.n === 2 ? 'rgba(215,219,228,.45)' : 'rgba(199,123,58,.45)') + ';display:flex;align-items:center;justify-content:center;font-size:' + Math.round(SIZES[c.n] / 2.6) + 'px;font-weight:900;color:#fff;overflow:hidden">' + av + '</div>';
+      h += '<div style="font-size:19px;margin-top:7px;line-height:1">' + (c.n === 1 ? '👑' : c.n === 2 ? '🥈' : '🥉') + '</div>';
+      h += '<div style="font-size:14px;font-weight:800;color:#fff;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + nm + _podRib + '</div>';
+      h += '<div style="font-size:12.5px;font-weight:800;margin-top:2px;color:' + VALC[c.n] + '">' + valLabel + '</div>';
+      h += '<div style="display:inline-flex;align-items:center;gap:4px;margin-top:7px;background:rgba(120,80,30,.28);border:1px solid rgba(200,150,60,.35);color:#d9a45c;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px">' + rk.emoji + ' ' + rk.badge + '</div>';
+      h += '<div style="margin-top:10px;height:' + PEDH[c.n] + 'px;border-radius:10px 10px 0 0;background:' + PEDBG[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:rgba(255,255,255,.5)">' + c.n + '</div>';
+      h += '</div>';
     }
+    h += '</div>';
   }
-  h += '</div><div class="rkFloorGlow"></div>' +
-    '<div class="rkFoot">' + _rkCrownSvg('rkFootCrown') +
-    '<div class="rkFootName">MINI ESPORTS</div>' +
-    '<div class="rkFootTag">PLAY &bull; COMPETE &bull; BELONG</div></div>' +
-    '</div>';
+  h += '</div>';
   return h;
 }
 
@@ -477,34 +471,26 @@ function _rankChromeParts() {
     {b:'Platinum',e:'🔷',pts:'1001'},{b:'Diamond',e:'💎',pts:'1501'},{b:'Legend',e:'👑',pts:'2000'},
     {b:'Heroic',e:'⚔️',pts:'3500'},  {b:'Grandmaster',e:'🌟',pts:'5000'}
   ];
-  var tierHtml = _tiers.map(function(t){
-    return '<div style="text-align:center;flex:1;min-width:36px"><div style="font-size:16px">'+t.e+'</div><div style="font-size:8px;color:#888;margin-top:1px">'+t.pts+'</div></div>';
-  }).join('');
+  /* ✅ D71: purane app jaisa single-line formula card (medal strip hata) */
   var rankHeader = '<div class="rank-formula-banner" onclick="window.showHowRankWorks&&showHowRankWorks()">' +
-    '<div style="font-size:10px;color:#888;margin-bottom:6px">📊 Rank = Wins×40 + Kills×2 + Matches×1 + Streak×10</div>' +
-    '<div style="display:flex;gap:2px;align-items:center">' + tierHtml + '</div>' +
-    '<div style="font-size:9px;color:#555;margin-top:4px;text-align:right">→ Tap for details</div>' +
+    '<div style="font-size:12.5px;font-weight:800;color:#ffd700">📊 Rank = Wins×40 + Kills×2 + Matches×1 <span style="color:#b8912a;font-weight:700;font-size:11px">→ Tap for details</span></div>' +
     '</div>';
 
   var tabBar = rankHeader + '<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
     ['kills','wins','rankpoints'].map(function(t) {
-      var labels = { kills: '☠️ Kills', wins: '🏆 Wins', rankpoints: '💎 Rank Points' };
+      var labels = { kills: '☠️ Kills', wins: '🏆 Wins', rankpoints: '💎 Points' };
       var active = t === _rankTab;
       return '<div onclick="renderRank(\'' + t + '\')" style="flex:1;padding:9px 6px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;text-align:center;' +
-        (active ? 'background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(123,47,247,.12));color:#ffd700;border:1.5px solid rgba(255,215,0,.45);box-shadow:0 0 12px rgba(255,215,0,.22)' :
-                  'background:rgba(43,16,80,.35);color:#9a7dbd;border:1px solid rgba(185,100,255,.18)') +
+        (active ? 'background:#0d2f26;color:#35e08a;border:1.5px solid #1f8a5c;box-shadow:0 0 10px rgba(31,201,110,.25)' :
+                  'background:#17171c;color:#8f8f98;border:1px solid #232329') +
         '">' + labels[t] + '</div>';
     }).join('') +
     '</div>';
 
   var seasonBanner = '<div style="display:flex;justify-content:space-between;align-items:center;' +
-    'background:linear-gradient(135deg,rgba(185,100,255,.09),rgba(0,212,255,.06));' +
-    'border:1px solid rgba(185,100,255,.2);border-radius:14px;padding:12px 16px;margin-bottom:12px;cursor:pointer" onclick="window.showHowRankWorks&&showHowRankWorks()">' +
-    '<div><div style="font-size:13px;font-weight:900;color:#b964ff">' + season.name + '</div>' +
-    '<div style="font-size:10px;color:#666;margin-top:1px">Resets monthly</div></div>' +
-    '<div style="text-align:right">' +
-    '<div style="font-size:16px;font-weight:900;color:#00d4ff">' + season.daysLeft + '</div>' +
-    '<div style="font-size:10px;color:#666">din baaki</div></div>' +
+    'background:#141419;border:1px solid #232329;border-radius:14px;padding:13px 16px;margin-bottom:12px">' +
+    '<div style="font-size:13px;font-weight:900;color:#d24dff">🏆 ' + season.name + '</div>' +
+    '<div style="font-size:11px;color:#8a8a92"><b style="color:#00d4ff;font-size:15px;font-weight:900">' + season.daysLeft + '</b> din baaki</div>' +
     '</div>';
 
   /* ✅ B28 (2026-10-07): Clan War / City Championship / Mentor Hub — teeno
@@ -522,7 +508,8 @@ function _rankChromeParts() {
     }).join('') +
     '</div>';
 
-  return { tabBar: tabBar, seasonTools: seasonBanner + rankTools };
+  /* ✅ D71 purana order: formula → tabs → tools → season */
+  return { tabBar: tabBar, seasonTools: rankTools + seasonBanner };
 }
 
 function renderRank(tab) {
@@ -531,7 +518,7 @@ function renderRank(tab) {
   var _cp = _rankChromeParts();
   var tabBar = _cp.tabBar;
   var seasonBanner = _cp.seasonTools;
-  rc.innerHTML = _arenaCard([], _rankTab) + tabBar + seasonBanner + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+  rc.innerHTML = tabBar + seasonBanner + _arenaCard([], _rankTab) + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
 
   if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); return; }
   window._supa.from('leaderboard').select('*').limit(300)
@@ -568,7 +555,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
   /* ✅ D69 (2026-11-06): podium ab RANK ARENA replica (_arenaCard) ke
      andar aata hai — owner ke selected screenshot jaisi poori screen.
      Purana .rank-podium block hataya; data/logic wahi purana. */
-  var h = _arenaCard(users, sortKey) + tabBar + seasonBanner;
+  var h = tabBar + seasonBanner + _arenaCard(users, sortKey);
   for (var j = 3; j < users.length; j++) {
     var u = users[j];
     var rk = calcRk(u.stats || {});
@@ -615,7 +602,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106e" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106g" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }

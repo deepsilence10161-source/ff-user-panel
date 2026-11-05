@@ -210,7 +210,51 @@ window.showMyCreatorMatches = function() {
       });
       bh += '</div>';
       body.innerHTML = bh;
+    window._loadShowcase(creatorUid);
     });
+};
+
+/* ✅ D71: Showcase loaders/add/delete — no-reward policy ke saath */
+window._loadShowcase = function(uid) {
+  var box = document.getElementById('_showcaseBox'); if (!box) return;
+  var isOwn = !!(window.U && window.U.uid === uid);
+  var head = '<div style="font-size:10px;color:#8878a8;font-weight:900;letter-spacing:1.2px;margin-bottom:8px">🎬 SHOWCASE</div>';
+  if (!window._supa) { box.innerHTML = head + '<div style="font-size:11px;color:#666">—</div>'; return; }
+  window._supa.from('creator_showcase').select('*').eq('creator_uid', uid)
+    .order('created_at', { ascending: false }).limit(6)
+    .then(function(r) {
+      var rows = r.data || [];
+      var h = head;
+      rows.forEach(function(v) {
+        h += '<div style="display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:8px;margin-bottom:8px;cursor:pointer" onclick="window.open(\'' + String(v.video_url).replace(/'/g, "\\'") + '\',\'_blank\')">' +
+          '<img src="' + (v.thumb_url || '') + '" alt="" style="width:86px;height:50px;object-fit:cover;border-radius:8px;background:#000;flex-shrink:0" onerror="this.style.visibility=\'hidden\'">' +
+          '<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escCP(v.title || 'YouTube video') + '</div><div style="font-size:10px;color:#888;margin-top:2px">▶ YouTube par dekhein</div></div>' +
+          (isOwn ? '<button onclick="event.stopPropagation();window._delShowcase(\'' + v.id + '\',\'' + uid + '\')" style="background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.35);color:#ff6b6b;border-radius:8px;padding:4px 8px;font-size:10px;cursor:pointer">🗑</button>' : '') +
+          '</div>';
+      });
+      if (!rows.length) h += '<div style="font-size:11px;color:#666;margin-bottom:8px">' + (isOwn ? 'Apni best gameplay videos yahan lagao — followers dekhte hi seekhenge.' : 'Abhi koi video nahi') + '</div>';
+      if (isOwn) h += '<button onclick="window._addShowcase(\'' + uid + '\')" style="width:100%;padding:10px;border-radius:12px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.35);color:#ff6b6b;font-size:12px;font-weight:800;cursor:pointer">＋ Add YouTube video</button>';
+      box.innerHTML = h;
+    }, function() { box.innerHTML = head + '<div style="font-size:11px;color:#666">—</div>'; });
+};
+window._addShowcase = function(uid) {
+  var url = prompt('YouTube video link paste karo:'); if (!url) return;
+  url = String(url).trim();
+  var m = url.match(/(?:youtube\.com\/(?:watch\?v=|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+  if (!m) { if (window.toast) toast('❌ Valid YouTube link daalo', 'err'); return; }
+  var id = m[1];
+  var title = (prompt('Video ka title (optional):') || 'YouTube video').slice(0, 80);
+  window._supa.from('creator_showcase').insert({ creator_uid: uid, video_url: 'https://www.youtube.com/watch?v=' + id, title: title, thumb_url: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg' })
+    .then(function(r) {
+      if (r && r.error) { if (window.toast) toast('Save nahi hua: ' + (r.error.message || ''), 'err'); return; }
+      if (window.toast) toast('✅ Showcase me add ho gayi');
+      window._loadShowcase(uid);
+    });
+};
+window._delShowcase = function(id, uid) {
+  if (!confirm('Video delete karein?')) return;
+  window._supa.from('creator_showcase').delete().eq('id', id)
+    .then(function() { window._loadShowcase(uid); });
 };
 
 /* --- Creator Room ID Entry --- */
@@ -393,6 +437,11 @@ window.showCreatorProfile = function(creatorUid) {
     bh += '</div>';
     bh += '<div style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;border-radius:12px;background:rgba(0,255,156,.07);border:1px solid rgba(0,255,156,.3)"><span style="font-size:11px;color:#9ff5d0;font-weight:700">Code: <strong style="color:#00ff9c">' + _escCP(c.creator_code||'—') + '</strong></span>' + (c.creator_code ? '<button onclick="window.copyTxt&&copyTxt(\'' + _escCP(c.creator_code) + '\')" style="background:rgba(0,255,156,.15);border:none;color:#00ff9c;padding:2px 8px;border-radius:6px;font-size:10px;cursor:pointer"><i class="fas fa-copy"></i></button>' : '') + '</div>';
     bh += '</div></div>';
+
+    /* ✅ D71 (2026-11-06) SHOWCASE — owner approved: "hn bana de showcase
+       system". Creator ki YouTube videos gallery — KOI reward nahi
+       (YouTube ToS-safe), sirf promotion. Table: creator_showcase. */
+    bh += '<div id="_showcaseBox" style="margin:12px 0"></div>';
 
     bh += '<button id="_followBtn" onclick="window._toggleFollowCreator(\'' + creatorUid + '\')" style="width:100%;padding:13px;border-radius:14px;font-weight:900;font-size:13px;cursor:pointer;border:none;' +
       (isFollowing ? 'background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.15)' : 'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;box-shadow:0 4px 16px rgba(0,255,156,.35)') + '">' +

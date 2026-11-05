@@ -455,7 +455,7 @@ console.log('\n── TEST 15: B28 user-side (teeno dormant screens ab Rank tab 
   ok(rk.indexOf('rankTools') !== -1 && rk.indexOf("'Clan War','showClanWar'") !== -1
      && rk.indexOf("'City Champ','showCityChampionship'") !== -1 && rk.indexOf("'Mentor Hub','showMentorHub'") !== -1,
      'B28: Rank tab par teeno tools ke buttons (pehle koi entry point hi nahi tha)');
-  const calls = (rk.match(/seasonBanner \+ rankTools/g) || []).length;
+  const calls = (rk.match(/rankTools \+ seasonBanner/g) || []).length; /* D71 purana order */
   const f7r0 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
   ok(calls >= 1 && /function _rankChromeParts\(\)/.test(rk) && /_rankChromeParts/.test(f7r0),
      'B28: rankTools chrome ke har render path me (rank.js chrome + fixes-v7 delegate)');
