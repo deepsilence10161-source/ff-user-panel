@@ -445,7 +445,9 @@ function _arenaCard(users, sortKey) {
       if (s.cls === 'p1') h += '<span class="rkLau L">' + _rkLaurel('#e8c565') + '</span><span class="rkLau R">' + _rkLaurel('#e8c565') + '</span>';
       h += '<div class="rkRing">' + av + '</div></div>';
       if (s.cls !== 'p1') h += _rkMedalSvg(s.num, s.cls === 'p2' ? 's' : 'b');
-      h += '<div class="rkName">' + (window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player')) + '</div>';
+      var _podRib = '';
+      try { if (window.premiumRibbonFor && Number(u.premiumLevel || 0) > 0) _podRib = window.premiumRibbonFor(u.premiumLevel, u.premiumExpires, 12); } catch (e) {}
+      h += '<div class="rkName">' + (window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player')) + _podRib + '</div>';
       h += '<div class="rkVal">' + valLabel + '</div>';
       h += '<div class="rkTier">' + rk.emoji + ' ' + rk.badge + '</div>';
       h += '<div class="rkPed">';
@@ -462,10 +464,10 @@ function _arenaCard(users, sortKey) {
   return h;
 }
 
-function renderRank(tab) {
-  if (tab) _rankTab = tab;
-  var rc = $('rankContent'); if (!rc) return;
-
+/* ✅ D70: chrome (formula banner + tabs + season + tools) ek global parts
+   function me — fixes-v7.js ka cached renderer bhi yahi chrome + arena use
+   kare, taaki live par kabhi purana podium wapas na dikhe. */
+function _rankChromeParts() {
   // Season info banner
   var season = window.getCurrentSeason ? window.getCurrentSeason() : { name: 'Season', daysLeft: 0, label: '' };
 
@@ -520,9 +522,18 @@ function renderRank(tab) {
     }).join('') +
     '</div>';
 
-  rc.innerHTML = _arenaCard([], _rankTab) + tabBar + seasonBanner + rankTools + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+  return { tabBar: tabBar, seasonTools: seasonBanner + rankTools };
+}
 
-  if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner + rankTools, false); return; }
+function renderRank(tab) {
+  if (tab) _rankTab = tab;
+  var rc = $('rankContent'); if (!rc) return;
+  var _cp = _rankChromeParts();
+  var tabBar = _cp.tabBar;
+  var seasonBanner = _cp.seasonTools;
+  rc.innerHTML = _arenaCard([], _rankTab) + tabBar + seasonBanner + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+
+  if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); return; }
   window._supa.from('leaderboard').select('*').limit(300)
     .then(function(r) {
       var users = (r.data || []).map(function(u) {
@@ -538,8 +549,8 @@ function renderRank(tab) {
         };
         return getVal(b) - getVal(a);
       });
-        _renderRankList(rc, users, sortKey, tabBar, seasonBanner + rankTools, false);
-    }).catch(function() { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner + rankTools, false); });
+        _renderRankList(rc, users, sortKey, tabBar, seasonBanner, false);
+    }).catch(function() { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); });
 }
 
 function _rankVal(u, sortKey) {
@@ -604,11 +615,15 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106b" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106d" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
   if (!users.length) h += '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ranked players yet</p></div>';
+  /* ✅ D70: Referral Leaderboard button (fixes-v7 wale renderer se port —
+     feature kahin gayab na ho) */
+  h += '<div style="margin-top:12px"><button onclick="window.showReferralLeaderboard&&showReferralLeaderboard()" ' +
+       'style="width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(185,100,255,.1),rgba(121,40,202,.05));color:#b964ff;border:1px solid rgba(185,100,255,.2);font-weight:700;font-size:13px;cursor:pointer">🎖️ Referral Leaderboard</button></div>';
   rc.innerHTML = h;
 
   // Inject chat below leaderboard

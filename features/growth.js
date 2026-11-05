@@ -690,7 +690,7 @@ function _cosIconHtml(c) {
   try {
     var ic = (c && c.icon) || '🎫';
     if (!c || !c.img) return ic;
-    return '<img src="' + c.img + '?v=20261106b" alt="" loading="lazy" ' +
+    return '<img src="' + c.img + '?v=20261106d" alt="" loading="lazy" ' +
       'style="max-width:48px;max-height:32px;object-fit:contain" ' +
       'onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + ic.replace(/'/g, '') + '\'">';
   } catch (e) { return (c && c.icon) || '🎫'; }
@@ -906,6 +906,10 @@ window.toggleCosmeticEquip = function(id, btnEl) {
     }
     if (window.updateHdr) window.updateHdr();
     window.showCosmeticsStore();
+    /* ✅ D70: profile card turant refresh — equipped tag/title plate par
+       turant dikhe (pehle card stale rehta tha, BEAST MODE apply ke baad
+       bhi purana PRO PLAYER art dikhta tha) */
+    if (window.renderProfile) setTimeout(function () { try { renderProfile(); } catch (e) {} }, 150);
   };
 
   if (nowEq) {

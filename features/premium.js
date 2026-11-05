@@ -9,7 +9,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261106b" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261106d" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho, code change
    na karna pade". price and gdBonus now come from window.CFG.premium
@@ -96,6 +96,21 @@ function _renderPremModal(){
   h+='<div style="font-size:32px;margin-bottom:6px;animation:premFloat 3s ease-in-out infinite">👑</div>';
   h+='<div style="font-size:21px;font-weight:900;background:linear-gradient(135deg,#ffd700,#b964ff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Premium Club</div>';
   h+='<div style="font-size:12px;color:#777;margin-top:4px">Alag gaming experience — bina gambling ke</div></div>';
+  /* ✅ D70 (2026-11-06): FREE vs PREMIUM comparison strip — owner:
+     "premium aur non-premium me difference clear ho taki log premium le".
+     Sirf ASLI enforced perks (code me jahan gate lage hain). */
+  h+='<div style="border:1.5px solid rgba(255,215,0,.3);border-radius:16px;overflow:hidden;margin-bottom:14px;background:linear-gradient(165deg,rgba(255,215,0,.06),rgba(185,100,255,.05))">';
+  h+='<div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;background:rgba(0,0,0,.35);padding:9px 10px;font-size:10px;font-weight:900;letter-spacing:.8px"><span style="color:#888">FEATURE</span><span style="color:#9a9aa8;text-align:center">FREE</span><span style="color:#ffd700;text-align:center">👑 PREMIUM</span></div>';
+  var _cmp=[['📺 Match-join ads','Har match','🚫 No Ads'],
+            ['🖼️ Photo & Banner','🔒','✔ Silver+'],
+            ['🌈 Rainbow frame + ring + ribbon','🔒','✔'],
+            ['🎮 Creator program + Live stream slot','🔒','✔ Gold+'],
+            ['🪙 Monthly coin bonus','—','50/150/400'],
+            ['💸 Referral commission withdraw','🔒','✔']];
+  _cmp.forEach(function(r,i){
+    h+='<div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:8px 10px;align-items:center;font-size:10.5px;'+(i%2?'background:rgba(255,255,255,.025)':'')+'"><span style="color:#ccc;font-weight:700">'+r[0]+'</span><span style="text-align:center;color:'+(r[1]==='🔒'?'#666':'#aaa')+'">'+r[1]+'</span><span style="text-align:center;color:#00ff9c;font-weight:800">'+r[2]+'</span></div>';
+  });
+  h+='</div>';
   TIERS.forEach(function(t){
     var isA=uT===t.tier,iBest=t.best;
     var isR=!isA&&_expRenew&&_rawTX===t.tier;   /* expired ka purana tier = renew tile */
@@ -104,7 +119,7 @@ function _renderPremModal(){
     h+='<div class="'+(iBest?'prem-tier-shine':'')+'" style="background:'+t.bg+';border:'+(isA?'2px':'1.5px')+' solid '+(isA?t.color:t.border)+';border-radius:18px;padding:'+(iBest?'26px 16px 16px':'16px')+';box-shadow:'+(iBest?'0 0 24px '+t.glow+',0 6px 28px rgba(0,0,0,.5)':'0 0 12px rgba(0,0,0,.3)')+';">';
     h+='<div class="prem-tier-crown" style="filter:drop-shadow(0 0 8px '+t.color+')">👑</div>';
     h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">';
-    h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+(t.img?'<img src="'+t.img+'?v=20261106b" style="width:32px;height:32px;object-fit:contain" alt="">':t.icon)+'</div>';
+    h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px solid '+t.color+'55;display:flex;align-items:center;justify-content:center;font-size:20px">'+(t.img?'<img src="'+t.img+'?v=20261106d" style="width:32px;height:32px;object-fit:contain" alt="">':t.icon)+'</div>';
     h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
     if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">✅ Active Plan</div>';
     if(isR)h+='<div style="font-size:10px;background:rgba(255,150,60,.16);color:#ffb066;padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex;margin-top:3px">⏰ Expired — renew karo</div>';

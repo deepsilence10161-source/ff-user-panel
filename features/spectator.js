@@ -31,7 +31,8 @@ window.showStreamSettings = function() {
 
   h += '<div style="font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px">Live Stream Link</div>';
   h += '<input id="_stLink" type="url" value="' + (cur || '') + '" placeholder="YouTube / Twitch link daalo" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:6px">';
-  h += '<div style="font-size:11px;color:#555;margin-bottom:14px">Example: https://youtube.com/live/xxxxx</div>';
+  h += '<div style="font-size:11px;color:#555;margin-bottom:6px">Example: https://youtube.com/live/xxxxx</div>';
+  h += '<div style="font-size:10.5px;color:#777;margin-bottom:14px">⏱ Live window: 6 ghante — phir stream list se khud hat jaayega (save dobara karo to extend)</div>';
 
   h += '<div style="font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px">Stream Title (optional)</div>';
   h += '<input id="_stTitle" type="text" value="' + (curT || '') + '" maxlength="40" placeholder="e.g. Solo Ranked Match!" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:14px">';
@@ -76,6 +77,17 @@ window.showStreamSettings = function() {
     if (_isLive && !link) {
       if (window.toast) toast('Live link daalo pehle!', 'err'); return;
     }
+    /* ✅ D70 (2026-11-06): sirf YouTube LIVE-stream link allowed — koi bhi
+       random video link nahi (owner requirement). Live window 6 ghante ki
+       hoti hai; dobara save karne par extend ho jaati hai. */
+    if (_isLive && link) {
+      var _ytOk = /^(https?:\/\/)?(www\.)?(youtube\.com\/(live\/|watch\?v=)|youtu\.be\/)[\w-]{6,}/.test(link);
+      if (!_ytOk) {
+        if (window.toast) toast('❌ Sirf YouTube live-stream link allowed: youtube.com/live/... ya youtube.com/watch?v=...', 'err');
+        return;
+      }
+    }
+    var _liveUntil = _isLive ? new Date(Date.now() + 6 * 3600 * 1000).toISOString() : null;
 
     var saved = false;
     function _done() {
@@ -85,6 +97,7 @@ window.showStreamSettings = function() {
         window.UD.streamLink  = link;  window.UD.stream_link  = link;
         window.UD.streamTitle = title; window.UD.stream_title = title;
         window.UD.isLive      = _isLive; window.UD.is_live    = _isLive;
+        window.UD.stream_live_until = _liveUntil;
       }
       if (window.toast) toast(_isLive ? '🔴 Ab tum LIVE ho! Viewers dekh sakte hain.' : '✅ Stream settings save ho gaye!', 'ok');
       if (window.closeModal) closeModal();
@@ -95,7 +108,8 @@ window.showStreamSettings = function() {
       window._supa.from('users').update({
         stream_link:  link  || null,
         stream_title: title || null,
-        is_live:      _isLive
+        is_live:      _isLive,
+        stream_live_until: _liveUntil
       }).eq('id', uid).then(function(r) {
         if (r && r.error) console.warn('[Stream] Supabase save error:', r.error);
         _done();

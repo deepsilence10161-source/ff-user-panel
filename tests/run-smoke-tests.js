@@ -456,8 +456,9 @@ console.log('\n── TEST 15: B28 user-side (teeno dormant screens ab Rank tab 
      && rk.indexOf("'City Champ','showCityChampionship'") !== -1 && rk.indexOf("'Mentor Hub','showMentorHub'") !== -1,
      'B28: Rank tab par teeno tools ke buttons (pehle koi entry point hi nahi tha)');
   const calls = (rk.match(/seasonBanner \+ rankTools/g) || []).length;
-  ok(calls === 4,
-     'B28: rankTools saare render paths me (turant render + teen _renderRankList calls)');
+  const f7r0 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
+  ok(calls >= 1 && /function _rankChromeParts\(\)/.test(rk) && /_rankChromeParts/.test(f7r0),
+     'B28: rankTools chrome ke har render path me (rank.js chrome + fixes-v7 delegate)');
   /* ⚠️ Live rank screen fixes-v7.js banati hai (wo window.renderRank ko
      replace karti hai) — wahan bhi wahi row honi chahiye. */
   const f7r = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');

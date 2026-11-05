@@ -285,9 +285,11 @@ window.showLiveSpectateList = function() {
     if (window.openModal) openModal('📺 Live Matches', h);
   }
   /* 1. User live streams (user_public_profiles view — RLS-safe) */
-  window._supa.from('user_public_profiles')
-    .select('id,ign,stream_link,stream_title,is_live')
-    .eq('is_live', true).not('stream_link', 'is', null).limit(20)
+  /* ✅ D70: user_live_streams VIEW — server-side TTL (6h window). Purani
+     atki hui streams (NULL stream_live_until) view me aati hi nahi. */
+  window._supa.from('user_live_streams')
+    .select('id,ign,stream_link,stream_title,stream_live_until')
+    .limit(20)
     .then(function(r) { _userStreams = (r.data || []).filter(function(u){ return u.stream_link; }); _render(); },
           function() { _render(); });
   /* 2. Live match streams (matches table) */

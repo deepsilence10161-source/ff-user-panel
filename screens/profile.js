@@ -118,6 +118,9 @@ function renderProfile() {
   window._pc2ProfData = {
     name: UD.ign || UD.displayName || 'Player',
     uid: displayUid, level: lv, xp: xp, xpNeed: maxXp,
+    /* ✅ D70: equipped TAG title plate par (pehle art me baked 'PRO PLAYER'
+       tha — BEAST MODE apply karne par bhi nahi badalta tha) */
+    title: _eqTag || '',
     pts: rk.pts || 0, tier: String(rk.badge || 'Bronze'),
     stats: [_pm0, _pk0, _pw0, (_pm0 ? (_pk0/_pm0).toFixed(1) : '0.0'), (_pm0 ? Math.round(_pw0/_pm0*100) : 0) + '%']
   };

@@ -167,112 +167,31 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
     } catch (e) { _fin(); }
   }
 
-  /* ── Render the full leaderboard with users array ── */
+  function _chromeHtml() {
+    if (window._rankChromeParts) { var c = window._rankChromeParts(); return c.tabBar + c.seasonTools; }
+    return buildTabBar() + buildSeasonBanner();
+  }
+
+  /* ── Render the full leaderboard with users array ──
+     ✅ D70 (2026-11-06): ye renderer ab rank.js ke RANK ARENA replica ko
+     delegate karta hai (chrome + arena + rows + referral button sab wahin).
+     Pehle yahan apna purana podium + "#N YOU" card tha jo arena ko live par
+     dabaa deta tha — owner ko naya UI dikhta hi nahi tha. fixes-v7 ka asli
+     kaam (premium-level merge + cache + instant render) waisa hi chalta hai. */
   function renderUsers(rc, users) {
-    var curTab = window._rankTab || 'kills';
-
-    function getVal(u) {
-      var st = u.stats || {};
-      if (curTab === 'kills') return Number(st.kills || 0);
-      if (curTab === 'wins') return Number(st.wins || 0);
-      return Number(st.wins||0)*40 + Number(st.kills||0)*2 + Number(st.matches||0) + Number(st.winStreak||u.winStreak||0)*10;
+    var sortKey = window._rankTab || 'kills';
+    if (window._rankChromeParts && window._renderRankList) {
+      var cp = window._rankChromeParts();
+      window._renderRankList(rc, users, sortKey, cp.tabBar, cp.seasonTools, false);
+      return;
     }
-    function valStr(val) {
-      if (curTab === 'kills') return val + ' kills';
-      if (curTab === 'wins') return val + ' wins';
-      return '🏆 ' + val + ' pts';
+    /* fail-safe: rank.js na mile to purana simple list */
+    var h = '';
+    for (var i = 0; i < users.length; i++) {
+      var u = users[i];
+      h += '<div class="rank-row"><div class="rank-info"><div class="rn">' + (u.ign || 'Player') + '</div></div></div>';
     }
-
-    var h = buildTabBar() + buildSeasonBanner();
-
-    /* My rank card — only shown when the user ISN'T already visible in
-       the top-3 podium below (2026-08 fix). Previously this always
-       rendered, so when the current user was rank #1 they'd see an
-       ugly redundant "#1 Singham YOU · K:0 W:0 M:0" card stacked right
-       on top of their own crowned podium spot — same info shown twice
-       in two very different visual styles right next to each other. */
-    var _myIdxForCard = -1;
-    if (window.U) { users.forEach(function(u, i){ if(u._uid === window.U.uid) _myIdxForCard = i; }); }
-    if (window.U && window.UD && (_myIdxForCard < 0 || _myIdxForCard >= 3)) {
-      var me = window.UD;
-      var mySt = me.stats || {};
-      var myRk = window.calcRk ? window.calcRk(mySt) : { badge:'Unranked', emoji:'🎮', color:'#666', bg:'rgba(255,255,255,.06)' };
-      var myIdx = _myIdxForCard;
-      h += '<div style="background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px">';
-      h += '<div style="font-size:26px;font-weight:900;color:#00ff9c;min-width:42px;text-align:center">' + (myIdx >= 0 ? '#' + (myIdx + 1) : '–') + '</div>';
-      h += '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + (me.ign || me.displayName || 'You') + _rowRibbon({ premiumLevel: 0 }, true) + ' <span style="font-size:9px;background:rgba(0,255,156,.15);color:#00ff9c;padding:1px 5px;border-radius:4px">YOU</span></div>';
-      h += '<div style="font-size:11px;color:#aaa;margin-top:2px">K:' + (mySt.kills||0) + ' W:' + (mySt.wins||0) + ' M:' + (mySt.matches||0) + '</div></div>';
-      h += '<span style="padding:4px 10px;border-radius:8px;background:' + myRk.bg + ';color:' + myRk.color + ';font-size:11px;font-weight:700">' + myRk.emoji + ' ' + myRk.badge + '</span>';
-      h += '</div>';
-    }
-
-    /* Podium top 3 */
-    if (users.length > 0) {
-      var podCount = Math.min(users.length, 3);
-      var ORDER    = podCount===1?[0]:podCount===2?[1,0]:[1,0,2];
-      var CLASSES  = podCount===1?['p1']:podCount===2?['p2','p1']:['p2','p1','p3'];
-      var MEDALS   = ['🥈','👑','🥉'];
-      var NUMS     = ['2','1','3'];
-      var COLORS   = ['#c0c0c0','#ffd700','#cd7f32'];
-
-      h += '<div class="rank-podium-wrap"><div class="rank-podium">';
-      for (var i = 0; i < podCount; i++) {
-        var u = users[ORDER[i]];
-        var posIdx = ['p2','p1','p3'].indexOf(CLASSES[i]);
-        var col = COLORS[posIdx] || '#ffd700';
-        var _del7 = (u.ign||u.displayName||'') === '[deleted]';
-        var av = _del7 ? '<i class="fas fa-user" style="opacity:.4;font-size:15px;line-height:1"></i>' : (u.profileImage ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (u.ign||u.displayName||'?').charAt(0).toUpperCase());
-        var rk2 = window.calcRk ? window.calcRk(u.stats||{}) : {badge:'',emoji:'🎮',color:'#fff',bg:'rgba(0,0,0,.1)'};
-        var v2 = getVal(u);
-        var _podIsMe = window.U && u._uid === window.U.uid;
-        h += '<div class="pod-item ' + CLASSES[i] + '">';
-        if (CLASSES[i]==='p1') h += '<div class="pod-crown" style="animation:podCrown 1.5s ease-in-out infinite">👑</div>';
-        h += '<div class="pod-ava" style="border-color:' + col + ';box-shadow:0 0 20px ' + col + '99' + (_podIsMe?',0 0 0 2px #00ff9c':'') + '">' + av + '</div>';
-        h += '<div class="pod-medal">' + MEDALS[i] + '</div>';
-        h += '<div class="pod-name">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + _rowRibbon(u, _podIsMe) + (_podIsMe?' <span style="font-size:8px;color:#00ff9c">(YOU)</span>':'') + '</div>';
-        h += '<div class="pod-earn" style="color:' + col + ';font-weight:900">' + valStr(v2) + '</div>';
-        h += '<div style="font-size:9px;padding:2px 6px;border-radius:8px;background:' + rk2.bg + ';color:' + rk2.color + ';margin:2px 0 4px">' + rk2.emoji + ' ' + rk2.badge + '</div>';
-        h += '<div class="pod-pedestal">' + NUMS[i] + '</div></div>';
-      }
-      h += '</div></div>';
-    }
-
-    /* Rows 4+ */
-    for (var j = 3; j < users.length; j++) {
-      var ur = users[j];
-      var rk = window.calcRk ? window.calcRk(ur.stats||{}) : {badge:'Player',emoji:'🎮',color:'#888',bg:'rgba(255,255,255,.06)'};
-      var _del7b = (ur.ign||ur.displayName||'') === '[deleted]';
-      var av2 = _del7b ? '<i class="fas fa-user" style="opacity:.4;font-size:15px;line-height:1"></i>' : (ur.profileImage ? '<img src="' + ur.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : (ur.ign||ur.displayName||'?').charAt(0).toUpperCase());
-      var st2 = ur.stats||{};
-      var v3 = getVal(ur);
-      var m2=Number(st2.matches||0), w2=Number(st2.wins||0), k2=Number(st2.kills||0);
-      var wr = m2>0 ? Math.round((w2/m2)*100) : 0;
-      var kd = m2>0 ? (k2/m2).toFixed(1) : '0.0';
-      var isMe = window.U && ur._uid === window.U.uid;
-      var numCol = j===3?'#ffd700':j===4?'#c0c0c0':j===5?'#cd7f32':'var(--txt2)';
-      /* ✅ 2026-10-13d: data-uid — E2E isi se row pakadta hai (waise hi
-         jaise admin panel ki Joined Players table me hai). */
-      h += '<div class="rank-row" data-uid="' + (ur._uid || '') + '" style="' + (isMe?'border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.04)':'') + '">';
-      h += '<div class="rank-num" style="color:' + numCol + ';font-weight:' + (j<6?'900':'600') + '">#' + (j+1) + '</div>';
-      h += '<div class="rank-ava">' + av2 + '</div>';
-      h += '<div class="rank-info"><div class="rn">' + (ur.ign||ur.displayName||'Player') + _rowRibbon(ur, isMe) + (isMe?' <span style="font-size:9px;color:#00ff9c">YOU</span>':'') + '</div>';
-      h += '<div class="rs">K:' + k2 + ' W:' + w2 + ' <span style="color:#00ff9c">WR:' + wr + '%</span> <span style="color:#ff9f1c">K/M:' + kd + '</span></div></div>';
-      h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</span>';
-      h += '<div class="rank-earn" style="color:' + (curTab==='kills'?'#ff6b6b':curTab==='wins'?'#ffd700':'#00d4ff') + '">' + valStr(v3) + '</div>';
-      h += '</div>';
-    }
-
-    if (!users.length) {
-      h += '<div class="empty-state" style="text-align:center;padding:40px;color:#666"><div style="font-size:48px;margin-bottom:8px">🏆</div>' +
-           '<div style="font-size:14px;font-weight:700;color:#888">No ranked players yet</div>' +
-           '<div style="font-size:12px;margin-top:4px;color:#555">Join matches to appear on leaderboard!</div></div>';
-    }
-
-    /* Referral leaderboard button */
-    h += '<div style="margin-top:12px"><button onclick="window.showReferralLeaderboard&&showReferralLeaderboard()" ' +
-         'style="width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(185,100,255,.1),rgba(121,40,202,.05));color:#b964ff;border:1px solid rgba(185,100,255,.2);font-weight:700;font-size:13px;cursor:pointer">🎖️ Referral Leaderboard</button></div>';
-
-    rc.innerHTML = h;
+    rc.innerHTML = h || '<div class="empty-state"><p>No ranked players yet</p></div>';
   }
 
   /* ── Sort users by current tab ── */
@@ -346,7 +265,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       if (users.length > 0) {
         renderUsers(rc, users); /* Show cached */
       } else {
-        rc.innerHTML = buildTabBar() + buildSeasonBanner() +
+        rc.innerHTML = _chromeHtml() +
           '<div style="text-align:center;padding:32px;color:#aaa">' +
           '<div style="font-size:32px;margin-bottom:8px">📡</div>' +
           '<div style="font-size:13px;margin-bottom:12px">Connection error</div>' +
@@ -381,7 +300,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       fetchAndRender(rc);
     } else {
       /* Very first load only — show minimal skeleton, not blank spinner */
-      rc.innerHTML = buildTabBar() + buildSeasonBanner() +
+      rc.innerHTML = _chromeHtml() +
         '<div style="padding:8px">' +
         [1,2,3,4,5].map(function(){ return '<div style="height:52px;background:rgba(255,255,255,.04);border-radius:12px;margin-bottom:8px;animation:rankShine 1.5s linear infinite"></div>'; }).join('') +
         '</div>';

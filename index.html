@@ -36,11 +36,25 @@ if ('serviceWorker' in navigator) {
   if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.addEventListener('controllerchange', function() {
       if (_swRefreshing) return;
-      /* Never auto-reload mid-session once user is logged in or splash is dismissed */
-      var sp = document.getElementById('splash');
-      if (window.U || (sp && sp.style.display === 'none')) return;
+      /* ✅ D70 (2026-11-06): owner rule — "har change fastly update ho".
+         Pehle logged-in session me reload SKIP hota tha ⇒ naya UI tab tak
+         nahi dikhta tha jab tak app maar kar dobara na kholo. Ab naya SW
+         milte hi 2s me reload (auth localStorage me safe rehta hai). */
       _swRefreshing = true;
-      window.location.reload();
+      if (window.toast) { try { toast('🔄 Naya version apply ho raha hai...', 'inf'); } catch (e) {} }
+      setTimeout(function() { window.location.reload(); }, 2000);
+    });
+    /* ✅ D70: har 5 min + app foreground aane par SW update check — deploy
+       ke minutes ke andar APK/web par pahunch jaye. */
+    setInterval(function() {
+      if (navigator.serviceWorker.getRegistration) {
+        navigator.serviceWorker.getRegistration().then(function(r) { if (r) r.update(); }).catch(function(){});
+      }
+    }, 5 * 60 * 1000);
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible' && navigator.serviceWorker.getRegistration) {
+        navigator.serviceWorker.getRegistration().then(function(r) { if (r) r.update(); }).catch(function(){});
+      }
     });
   }
   /* Register SW as early as possible — don't wait for load event */
@@ -75,13 +89,13 @@ html,body{background:#050507!important;color:#fff!important}
 body,#splash .sp-title,.login-title,.hdr-name{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important}
 #splash .sp-title{font-size:28px!important;font-weight:900!important;letter-spacing:-.3px!important}
 </style>
-<link rel="stylesheet" href="styles.css?v=20261106b">
-<link rel="stylesheet" href="style.css?v=20261106b">
+<link rel="stylesheet" href="styles.css?v=20261106d">
+<link rel="stylesheet" href="style.css?v=20261106d">
 
 <!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="icons/icon-192x192.png?v=20261106b">
-<link rel="apple-touch-icon" href="icons/icon-192x192.png?v=20261106b">
+<link rel="icon" type="image/png" href="icons/icon-192x192.png?v=20261106d">
+<link rel="apple-touch-icon" href="icons/icon-192x192.png?v=20261106d">
 <!-- Push Notifications: Firebase FCM (OneSignal → FCM migration, 2026-10-31).
      Web SDK: firebase-messaging-compat (body-end firebase scripts ke saath).
      Bind/token: core/firebase.js → _bindPushIdentity → push-token edge fn.
@@ -299,14 +313,14 @@ body,#splash .sp-title,.login-title,.hdr-name{font-family:'Inter',-apple-system,
 <!-- HEADER -->
 <div id="header" style="display:none" role="banner">
   <div class="hdr-row">
-    <div class="hdr-left"><img src="icons/icon-96x96.png?v=20261106b" alt="" aria-hidden="true" style="width:28px;height:28px;object-fit:contain;display:block;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(57,255,20,.45))"><h1 class="hdr-name" style="margin:0;font-size:inherit;display:inline">Mini eSports</h1></div>
+    <div class="hdr-left"><img src="icons/icon-96x96.png?v=20261106d" alt="" aria-hidden="true" style="width:28px;height:28px;object-fit:contain;display:block;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(57,255,20,.45))"><h1 class="hdr-name" style="margin:0;font-size:inherit;display:inline">Mini eSports</h1></div>
     <div class="hdr-right">
       <div class="hdr-bell" role="button" tabindex="0" aria-label="Search Matches" onclick="showUserSearch()" title="Search Matches"><i class="fas fa-search" style="font-size:14px" aria-hidden="true"></i></div>
       <div class="hdr-bell" role="button" tabindex="0" aria-label="Notifications" onclick="navTo('notif')" title="Notifications"><i class="fas fa-bell" aria-hidden="true"></i><span class="dot" id="bellDot"></span></div>
       <div class="hdr-bell" role="button" tabindex="0" aria-label="Help and Support" onclick="openSupport()" title="Help &amp; Support" id="hdrSupportBtn"><i class="fas fa-headset" style="font-size:13px" aria-hidden="true"></i></div>
       <div class="hdr-chip chip-coin" role="button" tabindex="0" aria-label="Wallet Coins" onclick="navTo('wallet')" title="Coins"><span>🪙</span><span id="hdrCoins">0</span></div>
       <div class="hdr-chip" role="button" tabindex="0" aria-label="Sky Diamonds" onclick="navTo('wallet')" style="background:rgba(0,212,255,.1);color:#00d4ff;border-color:rgba(0,212,255,.2)" title="Sky Diamonds"><span>💎</span><span id="hdrMoney">0</span></div>
-      <div class="hdr-chip" role="button" tabindex="0" aria-label="Green Diamonds" onclick="navTo('wallet')" style="background:rgba(0,255,100,.08);border-color:rgba(0,255,100,.2)" title="Green Diamonds"><img src="js/green-diamond.png?v=20261106b" alt="Green Diamond" style="width:13px;height:13px;object-fit:contain;vertical-align:middle"><span id="hdrGD" style="color:#00ff64;margin-left:3px">0</span></div>
+      <div class="hdr-chip" role="button" tabindex="0" aria-label="Green Diamonds" onclick="navTo('wallet')" style="background:rgba(0,255,100,.08);border-color:rgba(0,255,100,.2)" title="Green Diamonds"><img src="js/green-diamond.png?v=20261106d" alt="Green Diamond" style="width:13px;height:13px;object-fit:contain;vertical-align:middle"><span id="hdrGD" style="color:#00ff64;margin-left:3px">0</span></div>
     </div>
   </div>
   <div class="ticker-wrap"><span class="ticker-txt" id="tickerTxt">Welcome to Mini eSports! 🔥</span></div>
@@ -393,47 +407,116 @@ body,#splash .sp-title,.login-title,.hdr-name{font-family:'Inter',-apple-system,
   <!-- WALLET -->
   <div class="screen" id="scrWallet">
     <div id="walletMain">
-      <!-- Sky Diamond + Coins side-by-side, matching the reference layout -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;align-items:stretch">
+      <!-- ✅ D70 (2026-11-06): WALLET ARENA CARDS — owner ke reference
+           screenshot ka exact replica: neon gradient-border cards, faceted
+           diamond/coin SVG art with pedestal+orbit rings, big glow numbers,
+           chevron buttons. IDs/handlers wahi purane (wTotal/wCoins/
+           greenDiaCount/checkInBtn, startAdd/doCheckIn/showCoinShop). -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;align-items:stretch">
         <!-- Sky Diamond Card -->
-        <div class="w-card wc-money" style="margin-bottom:0;padding:16px 14px;background:linear-gradient(160deg,rgba(0,212,255,.12),rgba(0,60,120,.05));border:1px solid rgba(0,212,255,.3);display:flex;flex-direction:column;text-align:center">
-          <div class="w-label" style="color:#00d4ff;font-size:10px">💎 Sky Diamond Balance</div>
-          <div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(120,220,255,.55),rgba(0,212,255,.1) 70%);display:flex;align-items:center;justify-content:center;font-size:32px;margin:12px auto;filter:drop-shadow(0 0 14px rgba(0,212,255,.75)) drop-shadow(0 0 4px rgba(255,255,255,.5));animation:diaGlow 2.2s ease-in-out infinite">💎</div>
-          <div class="w-total" id="wTotal" style="color:#00d4ff;font-size:30px;margin-bottom:10px">0</div>
-          <div style="height:1px;background:rgba(0,212,255,.15);margin:0 0 10px"></div>
-          <button class="w-btn wb-add" onclick="startAdd()" style="background:linear-gradient(135deg,#0066ff,#00d4ff);color:#fff;width:100%;margin-top:auto;min-height:46px;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center"><i class="fas fa-gem"></i> Buy Sky Diamonds</button>
+        <div style="border-radius:20px;padding:2px;background:linear-gradient(180deg,#35c7ff 0%,#0a84ff 55%,#b44dff 100%);box-shadow:0 0 18px rgba(53,199,255,.35)">
+          <div style="border-radius:18px;background:linear-gradient(180deg,#04121f 0%,#02090f 100%);padding:14px 10px 12px;height:100%;display:flex;flex-direction:column;text-align:center;position:relative;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;color:#bfe9ff;font-size:11px;font-weight:900;letter-spacing:1.2px;line-height:1.3">
+              <svg viewBox="0 0 24 20" style="width:16px;height:14px"><polygon points="7,2 17,2 22,8 12,18 2,8" fill="#8fd4ff" stroke="#eaf8ff" stroke-width="1"/></svg>
+              SKY DIAMOND<br>BALANCE
+            </div>
+            <svg viewBox="0 0 140 110" style="width:78%;max-width:150px;margin:8px auto 2px">
+              <ellipse cx="70" cy="8" rx="60" ry="16" fill="none" stroke="#35c7ff" stroke-width="1" opacity=".35" transform="rotate(-6 70 8)"/>
+              <polygon points="45,14 95,14 112,36 28,36" fill="#bfe9ff"/>
+              <polygon points="45,14 70,36 28,36" fill="#eaf8ff"/>
+              <polygon points="95,14 112,36 70,36" fill="#8fd4ff"/>
+              <polygon points="28,36 112,36 70,86" fill="#5cb8ff"/>
+              <polygon points="28,36 70,36 70,86" fill="#2f9dff"/>
+              <polygon points="70,36 112,36 70,86" fill="#7fd0ff"/>
+              <polygon points="45,14 95,14 70,36" fill="#ffffff" opacity=".85"/>
+              <ellipse cx="70" cy="92" rx="34" ry="7" fill="none" stroke="#2f9dff" stroke-width="2.5" opacity=".85"/>
+              <ellipse cx="70" cy="95" rx="46" ry="9" fill="none" stroke="#2f9dff" stroke-width="1.5" opacity=".35"/>
+              <polygon points="12,52 20,44 22,56 14,60" fill="#5cb8ff" opacity=".9"/>
+              <polygon points="124,48 132,56 126,64 118,58" fill="#8fd4ff" opacity=".9"/>
+              <polygon points="118,74 126,78 120,86 114,80" fill="#2f9dff" opacity=".8"/>
+            </svg>
+            <div class="w-total" id="wTotal" style="color:#35c7ff;font-size:42px;font-weight:900;margin:2px 0 8px;text-shadow:0 0 18px rgba(53,199,255,.75)">0</div>
+            <div style="height:1px;background:rgba(53,199,255,.18);margin:0 6px 10px"></div>
+            <button class="w-btn wb-add" onclick="startAdd()" style="background:linear-gradient(135deg,#0a84ff,#00d4ff);color:#fff;width:100%;margin-top:auto;min-height:52px;border:none;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(10,132,255,.45)">
+              <svg viewBox="0 0 24 20" style="width:18px;height:15px"><polygon points="7,2 17,2 22,8 12,18 2,8" fill="#eaf8ff" stroke="#fff" stroke-width="1"/></svg>
+              Buy Sky<br>Diamonds
+              <span style="font-size:18px;font-weight:900;margin-left:2px">&#8250;</span>
+            </button>
+          </div>
         </div>
         <!-- Coins Card -->
-        <div class="w-card wc-coin" style="margin-bottom:0;padding:16px 14px;background:linear-gradient(160deg,rgba(255,215,0,.12),rgba(120,90,0,.05));border:1px solid rgba(255,215,0,.3);display:flex;flex-direction:column;text-align:center">
-          <div class="w-label" style="font-size:10px">🪙 Coins</div>
-          <div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,235,150,.55),rgba(255,215,0,.1) 70%);display:flex;align-items:center;justify-content:center;font-size:32px;margin:12px auto;filter:drop-shadow(0 0 14px rgba(255,215,0,.75)) drop-shadow(0 0 4px rgba(255,255,255,.5));animation:diaGlow 2.2s ease-in-out infinite .3s">🪙</div>
-          <div class="w-total yellow" id="wCoins" style="font-size:30px;margin-bottom:10px">0</div>
-          <div style="height:1px;background:rgba(255,215,0,.15);margin:0 0 10px"></div>
-          <button id="checkInBtn" data-daily-checkin class="w-btn" onclick="window.doCheckIn&&doCheckIn()" style="background:linear-gradient(135deg,rgba(0,255,156,.15),rgba(0,255,156,.05));color:var(--green);border:1px solid rgba(0,255,156,.2);width:100%;margin-bottom:6px;margin-top:auto"><i class="fas fa-calendar-check"></i> Daily Check-In</button>
-          <button class="w-btn" onclick="showCoinShop()" style="background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(0,255,0,.08));color:#ffd700;border:1px solid rgba(255,215,0,.25);width:100%;min-height:46px;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center"><i class="fas fa-gift"></i> Earn Coins</button>
+        <div style="border-radius:20px;padding:2px;background:linear-gradient(180deg,#ffd700 0%,#ff9500 55%,#ff4dd0 100%);box-shadow:0 0 18px rgba(255,215,0,.3)">
+          <div style="border-radius:18px;background:linear-gradient(180deg,#1a1204 0%,#0d0801 100%);padding:14px 10px 12px;height:100%;display:flex;flex-direction:column;text-align:center;position:relative;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;color:#ffe9a3;font-size:11px;font-weight:900;letter-spacing:1.6px">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px"><circle cx="12" cy="12" r="10" fill="#ffd700" stroke="#b8860b"/><rect x="8" y="10" width="2" height="6" fill="#b87400"/><rect x="11" y="10" width="2" height="6" fill="#b87400"/><rect x="14" y="10" width="2" height="6" fill="#b87400"/><polygon points="7,9 17,9 12,5" fill="#b87400"/></svg>
+              COINS
+            </div>
+            <svg viewBox="0 0 140 110" style="width:78%;max-width:150px;margin:8px auto 2px">
+              <ellipse cx="70" cy="52" rx="58" ry="16" fill="none" stroke="#ffd700" stroke-width="1.2" opacity=".55" transform="rotate(-10 70 52)"/>
+              <circle cx="70" cy="46" r="34" fill="#c98a00"/>
+              <circle cx="70" cy="44" r="32" fill="#ffdf6e"/>
+              <circle cx="70" cy="44" r="25" fill="#ffd700" stroke="#b8860b" stroke-width="1.5"/>
+              <polygon points="60,36 80,36 70,28" fill="#b87400"/>
+              <rect x="60" y="37" width="20" height="3" fill="#b87400"/>
+              <rect x="62" y="42" width="3" height="9" fill="#b87400"/>
+              <rect x="68.5" y="42" width="3" height="9" fill="#b87400"/>
+              <rect x="75" y="42" width="3" height="9" fill="#b87400"/>
+              <rect x="59" y="52" width="22" height="3" fill="#b87400"/>
+              <ellipse cx="70" cy="86" rx="32" ry="7" fill="none" stroke="#ffd700" stroke-width="2.5" opacity=".8"/>
+              <ellipse cx="70" cy="89" rx="44" ry="9" fill="none" stroke="#ffd700" stroke-width="1.5" opacity=".3"/>
+              <circle cx="16" cy="34" r="7" fill="#ffdf6e" stroke="#b8860b" opacity=".95"/>
+              <circle cx="126" cy="30" r="6" fill="#ffd700" stroke="#b8860b" opacity=".9"/>
+              <circle cx="120" cy="72" r="7" fill="#ffdf6e" stroke="#b8860b" opacity=".85"/>
+            </svg>
+            <div class="w-total yellow" id="wCoins" style="color:#ffd700;font-size:42px;font-weight:900;margin:2px 0 8px;text-shadow:0 0 18px rgba(255,215,0,.7)">0</div>
+            <div style="height:1px;background:rgba(255,215,0,.18);margin:0 6px 10px"></div>
+            <button id="checkInBtn" data-daily-checkin class="w-btn" onclick="window.doCheckIn&&doCheckIn()" style="background:linear-gradient(135deg,#0e6b45,#12855a);color:#eafff4;border:1px solid rgba(23,209,122,.55);border-radius:12px;width:100%;margin-bottom:8px;margin-top:auto;min-height:46px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12.5px;font-weight:900;cursor:pointer">
+              <svg viewBox="0 0 24 24" style="width:17px;height:17px"><rect x="3" y="5" width="18" height="16" rx="3" fill="#17d17a"/><rect x="3" y="5" width="18" height="5" rx="2" fill="#0e6b45"/><path d="M8 14 l3 3 l5 -6" stroke="#eafff4" stroke-width="2.5" fill="none"/></svg>
+              <span style="text-align:left;line-height:1.15">Daily<br>Check-In<br><span style="font-size:10.5px">(+ 🪙 5)</span></span>
+              <span style="font-size:18px;font-weight:900">&#8250;</span>
+            </button>
+            <button class="w-btn" onclick="showCoinShop()" style="background:rgba(255,215,0,.06);color:#ffd700;border:1.5px solid rgba(255,215,0,.6);border-radius:12px;width:100%;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:900;cursor:pointer">
+              <svg viewBox="0 0 24 24" style="width:16px;height:16px"><rect x="4" y="9" width="16" height="11" rx="2" fill="#ffd700"/><rect x="4" y="9" width="16" height="3" fill="#b8860b"/><rect x="10.5" y="9" width="3" height="11" fill="#b8860b"/><path d="M12 8 c-3 -4 -7 -1 -5 1 c1.5 1.5 5 -1 5 -1 z m0 0 c3 -4 7 -1 5 1 c-1.5 1.5 -5 -1 -5 -1 z" fill="#ffd700"/></svg>
+              Earn Coins
+              <span style="font-size:18px;font-weight:900">&#8250;</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Green Diamond card (matches Sky/Coin card style) -->
-      <!-- ✅ BUG FIX (2026-10-04): green diamond box mein icon nahi tha (sky
-           diamond/coin boxes mein glowing icon hai). Ab right side mein
-           green-diamond.png ka wahi glowing icon + info compact. -->
-      <div style="background:linear-gradient(160deg,rgba(0,255,100,.10),rgba(0,80,40,.04));border:1px solid rgba(0,255,100,.3);border-radius:16px;padding:16px 14px;margin-bottom:12px">
-        <div style="display:flex;align-items:center;gap:14px">
+      <!-- Green Diamond card — replica -->
+      <div style="border-radius:20px;padding:2px;background:linear-gradient(180deg,#00ff88 0%,#00cc55 60%,#00ff88 100%);box-shadow:0 0 18px rgba(0,255,136,.3);margin-bottom:12px">
+        <div style="border-radius:18px;background:linear-gradient(160deg,#03150c 0%,#010a05 100%);padding:14px 12px;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden">
           <div style="flex:1;min-width:0">
-            <div style="font-size:10px;font-weight:800;color:#00ff64;letter-spacing:.5px;margin-bottom:6px">💚 GREEN DIAMOND</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:900;color:#00ff64;letter-spacing:1px;margin-bottom:6px">
+              <svg viewBox="0 0 24 20" style="width:15px;height:13px"><polygon points="7,2 17,2 22,8 12,18 2,8" fill="#3dff88" stroke="#d6ffe0" stroke-width="1"/></svg>
+              <svg viewBox="0 0 24 20" style="width:15px;height:13px"><polygon points="7,2 17,2 22,8 12,18 2,8" fill="#00e060" stroke="#8effb0" stroke-width="1"/></svg>
+              GREEN DIAMOND
+            </div>
             <span id="greenDiaCount" style="display:inline-flex;align-items:center;gap:6px">
-              <img src="js/green-diamond.png?v=20261106b" style="width:20px;height:20px;object-fit:contain">
-              <span style="font-size:30px;font-weight:900;color:#00ff64">0</span>
+              <img src="js/green-diamond.png?v=20261106d" style="width:20px;height:20px;object-fit:contain">
+              <span style="font-size:34px;font-weight:900;color:#00ff64;text-shadow:0 0 16px rgba(0,255,100,.7)">0</span>
             </span>
-            <div style="font-size:11px;color:#888;margin-top:8px;line-height:1.7">
+            <div style="font-size:11px;color:#cfe8d8;margin-top:8px;line-height:1.7">
               Sirf <strong style="color:#00ff64">Paid Matches</strong> jeetne par milta hai · Rank, Badges, Titles ke liye use karo<br>
-              <span style="color:#ff6b6b">❌ Paise se nahi khareeda ja sakta</span> · <span style="color:#ff6b6b">❌ Withdraw nahi hota</span>
+              <span style="color:#ff5a5a;font-weight:700">❌ Paise se nahi khareeda ja sakta · ❌ Withdraw nahi hota</span>
             </div>
           </div>
-          <div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(120,255,180,.55),rgba(0,255,100,.1) 70%);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;filter:drop-shadow(0 0 14px rgba(0,255,100,.75)) drop-shadow(0 0 4px rgba(255,255,255,.5));animation:diaGlow 2.2s ease-in-out infinite .6s">
-            <img src="js/green-diamond.png?v=20261106b" alt="Green Diamond" style="width:38px;height:38px;object-fit:contain">
-          </div>
+          <svg viewBox="0 0 130 110" style="width:44%;max-width:150px;flex-shrink:0">
+            <polygon points="20,26 30,16 34,30 24,34" fill="#3dff88" opacity=".85"/>
+            <polygon points="104,20 114,28 106,38 98,30" fill="#8effb0" opacity=".85"/>
+            <polygon points="12,62 22,58 24,70 14,72" fill="#00e060" opacity=".8"/>
+            <polygon points="112,64 122,70 114,80 106,72" fill="#3dff88" opacity=".8"/>
+            <polygon points="42,22 88,22 104,44 26,44" fill="#8effb0"/>
+            <polygon points="42,22 65,44 26,44" fill="#d6ffe0"/>
+            <polygon points="88,22 104,44 65,44" fill="#3dff88"/>
+            <polygon points="26,44 104,44 65,92" fill="#00e060"/>
+            <polygon points="26,44 65,44 65,92" fill="#00b84c"/>
+            <polygon points="65,44 104,44 65,92" fill="#3dff88"/>
+            <polygon points="42,22 88,22 65,44" fill="#ffffff" opacity=".8"/>
+            <ellipse cx="65" cy="97" rx="30" ry="6" fill="none" stroke="#00e060" stroke-width="2.5" opacity=".8"/>
+            <ellipse cx="65" cy="100" rx="42" ry="8" fill="none" stroke="#00e060" stroke-width="1.5" opacity=".3"/>
+          </svg>
         </div>
       </div>
 
@@ -634,67 +717,67 @@ body,#splash .sp-title,.login-title,.hdr-name{font-family:'Inter',-apple-system,
      market), isliye yeh real-users ka bug tha. Local file = CDN dependency khatam.
      Fallback: core/db.js ka _initClient() CDN se try karta hai agar yeh file
      load/parse na ho. Details: vendor/README.md -->
-<script defer src="vendor/supabase.min.js?v=20261106b"></script>
+<script defer src="vendor/supabase.min.js?v=20261106d"></script>
 
 <!-- ═══════════════════════════════════════════════
      CORE — must load first, in order
 ═══════════════════════════════════════════════ -->
-<script defer src="core/firebase.js?v=20261106b"></script>
-<script defer src="js/r8-admin-gateway-shim.js?v=20261106b"></script><!-- R8 FINAL: admin-only RPCs via trusted backend path (admin-gateway) -->
-<script defer src="core/db.js?v=20261106b"></script>
-<script defer src="core/db-bridge.js?v=20261106b"></script>
-<script defer src="core/bugfixes.js?v=20261106b"></script>
-<script defer src="core/imgbb.js?v=20261106b"></script>
-<script defer src="features/app-config.js?v=20261106b"></script>
+<script defer src="core/firebase.js?v=20261106d"></script>
+<script defer src="js/r8-admin-gateway-shim.js?v=20261106d"></script><!-- R8 FINAL: admin-only RPCs via trusted backend path (admin-gateway) -->
+<script defer src="core/db.js?v=20261106d"></script>
+<script defer src="core/db-bridge.js?v=20261106d"></script>
+<script defer src="core/bugfixes.js?v=20261106d"></script>
+<script defer src="core/imgbb.js?v=20261106d"></script>
+<script defer src="features/app-config.js?v=20261106d"></script>
 <!-- ✅ SAFE-CLEANER v5 (2026-10-09): post-update safai ka SERVER-SIDE gate.
      Supabase app_settings.key='apk_cleanup' policy padhta hai; owner-exempt
      user/device par EK file bhi delete nahi hoti. Koi file-permission prompt
      kabhi nahi. Details: features/device-cleanup.js header. -->
-<script defer src="features/device-cleanup.js?v=20261106b"></script>
-<script defer src="core/utils.js?v=20261106b"></script>
-<script defer src="core/router.js?v=20261106b"></script>
-<script defer src="core/app-dialog.js?v=20261106b"></script><!-- ✅ B3: sab confirm/alert app-UI me -->
-<script defer src="core/modal.js?v=20261106b"></script>
-<script defer src="core/custom-dropdown.js?v=20261106b"></script>
-<script defer src="core/header.js?v=20261106b"></script>
-<script defer src="core/auth.js?v=20261106b"></script>
+<script defer src="features/device-cleanup.js?v=20261106d"></script>
+<script defer src="core/utils.js?v=20261106d"></script>
+<script defer src="core/router.js?v=20261106d"></script>
+<script defer src="core/app-dialog.js?v=20261106d"></script><!-- ✅ B3: sab confirm/alert app-UI me -->
+<script defer src="core/modal.js?v=20261106d"></script>
+<script defer src="core/custom-dropdown.js?v=20261106d"></script>
+<script defer src="core/header.js?v=20261106d"></script>
+<script defer src="core/auth.js?v=20261106d"></script>
 
 <!-- ═══════════════════════════════════════════════
      SCREENS — UI renderers
 ═══════════════════════════════════════════════ -->
-<script defer src="screens/home.js?v=20261106b"></script>
-<script defer src="screens/matches.js?v=20261106b"></script>
-<script defer src="screens/join.js?v=20261106b"></script>
-<script defer src="screens/room.js?v=20261106b"></script>
-<script defer src="screens/wallet.js?v=20261106b"></script>
-<script defer src="js/paytm-checkout.js?v=20261106b" defer></script>
-<script defer src="screens/rank.js?v=20261106b" defer></script>
-<script defer src="screens/profile.js?v=20261106b" defer></script>
-<script defer src="screens/support.js?v=20261106b" defer></script>
-<script defer src="screens/notifications.js?v=20261106b" defer></script>
+<script defer src="screens/home.js?v=20261106d"></script>
+<script defer src="screens/matches.js?v=20261106d"></script>
+<script defer src="screens/join.js?v=20261106d"></script>
+<script defer src="screens/room.js?v=20261106d"></script>
+<script defer src="screens/wallet.js?v=20261106d"></script>
+<script defer src="js/paytm-checkout.js?v=20261106d" defer></script>
+<script defer src="screens/rank.js?v=20261106d" defer></script>
+<script defer src="screens/profile.js?v=20261106d" defer></script>
+<script defer src="screens/support.js?v=20261106d" defer></script>
+<script defer src="screens/notifications.js?v=20261106d" defer></script>
 
 <!-- ═══════════════════════════════════════════════
      FEATURES — optional modules
 ═══════════════════════════════════════════════ -->
-<script defer src="features/ads.js?v=20261106b" defer></script>
-<script defer src="features/premium.js?v=20261106b" defer></script>
-<script defer src="features/battle-pass.js?v=20261106b" defer></script>
-<script defer src="features/battle-pass-xp.js?v=20261106b" defer></script>
-<script defer src="features/free-trial.js?v=20261106b" defer></script>
-<script defer src="features/bundle-offers.js?v=20261106b" defer></script>
-<script defer src="features/rewarded-bonus.js?v=20261106b" defer></script>
-<script defer src="features/clan.js?v=20261106b" defer></script>
-<script defer src="features/spectator.js?v=20261106b" defer></script>
-<script defer src="features/growth.js?v=20261106b" defer></script>
-<script defer src="features/polls.js?v=20261106b" defer></script>
-<script defer src="features/premium-creator.js?v=20261106b" defer></script>
+<script defer src="features/ads.js?v=20261106d" defer></script>
+<script defer src="features/premium.js?v=20261106d" defer></script>
+<script defer src="features/battle-pass.js?v=20261106d" defer></script>
+<script defer src="features/battle-pass-xp.js?v=20261106d" defer></script>
+<script defer src="features/free-trial.js?v=20261106d" defer></script>
+<script defer src="features/bundle-offers.js?v=20261106d" defer></script>
+<script defer src="features/rewarded-bonus.js?v=20261106d" defer></script>
+<script defer src="features/clan.js?v=20261106d" defer></script>
+<script defer src="features/spectator.js?v=20261106d" defer></script>
+<script defer src="features/growth.js?v=20261106d" defer></script>
+<script defer src="features/polls.js?v=20261106d" defer></script>
+<script defer src="features/premium-creator.js?v=20261106d" defer></script>
 <!-- creator-video-feed.js removed (2026-08): self-service creator video
      sharing was never wired to any working entry point (dead code —
      confirmed zero callers). creator-match-host.js REINSTATED and fully
      rewritten (2026-08) to use secure SECURITY DEFINER RPCs instead of
      raw table access — see that file's header comment for the security
      model. -->
-<script defer src="features/creator-match-host.js?v=20261106b" defer></script>
+<script defer src="features/creator-match-host.js?v=20261106d" defer></script>
 
 <!-- ═══════════════════════════════════════════════
      CORE BOOT — last: starts listeners after all
@@ -703,89 +786,89 @@ body,#splash .sp-title,.login-title,.hdr-name{font-family:'Inter',-apple-system,
 <!-- ═══════════════════════════════════════════
      NEW FEATURE MODULES
 ═══════════════════════════════════════════ -->
-<script defer src="features/auto-squad.js?v=20261106b" defer></script>
-<script defer src="features/seasonal-league.js?v=20261106b" defer></script>
+<script defer src="features/auto-squad.js?v=20261106d" defer></script>
+<script defer src="features/seasonal-league.js?v=20261106d" defer></script>
 <!-- ✅ B30 (2026-10-07): features/checkin-system.js HATA diya — pre-match
      check-in system poora nikal gaya (jo kaam tha — check-in-miss auto-refund /
      slot-release — wo policy 2026-10-03 me hi khatam ho chuki thi, is liye
      button aur poori file bekaar thi). Daily check-in (wallet ka button) alag
      feature hai — wo waise hi chalta rahega. -->
-<script defer src="features/watch-earn.js?v=20261106b" defer></script>
-<script defer src="features/match-history.js?v=20261106b" defer></script>
-<script defer src="features/admin-badge.js?v=20261106b" defer></script>
+<script defer src="features/watch-earn.js?v=20261106d" defer></script>
+<script defer src="features/match-history.js?v=20261106d" defer></script>
+<script defer src="features/admin-badge.js?v=20261106d" defer></script>
 
 <!-- v17 NEW FEATURES -->
-<script defer src="features/skill-matchmaking.js?v=20261106b" defer></script>
-<script defer src="features/squad-finder.js?v=20261106b" defer></script>
-<script defer src="features/friends.js?v=20261106b" defer></script>
-<script defer src="features/challenge.js?v=20261106b" defer></script>
-<script defer src="js/profile-card2-core.js?v=20261106b" defer></script>
-<script defer src="features/player-card.js?v=20261106b" defer></script>
-<script defer src="features/streak.js?v=20261106b" defer></script>
-<script defer src="features/city-championship.js?v=20261106b" defer></script>
-<script defer src="features/clean-badge.js?v=20261106b" defer></script>
-<script defer src="features/bracket.js?v=20261106b" defer></script>
-<script defer src="features/squad-bank.js?v=20261106b" defer></script>
-  <script defer src="features/mentor.js?v=20261106b" defer></script>
-<script defer src="features/clan-war.js?v=20261106b" defer></script>
-<script defer src="features/india-map.js?v=20261106b" defer></script>
+<script defer src="features/skill-matchmaking.js?v=20261106d" defer></script>
+<script defer src="features/squad-finder.js?v=20261106d" defer></script>
+<script defer src="features/friends.js?v=20261106d" defer></script>
+<script defer src="features/challenge.js?v=20261106d" defer></script>
+<script defer src="js/profile-card2-core.js?v=20261106d" defer></script>
+<script defer src="features/player-card.js?v=20261106d" defer></script>
+<script defer src="features/streak.js?v=20261106d" defer></script>
+<script defer src="features/city-championship.js?v=20261106d" defer></script>
+<script defer src="features/clean-badge.js?v=20261106d" defer></script>
+<script defer src="features/bracket.js?v=20261106d" defer></script>
+<script defer src="features/squad-bank.js?v=20261106d" defer></script>
+  <script defer src="features/mentor.js?v=20261106d" defer></script>
+<script defer src="features/clan-war.js?v=20261106d" defer></script>
+<script defer src="features/india-map.js?v=20261106d" defer></script>
 <!-- ✅ R25 (2026-09-21): F29 Special Tournament helper (Sunday/Monthly)
      special-match join-eligibility + badge — pehle kabhi define nahi
      hua tha, callers guard `if(window.f29SpecialTournament)` se safe the. -->
-<script defer src="features/f29-special-tournament.js?v=20261106b" defer></script>
+<script defer src="features/f29-special-tournament.js?v=20261106d" defer></script>
 
 <!-- js/ utility layer -->
-<script defer src="js/safe-loader.js?v=20261106b" defer></script>
-<script defer src="js/fixes-v7.js?v=20261106b" defer></script>
-<script defer src="js/fixes-v8.js?v=20261106b" defer></script>
-<script defer src="js/fixes-v9.js?v=20261106b" defer></script>
-<script defer src="js/fix5-listener-manager.js?v=20261106b" defer></script>
-<script defer src="js/fix6-offline-queue.js?v=20261106b" defer></script>
-<script defer src="js/fix8-lazy-loading.js?v=20261106b" defer></script>
-<script defer src="js/fix9-toast-queue.js?v=20261106b" defer></script>
-<script defer src="js/fix10-server-time-sync.js?v=20261106b" defer></script>
-<script defer src="js/fix12-push-notifications.js?v=20261106b" defer></script>
-  <script defer src="js/features-user.js?v=20261106b"></script>
-  <script defer src="js/features-user-tail.js?v=20261106b"></script>
-<script defer src="js/ui-fixes.js?v=20261106b"></script>
-<script defer src="js/security-patches.js?v=20261106b" defer></script>
-<script defer src="js/security.js?v=20261106b" defer></script>
-<script defer src="js/anti-cheat.js?v=20261106b" defer></script>
+<script defer src="js/safe-loader.js?v=20261106d" defer></script>
+<script defer src="js/fixes-v7.js?v=20261106d" defer></script>
+<script defer src="js/fixes-v8.js?v=20261106d" defer></script>
+<script defer src="js/fixes-v9.js?v=20261106d" defer></script>
+<script defer src="js/fix5-listener-manager.js?v=20261106d" defer></script>
+<script defer src="js/fix6-offline-queue.js?v=20261106d" defer></script>
+<script defer src="js/fix8-lazy-loading.js?v=20261106d" defer></script>
+<script defer src="js/fix9-toast-queue.js?v=20261106d" defer></script>
+<script defer src="js/fix10-server-time-sync.js?v=20261106d" defer></script>
+<script defer src="js/fix12-push-notifications.js?v=20261106d" defer></script>
+  <script defer src="js/features-user.js?v=20261106d"></script>
+  <script defer src="js/features-user-tail.js?v=20261106d"></script>
+<script defer src="js/ui-fixes.js?v=20261106d"></script>
+<script defer src="js/security-patches.js?v=20261106d" defer></script>
+<script defer src="js/security.js?v=20261106d" defer></script>
+<script defer src="js/anti-cheat.js?v=20261106d" defer></script>
 <!-- Device fingerprint for anti-cheat (auth is handled by Firebase Google login) -->
-<script defer src="js/device-identity.js?v=20261106b" defer></script>
-<script defer src="js/legal-compliance.js?v=20261106b" defer></script>
-<script defer src="js/diamond-system.js?v=20261106b" defer></script>
-<script defer src="js/rank-system.js?v=20261106b" defer></script>
+<script defer src="js/device-identity.js?v=20261106d" defer></script>
+<script defer src="js/legal-compliance.js?v=20261106d" defer></script>
+<script defer src="js/diamond-system.js?v=20261106d" defer></script>
+<script defer src="js/rank-system.js?v=20261106d" defer></script>
 <!-- ASSET CATALOG (2026-10-10): 59 real art items — ranks/premium/titles/
      badges/special/cosmetics/icons ka SSOT + Collection gallery + E2E verify -->
-<script defer src="js/features/asset-catalog.js?v=20261106b"></script>
-<script defer src="js/features/badge-engine.js?v=20261106b"></script>
-<script defer src="js/wallet-history.js?v=20261106b" defer></script>
-<script defer src="js/match-timer.js?v=20261106b" defer></script>
-<script defer src="js/match-result-detail.js?v=20261106b" defer></script>
-<script defer src="js/room-reveal.js?v=20261106b" defer></script>
-<script defer src="js/quick-deposit.js?v=20261106b" defer></script>
-<script defer src="js/offline-handler.js?v=20261106b" defer></script>
-<script defer src="js/referral-tracker.js?v=20261106b" defer></script>
-<script defer src="js/referral-system-fix.js?v=20261106b" defer></script>
-<script defer src="js/profile-card.js?v=20261106b" defer></script>
-<script defer src="js/smart-automations.js?v=20261106b" defer></script>
-<script defer src="js/preview-mode.js?v=20261106b" defer></script>
+<script defer src="js/features/asset-catalog.js?v=20261106d"></script>
+<script defer src="js/features/badge-engine.js?v=20261106d"></script>
+<script defer src="js/wallet-history.js?v=20261106d" defer></script>
+<script defer src="js/match-timer.js?v=20261106d" defer></script>
+<script defer src="js/match-result-detail.js?v=20261106d" defer></script>
+<script defer src="js/room-reveal.js?v=20261106d" defer></script>
+<script defer src="js/quick-deposit.js?v=20261106d" defer></script>
+<script defer src="js/offline-handler.js?v=20261106d" defer></script>
+<script defer src="js/referral-tracker.js?v=20261106d" defer></script>
+<script defer src="js/referral-system-fix.js?v=20261106d" defer></script>
+<script defer src="js/profile-card.js?v=20261106d" defer></script>
+<script defer src="js/smart-automations.js?v=20261106d" defer></script>
+<script defer src="js/preview-mode.js?v=20261106d" defer></script>
 
 <!-- Bug Fix Batch v10: All remaining patches (Bugs 57,43,29,36,39,71,15,New1-8) -->
-<script defer src="js/fixes-v10-all-bugs.js?v=20261106b"></script>
+<script defer src="js/fixes-v10-all-bugs.js?v=20261106d"></script>
 
-<script defer src="core/listeners.js?v=20261106b"></script>
-<script defer src="core/boot.js?v=20261106b"></script>
+<script defer src="core/listeners.js?v=20261106d"></script>
+<script defer src="core/boot.js?v=20261106d"></script>
 
 <!-- Bug Fix Batch v29: Complete bug report fixes (Bugs #1-#41) — v29 -->
-<script defer src="js/fixes-v29-all-bugs.js?v=20261106b"></script>
+<script defer src="js/fixes-v29-all-bugs.js?v=20261106d"></script>
 
 <!-- ✅ v30 Final Bug Fixes — Must be loaded LAST -->
-  <script defer src="js/bugfixes-v29-final.js?v=20261106b" defer></script>
+  <script defer src="js/bugfixes-v29-final.js?v=20261106d" defer></script>
 
 <!-- ✅ v30 Final Bug Fixes — Clan Supabase rewrite + Admin role checks + cJoin re-validate -->
-  <script defer src="js/bugfix-v30-final.js?v=20261106b" defer></script>
+  <script defer src="js/bugfix-v30-final.js?v=20261106d" defer></script>
 
   </body>
 </html>

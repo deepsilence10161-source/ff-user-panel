@@ -16,6 +16,7 @@
     uid:  { cx: 646, cy: 712, fs: 37, f: 'bold',   col: '#ffffff' },
     lv:   { cx: 230, cy: 848, fs: 44, f: 'bold',   col: '#ffffff' },
     tier: { cx: 648, cy: 849, fs: 44, f: 'impact', col: '#ffd75e' },
+    title:{ cx: 722, cy: 530, fs: 44, f: 'impact', col: '#ffd75e' },
     xp:   { cx: 1050, cy: 810, fs: 29, f: 'bold',  col: '#ffffff' },
     s1:   { cx: 240,  cy: 998, fs: 42, f: 'bold',  col: '#ffffff' },
     s2:   { cx: 474,  cy: 998, fs: 42, f: 'bold',  col: '#ffffff' },
@@ -25,11 +26,20 @@
   };
   var BAR = { x: 743, y: 856, w: 308, h: 22 };
   /* max text widths (px @1323 space) — lambe naam/UID auto-shrink hote hain */
-  var ALLOW = { name: 292, uid: 262, xp: 315, tier: 190, lv: 100, s1: 90, s2: 90, s3: 90, s4: 90, s5: 90 };
+  var ALLOW = { name: 292, uid: 262, xp: 315, tier: 190, title: 300, lv: 100, s1: 90, s2: 90, s3: 90, s4: 90, s5: 90 };
   var BTNS = [
     { x: 898, y: 74, w: 96, h: 96, act: function () { if (window.showAssetGallery) window.showAssetGallery(); else if (window.toast) toast('Collection yahan khulegi', 'ok'); } },
     { x: 1034, y: 74, w: 96, h: 96, act: function () { if (window.toast) toast('Profile settings jald aa rahi hain', 'ok'); } },
-    { x: 740, y: 369, w: 72, h: 72, act: function () { if (window.toast) toast('Name/UID edit: profile section me', 'ok'); } }
+    { x: 740, y: 369, w: 72, h: 72, act: function () { if (window.toast) toast('Name/UID edit: profile section me', 'ok'); } },
+    /* ✅ D70: copy-icon hotspot — art me baked icon tha par click par kuch
+       nahi hota tha (owner complaint). Ab UID copy hoti hai. */
+    { x: 818, y: 674, w: 96, h: 96, act: function () {
+        var d = window._pc2ProfData || {};
+        var u = d.uid != null ? String(d.uid) : '';
+        if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
+        if (window.copyTxt) window.copyTxt(u);
+        else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function(){ if (window.toast) toast('UID copy ho gayi', 'ok'); });
+      } }
   ];
   function fontCss(l, s) {
     if (l.f === 'impact') return 'font-family:Impact,"Arial Black",Franklin Gothic Bold,sans-serif;font-style:italic;font-weight:900;letter-spacing:.5px;font-size:' + (l.fs * s).toFixed(1) + 'px';
@@ -44,6 +54,7 @@
       uid: 'UID : ' + (d.uid || '—'),
       lv: 'Lv ' + (d.level == null ? 1 : d.level),
       tier: d.tier || 'Bronze',
+      title: d.title || '',
       xp: (d.xp || 0) + ' / ' + (d.xpNeed || 10) + ' XP  •  ' + (d.pts || 0) + ' pts',
       s1: String(d.stats ? d.stats[0] : 0),
       s2: String(d.stats ? d.stats[1] : 0),
@@ -56,7 +67,7 @@
   function html(d) {
     var t = texts(d);
     var pct = Math.max(0, Math.min(100, (d.xp || 0) / Math.max(1, d.xpNeed || 10) * 100));
-    var h = '<div class="pc2wrap" data-pc2="1" style="position:relative;width:100%;aspect-ratio:' + W + '/' + H + ';background:url(\'' + BASE + '?v=20261106b\') center/100% 100% no-repeat;border-radius:14px;overflow:hidden">';
+    var h = '<div class="pc2wrap" data-pc2="1" style="position:relative;width:100%;aspect-ratio:' + W + '/' + H + ';background:url(\'' + BASE + '?v=20261106d\') center/100% 100% no-repeat;border-radius:14px;overflow:hidden">';
     Object.keys(LBL).forEach(function (k) {
       var l = LBL[k];
       var skew = l.f === 'impact' ? ' skewX(-8deg);' : '';
@@ -149,7 +160,7 @@
     var im = new Image();
     im.onload = function () { cb(im); };
     im.onerror = function () { cb(null); };
-    im.src = BASE + '?v=20261106b';
+    im.src = BASE + '?v=20261106d';
   }
   window.PCARD2 = { W: W, H: H, BASE: BASE, html: html, mount: mount, draw: draw, loadImg: loadImg, scaleWrap: scaleWrap };
   console.log('[Mini eSports] ✅ Profile Card v2 core loaded (exact-replica)');

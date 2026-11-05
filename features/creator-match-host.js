@@ -372,6 +372,196 @@ window.showCreatorProfile = function(creatorUid) {
     var rating = Number(c.creator_rating || 5);
     for (var i = 1; i <= 5; i++) stars += (i <= Math.round(rating) ? '★' : '☆');
 
+    /* ✅ D70 (2026-11-06): Creator Profile ka rich redesign — pehle bahut
+       simple tha (owner complaint). Ab: gradient banner + glow avatar ring
+       (asli avatar_url use hota hai), CREATOR chip, glowing stars, stats
+       chips, code-pill with copy, premium-feel follow button. */
+    var avHtml = c.avatar_url
+      ? '<img src="' + c.avatar_url + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      : (c.ign||'C').charAt(0).toUpperCase();
+    var bh = '';
+    bh += '<div style="position:relative;border-radius:18px;overflow:hidden;border:1.5px solid rgba(185,100,255,.4);box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 24px rgba(123,47,247,.25);margin-bottom:12px;background:radial-gradient(120% 70% at 50% 0%,rgba(123,47,247,.4),transparent 60%),linear-gradient(165deg,#1c0b33 0%,#0d0518 100%)">';
+    bh += '<div style="height:74px;background:radial-gradient(60% 100% at 50% 100%,rgba(255,215,0,.28),transparent 70%),repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 14px)"></div>';
+    bh += '<div style="text-align:center;padding:0 14px 16px;margin-top:-42px">';
+    bh += '<div style="width:88px;height:88px;margin:0 auto;border-radius:50%;padding:3px;background:linear-gradient(135deg,#ffd700,#b44dff);box-shadow:0 0 22px rgba(255,215,0,.5)"><div style="width:100%;height:100%;border-radius:50%;background:#0b0b0f;color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;overflow:hidden">' + avHtml + '</div></div>';
+    bh += '<div style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:3px 10px;border-radius:10px;background:rgba(123,47,247,.18);border:1px solid rgba(185,100,255,.45);color:#d5a6ff;font-size:9.5px;font-weight:900;letter-spacing:1.5px">🎮 CREATOR</div>';
+    bh += '<div style="font-size:18px;font-weight:900;color:#fff;margin-top:4px;text-shadow:0 2px 8px rgba(0,0,0,.7)">' + _escCP(c.ign||'Creator') + '</div>';
+    bh += '<div style="font-size:17px;color:#ffd700;margin:5px 0 2px;text-shadow:0 0 12px rgba(255,215,0,.6)">' + stars + ' <span style="font-size:11px;color:#9a8bbd;text-shadow:none">(' + (c.creator_rating_count||0) + ' ratings)</span></div>';
+    bh += '<div style="display:flex;gap:8px;justify-content:center;margin-top:10px">';
+    bh += '<div style="flex:1;max-width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 6px"><div style="font-size:16px;font-weight:900;color:#00ff9c">' + (stats.total_matches||0) + '</div><div style="font-size:9px;color:#8878a8;font-weight:700;margin-top:1px">REFERRED MATCHES</div></div>';
+    bh += '<div style="flex:1;max-width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 6px"><div style="font-size:16px;font-weight:900;color:#ffd700">' + rating.toFixed(1) + '★</div><div style="font-size:9px;color:#8878a8;font-weight:700;margin-top:1px">CREATOR RATING</div></div>';
+    bh += '</div>';
+    bh += '<div style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;border-radius:12px;background:rgba(0,255,156,.07);border:1px solid rgba(0,255,156,.3)"><span style="font-size:11px;color:#9ff5d0;font-weight:700">Code: <strong style="color:#00ff9c">' + _escCP(c.creator_code||'—') + '</strong></span>' + (c.creator_code ? '<button onclick="window.copyTxt&&copyTxt(\'' + _escCP(c.creator_code) + '\')" style="background:rgba(0,255,156,.15);border:none;color:#00ff9c;padding:2px 8px;border-radius:6px;font-size:10px;cursor:pointer"><i class="fas fa-copy"></i></button>' : '') + '</div>';
+    bh += '</div></div>';
+
+    bh += '<button id="_followBtn" onclick="window._toggleFollowCreator(\'' + creatorUid + '\')" style="width:100%;padding:13px;border-radius:14px;font-weight:900;font-size:13px;cursor:pointer;border:none;' +
+      (isFollowing ? 'background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.15)' : 'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;box-shadow:0 4px 16px rgba(0,255,156,.35)') + '">' +
+      (isFollowing ? '✓ Following — notifications ON' : '+ Follow (naye match ka notification pao)') + '</button>';
+    bh += '<div style="font-size:10px;color:#666;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
+
+    body.innerHTML = bh;
+    });
+};
+
+/* --- Creator Room ID Entry --- */
+window.showCreatorRoomEntry = function(matchId) {
+  var h = '<div style="padding:4px 0">';
+  h += '<div style="font-size:12px;color:#888;margin-bottom:12px">Free Fire mein custom room banao → Room ID + Password yahan daalo → Match LIVE ho jayega, players ko dikhega.</div>';
+  h += '<div class="f-group"><label>🔑 Room ID</label>';
+  h += '<input type="text" id="crRoomId" class="f-input" placeholder="e.g. 1234567" inputmode="numeric"></div>';
+  h += '<div class="f-group"><label>🔒 Room Password</label>';
+  h += '<input type="text" id="crRoomPw" class="f-input" placeholder="e.g. 1234"></div>';
+  h += '<button onclick="submitCreatorRoomId(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0066ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">📤 Room ID Submit Karo</button>';
+  h += '</div>';
+  if (window.openModal) openModal('🔑 Room ID Enter', h);
+};
+
+window.submitCreatorRoomId = function(matchId) {
+  var roomId = ((document.getElementById('crRoomId')||{}).value||'').trim();
+  var roomPw = ((document.getElementById('crRoomPw')||{}).value||'').trim();
+  if (!roomId || roomId.length < 3) { toast('Valid Room ID daalo', 'err'); return; }
+  if (!window._supa) { toast('Network error', 'err'); return; }
+
+  window._supa.rpc('creator_set_room', { p_match_id: matchId, p_room_id: roomId, p_room_password: roomPw })
+    .then(function(r) {
+      var d = r.data;
+      if (!d || !d.success) {
+        var errMap = { not_your_match: 'Ye tumhara match nahi hai', match_not_active: 'Match active nahi hai', invalid_room_id: 'Room ID sahi nahi hai' };
+        toast(errMap[d && d.error] || 'Room ID save nahi hua', 'err');
+        return;
+      }
+      toast('✅ Room ID set! Match ab LIVE hai.', 'ok');
+      if (window.closeModal) closeModal();
+    }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+/* --- Creator Result Submission (stages for admin review only) --- */
+window.showCreatorResultForm = function(matchId) {
+  if (!window._supa) return;
+  var h = '<div id="_crResultBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading players...</div>';
+  if (window.openModal) openModal('🏆 Match Result', h);
+
+  /* ✅ MATCH-FLOW-E2E FIX (2026-10-30, run 40986675005 MF32): result form
+     hamesha "Koi player nahi mila" dikhata tha — client ke PostgREST calls me
+     auth.jwt()->>'sub' NULL jata hai (A11 pattern wahi claim_match_refund me
+     document hai), isliye join_requests RLS creator ko APNE match ki rows bhi
+     nahi dikhata. Ab data SECURITY DEFINER RPC creator_get_match_participants
+     se aata hai (server creator_uid/admin verify karta hai; p_uid fallback).
+     Purana select sirf fallback hai (admin/edge cases). */
+  function _crRender(players) {
+      var body = document.getElementById('_crResultBody');
+      if (!body) return;
+      if (!players.length) { body.innerHTML = '<div style="padding:10px;font-size:13px">Koi player nahi mila</div>'; return; }
+
+      var bh = '<div style="font-size:11px;color:#888;margin-bottom:12px;text-align:left">Har player ke kills aur placement daalo. Submit karne ke baad Admin verify karega aur prize payout karega.</div>';
+      bh += '<div style="display:grid;gap:8px;text-align:left">';
+      players.forEach(function(p) {
+        bh += '<div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px;border-radius:10px">';
+        bh += '<div style="flex:1;font-size:12px;font-weight:700">' + _esc(p.user_ign||p.ign_at_join||'Player') + '</div>';
+        bh += '<input type="number" min="0" placeholder="Kills" data-jr="' + p.id + '" class="_crKills" style="width:60px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px">';
+        bh += '<input type="number" min="1" placeholder="Rank" data-jr="' + p.id + '" class="_crPlacement" style="width:60px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px">';
+        bh += '</div>';
+      });
+      bh += '</div>';
+      bh += '<button onclick="submitCreatorResult(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;margin-top:14px">📤 Result Submit Karo</button>';
+      body.innerHTML = bh;
+  }
+  function _crLegacySelect() {
+    /* ✅ BUG E fix (2026-10-30): status filter IN-list ki jagah exclusion —
+       match live hone ke baad rows ke status flip hote hain, IN-list wala
+       purana filter creator ko participants hi nahi dikhata tha. */
+    return window._supa.from('join_requests').select('id,user_ign,ign_at_join,status').eq('match_id', matchId).not('status', 'in', '(cancelled,refunded,rejected)')
+      .then(function(r2) { _crRender(r2.data || []); });
+  }
+  window._supa.rpc('creator_get_match_participants', { p_match_id: matchId, p_uid: (window.U && window.U.uid) || null })
+    .then(function(r) {
+      var d = r && r.data;
+      if (!r.error && d && d.ok && Array.isArray(d.players)) { _crRender(d.players); return; }
+      console.warn('[CreatorResult] participants RPC nahi chala, legacy select fallback:', (r && r.error && r.error.message) || (d && d.error));
+      _crLegacySelect();
+    })
+    .catch(function(e) { console.warn('[CreatorResult] RPC error, legacy select fallback:', e && e.message); _crLegacySelect(); });
+};
+
+window.submitCreatorResult = function(matchId) {
+  var killInputs = document.querySelectorAll('._crKills');
+  var results = [];
+  killInputs.forEach(function(inp) {
+    var jrId = inp.dataset.jr;
+    var placementInp = document.querySelector('._crPlacement[data-jr="' + jrId + '"]');
+    results.push({
+      join_request_id: jrId,
+      kills: Number(inp.value || 0),
+      placement: Number((placementInp && placementInp.value) || 0)
+    });
+  });
+  if (!window._supa) { toast('Network error', 'err'); return; }
+
+  window._supa.rpc('creator_publish_result', { p_match_id: matchId, p_results: results })
+    .then(function(r) {
+      var d = r.data;
+      if (!d || !d.success) {
+        var errMap = { not_your_match: 'Ye tumhara match nahi hai', match_not_live: 'Match live nahi hai' };
+        toast(errMap[d && d.error] || 'Result submit nahi hua', 'err');
+        return;
+      }
+      toast('✅ Result submit ho gaya! Admin review ke baad payout hoga.', 'ok');
+      if (window.closeModal) closeModal();
+    }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+window.rateCreatorMatch = function(matchId, creatorUid) {
+  var h = '<div style="text-align:center;padding:10px 0">';
+  h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Is match ka experience kaisa raha?</div>';
+  h += '<div id="_starRow" style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;font-size:32px">';
+  for (var i = 1; i <= 5; i++) {
+    h += '<span data-star="' + i + '" onclick="window._selectStar(' + i + ')" style="cursor:pointer;color:#333">★</span>';
+  }
+  h += '</div>';
+  h += '<textarea id="_ratingReason" class="f-input" placeholder="Koi feedback? (optional)" style="min-height:60px;margin-bottom:14px"></textarea>';
+  h += '<button onclick="window._submitRating(\'' + matchId + '\')" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-weight:800;cursor:pointer">Submit Rating</button>';
+  h += '</div>';
+  window._selectedStars = 0;
+  if (window.openModal) openModal('⭐ Rate This Match', h);
+};
+window._selectStar = function(n) {
+  window._selectedStars = n;
+  document.querySelectorAll('#_starRow span').forEach(function(s) {
+    s.style.color = Number(s.dataset.star) <= n ? '#ffd700' : '#333';
+  });
+};
+window._submitRating = function(matchId) {
+  if (!window._selectedStars) { toast('Stars select karo', 'err'); return; }
+  var reason = ((document.getElementById('_ratingReason')||{}).value||'').trim();
+  if (!window._supa) return;
+  window._supa.rpc('rate_creator_match', { p_match_id: matchId, p_stars: window._selectedStars, p_reason: reason })
+    .then(function(r) {
+      if (r.data && r.data.success) { toast('✅ Rating submit ho gayi!', 'ok'); if (window.closeModal) closeModal(); }
+      else { toast((r.data && r.data.error) || 'Rating submit nahi hui', 'err'); }
+    });
+};
+
+/* ─── Public Creator Profile (follow + rating + their matches) ──── */
+window.showCreatorProfile = function(creatorUid) {
+  if (!window._supa) return;
+  var h = '<div id="_credProfBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('🎮 Creator Profile', h);
+
+  Promise.all([
+    window._supa.from('users').select('ign,avatar_url,creator_rating,creator_rating_count,creator_code').eq('id', creatorUid).single(),
+    window._supa.from('creator_stats').select('total_matches').eq('user_id', creatorUid).maybeSingle(),
+    uid() ? window._supa.from('creator_follows').select('id').eq('creator_uid', creatorUid).eq('follower_uid', uid()).maybeSingle() : Promise.resolve({data:null})
+  ]).then(function(results) {
+    var c = (results[0] && results[0].data) || {};
+    var stats = (results[1] && results[1].data) || {};
+    var isFollowing = !!(results[2] && results[2].data);
+    var body = document.getElementById('_credProfBody');
+    if (!body) return;
+
+    var stars = '';
+    var rating = Number(c.creator_rating || 5);
+    for (var i = 1; i <= 5; i++) stars += (i <= Math.round(rating) ? '★' : '☆');
+
     var bh = '<div style="text-align:center;padding-bottom:14px">';
     bh += '<div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#000;margin:0 auto 10px">' + (c.ign||'C').charAt(0).toUpperCase() + '</div>';
     bh += '<div style="font-size:16px;font-weight:800">' + _escCP(c.ign||'Creator') + '</div>';

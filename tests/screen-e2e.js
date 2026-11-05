@@ -238,7 +238,7 @@ const wired = [
   ['screens/home.js', 'refreshSeasonChampion'],
   ['features/seasonal-league.js', 'seasonChampionBanner'],
   ['supabase/migrations/20261013_season_champion.sql', 'declare_season_champion'],
-  ['js/fixes-v7.js', "data-uid"],
+  ['screens/rank.js', "data-uid"], /* D70: rows rank.js me */
   ['js/fixes-v7.js', "premiumRibbonFor"],
   ['screen-e2e.html', '9d/12'],
   /* 2026-10-13d (3.6): check-in streak strip — home par mount + refresh hook */
@@ -372,8 +372,9 @@ console.log('\n── SCREEN 12: leaderboard row par premium ribbon (asli render
 {
   const v7 = fs.readFileSync(path.join(REPO, 'js/fixes-v7.js'), 'utf8');
   /* 1. ribbon dono jagah — podium aur row (donon mein IGN ke aage) */
-  const podRibbon = /_rowRibbon\(u, _podIsMe\)/.test(v7);
-  const rowRibbon = /_rowRibbon\(ur, isMe\)/.test(v7);
+  const rk12 = fs.readFileSync(path.join(REPO, 'screens/rank.js'), 'utf8');
+  const podRibbon = /premiumRibbonFor\(u\.premiumLevel/.test(rk12); /* D70: arena podium */
+  const rowRibbon = /_premRibbon/.test(rk12);                        /* D70: rows */
   ok(podRibbon && rowRibbon, 'ribbon podium aur row dono me laga (IGN ke aage)');
   /* 2. expire premium = koi ribbon nahi — ye niyam asli file me hai (premiumRibbonFor) */
   const be = fs.readFileSync(path.join(REPO, 'js/features/badge-engine.js'), 'utf8');
