@@ -710,7 +710,7 @@ function _cosIconHtml(c) {
   try {
     var ic = (c && c.icon) || '🎫';
     if (!c || !c.img) return ic;
-    return '<img src="' + c.img + '?v=20261107a" alt="" loading="lazy" ' +
+    return '<img src="' + c.img + '?v=20261107b" alt="" loading="lazy" ' +
       'style="max-width:48px;max-height:32px;object-fit:contain" ' +
       'onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + ic.replace(/'/g, '') + '\'">';
   } catch (e) { return (c && c.icon) || '🎫'; }

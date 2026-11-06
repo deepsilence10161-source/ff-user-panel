@@ -22,7 +22,6 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, sans-serif !important;
 }
 
 /* ═══════════════════════════════════════
@@ -33,7 +32,6 @@ body {
 }
 
 #splash .sp-title {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-size: 28px !important;
   font-weight: 900 !important;
   letter-spacing: -.3px !important;
@@ -58,7 +56,6 @@ body {
 .login-logo { font-size: 72px !important; filter: drop-shadow(0 0 20px rgba(0,255,156,.3)); }
 
 .login-title {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-size: 32px !important;
   font-weight: 900 !important;
   letter-spacing: -.5px !important;
@@ -99,7 +96,6 @@ body {
 }
 
 .hdr-name {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-size: 20px !important;
   font-weight: 800 !important;
   letter-spacing: -.3px !important;
@@ -139,7 +135,6 @@ body {
 }
 
 .nav-item span {
-  font-family: 'Inter', sans-serif !important;
   font-size: 9px !important;
   font-weight: 700 !important;
   letter-spacing: .3px !important;
@@ -165,7 +160,6 @@ body {
    STATUS TABS
 ═══════════════════════════════════════ */
 .s-tab {
-  font-family: 'Inter', sans-serif !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   padding: 8px 18px !important;
@@ -191,7 +185,6 @@ body {
 }
 
 .c-pill {
-  font-family: 'Inter', sans-serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   border-radius: 14px !important;
@@ -218,7 +211,6 @@ body {
    pass as the rest of this file applies to .s-tab / .c-pill above
 ═══════════════════════════════════════ */
 .filter-dd .dd-current {
-  font-family: 'Inter', sans-serif !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   border-radius: 14px !important;
@@ -270,7 +262,6 @@ body {
 }
 
 .w-label {
-  font-family: 'Inter', sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: .8px !important;
@@ -278,7 +269,6 @@ body {
 }
 
 .w-total {
-  font-family: 'Inter', sans-serif !important;
   font-size: 34px !important;
   font-weight: 900 !important;
   letter-spacing: -1px !important;
@@ -286,7 +276,6 @@ body {
 }
 
 .w-btn {
-  font-family: 'Inter', sans-serif !important;
   font-size: 13px !important;
   font-weight: 800 !important;
   border-radius: 13px !important;
@@ -319,7 +308,6 @@ body {
 }
 
 .modal-hdr {
-  font-family: 'Inter', sans-serif !important;
   font-size: 16px !important;
   font-weight: 800 !important;
   padding: 18px 20px 14px !important;
@@ -336,14 +324,12 @@ body {
 
 .modal-body {
   padding: 16px 20px 24px !important;
-  font-family: 'Inter', sans-serif !important;
 }
 
 /* ═══════════════════════════════════════
    RANK SCREEN
 ═══════════════════════════════════════ */
 .rank-formula-banner {
-  font-family: 'Inter', sans-serif !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   border-radius: 14px !important;
@@ -364,7 +350,6 @@ body {
 }
 
 .empty-state p {
-  font-family: 'Inter', sans-serif !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   color: #555577 !important;
@@ -375,7 +360,6 @@ body {
 ═══════════════════════════════════════ */
 #scrNotif .screen-title,
 #scrNotif span[style*="font-size:18px"] {
-  font-family: 'Inter', sans-serif !important;
   font-weight: 800 !important;
 }
 
@@ -383,7 +367,6 @@ body {
    CHAT
 ═══════════════════════════════════════ */
 .chat-header {
-  font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
   background: rgba(10,10,18,.95) !important;
   border-bottom: 1px solid var(--border) !important;
@@ -400,7 +383,6 @@ body {
   border: 1.5px solid rgba(255,255,255,.1) !important;
   border-radius: 12px !important;
   color: var(--txt) !important;
-  font-family: 'Inter', sans-serif !important;
   padding: 11px 14px !important;
   font-size: 13px !important;
   transition: all .2s !important;
@@ -437,14 +419,12 @@ body {
 }
 
 .cd-box .num {
-  font-family: 'Inter', sans-serif !important;
   font-size: 28px !important;
   font-weight: 900 !important;
   letter-spacing: -1px !important;
 }
 
 .cd-box .lbl {
-  font-family: 'Inter', sans-serif !important;
   font-size: 9px !important;
   font-weight: 700 !important;
   letter-spacing: 1.5px !important;
@@ -460,7 +440,6 @@ body {
 }
 
 .prof-btn {
-  font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
   font-size: 13px !important;
   border-radius: 14px !important;
@@ -505,14 +484,12 @@ body {
 }
 
 .pkg-coins {
-  font-family: 'Inter', sans-serif !important;
   font-size: 18px !important;
   font-weight: 900 !important;
   margin-bottom: 4px !important;
 }
 
 .pkg-price {
-  font-family: 'Inter', sans-serif !important;
   font-size: 20px !important;
   font-weight: 900 !important;
   color: #00ff9c !important;
@@ -529,7 +506,6 @@ body {
    TOAST
 ═══════════════════════════════════════ */
 #toast-wrap > div {
-  font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
   font-size: 13px !important;
   border-radius: 14px !important;
@@ -554,7 +530,6 @@ body {
 }
 
 .wh-info .wh-name {
-  font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
   font-size: 13px !important;
 }
@@ -563,7 +538,6 @@ body {
    SECTION HEADING
 ═══════════════════════════════════════ */
 .section-heading {
-  font-family: 'Inter', sans-serif !important;
   font-size: 10px !important;
   font-weight: 800 !important;
   letter-spacing: 1.5px !important;
@@ -702,7 +676,6 @@ body {
   width: 30px !important;
   height: 30px !important;
   border-radius: 50% !important;
-  font-family: 'Inter', sans-serif !important;
   font-weight: 800 !important;
   font-size: 13px !important;
 }
@@ -716,7 +689,6 @@ body {
    AMOUNT BUTTONS
 ═══════════════════════════════════════ */
 .w-amt-btn {
-  font-family: 'Inter', sans-serif !important;
   font-weight: 700 !important;
   font-size: 15px !important;
   border-radius: 12px !important;
@@ -747,7 +719,6 @@ body {
 }
 
 .ticker-txt {
-  font-family: 'Inter', sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
 }
