@@ -293,16 +293,23 @@ function _renderMissionsPanelFromProg(prog) {
        mission. */
   ];
 
+  /* ✅ D84 (owner: "mission screen bhi attractive bana stylish"): neon
+     redesign — gradient header plate, glowing section titles, mission
+     cards me icon-tile + neon border + reward chip + glow progress. */
   var h = '<div>';
+  h += '<div style="position:relative;border-radius:16px;padding:12px 14px;margin-bottom:14px;background:linear-gradient(135deg,rgba(255,215,0,.14),rgba(210,77,255,.12) 55%,rgba(0,212,255,.10));border:1.5px solid rgba(255,215,0,.35);box-shadow:0 0 18px rgba(255,215,0,.15), inset 0 0 24px rgba(210,77,255,.08);display:flex;align-items:center;gap:10px">' +
+       '<div style="width:40px;height:40px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 0 14px rgba(255,180,0,.55)">🎯</div>' +
+       '<div><div style="font-size:15px;font-weight:900;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.45)">Missions Arena</div>' +
+       '<div style="font-size:10.5px;color:#c9a4ff;margin-top:1px">Khelo • missions poore karo • coins kamao</div></div></div>';
 
-  h += '<div style="font-size:13px;font-weight:800;color:#ffd700;margin-bottom:10px;display:flex;align-items:center;gap:6px"><i class="fas fa-sun"></i> Daily Missions</div>';
+  h += '<div style="font-size:13px;font-weight:900;color:#ffd700;margin-bottom:10px;display:flex;align-items:center;gap:7px;text-shadow:0 0 8px rgba(255,215,0,.4)"><span style="width:24px;height:24px;border-radius:8px;background:rgba(255,215,0,.14);border:1px solid rgba(255,215,0,.4);display:flex;align-items:center;justify-content:center;font-size:12px">☀️</span> Daily Missions <span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(255,215,0,.5),transparent)"></span></div>';
   DAILY.forEach(function(m) {
     var claimed = prog['claimed_' + m.id + '_' + today] === true;
     var done = m.check;
     h += renderMissionCard(m, done, claimed, today, 'daily');
   });
 
-  h += '<div style="font-size:13px;font-weight:800;color:#00d4ff;margin:14px 0 10px;display:flex;align-items:center;gap:6px"><i class="fas fa-calendar-week"></i> Weekly Missions</div>';
+  h += '<div style="font-size:13px;font-weight:900;color:#00d4ff;margin:16px 0 10px;display:flex;align-items:center;gap:7px;text-shadow:0 0 8px rgba(0,212,255,.4)"><span style="width:24px;height:24px;border-radius:8px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px">📅</span> Weekly Missions <span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,255,.5),transparent)"></span></div>';
   WEEKLY.forEach(function(m) {
     var claimed = prog['claimed_' + m.id + '_w' + weekNum] === true;
     var done = m.check;
@@ -316,23 +323,36 @@ function _renderMissionsPanelFromProg(prog) {
 function renderMissionCard(m, done, claimed, period, type) {
   var btnHtml = '';
   if (claimed) {
-    btnHtml = '<span style="font-size:11px;color:#00ff9c;font-weight:700">✅ Claimed</span>';
+    btnHtml = '<span style="font-size:10.5px;color:#00ff9c;font-weight:800;background:rgba(0,255,156,.10);border:1px solid rgba(0,255,156,.4);padding:5px 9px;border-radius:10px">✅ Claimed</span>';
   } else if (done) {
-    btnHtml = '<button onclick="claimMission(\'' + m.id + '\',' + m.reward + ',\'' + period + '\',\'' + type + '\')" style="padding:6px 12px;border-radius:10px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:11px;font-weight:800;cursor:pointer">Claim +' + m.reward + '🪙</button>';
+    btnHtml = '<button onclick="claimMission(\'' + m.id + '\',' + m.reward + ',\'' + period + '\',\'' + type + '\')" style="padding:7px 12px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0 0 12px rgba(0,255,156,.5);animation:badge-pulse 1.6s infinite">Claim +' + m.reward + '🪙</button>';
   } else {
-    btnHtml = '<span style="font-size:11px;color:var(--txt2)">+' + m.reward + '🪙</span>';
+    btnHtml = '<span style="font-size:11px;font-weight:900;color:#ffd700;background:rgba(255,215,0,.10);border:1px solid rgba(255,215,0,.35);padding:5px 9px;border-radius:10px;box-shadow:0 0 8px rgba(255,215,0,.18)">+' + m.reward + '🪙</span>';
   }
 
   var progressBar = '';
   if (m.progress !== undefined) {
     var pct = Math.min(100, Math.round((m.progress / m.max) * 100));
-    progressBar = '<div style="margin-top:6px;background:rgba(255,255,255,.08);border-radius:4px;height:4px"><div style="width:' + pct + '%;height:4px;border-radius:4px;background:linear-gradient(135deg,#00d4ff,#0066ff);transition:width .5s"></div></div>';
-    progressBar += '<div style="font-size:10px;color:var(--txt2);margin-top:3px">' + m.progress + ' / ' + m.max + '</div>';
+    progressBar = '<div style="margin-top:7px;background:rgba(255,255,255,.08);border-radius:5px;height:6px;overflow:hidden"><div style="width:' + pct + '%;height:6px;border-radius:5px;background:linear-gradient(90deg,#00d4ff,#0066ff,#d24dff);box-shadow:0 0 8px rgba(0,212,255,.7);transition:width .5s"></div></div>';
+    progressBar += '<div style="font-size:10px;color:var(--txt2);margin-top:3px;font-weight:700">' + m.progress + ' / ' + m.max + '</div>';
   }
 
-  return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)">' +
-    '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + m.label + '</div>' +
-    '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + m.desc + '</div>' + progressBar + '</div>' +
+  /* ✅ D84 neon mission card: type ke hisaab se gold/cyan theme, done par
+     green glow border, claimed par soft green tint */
+  var acc = type === 'daily' ? { c: '#ffd700', g: 'rgba(255,215,0,' } : { c: '#00d4ff', g: 'rgba(0,212,255,' };
+  var cardBg = claimed ? 'linear-gradient(135deg,rgba(0,255,156,.10),rgba(0,255,156,.03))'
+              : done ? 'linear-gradient(135deg,' + acc.g + '.16),' + acc.g + '.05) 60%,rgba(0,255,156,.08))'
+              : 'linear-gradient(135deg,' + acc.g + '.10),rgba(20,20,28,.85) 60%,' + acc.g + '.04))';
+  var cardBd = claimed ? '1.5px solid rgba(0,255,156,.45)'
+              : done ? '1.5px solid rgba(0,255,156,.65)'
+              : '1.5px solid ' + acc.g + '.30)';
+  var cardGlow = done && !claimed ? 'box-shadow:0 0 14px rgba(0,255,156,.25), inset 0 0 18px ' + acc.g + '.06);' : 'box-shadow:inset 0 0 18px ' + acc.g + '.05);';
+  var icon = (m.label.match(/^[^\s]+/) || ['🎯'])[0];
+  var titleTxt = m.label.replace(/^[^\s]+\s*/, '');
+  return '<div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;margin-bottom:9px;background:' + cardBg + ';border:' + cardBd + ';' + cardGlow + '">' +
+    '<div style="width:38px;height:38px;flex-shrink:0;border-radius:11px;background:rgba(0,0,0,.45);border:1px solid ' + acc.g + '.35);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 10px ' + acc.g + '.25), inset 0 0 8px ' + acc.g + '.15)">' + icon + '</div>' +
+    '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)">' + titleTxt + '</div>' +
+    '<div style="font-size:10.5px;color:var(--txt2);margin-top:2px">' + m.desc + '</div>' + progressBar + '</div>' +
     '<div style="flex-shrink:0">' + btnHtml + '</div></div>';
 }
 
@@ -690,7 +710,7 @@ function _cosIconHtml(c) {
   try {
     var ic = (c && c.icon) || '🎫';
     if (!c || !c.img) return ic;
-    return '<img src="' + c.img + '?v=20261106i" alt="" loading="lazy" ' +
+    return '<img src="' + c.img + '?v=20261106j" alt="" loading="lazy" ' +
       'style="max-width:48px;max-height:32px;object-fit:contain" ' +
       'onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + ic.replace(/'/g, '') + '\'">';
   } catch (e) { return (c && c.icon) || '🎫'; }

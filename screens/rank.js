@@ -417,10 +417,14 @@ function _arenaCard(users, sortKey) {
      mock ki asli art; sirf avatars/names/kills/pills dynamic. */
   var STAMP = '20261107b';
   var top = (users || []).slice(0, 3);
+  /* ✅ D84 (owner: "top 2,3 ki profile icon perfectly fit nahi beth rahi"):
+     slots ab arena_bg.jpg ke BLACK SOCKETS ke pixel-measure se exact
+     (PIL blob-scan: p2 center 22.17/45.61 w15.62, p3 77.39/47.43 w15.14,
+     p1 49.85/41.08 w19.82) — circle art ke ring socket me poora baithta hai. */
   var COLS = [
-    { n: 2, av: { l: 22.2, t: 40.0, w: 15.4 }, nm: { t: 56.4, f: 3.5 }, vl: { t: 59.9, f: 3.3 }, pl: { t: 62.8 } },
-    { n: 1, av: { l: 49.9, t: 34.1, w: 19.3 }, nm: { t: 48.5, f: 3.7 }, vl: { t: 52.1, f: 3.5 }, pl: { t: 55.0 } },
-    { n: 3, av: { l: 77.4, t: 41.0, w: 15.5 }, nm: { t: 57.2, f: 3.4 }, vl: { t: 60.7, f: 3.2 }, pl: { t: 63.7 } }
+    { n: 2, av: { l: 22.17, t: 40.51, w: 15.32 }, nm: { t: 57.0, f: 3.5 }, vl: { t: 60.5, f: 3.3 }, pl: { t: 63.4 } },
+    { n: 1, av: { l: 49.85, t: 34.52, w: 19.52 }, nm: { t: 49.8, f: 3.7 }, vl: { t: 53.4, f: 3.5 }, pl: { t: 56.3 } },
+    { n: 3, av: { l: 77.39, t: 42.48, w: 14.84 }, nm: { t: 58.6, f: 3.4 }, vl: { t: 62.1, f: 3.2 }, pl: { t: 64.6 } }
   ];
   var FILLS = {1:'#141414',2:'#ff8c1a',3:'#58b368'};
   var VALC  = {1:'#ffd700',2:'#ffffff',3:'#ffd700'};
@@ -439,8 +443,12 @@ function _arenaCard(users, sortKey) {
       var _podRib = '';
       try { if (window.premiumRibbonFor && Number(u.premiumLevel || 0) > 0) _podRib = window.premiumRibbonFor(u.premiumLevel, u.premiumExpires, 12); } catch (e) {}
       var nm = window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player');
-      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.av.t + '%;width:' + c.av.w + 'cqw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:' + FILLS[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:' + (c.av.w / 2.6) + 'cqw;font-weight:900;color:#fff;overflow:hidden">' + av + '</div>';
-      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.nm.t + '%;transform:translateX(-50%);max-width:26cqw;font-size:' + c.nm.f + 'cqw;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center">' + nm + _podRib + '</div>';
+      /* ✅ D84 (owner: "rank me kisi aur user ki profile par directly tap
+         karke user ko dekh sake"): avatar + name tap → usi user ka
+         public profile card (PCARD2 replica) */
+      var _tap = (u._uid && !isDel) ? ' onclick="window.viewPublicProfile&&viewPublicProfile(\'' + u._uid + '\')"' : '';
+      h += '<div' + _tap + ' style="position:absolute;left:' + c.av.l + '%;top:' + c.av.t + '%;width:' + c.av.w + 'cqw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:' + FILLS[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:' + (c.av.w / 2.6) + 'cqw;font-weight:900;color:#fff;overflow:hidden' + (_tap ? ';cursor:pointer' : '') + '">' + av + '</div>';
+      h += '<div' + _tap + ' style="position:absolute;left:' + c.av.l + '%;top:' + c.nm.t + '%;transform:translateX(-50%);max-width:26cqw;font-size:' + c.nm.f + 'cqw;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center' + (_tap ? ';cursor:pointer' : '') + '">' + nm + _podRib + '</div>';
       h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.vl.t + '%;transform:translateX(-50%);font-size:' + c.vl.f + 'cqw;font-weight:800;color:' + VALC[c.n] + ';text-shadow:0 2px 6px #000;white-space:nowrap">' + valLabel + '</div>';
       h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.pl.t + '%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:1cqw;background:rgba(70,45,20,.72);border:1px solid rgba(200,150,60,.4);color:#d9a45c;font-size:2.7cqw;font-weight:800;padding:0.8cqw 3cqw;border-radius:20px;white-space:nowrap">' + rk.emoji + ' ' + rk.badge + '</div>';
     }
@@ -568,7 +576,9 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
     var _top10title = j < 7 ? ['','🔱 Warlord','⚔️ Slayer','💫 Elite','🎯 Sniper','🔥 Blaze','🌟 Star','🎖️ Knight'][j+1] || '' : '';
     /* ✅ 2026-10-12: row par data-uid — E2E (aur debugging) ke liye pakka hook,
        waise hi jaise admin panel ki Joined Players table ki rows par hai. */
-    h += '<div class="rank-row" data-uid="' + (u._uid || '') + '"' + (isMe ? ' style="border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.05)"' : '') + '>';
+    /* ✅ D84: leaderboard row tap → us user ka public profile card */
+    var _rowTap = (u._uid && !_isDelR) ? ' onclick="window.viewPublicProfile&&viewPublicProfile(\'' + u._uid + '\')" style="cursor:pointer' : '';
+    h += '<div class="rank-row" data-uid="' + (u._uid || '') + '"' + (isMe ? ' style="border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.05);cursor:pointer' : _rowTap) + (isMe || _rowTap ? '"' : '') + '>';
     h += '<div class="rank-num" style="color:' + (j===3?'#ffd700':j===4?'#c0c0c0':j===5?'#cd7f32':'var(--txt2)') + ';font-weight:' + (j<6?'900':'700') + '">#' + (j + 1) + '</div>';
     h += '<div class="rank-ava">' + av + '</div>';
     /* ✅ 2026-10-12: premium ribbon — IGN ke aage (sab players ko dikhta hai;
@@ -593,7 +603,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106i" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261106j" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
