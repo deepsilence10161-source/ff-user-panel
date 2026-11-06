@@ -251,13 +251,12 @@ body {
   position: relative !important;
 }
 
-.m-card::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important; left: 0 !important; right: 0 !important;
-  height: 1px !important;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent) !important;
-}
+/* ✅ D85 (owner: "match card abhi bhi pahle jaisa — web aur apk dono"):
+   ye purana 1px-shine ::before rule styles.css ke D76/D81 key-art
+   ::before (match-bg) ko !important se override kar deta tha — ek element
+   par ek hi ::before box hota hai, isliye art kabhi render hi nahi hui
+   (local harness sirf styles.css load karta tha, isliye proof me art dikhi
+   aur live par nahi — ab proof LIVE page par bhi hota hai). Rule hataya. */
 
 .m-card:active { transform: scale(.98) !important; }
 

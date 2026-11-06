@@ -201,7 +201,7 @@ function renderWallet() {
                    ? '₹'
                    : (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
                    : (w.currency === 'green_diamonds')
-                     ? '<img src="js/green-diamond.png?v=20261106j" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
+                     ? '<img src="js/green-diamond.png?v=20261106k" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
                      : '🪙';
       h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
       h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
