@@ -126,7 +126,12 @@ function renderProfile() {
     /* ✅ D77 (06 Nov 2026, owner): photo/banner = ASLI dynamic URLs —
        replica art me baked nahi (D36 niyam). Update hote hi renderProfile
        dobara mount karta hai ⇒ turant dikhte hain. */
-    photo: UD.profileImage || '', banner: UD.bannerImage || ''
+    photo: UD.profileImage || '', banner: UD.bannerImage || '',
+    /* ✅ D82 (owner: "premium tag aur badges show hi nahi hote"): prem plate,
+       VIP chip aur earned badges ab CARD par bhi (overlay strip) */
+    prem: premPlate ? premPlate.replace(/<[^>]*>/g, '') : '',
+    vip: (_eqVip || UD.is_vip) ? true : false,
+    badges: (window.getEarnedBadges ? (function () { try { return window.getEarnedBadges(st).slice(0, 3).map(function (b) { return b.img; }); } catch (e) { return []; } })() : [])
   };
 
   /* ✅ USER-ATTRACTION (2026-10-12, badge-engine.js): khule badges ki

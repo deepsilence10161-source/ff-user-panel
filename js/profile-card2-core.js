@@ -98,6 +98,17 @@
     }
     /* LAYER 3 — transparent frame PNG (ring/crown/plates/stats bar…) */
     h += '<img data-pc2frame="1" src="' + FRAME + '?v=' + STAMP + '" alt="" style="position:absolute;z-index:2;left:0;top:0;width:100%;height:100%;pointer-events:none">';
+    /* LAYER 3.5 — D82: premium tag + VIP chip + earned badges mini-row
+       (medal-row ke neeche khali dark strip me, right-aligned) */
+    var _chips = '';
+    if (d.prem) _chips += '<span style="padding:2px 8px;border-radius:12px;font-size:9px;font-weight:900;background:rgba(255,215,0,.14);border:1px solid rgba(255,215,0,.55);color:#ffd700;white-space:nowrap">' + esc(d.prem) + '</span>';
+    if (d.vip) _chips += '<span style="padding:2px 8px;border-radius:12px;font-size:9px;font-weight:900;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);color:#ffd700;white-space:nowrap">⭐ VIP</span>';
+    (d.badges || []).forEach(function (bi) {
+      _chips += '<img src="' + escUrl(bi) + '" alt="" style="height:100%;max-height:18px;aspect-ratio:1;object-fit:contain;border-radius:6px">';
+    });
+    if (_chips) {
+      h += '<div style="position:absolute;z-index:3;left:30%;right:4%;top:76.4%;height:4.4%;display:flex;align-items:center;justify-content:flex-end;gap:5px;overflow:hidden">' + _chips + '</div>';
+    }
     /* LAYER 4 — dynamic text + XP bar + click hotspots */
     Object.keys(LBL).forEach(function (k) {
       var l = LBL[k];
