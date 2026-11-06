@@ -39,13 +39,21 @@
   var BAR = { x: 743, y: 856, w: 308, h: 22 };
   /* max text widths (px @1323 space) — lambe naam/UID auto-shrink hote hain */
   var ALLOW = { name: 292, uid: 262, xp: 315, tier: 190, title: 300, lv: 100, s1: 90, s2: 90, s3: 90, s4: 90, s5: 90 };
+  /* ✅ D80 (06 Nov 2026, owner: "gallery se settings khuli, gear se kuch nahi"):
+     frame PNG ke visible icons grid-map se measure kiye gaye aur hotspots
+     UNKE exactly neeche rakhe gaye (pehle ye do top hotspots ~8% left the —
+     image icon settings-hotspot par aur gear dead-zone me tha):
+       image-icon square  x 76-83%,  y 7-15%   => btn0
+       gear square        x 85.5-93.5%, y 7-15% => btn1
+       pencil circle      centre 59.5%, 35.5%  => btn2
+       copy purple square centre 65%, 62.5%    => btn3 */
   var BTNS = [
-    { x: 898, y: 74, w: 96, h: 96, act: function () { if (window.showAssetGallery) window.showAssetGallery(); else if (window.toast) toast('Collection yahan khulegi', 'ok'); } },
-    { x: 1034, y: 74, w: 96, h: 96, act: function () { if (window.showProfileSettings) window.showProfileSettings(); else if (window.toast) toast('Profile settings jald aa rahi hain', 'ok'); } },
-    { x: 740, y: 369, w: 72, h: 72, act: function () { if (window.toast) toast('Name/UID edit: profile section me', 'ok'); } },
+    { x: 1006, y: 80, w: 96, h: 100, act: function () { if (window.showAssetGallery) window.showAssetGallery(); else if (window.toast) toast('Collection yahan khulegi', 'ok'); } },
+    { x: 1136, y: 80, w: 96, h: 100, act: function () { if (window.showProfileSettings) window.showProfileSettings(); else if (window.toast) toast('Profile settings jald aa rahi hain', 'ok'); } },
+    { x: 739, y: 374, w: 96, h: 96, act: function () { if (window.toast) toast('Name/UID edit: profile section me', 'ok'); } },
     /* ✅ D70: copy-icon hotspot — art me baked icon tha par click par kuch
        nahi hota tha (owner complaint). Ab UID copy hoti hai. */
-    { x: 818, y: 674, w: 96, h: 96, act: function () {
+    { x: 812, y: 695, w: 96, h: 96, act: function () {
         var d = window._pc2ProfData || {};
         var u = d.uid != null ? String(d.uid) : '';
         if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
