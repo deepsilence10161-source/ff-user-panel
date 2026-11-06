@@ -323,11 +323,8 @@ function renderProfile() {
          sheet, pencil = photo upload. (Pehle image-icon par banner-picker
          khulta tha aur gear par kuch na hota tha agar sheet fn miss ho.)
          Banner upload settings sheet ki row se hamesha available hai. */
-      window.PCARD2.mount(_pc2Host, window._pc2ProfData, [
-        function () { if (window.showAssetGallery) window.showAssetGallery(); else if (window.toast) toast('Collection load nahi hui — refresh karo', 'err'); },
-        function () { if (window.showProfileSettings) window.showProfileSettings(); else if (window.toast) toast('Settings load nahi hui — refresh karo', 'err'); },
-        function () { var pi = document.getElementById('profImgIn'); if (pi) pi.click(); }
-      ]);
+      /* D79: actions core me hardcoded hain; own flag sirf pencil ke liye */
+      window.PCARD2.mount(_pc2Host, window._pc2ProfData, null, { own: true });
     }
   } catch (e) {}
 }
@@ -1223,7 +1220,7 @@ window.showProfileSettings = function() {
   h += '<div style="text-align:center;padding:14px 0 6px"><div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.18);margin:0 auto"></div></div>';
   /* Header */
   h += '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 20px 14px">';
-  h += '<div style="font-size:16px;font-weight:900;color:#fff">⚙️ Settings</div>';
+  h += '<div><div style="font-size:16px;font-weight:900;color:#fff">⚙️ Settings</div><div style="font-size:9px;color:#555;margin-top:2px">build 20261106d</div></div>';
   h += '<div onclick="window.closeProfileSettings()" style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fas fa-times" style="font-size:13px;color:#aaa"></i></div>';
   h += '</div>';
   /* Items */

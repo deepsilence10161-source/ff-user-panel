@@ -118,13 +118,46 @@
       if (sw > allowed && sw > 0) el.style.fontSize = (parseFloat(el.style.fontSize) * allowed / sw).toFixed(2) + 'px';
     });
   }
+  /* ✅ D79 (06 Nov 2026, owner dobara complaint): button actions ab CORE me
+     hardcoded + click-time late-bound — kisi handlers array / load-order /
+     purane cache se mapping toot hi nahi sakti. own=1 par pencil photo
+     upload; doosre user ke card par pencil = guidance toast. */
+  function runAct(i, wrap) {
+    var own = wrap && wrap.getAttribute('data-pc2own') === '1';
+    try {
+      if (i === 0) {
+        if (window.showAssetGallery) window.showAssetGallery();
+        else if (window.toast) toast('Collection load nahi hui — app refresh karo', 'err');
+      } else if (i === 1) {
+        if (window.showProfileSettings) {
+          /* gear = hamesha FRESH sheet (toggle-close se "khulti hi nahi"
+             wala bug namumkin) */
+          var ex = document.getElementById('profSettingsSheet');
+          if (ex && window.closeProfileSettings) window.closeProfileSettings();
+          window.showProfileSettings();
+        } else if (window.toast) toast('Settings load nahi hui — app refresh karo', 'err');
+      } else if (i === 2) {
+        if (own) {
+          var pi = document.getElementById('profImgIn');
+          if (pi) pi.click();
+          else if (window.showProfileSettings) window.showProfileSettings();
+        } else if (window.toast) toast('Apni profile par photo edit karo', 'inf');
+      } else if (i === 3) {
+        var d = window._pc2ProfData || {};
+        var u = d.uid != null ? String(d.uid) : '';
+        if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
+        if (window.copyTxt) window.copyTxt(u);
+        else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function(){ if (window.toast) toast('UID copy ho gayi', 'ok'); });
+      }
+    } catch (e) {
+      if (window.toast) toast('Action fail: ' + (e && e.message ? e.message : 'retry'), 'err');
+    }
+  }
   function bind(wrap, handlers) {
     scaleWrap(wrap);
-    var acts = handlers || BTNS;
     wrap.querySelectorAll('[data-pc2btn]').forEach(function (el) {
       el.addEventListener('click', function () {
-        var i = Number(el.getAttribute('data-pc2btn'));
-        try { (acts[i] || BTNS[i]).act ? (acts[i] || BTNS[i]).act() : (acts[i] || BTNS[i])(); } catch (e) {}
+        runAct(Number(el.getAttribute('data-pc2btn')), wrap);
       });
     });
     if (!window.__pc2Resize) {
@@ -136,10 +169,13 @@
   }
   /* render into container (modal body etc.); handlers = optional [fn,fn,fn]
      jo default button-actions (gallery/gear/pencil) override karte hain */
-  function mount(container, d, handlers) {
+  function mount(container, d, handlers, opts) {
     container.innerHTML = html(d);
     var wrap = container.querySelector('[data-pc2]');
-    if (wrap) bind(wrap, handlers);
+    if (wrap) {
+      if (opts && opts.own) wrap.setAttribute('data-pc2own', '1');
+      bind(wrap, handlers);
+    }
     return wrap;
   }
 
