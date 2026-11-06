@@ -1093,7 +1093,24 @@ body.has-web-banner .chat-container {
   background: conic-gradient(from var(--rbAngle, 0deg),
     #ff004d, #ff8c00, #ffd700, #00ff9c, #00d4ff, #b964ff, #ff004d);
   animation: rbSpin 4s linear infinite;
+  /* D76 (2026-11-07, owner screenshot replica): neon halo har card par */
+  box-shadow: 0 0 18px rgba(0, 255, 156, .22), 0 0 34px rgba(255, 0, 77, .16);
 }
+/* D76 (2026-11-07, owner screenshot replica): card ke top par dark battle-scene
+   key-art (sirf decoration — match data se independent, isliye UI art me safe). */
+.m-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 108px;
+  background: url('assets/img/match-bg.jpg') center 30% / cover no-repeat;
+  opacity: .42;
+  -webkit-mask-image: linear-gradient(#000 25%, transparent 96%);
+  mask-image: linear-gradient(#000 25%, transparent 96%);
+  pointer-events: none;
+  z-index: 0;
+}
+.m-card > * { position: relative; z-index: 1; }
 .rb-wrap > .rb-inner {
   border-radius: 18px;
   position: relative;

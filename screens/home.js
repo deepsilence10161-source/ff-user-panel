@@ -143,10 +143,12 @@ function mcHTML(t) {
   /* ✅ BUG FIX (2026-10-04) Bug 8: premium user ke liye match card par
      "unlimited colours" animated rainbow glow border (styles.css .rb-wrap).
      Non-premium ke liye layout bilkul same. */
+  /* ✅ D76 (2026-11-07, owner): "match card UI new screenshot jaisi exact" —
+     screenshot me HAR card par neon rainbow border tha. Ab sab cards par
+     animated rainbow frame (styles.css .rb-wrap); premium viewer ko extra
+     halo glow (.rb-glow) — premium difference bhi barkarar. */
   var _mViewerPrem = (window.isPremiumActive && isPremiumActive()) ? true : false;
-  var h = _mViewerPrem
-    ? '<div class="rb-wrap rb-glow" style="margin:0 0 12px"><div class="m-card rb-inner" data-match-id="' + t.id + '" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + ';margin:0">'
-    : '<div class="m-card" data-match-id="' + t.id + '" style="border-top:3px solid ' + modeClr + ';position:relative;overflow:hidden;box-shadow:' + glowStr + '">';
+  var h = '<div class="rb-wrap' + (_mViewerPrem ? ' rb-glow' : '') + '" style="margin:0 0 12px"><div class="m-card rb-inner" data-match-id="' + t.id + '" style="position:relative;overflow:hidden;box-shadow:' + glowStr + ';margin:0">';
   h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,' + modeClr + '20,transparent 70%);pointer-events:none"></div>';
   if (isHot) h += '<div style="position:absolute;top:10px;left:-1px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;font-size:9px;font-weight:900;padding:3px 10px 3px 6px;border-radius:0 20px 20px 0;letter-spacing:.5px">🔥 HOT</div>';
   if (t.isMonthlySpecial || t.specialCategory === 'monthly_special') h += '<div style="position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:8px;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:.3px">👑 MONTHLY</div>'; 
@@ -225,13 +227,13 @@ function mcHTML(t) {
   else if (es === 'completed') h += '<button class="mc-join join-dis" disabled>Ended</button>';
   else if (es === 'live' && matchActuallyStarted) h += '<button class="mc-join join-dis" disabled>Started</button>';
   else if (es === 'live' && !matchActuallyStarted) h += isAd ? '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')" style="background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;border:none">📺 Watch Ad & Join</button>' : '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')">Join</button>';
-  else h += isAd ? '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')" style="background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;letter-spacing:0.5px;border:none">📺 Watch Ad & Join</button>' : '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')" style="background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:800;letter-spacing:0.5px;border:none">⚡ JOIN</button>';
+  else h += isAd ? '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')" style="background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;letter-spacing:0.5px;border:none">📺 Watch Ad & Join</button>' : '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')">⚡ JOIN</button>'; /* D76: outline-neon pill, owner screenshot replica */
   /* Special Tournament eligibility info */
   if ((t.isSundaySpecial || t.isMonthlySpecial) && window.f29SpecialTournament) {
     h += window.f29SpecialTournament.getEligibilityInfo(t);
   }
   h += '</div></div>';
-  if (_mViewerPrem) h += '</div>'; /* close rainbow wrapper (Bug 8) */
+  h += '</div>'; /* close rainbow wrapper — D76: ab har card par hai */
   return h;
 }
 
@@ -523,7 +525,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261106j" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261106b" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

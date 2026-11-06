@@ -10,7 +10,7 @@
 ================================================================ */
 (function(){
 'use strict';
-var GDI=function(s){return '<img src="js/green-diamond.png?v=20261106j" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261106b" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
 
 /* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
    customize ki ja sakti hai, admin panel se customize ho". Was a
@@ -181,7 +181,7 @@ window.awardPassXP=function(uid,xp){
    img na ho to purana emoji-text jaisa hi chalta hai. */
 function _bpRewardLabel(r, sz) {
   try {
-    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261106j" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
+    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261106b" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
     var lbl = r.label || (r.type === 'gd' ? GDI(11) + ' ' + r.v : (r.v || ''));
     return img + lbl;
   } catch (e) { return (r && (r.label || r.v)) || ''; }
@@ -337,7 +337,7 @@ window.buySeasonPass=function(){
     h+='<button onclick="window._submitSP()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#b964ff,#6b2fcc);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(185,100,255,.35)">🎫 Season Pass Request Submit Karo</button>';
     if(window.openModal) openModal('🎫 Buy Season Pass',h);
 
-    var _ss='';
+    var _ss=''; var _ssHash=null;
     window._spHandleSs=function(inp){
       if(!inp.files||!inp.files[0])return;
       /* Bug 65 Fix: Use ImgBB for screenshot instead of storing base64 in RTDB */
@@ -346,7 +346,7 @@ window.buySeasonPass=function(){
           if (err) {
             /* Fallback: base64 preview only (no storage) */
             var r=new FileReader();
-            r.onload=function(e){ _ss=e.target.result; _spShowPreview(_ss); };
+            r.onload=function(e){ _ss=e.target.result; window._ffGuardShot(_ss,function(_h){_ssHash=_h;_spShowPreview(_ss);},function(){_ss='';_ssHash=null;try{inp.value='';}catch(e2){}}); };
             r.readAsDataURL(inp.files[0]);
             return;
           }
@@ -378,6 +378,7 @@ window.buySeasonPass=function(){
         season_key: getSeasonId(),
         price: PASS_PRICE(),
         payment_screenshot: _ss,
+        img_hash: _ssHash,
         status: 'pending'
       }).then(function(){
         /* Notify via Supabase notifications table */

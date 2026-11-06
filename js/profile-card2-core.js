@@ -67,7 +67,7 @@
   function html(d) {
     var t = texts(d);
     var pct = Math.max(0, Math.min(100, (d.xp || 0) / Math.max(1, d.xpNeed || 10) * 100));
-    var h = '<div class="pc2wrap" data-pc2="1" style="position:relative;width:100%;aspect-ratio:' + W + '/' + H + ';background:url(\'' + BASE + '?v=20261106j\') center/100% 100% no-repeat;border-radius:14px;overflow:hidden">';
+    var h = '<div class="pc2wrap" data-pc2="1" style="position:relative;width:100%;aspect-ratio:' + W + '/' + H + ';background:url(\'' + BASE + '?v=20261106b\') center/100% 100% no-repeat;border-radius:14px;overflow:hidden">';
     Object.keys(LBL).forEach(function (k) {
       var l = LBL[k];
       var skew = l.f === 'impact' ? ' skewX(-8deg);' : '';
@@ -160,7 +160,7 @@
     var im = new Image();
     im.onload = function () { cb(im); };
     im.onerror = function () { cb(null); };
-    im.src = BASE + '?v=20261106j';
+    im.src = BASE + '?v=20261106b';
   }
   window.PCARD2 = { W: W, H: H, BASE: BASE, html: html, mount: mount, draw: draw, loadImg: loadImg, scaleWrap: scaleWrap };
   console.log('[Mini eSports] ✅ Profile Card v2 core loaded (exact-replica)');

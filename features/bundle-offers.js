@@ -138,15 +138,15 @@ function _showBundlePayment(b) {
   h += '<button onclick="window._submitBundle(\'' + b.id + '\',' + b.price + ')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,' + b.color + ',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">💳 Bundle Request Submit</button>';
   if (window.openModal) openModal('💳 ' + b.label, h);
 
-  var _ss = '';
+  var _ss = ''; var _ssHash = null;
   window._bndlHandleSs = function(inp) {
     if (!inp.files || !inp.files[0]) return;
     var r = new FileReader();
     r.onload = function(e) {
       _ss = e.target.result;
-      var prev = document.getElementById('_bndlSsPreview'), area = document.getElementById('_bndlSsArea');
+      window._ffGuardShot(_ss, function(_h){ _ssHash = _h; var prev = document.getElementById('_bndlSsPreview'), area = document.getElementById('_bndlSsArea');
       if (prev) { prev.src = _ss; prev.style.display = 'block'; }
-      if (area) area.innerHTML = '<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>';
+      if (area) area.innerHTML = '<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>'; }, function(){ _ss=''; _ssHash=null; try{inp.value='';}catch(e){} });
     };
     r.readAsDataURL(inp.files[0]);
   };
@@ -170,6 +170,7 @@ function _showBundlePayment(b) {
       tier: (bundleId === 'gold_bp') ? 2 : 1,
       price: price,
       screenshot_url: _ss,
+      img_hash: _ssHash,
       utr: _bUtr,          /* ✅ B16 */
       status: 'pending',
       plan_type: 'bundle',
@@ -214,10 +215,10 @@ window.buyAnnualPlan = function(tier, price) {
     h += '<button onclick="window._submitAnnual(' + tier + ',' + price + ')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,' + p.color + ',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">💳 Annual Plan Request Submit</button>';
     if (window.openModal) openModal('💳 ' + p.label, h);
 
-    var _ss = '';
+    var _ss = ''; var _ssHash = null;
     window._annHandleSs = function(inp) {
       if (!inp.files || !inp.files[0]) return;
-      var r = new FileReader(); r.onload = function(e) { _ss = e.target.result; var prev = document.getElementById('_annSsPreview'), area = document.getElementById('_annSsArea'); if(prev){prev.src=_ss;prev.style.display='block';} if(area)area.innerHTML='<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>'; }; r.readAsDataURL(inp.files[0]);
+      var r = new FileReader(); r.onload = function(e) { _ss = e.target.result; window._ffGuardShot(_ss, function(_h){ _ssHash = _h; var prev = document.getElementById('_annSsPreview'), area = document.getElementById('_annSsArea'); if(prev){prev.src=_ss;prev.style.display='block';} if(area)area.innerHTML='<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>'; }, function(){ _ss=''; _ssHash=null; try{inp.value='';}catch(e){} }); }; r.readAsDataURL(inp.files[0]);
     };
     window._submitAnnual = function(tier, price) {
       if (!_ss) { if(window.toast)toast('Screenshot upload karo!','err'); return; }
@@ -227,7 +228,7 @@ window.buyAnnualPlan = function(tier, price) {
       var _aUtr = _aUtrInp ? _aUtrInp.value.trim() : '';
       if (!_aUtr) { if(window.toast)toast('UTR / UPI reference number daalo!','err'); return; }
       if (_aUtr.length < 6) { if(window.toast)toast('UTR number poora daalo (kam se kam 6 characters)','err'); return; }
-      window._supa.from('premium_requests').insert({ user_id: window.U.uid, user_name: (window.UD&&window.UD.ign)||'', tier: tier, price: price, screenshot_url: _ss, utr: _aUtr, status: 'pending', plan_type: 'annual' }).then(function(){ if(window.toast)toast('✅ Annual plan request submit! 24 ghante mein active.','ok'); if(window.closeModal)closeModal(); }, function(){ if(window.toast)toast('Submit failed, retry karo','err'); });
+      window._supa.from('premium_requests').insert({ user_id: window.U.uid, user_name: (window.UD&&window.UD.ign)||'', tier: tier, price: price, screenshot_url: _ss, img_hash: _ssHash, utr: _aUtr, status: 'pending', plan_type: 'annual' }).then(function(){ if(window.toast)toast('✅ Annual plan request submit! 24 ghante mein active.','ok'); if(window.closeModal)closeModal(); }, function(){ if(window.toast)toast('Submit failed, retry karo','err'); });
     };
   });
 };
