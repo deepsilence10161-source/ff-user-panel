@@ -889,6 +889,20 @@ console.log('\n═════════════════════�
   ok(!/\.mc-join|\.mc-name|\.mc-cell/.test(noComments), '25d: style.css me koi mc-* replica override rule nahi');
 })();
 
+/* ── TEST 26: D87 source-guard — Green Diamond ENTRY fee kabhi wapas na aaye ── */
+(function () {
+  var fs = require('fs');
+  var join = fs.readFileSync(__dirname + '/../screens/join.js', 'utf8');
+  var noC = join.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
+  ok(!/_supaCol\s*=[^;\n]*green_diamonds/.test(noC), '26a: join.js me GD wallet se fee deduction nahi');
+  ok(!/isGreen\s*=/.test(noC), '26b: join.js me isGreen entry-currency flag nahi');
+  ok(/function _gdLegacy/.test(join) && /function _normET/.test(join), '26c: join.js me D87 GD-legacy normalizer maujood');
+  var host = fs.readFileSync(__dirname + '/../features/creator-match-host.js', 'utf8');
+  ok(!/value="green_diamond"/.test(host), '26d: creator match-form me GD entry option nahi');
+  var home = fs.readFileSync(__dirname + '/../screens/home.js', 'utf8');
+  ok(/et === 'green_diamond'[\s\S]{0,80}et = 'free'/.test(home), '26e: home.js card me GD-entry legacy free normalize hota hai');
+})();
+
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
   if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
   process.exit(FAIL ? 1 : 0);

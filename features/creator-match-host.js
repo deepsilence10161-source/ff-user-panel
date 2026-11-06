@@ -47,7 +47,7 @@ window.showCreatorMatchForm = function() {
   h += '<div class="f-group"><label>🎮 Match Type</label>';
   h += '<select id="cmType" class="f-input">';
   h += '<option value="coins">🪙 Coin Match</option>';
-  h += '<option value="green_diamond">💚 Green Diamond Match</option>';
+  /* ✅ D87 (owner): Green Diamond entry option removed — entry fee sirf ads/sky/coins */
   h += '<option value="sky_diamond">💎 Sky Diamond Match</option>';
   h += '</select></div>';
 

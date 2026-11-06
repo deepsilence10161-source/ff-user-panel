@@ -143,6 +143,8 @@ function mcHTML(t) {
   if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
   console.log('[Mini eSports] Card: ' + (t.name||'?') + ' mode=' + tp + ' (mode=' + t.mode + ', type=' + t.type + ')');
   var et = (t.entryType || '').toString().toLowerCase().trim();
+  /* ✅ D87: GD entry currency abolished — legacy rows free dikho */
+  if (et === 'green' || et === 'green_diamond' || et === 'greendiamond' || et === 'gd') et = 'free';
   var isAd = et === 'ad';
   /* ✅ BUG FIX (2026-09-14): Number(t.entryFee)===0 fallback treated ANY
      match with entryFee=0 as a Coin match, even when entryType was
@@ -160,7 +162,7 @@ function mcHTML(t) {
   var js = Number(t.joinedSlots) || 0, ms = Number(t.maxSlots) || 1;
   var pct = Math.min(Math.round(js / ms * 100), 100);
   var bc = tp === 'duo' ? 'badge-duo' : tp === 'squad' ? 'badge-squad' : 'badge-solo';
-  var feeHTML = isAd ? '<span style="color:#ff9f1c;font-weight:800;font-size:12px">📺 ' + (Number(t.adsRequired)||2) + ' Ads Watch</span>' : (isCoin ? '<span class="fee-coin">🪙 ' + (t.entryFee || 0) + '</span>' : '<span class="fee-money">💎' + (t.entryFee || 0) + '</span>');
+  var feeHTML = isAd ? '<span style="color:#ff9f1c;font-weight:800;font-size:12px">📺 ' + (Number(t.adsRequired)||2) + ' Ads Watch</span>' : (isCoin ? '<span class="fee-coin">🪙 ' + (t.entryFee || 0) + '</span>' : (et === 'free' ? '<span class="fee-coin">🎁 Free</span>' : '<span class="fee-money">💎' + (t.entryFee || 0) + '</span>'));
   var timeHTML = fmtTime(t.matchTime);
   if (timeHTML === 'Time Not Announced') timeHTML = '<span class="time-val">Time Not Announced</span>';
   else timeHTML = '<span class="time-val">' + timeHTML + '</span>';
@@ -301,6 +303,7 @@ function renderHome() {
     /* ✅ Bug 5 Fix: isSpecial is never set as boolean; use specialType string check */
     if (t.specialType && t.specialType !== 'normal' && t.specialType !== '') continue;
     var tEntry = (t.entryType || '').toString().toLowerCase().trim();
+    if (tEntry === 'green' || tEntry === 'green_diamond' || tEntry === 'greendiamond' || tEntry === 'gd') tEntry = 'free'; /* D87 */
     var wantCat = hCF.toString().toLowerCase().trim();
     var catMatch = false;
     /* ✅ BUG FIX (2026-09-14): same class of bug as mcHTML's isCoin —
@@ -559,7 +562,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261107c" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261107d" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

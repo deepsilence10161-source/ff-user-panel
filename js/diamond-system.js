@@ -6,6 +6,9 @@
    • Sky Diamonds   (users.sky_diamonds)   = खरीदी हुई in-app currency,
        sirf matches khelne ke liye. NON-REFUNDABLE — kabhi ₹ cash nahi.
    • Green Diamonds (users.green_diamonds) = match win का VIRTUAL prize,
+     ✅ D87 (07-Nov-2026, owner): ENTRY FEE kabhi Green Diamond se NAHI —
+     sirf Ads / Sky Diamond / Coins. GD = prize + status chip + rank-points
+     mirror (admin grant) only.
        non-withdrawable (badge/status only).
    • Sponsored Winnings (users.sponsored_winnings) = SIRF yahi ₹
        withdrawable hain, aur sirf sponsored-tournament wins,
