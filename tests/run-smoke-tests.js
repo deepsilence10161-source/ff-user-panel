@@ -878,6 +878,17 @@ console.log('\n── TEST 24: badge equip wiring (har jagah dikhane ke liye) �
 }
 
 console.log('\n══════════════════════════════');
+/* ── TEST 25: D85c source-guard — purane override-blocks kabhi wapas na aayen ── */
+(function () {
+  var fs = require('fs');
+  var css = fs.readFileSync(__dirname + '/../style.css', 'utf8');
+  ok(!/font-family:[^;\n]*!important/.test(css), '25a: style.css me koi font-family !important nahi');
+  var noComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  ok(!/\.m-card::before/.test(noComments), '25b: style.css me .m-card::before override nahi (key-art safe)');
+  ok(!/mc-cell[^{]*label[^{]*\{[^}]*555577/.test(noComments), '25c: mc-cell label par grey override nahi');
+  ok(!/\.mc-join|\.mc-name|\.mc-cell/.test(noComments), '25d: style.css me koi mc-* replica override rule nahi');
+})();
+
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
   if (failures.length) { console.log('failures:'); failures.forEach(f => console.log('  - ' + f)); }
   process.exit(FAIL ? 1 : 0);
