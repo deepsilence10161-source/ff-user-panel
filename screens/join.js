@@ -113,7 +113,7 @@ function _normET(x){ return _gdLegacy(x) ? 'free' : (x||'').toString().toLowerCa
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261107f" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261107g" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';

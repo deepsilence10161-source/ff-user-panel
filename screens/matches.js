@@ -170,7 +170,7 @@ function showDet(id) {
   /* ✅ BUG FIX (2026-09-14): same class of bug as screens/home.js —
      category must come from entryType alone, not from whether fee
      happens to be zero. */
-  var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin';
+  var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin' || (t.entryType || '').toString().toLowerCase() === 'coins'; /* BUG-HUNT R1 plural */
   var h = '';
   var _detFFUID = (UD && UD.ffUid) ? UD.ffUid : '';
   if (_detFFUID) {
@@ -195,7 +195,7 @@ function showDet(id) {
   var _d1 = t.firstPrize || t.prize1st || 0;
   var _d2 = t.secondPrize || t.prize2nd || 0;
   var _d3 = t.thirdPrize || t.prize3rd || 0;
-  var _detPrSym = window._prizeIcon ? window._prizeIcon(t) : (isCoin ? '🪙' : (window.GD_ICON || '💎'));
+  var _detPrSym = window._prizeIcon ? window._prizeIcon(t) : (isCoin ? '🪙' : (window.GD_ICON || '💚')); /* BUG-HUNT R1: GD prize ka fallback 💎(sky) galat tha */
   if (_d1 || _d2 || _d3) {
     h += '<div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px solid rgba(255,215,0,.2);border-radius:12px">';
     h += '<div style="font-size:14px;font-weight:700;color:var(--yellow);margin-bottom:10px"><i class="fas fa-trophy"></i> Prize Breakdown</div>';
@@ -357,7 +357,7 @@ function showDet(id) {
 function giftTicket(matchId) {
   var t = MT[matchId]; if (!t) return;
   var fee = Number(t.entryFee) || 0;
-  var isCoin = (t.entryType || '').toLowerCase() === 'coin';
+  var isCoin = (t.entryType || '').toLowerCase() === 'coin' || (t.entryType || '').toString().toLowerCase() === 'coins'; /* BUG-HUNT R1 plural */
   var bal = isCoin ? (UD.coins||0) : getMoneyBal();
   if (bal < fee) { toast('Insufficient balance to gift entry', 'err'); return; }
   var h = '<div style="text-align:center;padding:8px">';
@@ -376,7 +376,7 @@ function confirmGiftTicket(matchId) {
   var t = MT[matchId]; if (!t) return;
   var ffUid = ($('giftToUid')||{}).value; if (!ffUid || ffUid.trim().length < 5) { toast('Valid FF UID enter karo', 'err'); return; }
   ffUid = ffUid.trim();
-  var isCoin = (t.entryType||'').toLowerCase() === 'coin';
+  var isCoin = (t.entryType||'').toLowerCase() === 'coin' || (t.entryType || '').toString().toLowerCase() === 'coins'; /* BUG-HUNT R1 plural */
   var fee = Number(t.entryFee)||0;
   // Find user by FF UID
   _findUserByFF(ffUid, function(friendUid, friendData) {

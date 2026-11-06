@@ -237,7 +237,7 @@
     var _eType2 = String((t && (t.entryType || t.entry_type)) || '').toLowerCase();
     var _isCoin2 = (_pType2 === 'coin' || _pType2 === 'coins' || _pType2 === 'cash') ||
                    (!_pType2 && _eType2 !== 'paid' && _eType2 !== 'sky' && _eType2 !== 'skydiamond' && _eType2 !== 'sky_diamond');
-    var _cIcon2 = _isCoin2 ? '🪙' : '💎';
+    var _cIcon2 = _isCoin2 ? '🪙' : '💚'; /* BUG-HUNT R1: GD prize share-text me 💎 sky icon galat tha */
     var text = '🎮 Mini eSports — Match Result!\n\n' +
       '🏆 ' + (t ? t.name : 'Match') + '\n' +
       '📊 Rank: ' + rankMedal(r.rank) + '\n' +

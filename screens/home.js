@@ -206,7 +206,8 @@ function mcHTML(t) {
   }
   var _subTypeMap = { battle_royale:'Battle Royale', clash_squad:'Clash Squad', sniper_only:'Sniper Only', shotgun_only:'Shotgun Only', pistol_only:'Pistol Only', no_heal:'No Heal', rush_only:'Rush Only' };
   var _subTypeLbl = _subTypeMap[t.matchSubType] || t.matchType || 'Battle Royale';
-  var _prSym = window._prizeIcon ? window._prizeIcon(t) : ((t.prizeType === 'coin' || t.entryType === 'coin') ? '🪙' : (window.GD_ICON || '💎'));
+  var _prPT = String(t.prizeType||'').toLowerCase(), _prET = String(t.entryType||'').toLowerCase();
+  var _prSym = window._prizeIcon ? window._prizeIcon(t) : ((_prPT==='coin'||_prPT==='coins'||_prPT==='cash'||_prET==='coin'||_prET==='coins') ? '🪙' : (window.GD_ICON || '💚')); /* ✅ BUG-HUNT R1: plural 'coins' prize par 💎/GD icon galat tha */
   h += '<div class="mc-sub"><span><i class="fas fa-gamepad"></i> ' + _subTypeLbl + '</span>';
   if (t.map) h += '<span><i class="fas fa-map"></i> ' + titleCase(t.map) + '</span>';
   var _subPerKill = Number(t.perKillPrize || t.perKill) || 0;
@@ -562,7 +563,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261107f" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261107g" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

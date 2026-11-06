@@ -902,6 +902,12 @@ console.log('\n═════════════════════�
   var home = fs.readFileSync(__dirname + '/../screens/home.js', 'utf8');
   ok(/et === 'green_diamond'[\s\S]{0,80}et = 'free'/.test(home), '26e: home.js card me GD-entry legacy free normalize hota hai');
   ok(/isCoin = !isAd && \(et === 'coin' \|\| et === 'coins'\)/.test(home), '26f: home.js card coin-icon plural coins handle karta hai');
+  var mats = fs.readFileSync(__dirname + '/../screens/matches.js', 'utf8');
+  ok((mats.match(/=== 'coins'; \/\* BUG-HUNT R1 plural \*\//g) || []).length >= 3, '27a: matches.js ke teeno isCoin checks plural-safe');
+  ok(/_prPT==='coins'/.test(home), '27b: home.js prize-icon plural coins safe');
+  var rk = fs.readFileSync(__dirname + '/../screens/rank.js', 'utf8');
+  ok(/function _isGhostRow/.test(rk) && (rk.match(/_isGhostRow\(u\)/g) || []).length >= 2, '27c: rank.js ghost-row filter dono lists par');
+  ok(/_rankVal\(b, _rankTab\) - _rankVal\(a, _rankTab\)/.test(rk), '27d: rank.js Points sort server rank_points se');
 })();
 
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);

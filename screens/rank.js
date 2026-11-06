@@ -522,23 +522,38 @@ function renderRank(tab) {
   if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); return; }
   window._supa.from('leaderboard').select('*').limit(300)
     .then(function(r) {
-      var users = (r.data || []).map(function(u) {
+      var users = (r.data || []).filter(function(u){ return !_isGhostRow(u); }).map(function(u) {
         return { _uid: u.id, ign: u.ign||'Player', profileImage: u.avatar_url||'', rankPoints: u.rank_points||0, winStreak: 0, stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 }, /* ✅ 2026-10-12: premium ribbon IGN ke aage — leaderboard row me public premium status aata hai (migration 20261012) */premiumLevel: Number(u.premium_level||0), premiumExpires: u.premium_expires ? new Date(u.premium_expires).getTime() : 0 };
       });
       var sortKey = _rankTab;
       users.sort(function(a, b) {
-        var getVal = function(u) {
-          var st = u.stats || {};
-          if (_rankTab === 'kills') return Number(st.kills || 0);
-          if (_rankTab === 'wins')  return Number(st.wins  || 0);
-          return (Number(st.wins||0)*40) + (Number(st.kills||0)*2) + (Number(st.matches||0));
-        };
-        return getVal(b) - getVal(a);
+        /* ✅ BUG-HUNT R1: Points tab ka sort ab _rankVal se (server
+           rank_points column) — purana stats-formula sort grant-wale
+           players ko ghosts se tie kara kar order random kar deta tha. */
+        var d = _rankVal(b, _rankTab) - _rankVal(a, _rankTab);
+        return d ? d : _rankTiebreak(a, b);
       });
         _renderRankList(rc, users, sortKey, tabBar, seasonBanner, false);
     }).catch(function() { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); });
 }
 
+/* ✅ BUG-HUNT R1 (07-Nov-2026): ghost rows — ign khaali + zero activity
+   (onboarding adhoora chhodne wale accounts) leaderboard/podium me "Player"
+   ban kar ghuste the. Public list me sirf asli identity wale players. */
+function _isGhostRow(u) {
+  var ign = (u.ign || '').toString().trim();
+  if (ign && ign !== '[deleted]') return false;
+  return !(Number(u.rank_points||0) || Number(u.total_matches||0) || Number(u.total_wins||0) || Number(u.total_kills||0));
+}
+function _rankTiebreak(a, b) {
+  var aw = Number(a.wins != null ? a.wins : (a.stats && a.stats.wins) || 0);
+  var bw = Number(b.wins != null ? b.wins : (b.stats && b.stats.wins) || 0);
+  if (bw - aw) return bw - aw;
+  var ak = Number(a.kills != null ? a.kills : (a.stats && a.stats.kills) || 0);
+  var bk = Number(b.kills != null ? b.kills : (b.stats && b.stats.kills) || 0);
+  if (bk - ak) return bk - ak;
+  return String(a.ign||'').localeCompare(String(b.ign||''));
+}
 function _rankVal(u, sortKey) {
   var st = u.stats || {};
   if (sortKey === 'kills') return Number(st.kills || 0);
@@ -614,7 +629,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261107f" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261107g" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
@@ -909,10 +924,10 @@ window.loadSeasonLeaderboard = function(cb) {
   /* Load from Supabase leaderboard view */
   window._supa.from('leaderboard').select('*').limit(200)
     .then(function(r) {
-      var users = (r.data || []).map(function(u) {
+      var users = (r.data || []).filter(function(u){ return !_isGhostRow(u); }).map(function(u) {
         return { _uid: u.id, ign: u.ign || 'Player', kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0, profileImage: u.avatar_url || '', rankPoints: u.rank_points || 0, stats: { kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0 }, premiumLevel: Number(u.premium_level||0), premiumExpires: u.premium_expires ? new Date(u.premium_expires).getTime() : 0 };
       });
-      users.sort(function(a,b) { return (window.calcRkScore ? window.calcRkScore(b.stats||{}) - window.calcRkScore(a.stats||{}) : b.rankPoints - a.rankPoints); });
+      users.sort(function(a,b) { var d = b.rankPoints - a.rankPoints; return d ? d : _rankTiebreak(a, b); }); /* BUG-HUNT R1: server points + deterministic tiebreak */
       cb(users, s);
     }).catch(function() { cb([], s); });
 };
