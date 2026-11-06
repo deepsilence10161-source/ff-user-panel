@@ -1146,6 +1146,13 @@ public class MainActivity extends AppCompatActivity {
         // ── PERFORMANCE OPTIMIZATIONS ─────────────────────────
         // 1. HTTP Cache — GitHub Pages ki files dusre load pe cache se
         s.setCacheMode(WebSettings.LOAD_DEFAULT);
+        /* ✅ D83 (owner: "APK me kuch bhi apply nahi hua"): WebView ka HTTP
+           cache har COLD START par flush — warna purane release ki
+           index.html/js/sw response WebView me chipki rehti thi aur naya
+           code APK tak pahunchta hi nahi tha. Service worker khud bhi
+           CACHE_VER bump par purane caches delete karta hai; yahan se
+           uska cached sw.js script response bhi saaf hota hai. */
+        try { webView.clearCache(true); } catch (Exception ignored) {}
 
         // 2. Hardware acceleration — WebView ke liye (Activity level pe bhi set hai Manifest mein)
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);

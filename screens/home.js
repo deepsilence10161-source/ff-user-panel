@@ -70,16 +70,23 @@ function renderSearchResults(results, q) {
 function viewPublicProfile(uid) {
   closeModal();
   if (!window._supa) { toast('Service unavailable', 'err'); return; }
-  window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,bio,total_matches,total_wins,total_kills').eq('id', uid).single() /* BUG #38 FIX */
+  window._supa.from('user_public_profiles').select('*').eq('id', uid).single() /* BUG #38 FIX */
     .then(function(r) {
       if (!r.data) { toast('Player nahi mila', 'err'); return; }
       var u = r.data;
       u.ign = u.ign || ''; u.ffUid = u.ff_uid || ''; u.profileImage = u.avatar_url || '';
       var st = { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0, earnings: 0 };
-      var av = u.profileImage
-        ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover">'
-        : '<span style="font-size:32px;font-weight:700">' + (u.ign || '?').charAt(0).toUpperCase() + '</span>';
-      var h = '<div style="text-align:center;padding-bottom:12px">';
+      var wr0 = st.matches > 0 ? Math.round(st.wins / st.matches * 100) : 0;
+      /* ✅ D83 (owner: "search karne par bekar ui vala card"): ab searched
+         user ka card bhi wahi PCARD2 replica (photo/banner/tier/stats dynamic) */
+      var h = '';
+      if (window.PCARD2) {
+        h += '<div id="pubPc2Host" style="margin-bottom:12px"></div>';
+      } else {
+        var av = u.profileImage
+          ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover">'
+          : '<span style="font-size:32px;font-weight:700">' + (u.ign || '?').charAt(0).toUpperCase() + '</span>';
+        h += '<div style="text-align:center;padding-bottom:12px">';
       h += '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,156,.1);border:3px solid rgba(0,255,156,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">' + av + '</div>';
       h += '<div style="font-size:20px;font-weight:900">' + (window.escHtml?window.escHtml(u.ign||'Player'):(u.ign||'Player')) + '</div>';
       h += '<div style="font-size:12px;color:var(--txt2);margin-top:2px">FF UID: <strong style="color:var(--green)">' + (u.ffUid || '—') + '</strong></div>';
@@ -96,7 +103,34 @@ function viewPublicProfile(uid) {
       h += '<div style="padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px solid rgba(0,255,156,.12)">';
       h += 'Win Rate: <strong style="color:var(--green)">' + wr + '%</strong>';
       h += '</div>';
+      }
+      if (u.bio) h += '<div style="font-size:12px;color:var(--txt2);margin:0 0 10px;font-style:italic;text-align:center">"' + (window.escHtml?window.escHtml(u.bio):u.bio) + '"</div>';
+      if (window.PCARD2) {
+        h += '<div style="padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px solid rgba(0,255,156,.12)">Win Rate: <strong style="color:var(--green)">' + wr0 + '%</strong></div>';
+      }
       openModal('👤 ' + (u.ign || 'Player'), h);
+      if (window.PCARD2) {
+        var _pd = {
+          name: u.ign || 'Player', uid: u.ff_uid || '—',
+          level: u.level || 1, xp: u.exp || 0, xpNeed: 10 * (u.level || 1),
+          pts: u.rank_points || 0, tier: String(u.rank_tier || 'Bronze'),
+          title: u.title || '',
+          stats: [st.matches, st.kills, st.wins, st.matches ? (st.kills / st.matches).toFixed(1) : '0.0', wr0 + '%'],
+          photo: u.avatar_url || '', banner: u.banner_url || '', vip: !!u.is_vip,
+          /* ✅ D83: prem chip + earned badges bhi own-card jaise (dynamic,
+             stats/view se compute — art me baked nahi) */
+          prem: (function () {
+            var _pt = Number(u.premium_level || 0);
+            if (_pt < 1) return '';
+            var _ex = u.premium_expires ? new Date(u.premium_expires).getTime() : 0;
+            if (_ex && _ex < Date.now()) return '';
+            return '\u2b50 ' + (_pt === 3 ? 'Premium III' : _pt === 2 ? 'Premium II' : 'Premium I');
+          })(),
+          badges: (window.getEarnedBadges ? (function () { try { return window.getEarnedBadges(st).slice(0, 3).map(function (b) { return b.img; }); } catch (e) { return []; } })() : [])
+        };
+        var _ph = document.getElementById('pubPc2Host');
+        if (_ph) window.PCARD2.mount(_ph, _pd, null, { public: true });
+      }
     }).catch(function() { toast('Player nahi mila', 'err'); });
 }
 
@@ -525,7 +559,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261106h" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261106i" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

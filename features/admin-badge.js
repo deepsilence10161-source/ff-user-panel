@@ -71,8 +71,9 @@ window.showSupportWithBadge = function() {
   [
     { icon:'⚠️', label:'Match Dispute', call:"closeModal&&closeModal();navTo&&navTo('matches')" },
     { icon:'💬', label:'Support Chat', call:"closeModal&&closeModal();navTo&&navTo('chat')" },
-    { icon:'🎫', label:'My Tickets & Replies', fn:'showMyTickets' },
-    { icon:'📩', label:'Submit Support Ticket', fn:'showSupportForm' },
+    /* ✅ D83 (owner: "ek hi kaam ke liye do button kyon"): EK hub button —
+       list ke andar "+ New Ticket" pehle se maujood hai */
+    { icon:'🎫', label:'Support Tickets — New + Replies', fn:'showMyTickets' },
     { icon:'📝', label:'Feedback', fn:'showMySuggestions' },
   ].forEach(function(btn) {
     var _oc = btn.call ? btn.call : ('if(window.' + btn.fn + ')' + btn.fn + '()');

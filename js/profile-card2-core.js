@@ -54,7 +54,7 @@
     /* ✅ D70: copy-icon hotspot — art me baked icon tha par click par kuch
        nahi hota tha (owner complaint). Ab UID copy hoti hai. */
     { x: 812, y: 695, w: 96, h: 96, act: function () {
-        var d = window._pc2ProfData || {};
+        var d = (wrap && wrap._pc2d) || window._pc2ProfData || {};
         var u = d.uid != null ? String(d.uid) : '';
         if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
         if (window.copyTxt) window.copyTxt(u);
@@ -143,7 +143,15 @@
      upload; doosre user ke card par pencil = guidance toast. */
   function runAct(i, wrap) {
     var own = wrap && wrap.getAttribute('data-pc2own') === '1';
+    var pub = wrap && wrap.getAttribute('data-pc2pub') === '1';
     try {
+      /* ✅ D83: doosre user ke card par gallery/gear = own-only sections;
+         frame art me baked icons hide nahi ho sakte, isliye pencil-jaisa
+         guidance toast (D79 precedent) — dead tap nahi, galat action nahi. */
+      if (pub && (i === 0 || i === 1)) {
+        if (window.toast) toast('Ye section sirf apni profile card par hota hai', 'inf');
+        return;
+      }
       if (i === 0) {
         if (window.showAssetGallery) window.showAssetGallery();
         else if (window.toast) toast('Collection load nahi hui — app refresh karo', 'err');
@@ -162,7 +170,7 @@
           else if (window.showProfileSettings) window.showProfileSettings();
         } else if (window.toast) toast('Apni profile par photo edit karo', 'inf');
       } else if (i === 3) {
-        var d = window._pc2ProfData || {};
+        var d = (wrap && wrap._pc2d) || window._pc2ProfData || {};
         var u = d.uid != null ? String(d.uid) : '';
         if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
         if (window.copyTxt) window.copyTxt(u);
@@ -192,7 +200,12 @@
     container.innerHTML = html(d);
     var wrap = container.querySelector('[data-pc2]');
     if (wrap) {
+      wrap._pc2d = d; /* ✅ D83: UID copy har mounted card ka APNA uid kare */
       if (opts && opts.own) wrap.setAttribute('data-pc2own', '1');
+      /* ✅ D83 (owner: searched user ka card bhi wahi replica): doosre user
+         ke card par OWN-action buttons (gallery/gear) gumrah karenge —
+         public mount par wo hide; pencil = guidance toast (pehle se). */
+      if (opts && opts.public) wrap.setAttribute('data-pc2pub', '1');
       bind(wrap, handlers);
     }
     return wrap;

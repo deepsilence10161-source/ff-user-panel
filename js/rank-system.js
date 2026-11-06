@@ -164,25 +164,55 @@ window.getRankTier = function(points) {
 };
 
 /* ── How Rank Works modal ── */
+/* ── How Rank Works modal — ✅ D83: owner ki bheji neon screenshot ka EXACT
+   replica (purple/magenta panel, crown title plate, formula strip, 6 neon
+   tier rows, info cells, gold collection button). Sab DATA dynamic:
+   tiers/points window.RANK_TIERS se, formula window.RANK_FORMULA se —
+   kuch bhi art me baked nahi (D36/D73 niyam). ── */
 window.showHowRankWorks = function() {
-  var h = '';
-  h += '<div style="text-align:center;padding:6px 0 14px">';
-  h += '<div style="font-size:13px;font-weight:700;color:#ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px 12px;margin-bottom:14px">';
-  h += '📊 ' + window.RANK_FORMULA;
+  var TAG = {
+    Bronze: 'Starting Rank • Build Your Skills',
+    Silver: 'Show Your Improvement',
+    Gold: 'Play Better • Climb Higher',
+    Platinum: 'Prove Your Consistency',
+    Diamond: 'Elite Players • Top Performers',
+    Legend: 'The Ultimate Rank • Be a Legend'
+  };
+  var P = 'border-radius:16px;';
+  var h = '<div style="background:linear-gradient(165deg,#1c0b33 0%,#2b1055 45%,#180a2c 100%);border:2px solid #d24dff;border-radius:22px;padding:14px 12px 12px;box-shadow:0 0 26px rgba(210,77,255,.35),inset 0 0 46px rgba(210,77,255,.10)">';
+  /* header logo */
+  h += '<div style="text-align:center;font-size:15px;font-weight:900;color:#fff;margin-bottom:6px"><span style="color:#ff4d4d">🔥</span> <span style="color:#00ff9c">Mini</span> eSports</div>';
+  /* crown + title plate with laurels */
+  h += '<div style="text-align:center;margin-bottom:10px">';
+  h += '<div style="font-size:24px;line-height:1;filter:drop-shadow(0 0 8px rgba(255,180,0,.8))">👑</div>';
+  h += '<div style="display:inline-block;padding:7px 20px;border-radius:14px;background:linear-gradient(90deg,rgba(255,120,0,.30),rgba(255,215,0,.16),rgba(255,120,0,.30));border:2px solid #ffb400;box-shadow:0 0 18px rgba(255,180,0,.45),inset 0 0 12px rgba(255,180,0,.15);font-size:17px;font-weight:900;color:#ffd75e;text-shadow:0 1px 3px rgba(60,30,0,.8)">🏆 How Rank Works 🏆</div>';
+  h += '<div style="font-size:11px;color:#e0b0ff;margin-top:2px">🌿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌿</div>';
   h += '</div>';
-  h += '</div>';
-  /* Tier ladder */
-  h += '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">';
+  /* formula strip */
+  h += '<div style="' + P + 'background:rgba(255,150,0,.10);border:2px solid rgba(255,180,0,.65);box-shadow:0 0 14px rgba(255,180,0,.25);padding:9px 10px;text-align:center;font-size:12px;font-weight:900;color:#fff;margin-bottom:10px">📊 ' + window.RANK_FORMULA + '</div>';
+  /* tier ladder — neon rows */
+  h += '<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px">';
   window.RANK_TIERS.forEach(function(t) {
-    h += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:' + t.bg + ';border:1px solid ' + t.color + '44">';
-    h += '<div style="font-size:22px"><img src="' + t.img + '?v=20261106h" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
-    h += '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:' + t.color + '">' + t.name + '</div>';
-    h += '<div style="font-size:11px;color:#666">' + (t.min === 0 ? '0' : t.min) + ' – ' + (t.max >= 9999 ? '∞' : t.max) + ' points</div></div>';
+    var range = (t.min === 0 ? '0' : String(t.min)) + ' – ' + (t.max >= 9999 ? '∞' : t.max);
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:14px;background:linear-gradient(90deg,' + t.bg + ',rgba(0,0,0,.25));border:2px solid ' + t.color + ';box-shadow:0 0 12px ' + t.color + '55,inset 0 0 10px ' + t.color + '22">';
+    h += '<div style="width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center"><img src="' + t.img + '?v=20261106i" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
+    h += '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:900;color:' + t.color + ';text-shadow:0 1px 3px rgba(0,0,0,.7)">' + t.name + '</div>';
+    h += '<div style="font-size:10px;color:#cfcfe8;margin-top:1px">' + (TAG[t.name] || '') + '</div></div>';
+    h += '<div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)">' + range + '</div><div style="font-size:9px;color:#cfcfe8">Points</div></div>';
     h += '</div>';
   });
   h += '</div>';
-  h += '<div style="font-size:11px;color:#555;text-align:center;line-height:1.6">🗓 Weekly reset every Monday<br>📅 Season reset every 1st of month<br>🏆 Top 3 get special badges · Top 10 get titles</div>';
-  h += '<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:11px;border-radius:12px;border:1px solid rgba(255,215,0,.35);background:rgba(255,215,0,.08);color:#ffd700;font-size:12px;font-weight:800;cursor:pointer;margin-top:10px">🏆 My Collection (Titles + Badges)</button>';
+  /* info cells */
+  h += '<div style="' + P + 'border:2px solid rgba(185,100,255,.65);box-shadow:0 0 14px rgba(185,100,255,.25);background:rgba(120,40,200,.10);display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:9px 6px;text-align:center;margin-bottom:10px">';
+  h += '<div><div style="font-size:15px">📅</div><div style="font-size:10px;font-weight:900;color:#ffd75e">Weekly reset</div><div style="font-size:9px;color:#cfcfe8">every Monday</div></div>';
+  h += '<div style="border-left:1px solid rgba(185,100,255,.35);border-right:1px solid rgba(185,100,255,.35)"><div style="font-size:15px">📆</div><div style="font-size:10px;font-weight:900;color:#ffd75e">Season reset</div><div style="font-size:9px;color:#cfcfe8">every 1st of month</div></div>';
+  h += '<div><div style="font-size:15px">🏆</div><div style="font-size:10px;font-weight:900;color:#ffd75e">Top 3 badges</div><div style="font-size:9px;color:#cfcfe8">Top 10 titles</div></div>';
+  h += '</div>';
+  /* gold collection button */
+  h += '<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:11px;border-radius:14px;border:2px solid #ffb400;background:linear-gradient(90deg,rgba(255,120,0,.35),rgba(255,215,0,.20),rgba(255,120,0,.35));box-shadow:0 0 16px rgba(255,180,0,.45);color:#ffd75e;font-size:13px;font-weight:900;cursor:pointer">👑 My Collection (Titles + Badges) ➤</button>';
+  /* bottom diamond */
+  h += '<div style="text-align:center;font-size:24px;margin-top:8px;filter:drop-shadow(0 0 10px #d24dff)">💠</div>';
+  h += '</div>';
   if (window.openModal) openModal('🏆 How Rank Works', h);
 };
 
