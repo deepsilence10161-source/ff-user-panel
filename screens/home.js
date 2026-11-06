@@ -157,7 +157,7 @@ function mcHTML(t) {
      hasn't set it yet) should show as Free/Paid, not silently relabel
      itself Coin. Only entryType (what the admin actually chose) should
      decide the category — entryFee is just an amount, not a type. */
-  var isCoin = !isAd && et === 'coin';
+  var isCoin = !isAd && (et === 'coin' || et === 'coins'); /* ✅ D87: DB plural 'coins' bhi coin hi hai — warna card par galat 💎 icon dikhta tha */
   var joined = hasJ(t.id);
   var js = Number(t.joinedSlots) || 0, ms = Number(t.maxSlots) || 1;
   var pct = Math.min(Math.round(js / ms * 100), 100);
@@ -562,7 +562,7 @@ window.renderSponsoredTournaments = function() {
     var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
                 : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
                 : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
-                    ? '<img src="js/green-diamond.png?v=20261107d" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                    ? '<img src="js/green-diamond.png?v=20261107f" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
                 : '₹';
     if (prizes.first || prizes.second || prizes.third || pool) {
       h += '<div class="mc-prizes">';

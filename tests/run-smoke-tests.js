@@ -901,6 +901,7 @@ console.log('\n═════════════════════�
   ok(!/value="green_diamond"/.test(host), '26d: creator match-form me GD entry option nahi');
   var home = fs.readFileSync(__dirname + '/../screens/home.js', 'utf8');
   ok(/et === 'green_diamond'[\s\S]{0,80}et = 'free'/.test(home), '26e: home.js card me GD-entry legacy free normalize hota hai');
+  ok(/isCoin = !isAd && \(et === 'coin' \|\| et === 'coins'\)/.test(home), '26f: home.js card coin-icon plural coins handle karta hai');
 })();
 
   console.log('PASS: ' + PASS + ' | FAIL: ' + FAIL);
