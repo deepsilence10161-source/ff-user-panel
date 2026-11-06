@@ -1,0 +1,109 @@
+name: premium-e2e
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  PREMIUM-E2E — poora premium system LIVE (asli UI + asli server, koi mock
+#  nahi): FREE TRIAL (server-authoritative start_free_trial + trial_used) →
+#  MONTHLY BONUS (claim_premium_monthly_bonus — server-map 50/150/400 beats
+#  client param, UNIQUE month guard, auto-claim no-double) → ads-suppress +
+#  Silver ribbon/gates → 12h expiry countdown banner → BUY REQUEST (policy
+#  gate, plans, Gold sheet, screenshot+UTR validation, premium_requests +
+#  notification) → ADMIN APPROVE (asli Premium Requests UI → approve_premium
+#  via admin-gateway, GREATEST expiry stack, leaderboard sync) → GOLD perks
+#  (Live Stream gate) → ADMIN CANCEL (cancel_premium gateway) → post-cancel
+#  gates closed → SECURITY (column lockdown, self approve/cancel reject).
+#  Accounts run-tagged; cleanup job hamesha chalta hai (0 residue).
+# ═══════════════════════════════════════════════════════════════════════════
+on:
+  workflow_dispatch:
+    inputs:
+      run_tag:
+        description: "Run tag (khali = auto timestamp)"
+        required: false
+        default: ""
+
+concurrency:
+  group: premium-e2e
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.mkrun.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - id: mkrun
+        run: |
+          TAG="${{ github.event.inputs.run_tag }}"
+          [ -z "$TAG" ] && TAG="$(date -u +%m%d%H%M%S)"
+          echo "run=$TAG" >> "$GITHUB_OUTPUT"
+          echo "RUN=$TAG"
+      - name: QA accounts banao (1 user + 1 admin)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MF_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          node tools/premium-e2e/accounts_prem.mjs --create --run "${{ steps.mkrun.outputs.run }}" --out /tmp/prem-state.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prem-state-${{ steps.mkrun.outputs.run }}
+          path: /tmp/prem-state.json
+          retention-days: 2
+
+  drive:
+    needs: seed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: prem-state-${{ needs.seed.outputs.run }}
+          path: /tmp/premst
+      - name: Playwright install
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Premium driver chalao (asli UI + asli server)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          python3 tools/premium-e2e/premium_driver.py \
+            --run "${{ needs.seed.outputs.run }}" \
+            --state /tmp/premst/prem-state.json \
+            --out /tmp/prem-out.json \
+            --shots prem-shots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prem-shots-${{ needs.seed.outputs.run }}
+          path: |
+            prem-shots/
+            /tmp/prem-out.json
+          retention-days: 7
+
+  cleanup:
+    needs: [seed, drive]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: prem-state-${{ needs.seed.outputs.run }}
+          path: /tmp/premst
+      - name: Sab QA data delete karo (0 residue)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          MF_SALT: ${{ secrets.TRI_SALT }}
+        run: |
+          node tools/premium-e2e/accounts_prem.mjs --cleanup --run "${{ needs.seed.outputs.run }}" --out /tmp/premst/prem-state.json

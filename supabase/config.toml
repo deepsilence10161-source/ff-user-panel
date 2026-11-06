@@ -1,0 +1,27 @@
+# Source-controlled Edge Function auth configuration.
+#
+# The app authenticates users with Firebase, not Supabase Auth. Therefore the
+# Edge gateway cannot be the identity verifier for this function: it rejects
+# the preflight-free recovery request before index.ts can inspect fb_token.
+# imgbb-upload performs its own fail-closed Firebase RS256/JWKS verification,
+# so disabling only the gateway's legacy JWT check does NOT make uploads
+# anonymous.
+project_id = "hddhkculuyrfoevxmlwy"
+
+[functions.imgbb-upload]
+verify_jwt = false
+
+[functions.paytm-callback]
+# PayTM ka webhook/browser-redirect koi Supabase JWT nahi bhej sakta —
+# gateway check isliye off. Function khud PayTM /v3/order/status se
+# (merchant-signed) authoritative status verify karta hai, isliye
+# koi bhi fake order-id flip nahi kar sakta (Round-7 live fix,
+# 2026-09-20 — pehle verify_jwt=true webhook ko 401 kar raha tha).
+verify_jwt = false
+
+[functions.paytm-create-order]
+# Panel Firebase JWT bhejta hai; gateway asymmetric third-party JWT
+# reject karta tha (401 UNAUTHORIZED_ASYMMETRIC_JWT — PayTM deposits
+# 100% dead the). Ab fn khud Firebase RS256/JWKS verify karta hai
+# (imgbb-upload pattern, fail-closed). Round-7 live fix, 2026-09-20.
+verify_jwt = false

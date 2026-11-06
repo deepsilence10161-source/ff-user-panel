@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- ✅ FIX (2026-10-06): CAMERA yahan se HATA diya gaya. Poori tarah verify
+         kiya gaya ki user-panel ka koi code camera use nahi karta
+         (na getUserMedia, na capture=\"camera\", na ACTION_IMAGE_CAPTURE) —
+         phir bhi APK launch par CAMERA ki permission maangta tha, jisse naya
+         user bina kuch dekhe \"Deny\" daba deta tha aur Play Store policy par
+         bhi sawal uthta tha. Admin panel (OCR ke liye) camera use karta hai,
+         par woh alag web app hai — uski permission wahan browser/panel
+         handle karta hai, is APK ki nahi. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- ✅ FIX (2026-10-06): READ/WRITE_EXTERNAL_STORAGE hataye. File upload
+         SAF/Photo-Picker (onShowFileChooser → ACTION_GET_CONTENT) se hota hai,
+         jisme in permissions ki zaroorat nahi hoti (Android 4.4+ se aisa hi hai). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- ✅ REQUEST_INSTALL_PACKAGES: Required for APK self-update.
+         Without this, canRequestPackageInstalls() always returns false
+         and user can never be prompted to enable permission.
+         Play Protect issue handled via appeal form submission. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!-- ✅ FIX (2026-10-08, corrected 2026-10-29): RECEIVE_BOOT_COMPLETED hi
+         REMOVED hua tha (Play Protect trigger). REQUEST_INSTALL_PACKAGES
+         UPAR line 25 par ACTIVE hai aur rahega — in-app updater ke liye ye
+         zaroori hai: iske bina canRequestPackageInstalls() hamesha false
+         rahta hai, Settings me humara toggle dikhta hi nahi aur user ek
+         an-suljhane wale permission-dialog loop me phans jata hai (yahi
+         10-08 wali galat comment ki wajah se confusion tha). Ek baar toggle
+         ON hone ke baad dobara koi dialog nahi aata (YMusic-pattern).
+         ✅ SAFE-CLEANER (2026-10-09): purana device-wide OldApkCleaner + SAF
+         folder picker POORA hata diya gaya (owner incident ke baad). Ab
+         post-update safai sirf app-private storage + tracked own downloads
+         par hoti hai, server policy (Supabase apk_cleanup) ke gate se.
+         File-access ki KOI permission nahi — MANAGE_EXTERNAL_STORAGE,
+         READ/WRITE_EXTERNAL_STORAGE kisi bhi roop me nahi, koi picker/dailog nahi. -->
+    <!-- ✅ SAFE-CLEANER v5: zero file-access permission.
+         Post-install cleanup: SafeCleaner (server-gated, app-private only).
+         BroadcastReceiver (PACKAGE_REPLACED, no permission). -->
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.MiniEsports.Splash"
+        android:usesCleartextTraffic="false"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true">
+
+        <!-- AdMob App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2592591151325650~4596226218" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|density"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- Launcher -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep Link: Chrome Custom Tab Google login ke baad
+                 Firebase redirect URL → miniesports://auth → app wapas opens
+                 Firebase Console mein bhi add karo:
+                 Authentication → Sign-in method → Authorized domains → miniesports://auth
+                 aur SHA-1 fingerprint add karo -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="miniesports"
+                    android:host="auth" />
+            </intent-filter>
+
+            <!-- ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update?url=<https-apk>
+                 — web pages (get.html/download.html) ka "App me update karein"
+                 button. Custom scheme hai, isliye autoVerify ki zaroorat nahi;
+                 URL ki asli suraksha MainActivity.isAllowedUpdateUrl() allowlist
+                 se aati hai (sirf official hosts + .apk). -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="miniesports"
+                    android:host="update" />
+            </intent-filter>
+
+        </activity>
+
+        <!-- ✅ APP GUARD: Auto-cleanup after APK install/update -->
+        <receiver
+            android:name=".ApkInstallReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" android:path="com.miniesports.app" />
+            </intent-filter>
+        </receiver>
+
+        <!-- FileProvider for file uploads -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- ═══ FCM (OneSignal → Firebase migration, 2026-10-31) ═══
+             Data-only high-priority messages → onMessageReceived foreground
+             AUR background dono me → display 100% apne control me. -->
+        <service
+            android:name=".FcmMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="ff_push" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+
+    </application>
+</manifest>

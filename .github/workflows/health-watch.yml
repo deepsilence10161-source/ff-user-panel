@@ -1,0 +1,56 @@
+name: Health Watch (panels + DB heartbeat, har 5 min)
+
+# ═══════════════════════════════════════════════════════════════
+#  24/7 mutual watchdog #2: GitHub Actions har 5 minute
+#    (a) user-panel + admin-panel Pages ko HTTP ping + marker check
+#    (b) DB ke per-minute watchdog ka heartbeat (ops_health) check
+#  Kuch bhi toota → guarded alert (bell + device push), 30 min dedupe.
+# ═══════════════════════════════════════════════════════════════
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Panels HTTP ping + markers
+        id: ping
+        run: |
+          u=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 https://deepsilence10161-source.github.io/ff-user-panel/ || echo 000)
+          a=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 https://deepsilence10161-source.github.io/ff-admin-panel/ || echo 000)
+          sw=$(curl -s -o /dev/null -w '%{http_code}' --max-time 25 https://deepsilence10161-source.github.io/ff-admin-panel/sw.js || echo 000)
+          mk=$(curl -s --max-time 25 https://deepsilence10161-source.github.io/ff-admin-panel/index.html | grep -c 'ADMIN-BUILD:' || true)
+          echo "user=$u admin=$a sw=$sw marker=$mk"
+          fail=0
+          [ "$u" = "200" ] || fail=1
+          [ "$a" = "200" ] || fail=1
+          [ "$sw" = "200" ] || fail=1
+          [ "$mk" -ge 1 ] || fail=1
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+
+      - name: DB heartbeat probe (per-minute watchdog zinda hai?)
+        id: hb
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          node tools/supabase-dump.mjs supabase/diag/20261104_health_probe.sql > hb.log 2>&1 || true
+          grep -o '"health_probe":{[^}]*}' hb.log | tail -1 || true
+          fail=0
+          echo "$(<hb.log)" | grep -q '"db_tick_age_min":null' && fail=1
+          age=$(grep -o '"db_tick_age_min":[0-9.]*' hb.log | tail -1 | cut -d: -f2)
+          [ -n "$age" ] && awk -v a="$age" 'BEGIN{exit !(a>8)}' && fail=1
+          grep -q '"user_bad":true' hb.log && fail=1
+          grep -q '"admin_bad":true' hb.log && fail=1
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+
+      - name: Alert (guarded, bell + push)
+        if: steps.ping.outputs.fail == '1' || steps.hb.outputs.fail == '1'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: node tools/supabase-sql.mjs supabase/migrations/20261104_health_alert.sql

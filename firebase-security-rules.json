@@ -1,0 +1,79 @@
+{
+  "_WARNING": "\u26a0\ufe0f STALE COPY \u2014 LIVE RTDB RULES ARE DIFFERENT (R2-strict, live-verified 2026-09). Ye file DEPLOY MAT karna \u2014 is '_WARNING' key ki wajah se deploy validation khud fail hogi (jaan-boojh kar rakha, taaki koi purani copy se live rules overwrite na kar de). Live rules dashboard/Console se hi manage karo.",
+  "rules": {
+    "appSettings": {
+      ".read": true,
+      ".write": false
+    },
+    "matches": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "deviceProfiles": {
+      ".read": "auth != null",
+      "$fpKey": {
+        ".write": "auth != null"
+      }
+    },
+    "ffUidIndex": {
+      ".read": "auth != null",
+      "$ffUid": {
+        ".write": "auth != null"
+      }
+    },
+    "ignIndex": {
+      ".read": "auth != null",
+      "$ign": {
+        ".write": "auth != null"
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
+    },
+    "joinRequests": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "deviceJoins": {
+      "$deviceId": {
+        "$matchId": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "deviceAnomalies": {
+      ".read": false,
+      ".write": "auth != null"
+    },
+    "notifications": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "support": {
+      "$ticketId": {
+        "messages": {
+          "$msgId": {
+            ".read": "auth != null",
+            ".write": "auth != null"
+          }
+        }
+      }
+    },
+    "clans": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "polls": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

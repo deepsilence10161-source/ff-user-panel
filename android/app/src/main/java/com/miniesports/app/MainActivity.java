@@ -1,0 +1,1761 @@
+package com.miniesports.app;
+
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.util.Log;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Message;
+import android.view.KeyEvent;
+import android.view.View;
+import android.webkit.GeolocationPermissions;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import android.os.Build;
+import android.provider.Settings;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+// ── Native Google Sign-In ─────────────────────────────────────────
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+// ─────────────────────────────────────────────────────────────────
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+
+public class MainActivity extends AppCompatActivity {
+
+    private WebView webView;
+    /* ✅ FIX (2026-10-29): WebView.getUrl() SIRF UI thread par legal hai.
+       JS-bridge thread se call karne par StrictMode violation + null/stale
+       value milti thi → isTrustedCleanupOrigin() hamesha REFUSED lautata tha
+       (cleanup-gate kabhi native tak nahi pahunch pata). Ab UI-thread
+       callbacks (onPageStarted/onPageFinished) is volatile cache me URL
+       likhte hain aur bridge thread sirf yeh cache PADHTA hai. */
+    private volatile String lastPageUrl = "";
+    private SwipeRefreshLayout swipeRefresh;
+    /* BUG FIX (2026-07): see setOnChildScrollUpCallback below — tracks the
+       WEB PAGE's actual scroll position (reported via the JS bridge),
+       since SwipeRefreshLayout can't see inside a WebView's own scrolling
+       divs on its own. */
+    private volatile boolean isContentAtTop = true;
+    private AdView bannerAdView;
+    private InterstitialAd interstitialAd;
+    private RewardedAd rewardedAd;
+    private ProgressBar progressBar;
+    private ValueCallback<Uri[]> filePathCallback;
+    private int pageLoadCount = 0;
+    private boolean userLoggedIn = false;
+
+    // ── Native Google Sign-In ─────────────────────────────────────
+    private GoogleSignInClient googleSignInClient;
+    // Web client ID (type 3) — google-services.json se liya
+    private static final String WEB_CLIENT_ID =
+        "247829466483-76misqmapf7pu81m9ims0r4p9lgufiap.apps.googleusercontent.com";
+    // ─────────────────────────────────────────────────────────────
+
+    private static final int INTERSTITIAL_TRIGGER  = 4;
+    private static final int FILE_CHOOSER_REQUEST  = 101;
+    private static final int PERMISSION_REQUEST    = 100;
+    private static final int GOOGLE_SIGN_IN_REQUEST = 102;   // ← naya
+    private static final int INSTALL_PERMISSION_REQUEST = 103;
+
+    private final AtomicBoolean isApkDownloading = new AtomicBoolean(false);
+    private volatile File pendingInstallApkFile = null;
+
+    /* ── D7 (2026-10-07): permission-request observability + retry ──
+       TAG logcat me dikhta hai (CI ka location-permission-e2e job logcat
+       dump karta hai), aur permAskCount duplicate prompt rokta hai. */
+    private static final String TAG = "MiniEsportsApp";
+    private final android.os.Handler permHandler =
+            new android.os.Handler(android.os.Looper.getMainLooper());
+    private int permAskCount = 0;
+
+    /* ✅ D7 FIX (2026-10-07, CI-proof): Android 12+ (API 31+) ka rule — agar
+       app ka targetSdk >= 31 hai to ACCESS_FINE_LOCATION AKELA maangna system
+       chupchap IGNORE kar deta hai (koi dialog nahi). Saath me onCreate ke
+       waqt bhi kuch ROMs request drop kar dete hain. Isliye:
+         (1) COARSE + FINE DONO ek saath maangte hain (Android 12+ ka
+             sarkaari tareeka),
+         (2) requests onCreate + 4s + 12s par retry hoti hain (sirf tab jab
+             koi system dialog saamne na ho),
+         (3) har check logcat me likhta hai — CI se pakka pata chalta hai
+             ki app ne maanga tha ya nahi.
+       Live proof (run 37663353788/37665593158): API 34 par 16 koshish (~80s)
+       tak ek bhi permissioncontroller window nahi aayi thi, focus pura waqt
+       MainActivity par — yaani location kabhi grant hi nahi hota tha aur city
+       auto-detect (core/modal.js) chupchap fail jata tha. */
+    private java.util.ArrayList<String> _missingCorePerms() {
+        java.util.ArrayList<String> needed = new java.util.ArrayList<>();
+        boolean fineMissing = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != android.content.pm.PackageManager.PERMISSION_GRANTED;
+        if (fineMissing) {
+            needed.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            needed.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (Build.VERSION.SDK_INT >= 33 &&
+                ActivityCompat.checkSelfPermission(this, "android.permission.POST_NOTIFICATIONS")
+                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            needed.add("android.permission.POST_NOTIFICATIONS");
+        }
+        return needed;
+    }
+
+    private void _askCorePerms(java.util.ArrayList<String> needed, String from) {
+        if (needed == null || needed.isEmpty()) return;
+        if (isFinishing() || isDestroyed()) return;
+        if (permAskCount >= 3) return;
+        permAskCount++;
+        Log.i(TAG, "perm-ask(" + from + ", #" + permAskCount + "): " + needed);
+        ActivityCompat.requestPermissions(this, needed.toArray(new String[0]), PERMISSION_REQUEST);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int code, String[] perms, int[] results) {
+        super.onRequestPermissionsResult(code, perms, results);
+        if (code == PERMISSION_REQUEST) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < (perms == null ? 0 : perms.length); i++) {
+                sb.append(perms[i]).append("=")
+                  .append(i < results.length && results[i] == android.content.pm.PackageManager.PERMISSION_GRANTED ? "granted" : "denied")
+                  .append(" ");
+            }
+            Log.i(TAG, "perm-result: " + sb);
+        }
+    }
+
+    // =========================================================
+    // URLs
+    // =========================================================
+    private static final String APP_URL =
+        "https://deepsilence10161-source.github.io/ff-user-panel/";
+
+    private static final String DEEP_LINK_SCHEME = "miniesports";
+
+    // =========================================================
+    // AdMob IDs (Test)
+    // =========================================================
+    private static final String ADMOB_BANNER       = "ca-app-pub-2592591151325650/8988651387";
+    private static final String ADMOB_INTERSTITIAL = "ca-app-pub-2592591151325650/9998480728";
+    private static final String ADMOB_REWARDED     = "ca-app-pub-2592591151325650/4752973036";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /* ═══ APP GUARD (2026-10-08): Check if app is blocked ═══ */
+        String blockMsg = AppGuard.getBlockMessage(this);
+        if (blockMsg != null) {
+            showBlockScreen(blockMsg);
+            return; // Don't continue loading the app
+        }
+
+        showLastCrashIfAny();
+        setContentView(R.layout.activity_main);
+
+        /* FCM (2026-10-31, OneSignal→Firebase migration): OneSignalManager ka
+           duplicate permission-observer HATA diya — POST_NOTIFICATIONS request
+           _missingCorePerms()/_askCorePerms() (neeche) me pehle se live hai. */
+        sInstance = new java.lang.ref.WeakReference<>(this);
+        /* ── ✅ FIX (2026-10-06): launch par sirf wahi permissions maango jo
+           asli me zaroori hain ────────────────────────────────────────────
+           PEHLE: CAMERA + ACCESS_FINE_LOCATION + READ_EXTERNAL_STORAGE
+             → app khulte hi "Allow Mini eSports to take pictures and record
+               video?" dialog (splash ke upar) aata tha. Camera poori app me
+               kahin use hi nahi hota (verified) — naya user ghabra kar Deny
+               daba deta tha, aur Play Store policy me bhi bina-zaroorat
+               permission sawal uthati hai.
+           AB: sirf LOCATION (city-detect — core/modal.js me use hota hai)
+               aur NOTIFICATION (Android 13+ par POST_NOTIFICATIONS).
+           Camera ki zaroorat sirf ADMIN panel ko OCR ke liye hai, aur woh
+           alag web-app hai — uski permission wahan browser handle karta hai. */
+        java.util.ArrayList<String> _needed = _missingCorePerms();
+        Log.i(TAG, "perm-check(onCreate): missing=" + _needed + " askCount=" + permAskCount);
+        _askCorePerms(_needed, "onCreate");
+        /* ✅ D7-FOLLOW-UP (2026-10-07): kuch ROMs/API-34 emulator par
+           onCreate ke waqt request chupchap drop ho jati hai (koi dialog
+           hi nahi). 4s aur 12s baad dobara check karo — par tab HI maango
+           jab koi system dialog saamne na ho (hasWindowFocus true), warna
+           user ko do baar prompt dikh sakta hai. Log se CI me saaf pata
+           chalega ki app ne request bheji thi ya nahi. */
+        permHandler.postDelayed(() -> {
+            java.util.ArrayList<String> n = _missingCorePerms();
+            Log.i(TAG, "perm-check(4s): missing=" + n + " askCount=" + permAskCount + " focus=" + hasWindowFocus());
+            if (!n.isEmpty() && permAskCount < 3 && hasWindowFocus()) _askCorePerms(n, "retry-4s");
+        }, 4000);
+        permHandler.postDelayed(() -> {
+            java.util.ArrayList<String> n = _missingCorePerms();
+            Log.i(TAG, "perm-check(12s): missing=" + n + " askCount=" + permAskCount + " focus=" + hasWindowFocus());
+            if (!n.isEmpty() && permAskCount < 3 && hasWindowFocus()) _askCorePerms(n, "retry-12s");
+        }, 12000);
+
+        MobileAds.initialize(this, status -> {});
+
+        // ── Native Google Sign-In init ────────────────────────
+        GoogleSignInOptions gso = new GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(WEB_CLIENT_ID)   // Firebase ke liye token chahiye
+            .requestEmail()
+            .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        // ─────────────────────────────────────────────────────
+
+        swipeRefresh = findViewById(R.id.swipeRefresh);
+        webView      = findViewById(R.id.webView);
+        progressBar  = findViewById(R.id.progressBar);
+
+        setupWebView();
+        setupBannerAd();
+        loadInterstitialAd();
+        loadRewardedAd();
+        /* ✅ SAFE-CLEANER (2026-10-09): sirf cached "allowed" verdict par
+           app-private updates/ dir ki safai (fail-safe: unknown/exempt =
+           kuch nahi). Yeh sirf apne updates/ folder ki files hatata hai. */
+        if (SafeCleaner.VERDICT_ALLOWED.equals(SafeCleaner.cachedVerdict(this))) {
+            cleanupOldUpdateApks();
+        }
+
+        handleIntent(getIntent());
+
+        if (isOnline()) { if (!assetE2ELoaded) webView.loadUrl(APP_URL); }
+        else webView.loadUrl("file:///android_asset/no_internet.html");
+
+        swipeRefresh.setEnabled(false);
+        swipeRefresh.setOnRefreshListener(() -> swipeRefresh.setRefreshing(false));
+
+        /* Disable native pull-to-refresh reload so dragging down inside modals
+           or pressing back never triggers a full WebView reload. */
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> true);
+    }
+
+    /* ✅ E2E DIAGNOSTICS (2026-10-12): CI emulator logcat me ye tag dhoondh
+       kar pata chalta hai ki intent aaya, kaunsa URL, aur page load hua ya
+       nahi. Sirf logging hai — app ka behaviour bilkul same. */
+    private static final String TAG_E2E = "MINIESPORTS-E2E";
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.i(TAG_E2E, "onNewIntent: " + (intent != null && intent.getData() != null
+                ? intent.getData().toString() : "no-data"));
+        handleIntent(intent);
+    }
+
+    /* ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update?url=<https-apk>&v=<tag>
+       ke liye STRICT host allowlist. Browser-download wali flow me APK file
+       Downloads me phans jaati hai (Android 11+ scoped storage — koi bhi app
+       doosre browser ki file delete NAHI kar sakti, ye platform ka niyam hai)
+       aur browser ka "unknown apps" dialog bar-bar aata hai. Isliye web pages
+       par "App me update karein" button isi deep-link par bhejta hai: download
+       app-private updates/ me hota hai aur install ke baad SafeCleaner use
+       hata deta hai. Allowlist se bahar ka URL yahan se aage badhta hi nahi. */
+    private static boolean isAllowedUpdateUrl(String url) {
+        if (url == null || url.trim().isEmpty()) return false;
+        try {
+            Uri u = Uri.parse(url.trim());
+            if (!"https".equals(u.getScheme())) return false;
+            if (!url.toLowerCase().endsWith(".apk")) return false;
+            String host = u.getHost();
+            if (host == null) return false;
+            String path = u.getPath() == null ? "" : u.getPath();
+            if (host.equals("deepsilence10161-source.github.io")
+                    || host.equals("deepsilence10161.workers.dev")) {
+                return true;
+            }
+            if (host.equals("github.com")
+                    || host.equals("objects.githubusercontent.com")
+                    || host.endsWith(".githubusercontent.com")) {
+                return path.startsWith("/deepsilence10161-source/ff-user-panel/");
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /* ═══ FCM PUSH (OneSignal → Firebase migration, 2026-10-31) ═══
+       Tap-forward + token-refresh + E2E gate. WebView JS bindings:
+       window._onPushTap(url) / window._onNativeFcmToken(token) /
+       window._onNativePush(title, body, url). */
+    private static java.lang.ref.WeakReference<MainActivity> sInstance;
+    private volatile String pendingPushUrl = null;
+
+    public static void onFcmTokenRefreshed(final String token) {
+        final MainActivity a = sInstance != null ? sInstance.get() : null;
+        if (a == null || token == null || token.isEmpty()) return;
+        a.runOnUiThread(() -> a.evalJs("window._onNativeFcmToken && window._onNativeFcmToken("
+                + org.json.JSONObject.quote(token) + ")"));
+    }
+
+    public static void forwardPushToWeb(final String title, final String body, final String url) {
+        final MainActivity a = sInstance != null ? sInstance.get() : null;
+        if (a == null) return;
+        a.runOnUiThread(() -> a.evalJs("window._onNativePush && window._onNativePush("
+                + org.json.JSONObject.quote(title == null ? "" : title) + ","
+                + org.json.JSONObject.quote(body == null ? "" : body) + ","
+                + org.json.JSONObject.quote(url == null ? "" : url) + ")"));
+    }
+
+    private void evalJs(String js) {
+        try { if (webView != null) webView.evaluateJavascript(js, null); } catch (Throwable ignored) { }
+    }
+
+    private void flushPendingPushToWeb() {
+        String u = pendingPushUrl;
+        if (u == null || u.isEmpty()) return;
+        try { if (webView == null || webView.getProgress() < 100) return; } catch (Throwable t) { return; }
+        pendingPushUrl = null;
+        evalJs("window._onPushTap && window._onPushTap(" + org.json.JSONObject.quote(u) + ")");
+    }
+
+    /* Notification-tap extras + E2E token-log gate (adb intent-extra,
+       30-min expiry — logcat sirf adb/shell padh sakta hai, koi app nahi). */
+    private void handlePushExtras(Intent intent) {
+        if (intent == null) return;
+        try {
+            if ("miniesports-e2e".equals(intent.getStringExtra("e2e_push_token_log"))) {
+                FcmMessagingService.enableE2eLog(this);
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(t -> {
+                        if (t.isSuccessful() && t.getResult() != null) {
+                            String tok = t.getResult();
+                            getSharedPreferences(FcmMessagingService.PREFS, MODE_PRIVATE).edit()
+                                .putString(FcmMessagingService.KEY_TOKEN, tok).apply();
+                            Log.i(FcmMessagingService.TAG_E2E, "FCM_TOKEN=" + tok);
+                        } else {
+                            Log.w(FcmMessagingService.TAG_E2E, "FCM_TOKEN_ERROR="
+                                + (t.getException() != null ? t.getException().getMessage() : "unknown"));
+                        }
+                    });
+            }
+            String pushUrl = intent.getStringExtra("push_url");
+            if (pushUrl != null && !pushUrl.isEmpty()) {
+                pendingPushUrl = pushUrl;
+                flushPendingPushToWeb(); /* page ready na ho to onPageFinished par flush */
+            }
+        } catch (Throwable ignored) { }
+    }
+
+    private void handleIntent(Intent intent) {
+        if (intent == null) return;
+        /* FCM: notification-tap extras + E2E gate — data-URI check se PEHLE
+           (tap intent me data nahi, sirf extras hote hain) */
+        handlePushExtras(intent);
+        Uri data = intent.getData();
+        if (data == null) return;
+        if (DEEP_LINK_SCHEME.equals(data.getScheme())) {
+            /* ✅ DEEP-LINK UPDATE (2026-10-29): update branch auth branch se
+               pehle — host allowlist pass hone par wahi native in-app
+               downloader chalta hai jo WebView update flow use karta hai. */
+            if ("update".equals(data.getHost())) {
+                String url = data.getQueryParameter("url");
+                String ver = data.getQueryParameter("v");
+                if (isAllowedUpdateUrl(url)) {
+                    Log.i(TAG_E2E, "update deep-link accepted: " + url);
+                    new AndroidBridge().downloadAndInstallTrusted(url, ver, true);
+                } else {
+                    Log.w(TAG_E2E, "update deep-link REFUSED by host allowlist: " + url);
+                    Toast.makeText(this,
+                        "Update link official source ka nahi hai — security ke liye block kiya gaya",
+                        Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+            webView.evaluateJavascript(
+                "if (window._onAuthDeepLink) window._onAuthDeepLink('" +
+                data.toString().replace("'", "\\'") + "');",
+                null
+            );
+            return;
+        }
+        /* ✅ ASSET E2E (2026-10-10) + SCREEN E2E (2026-10-12): emulator/CI
+           ke liye — sirf apne trusted github.io host par sirf ye do E2E
+           pages load ho sakte hain (asset-e2e.html = 60 images ka live
+           load proof; screen-e2e.html = har screen ka render + wiring
+           proof). Scope itna tang hai ki koi aur URL ya host kabhi nahi
+           chalega. */
+        if ("https".equals(data.getScheme())
+                && data.getHost() != null
+                && data.getHost().endsWith(".github.io")
+                && data.getPath() != null
+                && (data.getPath().endsWith("/asset-e2e.html")
+                    || data.getPath().endsWith("/screen-e2e.html")
+                    || data.getPath().endsWith("/tri-e2e.html"))) {
+            assetE2ELoaded = true;
+            boolean online = isOnline();
+            Log.i(TAG_E2E, "E2E intent match: " + data + " online=" + online);
+            if (online) {
+                webView.loadUrl(data.toString());
+                Log.i(TAG_E2E, "loadUrl called: " + data);
+            } else {
+                Log.w(TAG_E2E, "offline — E2E page load skip: " + data);
+            }
+        }
+    }
+
+    /* onCreate ka APP_URL load tabhi chale jab asset-e2e intent ne already
+       load na kar diya ho (warna uske turant baad override ho jata). */
+    private volatile boolean assetE2ELoaded = false;
+
+    // =========================================================
+    // JavaScript Bridge
+    // =========================================================
+    public class AndroidBridge {
+
+        @JavascriptInterface
+        public boolean isAndroidApp() { return true; }
+
+        /* ✅ FIX (2026-10-06): login screen par back press se app band karne
+           ke liye. Pehle back button hamesha JS router (window.goBack) ko
+           diya jaata tha jo login screen par kuch nahi karta tha — user ko
+           lagta tha "back button chalta hi nahi". Ab JS login-screen detect
+           karke yeh method call karta hai (core/utils.js → goBack()). */
+        @JavascriptInterface
+        public void exitApp() {
+            runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    finish();
+                }
+            });
+        }
+
+        /* ── FCM (OneSignal → Firebase migration, 2026-10-31) ──
+           JS login par fcmSyncToken('_onNativeFcmToken') call karta hai:
+           token async fetch → window.<cb>(token) → JS push-token edge fn
+           se user_push_tokens me upsert karta hai. osLogin/osLogout naye
+           native me JAAN-BOOJH KAR nahi: purane APK (field me) apna
+           bundled OneSignal SDK chalate rehte hain aur server-side
+           push-send unke liye OneSignal fallback rakhta hai — jab tak
+           sab users update na kar lein. */
+        @JavascriptInterface
+        public void fcmSyncToken(final String cbName) {
+            final String cb = (cbName == null) ? "" : cbName.replaceAll("[^A-Za-z0-9_$]", "");
+            if (cb.isEmpty()) return;
+            try {
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        final String tok = (task.isSuccessful() && task.getResult() != null) ? task.getResult() : "";
+                        if (!tok.isEmpty()) {
+                            try {
+                                getSharedPreferences(FcmMessagingService.PREFS, MODE_PRIVATE).edit()
+                                    .putString(FcmMessagingService.KEY_TOKEN, tok).apply();
+                            } catch (Throwable ignored) { }
+                        }
+                        runOnUiThread(() -> evalJs("window." + cb + " && window." + cb + "("
+                                + org.json.JSONObject.quote(tok) + ")"));
+                    });
+            } catch (Throwable ignored) { }
+        }
+
+        /* Pichli baar cache hua token (instant, network nahi) */
+        @JavascriptInterface
+        public String fcmCachedToken() {
+            return FcmMessagingService.getCachedToken(MainActivity.this);
+        }
+
+        /* ✅ FORCE UPDATE (2026-07): returns the REAL installed APK's
+           versionName straight from PackageManager — this can only change
+           by actually installing a new build, so it can't be spoofed by
+           clearing localStorage/app data or by anything the web page does.
+           Used by features/app-config.js to compare against
+           appMinSupportedVersion from Supabase. */
+        @JavascriptInterface
+        public String getAppVersion() {
+            try {
+                PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+                return pi.versionName != null ? pi.versionName : "";
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        /* ✅ FORCE UPDATE (2026-07): SHA-256 of the APK's signing certificate.
+           A version NUMBER inside an APK is just a string in the manifest —
+           anyone can decompile the APK, edit versionName, and rebuild it
+           (self-signed, since they don't have the real keystore). This
+           fingerprint is tied to the actual signing key used by our own
+           GitHub Actions release build, so a resigned/tampered APK will
+           report a DIFFERENT hash here even if its versionName was edited
+           to claim it's up to date. Optional: only enforced if
+           window.CFG.appExpectedSigningHash is set in Admin Panel. */
+        @JavascriptInterface
+        public String getPackageIntegrityStatus() {
+            try {
+                PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String hash = AppGuard.getSigningHash(MainActivity.this);
+                boolean debuggable = (getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+                SharedPreferences guardPrefs = MainActivity.this.getSharedPreferences("__app_guard_internals", MODE_PRIVATE);
+                int highestVC = guardPrefs.getInt("_last_vc", pi.versionCode);
+                return "{\"versionCode\":" + pi.versionCode +
+                       ",\"versionName\":\"" + (pi.versionName != null ? pi.versionName : "") + "\"" +
+                       ",\"signingHash\":\"" + hash + "\"" +
+                       ",\"packageName\":\"" + getPackageName() + "\"" +
+                       ",\"isDebuggable\":" + debuggable +
+                       ",\"highestVersionCode\":" + highestVC + "}";
+            } catch (Exception e) { return "{\"error\":\"" + e.getMessage() + "\"}"; }
+        }
+
+        @JavascriptInterface
+        public String getSigningHash() {
+            try {
+                Signature sig;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                    PackageInfo pi = getPackageManager().getPackageInfo(
+                        getPackageName(), PackageManager.GET_SIGNING_CERTIFICATES);
+                    if (pi.signingInfo == null) return "";
+                    Signature[] sigs = pi.signingInfo.hasMultipleSigners()
+                        ? pi.signingInfo.getApkContentsSigners()
+                        : pi.signingInfo.getSigningCertificateHistory();
+                    if (sigs == null || sigs.length == 0) return "";
+                    sig = sigs[0];
+                } else {
+                    PackageInfo pi = getPackageManager().getPackageInfo(
+                        getPackageName(), PackageManager.GET_SIGNATURES);
+                    if (pi.signatures == null || pi.signatures.length == 0) return "";
+                    sig = pi.signatures[0];
+                }
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                byte[] digest = md.digest(sig.toByteArray());
+                StringBuilder sb = new StringBuilder();
+                for (byte b : digest) sb.append(String.format("%02X", b));
+                return sb.toString();
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        /* BUG FIX (2026-07): called from JS (see styles/scroll listener in
+           the web app) whenever #mainContent's scrollTop changes, so
+           native pull-to-refresh (see setOnChildScrollUpCallback above)
+           only fires when the page is genuinely scrolled to the top. */
+        @JavascriptInterface
+        public void reportScrollTop(boolean atTop) {
+            runOnUiThread(() -> isContentAtTop = atTop);
+        }
+
+        // ── Native Google Sign-In ─────────────────────────────
+        // auth.js: window.Android.nativeGoogleSignIn()
+        // Google ka official account picker khulega (saved accounts dikh'te hain)
+        // Token wapas: window.onNativeGoogleToken(idToken)
+        @JavascriptInterface
+        public void nativeGoogleSignIn() {
+            runOnUiThread(() -> {
+                // Pehle sign out karo taaki har baar account picker aaye
+                googleSignInClient.signOut().addOnCompleteListener(task -> {
+                    Intent signInIntent = googleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST);
+                });
+            });
+        }
+
+        // Sign out pe native Google session bhi clear karo
+        @JavascriptInterface
+        public void nativeGoogleSignOut() {
+            if (googleSignInClient != null) {
+                googleSignInClient.signOut();
+                googleSignInClient.revokeAccess();
+            }
+        }
+
+        // ── Native WhatsApp Share ─────────────────────────────
+        // core/utils.js: window.Android.nativeShareWhatsApp(text)
+        // ✅ FEATURE (2026-08-29): Junaid ka explicit, repeated final
+        // instruction — "kahi bhi apk me url use na ho WhatsApp
+        // kholne ke liye, direct app khole package name se". This is
+        // a genuine ACTION_SEND intent addressed directly at the
+        // com.whatsapp package — it never builds, parses, or navigates
+        // to any wa.me / whatsapp:// / intent:// URL string anywhere
+        // in this method, so it is structurally immune to the entire
+        // net::ERR_UNKNOWN_URL_SCHEME bug class that kept recurring
+        // across many sessions with every URL-based approach. Tries
+        // the regular WhatsApp package first, then WhatsApp Business,
+        // then falls back to Android's own generic share chooser
+        // (still zero URLs — a plain ACTION_SEND with no target
+        // package lets the OS show every app that can handle text,
+        // including WhatsApp if installed under a name this method
+        // didn't anticipate).
+        @JavascriptInterface
+        public void nativeShareWhatsApp(String text) {
+            runOnUiThread(() -> {
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+
+                sendIntent.setPackage("com.whatsapp");
+                try {
+                    startActivity(sendIntent);
+                    return;
+                } catch (Exception e) { /* not installed, try Business next */ }
+
+                sendIntent.setPackage("com.whatsapp.w4b");
+                try {
+                    startActivity(sendIntent);
+                    return;
+                } catch (Exception e) { /* not installed either */ }
+
+                // Neither WhatsApp variant found — generic chooser,
+                // still no URL of any kind involved.
+                sendIntent.setPackage(null);
+                try {
+                    startActivity(Intent.createChooser(sendIntent, "Share via"));
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this,
+                        "Koi app nahi mila share karne ke liye", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        // ── Native Android System Share Sheet (ACTION_SEND Chooser) ──
+        @JavascriptInterface
+        public void nativeShare(String title, String text) {
+            runOnUiThread(() -> {
+                try {
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.setType("text/plain");
+                    if (title != null && !title.isEmpty()) {
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                    }
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, text != null ? text : "");
+                    Intent chooser = Intent.createChooser(sendIntent,
+                        (title != null && !title.isEmpty()) ? title : "Share via");
+                    startActivity(chooser);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this,
+                        "Koi app nahi mila share karne ke liye", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        // ── Chrome Custom Tab (fallback) ──────────────────────
+        @JavascriptInterface
+        public void openGoogleLogin(String url) {
+            runOnUiThread(() -> {
+                try {
+                    CustomTabsIntent customTab = new CustomTabsIntent.Builder()
+                        .setShowTitle(false).build();
+                    customTab.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    customTab.launchUrl(MainActivity.this, Uri.parse(url));
+                } catch (Exception e) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    } catch (Exception e2) {
+                        Toast.makeText(MainActivity.this,
+                            "Browser open nahi hua", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
+        // ── Rewarded Ad ───────────────────────────────────────
+        @JavascriptInterface
+        public void showRewardedAd(String adUnitId) {
+            runOnUiThread(() -> {
+                if (rewardedAd != null) {
+                    rewardedAd.show(MainActivity.this, rewardItem -> {
+                        webView.evaluateJavascript(
+                            "window.onAdRewarded && window.onAdRewarded('" + adUnitId + "');",
+                            null
+                        );
+                        loadRewardedAd();
+                    });
+                } else {
+                    webView.evaluateJavascript(
+                        "window.onAdRewarded && window.onAdRewarded(null);", null);
+                }
+            });
+        }
+
+        // ── Interstitial Ad ───────────────────────────────────
+        @JavascriptInterface
+        public void showInterstitialAd() {
+            runOnUiThread(() -> showInterstitialNative());
+        }
+
+        // ── Banner Ad ─────────────────────────────────────────
+        @JavascriptInterface
+        public void showBannerAd(String adUnitId) {
+            runOnUiThread(() -> {
+                if (bannerAdView != null) bannerAdView.setVisibility(View.VISIBLE);
+            });
+        }
+
+        @JavascriptInterface
+        public void showBanner(String adUnitId) { showBannerAd(adUnitId); }
+
+        @JavascriptInterface
+        public void hideBannerAd() {
+            runOnUiThread(() -> {
+                if (bannerAdView != null) bannerAdView.setVisibility(View.GONE);
+            });
+        }
+
+        @JavascriptInterface
+        public void hideBanner() { hideBannerAd(); }
+
+        // ── Utility ───────────────────────────────────────────
+        @JavascriptInterface
+        public boolean isOnline() { return MainActivity.this.isOnline(); }
+
+        @JavascriptInterface
+        public void showToast(String msg) {
+            runOnUiThread(() ->
+                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show()
+            );
+        }
+
+        // ── Login state ───────────────────────────────────────
+        @JavascriptInterface
+        public void onUserLoggedIn() { userLoggedIn = true; pageLoadCount = 0; }
+
+        @JavascriptInterface
+        public void onUserLoggedOut() { userLoggedIn = false; pageLoadCount = 0; }
+
+        /* ═══ SAFE-CLEANER v5.1 (2026-10-09, perfection-audit):
+           CLEANUP-BRIDGE ORIGIN GUARD — कोई भी बाहरी/दुर्भावनापूर्ण पेज
+           (ads, redirects, third-party WebView content) इन ब्रिज को
+           call NAHI kar sakta. Sirf official app hosts. ═══ */
+        private boolean isTrustedCleanupOrigin() {
+            try {
+                /* ✅ FIX (2026-10-29): webView.getUrl() bridge thread se call
+                   karna illegal hai (StrictMode violation + null return) —
+                   isliye pichhla har cleanup call REFUSED ho raha tha.
+                   Ab UI-thread cache (lastPageUrl) padhte hain. */
+                String u = lastPageUrl;
+                if (u == null || u.isEmpty()) return false;
+                boolean ok = u.contains("deepsilence10161-source.github.io")
+                    || u.contains("deepsilence10161.workers.dev");
+                if (!ok) Log.w(TAG, "⛔ cleanup origin check fail: " + u.split("[?#]")[0]);
+                return ok;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        // ── Post-Update Cleanup (SAFE-CLEANER v5, server-gated) ──
+        /* ✅ SAFE-CLEANER (2026-10-09): yehi EK entry point hai jahan safai
+           hoti hai. features/device-cleanup.js (JS gate) server policy
+           (Supabase app_settings.key='apk_cleanup') padhkar, owner-exemption
+           check karke, yeh call karti hai. Native policy ko DOBARA validate
+           karta hai — exempt user/device par EK file bhi delete nahi hoti.
+           Koi permission prompt nahi, koi dialog nahi.
+           JS: window.Android.runPostUpdateCleanup(policyJson, uid, deviceFp, userCreatedAt) */
+        @JavascriptInterface
+        public int runPostUpdateCleanup(String policyJson, String uid, String deviceFp, String userCreatedAt) {
+            try {
+                if (!isTrustedCleanupOrigin()) {
+                    Log.w(TAG, "⛔ runPostUpdateCleanup REFUSED — untrusted origin");
+                    return 0;
+                }
+                return SafeCleaner.runServerGatedCleanup(MainActivity.this, policyJson, uid, deviceFp, userCreatedAt);
+            } catch (Exception e) {
+                Log.w(TAG, "runPostUpdateCleanup error: " + e.getMessage());
+                return 0;
+            }
+        }
+
+        /* ✅ SAFE-CLEANER: legacy JS callers ke liye — ab yeh SIRF cached
+           "allowed" verdict par app-private safai karta hai (fail-safe). */
+        @JavascriptInterface
+        public int cleanOldApks() {
+            try {
+                if (!isTrustedCleanupOrigin()) {
+                    Log.w(TAG, "⛔ cleanOldApks REFUSED — untrusted origin");
+                    return 0;
+                }
+                return SafeCleaner.runIfCachedAllowed(MainActivity.this);
+            } catch (Exception e) {
+                Log.w(TAG, "cleanOldApks error: " + e.getMessage());
+                return 0;
+            }
+        }
+
+        /* ✅ SAFE-CLEANER: file-access ki koi permission NAHI maangte — kabhi
+           nahi. Yeh bridges compatibility ke liye hain: hamesha harmless
+           value lautate hain, koi dialog/picker NAHI khulta. */
+        @JavascriptInterface
+        public boolean requestStoragePermission() {
+            return false; // koi picker nahi, koi prompt nahi — by design
+        }
+
+        @JavascriptInterface
+        public boolean needsStoragePermission() {
+            return false; // koi permission chahiye hi nahi
+        }
+
+        // ── In-App Direct APK Update (Download + Smart Resume + Cache + Native Install) ──
+        @JavascriptInterface
+        public boolean hasCachedUpdateApk(String targetVersion) {
+            try {
+                File dir = getUpdatesDir();
+                String safeVer = sanitizeVersionTag(targetVersion);
+                File apkFile = new File(dir, "MiniEsports-v" + safeVer + ".apk");
+                return isValidApkFile(apkFile);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @JavascriptInterface
+        public void downloadAndInstallApk(String apkUrl, String targetVersion) {
+            /* ✅ SAFE-CLEANER v5.1: origin guard — sirf official app page
+               update download/install trigger kar sakta hai. */
+            downloadAndInstallTrusted(apkUrl, targetVersion, isTrustedCleanupOrigin());
+        }
+
+        /* ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update native handler
+           isi entry-point ko trusted=true ke saath call karta hai — URL ki
+           host-allowlist MainActivity.isAllowedUpdateUrl() me verify ho chuki
+           hoti hai. JavaScript path ka WebView-origin guard (upar wala method)
+           bilkul pehle jaisa strict laagoo hai; trusted flag native side par
+           SIRF allowlist se aata hai, kahin se nahi. */
+        public void downloadAndInstallTrusted(String apkUrl, String targetVersion, boolean trusted) {
+            if (!trusted) {
+                emitApkProgress(-1, 0, 0, "error", "Blocked: untrusted page");
+                return;
+            }
+            if (apkUrl == null || apkUrl.trim().isEmpty()) {
+                emitApkProgress(0, 0, 0, "error", "APK download link configured nahi hai");
+                return;
+            }
+            final String cleanUrl = apkUrl.trim();
+            final String safeVer = sanitizeVersionTag(targetVersion);
+            final File dir = getUpdatesDir();
+            final File finalApk = new File(dir, "MiniEsports-v" + safeVer + ".apk");
+            final File partApk  = new File(dir, "MiniEsports-v" + safeVer + ".apk.part");
+
+            // 1. Smart Cache Check: agar valid APK pehle se downloaded hai, seedha install prompt kholo!
+            if (isValidApkFile(finalApk)) {
+                long len = finalApk.length();
+                emitApkProgress(100, len, len, "ready", "Update pehle se downloaded hai — installer khul raha hai...");
+                runOnUiThread(() -> promptInstallApk(finalApk));
+                return;
+            }
+
+            if (!isApkDownloading.compareAndSet(false, true)) {
+                emitApkProgress(-1, 0, 0, "downloading", "Download pehle se chal raha hai...");
+                return;
+            }
+
+            new Thread(() -> {
+                HttpURLConnection conn = null;
+                InputStream in = null;
+                FileOutputStream out = null;
+                try {
+                    if (!dir.exists()) dir.mkdirs();
+
+                    // Purane versions ke incomplete .part ya purane .apk files saaf karo
+                    File[] existingFiles = dir.listFiles();
+                    if (existingFiles != null) {
+                        for (File f : existingFiles) {
+                            String nm = f.getName();
+                            if (!nm.equals(finalApk.getName()) && !nm.equals(partApk.getName())) {
+                                try { f.delete(); } catch (Exception ignored) {}
+                            }
+                        }
+                    }
+
+                    long downloadedBytes = partApk.exists() ? partApk.length() : 0L;
+                    emitApkProgress(0, downloadedBytes, 0, "connecting",
+                        downloadedBytes > 0 ? "Download resume ho raha hai..." : "Server se connect ho raha hai...");
+
+                    String currentUrl = cleanUrl;
+                    int redirects = 0;
+                    int responseCode = -1;
+                    while (redirects < 8) {
+                        URL u = new URL(currentUrl);
+                        conn = (HttpURLConnection) u.openConnection();
+                        conn.setInstanceFollowRedirects(false);
+                        conn.setConnectTimeout(15000);
+                        conn.setReadTimeout(25000);
+                        conn.setUseCaches(false);
+                        conn.setRequestProperty("User-Agent", "MiniEsports-Android-Updater/2.0");
+                        conn.setRequestProperty("Accept", "application/vnd.android.package-archive,application/octet-stream,*/*");
+                        conn.setRequestProperty("Accept-Encoding", "identity");
+                        conn.setRequestProperty("Connection", "keep-alive");
+                        if (downloadedBytes > 0) {
+                            conn.setRequestProperty("Range", "bytes=" + downloadedBytes + "-");
+                        }
+                        conn.connect();
+                        responseCode = conn.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_MOVED_PERM ||
+                            responseCode == HttpURLConnection.HTTP_MOVED_TEMP ||
+                            responseCode == HttpURLConnection.HTTP_SEE_OTHER  ||
+                            responseCode == 307 || responseCode == 308) {
+                            String loc = conn.getHeaderField("Location");
+                            conn.disconnect();
+                            if (loc == null || loc.isEmpty()) break;
+                            currentUrl = new URL(u, loc).toString();
+                            redirects++;
+                            continue;
+                        }
+                        break;
+                    }
+
+                    boolean appendMode = false;
+                    long totalBytes = -1L;
+
+                    if (responseCode == HttpURLConnection.HTTP_PARTIAL) {
+                        // 206 Partial Content — server supports Range resume
+                        appendMode = true;
+                        long contentLen = conn.getContentLengthLong();
+                        if (contentLen > 0) totalBytes = downloadedBytes + contentLen;
+                    } else if (responseCode == HttpURLConnection.HTTP_OK) {
+                        // 200 OK — start fresh from 0
+                        appendMode = false;
+                        downloadedBytes = 0L;
+                        totalBytes = conn.getContentLengthLong();
+                    } else if (responseCode == 416 && partApk.exists() && partApk.length() > 1024 * 1024) {
+                        // 416 Range Not Satisfiable — file may already be 100% downloaded in .part
+                        if (isValidApkFile(partApk)) {
+                            if (finalApk.exists()) finalApk.delete();
+                            partApk.renameTo(finalApk);
+                            long sz = finalApk.length();
+                            emitApkProgress(100, sz, sz, "ready", "Download complete! Installer khul raha hai...");
+                            runOnUiThread(() -> promptInstallApk(finalApk));
+                            return;
+                        } else {
+                            partApk.delete();
+                            throw new Exception("Corrupt partial file reset — dobara Update Now dabayein");
+                        }
+                    } else {
+                        throw new Exception("Server HTTP " + responseCode);
+                    }
+
+                    in = new BufferedInputStream(conn.getInputStream(), 262144);
+                    out = new FileOutputStream(partApk, appendMode);
+                    BufferedOutputStream bos = new BufferedOutputStream(out, 262144);
+
+                    byte[] buf = new byte[131072];
+                    int n;
+                    long lastEmitMs = System.currentTimeMillis();
+                    long speedWindowStartMs = lastEmitMs;
+                    long speedWindowBytes = 0L;
+                    String speedLabel = "";
+                    while ((n = in.read(buf)) != -1) {
+                        bos.write(buf, 0, n);
+                        downloadedBytes += n;
+                        speedWindowBytes += n;
+                        long now = System.currentTimeMillis();
+                        if (now - lastEmitMs >= 100) {
+                            long elapsedSecMs = Math.max(1L, now - speedWindowStartMs);
+                            if (elapsedSecMs >= 400) {
+                                double bytesPerSec = (speedWindowBytes * 1000.0) / elapsedSecMs;
+                                if (bytesPerSec >= 1024 * 1024) {
+                                    speedLabel = String.format(java.util.Locale.US, " (%.1f MB/s)", bytesPerSec / (1024.0 * 1024.0));
+                                } else {
+                                    speedLabel = String.format(java.util.Locale.US, " (%.0f KB/s)", bytesPerSec / 1024.0);
+                                }
+                                speedWindowStartMs = now;
+                                speedWindowBytes = 0L;
+                            }
+                            lastEmitMs = now;
+                            int pct = (totalBytes > 0)
+                                ? (int) Math.min(99L, (downloadedBytes * 100L) / totalBytes)
+                                : -1;
+                            emitApkProgress(pct, downloadedBytes, totalBytes, "downloading", "In-app downloading" + speedLabel + "...");
+                        }
+                    }
+                    bos.flush();
+                    bos.close();
+                    out = null;
+                    in.close();
+                    in = null;
+
+                    emitApkProgress(99, downloadedBytes, totalBytes, "verifying", "APK verify ho raha hai...");
+
+                    // Verify that downloaded file is a genuine, uncorrupted Android APK
+                    if (!isValidApkFile(partApk)) {
+                        partApk.delete();
+                        throw new Exception("Downloaded file valid APK nahi hai (corrupt ya incomplete download)");
+                    }
+
+                    if (finalApk.exists()) finalApk.delete();
+                    if (!partApk.renameTo(finalApk)) {
+                        throw new Exception("APK file save nahi ho paya");
+                    }
+
+                    // Track path + register for post-install SAFE cleanup
+                    // (exact path registry — naam-pattern scan kabhi nahi)
+                    try {
+                        getSharedPreferences("__app_guard_internals", MODE_PRIVATE)
+                            .edit().putString("_last_download_path", finalApk.getAbsolutePath()).apply();
+                        SafeCleaner.registerTrackedDownload(MainActivity.this, finalApk.getAbsolutePath());
+                    } catch (Exception ignored) {}
+
+                    emitApkProgress(100, downloadedBytes, downloadedBytes, "ready", "Download 100% complete! Installer khul raha hai...");
+                    runOnUiThread(() -> promptInstallApk(finalApk));
+
+                } catch (Exception e) {
+                    long partLen = partApk.exists() ? partApk.length() : 0L;
+                    String errMsg = e.getMessage() != null ? e.getMessage() : "Network error";
+                    emitApkProgress(-1, partLen, 0, "error",
+                        partLen > 0
+                            ? ("Download ruka (" + formatMb(partLen) + " saved) — Retry karne par yahin se resume hoga")
+                            : ("Download fail: " + errMsg));
+                } finally {
+                    isApkDownloading.set(false);
+                    try { if (out != null) out.close(); } catch (Exception ignored) {}
+                    try { if (in != null) in.close(); } catch (Exception ignored) {}
+                    try { if (conn != null) conn.disconnect(); } catch (Exception ignored) {}
+                }
+            }, "MiniEsports-ApkUpdater").start();
+        }
+    }
+    // =========================================================
+
+    // =========================================================
+    // Google Sign-In Result
+    // =========================================================
+    @Override
+    protected void onActivityResult(int req, int res, Intent data) {
+        super.onActivityResult(req, res, data);
+
+        if (req == FILE_CHOOSER_REQUEST && filePathCallback != null) {
+            filePathCallback.onReceiveValue(
+                res == RESULT_OK && data != null ? new Uri[]{data.getData()} : null
+            );
+            filePathCallback = null;
+        }
+        else if (req == INSTALL_PERMISSION_REQUEST) {
+            if (pendingInstallApkFile != null && pendingInstallApkFile.exists()) {
+                File f = pendingInstallApkFile;
+                pendingInstallApkFile = null;
+                promptInstallApk(f);
+            }
+        }
+
+        // ── Native Google Sign-In result ──────────────────────
+        else if (req == GOOGLE_SIGN_IN_REQUEST) {
+            Task<GoogleSignInAccount> task =
+                GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                String idToken = account.getIdToken();
+                if (idToken != null) {
+                    // Token mila — WebView mein inject karo
+                    // auth.js mein window.onNativeGoogleToken() handle karega
+                    final String safeToken = idToken.replace("'", "\\'");
+                    webView.post(() ->
+                        webView.evaluateJavascript(
+                            "if(window.onNativeGoogleToken)" +
+                            "  window.onNativeGoogleToken('" + safeToken + "');",
+                            null
+                        )
+                    );
+                } else {
+                    // Token null — error signal do
+                    webView.post(() ->
+                        webView.evaluateJavascript(
+                            "if(window.onNativeGoogleError)" +
+                            "  window.onNativeGoogleError('Token null');",
+                            null
+                        )
+                    );
+                }
+            } catch (ApiException e) {
+                // User ne cancel kiya ya koi error
+                final String errCode = String.valueOf(e.getStatusCode());
+                webView.post(() ->
+                    webView.evaluateJavascript(
+                        "if(window.onNativeGoogleError)" +
+                        "  window.onNativeGoogleError('Code:" + errCode + "');",
+                        null
+                    )
+                );
+            }
+        }
+
+        // ── SAFE-CLEANER (2026-10-09): SAF folder picker branch hata diya
+        //    gaya — file-access ki koi permission/picker ab kabhi nahi. ──
+    }
+
+    private void setupWebView() {
+        /* ✅ E2E (2026-10-12): sirf DEBUG build me WebView remote-debugging
+           ON — CI emulator isse har modal/screen ko CDP se chala kar
+           screenshot le sakta hai. RELEASE build me ye KABHI enable nahi
+           hota (users ke liye security waisi hi rehti hai).
+           NOTE: BuildConfig.DEBUG yahan NAHI use kiya — AGP 8 me
+           buildFeatures.buildConfig default OFF hai (compile error deta
+           hai: 'cannot find symbol BuildConfig'). Repo ka apna pattern
+           (line ~379) hi liya: ApplicationInfo flags se debuggable check. */
+        boolean isDebuggable = (getApplicationInfo().flags
+                & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        if (isDebuggable) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+        WebSettings s = webView.getSettings();
+
+        // ── Core JS / Storage ────────────────────────────────
+        s.setJavaScriptEnabled(true);
+        s.setDomStorageEnabled(true);
+        s.setDatabaseEnabled(true);
+        s.setGeolocationEnabled(true);
+        s.setSupportMultipleWindows(true);
+        s.setJavaScriptCanOpenWindowsAutomatically(true);
+        s.setAllowFileAccess(true);
+        s.setMediaPlaybackRequiresUserGesture(false);
+        s.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        s.setLoadWithOverviewMode(true);
+        s.setUseWideViewPort(true);
+
+        // ── PERFORMANCE OPTIMIZATIONS ─────────────────────────
+        // 1. HTTP Cache — GitHub Pages ki files dusre load pe cache se
+        s.setCacheMode(WebSettings.LOAD_DEFAULT);
+        /* ✅ D83 (owner: "APK me kuch bhi apply nahi hua"): WebView ka HTTP
+           cache har COLD START par flush — warna purane release ki
+           index.html/js/sw response WebView me chipki rehti thi aur naya
+           code APK tak pahunchta hi nahi tha. Service worker khud bhi
+           CACHE_VER bump par purane caches delete karta hai; yahan se
+           uska cached sw.js script response bhi saaf hota hai. */
+        try { webView.clearCache(true); } catch (Exception ignored) {}
+
+        // 2. Hardware acceleration — WebView ke liye (Activity level pe bhi set hai Manifest mein)
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+        // 3. Image loading — lazy nahi, immediately load karo
+        s.setLoadsImagesAutomatically(true);
+        s.setBlockNetworkImage(false);
+
+        // 4. Zoom controls disable — speed + cleaner UX
+        s.setBuiltInZoomControls(false);
+        s.setDisplayZoomControls(false);
+        s.setSupportZoom(false);
+
+        // 5. Text autosizing off — consistent layout, no reflow
+        s.setTextZoom(100);
+
+        // 6. Encoding
+        s.setDefaultTextEncodingName("UTF-8");
+
+        // 7. Remove WebView marker from User-Agent — Google OAuth block prevent
+        s.setUserAgentString(s.getUserAgentString().replace("; wv)", ")"));
+
+        // ── JavaScript Bridge ─────────────────────────────────
+        webView.addJavascriptInterface(new AndroidBridge(), "Android");
+
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageStarted(WebView v, String url, Bitmap favicon) {
+                lastPageUrl = (url == null) ? "" : url; // UI thread — safe write
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView v, String url) {
+                lastPageUrl = (url == null) ? "" : url; // UI thread — safe write
+                /* E2E diagnostics: kaunsa page load hua — CI logcat me proof.
+                   Query/fragment jaan-boojh kar strip: auth callback URLs me
+                   #access_token hota hai, wo logcat me KABHI nahi jana chahiye. */
+                Log.i(TAG_E2E, "onPageFinished: "
+                        + (url == null ? "null" : url.split("[?#]")[0]));
+                progressBar.setVisibility(View.GONE);
+                swipeRefresh.setRefreshing(false);
+                /* FCM: notification-tap se aayi pending URL ab JS ko do */
+                flushPendingPushToWeb();
+                if (userLoggedIn) {
+                    pageLoadCount++;
+                    if (pageLoadCount % INTERSTITIAL_TRIGGER == 0) showInterstitialNative();
+                }
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest req) {
+                String url = req.getUrl().toString();
+
+                /* ✅ DEEP-LINK INTERCEPT FIX (2026-10-29): apne hi
+                   miniesports:// deep-links (jaise overlay ke self-rescue
+                   button ka "miniesports://update?url=...MiniEsports.apk")
+                   ko .apk-contains rules se PEHLE pakdo. Pehle aisa deep-link
+                   niche "Direct APK update URLs" block me gir jata tha
+                   (kyunki query me "MiniEsports.apk" literal aata hai) aur
+                   raw downloader use poora "miniesports://..." string download
+                   URL samajh kar "unknown protocol" fail hota tha. Ab seedha
+                   ACTION_VIEW → manifest intent-filter → onNewIntent →
+                   handleIntent (host-allowlist + trusted downloader). */
+                if (url.startsWith(DEEP_LINK_SCHEME + "://")) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    } catch (Exception ignored) { }
+                    return true;
+                }
+
+                /* ✅ SAFETY NET (2026-08-26, now defensive-only as of
+                   2026-08-29): this block is no longer the primary
+                   WhatsApp-open path — the JS side now calls
+                   window.Android.nativeShareWhatsApp() directly (a
+                   pure ACTION_SEND intent, zero URLs involved at all,
+                   see the AndroidBridge class above), per Junaid's
+                   explicit final instruction to never use any URL for
+                   this. This block is kept only as defensive insurance
+                   against a whatsapp:// URL from some source outside
+                   this app's own control (e.g. a third-party ad SDK) —
+                   it should essentially never fire in normal use now
+                   that nothing in our own JS generates such a URL. */
+                if (url.startsWith("whatsapp://") || url.startsWith("whatsapp:")) {
+                    try {
+                        String text = "";
+                        int qIdx = url.indexOf('?');
+                        if (qIdx >= 0) {
+                            String query = url.substring(qIdx + 1);
+                            for (String param : query.split("&")) {
+                                if (param.startsWith("text=")) {
+                                    text = java.net.URLDecoder.decode(
+                                        param.substring(5), "UTF-8");
+                                    break;
+                                }
+                            }
+                        }
+                        Intent waIntent = new Intent(Intent.ACTION_SEND);
+                        waIntent.setType("text/plain");
+                        waIntent.setPackage("com.whatsapp");
+                        waIntent.putExtra(Intent.EXTRA_TEXT, text);
+                        startActivity(waIntent);
+                    } catch (Exception e) {
+                        // WhatsApp not installed / package mismatch — fall
+                        // back to the universal wa.me web link instead of
+                        // failing silently.
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://wa.me/")));
+                        } catch (Exception ignored) { }
+                    }
+                    return true;
+                }
+
+                // App ki own URLs — WebView mein hi rehne do
+                if (url.contains("deepsilence10161-source.github.io") ||
+                    url.contains("deepsilence10161.workers.dev")       ||
+                    url.contains("firebaseapp.com")                    ||
+                    url.contains("googleapis.com")) {
+                    return false;
+                }
+
+                // Google login — native sign-in use karte hain ab,
+                // lekin agar koi aur accounts.google.com URL aaye to Custom Tab mein kholo
+                if (url.contains("accounts.google.com")) {
+                    try {
+                        CustomTabsIntent customTab = new CustomTabsIntent.Builder()
+                            .setShowTitle(false).build();
+                        customTab.intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        customTab.launchUrl(MainActivity.this, Uri.parse(url));
+                    } catch (Exception e) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    }
+                    return true;
+                }
+
+                // Direct APK update URLs — NEVER open external browser! Always download & install in-app!
+                if (url.endsWith(".apk") || url.contains("MiniEsports.apk") || url.contains("/releases/latest/download/")) {
+                    new AndroidBridge().downloadAndInstallApk(url, "latest");
+                    return true;
+                }
+
+                // Baaki external links → browser
+                if (url.startsWith("http") || url.startsWith("https")) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+                }
+
+                // ✅ PAYTM/UPI FIX: custom-scheme deep links (upi://, gpay://,
+                // phonepe://, paytmmp://, intent://) — WebView khud inhe load
+                // nahi kar sakta, pehle ye silently fail ho rahe the (return false
+                // pe WebView "upi://..." ko ek normal webpage ki tarah load karne
+                // ki koshish karta tha, jo hamesha fail hota). Ab UPI apps ko ya to
+                // ACTION_VIEW se ya (Chrome-style "intent://" links ke liye)
+                // Intent.parseUri se explicitly launch karte hain. Paytm checkout
+                // bhi UPI app launch ke liye yehi scheme use karega.
+                try {
+                    Intent extIntent = url.startsWith("intent://")
+                        ? Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                        : new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(extIntent);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this,
+                        "Ye UPI app installed nahi hai is phone mein", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+
+            @Override
+            public void onReceivedError(WebView v, int code, String desc, String url) {
+                if (url != null && url.equals(v.getUrl()))
+                    v.loadUrl("file:///android_asset/no_internet.html");
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onProgressChanged(WebView v, int p) {
+                progressBar.setProgress(p);
+            }
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin,
+                    GeolocationPermissions.Callback cb) {
+                /* ✅ D7 FIX (2026-10-07): pehle HAR origin ko bina poochhe
+                   true kar diya jata tha — redirect/ads wala koi bhi page
+                   location maang sakta tha. Ab sirf apne hi hosts allow,
+                   baaki deny (WebView ka origin whitelist). */
+                boolean _ours = origin != null && (origin.contains("deepsilence10161-source.github.io")
+                        || origin.contains("deepsilence10161.workers.dev")
+                        || origin.startsWith("file://"));
+                cb.invoke(origin, _ours, false);
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView wv, ValueCallback<Uri[]> cb,
+                    FileChooserParams p) {
+                filePathCallback = cb;
+                startActivityForResult(p.createIntent(), FILE_CHOOSER_REQUEST);
+                return true;
+            }
+
+            @Override
+            public boolean onCreateWindow(WebView v, boolean isDialog,
+                    boolean isUserGesture, Message resultMsg) {
+                WebView popup = new WebView(MainActivity.this);
+                popup.getSettings().setJavaScriptEnabled(true);
+                popup.getSettings().setDomStorageEnabled(true);
+                AlertDialog d = new AlertDialog.Builder(MainActivity.this)
+                    .setView(popup).create();
+                popup.setWebChromeClient(new WebChromeClient() {
+                    @Override public void onCloseWindow(WebView w) { d.dismiss(); }
+                });
+                popup.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView vv, WebResourceRequest r) {
+                        String url = r.getUrl().toString();
+                        // ✅ DEEP-LINK INTERCEPT FIX (2026-10-29): popup se bhi
+                        // miniesports:// deep-link .apk-contains block se pehle
+                        // OS ko do (main WebView jaisa hi behaviour).
+                        if (url.startsWith(DEEP_LINK_SCHEME + "://")) {
+                            d.dismiss();
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                            } catch (Exception ignored) { }
+                            return true;
+                        }
+                        if (url.contains("deepsilence10161-source.github.io") ||
+                            url.contains("deepsilence10161.workers.dev")) {
+                            d.dismiss();
+                            return true;
+                        }
+                        // Popup mein bhi accounts.google.com aaye to Custom Tab
+                        if (url.contains("accounts.google.com")) {
+                            d.dismiss();
+                            try {
+                                CustomTabsIntent ct = new CustomTabsIntent.Builder().build();
+                                ct.launchUrl(MainActivity.this, Uri.parse(url));
+                            } catch (Exception e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                            }
+                            return true;
+                        }
+                        // ✅ PAYTM/UPI FIX: same custom-scheme handling as main WebView
+                        if (!url.startsWith("http")) {
+                            d.dismiss();
+                            try {
+                                Intent extIntent = url.startsWith("intent://")
+                                    ? Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                                    : new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                                startActivity(extIntent);
+                            } catch (Exception e) {
+                                Toast.makeText(MainActivity.this,
+                                    "Ye UPI app installed nahi hai is phone mein", Toast.LENGTH_SHORT).show();
+                            }
+                            return true;
+                        }
+                        // BUG FIX (2026-07): any other http(s) link that reaches here (e.g.
+                        // https://wa.me/... from the WhatsApp share buttons) used to fall
+                        // through to `return false`, which made this popup WebView try to
+                        // load it as an ordinary webpage instead of handing it to Android —
+                        // so tapping "Share on WhatsApp" quietly opened a near-invisible
+                        // dialog showing the wa.me redirect page instead of the WhatsApp
+                        // app. Mirror the main WebView's behaviour: dismiss this popup and
+                        // let the OS route it to whichever app handles it.
+                        if (url.endsWith(".apk") || url.contains("MiniEsports.apk") || url.contains("/releases/latest/download/")) {
+                            d.dismiss();
+                            new AndroidBridge().downloadAndInstallApk(url, "latest");
+                            return true;
+                        }
+                        d.dismiss();
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        } catch (Exception e) {
+                            Toast.makeText(MainActivity.this,
+                                "Is link ko kholne wala koi app nahi mila", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+                d.show();
+                ((WebView.WebViewTransport) resultMsg.obj).setWebView(popup);
+                resultMsg.sendToTarget();
+                return true;
+            }
+        });
+
+        // Intercept any WebView download (.apk) so it ALWAYS runs in-app without opening browser
+        webView.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
+            if (url != null && (url.endsWith(".apk") || url.contains("MiniEsports.apk") ||
+                "application/vnd.android.package-archive".equalsIgnoreCase(mimeType))) {
+                new AndroidBridge().downloadAndInstallApk(url, "latest");
+            }
+        });
+    }
+
+    private void setupBannerAd() {
+        bannerAdView = findViewById(R.id.bannerAdView);
+        if (bannerAdView == null) return;
+        try { bannerAdView.loadAd(new AdRequest.Builder().build()); }
+        catch (Exception e) { /* crash nahi hoga */ }
+    }
+
+    private void loadInterstitialAd() {
+        InterstitialAd.load(this, ADMOB_INTERSTITIAL,
+            new AdRequest.Builder().build(),
+            new InterstitialAdLoadCallback() {
+                @Override public void onAdLoaded(@NonNull InterstitialAd ad) {
+                    interstitialAd = ad;
+                    ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override public void onAdDismissedFullScreenContent() {
+                            webView.evaluateJavascript(
+                                "window.onInterstitialDismissed && window.onInterstitialDismissed();",
+                                null
+                            );
+                            loadInterstitialAd();
+                        }
+                    });
+                }
+                @Override public void onAdFailedToLoad(@NonNull LoadAdError e) {
+                    interstitialAd = null;
+                }
+            });
+    }
+
+    private void showInterstitialNative() {
+        if (interstitialAd != null) interstitialAd.show(this);
+    }
+
+    private void loadRewardedAd() {
+        RewardedAd.load(this, ADMOB_REWARDED,
+            new AdRequest.Builder().build(),
+            new RewardedAdLoadCallback() {
+                @Override public void onAdLoaded(@NonNull RewardedAd ad) { rewardedAd = ad; }
+                @Override public void onAdFailedToLoad(@NonNull LoadAdError e) { rewardedAd = null; }
+            });
+    }
+
+    private void showLastCrashIfAny() {
+        File f = new File(getFilesDir(), "last_crash.txt");
+        if (!f.exists()) return;
+        try {
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            String line;
+            while ((line = br.readLine()) != null) sb.append(line).append("\n");
+            br.close();
+            new AlertDialog.Builder(this)
+                .setTitle("Pichli baar crash hua tha")
+                .setMessage(sb.toString())
+                .setPositiveButton("OK", (d, w) -> f.delete())
+                .setCancelable(false)
+                .show();
+        } catch (Exception ignored) { }
+    }
+
+    private void showBlockScreen(String message) {
+        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
+        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+        layout.setGravity(android.view.Gravity.CENTER);
+        layout.setBackgroundColor(0xFF0A0D14);
+        layout.setPadding(48, 48, 48, 48);
+        android.widget.TextView icon = new android.widget.TextView(this);
+        icon.setText("\u26D4");
+        icon.setTextSize(64);
+        icon.setGravity(android.view.Gravity.CENTER);
+        layout.addView(icon);
+        android.widget.TextView title = new android.widget.TextView(this);
+        title.setText("Update Required");
+        title.setTextSize(24);
+        title.setTextColor(0xFFFF4444);
+        title.setGravity(android.view.Gravity.CENTER);
+        title.setPadding(0, 32, 0, 16);
+        layout.addView(title);
+        android.widget.TextView msg = new android.widget.TextView(this);
+        msg.setText(message);
+        msg.setTextSize(16);
+        msg.setTextColor(0xFFCCCCCC);
+        msg.setGravity(android.view.Gravity.CENTER);
+        msg.setPadding(0, 0, 0, 32);
+        layout.addView(msg);
+        android.widget.Button btn = new android.widget.Button(this);
+        btn.setText("Update Now");
+        btn.setBackgroundColor(0xFF00D4FF);
+        btn.setTextColor(0xFF00212B);
+        btn.setTextSize(18);
+        btn.setPadding(32, 16, 32, 16);
+        btn.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://github.com/deepsilence10161-source/ff-user-panel/releases/latest")));
+            } catch (Exception e) {
+                Toast.makeText(this, "Browser nahi khula", Toast.LENGTH_SHORT).show();
+            }
+        });
+        layout.addView(btn);
+        setContentView(layout);
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        return ni != null && ni.isConnected();
+    }
+
+    // =========================================================
+    // In-App APK Update Helpers (Cache, Verify, Cleanup, Install)
+    // =========================================================
+    private File getUpdatesDir() {
+        File ext = getExternalFilesDir(null);
+        File base = (ext != null) ? ext : getFilesDir();
+        File dir = new File(base, "updates");
+        if (!dir.exists()) dir.mkdirs();
+        return dir;
+    }
+
+    private String sanitizeVersionTag(String ver) {
+        if (ver == null || ver.trim().isEmpty()) return "latest";
+        String clean = ver.trim().replaceAll("[^A-Za-z0-9._-]", "_");
+        return clean.isEmpty() ? "latest" : clean;
+    }
+
+    private String formatMb(long bytes) {
+        return String.format(java.util.Locale.US, "%.1f MB", bytes / (1024.0 * 1024.0));
+    }
+
+    private boolean isValidApkFile(File f) {
+        if (f == null || !f.exists() || f.length() < 512 * 1024) return false;
+        try {
+            PackageInfo pi = getPackageManager().getPackageArchiveInfo(f.getAbsolutePath(), 0);
+            return pi != null && pi.packageName != null && !pi.packageName.isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void cleanupOldUpdateApks() {
+        new Thread(() -> {
+            try {
+                File dir = getUpdatesDir();
+                File[] files = dir.listFiles();
+                if (files == null || files.length == 0) return;
+                PackageInfo installedPi = getPackageManager().getPackageInfo(getPackageName(), 0);
+                int installedCode = installedPi.versionCode;
+                String installedName = installedPi.versionName != null ? installedPi.versionName : "";
+                long now = System.currentTimeMillis();
+                for (File f : files) {
+                    String name = f.getName();
+                    // Delete stale .part files older than 24h
+                    if (name.endsWith(".part") && (now - f.lastModified() > 24L * 3600L * 1000L)) {
+                        try { f.delete(); } catch (Exception ignored) {}
+                        continue;
+                    }
+                    if (name.endsWith(".apk")) {
+                        try {
+                            PackageInfo archivePi = getPackageManager().getPackageArchiveInfo(f.getAbsolutePath(), 0);
+                            if (archivePi == null) {
+                                f.delete();
+                            } else if (archivePi.versionCode <= installedCode ||
+                                       installedName.equals(archivePi.versionName)) {
+                                // Already installed version (or older) — delete APK to free storage!
+                                f.delete();
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+            } catch (Exception ignored) {}
+        }, "MiniEsports-ApkCleanup").start();
+    }
+
+    private void emitApkProgress(int pct, long downloaded, long total, String state, String msg) {
+        final String safeState = (state != null ? state : "").replace("'", "\\'");
+        final String safeMsg   = (msg != null ? msg : "").replace("'", "\\'");
+        if (webView == null) return;
+        webView.post(() -> {
+            try {
+                webView.evaluateJavascript(
+                    "if(window._onApkDownloadProgress)window._onApkDownloadProgress(" +
+                    pct + "," + downloaded + "," + total + ",'" + safeState + "','" + safeMsg + "');",
+                    null
+                );
+            } catch (Exception ignored) {}
+        });
+    }
+
+    private void promptInstallApk(File apkFile) {
+        if (apkFile == null || !apkFile.exists()) {
+            emitApkProgress(-1, 0, 0, "error", "APK file nahi mila");
+            return;
+        }
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (!getPackageManager().canRequestPackageInstalls()) {
+                    pendingInstallApkFile = apkFile;
+                    emitApkProgress(100, apkFile.length(), apkFile.length(), "permission",
+                        "Install permission allow karein — wapas aate hi install shuru hoga");
+
+                    /* ✅ PERMISSION DIALOG v2 (2026-10-29, owner order:
+                       "clear, short, attractive"): purana 9-line lecture
+                       hata kar 4-line crisp copy — kya, kyun, kitni baar,
+                       aur aage kya hoga. Buttons wahi (system-styled). */
+                    new AlertDialog.Builder(this)
+                        .setTitle("🔐 Bas ek baar — Install permission")
+                        .setMessage(
+                            "Android ke niyam se har app ko apna update install karne ke liye ek baar allow lena hota hai.\n\n" +
+                            "✅ Sirf ek baar — sirf MiniEsports ke liye\n" +
+                            "✅ Koi file, photo ya data access NAHI\n\n" +
+                            "Allow → switch ON → update turant install. Bas! 🎉"
+                        )
+                        .setPositiveButton("Allow ✅", (dialog, which) -> {
+                            try {
+                                Intent permIntent = new Intent(
+                                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                    Uri.parse("package:" + getPackageName())
+                                );
+                                startActivityForResult(permIntent, INSTALL_PERMISSION_REQUEST);
+                            } catch (Exception e) {
+                                // Fallback: open general Install Unknown Apps settings
+                                try {
+                                    /* ✅ COMPILE FIX (2026-10-12): pehle yahan
+                                       Settings.ACTION_MANAGE_UNKNOWN_SOURCES tha —
+                                       wo ek HIDDEN/system API hai jo public SDK
+                                       (compileSdk 34) me maujood hi nahi, isliye
+                                       javac 'cannot find symbol' deta tha aur APK
+                                       build hi fail ho jati thi (10-10 ki dono
+                                       builds version-gate par ruki thi, isliye ye
+                                       kabhi pakda nahi gaya). Ab public constant:
+                                       ACTION_SECURITY_SETTINGS (API 1+, wahi screen
+                                       jahan OEMs 'Install unknown apps' rakhte hain). */
+                                    Intent intent = new Intent(Settings.ACTION_SECURITY_SETTINGS);
+                                    startActivityForResult(intent, INSTALL_PERMISSION_REQUEST);
+                                } catch (Exception e2) {
+                                    Toast.makeText(this, "Settings kholein → Security → Install Unknown Apps → Allow", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Baad me", (dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .setCancelable(false)
+                        .show();
+                    return;
+                }
+            }
+            Uri apkUri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                apkFile
+            );
+            Intent installIntent = new Intent(Intent.ACTION_VIEW);
+            installIntent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+            installIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(installIntent);
+            emitApkProgress(100, apkFile.length(), apkFile.length(), "installing",
+                "Android Installer khul gaya hai — 'Update / Install' par tap karein");
+        } catch (Exception e) {
+            emitApkProgress(-1, apkFile.length(), apkFile.length(), "error",
+                "Installer open nahi ho paya: " + (e.getMessage() != null ? e.getMessage() : "Error"));
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView != null) {
+            /* Delegate back navigation to SPA JS router (window.goBack) so modals/screens
+               close cleanly without triggering a native WebView history reload. */
+            webView.evaluateJavascript(
+                "(function(){ if(typeof window.goBack==='function'){ window.goBack(); return 'handled'; } return 'none'; })()",
+                result -> {
+                    if (result == null || !result.contains("handled")) {
+                        if (webView.canGoBack()) webView.goBack();
+                    }
+                }
+            );
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /* ✅ D7: agar onCreate ka request kisi wajah se fire hi nahi hua
+           (permAskCount 0), to ab maango — warna duplicate prompt se bachne
+           ke liye chhod do (4s/12s wale retry sambhal lenge). */
+        if (permAskCount == 0) _askCorePerms(_missingCorePerms(), "onResume");
+        if (bannerAdView != null) bannerAdView.resume();
+        if (pendingInstallApkFile != null && pendingInstallApkFile.exists()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || getPackageManager().canRequestPackageInstalls()) {
+                File f = pendingInstallApkFile;
+                pendingInstallApkFile = null;
+                promptInstallApk(f);
+            }
+        }
+        /* ✅ SAFE-CLEANER (2026-10-09): purana auto-cleanup + SAF dialog yahan
+           se HATA diya gaya — na koi device-wide scan, na koi permission
+           prompt. Asli safai sirf server-gated path (runPostUpdateCleanup
+           ← features/device-cleanup.js) se hoti hai. */
+    }
+
+    @Override protected void onPause()   { super.onPause();   if (bannerAdView != null) bannerAdView.pause(); }
+    @Override protected void onDestroy() { super.onDestroy(); if (bannerAdView != null) bannerAdView.destroy(); if (webView != null) webView.destroy(); }
+}
+

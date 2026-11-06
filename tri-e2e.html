@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>TRI E2E — Admin Panel ↔ User Panel ↔ APK</title>
+<style>
+  :root{--gold:#ffd700;--green:#00ff9c;--red:#ff4d4d;--cyan:#00d4ff;--bg:#06060c;--card:#12122a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#eaeaea;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  #wrap{padding:10px 12px 24px}
+  h1{font-size:19px;line-height:1.2;margin:4px 0 2px;color:var(--gold);font-weight:900}
+  .sub{font-size:11px;color:#9aa;margin-bottom:8px}
+  .big{font-size:15px;font-weight:900;margin:8px 0 4px;color:var(--green)}
+  .big.fail{color:var(--red)}
+  ol{list-style:none;margin:6px 0 0;padding:0}
+  li{background:var(--card);border:1px solid #23233f;border-radius:10px;padding:7px 9px;margin-bottom:5px;font-size:11.5px;line-height:1.35}
+  li .nm{font-weight:800;color:#fff}
+  li .dt{color:#9aa;display:block;margin-top:2px;word-break:break-word}
+  li.ok{border-color:rgba(0,255,156,.45)} li.ok .nm:before{content:"✅ "}
+  li.bad{border-color:rgba(255,77,77,.5)} li.bad .nm:before{content:"❌ "}
+  li.run{border-color:rgba(0,212,255,.5)} li.run .nm:before{content:"⏳ "}
+  #frameBox{margin-top:10px;border:1px solid #23233f;border-radius:12px;overflow:hidden;background:#000}
+  #frameBox .hdr{font-size:10px;color:#9aa;padding:4px 8px;background:#0d0d1e}
+  iframe{width:100%;height:520px;border:0;background:#000}
+  #values{font-size:10px;color:#8f8;white-space:pre-wrap;word-break:break-all;margin-top:6px}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>TRI E2E — teeno ke beech poora flow</h1>
+  <div class="sub">Admin Panel ↔ User Panel (web) ↔ User Panel (APK) · asli Firebase + Supabase · run <b id="runid">?</b></div>
+  <div id="result" class="big">… chal raha hai</div>
+  <ol id="list"></ol>
+  <div id="frameBox">
+    <div class="hdr">asli app (index.html) isi WebView me — asli session ke saath</div>
+    <iframe id="appFrame" src="about:blank"></iframe>
+  </div>
+  <div id="values"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRI-E2E (APK side) — 2026-10-12
+   ---------------------------------------------------------------------------
+   Ye page APK ke WebView me khulta hai (MainActivity ka E2E intent allowlist:
+   asset-e2e.html | screen-e2e.html | tri-e2e.html). Iska kaam:
+
+     1. QA player ke roop me ASLI Firebase login (email/password) — wahi user
+        jo host driver admin panel me dekh raha hai.
+     2. Usi WebView me ASLI app (index.html) iframe me kholna — app khud
+        onAuthStateChanged se login karta hai (koi test-only auth nahi).
+     3. App ke ASLI functions se: support ticket submit, wallet/notif/matches
+        refresh, My-Tickets modal — sab real code paths.
+     4. Admin panel ke actions ka intezaar (DB poll) — reply, wallet credit,
+        match, notification — aur unhe APK me verify karna.
+     5. Login ke baad asli user nav-tour: Home, Special, Matches, Rank, Wallet,
+        Profile, Notifications, Search, Support aur Chat; paise/message submit nahi.
+     6. Logcat me saaf markers + aakhir me TRI-E2E-RESULT + TRI-E2E-VALUES; QA
+        chat ka RTDB subtree run-end se pehle admin session se saaf hota hai.
+
+   Credentials URL ke #fragment me aate hain (server ko nahi jaate) — QA
+   account har run me naya banta hai aur run ke ant me delete ho jaata hai.
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  var FIREBASE_CFG = {
+    apiKey: "AIzaSyA-v9AYigDrg96D_fos0vOW3wU2GY2UYec",
+    authDomain: "fft-app-1e283.firebaseapp.com",
+    databaseURL: "https://fft-app-1e283-default-rtdb.firebaseio.com",
+    projectId: "fft-app-1e283",
+    storageBucket: "fft-app-1e283.appspot.com",
+    messagingSenderId: "247829466483",
+    appId: "1:247829466483:web:6961488f1d3c4e3fff4906"
+  };
+  var Q = {};
+  (location.hash || '').replace(/^#/, '').split('&').forEach(function (kv) {
+    var i = kv.indexOf('='); if (i > 0) Q[decodeURIComponent(kv.slice(0, i))] = decodeURIComponent(kv.slice(i + 1));
+  });
+  var RUN = Q.run || 'norun', EMAIL = Q.e || '', PASS = Q.p || '';
+  /* ✅ QA RESCUE PROBE (2026-10-29): #qa_rescue=1 → one-shot localStorage
+     flag + iframe seedha index.html?qa_rescue=1 par (force-update overlay
+     apni user-journey khud chalegi: update click → block → rescue click →
+     deep-link). tri-e2e.html native intent-allowlist me pehle se allowed
+     hai, isliye koi production native change nahi chahiye. */
+  if (Q.qa_rescue === '1') {
+    try { localStorage.setItem('qa_rescue', '1'); } catch (e) {}
+    document.getElementById('appFrame').src = 'index.html?qa_rescue=1&v=' + Date.now();
+    /* Native emitApkProgress TOP document par evaluate hota hai — iframe
+       wali overlay tak events relay karo taaki error→rescue journey chale. */
+    window._onApkDownloadProgress = function () {
+      var f = document.getElementById('appFrame');
+      try {
+        if (f && f.contentWindow && f.contentWindow._onApkDownloadProgress) {
+          f.contentWindow._onApkDownloadProgress.apply(f.contentWindow, arguments);
+        }
+      } catch (e) {}
+    };
+  }
+  var MARK = 'QA-TEST TRI ' + RUN;
+  var VALUES = {};
+  var results = [];
+  document.getElementById('runid').textContent = RUN;
+
+  function logStep(nm, detail, ok) { console.log('TRI-E2E-STEP: ' + nm + ' — ' + detail); }
+  function fail(nm, err) { throw new Error(nm + ': ' + ((err && err.message) || err)); }
+
+  /* ⚠️ 2026-10-16: run 38928942155 me step 9 ka fail sirf itna bola —
+     "Cannot read property 'id' of undefined" — par kahan se aaya, pata nahi.
+     Is liye page par hi error/rejection hooks: har throw ka message + file:line
+     + poora stack console par aayega (logcat me). */
+  window.addEventListener('error', function (e) {
+    try {
+      console.log('TRI-PAGE-ERR: ' + (e && e.message) + ' @ ' + (e && e.filename) + ':' + (e && e.lineno) +
+                  '\n' + String((e && e.error && e.error.stack) || '').slice(0, 700));
+    } catch (x) {}
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    try {
+      var r = e && e.reason;
+      console.log('TRI-REJ-ERR: ' + String((r && (r.stack || r.message)) || r).slice(0, 700));
+    } catch (x) {}
+  });
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  var listEl = document.getElementById('list');
+  function render() {
+    listEl.innerHTML = results.map(function (r) {
+      return '<li class="' + (r.state === 'run' ? 'run' : (r.ok ? 'ok' : 'bad')) + '">' +
+        '<span class="nm">' + r.name + '</span><span class="dt">' + r.detail + '</span></li>';
+    }).join('');
+  }
+
+  function poll(fn, ms, timeout, what) {
+    var t0 = Date.now();
+    return (function again() {
+      return Promise.resolve().then(fn).then(function (v) {
+        if (v) return v;
+        if (Date.now() - t0 > timeout) throw new Error(what + ' timeout (' + Math.round(timeout / 1000) + 's)');
+        return sleep(ms).then(again);
+      });
+    })();
+  }
+
+  /* ── iframe (= asli app) helpers ─────────────────────────────────────── */
+  var frame = document.getElementById('appFrame');
+  function W() { return frame.contentWindow; }
+  function D() { return frame.contentDocument; }
+
+  function bootApp() {
+    return new Promise(function (resolve) {
+      frame.onload = function () { resolve(); };
+      frame.src = 'index.html?tri-e2e=' + RUN + '&v=' + Date.now();
+    });
+  }
+
+  var STEPS = [
+    /* ── 1/8 : app iframe + ASLI login (app ke apne auth se) ──
+       Note: app ka Firebase named app "mainApp" hai (Auth persistence LOCAL
+       = IndexedDB key me app-name bhi hota hai). Isliye login HAMESHA app ke
+       apne auth object se hota hai — warna session us app ko dikhta hi nahi. */
+    ['1/19 app iframe + QA player login (asli app auth)', function () {
+      if (!EMAIL || !PASS) fail('creds', 'email/password URL fragment me nahi mile');
+      return bootApp().then(function () {
+        return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
+          1000, 120000, 'app ka firebase auth load');
+      }).then(function (w) {
+        w.eval('window.__triSignIn=null; window.auth.signInWithEmailAndPassword(' +
+               JSON.stringify(EMAIL) + ',' + JSON.stringify(PASS) + ')' +
+               '.then(function(){window.__triSignIn="ok";})' +
+               '.catch(function(e){window.__triSignIn="err:"+((e&&e.code)||(e&&e.message)||"unknown");});');
+        return poll(function () { return W().__triSignIn; }, 1000, 90000, 'firebase sign-in')
+          .then(function (st) {
+            if (st !== 'ok') fail('sign-in', st);
+            return 'app ke apne auth se login (app-name mainApp, wahi persistence)';
+          });
+      });
+    }],
+
+    /* ── 2/8 : app auto-login + login screen hatna ── */
+    ['2/19 asli app login (onAuthStateChanged → _handleSignIn)', function () {
+      return poll(function () {
+        try {
+          var w = W();
+          return (w && w.U && w.U.uid && w.UD && w._supa) ? w : null;
+        } catch (e) { return null; }
+      }, 1000, 120000, 'app login (U/UD/_supa)').then(function (w) {
+        VALUES.uid = w.U.uid;
+        /* 🛡️ (2026-10-13h) State Verification gate (legal-compliance.js) —
+           QA account par DB me state='Haryana' set hai, par agar kisi wajah se
+           gate khul jaye to asli UI wale raaste se (mesStateOk) clear karo,
+           warna baaki saare modals uske peeche block ho jaate hain. */
+        try {
+          w.eval("if (window.UD && !window.UD.state && typeof window.mesStateOk === 'function') { window.mesStateOk('Haryana'); }");
+        } catch (e) {}
+        /* ⚠️ Supabase client ko Firebase token milna ASYNC hai (db.js
+           syncFirebaseToken). Us se pehle koi bhi write RLS se reject hoti hai
+           (policy: auth.jwt()->>'sub' = user_id) — CI me exactly yahi hua:
+           ticket insert token se pehle chala gaya aur DB me kuch nahi aaya.
+           Isliye ab token sync ka explicit intezaar. */
+        return poll(function () { return (w._supaTokenUid === w.U.uid) ? true : null; },
+          1000, 120000, 'supabase token sync (_supaTokenUid)').then(function () {
+        return poll(function () {
+          var ls = w.document.getElementById('loginScreen');
+          return (ls && getComputedStyle(ls).display === 'none') ? true : null;
+        }, 800, 90000, 'login screen hatna').then(function () {
+          return 'uid ' + String(VALUES.uid).slice(0, 8) + '… — login screen gaya, UD + _supa ready + token sync';
+        });
+        });
+      });
+    }],
+
+    /* ── 3/N : APK → Admin (support ticket) ── */
+    ['3/19 APK → Admin: support ticket submit', function () {
+      var w = W();
+      w.eval("if (window.showSupportForm) showSupportForm();");
+      return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
+        .then(function () {
+          w.document.getElementById('supType').value = 'other';
+          w.document.getElementById('supMsg').value = MARK + ' — APK se bheja gaya ticket (tri-e2e)';
+          /* Ticket insert ke 3 koshish (app ke andar bhi 3 retry hain; yahan
+             dobara submit karte hain agar pehla attempt RLS/token race me
+             reh gaya ho). Har attempt ke baad DB check — aur error bhi pakdo. */
+          var tries = 0;
+          function _one() {
+            tries++;
+            w.eval('window.submitSupportTicket()');
+            return poll(function () {
+              return w._supa.from('support_tickets').select('id,message')
+                .eq('user_id', w.U.uid).like('message', '%' + MARK + '%')
+                .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
+            }, 2500, tries < 3 ? 25000 : 60000, 'ticket DB me (koshish ' + tries + ')').catch(function (e) {
+              if (tries >= 3) throw e;
+              return _one();
+            });
+          }
+          return _one();
+        })
+        .then(function (row) { VALUES.ticket_row = row.id; return 'ticket #' + row.id.slice(0, 8) + ' DB me (admin panel isi ko dekhega)'; });
+    }],
+
+    /* ── 4/N : Admin → APK (ticket reply, asli My-Tickets modal) ── */
+    ['4/19 Admin → APK: ticket reply dikhe (My Tickets)', function () {
+      var w = W();
+      return poll(function () {
+        return w._supa.from('support_tickets').select('admin_reply,status')
+          .eq('id', VALUES.ticket_row).maybeSingle()
+          .then(function (r) { return (r.data && r.data.admin_reply) ? r.data.admin_reply : null; });
+      }, 4000, 420000, 'admin reply (host driver se)')
+        .then(function (reply) {
+          VALUES.ticket_reply = reply;
+          /* Modal ek hi baar render hota hai — isliye har koshish me modal
+             dobara kholte hain aur POORE page text me reply dhoondhte hain
+             (container badal jaye to bhi pakda jaye). */
+          return poll(function () {
+            var w2 = W();
+            if (w2.closeModal) w2.eval("if (window.closeModal) closeModal();");
+            w2.eval("if (window.showMyTickets) showMyTickets();");
+            return new Promise(function (res) {
+              setTimeout(function () {
+                var body = (w2.document.body && w2.document.body.innerText) || '';
+                res(body.indexOf(reply.slice(0, 30)) >= 0 ? true : null);
+              }, 2500);
+            });
+          }, 1000, 90000, 'reply modal me');
+        })
+        .then(function () { return 'reply APK ke My-Tickets modal me dikh gaya: “' + String(VALUES.ticket_reply).slice(0, 34) + '…”'; });
+    }],
+
+    /* ── 5/N : Admin → APK (SD credit, asli wallet UI) ── */
+    ['5/19 Admin → APK: coins credit (wallet UI)', function () {
+      var w = W();
+      return poll(function () {
+        return w._supa.from('users').select('coins,sky_diamonds').eq('id', w.U.uid).maybeSingle()
+          .then(function (r) { return (r.data && Number(r.data.coins) > 0) ? r.data : null; });
+      }, 4000, 420000, 'admin ka coins credit (host driver se)')
+        .then(function (u) {
+          VALUES.coins = String(u.coins);
+          VALUES.sky_diamonds = String(u.sky_diamonds);
+          w.eval("if (window.navTo) navTo('wallet');");
+          return poll(function () {
+            var w2 = W(), ui = w2.document.getElementById('wCoins');
+            var fromUD = w2.UD && String(w2.UD.coins);
+            if (ui && String(ui.textContent).replace(/[^0-9]/g, '') === String(VALUES.coins)) { VALUES.wallet_coins_ui = String(ui.textContent).trim(); return true; }
+            if (fromUD === String(VALUES.coins) && ui) { VALUES.wallet_coins_ui = String(ui.textContent).trim(); return true; }
+            return null;
+          }, 1500, 90000, 'wallet UI par coins');
+        })
+        .then(function () { return 'wallet par 🪙' + VALUES.coins + ' (UI: ' + (VALUES.wallet_coins_ui || '') + ') — admin_set_coins server credit APK tak pahuncha'; });
+    }],
+
+    /* ── 6/N : Admin → APK (match) ── */
+    ['6/19 Admin → APK: naya match list me', function () {
+      var w = W();
+      return poll(function () {
+        /* ⚠️ 2026-10-16: host ka room-match ka title "… — Room" par khatam hota
+           hai (main match "… — Custom Room" par). Is liye yahan sirf "— Room"
+           par khatam hone wali row chhodi jati hai — "Room" shabd par filter
+           KABHI nahi (main title me bhi Room hai!). */
+        return w._supa.from('matches').select('title').ilike('title', MARK + '%')
+          .order('created_at', { ascending: false }).limit(10)
+          .then(function (r) {
+            var rows = (r && r.data) || [];
+            var i, t, fallback = null;
+            for (i = 0; i < rows.length; i++) {
+              t = String(rows[i].title || '');
+              if (t.slice(-13) === '— Custom Room') return t;   /* asli main match */
+              if (t.slice(-6) !== '— Room' && !fallback) fallback = t;
+            }
+            return fallback;
+          });
+      }, 4000, 420000, 'admin ka match (host driver se)')
+        .then(function (title) {
+          VALUES.match_title = title;
+          function _nudge() {
+            w.eval("try{ if (window.navTo) navTo('home'); }catch(e){}" +
+                   "try{ if (window.renderHome) renderHome(); }catch(e){}" +
+                   "try{ if (window._loadMatches) _loadMatches(); }catch(e){}" +
+                   "try{ if (window.refreshMatches) refreshMatches(); }catch(e){}");
+          }
+          function _seen() {
+            var w2 = W();
+            var inModel = false;
+            try {
+              var arr = w2.MATCHES || w2._matches || [];
+              inModel = (Array.isArray(arr) ? arr : Object.values(arr)).some(function (m) {
+                return ((m && (m.title || m.name)) || '') === title; });
+            } catch (e) {}
+            if (!inModel) { try { var mt = w2.MT || {}; inModel = Object.keys(mt).some(function (k) { return (mt[k] && mt[k].title) === title; }); } catch (e) {} }
+            var body = (w2.document.body && w2.document.body.innerText) || '';
+            return (inModel || body.indexOf(title) >= 0) ? true : null;
+          }
+          _nudge();
+          return poll(function () { _nudge(); return _seen(); }, 3000, 120000, 'match app me render')
+            .catch(function () {
+              /* App ka data-layer refresh kabhi UI tak nahi pahunchta (screen
+                 already rendered). Tab asli user ki tarah: page reload —
+                 session persistence LOCAL hai, isliye login nahi tootega. */
+              return bootApp().then(function () {
+                return poll(function () { try { return W()._supa ? true : null; } catch (e) { return null; } }, 1000, 60000, 'app dobara load');
+              }).then(function () {
+                return poll(function () {
+                  var w2 = W();
+                  try { if (w2._loadMatches) w2.eval('_loadMatches()'); } catch (e) {}
+                  return _seen();
+                }, 3000, 150000, 'match app me render (reload ke baad)');
+              });
+            });
+        })
+        .then(function () { return 'match APK me dikha: “' + String(VALUES.match_title).slice(0, 40) + '”'; });
+    }],
+
+    /* ── 7/N : Admin → APK (notification) ── */
+    ['7/19 Admin → APK: notification', function () {
+      var w = W();
+      return poll(function () {
+        return w._supa.from('notifications').select('title,body').eq('user_id', w.U.uid)
+          .like('title', MARK + '%').order('created_at', { ascending: false }).limit(1)
+          .then(function (r) { return (r.data && r.data[0]) ? r.data[0] : null; });
+      }, 4000, 420000, 'admin notification (host driver se)')
+        .then(function (n) {
+          VALUES.notif_title = n.title;
+          w.eval("if (window._loadNotifs) _loadNotifs(); if (window.renderNotifications) renderNotifications();");
+          return poll(function () {
+            var w2 = W();
+            var arr = w2.NOTIFS || [];
+            var hit = Array.isArray(arr) ? arr.some(function (x) { return (x.title || '') === n.title; })
+                                         : Object.values(arr).some(function (x) { return (x.title || '') === n.title; });
+            return (hit || w2.document.body.innerText.indexOf(n.title) >= 0) ? true : null;
+          }, 2500, 120000, 'notification app me');
+        })
+        .then(function () { return 'notification APK me: “' + String(VALUES.notif_title).slice(0, 34) + '”'; });
+    }],
+
+    /* ── 8/N : Admin → APK (KYC approve, asli modal) ── */
+    ['8/19 Admin → APK: KYC approved dikhe', function () {
+      var w = W();
+      return poll(function () {
+        return w._supa.from('kyc_requests').select('status').eq('user_id', w.U.uid)
+          .order('created_at', { ascending: false }).limit(1)
+          .then(function (r) { return (r.data && r.data[0] && /approved|verified/.test(r.data[0].status)) ? r.data[0].status : null; });
+      }, 4000, 420000, 'admin KYC approve (host driver se)')
+        .then(function (st) {
+          VALUES.kyc_status = st;
+          w.eval("if (window.closeModal) closeModal(); if (window.mesShowKYC) mesShowKYC();");
+          return poll(function () {
+            var body = W().document.body.innerText || '';
+            return (body.indexOf('KYC Verified') >= 0 || body.indexOf('verify ho chuki') >= 0) ? true : null;
+          }, 1800, 90000, 'KYC Verified app me');
+        })
+        .then(function () { return 'KYC verified APK me dikh gaya (DB status=' + VALUES.kyc_status + ')'; });
+    }]
+  ];
+
+  /* ── runner ──────────────────────────────────────────────────────────── */
+  /* ── 9/19 : APK (P1) match join — ASLI UI raasta.
+     ✅ 2026-10-14/16 (live TRI 38574154924 + 38881149079 me step 9 fail):
+       • doJoin/cJoin `MT[id]` dekh kar chalte hain — app ke data-layer me
+         match na ho to wo CHUP-CHAAP return karte hain (koi error nahi).
+         Is liye pehle asli `_loadMatches()` (+ zaroorat par asli page reload).
+       • join pehle ASLI UI se: matches screen → card ka Join (cJoin) →
+         asli "Confirm Join" button (#confirmJoinBtn) → app ka confirm aaye
+         to asli "Haan, karo" (#_appDlgOk).
+       • agar ek koshish me row na bane (emulator me ek request hang ho jati
+         hai — logcat me 'Connection reset by peer' bhi dikha), to har 30s
+         par koshish dohrai jaati hai: pehle UI, phir WAHI server wala RPC
+         (validate_and_join_match — asli join ka server authority). Har
+         koshish ka nateeja alag se log hota hai (TRI-JOIN-RPC / TRI-JOIN-A).
+       • Fail par saaf diag logcat me: toast, dialog, MT me match, MT count,
+         security wrapper laga hai ya nahi, token uid, aur DB se match status. */
+  STEPS.push(['9/19 APK → match join (asli doJoin)', function () {
+    var w = W();
+    var JOIN_ATTEMPTS = 6, ATTEMPT_MS = 30000;
+    function _mtReady(id) {
+      try { if (w.eval) w.eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+      try { return (w.MT && w.MT[id]) ? true : null; } catch (e) { return null; }
+    }
+    function _fireRpc(id) {
+      try {
+        W().eval('(function(){ var p = window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' + JSON.stringify(id) +
+          ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}});' +
+          'var done = false; p.then(function(r){ done = true; console.log("TRI-JOIN-RPC: " + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); },' +
+          'function(e){ done = true; console.log("TRI-JOIN-RPC-ERR: " + String(e && (e.message || e)).slice(0,160)); });' +
+          'setTimeout(function(){ if (!done) console.log("TRI-JOIN-RPC: PENDING(12s)"); }, 12000); })();');
+        return true;
+      } catch (e) { console.log('TRI-JOIN-A: rpc eval fail ' + String(e).slice(0, 90)); return false; }
+    }
+    /* ── network probe (2026-10-16): TRI 38886753522 me join ke 6 koshish
+       (UI 35s + RPC 31s) sab chup-chaap fail hui aur RPC ka koi jawab hi
+       log nahi hua. Server side pakka theek hai (role par statement_timeout
+       8s hai — jawab 8s me aana hi tha). Is liye yahan ek chhota saaf
+       experiment: (A) GET, (B) POST insert (wahi jo step 3 me pass hua tha),
+       (C) rpc jo maujood nahi hai (404/error bhi saboot = round trip hua),
+       (D) raw fetch POST — aur Resource Timing se dekho request gayi thi ya
+       nahi (responseStart 0 = jawab hi nahi aaya). ── */
+    function _race(p, ms, tag) {
+      return Promise.race([
+        Promise.resolve(p).then(function (r) {
+          var t = r && r.error ? ('ERR: ' + (r.error.message || r.error.code)) : 'OK';
+          if (r && r.data !== undefined && r.data !== null && r.error === null) {
+            try { t = 'OK ' + JSON.stringify(r.data).slice(0, 60); } catch (e) {}
+          }
+          return tag + ' → ' + t;
+        }, function (e) { return tag + ' → THROW ' + String(e && (e.message || e)).slice(0, 90); }),
+        sleep(ms).then(function () { return tag + ' → PENDING(' + Math.round(ms / 1000) + 's)'; })
+      ]);
+    }
+    var SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
+    function _netProbe() {
+      var w2 = W(), SU = 'https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1';
+      var tok = '';
+      try {
+        var k = Object.keys(w2.localStorage);
+        for (var i = 0; i < k.length; i++) if (k[i].indexOf('sb-') === 0 && k[i].indexOf('-auth-token') > 0) tok = 'LS:' + k[i].slice(0, 24);
+      } catch (e) {}
+      var jobs = [
+        _race(w2._supa.from('matches').select('id').limit(1), 12000, 'A-GET'),
+        _race(w2._supa.from('support_tickets').insert({ user_id: w2.U.uid, subject: MARK + ' TRI-NETPROBE', message: 'probe', status: 'open' }), 12000, 'B-POST-insert'),
+        _race(w2._supa.rpc('tri_probe_maujood_nahi_hai'), 12000, 'C-RPC-404'),
+        /* D: bilkul raw fetch — supabase-js ke bahar, seedha PostgREST ko.
+           (anon key app ka apna public client key hai — core/db.js me hi hai.) */
+        Promise.resolve().then(function () { return W().auth.currentUser.getIdToken(); }).then(function (jwt) {
+          return _race(new Promise(function (res, rej) {
+            W().fetch(SU + '/rpc/tri_probe_maujood_nahi_hai', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', apikey: SUPA_ANON, Authorization: 'Bearer ' + jwt },
+              body: '{}'
+            }).then(function (r) { res({ error: null, data: 'http ' + r.status }); }, function (e) { rej(e); });
+          }), 12000, 'D-rawfetch-POST');
+        })
+      ];
+      return Promise.all(jobs.map(function (j) { return Promise.resolve(j); })).then(function (out) {
+        out = out.map(function (x) { return typeof x === 'string' ? x : '[object]'; });
+        var res = [];
+        try {
+          res = (w2.performance.getEntriesByType('resource') || [])
+            .filter(function (e) { return e.name.indexOf('/rpc/') !== -1 || e.name.indexOf('/rest/v1/support_tickets') !== -1; })
+            .slice(-6).map(function (e) {
+              return { u: e.name.split('/rest/v1/')[1].slice(0, 26), dur: Math.round(e.duration),
+                       respStart: Math.round(e.responseStart), status: e.responseStatus || '' };
+            });
+        } catch (e) {}
+        console.log('TRI-NETPROBE: ' + JSON.stringify(out) + ' | tokenHint=' + tok + ' | timing=' + JSON.stringify(res));
+        return true;
+      });
+    }
+    function _diag(id) {
+      var out = {};
+      try {
+        var w2 = W();
+        var tw = w2.document.getElementById('toast-wrap');
+        out.toast = tw ? (tw.innerText || '').replace(/\n/g, ' | ').slice(0, 220) : '';
+        var ov = w2.document.getElementById('_appDlgOv');
+        out.dlg = (ov && ov.classList.contains('show'))
+          ? String((w2.document.getElementById('_appDlgMsg') || {}).innerText || '').slice(0, 120) : '';
+        out.mt = (w2.MT && w2.MT[id]) ? 'yes' : 'NO';
+        out.mt_count = Object.keys(w2.MT || {}).length;
+        out.wrapper = w2._allJoinChecksDone ? 'security' : 'core';
+        out.device_check = (typeof w2.checkDeviceJoin);
+        out.tok_uid = w2._supaTokenUid ? String(w2._supaTokenUid).slice(0, 8) : '';
+        out.uid = w2.U ? String(w2.U.uid).slice(0, 8) : '';
+        out.confirmBtn = !!w2.document.getElementById('confirmJoinBtn');
+      } catch (e) { out.err = String(e).slice(0, 90); }
+      return out;
+    }
+    return poll(function () {
+      /* ⚠️ 2026-10-16 (asli race pakdi): host ka H9b apna ALAG room-match bhi
+         banata hai jiska title bhi `QA-TEST TRI <run>%` se shuru hota hai
+         ("… — Room"). Pehle yahan `order created_at desc limit 1` tha, is liye
+         kabhi-kabhi wahi naya room-match utha liya jata tha — aur uska
+         creator_uid = P1 (APK wala) hone se server join rok deta tha
+         (SELF_PLAY_BLOCKED, wahi purani galti dobara). Ab 10 rows laa kar
+         jaan-boojh kar wo row chunte hain jiske title me "Room" nahi hai. */
+      return w._supa.from('matches').select('id,title,filled_slots').ilike('title', MARK + '%')
+        .order('created_at', { ascending: false }).limit(10)
+        .then(function (r) {
+          var rows = (r && r.data) || [];
+          var i, t, fallback = null;
+          for (i = 0; i < rows.length; i++) {
+            t = String(rows[i].title || '');
+            /* main match "… — Room" par khatam hota hai, room-match
+               "… — Room" par. Is liye sirf wahi chhodo jo "— Room" par khatam
+               ho ("Room" shabd par filter galat tha — main title me bhi hai). */
+            if (t.slice(-13) === '— Custom Room') return rows[i];   /* asli main match */
+            if (t.slice(-6) !== '— Room' && !fallback) fallback = rows[i];
+          }
+          return fallback;
+        });
+    }, 3000, 120000, 'match id').then(function (m) {
+      VALUES.match_id = m.id;
+      /* ── 2026-10-16 (TRI 38893028621): probe ne saaf kar diya ki network
+         theek hai (GET, POST-insert, rpc-404, raw fetch — sab jawab dete hain)
+         par join ke waqt IFRAME ka apna console chup ho jata hai aur uske
+         timers bhi nahi chalte (12s ka PENDING log bhi nahi aaya). Is liye ab
+         iframe ke ANDAR se stage-logging + ek raw-fetch join (supabase-js ke
+         bahar, seedha PostgREST) — dono cheezein iframe ke apne realm me. ── */
+      function _installIframeHooks() {
+        try {
+          W().eval('(function(){ function L(m){ try { console.log("TRI-IN-IFRAME: " + m); } catch(e){} }' +
+            ' window.__triL = L; L("hooks installed");' +
+            ' window.__triFetchJoin = function(mid){' +
+            '   L("raw fetch join START");' +
+            '   window.auth.currentUser.getIdToken().then(function(jwt){' +
+            '     L("token mila");' +
+            '     return window.fetch("https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/rpc/validate_and_join_match", {' +
+            '       method:"POST", headers:{"Content-Type":"application/json", apikey: "' + SUPA_ANON + '", Authorization: "Bearer " + jwt},' +
+            '       body: JSON.stringify({p_uid: window.U.uid, p_match_id: mid, p_entry_fee: 0, p_currency: "coins",' +
+            '         p_join_data: {mode:"solo", ign: (window.UD && window.UD.ign) || ""}}) });' +
+            '   }).then(function(r){ L("fetch response http " + r.status); return r.text(); })' +
+            '     .then(function(t){ L("body: " + String(t).slice(0, 170)); })' +
+            '     .catch(function(e){ L("ERR " + String(e && (e.message || e)).slice(0, 150)); });' +
+            ' };' +
+            ' setTimeout(function(){ L("12s timer chala (realm zinda hai)"); }, 12000);' +
+            '})();');
+          console.log('TRI-IN-IFRAME: hooks install kiye');
+        } catch (e) { console.log('TRI-IN-IFRAME: hooks fail ' + String(e).slice(0, 120)); }
+      }
+      return poll(function () { return _mtReady(m.id); }, 3000, 90000, 'app ke MT me match')
+        .catch(function () {
+          return bootApp().then(function () {
+            return poll(function () { try { return W()._supa ? true : null; } catch (e) { return null; } }, 1500, 60000, 'app dobara load');
+          }).then(function () { return poll(function () { return _mtReady(m.id); }, 3000, 120000, 'reload ke baad MT me match'); });
+        })
+        .then(function () {
+          function _row() {
+            return W()._supa.from('join_requests').select('id,status').eq('match_id', m.id).eq('user_id', W().U.uid)
+              .then(function (r) { return (r.data && r.data.length) ? r.data[0] : null; });
+          }
+          /* ✅ 2026-10-16: parent realm se seedha PostgREST join (supabase-js ke
+             bahar). Probe D ne pakka kiya ki isi realm ka raw fetch POST jawab
+             deta hai (http 404) — is liye ye "network ka aakhri saaf raasta"
+             hai: agar ye bhi row banata hai to app/WebView ke andar wala
+             raasta hi ruk raha hai. */
+          function _parentRawJoin(mid) {
+            return Promise.resolve().then(function () { return W().auth.currentUser.getIdToken(); }).then(function (jwt) {
+              return W().fetch('https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/rpc/validate_and_join_match', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', apikey: SUPA_ANON, Authorization: 'Bearer ' + jwt },
+                body: JSON.stringify({ p_uid: W().U.uid, p_match_id: mid, p_entry_fee: 0, p_currency: 'coins',
+                                       p_join_data: { mode: 'solo', ign: (W().UD && W().UD.ign) || '' } })
+              });
+            }).then(function (r) {
+              return r.text().then(function (t) { console.log('TRI-PARENT-RAW: http ' + r.status + ' ' + String(t).slice(0, 170)); });
+            }).catch(function (e) { console.log('TRI-PARENT-RAW: ERR ' + String(e && (e.message || e)).slice(0, 140)); });
+          }
+          /* ek koshish: mode 'ui' = asli buttons, 'rpc' = wahi server RPC */
+          function _attempt(mode) {
+            if (mode === 'ui') {
+              try { W().eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();"); } catch (e) {}
+              return sleep(1200).then(function () {
+                try { W().eval("if (window.cJoin) cJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {}
+                return sleep(1200).then(function () {
+                  var clicked = false;
+                  try {
+                    var b = W().document.getElementById('confirmJoinBtn');
+                    if (b) { b.click(); clicked = true; }
+                  } catch (e) {}
+                  if (!clicked) { try { W().eval('(function(){ try { window.__triL && window.__triL("doJoin CALL se pehle"); } catch(e){}; if (window.doJoin) doJoin(' + JSON.stringify(m.id) + '); try { window.__triL && window.__triL("doJoin CALL ke baad (return aa gaya)"); } catch(e){} })();'); } catch (e) { console.log('TRI-JOIN-A: doJoin eval fail ' + String(e).slice(0,90)); } }
+                  return sleep(1200).then(function () {
+                    try {
+                      var ov = W().document.getElementById('_appDlgOv');
+                      if (ov && ov.classList.contains('show')) {
+                        var ok = W().document.getElementById('_appDlgOk');
+                        if (ok) ok.click();
+                      }
+                    } catch (e) {}
+                    console.log('TRI-JOIN-A: UI path (' + (clicked ? 'Confirm Join button' : 'doJoin') + ') bheja');
+                    return 'Confirm Join button (asli UI path)';
+                  });
+                });
+              });
+            }
+            _fireRpc(m.id);
+            try { W().eval('window.__triFetchJoin && window.__triFetchJoin(' + JSON.stringify(m.id) + ')'); } catch (e) {}
+            _parentRawJoin(m.id);
+            console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja + iframe raw fetch + parent raw fetch');
+            return Promise.resolve('validate_and_join_match RPC (wahi server path)');
+          }
+          var via = '';
+          _installIframeHooks();   /* ⚠️ pehle ye `return` ke BAAD likha gaya tha — chalta hi nahi tha */
+          /* ⚠️ 2026-10-16 (asli masking bug): pehle yahan `return
+             _netProbe().then(...)` aage se return kar deta tha — aur neeche
+             wala (chalu) `return _round2().then(function (row) { return {row,
+             via}; })` DEAD CODE ban gaya tha. Nateeja: chain ne seedha ROW
+             diya, `r.row` undefined nikla, aur asli SUCCESS (toast "Joined
+             successfully") bhi fail jaisa dikhta tha. Ab wrapper isi chain me
+             hai aur dead copy hata di. */
+          return _netProbe().then(function () { return _round2(); }).then(function (row) {
+            return { row: row, via: via };
+          });
+          function _round2() { return _round(0, 'ui'); }
+          function _round(i, mode) {
+            var t0 = Date.now();
+            return _attempt(mode).then(function (v) {
+              via = (i > 0 && mode === 'rpc') ? v : (via || v);
+              return poll(_row, 3000, ATTEMPT_MS, 'join row (koshish ' + (i + 1) + ': ' + mode + ')').catch(function () {
+                console.log('TRI-JOIN-A: koshish ' + (i + 1) + ' (' + mode + ') fail — ' +
+                            Math.round((Date.now() - t0) / 1000) + 's');
+                if (i + 1 >= JOIN_ATTEMPTS) {
+                  var d = _diag(m && m.id);
+                  console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d));
+                  fail('join', 'har koshish ke baad bhi join row nahi bani | diag=' + JSON.stringify(d));
+                }
+                return _round(i + 1, i === 0 ? 'ui' : (i % 2 === 0 ? 'ui' : 'rpc'));
+              });
+            });
+          }
+        })
+        .then(function (r) {
+          /* ⚠️ 2026-10-16: pehle yahan seedha `row.id` tha — agar chain ne
+             undefined diya to asli fail ka message dab jata tha aur sirf
+             "Cannot read property 'id' of undefined" dikhta tha (run
+             38928942155 me yahi hua). Ab saaf message + diag. */
+          var row = r && r.row;
+          if (!row) {
+            var d0 = _diag(m && m.id);
+            console.log('TRI-JOIN-DIAG: ' + JSON.stringify(d0));
+            fail('join-row-read', 'join row object nahi mila (r=' + JSON.stringify(r) + ') | diag=' + JSON.stringify(d0));
+          }
+          VALUES.join_row = row.id; VALUES.join_status = row.status || 'pending'; VALUES.join_via = r.via;
+          return 'APK (P1) match me join: row #' + String(row.id).slice(0, 8) + ' status=' + (row.status || 'pending') + ' — ' + r.via;
+        });
+    });
+  }]);
+  /* ── 10/10 : APK par match me DO players (P2 user web se) ── */
+  STEPS.push(['10/19 APK par match me 2 players (P2 web se join)', function () {
+    var w = W();
+    return poll(function () {
+      /* ⚠️ join_requests par RLS hai — P1 doosre player (P2) ki row NAHI dekh
+         sakta. Isliye "2 players" ka pakka signal matches.filled_slots hai
+         (sabko dikhta hai) + apni row ka hona. */
+      return w._supa.from('matches').select('filled_slots').eq('id', VALUES.match_id).maybeSingle()
+        .then(function (r) { return (r.data && Number(r.data.filled_slots) >= 2) ? Number(r.data.filled_slots) : null; });
+    }, 4000, 420000, 'doosra player (P2, host driver se) — match slots')
+      .then(function (rooms) {
+        VALUES.joined_players = String(rooms);
+        w.eval("if (window._loadMatches) _loadMatches(); if (window.renderHome) renderHome();");
+        return poll(function () {
+          var w2 = W();
+          var fs = null;
+          try { fs = (w2.MT && w2.MT[VALUES.match_id]) ? Number(w2.MT[VALUES.match_id].filledSlots) : null; } catch (e) {}
+          var body = (w2.document.body && w2.document.body.innerText) || '';
+          VALUES.apk_players_ui = (fs === null ? '' : String(fs));
+          return (fs !== null && fs >= 2) ? true : (body.indexOf('2/12') >= 0 ? true : null);
+        }, 2500, 150000, 'match par 2 players (app UI)');
+      })
+      .then(function () {
+        return 'APK par match me ' + VALUES.joined_players + ' players (slots UI: ' + (VALUES.apk_players_ui || '2') + ') — P1 (APK) + P2 (web)';
+      });
+  }]);
+
+  /* ── 11/12 : Premium ribbon IGN ke aage (APK par, asli UI) ──
+     Host ne H6b me approve_premium se P1 ko premium diya hai. Ab app me:
+       (a) UD me premium aa jaye (realtime ya reload par), aur
+       (b) My Matches ke "Playing As" me IGN ke aage ribbon dikhe. */
+  STEPS.push(['11/19 Premium ribbon IGN ke aage (APK)', function () {
+    function _premOf() {
+      var w = W();
+      var t = 0;
+      try { t = Number((w.UD && w.UD.premium && w.UD.premium.tier) || (w.UD && w.UD.premium_level) || 0); } catch (e) {}
+      return t;
+    }
+    function _scan() {
+      /* Teen jagah dekho — jahan bhi IGN ke aage ribbon mile (asli UI):
+         1) My Matches ka "Playing As" block  2) profile ka plate  3) fail-safe: koi bhi .prem-ribbon */
+      return new Promise(function (res) {
+        setTimeout(function () {
+          try {
+            var w2 = W();
+            var all = w2.document.querySelectorAll('.prem-ribbon');
+            var body = (w2.document.body && w2.document.body.innerText) || '';
+            if (all.length && body.indexOf('Playing As') >= 0) { res({ where: 'matches-playing-as', tier: all[0].getAttribute('data-premium-tier'), n: all.length }); return; }
+            if (all.length) { res({ where: 'screen-ribbon', tier: all[0].getAttribute('data-premium-tier'), n: all.length }); return; }
+            res(null);
+          } catch (e) { res(null); }
+        }, 2200);
+      });
+    }
+    function _ribbonInMatches() {
+      var w = W();
+      try {
+        W().eval("if (window.navTo) navTo('matches'); if (window.renderMyMatches) renderMyMatches();");
+      } catch (e) {}
+      return _scan().then(function (hit) {
+        if (hit) return hit;
+        /* My Matches me block na ho (ffUid khali) — profile plate par try karo */
+        try { W().eval("if (window.closeModal) closeModal(); if (window.navTo) navTo('profile');"); } catch (e) {}
+        return _scan().then(function (hit2) {
+          if (hit2) return hit2;
+          try { W().eval("if (window.openProfile) openProfile();"); } catch (e) {}
+          return _scan();
+        });
+      });
+    }
+    /* 1. UD me premium (realtime ya ek reload se) */
+    return poll(function () { return _premOf() > 0 ? true : null; }, 3000, 60000, 'UD me premium (host ke approve_premium se)')
+      .catch(function () {
+        return bootApp().then(function () {
+          return poll(function () { try { return W().U && W().U.uid ? true : null; } catch (e) { return null; } }, 1500, 90000, 'reload ke baad login (persistence)');
+        }).then(function () {
+          return poll(function () { return _premOf() > 0 ? true : null; }, 3000, 90000, 'reload ke baad premium (DB se)');
+        });
+      })
+      .then(function () { VALUES.premium_level = String(_premOf()); return _ribbonInMatches(); })
+      .then(function (hit) {
+        VALUES.premium_ribbon = hit ? hit.where : '';
+        if (!hit) fail('ribbon', 'IGN ke aage .prem-ribbon kahin nahi mila (matches/profile)');
+        return 'premium level ' + VALUES.premium_level + ' — IGN ke aage ribbon dikha (' + hit.where + ', tier=' + hit.tier + ')';
+      });
+  }]);
+
+  /* ── 12/12 : aakhri 12 ghante ka countdown banner (APK par, asli UI) ──
+     Host ne H6c me P1 ki premium_expires 6 ghante aage set ki hai (asli
+     admin update, RLS is_caller_admin). Ab APK (WebView) me:
+       (a) UD.premium.expiresAt DB se aaye,
+       (b) IGN/UI ke upar fixed banner dikhe + countdown khud chale,
+       (c) 12-ghante window ke bahar ho to banner bilkul na dikhe. */
+  STEPS.push(['12/19 Trial/Premium khatam hone ka countdown banner (APK)', function () {
+    function _state() {
+      try {
+        var w = W();
+        /* app ka apna state check (asli app me init par + har minute chalta hai) */
+        w.eval("if (window.checkTrialState) window.checkTrialState(); if (window.updatePremiumExpiryBanner) window.updatePremiumExpiryBanner();");
+        var el = w.document.getElementById('premExpiryBanner');
+        var cnt = w.document.getElementById('premExpiryCount');
+        var ud = 0;
+        try { ud = Number((w.UD && w.UD.premium && w.UD.premium.expiresAt) || 0); } catch (e) {}
+        return { has: !!el, ms: el ? Number(el.getAttribute('data-ms-left') || 0) : 0,
+                 txt: (cnt && cnt.textContent) || '', udExp: ud,
+                 pos: el ? el.style.position : '', z: el ? Number(el.style.zIndex || 0) : 0 };
+      } catch (e) { return { has: false }; }
+    }
+    function _due() {
+      var b = _state();
+      return (b.has && b.ms > 0 && b.ms <= 12 * 3600 * 1000) ? b : null;
+    }
+    return poll(function () { return _due(); }, 3000, 150000, 'APK par countdown banner (host ne H6c me 6h ki expiry set ki)')
+      .catch(function () {
+        /* UD purane 30-din wale expiry par atka ho sakta hai — ek asli reload */
+        return bootApp().then(function () {
+          return poll(function () { try { return W().U && W().U.uid ? true : null; } catch (e) { return null; } }, 1500, 90000, 'reload ke baad login (persistence)');
+        }).then(function () {
+          return poll(function () { return _due(); }, 3000, 90000, 'reload ke baad banner (DB se)');
+        });
+      })
+      .then(function (b) {
+        VALUES.premium_banner = 'app-banner';
+        VALUES.premium_expires_ms = String(b.ms);
+        if (!/^\d\d:\d\d:\d\d$/.test(b.txt)) fail('banner_time', 'countdown format galat: ' + b.txt);
+        if (b.pos !== 'fixed' || b.z < 9990) fail('banner_css', 'banner fixed/z-index sahi nahi (' + b.pos + '/' + b.z + ')');
+        if (!b.udExp || b.udExp < Date.now()) fail('banner_ud', 'UD.premium.expiresAt DB se nahi aaya');
+        var t0 = b.txt;
+        /* countdown khud chalta hai? 2.4s baad wahi text nahi hona chahiye */
+        return new Promise(function (res) {
+          setTimeout(function () { res(_state()); }, 2400);
+        }).then(function (b2) {
+          if (!b2.has) fail('banner_gone', 'countdown dekhne se pehle hi banner gayab ho gaya');
+          else if (b2.txt === t0) fail('banner_tick', 'countdown rukka hua hai (' + t0 + ')');
+          return 'APK par IGN ke upar fixed banner — countdown ' + t0 + ' (2.4s baad ' + b2.txt + '), CTA + data-ms-left=' + b.ms + ' (asli DB expiry se)';
+        });
+      });
+  }]);
+
+  /* ── 13/13 : avatar ring — web par kharida gaya ring APK me bhi dikhe ──
+     Host ne H6d me: admin se SD → user ne store se frame_ring_gold kharida
+     → equip kiya. Ek hi account, do surfaces — APK (WebView) par bhi wahi
+     equipped ring ka medal art profile par + store tile par dikhna chahiye. */
+  STEPS.push(['13/19 Avatar ring — web par kharida, APK par dikha (cross-surface)', function () {
+    function _state() {
+      try {
+        var w = W();
+        var medal = w.document.querySelector('img.pf2-ring-art');
+        var tiles = w.document.querySelectorAll('img[src*="img/ranks/"]');
+        var owned = false;
+        try { owned = !!(w.UD && w.UD.cosmetics && w.UD.cosmetics['frame_ring_gold']); } catch (e) {}
+        return { medal: medal ? (medal.getAttribute('src') || '') : '', alt: medal ? (medal.getAttribute('alt') || '') : '',
+                 tiles: tiles.length, owned: owned };
+      } catch (e) { return { medal: '', tiles: 0, owned: false }; }
+    }
+    function _hit() {
+      var w = W();
+      try { w.eval("if (window.navTo) navTo('profile'); if (window.renderProfile) renderProfile();"); } catch (e) {}
+      return new Promise(function (res) { setTimeout(function () { res(_state()); }, 1800); });
+    }
+    return _hit().then(function (b) {
+      if (b.medal && b.medal.indexOf('ranks/gold.png') !== -1) return b;
+      /* UD me ring aayi hi nahi (realtime/poll) — ek asli reload */
+      return bootApp().then(function () {
+        return poll(function () { try { return W().U && W().U.uid ? true : null; } catch (e) { return null; } }, 1500, 90000, 'reload ke baad login (persistence)');
+      }).then(function () {
+        return poll(function () {
+          return _hit().then(function (b2) { return (b2.medal && b2.medal.indexOf('ranks/gold.png') !== -1) ? b2 : null; });
+        }, 4000, 120000, 'APK par equipped ring ka medal');
+      });
+    }).then(function (b) {
+      VALUES.cosmetic_ring = 'frame_ring_gold';
+      VALUES.ring_medal = 'profile-medal';
+      if (!b.owned) fail('ring_owned', 'UD.cosmetics me ring nahi (owned nahi hua)');
+      /* store tile bhi asli art dikhata hai? */
+      try {
+        W().eval("if (window.showCosmeticsStore) showCosmeticsStore();");
+      } catch (e) {}
+      return new Promise(function (res) { setTimeout(function () { res(_state()); }, 2500); });
+    }).then(function (b2) {
+      if (!b2.tiles) fail('ring_tiles', 'store/profile me rings ka art (img[src*=img/ranks/]) kahin nahi mila');
+      return 'APK par equipped ring ka medal dikha (' + (b2.alt || 'ring') + ', art=' + (b2.medal.split('/').pop() || '') + ') + ' + b2.tiles + ' ring art tiles store me — wahi ring jo web par kharida tha';
+    });
+  }]);
+
+  /* ── 14/14 : Phase-3 — Room ID/password (creator ne web par set kiya,
+     APK me wahi dikha). Host ne H9b me: match ka creator = P1 (admin write),
+     P1 ne app ki creator-room UI se room ID save kiya (creator_set_room),
+     admin ne release kiya. Ab APK (wahi P1 account) par wahi Room ID dikhna
+     chahiye — asli RPC get_room_credentials + asli UI. */
+  STEPS.push(['14/19 Room ID/password — web par set, APK par dikha (Phase-3)', function () {
+    var roomId = 'TRIROOM' + String(RUN).slice(0, 6).toUpperCase();
+    function _scan() {
+      try {
+        var w = W();
+        var txt = (w.document.body && w.document.body.innerText) || '';
+        return txt.indexOf(roomId) !== -1 ? { where: 'apk-ui-room-box' } : null;
+      } catch (e) { return null; }
+    }
+    function _openRoom() {
+      try {
+        var w = W();
+        w.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
+      } catch (e) {}
+      return new Promise(function (res) { setTimeout(res, 2500); }).then(function () {
+        /* ✅ 2026-10-16 diag: pehle run me is step ka koi log nahi tha, is liye
+           yahan har kadam console par — rid mila ya nahi, MT me hai ya nahi,
+           aur asli RPC (get_room_credentials) ka poora jawab. */
+        return W()._supa.from('matches').select('id,title').ilike('title', MARK + '%— Room').limit(1)
+          .then(function (r) {
+            var rid = (r && r.data && r.data[0]) ? r.data[0].id : '';
+            console.log('TRI-ROOM: rid=' + rid + ' row=' + JSON.stringify((r && r.data) || null).slice(0, 140) +
+                        ' err=' + ((r && r.error && r.error.message) || '-'));
+            if (!rid) return null;
+            return W()._supa.rpc('get_room_credentials', { p_match_id: rid }).then(function (res) {
+              console.log('TRI-ROOM: rpc=' + JSON.stringify(res && res.data).slice(0, 180));
+              try { W().eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+              return new Promise(function (r2) { setTimeout(r2, 2000); }).then(function () {
+                var inMt = false;
+                try { inMt = !!(W().MT && W().MT[rid]); } catch (e) {}
+                console.log('TRI-ROOM: inMT=' + inMt + ' mtKeys=' + (function () {
+                  try { return Object.keys(W().MT || {}).length; } catch (e) { return 'na'; } })());
+                try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
+                return new Promise(function (r3) { setTimeout(r3, 2500); });
+              });
+            });
+          })['catch'](function (e) { console.log('TRI-ROOM: diag fail ' + String(e).slice(0, 120)); });
+      }).then(function () {
+        /* ✅ 2026-10-16: Room test ab ALAG match par hota hai (host H9b
+           '…— Room' naam ka naya match banata hai) — pehle wahi main match
+           tha jisme P1 ko join karna hota hai, aur uska creator_uid set karne
+           se server P1 ka join rok deta tha (SELF_PLAY_BLOCKED). Is liye pehle
+           DB se us room-match ka id nikaalo, phir wahi kholo. */
+        try {
+          W()._supa.from('matches').select('id').ilike('title', MARK + '%— Room').limit(1)
+            .then(function (r) {
+              var rid = (r && r.data && r.data[0]) ? r.data[0].id : (VALUES.match_id || '');
+              try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
+            });
+        } catch (e) {
+          try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + (VALUES.match_id || '') + "');"); } catch (e) {}
+        }
+        return new Promise(function (res) { setTimeout(res, 2500); });
+      }).then(function () { return _scan(); });
+    }
+    return _openRoom().then(function (hit) {
+      if (hit) return hit;
+      /* UD/MT stale ho sakta hai — ek asli reload */
+      return bootApp().then(function () {
+        return poll(function () { try { return W().U && W().U.uid ? true : null; } catch (e) { return null; } }, 1500, 90000, 'reload ke baad login (persistence)');
+      }).then(function () {
+        return poll(function () { return _openRoom(); }, 5000, 150000, 'APK par Room ID box');
+      });
+    }).then(function (hit) {
+      VALUES.room_id = roomId;
+      if (!hit) fail('room_id', 'APK ki UI par Room ID nahi mila: ' + roomId);
+      return 'APK par Room ID box dikha — "' + roomId + '" (creator ne web par set kiya tha, admin ne release kiya; asli get_room_credentials RPC se)';
+    });
+  }]);
+
+  /* ── 15/15 : Phase-3 DUO team — captain ne (web par) app ke asli join UI se
+     partner invite kiya, partner ne apni notification ke asli Accept se consent
+     diya, phir team join server (join_match_team) par pass hua. APK (wahi
+     captain account) par wahi duo match ab 2 players ke saath dikhna chahiye. ── */
+  STEPS.push(['15/19 Duo team — invite → accept → 2 players (APK)', function () {
+    var duoTitle = 'QA-TEST TRI ' + RUN + ' — Duo';
+    function _check() {
+      try {
+        var w = W();
+        var MT = w.MT || {};
+        var hit = null;
+        Object.keys(MT).forEach(function (k) {
+          var t = MT[k] || {};
+          var nm = String(t.name || t.title || '');
+          if (nm.indexOf(duoTitle) !== -1) {
+            hit = { id: k, filled: Number(t.filledSlots || t.joinedSlots || 0), nm: nm };
+          }
+        });
+        return (hit && hit.filled >= 2) ? hit : null;
+      } catch (e) { return null; }
+    }
+    try { W().eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();"); } catch (e) {}
+    return poll(function () {
+      try { W().eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+      return _check();
+    }, 6000, 240000, 'APK par duo match me 2 players').then(function (hit) {
+      VALUES.duo_title = duoTitle;
+      VALUES.duo_players = String(hit.filled);
+      return 'APK par duo match "' + duoTitle + '" me ' + hit.filled + ' players — captain ka invite + partner ka accept dono server par pass, team join live';
+    });
+  }]);
+
+  /* ── 16/16 : 3.6 check-in streak — web par (captain account) asli check-in hui,
+     ab APK par wahi streak strip (asli users.streak_days se) dikhna chahiye. ── */
+  STEPS.push(['16/19 Check-in streak strip (APK par wahi streak)', function () {
+    function _strip() {
+      try {
+        var w = W();
+        var d = w.document;
+        var el = d.getElementById('loginStreakStrip');
+        if (!el) return null;
+        return {
+          streak: Number(el.getAttribute('data-streak') || 0),
+          cycle: el.getAttribute('data-cycle'),
+          warrior: !!(el.querySelector ? el.querySelector('img[src*="week-warrior.png"]') : null),
+          txt: (el.innerText || '').replace(/\n/g, ' ').slice(0, 60)
+        };
+      } catch (e) { return null; }
+    }
+    try { W().eval("if (window.navTo) navTo('home'); if (window.renderHome) renderHome();"); } catch (e) {}
+    return poll(function () {
+      try { W().eval("if (window.renderHome) renderHome();"); } catch (e) {}
+      var s = _strip();
+      return (s && s.streak >= 1) ? s : null;
+    }, 6000, 240000, 'APK home par streak strip (streak >= 1)').then(function (s) {
+      if (!s.warrior) fail('streak_warrior', 'APK strip me Week Warrior kala nahi mili');
+      VALUES.streak_days = String(s.streak);
+      VALUES.streak_strip = 'home-strip';
+      return 'APK home par check-in streak strip — ' + s.streak + '/7 din (Week Warrior kala ✔) · ' + s.txt;
+    });
+  }]);
+
+  /* ── 17/17 : 3.8/11 Season Champion ka bada ailaan — host driver ne asli
+     season_champions row daali hogi (P1 ka), APK home par wahi 3-din wala
+     banner + asli kala dikhni chahiye (client dono surfaces par ek jaisa). ── */
+  STEPS.push(['17/19 Season Champion bada ailaan (APK par)', function () {
+    function _champ() {
+      try {
+        var w = W(), el = w.document.getElementById('seasonChampionBanner');
+        var inner = el && el.querySelector ? (el.querySelector('#seasonChampionBanner') || el) : el;
+        if (!inner || inner.getAttribute('data-mine') !== '1') return null;
+        var t = (inner.innerText || '');
+        return {
+          mine: inner.getAttribute('data-mine'),
+          txt: t.replace(/\n/g, ' ').slice(0, 70),
+          kala: !!(w.ASSET_CATALOG && w._assetUnlocked && w._assetStats &&
+                   w._assetUnlocked(w.ASSET_CATALOG.special.find(function (x) { return x.id === 'sp_season_champion'; }), w._assetStats()))
+        };
+      } catch (e) { return null; }
+    }
+    try { W().eval("if (window.navTo) navTo('home'); if (window.renderHome) renderHome();"); } catch (e) {}
+    /* (2026-10-16) Pehle yahan seedha banner ka intezaar tha. Host ka H15 jab
+       der se chalta hai (ya us run me fail ho jata hai) to APK 420s bekaar
+       intezaar karta tha aur wajah bhi nahi pata chalti thi. Ab do kadam:
+       (1) DB me asli champion row aane ka intezaar (khud APK ka client —
+           season_champions par sabko read ki ijazat hai), (2) uske BAAD banner
+           ka — taaki fail hone par wajah saaf ho. */
+    function _row() {
+      return W()._supa.from('season_champions')
+        .select('month_key,user_id,ign,kills,banner_until')
+        .order('declared_at', { ascending: false }).limit(3)
+        .then(function (r) {
+          var rows = (r && r.data) || [], best = null;
+          rows.forEach(function (x) {
+            if (!x || !x.banner_until) return;
+            if (!best || new Date(x.banner_until) > new Date(best.banner_until)) best = x;
+          });
+          return best;
+        }, function () { return null; });
+    }
+    return poll(function () { return _row(); }, 6000, 420000, 'DB me champion row (host H15 se)').then(function (row) {
+      VALUES.champion_row_ign = String(row.ign || '');
+      return poll(function () {
+        try { W().eval("if (window.renderHome) renderHome(); if (window.refreshSeasonChampion) refreshSeasonChampion();"); } catch (e) {}
+        return _champ();
+      }, 6000, 180000, 'APK home par champion banner (apna, row ke baad)');
+    }).then(function (b) {
+      if (!b.kala) fail('champion_kala', 'APK par Season Champion kala unlock nahi hui');
+      VALUES.champion_banner = 'ok';
+      return 'APK home par bada ailaan — "' + b.txt + '" (Season Champion kala ✔)';
+    });
+  }]);
+
+  /* ── 18/19 : 3.9 badge unlock push — host driver ne asli users row ke stats
+     badha kar asli notifyNewBadges chalaya; APK (wahi account) ko wo asli
+     notification row apni list me dikhni chahiye (isi row par push trigger
+     lagi hui hai — 200 push gateway alag se live-proved hai). ── */
+  STEPS.push(['18/19 Badge unlock push (APK par asli row)', function () {
+    var lastRows = 'abhi tak koi notification row nahi';
+    function _bn() {
+      try {
+        var w = W();
+        if (!w || !w._supa || !w.U || !w.U.uid) {
+          lastRows = 'app session / Supabase / UID abhi taiyar nahi';
+          return null;
+        }
+        return w._supa.from('notifications')
+          .select('type,title,ref_id,created_at').eq('user_id', w.U.uid)
+          .in('type', ['badge_unlock', 'badge_near_unlock'])
+          .order('created_at', { ascending: false }).limit(50);
+      } catch (e) {
+        lastRows = 'query throw: ' + String(e && (e.message || e)).slice(0, 100);
+        return null;
+      }
+    }
+    return poll(function () {
+      var q = _bn();
+      if (!q) return null;
+      return q.then(function (r) {
+        if (r && r.error) {
+          lastRows = 'Supabase ' + String(r.error.code || '') + ': ' + String(r.error.message || '').slice(0, 120);
+          return null;
+        }
+        var rows = (r && r.data) || [];
+        lastRows = rows.length ? rows.slice(0, 6).map(function (x) {
+          return String(x.type || '') + ': ' + String(x.title || '').slice(0, 52);
+        }).join(' || ') : 'query safal, par abhi row nahi';
+        /* APK (yahan) near-unlock row pehle dekh sakta hai, jabki asli
+           badge_unlock web ke H16 se kuch pal baad banti hai. Kisi bhi row
+           ko milte hi poll ko safal/asantoshjanak na mano: keval asli unlock
+           milne par return karo; near-only par null dekar polling chalne do.
+           Query ko newest-first + 50 rows tak rakho, taaki purani unlock
+           row near-unlock records ki wajah se list se bahar na ho. */
+        var un = rows.filter(function (x) {
+          var t = String(x.title || '');
+          return x.type === 'badge_unlock' &&
+            (t.indexOf('Naya badge') !== -1 || t.indexOf('Naya title') !== -1);
+        });
+        if (!un.length) return null;
+        return { n: rows.length, t: String(un[0].title || ''), ty: un[0].type, ok: true };
+      }, function () { return null; });
+    }, 6000, 420000, 'APK par badge unlock notification row (asli)').then(function (b) {
+      VALUES.badge_unlock_push = 'ok';
+      return 'APK par asli badge unlock notification (' + b.ty + ' × ' + b.n + ') — "' + b.t.slice(0, 48) + '"';
+    }, function (e) {
+      fail('badge_unlock_title', ((e && e.message) || String(e)) + ' — aakhri rows: ' + lastRows.slice(0, 260));
+    });
+  }]);
+
+  /* ── 19/19 : login ke baad poora user-route tour (asli APK WebView app) ──
+     Sirf harness result dekhna kaafi nahi: P1 ke apne authenticated app UI me
+     har main route ko actual nav/button click se kholte hain, visible DOM check
+     karte hain aur koi purchase/withdrawal/message submit nahi karte. Notifications
+     kholne se QA account ke read flags badlenge; run-end cleanup us data ko hataata
+     hai. Chat kholne par app apna support/{uid}/info sync karta hai; akhir me
+     host driver QA UID ka poora RTDB subtree saaf karke read-back confirm karta hai. */
+  STEPS.push(['19/19 Logged-in user route tour (Home → Chat, asli APK UI)', function () {
+    var w = W(), seen = [], p2Ign = 'TRIQA2 ' + RUN;
+    function must(ok, msg) { if (!ok) throw new Error(msg); }
+    function text(el) { return String(el && (el.innerText || el.textContent) || '').replace(/\s+/g, ' ').trim(); }
+    function visibleScreen(id) {
+      var e = w.document.getElementById(id);
+      return !!(e && e.classList.contains('active') && w.getComputedStyle(e).display !== 'none');
+    }
+    function waitScreen(name, id, contentSelector, checkText) {
+      return poll(function () {
+        try {
+          if (!visibleScreen(id)) return null;
+          var c = contentSelector ? w.document.querySelector(contentSelector) : w.document.getElementById(id);
+          var t = text(c);
+          if (!c || !t) return null;
+          if (checkText && t.toLowerCase().indexOf(checkText.toLowerCase()) < 0) return null;
+          return { name: name, text: t.slice(0, 90) };
+        } catch (e) { return null; }
+      }, 500, 30000, name + ' signed-in screen');
+    }
+    function clickNav(name, id, selector, checkText) {
+      var b = w.document.querySelector('#bottomNav [data-nav="' + name + '"]');
+      must(!!b, 'bottom-nav button missing: ' + name);
+      b.click();
+      return waitScreen(name, id, selector, checkText).then(function (v) {
+        seen.push(name);
+        console.log('TRI-USER-ROUTE: ' + name + ' — ' + v.text);
+        return v;
+      });
+    }
+    function chooseDropdown(id, contains) {
+      var d = w.document.getElementById(id);
+      must(!!d, 'filter missing: ' + id);
+      d.click();
+      var pop = d.querySelector('.dd-popover');
+      must(!!pop, 'filter popover did not open: ' + id);
+      var opts = Array.prototype.slice.call(pop.children || []);
+      var opt = opts.filter(function (x) { return text(x).toLowerCase().indexOf(contains.toLowerCase()) >= 0; })[0];
+      must(!!opt, 'filter option missing: ' + contains + ' in ' + id);
+      opt.click();
+      return text(d.querySelector('.dd-current'));
+    }
+    function clickHeader(label) {
+      var b = w.document.querySelector('#header [aria-label="' + label + '"]');
+      must(!!b, 'header action missing: ' + label);
+      b.click();
+    }
+    function closeModal() {
+      var b = w.document.querySelector('#modalOv .m-close');
+      if (b) b.click(); else if (w.closeModal) w.closeModal();
+    }
+    var profileFeatureAudit = [];
+    function openReadOnlyProfilePanel(selector, label, titleNeedle, readySelector) {
+      var entry = w.document.querySelector('#profileContent ' + selector);
+      must(!!entry, 'Profile entry missing: ' + label);
+      if (entry.scrollIntoView) entry.scrollIntoView({ block: 'center' });
+      entry.click();
+      return poll(function () {
+        var ov = w.document.getElementById('modalOv');
+        var title = w.document.getElementById('modalT');
+        var body = w.document.getElementById('modalB');
+        var titleText = text(title), bodyText = text(body);
+        if (!ov || !ov.classList.contains('show') || titleText.toLowerCase().indexOf(titleNeedle.toLowerCase()) < 0 || !bodyText) return null;
+        if (body && body.querySelector('.fa-spin')) return null;
+        if (readySelector && !(body && body.querySelector(readySelector))) return null;
+        return { title: titleText, body: bodyText };
+      }, 500, 20000, label + ' read-only panel').then(function (state) {
+        profileFeatureAudit.push(label);
+        seen.push('profile-' + label.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+        console.log('TRI-USER-PROFILE-FEATURE: ' + label + ' — ' + state.title + ' — ' + state.body.slice(0, 80));
+        closeModal();
+        return state;
+      });
+    }
+    function runProfileReadOnlyAudit() {
+      var checks = [
+        ['[onclick*="showPlayerTitles"]', 'My Titles', 'My Titles'],
+        ['[onclick*="showBattlePass"]', 'Season Pass', 'Season Pass'],
+        ['[onclick*="showClanHome"]', 'My Clan', 'Clan'],
+        ['[onclick*="showCosmeticsStore"]', 'Cosmetics Store', 'Cosmetics Store'],
+        ['[onclick*="showPollsList"]', 'Polls', 'Polls'],
+        ['[onclick*="showReferEarn"]', 'Refer & Earn', 'Refer & Earn'],
+        ['[onclick*="showCreatorDashboard"]', 'Creator Program', 'Creator Program'],
+        ['[onclick*="showAchievementsV3"]', 'Achievements', 'Achievements'],
+        ['[onclick*="showMatchHistory"]', 'Match History', 'Match History'],
+        ['[onclick*="showPerformanceTracker"]', 'Performance Stats', 'Performance Stats'],
+        ['[onclick*="showSeasonHistory"]', 'Season History', 'Season History'],
+        ['[onclick*="showLiveSpectateList"]', 'Watch Live & Earn', 'Live Matches'],
+        ['[onclick*="showPerformanceDashboard"]', 'Performance Dashboard', 'Performance Dashboard'],
+        ['[onclick*="showMySuggestions"]', 'My Suggestions', 'My Suggestions', '#suggestTxt']
+      ];
+      return checks.reduce(function (p, item) {
+        return p.then(function () { return openReadOnlyProfilePanel(item[0], item[1], item[2], item[3]); });
+      }, Promise.resolve()).then(function () {
+        VALUES.user_profile_feature_tour = profileFeatureAudit.join(', ');
+      });
+    }
+    function runTour() {
+      must(!!w.U && !!w.U.uid && !!w.UD && !!w._supa, 'app authenticated session not ready');
+      must(w.document.getElementById('loginScreen') && w.getComputedStyle(w.document.getElementById('loginScreen')).display === 'none', 'login screen is still visible');
+      return clickNav('home', 'scrHome', '#homeList', MARK).then(function () {
+        var cats = ['paid', 'coin', 'ad', 'all'];
+        cats.forEach(function (cat) {
+          var p = w.document.querySelector('#homeCat [data-cat="' + cat + '"]');
+          must(!!p, 'home category missing: ' + cat);
+          p.click();
+          must(p.classList.contains('active'), 'home category did not activate: ' + cat);
+        });
+        must(chooseDropdown('homeStatusDd', 'live').toLowerCase().indexOf('live') >= 0, 'Home Live filter did not apply');
+        must(chooseDropdown('homeStatusDd', 'upcoming').toLowerCase().indexOf('upcoming') >= 0, 'Home Upcoming filter did not reset');
+        must(chooseDropdown('homeRankDd', 'bronze').toLowerCase().indexOf('bronze') >= 0, 'Home Bronze filter did not apply');
+        must(chooseDropdown('homeRankDd', 'all ranks').toLowerCase().indexOf('all ranks') >= 0, 'Home rank filter did not reset');
+        return clickNav('matches', 'scrMatches', '#mmList', MARK);
+      }).then(function () {
+        must(chooseDropdown('mmStatusDd', 'completed').toLowerCase().indexOf('completed') >= 0, 'My Matches Completed filter did not apply');
+        must(chooseDropdown('mmStatusDd', 'upcoming').toLowerCase().indexOf('upcoming') >= 0, 'My Matches Upcoming filter did not reset');
+        var banner = w.document.getElementById('specialBanner');
+        must(!!banner, 'Special Tournaments entry missing from Matches');
+        banner.click();
+        return waitScreen('special', 'scrSpecial', '#specialList').then(function (s) {
+          var monthly = Array.prototype.slice.call(w.document.querySelectorAll('#scrSpecial .sp-tog-btn')).filter(function (b) { return text(b).indexOf('Monthly Special') >= 0; })[0];
+          var weekly = Array.prototype.slice.call(w.document.querySelectorAll('#scrSpecial .sp-tog-btn')).filter(function (b) { return text(b).indexOf('Sunday Special') >= 0; })[0];
+          must(!!monthly && !!weekly, 'Sunday/Monthly Special toggles missing');
+          monthly.click();
+          must(monthly.classList.contains('active'), 'Monthly Special toggle did not activate');
+          must(text(w.document.getElementById('specialList')).length > 0, 'Monthly Special list is blank');
+          weekly.click();
+          must(weekly.classList.contains('active'), 'Sunday Special toggle did not reset');
+          seen.push('special');
+          console.log('TRI-USER-ROUTE: special — ' + s.text);
+          return clickNav('matches', 'scrMatches', '#mmList', MARK);
+        });
+      }).then(function () {
+        return clickNav('rank', 'scrRank', '#rankContent', 'Rank = Wins');
+      }).then(function () {
+        var tab = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('wins') >= 0; })[0];
+        must(!!tab, 'Rank Wins tab missing');
+        tab.click(); must(w._rankTab === 'wins', 'Rank Wins tab did not activate');
+        var points = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('points') >= 0; })[0];
+        must(!!points, 'Rank Points tab missing');
+        points.click(); must(w._rankTab === 'rankpoints', 'Rank Points tab did not activate');
+        var kills = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('kills') >= 0; })[0];
+        must(!!kills, 'Rank Kills tab missing');
+        kills.click(); must(w._rankTab === 'kills', 'Rank Kills tab did not reset');
+        return clickNav('wallet', 'scrWallet', '#walletMain', 'Sky Diamond Balance');
+      }).then(function () {
+        must(!!w.document.getElementById('wTotal') && !!w.document.getElementById('wCoins') && !!w.document.getElementById('greenDiaCount'), 'Wallet balances are incomplete');
+        /* Balance/history are read only here; Buy, Check-In and Withdraw are deliberately untouched. */
+        var history = w.document.querySelector('#walletMain [onclick*="showCoinHistory"]');
+        must(!!history, 'Wallet Coin History action missing');
+        history.click();
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('Coin History') >= 0 && b && text(b) ? true : null;
+        }, 500, 20000, 'Coin History read-only modal');
+      }).then(function () {
+        closeModal();
+        var summary = w.document.querySelector('#walletMain [onclick*="showTransactionSummary"]');
+        must(!!summary, 'Wallet Transaction Summary action missing');
+        summary.click();
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('Transaction Summary') >= 0 && b && text(b).indexOf('Net Position') >= 0 ? true : null;
+        }, 500, 15000, 'Transaction Summary read-only modal');
+      }).then(function () {
+        closeModal();
+        return clickNav('profile', 'scrProfile', '#profileContent', w.UD.ign);
+      }).then(function () {
+        var gear = w.document.querySelector('#profileContent [onclick*="showProfileSettings"]');
+        must(!!gear, 'Profile settings control missing');
+        gear.click();
+        var sheet = w.document.getElementById('profSettingsSheet');
+        must(!!sheet && text(sheet).indexOf('Legal & Compliance') >= 0 && text(sheet).indexOf('My Tickets & Replies') >= 0, 'Profile settings sheet did not render expected options');
+        var closer = sheet.querySelector('[onclick*="closeProfileSettings"]');
+        if (closer) closer.click(); else if (w.closeProfileSettings) w.closeProfileSettings();
+        return runProfileReadOnlyAudit().then(function () { return clickHeader('Notifications'); });
+      }).then(function () {
+        return waitScreen('notifications', 'scrNotif', '#notifList', MARK);
+      }).then(function (n) {
+        seen.push('notifications');
+        console.log('TRI-USER-ROUTE: notifications — ' + n.text);
+        clickHeader('Search Matches');
+        return poll(function () { return w.document.getElementById('usrSrchInput'); }, 400, 20000, 'Search Players modal');
+      }).then(function (input) {
+        /* Search by the unique run-id substring (avoids whitespace in the
+           live-search PostgREST OR filter) and then require the exact P2 IGN.
+           Read-only probe distinguishes a hidden/missing profile row from a UI
+           event/rendering failure; it never writes or bypasses the UI assertion. */
+        var probe;
+        function probeQuery(label, query) {
+          return query.then(function (r) {
+            var rows = (r && r.data) || [];
+            var target = rows.filter(function (x) { return String(x.ign || '').toLowerCase() === p2Ign.toLowerCase(); })[0];
+            return { label: label, error: r && r.error ? String(r.error.code || '') + ': ' + String(r.error.message || '').slice(0, 140) : '', count: rows.length, p2: !!target, is_banned: target ? target.is_banned : null, profile_status: target ? target.profile_status : null };
+          }, function (e) { return { label: label, error: String(e && (e.message || e)).slice(0, 180), count: 0, p2: false }; });
+        }
+        var baseSelect = w._supa.from('user_public_profiles').select('ign,is_banned,profile_status');
+        probe = Promise.all([
+          probeQuery('same-filter-as-UI', baseSelect.or('ign.ilike.%' + RUN + '%,ff_uid.ilike.%' + RUN + '%').eq('is_banned', false).limit(10)),
+          probeQuery('P2-IGN-without-ban-filter', w._supa.from('user_public_profiles').select('ign,is_banned,profile_status').ilike('ign', '%' + p2Ign + '%').limit(10))
+        ]);
+        return probe.then(function (diagnostics) {
+          console.log('TRI-USER-SEARCH-PROBE: ' + JSON.stringify(diagnostics));
+          /* The route-tour can outlive a WebView modal node while its read-only
+             probe completes. Reopen through the visible header action and use
+             the fresh, attached input exactly as a signed-in user would. */
+          closeModal();
+          clickHeader('Search Matches');
+          return poll(function () { return w.document.getElementById('usrSrchInput'); }, 400, 20000, 'Search Players modal after probe').then(function (liveInput) {
+            must(!!(w.document.documentElement && w.document.documentElement.contains(liveInput)), 'Search input is detached from the active app document');
+            liveInput.value = RUN;
+            var inputMethod = 'input.oninput';
+            if (typeof liveInput.oninput === 'function') {
+              /* WebView 83 can ignore a cross-frame synthetic input dispatch;
+                 invoke the actual inline handler that a typed input calls. */
+              liveInput.oninput.call(liveInput, new w.Event('input', { bubbles: true }));
+            } else if (typeof w.liveSearchUsers === 'function') {
+              inputMethod = 'liveSearchUsers fallback';
+              w.liveSearchUsers(liveInput.value);
+            } else {
+              throw new Error('Search input handler missing: oninput=' + typeof liveInput.oninput + ', liveSearchUsers=' + typeof w.liveSearchUsers);
+            }
+            console.log('TRI-USER-SEARCH-INPUT: ' + JSON.stringify({ attached: !!(w.document.documentElement && w.document.documentElement.contains(liveInput)), oninput: typeof liveInput.oninput, method: inputMethod, immediate: text(w.document.getElementById('usrSrchResults')).slice(0, 60) }));
+            return poll(function () {
+              var r = w.document.getElementById('usrSrchResults');
+              return r && text(r).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0 ? text(r) : null;
+            }, 700, 30000, 'Search Players result for QA P2').catch(function (e) {
+              var results = w.document.getElementById('usrSrchResults');
+              throw new Error(((e && e.message) || String(e)) + ' | results="' + text(results).slice(0, 180) + '" | probe=' + JSON.stringify(diagnostics));
+            });
+          });
+        });
+      }).then(function () {
+        var row = Array.prototype.slice.call(w.document.querySelectorAll('#usrSrchResults [onclick*="viewPublicProfile"]')).filter(function (x) { return text(x).toLowerCase().indexOf(p2Ign.toLowerCase()) >= 0; })[0];
+        must(!!row, 'Search result row for QA P2 is missing');
+        row.click();
+        return poll(function () {
+          var title = w.document.getElementById('modalT'), body = w.document.getElementById('modalB');
+          return title && text(title).indexOf(p2Ign) >= 0 && body && /Matches/.test(text(body)) && /Wins/.test(text(body)) ? true : null;
+        }, 700, 30000, 'public player profile modal');
+      }).then(function () {
+        seen.push('search');
+        console.log('TRI-USER-ROUTE: search — QA P2 public profile opened');
+        closeModal();
+        clickHeader('Help and Support');
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('Help & Support') >= 0 && b && /Support Chat/.test(text(b)) && /Submit Support Ticket/.test(text(b)) ? b : null;
+        }, 400, 20000, 'Help & Support modal');
+      }).then(function (body) {
+        var tickets = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('My Tickets & Replies') >= 0; })[0];
+        must(!!tickets, 'My Tickets & Replies entry missing');
+        tickets.click();
+        return poll(function () {
+          var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
+          return t && text(t).indexOf('My Tickets') >= 0 && b && text(b).indexOf(MARK) >= 0 ? text(b) : null;
+        }, 700, 30000, 'My Tickets and admin reply');
+      }).then(function (ticketsText) {
+        must(ticketsText.indexOf('Admin Reply') >= 0 || ticketsText.indexOf('replied') >= 0 || ticketsText.indexOf('Replied') >= 0, 'ticket exists but admin reply is not visible');
+        seen.push('support-tickets');
+        console.log('TRI-USER-ROUTE: support tickets — ' + ticketsText.slice(0, 90));
+        closeModal();
+        clickHeader('Help and Support');
+        return poll(function () {
+          var b = w.document.getElementById('modalB');
+          return b && /Submit Support Ticket/.test(text(b)) ? b : null;
+        }, 400, 15000, 'Help modal before support form');
+      }).then(function (body) {
+        var submit = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Submit Support Ticket') >= 0; })[0];
+        must(!!submit, 'Support Ticket entry missing');
+        submit.click();
+        return poll(function () { return w.document.getElementById('supMsg') && w.document.getElementById('supType') ? true : null; }, 400, 15000, 'Support Ticket form');
+      }).then(function () {
+        must(!!w.document.querySelector('#modalB textarea#supMsg'), 'Support Ticket message field missing');
+        closeModal();
+        clickHeader('Help and Support');
+        return poll(function () {
+          var b = w.document.getElementById('modalB');
+          return b && /Support Chat/.test(text(b)) ? b : null;
+        }, 400, 15000, 'Help modal before Chat');
+      }).then(function (body) {
+        var chat = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Support Chat') >= 0; })[0];
+        must(!!chat, 'Support Chat entry missing');
+        chat.click();
+        return poll(function () {
+          var msgs = w.document.getElementById('chatMsgs'), inp = w.document.getElementById('chatIn');
+          return visibleScreen('scrChat') && msgs && inp && text(msgs) ? { messages: text(msgs).slice(0, 90) } : null;
+        }, 700, 30000, 'Support Chat screen and message area');
+      }).then(function (chatState) {
+        seen.push('support', 'chat');
+        console.log('TRI-USER-ROUTE: support/chat — ' + chatState.messages);
+        return clickNav('home', 'scrHome', '#homeList', MARK);
+      }).then(function () {
+        VALUES.user_route_tour = 'Home, Special, Matches, Rank, Wallet, Profile, Notifications, Search, Support, Chat — plus ' + profileFeatureAudit.length + ' read-only Profile modules; all opened in authenticated APK';
+        return { ok: true, seen: seen, uid: String(w.U.uid).slice(0, 8), chatInfoCleanup: 'admin RTDB cleanup pending' };
+      });
+    }
+    var run;
+    try { run = runTour(); } catch (e) { run = Promise.reject(e); }
+    return Promise.resolve(run).then(function (out) {
+      console.log('TRI-USER-ROUTE-TOUR-DONE: ' + JSON.stringify(out));
+      return 'authenticated user routes visited: ' + seen.join(', ') + ' (wallet purchase/withdrawal and chat send not used)';
+    }, function (e) {
+      var msg = String(e && (e.message || e) || 'route tour failed').slice(0, 260);
+      console.log('TRI-USER-ROUTE-TOUR-DONE: ' + JSON.stringify({ ok: false, seen: seen, error: msg }));
+      throw e;
+    });
+  }]);
+
+  function markState(i, state, detail) {
+    results[i] = results[i] || { name: STEPS[i][0], detail: '' };
+    results[i].state = state;
+    if (detail) results[i].detail = detail;
+    render();
+  }
+
+  (async function run() {
+    console.log('TRI-E2E-START: run=' + RUN + ' steps=' + STEPS.length);
+    for (var i = 0; i < STEPS.length; i++) {
+      var nm = STEPS[i][0];
+      markState(i, 'run', 'chal raha hai…');
+      var t0 = Date.now();
+      try {
+        var detail = await STEPS[i][1]();
+        results[i] = { name: nm, ok: true, detail: detail || 'ok', secs: Math.round((Date.now() - t0) / 1000) };
+        logStep(nm, (detail || 'ok') + ' [' + results[i].secs + 's]', true);
+      } catch (e) {
+        results[i] = { name: nm, ok: false, detail: (e && e.message || String(e)).slice(0, 220), secs: Math.round((Date.now() - t0) / 1000) };
+        logStep(nm, 'FAIL: ' + results[i].detail, false);
+      }
+      render();
+    }
+    var ok = results.filter(function (r) { return r.ok; }).length;
+    var el = document.getElementById('result');
+    el.className = 'big' + (ok === STEPS.length ? '' : ' fail');
+    el.textContent = 'TRI-E2E-RESULT: ' + ok + '/' + STEPS.length + ' OK';
+    console.log('TRI-E2E-RESULT: ' + ok + '/' + STEPS.length + ' OK');
+    console.log('TRI-E2E-VALUES: ' + JSON.stringify(VALUES));
+    document.getElementById('values').textContent = 'TRI-E2E-VALUES: ' + JSON.stringify(VALUES);
+  })();
+})();
+</script>
+</body>
+</html>
