@@ -318,9 +318,14 @@ function renderProfile() {
   try {
     var _pc2Host = document.getElementById('pc2HostProfile');
     if (_pc2Host && window.PCARD2 && window._pc2ProfData) {
+      /* ✅ D78 (06 Nov 2026, owner complaint): button mapping EXACT icon ke
+         hisaab se — image-icon = My Collection gallery, gear = settings
+         sheet, pencil = photo upload. (Pehle image-icon par banner-picker
+         khulta tha aur gear par kuch na hota tha agar sheet fn miss ho.)
+         Banner upload settings sheet ki row se hamesha available hai. */
       window.PCARD2.mount(_pc2Host, window._pc2ProfData, [
-        function () { var b = document.getElementById('profBannerIn'); if (b) b.click(); },
-        function () { if (window.showProfileSettings) window.showProfileSettings(); },
+        function () { if (window.showAssetGallery) window.showAssetGallery(); else if (window.toast) toast('Collection load nahi hui — refresh karo', 'err'); },
+        function () { if (window.showProfileSettings) window.showProfileSettings(); else if (window.toast) toast('Settings load nahi hui — refresh karo', 'err'); },
         function () { var pi = document.getElementById('profImgIn'); if (pi) pi.click(); }
       ]);
     }
