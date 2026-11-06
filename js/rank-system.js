@@ -195,7 +195,7 @@ window.showHowRankWorks = function() {
   window.RANK_TIERS.forEach(function(t) {
     var range = (t.min === 0 ? '0' : String(t.min)) + ' – ' + (t.max >= 9999 ? '∞' : t.max);
     h += '<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:14px;background:linear-gradient(90deg,' + t.bg + ',rgba(0,0,0,.25));border:2px solid ' + t.color + ';box-shadow:0 0 12px ' + t.color + '55,inset 0 0 10px ' + t.color + '22">';
-    h += '<div style="width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center"><img src="' + t.img + '?v=20261107b" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
+    h += '<div style="width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center"><img src="' + t.img + '?v=20261107c" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
     h += '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:900;color:' + t.color + ';text-shadow:0 1px 3px rgba(0,0,0,.7)">' + t.name + '</div>';
     h += '<div style="font-size:10px;color:#cfcfe8;margin-top:1px">' + (TAG[t.name] || '') + '</div></div>';
     h += '<div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)">' + range + '</div><div style="font-size:9px;color:#cfcfe8">Points</div></div>';

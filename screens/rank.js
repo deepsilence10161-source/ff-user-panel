@@ -543,6 +543,12 @@ function _rankVal(u, sortKey) {
   var st = u.stats || {};
   if (sortKey === 'kills') return Number(st.kills || 0);
   if (sortKey === 'wins')  return Number(st.wins  || 0);
+  /* ✅ D86 (owner: "green diamond diye the fir bhi rank 1 par nahi"):
+     Points ab SERVER ka rank_points column hai — jisme match-placement
+     points (publish_match_results) AUR admin ke green-diamond grants
+     (admin_adjust_wallet mirror) dono judte hain. Purana client-computed
+     value sirf fallback hai (column na ho to). */
+  if (u.rankPoints != null && u.rankPoints !== '') return Number(u.rankPoints || 0);
   return Number(st.wins||0)*40 + Number(st.kills||0)*2 + Number(st.matches||0) + Number(st.winStreak||u.winStreak||0)*10;
 }
 function _rankValStr(val, sortKey) {
@@ -567,9 +573,14 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
     } else if (sortKey === 'wins') {
       val = Number(_stR.wins || 0);
     } else {
-      var _wR = Number(_stR.wins||0), _kR = Number(_stR.kills||0),
-          _mR = Number(_stR.matches||0), _skR = Number(_stR.winStreak||u.winStreak||0);
-      val = _wR*40 + _kR*2 + _mR + _skR*10;
+      /* ✅ D86: row points bhi server rank_points column se (grant-visible) */
+      if (u.rankPoints != null && u.rankPoints !== '') {
+        val = Number(u.rankPoints || 0);
+      } else {
+        var _wR = Number(_stR.wins||0), _kR = Number(_stR.kills||0),
+            _mR = Number(_stR.matches||0), _skR = Number(_stR.winStreak||u.winStreak||0);
+        val = _wR*40 + _kR*2 + _mR + _skR*10;
+      }
     }
     var valStr = sortKey === 'kills' ? val + ' kills' : sortKey === 'wins' ? val + ' wins' : '🏆 ' + val + ' pts';
     var isMe = window.U && (u._uid === window.U.uid);
@@ -603,7 +614,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
        assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
        RP-based hai aur fail-safe (na mile to emoji waisa hi). */
     h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
-         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261107b" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
+         (window.rankBadgeImg ? '<img src="' + window.rankBadgeImg(rk.pts) + '?v=20261107c" alt="" style="width:16px;height:16px;object-fit:contain" onerror="this.style.display=\'none\'">' : '') +
          rk.emoji + ' ' + rk.badge + '</span>';
     h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
   }
