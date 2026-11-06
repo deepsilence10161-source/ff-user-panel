@@ -148,9 +148,9 @@ html{scrollbar-width:none;overscroll-behavior:none}
 .mc-prizes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:8px 12px 4px}
 .mc-prize-box{border-radius:12px;padding:9px 6px 8px;text-align:center;position:relative;overflow:hidden}
 .mc-prize-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:inherit;filter:brightness(3)}
-.mc-prize-1{background:rgba(255,215,0,.08);border:1.5px solid rgba(255,215,0,.45);box-shadow:0 0 12px rgba(255,215,0,.12)}
-.mc-prize-2{background:rgba(0,212,255,.06);border:1.5px solid rgba(0,212,255,.35);box-shadow:0 0 12px rgba(0,212,255,.08)}
-.mc-prize-3{background:rgba(255,140,0,.06);border:1.5px solid rgba(255,140,0,.35);box-shadow:0 0 12px rgba(255,140,0,.08)}
+.mc-prize-1{background:rgba(255,215,0,.10);border:2px solid rgba(255,215,0,.55);box-shadow:0 0 18px rgba(255,215,0,.22)}
+.mc-prize-2{background:rgba(0,212,255,.08);border:2px solid rgba(0,212,255,.45);box-shadow:0 0 18px rgba(0,212,255,.16)}
+.mc-prize-3{background:rgba(255,140,0,.08);border:2px solid rgba(255,140,0,.45);box-shadow:0 0 18px rgba(255,140,0,.16)}
 .mc-prize-icon{font-size:16px;line-height:1;margin-bottom:2px}
 .mc-prize-rank{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;opacity:.7;margin-bottom:1px}
 .mc-prize-amt{font-size:17px;font-weight:900;line-height:1.1}
@@ -177,7 +177,7 @@ html{scrollbar-width:none;overscroll-behavior:none}
 .mc-info-btn{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--txt2);cursor:pointer;font-size:13px;transition:all .2s}
 .mc-info-btn:active{background:rgba(255,255,255,.12);color:#fff}
 .mc-join{padding:8px 18px;border-radius:10px;border:none;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.3px}
-.mc-join.join-ok{background:transparent;color:#00ff6a;border:2px solid #00ff6a;box-shadow:0 0 16px rgba(0,255,106,.3),inset 0 0 8px rgba(0,255,106,.05);font-weight:900}
+.mc-join.join-ok{background:rgba(0,255,106,.04);color:#00ff6a;border:2.5px solid #00ff6a;box-shadow:0 0 22px rgba(0,255,106,.45),inset 0 0 10px rgba(0,255,106,.08);font-weight:900}
 .mc-join.join-ok:active{transform:scale(.95)}
 .mc-join.joined{background:transparent;border:1.5px solid var(--green);color:var(--green);cursor:default}
 .mc-join.join-full{background:var(--red);color:#fff;cursor:not-allowed;opacity:.7}
@@ -1089,12 +1089,13 @@ body.has-web-banner .chat-container {
 .rb-wrap {
   position: relative;
   border-radius: 20px;
-  padding: 2px;
+  padding: 3px;
   background: conic-gradient(from var(--rbAngle, 0deg),
     #ff004d, #ff8c00, #ffd700, #00ff9c, #00d4ff, #b964ff, #ff004d);
   animation: rbSpin 4s linear infinite;
-  /* D76 (2026-11-07, owner screenshot replica): neon halo har card par */
-  box-shadow: 0 0 18px rgba(0, 255, 156, .22), 0 0 34px rgba(255, 0, 77, .16);
+  /* D81 (2026-11-06, owner: "exact screenshot jaisi"): halo target ke
+     barabar — zyada strong */
+  box-shadow: 0 0 22px rgba(0, 255, 156, .30), 0 0 46px rgba(255, 0, 77, .22);
 }
 /* D76 (2026-11-07, owner screenshot replica): card ke top par dark battle-scene
    key-art (sirf decoration — match data se independent, isliye UI art me safe). */
@@ -1102,17 +1103,17 @@ body.has-web-banner .chat-container {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 108px;
+  height: 104px;
   background: url('assets/img/match-bg.jpg') center 30% / cover no-repeat;
-  opacity: .42;
-  -webkit-mask-image: linear-gradient(#000 25%, transparent 96%);
-  mask-image: linear-gradient(#000 25%, transparent 96%);
+  opacity: .58;
+  -webkit-mask-image: linear-gradient(#000 18%, transparent 88%);
+  mask-image: linear-gradient(#000 18%, transparent 88%);
   pointer-events: none;
   z-index: 0;
 }
 .m-card > * { position: relative; z-index: 1; }
 .rb-wrap > .rb-inner {
-  border-radius: 18px;
+  border-radius: 17px;
   position: relative;
   z-index: 1;
   /* ✅ OWNER FIX (2026-11-03): purane cached JS me .m-card ka margin-bottom
