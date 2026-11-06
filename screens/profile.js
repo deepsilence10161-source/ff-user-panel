@@ -122,7 +122,11 @@ function renderProfile() {
        tha — BEAST MODE apply karne par bhi nahi badalta tha) */
     title: _eqTag || '',
     pts: rk.pts || 0, tier: String(rk.badge || 'Bronze'),
-    stats: [_pm0, _pk0, _pw0, (_pm0 ? (_pk0/_pm0).toFixed(1) : '0.0'), (_pm0 ? Math.round(_pw0/_pm0*100) : 0) + '%']
+    stats: [_pm0, _pk0, _pw0, (_pm0 ? (_pk0/_pm0).toFixed(1) : '0.0'), (_pm0 ? Math.round(_pw0/_pm0*100) : 0) + '%'],
+    /* ✅ D77 (06 Nov 2026, owner): photo/banner = ASLI dynamic URLs —
+       replica art me baked nahi (D36 niyam). Update hote hi renderProfile
+       dobara mount karta hai ⇒ turant dikhte hain. */
+    photo: UD.profileImage || '', banner: UD.bannerImage || ''
   };
 
   /* ✅ USER-ATTRACTION (2026-10-12, badge-engine.js): khule badges ki

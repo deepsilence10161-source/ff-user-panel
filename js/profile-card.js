@@ -14,16 +14,17 @@
       level: 1, xp: 0, xpNeed: 10,
       pts: Number(UD.rank_points || 0),
       tier: String(rk.badge || 'Bronze'),
-      stats: [m, k, w, m ? (k / m).toFixed(1) : '0.0', (m ? Math.round(w / m * 100) : 0) + '%']
+      stats: [m, k, w, m ? (k / m).toFixed(1) : '0.0', (m ? Math.round(w / m * 100) : 0) + '%'],
+      title: UD.title || '', photo: UD.profileImage || '', banner: UD.bannerImage || ''
     };
     var go = function () {
-      window.PCARD2.loadImg(function (img) {
+      window.PCARD2.loadImgs(data, function (imgs) {
         var cw = 1000;
         var canvas = document.createElement('canvas');
         canvas.width = cw;
         canvas.height = Math.round(cw * window.PCARD2.H / window.PCARD2.W);
         var ctx = canvas.getContext('2d');
-        window.PCARD2.draw(ctx, data, cw, img);
+        window.PCARD2.draw(ctx, data, cw, imgs);
         shareCanvas(canvas);
       });
     };

@@ -53,7 +53,9 @@ function _renderPlayerCard(data){
   var _pc2Data = {
     name: ign, uid: ffUid, level: 1, xp: 0, xpNeed: 10, pts: rp || 0,
     tier: String(data.rank_tier || ri.badge || 'Bronze'),
-    stats: [matches, kills, wins, kd, wr + '%']
+    stats: [matches, kills, wins, kd, wr + '%'],
+    /* ✅ D77: searched user ki asli photo/banner (public view columns) */
+    photo: data.avatar_url || data.profileImage || '', banner: data.banner_url || ''
   };
   h += '<div id="pc2Host" style="margin-bottom:14px"></div>';
   /* Share buttons */
