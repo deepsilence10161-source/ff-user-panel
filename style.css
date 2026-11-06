@@ -235,86 +235,19 @@ body {
   box-shadow: 0 4px 16px rgba(255,215,0,.06) !important;
 }
 
-/* ═══════════════════════════════════════
-   MATCH CARD — Elite gaming UI
-═══════════════════════════════════════ */
-.m-card {
-  background: linear-gradient(160deg, #0d0d18, #0a0a12) !important;
-  border: 1px solid rgba(255,255,255,.07) !important;
-  border-radius: 20px !important;
-  margin-bottom: 14px !important;
-  overflow: hidden !important;
-  transition: all .22s !important;
-  box-shadow:
-    0 8px 32px rgba(0,0,0,.5),
-    0 1px 0 rgba(255,255,255,.04) inset !important;
-  position: relative !important;
-}
-
-/* ✅ D85 (owner: "match card abhi bhi pahle jaisa — web aur apk dono"):
-   ye purana 1px-shine ::before rule styles.css ke D76/D81 key-art
-   ::before (match-bg) ko !important se override kar deta tha — ek element
-   par ek hi ::before box hota hai, isliye art kabhi render hi nahi hui
-   (local harness sirf styles.css load karta tha, isliye proof me art dikhi
-   aur live par nahi — ab proof LIVE page par bhi hota hai). Rule hataya. */
-
-.m-card:active { transform: scale(.98) !important; }
-
-.mc-name {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 800 !important;
-  letter-spacing: -.3px !important;
-}
-
-.badge {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 9px !important;
-  font-weight: 800 !important;
-  letter-spacing: .8px !important;
-  border-radius: 8px !important;
-  padding: 3px 9px !important;
-}
-
-.mc-cell label {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 9px !important;
-  font-weight: 700 !important;
-  letter-spacing: .8px !important;
-  color: #555577 !important;
-}
-
-.mc-cell span {
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 800 !important;
-}
-
-.mc-join {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  letter-spacing: .4px !important;
-  border-radius: 11px !important;
-  padding: 9px 18px !important;
-  transition: all .18s !important;
-}
-
-.mc-join.join-ok {
-  background: rgba(0,255,156,.08) !important;
-  border: 2px solid #00ff9c !important;
-  color: #00ff9c !important;
-  box-shadow: 0 0 20px rgba(0,255,106,.2), inset 0 0 10px rgba(0,255,106,.05) !important;
-}
-
-.mc-join.join-ok:active {
-  transform: scale(.95) !important;
-  box-shadow: 0 0 10px rgba(0,255,106,.15) !important;
-}
-
-.mc-bar-fill {
-  background: linear-gradient(90deg, #00ff9c, #00d4ff) !important;
-  box-shadow: 0 0 8px rgba(0,255,156,.4) !important;
-}
+/* ✅ D85b (owner: "exact screenshot jaisi ui nahi hai"): ye poora purana
+   "Elite gaming UI" override-block ( .m-card box-shadow/border !important,
+   .mc-name/.badge Inter !important, .mc-cell label color #555577 !important,
+   .mc-join 2px border !important, .mc-bar-fill !important ) D76/D81 replica
+   ke inline/styles.css rules ko har jagah dabata tha — isi liye live card
+   target screenshot se alag dikhta tha (grey labels, kam glow, 2px pill).
+   Replica poora styles.css + inline styles me self-contained hai; proof
+   harness (sirf styles.css) hamesha target jaisa dikhta tha, live par ye
+   block beech me tha. Block hataya — ab live == proof == target.
+   Naya standing guard: ui-lab/d85-replica-guard.cjs har release par LIVE
+   page par computed-styles assert karta hai (art, label color, pill border,
+   podium slots, PCARD2 buttons) taaki aisi override-gadbad phir kabhi na
+   chhupe. */
 
 /* ═══════════════════════════════════════
    WALLET CARDS
