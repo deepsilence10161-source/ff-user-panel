@@ -433,9 +433,11 @@ jobs:
 
       - name: Verify all catalog assets live + valid on GitHub Pages
         run: |
-          # ✅ D93: protected public tree me readable asset-catalog nahi hota —
-          # asset checks local release pipeline (tests/asset-e2e.js) me hote hain.
-          if [ ! -f js/features/asset-catalog.js ]; then
+          # ✅ D93-fix3: protected public tree me asset-catalog OBFUSCATED hota
+          # hai (file exist karti hai par grep patterns match nahi karte) —
+          # isliye existence + _0x dono check; asset checks local release
+          # pipeline (tests/asset-e2e.js) me pehle hi pass ho chuke hote hain.
+          if [ ! -f js/features/asset-catalog.js ] || head -c 3000 js/features/asset-catalog.js | grep -q "_0x"; then
             echo "ℹ️ Protected build tree — asset-catalog readable nahi; live HTTP spot-check karte hain"
             BASE0="https://deepsilence10161-source.github.io/ff-user-panel"
             for P in index.html sw.js assets/img/green-diamond.png; do
@@ -1032,7 +1034,7 @@ jobs:
               -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
               -H "Content-Type: application/json" \
               -H "User-Agent: Mozilla/5.0" \
-              -d "{\"query\":\"UPDATE public.app_settings SET value = jsonb_set(value, '{appLatestVersion}', to_jsonb('${VER}'::text), true), updated_at = now() WHERE key = 'live_config' RETURNING value->>'appLatestVersion' AS v;\"}")
+              -d "{\"query\":\"UPDATE public.app_settings SET value = jsonb_set(value, '{appLatestVersion}', to_jsonb('${VER}'::text), true), updated_at = now() WHERE key = 'live_config' RETURNING value->>'appLatestVersion' AS v;\",\"read_only\":false}")
             echo "Attempt $ATTEMPT → $RESP"
             if echo "$RESP" | grep -q "$VER"; then
               echo "✅ live_config.appLatestVersion = $VER"
