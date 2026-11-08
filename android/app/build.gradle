@@ -53,8 +53,8 @@ def gitCommitCount() {
 
 /* ✅ D93 (2026-11-07) VERSION_OFFSET WIRING — "App not installed" ka ASLI
    root-cause fix: public repo ki history 06-Nov ko recreate hui thi (sirf
-   ~7 commits), jabki users ke phones par versionCode 567+ installed hai.
-   Bina offset ke naya APK versionCode 7 banta = DOWNGRADE = har phone par
+   ~7 commits), jabki users ke phones par vc=567+ (purana build) installed hai.
+   Bina offset ke naya APK vc=7 banta = DOWNGRADE = har phone par
    "App not installed / APK has no valid package"!
    Repo root ka VERSION_OFFSET file (565) isi se wire hota hai:
    versionCode = gitCommitCount() + VERSION_OFFSET  → 7+565 = 572 > 567 ✔

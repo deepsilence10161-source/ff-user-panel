@@ -433,6 +433,18 @@ jobs:
 
       - name: Verify all catalog assets live + valid on GitHub Pages
         run: |
+          # ✅ D93: protected public tree me readable asset-catalog nahi hota —
+          # asset checks local release pipeline (tests/asset-e2e.js) me hote hain.
+          if [ ! -f js/features/asset-catalog.js ]; then
+            echo "ℹ️ Protected build tree — asset-catalog readable nahi; live HTTP spot-check karte hain"
+            BASE0="https://deepsilence10161-source.github.io/ff-user-panel"
+            for P in index.html sw.js assets/img/green-diamond.png; do
+              C=$(curl -sL -o /dev/null -w "%{http_code}" "$BASE0/$P?cb=$RANDOM" || echo 000)
+              echo "  $P → $C"
+              [ "$C" = "200" ] || { echo "❌ core asset live nahi"; exit 1; }
+            done
+            echo "✅ core assets live (protected-tree mode)"; exit 0
+          fi
           grep -oE "'[a-z0-9]+/[a-z0-9-]+\.png'" js/features/asset-catalog.js | tr -d "'" | sed 's|^|assets/img/|' | sort -u > /tmp/asset-paths.txt
           COUNT=$(wc -l < /tmp/asset-paths.txt | tr -d ' ')
           # DYNAMIC (2026-10-12): expected = catalog ki item lines, hardcode nahi —
@@ -1012,10 +1024,9 @@ jobs:
             exit 1
           fi
 
-          # ✅ D93: project-ref typo fix (purana '...oevxmlwy' galat tha —
-          # isi se ye job chupchap fail hoti thi aur live_config kabhi
-          # auto-bump nahi hua).
-          PROJ="hddhkculuyrfoevmlwy"
+          # ✅ D93-fix2: ref wapas ORIGINAL 'hddhkculuyrfoevxmlwy' — ye hi
+          # sakal ref hai (core/db.js SUPA_URL se byte-match verify kiya).
+          PROJ="hddhkculuyrfoevxmlwy"
           for ATTEMPT in 1 2 3; do
             RESP=$(curl -s -X POST "https://api.supabase.com/v1/projects/$PROJ/database/query" \
               -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
