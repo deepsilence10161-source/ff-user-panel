@@ -35,10 +35,10 @@ fail() { echo -e "\033[1;31mE2E-FAIL: $*\033[0m"; exit 1; }
 # tests/screen-e2e.js). Protected tree par CI me ye gate INFORMATIONAL
 # hota hai; asli app gates (install/boot/nav/asset-e2e) strict rahenge.
 PROTECTED=0
-if curl -s "$BASE/js/features/badge-engine.js?cb=$RANDOM" | head -c 3000 | grep -q "_0x"; then
-  PROTECTED=1
-  echo "ℹ️ PROTECTED (obfuscated) live tree detected — SCREEN-E2E deep-wiring gate informational"
-fi
+PROBE="$(curl -s "$BASE/js/features/badge-engine.js?cb=$RANDOM" | head -c 3000 || true)"
+case "$PROBE" in
+  *_0x*) PROTECTED=1; echo "ℹ️ PROTECTED (obfuscated) live tree detected — SCREEN-E2E deep-wiring gate informational" ;;
+esac
 
 # ✅ सबसे NAYI apk चुनो (alphabetical head -1 nahi — repo me committed
 # MiniEsports.apk bhi hoti hai; galat file uthne par purana build test hota tha).
