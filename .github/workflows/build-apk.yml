@@ -438,14 +438,19 @@ jobs:
           # isliye existence + _0x dono check; asset checks local release
           # pipeline (tests/asset-e2e.js) me pehle hi pass ho chuke hote hain.
           if [ ! -f js/features/asset-catalog.js ] || head -c 3000 js/features/asset-catalog.js | grep -q "_0x"; then
-            echo "ℹ️ Protected build tree — asset-catalog readable nahi; live HTTP spot-check karte hain"
+            echo "ℹ️ Protected build tree — asset-catalog readable nahi; live HTTP spot-check (retry loop ke saath, Pages deploy propagation allow)"
             BASE0="https://deepsilence10161-source.github.io/ff-user-panel"
-            for P in index.html sw.js assets/img/green-diamond.png; do
-              C=$(curl -sL -o /dev/null -w "%{http_code}" "$BASE0/$P?cb=$RANDOM" || echo 000)
-              echo "  $P → $C"
-              [ "$C" = "200" ] || { echo "❌ core asset live nahi"; exit 1; }
+            for attempt in $(seq 1 20); do
+              FAILS=0
+              for P in index.html sw.js assets/green-diamond.png; do
+                C=$(curl -sL -o /dev/null -w "%{http_code}" "$BASE0/$P?cb=${RANDOM}${attempt}" || echo 000)
+                [ "$C" = "200" ] || { FAILS=$((FAILS+1)); echo "  MISS($C): $P"; }
+              done
+              [ "$FAILS" = "0" ] && { echo "✅ core assets live (protected-tree mode, attempt $attempt)"; exit 0; }
+              echo "attempt $attempt: $FAILS missing — 10s wait (Pages deploy ho rahi hogi)"
+              sleep 10
             done
-            echo "✅ core assets live (protected-tree mode)"; exit 0
+            echo "❌ core assets 20 attempts me bhi live nahi"; exit 1
           fi
           grep -oE "'[a-z0-9]+/[a-z0-9-]+\.png'" js/features/asset-catalog.js | tr -d "'" | sed 's|^|assets/img/|' | sort -u > /tmp/asset-paths.txt
           COUNT=$(wc -l < /tmp/asset-paths.txt | tr -d ' ')
@@ -1008,7 +1013,7 @@ jobs:
 
       - name: Set live_config.appLatestVersion on Supabase
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
         run: |
           set -e
           CNT="$(git rev-list --count HEAD)"
@@ -1021,23 +1026,42 @@ jobs:
           VER="${MAJ}.${MIN}.${VC}"
           echo "Publish hua version: $VER"
 
-          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
-            echo "❌ SUPABASE_ACCESS_TOKEN secret set nahi hai — appLatestVersion set nahi ho sakta"
+          if [ -z "$SUPABASE_SERVICE_ROLE" ]; then
+            echo "❌ SUPABASE_SERVICE_ROLE secret set nahi hai — appLatestVersion set nahi ho sakta"
             exit 1
           fi
 
-          # ✅ D93-fix2: ref wapas ORIGINAL 'hddhkculuyrfoevxmlwy' — ye hi
-          # sakal ref hai (core/db.js SUPA_URL se byte-match verify kiya).
-          PROJ="hddhkculuyrfoevxmlwy"
+          # ✅ D93-fix5: Supabase MANAGEMENT API ka /database/query endpoint
+          # READ-ONLY hota hai ("cannot execute UPDATE in a read-only
+          # transaction" — isi se ye job hamesha chupchap fail hoti thi aur
+          # live_config 1.0.561 par atka tha). Ab PostgREST + service_role
+          # se merge-PATCH: saare ~40 keys preserve, sirf appLatestVersion
+          # badalta hai. Ref = core/db.js SUPA_URL wala asli project ref.
+          REF="hddhkculuyrfoevxmlwy"
+          BASE="https://$REF.supabase.co/rest/v1/app_settings?key=eq.live_config"
           for ATTEMPT in 1 2 3; do
-            RESP=$(curl -s -X POST "https://api.supabase.com/v1/projects/$PROJ/database/query" \
-              -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-              -H "Content-Type: application/json" \
-              -H "User-Agent: Mozilla/5.0" \
-              -d "{\"query\":\"UPDATE public.app_settings SET value = jsonb_set(value, '{appLatestVersion}', to_jsonb('${VER}'::text), true), updated_at = now() WHERE key = 'live_config' RETURNING value->>'appLatestVersion' AS v;\",\"read_only\":false}")
-            echo "Attempt $ATTEMPT → $RESP"
-            if echo "$RESP" | grep -q "$VER"; then
-              echo "✅ live_config.appLatestVersion = $VER"
+            CUR=$(curl -s --max-time 20 "$BASE&select=value" \
+              -H "apikey: $SUPABASE_SERVICE_ROLE" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE")
+            NEW=$(echo "$CUR" | VER="$VER" python3 -c '
+          import json,sys,os
+          d=json.load(sys.stdin)
+          v=d[0]["value"]
+          v["appLatestVersion"]=os.environ["VER"]
+          print(json.dumps({"value":v}))')
+            RESP=$(curl -s --max-time 20 -X PATCH "$BASE" \
+              -H "apikey: $SUPABASE_SERVICE_ROLE" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE" \
+              -H "Content-Type: application/json" -H "Prefer: return=representation" \
+              -d "$NEW")
+            OK=$(echo "$RESP" | VER="$VER" python3 -c '
+          import json,sys,os
+          try:
+              d=json.load(sys.stdin)
+              print("YES" if d and d[0]["value"].get("appLatestVersion")==os.environ["VER"] else "NO")
+          except Exception:
+              print("NO")')
+            echo "Attempt $ATTEMPT → $OK"
+            if [ "$OK" = "YES" ]; then
+              echo "✅ live_config.appLatestVersion = $VER (PostgREST merge-PATCH, baaki keys untouched)"
               exit 0
             fi
             sleep 5
