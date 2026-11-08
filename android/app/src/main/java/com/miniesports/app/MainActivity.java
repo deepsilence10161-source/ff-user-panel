@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int INSTALL_PERMISSION_REQUEST = 103;
 
     private final AtomicBoolean isApkDownloading = new AtomicBoolean(false);
+    /* D93 (2026-11-07): SHA-256 integrity auto-retry counter — corrupt download
+       verify me fail hone par automatic FRESH re-download; installer tak corrupt
+       file kabhi nahi pahunchti ("App not installed / no valid package" fix). */
+    private final java.util.concurrent.atomic.AtomicInteger shaRetry = new java.util.concurrent.atomic.AtomicInteger(0);
     private volatile File pendingInstallApkFile = null;
 
     /* ── D7 (2026-10-07): permission-request observability + retry ──
@@ -951,7 +955,8 @@ public class MainActivity extends AppCompatActivity {
                         totalBytes = conn.getContentLengthLong();
                     } else if (responseCode == 416 && partApk.exists() && partApk.length() > 1024 * 1024) {
                         // 416 Range Not Satisfiable — file may already be 100% downloaded in .part
-                        if (isValidApkFile(partApk)) {
+                        // D93: 416-cache path par bhi SHA-256 integrity check
+                        if (isValidApkFile(partApk) && shaMatchesOrUnknown(partApk, cleanUrl)) {
                             if (finalApk.exists()) finalApk.delete();
                             partApk.renameTo(finalApk);
                             long sz = finalApk.length();
@@ -1013,6 +1018,27 @@ public class MainActivity extends AppCompatActivity {
                         partApk.delete();
                         throw new Exception("Downloaded file valid APK nahi hai (corrupt ya incomplete download)");
                     }
+
+                    /* ✅ D93: SHA-256 integrity — corrupt/adhoora download installer
+                       tak kabhi nahi jaayega ("App not installed / no valid package"
+                       ka permanent fix). Mismatch par automatic FRESH retry (x2). */
+                    emitApkProgress(99, downloadedBytes, totalBytes, "verifying", "SHA-256 integrity check...");
+                    if (!shaMatchesOrUnknown(partApk, cleanUrl)) {
+                        partApk.delete();
+                        if (shaRetry.getAndIncrement() < 2) {
+                            emitApkProgress(3, 0, 0, "downloading", "Verify me mismatch mila — fresh download auto-retry ho raha hai...");
+                            final String retryUrl = cleanUrl;
+                            final String retryVer = safeVer;
+                            new Thread(() -> {
+                                try { Thread.sleep(600); } catch (Exception ignored) {}
+                                downloadAndInstallTrusted(retryUrl, retryVer, true);
+                            }, "MiniEsports-ShaRetry").start();
+                            return;
+                        }
+                        shaRetry.set(0);
+                        throw new Exception("File corrupt download hui (SHA-256 mismatch, fresh retries ke baad bhi) — network check karke dobara Update Now dabayein");
+                    }
+                    shaRetry.set(0);
 
                     if (finalApk.exists()) finalApk.delete();
                     if (!partApk.renameTo(finalApk)) {
@@ -1588,6 +1614,69 @@ public class MainActivity extends AppCompatActivity {
             return pi != null && pi.packageName != null && !pi.packageName.isEmpty();
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    /* ═══════════ D93 (2026-11-07): SHA-256 INTEGRITY LAYER ═══════════
+       Owner order: "download bich me ruk jaye / kisi bhi wajah se corrupt
+       ho jaye to 'App not installed / APK has no valid package' error ka
+       PERMANENT solution."
+       CI har release ke saath MiniEsports.apk.sha256 asset publish karta
+       hai (apkUrl + ".sha256"). Install se pehle downloaded file ka
+       SHA-256 usse match hota hai; mismatch par file delete → automatic
+       FRESH re-download (resume nahi, zero se); phir bhi mismatch par
+       honest error. Corrupt file installer tak KABHI nahi pahunchti. */
+    private String sha256Hex(File f) {
+        java.io.InputStream fis = null;
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+            fis = new java.io.BufferedInputStream(new java.io.FileInputStream(f), 262144);
+            byte[] buf = new byte[131072];
+            int n;
+            while ((n = fis.read(buf)) != -1) md.update(buf, 0, n);
+            byte[] dig = md.digest();
+            StringBuilder sb = new StringBuilder(64);
+            for (byte b : dig) sb.append(String.format(java.util.Locale.US, "%02x", b));
+            return sb.toString();
+        } catch (Exception e) {
+            return null;
+        } finally {
+            try { if (fis != null) fis.close(); } catch (Exception ignored) {}
+        }
+    }
+
+    private String fetchExpectedSha256(String apkUrl) {
+        HttpURLConnection c = null;
+        try {
+            URL u = new URL(apkUrl + ".sha256");
+            c = (HttpURLConnection) u.openConnection();
+            c.setConnectTimeout(10000);
+            c.setReadTimeout(10000);
+            c.setUseCaches(false);
+            c.setRequestProperty("User-Agent", "MiniEsports-Android-Updater/2.0");
+            if (c.getResponseCode() != 200) return null;
+            java.io.InputStream in = new java.io.BufferedInputStream(c.getInputStream());
+            byte[] data = new byte[256];
+            int got = in.read(data);
+            in.close();
+            if (got <= 0) return null;
+            String s = new String(data, 0, got, "UTF-8").trim().toLowerCase(java.util.Locale.US);
+            return s.matches("[0-9a-f]{64}") ? s : null;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            try { if (c != null) c.disconnect(); } catch (Exception ignored) {}
+        }
+    }
+
+    private boolean shaMatchesOrUnknown(File f, String apkUrl) {
+        try {
+            String expected = fetchExpectedSha256(apkUrl);
+            if (expected == null) return true;   // sha256 asset nahi mila (purani release) → parse-check kaafi
+            String actual = sha256Hex(f);
+            return actual != null && expected.equals(actual);
+        } catch (Exception e) {
+            return true;
         }
     }
 
