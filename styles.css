@@ -1105,7 +1105,7 @@ body.has-web-banner .chat-container {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 104px;
-  background: url('assets/img/match-bg.jpg?v=20261109m') center 30% / cover no-repeat;
+  background: url('assets/img/match-bg.jpg?v=20261109n') center 30% / cover no-repeat;
   opacity: .58;
   -webkit-mask-image: linear-gradient(#000 18%, transparent 88%);
   mask-image: linear-gradient(#000 18%, transparent 88%);
