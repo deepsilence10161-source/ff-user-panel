@@ -1,0 +1,12 @@
+const { chromium } = require('playwright'); const fs=require('fs');
+const cred=JSON.parse(fs.readFileSync('/home/user/ff-user-panel/tools/tri-e2e/.state/d97a.json','utf8'));
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();
+await p.goto('http://127.0.0.1:8090',{waitUntil:'domcontentloaded'});
+await p.waitForFunction(()=>window.auth&&window.firebase,null,{timeout:20000});
+await p.evaluate(([e,w])=>window.auth.signInWithEmailAndPassword(e,w),[cred.player.email,cred.player.password]);
+await p.waitForFunction(()=>window.UD&&window.UD.ign,null,{timeout:25000});
+const PAY='<img src=x onerror="window.__xss=(window.__xss||0)+1"><svg onload="window.__xss=(window.__xss||0)+10">';
+await p.evaluate(p=>{window.UD.bio=p;window.UD.ign=p;if(window.renderProfile)window.renderProfile();},PAY);
+await p.waitForTimeout(500);
+console.log(JSON.stringify(await p.evaluate(()=>[...document.querySelectorAll('img[src="x"],svg[onload]')].map(e=>({tag:e.tagName,parent:(e.parentElement&&e.parentElement.className||'').toString().slice(0,40),html:e.outerHTML.slice(0,120),connected:e.isConnected}))),null,1));
+await b.close();})();

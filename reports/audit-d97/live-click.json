@@ -1,0 +1,446 @@
+{
+ "screens": {
+  "home": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙0",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#modalOv 🗺️ State Verification Required 🗺️Real money",
+    "Close modal",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-home.png"
+   ]
+  },
+  "rank": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙50",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-rank.png"
+   ]
+  },
+  "matches": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙50",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-matches.png"
+   ]
+  },
+  "wallet": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙50",
+    "💎0",
+    "0",
+    "Buy SkyDiamonds ›",
+    "#checkInBtn DailyCheck-In(+ 5) ›",
+    "Earn Coins ›",
+    "Coin History",
+    "Summary",
+    "All",
+    "💎 Sky",
+    "🪙 Coin",
+    "📈 In",
+    "📉 Out",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-wallet.png"
+   ]
+  },
+  "profile": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙55",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile"
+   ],
+   "errors": 0,
+   "shots": [
+    "scr-profile.png"
+   ]
+  },
+  "notif": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙55",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-notif.png"
+   ]
+  },
+  "chat": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙55",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-chat.png"
+   ]
+  },
+  "special": {
+   "clicks": [
+    "Search Matches",
+    "Notifications",
+    "#hdrSupportBtn Help and Support",
+    "🪙55",
+    "💎0",
+    "0",
+    "Home",
+    "Rank",
+    "Matches",
+    "Wallet",
+    "Profile",
+    "#inviteEarnBtn 🎁 Invite & Earn — दोस्त लाओ 🪙 पाओ!",
+    "card action",
+    "card action",
+    "card action",
+    "card action",
+    "Pehla badge: Hunter — 0/100Dekho ›",
+    "My TitlesView all",
+    "Season PassBattle Pass 🎫",
+    "My ClanJoin / Create",
+    "Live Stream👑 Gold+",
+    "Cosmetics Store💎 Unlock",
+    "Polls🗳️ Vote",
+    "City LeaderboardSet city",
+    "Refer & Earn0 friends",
+    "Creator ProgramJoin →",
+    "Achievements0 earned",
+    "View Full History →",
+    "Match History0 matches",
+    "Performance Stats→",
+    "Season HistoryPast Seasons",
+    "Watch Live & Earn+2🪙/min",
+    "👑 Plans / Renew Dekho",
+    "Performance Dashboard→",
+    "💡 Suggest a FeatureApp mein koi kami hai? Ba",
+    "#_premBtnV3 🥈 Premium Silver Active →",
+    "times"
+   ],
+   "errors": 1,
+   "shots": [
+    "scr-special.png"
+   ]
+  },
+  "inputs": {
+   "clicks": [
+    "chatIn+sendChat=true",
+    "search typed=true"
+   ],
+   "errors": []
+  }
+ },
+ "consoleErrors": [
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196229598
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196247078
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196267053
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196287052
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196307047
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196327070
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196347074
+  },
+  {
+   "msg": "Failed to load resource: the server responded with a status of 401 ()",
+   "at": 1794196367048
+  }
+ ],
+ "pageErrors": [],
+ "failedReqs": [
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196229524",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196247026",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196267024",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196287024",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196307024",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196327034",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196347034",
+   "status": 401
+  },
+  {
+   "url": "https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1&np=1794196367024",
+   "status": 401
+  }
+ ],
+ "skipped": [
+  "home: Logout",
+  "rank: Logout",
+  "matches: Logout",
+  "wallet: Logout",
+  "notif: Logout",
+  "chat: Logout",
+  "special: Logout"
+ ],
+ "modals": [
+  "home: modal-box",
+  "rank: modal-box",
+  "matches: modal-box",
+  "wallet: modal-box",
+  "profile: modal-box",
+  "notif: modal-box",
+  "chat: modal-box",
+  "special: modal-box"
+ ],
+ "totalClicks": 429
+}
