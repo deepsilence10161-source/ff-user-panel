@@ -1,5 +1,5 @@
 {
-  "_WARNING": "\u26a0\ufe0f STALE COPY \u2014 LIVE RTDB RULES ARE DIFFERENT (R2-strict, live-verified 2026-09). Ye file DEPLOY MAT karna \u2014 is '_WARNING' key ki wajah se deploy validation khud fail hogi (jaan-boojh kar rakha, taaki koi purani copy se live rules overwrite na kar de). Live rules dashboard/Console se hi manage karo.",
+  "_WARNING": "⚠️ STALE COPY — LIVE RTDB RULES ARE DIFFERENT (R2-strict, live-verified 2026-09). Ye file DEPLOY MAT karna — is '_WARNING' key ki wajah se deploy validation khud fail hogi (jaan-boojh kar rakha, taaki koi purani copy se live rules overwrite na kar de). Live rules dashboard/Console se hi manage karo.",
   "rules": {
     "appSettings": {
       ".read": true,
@@ -75,5 +75,6 @@
       ".read": false,
       ".write": false
     }
-  }
+  },
+  "_STATUS": "LEGACY / DO-NOT-TRUST (D99 audit note, 2026-11-09): ye file CURRENT Firebase RTDB security ka pramaan NAHI hai. Live rules Supabase (RLS + SECURITY DEFINER RPC) + RTDB (dashboard-managed, R2-strict) se chalte hain. Is file ko security proof ki tarah cite na karein; deploy bhi na karein (_WARNING key deploy validation fail karti hai)."
 }

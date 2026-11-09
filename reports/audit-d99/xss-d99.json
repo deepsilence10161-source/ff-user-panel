@@ -1,0 +1,19 @@
+{
+ "afterProfileRender": {
+  "xss": 0,
+  "stray": 0
+ },
+ "share": {
+  "ok": true,
+  "xss": 0
+ },
+ "chat": {
+  "ok": true
+ },
+ "final": {
+  "xss": 0,
+  "stray": 0,
+  "chatHtml": "has-chat-dom"
+ },
+ "pageErrors": []
+}

@@ -6,7 +6,10 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node tests/run-smoke-tests.js",
+    "test:smoke": "node tests/run-smoke-tests.js",
+    "test:screen": "node tests/screen-e2e.js",
+    "test:asset": "node tests/asset-e2e.js"
   },
   "keywords": [],
   "author": "",

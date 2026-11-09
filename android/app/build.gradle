@@ -43,12 +43,40 @@ def gitCommitCount() {
         logger.error('[auto-version] git unreadable: ' + e.message)
     }
     if (count < 1) {
+        /* ✅ D99 FIX (2026-11-09, third-party audit): SOURCE ZIP me .git history
+           hoti hi nahi, isliye zip se APK build karna impossible tha (hard fail).
+           Ab repo-root ki VERSION_FALLBACK file (release script har release par
+           current commit-count likhta hai) se deterministic versionCode milta hai
+           — silent/andaza nahi, committed value. Dono na milein tab hi fail. */
+        def fb = fallbackCommitCount()
+        if (fb > 0) {
+            logger.warn('[auto-version] git history absent (source zip?) — VERSION_FALLBACK=' + fb + ' use ho raha hai')
+            return fb
+        }
         throw new GradleException(
             '[auto-version] git commit count NAHI mila — build nahi chalega. ' +
             'Local: repo root se build karo ya git available karo. ' +
-            'CI: checkout step mein fetch-depth: 0 rakho (build-apk.yml mein set hai).')
+            'CI: checkout step mein fetch-depth: 0 rakho (build-apk.yml mein set hai). ' +
+            'ZIP build: repo root me VERSION_FALLBACK file rakho (release script banata hai).')
     }
     return count
+}
+
+/* ✅ D99: git absent hone par committed VERSION_FALLBACK (repo root) se count.
+   release-protected.sh ise har release par `git rev-list --count HEAD` se update
+   karta hai, isliye zip ka versionCode us release ke git count se match karta hai. */
+def fallbackCommitCount() {
+    try {
+        def f = new File(project.rootDir, '../VERSION_FALLBACK')
+        if (!f.exists()) f = new File(project.rootDir, 'VERSION_FALLBACK')
+        if (f.exists()) {
+            def v = f.text.trim().toInteger()
+            if (v > 0) return v
+        }
+    } catch (Exception e) {
+        logger.error('[auto-version] VERSION_FALLBACK unreadable: ' + e.message)
+    }
+    return 0
 }
 
 /* ✅ D93 (2026-11-07) VERSION_OFFSET WIRING — "App not installed" ka ASLI

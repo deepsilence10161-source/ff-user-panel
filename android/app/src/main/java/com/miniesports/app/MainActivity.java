@@ -446,13 +446,72 @@ public class MainActivity extends AppCompatActivity {
        load na kar diya ho (warna uske turant baad override ho jata). */
     private volatile boolean assetE2ELoaded = false;
 
+    /* ═══ D99 SECURITY HARDENING (2026-11-09 — third-party audit, P1) ═══
+       Pehle kai jagah URL par SUBSTRING (contains) checks thi — unse
+       `https://attacker.example/?site=<apna-domain>` jaisa URL bhi "apna"
+       maan liya jata tha. Ab har jagah Uri se HOST parse karke exact
+       allowlist match hota hai (isTrustedAppHost / isTrustedNavHost). */
+    private static final java.util.Set<String> TRUSTED_APP_HOSTS =
+            new java.util.HashSet<>(java.util.Arrays.asList(
+                    "deepsilence10161-source.github.io",
+                    "deepsilence10161.workers.dev"));
+    private static final java.util.Set<String> TRUSTED_GOOGLE_HOST_SUFFIXES =
+            new java.util.HashSet<>(java.util.Arrays.asList(
+                    "firebaseapp.com", "googleapis.com",
+                    "accounts.google.com", "googleusercontent.com"));
+
+    /** URL/origin ka lowercase host — parse fail / null par "" . */
+    static String hostOf(String url) {
+        if (url == null) return "";
+        String t = url.trim();
+        if (t.isEmpty()) return "";
+        try {
+            String h = Uri.parse(t).getHost();
+            if (h != null && !h.isEmpty()) return h.toLowerCase(java.util.Locale.ROOT);
+            if (t.toLowerCase(java.util.Locale.ROOT).startsWith("file://")) return "file";
+            return "";
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    /** SIRF app ke own HTTPS hosts — WebView-internal load + JS bridge ke liye. */
+    static boolean isTrustedAppHost(String url) {
+        String h = hostOf(url);
+        return !h.isEmpty() && TRUSTED_APP_HOSTS.contains(h);
+    }
+
+    /** Navigation allowlist: app hosts + Google auth/API hosts (exact ya dot-suffix). */
+    static boolean isTrustedNavHost(String url) {
+        String h = hostOf(url);
+        if (h.isEmpty()) return false;
+        if (TRUSTED_APP_HOSTS.contains(h)) return true;
+        for (String suf : TRUSTED_GOOGLE_HOST_SUFFIXES) {
+            if (h.equals(suf) || h.endsWith("." + suf)) return true;
+        }
+        return false;
+    }
+
     // =========================================================
     // JavaScript Bridge
     // =========================================================
     public class AndroidBridge {
 
+        /* ✅ D99: JS-bridge MASTER GATE — koi bhi @JavascriptInterface method
+           sirf tab chalta hai jab current top-level page app ke trusted host
+           se aayi ho. Ads / redirect / popup / third-party page se
+           window.Android.* ka har call refuse hota hai (log ke saath). */
+        private boolean bridgeAllowed() {
+            boolean ok = isTrustedAppHost(lastPageUrl);
+            if (!ok) {
+                Log.w(TAG, "\u26d4 Android bridge call REFUSED \u2014 untrusted page: "
+                        + (lastPageUrl == null ? "(none)" : lastPageUrl.split("[?#]")[0]));
+            }
+            return ok;
+        }
+
         @JavascriptInterface
-        public boolean isAndroidApp() { return true; }
+        public boolean isAndroidApp() { if (!bridgeAllowed()) return false;  return true; }
 
         /* ✅ FIX (2026-10-06): login screen par back press se app band karne
            ke liye. Pehle back button hamesha JS router (window.goBack) ko
@@ -461,6 +520,8 @@ public class MainActivity extends AppCompatActivity {
            karke yeh method call karta hai (core/utils.js → goBack()). */
         @JavascriptInterface
         public void exitApp() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(new Runnable() {
                 @Override public void run() {
                     finish();
@@ -478,6 +539,8 @@ public class MainActivity extends AppCompatActivity {
            sab users update na kar lein. */
         @JavascriptInterface
         public void fcmSyncToken(final String cbName) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             final String cb = (cbName == null) ? "" : cbName.replaceAll("[^A-Za-z0-9_$]", "");
             if (cb.isEmpty()) return;
             try {
@@ -499,6 +562,8 @@ public class MainActivity extends AppCompatActivity {
         /* Pichli baar cache hua token (instant, network nahi) */
         @JavascriptInterface
         public String fcmCachedToken() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return "";
             return FcmMessagingService.getCachedToken(MainActivity.this);
         }
 
@@ -510,6 +575,8 @@ public class MainActivity extends AppCompatActivity {
            appMinSupportedVersion from Supabase. */
         @JavascriptInterface
         public String getAppVersion() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return "";
             try {
                 PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
                 return pi.versionName != null ? pi.versionName : "";
@@ -529,6 +596,8 @@ public class MainActivity extends AppCompatActivity {
            window.CFG.appExpectedSigningHash is set in Admin Panel. */
         @JavascriptInterface
         public String getPackageIntegrityStatus() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return "";
             try {
                 PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
                 String hash = AppGuard.getSigningHash(MainActivity.this);
@@ -546,6 +615,8 @@ public class MainActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public String getSigningHash() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return "";
             try {
                 Signature sig;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
@@ -579,6 +650,8 @@ public class MainActivity extends AppCompatActivity {
            only fires when the page is genuinely scrolled to the top. */
         @JavascriptInterface
         public void reportScrollTop(boolean atTop) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> isContentAtTop = atTop);
         }
 
@@ -588,6 +661,8 @@ public class MainActivity extends AppCompatActivity {
         // Token wapas: window.onNativeGoogleToken(idToken)
         @JavascriptInterface
         public void nativeGoogleSignIn() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 // Pehle sign out karo taaki har baar account picker aaye
                 googleSignInClient.signOut().addOnCompleteListener(task -> {
@@ -600,6 +675,8 @@ public class MainActivity extends AppCompatActivity {
         // Sign out pe native Google session bhi clear karo
         @JavascriptInterface
         public void nativeGoogleSignOut() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             if (googleSignInClient != null) {
                 googleSignInClient.signOut();
                 googleSignInClient.revokeAccess();
@@ -625,6 +702,8 @@ public class MainActivity extends AppCompatActivity {
         // didn't anticipate).
         @JavascriptInterface
         public void nativeShareWhatsApp(String text) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
@@ -657,6 +736,8 @@ public class MainActivity extends AppCompatActivity {
         // ── Native Android System Share Sheet (ACTION_SEND Chooser) ──
         @JavascriptInterface
         public void nativeShare(String title, String text) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 try {
                     Intent sendIntent = new Intent(Intent.ACTION_SEND);
@@ -678,6 +759,8 @@ public class MainActivity extends AppCompatActivity {
         // ── Chrome Custom Tab (fallback) ──────────────────────
         @JavascriptInterface
         public void openGoogleLogin(String url) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 try {
                     CustomTabsIntent customTab = new CustomTabsIntent.Builder()
@@ -698,6 +781,8 @@ public class MainActivity extends AppCompatActivity {
         // ── Rewarded Ad ───────────────────────────────────────
         @JavascriptInterface
         public void showRewardedAd(String adUnitId) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 if (rewardedAd != null) {
                     rewardedAd.show(MainActivity.this, rewardItem -> {
@@ -717,36 +802,44 @@ public class MainActivity extends AppCompatActivity {
         // ── Interstitial Ad ───────────────────────────────────
         @JavascriptInterface
         public void showInterstitialAd() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> showInterstitialNative());
         }
 
         // ── Banner Ad ─────────────────────────────────────────
         @JavascriptInterface
         public void showBannerAd(String adUnitId) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 if (bannerAdView != null) bannerAdView.setVisibility(View.VISIBLE);
             });
         }
 
         @JavascriptInterface
-        public void showBanner(String adUnitId) { showBannerAd(adUnitId); }
+        public void showBanner(String adUnitId) { if (!bridgeAllowed()) return;  showBannerAd(adUnitId); }
 
         @JavascriptInterface
         public void hideBannerAd() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() -> {
                 if (bannerAdView != null) bannerAdView.setVisibility(View.GONE);
             });
         }
 
         @JavascriptInterface
-        public void hideBanner() { hideBannerAd(); }
+        public void hideBanner() { if (!bridgeAllowed()) return;  hideBannerAd(); }
 
         // ── Utility ───────────────────────────────────────────
         @JavascriptInterface
-        public boolean isOnline() { return MainActivity.this.isOnline(); }
+        public boolean isOnline() { if (!bridgeAllowed()) return false;  return MainActivity.this.isOnline(); }
 
         @JavascriptInterface
         public void showToast(String msg) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return;
             runOnUiThread(() ->
                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show()
             );
@@ -754,10 +847,10 @@ public class MainActivity extends AppCompatActivity {
 
         // ── Login state ───────────────────────────────────────
         @JavascriptInterface
-        public void onUserLoggedIn() { userLoggedIn = true; pageLoadCount = 0; }
+        public void onUserLoggedIn() { if (!bridgeAllowed()) return;  userLoggedIn = true; pageLoadCount = 0; }
 
         @JavascriptInterface
-        public void onUserLoggedOut() { userLoggedIn = false; pageLoadCount = 0; }
+        public void onUserLoggedOut() { if (!bridgeAllowed()) return;  userLoggedIn = false; pageLoadCount = 0; }
 
         /* ═══ SAFE-CLEANER v5.1 (2026-10-09, perfection-audit):
            CLEANUP-BRIDGE ORIGIN GUARD — कोई भी बाहरी/दुर्भावनापूर्ण पेज
@@ -771,8 +864,7 @@ public class MainActivity extends AppCompatActivity {
                    Ab UI-thread cache (lastPageUrl) padhte hain. */
                 String u = lastPageUrl;
                 if (u == null || u.isEmpty()) return false;
-                boolean ok = u.contains("deepsilence10161-source.github.io")
-                    || u.contains("deepsilence10161.workers.dev");
+                boolean ok = isTrustedAppHost(u);   /* ✅ D99: host-exact, substring nahi */
                 if (!ok) Log.w(TAG, "⛔ cleanup origin check fail: " + u.split("[?#]")[0]);
                 return ok;
             } catch (Exception e) {
@@ -806,6 +898,8 @@ public class MainActivity extends AppCompatActivity {
            "allowed" verdict par app-private safai karta hai (fail-safe). */
         @JavascriptInterface
         public int cleanOldApks() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return 0;
             try {
                 if (!isTrustedCleanupOrigin()) {
                     Log.w(TAG, "⛔ cleanOldApks REFUSED — untrusted origin");
@@ -823,17 +917,23 @@ public class MainActivity extends AppCompatActivity {
            value lautate hain, koi dialog/picker NAHI khulta. */
         @JavascriptInterface
         public boolean requestStoragePermission() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return false;
             return false; // koi picker nahi, koi prompt nahi — by design
         }
 
         @JavascriptInterface
         public boolean needsStoragePermission() {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return false;
             return false; // koi permission chahiye hi nahi
         }
 
         // ── In-App Direct APK Update (Download + Smart Resume + Cache + Native Install) ──
         @JavascriptInterface
         public boolean hasCachedUpdateApk(String targetVersion) {
+            /* ✅ D99 master-gate: untrusted page se bridge call refuse */
+            if (!bridgeAllowed()) return false;
             try {
                 File dir = getUpdatesDir();
                 String safeVer = sanitizeVersionTag(targetVersion);
@@ -847,8 +947,12 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void downloadAndInstallApk(String apkUrl, String targetVersion) {
             /* ✅ SAFE-CLEANER v5.1: origin guard — sirf official app page
-               update download/install trigger kar sakta hai. */
-            downloadAndInstallTrusted(apkUrl, targetVersion, isTrustedCleanupOrigin());
+               update download/install trigger kar sakta hai.
+               ✅ D99: + URL bhi host-allowlist se hona chahiye (github releases
+               ya apne hosts) — warna JS se koi bhi .apk install karwa sakta tha. */
+            boolean urlOk = isAllowedUpdateUrl(apkUrl) || isTrustedAppHost(apkUrl);
+            downloadAndInstallTrusted(apkUrl, targetVersion,
+                    bridgeAllowed() && urlOk);
         }
 
         /* ✅ DEEP-LINK UPDATE (2026-10-29): miniesports://update native handler
@@ -1163,9 +1267,19 @@ public class MainActivity extends AppCompatActivity {
         s.setGeolocationEnabled(true);
         s.setSupportMultipleWindows(true);
         s.setJavaScriptCanOpenWindowsAutomatically(true);
-        s.setAllowFileAccess(true);
+        /* ✅ D99 SECURITY (third-party audit P1): file-system access OFF.
+           Android docs ke mutabik file:///android_asset + file:///android_res
+           tab bhi khulte hain, isliye offline page safe hai; content://
+           (file chooser) explicitly ON rakha. Mixed content NEVER_ALLOW —
+           app me ek bhi http:// subresource nahi hai (verify kiya).
+           File-URL se universal/file access OFF + password save OFF. */
+        s.setAllowFileAccess(false);
+        s.setAllowContentAccess(true);
+        s.setAllowFileAccessFromFileURLs(false);
+        s.setAllowUniversalAccessFromFileURLs(false);
+        s.setSavePassword(false);
         s.setMediaPlaybackRequiresUserGesture(false);
-        s.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         s.setLoadWithOverviewMode(true);
         s.setUseWideViewPort(true);
 
@@ -1295,16 +1409,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // App ki own URLs — WebView mein hi rehne do
-                if (url.contains("deepsilence10161-source.github.io") ||
-                    url.contains("deepsilence10161.workers.dev")       ||
-                    url.contains("firebaseapp.com")                    ||
-                    url.contains("googleapis.com")) {
+                /* ✅ D99: host-exact allowlist (substring contains nahi) */
+                if (isTrustedNavHost(url)) {
                     return false;
                 }
 
                 // Google login — native sign-in use karte hain ab,
                 // lekin agar koi aur accounts.google.com URL aaye to Custom Tab mein kholo
-                if (url.contains("accounts.google.com")) {
+                if ("accounts.google.com".equals(hostOf(url))) {   /* ✅ D99 host-exact */
                     try {
                         CustomTabsIntent customTab = new CustomTabsIntent.Builder()
                             .setShowTitle(false).build();
@@ -1317,8 +1429,16 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Direct APK update URLs — NEVER open external browser! Always download & install in-app!
-                if (url.endsWith(".apk") || url.contains("MiniEsports.apk") || url.contains("/releases/latest/download/")) {
-                    new AndroidBridge().downloadAndInstallApk(url, "latest");
+                /* ✅ D99: APK download SIRF official host-allowlist se —
+                   pehle kisi bhi external ".apk" link par in-app download
+                   shuru ho jata tha (attacker-controlled APK ka rasta). */
+                if (isAllowedUpdateUrl(url)) {
+                    new AndroidBridge().downloadAndInstallTrusted(url, "latest", true);
+                    return true;
+                }
+                if (url.endsWith(".apk") || url.contains("MiniEsports.apk")
+                        || url.contains("/releases/latest/download/")) {
+                    Log.w(TAG, "\u26d4 APK link host-allowlist me nahi \u2014 download block: " + hostOf(url));
                     return true;
                 }
 
@@ -1369,9 +1489,9 @@ public class MainActivity extends AppCompatActivity {
                    true kar diya jata tha — redirect/ads wala koi bhi page
                    location maang sakta tha. Ab sirf apne hi hosts allow,
                    baaki deny (WebView ka origin whitelist). */
-                boolean _ours = origin != null && (origin.contains("deepsilence10161-source.github.io")
-                        || origin.contains("deepsilence10161.workers.dev")
-                        || origin.startsWith("file://"));
+                /* ✅ D99: host-exact; file:// sirf apne bundled offline page tak */
+                boolean _ours = isTrustedAppHost(origin)
+                        || (origin != null && origin.startsWith("file:///android_asset/"));
                 cb.invoke(origin, _ours, false);
             }
 
@@ -1389,6 +1509,17 @@ public class MainActivity extends AppCompatActivity {
                 WebView popup = new WebView(MainActivity.this);
                 popup.getSettings().setJavaScriptEnabled(true);
                 popup.getSettings().setDomStorageEnabled(true);
+                /* ✅ D99: popup WebView bhi main WebView jitna hi strict —
+                   file access OFF, mixed content NEVER, aur naye window open
+                   karne ki chain band (is popup me JS bridge hota hi nahi). */
+                popup.getSettings().setAllowFileAccess(false);
+                popup.getSettings().setAllowContentAccess(false);
+                popup.getSettings().setAllowFileAccessFromFileURLs(false);
+                popup.getSettings().setAllowUniversalAccessFromFileURLs(false);
+                popup.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+                popup.getSettings().setSavePassword(false);
+                popup.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
+                popup.getSettings().setSupportMultipleWindows(false);
                 AlertDialog d = new AlertDialog.Builder(MainActivity.this)
                     .setView(popup).create();
                 popup.setWebChromeClient(new WebChromeClient() {
@@ -1408,13 +1539,12 @@ public class MainActivity extends AppCompatActivity {
                             } catch (Exception ignored) { }
                             return true;
                         }
-                        if (url.contains("deepsilence10161-source.github.io") ||
-                            url.contains("deepsilence10161.workers.dev")) {
+                        if (isTrustedAppHost(url)) {   /* ✅ D99 host-exact */
                             d.dismiss();
                             return true;
                         }
                         // Popup mein bhi accounts.google.com aaye to Custom Tab
-                        if (url.contains("accounts.google.com")) {
+                        if ("accounts.google.com".equals(hostOf(url))) {   /* ✅ D99 host-exact */
                             d.dismiss();
                             try {
                                 CustomTabsIntent ct = new CustomTabsIntent.Builder().build();
@@ -1446,9 +1576,15 @@ public class MainActivity extends AppCompatActivity {
                         // dialog showing the wa.me redirect page instead of the WhatsApp
                         // app. Mirror the main WebView's behaviour: dismiss this popup and
                         // let the OS route it to whichever app handles it.
-                        if (url.endsWith(".apk") || url.contains("MiniEsports.apk") || url.contains("/releases/latest/download/")) {
+                        /* ✅ D99: popup se bhi sirf host-allowlisted APK */
+                        if (url.endsWith(".apk") || url.contains("MiniEsports.apk")
+                                || url.contains("/releases/latest/download/")) {
                             d.dismiss();
-                            new AndroidBridge().downloadAndInstallApk(url, "latest");
+                            if (isAllowedUpdateUrl(url)) {
+                                new AndroidBridge().downloadAndInstallTrusted(url, "latest", true);
+                            } else {
+                                Log.w(TAG, "\u26d4 popup APK link host-allowlist me nahi: " + hostOf(url));
+                            }
                             return true;
                         }
                         d.dismiss();
@@ -1470,9 +1606,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Intercept any WebView download (.apk) so it ALWAYS runs in-app without opening browser
         webView.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
-            if (url != null && (url.endsWith(".apk") || url.contains("MiniEsports.apk") ||
-                "application/vnd.android.package-archive".equalsIgnoreCase(mimeType))) {
-                new AndroidBridge().downloadAndInstallApk(url, "latest");
+            /* ✅ D99: download-listener se bhi sirf host-allowlisted APK install
+               hota hai; baaki .apk downloads refuse (log ke saath). */
+            if (isAllowedUpdateUrl(url)) {
+                new AndroidBridge().downloadAndInstallTrusted(url, "latest", true);
+            } else if (url != null && (url.endsWith(".apk")
+                    || "application/vnd.android.package-archive".equalsIgnoreCase(mimeType))) {
+                Log.w(TAG, "\u26d4 WebView download REFUSED \u2014 APK host allowlist me nahi: " + hostOf(url));
             }
         });
     }

@@ -1,0 +1,687 @@
+══ HTML-SINK SCAN ══  files scanned: 99  candidate raw interpolations: 1189
+
+core/modal.js  (2)
+  :188  [u.total_wins||0)]  bh += '<div style="font-size:12px;color:var(--txt2)">🏆 ' + (u.total_wins||0) + '</div>';
+  :189  [u.rank_points||0)]  bh += '<div style="font-size:13px;font-weight:800;color:#ff9f1c">' + (u.rank_points||0) + 'pts</div>';
+
+core/utils.js  (8)
+  :32  [ic]  d.innerHTML = '<i class="fas fa-' + ic + '"></i>' + msg;
+  :32  [msg]  d.innerHTML = '<i class="fas fa-' + ic + '"></i>' + msg;
+  :248  [duoT.memberName || 'Partner')]  if (st) st.innerHTML = '<span class="pf-ok">✓ Linked: ' + (duoT.memberName || 'Partner') + '</span>';
+  :250  [duoT.memberName || 'Partner')]  if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ ' + (duoT.memberName || 'Partner') + '</span>';
+  :259  [duoT.memberName || 'Partner')]  if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ Auto-filled: ' + (duoT.memberName || 'Partner') + '</span>';
+  :291  [sm.name||'Partner')]  if (st) st.innerHTML = '<span class="pf-ok">✓ Linked: ' + (sm.name||'Partner') + '</span>';
+  :293  [sm.name || 'Partner')]  if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ ' + (sm.name || 'Partner') + '</span>';
+  :300  [sm.name || 'Partner')]  if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ Auto-filled: ' + (sm.name || 'Partner') + '</span>';
+
+features/admin-badge.js  (8)
+  :110  [badge.icon]  '<span style="font-size:12px">' + badge.icon + '</span>' +
+  :111  [badge.color]  '<span style="font-size:11px;font-weight:700;color:' + badge.color + '">' + badge.text + '</span>' +
+  :111  [badge.text]  '<span style="font-size:11px;font-weight:700;color:' + badge.color + '">' + badge.text + '</span>' +
+  :128  [getPresencePill()]  h += '<div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">' + getPresencePill().html + '</div>';
+  :131  [badge.icon]  h += '<div style="font-size:10px;color:#8b93a0">' + badge.icon + ' ' + badge.text +
+  :131  [badge.text]  h += '<div style="font-size:10px;color:#8b93a0">' + badge.icon + ' ' + badge.text +
+  :151  [btn.label]  '<span style="flex:1;min-width:0"><span style="display:block;font-size:13px;font-weight:800">' + btn.label + '</span>' +
+  :152  [btn.sub]  '<span style="display:block;font-size:10px;color:#8b93a0;margin-top:1px">' + btn.sub + '</span></span>' +
+
+features/ads.js  (5)
+  :192  [sec]  '<div style="position:absolute;top:10px;right:16px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.08);font-size:10px;color:#888" id="
+  :194  [brand.icon]  '<div style="font-size:64px;margin-bottom:12px">' + brand.icon + '</div>' +
+  :195  [brand.name]  '<div style="font-size:22px;font-weight:900;margin-bottom:6px">' + brand.name + '</div>' +
+  :196  [brand.sub]  '<div style="font-size:13px;color:#888;margin-bottom:24px">' + brand.sub + '</div>' +
+  :197  [sec]  '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,106,.08);border:3px solid #00ff9c;display:flex;align-items:center;justify-
+
+features/app-config.js  (4)
+  :343  [title]  + '<div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:10px">' + title + '</div>'
+  :344  [msg]  + '<div style="font-size:13px;color:#999;line-height:1.7;margin-bottom:20px">' + msg + '</div>'
+  :399  [installedVersion || 'unknown')]  html += '<div style="font-size:10px;color:#444;margin-top:20px">Installed: ' + (installedVersion || 'unknown') + ' • Required: ' + (window.CFG.appMinS
+  :399  [window.CFG.appMinSupportedVersion || '-')]  html += '<div style="font-size:10px;color:#444;margin-top:20px">Installed: ' + (installedVersion || 'unknown') + ' • Required: ' + (window.CFG.appMinS
+
+features/auto-squad.js  (14)
+  :31  [modeLabel]  h += '<div style="font-size:16px;font-weight:900;margin-bottom:6px">Auto ' + modeLabel + ' Matching</div>';
+  :40  [needed]  h += '<div style="font-size:11px;color:var(--txt2)">/' + needed + ' players</div>';
+  :51  [matchId]  h += '<button onclick="joinAutoQueue(\'' + matchId + '\',\'' + mode + '\',' + needed + ')" style="width:100%;padding:14px;border-radius:14px;backgroun
+  :51  [mode]  h += '<button onclick="joinAutoQueue(\'' + matchId + '\',\'' + mode + '\',' + needed + ')" style="width:100%;padding:14px;border-radius:14px;backgroun
+  :51  [needed]  h += '<button onclick="joinAutoQueue(\'' + matchId + '\',\'' + mode + '\',' + needed + ')" style="width:100%;padding:14px;border-radius:14px;backgroun
+  :190  [mode.toUpperCase()]  h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:14px">Tumhara ' + mode.toUpperCase() + ' team ready hai</div>';
+  :198  [pIgn.charAt(0)]  h += '<div style="width:34px;height:34px;border-radius:50%;background:rgba(0,255,156,.12);display:flex;align-items:center;justify-content:center;font-
+  :199  [pIgn]  h += '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + pIgn + (isMe ? ' (You)' : '') + '</div>';
+  :200  [p.rank_tier || 'Bronze')]  h += '<div style="font-size:10px;color:#888">' + (p.rank_tier || 'Bronze') + '</div></div>';
+  :210  [matchId]  h += '<button onclick="autoSquadCaptainJoin(\'' + matchId + '\',\'' + mode + '\');closeModal()" style="width:100%;padding:13px;border-radius:13px;back
+  :210  [mode]  h += '<button onclick="autoSquadCaptainJoin(\'' + matchId + '\',\'' + mode + '\');closeModal()" style="width:100%;padding:13px;border-radius:13px;back
+  :308  [count]  '<div style="font-size:12px"><span style="color:var(--green);font-weight:700">⏳ Queue: ' + count + '/' + needed + '</span><br>' +
+  … +2 more
+
+features/battle-pass.js  (16)
+  :214  [monthName]  h+='<div style="font-size:11px;color:#888">'+monthName+' Season • '+daysLeft+' din baaki</div></div>';
+  :214  [daysLeft]  h+='<div style="font-size:11px;color:#888">'+monthName+' Season • '+daysLeft+' din baaki</div></div>';
+  :216  [PASS_PRICE()]  h+='<button onclick="window.buySeasonPass()" style="padding:8px 16px;border-radius:12px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00)
+  :221  [curTier]  h+='<div style="margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px"><span style="color:#888">Tier '+curTier+' / 50</span><spa
+  :221  [totalXP]  h+='<div style="margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px"><span style="color:#888">Tier '+curTier+' / 50</span><spa
+  :222  [xpPct]  h+='<div style="height:6px;background:rgba(255,255,255,.08);border-radius:3px"><div style="height:100%;width:'+xpPct+'%;background:linear-gradient(90d
+  :223  [xpForNext]  h+='<div style="font-size:10px;color:#666;margin-top:4px">Agla tier ke liye '+xpForNext+' XP chahiye</div>';
+  :232  [td.t]  h+='<div style="width:28px;height:28px;border-radius:8px;background:'+(unlocked?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)')+';border:1px solid '+(u
+  :245  [fLabel]  h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+fLabel+'</div>';
+  :247  [td.t]  if(unlocked&&!fc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'free\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radiu
+  :256  [pLabel]  h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+pLabel+'</div>';
+  :257  [td.t]  if(hasPrem&&unlocked&&!pc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'prem\')" style="margin-top:5px;font-size:9px;padding:3px 8px;bor
+  … +4 more
+
+features/bracket.js  (16)
+  :27  [t]  h+='<div style="font-size:28px">'+(t.status==='live'?'🔴':'🏆')+'</div>';
+  :28  [t.name||'Tournament')]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(t.name||'Tournament')+'</div><div style="font-size:11px;color:var(--txt2)">'+(t
+  :28  [t.team_count||0)]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(t.name||'Tournament')+'</div><div style="font-size:11px;color:var(--txt2)">'+(t
+  :28  [t.format||'Single Elimination')]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(t.name||'Tournament')+'</div><div style="font-size:11px;color:var(--txt2)">'+(t
+  :29  [sc]  h+='<div style="text-align:right"><div style="font-size:11px;font-weight:700;color:'+sc+'">'+(t.status||'upcoming').toUpperCase()+'</div><i class="fas
+  :29  [t.status||'upcoming').toUpperCase()]  h+='<div style="text-align:right"><div style="font-size:11px;font-weight:700;color:'+sc+'">'+(t.status||'upcoming').toUpperCase()+'</div><i class="fas
+  :56  [vi]  c.innerHTML = '<div class="empty-state" style="text-align:center;padding:20px;color:var(--txt2)">⚠️ Invalid round data at position ' + vi + '</div>';
+  :63  [data.format||'Single Elimination')]  var h='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><div style="font-size:12px;color:var(--txt2)">Format: <
+  :63  [sc]  var h='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><div style="font-size:12px;color:var(--txt2)">Format: <
+  :63  [data.status||'Upcoming').toUpperCase()]  var h='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><div style="font-size:12px;color:var(--txt2)">Format: <
+  :64  [data.prize]  if(data.prize)h+='<div style="font-size:12px;color:#ffd700;margin-top:3px">🏆 Prize: '+data.prize+'</div></div>';
+  :69  [round.name||'Round ']  h+='<div style="text-align:center;padding:6px 8px;font-size:11px;font-weight:800;color:var(--txt2);border-bottom:1px solid var(--border);margin-bottom
+  … +4 more
+
+features/bundle-offers.js  (49)
+  :76  [b.color]  h += '<div><div style="font-size:15px;font-weight:900;color:' + b.color + '">' + b.icon + ' ' + b.label + '</div>';
+  :76  [b.icon]  h += '<div><div style="font-size:15px;font-weight:900;color:' + b.color + '">' + b.icon + ' ' + b.label + '</div>';
+  :76  [b.label]  h += '<div><div style="font-size:15px;font-weight:900;color:' + b.color + '">' + b.icon + ' ' + b.label + '</div>';
+  :78  [b.originalPrice]  h += '<div style="text-align:right"><div style="font-size:10px;color:#666;text-decoration:line-through">₹' + b.originalPrice + '</div>';
+  :79  [b.color]  h += '<div style="font-size:24px;font-weight:900;color:' + b.color + '">₹' + b.price + '</div>';
+  :79  [b.price]  h += '<div style="font-size:24px;font-weight:900;color:' + b.color + '">₹' + b.price + '</div>';
+  :80  [b.save]  h += '<div style="font-size:10px;color:#00ff9c;font-weight:700">Save ₹' + b.save + '!</div></div></div>';
+  :83  [b.color]  h += '<div style="font-size:11px;color:#ccc;display:flex;align-items:center;gap:6px"><span style="color:' + b.color + '">✓</span>' + i + '</div>';
+  :86  [b.id]  h += '<button onclick="window.buyBundle(\'' + b.id + '\')" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(13
+  :86  [b.color]  h += '<button onclick="window.buyBundle(\'' + b.id + '\')" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(13
+  :86  [b]  h += '<button onclick="window.buyBundle(\'' + b.id + '\')" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(13
+  :86  [b.price]  h += '<button onclick="window.buyBundle(\'' + b.id + '\')" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(13
+  … +37 more
+
+features/challenge.js  (12)
+  :27  [toIgn]  h+='<div style="font-size:18px;font-weight:900">'+toIgn+' ko Challenge Karo</div>';
+  :37  [toUid]  h+='<button onclick="window._submitDuelChallenge(\''+toUid+'\',\''+toIgn.replace(/'/g,"\\'")+'\');" style="width:100%;padding:14px;border-radius:13px;
+  :37  [toIgn.replace(/'/g,"\\'")]  h+='<button onclick="window._submitDuelChallenge(\''+toUid+'\',\''+toIgn.replace(/'/g,"\\'")+'\');" style="width:100%;padding:14px;border-radius:13px;
+  :58  [toIgn]  card.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px 
+  :58  [rec.wins||0)]  card.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px 
+  :58  [rec.losses||0)]  card.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px 
+  :58  [total]  card.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px 
+  :104  [d.mode||'solo').toUpperCase()]  h+='<div style="font-size:11px;color:var(--txt2)">'+(d.mode||'solo').toUpperCase()+'</div></div>';
+  :117  [d.mode||'solo').toUpperCase()]  h+='<div style="font-size:12px;color:var(--txt2)">'+(d.mode||'solo').toUpperCase()+'</div>';
+  :118  [d.taunt]  if(d.taunt)h+='<div style="font-size:11px;color:#ff9f1c;font-style:italic">"'+d.taunt+'"</div>';
+  :122  [d.id]  h+='<button onclick="window.acceptDuel('+d.id+')" style="flex:1;padding:10px;border-radius:11px;border:none;background:var(--green);color:#000;font-si
+  :123  [d.id]  h+='<button onclick="window.declineDuel('+d.id+')" style="flex:1;padding:10px;border-radius:11px;border:1px solid var(--border);background:transparent
+
+features/city-championship.js  (10)
+  :24  [tab.id]  h+='<button id="'+tab.id+'" onclick="ccTab('+i+')" style="flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:poin
+  :24  [tab.l]  h+='<button id="'+tab.id+'" onclick="ccTab('+i+')" style="flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:poin
+  :49  [label]  var h='<div style="text-align:center;margin-bottom:12px"><div style="font-size:12px;color:var(--txt2)">Season: <strong style="color:var(--txt)">'+labe
+  :57  [ci.city]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+ci.city+'</div><div style="font-size:11px;color:var(--txt2)">👥 '+(ci.player_cou
+  :57  [ci.player_count||0)]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+ci.city+'</div><div style="font-size:11px;color:var(--txt2)">👥 '+(ci.player_cou
+  :57  [ci.wins||0)]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+ci.city+'</div><div style="font-size:11px;color:var(--txt2)">👥 '+(ci.player_cou
+  :76  [city]  h+='<div style="font-size:32px;margin-bottom:6px">🏙️</div><div style="font-size:22px;font-weight:900;color:var(--green)">'+city+'</div>';
+  :85  [city]  c.innerHTML='<div style="text-align:center;padding:20px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">🏙️</div><p>'+city+' abhi championsh
+  :97  [t]  function _rCard(i,t,d){ return'<div style="display:flex;gap:12px;padding:12px 14px;border-radius:13px;background:var(--card);border:1px solid var(--bo
+  :97  [d]  function _rCard(i,t,d){ return'<div style="display:flex;gap:12px;padding:12px 14px;border-radius:13px;background:var(--card);border:1px solid var(--bo
+
+features/clan-war.js  (12)
+  :43  [myScore]  h+='<div style="flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(0,255,156,.06);border:1.5px solid rgba(0,255,156,.25)"><div s
+  :43  [myClanName]  h+='<div style="flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(0,255,156,.06);border:1.5px solid rgba(0,255,156,.25)"><div s
+  :45  [oppScore]  h+='<div style="flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(255,68,68,.06);border:1.5px solid rgba(255,68,68,.2)"><div st
+  :45  [oppName]  h+='<div style="flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(255,68,68,.06);border:1.5px solid rgba(255,68,68,.2)"><div st
+  :47  [myPct]  h+='<div style="height:8px;background:rgba(255,68,68,.3);border-radius:8px;overflow:hidden;margin-bottom:14px"><div style="height:100%;width:'+myPct+'
+  :56  [myClanId]  h+='<div style="margin-top:12px"><button onclick="window.challengeClanToWar(\''+myClanId+'\')" style="width:100%;padding:13px;border-radius:13px;borde
+  :92  [c.name||'Clan')]  h+='<div style="font-size:28px">🛡️</div><div style="flex:1"><div style="font-size:13px;font-weight:800">'+(c.name||'Clan')+'</div><div style="font-si
+  :92  [c.total_members||0)]  h+='<div style="font-size:28px">🛡️</div><div style="flex:1"><div style="font-size:13px;font-weight:800">'+(c.name||'Clan')+'</div><div style="font-si
+  :93  [myClanId]  h+='<button onclick="window._sendWarChallenge(\''+myClanId+'\',\''+c.id+'\',\''+(c.name||'Clan').replace(/'/g,"\\'")+'\',\''+myClanName.replace(/'/g,"
+  :93  [c.id]  h+='<button onclick="window._sendWarChallenge(\''+myClanId+'\',\''+c.id+'\',\''+(c.name||'Clan').replace(/'/g,"\\'")+'\',\''+myClanName.replace(/'/g,"
+  :93  [c.name||'Clan').replace(/'/g,"\\'")]  h+='<button onclick="window._sendWarChallenge(\''+myClanId+'\',\''+c.id+'\',\''+(c.name||'Clan').replace(/'/g,"\\'")+'\',\''+myClanName.replace(/'/g,"
+  :93  [myClanName.replace(/'/g,"\\'")]  h+='<button onclick="window._sendWarChallenge(\''+myClanId+'\',\''+c.id+'\',\''+(c.name||'Clan').replace(/'/g,"\\'")+'\',\''+myClanName.replace(/'/g,"
+
+features/clan.js  (38)
+  :86  [clan.emblem||'🏰')]  h+='<div style="font-size:36px;margin-bottom:4px">'+(clan.emblem||'🏰')+'</div>';
+  :87  [clan.name||'My Clan')]  h+='<div style="font-size:20px;font-weight:900;color:#ffd700">'+(clan.name||'My Clan')+'</div>';
+  :88  [MAX_MEMBERS]  h+='<div style="font-size:12px;color:#888;margin-top:3px">'+mCount+'/'+MAX_MEMBERS+' members</div>';
+  :89  [clan.tag]  if(clan.tag)h+='<div style="margin-top:6px;display:inline-block;padding:3px 12px;border-radius:8px;background:rgba(255,215,0,.12);border:1px solid rgb
+  :94  [s.c]  h+='<div style="text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><div style=
+  :94  [s.v]  h+='<div style="text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><div style=
+  :94  [s.l]  h+='<div style="text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><div style=
+  :100  [clan]  h+='<div style="font-size:22px">'+(clan.weeklyRank===1?'🥇':clan.weeklyRank===2?'🥈':clan.weeklyRank===3?'🥉':'#'+clan.weeklyRank)+'</div>';
+  :100  [clan.weeklyRank]  h+='<div style="font-size:22px">'+(clan.weeklyRank===1?'🥇':clan.weeklyRank===2?'🥈':clan.weeklyRank===3?'🥉':'#'+clan.weeklyRank)+'</div>';
+  :101  [clan.weeklyRank]  h+='<div><div style="font-size:13px;font-weight:800;color:#ffd700">Weekly Rank #'+clan.weeklyRank+'</div><div style="font-size:11px;color:#888">Is haf
+  :104  [GDI(13)]  h+='<div style="margin-left:auto;text-align:right;font-size:12px;color:#00ff64;font-weight:700">'+GDI(13)+' '+rew+' prize</div>';
+  :104  [rew]  h+='<div style="margin-left:auto;text-align:right;font-size:12px;color:#00ff64;font-weight:700">'+GDI(13)+' '+rew+' prize</div>';
+  … +26 more
+
+features/clean-badge.js  (1)
+  :14  [THRESHOLD]  h+='<div style="font-size:13px;color:var(--txt2);margin-top:6px;line-height:1.6">Tumne '+THRESHOLD+' matches bina kisi report ke complete kiye!</div><
+
+features/creator-match-host.js  (37)
+  :60  [n]  h += '<option value="' + n + '"' + (n === 25 ? ' selected' : '') + '>' + n + ' Players</option>';
+  :60  [n]  h += '<option value="' + n + '"' + (n === 25 ? ' selected' : '') + '>' + n + ' Players</option>';
+  :66  [m.toLowerCase()]  ['Solo','Duo','Squad'].forEach(function(m) { h += '<option value="' + m.toLowerCase() + '">' + m + '</option>'; });
+  :66  [m]  ['Solo','Duo','Squad'].forEach(function(m) { h += '<option value="' + m.toLowerCase() + '">' + m + '</option>'; });
+  :92  [minDT]  h += '<input type="datetime-local" id="cmDateTime" class="f-input" min="' + minDT + '"></div>';
+  :199  [m.entry_fee||0)]  bh += '<div style="font-size:11px;color:#888">' + (m.entry_fee||0) + ' ' + (m.entry_type==='coins'?'🪙':'💎') + ' · ' + (m.filled_slots||0) + '/' + (m
+  :199  [m]  bh += '<div style="font-size:11px;color:#888">' + (m.entry_fee||0) + ' ' + (m.entry_type==='coins'?'🪙':'💎') + ' · ' + (m.filled_slots||0) + '/' + (m
+  :199  [m.filled_slots||0)]  bh += '<div style="font-size:11px;color:#888">' + (m.entry_fee||0) + ' ' + (m.entry_type==='coins'?'🪙':'💎') + ' · ' + (m.filled_slots||0) + '/' + (m
+  :199  [m.max_slots||0)]  bh += '<div style="font-size:11px;color:#888">' + (m.entry_fee||0) + ' ' + (m.entry_type==='coins'?'🪙':'💎') + ' · ' + (m.filled_slots||0) + '/' + (m
+  :200  [statusLabel]  bh += '<span style="font-size:10px;color:' + statusColor + ';font-weight:700">' + statusLabel + '</span>';
+  :203  [m.id]  bh += '<button onclick="showCreatorRoomEntry(\'' + m.id + '\')" style="width:100%;padding:9px;border-radius:10px;background:rgba(0,212,255,.08);border
+  :205  [m.id]  bh += '<button onclick="showCreatorResultForm(\'' + m.id + '\')" style="width:100%;padding:9px;border-radius:10px;background:rgba(0,255,156,.08);borde
+  … +25 more
+
+features/f29-special-tournament.js  (2)
+  :82  [label]  h += '<b style="color:var(--txt)">' + label + '</b> — special tournament match';
+  :84  [mrank]  if (mrank) h += '<br><i class="fas fa-medal" style="color:#ffd700"></i> <span style="color:#ffd700">' + mrank + '+</span> rank chahiye';
+
+features/free-trial.js  (7)
+  :101  [TRIAL_DAYS]  h += '<div style="font-size:13px;color:#888;margin-bottom:16px">' + TRIAL_DAYS + ' din bilkul free</div>';
+  :104  [p]  h += '<div style="font-size:12px;color:#ddd;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)">' + p + '</div>';
+  :177  [TRIAL_DAYS]  h += '<div style="font-size:13px;color:#888;margin-bottom:18px">Silver Premium ' + TRIAL_DAYS + ' din bilkul free try karo</div>';
+  :180  [p]  h += '<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#ddd;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)">' + p
+  :183  [TRIAL_DAYS]  h += '<button onclick="window.startFreeTrial()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#e0e0e
+  :270  [tname]  '<span style="font-weight:800">' + tname + ' khatam hone me</span>' +
+  :271  [_fmtLeft(left)]  '<span id="premExpiryCount" style="font-family:monospace;font-weight:900;font-size:13px;color:#fff">' + _fmtLeft(left) + '</span>' +
+
+features/friends.js  (25)
+  :17  [tab.ic]  h+='<button id="frTab'+i+'" onclick="frTab('+i+')" style="flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:poin
+  :17  [tab.l]  h+='<button id="frTab'+i+'" onclick="frTab('+i+')" style="flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:poin
+  :43  [d.avatar_url]  var av=d.avatar_url?'<img src="'+d.avatar_url+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover">':'<span style="font-size:15px;font
+  :45  [ri.bg]  h+='<div style="width:46px;height:46px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :45  [ri.c]  h+='<div style="width:46px;height:46px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :45  [av]  h+='<div style="width:46px;height:46px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :46  [d.ign||'Player')]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(d.ign||'Player')+'</div><div style="font-size:11px;color:var(--txt2)">'+ri.e+' 
+  :46  [ri.e]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(d.ign||'Player')+'</div><div style="font-size:11px;color:var(--txt2)">'+ri.e+' 
+  :46  [ri.b]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(d.ign||'Player')+'</div><div style="font-size:11px;color:var(--txt2)">'+ri.e+' 
+  :46  [d.total_matches||0)]  h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(d.ign||'Player')+'</div><div style="font-size:11px;color:var(--txt2)">'+ri.e+' 
+  :48  [d.id]  h+='<button onclick="window.sendDuelChallenge(\''+d.id+'\',\''+(d.ign||'Player').replace(/'/g,"\\'")+'\');" style="padding:5px 10px;border-radius:8px;
+  :48  [d.ign||'Player').replace(/'/g,"\\'")]  h+='<button onclick="window.sendDuelChallenge(\''+d.id+'\',\''+(d.ign||'Player').replace(/'/g,"\\'")+'\');" style="padding:5px 10px;border-radius:8px;
+  … +13 more
+
+features/growth.js  (50)
+  :28  [tab]  h += '<button onclick="switchCityTab(' + i + ')" id="cityTab' + i + '" style="padding:7px 14px;border-radius:20px;border:none;font-size:12px;font-weig
+  :144  [city]  cont.innerHTML = '<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">🏙️</div><div style="color:var(--txt2);fon
+  :150  [city]  html += '<div style="text-align:center;margin-bottom:10px;font-size:12px;font-weight:700;color:#ffd700">🏙️ ' + city + ' Leaderboard</div>';
+  :175  [medal]  html += '<div style="width:28px;text-align:center;font-size:' + (rank<=3?'18':'13') + 'px;font-weight:800;color:' + (rank===1?'#ffd700':rank===2?'#c0c
+  :176  [p]  html += '<div style="width:34px;height:34px;border-radius:50%;background:' + p.avatarBg + ';display:flex;align-items:center;justify-content:center;fon
+  :177  [p.ign]  html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:' + (isMe?'var(--green)':'var(--txt)') + ';overflow:hidden;t
+  :178  [p.city||'Unknown')]  html += '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (p.city||'Unknown') + ' • ' + p.wins + ' wins</div></div>';
+  :178  [p.wins]  html += '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (p.city||'Unknown') + ' • ' + p.wins + ' wins</div></div>';
+  :179  [p.rp]  html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:900;color:#00d4ff">' + p.rp + '</div><div style="font-size
+  :189  [myRank]  html += '<div style="width:28px;text-align:center;font-size:13px;font-weight:800;color:#00ff9c">#' + myRank + '</div>';
+  :190  [me]  html += '<div style="width:34px;height:34px;border-radius:50%;background:' + me.avatarBg + ';display:flex;align-items:center;justify-content:center;fo
+  :191  [me.ign]  html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:var(--green);overflow:hidden;text-overflow:ellipsis;white-sp
+  … +38 more
+
+features/india-map.js  (6)
+  :87  [city.x]  h+='<text x="'+city.x+'" y="'+(city.y-r-3)+'" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.8)" font-weight="700">'+city.name.substring(0
+  :87  [city]  h+='<text x="'+city.x+'" y="'+(city.y-r-3)+'" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.8)" font-weight="700">'+city.name.substring(0
+  :87  [city.name.substring(0,6)]  h+='<text x="'+city.x+'" y="'+(city.y-r-3)+'" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.8)" font-weight="700">'+city.name.substring(0
+  :125  [name]  +'<div style="font-size:14px;font-weight:800;color:var(--txt)">'+name+(isMe?' <span style="font-size:10px;color:var(--green)">(Your City)</span>':'')+
+  :126  [players]  +'<div style="font-size:12px;color:var(--txt2);margin-top:2px">👥 '+players+' players · 🏆 '+score+' points</div>'
+  :126  [score]  +'<div style="font-size:12px;color:var(--txt2);margin-top:2px">👥 '+players+' players · 🏆 '+score+' points</div>'
+
+features/match-history.js  (29)
+  :83  [color]  '<div style="font-size:16px;font-weight:900;color:' + color + '">' + val + '</div>' +
+  :83  [val]  '<div style="font-size:16px;font-weight:900;color:' + color + '">' + val + '</div>' +
+  :84  [label]  '<div style="font-size:9px;color:#888;margin-top:2px">' + label + '</div>' +
+  :112  [posEmoji]  html += '<div style="font-size:20px;min-width:28px;text-align:center">' + posEmoji + '</div>';
+  :114  [m.matchName || 'Match')]  html += '<div style="font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (m.matchName || 'Match') + '</div>'
+  :115  [date]  html += '<div style="font-size:10px;color:var(--txt2);margin-top:2px">' + date + ' • ' + (m.mode || 'Solo') + '</div>';
+  :115  [m.mode || 'Solo')]  html += '<div style="font-size:10px;color:var(--txt2);margin-top:2px">' + date + ' • ' + (m.mode || 'Solo') + '</div>';
+  :117  [m.kills || 0)]  html += '<div style="font-size:13px;font-weight:900;color:#ff6b6b">💀' + (m.kills || 0) + '</div>';
+  :118  [m.winnings]  if (m.winnings > 0) html += '<div style="font-size:10px;color:#00ff9c;margin-top:2px">+' + m.winnings + ' 💎</div>';
+  :140  [s]  html += '<div><div style="font-weight:700">' + (s.emoji ? s.emoji + ' ' : '') + (s.seasonName || 'Season') + '</div>';
+  :140  [s.seasonName || 'Season')]  html += '<div><div style="font-weight:700">' + (s.emoji ? s.emoji + ' ' : '') + (s.seasonName || 'Season') + '</div>';
+  :141  [s.finalTier || 'Bronze')]  html += '<div style="font-size:11px;color:var(--txt2)">' + (s.finalTier || 'Bronze') + (s.reward ? ' • ' + s.reward : '') + '</div></div>';
+  … +17 more
+
+features/mentor.js  (22)
+  :49  [ri.bg]  h+='<div style="width:48px;height:48px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :49  [ri.c]  h+='<div style="width:48px;height:48px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :49  [ri.e]  h+='<div style="width:48px;height:48px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :50  [m.ign||'Mentor')]  h+='<div style="flex:1"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:14px;font-weight:800">'+(m.ign||'Mentor')+'</span>
+  :51  [ri.e]  h+='<div style="font-size:11px;color:var(--txt2)">'+ri.e+' '+ri.b+'</div>';
+  :51  [ri.b]  h+='<div style="font-size:11px;color:var(--txt2)">'+ri.e+' '+ri.b+'</div>';
+  :52  [m.speciality]  if(m.speciality)h+='<div style="font-size:11px;color:#00d4ff">🎯 '+m.speciality+'</div></div></div>';
+  :55  [m.total_sessions||0)]  h+='<div style="font-size:11px;color:var(--txt2)">Sessions: <strong style="color:var(--txt)">'+(m.total_sessions||0)+'</strong></div>';
+  :56  [m.uid]  h+='<button onclick="window.requestMentorSession(\''+m.uid+'\',\''+(m.ign||'Mentor').replace(/'/g,"\\'")+'\')" style="padding:8px 14px;border-radius:1
+  :56  [m.ign||'Mentor').replace(/'/g,"\\'")]  h+='<button onclick="window.requestMentorSession(\''+m.uid+'\',\''+(m.ign||'Mentor').replace(/'/g,"\\'")+'\')" style="padding:8px 14px;border-radius:1
+  :75  [r.mentor_ign||'Mentor')]  h+='<div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-size:13px;font-weight:800">👨‍🏫 '+(r.mentor_ign||'Ment
+  :75  [sc]  h+='<div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-size:13px;font-weight:800">👨‍🏫 '+(r.mentor_ign||'Ment
+  … +10 more
+
+features/player-card.js  (9)
+  :175  [rankEmoji]  h+='<div style="font-size:60px;margin-bottom:6px;filter:drop-shadow(0 0 20px '+(isWin?ri.color+'88':'rgba(255,255,255,.2)')+')">'+rankEmoji+'</div>';
+  :176  [ign]  h+='<div style="font-size:22px;font-weight:900;color:#fff">'+ign+'</div>';
+  :177  [matchName]  h+='<div style="font-size:12px;color:rgba(255,255,255,.5);margin:4px 0 14px">'+matchName+'</div>';
+  :179  [rankPos]  h+='<div style="text-align:center"><div style="font-size:24px;font-weight:900;color:'+(isWin?ri.color:'#fff')+'">#'+rankPos+'</div><div style="font-si
+  :181  [kills]  h+='<div style="text-align:center"><div style="font-size:24px;font-weight:900;color:#ff6b6b">'+kills+'</div><div style="font-size:10px;color:rgba(255,
+  :183  [ri.color]  h+='<div style="text-align:center"><div style="font-size:14px;font-weight:900;color:'+ri.color+'">'+ri.emoji+' '+ri.badge+'</div><div style="font-size
+  :183  [ri.emoji]  h+='<div style="text-align:center"><div style="font-size:14px;font-weight:900;color:'+ri.color+'">'+ri.emoji+' '+ri.badge+'</div><div style="font-size
+  :183  [ri.badge]  h+='<div style="text-align:center"><div style="font-size:14px;font-weight:900;color:'+ri.color+'">'+ri.emoji+' '+ri.badge+'</div><div style="font-size
+  :189  [shareMsg.replace(/'/g,"\\'")]  h+='<button onclick="window.openWhatsApp(\''+shareMsg.replace(/'/g,"\\'")+'\')" style="width:100%;padding:13px;border-radius:13px;border:none;backgrou
+
+features/polls.js  (8)
+  :67  [p.total_votes || 0)]  h += '</div><div style="font-size:11px;color:var(--txt2);margin-top:4px">' + (p.total_votes || 0) + ' votes</div>';
+  :133  [pct]  h += '<span style="color:var(--txt2)">' + pct + '% (' + voteCount + ')</span></div>';
+  :134  [pct]  h += '<div style="height:8px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background
+  :137  [poll.id]  h += '<button onclick="submitPollVote(\'' + poll.id + '\',\'' + opt.key + '\',' + opt.idx + ')" style="width:100%;padding:12px;border-radius:12px;back
+  :137  [opt.key]  h += '<button onclick="submitPollVote(\'' + poll.id + '\',\'' + opt.key + '\',' + opt.idx + ')" style="width:100%;padding:12px;border-radius:12px;back
+  :137  [opt.idx]  h += '<button onclick="submitPollVote(\'' + poll.id + '\',\'' + opt.key + '\',' + opt.idx + ')" style="width:100%;padding:12px;border-radius:12px;back
+  :142  [total]  h += '<div style="text-align:center;font-size:11px;color:var(--txt2);margin-top:10px">' + total + ' total votes' + (poll.status !== 'active' ? ' · Pol
+  :142  [poll]  h += '<div style="text-align:center;font-size:11px;color:var(--txt2);margin-top:10px">' + total + ' total votes' + (poll.status !== 'active' ? ' · Pol
+
+features/premium-creator.js  (41)
+  :77  [m.label]  h += '<div style="font-size:20px;font-weight:900;color:#ffd700;margin-bottom:6px">' + m.label + '</div>';
+  :78  [m.day]  h += '<div style="font-size:14px;color:var(--txt2);margin-bottom:16px">Login streak ' + m.day + ' din!</div>';
+  :80  [m.coins]  h += '<div style="font-size:28px;font-weight:900;color:#ffd700">+' + m.coins + ' 🪙</div>';
+  :83  [m.badge]  h += '<div style="margin-top:8px;font-size:13px;font-weight:700;color:#b964ff">' + m.badge + ' badge mila!</div>';
+  :192  [col]  h += '<div style="font-size:14px;font-weight:900;color:' + col + '">👑 ' + nameMap[tier] + ' Premium</div>';
+  :193  [expDate]  h += '<div style="font-size:10px;color:var(--txt2)">Expires: ' + expDate + '</div>';
+  :197  [col]  h += '<div style="background:rgba(0,0,0,.2);border-radius:10px;padding:8px;font-size:11px"><div style="font-weight:800;color:' + col + '">' + f[0] + '
+  :203  [col]  h += '<button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade();" style="width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1p
+  :203  [col]  h += '<button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade();" style="width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1p
+  :317  [app.creator_code || '')]  ph += '<div style="font-size:12px;color:var(--txt2)">Code</div><div style="font-size:16px;font-weight:800;color:#00d4ff;margin-bottom:8px">' + (app.cr
+  :318  [statusLabel]  ph += '<div style="font-size:12px;color:var(--txt2)">Status</div><div style="font-size:14px;font-weight:800">' + statusLabel + '</div>';
+  :323  [uid()]  ph += '<button onclick="if(window._supa)window._supa.from(\'creator_applications\').delete().eq(\'user_id\',\''+uid()+'\').then(function(){if(window.c
+  … +29 more
+
+features/premium.js  (54)
+  :68  [p.i]  pts.forEach(function(p){h+='<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,
+  :68  [p.t]  pts.forEach(function(p){h+='<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,
+  :120  [t.color]  h+='<div class="prem-tier-crown" style="filter:drop-shadow(0 0 8px '+t.color+')">👑</div>';
+  :122  [t.color]  h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px 
+  :122  [t.color]  h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px 
+  :122  [t]  h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px 
+  :122  [t.img]  h+='<div style="display:flex;align-items:center;gap:10px"><div style="width:40px;height:40px;border-radius:12px;background:'+t.color+'18;border:1.5px 
+  :123  [t.color]  h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
+  :123  [t.label]  h+='<div><div style="font-size:16px;font-weight:900;color:'+t.color+'">Premium '+t.label+'</div>';
+  :124  [t.color]  if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex
+  :124  [t.color]  if(isA)h+='<div style="font-size:10px;background:'+t.color+'22;color:'+t.color+';padding:2px 8px;border-radius:8px;font-weight:800;display:inline-flex
+  :131  [t.tier]  if(isA)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear
+  … +42 more
+
+features/seasonal-league.js  (18)
+  :90  [s.name]  h += '<div style="font-size:13px;font-weight:900;color:#ffd700;margin-bottom:4px">' + s.name + '</div>';
+  :94  [pct]  h += '<div style="background:rgba(255,255,255,.06);border-radius:10px;height:6px;margin:8px 0"><div style="width:' + pct + '%;height:6px;background:li
+  :95  [s.daysLeft]  h += '<div style="font-size:12px;color:var(--txt2)">' + s.daysLeft + ' din baaki</div>';
+  :108  [p.pos]  h += '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px"><span style="color:#888">' + p.pos + '</span><span styl
+  :108  [p.reward]  h += '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px"><span style="color:#888">' + p.pos + '</span><span styl
+  :217  [n.name]  var bits = ['⏳ <b style="color:#ffd700">' + n.name + '</b> — <b>' + n.daysLeft + '</b> din baaki'];
+  :217  [n.daysLeft]  var bits = ['⏳ <b style="color:#ffd700">' + n.name + '</b> — <b>' + n.daysLeft + '</b> din baaki'];
+  :219  [n.pos]  else if (n.pos && n.gap > 0) bits.push('tum #' + n.pos + ' par ho · Top-3 se <b>' + n.gap + '</b> kills door');
+  :219  [n.gap]  else if (n.pos && n.gap > 0) bits.push('tum #' + n.pos + ' par ho · Top-3 se <b>' + n.gap + '</b> kills door');
+  :224  [bits.join(' · ')]  '<div style="flex:1;min-width:0;font-size:11px;color:#ddd;line-height:1.5">' + bits.join(' · ') + '</div>' +
+  :235  [n2.name]  var b2 = ['⏳ <b style="color:#ffd700">' + n2.name + '</b> — <b>' + n2.daysLeft + '</b> din baaki'];
+  :235  [n2.daysLeft]  var b2 = ['⏳ <b style="color:#ffd700">' + n2.name + '</b> — <b>' + n2.daysLeft + '</b> din baaki'];
+  … +6 more
+
+features/squad-bank.js  (17)
+  :41  [gd]  h+='<div><div style="font-size:11px;color:var(--txt2);font-weight:700;margin-bottom:3px">SQUAD BANK</div><div style="font-size:26px;font-weight:900;co
+  :41  [clan.name||'Clan')]  h+='<div><div style="font-size:11px;color:var(--txt2);font-weight:700;margin-bottom:3px">SQUAD BANK</div><div style="font-size:26px;font-weight:900;co
+  :42  [clanId]  h+='<button onclick="window.contributeToBank(\''+clanId+'\')" style="padding:10px 14px;border-radius:11px;border:1px solid rgba(0,255,156,.3);backgrou
+  :43  [myGd]  h+='</div><div style="margin-top:10px;font-size:11px;color:var(--txt2)">Mera balance: 💎 '+myGd+' GD'+(topContrib?' · Top: '+topContrib[1].ign:'')+'</
+  :50  [item.icon]  h+='<div style="font-size:28px;width:36px;text-align:center">'+item.icon+'</div>';
+  :51  [item.name]  h+='<div style="flex:1"><div style="font-size:13px;font-weight:800">'+item.name+'</div><div style="font-size:11px;color:var(--txt2)">'+item.desc+'</di
+  :51  [item.desc]  h+='<div style="flex:1"><div style="font-size:13px;font-weight:800">'+item.name+'</div><div style="font-size:11px;color:var(--txt2)">'+item.desc+'</di
+  :51  [item.type]  h+='<div style="flex:1"><div style="font-size:13px;font-weight:800">'+item.name+'</div><div style="font-size:11px;color:var(--txt2)">'+item.desc+'</di
+  :52  [item.cost]  h+=isUnlocked?'<div style="text-align:center"><div style="font-size:18px">✅</div><div style="font-size:10px;color:var(--green);font-weight:700">Unlock
+  :52  [clanId]  h+=isUnlocked?'<div style="text-align:center"><div style="font-size:18px">✅</div><div style="font-size:10px;color:var(--green);font-weight:700">Unlock
+  :52  [item.id]  h+=isUnlocked?'<div style="text-align:center"><div style="font-size:18px">✅</div><div style="font-size:10px;color:var(--green);font-weight:700">Unlock
+  :52  [item.cost]  h+=isUnlocked?'<div style="text-align:center"><div style="font-size:18px">✅</div><div style="font-size:10px;color:var(--green);font-weight:700">Unlock
+  … +5 more
+
+features/squad-finder.js  (25)
+  :42  [m]  ['all','Solo','Duo','Squad'].forEach(function(m){ var a=_sfMode===m; h+='<button onclick="_sfMode=\''+m+'\';_sfRefreshBrowse()" style="padding:5px 12p
+  :44  [r.v]  [{v:'all',l:'All'},{v:'Bronze',l:'🏅 Bronze'},{v:'Silver',l:'🥈 Silver'},{v:'Gold',l:'🥇 Gold'},{v:'Diamond',l:'💎 Diamond'}].forEach(function(r){ var
+  :44  [r.l]  [{v:'all',l:'All'},{v:'Bronze',l:'🏅 Bronze'},{v:'Silver',l:'🥈 Silver'},{v:'Gold',l:'🥇 Gold'},{v:'Diamond',l:'💎 Diamond'}].forEach(function(r){ var
+  :63  [ri.bg]  h+='<div style="width:44px;height:44px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :63  [ri.c]  h+='<div style="width:44px;height:44px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :63  [ri.e]  h+='<div style="width:44px;height:44px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-conten
+  :64  [d.ign||'Player')]  h+='<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800">'+(d.ign||'Player')+'</div>';
+  :65  [d.rank_tier||'Bronze')]  h+='<div style="font-size:11px;color:var(--txt2)">'+(d.rank_tier||'Bronze')+' · '+(d.mode||'Any')+(d.role?' · '+d.role:'')+'</div>';
+  :65  [d.mode||'Any')]  h+='<div style="font-size:11px;color:var(--txt2)">'+(d.rank_tier||'Bronze')+' · '+(d.mode||'Any')+(d.role?' · '+d.role:'')+'</div>';
+  :65  [d]  h+='<div style="font-size:11px;color:var(--txt2)">'+(d.rank_tier||'Bronze')+' · '+(d.mode||'Any')+(d.role?' · '+d.role:'')+'</div>';
+  :66  [d.note.substring(0,50)]  if(d.note)h+='<div style="font-size:11px;color:var(--txt2);font-style:italic">"'+d.note.substring(0,50)+'"</div>';
+  :67  [_ago(d.created_at)]  h+='<div style="font-size:10px;color:var(--txt2)">'+_ago(d.created_at)+'</div></div>';
+  … +13 more
+
+features/streak.js  (16)
+  :42  [badge.color]  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;paddi
+  :42  [badge.color]  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;paddi
+  :42  [badge.emoji]  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;paddi
+  :42  [badge.color]  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;paddi
+  :42  [streak]  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;paddi
+  :42  [badge.label]  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;paddi
+  :64  [badge.color]  var h='<div style="text-align:center;padding:16px 0"><div style="font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 20px '+badge.color+'88)">'+ba
+  :64  [badge.emoji]  var h='<div style="text-align:center;padding:16px 0"><div style="font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 20px '+badge.color+'88)">'+ba
+  :65  [badge.color]  h+='<div style="font-size:26px;font-weight:900;color:'+badge.color+'">'+streak+' Win Streak!</div>';
+  :65  [streak]  h+='<div style="font-size:26px;font-weight:900;color:'+badge.color+'">'+streak+' Win Streak!</div>';
+  :66  [badge.label]  h+='<div style="font-size:14px;color:var(--txt2);margin-top:4px">'+badge.label+'</div></div>';
+  :69  [t.l]  h+='<div style="text-align:center;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);opacity:'
+  … +4 more
+
+features/watch-earn.js  (13)
+  :185  [coinsPerInterval]  '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (intervalMins <= 1 ? '+' + coinsPerInterval + '🪙 per minute' : 'Har ' + intervalMin
+  :185  [intervalMins]  '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (intervalMins <= 1 ? '+' + coinsPerInterval + '🪙 per minute' : 'Har ' + intervalMin
+  :185  [coinsPerInterval]  '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (intervalMins <= 1 ? '+' + coinsPerInterval + '🪙 per minute' : 'Har ' + intervalMin
+  :185  [minsLeft]  '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (intervalMins <= 1 ? '+' + coinsPerInterval + '🪙 per minute' : 'Har ' + intervalMin
+  :269  [window]  h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (window._chatEsc ? window._chatEsc(u.stream_title || (u.ign + ' — Live')) : 
+  :270  [window]  h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">🔴 ' + (window._chatEsc ? window._chatEsc(u.ign || 'Player') : (u.ign || 'Player'))
+  :271  [String(link)]  h += '<button onclick="window.watchStream(\'' + String(link).replace(/'/g, "\\'") + '\')" style="padding:8px 14px;border-radius:10px;background:linear
+  :278  [m.title || 'Match')]  h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (m.title || 'Match') + '</div>';
+  :279  [count]  h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + count + ' watching • ' + (m.mode || 'BR') + '</div></div>';
+  :279  [m.mode || 'BR')]  h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + count + ' watching • ' + (m.mode || 'BR') + '</div></div>';
+  :280  [m.id]  h += '<button onclick="startWatching(\'' + m.id + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);
+  :320  [_embed]  h += '<iframe src="' + _embed + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-writ
+  … +1 more
+
+js/bugfix-v30-final.js  (10)
+  :563  [medal]  h += '<div style="font-size:22px;width:32px;text-align:center">' + medal + '</div>';
+  :564  [em]  h += '<div style="font-size:24px">' + em + '</div>';
+  :566  [clan.name || 'Clan')]  h += '<div style="font-size:14px;font-weight:800;color:#fff">' + (clan.name || 'Clan') + (myC ? ' (Aapka)' : '') + '</div>';
+  :567  [mc]  h += '<div style="font-size:10px;color:#888">' + mc + ' members &bull; ' + GDI(11) + ' ' + (clan.weekly_score || 0) + ' pts</div>';
+  :567  [GDI(11)]  h += '<div style="font-size:10px;color:#888">' + mc + ' members &bull; ' + GDI(11) + ' ' + (clan.weekly_score || 0) + ' pts</div>';
+  :567  [clan.weekly_score || 0)]  h += '<div style="font-size:10px;color:#888">' + mc + ' members &bull; ' + GDI(11) + ' ' + (clan.weekly_score || 0) + ' pts</div>';
+  :571  [GDI(13)]  h += '<div style="font-size:12px;font-weight:800;color:#00ff64">' + GDI(13) + ' ' + rew + '</div>';
+  :571  [rew]  h += '<div style="font-size:12px;font-weight:800;color:#00ff64">' + GDI(13) + ' ' + rew + '</div>';
+  :601  [clanId]  h += '<button onclick="window._sendClanMsg(\''+clanId+'\')" style="padding:10px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,
+  :705  [safe(m.message)]  '<div style="font-size:12px;color:#ddd">' + safe(m.message) + '</div>' +
+
+js/features-user.js  (88)
+  :44  [item.l]  h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">' + item.l + '</div>';
+  :45  [item.c]  h += '<div style="font-size:20px;font-weight:900;color:' + item.c + '">' + item.v + '</div></div>';
+  :45  [item.v]  h += '<div style="font-size:20px;font-weight:900;color:' + item.c + '">' + item.v + '</div></div>';
+  :117  [reportedName||'Player')]  h += '<div style="font-size:13px;font-weight:700;margin-bottom:12px">👤 Reporting: ' + (reportedName||'Player') + '</div>';
+  :121  [matchId]  h += '<button onclick="window.submitReport(\'' + matchId + '\',\'' + (reportedUid||'') + '\')" style="width:100%;padding:12px;border-radius:12px;backg
+  :121  [reportedUid||'')]  h += '<button onclick="window.submitReport(\'' + matchId + '\',\'' + (reportedUid||'') + '\')" style="width:100%;padding:12px;border-radius:12px;backg
+  :313  [matchId]  '<button onclick="window._remindCustom(\'' + matchId + '\')" style="padding:10px 14px;border-radius:10px;background:var(--primary);color:#000;font-wei
+  :348  [color]  h += '<span style="font-size:13px;font-weight:700"><i class="fas fa-id-card" style="color:' + color + '"></i> Profile ' + pct + '% Complete</span>';
+  :348  [pct]  h += '<span style="font-size:13px;font-weight:700"><i class="fas fa-id-card" style="color:' + color + '"></i> Profile ' + pct + '% Complete</span>';
+  :352  [pct]  h += '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,' + color + ',#00cc7a);border-radius:4px;transition:width .5s"></div
+  :352  [color]  h += '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,' + color + ',#00cc7a);border-radius:4px;transition:width .5s"></div
+  :356  [m]  h += '<span style="font-size:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:2px 7px;color:#666
+  … +76 more
+
+js/features/asset-catalog.js  (2)
+  :238  [title]  var h = '<div style="margin:14px 0 8px;font-size:13px;font-weight:800;color:#ffd700">' + title +
+  :258  [VER]  h += '<div style="font-size:11px;color:#888;text-align:center;margin-bottom:6px">Collection v' + VER + ' — ' +
+
+js/features/badge-engine.js  (12)
+  :191  [kindLabel.toUpperCase()]  h += '<div style="font-size:10px;font-weight:800;color:#ffd700;letter-spacing:.4px">🎯 AGLA INAAM · ' + kindLabel.toUpperCase() + '</div>';
+  :195  [nr.pct]  '<div style="height:100%;width:' + nr.pct + '%;background:linear-gradient(90deg,#ffd700,#b964ff);border-radius:3px"></div></div>';
+  :198  [nr.have]  '<div style="font-size:13px;font-weight:900;color:#00ff9c">' + nr.have + '<span style="color:#666;font-weight:700">/' + nr.need + '</span></div>' +
+  :198  [nr.need]  '<div style="font-size:13px;font-weight:900;color:#00ff9c">' + nr.have + '<span style="color:#666;font-weight:700">/' + nr.need + '</span></div>' +
+  :199  [nr.pct]  '<div style="font-size:9px;color:#888;font-weight:700">' + nr.pct + '% · ' + (nr.need - nr.have) + ' door</div>' +
+  :199  [nr]  '<div style="font-size:9px;color:#888;font-weight:700">' + nr.pct + '% · ' + (nr.need - nr.have) + ' door</div>' +
+  :226  [earned]  h += '<span style="font-size:11px;font-weight:800;color:#ffd700;flex-shrink:0">+' + (earned.length - show.length) + '</span>';
+  :417  [n.label]  '<div style="font-size:9px;font-weight:900;color:#ff8c00;margin-top:2px">' + n.label + '</div></div>';
+  :426  [d.day]  '<div style="font-size:8px;color:rgba(255,255,255,.5);font-weight:700">D' + d.day + '</div>' +
+  :427  [fg]  '<div style="font-size:10px;font-weight:900;color:' + fg + '">' + (d.done ? '✓' : '🪙' + d.coins) + '</div></div>';
+  :427  [d]  '<div style="font-size:10px;font-weight:900;color:' + fg + '">' + (d.done ? '✓' : '🪙' + d.coins) + '</div></div>';
+  :427  [d.coins]  '<div style="font-size:10px;font-weight:900;color:' + fg + '">' + (d.done ? '✓' : '🪙' + d.coins) + '</div></div>';
+
+js/fix12-push-notifications.js  (2)
+  :52  [msg.replace(/\n/g, '<br>')]  showModal('🔔 Notifications Blocked', '<p style="font-size:13px;line-height:1.6">' + msg.replace(/\n/g, '<br>') + '</p>');
+  :57  [msg.replace(/\n/g, '<br>')]  banner.innerHTML = '<strong>🔔 Notifications Blocked</strong><br>' + msg.replace(/\n/g, '<br>') + '<br><button onclick="this.parentNode.remove()" styl
+
+js/fix9-toast-queue.js  (2)
+  :53  [ic]  d.innerHTML = '<i class="fas fa-' + ic + '"></i>' + item.msg;
+  :53  [item.msg]  d.innerHTML = '<i class="fas fa-' + ic + '"></i>' + item.msg;
+
+js/fixes-v7.js  (19)
+  :122  [season.name || 'Season')]  '<div style="font-size:11px;font-weight:800;color:#b964ff">🏆 ' + (season.name || 'Season') + '</div>' +
+  :123  [season.daysLeft || 0)]  '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#666;font-weight:600"> din b
+  :192  [u.ign || 'Player')]  h += '<div class="rank-row"><div class="rank-info"><div class="rn">' + (u.ign || 'Player') + '</div></div></div>';
+  :519  [me.ign||'You')]  h+='<div style="text-align:center;padding:12px;background:rgba(0,255,156,.06);border-radius:12px 0 0 12px"><div style="font-size:15px;font-weight:900;
+  :521  [other.ign||'Player')]  h+='<div style="text-align:center;padding:12px;background:rgba(255,107,107,.06);border-radius:0 12px 12px 0"><div style="font-size:15px;font-weight:90
+  :608  [code]  h+='<div style="font-size:30px;font-weight:900;color:#00ff9c;letter-spacing:3px">'+code+'</div>';
+  :618  [_rJoin]  h+='<div style="font-size:11px;color:#aaa;margin-top:6px">Join par DONO ko +🪙'+_rJoin+' · Dost '+_rMThr+' matches khele to +🪙'+_rMatch+'</div>';
+  :618  [_rMThr]  h+='<div style="font-size:11px;color:#aaa;margin-top:6px">Join par DONO ko +🪙'+_rJoin+' · Dost '+_rMThr+' matches khele to +🪙'+_rMatch+'</div>';
+  :618  [_rMatch]  h+='<div style="font-size:11px;color:#aaa;margin-top:6px">Join par DONO ko +🪙'+_rJoin+' · Dost '+_rMThr+' matches khele to +🪙'+_rMatch+'</div>';
+  :634  [window]  h+='<a href="'+(window._waShareUrl?window._waShareUrl(msg):('https://wa.me/?text='+encodeURIComponent(msg)))+'" style="display:flex;align-items:center
+  :637  [JSON.stringify(msg)]  h+='<button onclick="(function(){var t='+JSON.stringify(msg)+';if(navigator.share)navigator.share({title:\'Mini eSports\',text:t}).catch(function(){})
+  :656  [p.name]  '<div style="flex:1;font-size:12px;font-weight:700">'+p.name+(isMe?' <span style="font-size:9px;color:#00ff9c">(You)</span>':'')+'</div>'+
+  … +7 more
+
+js/fixes-v9.js  (1)
+  :88  [c.l]  h += '<span style="font-size:12px;font-weight:700;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.9)">' + c.l + '</span>';
+
+js/legal-compliance.js  (29)
+  :32  [title]  ov.innerHTML = '<div style="background:#0d0d12;border-radius:20px 20px 0 0;padding:22px 18px 36px;width:100%;max-width:480px;max-height:92vh;overflow-
+  :32  [html]  ov.innerHTML = '<div style="background:#0d0d12;border-radius:20px 20px 0 0;padding:22px 18px 36px;width:100%;max-width:480px;max-height:92vh;overflow-
+  :44  [fn]  return '<button onclick="' + fn + '" style="padding:12px 16px;border-radius:11px;background:' + bg + ';border:1px solid ' + border + ';color:' + color
+  :44  [bg]  return '<button onclick="' + fn + '" style="padding:12px 16px;border-radius:11px;background:' + bg + ';border:1px solid ' + border + ';color:' + color
+  :44  [border]  return '<button onclick="' + fn + '" style="padding:12px 16px;border-radius:11px;background:' + bg + ';border:1px solid ' + border + ';color:' + color
+  :44  [color]  return '<button onclick="' + fn + '" style="padding:12px 16px;border-radius:11px;background:' + bg + ';border:1px solid ' + border + ';color:' + color
+  :44  [label]  return '<button onclick="' + fn + '" style="padding:12px 16px;border-radius:11px;background:' + bg + ';border:1px solid ' + border + ';color:' + color
+  :73  [s]  h += '<button onclick="window.mesStateBan()" style="padding:11px;border-radius:10px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,
+  :76  [s]  h += '<button data-state-choice onclick="window.mesStateOk(\'' + s + '\')" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border
+  :76  [s]  h += '<button data-state-choice onclick="window.mesStateOk(\'' + s + '\')" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border
+  :252  [HTTPS]  + '<p><strong style="color:#fff">Security:</strong> Firebase + HTTPS. Security breach hogi to 72 ghante mein notify karenge.</p>'
+  :292  [uid]  + '<button onclick="window.mesAcceptTC(\''+uid+'\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0099
+  … +17 more
+
+js/match-result-detail.js  (11)
+  :159  [initLetter]  h += '<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#b964ff);border:3px solid ' + rankColor + ';displ
+  :165  [playerName]  h += '<div style="font-size:22px;font-weight:900;color:#fff">' + playerName + '</div>';
+  :166  [ffUid]  h += '<div style="font-size:12px;color:#888;margin-top:2px">FF UID: ' + ffUid + '</div>';
+  :171  [tier]  h += '<span style="display:inline-block;padding:4px 16px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);fo
+  :183  [rank]  h += '<div style="font-size:22px;font-weight:900;color:#00ff9c">' + rank + '</div>';
+  :188  [kills]  h += '<div style="font-size:22px;font-weight:900;color:#ff6b6b">' + kills + '</div>';
+  :197  [wr]  h += 'Win Rate: <span style="color:' + (wr >= 30 ? '#00ff9c' : '#ffd700') + '">' + wr + '%</span>';
+  :210  [matchName]  h += '<div style="font-size:12px;color:#888;margin-bottom:4px">' + matchName + '</div>';
+  :212  [rankMedal(rank)]  h += '<span style="font-size:11px;color:#ccc">🏆 Rank: <b style="color:' + rankColor + '">' + rankMedal(rank) + '</b></span>';
+  :213  [kills]  h += '<span style="font-size:11px;color:#ccc">💀 Kills: <b style="color:#ff6b6b">' + kills + '</b></span>';
+  :223  [matchId]  h += '<button onclick="window._shareResultCard&&window._shareResultCard(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;backgr
+
+js/paytm-checkout.js  (4)
+  :151  [_maxNow]  '⚠️ Online (Paytm) payment sirf ₹' + _maxNow + ' tak — ye ₹' + amount + ' hai.<br>' +
+  :151  [amount]  '⚠️ Online (Paytm) payment sirf ₹' + _maxNow + ' tak — ye ₹' + amount + ' hai.<br>' +
+  :152  [UTR]  'Neeche wale <b>UPI / QR manual payment</b> se bhejo (screenshot + UTR).' +
+  :163  [sId]  '<div id="' + sId + '" style="display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-size:12px"></div>' +
+
+js/preview-mode.js  (1)
+  :372  [actionTxt]  (actionTxt ? '<b>' + actionTxt + '</b> launch ke baad unlock hoga. ' : '') +
+
+js/profile-card2-core.js  (25)
+  :110  [BWIN.l]  h += '<div data-pc2win="1" style="position:absolute;z-index:0;left:' + BWIN.l + '%;right:' + BWIN.r + '%;top:' + BWIN.t + '%;bottom:' + BWIN.b + '%;ba
+  :110  [BWIN.r]  h += '<div data-pc2win="1" style="position:absolute;z-index:0;left:' + BWIN.l + '%;right:' + BWIN.r + '%;top:' + BWIN.t + '%;bottom:' + BWIN.b + '%;ba
+  :110  [BWIN.t]  h += '<div data-pc2win="1" style="position:absolute;z-index:0;left:' + BWIN.l + '%;right:' + BWIN.r + '%;top:' + BWIN.t + '%;bottom:' + BWIN.b + '%;ba
+  :110  [BWIN.b]  h += '<div data-pc2win="1" style="position:absolute;z-index:0;left:' + BWIN.l + '%;right:' + BWIN.r + '%;top:' + BWIN.t + '%;bottom:' + BWIN.b + '%;ba
+  :110  [escUrl(d.banner)]  h += '<div data-pc2win="1" style="position:absolute;z-index:0;left:' + BWIN.l + '%;right:' + BWIN.r + '%;top:' + BWIN.t + '%;bottom:' + BWIN.b + '%;ba
+  :127  [esc(d.prem)]  if (d.prem) _chips += '<span style="padding:.34em 1em;border-radius:999px;font-size:.82em;font-weight:900;letter-spacing:.4px;background:linear-gradie
+  :133  [_chips]  h += '<div data-pc2chips="1" style="position:absolute;z-index:3;left:3.6%;right:3.4%;top:75.2%;height:6.2%;display:flex;align-items:center;justify-con
+  :140  [k]  h += '<span data-pc2lbl="' + k + '" style="position:absolute;z-index:3;left:' + (l.cx / W * 100).toFixed(3) + '%;top:' + (l.cy / H * 100).toFixed(3) +
+  :140  [l]  h += '<span data-pc2lbl="' + k + '" style="position:absolute;z-index:3;left:' + (l.cx / W * 100).toFixed(3) + '%;top:' + (l.cy / H * 100).toFixed(3) +
+  :140  [l]  h += '<span data-pc2lbl="' + k + '" style="position:absolute;z-index:3;left:' + (l.cx / W * 100).toFixed(3) + '%;top:' + (l.cy / H * 100).toFixed(3) +
+  :140  [skew]  h += '<span data-pc2lbl="' + k + '" style="position:absolute;z-index:3;left:' + (l.cx / W * 100).toFixed(3) + '%;top:' + (l.cy / H * 100).toFixed(3) +
+  :140  [shadow]  h += '<span data-pc2lbl="' + k + '" style="position:absolute;z-index:3;left:' + (l.cx / W * 100).toFixed(3) + '%;top:' + (l.cy / H * 100).toFixed(3) +
+  … +13 more
+
+js/quick-deposit.js  (22)
+  :33  [p.diamonds]  pkgHtml += '<div style="font-size:22px;font-weight:900;color:#00d4ff">💎 ' + p.diamonds + '</div>';
+  :34  [p.label]  pkgHtml += '<div style="font-size:10px;color:#00ff9c;font-weight:700;margin:2px 0">' + p.label + '</div>';
+  :35  [p.price]  pkgHtml += '<div style="font-size:16px;font-weight:800;color:#fff;margin-top:4px">₹' + p.price + '</div>';
+  :40  [pkgHtml]  if (modal) modal.innerHTML = h + pkgHtml + '<div style="font-size:11px;color:#555;text-align:center">UPI payment karo → screenshot admin ko bhejo → 1-
+  :41  [pkgHtml]  if (window.openModal) openModal('💎 Buy Sky Diamonds', h + pkgHtml + '<div style="font-size:11px;color:#555;text-align:center">UPI payment karo → scre
+  :69  [diamonds]  h += '<div style="font-size:28px;font-weight:900;color:#00d4ff">💎 ' + diamonds + '</div>';
+  :70  [price]  h += '<div style="font-size:22px;font-weight:900;color:#fff;margin:6px 0">₹' + price + '</div>';
+  :127  [_upiId]  h += '<div style="min-width:0">UPI ID:<br><b id="_mpUpiId" style="color:#ffd700;font-size:14px;word-break:break-all">' + _upiId + '</b></div>';
+  :130  [_payee]  h += '<div style="margin-top:6px">Payee: <b style="color:#fff">' + _payee + '</b></div>';
+  :131  [price]  h += '<div>Amount: <b style="color:#00ff9c">₹' + price + '</b></div>';
+  :132  [_mpEsc(_note)]  h += '<div>Note: <b style="color:#fff">' + _mpEsc(_note) + '</b> <span style="color:#666;font-size:10px">(payment note mein yeh likhna zaroori hai)</s
+  :135  [_upiLink]  h += '<button onclick="(function(){try{window.location.href=\'' + _upiLink + '\'}catch(e){}})()" style="width:100%;padding:12px;border-radius:12px;bor
+  … +10 more
+
+js/rank-system.js  (7)
+  :192  [P]  h += '<div style="' + P + 'background:rgba(255,150,0,.10);border:2px solid rgba(255,180,0,.65);box-shadow:0 0 14px rgba(255,180,0,.25);padding:9px 10p
+  :192  [window.RANK_FORMULA]  h += '<div style="' + P + 'background:rgba(255,150,0,.10);border:2px solid rgba(255,180,0,.65);box-shadow:0 0 14px rgba(255,180,0,.25);padding:9px 10p
+  :198  [t.img]  h += '<div style="width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:c
+  :198  [t.name]  h += '<div style="width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:c
+  :199  [t.color]  h += '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:900;color:' + t.color + ';text-shadow:0 1px 3px rgba(0,0,0,.7)">' + t.nam
+  :199  [t.name]  h += '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:900;color:' + t.color + ';text-shadow:0 1px 3px rgba(0,0,0,.7)">' + t.nam
+  :201  [range]  h += '<div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)">' + rang
+
+js/referral-system-fix.js  (4)
+  :178  [myCode]  '<div style="font-size:20px;font-weight:900;color:#00ff9c;letter-spacing:3px">' + myCode + '</div>',
+  :286  [myCode]  h += '<div style="font-size:28px;font-weight:900;color:#00ff9c;letter-spacing:4px">' + myCode + '</div>';
+  :289  [count]  h += '<div style="background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center"><div style="font-size:26px;font-weight:900;color
+  :290  [earned]  h += '<div style="background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center"><div style="font-size:26px;font-weight:900;color
+
+js/referral-tracker.js  (7)
+  :28  [total]  h += '<div style="font-size:20px;font-weight:900;color:var(--green)">' + total + '</div>';
+  :31  [pending]  h += '<div style="font-size:20px;font-weight:900;color:var(--yellow)">' + pending + '</div>';
+  :34  [earned]  h += '<div style="font-size:20px;font-weight:900;color:var(--purple)">🪙 ' + earned + '</div>';
+  :44  [r.referredName || 'User')]  h += '<div style="flex:1"><div style="font-size:13px;font-weight:600">' + (r.referredName || 'User') + '</div>';
+  :45  [timeAgo(r.createdAt)]  h += '<div style="font-size:11px;color:var(--txt2)">' + timeAgo(r.createdAt) + '</div></div>';
+  :46  [r]  h += '<div style="font-size:13px;font-weight:700;color:' + (r.verified ? 'var(--green)' : 'var(--yellow)') + '">' + (r.verified ? '+🪙 10' : '⏳') + '<
+  :46  [r]  h += '<div style="font-size:13px;font-weight:700;color:' + (r.verified ? 'var(--green)' : 'var(--yellow)') + '">' + (r.verified ? '+🪙 10' : '⏳') + '<
+
+js/room-reveal.js  (8)
+  :29  [safeRoomId]  var copyIdBtn   = '<button data-copy-val="' + safeRoomId + '" class="_roomCopyBtn" style="background:rgba(0,255,106,.15);border:none;color:var(--green
+  :30  [safeRoomPw]  var copyPwBtn   = '<button data-copy-val="' + safeRoomPw + '" class="_roomCopyBtn" style="background:rgba(0,255,106,.15);border:none;color:var(--green
+  :33  [t.roomId||'')]  '<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px;font-weight:900;color:var(--green)">' + (t.roo
+  :33  [copyIdBtn]  '<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px;font-weight:900;color:var(--green)">' + (t.roo
+  :35  [t.roomPassword||'')]  '<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px;font-weight:900;color:var(--green)">' + (t.roo
+  :35  [copyPwBtn]  '<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px;font-weight:900;color:var(--green)">' + (t.roo
+  :53  [mins]  '<div style="font-size:20px;font-weight:900;color:var(--blue)">' + mins + ':' + String(secs).padStart(2, '0') + '</div></div>';
+  :53  [String(secs)]  '<div style="font-size:20px;font-weight:900;color:var(--blue)">' + mins + ':' + String(secs).padStart(2, '0') + '</div></div>';
+
+js/shield.js  (2)
+  :51  [location.hostname || '?')]  '<p style="font-size:12px;color:#8b8ba0;margin-top:10px">Host: ' + (location.hostname || '?') + '</p></div></div>';
+  :56  [_lockMsg]  else document.documentElement.innerHTML = '<body style="margin:0">' + _lockMsg + '</body>';
+
+js/ui-fixes.js  (41)
+  :308  [rd.ign || rd.displayName || 'Player')]  h += '<div style="font-size:13px;color:#aaa">' + (rd.ign || rd.displayName || 'Player') + '</div>';
+  :314  [cs.me]  h += '<div style="text-align:right"><div style="font-size:16px;font-weight:900;color:' + (myWin?'#00ff9c':'#fff') + '">' + cs.me + '</div><div style="
+  :315  [cs.label]  h += '<div style="text-align:center;font-size:10px;color:#666;align-self:center;padding-top:6px">' + cs.label + '</div>';
+  :316  [cs.them]  h += '<div style="text-align:left"><div style="font-size:16px;font-weight:900;color:' + (!myWin?'#ff4444':'#fff') + '">' + cs.them + '</div><div style
+  :319  [window.U.uid]  h += '<button onclick="window.db.ref(\'users/\'+window.U.uid+\'/rival\').remove();if(window.closeModal)closeModal();if(window.toast)toast(\'Rival remo
+  :363  [d.ign||d.displayName||'?').charAt(0)]  h += '<div style="width:40px;height:40px;border-radius:50%;background:rgba(255,68,68,.15);display:flex;align-items:center;justify-content:center;font-
+  :364  [d.ign||d.displayName||'Player')]  h += '<div style="flex:1"><div style="font-size:14px;font-weight:700">' + (d.ign||d.displayName||'Player') + '</div>';
+  :365  [st.matches||0)]  h += '<div style="font-size:11px;color:#666">M:' + (st.matches||0) + ' · K:' + (st.kills||0) + ' · W:' + (st.wins||0) + '</div></div>';
+  :365  [st.kills||0)]  h += '<div style="font-size:11px;color:#666">M:' + (st.matches||0) + ' · K:' + (st.kills||0) + ' · W:' + (st.wins||0) + '</div></div>';
+  :365  [st.wins||0)]  h += '<div style="font-size:11px;color:#666">M:' + (st.matches||0) + ' · K:' + (st.kills||0) + ' · W:' + (st.wins||0) + '</div></div>';
+  :366  [r.uid]  h += '<button onclick="window._setRivalById(\'' + r.uid + '\',\'' + (d.ign||d.displayName||'Player') + '\')" style="padding:8px 14px;border-radius:10p
+  :366  [d.ign||d.displayName||'Player')]  h += '<button onclick="window._setRivalById(\'' + r.uid + '\',\'' + (d.ign||d.displayName||'Player') + '\')" style="padding:8px 14px;border-radius:10p
+  … +29 more
+
+screens/home.js  (66)
+  :79  [u.ign || u.displayName || '?').charAt(0)]  : '<span style="font-size:16px;font-weight:800;color:#041018">' + (u.ign || u.displayName || '?').charAt(0).toUpperCase() + '</span>';
+  :84  [av]  '<div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(140deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-conte
+  :88  [u.ffUid || '—')]  h += '<span style="font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:2px 8px
+  :122  [u.ign || '?').charAt(0).toUpperCase()]  : '<span style="font-size:32px;font-weight:700">' + (u.ign || '?').charAt(0).toUpperCase() + '</span>';
+  :124  [av]  h += '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,156,.1);border:3px solid rgba(0,255,156,.3);display:flex;align-items:
+  :126  [u.ffUid || '—')]  h += '<div style="font-size:12px;color:var(--txt2);margin-top:2px">FF UID: <strong style="color:var(--green)">' + (u.ffUid || '—') + '</strong></div>'
+  :138  [wr]  h += 'Win Rate: <strong style="color:var(--green)">' + wr + '%</strong>';
+  :143  [wr0]  h += '<div style="padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px solid rgba(0,255,156,.12)
+  :199  [t.entryFee || 0)]  var feeHTML = isAd ? '<span style="color:#ff9f1c;font-weight:800;font-size:12px">📺 ' + (Number(t.adsRequired)||2) + ' Ads Watch</span>' : (isCoin ? '
+  :199  [t.entryFee || 0)]  var feeHTML = isAd ? '<span style="color:#ff9f1c;font-weight:800;font-size:12px">📺 ' + (Number(t.adsRequired)||2) + ' Ads Watch</span>' : (isCoin ? '
+  :202  [timeHTML]  else timeHTML = '<span class="time-val">' + timeHTML + '</span>';
+  :222  [modeClr]  h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,' + modeClr + '20,transparent 70%
+  … +54 more
+
+screens/join.js  (21)
+  :56  [t.minRank]  rh += '<div style="font-size:13px;color:var(--txt2);margin-bottom:16px">Is match ke liye minimum <b style="color:#ffd700">' + t.minRank + '</b> rank c
+  :58  [myRankObj.emoji]  rh += '<div style="text-align:center"><div style="font-size:11px;color:#888;margin-bottom:4px">Tumhara Rank</div><div style="font-size:26px">' + myRan
+  :58  [myRankObj.color]  rh += '<div style="text-align:center"><div style="font-size:11px;color:#888;margin-bottom:4px">Tumhara Rank</div><div style="font-size:26px">' + myRan
+  :58  [myRankObj.badge]  rh += '<div style="text-align:center"><div style="font-size:11px;color:#888;margin-bottom:4px">Tumhara Rank</div><div style="font-size:26px">' + myRan
+  :59  [t.minRank]  rh += '<div style="text-align:center"><div style="font-size:11px;color:#888;margin-bottom:4px">Required</div><div style="font-size:26px">' + (reqEmoji
+  :122  [tp.toUpperCase()]  h += '<div class="ci-row"><span class="cl">Mode</span><span class="cv">' + tp.toUpperCase() + '</span></div>';
+  :123  [feeLabel]  h += '<div class="ci-row"><span class="cl">Entry Fee</span><span class="cv">' + feeLabel + '</span></div>';
+  :124  [slotsNeeded]  h += '<div class="ci-row"><span class="cl">Slots Needed</span><span class="cv">' + slotsNeeded + '</span></div>';
+  :125  [balLabel]  if (balLabel) h += '<div class="ci-row"><span class="cl">Your Balance</span><span class="cv" style="color:' + (enough ? 'var(--green)' : 'var(--red)')
+  :126  [prizeLabel]  h += '<div class="ci-row"><span class="cl">Winner Gets</span><span class="cv" style="color:#00ff9c">' + prizeLabel + '</span></div>';
+  :133  [UD.ffUid]  if (UD.ign && UD.ffUid) h += '<div class="ci-locked" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><i class="fas fa-lock"></i> Playin
+  :151  [fee]  h += '<div style="font-size:10px;color:#aaa;margin-top:2px">Har player ' + (isCoin?'🪙':'💎') + fee + ' dega</div>';
+  … +9 more
+
+screens/matches.js  (60)
+  :26  [mmSF]  var _emptyHTML = '<div class="empty-state"><i class="fas fa-gamepad"></i><p>No ' + mmSF + ' matches</p></div>';
+  :38  [jr.captainName || 'Teammate')]  var _captainNote = _isTeamMember ? '<div style="font-size:11px;color:var(--txt2);margin-top:2px"><i class="fas fa-crown" style="color:#ffd700;font-siz
+  :39  [_statusLabel]  h += '<span class="mm-status ms-a">' + _statusLabel + '</span></div>' + _captainNote;
+  :39  [_captainNote]  h += '<span class="mm-status ms-a">' + _statusLabel + '</span></div>' + _captainNote;
+  :47  [_myFFUID]  h += '<span style="font-size:12px;font-weight:800;color:var(--green)"><i class="fas fa-fingerprint" style="font-size:10px;margin-right:3px"></i>' + _m
+  :48  [_myFFUID]  h += '<button onclick="copyTxt(\'' + _myFFUID + '\')" style="background:rgba(0,255,156,.12);border:none;color:var(--green);padding:2px 7px;border-radi
+  :49  [_mySlot]  if (_mySlot) h += '<span style="margin-left:auto;background:rgba(0,255,156,.15);color:var(--green);padding:2px 8px;border-radius:6px;font-size:11px;fo
+  :64  [m.name||'?').charAt(0).toUpperCase()]  h += '<div style="width:26px;height:26px;border-radius:50%;background:rgba(185,100,255,.15);display:flex;align-items:center;justify-content:center;fon
+  :65  [m.name||'Teammate')]  h += '<div style="flex:1"><div style="font-size:12px;font-weight:700">' + (m.name||'Teammate') + (m.role==='captain'?' 👑':'') + '</div>';
+  :66  [m.ffUid]  if (m.ffUid) h += '<div style="font-size:10px;color:var(--txt2)">FF UID: <span style="color:var(--purple);font-weight:700">' + m.ffUid + '</span></div
+  :68  [mSlot]  if (mSlot) h += '<span style="background:rgba(185,100,255,.15);color:var(--purple);padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800">S
+  :75  [tp.toUpperCase()]  h += '<div class="mm-details"><span><i class="fas fa-gamepad"></i> ' + tp.toUpperCase() + '</span>';
+  … +48 more
+
+screens/notifications.js  (17)
+  :118  [col]  '<span style="position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,' + col + ',rgba(' +
+  :118  [colRgb]  '<span style="position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,' + col + ',rgba(' +
+  :119  [colRgb]  h += '<div style="width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;backgr
+  :119  [colRgb]  h += '<div style="width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;backgr
+  :119  [colRgb]  h += '<div style="width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;backgr
+  :119  [col]  h += '<div style="width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;backgr
+  :119  [n.faIcon || 'fa-bell')]  h += '<div style="width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;backgr
+  :124  [timeAgo(n.createdAt)]  h += '<span style="font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:2px 9p
+  :132  [n.matchId]  h += '<div style="display:flex;gap:8px;margin-top:9px"><button onclick="event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\'' + n.
+  :133  [n.matchId]  + '<button onclick="event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\'' + n.matchId + '\', false)" style="flex:1;padding:8px 10p
+  :137  [n._key]  h += '<button onclick="event.stopPropagation();deleteNotif(\'' + n._key + '\',\'' + (n._srcUser ? 'user' : 'global') + '\')" aria-label="Notification 
+  :137  [n]  h += '<button onclick="event.stopPropagation();deleteNotif(\'' + n._key + '\',\'' + (n._srcUser ? 'user' : 'global') + '\')" aria-label="Notification 
+  … +5 more
+
+screens/profile.js  (52)
+  :23  [UD.profileImage]  var av = UD.profileImage ? '<img src="' + UD.profileImage + '">' : (UD.ign || UD.displayName || '?').charAt(0).toUpperCase();
+  :59  [ptLabel]  premBadge = '<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;background:
+  :106  [UD.title]  if (UD.title) chips += '<span class="prof-title-chip">' + UD.title + '</span>';
+  :152  [_pm]  h += '<div class="prof-stats" style="grid-template-columns:1fr 1fr"><div class="ps-box psb"><div class="ps-val">' + _pm + '</div><div class="ps-lbl">M
+  :153  [_pk]  h += '<div class="ps-box psr"><div class="ps-val">' + _pk + '</div><div class="ps-lbl">Kills</div></div></div>';
+  :155  [_pwr]  h += '<div style="flex:1;text-align:center"><div style="font-size:16px;font-weight:900;color:#00ff9c">' + _pwr + '%</div><div style="font-size:10px;co
+  :157  [_pkd]  h += '<div style="flex:1;text-align:center"><div style="font-size:16px;font-weight:900;color:#ff9f1c">' + _pkd + '</div><div style="font-size:10px;col
+  :159  [rk.color]  h += '<div style="flex:1;text-align:center"><div style="font-size:16px;font-weight:900;color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</div>
+  :159  [rk.emoji]  h += '<div style="flex:1;text-align:center"><div style="font-size:16px;font-weight:900;color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</div>
+  :159  [rk.badge]  h += '<div style="flex:1;text-align:center"><div style="font-size:16px;font-weight:900;color:' + rk.color + '">' + rk.emoji + ' ' + rk.badge + '</div>
+  :190  [UD]  h += '<span style="font-size:12px;background:rgba(255,215,0,.15);padding:2px 8px;border-radius:10px">' + (UD.clanId ? '🏰 Active' : 'Join / Create') +
+  :193  [UD]  h += '<span style="margin-right:auto">' + (UD.isLive ? '<span style="display:inline-flex;align-items:center;gap:6px"><div style="width:7px;height:7px;
+  … +40 more
+
+screens/rank.js  (67)
+  :33  [prize||'?')]  '<div style="font-size:20px;color:#00ff6a;font-weight:900">💎' + (prize||'?') + ' WON!</div>' +
+  :102  [adsRequired]  h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:16px">Yeh match bilkul free hai. Sirf <b style="color:#fff">' + adsRequired + ' short
+  :115  [remaining]  h += '<div style="font-size:12px;color:#aaa;margin-bottom:14px">Abhi <b style="color:#fff">' + remaining + ' ad' + (remaining > 1 ? 's' : '') + '</b> 
+  :116  [matchId]  h += '<button onclick="watchAdForMatch(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff
+  :116  [watched]  h += '<button onclick="watchAdForMatch(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff
+  :116  [adsRequired]  h += '<button onclick="watchAdForMatch(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff
+  :119  [matchId]  h += '<button onclick="confirmAdMatchJoin(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#0
+  :150  [brand]  '<div style="font-size:28px;font-weight:900;margin-bottom:12px">' + brand + '</div>' +
+  :152  [sec]  '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,106,.1);border:3px solid #00ff9c;display:flex;align-items:center;justify-c
+  :358  [color]  return '<svg viewBox="0 0 18 60" xmlns="http://www.w3.org/2000/svg"><path d="M14 58 Q3 40 7 20 Q9 9 15 2" fill="none" stroke="' + color + '" stroke-wi
+  :358  [leaves]  return '<svg viewBox="0 0 18 60" xmlns="http://www.w3.org/2000/svg"><path d="M14 58 Q3 40 7 20 Q9 9 15 2" fill="none" stroke="' + color + '" stroke-wi
+  :374  [ink]  '<text x="17" y="30.5" text-anchor="middle" font-size="12" font-weight="900" fill="' + ink + '" font-family="Arial,sans-serif">' + num + '</text></svg
+  … +55 more
+
+screens/room.js  (7)
+  :164  [t.name || 'Match')]  h += '<div class="rp-match">' + (t.name || 'Match') + '</div>';
+  :171  [slotLabel]  '<div class="rp-slot-label">' + slotLabel + '</div>' +
+  :172  [slotDisplay]  '<div class="rp-slot-value">' + slotDisplay + '</div>' +
+  :177  [slotDisplay]  '<strong> STRICT WARNING:</strong> Aapko <strong>Slot ' + slotDisplay + '</strong> mein hi baithna hai. ' +
+  :194  [jKey]  h += '<button class="btn-inroom" onclick="confirmInRoom(\'' + jKey + '\',this)"><i class="fas fa-gamepad"></i> I\'m In Room ✅</button>';
+  :214  [r.error.message || ''), 'err'); btn.disabled = false; btn]  if (r.error) { toast('Error: ' + (r.error.message || ''), 'err'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-gamepad"></i> I\'m In Room ✅
+  :215  [d.error || 'not allowed'), 'err'); btn]  if (d.success === false) { toast('Room confirm nahi hua: ' + (d.error || 'not allowed'), 'err'); btn.disabled = false; btn.innerHTML = '<i class="fas 
+
+screens/support.js  (2)
+  :193  [txt]  '<div style="color:var(--txt);word-break:break-word">' + txt + '</div>' +
+  :199  [txt]  '<div style="color:var(--txt);word-break:break-word">' + txt + '</div>' +
+
+screens/wallet.js  (26)
+  :112  [f]  return '<button onclick="setWFilter(\'' + f + '\')" style="flex:0 0 auto;padding:7px 12px;border-radius:10px;' + activeStyle + 'font-size:11px;font-we
+  :171  [timeAgo(w.createdAt || w.timestamp)]  h += '<div class="wh-time">' + timeAgo(w.createdAt || w.timestamp) + '</div>';
+  :172  [w.utr || w.transactionId)]  if (w.utr || w.transactionId) h += '<div class="wh-utr">UTR: ' + (w.utr || w.transactionId) + '</div>';
+  :173  [amtTxt]  h += '</div><div class="wh-amt ' + (isD ? (_fail ? 'wha-m' : 'wha-g') : 'wha-r') + '">' + amtTxt + '</div>';
+  :174  [sc]  h += '<span class="wh-status ' + sc + '">' + sl + '</span></div>';
+  :174  [sl]  h += '<span class="wh-status ' + sc + '">' + sl + '</span></div>';
+  :206  [iconColor]  h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
+  :207  [label]  h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
+  :208  [timeAgo(w.timestamp)]  h += '<div class="wh-time">' + timeAgo(w.timestamp) + '</div>';
+  :209  [desc]  if (desc && desc !== label) h += '<div class="wh-utr">' + desc + '</div>';
+  :275  [sponsoredBal]  h += '<div style="font-size:26px;font-weight:900;color:#00ff9c">₹' + sponsoredBal + '</div>';
+  :281  [sponsoredBal]  h += '<div class="f-group"><label>Amount (₹) — Max ₹' + sponsoredBal + '</label>';
+  … +14 more
