@@ -513,6 +513,47 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public boolean isAndroidApp() { if (!bridgeAllowed()) return false;  return true; }
 
+        /* ✅ D100-F7 (owner: "android app me location permission — live
+           location se users ka city direct set ho"): NATIVE reverse-geocode.
+           android.location.Geocoder lat/lng se city+state nikalta hai —
+           third-party API (Nominatim) par depend kiye bina, isliye APK me
+           city auto-set reliable hai. D99 master-gate: sirf trusted app host
+           se call chalta hai. Return: JSON {"ok":true,"city":..,"state":..}
+           ya {"ok":false,"err":..}. Note: Geocoder network-backed hota hai —
+           JS side isko bridge thread par call karta hai (UI thread nahi),
+           aur fail hone par Nominatim fallback bhi hai (core/modal.js). */
+        @JavascriptInterface
+        public String reverseGeocode(double lat, double lng) {
+            if (!bridgeAllowed()) return "{\"ok\":false,\"err\":\"bridge_disabled\"}";
+            try {
+                android.location.Geocoder gc = new android.location.Geocoder(
+                        MainActivity.this, java.util.Locale.getDefault());
+                java.util.List<android.location.Address> addrs = gc.getFromLocation(lat, lng, 1);
+                if (addrs == null || addrs.isEmpty()) return "{\"ok\":false,\"err\":\"no_address\"}";
+                android.location.Address a = addrs.get(0);
+                String city = a.getLocality();
+                if (city == null || city.trim().isEmpty()) city = a.getSubLocality();
+                if (city == null || city.trim().isEmpty()) city = a.getSubAdminArea();
+                if (city == null || city.trim().isEmpty()) city = a.getAdminArea();
+                if (city == null || city.trim().isEmpty()) return "{\"ok\":false,\"err\":\"no_city\"}";
+                String state = a.getAdminArea() == null ? "" : a.getAdminArea().trim();
+                city = city.trim();
+                if (city.equalsIgnoreCase(state)) state = "";
+                return "{\"ok\":true,\"city\":\"" + jsonEscape(city)
+                        + "\",\"state\":\"" + jsonEscape(state) + "\"}";
+            } catch (Exception e) {
+                Log.w(TAG, "reverseGeocode fail: " + e);
+                return "{\"ok\":false,\"err\":\"geocoder\"}";
+            }
+        }
+
+        /* chhota JSON-string escaper (bridge payloads ke liye) */
+        private String jsonEscape(String v) {
+            if (v == null) return "";
+            return v.replace("\\", "\\\\").replace("\"", "\\\"")
+                    .replace("\n", " ").replace("\r", " ").replace("\t", " ");
+        }
+
         /* ✅ FIX (2026-10-06): login screen par back press se app band karne
            ke liye. Pehle back button hamesha JS router (window.goBack) ko
            diya jaata tha jo login screen par kuch nahi karta tha — user ko
