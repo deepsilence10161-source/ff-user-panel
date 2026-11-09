@@ -1,5 +1,5 @@
 const { chromium } = require('playwright'); const fs=require('fs');
-const cred=JSON.parse(fs.readFileSync('/home/user/ff-user-panel/tools/tri-e2e/.state/d97a.json','utf8'));
+const cred=JSON.parse(fs.readFileSync(process.env.CRED||"/home/user/ff-user-panel/tools/tri-e2e/.state/d98a.json",'utf8'));
 (async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();
 const bad=[];p.on('console',m=>{if(m.type()==='error')bad.push(m.text().slice(0,80));});p.on('response',r=>{if(r.status()>=400)bad.push('HTTP '+r.status()+' '+r.url().slice(0,80));});
 await p.goto('http://127.0.0.1:8090',{waitUntil:'domcontentloaded'});

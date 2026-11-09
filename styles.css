@@ -63,6 +63,7 @@ html{scrollbar-width:none;overscroll-behavior:none}
 .chip-coin{background:rgba(255,215,0,.1);color:var(--yellow)}
 .chip-money{background:rgba(0,255,106,.1);color:var(--green)}
 .ticker-wrap{overflow:hidden;padding:4px 16px 8px;position:relative}
+body.vn-chip-on .ticker-wrap{padding-right:min(48%,344px) !important} /* D98 F3: verify-chip overlap fix */
 .ticker-txt{white-space:nowrap;font-size:12px;font-weight:700;animation:scroll 22s linear infinite;display:inline-block;padding-left:100%;background:linear-gradient(90deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#ff8c00,#00ff9c);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:scroll 22s linear infinite,tickerShine 4s linear infinite}
 
 /* ===== STATE BANNER ===== */
@@ -1104,7 +1105,7 @@ body.has-web-banner .chat-container {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 104px;
-  background: url('assets/img/match-bg.jpg?v=20261109c') center 30% / cover no-repeat;
+  background: url('assets/img/match-bg.jpg?v=20261109e') center 30% / cover no-repeat;
   opacity: .58;
   -webkit-mask-image: linear-gradient(#000 18%, transparent 88%);
   mask-image: linear-gradient(#000 18%, transparent 88%);
