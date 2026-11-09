@@ -547,6 +547,36 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        /* ✅ D101 (owner: "location on karva lo user se agar on na ho varna
+           detection failed hoti rahegi"): GPS/Network provider ON hai ya
+           nahi — JS pehle check karta hai, OFF ho to user ko Settings tak
+           le jaane wala guide dikhata hai (detect fail loop khatam). */
+        @JavascriptInterface
+        public boolean isLocationEnabled() {
+            if (!bridgeAllowed()) return false;
+            try {
+                android.location.LocationManager lm = (android.location.LocationManager)
+                        getSystemService(LOCATION_SERVICE);
+                if (lm == null) return true; /* pata na chale to block mat karo */
+                return lm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+                        || lm.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER);
+            } catch (Exception e) {
+                return true;
+            }
+        }
+
+        /* ✅ D101: ek tap me Android Location Settings — JS guide button se. */
+        @JavascriptInterface
+        public void openLocationSettings() {
+            if (!bridgeAllowed()) return;
+            try {
+                startActivity(new android.content.Intent(
+                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            } catch (Exception e) {
+                Log.w(TAG, "openLocationSettings fail: " + e);
+            }
+        }
+
         /* chhota JSON-string escaper (bridge payloads ke liye) */
         private String jsonEscape(String v) {
             if (v == null) return "";
