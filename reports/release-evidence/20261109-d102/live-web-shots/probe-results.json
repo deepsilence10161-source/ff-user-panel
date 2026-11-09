@@ -1,0 +1,55 @@
+{
+  "results": [
+    {
+      "name": "pc2: tier cover + dynamic icon",
+      "pass": true,
+      "extra": "src=assets/img/ranks/bronze.png loaded=true insideCover=true"
+    },
+    {
+      "name": "pc2: tier text initial",
+      "pass": true,
+      "extra": "tier=\"Bronze\""
+    },
+    {
+      "name": "pc2: Gold tier → gold.png dynamic switch",
+      "pass": true,
+      "extra": "src=assets/img/ranks/gold.png tier=Gold"
+    },
+    {
+      "name": "cosmetics title purchase+equip",
+      "pass": true,
+      "extra": "eqId=tag_beast text=\"BEAST MODE\""
+    },
+    {
+      "name": "pc2 title CENTER 48-52%",
+      "pass": true,
+      "extra": "text=\"BEAST MODE\" center=50.2%"
+    },
+    {
+      "name": "home: Premium III literal zero",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "name": "leaderboard: emoji zero + images",
+      "pass": true,
+      "extra": "29/29"
+    },
+    {
+      "name": "loc-guide modal",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "name": "global medal sweep (home)",
+      "pass": true,
+      "extra": ""
+    },
+    {
+      "name": "page errors zero",
+      "pass": true,
+      "extra": ""
+    }
+  ],
+  "errs": []
+}

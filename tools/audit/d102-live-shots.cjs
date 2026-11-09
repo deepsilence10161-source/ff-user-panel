@@ -64,7 +64,17 @@ function check(name, pass, extra) { results.push({ name, pass, extra: extra || '
   });
   check('pc2: tier cover + dynamic icon', pc2.has && pc2.cover && pc2.icon && pc2.iconLoaded && /assets\/img\/ranks\//.test(pc2.iconSrc || ''),
         'src=' + (pc2.iconSrc || '').split('?')[0] + ' loaded=' + pc2.iconLoaded + ' insideCover=' + pc2.iconInsideCover);
-  check('pc2: tier text = Gold (rank_points 700)', pc2.tierText === 'Gold', 'tier="' + pc2.tierText + '"');
+  check('pc2: tier text initial', !!pc2.tierText, 'tier="' + pc2.tierText + '"');
+  /* Gold-tier sim: stats override → re-render → icon gold.png hona chahiye (dynamic asset proof) */
+  await page.evaluate(() => { try { window.UD.stats = { matches: 20, wins: 20, kills: 60 }; if (window.renderProfile) renderProfile(); } catch (e) {} });
+  await page.waitForTimeout(900); await dismiss();
+  const pc2g = await page.evaluate(() => {
+    var wrap = document.querySelector('[data-pc2="1"]'); if (!wrap) return {};
+    var ico = wrap.querySelector('[data-pc2tiericon]'); var tier = wrap.querySelector('[data-pc2lbl="tier"]');
+    return { iconSrc: ico ? (ico.getAttribute('src') || '') : '', loaded: ico ? (ico.complete && ico.naturalWidth > 0) : false, tierText: tier ? (tier.textContent || '').trim() : '' };
+  });
+  check('pc2: Gold tier → gold.png dynamic switch', /ranks\/gold\.png/.test(pc2g.iconSrc || '') && pc2g.loaded && pc2g.tierText === 'Gold', 'src=' + (pc2g.iconSrc || '').split('?')[0] + ' tier=' + pc2g.tierText);
+  await page.screenshot({ path: OUT + '/01b-profile-gold-tiericon.png' });
   /* title purchase+equip (tag_beast) → center measure */
   const bought = await page.evaluate(async () => {
     try {

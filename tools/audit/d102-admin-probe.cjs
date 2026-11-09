@@ -15,6 +15,10 @@ const fs = require('fs');
   await pu.evaluate(([em, pw]) => window.auth.signInWithEmailAndPassword(em, pw), [cred.player.email, cred.player.password]);
   await pu.waitForFunction(() => window.UD && window.UD.ign, null, { timeout: 30000 });
   await pu.waitForTimeout(2500);
+  /* simulate APK: appInstall mirror (asli flow: _onNativeFcmToken → _pushTokenCall ok → mirror) */
+  await pu.evaluate(() => new Promise(res => {
+    try { window._fbDb.ref('users/' + window.U.uid + '/appInstall').set({ platform: 'android', t: Date.now() }).then(() => res('ok'), () => res('err')); } catch (e) { res('throw'); }
+  })).then(r => console.log('appInstall mirror:', r));
   const pres = await pu.evaluate(() => new Promise(res => {
     try { window._fbDb.ref('presence/' + window.U.uid).once('value', s => res(s.val())); } catch (e) { res({ err: String(e) }); }
   }));
