@@ -14,16 +14,17 @@ const findings = [];
 function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct, lang, screen, kind, detail: String(detail).slice(0, 220) }); }
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--disable-dev-shm-usage', '--mute-audio'] });
   const only = process.env.ONLY ? process.env.ONLY.split(',') : Object.keys(ACCT);
   const langs = process.env.LANGS ? process.env.LANGS.split(',') : ['hi', 'en'];
   for (const key of only) {
     for (const lang of langs) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, geolocation: { latitude: 30.3366, longitude: 76.7789 }, permissions: ['geolocation', 'notifications'] });
-      await ctx.addInitScript(([l, LIVE_MODE]) => {
+      await ctx.addInitScript(([l, LIVE_MODE, uid]) => {
         try { localStorage.setItem('appLang', l); localStorage.setItem('_mes_lang_seen', '1'); } catch (e) {}
+        try { localStorage.setItem('tutorialSeen', '1'); localStorage.setItem('tutorialSeen_' + uid, '1'); localStorage.setItem('_mes_state', 'Haryana'); } catch (e) {}
         if (!LIVE_MODE) { window._SUPA_URL = 'http://127.0.0.1:8091'; window._SUPA_ANON_KEY = 'mock-anon-key'; }
-      }, [lang, process.env.LIVE === '1']);
+      }, [lang, process.env.LIVE === '1', ACCT[key].uid]);
       const page = await ctx.newPage();
       const errs = [];
       page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
@@ -91,8 +92,11 @@ function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct,
             const vis = el => !!(el && el.offsetParent !== null && getComputedStyle(el).visibility !== 'hidden');
             const imgs = [...document.images].filter(i => vis(i) && i.getAttribute('src'))
               .filter(i => { if (i.loading === 'lazy' && !i.complete) { const r = i.getBoundingClientRect(); if (r.top > window.innerHeight || r.bottom < 0) return false; } return true; })
-              .map(i => ({ s: i.getAttribute('src'), ok: i.complete && i.naturalWidth > 0 }));
-            const badImgs = imgs.filter(i => !i.ok || /dummy|placeholder|via\.place|lorempixel/i.test(i.s));
+              .map(i => ({ s: i.getAttribute('src'), ok: i.complete ? (i.naturalWidth > 0) : null }));
+            const isExt = u => /^https?:\/\//.test(u) && u.indexOf(location.host) === -1;
+            const badAll = imgs.filter(i => i.ok === false || /dummy|placeholder|via\.place|lorempixel/i.test(i.s));
+            const badImgs = badAll.filter(i => !isExt(i.s));
+            const extBad = badAll.filter(i => isExt(i.s)).map(i => i.s);
             const emojiSlots = [...document.querySelectorAll('.badge,[class*="tier"],[class*="rank-"],[class*="medal"],[class*="premium"],[class*="title-"],[class*="icon"]')]
               .filter(vis).map(e => (e.textContent || '').trim()).filter(t => t && t.length <= 4 && /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(t));
             const txt = document.body.innerText || '';
@@ -100,13 +104,16 @@ function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct,
             const i18nHoles = [...document.querySelectorAll('[data-i18n]')].filter(vis).filter(e => (e.textContent || '').trim() === (e.getAttribute('data-i18n') || '').trim() && e.getAttribute('data-i18n')).map(e => e.getAttribute('data-i18n'));
             const ENLAB = /(^(Home|Rank|Wallet|Profile|Matches|Settings|Notifications|Shop|Store|Clan|Leaderboard|Wins|Kills)$|My Titles|View all|Season Pass|Join \/ Create|Live Stream|Battle Pass|Welcome to|Invite & Earn|Search|Apply$|Skip|Next|Finish|Let's Play|Gold\+|Win Rate|K\/M|Quick Tour)/;
             const enInHi = lang === 'hi' ? [...document.querySelectorAll('button, .nav-item, [class*=nav] a, [class*=bottom] *, h1,h2,h3,h4, .badge, [class*=chip], [class*=label]')].filter(vis).map(e => (e.textContent || '').trim()).filter(t => t && t.length < 26 && ENLAB.test(t) && !/[\u0900-\u097F]/.test(t)) : [];
-            return { badImgs: badImgs.slice(0, 12), emojiSlots: emojiSlots.slice(0, 12), leaks: leaks.slice(0, 8), i18nHoles: i18nHoles.slice(0, 12), imgTotal: imgs.length, enInHi: [...new Set(enInHi)].slice(0, 14) };
+            const hiInEn = lang === 'en' ? [...document.querySelectorAll('button, .nav-item, [class*=nav] a, [class*=bottom] *, h1,h2,h3,h4, .badge, [class*=chip], [class*=label]')].filter(vis).map(e => (e.textContent || '').trim()).filter(t => t && t.length < 40 && /[\u0900-\u097F]/.test(t)) : [];
+            return { badImgs: badImgs.slice(0, 12), emojiSlots: emojiSlots.slice(0, 12), leaks: leaks.slice(0, 8), i18nHoles: i18nHoles.slice(0, 12), imgTotal: imgs.length, enInHi: [...new Set(enInHi)].slice(0, 14), hiInEn: [...new Set(hiInEn)].slice(0, 14), extBad: extBad.slice(0, 6), extBadN: extBad.length };
           }, [lang]);
           rep.badImgs.forEach(b => add('high', key, lang, scr, 'img-fail', b.s));
           rep.emojiSlots.forEach(t => add('med', key, lang, scr, 'emoji-slot', t));
           rep.leaks.forEach(t => add('med', key, lang, scr, 'text-leak', t));
           rep.i18nHoles.forEach(t => add('med', key, lang, scr, 'i18n-hole', t));
           rep.enInHi.forEach(t => add('med', key, lang, scr, 'en-in-hi', t));
+          rep.hiInEn.forEach(t => add('med', key, lang, scr, 'hi-in-en', t));
+          if (rep.extBadN) console.log(`  [env] ${key}/${lang}/${scr}: ${rep.extBadN} external-avatar fetch fail (letter-fallback shown; sandbox CDN rate-limit)`);
           await page.screenshot({ path: path.join(OUT, `${key}-${lang}-${scr}.png`) });
         }
         errs.filter(e => !/FCM|Notification permission|messaging|service worker|sw.js|realtime\/v1|websocket|503|401 \(\)/i.test(e)).slice(0, 6).forEach(e => add('high', key, lang, '*', 'pageerror', e));

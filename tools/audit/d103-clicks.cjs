@@ -12,17 +12,17 @@ const SCREENS = ['home', 'rank', 'matches', 'wallet', 'profile', 'notif', 'speci
 const findings = [];
 const SKIP = /Logout|Sign Out|Delete Account|logout/i;   // session khatam karne wale skip
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--disable-dev-shm-usage', '--mute-audio'] });
   const only = process.env.ONLY ? process.env.ONLY.split(',') : ['qa2', 'qa1'];
   const langs = process.env.LANGS ? process.env.LANGS.split(',') : ['hi'];
   for (const key of only) for (const lang of langs) {
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, geolocation: { latitude: 30.3366, longitude: 76.7789 }, permissions: ['geolocation', 'notifications'] });
-    await ctx.addInitScript(([l]) => { try { localStorage.setItem('appLang', l); } catch (e) {} window._SUPA_URL = 'http://127.0.0.1:8091'; window._SUPA_ANON_KEY = 'mock'; }, [lang]);
+    await ctx.addInitScript(([l, uid, LIVE]) => { try { localStorage.setItem('appLang', l); localStorage.setItem('_mes_lang_seen', '1'); localStorage.setItem('tutorialSeen', '1'); localStorage.setItem('tutorialSeen_' + uid, '1'); localStorage.setItem('_mes_state', 'Haryana'); if (!LIVE) { window._SUPA_URL = 'http://127.0.0.1:8091'; window._SUPA_ANON_KEY = 'mock'; } } catch (e) {} }, [lang, ACCT[key].uid, process.env.LIVE === '1']);
     const page = await ctx.newPage();
     let errs = [];
     page.on('pageerror', e => errs.push(String(e.message).slice(0, 140)));
     try {
-      await page.goto('http://127.0.0.1:8092/_d103.html', { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.goto(process.env.BASE || 'http://127.0.0.1:8092/_d103.html', { waitUntil: 'domcontentloaded', timeout: 60000 });
       await page.waitForFunction(() => window.auth && window.firebase, null, { timeout: 30000 });
       await page.evaluate(([e, w]) => window.auth.signInWithEmailAndPassword(e, w), [ACCT[key].email, ACCT[key].password]);
       await page.waitForFunction(() => window.U && window.curScr, null, { timeout: 30000 });

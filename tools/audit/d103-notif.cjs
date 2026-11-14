@@ -9,7 +9,7 @@ fs.mkdirSync(OUT, { recursive: true });
 let pass = 0, fail = 0;
 const ok = (c, m) => { if (c) { pass++; console.log('  ✓ ' + m); } else { fail++; console.log('  ✗ ' + m); } };
 (async () => {
-  const b = await chromium.launch();
+  const b = await chromium.launch({ args: ['--disable-dev-shm-usage', '--mute-audio'] });
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true });
   await ctx.addInitScript(() => { localStorage.setItem('appLang', 'hi'); window._SUPA_URL = 'http://127.0.0.1:8091'; window._SUPA_ANON_KEY = 'mock'; });
   const p = await ctx.newPage();
@@ -43,6 +43,7 @@ const ok = (c, m) => { if (c) { pass++; console.log('  ✓ ' + m); } else { fail
   ok(toast && toastSeen, 'push-payload → in-app toast render (FCM foreground path)');
   await p.screenshot({ path: OUT + '/notif-qa4-hi-toast.png' });
   ok(errs.filter(e => !/FCM|Notification|messaging|sw.js|realtime|websocket|503|401/i.test(e)).length === 0, 'koi pageerror nahi (' + errs.length + ' raw)');
+  if (errs.length) console.log('  RAW ERRS: ' + JSON.stringify(errs));
   console.log('NOTIF PROBE: PASS ' + pass + ' | FAIL ' + fail);
   await b.close();
   process.exit(fail ? 1 : 0);
