@@ -15,10 +15,9 @@ const fs = require('fs');
   await pu.evaluate(([em, pw]) => window.auth.signInWithEmailAndPassword(em, pw), [cred.player.email, cred.player.password]);
   await pu.waitForFunction(() => window.UD && window.UD.ign, null, { timeout: 30000 });
   await pu.waitForTimeout(2500);
-  /* simulate APK: appInstall mirror (asli flow: _onNativeFcmToken → _pushTokenCall ok → mirror) */
-  await pu.evaluate(() => new Promise(res => {
-    try { window._fbDb.ref('users/' + window.U.uid + '/appInstall').set({ platform: 'android', t: Date.now() }).then(() => res('ok'), () => res('err')); } catch (e) { res('throw'); }
-  })).then(r => console.log('appInstall mirror:', r));
+  /* simulate APK: fcm_token platform mirror (asli flow: _onNativeFcmToken →
+     _pushTokenCall set-ok → users.fcm_token/fcm_updated_at update) */
+  await pu.evaluate((uid) => window._supa.from('users').update({ fcm_token: 'android', fcm_updated_at: new Date().toISOString() }).eq('id', uid).then(() => 'ok', e => 'err:' + e.message), cred.player.uid).then(r => console.log('fcm mirror:', r));
   const pres = await pu.evaluate(() => new Promise(res => {
     try { window._fbDb.ref('presence/' + window.U.uid).once('value', s => res(s.val())); } catch (e) { res({ err: String(e) }); }
   }));
@@ -32,6 +31,17 @@ const fs = require('fs');
   await pa.waitForFunction(() => window.auth && window.firebase, null, { timeout: 30000 });
   await pa.evaluate(([em, pw]) => window.auth.signInWithEmailAndPassword(em, pw), [cred.admin.email, cred.admin.password]);
   await pa.waitForTimeout(6000);
+  /* New-Device verify modal dismiss (QA session) */
+  await pa.evaluate((em) => {
+    var inp = Array.from(document.querySelectorAll('input')).find(i => (i.placeholder || '').indexOf('admin email') > -1);
+    if (inp) {
+      inp.value = em;
+      inp.dispatchEvent(new Event('input', { bubbles: true }));
+      var btn = Array.from(document.querySelectorAll('button')).find(b => (b.textContent || '').indexOf('Trust This Device') > -1);
+      if (btn) btn.click();
+    }
+  }, cred.admin.email);
+  await pa.waitForTimeout(2500);
   /* Users section kholo */
   const clicked = await pa.evaluate(() => {
     var cands = Array.from(document.querySelectorAll('button,a,div[onclick],li,span')).filter(el => {
@@ -56,6 +66,8 @@ const fs = require('fs');
   const okApp = row.row && (row.hasApp || row.hasWeb);
   const okOn = row.row && row.hasOn;
   console.log('CHECK App-col:', okApp, '| Online-col:', okOn);
+  await pa.evaluate(() => { document.querySelectorAll('.table-wrapper, div[style*="overflow"]').forEach(el => { el.scrollLeft = el.scrollWidth; }); window.scrollTo(0, 0); });
+  await pa.waitForTimeout(600);
   await pa.screenshot({ path: OUT + '/05-admin-users-columns.png', fullPage: false });
   /* table area clip */
   const tbl = await pa.$('#usersTable');
