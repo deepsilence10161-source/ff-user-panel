@@ -1,6 +1,6 @@
 /* D103 10-hour QA sweep — 7 QA accounts × hi/en × har screen.
    Mock-Supabase (127.0.0.1:8091) data-layer; Firebase auth live.
-   Checks per screen: images loaded / dummy-src / emoji-icon slots / i18n holes / NaN-undefined-leaks / pageerrors.
+   Checks per screen: images loaded / dummy-src / emoji-icon slots / i18n holes / en-in-hi / NaN-leaks / pageerrors.
    OUT: reports/d103-sweep/  */
 'use strict';
 const { chromium } = require('playwright');
@@ -10,7 +10,6 @@ const ACCT = JSON.parse(fs.readFileSync(__dirname + '/../tri-e2e/.state/d103.jso
 const OUT = process.env.OUT || '/home/user/ff-user-panel/reports/d103-sweep';
 fs.mkdirSync(OUT, { recursive: true });
 const SCREENS = ['home', 'rank', 'matches', 'wallet', 'profile', 'notif', 'special', 'clan', 'settings'];
-const EMOJI = /[\u{1F3C6}\u{1F3C5}\u{1F396}\u{1F6E1}\u{2B50}\u{1F48E}\u{1F451}\u{1F525}\u{1F3AF}]/u;
 const findings = [];
 function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct, lang, screen, kind, detail: String(detail).slice(0, 220) }); }
 
@@ -21,11 +20,10 @@ function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct,
   for (const key of only) {
     for (const lang of langs) {
       const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, geolocation: { latitude: 30.3366, longitude: 76.7789 }, permissions: ['geolocation', 'notifications'] });
-      await ctx.addInitScript(([l]) => {
+      await ctx.addInitScript(([l, LIVE_MODE]) => {
         try { localStorage.setItem('appLang', l); localStorage.setItem('_mes_lang_seen', '1'); } catch (e) {}
-        window._SUPA_URL = 'http://127.0.0.1:8091';
-        window._SUPA_ANON_KEY = 'mock-anon-key';
-      }, [lang]);
+        if (!LIVE_MODE) { window._SUPA_URL = 'http://127.0.0.1:8091'; window._SUPA_ANON_KEY = 'mock-anon-key'; }
+      }, [lang, process.env.LIVE === '1']);
       const page = await ctx.newPage();
       const errs = [];
       page.on('pageerror', e => errs.push(String(e.message).slice(0, 160)));
@@ -36,7 +34,7 @@ function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct,
         await page.evaluate(([em, pw]) => window.auth.signInWithEmailAndPassword(em, pw), [ACCT[key].email, ACCT[key].password]);
         await page.waitForFunction(() => window.U && window.curScr, null, { timeout: 30000 });
         await page.waitForTimeout(2500);
-        /* first-login modals dismiss: referral sheet skip + loc guide (geolocation granted hai) */
+        /* first-login modals dismiss: referral sheet skip + loc guide + tour + achievement */
         let nullStreak = 0;
         for (let i = 0; i < 8; i++) {
           const done = await page.evaluate(() => {
@@ -58,6 +56,28 @@ function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct,
         }
         for (const scr of SCREENS) {
           const okNav = await page.evaluate(s => { try { if (!window.navTo) return false; window.navTo(s); return true; } catch (e) { return false; } }, scr);
+          /* har screen se pehle stray sheets dismiss (scroll-lock hatane ke liye) */
+          for (let dI = 0; dI < 4; dI++) {
+            const dd = await page.evaluate(() => {
+              const b = [...document.querySelectorAll('button,[onclick]')].find(x => x.offsetParent && /Abhi nahi|Skip for now|Skip|Band karo|Close|✕/.test((x.textContent || '').trim()) && (x.textContent || '').trim().length < 22);
+              if (b) { b.click(); return 1; }
+              const x = [...document.querySelectorAll('button,span,div')].find(e => e.offsetParent && ((e.textContent || '').trim() === '✕' || (e.textContent || '').trim() === '×') && e.closest('[class*=sheet],[class*=modal],[class*=bottom]'));
+              if (x) { x.click(); return 2; }
+              return 0;
+            });
+            if (!dd) break;
+            await page.waitForTimeout(700);
+          }
+          /* lazy-load assets/avatar nich fold tak load hon — real user scroll jaisa */
+          await page.evaluate(async () => {
+            const el = document.scrollingElement || document.body;
+            for (let y = 0; y < 4; y++) { el.scrollTop = el.scrollTop + 700; await new Promise(r => setTimeout(r, 350)); }
+            el.scrollTop = 0;
+          });
+          await page.waitForTimeout(1200);
+          /* lazy images settle hon (slow sandbox network) — warna false img-fail */
+          await page.waitForFunction(() => [...document.images].every(i => !i.offsetParent || i.complete), null, { timeout: 9000 }).catch(() => {});
+          await page.waitForTimeout(600);
           if (!okNav) { add('info', key, lang, scr, 'nav-missing', 'navTo absent'); continue; }
           await page.waitForTimeout(1800);
           await page.evaluate(() => {
@@ -69,7 +89,9 @@ function add(sev, acct, lang, screen, kind, detail) { findings.push({ sev, acct,
           await page.waitForTimeout(400);
           const rep = await page.evaluate((lang) => {
             const vis = el => !!(el && el.offsetParent !== null && getComputedStyle(el).visibility !== 'hidden');
-            const imgs = [...document.images].filter(i => vis(i) && i.getAttribute('src')).map(i => ({ s: i.getAttribute('src'), ok: i.complete && i.naturalWidth > 0 }));
+            const imgs = [...document.images].filter(i => vis(i) && i.getAttribute('src'))
+              .filter(i => { if (i.loading === 'lazy' && !i.complete) { const r = i.getBoundingClientRect(); if (r.top > window.innerHeight || r.bottom < 0) return false; } return true; })
+              .map(i => ({ s: i.getAttribute('src'), ok: i.complete && i.naturalWidth > 0 }));
             const badImgs = imgs.filter(i => !i.ok || /dummy|placeholder|via\.place|lorempixel/i.test(i.s));
             const emojiSlots = [...document.querySelectorAll('.badge,[class*="tier"],[class*="rank-"],[class*="medal"],[class*="premium"],[class*="title-"],[class*="icon"]')]
               .filter(vis).map(e => (e.textContent || '').trim()).filter(t => t && t.length <= 4 && /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(t));
