@@ -6,7 +6,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs'); const path = require('path');
 const ACCT = JSON.parse(fs.readFileSync(__dirname + '/../tri-e2e/.state/d103.json', 'utf8'));
-const OUT = '/home/user/ff-user-panel/reports/d103-admin-deep';
+const OUT = process.env.OUT || '/home/user/ff-user-panel/reports/d103-admin-deep';
 fs.mkdirSync(OUT, { recursive: true });
 const findings = []; const add = (k, d) => findings.push({ kind: k, detail: String(d).slice(0, 220) });
 const DESTRUCT = /delete|remove|ban\b|unban|suspend|deactivate|approve|reject|pay\b|payout|refund|withdraw|send\b|broadcast|reset|clear|wipe|cancel tournament|refund all|purge|kick|promote|demote|grant|revoke|save|submit|confirm|apply|update|close account|freeze|sign out|logout/i;
@@ -32,7 +32,11 @@ const AUDIT = `(() => {
   return { broken: broken.slice(0, 8), nImg: imgs.length, leaks, rows, ths: ths.slice(0, 14), navCount: navs.length, navEmoji: navEmoji.slice(0, 10).map(n => (n.textContent || '').trim().slice(0, 24)), iconBtns: iconBtns.length, txtLen: txt.length, secVis, secTxtLen: secTxt.length, faN: fa.length, faDead: faDead.length };
 })`;
 (async () => {
-  const browser = await chromium.launch();
+  /* ✅ r7c FIX (15-Nov): --disable-dev-shm-usage zaroori hai — bina iske /dev/shm
+   (container me chhota) bhar jata tha ⇒ renderer OOM: pehle 10-min hang, phir
+   'Target page, context or browser has been closed' (jo findings me false-positive
+   ban kar girte the). premium script me ye pehle se tha, isliye wo clean chala. */
+  const browser = await chromium.launch({ args: ['--disable-dev-shm-usage', '--mute-audio'] });
   const ctx = await browser.newContext({ viewport: { width: 1400, height: 950 }, serviceWorkers: 'block' });
   const page = await ctx.newPage();
   const errs = [];
