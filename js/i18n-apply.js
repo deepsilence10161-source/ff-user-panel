@@ -75,6 +75,7 @@
     'Gold': 'गोल्ड', 'Gold+': 'गोल्ड+', 'Silver': 'सिल्वर', 'Diamond': 'डायमंड',
     'Copied! ✅': 'कॉपी हो गया! ✅', 'Copy failed': 'कॉपी विफल',
     /* D103-UI z36: avatar-bg picker labels (fixes-v9 BG_COLORS) */
+    '🎨 Profile Icon Background': '🎨 प्रोफ़ाइल आइकॉन बैकग्राउंड',
     '⬛ Default Dark': '⬛ डिफ़ॉल्ट डार्क', '🔵 Blue': '🔵 नीला', '🟣 Purple': '🟣 पर्पल', '🟢 Green': '🟢 हरा',
     '🔴 Red': '🔴 लाल', '🟠 Orange': '🟠 नारंगी', '⚫ Black': '⚫ काला', '🌌 Galaxy': '🌌 गैलेक्सी',
     '🌊 Ocean': '🌊 ओशन', '🔥 Fire': '🔥 फायर', '💎 Diamond': '💎 डायमंड', '🌸 Pink': '🌸 पिंक',
