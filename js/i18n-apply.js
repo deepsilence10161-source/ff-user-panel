@@ -100,6 +100,7 @@
     'Comeback King': 'कमबैक किंग', 'Leaderboard par Top-3 (asli position)': 'लीडरबोर्ड पर टॉप-3 (असली पोजीशन)', 'Crown': 'क्राउन', 'UI icon — Legend/king': 'UI आइकॉन — लेजेंड/किंग',
     'UI icon — Winner': 'UI आइकॉन — विनर', 'Currency icon': 'करेंसी आइकॉन', 'Fire': 'फायर',
     'Trophy': 'ट्रॉफी', 'On Fire / emoji-pack icon': 'ऑन फायर / इमोजी-पैक आइकॉन',
+    '1️⃣ Profile me apna Free Fire IGN set karo': '1️⃣ प्रोफ़ाइल में अपना फ्री फायर IGN सेट करो', '2️⃣ Match join karo': '2️⃣ मैच जॉइन करो',
     '⬛ Default Dark': '⬛ डिफ़ॉल्ट डार्क', '🔵 Blue': '🔵 नीला', '🟣 Purple': '🟣 पर्पल', '🟢 Green': '🟢 हरा',
     '🔴 Red': '🔴 लाल', '🟠 Orange': '🟠 नारंगी', '⚫ Black': '⚫ काला', '🌌 Galaxy': '🌌 गैलेक्सी',
     '🌊 Ocean': '🌊 ओशन', '🔥 Fire': '🔥 फायर', '💎 Diamond': '💎 डायमंड', '🌸 Pink': '🌸 पिंक',
@@ -367,7 +368,11 @@
     '✅ Coins kharidne ki zaroorat nahi — neeche se free earn karo!': '✅ सिक्के खरीदने की ज़रूरत नहीं — नीचे मुफ़्त कमाओ!' ,
     'Verified profile से match rewards, leaderboard trust और team-features smooth चलते हैं। Admin approval के बाद UID lock हो जाता है — safe।': 'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.',
     'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.': 'वेरिफाइड प्रोफ़ाइल से मैच रिवॉर्ड्स, लीडरबोर्ड ट्रस्ट और टीम-फीचर्स स्मूद चलते हैं। एडमिन अप्रूवल के बाद UID लॉक हो जाता है — सुरक्षित।',
-    'Entry fee non-refundable hai (cancelled match ke siwa).': 'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।', 'Kill count dispute ke liye screenshot upload karo.': 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।' };
+    'Entry fee non-refundable hai (cancelled match ke siwa).': 'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।', 'Kill count dispute ke liye screenshot upload karo.': 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।',
+    'Wahi naam match room me use hoga — sahi IGN zaroori hai.': 'वही नाम मैच रूम में यूज़ होगा — सही IGN ज़रूरी है।',
+    'Entry fee wallet se kategi; jeetne par prize turant wallet me aayega. 🏆': 'एंट्री फीस वॉलेट से कटेगी; जीतने पर प्राइज़ तुरंत वॉलेट में आएगा। 🏆',
+    '3️⃣ Room time se 15 minute pehle notification aayega': '3️⃣ रूम टाइम से 15 मिनट पहले नोटिफिकेशन आएगा',
+    'Room ID + password push notification me milega — tab tak ready rehna. 🔔': 'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔' };
   var LONG_EN = { 'ऐप में कोई कमी है? बताओ — इनाम मिलेगा!': 'App mein koi kami hai? Batao — reward milega!',
     'संडे और मंथली स्पेशल्स — बड़े इनामों के लिए खेलो!': 'Sunday & monthly specials — bade rewards ke liye khelo!',
     'एडमिन अप्रूव करेगा — UPI पर सीधा ट्रांसफर होगा।': 'Admin approve karega — UPI pe direct transfer hoga.',
@@ -418,7 +423,11 @@
     '✅ सिक्के खरीदने की ज़रूरत नहीं — नीचे मुफ़्त कमाओ!': '✅ Coins kharidne ki zaroorat nahi — neeche se free earn karo!' ,
     'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.': 'Verified profile से match rewards, leaderboard trust और team-features smooth चलते हैं। Admin approval के बाद UID lock हो जाता है — safe।',
     'वेरिफाइड प्रोफ़ाइल से मैच रिवॉर्ड्स, लीडरबोर्ड ट्रस्ट और टीम-फीचर्स स्मूद चलते हैं। एडमिन अप्रूवल के बाद UID लॉक हो जाता है — सुरक्षित।': 'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.',
-    'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।': 'Entry fee non-refundable hai (cancelled match ke siwa).', 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।': 'Kill count dispute ke liye screenshot upload karo.' };
+    'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।': 'Entry fee non-refundable hai (cancelled match ke siwa).', 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।': 'Kill count dispute ke liye screenshot upload karo.',
+    'वही नाम मैच रूम में यूज़ होगा — सही IGN ज़रूरी है।': 'Wahi naam match room me use hoga — sahi IGN zaroori hai.',
+    'एंट्री फीस वॉलेट से कटेगी; जीतने पर प्राइज़ तुरंत वॉलेट में आएगा। 🏆': 'Entry fee wallet se kategi; jeetne par prize turant wallet me aayega. 🏆',
+    '3️⃣ रूम टाइम से 15 मिनट पहले नोटिफिकेशन आएगा': '3️⃣ Room time se 15 minute pehle notification aayega',
+    'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔': 'Room ID + password push notification me milega — tab tak ready rehna. 🔔' };
   /* D103-UI polish-11: attribute-level i18n (title/aria-label/placeholder) */
   var ATTR_HI = {
     'Search Matches': 'मैच खोजें', 'Notifications': 'सूचनाएं', 'Help & Support': 'सहायता और सपोर्ट',
