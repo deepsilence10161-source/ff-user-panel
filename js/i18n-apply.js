@@ -100,6 +100,26 @@
     'Comeback King': 'कमबैक किंग', 'Leaderboard par Top-3 (asli position)': 'लीडरबोर्ड पर टॉप-3 (असली पोजीशन)', 'Crown': 'क्राउन', 'UI icon — Legend/king': 'UI आइकॉन — लेजेंड/किंग',
     'UI icon — Winner': 'UI आइकॉन — विनर', 'Currency icon': 'करेंसी आइकॉन', 'Fire': 'फायर',
     'Trophy': 'ट्रॉफी', 'On Fire / emoji-pack icon': 'ऑन फायर / इमोजी-पैक आइकॉन',
+    /* D103-UI z44: batch-4 modals (battle-pass/city-champ/clan-war/creator/mentor/titles/polls/refer/season/perf-tracker) */
+    'Tier 0 / 50': 'टियर 0 / 50', 'PREMIUM': 'प्रीमियम', 'Starter Badge': 'स्टार्टर बैज', '🔒 Premium': '🔒 प्रीमियम',
+    'Chosen One Badge': 'चोज़न वन बैज', '🔒 Season Pass chahiye': '🔒 सीज़न पास चाहिए', 'Har mahine naya Season Pass aata hai!': 'हर महीने नया सीज़न पास आता है!', '🏆 Standings': '🏆 स्टैंडिंग्स',
+    '🏙️ My City': '🏙️ मेरा शहर', '📋 Rules': '📋 नियम', 'Abhi koi city registered nahi': 'अभी कोई सिटी रजिस्टर्ड नहीं', '🏙️ City Championship': '🏙️ सिटी चैंपियनशिप',
+    'Clan join karo pehle!': 'क्लैन जॉइन करो पहले!', 'Clan Join Karo': 'क्लैन जॉइन करो', 'Creator Studio': 'क्रिएटर स्टूडियो', 'ACTIVE CREATOR': 'एक्टिव क्रिएटर',
+    '(naya — koi rating nahi': '(नया — कोई रेटिंग नहीं', 'T1 STARTER': 'T1 स्टार्टर', 'host 15% · referral 10%': 'होस्ट 15% · रेफरल 10%', 'CODE: —': 'कोड: —',
+    'REF USERS: 0': 'रेफ यूज़र्स: 0', 'MATCHES: 0': 'मैचेस: 0', '🔒 LOCKED': '🔒 लॉक्ड', '✅ AVAILABLE': '✅ उपलब्ध',
+    '💸 PAID': '💸 पेड', '↩️ REVERSED': '↩️ रिवर्स्ड', '📈 EARNINGS — 30 DIN': '📈 कमाई — 30 दिन', 'HOST': 'होस्ट',
+    'REFERRAL': 'रेफरल', 'ADS': 'एड्स', 'MENTOR': 'मेंटर', '👥 MERE REFERRED USERS (0)': '👥 मेरे रेफर्ड यूज़र्स (0)',
+    'Abhi koi referred user nahi.': 'अभी कोई रेफर्ड यूज़र नहीं।', '🎮 MERE HOSTED MATCHES': '🎮 मेरे होस्टेड मैचेस', 'Koi hosted match nahi.': 'कोई होस्टेड मैच नहीं।', '💸 PAYOUTS': '💸 पेआउट्स',
+    'Koi payout request nahi.': 'कोई पेआउट रिक्वेस्ट नहीं।', '🎁 PROMO KIT': '🎁 प्रोमो किट', '🎮 Creator Profile': '🎮 क्रिएटर प्रोफ़ाइल', 'Creator': 'क्रिएटर',
+    '(0 ratings)': '(0 रेटिंग्स)', '+ Follow (naye match ka notification pao)': '+ फॉलो (नए मैच की नोटिफिकेशन पाओ)', '0 referred matches played · Code: —': '0 रेफर्ड मैचेस खेले · कोड: —', '📺 Live Matches': '📺 लाइव मैचेस',
+    '🔍 Find Mentor': '🔍 मेंटर खोजें', '📚 My Sessions': '📚 मेरे सेशंस', 'Koi mentor available nahi abhi': 'अभी कोई मेंटर उपलब्ध नहीं', '🎖️ My Titles': '🎖️ मेरे टाइटल्स',
+    '2 / 33 unlocked': '2 / 33 अनलॉक्ड', 'Winner': 'विनर', 'Pehli jeet': 'पहली जीत', '10 baar jeeta': '10 बार जीता',
+    '50 baar jeeta': '50 बार जीता', 'Marksman': 'मार्क्समैन', 'Terminator': 'टर्मिनेटर', 'Premium': 'प्रीमियम',
+    'Premium subscriber': 'प्रीमियम सब्स्क्राइबर', 'Verified content creator': 'वेरिफाइड कंटेंट क्रिएटर', '3+ consecutive wins': '3+ लगातार विंस', '30 matches without report': '30 मैचेस बिना रिपोर्ट',
+    '📊 Polls': '📊 पोल्स', '🤝 Refer & Earn': '🤝 रेफर और कमाओ', '🎁 Reward Steps': '🎁 रिवॉर्ड स्टेप्स', 'Dost join kare': 'दोस्त जॉइन करे',
+    'Tum: +50🪙': 'तुम: +50🪙', 'Dost: +50🪙': 'दोस्त: +50🪙', 'Tum: +10💎': 'तुम: +10💎', 'Tum: +30🪙': 'तुम: +30🪙',
+    'Dost Joined': 'दोस्त जॉइंड', 'Total Earned': 'कुल कमाई', '🏆 Referral Leaderboard': '🏆 रेफरल लीडरबोर्ड', '1 referrals': '1 रेफरल्स',
+    'Koi season history nahi': 'कोई सीज़न हिस्ट्री नहीं', 'Player Level: Pro 🎯': 'प्लेयर लेवल: प्रो 🎯', 'Total Matches': 'कुल मैचेस', 'Koi match history nahi': 'कोई मैच हिस्ट्री नहीं',
     '1️⃣ Profile me apna Free Fire IGN set karo': '1️⃣ प्रोफ़ाइल में अपना फ्री फायर IGN सेट करो', '2️⃣ Match join karo': '2️⃣ मैच जॉइन करो',
     '⬛ Default Dark': '⬛ डिफ़ॉल्ट डार्क', '🔵 Blue': '🔵 नीला', '🟣 Purple': '🟣 पर्पल', '🟢 Green': '🟢 हरा',
     '🔴 Red': '🔴 लाल', '🟠 Orange': '🟠 नारंगी', '⚫ Black': '⚫ काला', '🌌 Galaxy': '🌌 गैलेक्सी',
@@ -375,7 +395,10 @@
     'Room ID + password push notification me milega — tab tak ready rehna. 🔔': 'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔',
     '50+ बार Top-10': '50+ बार टॉप-10',
     '25+ बार Top-5': '25+ बार टॉप-5',
-    '15+ बार Top-3': '15+ बार टॉप-3' };
+    '15+ बार Top-3': '15+ बार टॉप-3',
+    'Abhi koi commission nahi — kit se code share karo!': 'अभी कोई कमीशन नहीं — किट से कोड शेयर करो!',
+    'Sirf followers ko naye match ka notification jaata hai — sabko nahi': 'सिर्फ फॉलोअर्स को नए मैच की नोटिफिकेशन जाती है — सबको नहीं',
+    'Abhi koi live match nahi — jab match live ho tab yahan dikhega': 'अभी कोई लाइव मैच नहीं — जब मैच लाइव हो तब यहाँ दिखेगा' };
   var LONG_EN = { 'ऐप में कोई कमी है? बताओ — इनाम मिलेगा!': 'App mein koi kami hai? Batao — reward milega!',
     'संडे और मंथली स्पेशल्स — बड़े इनामों के लिए खेलो!': 'Sunday & monthly specials — bade rewards ke liye khelo!',
     'एडमिन अप्रूव करेगा — UPI पर सीधा ट्रांसफर होगा।': 'Admin approve karega — UPI pe direct transfer hoga.',
@@ -433,7 +456,10 @@
     'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔': 'Room ID + password push notification me milega — tab tak ready rehna. 🔔',
     '50+ बार Top-10': '50+ times Top-10',
     '25+ बार Top-5': '25+ times Top-5',
-    '15+ बार Top-3': '15+ times Top-3' };
+    '15+ बार Top-3': '15+ times Top-3',
+    'अभी कोई कमीशन नहीं — किट से कोड शेयर करो!': 'Abhi koi commission nahi — kit se code share karo!',
+    'सिर्फ फॉलोअर्स को नए मैच की नोटिफिकेशन जाती है — सबको नहीं': 'Sirf followers ko naye match ka notification jaata hai — sabko nahi',
+    'अभी कोई लाइव मैच नहीं — जब मैच लाइव हो तब यहाँ दिखेगा': 'Abhi koi live match nahi — jab match live ho tab yahan dikhega' };
   /* D103-UI polish-11: attribute-level i18n (title/aria-label/placeholder) */
   var ATTR_HI = {
     'Search Matches': 'मैच खोजें', 'Notifications': 'सूचनाएं', 'Help & Support': 'सहायता और सपोर्ट',
