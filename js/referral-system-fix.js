@@ -1,1 +1,325 @@
-(function(){'use strict';var _0x516328=(function(){var _0x58e80e=!![];return function(_0x470f76,_0x5284d6){var _0xd14ad8=_0x58e80e?function(){if(_0x5284d6){var _0xf8aae8=_0x5284d6['apply'](_0x470f76,arguments);return _0x5284d6=null,_0xf8aae8;}}:function(){};return _0x58e80e=![],_0xd14ad8;};}()),_0xdff400=_0x516328(this,function(){if(_0xdff400['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0xdff400['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0xdff400)['search']('(((.+)+)+)+$');});_0xdff400();window['applyReferralCode']=function(_0x686c4b){var _0x463f6f=window['UD'],_0x57ed5d=window['U'],_0x19b677=window['db'];if(!_0x463f6f||!_0x57ed5d)return;_0x686c4b=(_0x686c4b||'')['trim']()['toUpperCase']();if(!_0x686c4b){if(window['toast'])window['toast']('Referral\x20code\x20daalo\x20pehle','err');return;}if(_0x463f6f['referredBy']){if(window['toast'])window['toast']('Aapne\x20already\x20ek\x20code\x20use\x20kar\x20liya\x20hai','err');return;}if(_0x686c4b===(_0x463f6f['referralCode']||'')['toUpperCase']()){if(window['toast'])window['toast']('Apna\x20khud\x20ka\x20code\x20use\x20nahi\x20kar\x20sakte','err');return;}if(!window['_supa']||!window['_supaReady']){if(window['toast'])window['toast']('Service\x20unavailable','err');return;}var _0x1db0fe=window['CFG']&&window['CFG']['referralJoinCoins']||0x32;window['_supa']['rpc']('apply_referral_code',{'p_code':_0x686c4b,'p_reward':_0x1db0fe})['then'](function(_0x1aefdf){if(_0x1aefdf['error']||_0x1aefdf['data']&&_0x1aefdf['data']['success']===![]){var _0x26d574=_0x1aefdf['data']&&_0x1aefdf['data']['error']||_0x1aefdf['error']&&_0x1aefdf['error']['message']||'Kuch\x20galat\x20ho\x20gaya';if(window['toast'])window['toast'](_0x26d574,'err');return;}var _0x242fba=_0x1aefdf['data']['referrer_uid'];_0x463f6f['referredBy']=_0x242fba,_0x463f6f['referralPopupDone']=!![];var _0x1b0c30=Number(_0x1aefdf['data']['reward_self']!=null?_0x1aefdf['data']['reward_self']:_0x1aefdf['data']['reward'])||0x0;if(_0x1b0c30>0x0){_0x463f6f['coins']=(_0x463f6f['coins']||0x0)+_0x1b0c30;if(window['updateHdr'])window['updateHdr']();}_0x19b677&&(_0x19b677['ref']('users/'+_0x57ed5d['uid'])['update']({'referredBy':_0x242fba,'referredByCode':_0x686c4b,'referralAppliedAt':Date['now'](),'referralPopupDone':!![]}),_0x19b677['ref']('users/'+_0x242fba+'/notifications')['push']({'title':'🎁\x20Referral\x20Reward!','message':(_0x463f6f['ign']||'Someone')+'\x20ne\x20aapka\x20code\x20use\x20kiya!\x20+'+_0x1aefdf['data']['reward']+'\x20coins!','type':'referral','timestamp':Date['now'](),'read':![]}));try{localStorage['setItem']('_refDone_'+_0x57ed5d['uid'],'1');}catch(_0x35e8e9){}if(window['toast'])window['toast']('🎁\x20Code\x20apply\x20ho\x20gaya!\x20Account\x20linked!'+(_0x1b0c30>0x0?'\x20+'+_0x1b0c30+'\x20coins\x20mile!':''),'ok');var _0x2398a6=document['getElementById']('_refCodePopup');if(_0x2398a6)_0x2398a6['remove']();})['catch'](function(_0xb34cad){if(window['toast'])window['toast']('Error:\x20'+(_0xb34cad&&_0xb34cad['message']||'kuch\x20galat\x20ho\x20gaya'),'err');});},window['showFirstLoginReferralPopup']=function(){var _0x3005ce=window['UD'],_0x1567b4=window['U'],_0x21f1ce=window['db'];if(!_0x3005ce||!_0x1567b4||!_0x21f1ce)return;if(_0x3005ce['referredBy'])return;if(_0x3005ce['referralPopupDone'])return;try{if(localStorage['getItem']('_refDone_'+_0x1567b4['uid']))return;}catch(_0x44f653){}var _0xaf1517=null;try{_0xaf1517=new URLSearchParams(window['location']['search'])['get']('ref');}catch(_0x3280d4){}if(_0xaf1517){_0x21f1ce['ref']('users/'+_0x1567b4['uid']+'/referralPopupDone')['set'](!![]);try{localStorage['setItem']('_refDone_'+_0x1567b4['uid'],'1');}catch(_0x320e08){}if(window['_supa'])window['_supa']['from']('users')['update']({'referral_popup_done':!![]})['eq']('id',_0x1567b4['uid'])['then'](null,function(){});_0x3005ce['referralPopupDone']=!![];var _0x2c7a33=String(_0xaf1517)['trim']()['toUpperCase']();window['_supa']['rpc']('apply_referral_code',{'p_code':_0x2c7a33,'p_reward':0x0})['then'](function(_0x1407df){var _0x5dc1cf=_0x1407df&&_0x1407df['data'];if(_0x5dc1cf&&_0x5dc1cf['success']){_0x3005ce['referredBy']=_0x5dc1cf['referrer_uid']||_0x3005ce['referredBy'];var _0x8121fb=Number(_0x5dc1cf['reward_self']!=null?_0x5dc1cf['reward_self']:_0x5dc1cf['reward'])||0x0;if(_0x8121fb>0x0)_0x3005ce['coins']=(_0x3005ce['coins']||0x0)+_0x8121fb;if(window['updateHdr'])window['updateHdr']();if(window['toast'])window['toast']('🎁\x20Link\x20ka\x20referral\x20apply\x20ho\x20gaya!'+(_0x8121fb>0x0?'\x20+'+_0x8121fb+'\x20coins!':''),'ok');}else{if(window['toast'])window['toast'](_0x5dc1cf&&_0x5dc1cf['error']||'Referral\x20code\x20apply\x20nahi\x20hua','err');}},function(){});return;}_0x21f1ce['ref']('users/'+_0x1567b4['uid']+'/referralPopupDone')['set'](!![]);try{localStorage['setItem']('_refDone_'+_0x1567b4['uid'],'1');}catch(_0x4c7d54){}if(window['_supa'])window['_supa']['from']('users')['update']({'referral_popup_done':!![]})['eq']('id',_0x1567b4['uid'])['then'](null,function(){});_0x3005ce['referralPopupDone']=!![],setTimeout(function(){if(document['getElementById']('_refCodePopup'))return;var _0x3b0d68=_0x3005ce['referralCode']||_0x1567b4['uid']['substring'](0x0,0x8)['toUpperCase'](),_0x3a30ec=document['createElement']('div');_0x3a30ec['id']='_refCodePopup',_0x3a30ec['style']['cssText']='position:fixed;inset:0;z-index:99980;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center',_0x3a30ec['innerHTML']=['<div\x20style=\x22background:#111118;border-radius:24px\x2024px\x200\x200;padding:28px\x2020px\x2044px;width:100%;max-width:480px;animation:refSlideUp\x20.35s\x20cubic-bezier(.16,1,.3,1)\x22>','<div\x20style=\x22width:44px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);margin:0\x20auto\x2022px\x22></div>','<div\x20style=\x22text-align:center;margin-bottom:22px\x22>','<div\x20style=\x22font-size:52px;margin-bottom:10px\x22>🎁</div>','<div\x20style=\x22font-size:20px;font-weight:900;color:#fff;margin-bottom:8px\x22>Kisi\x20ka\x20Referral\x20Code\x20hai?</div>','<div\x20style=\x22font-size:13px;color:#888;line-height:1.6\x22>Dost\x20ka\x20code\x20daalo,\x20bonus\x20coins\x20pao!<br><span\x20style=\x22color:#b964ff;font-weight:700\x22>Sirf\x20pehle\x20login\x20pe</span>\x20—\x20ek\x20baar\x20ka\x20mauka</div>','</div>','<div\x20style=\x22display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap\x22>','<input\x20id=\x22_refCodeInput\x22\x20type=\x22text\x22\x20placeholder=\x22REFERRAL\x20CODE\x22\x20autocomplete=\x22off\x22\x20','style=\x22flex:1\x201\x20140px;min-width:0;padding:15px\x2016px;border-radius:14px;background:rgba(255,255,255,.07);border:1.5px\x20solid\x20rgba(255,255,255,.12);color:#fff;font-size:16px;font-weight:800;outline:none;text-transform:uppercase;letter-spacing:1px\x22\x20','oninput=\x22this.value=this.value.toUpperCase()\x22>','<button\x20onclick=\x22window.applyReferralCode(document.getElementById(\x27_refCodeInput\x27).value)\x22\x20','style=\x22flex:0\x200\x20auto;flex-shrink:0;padding:15px\x2018px;border-radius:14px;background:linear-gradient(135deg,#b964ff,#7c3aed);border:none;color:#fff;font-weight:900;font-size:14px;cursor:pointer;white-space:nowrap;box-shadow:0\x204px\x2016px\x20rgba(124,58,237,.4)\x22>Apply</button>','</div>','<div\x20style=\x22background:rgba(0,255,156,.05);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:14px;padding:13px\x2016px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between\x22>','<div>','<div\x20style=\x22font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px\x22>Tumhara\x20Code\x20—\x20Dosto\x20ko\x20share\x20karo!</div>','<div\x20style=\x22font-size:20px;font-weight:900;color:#00ff9c;letter-spacing:3px\x22>'+_0x3b0d68+'</div>','</div>','<button\x20onclick=\x22window._copyRefCode&&window._copyRefCode()\x22\x20style=\x22padding:9px\x2014px;border-radius:10px;background:rgba(0,255,156,.15);border:1px\x20solid\x20rgba(0,255,156,.3);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button>','</div>','<button\x20onclick=\x22document.getElementById(\x27_refCodePopup\x27).remove()\x22\x20','style=\x22width:100%;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.07);color:#666;font-weight:700;font-size:14px;cursor:pointer\x22>','Skip\x20—\x20Code\x20nahi\x20hai','</button>','</div>','<style>@keyframes\x20refSlideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}</style>']['join'](''),_0x3a30ec['addEventListener']('click',function(_0x168a04){if(_0x168a04['target']===_0x3a30ec)_0x3a30ec['remove']();}),document['body']['appendChild'](_0x3a30ec),setTimeout(function(){var _0x15397e=document['getElementById']('_refCodeInput');if(_0x15397e)_0x15397e['focus']();},0x190);},0x708);};function _0x2bf6f9(){if(!window['afterLogin']||window['_refHookDone'])return;window['_refHookDone']=!![];var _0x34e824=window['afterLogin'];window['afterLogin']=function(_0x52af67){var _0x499650=window['db'],_0x4ef7d5=window['_supa'];function _0x38ef5e(_0xe83e91){_0x34e824['call'](this,_0x52af67);if(!_0xe83e91)return;var _0x4ed3e8=0x0,_0x1df368=setInterval(function(){_0x4ed3e8++;window['UD']&&window['U']&&(clearInterval(_0x1df368),!window['UD']['referredBy']&&!window['UD']['referralPopupDone']&&window['showFirstLoginReferralPopup']());if(_0x4ed3e8>0x1e)clearInterval(_0x1df368);},0x190);}if(_0x4ef7d5)_0x4ef7d5['from']('users')['select']('id,referred_by,referral_popup_done')['eq']('id',_0x52af67['uid'])['maybeSingle']()['then'](function(_0x2b7f27){var _0x4fb0a4=!_0x2b7f27['data'];if(_0x2b7f27['data']&&!_0x2b7f27['data']['referral_popup_done']&&!_0x2b7f27['data']['referred_by'])_0x4fb0a4=!![];_0x38ef5e(_0x4fb0a4);})['catch'](function(){if(!_0x499650){_0x34e824['call'](this,_0x52af67);return;}_0x499650['ref']('users/'+_0x52af67['uid'])['once']('value')['then'](function(_0x20d986){_0x38ef5e(!_0x20d986['exists']());})['catch'](function(){_0x34e824['call'](this,_0x52af67);});});else _0x499650?_0x499650['ref']('users/'+_0x52af67['uid'])['once']('value')['then'](function(_0x5a9dd3){_0x38ef5e(!_0x5a9dd3['exists']());})['catch'](function(){_0x34e824['call'](this,_0x52af67);}):_0x34e824['call'](this,_0x52af67);};}window['showReferralStats']=function(){var _0x1bd3fb=window['UD'],_0x30e007=window['U'];if(!_0x1bd3fb||!_0x30e007)return;var _0x5349db=_0x1bd3fb['referralCode']||_0x30e007['uid']['substring'](0x0,0x8)['toUpperCase'](),_0x132fda=Number(_0x1bd3fb['referralCount'])||0x0,_0x3bc504=window['CFG']&&window['CFG']['referralJoinCoins']||0x32,_0x173b91=Number(_0x1bd3fb['referralCoinsEarned'])||_0x132fda*_0x3bc504,_0x37fa7b='';_0x37fa7b+='<div\x20style=\x22text-align:center;padding:8px\x200\x2016px\x22><div\x20style=\x22font-size:48px;margin-bottom:10px\x22>🎁</div>',_0x37fa7b+='<div\x20style=\x22font-size:16px;font-weight:800;color:#fff;margin-bottom:4px\x22>Refer\x20&\x20Earn</div>',_0x37fa7b+='<div\x20style=\x22font-size:12px;color:#888;margin-bottom:16px\x22>Dosto\x20ko\x20invite\x20karo,\x20coins\x20kamao!</div></div>',_0x37fa7b+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px\x22>',_0x37fa7b+='<div\x20style=\x22font-size:11px;color:#888;margin-bottom:6px\x22>Your\x20Referral\x20Code</div>',_0x37fa7b+='<div\x20style=\x22font-size:28px;font-weight:900;color:#00ff9c;letter-spacing:4px\x22>'+_0x5349db+'</div>',_0x37fa7b+='<button\x20onclick=\x22window._copyRefCode&&window._copyRefCode()\x22\x20style=\x22margin-top:10px;padding:7px\x2018px;border-radius:8px;background:rgba(0,255,156,.15);border:1px\x20solid\x20rgba(0,255,156,.3);color:#00ff9c;font-weight:700;font-size:12px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i>\x20Copy\x20Code</button></div>',_0x37fa7b+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px;margin-bottom:16px\x22>',_0x37fa7b+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center\x22><div\x20style=\x22font-size:26px;font-weight:900;color:#ffd700\x22>'+_0x132fda+'</div><div\x20style=\x22font-size:11px;color:#888\x22>Friends\x20Referred</div></div>',_0x37fa7b+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center\x22><div\x20style=\x22font-size:26px;font-weight:900;color:#ffd700\x22>'+_0x173b91+'</div><div\x20style=\x22font-size:11px;color:#888\x22>Coins\x20Earned</div></div></div>',_0x37fa7b+='<button\x20onclick=\x22window._pvShare&&window._pvShare()\x22\x20style=\x22width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:14px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-share-alt\x22\x20style=\x22margin-right:8px\x22></i>Share\x20&\x20Invite</button>';if(window['openModal'])window['openModal']('🎁\x20Refer\x20&\x20Earn',_0x37fa7b);},window['_copyRefCode']=function(){var _0x1a9b34=window['UD'],_0x262e4c=window['U'];if(!_0x1a9b34||!_0x262e4c)return;var _0xeffe5e=_0x1a9b34['referralCode']||_0x262e4c['uid']['substring'](0x0,0x8)['toUpperCase']();if(window['copyTxt'])window['copyTxt'](_0xeffe5e);else try{navigator['clipboard']['writeText'](_0xeffe5e);}catch(_0x425cc6){var _0x344175=document['createElement']('textarea');_0x344175['value']=_0xeffe5e,document['body']['appendChild'](_0x344175),_0x344175['select'](),document['execCommand']('copy'),document['body']['removeChild'](_0x344175);}if(window['toast'])window['toast']('✅\x20Code\x20copied:\x20'+_0xeffe5e,'ok');};var _0x5c679a=0x0,_0x53ebb6=setInterval(function(){_0x5c679a++;window['afterLogin']&&(clearInterval(_0x53ebb6),_0x2bf6f9());if(_0x5c679a>0x3c)clearInterval(_0x53ebb6);},0x12c);console['log']('[Mini\x20eSports]\x20Referral\x20System\x20v5.0\x20—\x20airtight\x20new-user-only\x20popup');}());
+/* ================================================================
+   MINI eSPORTS — REFERRAL SYSTEM v5.0
+   ----------------------------------------------------------------
+   RULE: Referral popup SIRF brand-new account pe aata hai.
+   "Brand new" = is session mein snap.exists() === FALSE tha,
+   yaani Firebase mein user record abhi pehli baar create hua.
+
+   HOW IT WORKS:
+   - app.js ka afterLogin() hook karte hain BEFORE it runs
+   - Hum khud snap check karte hain: exists=false → naya user
+   - Agar exists=true → purana user → popup KABHI nahi
+   - Firebase flag 'referralPopupDone' cross-device safety
+   - localStorage flag same-device double-show rokne ke liye
+   ================================================================ */
+(function () {
+  'use strict';
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 1: APPLY REFERRAL CODE
+     ══════════════════════════════════════════════════════════════ */
+  window.applyReferralCode = function (code) {
+    var UD = window.UD; var U = window.U; var db = window.db;
+    if (!UD || !U) return;
+
+    code = (code || '').trim().toUpperCase();
+    if (!code) { if (window.toast) window.toast('Referral code daalo pehle', 'err'); return; }
+    if (UD.referredBy) { if (window.toast) window.toast('Aapne already ek code use kar liya hai', 'err'); return; }
+    if (code === (UD.referralCode || '').toUpperCase()) {
+      if (window.toast) window.toast('Apna khud ka code use nahi kar sakte', 'err'); return;
+    }
+
+    /* BUG #38/#3 FIX (2026-07): the previous version of this function had four separate
+       bugs, all fixed by consolidating into one atomic, server-validated RPC call:
+       1. Read window.CFG.referralReward for the reward amount — that key is never
+          populated anywhere; only CFG.referralJoinCoins is actually set from admin
+          settings, so the configured reward always silently fell back to a hardcoded 50.
+       2. The referrals.upsert() call referenced code/reward/referred_name columns that
+          don't exist in the real schema (only referrer_id, referred_id, referrer_ign,
+          join_bonus_paid, match_bonus_paid) — this insert always failed silently.
+       3. increment_balance(referrerUid, ...) — crediting a DIFFERENT user's balance from
+          a regular (non-admin) user's own session — now correctly rejected by the BUG #49
+          security fix, since a non-admin can't credit someone else's account directly.
+       4. Duplicate-check-then-insert was two separate round trips with an acknowledged
+          race condition (two tabs applying the same code simultaneously).
+       The new apply_referral_code(code, reward) RPC handles code lookup, self-referral
+       block, first-match-only check, duplicate check, the referrals insert, and the
+       coin credit all atomically in one transaction, with SECURITY DEFINER privileges
+       that correctly allow crediting a different user for this one narrow, fully-
+       validated case — without loosening increment_balance's general security. */
+    if (!window._supa || !window._supaReady) { if (window.toast) window.toast('Service unavailable', 'err'); return; }
+    var _reward = (window.CFG && window.CFG.referralJoinCoins) || 50;
+    window._supa.rpc('apply_referral_code', { p_code: code, p_reward: _reward })
+      .then(function(r) {
+        if (r.error || (r.data && r.data.success === false)) {
+          var msg = (r.data && r.data.error) || (r.error && r.error.message) || 'Kuch galat ho gaya';
+          if (window.toast) window.toast(msg, 'err');
+          return;
+        }
+        var referrerUid = r.data.referrer_uid;
+        UD.referredBy = referrerUid;
+        UD.referralPopupDone = true;
+        /* ✅ B20 (2026-10-07): join bonus ab DONO ko milta hai (admin ka
+           hint "Dono ko milenge"; server-side apply_referral_code me
+           v_real_reward dono taraf credit hota hai). Self-side coins
+           turant UD me reflect karo — warna header ka balance agle
+           refresh tak purana dikhta. Profile-screen ka manual-code path
+           (claim_referral_reward) pehle se dono ko deta tha — ab dono
+           paths ka vyavhaar ek hi hai. */
+        var _selfRw = Number(r.data.reward_self != null ? r.data.reward_self : r.data.reward) || 0;
+        if (_selfRw > 0) {
+          UD.coins = (UD.coins || 0) + _selfRw;
+          if (window.updateHdr) window.updateHdr();
+        }
+        /* Mirror to Firebase for immediate local UD cache + push notification trigger */
+        if (db) {
+          db.ref('users/' + U.uid).update({ referredBy: referrerUid, referredByCode: code, referralAppliedAt: Date.now(), referralPopupDone: true });
+          db.ref('users/' + referrerUid + '/notifications').push({
+            title: '🎁 Referral Reward!',
+            message: (UD.ign || 'Someone') + ' ne aapka code use kiya! +' + r.data.reward + ' coins!',
+            type: 'referral', timestamp: Date.now(), read: false
+          });
+        }
+        try { localStorage.setItem('_refDone_' + U.uid, '1'); } catch(e) {}
+        if (window.toast) window.toast('🎁 Code apply ho gaya! Account linked!'
+          + (_selfRw > 0 ? ' +' + _selfRw + ' coins mile!' : ''), 'ok');
+        var pop = document.getElementById('_refCodePopup');
+        if (pop) pop.remove();
+      })
+      .catch(function(e) {
+        if (window.toast) window.toast('Error: ' + (e && e.message || 'kuch galat ho gaya'), 'err');
+      });
+  };
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 2: SHOW POPUP (called only for brand-new accounts)
+     ══════════════════════════════════════════════════════════════ */
+  window.showFirstLoginReferralPopup = function () {
+    var UD = window.UD; var U = window.U; var db = window.db;
+    if (!UD || !U || !db) return;
+
+    /* Safety guards — should already be clear but double-check */
+    if (UD.referredBy) return;
+    if (UD.referralPopupDone) return;
+    try { if (localStorage.getItem('_refDone_' + U.uid)) return; } catch (e) {}
+
+    /* ✅ B20 (2026-10-07): {?ref=} link se aaya naya user — link me hi
+       code hai, usse TYP karana bewakoofi thi (aur pehle URL-auto-apply
+       alag engine (fixes-v7) me chalta tha jo isi popup ke
+       referralPopupDone flag se band ho jata tha — matlab link wala
+       bonus NAYE user ko kabhi milta hi nahi tha). Ab: link ho to
+       seedha auto-apply (popup skip). Apply server RPC se hota hai —
+       dono taraf bonus, ledger entry, aur guard sab usi ek jagah. */
+    var _urlRef = null;
+    try { _urlRef = new URLSearchParams(window.location.search).get('ref'); } catch (e) {}
+    if (_urlRef) {
+      db.ref('users/' + U.uid + '/referralPopupDone').set(true);
+      try { localStorage.setItem('_refDone_' + U.uid, '1'); } catch (e) {}
+      if (window._supa) window._supa.from('users').update({ referral_popup_done: true }).eq('id', U.uid).then(null, function(){});
+      UD.referralPopupDone = true;
+      var _ur = String(_urlRef).trim().toUpperCase();
+      window._supa.rpc('apply_referral_code', { p_code: _ur, p_reward: 0 })
+        .then(function (r) {
+          var d = r && r.data;
+          if (d && d.success) {
+            UD.referredBy = d.referrer_uid || UD.referredBy;
+            var _self = Number(d.reward_self != null ? d.reward_self : d.reward) || 0;
+            if (_self > 0) UD.coins = (UD.coins || 0) + _self;
+            if (window.updateHdr) window.updateHdr();
+            if (window.toast) window.toast('🎁 Link ka referral apply ho gaya!' + (_self > 0 ? ' +' + _self + ' coins!' : ''), 'ok');
+          } else {
+            if (window.toast) window.toast((d && d.error) || 'Referral code apply nahi hua', 'err');
+          }
+        }, function(){});
+      return;
+    }
+
+    /* Mark immediately — no double show */
+    db.ref('users/' + U.uid + '/referralPopupDone').set(true);
+    try { localStorage.setItem('_refDone_' + U.uid, '1'); } catch (e) {}
+    /* ✅ Audit Fix: also persist to Supabase (source of truth for isNewUser
+       check above) — without this, skipping the popup only stuck on the
+       same device/localStorage; a reinstall or new device would show it again. */
+    if (window._supa) window._supa.from('users').update({ referral_popup_done: true }).eq('id', U.uid).then(null, function(){});
+    UD.referralPopupDone = true;
+
+    setTimeout(function () {
+      if (document.getElementById('_refCodePopup')) return;
+
+      var myCode = UD.referralCode || U.uid.substring(0, 8).toUpperCase();
+      var overlay = document.createElement('div');
+      overlay.id = '_refCodePopup';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:99980;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center';
+
+      overlay.innerHTML = [
+        '<div style="background:#111118;border-radius:24px 24px 0 0;padding:28px 20px 44px;width:100%;max-width:480px;animation:refSlideUp .35s cubic-bezier(.16,1,.3,1)">',
+          '<div style="width:44px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);margin:0 auto 22px"></div>',
+          '<div style="text-align:center;margin-bottom:22px">',
+            '<div style="font-size:52px;margin-bottom:10px">🎁</div>',
+            '<div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">Kisi ka Referral Code hai?</div>',
+            '<div style="font-size:13px;color:#888;line-height:1.6">Dost ka code daalo, bonus coins pao!<br><span style="color:#b964ff;font-weight:700">Sirf pehle login pe</span> — ek baar ka mauka</div>',
+          '</div>',
+          '<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">',
+            '<input id="_refCodeInput" type="text" placeholder="REFERRAL CODE" autocomplete="off" ',
+              /* ✅ BUG FIX (2026-10-06): Apply button screen se bahar nikal jata tha.
+                 Wajah: flex item ka default min-width:auto hota hai, isliye input
+                 apni intrinsic width (placeholder + letter-spacing) se chhota nahi
+                 hota tha aur button ko bahar dhakel deta tha. Fix: input par
+                 min-width:0 + button par flex-shrink:0 (aur chhoti screen ke liye
+                 letter-spacing bhi kam). */
+              'style="flex:1 1 140px;min-width:0;padding:15px 16px;border-radius:14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:#fff;font-size:16px;font-weight:800;outline:none;text-transform:uppercase;letter-spacing:1px" ',
+              'oninput="this.value=this.value.toUpperCase()">',
+            '<button onclick="window.applyReferralCode(document.getElementById(\'_refCodeInput\').value)" ',
+              'style="flex:0 0 auto;flex-shrink:0;padding:15px 18px;border-radius:14px;background:linear-gradient(135deg,#b964ff,#7c3aed);border:none;color:#fff;font-weight:900;font-size:14px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px rgba(124,58,237,.4)">Apply</button>',
+          '</div>',
+          '<div style="background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.15);border-radius:14px;padding:13px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">',
+            '<div>',
+              '<div style="font-size:10px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Tumhara Code — Dosto ko share karo!</div>',
+              '<div style="font-size:20px;font-weight:900;color:#00ff9c;letter-spacing:3px">' + myCode + '</div>',
+            '</div>',
+            '<button onclick="window._copyRefCode&&window._copyRefCode()" style="padding:9px 14px;border-radius:10px;background:rgba(0,255,156,.15);border:1px solid rgba(0,255,156,.3);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer"><i class="fas fa-copy"></i></button>',
+          '</div>',
+          '<button onclick="document.getElementById(\'_refCodePopup\').remove()" ',
+            'style="width:100%;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#666;font-weight:700;font-size:14px;cursor:pointer">',
+            'Skip — Code nahi hai',
+          '</button>',
+        '</div>',
+        '<style>@keyframes refSlideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}</style>'
+      ].join('');
+
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+      document.body.appendChild(overlay);
+      setTimeout(function () { var inp = document.getElementById('_refCodeInput'); if (inp) inp.focus(); }, 400);
+    }, 1800);
+  };
+
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 3: HOOK afterLogin — THE CORE FIX
+     ══════════════════════════════════════════════════════════════ */
+  function hookAfterLogin () {
+    if (!window.afterLogin || window._refHookDone) return;
+    window._refHookDone = true;
+
+    var _origAfterLogin = window.afterLogin;
+
+    window.afterLogin = function (user) {
+      var db = window.db;
+      var supa = window._supa;
+
+      /* Bug Critical #2 + Medium #11 Fix: New user detection via Supabase.
+         Firebase RTDB users/ is empty after migration — db.ref('users/'+uid)
+         always returns !snap.exists() = TRUE, so popup showed on EVERY login.
+         Now we check Supabase users table (source of truth) for user existence. */
+      function _runWithNewUserFlag(isNewUser) {
+        _origAfterLogin.call(this, user);
+        if (!isNewUser) return;
+        var tries = 0;
+        var chk = setInterval(function () {
+          tries++;
+          if (window.UD && window.U) {
+            clearInterval(chk);
+            if (!window.UD.referredBy && !window.UD.referralPopupDone) {
+              window.showFirstLoginReferralPopup();
+            }
+          }
+          if (tries > 30) clearInterval(chk);
+        }, 400);
+      }
+
+      if (supa) {
+        // Supabase check — single row lookup is fast and accurate
+        /* ✅ FIX (2026-09-30): .single() → .maybeSingle().
+           Naye user ka users-row is check se THODI DER BAAD banta hai, isliye
+           .single() par PostgREST HTTP 406 deta tha aur browser console me
+           "Failed to load resource: 406" error chhap jaata tha (live verified
+           request order: 204 PATCH users → 406 GET users → 201 POST users).
+           .maybeSingle() 0 rows par saaf {data:null} deta hai — wahi
+           isNewUser=true wala behaviour, bina console error ke. */
+        supa.from('users').select('id,referred_by,referral_popup_done')
+          .eq('id', user.uid).maybeSingle()
+          .then(function(r) {
+            // If Supabase has no row → brand new user
+            var isNewUser = !r.data;
+            // If row exists but referralPopupDone not set → also show popup
+            if (r.data && !r.data.referral_popup_done && !r.data.referred_by) isNewUser = true;
+            _runWithNewUserFlag(isNewUser);
+          })
+          .catch(function() {
+            // Supabase unavailable — fall back to Firebase check
+            if (!db) { _origAfterLogin.call(this, user); return; }
+            db.ref('users/' + user.uid).once('value').then(function(snap) {
+              _runWithNewUserFlag(!snap.exists());
+            }).catch(function() { _origAfterLogin.call(this, user); });
+          });
+      } else if (db) {
+        db.ref('users/' + user.uid).once('value').then(function (snap) {
+          _runWithNewUserFlag(!snap.exists());
+        }).catch(function () { _origAfterLogin.call(this, user); });
+      } else {
+        _origAfterLogin.call(this, user);
+      }
+    };
+  }
+
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 4: REFERRAL STATS MODAL
+     ══════════════════════════════════════════════════════════════ */
+  window.showReferralStats = function () {
+    var UD = window.UD; var U = window.U;
+    if (!UD || !U) return;
+    var myCode = UD.referralCode || U.uid.substring(0, 8).toUpperCase();
+    var count  = Number(UD.referralCount) || 0;
+    /* ✅ B20 (2026-10-07): pehle fallback hardcoded 50 tha — admin ki
+       referralJoinCoins setting badalne par "Total Earned" galat
+       dikhata. Ab wahi CFG value jo server use karta hai. */
+    var _joinRw = (window.CFG && window.CFG.referralJoinCoins) || 50;
+    var earned = Number(UD.referralCoinsEarned) || (count * _joinRw);
+
+    var h = '';
+    h += '<div style="text-align:center;padding:8px 0 16px"><div style="font-size:48px;margin-bottom:10px">🎁</div>';
+    h += '<div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px">Refer & Earn</div>';
+    h += '<div style="font-size:12px;color:#888;margin-bottom:16px">Dosto ko invite karo, coins kamao!</div></div>';
+    h += '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px">';
+    h += '<div style="font-size:11px;color:#888;margin-bottom:6px">Your Referral Code</div>';
+    h += '<div style="font-size:28px;font-weight:900;color:#00ff9c;letter-spacing:4px">' + myCode + '</div>';
+    h += '<button onclick="window._copyRefCode&&window._copyRefCode()" style="margin-top:10px;padding:7px 18px;border-radius:8px;background:rgba(0,255,156,.15);border:1px solid rgba(0,255,156,.3);color:#00ff9c;font-weight:700;font-size:12px;cursor:pointer"><i class="fas fa-copy"></i> Copy Code</button></div>';
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center"><div style="font-size:26px;font-weight:900;color:#ffd700">' + count + '</div><div style="font-size:11px;color:#888">Friends Referred</div></div>';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:12px;padding:14px;text-align:center"><div style="font-size:26px;font-weight:900;color:#ffd700">' + earned + '</div><div style="font-size:11px;color:#888">Coins Earned</div></div></div>';
+    h += '<button onclick="window._pvShare&&window._pvShare()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:14px;cursor:pointer"><i class="fas fa-share-alt" style="margin-right:8px"></i>Share & Invite</button>';
+
+    if (window.openModal) window.openModal('🎁 Refer & Earn', h);
+  };
+
+  window._copyRefCode = function () {
+    var UD = window.UD; var U = window.U;
+    if (!UD || !U) return;
+    var code = UD.referralCode || U.uid.substring(0, 8).toUpperCase();
+    if (window.copyTxt) {
+      window.copyTxt(code);
+    } else {
+      try { navigator.clipboard.writeText(code); } catch (e) {
+        var ta = document.createElement('textarea');
+        ta.value = code; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+      }
+    }
+    if (window.toast) window.toast('✅ Code copied: ' + code, 'ok');
+  };
+
+
+  /* ══════════════════════════════════════════════════════════════
+     SECTION 5: INIT — wait for afterLogin to exist, then hook
+     ══════════════════════════════════════════════════════════════ */
+  var _tries = 0;
+  var _iv = setInterval(function () {
+    _tries++;
+    if (window.afterLogin) { clearInterval(_iv); hookAfterLogin(); }
+    if (_tries > 60) clearInterval(_iv);
+  }, 300);
+
+  console.log('[Mini eSports] Referral System v5.0 — airtight new-user-only popup');
+
+})(); // end IIFE

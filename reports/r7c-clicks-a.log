@@ -1,0 +1,36 @@
+clicks qa4/en/home done, findings=0 dialogs=0
+clicks qa4/en/rank done, findings=0 dialogs=0
+clicks qa4/en/matches done, findings=0 dialogs=0
+clicks qa4/en/wallet done, findings=0 dialogs=0
+clicks qa4/en/profile done, findings=0 dialogs=0
+clicks qa4/en/notif done, findings=0 dialogs=0
+clicks qa4/en/special done, findings=0 dialogs=0
+clicks qa4/en/clan done, findings=0 dialogs=0
+clicks qa4/en/settings done, findings=0 dialogs=0
+clicks qa4/hi/home done, findings=0 dialogs=0
+clicks qa4/hi/rank done, findings=0 dialogs=0
+clicks qa4/hi/matches done, findings=0 dialogs=0
+clicks qa4/hi/wallet done, findings=0 dialogs=0
+clicks qa4/hi/profile done, findings=0 dialogs=0
+clicks qa4/hi/notif done, findings=19 dialogs=0
+CLICK MATRIX FINDINGS: 20 | NATIVE DIALOGS: 0
+ - notif | ix3 | click-flow: page.evaluate: Target crashed 
+ - notif | ix4 | click-flow: page.evaluate: Target crashed 
+ - notif | ix5 | click-flow: page.evaluate: Target crashed 
+ - notif | ix6 | click-flow: page.evaluate: Target crashed 
+ - notif | ix7 | click-flow: page.evaluate: Target crashed 
+ - notif | ix8 | click-flow: page.evaluate: Target crashed 
+ - notif | ix9 | click-flow: page.evaluate: Target crashed 
+ - notif | ix10 | click-flow: page.evaluate: Target crashed 
+ - notif | ix11 | click-flow: page.evaluate: Target crashed 
+ - notif | ix12 | click-flow: page.evaluate: Target crashed 
+ - notif | ix13 | click-flow: page.evaluate: Target crashed 
+ - notif | ix14 | click-flow: page.evaluate: Target crashed 
+ - notif | ix15 | click-flow: page.evaluate: Target crashed 
+ - notif | ix16 | click-flow: page.evaluate: Target crashed 
+ - notif | ix17 | click-flow: page.evaluate: Target crashed 
+ - notif | ix18 | click-flow: page.evaluate: Target crashed 
+ - notif | ix19 | click-flow: page.evaluate: Target crashed 
+ - notif | ix20 | click-flow: page.evaluate: Target crashed 
+ - notif | ix21 | click-flow: page.evaluate: Target crashed 
+ - * | - | flow: page.evaluate: Target crashed 

@@ -1,1 +1,344 @@
-(function(){'use strict';var _0x2b177d=(function(){var _0x3bb935=!![];return function(_0x3a5bca,_0x37dfc3){var _0x471722=_0x3bb935?function(){if(_0x37dfc3){var _0x434892=_0x37dfc3['apply'](_0x3a5bca,arguments);return _0x37dfc3=null,_0x434892;}}:function(){};return _0x3bb935=![],_0x471722;};}()),_0x3044dc=_0x2b177d(this,function(){if(_0x3044dc['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3044dc['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3044dc)['search']('(((.+)+)+)+$');});_0x3044dc();var _0x2b2c1c='mes_offline_q',_0x32ca18=0x2,_0x23dcf7='ops';function _0x3668dc(_0x238b6){var _0x150830=indexedDB['open'](_0x2b2c1c,_0x32ca18);_0x150830['onupgradeneeded']=function(_0x42aa67){var _0x331037=_0x42aa67['target']['result'],_0x13e754=_0x42aa67['oldVersion'];!_0x331037['objectStoreNames']['contains'](_0x23dcf7)&&_0x331037['createObjectStore'](_0x23dcf7,{'keyPath':'id','autoIncrement':!![]});if(_0x13e754<0x2){var _0x3c9ade=_0x42aa67['target']['transaction'];if(_0x3c9ade&&_0x3c9ade['objectStore'])try{var _0x325938=_0x3c9ade['objectStore'](_0x23dcf7);!_0x325938['indexNames']['contains']('type')&&_0x325938['createIndex']('type','type',{'unique':![]});}catch(_0x38cf81){}}},_0x150830['onsuccess']=function(_0xb97f13){_0x238b6(_0xb97f13['target']['result']);},_0x150830['onerror']=function(_0x408844){console['error']('[OQ]\x20IDB\x20open\x20error:',_0x408844['target']['error']),_0x238b6(null);};}function _0x38bb53(_0x23b0ed){_0x23b0ed['_queuedAt']=Date['now'](),_0x23b0ed['_deviceId']=window['getDeviceId']?window['getDeviceId']():localStorage['getItem']('_minieSport_did')||'unknown',_0x23b0ed['_canvasFP']=sessionStorage['getItem']('_mes_cfp')||'',_0x23b0ed['_userAgent']=navigator['userAgent']['substring'](0x0,0x50),_0x3668dc(function(_0x22497e){if(!_0x22497e)return;_0x22497e['transaction'](_0x23dcf7,'readwrite')['objectStore'](_0x23dcf7)['add'](_0x23b0ed),_0x1ef2f5();});}function _0x2e6275(_0x2e25b1,_0x423223){_0x3668dc(function(_0x408226){if(!_0x408226)return _0x423223&&_0x423223();_0x408226['transaction'](_0x23dcf7,'readwrite')['objectStore'](_0x23dcf7)['delete'](_0x2e25b1)['onsuccess']=function(){_0x423223&&_0x423223();};});}function _0x421a7a(_0x45d954,_0x3e8666){var _0x17465b=0x1388;if(_0x45d954['type']==='joinMatch'&&window['U']){var _0x43f432=window['U']['uid'];function _0x42dd80(){var _0x33011c=window['db'];if(!_0x33011c){_0x3e8666(!![]);return;}_0x33011c['ref']('users/'+_0x43f432+'/selfExcluded')['once']('value',function(_0x354413){if(_0x354413['val']()===!![]){console['warn']('[OQ]\x20Queued\x20join\x20rejected\x20—\x20self-exclusion\x20active'),_0x3e8666(![],'Self-exclusion\x20active');return;}var _0x1ed89d=sessionStorage['getItem']('_mes_cfp')||'';if(_0x45d954['_canvasFP']&&_0x1ed89d&&_0x45d954['_canvasFP']!==_0x1ed89d){console['warn']('[OQ]\x20Queued\x20join\x20rejected\x20—\x20device\x20fingerprint\x20mismatch'),_0x3e8666(![],'Device\x20mismatch');return;}var _0x5c2e47=window['JR']||{},_0x230625=Object['values'](_0x5c2e47)['some'](function(_0x3b6258){return _0x3b6258['matchId']===(_0x45d954['payload']&&_0x45d954['payload']['matchId'])&&(_0x3b6258['status']==='pending'||_0x3b6258['status']==='joined'||_0x3b6258['status']==='approved');});if(_0x230625){console['warn']('[OQ]\x20Queued\x20join\x20rejected\x20—\x20already\x20joined'),_0x3e8666(![],'Already\x20joined');return;}_0x3e8666(!![]);});}window['_supa']?window['_supa']['from']('user_public_profiles')['select']('is_banned')['eq']('id',_0x43f432)['single']()['then'](function(_0x424b09){if(_0x424b09['data']&&_0x424b09['data']['is_banned']){console['warn']('[OQ]\x20Queued\x20join\x20rejected\x20—\x20Supabase\x20ban\x20active'),_0x3e8666(![],'Account\x20banned');return;}_0x42dd80();})['catch'](function(){_0x42dd80();}):_0x42dd80();}else _0x3e8666(!![]);}function _0x14ebdc(_0x87243a,_0x222850){switch(_0x87243a['type']){case'joinMatch':var _0xa7b37c=_0x87243a['payload'];_0x421a7a(_0x87243a,function(_0x17a4fe,_0x39602a){if(!_0x17a4fe){if(window['toast'])window['toast']('⚠️\x20Queued\x20join\x20cancelled:\x20'+(_0x39602a||'security'),'err');_0x222850(!![]);return;}if(!window['U']||!window['db']){_0x222850(![]);return;}if(window['_supa']&&_0xa7b37c['entryFee']>0x0){function _0x508ff6(){window['_supa']['rpc']('validate_and_join_match',{'p_uid':window['U']['uid'],'p_match_id':_0xa7b37c['matchId'],'p_entry_fee':_0xa7b37c['entryFee']||0x0,'p_currency':_0xa7b37c['entryType']==='coin'?'coins':'sky_diamonds','p_join_data':JSON['stringify']({'fee_split':_0xa7b37c['feeType']||'solo'})})['then'](function(_0x366df6){if(_0x366df6&&_0x366df6['data']&&_0x366df6['data']['ok']===![]){if(window['toast'])window['toast']('❌\x20Queued\x20join\x20failed:\x20'+(_0x366df6['data']['error']||'Server\x20rejected'),'err');_0x222850(!![]);}else window['db']['ref']('joinRequests')['push'](Object['assign']({},_0xa7b37c,{'timestamp':firebase['database']['ServerValue']['TIMESTAMP'],'status':'pending','_offlineQueued':!![]})),_0x222850(!![]);})['catch'](function(){_0x222850(![]);});}window['_supa']['from']('matches')['select']('data')['eq']('firebase_id',_0xa7b37c['matchId'])['single']()['then'](function(_0x44d3f5){var _0xed952=_0x44d3f5['data']&&_0x44d3f5['data']['data']||{},_0x3b803a=_0xed952['status']||_0xed952['matchStatus']||'';if(_0x3b803a==='live'||_0x3b803a==='completed'||_0x3b803a==='cancelled'){if(window['toast'])window['toast']('⚠️\x20Queued\x20join\x20cancelled:\x20match\x20already\x20'+_0x3b803a,'err');_0x222850(![],'match_'+_0x3b803a);return;}var _0x234f5c=Number(_0xed952['filledSlots']||0x0),_0x2741ef=Number(_0xed952['maxSlots']||_0xed952['totalSlots']||0x3e7);if(_0x234f5c>=_0x2741ef){if(window['toast'])window['toast']('⚠️\x20Match\x20bhar\x20gaya\x20—\x20queued\x20join\x20cancel','inf');_0x222850(!![]);return;}_0x508ff6();})['catch'](function(){_0x508ff6();});}else window['_supa']['rpc']('validate_and_join_match',{'p_uid':window['U']['uid'],'p_match_id':_0xa7b37c['matchId'],'p_entry_fee':0x0,'p_currency':'coins','p_join_data':{}})['then'](function(_0xf0c30f){if(_0xf0c30f&&_0xf0c30f['error']||_0xf0c30f&&_0xf0c30f['data']&&_0xf0c30f['data']['ok']===![]){var _0x420f87=_0xf0c30f['data']&&_0xf0c30f['data']['error']||_0xf0c30f['error']&&_0xf0c30f['error']['message']||'Server\x20rejected';if(window['toast'])window['toast']('❌\x20Queued\x20join\x20failed:\x20'+_0x420f87,'err');_0x222850(!![]);}else window['db']&&window['db']['ref']('joinRequests')['push'](Object['assign']({},_0xa7b37c,{'timestamp':firebase['database']&&firebase['database']['ServerValue']?firebase['database']['ServerValue']['TIMESTAMP']:Date['now'](),'status':'joined','_offlineQueued':!![]})),_0x222850(!![]);})['catch'](function(){if(window['toast'])window['toast']('❌\x20Queued\x20join\x20failed\x20—\x20server\x20unavailable','err');_0x222850(!![]);});});break;case'walletRequest':var _0x4324fa=_0x87243a['payload'];window['db']&&window['db']['ref']('walletRequests')['push'](Object['assign']({},_0x4324fa,{'createdAt':firebase['database']['ServerValue']['TIMESTAMP'],'_offlineQueued':!![]}))['then'](function(){_0x222850(!![]);})['catch'](function(){_0x222850(![]);});break;case'firebaseSet':window['db']&&window['db']['ref'](_0x87243a['payload']['path'])['set'](_0x87243a['payload']['value'])['then'](function(){_0x222850(!![]);})['catch'](function(){_0x222850(![]);});break;case'firebaseUpdate':window['db']&&window['db']['ref'](_0x87243a['payload']['path'])['update'](_0x87243a['payload']['value'])['then'](function(){_0x222850(!![]);})['catch'](function(){_0x222850(![]);});break;case'firebasePush':window['db']&&window['db']['ref'](_0x87243a['payload']['path'])['push'](_0x87243a['payload']['value'])['then'](function(){_0x222850(!![]);})['catch'](function(){_0x222850(![]);});break;default:console['warn']('[OQ]\x20Unknown\x20op\x20type:',_0x87243a['type']),_0x222850(![]);}}var _0x17d459=![];function _0x12cee8(){if(_0x17d459||!_online)return;_0x17d459=!![],_0x3668dc(function(_0x5b0ef2){if(!_0x5b0ef2){_0x17d459=![];return;}var _0x941169=_0x5b0ef2['transaction'](_0x23dcf7,'readonly'),_0x55232a=_0x941169['objectStore'](_0x23dcf7)['getAll']();_0x55232a['onsuccess']=function(_0x4ff6e0){var _0x44aeed=_0x4ff6e0['target']['result']||[];if(!_0x44aeed['length']){_0x17d459=![];return;}console['log']('[OQ]\x20Retrying',_0x44aeed['length'],'pending\x20operation(s)...');var _0x386b86=0x0;function _0x4d837e(){if(_0x386b86>=_0x44aeed['length']){_0x17d459=![],_0x1ef2f5();return;}var _0x2d7c43=_0x44aeed[_0x386b86++];_0x14ebdc(_0x2d7c43,function(_0x3bd00e){_0x3bd00e?_0x2e6275(_0x2d7c43['id'],_0x4d837e):_0x4d837e();});}_0x4d837e();},_0x55232a['onerror']=function(){_0x17d459=![];};});}function _0x1ef2f5(){_0x3668dc(function(_0x578f7b){if(!_0x578f7b)return;_0x578f7b['transaction'](_0x23dcf7,'readonly')['objectStore'](_0x23dcf7)['count']()['onsuccess']=function(_0x16571f){var _0x115b53=_0x16571f['target']['result']||0x0,_0x1f26da=document['getElementById']('_oqBadge');!_0x1f26da&&_0x115b53>0x0&&(_0x1f26da=document['createElement']('div'),_0x1f26da['id']='_oqBadge',_0x1f26da['style']['cssText']='position:fixed;bottom:80px;right:12px;background:#ff6600;color:#fff;border-radius:20px;padding:6px\x2012px;font-size:11px;font-weight:700;z-index:9999;cursor:pointer;box-shadow:0\x202px\x208px\x20rgba(0,0,0,.3)',_0x1f26da['onclick']=function(){window['OQ']['retry']();},document['body']&&document['body']['appendChild'](_0x1f26da));if(_0x1f26da){if(_0x115b53>0x0)_0x1f26da['textContent']='📡\x20'+_0x115b53+'\x20queued\x20—\x20tap\x20to\x20retry',_0x1f26da['style']['display']='block';else _0x1f26da['style']['display']='none';}};});}window['addEventListener']('online',function(){_online=!![],_0x12cee8();}),window['addEventListener']('offline',function(){_online=![];}),window['OQ']={'joinMatch':function(_0x569c18,_0x407d76){var _0x44e9d6=window['U'],_0x1c5bae=window['UD'],_0x54908a=window['MT']&&window['MT'][_0x569c18];if(_0x1c5bae&&(_0x1c5bae['isBanned']===!![]||_0x1c5bae['banned']===!![])){if(window['toast'])window['toast']('⛔\x20Aapka\x20account\x20ban\x20hai.\x20Match\x20join\x20nahi\x20kar\x20sakte.','err');return;}var _0xbf75ed={'userId':_0x44e9d6?_0x44e9d6['uid']:'','matchId':_0x569c18,'teamName':_0x407d76||'','entryFee':_0x54908a?Number(_0x54908a['entryFee'])||0x0:0x0,'entryType':_0x54908a?_0x54908a['entryType']||'coin':'coin','userIgn':_0x1c5bae?_0x1c5bae['ign']||'':'','userFFUID':_0x1c5bae?_0x1c5bae['ffUid']||'':''},_0x1af320=typeof _queue!=='undefined'?_queue:window['_oq_data']?window['_oq_data']:[],_0x27d1fd=_0x1af320['some'](function(_0x2a7051){return _0x2a7051&&_0x2a7051['type']==='joinMatch'&&_0x2a7051['payload']&&_0x2a7051['payload']['matchId']===_0x569c18;});if(_0x27d1fd){if(window['toast'])window['toast']('ℹ️\x20Yeh\x20match\x20pehle\x20se\x20queue\x20mein\x20hai!','inf');return;}_0x38bb53({'type':'joinMatch','payload':_0xbf75ed});if(window['toast'])window['toast']('📡\x20Offline\x20—\x20join\x20queued,\x20online\x20hone\x20pe\x20submit\x20hoga','inf');},'enqueue':_0x38bb53,'clearAll':function(){_0x3668dc(function(_0x227f37){if(!_0x227f37)return;var _0x45cf4e=_0x227f37['transaction'](_0x23dcf7,'readwrite');_0x45cf4e['objectStore'](_0x23dcf7)['clear'](),console['log']('[OQ]\x20Queue\x20cleared\x20on\x20logout\x20✅'),_0x227f37['close']();});},'retry':_0x12cee8,'pendingCount':function(_0x1ccf0d){_0x3668dc(function(_0x277495){if(!_0x277495)return _0x1ccf0d(0x0);_0x277495['transaction'](_0x23dcf7,'readonly')['objectStore'](_0x23dcf7)['count']()['onsuccess']=function(_0x537a84){_0x1ccf0d(_0x537a84['target']['result']||0x0);};});}},setTimeout(_0x1ef2f5,0x7d0),console['log']('[Mini\x20eSports]\x20✅\x20Offline\x20Queue\x20v2.0\x20loaded\x20(with\x20security\x20replay)');}());
+/* ================================================================
+   MINI ESPORTS — Offline Queue v2.0
+   Bug 4 Fix: Security checks (rate limit, self-exclusion, device FP)
+   are replayed when going back online BEFORE executing queued joins
+================================================================ */
+(function () {
+  'use strict';
+
+  var DB_NAME = 'mes_offline_q', DB_VER = 2, STORE = 'ops'; // Issue #12: bumped to v2
+
+  /* ── IndexedDB helper ── */
+  function _openDB(cb) {
+    var req = indexedDB.open(DB_NAME, DB_VER);
+    /* Issue #12 Fix: Handle version upgrades — creates store on v1, adds index on v2 */
+    req.onupgradeneeded = function (e) {
+      var idb = e.target.result;
+      var oldVersion = e.oldVersion;
+      /* v0 → v1: create object store */
+      if (!idb.objectStoreNames.contains(STORE)) {
+        idb.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+      }
+      /* v1 → v2: add 'type' index for efficient queue filtering */
+      if (oldVersion < 2) {
+        var tx = e.target.transaction;
+        if (tx && tx.objectStore) {
+          try {
+            var store = tx.objectStore(STORE);
+            if (!store.indexNames.contains('type')) {
+              store.createIndex('type', 'type', { unique: false });
+            }
+          } catch(idxErr) { /* index may already exist — safe to ignore */ }
+        }
+      }
+    };
+    req.onsuccess = function (e) { cb(e.target.result); };
+    req.onerror   = function (e) { console.error('[OQ] IDB open error:', e.target.error); cb(null); };
+  }
+
+  function enqueue(op) {
+    /* Bug 4 Fix: Capture security metadata at queue time */
+    op._queuedAt     = Date.now();
+    op._deviceId     = window.getDeviceId ? window.getDeviceId() : localStorage.getItem('_minieSport_did') || 'unknown';
+    op._canvasFP     = sessionStorage.getItem('_mes_cfp') || '';
+    op._userAgent    = navigator.userAgent.substring(0, 80);
+    _openDB(function (db) {
+      if (!db) return;
+      db.transaction(STORE, 'readwrite').objectStore(STORE).add(op);
+      _updateBadge();
+    });
+  }
+
+  function dequeue(id, cb) {
+    _openDB(function (db) {
+      if (!db) return cb && cb();
+      db.transaction(STORE, 'readwrite').objectStore(STORE).delete(id).onsuccess = function () { cb && cb(); };
+    });
+  }
+
+  /* ── Bug 4 Fix: Replay security checks before executing ── */
+  function _replaySecurityChecks(op, done) {
+    var JOIN_COOLDOWN_MS = 5000;
+
+    if (op.type === 'joinMatch' && window.U) {
+      var uid = window.U.uid;
+      /* Bug High #8 Fix: Check Supabase is_banned first (authoritative ban source),
+         then Firebase selfExcluded as fallback */
+      function _checkBanAndProceed() {
+        var db = window.db;
+        if (!db) { done(true); return; }
+        db.ref('users/' + uid + '/selfExcluded').once('value', function (s) {
+          if (s.val() === true) {
+            console.warn('[OQ] Queued join rejected — self-exclusion active');
+            done(false, 'Self-exclusion active'); return;
+          }
+          var currentFP = sessionStorage.getItem('_mes_cfp') || '';
+          if (op._canvasFP && currentFP && op._canvasFP !== currentFP) {
+            console.warn('[OQ] Queued join rejected — device fingerprint mismatch');
+            done(false, 'Device mismatch'); return;
+          }
+          var JR = window.JR || {};
+          var alreadyJoined = Object.values(JR).some(function (jr) {
+            return jr.matchId === (op.payload && op.payload.matchId) &&
+                   (jr.status === 'pending' || jr.status === 'joined' || jr.status === 'approved');
+          });
+          if (alreadyJoined) {
+            console.warn('[OQ] Queued join rejected — already joined');
+            done(false, 'Already joined'); return;
+          }
+          done(true);
+        });
+      }
+
+      if (window._supa) {
+        // Check Supabase is_banned (authoritative)
+        window._supa.from('user_public_profiles').select('is_banned').eq('id', uid).single() /* BUG #38 FIX */
+          .then(function(r) {
+            if (r.data && r.data.is_banned) {
+              console.warn('[OQ] Queued join rejected — Supabase ban active');
+              done(false, 'Account banned'); return;
+            }
+            _checkBanAndProceed();
+          })
+          .catch(function() { _checkBanAndProceed(); }); // Supabase unavailable → Firebase check
+      } else {
+        _checkBanAndProceed();
+      }
+    } else {
+      done(true);
+    }
+  }
+
+  /* ── Execute a single queued op (with security replay) ── */
+  function _executeOp(op, done) {
+    switch (op.type) {
+
+      case 'joinMatch':
+        var p = op.payload;
+        /* Security checks first */
+        _replaySecurityChecks(op, function (ok, reason) {
+          if (!ok) {
+            if (window.toast) window.toast('⚠️ Queued join cancelled: ' + (reason||'security'), 'err');
+            done(true); return;
+          }
+          if (!window.U || !window.db) { done(false); return; }
+
+          if (window._supa && p.entryFee > 0) {
+            /* Paid match — validate via RPC */
+            function _doRPCReplay() {
+              window._supa.rpc('validate_and_join_match', {
+                p_uid:       window.U.uid,
+                p_match_id:  p.matchId,
+                p_entry_fee: p.entryFee || 0,
+                p_currency:  p.entryType === 'coin' ? 'coins' : 'sky_diamonds',
+                p_join_data: JSON.stringify({ fee_split: p.feeType || 'solo' })
+              }).then(function(r) {
+                if (r && r.data && r.data.ok === false) {
+                  if (window.toast) window.toast('❌ Queued join failed: ' + (r.data.error||'Server rejected'), 'err');
+                  done(true);
+                } else {
+                  window.db.ref('joinRequests').push(Object.assign({}, p, {
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    status: 'pending', _offlineQueued: true
+                  }));
+                  done(true);
+                }
+              }).catch(function() { done(false); });
+            }
+            /* Pre-check slots */
+            window._supa.from('matches').select('data').eq('firebase_id', p.matchId).single()
+              .then(function(mr) {
+                var md = (mr.data && mr.data.data) || {};
+                /* Bug #19 Fix: Check match status — don't join started/completed/cancelled matches */
+                var matchStatus = md.status || md.matchStatus || '';
+                if (matchStatus === 'live' || matchStatus === 'completed' || matchStatus === 'cancelled') {
+                  if (window.toast) window.toast('⚠️ Queued join cancelled: match already ' + matchStatus, 'err');
+                  done(false, 'match_' + matchStatus);
+                  return;
+                }
+                var filled = Number(md.filledSlots||0), maxS = Number(md.maxSlots||md.totalSlots||999);
+                if (filled >= maxS) {
+                  if (window.toast) window.toast('⚠️ Match bhar gaya — queued join cancel', 'inf');
+                  done(true); return;
+                }
+                _doRPCReplay();
+              }).catch(function() { _doRPCReplay(); });
+          } else {
+            /* ✅ R5: Free match — server-authoritative RPC ONLY (paid jaisa).
+               Pehle yahan direct join_requests insert hota tha (Supabase fail
+               hone par bhi Firebase join accepted) — ab free/ad join bhi
+               validate_and_join_match RPC se; fail = queue drop, koi
+               Firebase-only authority join nahi. */
+            window._supa.rpc('validate_and_join_match', {
+              p_uid:         window.U.uid,
+              p_match_id:    p.matchId,
+              p_entry_fee:   0,
+              p_currency:    'coins',
+              p_join_data:   {}
+            }).then(function(r) {
+              if ((r && r.error) || (r && r.data && r.data.ok === false)) {
+                var e = (r.data && r.data.error) || (r.error && r.error.message) || 'Server rejected';
+                if (window.toast) window.toast('❌ Queued join failed: ' + e, 'err');
+                done(true);
+              } else {
+                /* success → Firebase mirror (display only) */
+                if (window.db) {
+                  window.db.ref('joinRequests').push(Object.assign({}, p, {
+                    timestamp: (firebase.database && firebase.database.ServerValue) ? firebase.database.ServerValue.TIMESTAMP : Date.now(),
+                    status: 'joined', _offlineQueued: true
+                  }));
+                }
+                done(true);
+              }
+            }).catch(function() {
+              if (window.toast) window.toast('❌ Queued join failed — server unavailable', 'err');
+              done(true);
+            });
+          }
+        });
+        break;
+
+      case 'walletRequest':
+        var wp = op.payload;
+        window.db && window.db.ref('walletRequests').push(Object.assign({}, wp, {
+          createdAt: firebase.database.ServerValue.TIMESTAMP, _offlineQueued: true
+        })).then(function () { done(true); }).catch(function () { done(false); });
+        break;
+
+      case 'firebaseSet':
+        window.db && window.db.ref(op.payload.path).set(op.payload.value)
+          .then(function () { done(true); }).catch(function () { done(false); });
+        break;
+
+      case 'firebaseUpdate':
+        window.db && window.db.ref(op.payload.path).update(op.payload.value)
+          .then(function () { done(true); }).catch(function () { done(false); });
+        break;
+
+      case 'firebasePush':
+        window.db && window.db.ref(op.payload.path).push(op.payload.value)
+          .then(function () { done(true); }).catch(function () { done(false); });
+        break;
+
+      default:
+        console.warn('[OQ] Unknown op type:', op.type);
+        done(false);
+    }
+  }
+
+  /* ── Retry all pending ops ── */
+  var _retrying = false;
+  function retryPending() {
+    if (_retrying || !_online) return;
+    _retrying = true;
+    _openDB(function (db) {
+      if (!db) { _retrying = false; return; }
+      var tx = db.transaction(STORE, 'readonly');
+      var req = tx.objectStore(STORE).getAll();
+      req.onsuccess = function (e) {
+        var ops = e.target.result || [];
+        if (!ops.length) { _retrying = false; return; }
+        console.log('[OQ] Retrying', ops.length, 'pending operation(s)...');
+        var i = 0;
+        function next() {
+          if (i >= ops.length) { _retrying = false; _updateBadge(); return; }
+          var op = ops[i++];
+          _executeOp(op, function (success) {
+            if (success) {
+              dequeue(op.id, next);
+            } else {
+              next(); /* Skip failed, try others */
+            }
+          });
+        }
+        next();
+      };
+      req.onerror = function () { _retrying = false; };
+    });
+  }
+
+  function _updateBadge() {
+    _openDB(function (db) {
+      if (!db) return;
+      db.transaction(STORE, 'readonly').objectStore(STORE).count().onsuccess = function (e) {
+        var n = e.target.result || 0;
+        var badge = document.getElementById('_oqBadge');
+        if (!badge && n > 0) {
+          badge = document.createElement('div');
+          badge.id = '_oqBadge';
+          badge.style.cssText = 'position:fixed;bottom:80px;right:12px;background:#ff6600;color:#fff;border-radius:20px;padding:6px 12px;font-size:11px;font-weight:700;z-index:9999;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)';
+          badge.onclick = function () { window.OQ.retry(); };
+          document.body && document.body.appendChild(badge);
+        }
+        if (badge) {
+          if (n > 0) { badge.textContent = '📡 ' + n + ' queued — tap to retry'; badge.style.display = 'block'; }
+          else badge.style.display = 'none';
+        }
+      };
+    });
+  }
+
+  /* ── Online/offline events ── */
+  window.addEventListener('online',  function () { _online = true;  retryPending(); });
+  window.addEventListener('offline', function () { _online = false; });
+
+  /* ── Public API ── */
+  window.OQ = {
+    joinMatch: function (matchId, teamName) {
+      var U = window.U, UD = window.UD, t = window.MT && window.MT[matchId];
+
+      // Bug New-29 Fix: Banned users must not be able to queue a join,
+      // even offline. The ban check runs when connectivity is restored,
+      // but the Supabase RPC will reject the join anyway; blocking here
+      // avoids a confusing "join queued" message for a banned user.
+      if (UD && (UD.isBanned === true || UD.banned === true)) {
+        if (window.toast) window.toast('⛔ Aapka account ban hai. Match join nahi kar sakte.', 'err');
+        return;
+      }
+
+      var payload = {
+        userId:    U ? U.uid : '',
+        matchId:   matchId,
+        teamName:  teamName || '',
+        entryFee:  t ? (Number(t.entryFee) || 0) : 0,
+        entryType: t ? (t.entryType || 'coin') : 'coin',
+        userIgn:   UD ? (UD.ign || '') : '',
+        userFFUID: UD ? (UD.ffUid || '') : ''
+      };
+      /* Bug #61 Fix: Deduplicate — don't queue same match twice */
+      var _existingQ = typeof _queue !== 'undefined' ? _queue : (window._oq_data ? window._oq_data : []);
+      var _alreadyQueued = _existingQ.some(function(op) {
+        return op && op.type === 'joinMatch' && op.payload && op.payload.matchId === matchId;
+      });
+      if (_alreadyQueued) {
+        if (window.toast) window.toast('ℹ️ Yeh match pehle se queue mein hai!', 'inf');
+        return;
+      }
+      enqueue({ type: 'joinMatch', payload: payload });
+      if (window.toast) window.toast('📡 Offline — join queued, online hone pe submit hoga', 'inf');
+    },
+    enqueue:      enqueue,
+    /* Bug 15 Fix: Called on logout to wipe all pending operations so they
+       cannot be replayed by a different user who logs in on the same device. */
+    clearAll: function() {
+      _openDB(function(idb) {
+        if (!idb) return;
+        var tx = idb.transaction(STORE, 'readwrite');
+        tx.objectStore(STORE).clear();
+        console.log('[OQ] Queue cleared on logout ✅');
+        idb.close();
+      });
+    },
+    retry:        retryPending,
+    pendingCount: function (cb) {
+      _openDB(function (db) {
+        if (!db) return cb(0);
+        db.transaction(STORE, 'readonly').objectStore(STORE).count().onsuccess = function (e) { cb(e.target.result || 0); };
+      });
+    }
+  };
+
+  /* Init badge */
+  setTimeout(_updateBadge, 2000);
+  console.log('[Mini eSports] ✅ Offline Queue v2.0 loaded (with security replay)');
+})();

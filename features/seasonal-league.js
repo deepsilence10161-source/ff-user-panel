@@ -1,1 +1,396 @@
-(function(){'use strict';var _0x13f8ef=(function(){var _0x334adc=!![];return function(_0x50ae2e,_0x88da89){var _0x1cdb9d=_0x334adc?function(){if(_0x88da89){var _0x112235=_0x88da89['apply'](_0x50ae2e,arguments);return _0x88da89=null,_0x112235;}}:function(){};return _0x334adc=![],_0x1cdb9d;};}()),_0x285bb6=_0x13f8ef(this,function(){if(_0x285bb6['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x285bb6['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x285bb6)['search']('(((.+)+)+)+$');});_0x285bb6();var _0x2ef469=null;window['loadCurrentSeason']=function(){if(!window['_supa']){setTimeout(window['loadCurrentSeason'],0x320);return;}window['_supa']['from']('app_settings')['select']('key,value')['in']('key',['currentSeason','live_config'])['then'](function(_0x589cdc){var _0x2f60df=_0x589cdc&&_0x589cdc['data']||[],_0x25a95e=null,_0x120d6c=null;_0x2f60df['forEach'](function(_0x41be63){if(_0x41be63['key']==='currentSeason')_0x25a95e=_0x41be63['value'];else{if(_0x41be63['key']==='live_config')_0x120d6c=_0x41be63['value'];}});var _0x18ee2a=_0x25a95e&&typeof _0x25a95e==='object'?Object['assign']({},_0x25a95e):{};if(_0x120d6c&&typeof _0x120d6c==='object'){if(!_0x18ee2a['name'])_0x18ee2a['name']=_0x120d6c['seasonName'];if(_0x18ee2a['active']===undefined||_0x18ee2a['active']===null)_0x18ee2a['active']=Number(_0x120d6c['seasonActive'])!==0x0;if(!_0x18ee2a['endDate'])_0x18ee2a['endDate']=_0x120d6c['seasonEndDate']||(_0x120d6c['seasonEndDays']?Date['now']()+Number(_0x120d6c['seasonEndDays'])*0x5265c00:null);}if(!_0x18ee2a['name'])_0x18ee2a['name']='Season\x201';if(_0x18ee2a['active']===undefined||_0x18ee2a['active']===null)_0x18ee2a['active']=!![];_0x2ef469=_0x18ee2a,window['_currentSeason']=_0x2ef469;if(window['updateSeasonDisplay'])window['updateSeasonDisplay'](_0x2ef469);})['catch'](function(){_0x2ef469={'name':'Season\x201','endDate':null},window['_currentSeason']=_0x2ef469;});},window['getCurrentSeason']=function(){if(!_0x2ef469)return{'name':'Season\x201','daysLeft':0x0,'label':'','active':![]};var _0x4be534=Date['now'](),_0x26e578=_0x2ef469['endDate']||_0x2ef469['end_date']||null,_0x2dcc78=_0x26e578?typeof _0x26e578==='string'?new Date(_0x26e578)['getTime']():Number(_0x26e578):0x0;if(!_0x2dcc78||isNaN(_0x2dcc78))_0x2dcc78=0x0;var _0xaf241e=0x0;if(_0x2dcc78){var _0x540f02=new Date(_0x4be534);_0x540f02['setHours'](0x0,0x0,0x0,0x0);var _0x55f16c=new Date(_0x2dcc78);_0x55f16c['setHours'](0x0,0x0,0x0,0x0),_0xaf241e=Math['max'](0x0,Math['round']((_0x55f16c['getTime']()-_0x540f02['getTime']())/0x5265c00));}return{'id':_0x2ef469['id']||'S1','name':_0x2ef469['name']||window['CFG']&&window['CFG']['seasonName']||'Season\x201','daysLeft':_0xaf241e,'endDate':_0x2dcc78,'active':!!_0x2ef469['active'],'label':_0xaf241e>0x0?_0xaf241e+'\x20din\x20baaki':'Ended','hasEnd':!!_0x2dcc78,'monthKey':window['getMonthlySeasonMeta']?window['getMonthlySeasonMeta']()['monthKey']:window['getWeekKey']?'':''};},window['showSeasonInfo']=function(){var _0x1b561e=window['getCurrentSeason'](),_0x3b3062='<div\x20style=\x22text-align:center;padding:8px\x200\x22>';_0x3b3062+='<div\x20style=\x22font-size:13px;font-weight:900;color:#ffd700;margin-bottom:4px\x22>'+_0x1b561e['name']+'</div>';if(_0x1b561e['active']){var _0x495158=Math['max'](0x0,Math['min'](0x64,0x64-_0x1b561e['daysLeft']/0x5a*0x64));_0x3b3062+='<div\x20style=\x22background:rgba(255,255,255,.06);border-radius:10px;height:6px;margin:8px\x200\x22><div\x20style=\x22width:'+_0x495158+'%;height:6px;background:linear-gradient(90deg,#00ff9c,#ffd700);border-radius:10px;transition:width\x20.5s\x22></div></div>',_0x3b3062+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>'+_0x1b561e['daysLeft']+'\x20din\x20baaki</div>';}_0x3b3062+='<div\x20style=\x22margin-top:14px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px\x22>',_0x3b3062+='<div\x20style=\x22font-size:11px;font-weight:800;color:#fff;margin-bottom:8px\x22>🏆\x20Season\x20End\x20Rewards</div>';var _0x45356d=[{'pos':'#1\x20Champion','reward':'🌟\x20Grandmaster\x20Badge\x20+\x20500🪙'},{'pos':'#2–#5','reward':'👑\x20Legend\x20Badge\x20+\x20200🪙'},{'pos':'#6–#20','reward':'💎\x20Diamond\x20Badge\x20+\x20100🪙'},{'pos':'#21–#100','reward':(window['tierIconHtml']?tierIconHtml('Gold',0xe):'')+'\x20Gold\x20Badge\x20+\x2050🪙'}];_0x45356d['forEach'](function(_0x428e11){_0x3b3062+='<div\x20style=\x22display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px\x22><span\x20style=\x22color:#888\x22>'+_0x428e11['pos']+'</span><span\x20style=\x22color:#ffd700\x22>'+_0x428e11['reward']+'</span></div>';}),_0x3b3062+='</div>';if(window['U']&&window['UD']){_0x3b3062+='<div\x20style=\x22margin-top:12px\x22>',_0x3b3062+='<div\x20style=\x22font-size:11px;font-weight:800;color:#00d4ff;margin-bottom:8px\x22>📊\x20Tumhara\x20Is\x20Season\x20Ka\x20Stats</div>';var _0x46b5d3=window['UD']&&window['UD']['stats']||{},_0x8ab3eb=window['calcRk']?window['calcRk'](_0x46b5d3):{'badge':'Bronze','emoji':'🏅','pts':0x0};_0x3b3062+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:8px\x22>',[{'l':'Rank','v':(window['tierIconHtml']?tierIconHtml(_0x8ab3eb['badge'],0xe):'')+'\x20'+_0x8ab3eb['badge']},{'l':'Points','v':_0x8ab3eb['pts']},{'l':'Wins','v':_0x46b5d3['wins']||0x0}]['forEach'](function(_0x25bf10){_0x3b3062+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center\x22><div\x20style=\x22font-size:15px;font-weight:900;color:#fff\x22>'+_0x25bf10['v']+'</div><div\x20style=\x22font-size:10px;color:#666\x22>'+_0x25bf10['l']+'</div></div>';}),_0x3b3062+='</div></div>';}_0x3b3062+='</div>';if(window['openModal'])openModal('🏆\x20'+_0x1b561e['name'],_0x3b3062);},window['showSeasonHistory']=function(){if(!window['U']){toast('Login\x20karo\x20pehle','err');return;}var _0x1680af='<div\x20id=\x22seasonHistList\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading…</div>';if(window['openModal'])openModal('🏆\x20Season\x20History',_0x1680af);if(window['_supa']){window['_supa']['from']('seasonal_league_history')['select']('*')['eq']('user_id',window['U']['uid'])['order']('created_at',{'ascending':![]})['then'](function(_0x14c126){var _0x4bc8cb=(_0x14c126['data']||[])['map'](function(_0x33db29){return{'seasonName':_0x33db29['season_name'],'seasonNum':_0x33db29['season_num'],'finalTier':_0x33db29['final_tier'],'points':_0x33db29['points'],'badge':_0x33db29['badge'],'reward':_0x33db29['reward'],'emoji':_0x33db29['emoji']};});if(window['renderSeasonHistory'])renderSeasonHistory(_0x4bc8cb);})['catch'](function(){if(window['renderSeasonHistory'])renderSeasonHistory([]);});return;}if(window['renderSeasonHistory'])renderSeasonHistory([]);};var _0x495504=null,_0x20d9e4=0x0,_0x2f1ac8=0x5*0x3c*0x3e8;function _0x495a1e(_0x219931){if(!window['_supa']){_0x219931(null);return;}if(_0x495504&&Date['now']()-_0x20d9e4<_0x2f1ac8){_0x219931(_0x495504);return;}window['_supa']['from']('leaderboard')['select']('id,total_kills,total_wins,rank_points')['limit'](0x12c)['then'](function(_0x3a391e){_0x495504=_0x3a391e&&_0x3a391e['data']||null,_0x20d9e4=Date['now']();try{if(typeof _0xdd80cd==='function')_0xdd80cd(_0x495504);}catch(_0xa67a09){}_0x219931(_0x495504);})['catch'](function(){_0x219931(null);});}window['seasonStripNumbers']=function(_0x19e646,_0x1ae8b4){var _0x16c57b=window['getCurrentSeason']?window['getCurrentSeason']():null;if(!_0x16c57b||!_0x16c57b['hasEnd']||!_0x16c57b['active']||_0x16c57b['daysLeft']<=0x0)return null;var _0x4942ac={'name':_0x16c57b['name'],'daysLeft':_0x16c57b['daysLeft'],'pos':0x0,'gap':0x0,'metric':'kills','total':0x0};if(!_0x19e646||!_0x19e646['length'])return _0x4942ac;var _0x24a812=_0x19e646['slice']()['sort'](function(_0x286041,_0x3ea99b){return Number(_0x3ea99b['total_kills']||0x0)-Number(_0x286041['total_kills']||0x0);});_0x4942ac['total']=_0x24a812['length'];var _0x270ac4=-0x1;for(var _0x309cbe=0x0;_0x309cbe<_0x24a812['length'];_0x309cbe++){if(_0x24a812[_0x309cbe]['id']===_0x1ae8b4){_0x270ac4=_0x309cbe;break;}}if(_0x270ac4<0x0)return _0x4942ac;if(_0x270ac4<0x3)return _0x4942ac['pos']=_0x270ac4+0x1,_0x4942ac;var _0x2ec9cb=Number(_0x24a812[0x2]['total_kills']||0x0);return _0x4942ac['pos']=_0x270ac4+0x1,_0x4942ac['gap']=Math['max'](0x1,_0x2ec9cb-Number(_0x24a812[_0x270ac4]['total_kills']||0x0)+0x1),_0x4942ac;},window['__SS_SET_ROWS']=function(_0xbabd1d){_0x495504=_0xbabd1d||null,_0x20d9e4=Date['now']();},window['renderSeasonCountdownStrip']=function(){try{var _0xa19397=window['seasonStripNumbers'](_0x495504,window['U']&&window['U']['uid']||'');if(!_0xa19397)return'';var _0x2ffcb6=['⏳\x20<b\x20style=\x22color:#ffd700\x22>'+_0xa19397['name']+'</b>\x20—\x20<b>'+_0xa19397['daysLeft']+'</b>\x20din\x20baaki'];if(_0xa19397['pos']&&_0xa19397['pos']<=0x3)_0x2ffcb6['push']('tum\x20#'+_0xa19397['pos']+'\x20par\x20ho\x20(Top-3\x20me!)\x20🏅');else{if(_0xa19397['pos']&&_0xa19397['gap']>0x0)_0x2ffcb6['push']('tum\x20#'+_0xa19397['pos']+'\x20par\x20ho\x20·\x20Top-3\x20se\x20<b>'+_0xa19397['gap']+'</b>\x20kills\x20door');}var _0x4859b9='<div\x20id=\x22seasonCountdownStrip\x22\x20data-days-left=\x22'+_0xa19397['daysLeft']+'\x22\x20data-pos=\x22'+(_0xa19397['pos']||0x0)+'\x22\x20data-gap=\x22'+(_0xa19397['gap']||0x0)+'\x22\x20'+'onclick=\x22if(window.renderRank)renderRank();else\x20if(window.navTo)navTo(\x27rank\x27)\x22\x20'+'style=\x22display:flex;align-items:center;gap:8px;margin:8px\x200;padding:9px\x2011px;border-radius:12px;cursor:pointer;'+'background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(255,215,0,.06));border:1px\x20solid\x20rgba(0,255,156,.22)\x22>'+'<div\x20style=\x22flex:1;min-width:0;font-size:11px;color:#ddd;line-height:1.5\x22>'+_0x2ffcb6['join']('\x20·\x20')+'</div>'+'<div\x20style=\x22font-size:10px;font-weight:900;color:#00ff9c;white-space:nowrap\x22>Rank\x20dekho\x20›</div></div>';return _0x495a1e(function(_0x5007b4){try{var _0x4d7a80=document['getElementById']('seasonCountdownStrip');if(!_0x4d7a80)return;var _0x561aa4=window['seasonStripNumbers'](_0x5007b4,window['U']&&window['U']['uid']||'');if(!_0x561aa4){_0x4d7a80['remove']();return;}_0x4d7a80['setAttribute']('data-pos',String(_0x561aa4['pos']||0x0)),_0x4d7a80['setAttribute']('data-gap',String(_0x561aa4['gap']||0x0));var _0x515fc9=['⏳\x20<b\x20style=\x22color:#ffd700\x22>'+_0x561aa4['name']+'</b>\x20—\x20<b>'+_0x561aa4['daysLeft']+'</b>\x20din\x20baaki'];if(_0x561aa4['pos']&&_0x561aa4['pos']<=0x3)_0x515fc9['push']('tum\x20#'+_0x561aa4['pos']+'\x20par\x20ho\x20(Top-3\x20me!)\x20🏅');else{if(_0x561aa4['pos']&&_0x561aa4['gap']>0x0)_0x515fc9['push']('tum\x20#'+_0x561aa4['pos']+'\x20par\x20ho\x20·\x20Top-3\x20se\x20<b>'+_0x561aa4['gap']+'</b>\x20kills\x20door');}var _0xf165cd=_0x4d7a80['querySelector']('div');if(_0xf165cd)_0xf165cd['innerHTML']=_0x515fc9['join']('\x20·\x20');}catch(_0x5b499e){}}),_0x4859b9;}catch(_0x45923d){return'';}};var _0x1609d4=null,_0x23ec32=0x0,_0x4d595a=0x5*0x3c*0x3e8;window['__SS_SET_CHAMPION']=function(_0x204f2e){_0x1609d4=_0x204f2e||null,_0x23ec32=Date['now']();},window['ssSeasonLabelFromKey']=function(_0x49e9fd){var _0x236faa=/^(\d{4})_(\d{2})$/['exec'](String(_0x49e9fd||''));if(!_0x236faa)return'';var _0x217c33=Number(_0x236faa[0x1]),_0x278dac=Number(_0x236faa[0x2]);if(!_0x278dac||_0x278dac>0xc)return'';var _0x293076=_0x278dac+(_0x217c33-0x7ea)*0xc+0x4;if(_0x293076<0x1)_0x293076=0x1;return'Season\x20'+_0x293076+'\x20\x27'+String(_0x217c33)['slice'](-0x2);},window['championBannerNumbers']=function(_0x485952,_0x50d52c,_0x122977){try{if(!_0x485952||!_0x485952['month_key']||!_0x485952['ign'])return null;var _0xb2f630=_0x485952['banner_until']?new Date(_0x485952['banner_until'])['getTime']():0x0,_0x249c27=Number(_0x122977)||Date['now']();if(!_0xb2f630||!(_0xb2f630>_0x249c27))return null;var _0x189d4d=_0xb2f630-_0x249c27;return{'label':window['ssSeasonLabelFromKey'](_0x485952['month_key']),'ign':String(_0x485952['ign']),'kills':Number(_0x485952['kills']||0x0),'wins':Number(_0x485952['wins']||0x0),'mine':!!(_0x50d52c&&_0x485952['user_id']===_0x50d52c),'hoursLeft':Math['max'](0x1,Math['ceil'](_0x189d4d/0x36ee80))};}catch(_0x30d756){return null;}},window['ssLbFlags']=function(_0x46a937,_0x336de1){var _0xa52430={'lbTop3':0x0};try{if(!_0x46a937||!_0x46a937['length']||!_0x336de1)return _0xa52430;var _0x3abd95=_0x46a937['slice']()['sort'](function(_0x5ae819,_0x2353f3){return Number(_0x2353f3['total_kills']||0x0)-Number(_0x5ae819['total_kills']||0x0);});for(var _0xfbb720=0x0;_0xfbb720<_0x3abd95['length']&&_0xfbb720<0x3;_0xfbb720++){if(_0x3abd95[_0xfbb720]&&_0x3abd95[_0xfbb720]['id']===_0x336de1){_0xa52430['lbTop3']=0x1;break;}}}catch(_0x482fc0){}return _0xa52430;};function _0x2fcbcf(_0x1022b2){if(!window['_supa']){_0x1022b2(null);return;}if(_0x1609d4&&Date['now']()-_0x23ec32<_0x4d595a){_0x1022b2(_0x1609d4);return;}var _0x3ef214=window['_supa']['from']('season_champions')['select']('month_key,user_id,ign,kills,wins,rank_points,declared_at,banner_until')['order']('declared_at',{'ascending':![]})['limit'](0x3);_0x3ef214['then'](function(_0x2f47ea){var _0x27b5bf=_0x2f47ea&&_0x2f47ea['data']||[],_0x11dcd5=null;_0x27b5bf['forEach'](function(_0x21eb8c){if(!_0x21eb8c||!_0x21eb8c['banner_until'])return;if(!_0x11dcd5||new Date(_0x21eb8c['banner_until'])>new Date(_0x11dcd5['banner_until']))_0x11dcd5=_0x21eb8c;}),_0x1609d4=_0x11dcd5,_0x23ec32=Date['now'](),_0x1022b2(_0x1609d4);},function(){_0x1022b2(null);});}window['renderSeasonChampionBanner']=function(){try{var _0x1e6df8=window['championBannerNumbers'](_0x1609d4,window['U']&&window['U']['uid']||'');if(!_0x1e6df8)return'';var _0x326dc8=_0x1e6df8['hoursLeft']>=0x18?Math['ceil'](_0x1e6df8['hoursLeft']/0x18)+'\x20din':_0x1e6df8['hoursLeft']+'\x20ghante',_0x591e2a=_0x1e6df8['mine']?'🎉\x20<b>tum\x20champion\x20ho!</b>\x20Special\x20kala\x20tumhari\x20collection\x20me\x20hai.':'<b>'+_0x1e6df8['ign']+'</b>\x20—\x20<b>'+_0x1e6df8['kills']+'</b>\x20kills\x20se\x20sabse\x20aage\x20🎯';return'<div\x20id=\x22seasonChampionBanner\x22\x20data-month=\x22'+_0x219b2e(String(_0x1609d4['month_key']))+'\x22\x20data-champ=\x22'+_0x219b2e(String(_0x1609d4['user_id']))+'\x22\x20data-mine=\x22'+(_0x1e6df8['mine']?'1':'0')+'\x22\x20'+'onclick=\x22if(window.renderRank)renderRank();else\x20if(window.navTo)navTo(\x27rank\x27)\x22\x20'+'style=\x22display:flex;align-items:center;gap:9px;margin:8px\x200;padding:10px\x2012px;border-radius:14px;cursor:pointer;'+'background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,140,0,.10));border:1px\x20solid\x20rgba(255,215,0,.42)\x22>'+'<img\x20src=\x22assets/img/special/season-champion.png\x22\x20alt=\x22Season\x20Champion\x22\x20style=\x22width:34px;height:34px;object-fit:contain;flex-shrink:0\x22>'+'<div\x20style=\x22flex:1;min-width:0\x22>'+'<div\x20style=\x22font-size:12px;font-weight:900;color:#ffd700;letter-spacing:.3px\x22>🏆\x20'+_0x219b2e(_0x1e6df8['label'])+'\x20CHAMPION</div>'+'<div\x20style=\x22font-size:11px;color:#e8e8e8;line-height:1.45\x22>'+_0x591e2a+'</div>'+'<div\x20style=\x22font-size:9px;color:var(--txt2,#9aa);margin-top:2px\x22>Bada\x20ailaan\x20·\x20'+_0x326dc8+'\x20aur</div>'+'</div>'+'<div\x20style=\x22font-size:10px;font-weight:900;color:#ffd700;white-space:nowrap\x22>Rank\x20›</div></div>';}catch(_0x3ecb55){return'';}};function _0x219b2e(_0x514897){return String(_0x514897==null?'':_0x514897)['replace'](/[&<>"']/g,function(_0x3884a5){return{'&':'&amp;','<':'&lt;','>':'&gt;','\x22':'&quot;','\x27':'&#39;'}[_0x3884a5];});}window['refreshSeasonChampion']=function(){try{_0x2fcbcf(function(_0x2787ed){try{var _0x16da4f=window['UD']||{};_0x16da4f['season_champion']=_0x2787ed&&window['U']&&_0x2787ed['user_id']===window['U']['uid']?0x1:0x0;var _0x4c009c=document['getElementById']('seasonChampionBanner'),_0x1e9579=window['renderSeasonChampionBanner']();if(_0x4c009c){if(_0x1e9579)_0x4c009c['innerHTML']=_0x1e9579;else _0x4c009c['innerHTML']='';}}catch(_0x47fa31){}});}catch(_0x27fee3){}};function _0xdd80cd(_0xb51b8a){try{var _0x236c31=window['ssLbFlags'](_0xb51b8a,window['U']&&window['U']['uid']||''),_0x332e92=window['UD']||{};_0x332e92['lb_top3']=_0x236c31['lbTop3'];}catch(_0x2c25ee){}}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(window['loadCurrentSeason'],0x5dc);}):setTimeout(window['loadCurrentSeason'],0x5dc);}());
+/* ================================================================
+   SEASONAL LEAGUE SYSTEM — seasonal-league.js
+   
+   Firebase:
+   appSettings/currentSeason: { id, name, startDate, endDate, active }
+   seasons/{seasonId}/rankings/{uid}: { rank, kills, wins, matches }
+   users/{uid}/seasonHistory: [ { seasonId, rank, badge } ]
+   ================================================================ */
+
+(function() {
+'use strict';
+
+var _season = null;
+
+/* ── Load Current Season ── */
+window.loadCurrentSeason = function() {
+  if (!window._supa) { setTimeout(window.loadCurrentSeason, 800); return; }
+  /* App configuration lives in app_settings. The old `config` table does
+     not exist in production and caused a 404 on every page load. */
+  /* ✅ B18 (2026-10-07): user ko sirf `currentSeason` par nahi chhodna —
+     admin ki Seasonal League settings (live_config.seasonName /
+     seasonEndDate / seasonActive) hamesha se isi jagah likhi jaati thin,
+     par ye screen unhe padhti hi nahi thi (2026-09-08 wali purani row se
+     user ko jhoothi "30 din baaki" dikhti rehti thi). Ab dono ek hi sach:
+     currentSeason pehle, aur agar wo khaali/adhooora ho to live_config
+     (admin Settings) — aur endDate na mile to admin ke seasonEndDate /
+     seasonEndDays se banti hai. */
+  window._supa.from('app_settings')
+    .select('key,value')
+    .in('key', ['currentSeason', 'live_config'])
+    .then(function(r) {
+      var rows = (r && r.data) || [];
+      var cur = null, cfg = null;
+      rows.forEach(function (x) { if (x.key === 'currentSeason') cur = x.value; else if (x.key === 'live_config') cfg = x.value; });
+      var s = (cur && typeof cur === 'object') ? Object.assign({}, cur) : {};
+      if (cfg && typeof cfg === 'object') {
+        if (!s.name)   s.name   = cfg.seasonName;
+        if (s.active === undefined || s.active === null) s.active = (Number(cfg.seasonActive) !== 0);
+        if (!s.endDate) s.endDate = cfg.seasonEndDate || (cfg.seasonEndDays ? (Date.now() + Number(cfg.seasonEndDays) * 86400000) : null);
+      }
+      if (!s.name) s.name = 'Season 1';
+      if (s.active === undefined || s.active === null) s.active = true;
+      _season = s;
+      window._currentSeason = _season;
+      if (window.updateSeasonDisplay) window.updateSeasonDisplay(_season);
+    })
+    .catch(function() {
+      /* Fallback: default season */
+      _season = { name: 'Season 1', endDate: null };
+      window._currentSeason = _season;
+    });
+};
+
+window.getCurrentSeason = function() {
+  if (!_season) return { name: 'Season 1', daysLeft: 0, label: '', active: false };
+  var now = Date.now();
+  /* endDate can be ISO string (from Supabase) or timestamp or null */
+  var endRaw = _season.endDate || _season.end_date || null;
+  var end = endRaw ? (typeof endRaw === 'string' ? new Date(endRaw).getTime() : Number(endRaw)) : 0;
+  /* ✅ B18: pehle tareekh na hone par chup-chaap "aaj se 30 din" maan liya
+     jaata tha — user ko jhoothi 30-din wali deadline dikhti thi jo kabhi
+     badalti nahi thi. Ab sach: tareekh na ho to koi jhoothi deadline nahi. */
+  if (!end || isNaN(end)) end = 0;
+  /* ✅ B18: din CALENDAR-din me (admin ka hint bhi wahi ginta hai) — warna
+     ek hi tareekh admin ko 45 aur user ko 46 dikhati thi. */
+  var daysLeft = 0;
+  if (end) {
+    var _t0 = new Date(now); _t0.setHours(0, 0, 0, 0);
+    var _t1 = new Date(end); _t1.setHours(0, 0, 0, 0);
+    daysLeft = Math.max(0, Math.round((_t1.getTime() - _t0.getTime()) / 86400000));
+  }
+  return {
+    id:       _season.id || 'S1',
+    name:     _season.name || (window.CFG && window.CFG.seasonName) || 'Season 1',
+    daysLeft: daysLeft,
+    endDate:  end,
+    active:   !!_season.active,
+    label:    daysLeft > 0 ? daysLeft + ' din baaki' : 'Ended',
+    hasEnd:   !!end,
+    /* ✅ B18: monthly storage key (seasonStats/<monthKey> / weekly buckets)
+       wahi ek jagah se — display admin ki settings se, key monthly bucket se */
+    monthKey: (window.getMonthlySeasonMeta ? window.getMonthlySeasonMeta().monthKey : (window.getWeekKey ? '' : ''))
+  };
+};
+
+/* ── Season Rank Display (profile/rank screen) ── */
+window.showSeasonInfo = function() {
+  var s = window.getCurrentSeason();
+  var h = '<div style="text-align:center;padding:8px 0">';
+  h += '<div style="font-size:13px;font-weight:900;color:#ffd700;margin-bottom:4px">' + s.name + '</div>';
+
+  if (s.active) {
+    var pct = Math.max(0, Math.min(100, 100 - (s.daysLeft / 90 * 100)));
+    h += '<div style="background:rgba(255,255,255,.06);border-radius:10px;height:6px;margin:8px 0"><div style="width:' + pct + '%;height:6px;background:linear-gradient(90deg,#00ff9c,#ffd700);border-radius:10px;transition:width .5s"></div></div>';
+    h += '<div style="font-size:12px;color:var(--txt2)">' + s.daysLeft + ' din baaki</div>';
+  }
+
+  // Season prizes
+  h += '<div style="margin-top:14px;background:rgba(0,0,0,.2);border-radius:12px;padding:12px">';
+  h += '<div style="font-size:11px;font-weight:800;color:#fff;margin-bottom:8px">🏆 Season End Rewards</div>';
+  var prizes = [
+    { pos: '#1 Champion',    reward: '🌟 Grandmaster Badge + 500🪙' },
+    { pos: '#2–#5',          reward: '👑 Legend Badge + 200🪙' },
+    { pos: '#6–#20',         reward: '💎 Diamond Badge + 100🪙' },
+    { pos: '#21–#100',       reward: (window.tierIconHtml?tierIconHtml('Gold',14):'')+' Gold Badge + 50🪙' },
+  ];
+  prizes.forEach(function(p) {
+    h += '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px"><span style="color:#888">' + p.pos + '</span><span style="color:#ffd700">' + p.reward + '</span></div>';
+  });
+  h += '</div>';
+
+  // My season stats
+  if (window.U && window.UD) {
+    h += '<div style="margin-top:12px">';
+    h += '<div style="font-size:11px;font-weight:800;color:#00d4ff;margin-bottom:8px">📊 Tumhara Is Season Ka Stats</div>';
+    var st = (window.UD && window.UD.stats) || {};
+    var rk = window.calcRk ? window.calcRk(st) : { badge: 'Bronze', emoji: '🏅', pts: 0 };
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
+    [
+      { l: 'Rank', v: (window.tierIconHtml?tierIconHtml(rk.badge,14):'') + ' ' + rk.badge },
+      { l: 'Points', v: rk.pts },
+      { l: 'Wins', v: st.wins || 0 },
+    ].forEach(function(i) {
+      h += '<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center"><div style="font-size:15px;font-weight:900;color:#fff">' + i.v + '</div><div style="font-size:10px;color:#666">' + i.l + '</div></div>';
+    });
+    h += '</div></div>';
+  }
+
+  h += '</div>';
+  if (window.openModal) openModal('🏆 ' + s.name, h);
+};
+
+/* ── Season History (profile pe) ── */
+window.showSeasonHistory = function() {
+  if (!window.U) { toast('Login karo pehle', 'err'); return; }
+  /* R28b FIX (2026-09-22): ye function renderSeasonHistory(hist) bulata
+     tha, jo #seasonHistList element dhunda karta tha — par koi modal
+     khula hi nahi jata tha, isliye wo element kabhi exist hi nahi karta,
+     aur button dabane par KABHI KUCH DIKHTA HI NAHI THA (renderSeasonHistory
+     silently return ho jata tha). Ab modal pehle khulta hai (spinner +
+     #seasonHistList ke saath), data aane par renderSeasonHistory use
+     bhar deta hai — showMatchHistory jaisa hi existing pattern. */
+  var h = '<div id="seasonHistList" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading…</div>';
+  if (window.openModal) openModal('🏆 Season History', h);
+  /* Load season history from Supabase */
+  if (window._supa) {
+    window._supa.from('seasonal_league_history').select('*').eq('user_id', window.U.uid).order('created_at', { ascending: false })
+      .then(function(r) {
+        var hist = (r.data || []).map(function(s) { return { seasonName: s.season_name, seasonNum: s.season_num, finalTier: s.final_tier, points: s.points, badge: s.badge, reward: s.reward, emoji: s.emoji }; });
+        if (window.renderSeasonHistory) renderSeasonHistory(hist);
+      }).catch(function(){ if (window.renderSeasonHistory) renderSeasonHistory([]); });
+    return;
+  }
+  /* Fallback: empty history if Supabase not ready */
+  if (window.renderSeasonHistory) renderSeasonHistory([]);
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   3.8 SEASON ENERGY (2026-10-13) — home par season countdown + apni
+   position + Top-3 ka near-miss.
+   ──────────────────────────────────────────────────────────────────
+   KYUN: season sirf "X din baaki" nahi hona chahiye — player ko ye bhi
+   dikhna chahiye ki WO kahan khada hai aur kitna door hai ("tum #7 par
+   ho · Top-3 se 2 kills door"). Yahi near-miss khelte rehne ki wajah
+   banta hai (aur season pass kharidne ki).
+   IZAT ka niyam: jo naapa nahi ja sakta wo NAHI likhte —
+     • endDate nahi → strip hi nahi (jhooti deadline kabhi nahi)
+     • season khatam (0 din) → strip nahi
+     • apni row leaderboard me nahi mili → sirf countdown dikhega,
+       position/near-miss nahi (jhooti rank kabhi nahi)
+   Metric: leaderboard ka default tab KILLS hai — wahi use hota hai,
+   taaki home aur rank screen ek hi baat bolein.
+   ══════════════════════════════════════════════════════════════════ */
+var _ssRows = null, _ssAt = 0;
+var _SS_CACHE_MS = 5 * 60 * 1000;
+
+function _ssLoad(cb) {
+  if (!window._supa) { cb(null); return; }
+  if (_ssRows && (Date.now() - _ssAt) < _SS_CACHE_MS) { cb(_ssRows); return; }
+  window._supa.from('leaderboard').select('id,total_kills,total_wins,rank_points').limit(300)
+    .then(function (r) {
+      _ssRows = (r && r.data) || null;
+      _ssAt = Date.now();
+      try { if (typeof _ssSetLbFlags === 'function') _ssSetLbFlags(_ssRows); } catch (e) {}
+      cb(_ssRows);
+    })
+    .catch(function () { cb(null); });
+}
+
+/* saare numbers yahin bante hain — test bhi isi ko bulata hai */
+window.seasonStripNumbers = function (rows, myUid) {
+  var s = window.getCurrentSeason ? window.getCurrentSeason() : null;
+  if (!s || !s.hasEnd || !s.active || s.daysLeft <= 0) return null;
+  var out = { name: s.name, daysLeft: s.daysLeft, pos: 0, gap: 0, metric: 'kills', total: 0 };
+  if (!rows || !rows.length) return out;
+  var sorted = rows.slice().sort(function (a, b) { return Number(b.total_kills || 0) - Number(a.total_kills || 0); });
+  out.total = sorted.length;
+  var myIdx = -1;
+  for (var i = 0; i < sorted.length; i++) { if (sorted[i].id === myUid) { myIdx = i; break; } }
+  if (myIdx < 0) return out;              /* ranked nahi — sirf countdown */
+  if (myIdx < 3) { out.pos = myIdx + 1; return out; }   /* pehle se Top-3 me */
+  var third = Number(sorted[2].total_kills || 0);
+  out.pos = myIdx + 1;
+  out.gap = Math.max(1, third - Number(sorted[myIdx].total_kills || 0) + 1); /* Top-3 me aane ke liye kam se kam kitne kills chahiye */
+  return out;
+};
+
+/* Test hook (read-only vyavhaar): rows cache seedha set karo — E2E page
+   asli strip HTML ko asli numbers ke saath render kar sake (koi mock
+   function nahi, sirf cache bhar rahe hain jo DB se bharta hai). */
+window.__SS_SET_ROWS = function (rows) { _ssRows = rows || null; _ssAt = Date.now(); };
+
+window.renderSeasonCountdownStrip = function () {
+  try {
+    var n = window.seasonStripNumbers(_ssRows, (window.U && window.U.uid) || '');
+    if (!n) return '';
+    var bits = ['⏳ <b style="color:#ffd700">' + n.name + '</b> — <b>' + n.daysLeft + '</b> din baaki'];
+    if (n.pos && n.pos <= 3) bits.push('tum #' + n.pos + ' par ho (Top-3 me!) 🏅');
+    else if (n.pos && n.gap > 0) bits.push('tum #' + n.pos + ' par ho · Top-3 se <b>' + n.gap + '</b> kills door');
+    var h = '<div id="seasonCountdownStrip" data-days-left="' + n.daysLeft + '" data-pos="' + (n.pos || 0) + '" data-gap="' + (n.gap || 0) + '" ' +
+      'onclick="if(window.renderRank)renderRank();else if(window.navTo)navTo(\'rank\')" ' +
+      'style="display:flex;align-items:center;gap:8px;margin:8px 0;padding:9px 11px;border-radius:12px;cursor:pointer;' +
+      'background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(255,215,0,.06));border:1px solid rgba(0,255,156,.22)">' +
+      '<div style="flex:1;min-width:0;font-size:11px;color:#ddd;line-height:1.5">' + bits.join(' · ') + '</div>' +
+      '<div style="font-size:10px;font-weight:900;color:#00ff9c;white-space:nowrap">Rank dekho ›</div></div>';
+    /* position async aati hai (leaderboard fetch) — strip turant, number baad me */
+    _ssLoad(function (rows) {
+      try {
+        var el = document.getElementById('seasonCountdownStrip');
+        if (!el) return;
+        var n2 = window.seasonStripNumbers(rows, (window.U && window.U.uid) || '');
+        if (!n2) { el.remove(); return; }
+        el.setAttribute('data-pos', String(n2.pos || 0));
+        el.setAttribute('data-gap', String(n2.gap || 0));
+        var b2 = ['⏳ <b style="color:#ffd700">' + n2.name + '</b> — <b>' + n2.daysLeft + '</b> din baaki'];
+        if (n2.pos && n2.pos <= 3) b2.push('tum #' + n2.pos + ' par ho (Top-3 me!) 🏅');
+        else if (n2.pos && n2.gap > 0) b2.push('tum #' + n2.pos + ' par ho · Top-3 se <b>' + n2.gap + '</b> kills door');
+        var txt = el.querySelector('div');
+        if (txt) txt.innerHTML = b2.join(' · ');
+      } catch (e) {}
+    });
+    return h;
+  } catch (e) { return ''; }
+};
+
+/* ══════════════════════════════════════════════════════════════════════
+   3.8/11 SEASON CHAMPION KA BADA AILAAN — client taraf (2026-10-13)
+
+   Server: supabase/migrations/20261013_season_champion.sql
+     • season_champions (month_key, user_id, ign, kills, wins, rank_points,
+       declared_at, banner_until) — pg_cron har mahine ki 1 tareekh declare
+       karta hai (pichhla season, leaderboard ka #1, kills metric = wahi jo
+       rank screen aur season strip bolte hain).
+     • champion ko personal push bhi (notifications trigger).
+
+   Yahan: 3 din ka home banner — ASLI row se.
+   IZAT ka niyam:
+     • banner_until beet gaya → banner NAHI (purana "champion" chipka nahi)
+     • row na ho / ign na ho → banner NAHI (jhoota ailaan kabhi nahi)
+     • "tum champion ho" sirf tab jab user_id == apna uid
+   ══════════════════════════════════════════════════════════════════════ */
+var _scRow = null, _scAt = 0, _SC_CACHE_MS = 5 * 60 * 1000;
+
+/* test hook — sirf cache bharta hai (koi mock function nahi) */
+window.__SS_SET_CHAMPION = function (row) { _scRow = row || null; _scAt = Date.now(); };
+
+/* month_key ('YYYY_MM') → wahi label jo app baaki jagah bolti hai
+   (js/rank-system.js: seasonNum = month + (year-2026)*12 + 4) */
+window.ssSeasonLabelFromKey = function (mk) {
+  var m = /^(\d{4})_(\d{2})$/.exec(String(mk || ''));
+  if (!m) return '';
+  var yr = Number(m[1]), mo = Number(m[2]);
+  if (!mo || mo > 12) return '';
+  var n = mo + (yr - 2026) * 12 + 4;
+  if (n < 1) n = 1;
+  return 'Season ' + n + " '" + String(yr).slice(-2);
+};
+
+/* sach me kitna waqt bacha (koi jhooti deadline nahi) */
+window.championBannerNumbers = function (row, myUid, nowMs) {
+  try {
+    if (!row || !row.month_key || !row.ign) return null;
+    var end = row.banner_until ? new Date(row.banner_until).getTime() : 0;
+    var now = Number(nowMs) || Date.now();
+    if (!end || !(end > now)) return null;
+    var left = end - now;
+    return {
+      label: window.ssSeasonLabelFromKey(row.month_key),
+      ign: String(row.ign),
+      kills: Number(row.kills || 0),
+      wins: Number(row.wins || 0),
+      mine: !!(myUid && row.user_id === myUid),
+      hoursLeft: Math.max(1, Math.ceil(left / 3600000))
+    };
+  } catch (e) { return null; }
+};
+
+/* leaderboard rows se apna Top-3 status — asli position se (jhoota nahi) */
+window.ssLbFlags = function (rows, myUid) {
+  var out = { lbTop3: 0 };
+  try {
+    if (!rows || !rows.length || !myUid) return out;
+    var sorted = rows.slice().sort(function (a, b) { return Number(b.total_kills || 0) - Number(a.total_kills || 0); });
+    for (var i = 0; i < sorted.length && i < 3; i++) {
+      if (sorted[i] && sorted[i].id === myUid) { out.lbTop3 = 1; break; }
+    }
+  } catch (e) {}
+  return out;
+};
+
+function _scLoad(cb) {
+  if (!window._supa) { cb(null); return; }
+  if (_scRow && (Date.now() - _scAt) < _SC_CACHE_MS) { cb(_scRow); return; }
+  /* poll (multiple rows) phir JS me latest — .maybeSingle() bina row par bhi
+     kabhi-kabhi error deta hai, aur yahan "row nahi" ek normal haalat hai */
+  var q = window._supa.from('season_champions')
+    .select('month_key,user_id,ign,kills,wins,rank_points,declared_at,banner_until')
+    .order('declared_at', { ascending: false }).limit(3);
+  q.then(function (r) {
+    var rows = (r && r.data) || [];
+    /* sabse lamba chalta hua ailaan (kai champions ho sakte hain) */
+    var best = null;
+    rows.forEach(function (x) {
+      if (!x || !x.banner_until) return;
+      if (!best || new Date(x.banner_until) > new Date(best.banner_until)) best = x;
+    });
+    _scRow = best; _scAt = Date.now();
+    cb(_scRow);
+  }, function () { cb(null); });
+}
+
+/* banner HTML — cache se (sync). Data na ho to '' (placeholder khaali). */
+window.renderSeasonChampionBanner = function () {
+  try {
+    var n = window.championBannerNumbers(_scRow, (window.U && window.U.uid) || '');
+    if (!n) return '';
+    var daysTxt = n.hoursLeft >= 24 ? Math.ceil(n.hoursLeft / 24) + ' din' : n.hoursLeft + ' ghante';
+    var line = n.mine
+      ? '🎉 <b>tum champion ho!</b> Special kala tumhari collection me hai.'
+      : '<b>' + n.ign + '</b> — <b>' + n.kills + '</b> kills se sabse aage 🎯';
+    return '<div id="seasonChampionBanner" data-month="' + _esc(String(_scRow.month_key)) + '" data-champ="' + _esc(String(_scRow.user_id)) + '" data-mine="' + (n.mine ? '1' : '0') + '" ' +
+      'onclick="if(window.renderRank)renderRank();else if(window.navTo)navTo(\'rank\')" ' +
+      'style="display:flex;align-items:center;gap:9px;margin:8px 0;padding:10px 12px;border-radius:14px;cursor:pointer;' +
+      'background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,140,0,.10));border:1px solid rgba(255,215,0,.42)">' +
+      '<img src="assets/img/special/season-champion.png" alt="Season Champion" style="width:34px;height:34px;object-fit:contain;flex-shrink:0">' +
+      '<div style="flex:1;min-width:0">' +
+      '<div style="font-size:12px;font-weight:900;color:#ffd700;letter-spacing:.3px">🏆 ' + _esc(n.label) + ' CHAMPION</div>' +
+      '<div style="font-size:11px;color:#e8e8e8;line-height:1.45">' + line + '</div>' +
+      '<div style="font-size:9px;color:var(--txt2,#9aa);margin-top:2px">Bada ailaan · ' + daysTxt + ' aur</div>' +
+      '</div>' +
+      '<div style="font-size:10px;font-weight:900;color:#ffd700;white-space:nowrap">Rank ›</div></div>';
+  } catch (e) { return ''; }
+};
+
+function _esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+  });
+}
+
+/* home render ke baad: asli row laao, banner bharo + UD flags set karo
+   (champion kala aur leaderboard Top-3 special asli data par hi khulein) */
+window.refreshSeasonChampion = function () {
+  try {
+    _scLoad(function (row) {
+      try {
+        var UD = window.UD || {};
+        UD.season_champion = (row && window.U && row.user_id === window.U.uid) ? 1 : 0;
+        var el = document.getElementById('seasonChampionBanner');
+        var html = window.renderSeasonChampionBanner();
+        if (el) {
+          if (html) el.innerHTML = html;
+          else el.innerHTML = '';
+        }
+      } catch (e) {}
+    });
+  } catch (e) {}
+};
+
+/* leaderboard load hote waqt asli Top-3 flag bhi (sp_top3_champion kala) */
+function _ssSetLbFlags(rows) {
+  try {
+    var f = window.ssLbFlags(rows, (window.U && window.U.uid) || '');
+    var UD = window.UD || {};
+    UD.lb_top3 = f.lbTop3;
+  } catch (e) {}
+}
+
+/* ── Auto-load ── */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() { setTimeout(window.loadCurrentSeason, 1500); });
+} else {
+  setTimeout(window.loadCurrentSeason, 1500);
+}
+
+})();

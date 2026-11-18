@@ -1,1 +1,220 @@
-(function(){'use strict';var _0x389733=(function(){var _0x2aed24=!![];return function(_0x2c39ab,_0x2fd9d3){var _0x44e8cc=_0x2aed24?function(){if(_0x2fd9d3){var _0x9fdd83=_0x2fd9d3['apply'](_0x2c39ab,arguments);return _0x2fd9d3=null,_0x9fdd83;}}:function(){};return _0x2aed24=![],_0x44e8cc;};}()),_0x3d54cd=_0x389733(this,function(){if(_0x3d54cd['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3d54cd['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3d54cd)['search']('(((.+)+)+)+$');});_0x3d54cd();window['getMonthlySeasonMeta']=function(){var _0x51197a=new Date(),_0xfeefce=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],_0x5b4a62=_0x51197a['getFullYear']()['toString']()['slice'](-0x2),_0x2b8eb7=_0x51197a['getMonth'](),_0x30dab0=_0x2b8eb7+0x1+(_0x51197a['getFullYear']()-0x7ea)*0xc+0x4;if(_0x30dab0<0x1)_0x30dab0=0x1;var _0x10b9f6=new Date(_0x51197a['getFullYear'](),_0x2b8eb7+0x1,0x0)['getDate'](),_0x256fbb=_0x10b9f6-_0x51197a['getDate']();return{'name':'Season\x20'+_0x30dab0+'\x20\x27'+_0x5b4a62,'label':_0xfeefce[_0x2b8eb7]+'\x20'+_0x51197a['getFullYear'](),'daysLeft':_0x256fbb,'monthKey':_0x51197a['getFullYear']()+'_'+String(_0x2b8eb7+0x1)['padStart'](0x2,'0')};};function _0x3be063(){var _0x4bdc9a=(window['getCurrentSeason']?window['getCurrentSeason']():{})||{},_0x407efe=(window['getMonthlySeasonMeta']?window['getMonthlySeasonMeta']():{})||{};return Object['assign']({},_0x407efe,_0x4bdc9a,{'monthKey':_0x407efe['monthKey']||_0x4bdc9a['monthKey']||''});}function _0x191a2a(){var _0x1b2fc7=new Date(),_0x203806=_0x1b2fc7['getDay'](),_0x462f80=new Date(_0x1b2fc7);return _0x462f80['setDate'](_0x1b2fc7['getDate']()-(_0x203806+0x6)%0x7),_0x462f80['getFullYear']()+'_W'+String(_0x462f80['getMonth']()+0x1)['padStart'](0x2,'0')+String(_0x462f80['getDate']())['padStart'](0x2,'0');}window['getWeekKey']=_0x191a2a,window['loadSeasonLeaderboard']=function(_0x4dcf19){var _0x3ee4aa=_0x3be063();if(!window['_supa']){if(_0x4dcf19)_0x4dcf19([],_0x3ee4aa);return;}window['_supa']['from']('leaderboard')['select']('*')['limit'](0xc8)['then'](function(_0x2cb5ef){var _0x41379e=(_0x2cb5ef['data']||[])['filter'](function(_0x1c2831){return _0x1c2831['ign'];})['map'](function(_0x208510){return{'_uid':_0x208510['id'],'ign':_0x208510['ign']||'Player','displayName':_0x208510['ign']||'Player','profileImage':_0x208510['avatar_url']||'','city':_0x208510['city']||'','rankPoints':Number(_0x208510['rank_points'])||0x0,'winStreak':Number(_0x208510['win_streak'])||0x0,'stats':{'matches':_0x208510['total_matches']||0x0,'wins':_0x208510['total_wins']||0x0,'kills':_0x208510['total_kills']||0x0}};});if(_0x4dcf19)_0x4dcf19(_0x41379e,_0x3ee4aa);})['catch'](function(){window['_supa']['from']('user_public_profiles')['select']('id,ign,avatar_url,rank_points,total_wins,total_kills,total_matches,win_streak,city')['order']('rank_points',{'ascending':![]})['limit'](0xc8)['then'](function(_0x311117){var _0x341331=(_0x311117['data']||[])['filter'](function(_0x4f76db){return _0x4f76db['ign'];})['map'](function(_0x36d32f){return{'_uid':_0x36d32f['id'],'ign':_0x36d32f['ign']||'Player','displayName':_0x36d32f['ign']||'Player','profileImage':_0x36d32f['avatar_url']||'','city':_0x36d32f['city']||'','rankPoints':Number(_0x36d32f['rank_points'])||0x0,'winStreak':Number(_0x36d32f['win_streak'])||0x0,'stats':{'matches':_0x36d32f['total_matches']||0x0,'wins':_0x36d32f['total_wins']||0x0,'kills':_0x36d32f['total_kills']||0x0}};});if(_0x4dcf19)_0x4dcf19(_0x341331,_0x3ee4aa);})['catch'](function(_0x421c3b){console['warn']('[Rank]\x20LB\x20load\x20failed:',_0x421c3b['message']);if(_0x4dcf19)_0x4dcf19([],_0x3ee4aa);});});},window['updateSeasonStats']=function(_0x2f9c19,_0x11783a){if(!window['db']||!_0x2f9c19)return;var _0xf4a775=_0x3be063(),_0x39fc60=_0x191a2a(),_0x2b275d=window['db']['ref']('seasonStats/'+_0xf4a775['monthKey']+'/'+_0x2f9c19);_0x2b275d['once']('value',function(_0x4b0f90){var _0x465ca4=_0x4b0f90['val']()||{},_0x35ae90={'ign':_0x11783a['ign']||_0x465ca4['ign']||'','displayName':_0x11783a['displayName']||_0x465ca4['displayName']||'','profileImage':_0x11783a['profileImage']||_0x465ca4['profileImage']||'','stats':{'wins':(_0x465ca4['stats']&&_0x465ca4['stats']['wins']||0x0)+(_0x11783a['wins']||0x0),'kills':(_0x465ca4['stats']&&_0x465ca4['stats']['kills']||0x0)+(_0x11783a['kills']||0x0),'matches':(_0x465ca4['stats']&&_0x465ca4['stats']['matches']||0x0)+(_0x11783a['matches']||0x0)}},_0x35340b=window['calcRkScore']?window['calcRkScore'](_0x35ae90['stats']):0x0;_0x35ae90['rankPoints']=_0x35340b,_0x2b275d['set'](_0x35ae90);});var _0x473c63=window['db']['ref']('weeklyStats/'+_0x39fc60+'/'+_0x2f9c19);_0x473c63['once']('value',function(_0x41e43c){var _0x5d283d=_0x41e43c['val']()||{};_0x473c63['set']({'ign':_0x11783a['ign']||_0x5d283d['ign']||'','kills':(_0x5d283d['kills']||0x0)+(_0x11783a['kills']||0x0),'wins':(_0x5d283d['wins']||0x0)+(_0x11783a['wins']||0x0),'matches':(_0x5d283d['matches']||0x0)+(_0x11783a['matches']||0x0)});});},window['assignTop3Badges']=function(_0x33f413){if(!window['db']||!_0x33f413||_0x33f413['length']<0x1)return;_0x33f413['slice'](0x0,0x3)['forEach'](function(_0x2a5ef5,_0x1a9a8d){if(!_0x2a5ef5['_uid'])return;var _0x3bd933=_0x1a9a8d===0x0?'_top1':_0x1a9a8d===0x1?'_top2':'_top3';window['db']['ref']('users/'+_0x2a5ef5['_uid']+'/stats/'+_0x3bd933)['set'](!![]);});},window['RANK_FORMULA']='Wins×40\x20+\x20Kills×2\x20+\x20Matches×1\x20+\x20WinStreak×10',window['RANK_TIERS']=[{'name':'Bronze','min':0x0,'max':0x12c,'emoji':'','color':'#cd7f32','bg':'rgba(205,127,50,.13)','img':'assets/img/ranks/bronze.png'},{'name':'Silver','min':0x12d,'max':0x258,'emoji':'','color':'#c0c0c0','bg':'rgba(192,192,192,.13)','img':'assets/img/ranks/silver.png'},{'name':'Gold','min':0x259,'max':0x3e8,'emoji':'','color':'#ffd700','bg':'rgba(255,215,0,.14)','img':'assets/img/ranks/gold.png'},{'name':'Platinum','min':0x3e9,'max':0x5dc,'emoji':'🔷','color':'#e0e0ff','bg':'rgba(180,180,255,.13)','img':'assets/img/ranks/platinum.png'},{'name':'Diamond','min':0x5dd,'max':0x7d0,'emoji':'💎','color':'#00d4ff','bg':'rgba(0,212,255,.15)','img':'assets/img/ranks/diamond.png'},{'name':'Legend','min':0x7d1,'max':0x270f,'emoji':'👑','color':'#b964ff','bg':'rgba(185,100,255,.15)','img':'assets/img/ranks/legend.png'}],window['getRankTier']=function(_0x24bd31){_0x24bd31=Number(_0x24bd31)||0x0;for(var _0xcb0453=window['RANK_TIERS']['length']-0x1;_0xcb0453>=0x0;_0xcb0453--){if(_0x24bd31>=window['RANK_TIERS'][_0xcb0453]['min'])return window['RANK_TIERS'][_0xcb0453];}return window['RANK_TIERS'][0x0];},window['showHowRankWorks']=function(){var _0x8d7dc={'Bronze':'Starting\x20Rank\x20•\x20Build\x20Your\x20Skills','Silver':'Show\x20Your\x20Improvement','Gold':'Play\x20Better\x20•\x20Climb\x20Higher','Platinum':'Prove\x20Your\x20Consistency','Diamond':'Elite\x20Players\x20•\x20Top\x20Performers','Legend':'The\x20Ultimate\x20Rank\x20•\x20Be\x20a\x20Legend'},_0xe03e67='border-radius:16px;',_0x36b2fb='<div\x20style=\x22background:linear-gradient(165deg,#1c0b33\x200%,#2b1055\x2045%,#180a2c\x20100%);border:2px\x20solid\x20#d24dff;border-radius:22px;padding:14px\x2012px\x2012px;box-shadow:0\x200\x2026px\x20rgba(210,77,255,.35),inset\x200\x200\x2046px\x20rgba(210,77,255,.10)\x22>';_0x36b2fb+='<div\x20style=\x22text-align:center;font-size:15px;font-weight:900;color:#fff;margin-bottom:6px\x22><span\x20style=\x22color:#ff4d4d\x22>🔥</span>\x20<span\x20style=\x22color:#00ff9c\x22>Mini</span>\x20eSports</div>',_0x36b2fb+='<div\x20style=\x22text-align:center;margin-bottom:10px\x22>',_0x36b2fb+='<div\x20style=\x22font-size:24px;line-height:1;filter:drop-shadow(0\x200\x208px\x20rgba(255,180,0,.8))\x22>👑</div>',_0x36b2fb+='<div\x20style=\x22display:inline-block;padding:7px\x2020px;border-radius:14px;background:linear-gradient(90deg,rgba(255,120,0,.30),rgba(255,215,0,.16),rgba(255,120,0,.30));border:2px\x20solid\x20#ffb400;box-shadow:0\x200\x2018px\x20rgba(255,180,0,.45),inset\x200\x200\x2012px\x20rgba(255,180,0,.15);font-size:17px;font-weight:900;color:#ffd75e;text-shadow:0\x201px\x203px\x20rgba(60,30,0,.8)\x22>🏆\x20How\x20Rank\x20Works\x20🏆</div>',_0x36b2fb+='<div\x20style=\x22font-size:11px;color:#e0b0ff;margin-top:2px\x22>🌿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌿</div>',_0x36b2fb+='</div>',_0x36b2fb+='<div\x20style=\x22'+_0xe03e67+'background:rgba(255,150,0,.10);border:2px\x20solid\x20rgba(255,180,0,.65);box-shadow:0\x200\x2014px\x20rgba(255,180,0,.25);padding:9px\x2010px;text-align:center;font-size:12px;font-weight:900;color:#fff;margin-bottom:10px\x22>📊\x20'+window['RANK_FORMULA']+'</div>',_0x36b2fb+='<div\x20style=\x22display:flex;flex-direction:column;gap:7px;margin-bottom:10px\x22>',window['RANK_TIERS']['forEach'](function(_0x4f8578){var _0x5784a6=(_0x4f8578['min']===0x0?'0':String(_0x4f8578['min']))+'\x20–\x20'+(_0x4f8578['max']>=0x270f?'∞':_0x4f8578['max']);_0x36b2fb+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:7px\x2010px;border-radius:14px;background:linear-gradient(90deg,'+_0x4f8578['bg']+',rgba(0,0,0,.25));border:2px\x20solid\x20'+_0x4f8578['color']+';box-shadow:0\x200\x2012px\x20'+_0x4f8578['color']+'55,inset\x200\x200\x2010px\x20'+_0x4f8578['color']+'22\x22>',_0x36b2fb+='<div\x20style=\x22width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center\x22><img\x20src=\x22'+_0x4f8578['img']+'?v=20261117g\x22\x20alt=\x22'+_0x4f8578['name']+'\x22\x20style=\x22width:38px;height:38px;object-fit:contain\x22\x20onerror=\x22this.style.display=\x27none\x27;this.parentNode.textContent=\x27'+_0x4f8578['emoji']+'\x27\x22></div>',_0x36b2fb+='<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:14px;font-weight:900;color:'+_0x4f8578['color']+';text-shadow:0\x201px\x203px\x20rgba(0,0,0,.7)\x22>'+_0x4f8578['name']+'</div>',_0x36b2fb+='<div\x20style=\x22font-size:10px;color:#cfcfe8;margin-top:1px\x22>'+(_0x8d7dc[_0x4f8578['name']]||'')+'</div></div>',_0x36b2fb+='<div\x20style=\x22text-align:right;flex-shrink:0\x22><div\x20style=\x22font-size:13px;font-weight:900;color:#fff;text-shadow:0\x201px\x203px\x20rgba(0,0,0,.7)\x22>'+_0x5784a6+'</div><div\x20style=\x22font-size:9px;color:#cfcfe8\x22>Points</div></div>',_0x36b2fb+='</div>';}),_0x36b2fb+='</div>',_0x36b2fb+='<div\x20style=\x22'+_0xe03e67+'border:2px\x20solid\x20rgba(185,100,255,.65);box-shadow:0\x200\x2014px\x20rgba(185,100,255,.25);background:rgba(120,40,200,.10);display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:6px;padding:9px\x206px;text-align:center;margin-bottom:10px\x22>',_0x36b2fb+='<div><div\x20style=\x22font-size:15px\x22>📅</div><div\x20style=\x22font-size:10px;font-weight:900;color:#ffd75e\x22>Weekly\x20reset</div><div\x20style=\x22font-size:9px;color:#cfcfe8\x22>every\x20Monday</div></div>',_0x36b2fb+='<div\x20style=\x22border-left:1px\x20solid\x20rgba(185,100,255,.35);border-right:1px\x20solid\x20rgba(185,100,255,.35)\x22><div\x20style=\x22font-size:15px\x22>📆</div><div\x20style=\x22font-size:10px;font-weight:900;color:#ffd75e\x22>Season\x20reset</div><div\x20style=\x22font-size:9px;color:#cfcfe8\x22>every\x201st\x20of\x20month</div></div>',_0x36b2fb+='<div><div\x20style=\x22font-size:15px\x22>🏆</div><div\x20style=\x22font-size:10px;font-weight:900;color:#ffd75e\x22>Top\x203\x20badges</div><div\x20style=\x22font-size:9px;color:#cfcfe8\x22>Top\x2010\x20titles</div></div>',_0x36b2fb+='</div>',_0x36b2fb+='<button\x20onclick=\x22window.showAssetGallery&&window.showAssetGallery()\x22\x20style=\x22width:100%;padding:11px;border-radius:14px;border:2px\x20solid\x20#ffb400;background:linear-gradient(90deg,rgba(255,120,0,.35),rgba(255,215,0,.20),rgba(255,120,0,.35));box-shadow:0\x200\x2016px\x20rgba(255,180,0,.45);color:#ffd75e;font-size:13px;font-weight:900;cursor:pointer\x22>👑\x20My\x20Collection\x20(Titles\x20+\x20Badges)\x20➤</button>',_0x36b2fb+='<div\x20style=\x22text-align:center;font-size:24px;margin-top:8px;filter:drop-shadow(0\x200\x2010px\x20#d24dff)\x22>💠</div>',_0x36b2fb+='</div>';if(window['openModal'])openModal('🏆\x20How\x20Rank\x20Works',_0x36b2fb);},console['log']('[Mini\x20eSports]\x20✅\x20Rank\x20System\x20v2.0\x20loaded');}());
+/* ================================================================
+   MINI eSPORTS — RANK SYSTEM v2.0
+   - Kills / Wins / Rank Points leaderboards
+   - Weekly reset (Monday)
+   - Season reset (monthly)
+   - Top 3 special badge
+   - Top 10 special title
+   ================================================================ */
+(function() {
+'use strict';
+
+/* ── Monthly bucket (leaderboard/stat keys ke liye) ──
+   ⚠️ LIVE-TESTING SABAK (2026-10-07, B18): pehle yahi function
+   `window.getCurrentSeason` ke naam se define hota tha — aur kyunki ye file
+   seasonal-league.js ke BAAD load hoti hai, ye usko CHUP-CHAAP override kar
+   deti thi. Nateeja: admin ki Seasonal League settings (naam/tareekh/ON-OFF)
+   user ko kabhi dikhti hi nahi thin; user ko yahan ka hardcoded monthly
+   "Season 14 '26" dikhta tha. Ab:
+     • display ka EK hi source = getCurrentSeason() (seasonal-league.js,
+       admin ki settings se),
+     • ye function sirf WAHI kaam karta hai jo iska asli kaam hai — monthly
+       storage key (seasonStats/<monthKey>) — naam alag se, override ke bina. */
+window.getMonthlySeasonMeta = function() {
+  var now = new Date();
+  var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var yr = now.getFullYear().toString().slice(-2);
+  var mo = now.getMonth();
+  var seasonNum = mo + 1 + (now.getFullYear() - 2026) * 12 + 4; // Season 1 = April 2026
+  if (seasonNum < 1) seasonNum = 1;
+  /* Days left in month */
+  var lastDay = new Date(now.getFullYear(), mo + 1, 0).getDate();
+  var daysLeft = lastDay - now.getDate();
+  return {
+    name: 'Season ' + seasonNum + " '" + yr,
+    label: monthNames[mo] + ' ' + now.getFullYear(),
+    daysLeft: daysLeft,
+    monthKey: now.getFullYear() + '_' + String(mo + 1).padStart(2, '0')
+  };
+};
+
+/* Display + storage key ek saath (jo code dono chahta hai) */
+function _seasonMerged() {
+  var disp = (window.getCurrentSeason ? window.getCurrentSeason() : {}) || {};
+  var meta = (window.getMonthlySeasonMeta ? window.getMonthlySeasonMeta() : {}) || {};
+  return Object.assign({}, meta, disp, { monthKey: meta.monthKey || disp.monthKey || '' });
+}
+
+/* ── Weekly leaderboard (Monday reset) ── */
+function getWeekKey() {
+  var now = new Date();
+  var day = now.getDay(); // 0=Sun, 1=Mon
+  var monday = new Date(now);
+  monday.setDate(now.getDate() - ((day + 6) % 7));
+  return monday.getFullYear() + '_W' + String(monday.getMonth()+1).padStart(2,'0') + String(monday.getDate()).padStart(2,'0');
+}
+window.getWeekKey = getWeekKey;
+
+/* Bug #9 Fix: loadSeasonLeaderboard — 100% Supabase (Firebase seasonStats empty post-migration) */
+window.loadSeasonLeaderboard = function(cb) {
+  var s = _seasonMerged();
+  if (!window._supa) { if (cb) cb([], s); return; }
+  /* Try leaderboard view first, fallback to users table */
+  window._supa.from('leaderboard').select('*').limit(200)
+    .then(function(r) {
+      var users = (r.data || []).filter(function(u){ return u.ign; }).map(function(u) {
+        return {
+          _uid: u.id, ign: u.ign||'Player', displayName: u.ign||'Player',
+          profileImage: u.avatar_url||'', city: u.city||'',
+          rankPoints: Number(u.rank_points)||0, winStreak: Number(u.win_streak)||0,
+          stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 }
+        };
+      });
+      if (cb) cb(users, s);
+    })
+    .catch(function() {
+      /* Fallback: query users table directly */
+      window._supa.from('user_public_profiles').select('id,ign,avatar_url,rank_points,total_wins,total_kills,total_matches,win_streak,city') /* BUG #38 FIX */
+        .order('rank_points', { ascending: false }).limit(200)
+        .then(function(r2) {
+          var users = (r2.data||[]).filter(function(u){ return u.ign; }).map(function(u) {
+            return {
+              _uid: u.id, ign: u.ign||'Player', displayName: u.ign||'Player',
+              profileImage: u.avatar_url||'', city: u.city||'',
+              rankPoints: Number(u.rank_points)||0, winStreak: Number(u.win_streak)||0,
+              stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 }
+            };
+          });
+          if (cb) cb(users, s);
+        }).catch(function(e){ console.warn('[Rank] LB load failed:', e.message); if (cb) cb([], s); });
+    });
+};
+
+/* ── After match result: update season & weekly stats ── */
+window.updateSeasonStats = function(uid, statsUpdate) {
+  if (!window.db || !uid) return;
+  var s = _seasonMerged();
+  var wk = getWeekKey();
+  /* Season stats */
+  var sRef = window.db.ref('seasonStats/' + s.monthKey + '/' + uid);
+  sRef.once('value', function(snap) {
+    var existing = snap.val() || {};
+    var merged = {
+      ign: statsUpdate.ign || existing.ign || '',
+      displayName: statsUpdate.displayName || existing.displayName || '',
+      profileImage: statsUpdate.profileImage || existing.profileImage || '',
+      stats: {
+        wins:    (existing.stats && existing.stats.wins    || 0) + (statsUpdate.wins    || 0),
+        kills:   (existing.stats && existing.stats.kills   || 0) + (statsUpdate.kills   || 0),
+        matches: (existing.stats && existing.stats.matches || 0) + (statsUpdate.matches || 0)
+      }
+    };
+    var pts = window.calcRkScore ? window.calcRkScore(merged.stats) : 0;
+    merged.rankPoints = pts;
+    sRef.set(merged);
+  });
+  /* Weekly stats */
+  var wRef = window.db.ref('weeklyStats/' + wk + '/' + uid);
+  wRef.once('value', function(snap) {
+    var ew = snap.val() || {};
+    wRef.set({
+      ign: statsUpdate.ign || ew.ign || '',
+      kills:   (ew.kills   || 0) + (statsUpdate.kills   || 0),
+      wins:    (ew.wins    || 0) + (statsUpdate.wins    || 0),
+      matches: (ew.matches || 0) + (statsUpdate.matches || 0)
+    });
+  });
+};
+
+/* ── Auto-assign top3 badge on season end / leaderboard view ── */
+window.assignTop3Badges = function(users) {
+  if (!window.db || !users || users.length < 1) return;
+  users.slice(0, 3).forEach(function(u, i) {
+    if (!u._uid) return;
+    var key = i === 0 ? '_top1' : i === 1 ? '_top2' : '_top3';
+    window.db.ref('users/' + u._uid + '/stats/' + key).set(true);
+  });
+};
+
+/* ── Expose rank point formula for display ── */
+window.RANK_FORMULA = 'Wins×40 + Kills×2 + Matches×1 + WinStreak×10';
+
+/* ── Rank tier definitions ── */
+window.RANK_TIERS = [
+  { name: 'Bronze',   min: 0,    max: 300,  emoji: '', color: '#cd7f32', bg: 'rgba(205,127,50,.13)',  img: 'assets/img/ranks/bronze.png'   },
+  { name: 'Silver',   min: 301,  max: 600,  emoji: '', color: '#c0c0c0', bg: 'rgba(192,192,192,.13)', img: 'assets/img/ranks/silver.png'   },
+  { name: 'Gold',     min: 601,  max: 1000, emoji: '', color: '#ffd700', bg: 'rgba(255,215,0,.14)',   img: 'assets/img/ranks/gold.png'     },
+  { name: 'Platinum', min: 1001, max: 1500, emoji: '🔷', color: '#e0e0ff', bg: 'rgba(180,180,255,.13)', img: 'assets/img/ranks/platinum.png' },
+  { name: 'Diamond',  min: 1501, max: 2000, emoji: '💎', color: '#00d4ff', bg: 'rgba(0,212,255,.15)',   img: 'assets/img/ranks/diamond.png'  },
+  { name: 'Legend',   min: 2001, max: 9999, emoji: '👑', color: '#b964ff', bg: 'rgba(185,100,255,.15)', img: 'assets/img/ranks/legend.png'   }
+];
+
+/* BUG #27 FIX (2026-07): mentor.js, squad-finder.js, friends.js, skill-matchmaking.js,
+   and player-card.js each had their OWN separate, simplified 4-tier rank calculation
+   (Bronze/Silver/Gold/Diamond only, wrong thresholds) — a player could show as a
+   different rank on different screens simultaneously. This is now the single shared
+   source of truth; all 5 files below have been updated to call this instead of their
+   own inline duplicate logic. */
+window.getRankTier = function(points) {
+  points = Number(points) || 0;
+  for (var i = window.RANK_TIERS.length - 1; i >= 0; i--) {
+    if (points >= window.RANK_TIERS[i].min) return window.RANK_TIERS[i];
+  }
+  return window.RANK_TIERS[0];
+};
+
+/* ── How Rank Works modal ── */
+/* ── How Rank Works modal — ✅ D83: owner ki bheji neon screenshot ka EXACT
+   replica (purple/magenta panel, crown title plate, formula strip, 6 neon
+   tier rows, info cells, gold collection button). Sab DATA dynamic:
+   tiers/points window.RANK_TIERS se, formula window.RANK_FORMULA se —
+   kuch bhi art me baked nahi (D36/D73 niyam). ── */
+window.showHowRankWorks = function() {
+  var TAG = {
+    Bronze: 'Starting Rank • Build Your Skills',
+    Silver: 'Show Your Improvement',
+    Gold: 'Play Better • Climb Higher',
+    Platinum: 'Prove Your Consistency',
+    Diamond: 'Elite Players • Top Performers',
+    Legend: 'The Ultimate Rank • Be a Legend'
+  };
+  var P = 'border-radius:16px;';
+  var h = '<div style="background:linear-gradient(165deg,#1c0b33 0%,#2b1055 45%,#180a2c 100%);border:2px solid #d24dff;border-radius:22px;padding:14px 12px 12px;box-shadow:0 0 26px rgba(210,77,255,.35),inset 0 0 46px rgba(210,77,255,.10)">';
+  /* header logo */
+  h += '<div style="text-align:center;font-size:15px;font-weight:900;color:#fff;margin-bottom:6px"><span style="color:#ff4d4d">🔥</span> <span style="color:#00ff9c">Mini</span> eSports</div>';
+  /* crown + title plate with laurels */
+  h += '<div style="text-align:center;margin-bottom:10px">';
+  h += '<div style="font-size:24px;line-height:1;filter:drop-shadow(0 0 8px rgba(255,180,0,.8))">👑</div>';
+  h += '<div style="display:inline-block;padding:7px 20px;border-radius:14px;background:linear-gradient(90deg,rgba(255,120,0,.30),rgba(255,215,0,.16),rgba(255,120,0,.30));border:2px solid #ffb400;box-shadow:0 0 18px rgba(255,180,0,.45),inset 0 0 12px rgba(255,180,0,.15);font-size:17px;font-weight:900;color:#ffd75e;text-shadow:0 1px 3px rgba(60,30,0,.8)">🏆 How Rank Works 🏆</div>';
+  h += '<div style="font-size:11px;color:#e0b0ff;margin-top:2px">🌿&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌿</div>';
+  h += '</div>';
+  /* formula strip */
+  h += '<div style="' + P + 'background:rgba(255,150,0,.10);border:2px solid rgba(255,180,0,.65);box-shadow:0 0 14px rgba(255,180,0,.25);padding:9px 10px;text-align:center;font-size:12px;font-weight:900;color:#fff;margin-bottom:10px">📊 ' + window.RANK_FORMULA + '</div>';
+  /* tier ladder — neon rows */
+  h += '<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px">';
+  window.RANK_TIERS.forEach(function(t) {
+    var range = (t.min === 0 ? '0' : String(t.min)) + ' – ' + (t.max >= 9999 ? '∞' : t.max);
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:14px;background:linear-gradient(90deg,' + t.bg + ',rgba(0,0,0,.25));border:2px solid ' + t.color + ';box-shadow:0 0 12px ' + t.color + '55,inset 0 0 10px ' + t.color + '22">';
+    h += '<div style="width:44px;height:44px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center"><img src="' + t.img + '?v=20261117g" alt="' + t.name + '" style="width:38px;height:38px;object-fit:contain" onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + t.emoji + '\'"></div>';
+    h += '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:900;color:' + t.color + ';text-shadow:0 1px 3px rgba(0,0,0,.7)">' + t.name + '</div>';
+    h += '<div style="font-size:10px;color:#cfcfe8;margin-top:1px">' + (TAG[t.name] || '') + '</div></div>';
+    h += '<div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)">' + range + '</div><div style="font-size:9px;color:#cfcfe8">Points</div></div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  /* info cells */
+  h += '<div style="' + P + 'border:2px solid rgba(185,100,255,.65);box-shadow:0 0 14px rgba(185,100,255,.25);background:rgba(120,40,200,.10);display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:9px 6px;text-align:center;margin-bottom:10px">';
+  h += '<div><div style="font-size:15px">📅</div><div style="font-size:10px;font-weight:900;color:#ffd75e">Weekly reset</div><div style="font-size:9px;color:#cfcfe8">every Monday</div></div>';
+  h += '<div style="border-left:1px solid rgba(185,100,255,.35);border-right:1px solid rgba(185,100,255,.35)"><div style="font-size:15px">📆</div><div style="font-size:10px;font-weight:900;color:#ffd75e">Season reset</div><div style="font-size:9px;color:#cfcfe8">every 1st of month</div></div>';
+  h += '<div><div style="font-size:15px">🏆</div><div style="font-size:10px;font-weight:900;color:#ffd75e">Top 3 badges</div><div style="font-size:9px;color:#cfcfe8">Top 10 titles</div></div>';
+  h += '</div>';
+  /* gold collection button */
+  h += '<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:11px;border-radius:14px;border:2px solid #ffb400;background:linear-gradient(90deg,rgba(255,120,0,.35),rgba(255,215,0,.20),rgba(255,120,0,.35));box-shadow:0 0 16px rgba(255,180,0,.45);color:#ffd75e;font-size:13px;font-weight:900;cursor:pointer">👑 My Collection (Titles + Badges) ➤</button>';
+  /* bottom diamond */
+  h += '<div style="text-align:center;font-size:24px;margin-top:8px;filter:drop-shadow(0 0 10px #d24dff)">💠</div>';
+  h += '</div>';
+  if (window.openModal) openModal('🏆 How Rank Works', h);
+};
+
+console.log('[Mini eSports] ✅ Rank System v2.0 loaded');
+})();

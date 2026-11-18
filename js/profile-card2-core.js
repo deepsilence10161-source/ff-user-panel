@@ -1,1 +1,396 @@
-(function(){'use strict';var _0x8cf0d2=(function(){var _0x4c708f=!![];return function(_0xf120fa,_0x371816){var _0x361f7f=_0x4c708f?function(){if(_0x371816){var _0x47cfc8=_0x371816['apply'](_0xf120fa,arguments);return _0x371816=null,_0x47cfc8;}}:function(){};return _0x4c708f=![],_0x361f7f;};}()),_0x40938f=_0x8cf0d2(this,function(){if(_0x40938f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x40938f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x40938f)['search']('(((.+)+)+)+$');});_0x40938f();var _0x2513a0=0x52b,_0x2581f3=0x4a5,_0x1ddb40='20261106b',_0x4ac8e1='assets/profile/card_frame.png';function _0x4bfe43(){try{if((window['_lang']||localStorage['getItem']('appLang')||'hi')==='hi')return'assets/profile/card_frame_hi.png';}catch(_0x2057f2){}return _0x4ac8e1;}var _0xc19259='assets/profile/card_scene.jpg',_0x50d9ee={'cx':0x295,'cy':0x128,'r':0x9e},_0xa7db32={'name':{'cx':0x27a,'cy':0x255,'fs':0x3e,'f':'impact','col':'#ffffff'},'uid':{'cx':0x286,'cy':0x2c8,'fs':0x25,'f':'bold','col':'#ffffff'},'lv':{'cx':0xe6,'cy':0x350,'fs':0x2c,'f':'bold','col':'#ffffff'},'tier':{'cx':0x288,'cy':0x351,'fs':0x2c,'f':'impact','col':'#ffd75e'},'title':{'cx':0x298,'cy':0x210,'fs':0x2c,'f':'impact','col':'#ffd75e'},'xp':{'cx':0x41a,'cy':0x32a,'fs':0x1d,'f':'bold','col':'#ffffff'},'s1':{'cx':0xf0,'cy':0x3e6,'fs':0x2a,'f':'bold','col':'#ffffff'},'s2':{'cx':0x1da,'cy':0x3e6,'fs':0x2a,'f':'bold','col':'#ffffff'},'s3':{'cx':0x2af,'cy':0x3e6,'fs':0x2a,'f':'bold','col':'#ffffff'},'s4':{'cx':0x395,'cy':0x3e6,'fs':0x2a,'f':'bold','col':'#ffffff'},'s5':{'cx':0x47b,'cy':0x3e6,'fs':0x2a,'f':'bold','col':'#ffffff'}},_0x335414={'x':0x2e7,'y':0x358,'w':0x134,'h':0x16},_0xe2b1c2={'name':0x124,'uid':0x106,'xp':0x13b,'tier':0xbe,'title':0x12c,'lv':0x64,'s1':0x5a,'s2':0x5a,'s3':0x5a,'s4':0x5a,'s5':0x5a},_0x281094=[{'x':0x3ee,'y':0x50,'w':0x60,'h':0x64,'act':function(){if(window['showAssetGallery'])window['showAssetGallery']();else{if(window['toast'])toast('Collection\x20yahan\x20khulegi','ok');}}},{'x':0x470,'y':0x50,'w':0x60,'h':0x64,'act':function(){if(window['showProfileSettings'])window['showProfileSettings']();else{if(window['toast'])toast('Profile\x20settings\x20jald\x20aa\x20rahi\x20hain','ok');}}},{'x':0x2e3,'y':0x176,'w':0x60,'h':0x60,'act':function(){if(window['toast'])toast('Name/UID\x20edit:\x20profile\x20section\x20me','ok');}},{'x':0x32c,'y':0x2b7,'w':0x60,'h':0x60,'act':function(){var _0x23202c=wrap&&wrap['_pc2d']||window['_pc2ProfData']||{},_0x59279b=_0x23202c['uid']!=null?String(_0x23202c['uid']):'';if(!_0x59279b){if(window['toast'])toast('UID\x20nahi\x20mili','inf');return;}if(window['copyTxt'])window['copyTxt'](_0x59279b);else{if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x59279b)['then'](function(){if(window['toast'])toast('UID\x20copy\x20ho\x20gayi','ok');});}}}];function _0x28dfe5(_0x1b5ef5,_0x39cf27){if(_0x1b5ef5['f']==='impact')return'font-family:Impact,\x22Arial\x20Black\x22,Franklin\x20Gothic\x20Bold,sans-serif;font-style:italic;font-weight:900;letter-spacing:.5px;font-size:'+(_0x1b5ef5['fs']*_0x39cf27)['toFixed'](0x1)+'px';return'font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:'+(_0x1b5ef5['fs']*_0x39cf27)['toFixed'](0x1)+'px';}function _0x1766a4(_0x18be8d){return String(_0x18be8d==null?'':_0x18be8d)['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;')['replace'](/"/g,'&quot;');}function _0x1d3df4(_0x227023){return String(_0x227023)['replace'](/"/g,'%22')['replace'](/'/g,'%27');}function _0x3a2fc6(_0x2a73f4){return{'name':_0x2a73f4['name']||'Player','uid':'UID\x20:\x20'+(_0x2a73f4['uid']||'—'),'lv':'Lv\x20'+(_0x2a73f4['level']==null?0x1:_0x2a73f4['level']),'tier':_0x2a73f4['tier']||'Bronze','title':_0x2a73f4['title']||'','xp':(_0x2a73f4['xp']||0x0)+'\x20/\x20'+(_0x2a73f4['xpNeed']||0xa)+'\x20XP\x20\x20•\x20\x20'+(_0x2a73f4['pts']||0x0)+'\x20pts','s1':String(_0x2a73f4['stats']?_0x2a73f4['stats'][0x0]:0x0),'s2':String(_0x2a73f4['stats']?_0x2a73f4['stats'][0x1]:0x0),'s3':String(_0x2a73f4['stats']?_0x2a73f4['stats'][0x2]:0x0),'s4':String(_0x2a73f4['stats']?_0x2a73f4['stats'][0x3]:'0.0'),'s5':String(_0x2a73f4['stats']?_0x2a73f4['stats'][0x4]:'0%')};}var _0x4605e0={'l':3.25,'r':3.35,'t':3.85,'b':3.95},_0x455e20={'l':35.3,'t':66.9,'w':5.9,'h':8.5};function _0xfc52f6(_0x28d153){_0x28d153=String(_0x28d153||'')['toLowerCase']();var _0x3cb5fa=_0x28d153['indexOf']('silver')===0x0?'silver':_0x28d153['indexOf']('gold')===0x0?'gold':_0x28d153['indexOf']('platinum')===0x0?'platinum':_0x28d153['indexOf']('diamond')===0x0?'diamond':_0x28d153['indexOf']('legend')===0x0?'legend':'bronze';return'assets/img/ranks/'+_0x3cb5fa+'.png';}function _0x5cceba(_0x2b5046){var _0xfa0f94=_0x3a2fc6(_0x2b5046),_0x4a1874=Math['max'](0x0,Math['min'](0x64,(_0x2b5046['xp']||0x0)/Math['max'](0x1,_0x2b5046['xpNeed']||0xa)*0x64)),_0x20ece5=_0x2b5046['banner']?'':_0xc19259+'?v='+_0x1ddb40,_0x55afab='<div\x20class=\x22pc2wrap\x22\x20data-pc2=\x221\x22\x20style=\x22position:relative;width:100%;aspect-ratio:'+_0x2513a0+'/'+_0x2581f3+';'+(_0x20ece5?'background:url(\x27'+_0x20ece5+'\x27)\x20center/cover\x20no-repeat;':'')+'border-radius:14px;overflow:hidden;background-color:#0a0e2e\x22>';_0x2b5046['banner']&&(_0x55afab+='<div\x20data-pc2win=\x221\x22\x20style=\x22position:absolute;z-index:0;left:'+_0x4605e0['l']+'%;right:'+_0x4605e0['r']+'%;top:'+_0x4605e0['t']+'%;bottom:'+_0x4605e0['b']+'%;background:url(\x27'+_0x1d3df4(_0x2b5046['banner'])+'\x27)\x20center/cover\x20no-repeat;border-radius:10px;box-shadow:inset\x200\x200\x2040px\x20rgba(0,0,0,.55)\x22></div>');_0x2b5046['photo']&&(_0x55afab+='<img\x20data-pc2av=\x221\x22\x20src=\x22'+_0x1d3df4(_0x2b5046['photo'])+'\x22\x20alt=\x22\x22\x20style=\x22position:absolute;z-index:1;left:'+((_0x50d9ee['cx']-_0x50d9ee['r'])/_0x2513a0*0x64)['toFixed'](0x2)+'%;top:'+((_0x50d9ee['cy']-_0x50d9ee['r'])/_0x2581f3*0x64)['toFixed'](0x2)+'%;width:'+(_0x50d9ee['r']*0x2/_0x2513a0*0x64)['toFixed'](0x2)+'%;height:'+(_0x50d9ee['r']*0x2/_0x2581f3*0x64)['toFixed'](0x2)+'%;border-radius:50%;object-fit:cover;object-position:center\x2020%\x22>');_0x55afab+='<img\x20data-pc2frame=\x221\x22\x20src=\x22'+_0x4bfe43()+'?v='+_0x1ddb40+'\x22\x20alt=\x22\x22\x20style=\x22position:absolute;z-index:2;left:0;top:0;width:100%;height:100%;pointer-events:none\x22>',_0x55afab+='<div\x20data-pc2tcover=\x221\x22\x20style=\x22position:absolute;z-index:2;left:33.4%;top:41.6%;width:33.2%;height:5.1%;background:#191108;border-radius:4px;pointer-events:none\x22></div>',_0x55afab+='<div\x20data-pc2tiercover=\x221\x22\x20style=\x22position:absolute;z-index:2;left:'+_0x455e20['l']+'%;top:'+_0x455e20['t']+'%;width:'+_0x455e20['w']+'%;height:'+_0x455e20['h']+'%;background:#241600;border-radius:6px;pointer-events:none\x22></div>',_0x55afab+='<img\x20data-pc2tiericon=\x221\x22\x20src=\x22'+_0xfc52f6(_0x2b5046['tier'])+'?v='+_0x1ddb40+'\x22\x20alt=\x22\x22\x20style=\x22position:absolute;z-index:3;left:'+(_0x455e20['l']+0.5)+'%;top:'+(_0x455e20['t']+0.6)+'%;width:'+(_0x455e20['w']-0x1)+'%;height:'+(_0x455e20['h']-1.2)+'%;object-fit:contain;pointer-events:none\x22>';var _0x1e5e5b='',_0x5419de=Number(_0x2b5046['premLevel'])||0x0,_0x4f47ed=_0x2b5046['premHtml']?String(_0x2b5046['premHtml']):_0x2b5046['prem']?_0x1766a4(_0x2b5046['prem']):'';if(_0x4f47ed){var _0x255570=_0x5419de>=0x3?'linear-gradient(135deg,#9ff1ff,#4f7bff)':_0x5419de===0x1?'linear-gradient(135deg,#f5f8ff,#a9b8cc)':'linear-gradient(135deg,#ffd75e,#ff9c00)',_0x586f7b=_0x5419de>=0x3?'#08243c':_0x5419de===0x1?'#232833':'#2b1a00',_0x3daa3d=_0x5419de>=0x3?'rgba(120,200,255,.6)':_0x5419de===0x1?'rgba(220,230,255,.5)':'rgba(255,190,0,.55)';_0x1e5e5b+='<span\x20style=\x22display:inline-flex;align-items:center;gap:.4em;padding:.34em\x201em;border-radius:999px;font-size:.82em;font-weight:900;letter-spacing:.4px;background:'+_0x255570+';color:'+_0x586f7b+';white-space:nowrap;box-shadow:0\x200\x2012px\x20'+_0x3daa3d+',0\x201px\x203px\x20rgba(0,0,0,.5)\x22>'+_0x4f47ed+'</span>';}if(_0x2b5046['vip'])_0x1e5e5b+='<span\x20style=\x22display:inline-flex;align-items:center;gap:.35em;padding:.3em\x20.9em;border-radius:999px;font-size:.78em;font-weight:900;background:rgba(255,215,0,.14);border:1px\x20solid\x20rgba(255,215,0,.6);color:#ffd700;white-space:nowrap\x22><img\x20src=\x22assets/img/icons/crown.png?v='+_0x1ddb40+'\x22\x20alt=\x22\x22\x20style=\x22height:1.15em;width:1.15em;object-fit:contain\x22>\x20VIP</span>';return(_0x2b5046['badges']||[])['forEach'](function(_0x4c6aa9){_0x1e5e5b+='<img\x20src=\x22'+_0x1d3df4(_0x4c6aa9)+'\x22\x20alt=\x22\x22\x20style=\x22height:1.7em;aspect-ratio:1;object-fit:contain;border-radius:.4em\x22>';}),_0x1e5e5b&&(_0x55afab+='<div\x20data-pc2chips=\x221\x22\x20style=\x22position:absolute;z-index:3;left:3.6%;right:3.4%;top:75.2%;height:6.2%;display:flex;align-items:center;justify-content:flex-end;gap:.4em;font-size:30px\x22>'+_0x1e5e5b+'</div>'),Object['keys'](_0xa7db32)['forEach'](function(_0x4ef43a){var _0x5b217e=_0xa7db32[_0x4ef43a],_0x272c4b=_0x5b217e['f']==='impact'?'\x20skewX(-8deg);':'',_0x1fa59a=_0x4ef43a==='name'?'text-shadow:0\x202px\x208px\x20rgba(0,0,0,.75);':_0x4ef43a==='tier'?'text-shadow:0\x202px\x204px\x20rgba(60,30,0,.8);':'text-shadow:0\x201px\x204px\x20rgba(0,0,0,.7);';_0x55afab+='<span\x20data-pc2lbl=\x22'+_0x4ef43a+'\x22\x20style=\x22position:absolute;z-index:3;left:'+(_0x5b217e['cx']/_0x2513a0*0x64)['toFixed'](0x3)+'%;top:'+(_0x5b217e['cy']/_0x2581f3*0x64)['toFixed'](0x3)+'%;transform:translate(-50%,-50%)'+_0x272c4b+';'+_0x1fa59a+'color:'+_0x5b217e['col']+';white-space:nowrap;font-size:'+_0x5b217e['fs']+'px\x22\x20data-fs=\x22'+_0x5b217e['fs']+'\x22>'+_0x1766a4(_0xfa0f94[_0x4ef43a])+'</span>';}),_0x4a1874>0x0&&(_0x55afab+='<div\x20style=\x22position:absolute;z-index:3;left:'+(_0x335414['x']/_0x2513a0*0x64)['toFixed'](0x2)+'%;top:'+(_0x335414['y']/_0x2581f3*0x64)['toFixed'](0x2)+'%;height:'+(_0x335414['h']/_0x2581f3*0x64)['toFixed'](0x2)+'%;width:'+(_0x335414['w']*_0x4a1874/0x64/_0x2513a0*0x64)['toFixed'](0x2)+'%;background:linear-gradient(90deg,#00ff9c,#a4ff4d);border-radius:4px;box-shadow:0\x200\x2010px\x20rgba(0,255,150,.8)\x22></div>'),_0x281094['forEach'](function(_0x14e45b,_0x136b25){_0x55afab+='<button\x20data-pc2btn=\x22'+_0x136b25+'\x22\x20aria-label=\x22card\x20action\x22\x20style=\x22position:absolute;z-index:4;left:'+(_0x14e45b['x']/_0x2513a0*0x64)['toFixed'](0x2)+'%;top:'+(_0x14e45b['y']/_0x2513a0*0x0+_0x14e45b['y']/_0x2581f3*0x64)['toFixed'](0x2)+'%;width:'+(_0x14e45b['w']/_0x2513a0*0x64)['toFixed'](0x2)+'%;height:'+(_0x14e45b['h']/_0x2581f3*0x64)['toFixed'](0x2)+'%;background:transparent;border:0;cursor:pointer;border-radius:12px\x22></button>';}),_0x55afab+='</div>',_0x55afab;}function _0x5ea500(_0x26fea4){var _0x196f0a=_0x26fea4['clientWidth']||0x168,_0x4c523d=_0x196f0a/_0x2513a0;_0x26fea4['querySelectorAll']('[data-pc2lbl]')['forEach'](function(_0x20271f){var _0x487690=_0x20271f['getAttribute']('data-pc2lbl');_0x20271f['style']['fontSize']=(Number(_0x20271f['getAttribute']('data-fs'))*_0x4c523d)['toFixed'](0x2)+'px';var _0x21454a=(_0xe2b1c2[_0x487690]||0x270f)*_0x4c523d,_0x3de586=_0x20271f['scrollWidth'];if(_0x3de586>_0x21454a&&_0x3de586>0x0)_0x20271f['style']['fontSize']=(parseFloat(_0x20271f['style']['fontSize'])*_0x21454a/_0x3de586)['toFixed'](0x2)+'px';}),_0x26fea4['querySelectorAll']('[data-pc2chips]')['forEach'](function(_0x45b34b){_0x45b34b['style']['fontSize']=(0x1e*_0x4c523d)['toFixed'](0x2)+'px';});}function _0x2416b2(_0x3462aa,_0x57eb66){var _0x331609=_0x57eb66&&_0x57eb66['getAttribute']('data-pc2own')==='1',_0x38e0d8=_0x57eb66&&_0x57eb66['getAttribute']('data-pc2pub')==='1';try{if(_0x38e0d8&&(_0x3462aa===0x0||_0x3462aa===0x1)){if(window['toast'])toast('Ye\x20section\x20sirf\x20apni\x20profile\x20card\x20par\x20hota\x20hai','inf');return;}if(_0x3462aa===0x0){if(window['showAssetGallery'])window['showAssetGallery']();else{if(window['toast'])toast('Collection\x20load\x20nahi\x20hui\x20—\x20app\x20refresh\x20karo','err');}}else{if(_0x3462aa===0x1){if(window['showProfileSettings']){var _0x1e44d1=document['getElementById']('profSettingsSheet');if(_0x1e44d1&&window['closeProfileSettings'])window['closeProfileSettings']();window['showProfileSettings']();}else{if(window['toast'])toast('Settings\x20load\x20nahi\x20hui\x20—\x20app\x20refresh\x20karo','err');}}else{if(_0x3462aa===0x2){if(_0x331609){var _0x3b8215=document['getElementById']('profImgIn');if(_0x3b8215)_0x3b8215['click']();else{if(window['showProfileSettings'])window['showProfileSettings']();}}else{if(window['toast'])toast('Apni\x20profile\x20par\x20photo\x20edit\x20karo','inf');}}else{if(_0x3462aa===0x3){var _0x5174de=_0x57eb66&&_0x57eb66['_pc2d']||window['_pc2ProfData']||{},_0x41c77d=_0x5174de['uid']!=null?String(_0x5174de['uid']):'';if(!_0x41c77d){if(window['toast'])toast('UID\x20nahi\x20mili','inf');return;}if(window['copyTxt'])window['copyTxt'](_0x41c77d);else{if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x41c77d)['then'](function(){if(window['toast'])toast('UID\x20copy\x20ho\x20gayi','ok');});}}}}}}catch(_0x3f864b){if(window['toast'])toast('Action\x20fail:\x20'+(_0x3f864b&&_0x3f864b['message']?_0x3f864b['message']:'retry'),'err');}}function _0x5437f4(_0x762d72,_0x1863fb){_0x5ea500(_0x762d72),_0x762d72['querySelectorAll']('[data-pc2btn]')['forEach'](function(_0x2e59f8){_0x2e59f8['addEventListener']('click',function(){_0x2416b2(Number(_0x2e59f8['getAttribute']('data-pc2btn')),_0x762d72);});}),!window['__pc2Resize']&&(window['__pc2Resize']=!![],window['addEventListener']('resize',function(){document['querySelectorAll']('[data-pc2]')['forEach'](_0x5ea500);}));}function _0x3b2533(_0x5d8489,_0x3411b3,_0x5a4a85,_0x17b0dc){_0x5d8489['innerHTML']=_0x5cceba(_0x3411b3);var _0x2ad64c=_0x5d8489['querySelector']('[data-pc2]');if(_0x2ad64c){_0x2ad64c['_pc2d']=_0x3411b3;if(_0x17b0dc&&_0x17b0dc['own'])_0x2ad64c['setAttribute']('data-pc2own','1');if(_0x17b0dc&&_0x17b0dc['public'])_0x2ad64c['setAttribute']('data-pc2pub','1');_0x5437f4(_0x2ad64c,_0x5a4a85);}return _0x2ad64c;}function _0x229d75(_0x16458e,_0x35c3a3,_0x449352,_0x10bfab){var _0x492813=_0x35c3a3['width']/_0x35c3a3['height'],_0x5d136b=_0x449352/_0x10bfab,_0x11cd66,_0x1ac12a,_0x517b9a,_0x3ecbd5;_0x492813>_0x5d136b?(_0x1ac12a=_0x35c3a3['height'],_0x11cd66=_0x1ac12a*_0x5d136b,_0x517b9a=(_0x35c3a3['width']-_0x11cd66)/0x2,_0x3ecbd5=0x0):(_0x11cd66=_0x35c3a3['width'],_0x1ac12a=_0x11cd66/_0x5d136b,_0x517b9a=0x0,_0x3ecbd5=(_0x35c3a3['height']-_0x1ac12a)/0x2),_0x16458e['drawImage'](_0x35c3a3,_0x517b9a,_0x3ecbd5,_0x11cd66,_0x1ac12a,0x0,0x0,_0x449352,_0x10bfab);}function _0x4104e8(_0xd0e2a4,_0x596a4b,_0xf2bacc,_0x46f3ef){var _0x2a6c2b=_0xf2bacc/_0x2513a0,_0x2f0794=Math['round'](_0xf2bacc*_0x2581f3/_0x2513a0);_0xd0e2a4['clearRect'](0x0,0x0,_0xf2bacc,_0x2f0794),_0xd0e2a4['save'](),_0xd0e2a4['beginPath'](),_0xd0e2a4['rect'](0x0,0x0,_0xf2bacc,_0x2f0794),_0xd0e2a4['clip'](),_0xd0e2a4['fillStyle']='#0a0e2e',_0xd0e2a4['fillRect'](0x0,0x0,_0xf2bacc,_0x2f0794);var _0x3b9482=_0x46f3ef&&_0x46f3ef['scene']||null;if(_0x3b9482&&!_0x596a4b['banner'])_0x229d75(_0xd0e2a4,_0x3b9482,_0xf2bacc,_0x2f0794);if(_0x596a4b['banner']&&_0x46f3ef&&_0x46f3ef['banner']){var _0x46e874=_0x4605e0['l']/0x64*_0xf2bacc,_0xafc000=_0x4605e0['t']/0x64*_0x2f0794,_0x43eddf=_0xf2bacc-_0x46e874-_0x4605e0['r']/0x64*_0xf2bacc,_0xc26f7f=_0x2f0794-_0xafc000-_0x4605e0['b']/0x64*_0x2f0794;_0xd0e2a4['save'](),_0xd0e2a4['beginPath']();if(_0xd0e2a4['roundRect'])_0xd0e2a4['roundRect'](_0x46e874,_0xafc000,_0x43eddf,_0xc26f7f,0xa*_0x2a6c2b);else _0xd0e2a4['rect'](_0x46e874,_0xafc000,_0x43eddf,_0xc26f7f);_0xd0e2a4['clip']();var _0x30eca6=_0x46f3ef['banner'],_0x5bc227=_0x30eca6['width']/_0x30eca6['height'],_0x43552b=_0x43eddf/_0xc26f7f,_0x4c3369,_0x35e10c,_0x3ed606,_0x1c74bb;_0x5bc227>_0x43552b?(_0x35e10c=_0x30eca6['height'],_0x4c3369=_0x35e10c*_0x43552b,_0x3ed606=(_0x30eca6['width']-_0x4c3369)/0x2,_0x1c74bb=0x0):(_0x4c3369=_0x30eca6['width'],_0x35e10c=_0x4c3369/_0x43552b,_0x3ed606=0x0,_0x1c74bb=(_0x30eca6['height']-_0x35e10c)/0x2),_0xd0e2a4['drawImage'](_0x30eca6,_0x3ed606,_0x1c74bb,_0x4c3369,_0x35e10c,_0x46e874,_0xafc000,_0x43eddf,_0xc26f7f),_0xd0e2a4['restore']();}if(_0x46f3ef&&_0x46f3ef['photo']){var _0x1418b8=(_0x50d9ee['cx']-_0x50d9ee['r'])*_0x2a6c2b,_0x435a4c=(_0x50d9ee['cy']-_0x50d9ee['r'])*_0x2a6c2b,_0x3961af=_0x50d9ee['r']*0x2*_0x2a6c2b;_0xd0e2a4['save'](),_0xd0e2a4['beginPath'](),_0xd0e2a4['arc'](_0x50d9ee['cx']*_0x2a6c2b,_0x50d9ee['cy']*_0x2a6c2b,_0x50d9ee['r']*_0x2a6c2b,0x0,Math['PI']*0x2),_0xd0e2a4['clip']();var _0x1e32be=_0x46f3ef['photo'],_0x1f25af=_0x1e32be['width']/_0x1e32be['height'],_0xcadba9,_0x3b0470,_0x29ddd6,_0x49bb70;_0x1f25af>0x1?(_0x3b0470=_0x1e32be['height'],_0xcadba9=_0x3b0470,_0x29ddd6=(_0x1e32be['width']-_0xcadba9)/0x2,_0x49bb70=0x0):(_0xcadba9=_0x1e32be['width'],_0x3b0470=_0xcadba9,_0x29ddd6=0x0,_0x49bb70=(_0x1e32be['height']-_0x3b0470)/0x2),_0xd0e2a4['drawImage'](_0x1e32be,_0x29ddd6,_0x49bb70,_0xcadba9,_0x3b0470,_0x1418b8,_0x435a4c,_0x3961af,_0x3961af),_0xd0e2a4['restore']();}_0xd0e2a4['restore']();if(_0x46f3ef&&_0x46f3ef['frame'])_0xd0e2a4['drawImage'](_0x46f3ef['frame'],0x0,0x0,_0xf2bacc,_0x2f0794);_0xd0e2a4['fillStyle']='#241600',_0xd0e2a4['fillRect'](_0x455e20['l']/0x64*_0xf2bacc,_0x455e20['t']/0x64*_0x2f0794,_0x455e20['w']/0x64*_0xf2bacc,_0x455e20['h']/0x64*_0x2f0794);if(_0x46f3ef&&_0x46f3ef['tier'])_0xd0e2a4['drawImage'](_0x46f3ef['tier'],(_0x455e20['l']+0.5)/0x64*_0xf2bacc,(_0x455e20['t']+0.6)/0x64*_0x2f0794,(_0x455e20['w']-0x1)/0x64*_0xf2bacc,(_0x455e20['h']-1.2)/0x64*_0x2f0794);var _0x5cf2c8=_0x3a2fc6(_0x596a4b);_0xd0e2a4['textAlign']='center',_0xd0e2a4['textBaseline']='middle',Object['keys'](_0xa7db32)['forEach'](function(_0x1cdc1c){var _0x2c0d02=_0xa7db32[_0x1cdc1c];_0xd0e2a4['save'](),_0xd0e2a4['translate'](_0x2c0d02['cx']*_0x2a6c2b,_0x2c0d02['cy']*_0x2a6c2b);var _0x3e5c6e=_0x2c0d02['fs']*_0x2a6c2b;if(_0x2c0d02['f']==='impact')_0xd0e2a4['transform'](0x1,0x0,-0.14,0x1,0x0,0x0),_0xd0e2a4['font']='900\x20'+_0x3e5c6e['toFixed'](0x1)+'px\x20Impact,\x22Arial\x20Black\x22,sans-serif';else _0xd0e2a4['font']='800\x20'+_0x3e5c6e['toFixed'](0x1)+'px\x20Arial,sans-serif';var _0x14b079=(_0xe2b1c2[_0x1cdc1c]||0x270f)*_0x2a6c2b,_0x5eb336=_0xd0e2a4['measureText'](_0x5cf2c8[_0x1cdc1c])['width'];_0x5eb336>_0x14b079&&_0x5eb336>0x0&&(_0x3e5c6e=_0x3e5c6e*_0x14b079/_0x5eb336,_0xd0e2a4['font']=(_0x2c0d02['f']==='impact'?'900\x20':'800\x20')+_0x3e5c6e['toFixed'](0x1)+'px\x20'+(_0x2c0d02['f']==='impact'?'Impact,\x22Arial\x20Black\x22,sans-serif':'Arial,sans-serif')),_0x1cdc1c==='name'&&(_0xd0e2a4['shadowColor']='rgba(0,0,0,.75)',_0xd0e2a4['shadowBlur']=0x8*_0x2a6c2b,_0xd0e2a4['shadowOffsetY']=0x2*_0x2a6c2b),_0x1cdc1c==='tier'&&(_0xd0e2a4['lineWidth']=0x5*_0x2a6c2b,_0xd0e2a4['strokeStyle']='rgba(60,30,0,.85)',_0xd0e2a4['strokeText'](_0x5cf2c8[_0x1cdc1c],0x0,0x0)),_0xd0e2a4['fillStyle']=_0x2c0d02['col'],_0xd0e2a4['fillText'](_0x5cf2c8[_0x1cdc1c],0x0,0x0),_0xd0e2a4['restore']();});var _0x30ff7b=Math['max'](0x0,Math['min'](0x64,(_0x596a4b['xp']||0x0)/Math['max'](0x1,_0x596a4b['xpNeed']||0xa)*0x64));if(_0x30ff7b>0x0){var _0x27c9df=_0xd0e2a4['createLinearGradient'](_0x335414['x']*_0x2a6c2b,0x0,(_0x335414['x']+_0x335414['w'])*_0x2a6c2b,0x0);_0x27c9df['addColorStop'](0x0,'#00ff9c'),_0x27c9df['addColorStop'](0x1,'#a4ff4d'),_0xd0e2a4['fillStyle']=_0x27c9df,_0xd0e2a4['shadowColor']='rgba(0,255,150,.8)',_0xd0e2a4['shadowBlur']=0xa*_0x2a6c2b,_0xd0e2a4['beginPath']();if(_0xd0e2a4['roundRect'])_0xd0e2a4['roundRect'](_0x335414['x']*_0x2a6c2b,_0x335414['y']*_0x2a6c2b,_0x335414['w']*_0x2a6c2b*_0x30ff7b/0x64,_0x335414['h']*_0x2a6c2b,0x4*_0x2a6c2b);else _0xd0e2a4['rect'](_0x335414['x']*_0x2a6c2b,_0x335414['y']*_0x2a6c2b,_0x335414['w']*_0x2a6c2b*_0x30ff7b/0x64,_0x335414['h']*_0x2a6c2b);_0xd0e2a4['fill'](),_0xd0e2a4['shadowBlur']=0x0;}return _0x2f0794;}function _0x31168b(_0x5096c6,_0x1d342e){var _0x3e29c2={'frame':null,'scene':null,'photo':null,'banner':null,'tier':null},_0x72be07=0x3+(_0x5096c6&&_0x5096c6['photo']?0x1:0x0)+(_0x5096c6&&_0x5096c6['banner']?0x1:0x0);function _0x22a1d2(){_0x72be07--;if(_0x72be07<=0x0)_0x1d342e(_0x3e29c2);}function _0x7015ac(_0x381cb2,_0x3a0b26){var _0x42c4e7=new Image();if(/^https?:/['test'](location['protocol']))_0x42c4e7['crossOrigin']='anonymous';_0x42c4e7['onload']=function(){_0x3e29c2[_0x3a0b26]=_0x42c4e7,_0x22a1d2();},_0x42c4e7['onerror']=function(){_0x22a1d2();},_0x42c4e7['src']=_0x381cb2;}_0x7015ac(_0x4bfe43()+'?v='+_0x1ddb40,'frame'),_0x7015ac(_0xc19259+'?v='+_0x1ddb40,'scene'),_0x7015ac(_0xfc52f6(_0x5096c6&&_0x5096c6['tier'])+'?v='+_0x1ddb40,'tier');if(_0x5096c6&&_0x5096c6['photo'])_0x7015ac(_0x5096c6['photo'],'photo');if(_0x5096c6&&_0x5096c6['banner'])_0x7015ac(_0x5096c6['banner'],'banner');}function _0xf0f68(_0x316618){_0x31168b(null,function(_0x553790){_0x316618(_0x553790['frame']);});}window['PCARD2']={'W':_0x2513a0,'H':_0x2581f3,'BASE':_0x4ac8e1,'FRAME':_0x4ac8e1,'SCENE':_0xc19259,'AV':_0x50d9ee,'html':_0x5cceba,'mount':_0x3b2533,'draw':_0x4104e8,'loadImg':_0xf0f68,'loadImgs':_0x31168b,'scaleWrap':_0x5ea500},console['log']('[Mini\x20eSports]\x20✅\x20Profile\x20Card\x20v2\x20core\x20loaded\x20(exact-replica,\x20dynamic\x20photo/banner\x20layers)');}());
+/* ══════════════════════════════════════════════════════════════════
+   PROFILE CARD v2 (D36, 04 Nov 2026) — owner ki di hui design ka
+   100% exact replica.  D77 (06 Nov 2026, owner complaint "profile
+   photo/banner update nahi hoti"): ab koi bhi dynamic cheez art me
+   BAKED nahi — card 4 layers se banta hai:
+     1) BACKGROUND  = user ka banner (banner_url); na ho to default
+                      scene art (card_scene.jpg)
+     2) AVATAR      = user ki asli photo (avatar_url) circular clip me;
+                      na ho to ring ka khali center dikhta hai
+     3) FRAME       = card_frame.png (transparent PNG — ring, crown,
+                      wreaths, shield, pencil, plates, wings, hexagon,
+                      medal, XP bar, stats bar, border glow, buttons)
+     4) TEXT/BAR    = dynamic labels (name, UID, Lv, tier, XP, pts,
+                      5 stats) — same coordinate table (1323×1189),
+                      HTML modal aur share-canvas dono pixel-identical.
+   ══════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  var W = 1323, H = 1189;
+  var STAMP = '20261106b';
+  var FRAME = 'assets/profile/card_frame.png';
+  /* ✅ D103 z22: frame PNG me baked English stat-labels; Hindi variant swap */
+  function frameAsset() {
+    try { if ((window._lang || localStorage.getItem('appLang') || 'hi') === 'hi') return 'assets/profile/card_frame_hi.png'; } catch (e) {}
+    return FRAME;
+  }
+  var SCENE = 'assets/profile/card_scene.jpg';
+  /* avatar circle (ring ka inner hole) — 1323×1189 space me */
+  var AV = { cx: 661, cy: 296, r: 158 };
+  /* label table: cx,cy = centre (px @1323×1189), fs = font-size px, f = font style */
+  var LBL = {
+    name: { cx: 634, cy: 597, fs: 62, f: 'impact', col: '#ffffff' },
+    uid:  { cx: 646, cy: 712, fs: 37, f: 'bold',   col: '#ffffff' },
+    lv:   { cx: 230, cy: 848, fs: 44, f: 'bold',   col: '#ffffff' },
+    tier: { cx: 648, cy: 849, fs: 44, f: 'impact', col: '#ffd75e' },
+    title:{ cx: 664, cy: 528, fs: 44, f: 'impact', col: '#ffd75e' }, /* ✅ D101: plate CENTER (pixel-probe 664) — pehle 722 tha → title right-shift dikhta tha */
+    xp:   { cx: 1050, cy: 810, fs: 29, f: 'bold',  col: '#ffffff' },
+    s1:   { cx: 240,  cy: 998, fs: 42, f: 'bold',  col: '#ffffff' },
+    s2:   { cx: 474,  cy: 998, fs: 42, f: 'bold',  col: '#ffffff' },
+    s3:   { cx: 687,  cy: 998, fs: 42, f: 'bold',  col: '#ffffff' },
+    s4:   { cx: 917,  cy: 998, fs: 42, f: 'bold',  col: '#ffffff' },
+    s5:   { cx: 1147, cy: 998, fs: 42, f: 'bold',  col: '#ffffff' }
+  };
+  var BAR = { x: 743, y: 856, w: 308, h: 22 };
+  /* max text widths (px @1323 space) — lambe naam/UID auto-shrink hote hain */
+  var ALLOW = { name: 292, uid: 262, xp: 315, tier: 190, title: 300, lv: 100, s1: 90, s2: 90, s3: 90, s4: 90, s5: 90 };
+  /* ✅ D80 (06 Nov 2026, owner: "gallery se settings khuli, gear se kuch nahi"):
+     frame PNG ke visible icons grid-map se measure kiye gaye aur hotspots
+     UNKE exactly neeche rakhe gaye (pehle ye do top hotspots ~8% left the —
+     image icon settings-hotspot par aur gear dead-zone me tha):
+       image-icon square  x 76-83%,  y 7-15%   => btn0
+       gear square        x 85.5-93.5%, y 7-15% => btn1
+       pencil circle      centre 59.5%, 35.5%  => btn2
+       copy purple square centre 65%, 62.5%    => btn3 */
+  var BTNS = [
+    { x: 1006, y: 80, w: 96, h: 100, act: function () { if (window.showAssetGallery) window.showAssetGallery(); else if (window.toast) toast('Collection yahan khulegi', 'ok'); } },
+    { x: 1136, y: 80, w: 96, h: 100, act: function () { if (window.showProfileSettings) window.showProfileSettings(); else if (window.toast) toast('Profile settings jald aa rahi hain', 'ok'); } },
+    { x: 739, y: 374, w: 96, h: 96, act: function () { if (window.toast) toast('Name/UID edit: profile section me', 'ok'); } },
+    /* ✅ D70: copy-icon hotspot — art me baked icon tha par click par kuch
+       nahi hota tha (owner complaint). Ab UID copy hoti hai. */
+    { x: 812, y: 695, w: 96, h: 96, act: function () {
+        var d = (wrap && wrap._pc2d) || window._pc2ProfData || {};
+        var u = d.uid != null ? String(d.uid) : '';
+        if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
+        if (window.copyTxt) window.copyTxt(u);
+        else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function(){ if (window.toast) toast('UID copy ho gayi', 'ok'); });
+      } }
+  ];
+  function fontCss(l, s) {
+    if (l.f === 'impact') return 'font-family:Impact,"Arial Black",Franklin Gothic Bold,sans-serif;font-style:italic;font-weight:900;letter-spacing:.5px;font-size:' + (l.fs * s).toFixed(1) + 'px';
+    return 'font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:' + (l.fs * s).toFixed(1) + 'px';
+  }
+  function esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function escUrl(u) { return String(u).replace(/"/g, '%22').replace(/'/g, '%27'); }
+
+  /* data: {name,uid,level,xp,xpNeed,pts,tier,title,stats:[m,k,w,km,wr],
+            photo: avatar_url, banner: banner_url} */
+  function texts(d) {
+    return {
+      name: d.name || 'Player',
+      uid: 'UID : ' + (d.uid || '—'),
+      lv: 'Lv ' + (d.level == null ? 1 : d.level),
+      tier: d.tier || 'Bronze',
+      title: d.title || '',
+      xp: (d.xp || 0) + ' / ' + (d.xpNeed || 10) + ' XP  •  ' + (d.pts || 0) + ' pts',
+      s1: String(d.stats ? d.stats[0] : 0),
+      s2: String(d.stats ? d.stats[1] : 0),
+      s3: String(d.stats ? d.stats[2] : 0),
+      s4: String(d.stats ? d.stats[3] : '0.0'),
+      s5: String(d.stats ? d.stats[4] : '0%')
+    };
+  }
+
+  /* ✅ D96 (2026-11-09, owner live report): "banner border line se bahar ja
+     raha hai" — purana code user ka custom banner POORI card par full-bleed
+     background lagata tha, jabki frame PNG transparent hai → banner frame
+     ki border-line ke BAHAR ke margins me bhi dikhta tha (red TQ-Kings
+     banner wale card me saaf dikha). Ab custom banner SIRF frame ki inner
+     window me clip hota hai (window rect frame PNG ke opaque border-line
+     runs se pngjs se measure kiya gaya: 1086×976 asset me left line x≈29-35,
+     right x≈1050-1056, top y≈32-37, bottom y≈938-943 → % insets neeche).
+     Default scene (bina banner) pehle jaisa full-bleed hi rehta hai
+     (owner-approved replica look). */
+  var BWIN = { l: 3.25, r: 3.35, t: 3.85, b: 3.95 }; /* % insets — frame line ke andar */
+  /* ✅ D102 (owner: "profile card me 🥇 chipka hua"): card_frame.png ke tier-pill
+     ke andar BAKED blue-ribbon medal icon tha (emoji-jaisa art; pixel-probe
+     frame-px x390-444, y656-732). D100-F3b title-cover wala hi tarika: dark
+     cover patch + upar dynamic ASLI rank asset (tier ke hisaab se). */
+  var TIERCV = { l: 35.3, t: 66.9, w: 5.9, h: 8.5 };
+  function _tierAsset(t) {
+    t = String(t || '').toLowerCase();
+    var f = t.indexOf('silver') === 0 ? 'silver' : t.indexOf('gold') === 0 ? 'gold'
+          : t.indexOf('platinum') === 0 ? 'platinum' : t.indexOf('diamond') === 0 ? 'diamond'
+          : t.indexOf('legend') === 0 ? 'legend' : 'bronze';
+    return 'assets/img/ranks/' + f + '.png';
+  }
+
+  function html(d) {
+    var t = texts(d);
+    var pct = Math.max(0, Math.min(100, (d.xp || 0) / Math.max(1, d.xpNeed || 10) * 100));
+    /* LAYER 1 — background: bina banner = default scene art full-bleed;
+       banner wale card me margins clean dark rehte hain (D96) */
+    var bg = d.banner ? '' : SCENE + '?v=' + STAMP;
+    var h = '<div class="pc2wrap" data-pc2="1" style="position:relative;width:100%;aspect-ratio:' + W + '/' + H + ';' + (bg ? 'background:url(\'' + bg + '\') center/cover no-repeat;' : '') + 'border-radius:14px;overflow:hidden;background-color:#0a0e2e">';
+    /* LAYER 1b — ✅ D96: asli banner SIRF frame-window ke andar */
+    if (d.banner) {
+      h += '<div data-pc2win="1" style="position:absolute;z-index:0;left:' + BWIN.l + '%;right:' + BWIN.r + '%;top:' + BWIN.t + '%;bottom:' + BWIN.b + '%;background:url(\'' + escUrl(d.banner) + '\') center/cover no-repeat;border-radius:10px;box-shadow:inset 0 0 40px rgba(0,0,0,.55)"></div>';
+    }
+    /* LAYER 2 — asli profile photo (circular), ring ke hole me */
+    if (d.photo) {
+      h += '<img data-pc2av="1" src="' + escUrl(d.photo) + '" alt="" style="position:absolute;z-index:1;left:' + ((AV.cx - AV.r) / W * 100).toFixed(2) + '%;top:' + ((AV.cy - AV.r) / H * 100).toFixed(2) + '%;width:' + (AV.r * 2 / W * 100).toFixed(2) + '%;height:' + (AV.r * 2 / H * 100).toFixed(2) + '%;border-radius:50%;object-fit:cover;object-position:center 20%">';
+    }
+    /* LAYER 3 — transparent frame PNG (ring/crown/plates/stats bar…) */
+    h += '<img data-pc2frame="1" src="' + frameAsset() + '?v=' + STAMP + '" alt="" style="position:absolute;z-index:2;left:0;top:0;width:100%;height:100%;pointer-events:none">';
+    /* ✅ D100-F3b (owner: "⚡ symbols card par chipke bina data ke nahi"):
+       frame PNG ke title-plate inner zone me BAKED ⚡🎯 decor pixels the
+       (pixel-probe: 407 bright px). Ye data nahi, art tha — par owner order
+       clean title hai. Isliye plate-inner par dark cover patch (z=frame ke
+       baad, text se pehle) — baked decor chhupta hai, dynamic CLEAN title
+       text (LAYER 4) upar dikhta hai. Title khali ho to plate bilkul saaf.
+       Gold chevron border zone ke BAHAR hai — replica look intact. */
+    h += '<div data-pc2tcover="1" style="position:absolute;z-index:2;left:33.4%;top:41.6%;width:33.2%;height:5.1%;background:#191108;border-radius:4px;pointer-events:none"></div>';
+    /* ✅ D102: baked medal-emoji cover + dynamic tier asset (HTML render) */
+    h += '<div data-pc2tiercover="1" style="position:absolute;z-index:2;left:' + TIERCV.l + '%;top:' + TIERCV.t + '%;width:' + TIERCV.w + '%;height:' + TIERCV.h + '%;background:#241600;border-radius:6px;pointer-events:none"></div>';
+    h += '<img data-pc2tiericon="1" src="' + _tierAsset(d.tier) + '?v=' + STAMP + '" alt="" style="position:absolute;z-index:3;left:' + (TIERCV.l + 0.5) + '%;top:' + (TIERCV.t + 0.6) + '%;width:' + (TIERCV.w - 1.0) + '%;height:' + (TIERCV.h - 1.2) + '%;object-fit:contain;pointer-events:none">';
+    /* LAYER 3.5 — D82+D96: premium tag + VIP chip + earned badges mini-row
+       (medal-row ke neeche dark strip me, right-aligned).
+       ✅ D96 (owner: "premium sahi se show hi nahi ho raha — wo premium
+       user ki nishani aur izzat hai"): purani row patli (4.4%) + fixed 9px
+       font + overflow:hidden thi → chips katte/ghuste the. Ab: poori strip
+       (frame-window ke andar), font card-size ke saath scale hota hai
+       (scaleWrap data-pc2chips), premium chip SOLID GOLD gradient pill
+       (glow ke saath) — kabhi nahi katta, koi overlap nahi. */
+    var _chips = '';
+    /* ✅ D103 (owner: "premium badge aur tag perfectly show hona chahiye,
+       position perfectly set kar"): chip ab TIER ke hisaab se rang (Silver=
+       steel, Gold=gold, Diamond=ice-blue) + ASLI transparent tier icon —
+       pehle har tier par ek jaisa GOLD pill + sirf text tha (icon <img>
+       strip kar diya jata tha), aur public player-card prem HTML bhejta tha
+       jo esc() hoke literal "<img …>" text ban jata tha. premHtml trusted hai
+       (sirf premTierIcon/premTierName se banta hai); fallback esc(d.prem). */
+    var _pl = Number(d.premLevel) || 0;
+    var _premInner = d.premHtml ? String(d.premHtml) : (d.prem ? esc(d.prem) : '');
+    if (_premInner) {
+      var _pg = _pl >= 3 ? 'linear-gradient(135deg,#9ff1ff,#4f7bff)' : _pl === 1 ? 'linear-gradient(135deg,#f5f8ff,#a9b8cc)' : 'linear-gradient(135deg,#ffd75e,#ff9c00)';
+      var _ptx = _pl >= 3 ? '#08243c' : _pl === 1 ? '#232833' : '#2b1a00';
+      var _pgl = _pl >= 3 ? 'rgba(120,200,255,.6)' : _pl === 1 ? 'rgba(220,230,255,.5)' : 'rgba(255,190,0,.55)';
+      _chips += '<span style="display:inline-flex;align-items:center;gap:.4em;padding:.34em 1em;border-radius:999px;font-size:.82em;font-weight:900;letter-spacing:.4px;background:' + _pg + ';color:' + _ptx + ';white-space:nowrap;box-shadow:0 0 12px ' + _pgl + ',0 1px 3px rgba(0,0,0,.5)">' + _premInner + '</span>';
+    }
+    /* ✅ D103: ⭐ emoji ki jagah ASLI crown asset (D100: emoji nahi jab asli
+       asset available ho) */
+    if (d.vip) _chips += '<span style="display:inline-flex;align-items:center;gap:.35em;padding:.3em .9em;border-radius:999px;font-size:.78em;font-weight:900;background:rgba(255,215,0,.14);border:1px solid rgba(255,215,0,.6);color:#ffd700;white-space:nowrap"><img src="assets/img/icons/crown.png?v=' + STAMP + '" alt="" style="height:1.15em;width:1.15em;object-fit:contain"> VIP</span>';
+    (d.badges || []).forEach(function (bi) {
+      _chips += '<img src="' + escUrl(bi) + '" alt="" style="height:1.7em;aspect-ratio:1;object-fit:contain;border-radius:.4em">';
+    });
+    if (_chips) {
+      h += '<div data-pc2chips="1" style="position:absolute;z-index:3;left:3.6%;right:3.4%;top:75.2%;height:6.2%;display:flex;align-items:center;justify-content:flex-end;gap:.4em;font-size:30px">' + _chips + '</div>';
+    }
+    /* LAYER 4 — dynamic text + XP bar + click hotspots */
+    Object.keys(LBL).forEach(function (k) {
+      var l = LBL[k];
+      var skew = l.f === 'impact' ? ' skewX(-8deg);' : '';
+      var shadow = k === 'name' ? 'text-shadow:0 2px 8px rgba(0,0,0,.75);' : (k === 'tier' ? 'text-shadow:0 2px 4px rgba(60,30,0,.8);' : 'text-shadow:0 1px 4px rgba(0,0,0,.7);');
+      h += '<span data-pc2lbl="' + k + '" style="position:absolute;z-index:3;left:' + (l.cx / W * 100).toFixed(3) + '%;top:' + (l.cy / H * 100).toFixed(3) + '%;transform:translate(-50%,-50%)' + skew + ';' + shadow + 'color:' + l.col + ';white-space:nowrap;font-size:' + l.fs + 'px" data-fs="' + l.fs + '">' + esc(t[k]) + '</span>';
+    });
+    if (pct > 0) {
+      h += '<div style="position:absolute;z-index:3;left:' + (BAR.x / W * 100).toFixed(2) + '%;top:' + (BAR.y / H * 100).toFixed(2) + '%;height:' + (BAR.h / H * 100).toFixed(2) + '%;width:' + (BAR.w * pct / 100 / W * 100).toFixed(2) + '%;background:linear-gradient(90deg,#00ff9c,#a4ff4d);border-radius:4px;box-shadow:0 0 10px rgba(0,255,150,.8)"></div>';
+    }
+    BTNS.forEach(function (b, i) {
+      h += '<button data-pc2btn="' + i + '" aria-label="card action" style="position:absolute;z-index:4;left:' + (b.x / W * 100).toFixed(2) + '%;top:' + (b.y / W * 0 + b.y / H * 100).toFixed(2) + '%;width:' + (b.w / W * 100).toFixed(2) + '%;height:' + (b.h / H * 100).toFixed(2) + '%;background:transparent;border:0;cursor:pointer;border-radius:12px"></button>';
+    });
+    h += '</div>';
+    return h;
+  }
+
+  function scaleWrap(wrap) {
+    var w = wrap.clientWidth || 360;
+    var s = w / W;
+    wrap.querySelectorAll('[data-pc2lbl]').forEach(function (el) {
+      var k = el.getAttribute('data-pc2lbl');
+      el.style.fontSize = (Number(el.getAttribute('data-fs')) * s).toFixed(2) + 'px';
+      var allowed = (ALLOW[k] || 9999) * s;
+      var sw = el.scrollWidth;
+      if (sw > allowed && sw > 0) el.style.fontSize = (parseFloat(el.style.fontSize) * allowed / sw).toFixed(2) + 'px';
+    });
+    /* ✅ D96: chips row ka font bhi card-size ke saath scale — taaki premium
+       chip kabhi na kate (fixed 9px wala purana bug) */
+    wrap.querySelectorAll('[data-pc2chips]').forEach(function (el) {
+      el.style.fontSize = (30 * s).toFixed(2) + 'px';
+    });
+  }
+  /* ✅ D79 (06 Nov 2026, owner dobara complaint): button actions ab CORE me
+     hardcoded + click-time late-bound — kisi handlers array / load-order /
+     purane cache se mapping toot hi nahi sakti. own=1 par pencil photo
+     upload; doosre user ke card par pencil = guidance toast. */
+  function runAct(i, wrap) {
+    var own = wrap && wrap.getAttribute('data-pc2own') === '1';
+    var pub = wrap && wrap.getAttribute('data-pc2pub') === '1';
+    try {
+      /* ✅ D83: doosre user ke card par gallery/gear = own-only sections;
+         frame art me baked icons hide nahi ho sakte, isliye pencil-jaisa
+         guidance toast (D79 precedent) — dead tap nahi, galat action nahi. */
+      if (pub && (i === 0 || i === 1)) {
+        if (window.toast) toast('Ye section sirf apni profile card par hota hai', 'inf');
+        return;
+      }
+      if (i === 0) {
+        if (window.showAssetGallery) window.showAssetGallery();
+        else if (window.toast) toast('Collection load nahi hui — app refresh karo', 'err');
+      } else if (i === 1) {
+        if (window.showProfileSettings) {
+          /* gear = hamesha FRESH sheet (toggle-close se "khulti hi nahi"
+             wala bug namumkin) */
+          var ex = document.getElementById('profSettingsSheet');
+          if (ex && window.closeProfileSettings) window.closeProfileSettings();
+          window.showProfileSettings();
+        } else if (window.toast) toast('Settings load nahi hui — app refresh karo', 'err');
+      } else if (i === 2) {
+        if (own) {
+          var pi = document.getElementById('profImgIn');
+          if (pi) pi.click();
+          else if (window.showProfileSettings) window.showProfileSettings();
+        } else if (window.toast) toast('Apni profile par photo edit karo', 'inf');
+      } else if (i === 3) {
+        var d = (wrap && wrap._pc2d) || window._pc2ProfData || {};
+        var u = d.uid != null ? String(d.uid) : '';
+        if (!u) { if (window.toast) toast('UID nahi mili', 'inf'); return; }
+        if (window.copyTxt) window.copyTxt(u);
+        else if (navigator.clipboard) navigator.clipboard.writeText(u).then(function(){ if (window.toast) toast('UID copy ho gayi', 'ok'); });
+      }
+    } catch (e) {
+      if (window.toast) toast('Action fail: ' + (e && e.message ? e.message : 'retry'), 'err');
+    }
+  }
+  function bind(wrap, handlers) {
+    scaleWrap(wrap);
+    wrap.querySelectorAll('[data-pc2btn]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        runAct(Number(el.getAttribute('data-pc2btn')), wrap);
+      });
+    });
+    if (!window.__pc2Resize) {
+      window.__pc2Resize = true;
+      window.addEventListener('resize', function () {
+        document.querySelectorAll('[data-pc2]').forEach(scaleWrap);
+      });
+    }
+  }
+  /* render into container (modal body etc.); handlers = optional [fn,fn,fn]
+     jo default button-actions (gallery/gear/pencil) override karte hain */
+  function mount(container, d, handlers, opts) {
+    container.innerHTML = html(d);
+    var wrap = container.querySelector('[data-pc2]');
+    if (wrap) {
+      wrap._pc2d = d; /* ✅ D83: UID copy har mounted card ka APNA uid kare */
+      if (opts && opts.own) wrap.setAttribute('data-pc2own', '1');
+      /* ✅ D83 (owner: searched user ka card bhi wahi replica): doosre user
+         ke card par OWN-action buttons (gallery/gear) gumrah karenge —
+         public mount par wo hide; pencil = guidance toast (pehle se). */
+      if (opts && opts.public) wrap.setAttribute('data-pc2pub', '1');
+      bind(wrap, handlers);
+    }
+    return wrap;
+  }
+
+  /* ── canvas (share image) — same 4 layers, same table ── */
+  function _cover(ctx, img, cw, ch) {
+    var ir = img.width / img.height, cr = cw / ch;
+    var sw, sh, sx, sy;
+    if (ir > cr) { sh = img.height; sw = sh * cr; sx = (img.width - sw) / 2; sy = 0; }
+    else { sw = img.width; sh = sw / cr; sx = 0; sy = (img.height - sh) / 2; }
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+  }
+  function draw(ctx, d, cw, imgs) {
+    var s = cw / W, ch = Math.round(cw * H / W);
+    ctx.clearRect(0, 0, cw, ch);
+    /* LAYER 1 */
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, cw, ch); ctx.clip();
+    ctx.fillStyle = '#0a0e2e'; ctx.fillRect(0, 0, cw, ch);
+    var bgImg = (imgs && imgs.scene) || null;
+    if (bgImg && !d.banner) _cover(ctx, bgImg, cw, ch); /* banner wale card me margins dark (HTML jaisa) */
+    /* ✅ D96: share-image me bhi banner SIRF frame-window ke andar
+       (HTML render jaisa hi — warna share card me banner bahar dikhta) */
+    if (d.banner && imgs && imgs.banner) {
+      var wx = BWIN.l / 100 * cw, wy = BWIN.t / 100 * ch;
+      var ww = cw - wx - (BWIN.r / 100 * cw), wh = ch - wy - (BWIN.b / 100 * ch);
+      ctx.save();
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(wx, wy, ww, wh, 10 * s); else ctx.rect(wx, wy, ww, wh);
+      ctx.clip();
+      var bi = imgs.banner, ir0 = bi.width / bi.height, cr0 = ww / wh;
+      var sw0, sh0, sx0, sy0;
+      if (ir0 > cr0) { sh0 = bi.height; sw0 = sh0 * cr0; sx0 = (bi.width - sw0) / 2; sy0 = 0; }
+      else { sw0 = bi.width; sh0 = sw0 / cr0; sx0 = 0; sy0 = (bi.height - sh0) / 2; }
+      ctx.drawImage(bi, sx0, sy0, sw0, sh0, wx, wy, ww, wh);
+      ctx.restore();
+    }
+    /* LAYER 2 — photo circular clip (box me cover-crop) */
+    if (imgs && imgs.photo) {
+      var bx = (AV.cx - AV.r) * s, by = (AV.cy - AV.r) * s, bw = AV.r * 2 * s;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(AV.cx * s, AV.cy * s, AV.r * s, 0, Math.PI * 2);
+      ctx.clip();
+      var p = imgs.photo, ir = p.width / p.height;
+      var sw2, sh2, sx2, sy2;
+      if (ir > 1) { sh2 = p.height; sw2 = sh2; sx2 = (p.width - sw2) / 2; sy2 = 0; }
+      else { sw2 = p.width; sh2 = sw2; sx2 = 0; sy2 = (p.height - sh2) / 2; }
+      ctx.drawImage(p, sx2, sy2, sw2, sh2, bx, by, bw, bw);
+      ctx.restore();
+    }
+    ctx.restore();
+    /* LAYER 3 — frame */
+    if (imgs && imgs.frame) ctx.drawImage(imgs.frame, 0, 0, cw, ch);
+    /* ✅ D102: baked medal-emoji cover + dynamic tier asset (share canvas bhi identical) */
+    ctx.fillStyle = '#241600';
+    ctx.fillRect(TIERCV.l / 100 * cw, TIERCV.t / 100 * ch, TIERCV.w / 100 * cw, TIERCV.h / 100 * ch);
+    if (imgs && imgs.tier) ctx.drawImage(imgs.tier, (TIERCV.l + 0.5) / 100 * cw, (TIERCV.t + 0.6) / 100 * ch, (TIERCV.w - 1.0) / 100 * cw, (TIERCV.h - 1.2) / 100 * ch);
+    /* LAYER 4 — text */
+    var t = texts(d);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    Object.keys(LBL).forEach(function (k) {
+      var l = LBL[k];
+      ctx.save();
+      ctx.translate(l.cx * s, l.cy * s);
+      var fs = l.fs * s;
+      if (l.f === 'impact') { ctx.transform(1, 0, -0.14, 1, 0, 0); ctx.font = '900 ' + fs.toFixed(1) + 'px Impact,"Arial Black",sans-serif'; }
+      else ctx.font = '800 ' + fs.toFixed(1) + 'px Arial,sans-serif';
+      var allowed = (ALLOW[k] || 9999) * s;
+      var tw = ctx.measureText(t[k]).width;
+      if (tw > allowed && tw > 0) { fs = fs * allowed / tw; ctx.font = (l.f === 'impact' ? '900 ' : '800 ') + fs.toFixed(1) + 'px ' + (l.f === 'impact' ? 'Impact,"Arial Black",sans-serif' : 'Arial,sans-serif'); }
+      if (k === 'name') { ctx.shadowColor = 'rgba(0,0,0,.75)'; ctx.shadowBlur = 8 * s; ctx.shadowOffsetY = 2 * s; }
+      if (k === 'tier') { ctx.lineWidth = 5 * s; ctx.strokeStyle = 'rgba(60,30,0,.85)'; ctx.strokeText(t[k], 0, 0); }
+      ctx.fillStyle = l.col;
+      ctx.fillText(t[k], 0, 0);
+      ctx.restore();
+    });
+    var pct = Math.max(0, Math.min(100, (d.xp || 0) / Math.max(1, d.xpNeed || 10) * 100));
+    if (pct > 0) {
+      var g = ctx.createLinearGradient(BAR.x * s, 0, (BAR.x + BAR.w) * s, 0);
+      g.addColorStop(0, '#00ff9c'); g.addColorStop(1, '#a4ff4d');
+      ctx.fillStyle = g;
+      ctx.shadowColor = 'rgba(0,255,150,.8)'; ctx.shadowBlur = 10 * s;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(BAR.x * s, BAR.y * s, BAR.w * s * pct / 100, BAR.h * s, 4 * s); else ctx.rect(BAR.x * s, BAR.y * s, BAR.w * s * pct / 100, BAR.h * s);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    return ch;
+  }
+  /* share-flow helper: frame+scene hamesha, photo/banner data se */
+  function loadImgs(d, cb) {
+    var out = { frame: null, scene: null, photo: null, banner: null, tier: null };
+    var pend = 3 + (d && d.photo ? 1 : 0) + (d && d.banner ? 1 : 0);
+    function done() { pend--; if (pend <= 0) cb(out); }
+    function load(src, key) {
+      var im = new Image();
+      /* crossOrigin sirf http(s) par (canvas share ke liye); file:// preview
+         me CORS block hota hai — wahan bina crossOrigin load karo. */
+      if (/^https?:/.test(location.protocol)) im.crossOrigin = 'anonymous';
+      im.onload = function () { out[key] = im; done(); };
+      im.onerror = function () { done(); };
+      im.src = src;
+    }
+    load(frameAsset() + '?v=' + STAMP, 'frame');
+    load(SCENE + '?v=' + STAMP, 'scene');
+    load(_tierAsset(d && d.tier) + '?v=' + STAMP, 'tier');
+    if (d && d.photo) load(d.photo, 'photo');
+    if (d && d.banner) load(d.banner, 'banner');
+  }
+  /* purana naam backward-compat ke liye (ab loadImgs hi use karo) */
+  function loadImg(cb) { loadImgs(null, function (o) { cb(o.frame); }); }
+  window.PCARD2 = { W: W, H: H, BASE: FRAME, FRAME: FRAME, SCENE: SCENE, AV: AV, html: html, mount: mount, draw: draw, loadImg: loadImg, loadImgs: loadImgs, scaleWrap: scaleWrap };
+  console.log('[Mini eSports] ✅ Profile Card v2 core loaded (exact-replica, dynamic photo/banner layers)');
+})();

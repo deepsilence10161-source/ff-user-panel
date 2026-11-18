@@ -1,1 +1,28 @@
-var _0x5caefe=(function(){var _0x29a62e=!![];return function(_0xd4663d,_0x37ea9f){var _0x28efdd=_0x29a62e?function(){if(_0x37ea9f){var _0x3eda4a=_0x37ea9f['apply'](_0xd4663d,arguments);return _0x37ea9f=null,_0x3eda4a;}}:function(){};return _0x29a62e=![],_0x28efdd;};}()),_0x3182e4=_0x5caefe(this,function(){if(_0x3182e4['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3182e4['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3182e4)['search']('(((.+)+)+)+$');});_0x3182e4(),window['showProfileUpdate_v2']=function(){typeof showProfileUpdate==='function'&&showProfileUpdate();},window['updateSeasonDisplay']=function(_0x586163){if(!_0x586163)return;var _0x5be0ba=document['querySelectorAll']('[data-season-name]');_0x5be0ba['forEach'](function(_0x306aaa){_0x306aaa['textContent']=_0x586163['name']||'';});var _0x4e1efd=document['querySelectorAll']('[data-season-rank]');_0x4e1efd['forEach'](function(_0x4b00a1){_0x4b00a1['textContent']=_0x586163['rank']||'';});};!window['showResultScreenshot']&&(window['showResultScreenshot']=function(_0x13b50b,_0x5e24f8){if(window['toast'])toast((_0x5e24f8||'Match')+'\x20ka\x20result\x20screenshot\x20abhi\x20yahan\x20dikhane\x20ka\x20feature\x20ban\x20raha\x20hai!','inf');});
+/* ── features-user-tail: post-IIFE stubs (showProfileUpdate_v2, updateSeasonDisplay, showResultScreenshot) ── */
+
+/* ── showProfileUpdate_v2: Enhanced profile update (v17 stub → calls v1) ── */
+window.showProfileUpdate_v2 = function() {
+  if (typeof showProfileUpdate === 'function') {
+    showProfileUpdate();
+  }
+};
+
+/* ── updateSeasonDisplay: Updates season UI elements ── */
+window.updateSeasonDisplay = function(season) {
+  if (!season) return;
+  var els = document.querySelectorAll('[data-season-name]');
+  els.forEach(function(el) { el.textContent = season.name || ''; });
+  var rankEls = document.querySelectorAll('[data-season-rank]');
+  rankEls.forEach(function(el) { el.textContent = season.rank || ''; });
+};
+
+/* ✅ AUDIT FIX: "Result" button on completed matches in match history called
+   this but it was never defined — tap did nothing, with no feedback at all.
+   Until the real screenshot viewer is wired to wherever the admin-side
+   result image is actually stored, show clear feedback instead of a dead
+   tap so it doesn't look broken. */
+if (!window.showResultScreenshot) {
+  window.showResultScreenshot = function(matchId, matchName) {
+    if (window.toast) toast((matchName || 'Match') + ' ka result screenshot abhi yahan dikhane ka feature ban raha hai!', 'inf');
+  };
+}

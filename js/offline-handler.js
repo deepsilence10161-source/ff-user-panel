@@ -1,1 +1,112 @@
-(function(){var _0x255c5c=(function(){var _0x12d7be=!![];return function(_0x36e333,_0x59a9ec){var _0x19ef60=_0x12d7be?function(){if(_0x59a9ec){var _0x234066=_0x59a9ec['apply'](_0x36e333,arguments);return _0x59a9ec=null,_0x234066;}}:function(){};return _0x12d7be=![],_0x19ef60;};}()),_0x1c4f49=null,_0xeaffc6=!![],_0x470fe6=Date['now'](),_0x9b3a90=![];function _0x16c888(_0x474545,_0x5e3d1b){!_0x1c4f49&&(_0x1c4f49=document['createElement']('div'),_0x1c4f49['id']='vnOfflineBanner',_0x1c4f49['style']['cssText']='position:fixed;top:0;left:0;right:0;z-index:99999;text-align:center;padding:8px\x2016px;font-size:12px;font-weight:700;color:#fff;transition:all\x20.3s;cursor:pointer',_0x1c4f49['onclick']=function(){_0x2bd339(!![]);},document['body']['prepend'](_0x1c4f49)),_0x1c4f49['style']['background']=_0x5e3d1b||'#ff6600',_0x1c4f49['textContent']=_0x474545,_0x1c4f49['style']['display']='block',_0x1c4f49['style']['opacity']='1';}function _0x31e634(){_0x1c4f49&&(_0x1c4f49['style']['opacity']='0',setTimeout(function(){if(_0x1c4f49)_0x1c4f49['style']['display']='none';},0x12c));}function _0x273830(){var _0x4d19ea=_0x255c5c(this,function(){if(_0x4d19ea['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x4d19ea['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x4d19ea)['search']('(((.+)+)+)+$');});_0x4d19ea();if(!_0xeaffc6)return;_0xeaffc6=![],_0x16c888('📡\x20No\x20connection\x20—\x20cached\x20data\x20dikh\x20raha\x20hai','#e65c00');}function _0x2d87bb(){var _0x218f3b=!_0xeaffc6;_0xeaffc6=!![],_0x470fe6=Date['now'](),_0x31e634();if(_0x218f3b){if(window['toast'])toast('✅\x20Back\x20online','ok');setTimeout(function(){if(window['renderHome'])renderHome();if(window['renderMM'])renderMM();if(window['renderWallet'])renderWallet();},0x258);}}function _0x2bd339(_0x1d34b6){if(_0x9b3a90&&!_0x1d34b6)return;_0x9b3a90=!![];if(typeof navigator!=='undefined'&&navigator['onLine']===![]){_0x9b3a90=![],_0x273830();return;}var _0x529355='https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1',_0x16637f=![],_0x5d0041=setTimeout(function(){!_0x16637f&&(_0x16637f=!![],_0x9b3a90=![]);},0x2328);try{fetch(_0x529355,{'cache':'no-store','credentials':'omit','mode':'cors','headers':Object['assign']({'Pragma':'no-cache'},window['_SUPA_ANON_KEY']?{'apikey':window['_SUPA_ANON_KEY']}:{})})['then'](function(){if(_0x16637f)return;_0x16637f=!![],clearTimeout(_0x5d0041),_0x9b3a90=![],_0x2d87bb();})['catch'](function(){if(_0x16637f)return;_0x16637f=!![],clearTimeout(_0x5d0041),_0x9b3a90=![],_0x273830();});}catch(_0x1f12bb){_0x16637f=!![],clearTimeout(_0x5d0041),_0x9b3a90=![],_0x273830();}}window['addEventListener']('offline',function(){_0x273830();}),window['addEventListener']('online',function(){_0x2bd339(!![]);}),_0xeaffc6=typeof navigator==='undefined'?!![]:navigator['onLine']!==![];if(!_0xeaffc6)_0x273830();setTimeout(function(){_0x2bd339(!![]);},0x9c4),setInterval(function(){_0x2bd339(![]);},0x4e20),setInterval(function(){if(_0xeaffc6&&Date['now']()-_0x470fe6>0x493e0){_0x16c888('⚠️\x20Data\x20purana\x20ho\x20sakta\x20hai\x20—\x20refresh\x20kar\x20raha\x20hai...','#885500');if(window['renderHome'])renderHome();_0x470fe6=Date['now'](),setTimeout(_0x31e634,0xbb8);}},0x1d4c0),window['_markDataFresh']=function(){_0x470fe6=Date['now']();},window['_offlineProbe']=_0x2bd339,console['log']('[Mini\x20eSports]\x20✅\x20Feature\x2010:\x20Offline\x20Handler\x20v2\x20(Supabase-probe)\x20loaded');}());
+/* ====== FEATURE 10: OFFLINE HANDLER (D94 rewrite, 08-Nov-2026) ======
+   Owner complaint: "No connection — cached data dikh raha hai" banner
+   hat hi nahi raha tha. Root cause: banner Firebase RTDB ke
+   `.info connected` websocket se juda tha — app ka DATA Supabase par
+   hai; Firebase WS agar carrier/WebView par block/atka to banner
+   FOREVER raha (data sab normal phir bhi).
+   Naya design (simple + sahi):
+     • Startup par koi banner NAHI (pehle offline assume karna galat).
+     • Offline sirf tab: browser bola offline (navigator.onLine/events)
+       YA asli data-server (Supabase REST) probe FAIL hua (fetch throw).
+     • Online hote hi (probe OK / 'online' event) banner turant hide —
+       20s probe interval + instant event hooks.
+     • Banner tap = manual re-probe (user control).
+     • Firebase `.info connected` se koi dependency NAHI.
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var _banner = null, _online = true, _lastFresh = Date.now(), _probeBusy = false;
+
+  function _show(msg, color) {
+    if (!_banner) {
+      _banner = document.createElement('div');
+      _banner.id = 'vnOfflineBanner';
+      _banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;text-align:center;padding:8px 16px;font-size:12px;font-weight:700;color:#fff;transition:all .3s;cursor:pointer';
+      _banner.onclick = function () { probe(true); };   // tap = dobara check
+      document.body.prepend(_banner);
+    }
+    _banner.style.background = color || '#ff6600';
+    _banner.textContent = msg;
+    _banner.style.display = 'block';
+    _banner.style.opacity = '1';
+  }
+
+  function _hide() {
+    if (_banner) {
+      _banner.style.opacity = '0';
+      setTimeout(function () { if (_banner) _banner.style.display = 'none'; }, 300);
+    }
+  }
+
+  function _setOffline() {
+    if (!_online) return;
+    _online = false;
+    _show('📡 No connection — cached data dikh raha hai', '#e65c00');
+  }
+  function _setOnline() {
+    var wasOffline = !_online;
+    _online = true; _lastFresh = Date.now();
+    _hide();
+    if (wasOffline) {
+      if (window.toast) toast('✅ Back online', 'ok');
+      setTimeout(function () {
+        if (window.renderHome) renderHome();
+        if (window.renderMM) renderMM();
+        if (window.renderWallet) renderWallet();
+      }, 600);
+    }
+  }
+
+  /* Asli data-connectivity probe: Supabase REST (app ka real data source).
+     fetch THROW = network dead → offline. Resolve (SW cache se bhi) = app
+     functional → online. Random nonce + no-store taaki browser cache na bole. */
+  function probe(force) {
+    if (_probeBusy && !force) return;
+    _probeBusy = true;
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      _probeBusy = false; _setOffline(); return;
+    }
+    var url = 'https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/app_settings?select=key&limit=1'; /* D97: np= nonce PostgREST filter-parse 400 deta tha — cache:'no-store' + Pragma kaafi hai */
+    var done = false;
+    var timer = setTimeout(function () {
+      if (!done) { done = true; _probeBusy = false; }   // slow ≠ dead: banner mat dikhao
+    }, 9000);
+    try {
+      fetch(url, { cache: 'no-store', credentials: 'omit', mode: 'cors', headers: Object.assign({ 'Pragma': 'no-cache' }, window._SUPA_ANON_KEY ? { apikey: window._SUPA_ANON_KEY } : {}) })
+        .then(function () {
+          if (done) return; done = true; clearTimeout(timer); _probeBusy = false;
+          _setOnline();
+        })
+        .catch(function () {
+          if (done) return; done = true; clearTimeout(timer); _probeBusy = false;
+          _setOffline();
+        });
+    } catch (e) {
+      done = true; clearTimeout(timer); _probeBusy = false;
+      _setOffline();
+    }
+  }
+
+  /* Browser-level events = instant reaction */
+  window.addEventListener('offline', function () { _setOffline(); });
+  window.addEventListener('online', function () { probe(true); });
+
+  /* Boot: online assume (koi banner nahi), phir probe se confirm */
+  _online = (typeof navigator === 'undefined') ? true : navigator.onLine !== false;
+  if (!_online) _setOffline();
+  setTimeout(function () { probe(true); }, 2500);
+  setInterval(function () { probe(false); }, 20000);
+
+  /* Stale data warning (purana behaviour, ab probe-se-fresh ke saath) */
+  setInterval(function () {
+    if (_online && Date.now() - _lastFresh > 300000) {
+      _show('⚠️ Data purana ho sakta hai — refresh kar raha hai...', '#885500');
+      if (window.renderHome) renderHome();
+      _lastFresh = Date.now();
+      setTimeout(_hide, 3000);
+    }
+  }, 120000);
+
+  window._markDataFresh = function () { _lastFresh = Date.now(); };
+  window._offlineProbe = probe;   /* test hook */
+  console.log('[Mini eSports] ✅ Feature 10: Offline Handler v2 (Supabase-probe) loaded');
+})();

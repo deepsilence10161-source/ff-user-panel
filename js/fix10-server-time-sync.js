@@ -1,1 +1,155 @@
-(function(){'use strict';var _0x868199=(function(){var _0x1688d1=!![];return function(_0x1b3c20,_0x8abb2c){var _0x1d96be=_0x1688d1?function(){if(_0x8abb2c){var _0x145384=_0x8abb2c['apply'](_0x1b3c20,arguments);return _0x8abb2c=null,_0x145384;}}:function(){};return _0x1688d1=![],_0x1d96be;};}());var _0x5d7ce2=0x0,_0x17240c=![],_0x3e1c48=null;function _0x4dbb0b(){if(!window['db'])return;var _0x3e1f2e=![],_0x2e46e7=setTimeout(function(){if(_0x3e1f2e)return;console['warn']('[ServerTime]\x20Firebase\x20.info\x20timeout\x20—\x20trying\x20HTTP\x20fallback');try{var _0x167554=new XMLHttpRequest();_0x167554['open']('HEAD','https://worldtimeapi.org/api/timezone/Asia/Kolkata',!![]),_0x167554['timeout']=0xbb8,_0x167554['onload']=function(){var _0x5d8284=_0x167554['getResponseHeader']('Date');if(_0x5d8284){var _0x34fcd2=new Date(_0x5d8284)['getTime']();if(!isNaN(_0x34fcd2)){_0x5d7ce2=_0x34fcd2-Date['now'](),_0x17240c=!![],console['log']('[ServerTime]\x20HTTP\x20fallback\x20offset:',_0x5d7ce2,'ms');if(window['renderHome'])renderHome();if(window['renderMM'])renderMM();}}},_0x167554['onerror']=_0x167554['ontimeout']=function(){_0x5d7ce2=0x0,_0x17240c=!![],console['warn']('[ServerTime]\x20All\x20sync\x20methods\x20failed\x20—\x20using\x20client\x20time');},_0x167554['send']();}catch(_0xa13779){_0x5d7ce2=0x0,_0x17240c=!![];}},0x1388);db['ref']('.info/serverTimeOffset')['once']('value',function(_0x3ec428){_0x3e1f2e=!![],clearTimeout(_0x2e46e7),_0x5d7ce2=Number(_0x3ec428['val']())||0x0,_0x17240c=!![],console['log']('[ServerTime]\x20Offset\x20synced:',_0x5d7ce2,'ms');if(window['renderHome'])renderHome();if(window['renderMM'])renderMM();});}function _0x5af006(){if(!window['db'])return;db['ref']('.info/serverTimeOffset')['on']('value',function(_0x286ba3){var _0x2ee7d4=Number(_0x286ba3['val']())||0x0;if(Math['abs'](_0x2ee7d4-_0x5d7ce2)>0x3e8){_0x5d7ce2=_0x2ee7d4,_0x17240c=!![];if(window['renderHome'])renderHome();if(window['renderMM'])renderMM();}else _0x5d7ce2=_0x2ee7d4,_0x17240c=!![];});}window['serverNow']=function(){return Date['now']()+_0x5d7ce2;};function _0x11d7f4(){var _0x52bf11=window['effSt'];if(!_0x52bf11||window['_effStPatched'])return;window['_effStPatched']=!![],window['effSt']=function(_0x59b004){if(!_0x59b004)return'upcoming';var _0x3b072e=(_0x59b004['status']||'')['toString']()['toLowerCase']()['trim']();if(_0x3b072e==='cancelled'||_0x3b072e==='canceled')return'cancelled';if(_0x3b072e==='resultpublished'||_0x3b072e==='result_published')return'resultPublished';if(_0x3b072e==='completed'||_0x3b072e==='finished'||_0x3b072e==='ended'||_0x3b072e==='done')return'completed';var _0x4db2a9=Number(_0x59b004['matchTime']);if(!_0x4db2a9||_0x4db2a9<=0x0)return _0x3b072e||'upcoming';var _0x2b09b9=window['serverNow'](),_0x278e93=Number(_0x59b004['roomReleaseMinutes'])||0x5,_0x20b2f9=_0x4db2a9-_0x278e93*0xea60;(_0x59b004['roomStatus']==='released'||_0x59b004['roomReleasedAt'])&&(_0x20b2f9=Math['min'](_0x20b2f9,Number(_0x59b004['roomReleasedAt'])||_0x20b2f9));if(_0x2b09b9<_0x20b2f9)return'upcoming';if(_0x2b09b9>=_0x20b2f9&&_0x2b09b9<_0x4db2a9+0x36ee80)return'live';return'completed';},console['log']('[ServerTime]\x20effSt()\x20patched\x20to\x20use\x20server\x20time.');}function _0x4bffe6(){clearInterval(_0x3e1c48),_0x3e1c48=setInterval(_0x4dbb0b,0x5*0x3c*0x3e8);}function _0x5d5b2b(){var _0x59f729=_0x868199(this,function(){if(_0x59f729['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x59f729['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x59f729)['search']('(((.+)+)+)+$');});_0x59f729();if(!window['db']){var _0x59c35d=setInterval(function(){window['db']&&(clearInterval(_0x59c35d),_0x5d5b2b());},0xc8);return;}_0x5af006(),_0x4bffe6(),setTimeout(_0x11d7f4,0x32);}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',_0x5d5b2b):_0x5d5b2b(),console['log']('[Mini\x20eSports]\x20✅\x20Fix\x2010:\x20Server\x20Time\x20Sync\x20loaded.');}());
+/* ============================================================
+   FIX 10: SERVER TIME OFFSET — USER PANEL
+   - Firebase .info/serverTimeOffset user panel mein bhi use karo
+   - effSt() ab server-synced time use karta hai
+   - Match timer bhi server time pe based hoga
+   ============================================================ */
+
+(function() {
+  'use strict';
+
+  var _serverOffset = 0;   // milliseconds: serverTime = Date.now() + _serverOffset
+  var _offsetReady  = false;
+  var _syncInterval = null;
+
+  /* ── Fetch server time offset ── */
+  function syncOffset() {
+    if (!window.db) return;
+
+    /* Bug #48 Fix: Add 5-second timeout + HTTP fallback if Firebase .info unavailable */
+    var _syncDone = false;
+    var _syncTimeout = setTimeout(function() {
+      if (_syncDone) return;
+      console.warn('[ServerTime] Firebase .info timeout — trying HTTP fallback');
+      /* HTTP HEAD fallback: use Date response header to approximate server time */
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open('HEAD', 'https://worldtimeapi.org/api/timezone/Asia/Kolkata', true);
+        xhr.timeout = 3000;
+        xhr.onload = function() {
+          var dateHdr = xhr.getResponseHeader('Date');
+          if (dateHdr) {
+            var serverMs = new Date(dateHdr).getTime();
+            if (!isNaN(serverMs)) {
+              _serverOffset = serverMs - Date.now();
+              _offsetReady  = true;
+              console.log('[ServerTime] HTTP fallback offset:', _serverOffset, 'ms');
+              if (window.renderHome) renderHome();
+              if (window.renderMM)   renderMM();
+            }
+          }
+        };
+        xhr.onerror = xhr.ontimeout = function() {
+          /* Last resort: use Date.now() with 0 offset — flag as ready anyway */
+          _serverOffset = 0;
+          _offsetReady  = true;
+          console.warn('[ServerTime] All sync methods failed — using client time');
+        };
+        xhr.send();
+      } catch(e) {
+        _serverOffset = 0;
+        _offsetReady  = true;
+      }
+    }, 5000);
+
+    db.ref('.info/serverTimeOffset').once('value', function(s) {
+      _syncDone = true;
+      clearTimeout(_syncTimeout);
+      _serverOffset = Number(s.val()) || 0;
+      _offsetReady  = true;
+      console.log('[ServerTime] Offset synced:', _serverOffset, 'ms');
+      /* Re-render after sync so match states are correct */
+      if (window.renderHome) renderHome();
+      if (window.renderMM)   renderMM();
+    });
+  }
+
+  /* ── Real-time offset listener (updates if clock drifts) ── */
+  function startOffsetListener() {
+    if (!window.db) return;
+    db.ref('.info/serverTimeOffset').on('value', function(s) {
+      var newOffset = Number(s.val()) || 0;
+      if (Math.abs(newOffset - _serverOffset) > 1000) {
+        /* Significant drift — update and re-render */
+        _serverOffset = newOffset;
+        _offsetReady  = true;
+        if (window.renderHome) renderHome();
+        if (window.renderMM)   renderMM();
+      } else {
+        _serverOffset = newOffset;
+        _offsetReady  = true;
+      }
+    });
+  }
+
+  /* ── Public API ── */
+  window.serverNow = function() {
+    return Date.now() + _serverOffset;
+  };
+
+
+  /* ── Patch effSt() to use server time ── */
+  function patchEffSt() {
+    var _origEffSt = window.effSt;
+    if (!_origEffSt || window._effStPatched) return;
+    window._effStPatched = true;
+
+    window.effSt = function(t) {
+      if (!t) return 'upcoming';
+      var st = (t.status || '').toString().toLowerCase().trim();
+
+      /* Admin-controlled terminal states (HIGHEST PRIORITY) */
+      if (st === 'cancelled' || st === 'canceled')               return 'cancelled';
+      if (st === 'resultpublished' || st === 'result_published') return 'resultPublished';
+      if (st === 'completed' || st === 'finished' || st === 'ended' || st === 'done') return 'completed';
+
+      var mt = Number(t.matchTime);
+      if (!mt || mt <= 0) return st || 'upcoming';
+
+      /* ✅ FIX: Use server-synced time instead of Date.now() */
+      var now    = window.serverNow();
+      var relMin = Number(t.roomReleaseMinutes) || 5;
+      var liveAt = mt - (relMin * 60000);
+
+      if (t.roomStatus === 'released' || t.roomReleasedAt) {
+        liveAt = Math.min(liveAt, Number(t.roomReleasedAt) || liveAt);
+      }
+
+      if (now < liveAt) return 'upcoming';
+      if (now >= liveAt && now < mt + 3600000) return 'live';
+      return 'completed';
+    };
+
+    console.log('[ServerTime] effSt() patched to use server time.');
+  }
+
+
+  /* ── Re-sync periodically to catch clock drift (every 5 min) ── */
+  function startPeriodicSync() {
+    clearInterval(_syncInterval);
+    _syncInterval = setInterval(syncOffset, 5 * 60 * 1000);
+  }
+
+  /* ── Initialize ── */
+  function init() {
+    if (!window.db) {
+      /* Wait for db to be available */
+      var _wait = setInterval(function() {
+        if (window.db) { clearInterval(_wait); init(); }
+      }, 200);
+      return;
+    }
+    startOffsetListener();
+    startPeriodicSync();
+    /* Patch effSt after a tick (let app.js define it first) */
+    setTimeout(patchEffSt, 50);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  console.log('[Mini eSports] ✅ Fix 10: Server Time Sync loaded.');
+})();

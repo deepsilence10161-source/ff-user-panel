@@ -1,0 +1,31 @@
+name: DB keepalive (anti-pause)
+
+# ═══════════════════════════════════════════════════════════════
+#  Supabase FREE plan ka sabse khatarnak niyam: 7 din DB-activity
+#  na ho to project PAUSE (app dark — manual restore padta hai).
+#  Yeh workflow hafte me 2 baar (Mon+Thu 03:30 UTC) read-only SQL
+#  ping chala kar project ko ACTIVE rakhta hai — 7-din window ke
+#  against 2x safety margin. Output me sirf counts/size (koi PII
+#  nahi — logs public repo par dikhte hain).
+#  Backup NOTE: free plan me automatic backups nahi hote; encrypted
+#  off-site backup workflow alag se planned hai (audit §limits).
+# ═══════════════════════════════════════════════════════════════
+
+on:
+  schedule:
+    - cron: '30 3 * * 1,4'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: SQL ping (Management API, read-only)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: node tools/supabase-dump.mjs "supabase/diag/keepalive-ping.sql"

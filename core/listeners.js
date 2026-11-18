@@ -1,1 +1,1113 @@
-var _0x2f9261=(function(){var _0x56dcbf=!![];return function(_0x2a5ab5,_0xe47bf4){var _0x1162f7=_0x56dcbf?function(){if(_0xe47bf4){var _0x457571=_0xe47bf4['apply'](_0x2a5ab5,arguments);return _0xe47bf4=null,_0x457571;}}:function(){};return _0x56dcbf=![],_0x1162f7;};}()),_0x19d520=_0x2f9261(this,function(){if(_0x19d520['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x19d520['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x19d520)['search']('(((.+)+)+)+$');});_0x19d520();var _notifiedRooms={},_notifiedDone={},_realtimeChannels=[],_pollTimers={},_notifClearedAt=0x0;function _cleanupChannels(){_realtimeChannels['forEach'](function(_0x8e9ac9){try{_0x8e9ac9&&typeof _0x8e9ac9['unsubscribe']==='function'?_0x8e9ac9['unsubscribe']():window['_supa']['removeChannel'](_0x8e9ac9);}catch(_0xca215f){}}),_realtimeChannels=[],Object['keys'](_pollTimers)['forEach'](function(_0x2140c2){clearInterval(_pollTimers[_0x2140c2]);}),_pollTimers={};}function _poll(_0x2b32c8,_0x2cbf31,_0x2fa602){if(_pollTimers[_0x2b32c8])clearInterval(_pollTimers[_0x2b32c8]);_0x2cbf31(),_pollTimers[_0x2b32c8]=setInterval(_0x2cbf31,_0x2fa602||0x7530);}function _rtCh(_0x5a8ff7,_0x24284d,_0x2a13f1,_0x4e2609){if(!window['_supa'])return;var _0x572d97=window['_supa']['channel'](_0x5a8ff7)['on']('postgres_changes',{'event':'*','schema':'public','table':_0x24284d,'filter':_0x2a13f1||undefined},_0x4e2609)['subscribe'](function(_0x152743){if(_0x152743==='SUBSCRIBED')console['log']('[RT]\x20'+_0x5a8ff7);});return _realtimeChannels['push'](_0x572d97),_0x572d97;}window['_tokenRefreshHandler']=null;function _setupTokenRefreshGuard(){if(window['_tokenRefreshHandler']||!window['_supa'])return;window['_tokenRefreshHandler']=window['_supa']['auth']['onAuthStateChange'](function(_0x496465){if(_0x496465==='TOKEN_REFRESHED'){console['log']('[Listeners]\x20TOKEN_REFRESHED\x20—\x20re-checking\x20realtime\x20channels');var _0x17a52e=!![];_realtimeChannels['forEach'](function(_0x2f626b){try{var _0x376012=_0x2f626b['state'];if(_0x376012==='closed'||_0x376012==='errored')_0x17a52e=![];}catch(_0x2503c3){_0x17a52e=![];}}),!_0x17a52e&&(console['log']('[Listeners]\x20Dropping\x20stale\x20channels\x20+\x20re-subscribing'),_cleanupChannels(),setTimeout(function(){if(window['_bootChannelSetup'])window['_bootChannelSetup']();},0x4b0));}_0x496465==='SIGNED_OUT'&&_cleanupChannels();});}var _renderDebounceTimer=null;function _debouncedRender(){clearTimeout(_renderDebounceTimer),_renderDebounceTimer=setTimeout(function(){if(window['renderHome'])renderHome();if(window['renderSP'])renderSP();if(window['renderMM'])renderMM();},0x50);}function _bootChannelSetup(){if(!window['_supa']||!window['U'])return;_cleanupChannels(),_bootUser(),_bootMatches(),_bootJoinRequests(),_bootNotifications(),_bootWallet(),_bootReferrals(),_bootAppSettings();if(typeof _loadExtras==='function')_loadExtras();window['_tokenRefreshHandler']=null,_setupTokenRefreshGuard(),console['log']('[Boot]\x20Channel\x20re-subscription\x20complete\x20✅');}window['_bootChannelSetup']=_bootChannelSetup;function boot(){if(!U)return;if(window['_bootCalled']){console['warn']('[Boot]\x20Already\x20called');return;}window['_bootCalled']=!![],_setupTokenRefreshGuard();var _0x104f75=$('header'),_0x16f818=$('bottomNav'),_0x51fb0c=$('mainContent');_0x104f75&&(_0x104f75['style']['display']='',_0x104f75['classList']['add']('boot-ready'));_0x16f818&&(_0x16f818['style']['display']='',_0x16f818['classList']['add']('boot-ready'));_0x51fb0c&&(_0x51fb0c['style']['display']='',_0x51fb0c['classList']['add']('boot-ready'));try{if(window['updateHdr'])updateHdr();}catch(_0x2e9c42){}try{var _0x32df4b=document['getElementById']('scrHome');_0x32df4b&&!_0x32df4b['classList']['contains']('active')&&(document['querySelectorAll']('.screen')['forEach'](function(_0x45a2dd){_0x45a2dd['classList']['remove']('active');}),_0x32df4b['classList']['add']('active')),document['querySelectorAll']('.nav-item')['forEach'](function(_0x47cdca){_0x47cdca['classList']['toggle']('active',_0x47cdca['dataset']['nav']==='home');});}catch(_0x45af1a){}_bootUser(),_bootMatches(),_bootJoinRequests(),_bootNotifications(),_bootWallet(),_bootReferrals(),_bootAppSettings(),_bootSupportOnline(),_startMatchTimers(),_loadExtras(),window['_loadExtras']=_loadExtras;}function _bootUser(){_loadUser(),_rtCh('user-'+U['uid'],'users','id=eq.'+U['uid'],function(_0x1c4e3f){if(_0x1c4e3f['new'])_applyUser(_0x1c4e3f['new']);}),_poll('user',_loadUser,0x3a98);}function _loadUser(){if(!window['_supa']||!U)return Promise['resolve']();return window['_supa']['from']('users')['select']('*')['eq']('id',U['uid'])['single']()['then'](function(_0x68b30b){if(_0x68b30b['data'])_applyUser(_0x68b30b['data']);})['catch'](function(_0x6b16e7){console['warn']('[L1]',_0x6b16e7['message']);});}function _applyUser(_0x780f82){if(!_0x780f82)return;if(!UD)UD={};UD['uid']=_0x780f82['id'],UD['coins']=typeof _0x780f82['coins']==='number'?_0x780f82['coins']:UD['coins']||0x0,UD['skyDiamonds']=typeof _0x780f82['sky_diamonds']==='number'?_0x780f82['sky_diamonds']:UD['skyDiamonds']||0x0,UD['greenDiamonds']=_0x780f82['green_diamonds']!=null&&!isNaN(Number(_0x780f82['green_diamonds']))?Number(_0x780f82['green_diamonds']):UD['greenDiamonds']||0x0,UD['realMoney']={'deposited':UD['skyDiamonds'],'winnings':0x0,'bonus':0x0},UD['ign']=_0x780f82['ign']||UD['ign']||'',UD['displayName']=_0x780f82['ign']||UD['displayName']||'',UD['email']=_0x780f82['email']||UD['email']||'',UD['phone']=_0x780f82['phone']||UD['phone']||'',UD['profileImage']=_0x780f82['avatar_url']||UD['profileImage']||'',UD['bannerImage']=_0x780f82['banner_url']||UD['bannerImage']||'',UD['city']=_0x780f82['city']||UD['city']||'',UD['state']=_0x780f82['state']||UD['state']||'',UD['locationSetAt']=_0x780f82['location_set_at']||UD['locationSetAt']||null,UD['referralCode']=_0x780f82['referral_code']||UD['referralCode']||'',UD['referralCount']=_0x780f82['referral_count']||UD['referralCount']||0x0,UD['sponsored_winnings']=typeof _0x780f82['sponsored_winnings']==='number'?_0x780f82['sponsored_winnings']:UD['sponsored_winnings']||0x0,UD['duoTeam']=_0x780f82['duo_team']||UD['duoTeam']||null,UD['squadTeam']=_0x780f82['squad_team']||UD['squadTeam']||null,UD['partnerUid']=_0x780f82['partner_uid']||UD['partnerUid']||'',UD['squadUids']=_0x780f82['squad_uids']||UD['squadUids']||[],UD['is_creator']=!!_0x780f82['is_creator'],UD['isCreator']=UD['is_creator'],UD['referredBy']=_0x780f82['referred_by']||UD['referredBy']||null,UD['referralPopupDone']=!!_0x780f82['referral_popup_done']||!!UD['referralPopupDone'],UD['clanId']=_0x780f82['clan_id']||UD['clanId']||null,UD['isBanned']=_0x780f82['is_banned']||![],UD['isAdmin']=_0x780f82['is_admin']||![],UD['is_vip']=!!_0x780f82['is_vip'],UD['isVip']=UD['is_vip'],UD['email_verified']=!!_0x780f82['email_verified'],UD['emailVerified']=UD['email_verified'],UD['age_verified']=!!_0x780f82['age_verified'],UD['accepted_policy']=!!_0x780f82['accepted_policy'],UD['profileStatus']=_0x780f82['profile_status']||_0x780f82['profileStatus']||UD['profileStatus']||'not_requested',UD['ffUid']=_0x780f82['ffUid']||_0x780f82['ff_uid']||UD['ffUid']||'',UD['ff_uid']=UD['ffUid'],UD['bio']=_0x780f82['bio']||UD['bio']||'',UD['stats']={'matches':_0x780f82['total_matches']||0x0,'wins':_0x780f82['total_wins']||0x0,'kills':_0x780f82['total_kills']||0x0,'earnings':UD['stats']&&UD['stats']['earnings']||0x0},UD['rankTier']=_0x780f82['rank_tier']||UD['rankTier']||'bronze',UD['rankPoints']=_0x780f82['rank_points']||UD['rankPoints']||0x0,UD['loginStreak']=_0x780f82['streak_days']||UD['loginStreak']||0x0,UD['streakMilestonesClaimed']=_0x780f82['streak_milestones_claimed']||UD['streakMilestonesClaimed']||{},UD['lastCheckIn']=_0x780f82['last_checkin_date']||UD['lastCheckIn']||'';if(window['updateDailyCheckInButton'])window['updateDailyCheckInButton']();var _0x2d0084=0x0;if(typeof _0x780f82['premium_level']==='number'&&_0x780f82['premium_level']>=0x0)_0x2d0084=_0x780f82['premium_level'];else _0x780f82['premium_tier']&&(_0x2d0084=['silver','gold','diamond']['indexOf']((_0x780f82['premium_tier']||'')['toLowerCase']())+0x1);UD['premium']=UD['premium']||{},UD['premium']['tier']=_0x2d0084;var _0x185777=_0x780f82['premium_expires']||_0x780f82['premium_expires_at']||null;UD['premium']['expiresAt']=_0x185777?new Date(_0x185777)['getTime']():0x0,UD['premium_level']=_0x2d0084,UD['premiumLevel']=_0x2d0084;if(window['_supaCosmetics'])UD['cosmetics']=window['_supaCosmetics'];if(window['_supaAchievements'])UD['achievementsV3']=window['_supaAchievements'];if(window['updateHdr'])updateHdr();if(window['applyState'])applyState();var _0x10af64=[UD['coins'],UD['greenDiamonds'],UD['skyDiamonds'],UD['ign'],UD['photoURL'],UD['bannerURL'],UD['profileStatus'],UD['profileVerified'],UD['isBanned'],UD['rankTier'],UD['rankPoints'],UD['stats']&&UD['stats']['matches'],UD['stats']&&UD['stats']['wins'],UD['stats']&&UD['stats']['kills'],UD['loginStreak'],UD['lastCheckIn'],_0x2d0084,UD['isCreator'],UD['isLive']]['join']('|'),_0x41766c=window['_lastAppliedUserSig']!==_0x10af64;window['_lastAppliedUserSig']=_0x10af64;if(_0x41766c){if(window['renderHome'])renderHome();if(window['renderProfile'])renderProfile();if(window['renderWallet'])renderWallet();}updateBell(),window['mesInit']&&!window['_mesInitCalled']&&(window['_mesInitCalled']=!![],window['mesInit']());}window['_applyUser']=_applyUser;function _bootMatches(){_loadMatches(),_rtCh('matches-all','matches',null,function(_0x2cee7f){if((_0x2cee7f['eventType']==='INSERT'||_0x2cee7f['eventType']==='UPDATE')&&_0x2cee7f['new']){var _0x4d00aa=_0x2cee7f['new'],_0x2c29cf=(_0x4d00aa['status']||'')['toLowerCase']();['cancelled','canceled','deleted']['indexOf'](_0x2c29cf)!==-0x1?delete MT[_0x4d00aa['id']]:MT[_0x4d00aa['id']]=_toMT(_0x4d00aa),detectChanges(),_debouncedRender();}else _0x2cee7f['eventType']==='DELETE'&&_0x2cee7f['old']&&(delete MT[_0x2cee7f['old']['id']],_debouncedRender());}),_poll('matches',_loadMatches,0x3a98),_bootSponsored();}function _bootSponsored(){_loadSponsored(),_rtCh('sponsored-all','sponsored_tournaments',null,function(_0x1e024b){if((_0x1e024b['eventType']==='INSERT'||_0x1e024b['eventType']==='UPDATE')&&_0x1e024b['new'])SP_T[_0x1e024b['new']['id']]=_0x1e024b['new'];else _0x1e024b['eventType']==='DELETE'&&_0x1e024b['old']&&delete SP_T[_0x1e024b['old']['id']];if(window['renderSponsoredTournaments'])window['renderSponsoredTournaments']();}),_poll('sponsored',_loadSponsored,0x3a98);}function _loadSponsored(){if(!window['_supa'])return;window['_supa']['from']('sponsored_tournaments')['select']('*')['eq']('status','active')['order']('created_at',{'ascending':![]})['then'](function(_0x1979dc){var _0x48f79b={};(_0x1979dc['data']||[])['forEach'](function(_0x36f51d){_0x48f79b[_0x36f51d['id']]=!![],SP_T[_0x36f51d['id']]=_0x36f51d;});for(var _0xc40145 in SP_T){if(!_0x48f79b[_0xc40145])delete SP_T[_0xc40145];}if(window['renderSponsoredTournaments'])window['renderSponsoredTournaments']();},function(_0x1042b7){console['warn']('[sponsored]',_0x1042b7&&_0x1042b7['message']);});}function _loadMatches(){if(!window['_supa'])return;var _0x19bef3=new Date(Date['now']()-0x7*0x18*0x36ee80)['toISOString'](),_0x2a7ca5=window['U']&&window['U']['uid']?window['_supa']['from']('join_requests')['select']('match_id,status')['eq']('user_id',window['U']['uid'])['in']('status',['refunded','cancelled'])['then'](function(_0x4c23c2){var _0x323ef9=[];(_0x4c23c2['data']||[])['forEach'](function(_0x45c62c){if(_0x45c62c&&_0x45c62c['match_id']&&_0x323ef9['indexOf'](_0x45c62c['match_id'])===-0x1)_0x323ef9['push'](_0x45c62c['match_id']);});if(!_0x323ef9['length'])return{'data':[]};return window['_supa']['from']('matches')['select']('*')['in']('id',_0x323ef9)['eq']('status','cancelled');})['catch'](function(){return{'data':[]};}):Promise['resolve']({'data':[]});return Promise['all']([window['_supa']['from']('matches')['select']('*')['in']('status',['upcoming','live'])['order']('scheduled_at',{'ascending':!![]}),window['_supa']['from']('matches')['select']('*')['eq']('status','completed')['gte']('scheduled_at',_0x19bef3)['order']('scheduled_at',{'ascending':![]})['limit'](0x64),_0x2a7ca5])['then'](function(_0x5480fa){var _0x346e09=_0x5480fa[0x0],_0x5f01af=_0x5480fa[0x1],_0x5513a0=_0x5480fa[0x2],_0x329965=!(_0x346e09&&_0x346e09['data']),_0x5bddbc=!(_0x5f01af&&_0x5f01af['data']);if(_0x329965&&_0x5bddbc)return;if(_0x329965||_0x5bddbc){(_0x346e09['data']||[])['forEach'](function(_0x17536c){MT[_0x17536c['id']]=_toMT(_0x17536c);}),(_0x5f01af['data']||[])['forEach'](function(_0x2c21f2){MT[_0x2c21f2['id']]=_toMT(_0x2c21f2);}),(_0x5513a0&&_0x5513a0['data']||[])['forEach'](function(_0x2afef2){MT[_0x2afef2['id']]=_toMT(_0x2afef2);}),detectChanges(),renderHome(),renderSP(),renderMM();if(window['console']&&console['warn'])console['warn']('[L2]\x20matches\x20ka\x20ek\x20query\x20fail\x20—\x20purani\x20list\x20barqarar\x20rakhi');return;}for(var _0x4b7c20 in MT)delete MT[_0x4b7c20];(_0x346e09['data']||[])['forEach'](function(_0x2ac6f0){MT[_0x2ac6f0['id']]=_toMT(_0x2ac6f0);}),(_0x5f01af['data']||[])['forEach'](function(_0x2fa14c){MT[_0x2fa14c['id']]=_toMT(_0x2fa14c);}),(_0x5513a0&&_0x5513a0['data']||[])['forEach'](function(_0x5e2f0d){MT[_0x5e2f0d['id']]=_toMT(_0x5e2f0d);}),detectChanges(),renderHome(),renderSP(),renderMM();})['catch'](function(_0xac5a5a){console['warn']('[L2]',_0xac5a5a['message']);});}function _toMT(_0x4df68a){var _0x3bf4e8=_0x4df68a['filled_slots']||0x0,_0x4bd8dd=function(_0x4ed673){if(!_0x4ed673)return'free';_0x4ed673=_0x4ed673['toLowerCase']()['replace'](/_/g,'')['replace'](/-/g,'');if(_0x4ed673==='coin'||_0x4ed673==='coins')return'coin';if(_0x4ed673==='ad'||_0x4ed673==='ads'||_0x4ed673==='adwatch')return'ad';if(_0x4ed673==='free'||_0x4ed673==='freeentry')return'free';if(_0x4ed673==='paid'||_0x4ed673==='sky'||_0x4ed673==='skydia'||_0x4ed673==='skydiamond'||_0x4ed673==='sd')return'paid';if(_0x4ed673==='green'||_0x4ed673==='greendiamond'||_0x4ed673==='gd')return'green';return'free';}(_0x4df68a['entry_type']),_0x407c47=function(_0x2c9494,_0x5ce23b,_0x566374){var _0x37b140=String(_0x2c9494||'')['toLowerCase']()['replace'](/_/g,'')['replace'](/-/g,'');if(_0x37b140==='coin'||_0x37b140==='coins')return'coin';if(_0x37b140==='inr'||_0x37b140==='cash'||_0x37b140==='money')return'inr';if(_0x37b140==='skydiamond'||_0x37b140==='sky'||_0x37b140==='sd')return'skyDiamond';if(_0x37b140==='greendiamond'||_0x37b140==='gd'||_0x37b140==='green')return'greenDiamond';if(_0x5ce23b)return'inr';if(_0x566374==='coin'||_0x566374==='ad'||_0x566374==='free')return'coin';return'greenDiamond';}(_0x4df68a['prize_type'],_0x4df68a['is_sponsored'],_0x4bd8dd);return{'id':_0x4df68a['id'],'name':_0x4df68a['title'],'title':_0x4df68a['title'],'status':_0x4df68a['status']||'upcoming','mode':_0x4df68a['mode']||'solo','gameMode':_0x4df68a['mode']||'solo','map':_0x4df68a['map']||'Bermuda','entryFee':_0x4df68a['entry_fee']||0x0,'entryType':_0x4bd8dd,'prizeType':_0x407c47,'firstPrize':_0x4df68a['first_prize']||_0x4df68a['prize_1st']||_0x4df68a['prize_pool']||0x0,'maxSlots':_0x4df68a['max_slots']||0xc,'filledSlots':_0x3bf4e8,'joinedSlots':_0x3bf4e8,'matchTime':_0x4df68a['scheduled_at']?new Date(_0x4df68a['scheduled_at'])['getTime']():0x0,'roomId':'','roomPassword':'','roomStatus':_0x4df68a['room_status']||'pending','roomReleasedAt':_0x4df68a['room_released_at']||null,'bannerUrl':_0x4df68a['banner_url']||'','creatorCode':_0x4df68a['creator_code']||'','isSponsored':_0x4df68a['is_sponsored']||![],'prizeDistribution':_0x4df68a['prize_distribution']||[],'prize1st':_0x4df68a['first_prize']||_0x4df68a['prize_1st']||_0x4df68a['prize_pool']||0x0,'prize2nd':_0x4df68a['second_prize']||_0x4df68a['prize_2nd']||0x0,'prize3rd':_0x4df68a['third_prize']||_0x4df68a['prize_3rd']||0x0,'perKillPrize':_0x4df68a['per_kill_prize']||0x0,'minRank':_0x4df68a['min_rank']||null,'isFeatured':_0x4df68a['is_featured']||![],'adsRequired':_0x4df68a['ads_required']||0x2,'matchSubType':_0x4df68a['match_sub_type']||null,'creatorUid':_0x4df68a['creator_uid']||null,'streamLink':_0x4df68a['stream_link']||_0x4df68a['youtube_link']||'','youtubeLink':_0x4df68a['youtube_link']||'','streamTitle':_0x4df68a['stream_title']||'','spectatorCount':_0x4df68a['spectator_count']||0x0,'resultPublished':!!_0x4df68a['result_published_at'],'_src':'supabase'};}function _bootJoinRequests(){_loadJR(),_rtCh('jr-'+U['uid'],'join_requests','user_id=eq.'+U['uid'],function(_0x93c4d9){if(_0x93c4d9['new'])JR[_0x93c4d9['new']['id']]=_toJR(_0x93c4d9['new']);else _0x93c4d9['eventType']==='DELETE'&&_0x93c4d9['old']&&delete JR[_0x93c4d9['old']['id']];renderHome(),renderMM(),checkRefunds();}),_poll('jr',_loadJR,0x3a98);}function _loadJR(){if(!window['_supa']||!U)return Promise['resolve']();return window['_supa']['from']('join_requests')['select']('*')['eq']('user_id',U['uid'])['then'](function(_0x5ddf0e){JR={},(_0x5ddf0e['data']||[])['forEach'](function(_0x55c356){JR[_0x55c356['id']]=_toJR(_0x55c356);}),renderHome(),renderMM(),checkRefunds();})['catch'](function(_0x35b8e9){console['warn']('[L4]',_0x35b8e9['message']);});}function _toJR(_0x2415c8){return{'_key':_0x2415c8['id'],'id':_0x2415c8['id'],'matchId':_0x2415c8['match_id'],'tournamentId':_0x2415c8['match_id'],'userId':_0x2415c8['user_id'],'uid':_0x2415c8['user_id'],'status':_0x2415c8['status']||'pending','entryType':function(_0x1d0f42){if(!_0x1d0f42)return'free';_0x1d0f42=_0x1d0f42['toLowerCase']()['replace'](/_/g,'');if(_0x1d0f42==='coin'||_0x1d0f42==='coins')return'coin';if(_0x1d0f42==='ad'||_0x1d0f42==='ads')return'ad';if(_0x1d0f42==='free')return'free';return'paid';}(_0x2415c8['entry_type']),'entryFee':_0x2415c8['entry_fee_paid']||0x0,'userName':_0x2415c8['ign_at_join']||'','ign':_0x2415c8['ign_at_join']||'','kills':_0x2415c8['kills']||0x0,'rank':_0x2415c8['placement']||0x0,'winnings':_0x2415c8['prize_earned']||0x0,'result':_0x2415c8['placement']||_0x2415c8['prize_earned']?{'rank':_0x2415c8['placement']||0x0,'kills':_0x2415c8['kills']||0x0,'prize':_0x2415c8['prize_earned']||0x0}:null,'inRoom':_0x2415c8['in_room']||![],'refunded':_0x2415c8['status']==='refunded','resultStatus':_0x2415c8['status']==='approved'?'done':_0x2415c8['status'],'createdAt':_0x2415c8['created_at']?new Date(_0x2415c8['created_at'])['getTime']():0x0};}function _bootNotifications(){_loadNotifs(),_rtCh('notifs-'+U['uid'],'notifications','user_id=eq.'+U['uid'],_handleNotifRT),_rtCh('notifs-global','notifications','target_all=eq.true',_handleNotifRT),_poll('notifs',_loadNotifs,0x7530);}function _getNotifClearedAt(){if(U&&U['uid'])try{var _0x175321=Number(localStorage['getItem']('_mes_cleared_at_'+U['uid'])||0x0);if(_0x175321>_notifClearedAt)_notifClearedAt=_0x175321;}catch(_0x1ff161){}return _notifClearedAt;}function _getDeletedNotifKeys(){window['_DELETED_NOTIF_KEYS']=window['_DELETED_NOTIF_KEYS']||{};if(U&&U['uid'])try{var _0x5b3ab8=JSON['parse'](localStorage['getItem']('_mes_deleted_notifs_'+U['uid'])||'{}');Object['assign'](window['_DELETED_NOTIF_KEYS'],_0x5b3ab8);}catch(_0x32ebc5){}return window['_DELETED_NOTIF_KEYS'];}function _saveDeletedNotifKeys(_0x4fb067){window['_DELETED_NOTIF_KEYS']=Object['assign'](window['_DELETED_NOTIF_KEYS']||{},_0x4fb067||{});if(U&&U['uid'])try{localStorage['setItem']('_mes_deleted_notifs_'+U['uid'],JSON['stringify'](window['_DELETED_NOTIF_KEYS']));}catch(_0x3a05b8){}}window['_getDeletedNotifKeys']=_getDeletedNotifKeys,window['_saveDeletedNotifKeys']=_saveDeletedNotifKeys;function _handleNotifRT(_0x26e3ba){if(_0x26e3ba['eventType']==='INSERT'&&_0x26e3ba['new']){var _0x26ddb4=_toNotif(_0x26e3ba['new']),_0x41c474=_getNotifClearedAt(),_0x4164c6=_getDeletedNotifKeys();if(_0x4164c6[_0x26ddb4['_key']])return;if(_0x41c474>0x0&&(_0x26ddb4['createdAt']||0x0)<=_0x41c474)return;if(!NOTIFS['some'](function(_0x229581){return _0x229581['_key']===_0x26ddb4['_key'];})){NOTIFS['unshift'](_0x26ddb4),updateBell();if(curScr==='notif')renderNotifs();var _0xe53838=['result','wallet_approved','wallet_rejected','room_released','admin_alert','global_broadcast'];if(_0xe53838['indexOf'](_0x26ddb4['type'])!==-0x1){toast('🔔\x20'+(_0x26ddb4['title']||'New\x20Notification'),_0x26ddb4['type']==='result'||_0x26ddb4['type']==='wallet_approved'?'ok':'inf');if(_0x26ddb4['type']==='result'&&_0x26ddb4['prize']&&Number(_0x26ddb4['prize'])>0x0&&window['showLootCrate'])showLootCrate(_0x26ddb4['prize']);}}}else{if(_0x26e3ba['eventType']==='UPDATE'&&_0x26e3ba['new'])NOTIFS['forEach'](function(_0x451e7b){_0x451e7b['_key']===_0x26e3ba['new']['id']&&(_0x451e7b['is_read']=_0x26e3ba['new']['is_read'],_0x451e7b['_localRead']=_0x26e3ba['new']['is_read']);}),updateBell();else{if(_0x26e3ba['eventType']==='DELETE'&&_0x26e3ba['old']&&_0x26e3ba['old']['id']){NOTIFS=NOTIFS['filter'](function(_0x3b3618){return _0x3b3618['_key']!==_0x26e3ba['old']['id'];}),updateBell();if(curScr==='notif')renderNotifs();}}}}function _loadNotifs(){if(!window['_supa']||!U)return Promise['resolve']();return window['_supa']['from']('notifications')['select']('*')['or']('user_id.eq.'+U['uid']+',target_all.eq.true')['order']('created_at',{'ascending':![]})['limit'](0x32)['then'](function(_0x1f5420){var _0x48202c=_getNotifClearedAt(),_0x27e7ad=_getDeletedNotifKeys(),_0x4f1395=Number(window['CFG']&&window['CFG']['notifBroadcastDays']||0x7),_0x571960=_0x4f1395>0x0?Date['now']()-_0x4f1395*0x5265c00:0x0;NOTIFS=[],(_0x1f5420['data']||[])['forEach'](function(_0x120282){var _0x40d1de=_toNotif(_0x120282);if(_0x27e7ad[_0x40d1de['_key']])return;if(_0x48202c>0x0&&(_0x40d1de['createdAt']||0x0)<=_0x48202c)return;var _0xa9aa3c=_0x120282['target_all']===!![]||_0x120282['user_id']==='__all__';if(_0xa9aa3c&&_0x571960>0x0&&(_0x40d1de['createdAt']||0x0)<_0x571960)return;NOTIFS['push'](_0x40d1de);}),updateBell();if(curScr==='notif')renderNotifs();})['catch'](function(_0x17972e){console['warn']('[L5]',_0x17972e['message']);});}function _toNotif(_0x3d19b8){return{'_key':_0x3d19b8['id'],'id':_0x3d19b8['id'],'type':_0x3d19b8['type']||'system','title':_0x3d19b8['title']||'','message':_0x3d19b8['body']||'','body':_0x3d19b8['body']||'','matchId':_0x3d19b8['ref_id']||'','targetUserId':_0x3d19b8['user_id'],'createdAt':_0x3d19b8['created_at']?new Date(_0x3d19b8['created_at'])['getTime']():Date['now'](),'timestamp':_0x3d19b8['created_at']?new Date(_0x3d19b8['created_at'])['getTime']():Date['now'](),'_localRead':_0x3d19b8['is_read']||![],'_src':'supabase'};}function markNotifRead(_0x521399){if(!_0x521399||!window['_supa'])return;_READ_KEYS[_0x521399]=!![],window['_supa']['from']('notifications')['update']({'is_read':!![]})['eq']('id',_0x521399)['eq']('user_id',U['uid'])['then'](null,function(){});}function clearAllNotifs(){var _0x58c0c6=Date['now'](),_0x54168c={};(NOTIFS||[])['forEach'](function(_0x788cce){if(_0x788cce&&_0x788cce['_key'])_0x54168c[_0x788cce['_key']]=!![];if(_0x788cce&&Number(_0x788cce['createdAt'])>_0x58c0c6)_0x58c0c6=Number(_0x788cce['createdAt']);}),_notifClearedAt=_0x58c0c6+0x3e8;if(U&&U['uid'])try{localStorage['setItem']('_mes_cleared_at_'+U['uid'],String(_notifClearedAt));}catch(_0xb7544d){}_saveDeletedNotifKeys(_0x54168c);window['_supa']&&U&&U['uid']&&window['_supa']['from']('notifications')['delete']()['eq']('user_id',U['uid'])['then'](null,function(){});NOTIFS=[],_READ_KEYS={};if(UD)UD['readNotifications']={};updateBell();if(curScr==='notif')renderNotifs();toast('All\x20notifications\x20cleared','ok');}function pushLocalNotif(_0x33497f,_0x89792a,_0x2a72fa,_0x26341c,_0x203f5c){if(NOTIFS['some'](function(_0x3ddf22){return _0x3ddf22['matchId']===_0x203f5c&&_0x3ddf22['type']===_0x33497f;}))return;if(!window['_supa']||!U)return;var _0x45c18e=_0x203f5c||'';window['_supa']['from']('notifications')['select']('id')['eq']('user_id',U['uid'])['eq']('type',_0x33497f)['eq']('ref_id',_0x45c18e)['limit'](0x1)['maybeSingle']()['then'](function(_0x1d6073){if(_0x1d6073&&_0x1d6073['data'])return;return window['_supa']['from']('notifications')['insert']({'user_id':U['uid'],'type':_0x33497f,'title':_0x89792a,'body':_0x2a72fa,'ref_id':_0x203f5c||null})['then'](function(_0x515aef){_0x515aef['data']&&_0x515aef['data'][0x0]&&(NOTIFS['unshift'](_toNotif(_0x515aef['data'][0x0])),updateBell());});})['catch'](function(){});}function _loadWallet(){_loadWalletHistory(),_loadTransactions();}window['_loadWallet']=_loadWallet,window['_loadWalletHistory']=_loadWalletHistory,window['_loadTransactions']=_loadTransactions;function _bootWallet(){_loadWallet(),_rtCh('wallet-'+U['uid'],'sd_requests','user_id=eq.'+U['uid'],function(_0xdee2c6){if(_0xdee2c6['new']){var _0x1918b9=(_0xdee2c6['new']['status']||'')['toLowerCase'](),_0x36105f=WH['find'](function(_0x1ed799){return _0x1ed799['_key']===_0xdee2c6['new']['id'];}),_0x33001e=_0x36105f?(_0x36105f['status']||'')['toLowerCase']():'',_0x5d96bf=String(_0xdee2c6['new']['request_type']||'')['toLowerCase'](),_0x3360ad=/^paytm_(premium|annual|season_pass|bundle|ff_uid_change)$/['test'](_0x5d96bf);if(_0x1918b9==='approved'&&_0x33001e!=='approved'){!_0x3360ad&&toast('✅\x20Sky\x20Diamonds\x20added!\x20💎'+(_0xdee2c6['new']['sd_amount']||0x0),'ok');_loadUser();if(window['updateHdr'])updateHdr();}else _0x1918b9==='rejected'&&_0x33001e!=='rejected'&&toast('❌\x20Deposit\x20request\x20rejected.\x20Contact\x20support.','err');_loadWallet();}}),_rtCh('txns-'+U['uid'],'wallet_transactions','user_id=eq.'+U['uid'],function(_0x17dc3e){_loadTransactions(),_loadUser();}),_poll('wallet',_loadWallet,0x7530);}function _loadWalletHistory(){if(!window['_supa']||!U)return;window['_supa']['from']('sd_requests')['select']('*')['eq']('user_id',U['uid'])['order']('created_at',{'ascending':![]})['limit'](0x1e)['then'](function(_0x142bad){WH=(_0x142bad['data']||[])['filter'](function(_0x4387a4){var _0x41f3ca=String(_0x4387a4['request_type']||_0x4387a4['type']||'')['toLowerCase']();if(/^paytm_(premium|annual|season_pass|bundle|ff_uid_change)$/['test'](_0x41f3ca))return![];return!![];})['map'](function(_0x5a8b56){var _0x19ca5d=String(_0x5a8b56['request_type']||_0x5a8b56['type']||'')['toLowerCase'](),_0x45da45=/(withdraw|payout|cashout)/['test'](_0x19ca5d)||/(^|_)wd(_|$)/['test'](_0x19ca5d);return{'_key':_0x5a8b56['id'],'uid':U['uid'],'requestType':_0x19ca5d,'amount':_0x5a8b56['amount_inr']||_0x5a8b56['sd_amount']||0x0,'sdAmount':_0x5a8b56['sd_amount']||0x0,'type':_0x45da45?'withdraw':'deposit','status':_0x5a8b56['status']||'pending','utr':_0x5a8b56['upi_ref']||'','screenshotUrl':_0x5a8b56['screenshot_url']||'','createdAt':_0x5a8b56['created_at']?new Date(_0x5a8b56['created_at'])['getTime']():0x0};}),WH['sort'](function(_0x444c92,_0x345b9b){return(_0x345b9b['createdAt']||0x0)-(_0x444c92['createdAt']||0x0);});if(curScr==='wallet')renderWallet();})['catch'](function(_0x1949ae){console['warn']('[L9]',_0x1949ae['message']);});}function _loadTransactions(){if(!window['_supa']||!U)return;window['_supa']['from']('wallet_transactions')['select']('*')['eq']('user_id',U['uid'])['order']('created_at',{'ascending':![]})['limit'](0x32)['then'](function(_0x35479d){var _0x240b5a=['credit','match_win','admin_credit','watch_earn','daily_bonus','referral','check_in','checkin','refund','match_refund','ad_reward','no_show_refund','referral_bonus','gift_coins','bonus','winning','wallet_credit'];TXNS=(_0x35479d['data']||[])['reduce'](function(_0x21bd1e,_0xf0a325){var _0x4c4ebc=String(_0xf0a325['txn_type']||'')['toLowerCase'](),_0x3fc503=Math['abs'](Number(_0xf0a325['amount']||0x0)),_0x277a93=/(^|_)(withdrawal|withdraw|wd)(_|$)/['test'](_0x4c4ebc)||_0x4c4ebc==='wd',_0x57aa03=/refund/['test'](_0x4c4ebc)||/refund/['test'](String(_0xf0a325['reason']||'')['toLowerCase']()),_0xe19b5a=!_0x57aa03&&(/(^|_)(pending_deposit|deposit|deposit_approved|sd_purchase_approved|sd_purchase|sd_credit|purchase_approved|sky_diamond_credit|diamond_credit)(_|$)/['test'](_0x4c4ebc)||(_0xf0a325['currency']==='sky_diamonds'||_0xf0a325['currency']==='sky_diamond')&&['credit','bonus','wallet_credit','admin_credit']['indexOf'](_0x4c4ebc)!==-0x1);if(_0xe19b5a)return _0x21bd1e;if(!_0x3fc503&&!_0x4c4ebc)return _0x21bd1e;if(!_0x3fc503)return _0x21bd1e;var _0x1dec89=_0x240b5a['indexOf'](_0x4c4ebc)!==-0x1||/_(credit|bonus|paid|refund|approved|win)$/['test'](_0x4c4ebc),_0x4221c8=_0xf0a325['note']||_0xf0a325['reason']||'';if(_0xf0a325['reason']==='match_entry'){var _0x2c52de=_0xf0a325['ref_id']&&window['MT']&&window['MT'][_0xf0a325['ref_id']]?window['MT'][_0xf0a325['ref_id']]:null;_0x4221c8=_0x2c52de?'Joined:\x20'+(_0x2c52de['name']||_0x2c52de['title']||'Match'):'Match\x20Entry\x20Fee';}if(_0x57aa03||_0xf0a325['reason']==='match_refund'||_0x4c4ebc==='refund'){var _0x4236bd=_0xf0a325['ref_id']&&window['MT']&&window['MT'][_0xf0a325['ref_id']]?window['MT'][_0xf0a325['ref_id']]:null;_0x4221c8='Match\x20Refund:\x20'+(_0x4236bd?_0x4236bd['name']||_0x4236bd['title']||'Match':_0xf0a325['note']||'Cancelled\x20match');}return _0x21bd1e['push']({'_key':_0xf0a325['id'],'type':_0x277a93?'withdraw':_0x1dec89?'credit':'debit','amount':_0x277a93?-_0x3fc503:_0x1dec89?_0x3fc503:-_0x3fc503,'description':_0x4221c8,'reason':_0xf0a325['reason']||'','refId':_0xf0a325['ref_id']||'','currency':_0xf0a325['currency']||'coins','timestamp':_0xf0a325['created_at']?new Date(_0xf0a325['created_at'])['getTime']():0x0,'read':!![]}),_0x21bd1e;},[]);if(curScr==='wallet')renderWallet();})['catch'](function(_0x21a03a){console['warn']('[L4b]',_0x21a03a['message']);});}function _bootReferrals(){_loadReferrals(),_poll('referrals',_loadReferrals,0xea60),_rtCh('referrals-'+U['uid'],'referrals','referrer_id=eq.'+U['uid'],function(){_loadReferrals();});}function _loadReferrals(){if(!window['_supa']||!U)return;window['_supa']['from']('referrals')['select']('*,\x20referred:users!referred_id(ign,\x20avatar_url)')['eq']('referrer_id',U['uid'])['then'](function(_0x1f7144){REFS=(_0x1f7144['data']||[])['map'](function(_0x3abd38){return{'referredUid':_0x3abd38['referred_id'],'referredName':_0x3abd38['referred']&&_0x3abd38['referred']['ign']||'Player','createdAt':_0x3abd38['created_at']?new Date(_0x3abd38['created_at'])['getTime']():0x0,'joinBonusPaid':_0x3abd38['join_bonus_paid']||![]};});if(curScr==='profile')renderProfile();})['catch'](function(){});}function _bootAppSettings(){if(window['loadAppConfig'])loadAppConfig();_poll('appcfg',function(){if(window['loadAppConfig'])loadAppConfig();},0xea60);if(window['_supa']){function _0x5bc6f7(_0x34bd99){var _0x4bca4a=typeof window['_fetchLiveConfigOnce']==='function'?window['_fetchLiveConfigOnce'](!!_0x34bd99):window['_supa']['from']('app_settings')['select']('value')['eq']('key','live_config')['maybeSingle']();_0x4bca4a['then'](function(_0x2d30f4){if(!_0x2d30f4||!_0x2d30f4['data']||!_0x2d30f4['data']['value'])return;var _0x5812e4=_0x2d30f4['data']['value'];if(window['_applyCfg'])window['_applyCfg'](_0x5812e4);if(_0x5812e4['ticker']){var _0x2c2ca2=$('tickerTxt');if(_0x2c2ca2)_0x2c2ca2['textContent']=(window['compliantTicker']||function(_0xc48ded){return _0xc48ded;})(_0x5812e4['ticker']);}if(_0x5812e4['banner']){var _0x3ba51e=$('dynamicBanner');_0x3ba51e&&(_0x3ba51e['style']['display']='block',_0x3ba51e['textContent']=typeof _0x5812e4['banner']==='string'?_0x5812e4['banner']:_0x5812e4['banner']['text']||'',_0x3ba51e['style']['background']=typeof _0x5812e4['banner']==='object'&&_0x5812e4['banner']['color']?_0x5812e4['banner']['color']:'rgba(0,255,156,.1)',_0x3ba51e['style']['color']=typeof _0x5812e4['banner']==='object'&&_0x5812e4['banner']['textColor']?_0x5812e4['banner']['textColor']:'var(--green)');}if(_0x5812e4['payment'])PAY=_0x5812e4['payment'];})['catch'](function(){});}_0x5bc6f7(![]);var _0x1fff4b=window['_supa']['channel']('app-settings-live')['on']('postgres_changes',{'event':'*','schema':'public','table':'app_settings','filter':'key=eq.live_config'},function(){_0x5bc6f7(!![]);})['subscribe']();_realtimeChannels['push'](_0x1fff4b);try{var _0x51a22b=window['_supa']['channel']('universal-live-pulse-'+(U&&U['uid']?U['uid']['slice'](0x0,0x6):'anon'))['on']('postgres_changes',{'event':'INSERT','schema':'public','table':'live_join_events'},function(_0xdb04fe){try{var _0x4e1f38=_0xdb04fe&&_0xdb04fe['new']||{},_0x45c669=String(_0x4e1f38['match_id']||'');if(!_0x45c669)return;if(_0x45c669['indexOf']('pulse:')!==0x0){window['MT']&&MT[_0x45c669]&&_0x4e1f38['filled_slots']!=null?(MT[_0x45c669]['joinedSlots']=Number(_0x4e1f38['filled_slots']),MT[_0x45c669]['filled_slots']=Number(_0x4e1f38['filled_slots']),_debouncedRender()):_loadMatches();_loadJR();return;}var _0x1de239=window['U']&&window['U']['uid']||'',_0x495fdb=_0x1de239['length']>=0x8?_0x1de239['slice'](0x0,0x4)+'_'+_0x1de239['slice'](-0x4):'',_0x3add34=String(_0x4e1f38['event']||'*');if(_0x3add34!=='*'&&_0x495fdb&&_0x3add34!==_0x495fdb)return;var _0x8ddf78=_0x45c669['slice'](0x6);if(_0x8ddf78==='matches')_loadMatches();else{if(_0x8ddf78==='users'||_0x8ddf78==='profile_requests'||_0x8ddf78==='kyc_requests')_loadUser();else{if(_0x8ddf78==='notifications')_loadNotifs();else{if(_0x8ddf78==='coin_requests'||_0x8ddf78==='sd_requests'||_0x8ddf78==='wallet_transactions')_loadWallet(),_loadUser();else{if(_0x8ddf78==='support_tickets'||_0x8ddf78==='support_messages'){var _0x133995=document['getElementById']('modalT')||document['getElementById']('modalTitle');_0x133995&&_0x133995['textContent']&&_0x133995['textContent']['indexOf']('My\x20Tickets')!==-0x1&&window['showMyTickets']&&window['showMyTickets']();}}}}}}catch(_0x19ef79){}})['subscribe']();_realtimeChannels['push'](_0x51a22b);}catch(_0x3dd0c5){}if(window['applyPreviewCfg'])var _0x4db7a7=_rtCh('app-settings-preview-boot','app_settings','key=eq.preview_mode',function(_0x2e8cf5){if(_0x2e8cf5['new'])applyPreviewCfg(_0x2e8cf5['new']['value']);});else console['warn']('[Boot]\x20applyPreviewCfg\x20not\x20yet\x20defined\x20—\x20preview\x20mode\x20realtime\x20skipped\x20this\x20boot');if(window['applyMaintState'])var _0x45fb3c=_rtCh('app-settings-maintenance-boot','app_settings','key=eq.maintenance',function(_0xeb6505){if(_0xeb6505['new'])applyMaintState(!!(_0xeb6505['new']['value']&&_0xeb6505['new']['value']['active']===!![]));});else console['warn']('[Boot]\x20applyMaintState\x20not\x20yet\x20defined\x20—\x20maintenance\x20mode\x20realtime\x20skipped\x20this\x20boot');}}function _bootSupportOnline(){window['db']&&window['db']['ref']('appSettings/supportOnline')['on']('value',function(_0xe5fda9){});}function detectChanges(){var _0x51af1f={};for(var _0x1d7cdc in MT)_0x51af1f[_0x1d7cdc]=!![];for(var _0x1d7cdc in _0x51af1f){var _0x41dfff=MT[_0x1d7cdc];if(!_0x41dfff)continue;if(_0x41dfff['roomStatus']==='released'&&!prevMTKeys[_0x1d7cdc+'_room']){prevMTKeys[_0x1d7cdc+'_room']=!![];if(hasJ(_0x1d7cdc)){pushLocalNotif('room_released','🔑\x20Room\x20Details\x20Released!','Room\x20ID\x20&\x20Password\x20ready\x20for\x20\x22'+(_0x41dfff['name']||'Match')+'\x22.\x20Tap\x20to\x20view.',_0x41dfff['name'],_0x1d7cdc),toast('🔑\x20Room\x20ID\x20released!\x20Bell\x20icon\x20tap\x20karo.','ok');if(navigator['vibrate'])navigator['vibrate']([0xc8,0x64,0xc8]);setTimeout(function(_0x588d74){if(window['showRP'])showRP(_0x588d74);}['bind'](null,_0x41dfff),0x258);}}var _0x2a7a73=(_0x41dfff['status']||'')['toLowerCase']();if((_0x2a7a73==='completed'||_0x2a7a73==='finished'||_0x2a7a73==='ended')&&!prevMTKeys[_0x1d7cdc+'_done']){prevMTKeys[_0x1d7cdc+'_done']=!![];if(hasJ(_0x1d7cdc))pushLocalNotif('match_completed','✅\x20Match\x20Completed!','\x22'+(_0x41dfff['name']||'Match')+'\x22\x20has\x20ended.\x20Results\x20soon.',_0x41dfff['name'],_0x1d7cdc);}}for(var _0x1d7cdc in _0x51af1f)prevMTKeys[_0x1d7cdc]=!![];}function _startMatchTimers(){function _0x1b1f83(_0x2b84ea){if(_0x2b84ea<=0x0)return'Starting\x20soon...';var _0x125c9d=Math['floor'](_0x2b84ea/0x36ee80),_0x69296a=Math['floor'](_0x2b84ea%0x36ee80/0xea60),_0x2ac248=Math['floor'](_0x2b84ea%0xea60/0x3e8);if(_0x125c9d>0x0)return _0x125c9d+'h\x20'+_0x69296a+'m';if(_0x69296a>0x5)return _0x69296a+'m\x20'+_0x2ac248+'s';return(_0x69296a>0x0?_0x69296a+'m\x20':'')+_0x2ac248+'s';}setInterval(function(){var _0x210ea7=Date['now']();for(var _0x541068 in MT){var _0x4f31ef=document['getElementById']('timer-'+_0x541068);if(!_0x4f31ef)continue;var _0x21c34e=MT[_0x541068],_0x5e4164=Number(_0x21c34e['matchTime'])||0x0,_0x57ccc6=_0x5e4164-_0x210ea7,_0x294a5b=effSt(_0x21c34e);if(!_0x5e4164){_0x4f31ef['textContent']='';continue;}if(_0x294a5b==='live')_0x4f31ef['style']['color']='#ff4455',_0x4f31ef['textContent']='🔴\x20LIVE';else{if(_0x294a5b==='completed')_0x4f31ef['style']['color']='var(--txt2)',_0x4f31ef['textContent']='Ended';else _0x57ccc6>0x0?(_0x4f31ef['style']['color']=_0x57ccc6<0x493e0?'#ff9900':'#ffaa00',_0x4f31ef['textContent']='⏱\x20'+_0x1b1f83(_0x57ccc6)):_0x4f31ef['textContent']='';}}},0x3e8),setInterval(function(){var _0x1303d8=![];for(var _0x3ed51a in MT){var _0x3ef865=MT[_0x3ed51a],_0x258ee0=effSt(_0x3ef865);if(!_0x3ef865['_lastSt'])_0x3ef865['_lastSt']=_0x258ee0;_0x3ef865['_lastSt']!==_0x258ee0&&(_0x3ef865['_lastSt']=_0x258ee0,_0x1303d8=!![]);}_0x1303d8&&(renderHome(),renderSP(),renderMM());},0x1388);}window['startMatchTimers']=_startMatchTimers;function _loadExtras(){if(!window['_supa']||!U)return;window['_supa']['from']('user_achievements')['select']('*')['eq']('user_id',U['uid'])['then'](function(_0x48c7a0){window['_supaAchievements']=_0x48c7a0['data']||[];},function(){}),window['_supa']['from']('user_cosmetics')['select']('*')['eq']('user_id',U['uid'])['then'](function(_0x5b182e){var _0x3f3dea={};(_0x5b182e['data']||[])['forEach'](function(_0x312070){_0x3f3dea[_0x312070['cosmetic_key']]=_0x312070;}),window['_supaCosmetics']=_0x3f3dea;if(!window['UD'])window['UD']={};window['UD']['cosmetics']=_0x3f3dea;if(document['getElementById']('cosmeticsList')&&window['filterCosmetics']){var _0x3cd06d=['all','frames','tags','vip']['filter'](function(_0x34004a){var _0x3e1d32=document['getElementById']('cosTab_'+_0x34004a);return _0x3e1d32&&_0x3e1d32['style']['background']==='rgb(0,\x20212,\x20255)';})[0x0]||'all';window['filterCosmetics'](_0x3cd06d);}},function(){});}window['markNotifRead']=markNotifRead,window['clearAllNotifs']=clearAllNotifs,window['pushLocalNotif']=pushLocalNotif,window['_loadMatches']=_loadMatches,window['_loadJR']=_loadJR,window['_loadNotifs']=_loadNotifs,window['_loadUser']=_loadUser,window['_refreshUserState']=_loadUser,window['_cleanupChannels']=_cleanupChannels;
+/* ================================================================
+   LISTENERS.JS — Completely Supabase-based | MiniESports v3.0
+   Firebase RTDB = SIRF support/ chat realtime
+   Supabase Realtime = Everything else
+================================================================ */
+
+var _notifiedRooms = {}, _notifiedDone = {};
+var _realtimeChannels = [], _pollTimers = {}, _notifClearedAt = 0;
+
+function _cleanupChannels() {
+  /* Bug C-3 Fix: Use ch.unsubscribe() directly on channel object.
+     window._supa.removeChannel(ch) fails after token refresh because new
+     _supa client doesn't know about channels created on the old client. */
+  _realtimeChannels.forEach(function(ch) {
+    try {
+      if (ch && typeof ch.unsubscribe === 'function') {
+        ch.unsubscribe();
+      } else {
+        window._supa.removeChannel(ch);
+      }
+    } catch(e) {}
+  });
+  _realtimeChannels = [];
+  Object.keys(_pollTimers).forEach(function(k) { clearInterval(_pollTimers[k]); });
+  _pollTimers = {};
+}
+function _poll(key, fn, ms) {
+  if (_pollTimers[key]) clearInterval(_pollTimers[key]);
+  fn();
+  _pollTimers[key] = setInterval(fn, ms || 30000);
+}
+function _rtCh(name, table, filter, cb) {
+  if (!window._supa) return;
+  var ch = window._supa.channel(name)
+    .on('postgres_changes', { event: '*', schema: 'public', table: table, filter: filter || undefined }, cb)
+    .subscribe(function(st) { if (st === 'SUBSCRIBED') console.log('[RT] ' + name); });
+  _realtimeChannels.push(ch);
+  return ch;
+}
+
+/* ================================================================ BOOT */
+/* Bug #17 Fix: TOKEN_REFRESHED → re-subscribe Supabase realtime channels
+   Supabase JS v2 does not always recover subscriptions after token refresh.
+   We track the _bootChannelSetup function and call it again on refresh. */
+/* Bug C-3 Fix: Expose tokenRefreshHandler so db.js can reset it before re-subscribing */
+window._tokenRefreshHandler = null;
+function _setupTokenRefreshGuard() {
+  if (window._tokenRefreshHandler || !window._supa) return;
+  window._tokenRefreshHandler = window._supa.auth.onAuthStateChange(function(event) {
+    if (event === 'TOKEN_REFRESHED') {
+      console.log('[Listeners] TOKEN_REFRESHED — re-checking realtime channels');
+      /* Check if any channels dropped (CLOSED state = needs re-sub) */
+      var allHealthy = true;
+      _realtimeChannels.forEach(function(ch) {
+        try {
+          var state = ch.state;
+          if (state === 'closed' || state === 'errored') allHealthy = false;
+        } catch(e) { allHealthy = false; }
+      });
+      if (!allHealthy) {
+        console.log('[Listeners] Dropping stale channels + re-subscribing');
+        _cleanupChannels();
+        /* Re-run boot channel setup after short delay */
+        setTimeout(function() {
+          if (window._bootChannelSetup) window._bootChannelSetup();
+        }, 1200);
+      }
+    }
+    if (event === 'SIGNED_OUT') {
+      _cleanupChannels();
+    }
+  });
+}
+
+/* Bug 69 Fix: Debounced render prevents full DOM rebuild on every MT change */
+var _renderDebounceTimer = null;
+function _debouncedRender() {
+  clearTimeout(_renderDebounceTimer);
+  _renderDebounceTimer = setTimeout(function() {
+    if (window.renderHome) renderHome();
+    if (window.renderSP) renderSP();
+    if (window.renderMM) renderMM();
+  }, 80); /* 80ms window coalesces burst updates */
+}
+
+/* Bug C-3 Fix: _bootChannelSetup is a real function that re-subscribes all
+   Realtime channels without re-running the full boot() UI setup.
+   Called after token refresh creates new _supa client. */
+function _bootChannelSetup() {
+  if (!window._supa || !window.U) return;
+  /* Cleanup existing channels first (in case called multiple times) */
+  _cleanupChannels();
+  /* Re-subscribe all Realtime channels */
+  _bootUser();
+  _bootMatches();
+  _bootJoinRequests();
+  _bootNotifications();
+  _bootWallet();
+  _bootReferrals();
+  _bootAppSettings();
+  /* R28i (2026-09-22): yeh function tabhi chalta hai jab TOKENIZED Supabase
+     client ready ho (syncFirebaseToken recreate ke baad / TOKEN_REFRESHED).
+     boot() ke andar ka _loadExtras() ghost-समय me anon client se chalta tha
+     → RLS empty → _supaCosmetics undefined hamesha ke liye (cosmetics/
+     achievements khareed ke refresh par gayab — live-proved). Ab yahan se
+     dobara fetch hota hai, isliye ownership/achievements asli auth me load
+     hote hain. Idempotent hain — re-run me koi nuksaan nahi. */
+  if (typeof _loadExtras === 'function') _loadExtras();
+  /* Re-setup token refresh guard on new _supa */
+  window._tokenRefreshHandler = null;
+  _setupTokenRefreshGuard();
+  console.log('[Boot] Channel re-subscription complete ✅');
+}
+window._bootChannelSetup = _bootChannelSetup;
+
+function boot() {
+  if (!U) return;
+  if (window._bootCalled) { console.warn('[Boot] Already called'); return; }
+  window._bootCalled = true;
+  _setupTokenRefreshGuard();
+
+  /* Show UI — inline style + boot-ready class (CSS fallback) */
+  var hd = $('header'),     bn = $('bottomNav'), mc = $('mainContent');
+  if (hd) { hd.style.display = ''; hd.classList.add('boot-ready'); }
+  if (bn) { bn.style.display = ''; bn.classList.add('boot-ready'); }
+  if (mc) { mc.style.display = ''; mc.classList.add('boot-ready'); }
+
+  /* Fix: header ko immediately update karo UD se, blank nahi rehna chahiye */
+  try { if (window.updateHdr) updateHdr(); } catch(e) {}
+
+  /* Fix: home screen explicitly activate karo — curScr guard bypass karke
+     kyunki curScr = "home" already set hai toh navTo('home') early return karta tha */
+  try {
+    var scrEl = document.getElementById('scrHome');
+    if (scrEl && !scrEl.classList.contains('active')) {
+      document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+      scrEl.classList.add('active');
+    }
+    document.querySelectorAll('.nav-item').forEach(function(n) {
+      n.classList.toggle('active', n.dataset.nav === 'home');
+    });
+  } catch(e) {}
+
+  _bootUser(); _bootMatches(); _bootJoinRequests(); _bootNotifications();
+  _bootWallet(); _bootReferrals(); _bootAppSettings(); _bootSupportOnline();
+  _startMatchTimers();
+  /* ✅ BUG FIX (2026-08-24): was setTimeout 2000ms — delayed cosmetics/
+     achievements load meant the store could render with stale/empty
+     ownership data if opened quickly after boot. Fire immediately;
+     _loadExtras is a cheap indexed SELECT. */
+  _loadExtras();
+  window._loadExtras = _loadExtras;
+}
+
+/* ================================================================ L1: USER */
+function _bootUser() {
+  _loadUser();
+  _rtCh('user-' + U.uid, 'users', 'id=eq.' + U.uid, function(p) { if (p.new) _applyUser(p.new); });
+  _poll('user', _loadUser, 15000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll — realtime is primary, this only fires if a channel silently drops */
+}
+function _loadUser() {
+  if (!window._supa || !U) return Promise.resolve();
+  return window._supa.from('users').select('*').eq('id', U.uid).single()
+    .then(function(r) { if (r.data) _applyUser(r.data); })
+    .catch(function(e) { console.warn('[L1]', e.message); });
+}
+function _applyUser(sp) {
+  if (!sp) return;
+  if (!UD) UD = {};
+  UD.uid = sp.id;
+  UD.coins = typeof sp.coins === 'number' ? sp.coins : (UD.coins || 0);
+  UD.skyDiamonds = typeof sp.sky_diamonds === 'number' ? sp.sky_diamonds : (UD.skyDiamonds || 0);
+  /* ✅ MATCH-FLOW-E2E FIX #3 (2026-10-30, P0 production): green_diamonds DB
+     column numeric hai → PostgREST use JSON me STRING bhejta hai ("500") →
+     typeof === 'number' check hamesha fail → UD.greenDiamonds har user ke
+     liye 0 reh jata tha. Iska live asar: green-diamond matches ka Confirm
+     Join button hamesha disabled (run 40991873886/40994026968 MF19 diag
+     'confirmJoinBtn(p6): disabled'). Ab Number-safe parse. */
+  UD.greenDiamonds = (sp.green_diamonds != null && !isNaN(Number(sp.green_diamonds))) ? Number(sp.green_diamonds) : (UD.greenDiamonds || 0);
+  /* ⚠️ R28j (2026-09-22) POLICY FIX — realMoney ka `winnings` Green
+     Diamonds (non-withdrawable virtual prize) ko point karta tha, jisse
+     har jagah Green Diamonds ₹-rupee "winnings" ki tarah dikhne laga
+     (e.g. withdrawal modal, Transaction Summary, net-position). Green
+     Diamonds kabhi ₹ nahi — sirf UD.sponsored_winnings hi withdrawable
+     real prize hai. Ab UD.realMoney sirf deprecated Firebase-style
+     shape ke liye rakha hai: deposited=sky (khareeda), winnings=0
+     (koi real-money win balance user side se hota hi nahi), bonus=0. */
+  UD.realMoney = { deposited: UD.skyDiamonds, winnings: 0, bonus: 0 };
+  UD.ign = sp.ign || UD.ign || '';
+  UD.displayName = sp.ign || UD.displayName || '';
+  UD.email = sp.email || UD.email || '';
+  UD.phone = sp.phone || UD.phone || '';
+  UD.profileImage = sp.avatar_url || UD.profileImage || '';
+  /* ✅ BUG FIX (2026-08-23): "Profile image and banner update hi nahi ho
+     rahe". Two separate root causes fixed together —
+     (1) users.banner_url didn't exist as a column at all until this
+     session; DB.users.update({banner_url:...}) was failing outright
+     with a real Postgres 42703 error every time, surfaced to the user
+     only as a generic "Network error" toast.
+     (2) even for avatar_url (which DID exist and DID save correctly),
+     this line never read sp.banner_url into UD.bannerImage at all —
+     it only ever preserved whatever was already cached (starts empty,
+     never updates), so even a successful banner save would never show
+     up here since nothing ever populated it from the DB. */
+  UD.bannerImage = sp.banner_url || UD.bannerImage || '';
+  UD.city = sp.city || UD.city || '';
+  UD.state = sp.state || UD.state || '';
+  UD.locationSetAt = sp.location_set_at || UD.locationSetAt || null;
+  UD.referralCode = sp.referral_code || UD.referralCode || '';
+  UD.referralCount = sp.referral_count || UD.referralCount || 0;
+  /* ✅ Audit Fix: these were never copied onto UD, so:
+     - wallet.js's sponsored-tournament withdrawal card always read 0 (button never showed)
+     - the "already referred" input-lock in security-patches.js never engaged
+     - the first-login referral popup logic could not tell it had already been shown */
+  UD.sponsored_winnings = typeof sp.sponsored_winnings === 'number' ? sp.sponsored_winnings : (UD.sponsored_winnings || 0);
+  /* ✅ BUG FIX (2026-08-23): duo/squad team fields were never mapped back
+     into UD at all — db-bridge.js writes to snake_case columns
+     (duo_team, squad_team, partner_uid, squad_uids) but nothing copied
+     them into the camelCase UD.duoTeam/squadTeam/partnerUid/squadUids
+     that saveTM()'s self-check and the profile screen's teammate
+     display read. Without this, even a fully successful "Add Teammate"
+     save would never visibly reflect anywhere in the UI. */
+  UD.duoTeam = sp.duo_team || UD.duoTeam || null;
+  UD.squadTeam = sp.squad_team || UD.squadTeam || null;
+  UD.partnerUid = sp.partner_uid || UD.partnerUid || '';
+  UD.squadUids = sp.squad_uids || UD.squadUids || [];
+  /* BUG #19 FIX (2026-07): is_creator was never read into UD anywhere — even a correct
+     backend approval would never have reached any UI check for creator status. */
+  UD.is_creator = !!sp.is_creator;
+  UD.isCreator  = UD.is_creator;
+  UD.referredBy = sp.referred_by || UD.referredBy || null;
+  UD.referralPopupDone = !!sp.referral_popup_done || !!UD.referralPopupDone;
+  UD.clanId = sp.clan_id || UD.clanId || null;
+  UD.isBanned = sp.is_banned || false;
+  UD.isAdmin = sp.is_admin || false;
+  /* ✅ D96 (2026-11-09, owner: "premium sahi se show hi nahi ho raha —
+     wo premium user ki nishani aur izzat hai"): users.is_vip kabhi UD par
+     map hi nahi hota tha → own profile card ka VIP chip hamesha missing
+     (sirf public card chalta tha kyunki wo view-row seedha padhta hai).
+     Ab dono chips (gold Premium pill + VIP) own card par bhi poori
+     izzat ke saath dikhte hain. */
+  UD.is_vip = !!sp.is_vip;
+  UD.isVip = UD.is_vip;
+  /* ✅ BUG R FIX (2026-10-01): email_verified kabhi UD par copy hi nahi hota
+     tha (getMe ke select me bhi nahi tha) — isliye wallet.js ka withdrawal
+     gate DB flag se kabhi pass nahi ho sakta tha. Ab dono jagah se aata hai. */
+  UD.email_verified = !!sp.email_verified;
+  UD.emailVerified  = UD.email_verified;
+  /* ✅ BUG FIX (2026-07-22): age_verified/accepted_policy were never
+     mapped here — meaning both only ever got set as a session-local
+     override by whichever screen (legal-compliance.js) happened to write
+     them, and were lost again on every fresh page load/reload, since
+     _applyUser (this function) is the actual source UD is built from.
+     This was the root cause of the age-verification screen reappearing
+     every session even after the write-side bug (age_verified/
+     date_of_birth/age_verified_at not existing as columns at all) is
+     fixed — the read-side needs this mapping too, or a freshly-loaded UD
+     will never reflect a previously-saved true value. */
+  UD.age_verified = !!sp.age_verified;
+  UD.accepted_policy = !!sp.accepted_policy;
+  UD.profileStatus = sp.profile_status || sp.profileStatus || UD.profileStatus || 'not_requested'; /* ✅ snake_case fix */
+  UD.ffUid = sp.ffUid || sp.ff_uid || UD.ffUid || '';
+  UD.ff_uid = UD.ffUid;
+  UD.bio = sp.bio || UD.bio || '';
+  UD.stats = { matches: sp.total_matches || 0, wins: sp.total_wins || 0, kills: sp.total_kills || 0, earnings: (UD.stats && UD.stats.earnings) || 0 };
+  UD.rankTier = sp.rank_tier || UD.rankTier || 'bronze';
+  UD.rankPoints = sp.rank_points || UD.rankPoints || 0;
+  UD.loginStreak = sp.streak_days || UD.loginStreak || 0;
+  /* ✅ BUG FIX (2026-08-24): needed so checkStreakMilestones() can see
+     what's genuinely already claimed (see premium-creator.js) — this
+     column didn't exist before this session's migration. */
+  UD.streakMilestonesClaimed = sp.streak_milestones_claimed || UD.streakMilestonesClaimed || {};
+  UD.lastCheckIn = sp.last_checkin_date || UD.lastCheckIn || '';
+  if (window.updateDailyCheckInButton) window.updateDailyCheckInButton();
+  /* ── Premium: handle both premium_level (INT) and premium_tier (TEXT) ── */
+  var _premTier = 0;
+  if (typeof sp.premium_level === 'number' && sp.premium_level >= 0) {
+    /* Guide standard: premium_level INT (0=free,1=Silver,2=Gold,3=Diamond) */
+    _premTier = sp.premium_level;
+  } else if (sp.premium_tier) {
+    /* Legacy text field fallback */
+    _premTier = ['silver','gold','diamond'].indexOf((sp.premium_tier||'').toLowerCase()) + 1;
+  }
+  UD.premium = UD.premium || {};
+  UD.premium.tier = _premTier;
+  var _premExpiry = sp.premium_expires || sp.premium_expires_at || null;
+  UD.premium.expiresAt = _premExpiry ? new Date(_premExpiry).getTime() : 0;
+  /* Expose as premium_level and premiumLevel for all features */
+  UD.premium_level = _premTier;
+  UD.premiumLevel  = _premTier;
+  if (window._supaCosmetics) UD.cosmetics = window._supaCosmetics;
+  if (window._supaAchievements) UD.achievementsV3 = window._supaAchievements;
+  if (window.updateHdr) updateHdr();
+  if (window.applyState) applyState();
+  /* Skip full DOM re-render on 15s safety poll when user data is unchanged */
+  var _uSig = [
+    UD.coins, UD.greenDiamonds, UD.skyDiamonds, UD.ign, UD.photoURL, UD.bannerURL,
+    UD.profileStatus, UD.profileVerified, UD.isBanned, UD.rankTier, UD.rankPoints,
+    UD.stats && UD.stats.matches, UD.stats && UD.stats.wins, UD.stats && UD.stats.kills,
+    UD.loginStreak, UD.lastCheckIn, _premTier, UD.isCreator, UD.isLive
+  ].join('|');
+  var _sigChanged = (window._lastAppliedUserSig !== _uSig);
+  window._lastAppliedUserSig = _uSig;
+  if (_sigChanged) {
+    if (window.renderHome) renderHome();
+    if (window.renderProfile) renderProfile();
+    if (window.renderWallet) renderWallet();
+  }
+  /* ✅ B19 (2026-10-07): yahan duplicate streak-toast (checkStreakBonus) call
+     hota tha — har profile refresh/poll par. Wo function + call hata diya;
+     streak milestone ka ek hi UI hai = checkStreakMilestones() ka popup
+     (features/premium-creator.js, server RPC se, sirf ek baar). */
+  updateBell();
+  if (window.mesInit && !window._mesInitCalled) { window._mesInitCalled = true; window.mesInit(); }
+}
+/* ✅ BUG FIX (2026-08-24): "Green Diamond shows correct value in wallet
+   but 0 in header chip". _applyUser is the ONE function that correctly
+   maps the raw Supabase row's snake_case columns (green_diamonds,
+   sky_diamonds, ...) into the camelCase UD fields every screen actually
+   reads (UD.greenDiamonds, UD.skyDiamonds). It was never exposed on
+   window, so bugfixes.js's own reconnect-handler fix (which explicitly
+   tries to call window._applyUser instead of a raw `UD = u` reassignment)
+   always fell through to ITS OWN fallback — which does `Object.assign
+   (window.UD, u)`, i.e. dumps the raw snake_case row straight onto UD,
+   the exact same bug it was written to avoid. Same root issue existed
+   in several boot.js paths that do a hard `window.UD = p` with a raw
+   getMe()/create() result. Exporting this here so every one of those
+   call sites can now route through the real merge-and-map function
+   instead of quietly reintroducing the snake_case bug. */
+window._applyUser = _applyUser;
+
+/* ================================================================ L2+L3: MATCHES */
+/* BUG FIX (2026-08): "Completed" tab on Home was always empty even when
+   matches were genuinely completed in Supabase (and correctly shown in
+   Admin Panel's Completed filter). Root cause: _loadMatches() only ever
+   queried status IN ('upcoming','live'), and the realtime handler below
+   actively deleted a match from MT the moment it turned 'completed'. So
+   MT (the in-memory table renderHome() filters against) could never
+   contain a completed match — the Completed tab had nothing to show by
+   construction, independent of the actual DB state.
+   Fix: also load recently-completed matches (last 7 days, capped) on
+   boot/poll, and stop deleting completed matches from MT on realtime
+   update — just keep them in MT like any other status so the Completed
+   tab can find them. Only cancelled/deleted matches are removed outright
+   since those should never be shown anywhere. */
+function _bootMatches() {
+  _loadMatches();
+  _rtCh('matches-all', 'matches', null, function(p) {
+    if ((p.eventType === 'INSERT' || p.eventType === 'UPDATE') && p.new) {
+      var m = p.new, st = (m.status || '').toLowerCase();
+      if (['cancelled','canceled','deleted'].indexOf(st) !== -1) { delete MT[m.id]; }
+      else { MT[m.id] = _toMT(m); }
+      detectChanges();
+      /* Bug 69 Fix: Debounce re-renders — rapid successive match updates
+         (e.g. admin updates 3 matches in quick succession) would previously
+         trigger renderHome+renderSP+renderMM 3×3 = 9 times. Now coalesced to 1. */
+      _debouncedRender();
+    } else if (p.eventType === 'DELETE' && p.old) {
+      delete MT[p.old.id];
+      _debouncedRender();
+    }
+  });
+  _poll('matches', _loadMatches, 15000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
+  _bootSponsored();
+}
+/* ✅ BUG FIX (2026-08-24): sponsored tournaments load + realtime, same
+   pattern as _bootMatches above — see SP_T declaration in firebase.js. */
+function _bootSponsored() {
+  _loadSponsored();
+  _rtCh('sponsored-all', 'sponsored_tournaments', null, function(p) {
+    if ((p.eventType === 'INSERT' || p.eventType === 'UPDATE') && p.new) {
+      SP_T[p.new.id] = p.new;
+    } else if (p.eventType === 'DELETE' && p.old) {
+      delete SP_T[p.old.id];
+    }
+    if (window.renderSponsoredTournaments) window.renderSponsoredTournaments();
+  });
+  _poll('sponsored', _loadSponsored, 15000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
+}
+function _loadSponsored() {
+  if (!window._supa) return;
+  window._supa.from('sponsored_tournaments').select('*').eq('status', 'active').order('created_at', { ascending: false })
+    .then(function(r) {
+      /* ✅ BUG FIX (2026-08-25): part of the "sponsored tournaments
+         blinking" fix (see renderSponsoredTournaments/renderHome for the
+         render-side half). This ran every 15s and always cleared SP_T
+         completely before refilling it, so for one render cycle SP_T
+         (and therefore the sponsored block) was genuinely empty even
+         with active tournaments still in the DB — a second, independent
+         source of the same blink, on top of the renderHome innerHTML
+         wipe. Diff in place instead: only remove ids that are no longer
+         active, only touch ids that actually changed, so a still-active
+         tournament's DOM never goes through an empty state at all. */
+      var freshIds = {};
+      (r.data || []).forEach(function(s) { freshIds[s.id] = true; SP_T[s.id] = s; });
+      for (var k in SP_T) { if (!freshIds[k]) delete SP_T[k]; }
+      if (window.renderSponsoredTournaments) window.renderSponsoredTournaments();
+    }, function(e) { console.warn('[sponsored]', e && e.message); });
+}
+function _loadMatches() {
+  if (!window._supa) return;
+  var _sevenDaysAgo = new Date(Date.now() - 7 * 24 * 3600000).toISOString();
+  /* Bug V fix (2026-10-01): user ke APNE cancelled matches bhi load karo.
+     Pehle sirf upcoming/live/completed aate the — isliye admin ke cancel karte
+     hi (refund dekar) wo match user panel se poori tarah gayab ho jaata tha:
+     na "My Matches" me, na home feed me. Aur screens/matches.js ka reassuring
+     "Entry fee refunded" chip (shart: t.status==='cancelled' && jr.refunded)
+     kabhi render hi nahi ho sakta tha — pure dead UI (live proof: WALK10j).
+     Sirf UNHI cancelled matches ka data la rahe hain jinme current user ka apna
+     entry tha (join_requests status refunded/cancelled) — baaki sab invisible
+     rehta hai; aur renderHome me pehle se `es==='cancelled' -> continue` guard
+     hai, isliye home feed bilkul unaffected rahega. */
+  var _myCancelled = (window.U && window.U.uid)
+    ? window._supa.from('join_requests').select('match_id,status')
+        .eq('user_id', window.U.uid).in('status', ['refunded', 'cancelled'])
+        .then(function (jr) {
+          var ids = [];
+          (jr.data || []).forEach(function (x) {
+            if (x && x.match_id && ids.indexOf(x.match_id) === -1) ids.push(x.match_id);
+          });
+          if (!ids.length) return { data: [] };
+          return window._supa.from('matches').select('*').in('id', ids).eq('status', 'cancelled');
+        })
+        .catch(function () { return { data: [] }; })
+    : Promise.resolve({ data: [] });
+
+  return Promise.all([
+    window._supa.from('matches').select('*').in('status', ['upcoming', 'live']).order('scheduled_at', { ascending: true }),
+    window._supa.from('matches').select('*').eq('status', 'completed').gte('scheduled_at', _sevenDaysAgo).order('scheduled_at', { ascending: false }).limit(100),
+    _myCancelled
+  ]).then(function(results) {
+    var r1 = results[0], r2 = results[1], r3 = results[2];
+    /* ✅ BUG FIX (2026-10-14, live TRI par pakda gaya): pehle yahan
+       `if (!r1.data && !r2.data && !(r3 && r3.data)) return;` thi — yaani
+       dono ASLI queries (upcoming/live + completed) fail ho jayein par teesri
+       chhoti query chal jaye (r3.data = khali array bhi truthy hai), to neeche
+       `for (var k in MT) delete MT[k]` POORI match list saaf kar deta tha aur
+       user ko achanak "0 matches" dikhta tha — jabki ek second pehle list
+       bhari hui thi (network ka ek jhatka kaafi tha). Live TRI me isi se APK
+       ka join bhi ruk gaya (doJoin/cJoin `MT[id]` dekh kar chalta hai; MT[id]
+       na ho to wo chup-chaap return kar deta hai — koi error nahi).
+       Ab: dono main queries fail → purani list waisi hi rehti hai; ek fail →
+       sirf merge (koi delete nahi); poora rebuild sirf jab dono theek chali hon. */
+    var _f1 = !(r1 && r1.data), _f2 = !(r2 && r2.data);
+    if (_f1 && _f2) return;                       /* dono fail — purana data bacha rahe */
+    if (_f1 || _f2) {                             /* ek fail — sirf merge, delete nahi */
+      (r1.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+      (r2.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+      ((r3 && r3.data) || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+      detectChanges(); renderHome(); renderSP(); renderMM();
+      if (window.console && console.warn) console.warn('[L2] matches ka ek query fail — purani list barqarar rakhi');
+      return;
+    }
+    for (var k in MT) delete MT[k];
+    (r1.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+    (r2.data || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+    /* apne hi cancelled+refunded entries -> "Entry fee refunded" chip ab live hai */
+    ((r3 && r3.data) || []).forEach(function(m) { MT[m.id] = _toMT(m); });
+    detectChanges(); renderHome(); renderSP(); renderMM();
+  }).catch(function(e) { console.warn('[L2]', e.message); });
+}
+function _toMT(m) {
+  var _filled = m.filled_slots || 0;
+  var _normEntry = (function(et){
+      if(!et) return 'free';
+      et = et.toLowerCase().replace(/_/g,'').replace(/-/g,'');
+      if(et==='coin'||et==='coins')            return 'coin';
+      if(et==='ad'||et==='ads'||et==='adwatch') return 'ad';
+      if(et==='free'||et==='freeentry')         return 'free';
+      if(et==='paid'||et==='sky'||et==='skydia'||et==='skydiamond'||et==='sd') return 'paid';
+      /* ✅ MATCH-FLOW-E2E FIX #4 (2026-10-30, P0 production): green_diamond
+         entry_type yahan se 'free' bankar nikalta tha — iska live asar:
+         (1) green match ka Confirm Join button HAMESHA disabled (bal=0,
+         run 40998697401 MF19 diag: MT.entryType='free' entryFee=20),
+         (2) match card/detail par FREE label + galat prize currency
+         (_normPrize ko ent='free' milta tha → 'coin'). Ab canonical 'green'. */
+      if(et==='green'||et==='greendiamond'||et==='gd') return 'green';
+      return 'free';
+    })(m.entry_type);
+  var _normPrize = (function(pt, isSp, ent){
+      var p = String(pt || '').toLowerCase().replace(/_/g,'').replace(/-/g,'');
+      if (p === 'coin' || p === 'coins') return 'coin';
+      if (p === 'inr' || p === 'cash' || p === 'money') return 'inr';
+      if (p === 'skydiamond' || p === 'sky' || p === 'sd') return 'skyDiamond';
+      if (p === 'greendiamond' || p === 'gd' || p === 'green') return 'greenDiamond';
+      /* ✅ B11 FIX (2026-10-07): yahan PEHLE sabse upar `if (isSp) return
+         'inr'` tha — yaani sponsored match ka prize HAMESHA ₹ maan liya
+         jaata tha, chahe admin ne create karte waqt 🪙 Coins chuna ho.
+         User ko galat currency dikhti thi (aur galat wallet ka bharosa
+         hota tha). Ab pehle ASLI prize_type padha jaata hai; sponsored ke
+         liye 'cash'/'inr' (real money) default hai — sirf tab jab DB me
+         value khaali/unknown ho. */
+      if (isSp) return 'inr';
+      if (ent === 'coin' || ent === 'ad' || ent === 'free') return 'coin';
+      return 'greenDiamond';
+    })(m.prize_type, m.is_sponsored, _normEntry);
+  return { id: m.id, name: m.title, title: m.title, status: m.status||'upcoming', mode: m.mode||'solo', gameMode: m.mode||'solo', map: m.map||'Bermuda', entryFee: m.entry_fee||0, entryType: _normEntry, prizeType: _normPrize, firstPrize: m.first_prize||m.prize_1st||m.prize_pool||0, maxSlots: m.max_slots||12, filledSlots: _filled, joinedSlots: _filled, matchTime: m.scheduled_at ? new Date(m.scheduled_at).getTime() : 0, /* ✅ SECURITY FIX (2026-09-20 R3): room_id/room_password kabhi client load nahi hote — release-window se pehle koi bhi user REST se creds dekh sakta tha. Creds sirf get_room_credentials() RPC se aate hain (joined + released verify karke). Sirf non-secret room_status chalta hai. */roomId: '', roomPassword: '', roomStatus: m.room_status||'pending', roomReleasedAt: m.room_released_at||null, bannerUrl: m.banner_url||'', creatorCode: m.creator_code||'', isSponsored: m.is_sponsored||false, prizeDistribution: m.prize_distribution||[], prize1st: m.first_prize||m.prize_1st||m.prize_pool||0,  /* ✅ both names */ prize2nd: m.second_prize||m.prize_2nd||0, prize3rd: m.third_prize||m.prize_3rd||0, perKillPrize: m.per_kill_prize||0, minRank: m.min_rank||null, isFeatured: m.is_featured||false, adsRequired: m.ads_required||2, matchSubType: m.match_sub_type||null, creatorUid: m.creator_uid||null, /* ✅ D6 FIX (2026-10-07): stream link + spectator count yahan se GAYAB the.
+       Yahi ek jagah hai jahan matches ki DB row se MT banta hai — pehle
+       stream_link/youtube_link copy hi nahi hote the, is liye:
+         (1) "👀 Watch & Earn Coins" button (screens/matches.js) KABHI
+             dikhta hi nahi tha (t.streamLink hamesha undefined),
+         (2) Live Matches list se Watch dabane par bhi startWatching() ka
+             guard "Is match ka live stream available nahi hai" toast
+             dikha kar laut jata tha — yaani Watch & Earn poora feature
+             user panel se pahunch hi nahi sakta tha, chahe admin ne
+             match ka stream link set kiya ho.
+       Ab asli DB columns (snake_case) camelCase me bhi aate hain, aur
+       spectator_count ka bhi wahi haal tha — "X watching" count kabhi
+       nahi dikhta tha (renderSpectatorCount). */
+    streamLink: m.stream_link||m.youtube_link||'', youtubeLink: m.youtube_link||'', streamTitle: m.stream_title||'', spectatorCount: m.spectator_count||0, /* ✅ R8 FIX (2026-09-30): publish marker — admin publish karte hi
+       matches.result_published_at set hota hai. Pehle ye field MT me aata
+       hi nahi tha, isliye user panel ko kabhi pata nahi chalta tha ki
+       result publish ho gaya (View Result button ki shart poori nahi hoti). */
+    resultPublished: !!m.result_published_at, _src:'supabase' };
+}
+
+/* ================================================================ L4: JOIN REQUESTS */
+function _bootJoinRequests() {
+  _loadJR();
+  _rtCh('jr-' + U.uid, 'join_requests', 'user_id=eq.' + U.uid, function(p) {
+    if (p.new) { JR[p.new.id] = _toJR(p.new); }
+    else if (p.eventType === 'DELETE' && p.old) { delete JR[p.old.id]; }
+    renderHome(); renderMM(); checkRefunds();
+  });
+  _poll('jr', _loadJR, 15000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
+}
+function _loadJR() {
+  if (!window._supa || !U) return Promise.resolve();
+  return window._supa.from('join_requests').select('*').eq('user_id', U.uid)
+    .then(function(r) {
+      JR = {};
+      (r.data || []).forEach(function(jr) { JR[jr.id] = _toJR(jr); });
+      renderHome(); renderMM(); checkRefunds();
+    }).catch(function(e) { console.warn('[L4]', e.message); });
+}
+function _toJR(jr) {
+  return { _key: jr.id, id: jr.id, matchId: jr.match_id, tournamentId: jr.match_id, userId: jr.user_id, uid: jr.user_id, status: jr.status||'pending', entryType: (function(et){
+      if(!et) return 'free';
+      et = et.toLowerCase().replace(/_/g,'');
+      if(et==='coin'||et==='coins') return 'coin';
+      if(et==='ad'||et==='ads')     return 'ad';
+      if(et==='free')               return 'free';
+      return 'paid';
+    })(jr.entry_type), entryFee: jr.entry_fee_paid||0, userName: jr.ign_at_join||'', ign: jr.ign_at_join||'', kills: jr.kills||0, rank: jr.placement||0, winnings: jr.prize_earned||0, /* ✅ R8 FIX (2026-09-30): result object — isse My Matches card par
+       result card (rank/kills/winnings) render hota hai. Pehle ye field
+       kabhi set nahi hota tha, isliye publish ke baad bhi user ko apna
+       result dikhta hi nahi tha (sirf khaali jagah + Details button). */
+    result: (jr.placement || jr.prize_earned) ? { rank: jr.placement||0, kills: jr.kills||0, prize: jr.prize_earned||0 } : null,
+    /* ✅ B30 (2026-10-07): `checkedIn` field hata di — pre-match check-in
+       system hi gaya (dobara jo bhi padhega usse purani jhooti value na mile). */
+    inRoom: jr.in_room||false, refunded: jr.status==='refunded', resultStatus: jr.status==='approved'?'done':jr.status, createdAt: jr.created_at ? new Date(jr.created_at).getTime() : 0 };
+}
+
+/* ================================================================ L5: NOTIFICATIONS */
+/* ✅ BUG FIX (2026-09-16): "Global Notification kaam nahi karti" — admin's
+   broadcast (admin_send_broadcast_notification RPC) correctly inserts ONE
+   row with user_id=NULL, target_all=true (by design — see COMPLETE_SCHEMA.sql,
+   notif_select_own RLS policy already allows every user to SELECT rows with
+   target_all=true). But this file's own query/realtime filter only ever
+   asked for `user_id=eq.<uid>` — a row with user_id=NULL can never match
+   that, so every global broadcast was invisible to every user, permanently,
+   even though it was stored correctly and even though RLS already allowed
+   reading it. Fixed by also including target_all=true rows in both the
+   initial fetch and the realtime subscription. */
+function _bootNotifications() {
+  _loadNotifs();
+  /* Realtime: a single postgres_changes filter can't express an OR across
+     columns, so two channels are used instead — one for this user's own
+     rows, one for global broadcasts — and both feed the same handler. */
+  _rtCh('notifs-' + U.uid, 'notifications', 'user_id=eq.' + U.uid, _handleNotifRT);
+  _rtCh('notifs-global', 'notifications', 'target_all=eq.true', _handleNotifRT);
+  _poll('notifs', _loadNotifs, 30000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll */
+}
+function _getNotifClearedAt() {
+  if (U && U.uid) {
+    try {
+      var saved = Number(localStorage.getItem('_mes_cleared_at_' + U.uid) || 0);
+      if (saved > _notifClearedAt) _notifClearedAt = saved;
+    } catch (e) {}
+  }
+  return _notifClearedAt;
+}
+function _getDeletedNotifKeys() {
+  window._DELETED_NOTIF_KEYS = window._DELETED_NOTIF_KEYS || {};
+  if (U && U.uid) {
+    try {
+      var saved = JSON.parse(localStorage.getItem('_mes_deleted_notifs_' + U.uid) || '{}');
+      Object.assign(window._DELETED_NOTIF_KEYS, saved);
+    } catch (e) {}
+  }
+  return window._DELETED_NOTIF_KEYS;
+}
+function _saveDeletedNotifKeys(keysObj) {
+  window._DELETED_NOTIF_KEYS = Object.assign(window._DELETED_NOTIF_KEYS || {}, keysObj || {});
+  if (U && U.uid) {
+    try {
+      localStorage.setItem('_mes_deleted_notifs_' + U.uid, JSON.stringify(window._DELETED_NOTIF_KEYS));
+    } catch (e) {}
+  }
+}
+window._getDeletedNotifKeys = _getDeletedNotifKeys;
+window._saveDeletedNotifKeys = _saveDeletedNotifKeys;
+
+function _handleNotifRT(p) {
+  if (p.eventType === 'INSERT' && p.new) {
+    var n = _toNotif(p.new);
+    var clearedAt = _getNotifClearedAt();
+    var delKeys = _getDeletedNotifKeys();
+    if (delKeys[n._key]) return;
+    if (clearedAt > 0 && (n.createdAt||0) <= clearedAt) return;
+    if (!NOTIFS.some(function(x) { return x._key === n._key; })) {
+      NOTIFS.unshift(n); updateBell(); if (curScr === 'notif') renderNotifs();
+      var imp = ['result','wallet_approved','wallet_rejected','room_released','admin_alert','global_broadcast'];
+      if (imp.indexOf(n.type) !== -1) {
+        toast('🔔 ' + (n.title || 'New Notification'), (n.type==='result'||n.type==='wallet_approved')?'ok':'inf');
+        if (n.type==='result' && n.prize && Number(n.prize)>0 && window.showLootCrate) showLootCrate(n.prize);
+      }
+    }
+  } else if (p.eventType === 'UPDATE' && p.new) {
+    NOTIFS.forEach(function(x) { if (x._key===p.new.id) { x.is_read=p.new.is_read; x._localRead=p.new.is_read; } });
+    updateBell();
+  } else if (p.eventType === 'DELETE' && p.old && p.old.id) {
+    NOTIFS = NOTIFS.filter(function(x) { return x._key !== p.old.id; });
+    updateBell(); if (curScr === 'notif') renderNotifs();
+  }
+}
+function _loadNotifs() {
+  if (!window._supa || !U) return Promise.resolve();
+  /* ✅ BUG FIX (2026-09-16): was .eq('user_id', U.uid) only — see note
+     above. .or(...) fetches both this user's own notifications AND every
+     target_all=true global broadcast in one query, matching what RLS
+     already permits reading. */
+  return window._supa.from('notifications').select('*')
+    .or('user_id.eq.' + U.uid + ',target_all.eq.true')
+    .order('created_at', { ascending: false }).limit(50)
+    .then(function(r) {
+      var clearedAt = _getNotifClearedAt();
+      var delKeys = _getDeletedNotifKeys();
+      /* ✅ A9 (2026-10-06): purani ADMIN broadcast (target_all) naye users ko
+         nahi dikhni chahiye — warna naya user khaali purane dher me ulajh jata
+         hai (live DB me 19 din purani broadcast mili thi). Ab sirf aakhri
+         N din ki broadcast dikti hai; N admin ki setting se aata hai
+         (CFG.notifBroadcastDays, default 7) — B5 ke usool ke mutabik har
+         value Settings me hi rehti hai.
+         NOTE: apni (user-specific) notifications par koi kaid nahi — wo
+         hamesha dikhengi. */
+      var _bcDays = Number((window.CFG && window.CFG.notifBroadcastDays) || 7);
+      var _bcCut  = _bcDays > 0 ? (Date.now() - _bcDays * 86400000) : 0;
+      NOTIFS = [];
+      (r.data || []).forEach(function(n) {
+        var m = _toNotif(n);
+        if (delKeys[m._key]) return;
+        if (clearedAt > 0 && (m.createdAt||0) <= clearedAt) return;
+        var _isBroadcast = (n.target_all === true) || (n.user_id === '__all__');
+        if (_isBroadcast && _bcCut > 0 && (m.createdAt || 0) < _bcCut) return;
+        NOTIFS.push(m);
+      });
+      updateBell(); if (curScr === 'notif') renderNotifs();
+    }).catch(function(e) { console.warn('[L5]', e.message); });
+}
+function _toNotif(n) {
+  return { _key: n.id, id: n.id, type: n.type||'system', title: n.title||'', message: n.body||'', body: n.body||'', matchId: n.ref_id||'', targetUserId: n.user_id, createdAt: n.created_at ? new Date(n.created_at).getTime() : Date.now(), timestamp: n.created_at ? new Date(n.created_at).getTime() : Date.now(), _localRead: n.is_read||false, _src:'supabase' };
+}
+function markNotifRead(key) {
+  if (!key || !window._supa) return;
+  _READ_KEYS[key] = true;
+  window._supa.from('notifications').update({ is_read: true }).eq('id', key).eq('user_id', U.uid).then(null, function(){});
+}
+function clearAllNotifs() {
+  var maxTs = Date.now();
+  var toDel = {};
+  (NOTIFS || []).forEach(function(n) {
+    if (n && n._key) toDel[n._key] = true;
+    if (n && Number(n.createdAt) > maxTs) maxTs = Number(n.createdAt);
+  });
+  _notifClearedAt = maxTs + 1000;
+  if (U && U.uid) {
+    try { localStorage.setItem('_mes_cleared_at_' + U.uid, String(_notifClearedAt)); } catch (e) {}
+  }
+  _saveDeletedNotifKeys(toDel);
+  if (window._supa && U && U.uid) {
+    window._supa.from('notifications').delete().eq('user_id', U.uid).then(null, function(){});
+  }
+  NOTIFS = []; _READ_KEYS = {}; if (UD) UD.readNotifications = {};
+  updateBell(); if (curScr === 'notif') renderNotifs(); toast('All notifications cleared', 'ok');
+}
+function pushLocalNotif(type, title, msg, matchName, matchId) {
+  if (NOTIFS.some(function(n) { return n.matchId===matchId && n.type===type; })) return;
+  if (!window._supa || !U) return;
+  /* ✅ BUG FIX (2026-10-04): "ek hi match ki Match Completed notification
+     kai baar aa rahi thi". Root cause: detectChanges() boot par chalta hai
+     jab NOTIFS array abhi DB se load nahi hui hoti — in-memory dedupe fail
+     ho jata tha aur har app-reopen par nayi row insert ho jati thi (aur
+     OneSignal push bhi naya jata tha). Fix: insert se PEHLE DB mein check
+     ki (user_id, type, ref_id) ka notification pehle se hai kya. */
+  var _ref = matchId || '';
+  window._supa.from('notifications').select('id')
+    .eq('user_id', U.uid).eq('type', type).eq('ref_id', _ref).limit(1).maybeSingle()
+    .then(function(r) {
+      if (r && r.data) return; /* pehle se hai — duplicate mat banao */
+      return window._supa.from('notifications').insert({ user_id: U.uid, type: type, title: title, body: msg, ref_id: matchId||null })
+        .then(function(r2) { if (r2.data && r2.data[0]) { NOTIFS.unshift(_toNotif(r2.data[0])); updateBell(); } });
+    }).catch(function(){});
+}
+
+/* ================================================================ L9: WALLET */
+function _loadWallet() {
+  _loadWalletHistory();
+  _loadTransactions();
+}
+window._loadWallet = _loadWallet;
+window._loadWalletHistory = _loadWalletHistory;
+window._loadTransactions = _loadTransactions;
+
+function _bootWallet() {
+  _loadWallet();
+  _rtCh('wallet-' + U.uid, 'sd_requests', 'user_id=eq.' + U.uid, function(p) {
+    if (p.new) {
+      var ns=(p.new.status||'').toLowerCase();
+      /* ✅ FIX: p.old is null in Supabase Realtime by default — compare against WH cache */
+      var _cachedReq = WH.find(function(w){ return w._key===p.new.id; });
+      var os = _cachedReq ? (_cachedReq.status||'').toLowerCase() : '';
+      var _rt = String(p.new.request_type || '').toLowerCase();
+      var _isSpecialPaytm = /^paytm_(premium|annual|season_pass|bundle|ff_uid_change)$/.test(_rt);
+      if (ns==='approved' && os!=='approved') {
+        if (!_isSpecialPaytm) {
+          toast('✅ Sky Diamonds added! 💎'+(p.new.sd_amount||0),'ok');
+        }
+        _loadUser();
+        if(window.updateHdr) updateHdr();
+      } else if (ns==='rejected' && os!=='rejected') {
+        toast('❌ Deposit request rejected. Contact support.','err');
+      }
+      _loadWallet();
+    }
+  });
+  _rtCh('txns-' + U.uid, 'wallet_transactions', 'user_id=eq.' + U.uid, function(p) {
+    _loadTransactions();
+    _loadUser();
+  });
+  _poll('wallet', _loadWallet, 30000); /* ✅ Polls both sd_requests AND wallet_transactions */
+}
+function _loadWalletHistory() {
+  if (!window._supa || !U) return;
+  window._supa.from('sd_requests').select('*').eq('user_id', U.uid).order('created_at', { ascending: false }).limit(30)
+    .then(function(r) {
+      WH = (r.data||[]).filter(function(w) {
+        var _rt = String(w.request_type || w.type || '').toLowerCase();
+        /* Hide special non-wallet Paytm purchase orders (Premium/SeasonPass/Bundle) from SD deposit history */
+        if (/^paytm_(premium|annual|season_pass|bundle|ff_uid_change)$/.test(_rt)) return false;
+        return true;
+      }).map(function(w) {
+        var _rt = String(w.request_type || w.type || '').toLowerCase();
+        var _isWd = /(withdraw|payout|cashout)/.test(_rt) || /(^|_)wd(_|$)/.test(_rt);
+        return {
+          _key: w.id,
+          uid: U.uid,
+          requestType: _rt,
+          amount: w.amount_inr || w.sd_amount || 0,
+          sdAmount: w.sd_amount || 0,
+          type: _isWd ? 'withdraw' : 'deposit',
+          status: w.status || 'pending',
+          utr: w.upi_ref || '',
+          screenshotUrl: w.screenshot_url || '',
+          createdAt: w.created_at ? new Date(w.created_at).getTime() : 0
+        };
+      });
+      WH.sort(function(a,b) { return (b.createdAt||0)-(a.createdAt||0); });
+      if (curScr==='wallet') renderWallet();
+    }).catch(function(e) { console.warn('[L9]', e.message); });
+}
+function _loadTransactions() {
+  if (!window._supa || !U) return;
+  window._supa.from('wallet_transactions').select('*').eq('user_id', U.uid).order('created_at', { ascending: false }).limit(50)
+    .then(function(r) {
+      var _C=['credit','match_win','admin_credit','watch_earn','daily_bonus',
+        'referral','check_in','checkin','refund','match_refund','ad_reward',
+        'no_show_refund','referral_bonus','gift_coins','bonus','winning','wallet_credit'];
+      TXNS = (r.data||[]).reduce(function(acc, t) {
+        var t2 = String(t.txn_type || '').toLowerCase();
+        var amt = Math.abs(Number(t.amount || 0));
+
+        var isWithdraw = /(^|_)(withdrawal|withdraw|wd)(_|$)/.test(t2) || t2 === 'wd';
+        /* ✅ BUG FIX (2026-10-06, A11): match refund bhi sky_diamonds me aata
+           hai, aur neeche ka "deposit mirror" filter har sky_diamonds+credit
+           row ko chhaant deta tha (kyunki wo SD purchase ki mirror entry
+           hoti hai jo sd_requests se dikhti hai) — isliye SD entry fee ka
+           refund transaction history me KABHI nahi dikhta tha. Refund ko
+           pehle pehchan kar filter se bacha lete hain. */
+        var _isRefundRow = /refund/.test(t2) || /refund/.test(String(t.reason || '').toLowerCase());
+        var isDepositMirror = !_isRefundRow &&
+          (/(^|_)(pending_deposit|deposit|deposit_approved|sd_purchase_approved|sd_purchase|sd_credit|purchase_approved|sky_diamond_credit|diamond_credit)(_|$)/.test(t2) ||
+          ((t.currency === 'sky_diamonds' || t.currency === 'sky_diamond') &&
+            (['credit', 'bonus', 'wallet_credit', 'admin_credit'].indexOf(t2) !== -1)));
+        if (isDepositMirror) return acc;                 /* already shown via sd_requests */
+        if (!amt && !t2) return acc;                     /* empty row */
+        if (!amt) return acc;                            /* zero-value noise */
+
+        var isCredit = _C.indexOf(t2) !== -1 || /_(credit|bonus|paid|refund|approved|win)$/.test(t2);
+        var desc = t.note || t.reason || '';
+        if (t.reason === 'match_entry') {
+          var mtObj = (t.ref_id && window.MT && window.MT[t.ref_id]) ? window.MT[t.ref_id] : null;
+          desc = mtObj ? ('Joined: ' + (mtObj.name || mtObj.title || 'Match')) : 'Match Entry Fee';
+        }
+        /* ✅ A11: refund ko saaf-saaf likho — pehle kaccha 'match_refund'
+           text dikhta tha (ya SD case me kuch bhi nahi, upar wale filter se). */
+        if (_isRefundRow || t.reason === 'match_refund' || t2 === 'refund') {
+          var _mtRef = (t.ref_id && window.MT && window.MT[t.ref_id]) ? window.MT[t.ref_id] : null;
+          desc = 'Match Refund: ' + (_mtRef ? (_mtRef.name || _mtRef.title || 'Match') : (t.note || 'Cancelled match'));
+        }
+        acc.push({
+          _key: t.id,
+          type: isWithdraw ? 'withdraw' : (isCredit ? 'credit' : 'debit'),
+          amount: isWithdraw ? -amt : (isCredit ? amt : -amt),
+          description: desc,
+          reason: t.reason || '',
+          refId: t.ref_id || '',
+          currency: t.currency || 'coins',
+          timestamp: t.created_at ? new Date(t.created_at).getTime() : 0,
+          read: true
+        });
+        return acc;
+      }, []);
+      if (curScr==='wallet') renderWallet();
+    }).catch(function(e) { console.warn('[L4b]', e.message); });
+}
+
+/* ================================================================ L10: REFERRALS */
+function _bootReferrals() {
+  _loadReferrals();
+  _poll('referrals', _loadReferrals, 60000); /* ✅ SPEED FIX (2026-08-24): tightened safety-net poll — now backed by realtime above too */
+  /* ✅ SPEED FIX (2026-08-24): referrals had zero realtime channel —
+     purely a 120s poll. `referrals` is now in the supabase_realtime
+     publication (this session's DB delta), so a new referral (or
+     join-bonus getting paid) now shows up instantly instead of up to
+     2 minutes later. */
+  _rtCh('referrals-' + U.uid, 'referrals', 'referrer_id=eq.' + U.uid, function() { _loadReferrals(); });
+}
+function _loadReferrals() {
+  if (!window._supa || !U) return;
+  window._supa.from('referrals').select('*, referred:users!referred_id(ign, avatar_url)').eq('referrer_id', U.uid)
+    .then(function(r) {
+      REFS = (r.data||[]).map(function(ref) { return { referredUid:ref.referred_id, referredName:ref.referred&&ref.referred.ign||'Player', createdAt:ref.created_at?new Date(ref.created_at).getTime():0, joinBonusPaid:ref.join_bonus_paid||false }; });
+      if (curScr==='profile') renderProfile();
+    }).catch(function(){});
+}
+
+/* ================================================================ APP SETTINGS */
+function _bootAppSettings() {
+  if (window.loadAppConfig) loadAppConfig();
+  _poll('appcfg', function() { if (window.loadAppConfig) loadAppConfig(); }, 60000); /* ✅ SPEED FIX (2026-08-24): was 5 minutes — tightened safety-net; live_config realtime channel above is now primary */
+  if (window._supa) {
+    function _loadLiveConfig(fromRt) {
+      /* ✅ FIX (2026-09-30): .single() → .maybeSingle() — live_config row na
+         hone par (ya RLS ke kisi bhi edge case mein) .single() PostgREST se
+         HTTP 406 deta hai aur browser use console ERROR ki tarah log karta
+         hai. .maybeSingle() 0 rows par saaf {data:null,error:null} deta hai.
+         Row maujood hone par behaviour bilkul same rehta hai. */
+      var _p = (typeof window._fetchLiveConfigOnce === 'function')
+        ? window._fetchLiveConfigOnce(!!fromRt)
+        : window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle();
+      _p.then(function(r) {
+          if (!r || !r.data||!r.data.value) return;
+          var cfg = r.data.value;
+          /* ✅ R26 FIX (2026-09-21): ye handler sirf ticker/banner/PAY
+             set karta tha — poora CFG (paytmEnabled, sdPackages, premium,
+             battlePassPrice, season, cosmetics…) NAHI. Isliye admin ka
+             koi bhi settings toggle (jaise Paytm Instant Checkout) user
+             ko realtime me nahi milta tha — sirf 60s poll ya full reload
+             par. Ab wahi complete _applyCfg chalta hai jo boot par bhi
+             use hota hai (same single source of truth); pehle ke
+             ticker/banner/PAY assignments neeche vaise-hi rakhe hain. */
+          if (window._applyCfg) window._applyCfg(cfg);
+          if (cfg.ticker) { var tt=$('tickerTxt'); if (tt) tt.textContent = (window.compliantTicker||function(x){return x;})(cfg.ticker); }
+          if (cfg.banner) { var el=$('dynamicBanner'); if (el) { el.style.display='block'; el.textContent=typeof cfg.banner==='string'?cfg.banner:(cfg.banner.text||''); el.style.background=typeof cfg.banner==='object'&&cfg.banner.color?cfg.banner.color:'rgba(0,255,156,.1)'; el.style.color=typeof cfg.banner==='object'&&cfg.banner.textColor?cfg.banner.textColor:'var(--green)'; } }
+          if (cfg.payment) PAY = cfg.payment;
+        }).catch(function(){});
+    }
+    _loadLiveConfig(false);
+    /* ✅ SPEED FIX (2026-08-24): app_settings had a 5-MINUTE poll and no
+       realtime channel — the slowest data path in the whole app. If
+       admin updates the ticker/banner, users could wait up to 5 minutes
+       to see it. app_settings is already in the publication (an earlier
+       session added it for maintenance-mode). Also removed the
+       "!tt.textContent" guard on ticker — that silently prevented ANY
+       ticker update after the very first one ever set, forever, since
+       textContent is never empty once set once. */
+    var _liveConfigCh = window._supa.channel('app-settings-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'app_settings', filter: 'key=eq.live_config' }, function() { _loadLiveConfig(true); })
+      .subscribe();
+    _realtimeChannels.push(_liveConfigCh);
+
+    /* ✅ UNIVERSAL <0.3s LIVE PULSE (live_join_events):
+       Since Supabase Realtime WALRUS does not evaluate Firebase JWTs for RLS-protected
+       tables (users, notifications, coin_requests, wallet_transactions, support_tickets),
+       live_join_events (public-read, zero-PII) emits a lightweight pulse row with
+       match_id='pulse:<table>' and event='<uid4_uid4>' whenever those tables change. */
+    try {
+      var _uPulseCh = window._supa.channel('universal-live-pulse-' + (U && U.uid ? U.uid.slice(0, 6) : 'anon'))
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'live_join_events' }, function(payload) {
+          try {
+            var row = (payload && payload.new) || {};
+            var mid = String(row.match_id || '');
+            if (!mid) return;
+            if (mid.indexOf('pulse:') !== 0) {
+              /* Match slot change — update MT[mid].joinedSlots in <0.3s */
+              if (window.MT && MT[mid] && row.filled_slots != null) {
+                MT[mid].joinedSlots = Number(row.filled_slots);
+                MT[mid].filled_slots = Number(row.filled_slots);
+                _debouncedRender();
+              } else {
+                _loadMatches();
+              }
+              _loadJR();
+              return;
+            }
+            var uid = (window.U && window.U.uid) || '';
+            var myTag = uid.length >= 8 ? (uid.slice(0, 4) + '_' + uid.slice(-4)) : '';
+            var evTag = String(row.event || '*');
+            if (evTag !== '*' && myTag && evTag !== myTag) return;
+            var tbl = mid.slice(6);
+            if (tbl === 'matches') {
+              _loadMatches();
+            } else if (tbl === 'users' || tbl === 'profile_requests' || tbl === 'kyc_requests') {
+              _loadUser();
+            } else if (tbl === 'notifications') {
+              _loadNotifs();
+            } else if (tbl === 'coin_requests' || tbl === 'sd_requests' || tbl === 'wallet_transactions') {
+              _loadWallet();
+              _loadUser();
+            } else if (tbl === 'support_tickets' || tbl === 'support_messages') {
+              var mTit = document.getElementById('modalT') || document.getElementById('modalTitle');
+              if (mTit && mTit.textContent && mTit.textContent.indexOf('My Tickets') !== -1 && window.showMyTickets) {
+                window.showMyTickets();
+              }
+            }
+          } catch(_pe) {}
+        })
+        .subscribe();
+      _realtimeChannels.push(_uPulseCh);
+    } catch(_ce) {}
+
+    /* ✅ BUG FIX (2026-09-17): "Preview/Maintenance mode admin se on karne
+       par user panel me refresh karna padta hai" — root cause was NOT the
+       realtime publication or RLS (both verified correct live) — it was
+       that js/preview-mode.js's checkPreviewMode() and
+       js/features-user.js's checkMaintenance() each created their OWN
+       independent Supabase Realtime channel exactly once, on first login,
+       completely outside this file's _realtimeChannels array and outside
+       _bootChannelSetup()/_cleanupChannels() (see the top of this file
+       and core/db.js's syncFirebaseToken). Every other realtime feature
+       in the app (matches, notifications, wallet, etc.) is re-subscribed
+       automatically whenever the Firebase ID token refreshes and
+       window._supa gets recreated with the new Bearer token — because
+       _bootAppSettings, _bootMatches, _bootNotifications etc. are ALL
+       re-run by _bootChannelSetup() at that point. Preview/Maintenance
+       were the only two realtime listeners in the entire app NOT wired
+       into that cycle. Firebase ID tokens expire and refresh roughly
+       every hour, and also always refresh once right after login — so
+       any preview/maintenance channel created before that first refresh
+       was reliably orphaned (bound to a _supa client object that no
+       longer exists) for the rest of the session, silently, with no
+       error — exactly matching "works after a fresh refresh, stops
+       working while already open". Fixed by moving both here, using
+       window._rtCh (this file's shared helper — see top of file) which
+       pushes into _realtimeChannels and therefore participates correctly
+       in cleanup + re-subscription like every other feature. The original
+       checkPreviewMode()/checkMaintenance() functions still run their
+       initial one-time reads and their 25s polling safety net exactly as
+       before (those are unaffected by this — a plain .then() read doesn't
+       go stale the way a channel subscription does); only the realtime
+       subscription itself moved. window.applyPreviewCfg/applyMaintState
+       are exposed by preview-mode.js/features-user.js specifically so
+       this file can drive them without duplicating their logic. */
+    if (window.applyPreviewCfg) {
+      var _pvCh = _rtCh('app-settings-preview-boot', 'app_settings', 'key=eq.preview_mode', function (payload) {
+        if (payload.new) applyPreviewCfg(payload.new.value);
+      });
+    } else {
+      /* Defensive guard — applyPreviewCfg is defined by js/preview-mode.js,
+         a deferred script. In the normal app flow this function only
+         actually runs once, well after every script (deferred or not)
+         has parsed, because boot() itself only ever fires from Firebase's
+         onAuthStateChanged callback (see core/auth.js), which cannot
+         resolve before the whole page — deferred scripts included — has
+         loaded. This branch should be unreachable; it exists only so a
+         future script-order change fails loudly in the console instead
+         of silently dropping the preview-mode realtime subscription. */
+      console.warn('[Boot] applyPreviewCfg not yet defined — preview mode realtime skipped this boot');
+    }
+    if (window.applyMaintState) {
+      var _mtCh = _rtCh('app-settings-maintenance-boot', 'app_settings', 'key=eq.maintenance', function (payload) {
+        if (payload.new) applyMaintState(!!(payload.new.value && payload.new.value.active === true));
+      });
+    } else {
+      console.warn('[Boot] applyMaintState not yet defined — maintenance mode realtime skipped this boot');
+    }
+  }
+}
+
+/* ================================================================ SUPPORT ONLINE (only Firebase RTDB call remaining) */
+function _bootSupportOnline() {
+  /* support.js ke startChat() mein Firebase RTDB use hota hai for chat — woh wahan hi rahega */
+  /* Sirf supportOnline status ke liye — ye safe hai */
+  if (window.db) { window.db.ref('appSettings/supportOnline').on('value', function(s) {}); }
+}
+
+/* ================================================================ DETECT CHANGES */
+function detectChanges() {
+  var newKeys = {};
+  for (var k in MT) newKeys[k] = true;
+  for (var k in newKeys) {
+    var t = MT[k]; if (!t) continue;
+    if (t.roomStatus === 'released' && !prevMTKeys[k+'_room']) {
+      prevMTKeys[k+'_room'] = true;
+      if (hasJ(k)) {
+        pushLocalNotif('room_released', '🔑 Room Details Released!', 'Room ID & Password ready for "' + (t.name||'Match') + '". Tap to view.', t.name, k);
+        toast('🔑 Room ID released! Bell icon tap karo.', 'ok');
+        if (navigator.vibrate) navigator.vibrate([200,100,200]);
+        setTimeout(function(match) { if (window.showRP) showRP(match); }.bind(null, t), 600);
+      }
+    }
+    var st = (t.status||'').toLowerCase();
+    if ((st==='completed'||st==='finished'||st==='ended') && !prevMTKeys[k+'_done']) {
+      prevMTKeys[k+'_done'] = true;
+      if (hasJ(k)) pushLocalNotif('match_completed', '✅ Match Completed!', '"' + (t.name||'Match') + '" has ended. Results soon.', t.name, k);
+    }
+  }
+  for (var k in newKeys) prevMTKeys[k] = true;
+}
+
+/* ================================================================ TIMERS */
+function _startMatchTimers() {
+  function fmtCd(ms) {
+    if (ms<=0) return 'Starting soon...';
+    var h=Math.floor(ms/3600000), m=Math.floor((ms%3600000)/60000), s=Math.floor((ms%60000)/1000);
+    if (h>0) return h+'h '+m+'m'; if (m>5) return m+'m '+s+'s'; return (m>0?m+'m ':'') + s+'s';
+  }
+  setInterval(function() {
+    var now = Date.now();
+    for (var mid in MT) {
+      var el=document.getElementById('timer-'+mid); if (!el) continue;
+      var t=MT[mid], mt=Number(t.matchTime)||0, diff=mt-now, es=effSt(t);
+      if (!mt) { el.textContent=''; continue; }
+      if (es==='live') { el.style.color='#ff4455'; el.textContent='🔴 LIVE'; }
+      else if (es==='completed') { el.style.color='var(--txt2)'; el.textContent='Ended'; }
+      else if (diff>0) { el.style.color=diff<300000?'#ff9900':'#ffaa00'; el.textContent='⏱ '+fmtCd(diff); }
+      else { el.textContent=''; }
+    }
+  }, 1000);
+  setInterval(function() {
+    var need=false;
+    for (var mid in MT) { var t=MT[mid], ns=effSt(t); if (!t._lastSt) t._lastSt=ns; if (t._lastSt!==ns) { t._lastSt=ns; need=true; } }
+    if (need) { renderHome(); renderSP(); renderMM(); }
+  }, 5000);
+}
+window.startMatchTimers = _startMatchTimers;
+
+function _loadExtras() {
+  if (!window._supa || !U) return;
+  window._supa.from('user_achievements').select('*').eq('user_id', U.uid).then(function(r) { window._supaAchievements = r.data||[]; }, function(){});
+  /* ✅ BUG FIX (2026-08-23): "Cosmetic store me kharida hua item bhi
+     unlock nahi dikhta, dobara buy karne ka option aata rehta hai".
+     The purchase itself (purchase_cosmetic RPC) was working fine and
+     the row really was landing in user_cosmetics — confirmed live: a
+     purchased frame_fire row existed in the DB while the store still
+     showed it as buyable. Root cause: this stored the raw Supabase
+     response as an ARRAY of rows, but every screen that reads
+     UD.cosmetics (growth.js's renderCosmeticCards: `owned[c.id]`)
+     expects an OBJECT keyed by cosmetic_key — `owned['frame_fire']` on
+     an array is always undefined (arrays index numerically), so
+     isOwned was unconditionally false regardless of what was actually
+     purchased. Now keyed by cosmetic_key at the source, matching what
+     every consumer already expects. */
+  window._supa.from('user_cosmetics').select('*').eq('user_id', U.uid).then(function(r) {
+    var keyed = {};
+    (r.data || []).forEach(function(row) { keyed[row.cosmetic_key] = row; });
+    window._supaCosmetics = keyed;
+    /* ✅ BUG FIX (2026-08-24): "Buy karne ke baad Owned dikhta hai, but
+       refresh karne par phir se Buy aa jata hai — fake owned". Root
+       cause: window._supaCosmetics is only assigned here, 2s after boot,
+       via an un-awaited async call — but UD.cosmetics is only ever
+       copied FROM window._supaCosmetics inside _applyUser (see above),
+       which typically already ran (from the initial _loadUser) well
+       before this promise resolves. Nothing re-ran _applyUser or
+       re-rendered anything once this data actually landed, so UD.cosmetics
+       stayed undefined for the rest of the session (until the next
+       realtime users-row update or 30s poll happened to fire) — the
+       store kept reading an empty owned{} and showed "Buy" on truly
+       owned items every single load. Now we push it into UD directly
+       the moment it arrives, and re-render the store if it's open. */
+    if (!window.UD) window.UD = {};
+    window.UD.cosmetics = keyed;
+    if (document.getElementById('cosmeticsList') && window.filterCosmetics) {
+      var activeTab = ['all','frames','tags','vip'].filter(function(t) {
+        var b = document.getElementById('cosTab_' + t);
+        return b && b.style.background === 'rgb(0, 212, 255)';
+      })[0] || 'all';
+      window.filterCosmetics(activeTab);
+    }
+  }, function(){});
+}
+
+window.markNotifRead = markNotifRead;
+window.clearAllNotifs = clearAllNotifs;
+window.pushLocalNotif = pushLocalNotif;
+window._loadMatches = _loadMatches;
+window._loadJR = _loadJR;
+window._loadNotifs = _loadNotifs;
+window._loadUser = _loadUser;
+window._refreshUserState = _loadUser;
+/* Bug C-3 Fix: Expose channel management for token refresh */
+window._cleanupChannels = _cleanupChannels;

@@ -1,1 +1,92 @@
-var _0x492b42=(function(){var _0x17c39b=!![];return function(_0x2649a7,_0x17f88b){var _0x1f6e24=_0x17c39b?function(){if(_0x17f88b){var _0x5ddd68=_0x17f88b['apply'](_0x2649a7,arguments);return _0x17f88b=null,_0x5ddd68;}}:function(){};return _0x17c39b=![],_0x1f6e24;};}()),_0x156f75=_0x492b42(this,function(){if(_0x156f75['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x156f75['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x156f75)['search']('(((.+)+)+)+$');});_0x156f75();var _DD_CONFIG={'homeStatusDd':{'options':[{'v':'upcoming','l':'⏱️\x20Upcoming'},{'v':'live','l':'🔴\x20Live'},{'v':'completed','l':'✅\x20Completed'}],'onSelect':function(_0x527b2b){if(window['setST'])setST('home',_0x527b2b);}},'homeRankDd':{'options':[{'v':'all','l':'All\x20Ranks'},{'v':'Bronze','l':'🏅\x20Bronze'},{'v':'Silver','l':'Silver'},{'v':'Gold','l':'Gold'},{'v':'Platinum','l':'🔷\x20Platinum'},{'v':'Diamond','l':'💎\x20Diamond'},{'v':'Legend','l':'👑\x20Legend'}],'onSelect':function(_0x252e0d){window['_rankFilter']=_0x252e0d;if(window['renderHome'])renderHome();}},'mmStatusDd':{'options':[{'v':'upcoming','l':'⏱️\x20Upcoming'},{'v':'live','l':'🔴\x20Live'},{'v':'completed','l':'✅\x20Completed'},{'v':'cancelled','l':'🚫\x20Cancelled'}],'onSelect':function(_0x1205ce){if(window['setST'])setST('mm',_0x1205ce);}}},_ddOpenId=null;function _closeAllCustomDd(){document['querySelectorAll']('.dd-popover')['forEach'](function(_0x20e897){_0x20e897['remove']();}),_ddOpenId=null;}window['_toggleCustomDd']=function(_0x335d51){if(_ddOpenId===_0x335d51){_closeAllCustomDd();return;}_closeAllCustomDd();var _0x8c7c53=document['getElementById'](_0x335d51),_0x282055=_DD_CONFIG[_0x335d51];if(!_0x8c7c53||!_0x282055)return;var _0x4966eb=document['createElement']('div');_0x4966eb['className']='dd-popover',_0x4966eb['style']['cssText']='position:absolute;top:calc(100%\x20+\x206px);left:0;right:0;background:#151520;border:1.5px\x20solid\x20rgba(255,255,255,.12);border-radius:14px;box-shadow:0\x2012px\x2032px\x20rgba(0,0,0,.5);z-index:200;overflow:hidden',_0x282055['options']['forEach'](function(_0x507d60){var _0x1a18ae=document['createElement']('div');_0x1a18ae['textContent']=_0x507d60['l'],_0x1a18ae['style']['cssText']='padding:12px\x2016px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;border-bottom:1px\x20solid\x20rgba(255,255,255,.05)',_0x1a18ae['onmousedown']=function(_0x9ccddc){_0x9ccddc['preventDefault']();},_0x1a18ae['onclick']=function(_0x22cf7c){_0x22cf7c['stopPropagation']();var _0x361b0a=_0x8c7c53['querySelector']('.dd-current');if(_0x361b0a)_0x361b0a['textContent']=_0x507d60['l'];_0x282055['onSelect'](_0x507d60['v']),_closeAllCustomDd();},_0x4966eb['appendChild'](_0x1a18ae);}),_0x8c7c53['style']['position']='relative',_0x8c7c53['appendChild'](_0x4966eb),_ddOpenId=_0x335d51;},document['addEventListener']('click',function(_0x11a482){if(!_ddOpenId)return;var _0x2f031c=document['getElementById'](_ddOpenId);if(_0x2f031c&&!_0x2f031c['contains'](_0x11a482['target']))_closeAllCustomDd();});
+/* ================================================================
+   CUSTOM DROPDOWN — core/custom-dropdown.js
+   BUG FIX (2026-08): native <select> dropdowns render as a plain
+   WHITE, unstyleable OS-level popup on Android Chrome/WebView — no
+   amount of CSS can theme them, which clashed hard with the app's
+   dark theme (screenshots showed a jarring white popover over Status
+   and Rank filters). Replaced with fully custom, dark-themed popover
+   menus that behave the same way (tap → pick → closes) but stay
+   entirely within our own styled DOM.
+================================================================ */
+
+var _DD_CONFIG = {
+  homeStatusDd: {
+    options: [
+      { v: 'upcoming', l: '⏱️ Upcoming' },
+      { v: 'live',     l: '🔴 Live' },
+      { v: 'completed',l: '✅ Completed' }
+    ],
+    onSelect: function(v) { if (window.setST) setST('home', v); }
+  },
+  homeRankDd: {
+    options: [
+      { v: 'all',      l: 'All Ranks' },
+      { v: 'Bronze',   l: '🏅 Bronze' },
+      { v: 'Silver',   l: 'Silver' },
+      { v: 'Gold',     l: 'Gold' },
+      { v: 'Platinum', l: '🔷 Platinum' },
+      { v: 'Diamond',  l: '💎 Diamond' },
+      { v: 'Legend',   l: '👑 Legend' }
+    ],
+    onSelect: function(v) { window._rankFilter = v; if (window.renderHome) renderHome(); }
+  },
+  mmStatusDd: {
+    options: [
+      { v: 'upcoming', l: '⏱️ Upcoming' },
+      { v: 'live',     l: '🔴 Live' },
+      { v: 'completed',l: '✅ Completed' },
+      /* Bug V fix (2026-10-01): admin ke cancel karne par (refund ke saath) user
+         ko apna match dekhna chahiye — "Entry fee refunded" chip yahin se live
+         hota hai. Pehle 'cancelled' filter option hi nahi tha, isliye wo card
+         kabhi reachable nahi tha. */
+      { v: 'cancelled',l: '🚫 Cancelled' }
+    ],
+    onSelect: function(v) { if (window.setST) setST('mm', v); }
+  }
+};
+
+var _ddOpenId = null;
+
+function _closeAllCustomDd() {
+  document.querySelectorAll('.dd-popover').forEach(function(p) { p.remove(); });
+  _ddOpenId = null;
+}
+
+window._toggleCustomDd = function(id) {
+  if (_ddOpenId === id) { _closeAllCustomDd(); return; }
+  _closeAllCustomDd();
+
+  var el = document.getElementById(id);
+  var cfg = _DD_CONFIG[id];
+  if (!el || !cfg) return;
+
+  var pop = document.createElement('div');
+  pop.className = 'dd-popover';
+  pop.style.cssText = 'position:absolute;top:calc(100% + 6px);left:0;right:0;background:#151520;border:1.5px solid rgba(255,255,255,.12);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.5);z-index:200;overflow:hidden';
+
+  cfg.options.forEach(function(opt) {
+    var row = document.createElement('div');
+    row.textContent = opt.l;
+    row.style.cssText = 'padding:12px 16px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05)';
+    row.onmousedown = function(e) { e.preventDefault(); }; /* prevent blur races on touch */
+    row.onclick = function(e) {
+      e.stopPropagation();
+      var cur = el.querySelector('.dd-current');
+      if (cur) cur.textContent = opt.l;
+      cfg.onSelect(opt.v);
+      _closeAllCustomDd();
+    };
+    pop.appendChild(row);
+  });
+
+  el.style.position = 'relative';
+  el.appendChild(pop);
+  _ddOpenId = id;
+};
+
+/* Close popover when tapping anywhere outside it */
+document.addEventListener('click', function(e) {
+  if (!_ddOpenId) return;
+  var openEl = document.getElementById(_ddOpenId);
+  if (openEl && !openEl.contains(e.target)) _closeAllCustomDd();
+});

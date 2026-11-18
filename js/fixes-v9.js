@@ -1,1 +1,277 @@
-(function(){'use strict';var _0x4725bd=(function(){var _0x28c637=!![];return function(_0x118e19,_0x1f0173){var _0x1eb50e=_0x28c637?function(){if(_0x1f0173){var _0x4faeb3=_0x1f0173['apply'](_0x118e19,arguments);return _0x1f0173=null,_0x4faeb3;}}:function(){};return _0x28c637=![],_0x1eb50e;};}());var _0x2d3911='js/green-diamond.png?v=20261117g',_0x32fed3='<img\x20src=\x22'+_0x2d3911+'\x22\x20style=\x22width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block\x22>',_0x3bac49='<img\x20src=\x22'+_0x2d3911+'\x22\x20style=\x22width:20px;height:20px;vertical-align:middle;object-fit:contain;display:inline-block\x22>';window['GD_ICON']=_0x32fed3,window['GD_ICON_LG']=_0x3bac49;var _0x3fa1af='\uD83D\uDCAA'['charAt'](0x0)==='\uD83D'?null:null,_0x99c9f5='\u{1F49A}';function _0x2bd6ae(_0x263435,_0x585b8e,_0x2f88ae){var _0x42b188=_0x4725bd(this,function(){if(_0x42b188['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x42b188['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x42b188)['search']('(((.+)+)+)+$');});_0x42b188();var _0x51b930=0x0,_0x52a64d=setInterval(function(){_0x51b930+=0x96;if(_0x263435())clearInterval(_0x52a64d),_0x585b8e();else{if(_0x51b930>=(_0x2f88ae||0x2ee0))clearInterval(_0x52a64d);}},0x96);}_0x2bd6ae(function(){return typeof window['navTo']==='function'&&!window['_v9wWrap'];},function(){window['_v9wWrap']=!![];var _0x502a17=window['navTo'];window['navTo']=function(_0x3415b8){try{_0x502a17['call'](this,_0x3415b8);}catch(_0x2b1180){}_0x3415b8==='wallet'&&[0x50,0x12c,0x2bc]['forEach'](function(_0x139d6b){setTimeout(function(){var _0x154b68=document['getElementById']('walletMain'),_0x1179f6=document['getElementById']('walletFlow');if(!_0x154b68)return;if(_0x154b68['style']['display']==='none')_0x154b68['style']['display']='';if(_0x1179f6&&_0x1179f6['style']['display']!=='none')_0x1179f6['style']['display']='none';try{if(window['renderWallet'])renderWallet();}catch(_0x1f0a62){}},_0x139d6b);});};});var _0x4c82dc=[{'l':'\u2B1B\x20Default\x20Dark','v':'#0d0d1a'},{'l':'\uD83D\uDD35\x20Blue','v':'linear-gradient(135deg,#001a4d,#003399)'},{'l':'\uD83D\uDFE3\x20Purple','v':'linear-gradient(135deg,#1a0033,#4d0099)'},{'l':'\uD83D\uDFE2\x20Green','v':'linear-gradient(135deg,#001a0d,#004d26)'},{'l':'\uD83D\uDD34\x20Red','v':'linear-gradient(135deg,#1a0000,#4d0000)'},{'l':'\uD83D\uDFE0\x20Orange','v':'linear-gradient(135deg,#1a0d00,#4d2600)'},{'l':'\u26AB\x20Black','v':'#000000'},{'l':'\uD83C\uDF0C\x20Galaxy','v':'linear-gradient(135deg,#060616,#12023a)'},{'l':'\uD83C\uDF0A\x20Ocean','v':'linear-gradient(135deg,#001933,#003366)'},{'l':'\uD83D\uDD25\x20Fire','v':'linear-gradient(135deg,#1a0000,#660000)'},{'l':'\uD83D\uDC8E\x20Diamond','v':'linear-gradient(135deg,#001a33,#004466)'},{'l':'\uD83C\uDF38\x20Pink','v':'linear-gradient(135deg,#1a0014,#4d003d)'}];window['showAvatarBgPicker']=function(){var _0x4c1d47=document['getElementById']('_avaBgSheet');if(_0x4c1d47){_0x4c1d47['remove']();return;}var _0xb7dc3c=window['UD']&&window['UD']['avatarBgColor']||'#0d0d1a',_0x2dc9af=document['createElement']('div');_0x2dc9af['id']='_avaBgSheet',_0x2dc9af['style']['cssText']='position:fixed;inset:0;z-index:9600;display:flex;flex-direction:column;justify-content:flex-end';var _0x3111e4=document['createElement']('div');_0x3111e4['style']['cssText']='position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px)',_0x3111e4['onclick']=function(){_0x2dc9af['remove']();};var _0x3e8faf=document['createElement']('div');_0x3e8faf['style']['cssText']='position:relative;background:#111;border-radius:24px\x2024px\x200\x200;padding:20px\x2016px\x2036px;max-height:75vh;overflow-y:auto';var _0x46b77='<div\x20style=\x22display:flex;justify-content:center;padding:0\x200\x2014px\x22><div\x20style=\x22width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.15)\x22></div></div>';_0x46b77+='<div\x20style=\x22font-size:15px;font-weight:800;color:#fff;margin-bottom:16px\x22>\uD83C\uDFA8\x20Profile\x20Icon\x20Background</div>',_0x46b77+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px\x22>',_0x4c82dc['forEach'](function(_0x54a30f){var _0x46134b=_0xb7dc3c===_0x54a30f['v'];_0x46b77+='<div\x20onclick=\x22window._pickAvatarBg(\x27'+_0x54a30f['v']['replace'](/\\/g,'\x5c\x5c')['replace'](/'/g,'\x5c\x27')+'\x27)\x22\x20style=\x22padding:14px\x2012px;border-radius:14px;background:'+_0x54a30f['v']+';border:'+(_0x46134b?'2px\x20solid\x20#00ff9c':'1px\x20solid\x20rgba(255,255,255,.12)')+';cursor:pointer;display:flex;align-items:center;justify-content:space-between;min-height:52px\x22>',_0x46b77+='<span\x20style=\x22font-size:12px;font-weight:700;color:#fff;text-shadow:0\x201px\x206px\x20rgba(0,0,0,.9)\x22>'+_0x54a30f['l']+'</span>';if(_0x46134b)_0x46b77+='<span\x20style=\x22color:#00ff9c;font-size:18px\x22>\u2713</span>';_0x46b77+='</div>';}),_0x46b77+='</div>',_0x3e8faf['innerHTML']=_0x46b77,_0x2dc9af['appendChild'](_0x3111e4),_0x2dc9af['appendChild'](_0x3e8faf),document['body']['appendChild'](_0x2dc9af);},window['_pickAvatarBg']=function(_0x40f4a2){if(!window['U'])return;function _0x2dc5af(){if(window['UD'])window['UD']['avatarBgColor']=_0x40f4a2;var _0x544489=document['getElementById']('_avaBgSheet');if(_0x544489)_0x544489['remove']();try{if(window['renderProfile'])renderProfile();}catch(_0x23f57c){}if(window['toast'])toast('Profile\x20background\x20updated!\x20\u2705','ok');}window['db']?window['db']['ref']('users/'+window['U']['uid']+'/avatarBgColor')['set'](_0x40f4a2,function(){_0x2dc5af();}):_0x2dc5af(),window['_supa']&&window['_supa']['from']('users')['update']({'avatar_bg_color':_0x40f4a2})['eq']('id',window['U']['uid'])['then'](null,function(_0x2d12a7){console['warn']('[AvatarBg]\x20Supabase\x20save\x20failed:',_0x2d12a7['message']);});},_0x2bd6ae(function(){return typeof window['renderProfile']==='function'&&!window['_v9rpWrap'];},function(){window['_v9rpWrap']=!![];var _0x50c5fa=window['renderProfile'];window['renderProfile']=function(){_0x50c5fa['apply'](this,arguments),setTimeout(function(){var _0x3dfbb7=document['getElementById']('profileContent');if(!_0x3dfbb7)return;var _0x5a2be8=_0x3dfbb7['querySelector']('.prof-ava');_0x5a2be8&&window['UD']&&window['UD']['avatarBgColor']&&(_0x5a2be8['style']['background']=window['UD']['avatarBgColor']);var _0x35b5e4=_0x3dfbb7['querySelector']('#_avaBgBtn');if(_0x35b5e4)_0x35b5e4['remove']();},0x50);};});var _0x5d8993=String['fromCodePoint'](0x1f49a);function _0x254f2e(_0x38ce48){if(!_0x38ce48)return;if(_0x38ce48['nodeType']===0x3){if(_0x38ce48['textContent']['indexOf'](_0x5d8993)!==-0x1){var _0x1d4d8f=document['createElement']('span');_0x1d4d8f['innerHTML']=_0x38ce48['textContent']['split'](_0x5d8993)['join'](_0x32fed3),_0x38ce48['parentNode']['replaceChild'](_0x1d4d8f,_0x38ce48);}return;}if(_0x38ce48['tagName']==='SCRIPT'||_0x38ce48['tagName']==='STYLE'||_0x38ce48['tagName']==='IMG')return;Array['prototype']['slice']['call'](_0x38ce48['childNodes'])['forEach'](_0x254f2e);}function _0x59fac6(){['homeList','mmList','specialList','profileContent','rankContent','walletMain','notifList','modalB']['forEach'](function(_0x205505){var _0x5be96b=document['getElementById'](_0x205505);if(_0x5be96b)_0x254f2e(_0x5be96b);});}var _0xae85e6=null;function _0x5d4890(){if(_0xae85e6)return;_0xae85e6=setTimeout(function(){_0xae85e6=null;try{_0x254f2e(document['body']);}catch(_0x1a1be7){}},0x78);}function _0x3b07a8(){if(window['_v9gdMo']||typeof MutationObserver!=='function')return;window['_v9gdMo']=new MutationObserver(function(_0x22aa18){for(var _0x3123c0=0x0;_0x3123c0<_0x22aa18['length'];_0x3123c0++){var _0xd16253=_0x22aa18[_0x3123c0];if(_0xd16253['type']==='characterData'){if(_0xd16253['target']&&_0xd16253['target']['textContent']&&_0xd16253['target']['textContent']['indexOf'](_0x5d8993)!==-0x1){_0x5d4890();return;}}else{if(_0xd16253['addedNodes'])for(var _0x25a877=0x0;_0x25a877<_0xd16253['addedNodes']['length'];_0x25a877++){var _0x4fcedf=_0xd16253['addedNodes'][_0x25a877];if(_0x4fcedf['nodeType']===0x3){if(_0x4fcedf['textContent']['indexOf'](_0x5d8993)!==-0x1){_0x5d4890();return;}}else{if(_0x4fcedf['nodeType']===0x1&&_0x4fcedf['textContent']&&_0x4fcedf['textContent']['indexOf'](_0x5d8993)!==-0x1){_0x5d4890();return;}}}}}}),window['_v9gdMo']['observe'](document['body'],{'childList':!![],'subtree':!![],'characterData':!![]});}_0x2bd6ae(function(){return typeof window['navTo']==='function'&&!window['_v9gdWrap'];},function(){window['_v9gdWrap']=!![];var _0x73f3e1=window['navTo'];window['navTo']=function(_0x370c1c){try{_0x73f3e1['call'](this,_0x370c1c);}catch(_0x544d2d){}setTimeout(_0x59fac6,0xfa);};}),_0x2bd6ae(function(){return document['body'];},function(){try{_0x254f2e(document['body']);}catch(_0x3088c2){}_0x3b07a8();}),_0x2bd6ae(function(){return typeof window['openModal']==='function'&&!window['_v9omWrap'];},function(){window['_v9omWrap']=!![];var _0x336d29=window['openModal'];window['openModal']=function(_0x5012e3,_0x324ddc){if(typeof _0x324ddc==='string')_0x324ddc=_0x324ddc['split'](_0x5d8993)['join'](_0x32fed3);return _0x336d29['call'](this,_0x5012e3,_0x324ddc);};}),['renderHome','renderMM','renderSpecial','renderRank','renderProfile','renderWallet','renderNotifs']['forEach'](function(_0x5ef0b5){_0x2bd6ae(function(){return typeof window[_0x5ef0b5]==='function'&&!window['_v9_'+_0x5ef0b5];},function(){window['_v9_'+_0x5ef0b5]=!![];var _0x308489=window[_0x5ef0b5];window[_0x5ef0b5]=function(){_0x308489['apply'](this,arguments),setTimeout(_0x59fac6,0x96);};});}),_0x2bd6ae(function(){return typeof window['renderRank']==='function'&&!window['_v9rkWrap'];},function(){window['_v9rkWrap']=!![];var _0x581a66=window['renderRank'];window['renderRank']=function(_0x4696c4){if(_0x4696c4==='city'||_0x4696c4==='earning'||_0x4696c4==='earnings')_0x4696c4='rankpoints';_0x581a66['call'](this,_0x4696c4);};}),_0x2bd6ae(function(){return typeof window['buildMatchCard']==='function'&&!window['_v9mcWrap'];},function(){window['_v9mcWrap']=!![];var _0x5a69c4=window['buildMatchCard'];window['buildMatchCard']=function(_0x578f58){var _0x571fc9=_0x5a69c4['apply'](this,arguments);if(typeof _0x571fc9==='string')_0x571fc9=_0x571fc9['split'](_0x5d8993)['join'](_0x32fed3);return _0x571fc9;};}),_0x2bd6ae(function(){return typeof window['renderWallet']==='function'&&!window['_v9walletGD'];},function(){window['_v9walletGD']=!![];var _0x2dc718=window['renderWallet'];window['renderWallet']=function(){_0x2dc718['apply'](this,arguments),setTimeout(function(){var _0x31a493=document['getElementById']('greenDiaCount');if(_0x31a493&&window['UD']){var _0x12bef1=Math['max'](Number(window['UD']['greenDiamonds'])||0x0,0x0);_0x31a493['textContent']=String(_0x12bef1);}},0x50);};}),console['log']('[v9]\x20fixes-v9.js\x20loaded\x20\u2705');}());
+/* ================================================================
+   MINI eSPORTS — fixes-v9.js
+   1. Wallet loading guarantee
+   2. Profile avatar background color picker
+   3. Replace 💚 emoji with real green diamond image in DOM
+   4. Rank - no earning/city tab
+   ================================================================ */
+(function(){
+'use strict';
+
+var GD_SRC = 'js/green-diamond.png?v=20261117g';
+var GD = '<img src="' + GD_SRC + '" style="width:14px;height:14px;vertical-align:middle;object-fit:contain;display:inline-block">';
+var GD_LG = '<img src="' + GD_SRC + '" style="width:20px;height:20px;vertical-align:middle;object-fit:contain;display:inline-block">';
+window.GD_ICON = GD;
+window.GD_ICON_LG = GD_LG;
+
+var GREEN_DIAMOND_EMOJI = '\uD83D\uDCAA'.charAt(0) === '\uD83D' ? null : null; // not used
+// Use unicode codepoint to avoid the emoji being replaced at build time
+var GD_EMOJI_CP = '\u{1F49A}'; // 💚
+
+function wait(fn, cb, ms){
+  var e=0, t=setInterval(function(){
+    e+=150;
+    if(fn()){ clearInterval(t); cb(); }
+    else if(e>=(ms||12000)) clearInterval(t);
+  }, 150);
+}
+
+/* ============================================================
+   1. WALLET LOADING — Triple guarantee
+   ============================================================ */
+wait(function(){ return typeof window.navTo==='function' && !window._v9wWrap; }, function(){
+  window._v9wWrap = true;
+  var _o = window.navTo;
+  window.navTo = function(s){
+    try{ _o.call(this, s); } catch(e){}
+    if(s === 'wallet'){
+      [80, 300, 700].forEach(function(d){
+        setTimeout(function(){
+          var wm = document.getElementById('walletMain');
+          var wf = document.getElementById('walletFlow');
+          if(!wm) return;
+          if(wm.style.display === 'none') wm.style.display = '';
+          if(wf && wf.style.display !== 'none') wf.style.display = 'none';
+          try{ if(window.renderWallet) renderWallet(); } catch(e){}
+        }, d);
+      });
+    }
+  };
+});
+
+/* ============================================================
+   2. AVATAR BACKGROUND COLOR PICKER
+   ============================================================ */
+var BG_COLORS = [
+  {l:'\u2B1B Default Dark', v:'#0d0d1a'},
+  {l:'\uD83D\uDD35 Blue',    v:'linear-gradient(135deg,#001a4d,#003399)'},
+  {l:'\uD83D\uDFE3 Purple',  v:'linear-gradient(135deg,#1a0033,#4d0099)'},
+  {l:'\uD83D\uDFE2 Green',   v:'linear-gradient(135deg,#001a0d,#004d26)'},
+  {l:'\uD83D\uDD34 Red',     v:'linear-gradient(135deg,#1a0000,#4d0000)'},
+  {l:'\uD83D\uDFE0 Orange',  v:'linear-gradient(135deg,#1a0d00,#4d2600)'},
+  {l:'\u26AB Black',         v:'#000000'},
+  {l:'\uD83C\uDF0C Galaxy',  v:'linear-gradient(135deg,#060616,#12023a)'},
+  {l:'\uD83C\uDF0A Ocean',   v:'linear-gradient(135deg,#001933,#003366)'},
+  {l:'\uD83D\uDD25 Fire',    v:'linear-gradient(135deg,#1a0000,#660000)'},
+  {l:'\uD83D\uDC8E Diamond', v:'linear-gradient(135deg,#001a33,#004466)'},
+  {l:'\uD83C\uDF38 Pink',    v:'linear-gradient(135deg,#1a0014,#4d003d)'},
+];
+
+window.showAvatarBgPicker = function(){
+  var ex = document.getElementById('_avaBgSheet');
+  if(ex){ ex.remove(); return; }
+  var cur = (window.UD && window.UD.avatarBgColor) || '#0d0d1a';
+  var sh = document.createElement('div');
+  sh.id = '_avaBgSheet';
+  sh.style.cssText = 'position:fixed;inset:0;z-index:9600;display:flex;flex-direction:column;justify-content:flex-end';
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px)';
+  ov.onclick = function(){ sh.remove(); };
+  var pn = document.createElement('div');
+  pn.style.cssText = 'position:relative;background:#111;border-radius:24px 24px 0 0;padding:20px 16px 36px;max-height:75vh;overflow-y:auto';
+  var h = '<div style="display:flex;justify-content:center;padding:0 0 14px"><div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.15)"></div></div>';
+  h += '<div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:16px">\uD83C\uDFA8 Profile Icon Background</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+  BG_COLORS.forEach(function(c){
+    var active = cur === c.v;
+    h += '<div onclick="window._pickAvatarBg(\'' + c.v.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" style="padding:14px 12px;border-radius:14px;background:' + c.v + ';border:' + (active?'2px solid #00ff9c':'1px solid rgba(255,255,255,.12)') + ';cursor:pointer;display:flex;align-items:center;justify-content:space-between;min-height:52px">';
+    h += '<span style="font-size:12px;font-weight:700;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.9)">' + c.l + '</span>';
+    if(active) h += '<span style="color:#00ff9c;font-size:18px">\u2713</span>';
+    h += '</div>';
+  });
+  h += '</div>';
+  pn.innerHTML = h;
+  sh.appendChild(ov);
+  sh.appendChild(pn);
+  document.body.appendChild(sh);
+};
+
+window._pickAvatarBg = function(val){
+  if(!window.U) return;
+  /* Bug High #10 Fix: Dual-write to Firebase + Supabase for cross-device persistence. */
+  function _afterSave() {
+    if(window.UD) window.UD.avatarBgColor = val;
+    var sh = document.getElementById('_avaBgSheet');
+    if(sh) sh.remove();
+    try{ if(window.renderProfile) renderProfile(); } catch(e){}
+    if(window.toast) toast('Profile background updated! \u2705', 'ok');
+  }
+  if(window.db) {
+    window.db.ref('users/' + window.U.uid + '/avatarBgColor').set(val, function(){ _afterSave(); });
+  } else { _afterSave(); }
+  // Supabase — cross-device sync
+  if(window._supa) {
+    window._supa.from('users').update({ avatar_bg_color: val }).eq('id', window.U.uid)  /* Bug C-5 Fix: correct column name */
+      .then(null, function(e){ console.warn('[AvatarBg] Supabase save failed:', e.message); });
+  }
+};
+
+/* Wrap renderProfile to apply bg color + add picker button */
+wait(function(){ return typeof window.renderProfile==='function' && !window._v9rpWrap; }, function(){
+  window._v9rpWrap = true;
+  var _o = window.renderProfile;
+  window.renderProfile = function(){
+    _o.apply(this, arguments);
+    setTimeout(function(){
+      var pc = document.getElementById('profileContent'); if(!pc) return;
+      var ava = pc.querySelector('.prof-ava');
+      if(ava && window.UD && window.UD.avatarBgColor){
+        ava.style.background = window.UD.avatarBgColor;
+      }
+      var oldBtn = pc.querySelector('#_avaBgBtn');
+      if(oldBtn) oldBtn.remove();
+    }, 80);
+  };
+});
+
+/* ============================================================
+   3. REPLACE 💚 EMOJI with real green diamond image in DOM
+   NOTE: We search for the literal emoji codepoint U+1F49A
+   ============================================================ */
+var GD_EMOJI = String.fromCodePoint(0x1F49A); // 💚
+
+function replaceGDInNode(node){
+  if(!node) return;
+  if(node.nodeType === 3){ // text node
+    if(node.textContent.indexOf(GD_EMOJI) !== -1){
+      var sp = document.createElement('span');
+      sp.innerHTML = node.textContent.split(GD_EMOJI).join(GD);
+      node.parentNode.replaceChild(sp, node);
+    }
+    return;
+  }
+  if(node.tagName === 'SCRIPT' || node.tagName === 'STYLE' || node.tagName === 'IMG') return;
+  Array.prototype.slice.call(node.childNodes).forEach(replaceGDInNode);
+}
+
+function replaceGDInScreens(){
+  ['homeList','mmList','specialList','profileContent','rankContent',
+   'walletMain','notifList','modalB'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) replaceGDInNode(el);
+  });
+}
+
+/* ✅ D88 (07-Nov-2026, owner: "💚 nahi — real green diamond PNG icon ki
+   tarah"): purana walker sirf nav-modal ke 250ms baad fixed containers
+   scan karta tha — async renders (cards, missions, toasts) me 💚 reh
+   jata tha. Ab MutationObserver har naye text-node ko pakad kar turant
+   PNG se badalta hai (debounced, script/style/img skip). */
+var _gdMoTimer = null;
+function _gdQueueScan(){
+  if (_gdMoTimer) return;
+  _gdMoTimer = setTimeout(function(){
+    _gdMoTimer = null;
+    try { replaceGDInNode(document.body); } catch (e) {}
+  }, 120);
+}
+function _gdStartObserver(){
+  if (window._v9gdMo || typeof MutationObserver !== 'function') return;
+  window._v9gdMo = new MutationObserver(function(muts){
+    for (var i = 0; i < muts.length; i++) {
+      var m = muts[i];
+      if (m.type === 'characterData') { if (m.target && m.target.textContent && m.target.textContent.indexOf(GD_EMOJI) !== -1) { _gdQueueScan(); return; } }
+      else if (m.addedNodes) {
+        for (var j = 0; j < m.addedNodes.length; j++) {
+          var n = m.addedNodes[j];
+          if (n.nodeType === 3) { if (n.textContent.indexOf(GD_EMOJI) !== -1) { _gdQueueScan(); return; } }
+          else if (n.nodeType === 1 && n.textContent && n.textContent.indexOf(GD_EMOJI) !== -1) { _gdQueueScan(); return; }
+        }
+      }
+    }
+  });
+  window._v9gdMo.observe(document.body, { childList: true, subtree: true, characterData: true });
+}
+
+/* Run on every navigation */
+wait(function(){ return typeof window.navTo==='function' && !window._v9gdWrap; }, function(){
+  window._v9gdWrap = true;
+  var _o = window.navTo;
+  window.navTo = function(s){
+    try{ _o.call(this, s); } catch(e){}
+    setTimeout(replaceGDInScreens, 250);
+  };
+});
+
+wait(function(){ return document.body; }, function(){
+  try { replaceGDInNode(document.body); } catch (e) {}
+  _gdStartObserver();
+});
+
+/* Run on modal open */
+wait(function(){ return typeof window.openModal==='function' && !window._v9omWrap; }, function(){
+  window._v9omWrap = true;
+  var _o = window.openModal;
+  window.openModal = function(t, b){
+    if(typeof b === 'string') b = b.split(GD_EMOJI).join(GD);
+    return _o.call(this, t, b);
+  };
+});
+
+/* Run after render functions */
+['renderHome','renderMM','renderSpecial','renderRank','renderProfile','renderWallet','renderNotifs'].forEach(function(fn){
+  wait(function(){ return typeof window[fn]==='function' && !window['_v9_'+fn]; }, function(){
+    window['_v9_'+fn] = true;
+    var _o = window[fn];
+    window[fn] = function(){
+      _o.apply(this, arguments);
+      setTimeout(replaceGDInScreens, 150);
+    };
+  });
+});
+
+/* ============================================================
+   4. RANK — block city/earning tab
+   ============================================================ */
+wait(function(){ return typeof window.renderRank==='function' && !window._v9rkWrap; }, function(){
+  window._v9rkWrap = true;
+  var _o = window.renderRank;
+  window.renderRank = function(tab){
+    if(tab === 'city' || tab === 'earning' || tab === 'earnings') tab = 'rankpoints';
+    _o.call(this, tab);
+  };
+});
+
+/* ============================================================
+   5. MATCH CARD — replace emoji in built HTML
+   ============================================================ */
+wait(function(){ return typeof window.buildMatchCard==='function' && !window._v9mcWrap; }, function(){
+  window._v9mcWrap = true;
+  var _o = window.buildMatchCard;
+  window.buildMatchCard = function(t){
+    var html = _o.apply(this, arguments);
+    if(typeof html === 'string') html = html.split(GD_EMOJI).join(GD);
+    return html;
+  };
+});
+
+/* ============================================================
+   6. UPDATE greenDiaCount in wallet with image
+   ============================================================ */
+wait(function(){ return typeof window.renderWallet==='function' && !window._v9walletGD; }, function(){
+  window._v9walletGD = true;
+  var _o = window.renderWallet;
+  window.renderWallet = function(){
+    _o.apply(this, arguments);
+    setTimeout(function(){
+      var gdc = document.getElementById('greenDiaCount');
+      if(gdc && window.UD){
+        var gd = Math.max(Number(window.UD.greenDiamonds)||0, 0);
+        gdc.textContent = String(gd);   /* ✅ D72: gem icon card art me baked hai */
+      }
+    }, 80);
+  };
+});
+
+console.log('[v9] fixes-v9.js loaded \u2705');
+})();

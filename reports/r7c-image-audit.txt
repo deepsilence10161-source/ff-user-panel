@@ -1,0 +1,84 @@
+TOTAL IMAGE FILES FOUND = 81
+
+--- SUMMARY ---
+alpha NAHI hai (RGB/JPG)      : 70
+background BLACK lagta hai    : 75
+kinare par bright-grey GLOW   : 0
+
+--- BLACK BACKGROUND wali (top 40) ---
+  ff-user-panel/assets/img/titles/death-bringer.png          320x320 mode=RGB black=0.93 cornerAlpha=255 halo=0.00 28KB
+  ff-user-panel/assets/img/titles/apex.png                   320x320 mode=RGB black=0.92 cornerAlpha=255 halo=0.00 31KB
+  ff-user-panel/assets/img/titles/reaper.png                 320x320 mode=RGB black=0.92 cornerAlpha=255 halo=0.00 28KB
+  ff-user-panel/assets/img/titles/arena-king.png             320x320 mode=RGB black=0.92 cornerAlpha=255 halo=0.00 29KB
+  ff-user-panel/assets/img/titles/shadow-hunter.png          320x320 mode=RGB black=0.91 cornerAlpha=255 halo=0.00 34KB
+  ff-user-panel/assets/img/titles/destroyer.png              320x320 mode=RGB black=0.91 cornerAlpha=255 halo=0.00 35KB
+  ff-user-panel/assets/img/badges/eternal-champion.png       256x256 mode=P black=0.90 cornerAlpha=255 halo=0.00 9KB
+  ff-user-panel/assets/img/titles/immortal.png               320x320 mode=RGB black=0.90 cornerAlpha=255 halo=0.00 36KB
+  ff-user-panel/assets/img/titles/veteran.png                320x320 mode=RGB black=0.90 cornerAlpha=255 halo=0.00 30KB
+  ff-user-panel/assets/img/badges/the-conqueror.png          256x256 mode=P black=0.90 cornerAlpha=255 halo=0.00 9KB
+  ff-user-panel/assets/img/titles/lone-wolf.png              320x320 mode=RGB black=0.90 cornerAlpha=255 halo=0.00 35KB
+  ff-user-panel/assets/img/badges/royal-legend.png           256x256 mode=P black=0.90 cornerAlpha=255 halo=0.00 9KB
+  ff-user-panel/assets/img/titles/phoenix.png                320x320 mode=RGB black=0.90 cornerAlpha=255 halo=0.00 37KB
+  ff-user-panel/assets/img/titles/supreme.png                320x320 mode=RGB black=0.89 cornerAlpha=255 halo=0.00 41KB
+  ff-user-panel/assets/img/titles/infinity.png               320x320 mode=RGB black=0.88 cornerAlpha=255 halo=0.00 35KB
+  ff-user-panel/assets/img/titles/mythic.png                 320x320 mode=RGB black=0.88 cornerAlpha=255 halo=0.00 42KB
+  ff-user-panel/assets/img/titles/cosmic.png                 320x320 mode=RGB black=0.88 cornerAlpha=255 halo=0.00 40KB
+  ff-user-panel/assets/img/titles/champion.png               320x320 mode=RGB black=0.87 cornerAlpha=255 halo=0.00 40KB
+  ff-user-panel/assets/img/titles/titan.png                  320x320 mode=RGB black=0.83 cornerAlpha=255 halo=0.00 51KB
+  ff-user-panel/assets/img/special/clan-war-champion.png     256x256 mode=RGB black=0.83 cornerAlpha=255 halo=0.00 38KB
+  ff-user-panel/assets/img/premium/gold.png                  224x224 mode=RGB black=0.82 cornerAlpha=255 halo=0.00 28KB
+  ff-user-panel/assets/img/premium/silver.png                224x224 mode=RGB black=0.82 cornerAlpha=255 halo=0.00 30KB
+  ff-user-panel/assets/img/premium/diamond.png               224x224 mode=RGB black=0.81 cornerAlpha=255 halo=0.00 30KB
+  ff-user-panel/assets/img/special/season-champion.png       256x256 mode=RGB black=0.79 cornerAlpha=255 halo=0.00 45KB
+  ff-user-panel/assets/img/special/top3-champion.png         256x256 mode=RGB black=0.79 cornerAlpha=255 halo=0.00 43KB
+  ff-user-panel/assets/profile/card_frame.png                1086x976 mode=RGBA black=0.73 cornerAlpha=0 halo=0.09 1014KB
+  ff-user-panel/assets/img/icons/trophy.png                  128x128 mode=RGB black=0.71 cornerAlpha=255 halo=0.00 16KB
+  ff-user-panel/assets/img/badges/elite-fighter.png          256x256 mode=P black=0.65 cornerAlpha=255 halo=0.00 37KB
+  ff-user-panel/assets/img/icons/crown.png                   128x128 mode=RGB black=0.65 cornerAlpha=255 halo=0.00 18KB
+  ff-user-panel/assets/img/ranks/bronze.png                  224x224 mode=RGB black=0.65 cornerAlpha=255 halo=0.00 48KB
+  ff-user-panel/assets/img/titles/unstoppable.png            320x320 mode=RGB black=0.63 cornerAlpha=255 halo=0.00 130KB
+  ff-user-panel/assets/img/ranks/gold.png                    224x224 mode=RGB black=0.62 cornerAlpha=255 halo=0.00 52KB
+  ff-user-panel/icons/icon-512x512.png                       512x512 mode=RGBA black=0.62 cornerAlpha=0 halo=0.00 290KB
+  ff-user-panel/icons/icon-384x384.png                       384x384 mode=RGBA black=0.62 cornerAlpha=0 halo=0.00 176KB
+  ff-user-panel/assets/img/badges/survivor.png               256x256 mode=P black=0.61 cornerAlpha=255 halo=0.00 36KB
+  ff-user-panel/assets/img/icons/fire.png                    128x128 mode=RGB black=0.61 cornerAlpha=255 halo=0.00 17KB
+  ff-user-panel/assets/img/badges/predator.png               256x256 mode=P black=0.60 cornerAlpha=255 halo=0.00 41KB
+  ff-user-panel/assets/img/badges/hunter.png                 256x256 mode=P black=0.60 cornerAlpha=255 halo=0.00 34KB
+  ff-user-panel/assets/img/badges/king-of-arena.png          256x256 mode=RGB black=0.60 cornerAlpha=255 halo=0.00 91KB
+  ff-user-panel/assets/img/badges/rising-star.png            256x256 mode=P black=0.60 cornerAlpha=255 halo=0.00 33KB
+
+--- HALO/GLOW wali (top 30) ---
+
+--- ALPHA NAHI wali (top 30) ---
+  ff-user-panel/assets/img/badges/comeback-king.png          mode=RGB 256x256 black=0.56
+  ff-user-panel/assets/img/badges/elite-fighter.png          mode=P 256x256 black=0.65
+  ff-user-panel/assets/img/badges/eternal-champion.png       mode=P 256x256 black=0.90
+  ff-user-panel/assets/img/badges/god-of-war.png             mode=P 256x256 black=0.57
+  ff-user-panel/assets/img/badges/grinder.png                mode=P 256x256 black=0.59
+  ff-user-panel/assets/img/badges/hunter.png                 mode=P 256x256 black=0.60
+  ff-user-panel/assets/img/badges/kill-machine.png           mode=P 256x256 black=0.57
+  ff-user-panel/assets/img/badges/king-of-arena.png          mode=RGB 256x256 black=0.60
+  ff-user-panel/assets/img/badges/legend-born.png            mode=RGB 256x256 black=0.53
+  ff-user-panel/assets/img/badges/legend-winner.png          mode=RGB 256x256 black=0.56
+  ff-user-panel/assets/img/badges/mvp.png                    mode=P 256x256 black=0.52
+  ff-user-panel/assets/img/badges/one-man-army.png           mode=P 256x256 black=0.57
+  ff-user-panel/assets/img/badges/podium-master.png          mode=P 256x256 black=0.60
+  ff-user-panel/assets/img/badges/predator.png               mode=P 256x256 black=0.60
+  ff-user-panel/assets/img/badges/rank-climber.png           mode=RGB 256x256 black=0.55
+  ff-user-panel/assets/img/badges/rising-star.png            mode=P 256x256 black=0.60
+  ff-user-panel/assets/img/badges/royal-legend.png           mode=P 256x256 black=0.90
+  ff-user-panel/assets/img/badges/survivor.png               mode=P 256x256 black=0.61
+  ff-user-panel/assets/img/badges/the-conqueror.png          mode=P 256x256 black=0.90
+  ff-user-panel/assets/img/badges/top-10.png                 mode=RGB 256x256 black=0.56
+  ff-user-panel/assets/img/badges/top-5.png                  mode=RGB 256x256 black=0.57
+  ff-user-panel/assets/img/badges/week-warrior.png           mode=P 256x256 black=0.59
+  ff-user-panel/assets/img/badges/win-streak.png             mode=RGB 256x256 black=0.60
+  ff-user-panel/assets/img/frames/glow.png                   mode=RGB 512x512 black=0.19
+  ff-user-panel/assets/img/icons/coin.png                    mode=RGB 128x128 black=0.48
+  ff-user-panel/assets/img/icons/crown.png                   mode=RGB 128x128 black=0.65
+  ff-user-panel/assets/img/icons/diamond.png                 mode=RGB 128x128 black=0.39
+  ff-user-panel/assets/img/icons/fire.png                    mode=RGB 128x128 black=0.61
+  ff-user-panel/assets/img/icons/trophy.png                  mode=RGB 128x128 black=0.71
+  ff-user-panel/assets/img/icons/xp.png                      mode=RGB 128x128 black=0.41
+
+json → ff-user-panel/reports/r7c-image-audit.json

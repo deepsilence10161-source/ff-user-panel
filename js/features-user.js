@@ -1,1 +1,2494 @@
-(function(){'use strict';var _0x3fb840=(function(){var _0x28b4c0=!![];return function(_0x3e794a,_0x885037){var _0x27195a=_0x28b4c0?function(){if(_0x885037){var _0x5fdbc=_0x885037['apply'](_0x3e794a,arguments);return _0x885037=null,_0x5fdbc;}}:function(){};return _0x28b4c0=![],_0x27195a;};}()),_0x409257=_0x3fb840(this,function(){if(_0x409257['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x409257['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x409257)['search']('(((.+)+)+)+$');});_0x409257();function _0x216b46(){return window['db'];}function _0x5c3f5d(){return window['auth'];}var _0x573185={'ref':function(_0x52c364){return window['db']?window['db']['ref'](_0x52c364):{'on':function(){},'once':function(){},'set':function(){},'update':function(){},'push':function(){return{'key':null};},'transaction':function(){}};}},_0x2b41dd=window['auth'];function _0x21f9a7(_0x312ecd){return document['getElementById'](_0x312ecd);}function _0x172094(_0x271458,_0x22cdc1){if(window['toast'])toast(_0x271458,_0x22cdc1||'ok');else console['log'](_0x271458);}function _0x46c205(){return window['U'];}function _0x161bdd(){return window['UD'];}function _0x476875(){var _0x5ed637=window['U'];if(!_0x5ed637)return _0x172094('Please\x20login\x20first','err'),null;return _0x5ed637['uid'];}window['showTransactionSummary']=function(){var _0x485143=window['WH']||[],_0x3fe51e=_0x485143['filter'](function(_0x33cc21){return _0x33cc21['type']==='deposit'&&(_0x33cc21['status']==='approved'||_0x33cc21['status']==='done');}),_0x3a02b3=_0x485143['filter'](function(_0x1733a6){return _0x1733a6['type']==='withdraw'&&(_0x1733a6['status']==='approved'||_0x1733a6['status']==='done');}),_0x397175=_0x3fe51e['reduce'](function(_0x123c21,_0x465067){return _0x123c21+(_0x465067['amount']||0x0);},0x0),_0x3a124a=_0x3a02b3['reduce'](function(_0x1d2990,_0x5f0354){return _0x1d2990+(_0x5f0354['amount']||0x0);},0x0),_0x89e175=window['UD'],_0x14212d=Math['max'](Number(_0x89e175&&_0x89e175['sponsored_winnings'])||0x0,0x0),_0x3c21b5='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px\x22>';[{'l':'💰\x20Total\x20Deposited','v':'₹'+_0x397175,'c':'var(--blue)'},{'l':'🏆\x20Total\x20Winnings','v':'₹'+_0x14212d,'c':'var(--green)'},{'l':'📤\x20Total\x20Withdrawn','v':'₹'+_0x3a124a,'c':'#ffaa00'},{'l':'📊\x20Net\x20Position','v':'₹'+(_0x397175+_0x14212d-_0x3a124a),'c':_0x397175+_0x14212d-_0x3a124a>=0x0?'var(--green)':'#ff6b6b'}]['forEach'](function(_0x5f034c){_0x3c21b5+='<div\x20style=\x22background:var(--card);border:1px\x20solid\x20var(--border);border-radius:12px;padding:14px;text-align:center\x22>',_0x3c21b5+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:6px\x22>'+_0x5f034c['l']+'</div>',_0x3c21b5+='<div\x20style=\x22font-size:20px;font-weight:900;color:'+_0x5f034c['c']+'\x22>'+_0x5f034c['v']+'</div></div>';}),_0x3c21b5+='</div>';if(window['openModal'])openModal('Transaction\x20Summary',_0x3c21b5);},window['copyMyFFUID']=function(){var _0x2927af=window['UD'];if(!_0x2927af||!_0x2927af['ffUid']){_0x172094('FF\x20UID\x20not\x20set!','err');return;}window['copyTxt']&&copyTxt(_0x2927af['ffUid']),_0x172094('FF\x20UID\x20copied:\x20'+_0x2927af['ffUid'],'ok');},window['getDeviceFingerprint']=function(){var _0x31ab9f=window['navigator'],_0x5f330c=window['screen'],_0xf620f3=[_0x31ab9f['userAgent'],_0x31ab9f['language'],_0x31ab9f['platform'],_0x5f330c['width']+'x'+_0x5f330c['height'],_0x5f330c['colorDepth'],_0x31ab9f['hardwareConcurrency']||'',_0x31ab9f['deviceMemory']||'',new Date()['getTimezoneOffset']()]['join']('|'),_0x451c6e=0x0;for(var _0x58633c=0x0;_0x58633c<_0xf620f3['length'];_0x58633c++){_0x451c6e=(_0x451c6e<<0x5)-_0x451c6e+_0xf620f3['charCodeAt'](_0x58633c),_0x451c6e|=0x0;}return Math['abs'](_0x451c6e)['toString'](0x24);},window['registerDeviceFingerprint']=function(){var _0x19a77c=window['db'],_0x59fbca=window['U'];if(!_0x19a77c||!_0x59fbca)return;var _0x2165d9=window['getDeviceFingerprint']();_0x19a77c['ref']('deviceFingerprints/'+_0x2165d9)['once']('value',function(_0x4a2e1a){var _0x33700a=_0x4a2e1a['val']();_0x33700a&&_0x33700a['uid']!==_0x59fbca['uid']?(_0x19a77c['ref']('users/'+_0x59fbca['uid']+'/multiAccountFlag')['set'](!![]),_0x19a77c['ref']('users/'+_0x59fbca['uid']+'/flaggedDevice')['set'](_0x2165d9)):(_0x19a77c['ref']('deviceFingerprints/'+_0x2165d9)['set']({'uid':_0x59fbca['uid'],'lastSeen':Date['now']()}),_0x19a77c['ref']('users/'+_0x59fbca['uid']+'/deviceFp')['set'](_0x2165d9));});},window['checkInstantRefunds']=function(){var _0x1ce4fa=window['JR']||{},_0x1831bf=window['MT']||{},_0x51901d=window['U'];if(!window['_supa']||!_0x51901d)return;for(var _0x5522c0 in _0x1ce4fa){var _0x4c3a84=_0x1ce4fa[_0x5522c0];if(_0x4c3a84['refunded']||_0x4c3a84['isTeamMember'])continue;var _0x2281da=_0x1831bf[_0x4c3a84['matchId']];if(!_0x2281da)continue;var _0x40dd74=(_0x2281da['status']||'')['toLowerCase']();(_0x40dd74==='cancelled'||_0x40dd74==='canceled')&&function(_0x305859,_0x5a96f8){window['_supa']['rpc']('claim_match_refund',{'p_join_id':_0x305859,'p_uid':window['U']&&window['U']['uid']||null})['then'](function(_0x4a1c6b){var _0x5d799a=_0x4a1c6b&&_0x4a1c6b['data'];if(!_0x5d799a||!_0x5d799a['success'])return;if(window['UD']){_0x5d799a['currency']==='coins'?window['UD']['coins']=(window['UD']['coins']||0x0)+_0x5d799a['refunded']:window['UD']['sky_diamonds']=(window['UD']['sky_diamonds']||0x0)+_0x5d799a['refunded'];if(window['updateHdr'])window['updateHdr']();}_0x1ce4fa[_0x305859]['refunded']=!![],_0x172094('⚡\x20Instant\x20Refund!\x20💎'+_0x5d799a['refunded']+'\x20wapas\x20mil\x20gaya\x20—\x20'+_0x5a96f8+'\x20cancelled','ok');},function(){});}(_0x5522c0,_0x2281da['name']||'Match');}},window['showReportPlayer']=function(_0xba7ae8,_0x22aeb7,_0x3cca4d){var _0x5d4e8='<div\x20style=\x22padding:4px\x22>';_0x5d4e8+='<div\x20style=\x22font-size:13px;font-weight:700;margin-bottom:12px\x22>👤\x20Reporting:\x20'+(_0x3cca4d||'Player')+'</div>',_0x5d4e8+='<div\x20class=\x22f-group\x22><label>Report\x20Type</label><select\x20class=\x22f-input\x22\x20id=\x22repType\x22><option\x20value=\x22cheating\x22>🎮\x20Cheating\x20/\x20Hack</option><option\x20value=\x22abuse\x22>🤬\x20Abusive\x20Language</option><option\x20value=\x22afk\x22>🚶\x20AFK\x20/\x20Not\x20Playing</option><option\x20value=\x22wrong_slot\x22>📍\x20Wrong\x20Slot</option><option\x20value=\x22result_dispute\x22>⚔️\x20Result\x20Dispute</option><option\x20value=\x22other\x22>❓\x20Other</option></select></div>',_0x5d4e8+='<div\x20class=\x22f-group\x22><label>Description</label><textarea\x20class=\x22f-input\x22\x20id=\x22repDesc\x22\x20placeholder=\x22Kya\x20hua\x20explain\x20karo...\x22\x20rows=\x223\x22></textarea></div>',_0x5d4e8+='<div\x20class=\x22f-group\x22><label>Proof\x20Screenshot\x20(optional)</label><input\x20type=\x22file\x22\x20accept=\x22image/*\x22\x20id=\x22repProofFile\x22\x20class=\x22f-input\x22\x20onchange=\x22window._repProof=null;var\x20r=new\x20FileReader();r.onload=function(e){window._repProof=e.target.result;};r.readAsDataURL(this.files[0])\x22></div>',_0x5d4e8+='<button\x20onclick=\x22window.submitReport(\x27'+_0xba7ae8+'\x27,\x27'+(_0x22aeb7||'')+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;border:none;font-weight:800;font-size:14px;cursor:pointer;margin-top:8px\x22><i\x20class=\x22fas\x20fa-flag\x22></i>\x20Submit\x20Report</button>',_0x5d4e8+='</div>';if(window['openModal'])openModal('🚩\x20Report\x20Player',_0x5d4e8);},window['submitReport']=function(_0x194e41,_0x5a9ed2){var _0x1f318b=window['U'],_0x4a369e=window['UD'];if(!_0x1f318b)return;var _0x5a4d6b=(document['getElementById']('repType')||{})['value']||'other',_0x535ba9=(document['getElementById']('repDesc')||{})['value']||'';if(!_0x535ba9['trim']()){_0x172094('Description\x20likhna\x20zaroori\x20hai','err');return;}var _0x5a2709=function(_0x2a7a21){var _0x5be9cb={'reporter_id':_0x1f318b['uid'],'reported_id':_0x5a9ed2||null,'match_id':_0x194e41,'type':_0x5a4d6b,'description':_0x535ba9['trim'](),'proof_url':_0x2a7a21||null,'status':'open'};if(window['_supa'])window['_supa']['from']('reports')['insert'](_0x5be9cb)['then'](function(){window['_repProof']=null,_0x172094('✅\x20Report\x20submitted!');if(window['closeModal'])closeModal();})['catch'](function(){_0x172094('Submit\x20nahi\x20hua,\x20dobara\x20try\x20karo','err');});else{if(window['db']){_0x573185['ref']('reports')['push'](Object['assign']({'createdAt':Date['now']()},_0x5be9cb)),window['_repProof']=null,_0x172094('✅\x20Report\x20submitted!');if(window['closeModal'])closeModal();}}};window['_repProof']&&window['uploadToImgBBBase64']?uploadToImgBBBase64(window['_repProof'],'report_proof_'+_0x1f318b['uid']+'_'+Date['now'](),function(_0x1c320d,_0x3a9ba0){_0x5a2709(_0x3a9ba0||null);}):_0x5a2709(null);},window['shareToInstagram']=function(_0x5106df){var _0x36bbd9=window['MT']||{},_0x5cd8ad=_0x36bbd9[_0x5106df];if(!_0x5cd8ad)return;var _0x2487c1=(_0x5cd8ad['entryType']||'')['toString']()['toLowerCase']()==='coin',_0x197a55=Math['max'](Number(_0x5cd8ad['firstPrize']||_0x5cd8ad['prize1st']||0x0),0x0),_0x752c9b=_0x2487c1?'🪙\x20'+_0x197a55+'\x20Coins':'💎\x20'+_0x197a55+'\x20Green\x20Diamonds',_0x37ed9b=Number(_0x5cd8ad['entryFee']||0x0),_0x42087b=_0x37ed9b>0x0?_0x2487c1?'🪙\x20'+_0x37ed9b:'💎\x20'+_0x37ed9b:'FREE',_0x394b0b=typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/',_0xb8e809=_0x394b0b+'?join='+_0x5106df+'&ref='+(window['UD']&&(window['UD']['ffUid']||window['UD']['referralCode'])||''),_0x1741ed='🎮\x20'+(_0x5cd8ad['name']||'Match')+'\x0a'+'🏆\x201st\x20Prize:\x20'+_0x752c9b+'\x0a'+'🎟\x20Entry:\x20'+_0x42087b+'\x0a'+'⚔️\x20'+(_0x5cd8ad['mode']||'solo')['toUpperCase']()+'\x20Mode\x0a'+'🔗\x20'+_0x394b0b+'\x0a'+'#MiniESports\x20#FreeFire';navigator['share']?navigator['share']({'title':_0x5cd8ad['name']||'Match','text':_0x1741ed,'url':_0xb8e809})['catch'](function(){}):navigator['clipboard']&&navigator['clipboard']['writeText'](_0x1741ed)['then'](function(){_0x172094('Caption\x20copied!\x20Instagram\x20pe\x20paste\x20karo\x20📋','ok'),setTimeout(function(){window['open']('instagram://story-camera','_blank');},0x1f4);})['catch'](function(){_0x172094('Copy\x20failed','err');});},window['applyDynamicWallpaper']=function(){var _0x13de54=window['UD'];if(!_0x13de54)return;var _0x85a6e5=window['calcRk']?window['calcRk'](_0x13de54['stats']||{}):{'badge':'Bronze','color':'#cd7f32'},_0x260cf7=document['body'],_0x36c4b1=document['getElementById']('_dynWallpaper');if(_0x36c4b1)_0x36c4b1['remove']();var _0x33f903=document['createElement']('style');_0x33f903['id']='_dynWallpaper';var _0x211a69={'Diamond':['#b964ff','#00d4ff','#ff00ff'],'Platinum':['#00d4ff','#ffffff','#00ff9c'],'Gold':['#ffd700','#ff8c00','#ffaa00'],'Silver':['#c0c0c0','#ffffff','#aaaaaa'],'Bronze':['#cd7f32','#8b4513','#a0522d']},_0x42b867=_0x211a69[_0x85a6e5['badge']]||_0x211a69['Bronze'];_0x33f903['textContent']='@keyframes\x20wallpaperShift{0%{background-position:0%\x2050%}50%{background-position:100%\x2050%}100%{background-position:0%\x2050%}}';var _0x4528b7=document['getElementById']('mainContent')||_0x260cf7;_0x260cf7['style']['setProperty']('--dyn-glow',_0x42b867[0x0]+'15'),_0x260cf7['getAttribute']('data-theme')!=='light'&&(document['documentElement']['style']['setProperty']('--bg','#050507'),document['getElementById']('homeList')&&(document['getElementById']('homeList')['style']['background']='')),document['head']['appendChild'](_0x33f903);},window['_remindMatchName']='',window['_matchReminderApply']=function(_0x1c753d,_0x7a4c85,_0xf600c6){var _0x1bde2a=window['U']&&window['U']['uid']||'';if(!_0x1bde2a){_0x172094('Pehle\x20login\x20karo','err');return;}if(!window['_supa']){_0x172094('Reminder\x20sewa\x20abhi\x20uplabdh\x20nahi','err');return;}var _0x5f49c6=_0xf600c6||window['_remindMatchName']||'Match',_0x21db6e=_0x7a4c85===null||_0x7a4c85===undefined||_0x7a4c85===''?null:Number(_0x7a4c85);window['_supa']['rpc']('set_match_reminder',{'p_uid':_0x1bde2a,'p_match_id':_0x1c753d,'p_mins':_0x21db6e})['then'](function(_0x390a8a){if(_0x390a8a&&_0x390a8a['error']){_0x172094(_0x390a8a['error']['message']||'Reminder\x20set\x20nahi\x20hua','err');return;}var _0x77cf0a=_0x390a8a&&_0x390a8a['data']||{};if(window['closeModal'])closeModal();var _0x40791f=Number(_0x77cf0a['remind_at'])||0x0,_0x1b913c=_0x40791f-Date['now']();if(_0x1b913c>0x0&&_0x1b913c<0xc*0x36ee80)try{if(typeof Notification!=='undefined'&&Notification['permission']==='granted')setTimeout(function(){try{new Notification('⚡\x20Match\x20shuru\x20hone\x20wala\x20hai!',{'body':_0x5f49c6+'\x20'+(_0x77cf0a['remind_mins']||_0x21db6e||'')+'\x20minute\x20mein\x20start\x20hoga.\x20Room\x20ID\x20ready\x20rakho!','icon':'icons/icon-192x192.png?v=20261117g'});}catch(_0x924803){}},_0x1b913c);else typeof Notification!=='undefined'&&Notification['requestPermission']&&Notification['requestPermission']();}catch(_0x25d3c3){}_0x172094('⏰\x20Reminder\x20set!\x20Match\x20se\x20'+(_0x77cf0a['remind_mins']||_0x21db6e||'')+'\x20minute\x20pehle\x20notification\x20aayegi.','ok');},function(_0x107ddc){_0x172094(_0x107ddc&&_0x107ddc['message']||'Reminder\x20set\x20nahi\x20hua','err');});},window['_remindCustom']=function(_0x1b65db){var _0x1e7d92=_0x21f9a7('remCustomMins'),_0x1a497b=_0x1e7d92?Number(_0x1e7d92['value']):0x0;if(!_0x1a497b||_0x1a497b<0x1){_0x172094('Kitne\x20minute\x20pehle?\x20(1\x20se\x201440)','err');return;}window['_matchReminderApply'](_0x1b65db,Math['min'](0x5a0,Math['round'](_0x1a497b)),'');},window['setMatchReminder']=function(_0x15fc5b,_0x11c1bd,_0x524281){var _0x447209=window['serverNow']?window['serverNow']():Date['now']();if(!_0x11c1bd||Number(_0x11c1bd)<=_0x447209){_0x172094('Match\x20shuru\x20ho\x20chuka\x20hai\x20—\x20ab\x20reminder\x20set\x20nahi\x20ho\x20sakta','err');return;}window['_remindMatchName']=_0x524281||'Match';var _0x4ca45c=Math['floor']((Number(_0x11c1bd)-_0x447209)/0xea60),_0x1b1987=Number(window['CFG']&&window['CFG']['matchReminderMins']||0x1e),_0x548c53=[0x5,0xa,0xf,0x1e,0x3c,0x78];if(_0x548c53['indexOf'](_0x1b1987)<0x0)_0x548c53['push'](_0x1b1987);_0x548c53['sort'](function(_0x443f5f,_0x4782fa){return _0x443f5f-_0x4782fa;});var _0x5068e6=String(_0x524281||'Match')['replace'](/'/g,'\x5c\x27'),_0x57579b='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.5\x22>'+window['_chatEsc'](_0x524281||'Match')+'\x20—\x20match\x20'+(_0x4ca45c<0x3c?_0x4ca45c+'\x20minute':Math['floor'](_0x4ca45c/0x3c)+'\x20ghante\x20'+_0x4ca45c%0x3c+'\x20minute')+'\x20me\x20shuru\x20hoga.\x20Kitne\x20pehle\x20batana?</div>';_0x57579b+='<div\x20style=\x22display:flex;flex-wrap:wrap;gap:8px\x22>',_0x548c53['forEach'](function(_0x43c3b6){var _0xcbe2e2=Number(_0x11c1bd)-_0x43c3b6*0xea60>_0x447209;_0x57579b+='<button\x20'+(_0xcbe2e2?'onclick=\x22window._matchReminderApply(\x27'+_0x15fc5b+'\x27,'+_0x43c3b6+',\x27'+_0x5068e6+'\x27)\x22':'disabled')+'\x20style=\x22flex:1\x201\x2092px;padding:12px;border-radius:12px;border:1px\x20solid\x20'+(_0xcbe2e2?'rgba(0,255,156,.3)':'var(--border)')+';background:'+(_0xcbe2e2?'rgba(0,255,156,.08)':'var(--card2)')+';color:'+(_0xcbe2e2?'var(--green)':'var(--txt2)')+';font-size:13px;font-weight:'+(_0x43c3b6===_0x1b1987?'800':'600')+';cursor:'+(_0xcbe2e2?'pointer':'not-allowed')+';opacity:'+(_0xcbe2e2?'1':'.45')+'\x22>'+_0x43c3b6+'\x20min\x20pehle'+(_0x43c3b6===_0x1b1987?'\x20⭐':'')+'</button>';}),_0x57579b+='</div>',_0x57579b+='<div\x20style=\x22display:flex;gap:8px;margin-top:12px\x22>'+'<input\x20type=\x22number\x22\x20id=\x22remCustomMins\x22\x20min=\x221\x22\x20max=\x221440\x22\x20placeholder=\x22Apni\x20marzi\x20(minute)\x22\x20'+'style=\x22flex:1\x201\x20140px;min-width:0;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px\x22>'+'<button\x20onclick=\x22window._remindCustom(\x27'+_0x15fc5b+'\x27)\x22\x20style=\x22padding:10px\x2014px;border-radius:10px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;flex-shrink:0\x22>Set</button>'+'</div>',_0x57579b+='<div\x20style=\x22margin-top:10px;font-size:11px;color:var(--txt2)\x22>⭐\x20=\x20admin\x20ki\x20default\x20setting.\x20Sirf\x20match\x20se\x20<b>pehle</b>\x20ka\x20samay\x20chun\x20sakte\x20ho\x20—\x20bahut\x20kam\x20samay\x20bacha\x20ho\x20to\x20notification\x20turant\x20chali\x20jayegi.</div>';if(window['showModal'])showModal('🔔\x20Set\x20Match\x20Reminder',_0x57579b);},window['getProfileCompletion']=function(){var _0x346bfe=window['UD'];if(!_0x346bfe)return 0x0;var _0xb6758a=[{'k':'ign','w':0x23,'label':'Game\x20Name\x20(IGN)'},{'k':'ffUid','w':0x23,'label':'Free\x20Fire\x20UID'},{'k':'phone','w':0x14,'label':'WhatsApp\x20Number'},{'k':'profileImage','w':0xa,'label':'Profile\x20Photo'}],_0x4b0584=0x0;return _0xb6758a['forEach'](function(_0x49fc82){if(_0x346bfe[_0x49fc82['k']])_0x4b0584+=_0x49fc82['w'];}),Math['min'](_0x4b0584,0x64);},window['getProfileMissingFields']=function(){var _0x44f51a=window['UD'];if(!_0x44f51a)return[];var _0x8e59d5=[{'k':'ign','label':'Game\x20Name\x20(IGN)'},{'k':'ffUid','label':'Free\x20Fire\x20UID'},{'k':'phone','label':'WhatsApp\x20Number'},{'k':'profileImage','label':'Profile\x20Photo'}];return _0x8e59d5['filter'](function(_0x21845f){return!_0x44f51a[_0x21845f['k']];})['map'](function(_0x2b0c6b){return _0x2b0c6b['label'];});},window['renderProfileCompletion']=function(){var _0x3846d3=window['getProfileCompletion'](),_0xdf1050=window['getProfileMissingFields']?window['getProfileMissingFields']():[],_0x4eb78d=_0x3846d3>=0x50?'#00ff9c':_0x3846d3>=0x32?'#ffd700':'#ff6b6b',_0x3d71fd='<div\x20style=\x22background:var(--card2);border:1px\x20solid\x20var(--border);border-radius:14px;padding:12px\x2016px;margin-bottom:14px\x22>';_0x3d71fd+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;margin-bottom:8px\x22>',_0x3d71fd+='<span\x20style=\x22font-size:13px;font-weight:700\x22><i\x20class=\x22fas\x20fa-id-card\x22\x20style=\x22color:'+_0x4eb78d+'\x22></i>\x20Profile\x20'+_0x3846d3+'%\x20Complete</span>';if(_0x3846d3<0x64)_0x3d71fd+='<span\x20style=\x22font-size:11px;color:var(--txt2)\x22>Complete\x20karo!</span>';return _0x3d71fd+='</div>',_0x3d71fd+='<div\x20style=\x22height:6px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden\x22>',_0x3d71fd+='<div\x20style=\x22height:100%;width:'+_0x3846d3+'%;background:linear-gradient(90deg,'+_0x4eb78d+',#00cc7a);border-radius:4px;transition:width\x20.5s\x22></div></div>',_0xdf1050['length']>0x0&&(_0x3d71fd+='<div\x20style=\x22margin-top:8px;display:flex;flex-wrap:wrap;gap:4px\x22>',_0xdf1050['forEach'](function(_0x2b2ab5){_0x3d71fd+='<span\x20style=\x22font-size:10px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:6px;padding:2px\x207px;color:#666\x22>+\x20'+_0x2b2ab5+'</span>';}),_0x3d71fd+='</div>'),_0x3d71fd+='</div>',_0x3d71fd;},window['getStreakInfo']=function(){var _0x58630a=window['UD'];if(!_0x58630a||!_0x58630a['stats'])return null;var _0xd25c72=_0x58630a['stats']['wins']||0x0,_0x5b4889=_0x58630a['stats']['matches']||0x0;if(_0xd25c72>=0x5)return{'emoji':'🔥','label':_0xd25c72+'\x20Win\x20Streak!','color':'#ff6b6b'};if(_0xd25c72>=0x3)return{'emoji':'⚡','label':'3+\x20Wins!','color':'#ffd700'};if(_0x5b4889>=0xa)return{'emoji':'💪','label':'Veteran\x20Player','color':'#4d96ff'};return null;};var _0x1b5525=JSON['parse'](localStorage['getItem']('matchWatchlist')||'[]');window['toggleWatchlist']=function(_0x4a5952){var _0x3988f0=_0x1b5525['indexOf'](_0x4a5952);_0x3988f0>=0x0?(_0x1b5525['splice'](_0x3988f0,0x1),_0x172094('Watchlist\x20se\x20hataya','inf')):(_0x1b5525['push'](_0x4a5952),_0x172094('⭐\x20Watchlist\x20mein\x20add\x20hua!'));localStorage['setItem']('matchWatchlist',JSON['stringify'](_0x1b5525));if(window['renderHome'])renderHome();},window['isWatchlisted']=function(_0x4f834d){return _0x1b5525['indexOf'](_0x4f834d)>=0x0;},window['renderStatsChart']=function(){return'';var _0x5f3de1=window['UD'];if(!_0x5f3de1||!_0x5f3de1['stats'])return'';var _0xc7550c=_0x5f3de1['stats'],_0x3b9294=[{'label':'Matches','val':_0xc7550c['matches']||0x0,'max':0x64,'color':'#4d96ff'},{'label':'Wins','val':_0xc7550c['wins']||0x0,'max':Math['max'](_0xc7550c['matches']||0x1,0x1),'color':'#00ff9c'},{'label':'Kills','val':_0xc7550c['kills']||0x0,'max':0xc8,'color':'#ff6b6b'},{'label':'Earned','val':_0xc7550c['earnings']||0x0,'max':0x1388,'color':'#ffd700'}],_0xed7a50='<div\x20style=\x22background:var(--card2);border:1px\x20solid\x20var(--border);border-radius:14px;padding:14px;margin-bottom:14px\x22>';_0xed7a50+='<div\x20style=\x22font-size:13px;font-weight:700;margin-bottom:12px\x22><i\x20class=\x22fas\x20fa-chart-bar\x22\x20style=\x22color:#4d96ff\x22></i>\x20Stats\x20Overview</div>',_0xed7a50+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px\x22>',_0x3b9294['forEach'](function(_0x266b0f){var _0x464d84=Math['min'](0x64,_0x266b0f['max']>0x0?_0x266b0f['val']/_0x266b0f['max']*0x64:0x0);_0xed7a50+='<div><div\x20style=\x22display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px\x22><span\x20style=\x22color:var(--txt2)\x22>'+_0x266b0f['label']+'</span><span\x20style=\x22font-weight:700;color:'+_0x266b0f['color']+'\x22>'+_0x266b0f['val']+'</span></div>',_0xed7a50+='<div\x20style=\x22height:6px;background:rgba(255,255,255,.06);border-radius:3px\x22><div\x20style=\x22height:100%;width:'+_0x464d84+'%;background:'+_0x266b0f['color']+';border-radius:3px\x22></div></div></div>';}),_0xed7a50+='</div>';var _0x38ad65=_0xc7550c['matches']>0x0?Math['round']((_0xc7550c['wins']||0x0)/_0xc7550c['matches']*0x64):0x0;return _0xed7a50+='<div\x20style=\x22margin-top:10px;padding:8px;background:rgba(0,255,106,.06);border-radius:8px;text-align:center;font-size:12px\x22>',_0xed7a50+='<span\x20style=\x22color:var(--txt2)\x22>Win\x20Rate:\x20</span><strong\x20style=\x22color:var(--green)\x22>'+_0x38ad65+'%</strong>\x20·\x20',_0xed7a50+='<span\x20style=\x22color:var(--txt2)\x22>Avg\x20Kill:\x20</span><strong\x20style=\x22color:#ff6b6b\x22>'+(_0xc7550c['matches']>0x0?((_0xc7550c['kills']||0x0)/_0xc7550c['matches'])['toFixed'](0x1):0x0)+'</strong></div>',_0xed7a50+='</div>',_0xed7a50;},window['showSetBio']=function(){var _0x301412=window['UD'],_0x5864f6='<div\x20style=\x22padding:8px\x22>';_0x5864f6+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:12px\x22>Apna\x20gaming\x20status\x20set\x20karo\x20(60\x20chars\x20max)</div>',_0x5864f6+='<input\x20type=\x22text\x22\x20id=\x22bioInput\x22\x20maxlength=\x2260\x22\x20placeholder=\x22e.g.\x20Headshots\x20only\x20🎯\x22\x20value=\x22'+(window['escHtml']?window['escHtml'](_0x301412['bio']||''):(_0x301412['bio']||'')['replace'](/"/g,'&quot;'))+'\x22\x20style=\x22width:100%;padding:12px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:14px;box-sizing:border-box\x22>',_0x5864f6+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px;margin-top:10px\x22>',['Headshots\x20only\x20🎯','Top\x20Fragger\x20💀','Clutch\x20King\x20👑','Rush\x20or\x20Die\x20🔥','Solo\x20Carry\x20💪','Squad\x20Goals\x20🤝']['forEach'](function(_0x4e5434){_0x5864f6+='<div\x20onclick=\x22document.getElementById(\x27bioInput\x27).value=\x27'+_0x4e5434+'\x27\x22\x20style=\x22padding:8px;border-radius:8px;background:var(--card2);border:1px\x20solid\x20var(--border);font-size:11px;cursor:pointer;text-align:center\x22>'+_0x4e5434+'</div>';}),_0x5864f6+='</div>',_0x5864f6+='<button\x20onclick=\x22window._saveBio()\x22\x20style=\x22width:100%;margin-top:14px;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;font-size:14px\x22>Save\x20Bio</button>',_0x5864f6+='</div>';if(window['showModal'])showModal('✏️\x20Set\x20Bio',_0x5864f6);},window['_saveBio']=function(){var _0x172ccc=(_0x21f9a7('bioInput')||{})['value']||'',_0x39c738=_0x476875();if(!_0x39c738)return;_0x573185['ref']('users/'+_0x39c738+'/bio')['set'](_0x172ccc),_0x172094('✅\x20Bio\x20saved!');if(window['closeModal'])closeModal();setTimeout(function(){if(window['renderProfile'])renderProfile();},0x1f4);},window['_kpData']='',window['_uploadKP']=function(_0x4abb51){var _0x584050=_0x4abb51['files'][0x0];if(!_0x584050)return;if(!_0x584050['type']['startsWith']('image/')){if(window['_toast'])_0x172094('Sirf\x20image\x20files\x20allowed\x20hain!\x20('+_0x584050['type']+')','err');_0x4abb51['value']='';return;}if(_0x584050['size']>0xa*0x400*0x400){if(window['_toast'])_0x172094('File\x20too\x20large!\x20Max\x2010MB\x20allowed.','err');_0x4abb51['value']='';return;}var _0x49eb9a=new FileReader();_0x49eb9a['onload']=function(_0x5b7adb){window['_kpData']=_0x5b7adb['target']['result'];var _0xaae40a=_0x21f9a7('kpPreview');_0xaae40a&&(_0xaae40a['src']=window['_kpData'],_0xaae40a['style']['display']='block');},_0x49eb9a['readAsDataURL'](_0x584050);},window['_submitKP']=function(_0x19141c){if(!window['_kpData']){_0x172094('Screenshot\x20select\x20karo!','err');return;}var _0xc046d0=function(_0x213f12){var _0x2f515c={'match_id':_0x19141c,'user_id':window['U']?window['U']['uid']:null,'screenshot_url':_0x213f12,'kills_claimed':0x0,'status':'pending'};if(window['_supa'])window['_supa']['from']('kill_proofs')['insert'](_0x2f515c)['then'](function(){_0x172094('✅\x20Kill\x20proof\x20submitted!\x20Admin\x20verify\x20karega.'),window['_kpData']='';if(window['closeModal'])closeModal();})['catch'](function(){_0x172094('Submit\x20nahi\x20hua','err');});else{if(window['db']){_0x573185['ref']('killProofs/'+(window['U']?window['U']['uid']:'u')+'/'+_0x19141c)['set'](Object['assign']({'createdAt':Date['now']()},_0x2f515c)),_0x172094('✅\x20Kill\x20proof\x20submitted!'),window['_kpData']='';if(window['closeModal'])closeModal();}}};window['uploadToImgBBBase64']?uploadToImgBBBase64(window['_kpData'],'kp_'+(window['U']?window['U']['uid']:'')+'_'+_0x19141c,function(_0x10275c,_0x86ef9){_0xc046d0(_0x86ef9||window['_kpData']);}):_0xc046d0(window['_kpData']);},window['shareResultCard']=function(_0x230b75,_0x24f663,_0x1b01f5,_0x2e08f7){var _0x641751=window['UD'],_0x111f00=document['createElement']('canvas');_0x111f00['width']=0x190,_0x111f00['height']=0xdc;var _0x545dac=_0x111f00['getContext']('2d'),_0x3d4af8=_0x545dac['createLinearGradient'](0x0,0x0,0x190,0xdc);_0x3d4af8['addColorStop'](0x0,'#0a0a0f'),_0x3d4af8['addColorStop'](0x1,'#1a1a2e'),_0x545dac['fillStyle']=_0x3d4af8,_0x545dac['fillRect'](0x0,0x0,0x190,0xdc),_0x545dac['fillStyle']='#00ff9c',_0x545dac['font']='bold\x2022px\x20Arial',_0x545dac['fillText']('Mini\x20eSports',0x14,0x24),_0x545dac['fillStyle']='#fff',_0x545dac['font']='bold\x2016px\x20Arial',_0x545dac['fillText'](_0x230b75||'Tournament\x20Result',0x14,0x44),_0x545dac['fillStyle']='#ffd700',_0x545dac['font']='bold\x2048px\x20Arial',_0x545dac['fillText']('#'+(_0x24f663||0x1),0x14,0x8c),_0x545dac['fillStyle']='#aaa',_0x545dac['font']='14px\x20Arial',_0x545dac['fillText']('Rank',0x14,0xa0),_0x545dac['fillStyle']='#ff6b6b',_0x545dac['font']='bold\x2036px\x20Arial',_0x545dac['fillText']((_0x1b01f5||0x0)+'💀',0x82,0x8c),_0x545dac['fillStyle']='#aaa',_0x545dac['font']='14px\x20Arial',_0x545dac['fillText']('Kills',0x82,0xa0),_0x545dac['fillStyle']='#00ff9c',_0x545dac['font']='bold\x2036px\x20Arial',_0x545dac['fillText']('₹'+(_0x2e08f7||0x0),0xfa,0x8c),_0x545dac['fillStyle']='#aaa',_0x545dac['font']='14px\x20Arial',_0x545dac['fillText']('Won',0xfa,0xa0),_0x545dac['fillStyle']='#555',_0x545dac['font']='12px\x20Arial',_0x545dac['fillText']((_0x641751?_0x641751['ign']:'')+'\x20|\x20'+(typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/'),0x14,0xc8);var _0xa9cde6=_0x111f00['toDataURL'](),_0x55654f=document['createElement']('a');_0x55654f['href']=_0xa9cde6,_0x55654f['download']='result-card.png',_0x55654f['click'](),_0x172094('🖼️\x20Result\x20card\x20download\x20ho\x20rahi\x20hai!');},window['showSeasonStats']=function(){var _0x344dc5=_0x476875();if(!_0x344dc5)return;_0x573185['ref']('season')['once']('value',function(_0x970b71){var _0x414229=_0x970b71['val']()||{'name':'Season\x201','endDate':null};_0x573185['ref']('seasonStats/'+_0x344dc5)['once']('value',function(_0x1696c5){var _0x33d7a7=_0x1696c5['val']()||{'points':0x0},_0x5a9bd5='<div\x20style=\x22padding:8px;text-align:center\x22>';_0x5a9bd5+='<div\x20style=\x22font-size:24px;font-weight:900;color:var(--primary);margin-bottom:4px\x22>'+(_0x414229['name']||'Season\x201')+'</div>',_0x5a9bd5+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:16px\x22>Ek\x20season\x20mein\x20sabse\x20zyada\x20points\x20jito!</div>',_0x5a9bd5+='<div\x20style=\x22font-size:48px;font-weight:900;color:#ffd700\x22>'+(_0x33d7a7['points']||0x0)+'</div>',_0x5a9bd5+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:16px\x22>Season\x20Points</div>',_0x5a9bd5+='<div\x20style=\x22padding:12px;background:var(--card2);border-radius:12px;font-size:13px\x22>',_0x5a9bd5+='🏆\x20Win\x20=\x20+50\x20pts\x20&nbsp;|&nbsp;\x20💀\x20Kill\x20=\x20+5\x20pts\x20&nbsp;|&nbsp;\x20🎮\x20Match\x20=\x20+10\x20pts</div>';if(_0x414229['endDate'])_0x5a9bd5+='<div\x20style=\x22margin-top:10px;font-size:11px;color:var(--txt2)\x22>Season\x20ends:\x20'+new Date(_0x414229['endDate'])['toLocaleDateString']()+'</div>';_0x5a9bd5+='</div>';if(window['showModal'])showModal('🏆\x20Season\x20Championship',_0x5a9bd5);});});},window['showMatchFeed']=function(_0x32299b){_0x573185['ref']('matchFeed/'+_0x32299b)['limitToLast'](0xf)['once']('value',function(_0x27d233){var _0x2424a3=[];if(_0x27d233['exists']())_0x27d233['forEach'](function(_0x2a0ae6){_0x2424a3['unshift'](_0x2a0ae6['val']());});var _0x4b220f='<div\x20style=\x22padding:4px\x200\x22>';if(!_0x2424a3['length'])_0x4b220f+='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22>Live\x20feed\x20match\x20start\x20hone\x20par\x20dikhe\x20ga</div>';_0x2424a3['forEach'](function(_0x35f5ec){var _0x46920e=_0x35f5ec['type']==='kill'?'💀':_0x35f5ec['type']==='elim'?'🔴':'📢';_0x4b220f+='<div\x20style=\x22display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px\x20solid\x20var(--border)\x22>',_0x4b220f+='<span\x20style=\x22font-size:18px\x22>'+_0x46920e+'</span>',_0x4b220f+='<div><div\x20style=\x22font-size:13px;font-weight:600\x22>'+(window['escHtml']?window['escHtml'](_0x35f5ec['text']||'Event'):_0x35f5ec['text']||'Event')+'</div>',_0x4b220f+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+new Date(_0x35f5ec['ts']||Date['now']())['toLocaleTimeString']()+'</div></div>',_0x4b220f+='</div>';}),_0x4b220f+='</div>';if(window['showModal'])showModal('📡\x20Live\x20Feed',_0x4b220f);});},window['checkShowTutorial']=function(){var _0x484171=window['U']&&window['U']['uid'],_0x5ace50=_0x484171?'tutorialSeen_'+_0x484171:'tutorialSeen';if(localStorage['getItem'](_0x5ace50)||localStorage['getItem']('tutorialSeen'))return;setTimeout(function(){var _0x3d7f41=[{'title':'👋\x20Welcome\x20to\x20Mini\x20eSports!','body':'India\x20ka\x20best\x20Free\x20Fire\x20tournament\x20platform!'},{'title':'🎮\x20Matches\x20Join\x20Karo','body':'Home\x20screen\x20pe\x20matches\x20dekho,\x20entry\x20fee\x20bharo\x20aur\x20join\x20karo.'},{'title':'💰\x20Wallet','body':'UPI\x20se\x20Sky\x20Diamonds\x20add\x20karo\x20aur\x20matches\x20khelo.\x20Jeetne\x20par\x20Coins,\x20rank\x20aur\x20rewards\x20milte\x20hain\x20—\x20yeh\x20ek\x20skill-based\x20platform\x20hai,\x20real-money\x20prize\x20nahi.'},{'title':'👥\x20Team\x20Mode','body':'Profile\x20mein\x20Duo/Squad\x20partner\x20set\x20karo\x20aur\x20saath\x20khelo.'},{'title':'🏆\x20Rank\x20karo!','body':'Matches\x20jeeto,\x20kills\x20lo\x20aur\x20leaderboard\x20pe\x20aao.\x20Good\x20luck!'}],_0x2bdb00=0x0;function _0x1cb258(){var _0x5bd821=_0x3d7f41[_0x2bdb00],_0x5cff14='<div\x20style=\x22text-align:center;padding:10px\x22>';_0x5cff14+='<div\x20style=\x22font-size:48px;margin-bottom:12px\x22>'+_0x5bd821['title']['split']('\x20')[0x0]+'</div>',_0x5cff14+='<div\x20style=\x22font-size:18px;font-weight:800;margin-bottom:8px\x22>'+_0x5bd821['title']['slice'](_0x5bd821['title']['indexOf']('\x20')+0x1)+'</div>',_0x5cff14+='<div\x20style=\x22font-size:14px;color:var(--txt2);margin-bottom:20px\x22>'+_0x5bd821['body']+'</div>',_0x5cff14+='<div\x20style=\x22display:flex;gap:8px;justify-content:center;margin-bottom:14px\x22>',_0x3d7f41['forEach'](function(_0x2497ac,_0x387514){_0x5cff14+='<div\x20style=\x22width:8px;height:8px;border-radius:50%;background:'+(_0x387514===_0x2bdb00?'var(--primary)':'rgba(255,255,255,.2)')+'\x22></div>';}),_0x5cff14+='</div>';if(_0x2bdb00<_0x3d7f41['length']-0x1)_0x5cff14+='<button\x20onclick=\x22window._tutNext()\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer\x22>Next\x20→</button>';else _0x5cff14+='<button\x20onclick=\x22window._tutDone()\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#00cc7a);color:#000;font-weight:800;border:none;cursor:pointer\x22>🎮\x20Let\x27s\x20Play!</button>';_0x5cff14+='</div>';if(window['showModal'])showModal('🎮\x20Quick\x20Tour',_0x5cff14);}window['_tutNext']=function(){_0x2bdb00++,_0x1cb258();},window['_tutDone']=function(){localStorage['setItem'](_0x5ace50,'1'),localStorage['setItem']('tutorialSeen','1');if(window['closeModal'])closeModal();},_0x1cb258();},0x5dc);},window['renderWalletStats']=function(){var _0x2573d5=window['UD'];if(!_0x2573d5)return'';var _0x3313e4=window['WH']||[],_0x223e22=_0x3313e4['filter'](function(_0x2eb9ce){return _0x2eb9ce['type']==='deposit'&&(_0x2eb9ce['status']==='approved'||_0x2eb9ce['status']==='done');}),_0x15cfd8=_0x3313e4['filter'](function(_0x5d6923){return _0x5d6923['type']==='withdraw'&&(_0x5d6923['status']==='approved'||_0x5d6923['status']==='done');}),_0x3e28ea=_0x223e22['reduce'](function(_0x3ceb00,_0x5f2501){return _0x3ceb00+(_0x5f2501['amount']||0x0);},0x0),_0x3027c5=_0x15cfd8['reduce'](function(_0x479fac,_0x956e05){return _0x479fac+(_0x956e05['amount']||0x0);},0x0),_0x4f1d23=Math['max'](Number(_0x2573d5['sponsored_winnings'])||0x0,0x0),_0x3ab3e1='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:8px;margin-bottom:14px\x22>';return[['📥\x20Deposits',_0x223e22['length'],'Total:\x20₹'+_0x3e28ea],['📤\x20Withdrawals',_0x15cfd8['length'],'Total:\x20₹'+_0x3027c5],['🏆\x20Winnings','₹'+_0x4f1d23,'Earned']]['forEach'](function(_0x2955f3){_0x3ab3e1+='<div\x20style=\x22background:var(--card2);border:1px\x20solid\x20var(--border);border-radius:12px;padding:10px;text-align:center\x22><div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:4px\x22>'+_0x2955f3[0x0]+'</div><div\x20style=\x22font-size:18px;font-weight:800\x22>'+_0x2955f3[0x1]+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x2955f3[0x2]+'</div></div>';}),_0x3ab3e1+='</div>',_0x3ab3e1;},window['ratePartner']=function(_0x40532a,_0x262987){var _0x1b1318='<div\x20style=\x22padding:8px;text-align:center\x22>';_0x1b1318+='<div\x20style=\x22font-size:16px;font-weight:700;margin-bottom:16px\x22>Partner\x20ko\x20rate\x20karo</div>',_0x1b1318+='<div\x20id=\x22starRating\x22\x20style=\x22display:flex;gap:8px;justify-content:center;margin-bottom:16px\x22>';for(var _0x2b9bb3=0x1;_0x2b9bb3<=0x5;_0x2b9bb3++){_0x1b1318+='<span\x20onclick=\x22window._setStar('+_0x2b9bb3+')\x22\x20style=\x22font-size:36px;cursor:pointer\x22\x20data-star=\x22'+_0x2b9bb3+'\x22>⭐</span>';}_0x1b1318+='</div>',_0x1b1318+='<textarea\x20id=\x22rateNote\x22\x20placeholder=\x22Optional\x20feedback...\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;resize:none;height:70px;box-sizing:border-box\x22></textarea>',_0x1b1318+='<button\x20onclick=\x22window._submitRating(\x27'+_0x40532a+'\x27,\x27'+_0x262987+'\x27)\x22\x20style=\x22width:100%;margin-top:12px;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer\x22>Submit\x20Rating</button>',_0x1b1318+='</div>',window['_starVal']=0x5;if(window['showModal'])showModal('⭐\x20Rate\x20Partner',_0x1b1318);},window['_setStar']=function(_0x2dca12){window['_starVal']=_0x2dca12,document['querySelectorAll']('[data-star]')['forEach'](function(_0x1a8607){_0x1a8607['style']['opacity']=parseInt(_0x1a8607['dataset']['star'])<=_0x2dca12?'1':'0.3';});},window['_submitRating']=function(_0x48b54e,_0x29aa92){_0x573185['ref']('partnerRatings/'+_0x48b54e+'/'+_0x29aa92)['set']({'rating':window['_starVal']||0x5,'note':(_0x21f9a7('rateNote')||{})['value']||'','raterUid':window['U']['uid'],'matchId':_0x29aa92,'createdAt':Date['now']()}),_0x573185['ref']('users/'+_0x48b54e+'/avgRating')['transaction'](function(_0x1561c3){return(_0x1561c3||0x5)*0.8+(window['_starVal']||0x5)*0.2;}),_0x172094('✅\x20Rating\x20submit\x20hua!');if(window['closeModal'])closeModal();};;window['renderAchievementsHTML']=function(){var _0x50b7c7=window['UD'];if(!_0x50b7c7)return'';var _0x1b785e=_0x50b7c7['stats']||{},_0x4a9d27=[{'title':'First\x20Blood','earned':(_0x1b785e['wins']||0x0)>=0x1,'icon':'🩸'},{'title':'High\x20Flyer','earned':(_0x1b785e['wins']||0x0)>=0x5,'icon':'🚀'},{'title':'Kill\x20Machine','earned':(_0x1b785e['kills']||0x0)>=0x32,'icon':'💀'},{'title':'Money\x20Maker','earned':(_0x1b785e['earnings']||0x0)>=0x64,'icon':'💰'},{'title':'Veteran','earned':(_0x1b785e['matches']||0x0)>=0x19,'icon':'🎖️'},{'title':'Influencer','earned':(_0x50b7c7['referralCount']||0x0)>=0x5,'icon':'🌟'}],_0x1b6a52=_0x4a9d27['filter'](function(_0x19750f){return _0x19750f['earned'];})['length'],_0x3944e1='<div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px\x22>';return _0x4a9d27['forEach'](function(_0x5b1c4d){_0x3944e1+='<div\x20title=\x22'+_0x5b1c4d['title']+'\x22\x20style=\x22width:36px;height:36px;border-radius:10px;background:'+(_0x5b1c4d['earned']?'rgba(0,255,156,.12)':'rgba(255,255,255,.04)')+';border:1px\x20solid\x20'+(_0x5b1c4d['earned']?'rgba(0,255,156,.3)':'var(--border)')+';display:flex;align-items:center;justify-content:center;font-size:18px;opacity:'+(_0x5b1c4d['earned']?'1':'.3')+'\x22>'+_0x5b1c4d['icon']+'</div>';}),_0x3944e1+='</div>',_0x3944e1+='<div\x20style=\x22font-size:11px;color:var(--green)\x22>'+_0x1b6a52+'/'+_0x4a9d27['length']+'\x20achievements\x20unlocked</div>',_0x3944e1+='<button\x20onclick=\x22window.showAchievements()\x22\x20style=\x22margin-top:8px;padding:8px\x2014px;border-radius:10px;background:rgba(0,255,156,.1);color:var(--green);border:1px\x20solid\x20rgba(0,255,156,.2);font-size:12px;font-weight:700;cursor:pointer\x22>View\x20All</button>',_0x3944e1;},window['getRecommendedMatch']=function(){var _0x463ec9=window['UD'],_0x20836d=window['MT'];if(!_0x463ec9||!_0x20836d)return null;var _0x418f6c=_0x463ec9['realMoney']&&_0x463ec9['realMoney']['deposited']?Number(_0x463ec9['realMoney']['deposited']):0x0,_0x1639ac=_0x418f6c>0x0?Math['min'](_0x418f6c*0.1,0x64):0xa,_0x4ad823=null,_0x4178fa=-0x1,_0x4c8f54=_0x463ec9['duoTeam']?'duo':'solo';return Object['values'](_0x20836d)['forEach'](function(_0x56b0f6){if(!_0x56b0f6||!_0x56b0f6['id'])return;if(window['hasJ']&&hasJ(_0x56b0f6['id']))return;var _0x337246=Number(_0x56b0f6['entryFee'])||0x0;if(_0x337246>_0x1639ac)return;var _0x118107=Number(_0x56b0f6['joinedSlots']||0x0),_0x481e9c=Number(_0x56b0f6['maxSlots']||0x1);if(_0x118107>=_0x481e9c)return;var _0x22c14e=(_0x56b0f6['prizePool']||0x0)-_0x337246*0x2+(_0x118107/_0x481e9c>0.3?0xa:0x0);if((_0x56b0f6['mode']||_0x56b0f6['type']||'')['toLowerCase']()===_0x4c8f54)_0x22c14e+=0x14;_0x22c14e>_0x4178fa&&(_0x4178fa=_0x22c14e,_0x4ad823=_0x56b0f6);}),_0x4ad823;},window['setupMatchAlerts']=function(){if(!window['MT']||!window['db'])return;Object['keys'](window['MT'])['forEach'](function(_0x45c98b){var _0x4e12cd=window['MT'][_0x45c98b];if(!_0x4e12cd['matchTime'])return;var _0x5d0c81=Number(_0x4e12cd['matchTime'])-Date['now']()-0x493e0;_0x5d0c81>0x0&&_0x5d0c81<0x36ee80&&setTimeout(function(){if(window['JR'])for(var _0x26d73a in window['JR']){if(window['JR'][_0x26d73a]['matchId']===_0x45c98b){'Notification'in window&&Notification['permission']==='granted'&&new Notification('⚡\x20Match\x20Starting!',{'body':(_0x4e12cd['name']||'Your\x20match')+'\x205\x20minutes\x20mein\x20start\x20hoga!','icon':'icons/icon-192x192.png?v=20261117g'});break;}}},_0x5d0c81);});},window['generateProfileCard']=function(){var _0x185253=window['UD'];if(!_0x185253)return;var _0x44639b=_0x185253['stats']||{},_0x57c8be=document['createElement']('canvas');_0x57c8be['width']=0x17c,_0x57c8be['height']=0xc8;var _0x2e21ec=_0x57c8be['getContext']('2d'),_0x42545d=_0x2e21ec['createLinearGradient'](0x0,0x0,0x17c,0xc8);_0x42545d['addColorStop'](0x0,'#0d0d18'),_0x42545d['addColorStop'](0x1,'#1a1040'),_0x2e21ec['fillStyle']=_0x42545d,_0x2e21ec['fillRect'](0x0,0x0,0x17c,0xc8),_0x2e21ec['strokeStyle']='#00ff9c55',_0x2e21ec['lineWidth']=0x2,_0x2e21ec['strokeRect'](0x8,0x8,0x16c,0xb8),_0x2e21ec['fillStyle']='#00ff9c',_0x2e21ec['font']='bold\x2014px\x20Arial',_0x2e21ec['fillText']('MINI\x20ESPORTS',0x14,0x23),_0x2e21ec['fillStyle']='#fff',_0x2e21ec['font']='bold\x2020px\x20Arial',_0x2e21ec['fillText'](_0x185253['ign']||'Player',0x14,0x46),_0x2e21ec['fillStyle']='#aaa',_0x2e21ec['font']='12px\x20Arial',_0x2e21ec['fillText']('FF\x20UID:\x20'+(_0x185253['ffUid']||'—'),0x14,0x5a);var _0x231272=[['Matches',_0x44639b['matches']||0x0],['Wins',_0x44639b['wins']||0x0],['Kills',_0x44639b['kills']||0x0],['Earned','₹'+(_0x44639b['earnings']||0x0)]];_0x231272['forEach'](function(_0x38276d,_0x3f786f){var _0x366c6c=0x14+_0x3f786f*0x5a;_0x2e21ec['fillStyle']='#ffd700',_0x2e21ec['font']='bold\x2018px\x20Arial',_0x2e21ec['fillText'](_0x38276d[0x1],_0x366c6c,0x87),_0x2e21ec['fillStyle']='#888',_0x2e21ec['font']='11px\x20Arial',_0x2e21ec['fillText'](_0x38276d[0x0],_0x366c6c,0x98);}),_0x2e21ec['fillStyle']='#444',_0x2e21ec['font']='10px\x20Arial',_0x2e21ec['fillText'](typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/',0x14,0xb9);var _0x55e74d=_0x57c8be['toDataURL'](),_0x3e2ce4=document['createElement']('a');_0x3e2ce4['href']=_0x55e74d,_0x3e2ce4['download']='player-card.png',_0x3e2ce4['click'](),_0x172094('🎴\x20Player\x20card\x20downloaded!');};!window['startMatchTimers']&&(window['startMatchTimers']=function(){clearInterval(window['_timerInterval']),window['_timerInterval']=setInterval(function(){var _0x328d5f=window['MT']||{};Object['keys'](_0x328d5f)['forEach'](function(_0x5d834e){var _0x117414=_0x328d5f[_0x5d834e];if(!_0x117414||!_0x117414['matchTime'])return;var _0x52a4e1=document['getElementById']('timer-'+_0x5d834e);if(!_0x52a4e1)return;var _0x6e83fb=Number(_0x117414['matchTime'])-Date['now']();if(_0x6e83fb<=0x0){_0x52a4e1['textContent']='';return;}if(_0x6e83fb>0x5265c00){_0x52a4e1['textContent']='';return;}var _0x2d5bff=Math['floor'](_0x6e83fb/0x36ee80),_0x156e64=Math['floor'](_0x6e83fb%0x36ee80/0xea60),_0x3c14eb=Math['floor'](_0x6e83fb%0xea60/0x3e8);_0x52a4e1['textContent']='⏱\x20'+(_0x2d5bff>0x0?_0x2d5bff+'h\x20':'')+_0x156e64+'m\x20'+_0x3c14eb+'s';});},0x3e8);});window['processTeammateJoins']=function(_0x41d837,_0x529bb8,_0x7fb59e,_0x138d8c,_0x211f89,_0x12f7b7){return;};function _0x1bd248(_0x1cedbb,_0x2540fb,_0x19baa6,_0x1eaeac,_0x459589,_0x5e4dbe,_0x8ffc05,_0x1ea4ea,_0xa4023d){if(!_0x1cedbb||_0x1cedbb===_0xa4023d)return;_0x573185['ref']('joinRequests')['orderByChild']('userId')['equalTo'](_0x1cedbb)['once']('value',function(_0x1fea1d){var _0x224a47=![];if(_0x1fea1d['exists']())_0x1fea1d['forEach'](function(_0x55d743){if(_0x55d743['val']()['matchId']===_0x19baa6)_0x224a47=!![];});if(_0x224a47)return;var _0xefc271=_0x573185['ref']('joinRequests')['push']()['key'];_0x573185['ref']('joinRequests/'+_0xefc271)['set']({'requestId':_0xefc271,'userId':_0x1cedbb,'userName':_0x2540fb['ign']||_0x2540fb['displayName']||'','userFFUID':_0x2540fb['ffUid']||'','displayName':_0x2540fb['displayName']||'','userEmail':_0x2540fb['email']||'','matchId':_0x19baa6,'matchName':_0x1eaeac||'','entryFee':0x0,'entryType':_0x459589?'coin':'money','mode':_0x5e4dbe,'status':'joined','slotsBooked':0x0,'isTeamMember':!![],'captainUid':_0xa4023d,'captainName':_0x1ea4ea||'','teamMembers':_0x8ffc05,'createdAt':firebase['database']['ServerValue']['TIMESTAMP']}),_0x573185['ref']('users/'+_0x1cedbb+'/stats/matches')['transaction'](function(_0x39f974){return(_0x39f974||0x0)+0x1;});var _0x44a432=_0x573185['ref']('users/'+_0x1cedbb+'/notifications')['push']()['key'];_0x573185['ref']('users/'+_0x1cedbb+'/notifications/'+_0x44a432)['set']({'type':'team_joined','title':'🎮\x20Team\x20Match\x20Joined!','body':_0x1ea4ea+'\x20ne\x20\x22'+_0x1eaeac+'\x22\x20join\x20kiya\x20—\x20tum\x20bhi\x20team\x20mein\x20automatically\x20ho!\x20My\x20Matches\x20mein\x20dekho.','matchId':_0x19baa6,'matchName':_0x1eaeac,'faIcon':'fa-users','read':![],'createdAt':firebase['database']['ServerValue']['TIMESTAMP']}),console['log']('[Mini\x20eSports]\x20✅\x20Teammate\x20joinRequest\x20created\x20for:\x20'+(_0x2540fb['ign']||_0x1cedbb));});}window['showMatchHistory']=function(){var _0x25cbb2=_0x476875();if(!_0x25cbb2)return;_0x573185['ref']('joinRequests')['orderByChild']('userId')['equalTo'](_0x25cbb2)['once']('value',function(_0x15505a){var _0x4b2de9=[];if(_0x15505a['exists']())_0x15505a['forEach'](function(_0x27bc37){var _0x2b15f9=_0x27bc37['val'](),_0x4b12d2=window['MT']&&window['MT'][_0x2b15f9['matchId']];_0x4b2de9['push']({'jr':_0x2b15f9,'match':_0x4b12d2});});_0x4b2de9['sort'](function(_0x59d72e,_0x4f1a39){return(_0x4f1a39['jr']['createdAt']||0x0)-(_0x59d72e['jr']['createdAt']||0x0);});var _0x3e6000='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';if(!_0x4b2de9['length'])_0x3e6000+='<p\x20style=\x22text-align:center;color:var(--txt2);padding:30px\x22>Koi\x20match\x20history\x20nahi</p>';_0x4b2de9['slice'](0x0,0x14)['forEach'](function(_0x384793){var _0x576cca=_0x384793['jr'],_0x3247dd=_0x384793['match'],_0x594efe=_0x576cca['result']&&_0x576cca['result']['won'],_0x22a65c=_0x576cca['result']?_0x576cca['result']['prize']||0x0:0x0;_0x3e6000+='<div\x20style=\x22padding:12px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border)\x22>';var _0x49f653=_0x576cca['matchId']||'',_0x427d65=window['MT']&&window['MT'][_0x49f653],_0x5c93b4=_0x427d65&&(_0x427d65['isSundaySpecial']||_0x427d65['isMonthlySpecial']),_0x320f1f=_0x5c93b4&&window['f29SpecialTournament']?window['f29SpecialTournament']['getSpecialBadge'](_0x427d65):'';_0x3e6000+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:start\x22>',_0x3e6000+='<div\x20style=\x22flex:1\x22>';if(_0x320f1f)_0x3e6000+='<div\x20style=\x22margin-bottom:4px\x22>'+_0x320f1f+'</div>';_0x3e6000+='<div\x20style=\x22font-size:13px;font-weight:700\x22>'+(_0x576cca['matchName']||'Match')+'</div>',_0x3e6000+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+(_0x576cca['mode']||'solo')['toUpperCase']()+'\x20·\x20'+new Date(_0x576cca['createdAt']||0x0)['toLocaleDateString']()+'</div>';if(_0x576cca['isTeamMember'])_0x3e6000+='<div\x20style=\x22font-size:10px;color:var(--purple)\x22><i\x20class=\x22fas\x20fa-crown\x22></i>\x20'+(_0x576cca['captainName']||'Captain')+'\x20ki\x20team</div>';if(_0x576cca['slotNumber'])_0x3e6000+='<div\x20style=\x22font-size:10px;color:var(--blue)\x22>Slot:\x20'+_0x576cca['slotNumber']+'</div>';_0x3e6000+='</div>',_0x3e6000+='<div\x20style=\x22text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px\x22>';if(_0x22a65c>0x0)_0x3e6000+='<div\x20style=\x22font-size:14px;font-weight:800;color:var(--green)\x22>+💎'+_0x22a65c+'</div>';_0x3e6000+='<div\x20style=\x22font-size:11px;color:'+(_0x594efe?'var(--green)':'var(--txt2)')+'\x22>'+(_0x594efe?'🏆\x20Won':'🎮\x20Played')+'</div>';if(_0x576cca['resultStatus']==='completed'&&_0x49f653)_0x3e6000+='<button\x20onclick=\x22window.showResultScreenshot&&showResultScreenshot(\x27'+_0x49f653+'\x27,\x27'+(_0x576cca['matchName']||'Match')+'\x27)\x22\x20style=\x22padding:3px\x208px;border-radius:6px;background:rgba(0,212,255,.1);border:1px\x20solid\x20rgba(0,212,255,.2);color:var(--blue);font-size:9px;font-weight:700;cursor:pointer\x22><i\x20class=\x22fas\x20fa-image\x22></i>\x20Result</button>';if(_0x576cca['cashbackGiven'])_0x3e6000+='<div\x20style=\x22font-size:9px;color:#ffd700\x22>🪙\x20Cashback\x20Received</div>';_0x3e6000+='</div></div></div>';}),_0x3e6000+='</div>';if(window['showModal'])showModal('📋\x20Match\x20History',_0x3e6000);});},window['showMyTickets']=function(){var _0x119512=_0x476875();if(!_0x119512)return;function _0x19b68e(_0x41fc48){_0x41fc48['sort'](function(_0x4194d3,_0x1faf16){return(_0x1faf16['createdAt']||0x0)-(_0x4194d3['createdAt']||0x0);});var _0x38d5db='<div\x20style=\x22display:flex;flex-direction:column;gap:10px\x22>';_0x38d5db+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;margin-bottom:2px\x22>'+'<span\x20style=\x22font-size:12px;color:var(--txt2)\x22>Tumhare\x20submitted\x20tickets\x20&amp;\x20admin\x20replies</span>'+'<button\x20onclick=\x22if(window.showSupportForm)showSupportForm()\x22\x20style=\x22padding:6px\x2012px;border-radius:8px;background:rgba(0,255,156,.12);border:1px\x20solid\x20rgba(0,255,156,.3);color:var(--green);font-size:11px;font-weight:700;cursor:pointer\x22>+\x20New\x20Ticket</button>'+'</div>';!_0x41fc48['length']&&(_0x38d5db+='<div\x20style=\x22text-align:center;color:var(--txt2);padding:28px\x2016px;background:var(--card2);border-radius:12px;border:1px\x20solid\x20var(--border)\x22>'+'<div\x20style=\x22font-size:28px;margin-bottom:6px\x22>🎫</div>'+'<div\x20style=\x22font-size:13px;font-weight:700;color:var(--txt)\x22>Koi\x20ticket\x20submit\x20nahi\x20hua</div>'+'<div\x20style=\x22font-size:11px;margin-top:4px\x22>Koi\x20dikkat\x20ho\x20to\x20\x22+\x20New\x20Ticket\x22\x20dabayein</div>'+'</div>');var _0x193e9a=window['escHtml']||function(_0x56d3b3){return String(_0x56d3b3||'')['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;');};_0x41fc48['forEach'](function(_0x528fba){var _0x38d74d=String(_0x528fba['status']||'open')['toLowerCase'](),_0x37e772=!!(_0x528fba['adminReply']||_0x528fba['admin_reply']),_0x2b8a83=_0x38d74d==='resolved'||_0x38d74d==='closed'||_0x38d74d==='replied'||_0x37e772,_0x563d8a=_0x2b8a83?'var(--green)':'#ffaa00',_0x3d58af=_0x38d74d==='resolved'?'✅\x20Resolved':_0x37e772?'💬\x20Replied':'⏳\x20Open',_0x8216be=_0x193e9a(_0x528fba['subject']||_0x528fba['type']||'Support\x20Issue'),_0x4c619f=_0x193e9a(_0x528fba['message']||''),_0x537f96=_0x193e9a(_0x528fba['adminReply']||_0x528fba['admin_reply']||''),_0x2e7c2b=_0x528fba['createdAt']?new Date(_0x528fba['createdAt'])['toLocaleString']('en-IN',{'day':'numeric','month':'short','hour':'2-digit','minute':'2-digit'}):'';_0x38d5db+='<div\x20style=\x22padding:12px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border)\x22>',_0x38d5db+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:flex-start;gap:8px\x22>',_0x38d5db+='<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:13px;font-weight:800;color:var(--txt);text-transform:capitalize\x22>'+_0x8216be+'</div>',_0x38d5db+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:4px;word-break:break-word\x22>'+_0x4c619f+'</div>';if(_0x2e7c2b)_0x38d5db+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:5px;opacity:.75\x22>'+_0x2e7c2b+'</div>';_0x38d5db+='</div>',_0x38d5db+='<span\x20style=\x22font-size:11px;font-weight:700;color:'+_0x563d8a+';white-space:nowrap;background:rgba(255,255,255,.04);padding:3px\x208px;border-radius:8px;border:1px\x20solid\x20rgba(255,255,255,.08)\x22>'+_0x3d58af+'</span>',_0x38d5db+='</div>',_0x537f96&&(_0x38d5db+='<div\x20style=\x22margin-top:10px;padding:10px\x2012px;border-radius:10px;background:rgba(0,255,156,.07);border-left:3px\x20solid\x20var(--green)\x22>'+'<div\x20style=\x22font-size:10px;font-weight:800;color:var(--green);margin-bottom:3px\x22>🛡️\x20Admin\x20Reply</div>'+'<div\x20style=\x22font-size:12px;color:var(--txt);line-height:1.45;word-break:break-word\x22>'+_0x537f96+'</div>'+'</div>'),_0x38d5db+='</div>';}),_0x38d5db+='</div>';var _0xa6561e=window['openModal']||window['showModal'];if(_0xa6561e)_0xa6561e('🎫\x20My\x20Tickets',_0x38d5db);}if(window['_supa']){window['_supa']['from']('support_tickets')['select']('*')['eq']('user_id',_0x119512)['order']('created_at',{'ascending':![]})['limit'](0x32)['then'](function(_0x27a9f6){var _0x55e0cb=(_0x27a9f6&&_0x27a9f6['data']||[])['map'](function(_0x1535b8){return{'id':_0x1535b8['id'],'subject':_0x1535b8['subject']||'general','type':_0x1535b8['subject']||'general','message':_0x1535b8['message']||'','status':_0x1535b8['status']||'open','adminReply':_0x1535b8['admin_reply']||'','createdAt':_0x1535b8['created_at']?new Date(_0x1535b8['created_at'])['getTime']():0x0,'repliedAt':_0x1535b8['replied_at']?new Date(_0x1535b8['replied_at'])['getTime']():0x0};});_0x19b68e(_0x55e0cb);},function(){_0x19b68e([]);});return;}_0x573185['ref']('supportRequests')['orderByChild']('userId')['equalTo'](_0x119512)['once']('value',function(_0x2e872c){var _0x3d37d8=[];if(_0x2e872c['exists']())_0x2e872c['forEach'](function(_0x4eb5da){_0x3d37d8['push']({'id':_0x4eb5da['key'],..._0x4eb5da['val']()});});_0x19b68e(_0x3d37d8);});},window['updateRoomCountdowns']=function(){var _0x230cfc=window['MT']||{},_0xe38268=window['JR']||{};for(var _0x5d385c in _0xe38268){var _0x126aa6=_0xe38268[_0x5d385c];if(!_0x126aa6['matchId'])continue;var _0x5d38c0=_0x230cfc[_0x126aa6['matchId']];if(!_0x5d38c0||!_0x5d38c0['matchTime'])continue;var _0x353d40=document['getElementById']('room-cd-'+_0x126aa6['matchId']);if(!_0x353d40)continue;var _0x13b259=Number(_0x5d38c0['matchTime'])-Date['now']();if(_0x5d38c0['roomStatus']==='released')_0x353d40['innerHTML']='<span\x20style=\x22color:var(--green);font-size:11px\x22><i\x20class=\x22fas\x20fa-key\x22></i>\x20Room\x20ID\x20Released!</span>';else{if(_0x13b259>0x0){var _0x40dec1=Math['floor'](_0x13b259/0x36ee80),_0x37a91=Math['floor'](_0x13b259%0x36ee80/0xea60);_0x353d40['textContent']='🔑\x20Room\x20ID\x20in:\x20'+_0x40dec1+'h\x20'+_0x37a91+'m';}}}},setInterval(window['updateRoomCountdowns'],0xea60),window['showPlayerComparison']=function(){var _0x19a02b='<div\x20style=\x22padding:8px\x22>';_0x19a02b+='<div\x20style=\x22font-size:14px;font-weight:700;margin-bottom:12px\x22>⚔️\x20Compare\x20with\x20Player</div>',_0x19a02b+='<input\x20type=\x22text\x22\x20id=\x22cmpUid\x22\x20placeholder=\x22Enter\x20FF\x20UID\x20to\x20compare\x22\x20style=\x22width:100%;padding:12px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box;margin-bottom:10px\x22>',_0x19a02b+='<button\x20onclick=\x22window._doCompare()\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer\x22>Compare</button>',_0x19a02b+='</div>';if(window['showModal'])showModal('⚔️\x20Player\x20Compare',_0x19a02b);},window['_doCompare']=function(){var _0x283779=(_0x21f9a7('cmpUid')||{})['value'];if(!_0x283779)return;_0x573185['ref']('users')['orderByChild']('ffUid')['equalTo'](_0x283779['trim']())['once']('value',function(_0x478e90){if(!_0x478e90['exists']()){_0x172094('Player\x20nahi\x20mila','err');return;}var _0x2f197d=null;_0x478e90['forEach'](function(_0x1762aa){_0x2f197d=_0x1762aa['val']();});var _0x43db80=window['UD'],_0x29d09a=_0x43db80['stats']||{},_0x17620d=_0x2f197d['stats']||{},_0x3dbe02=[['Matches',_0x29d09a['matches']||0x0,_0x17620d['matches']||0x0],['Wins',_0x29d09a['wins']||0x0,_0x17620d['wins']||0x0],['Kills',_0x29d09a['kills']||0x0,_0x17620d['kills']||0x0],['Earnings','₹'+(_0x29d09a['earnings']||0x0),'₹'+(_0x17620d['earnings']||0x0)]],_0x3449e3='<div>';_0x3449e3+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x2060px\x201fr;gap:0;margin-bottom:14px\x22>',_0x3449e3+='<div\x20style=\x22text-align:center;padding:12px;background:rgba(0,255,156,.06);border-radius:12px\x200\x200\x2012px\x22><div\x20style=\x22font-size:18px;font-weight:900;color:var(--green)\x22>'+(window['escHtml']?window['escHtml'](_0x43db80['ign']||'You'):_0x43db80['ign']||'You')+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>You</div></div>',_0x3449e3+='<div\x20style=\x22display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;background:var(--card2)\x22>VS</div>',_0x3449e3+='<div\x20style=\x22text-align:center;padding:12px;background:rgba(255,107,107,.06);border-radius:0\x2012px\x2012px\x200\x22><div\x20style=\x22font-size:18px;font-weight:900;color:#ff6b6b\x22>'+(window['escHtml']?window['escHtml'](_0x2f197d['ign']||'Player'):_0x2f197d['ign']||'Player')+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Opponent</div></div>',_0x3449e3+='</div>',_0x3dbe02['forEach'](function(_0xe77e75){var _0x578bdc=typeof _0xe77e75[0x1]==='number'&&typeof _0xe77e75[0x2]==='number'&&_0xe77e75[0x1]>_0xe77e75[0x2];_0x3449e3+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x2080px\x201fr;gap:0;border-bottom:1px\x20solid\x20var(--border);padding:8px\x200\x22>',_0x3449e3+='<div\x20style=\x22text-align:center;font-size:14px;font-weight:'+(_0x578bdc?'900':'400')+';color:'+(_0x578bdc?'var(--green)':'var(--txt)')+'\x22>'+_0xe77e75[0x1]+'</div>',_0x3449e3+='<div\x20style=\x22text-align:center;font-size:11px;color:var(--txt2)\x22>'+_0xe77e75[0x0]+'</div>',_0x3449e3+='<div\x20style=\x22text-align:center;font-size:14px;font-weight:'+(!_0x578bdc?'900':'400')+';color:'+(!_0x578bdc?'#ff6b6b':'var(--txt)')+'\x22>'+_0xe77e75[0x2]+'</div>',_0x3449e3+='</div>';}),_0x3449e3+='</div>';if(window['showModal'])showModal('⚔️\x20Comparison',_0x3449e3);});};var _0x4c0448=null;window['showResultDispute']=function(_0x3fcf2f){if(!_0x3fcf2f){if(window['closeModal'])closeModal();if(window['toast'])toast('Match\x20chuno\x20—\x20Matches\x20list\x20se\x20report\x20karo','err');if(window['navTo'])navTo('matches');return;}_0x4c0448=null;var _0x16a62c='<div\x20style=\x22padding:8px\x22>';_0x16a62c+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:12px\x22>Galat\x20result\x20ke\x20against\x20complaint\x20submit\x20karo</div>',_0x16a62c+='<div\x20style=\x22margin-bottom:10px\x22><label\x20style=\x22font-size:12px;color:var(--txt2);display:block;margin-bottom:4px\x22>Issue\x20Type</label>',_0x16a62c+='<select\x20id=\x22dispType\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px\x22>',_0x16a62c+='<option\x20value=\x22wrong_rank\x22>Wrong\x20Rank\x20Given</option><option\x20value=\x22missing_kills\x22>Kills\x20Count\x20Wrong</option><option\x20value=\x22not_credited\x22>Prize\x20Not\x20Credited</option><option\x20value=\x22other\x22>Other\x20Issue</option>',_0x16a62c+='</select></div>',_0x16a62c+='<div\x20style=\x22margin-bottom:10px\x22><label\x20style=\x22font-size:12px;color:var(--txt2);display:block;margin-bottom:4px\x22>Your\x20Actual\x20Rank</label>',_0x16a62c+='<input\x20type=\x22number\x22\x20id=\x22dispRank\x22\x20placeholder=\x22e.g.\x201\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box\x22></div>',_0x16a62c+='<div\x20style=\x22margin-bottom:10px\x22><label\x20style=\x22font-size:12px;color:var(--txt2);display:block;margin-bottom:4px\x22>Screenshot\x20(optional)</label>',_0x16a62c+='<div\x20onclick=\x22document.getElementById(\x27dispSsIn\x27).click()\x22\x20id=\x22dispSsBox\x22\x20style=\x22width:100%;padding:14px;border-radius:10px;background:var(--card2);border:2px\x20dashed\x20var(--border);color:var(--txt2);font-size:12px;text-align:center;cursor:pointer;box-sizing:border-box\x22><i\x20class=\x22fas\x20fa-camera\x22\x20style=\x22margin-right:6px\x22></i>Tap\x20to\x20upload\x20screenshot</div>',_0x16a62c+='<input\x20type=\x22file\x22\x20id=\x22dispSsIn\x22\x20accept=\x22image/*\x22\x20style=\x22display:none\x22\x20onchange=\x22window._dispLoadSS(this)\x22>',_0x16a62c+='<div\x20id=\x22dispSsPreview\x22\x20style=\x22display:none;margin-top:6px;text-align:center\x22><img\x20id=\x22dispSsImg\x22\x20style=\x22max-width:100%;max-height:150px;border-radius:8px;border:1px\x20solid\x20var(--border)\x22></div>',_0x16a62c+='</div>',_0x16a62c+='<div\x20style=\x22margin-bottom:10px\x22><label\x20style=\x22font-size:12px;color:var(--txt2);display:block;margin-bottom:4px\x22>Explanation</label>',_0x16a62c+='<textarea\x20id=\x22dispMsg\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;resize:none;height:70px;box-sizing:border-box\x22\x20placeholder=\x22Details\x20likhiyo...\x22></textarea></div>',_0x16a62c+='<button\x20onclick=\x22window._submitDispute(\x27'+_0x3fcf2f+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:#ff6b6b;color:#fff;font-weight:800;border:none;cursor:pointer\x22><i\x20class=\x22fas\x20fa-paper-plane\x22\x20style=\x22margin-right:6px\x22></i>Submit\x20Dispute</button>',_0x16a62c+='</div>';if(window['showModal'])showModal('⚠️\x20Report\x20Dispute',_0x16a62c);},window['_dispLoadSS']=function(_0x585d20){var _0x117255=_0x585d20['files'][0x0];if(!_0x117255)return;var _0x53d699=new FileReader();_0x53d699['onload']=function(_0x47b872){_0x4c0448=_0x47b872['target']['result'];var _0x33ed02=document['getElementById']('dispSsPreview'),_0x3546b5=document['getElementById']('dispSsImg'),_0x449e97=document['getElementById']('dispSsBox');if(_0x3546b5)_0x3546b5['src']=_0x4c0448;if(_0x33ed02)_0x33ed02['style']['display']='block';if(_0x449e97)_0x449e97['innerHTML']='<i\x20class=\x22fas\x20fa-check-circle\x22\x20style=\x22color:var(--green);margin-right:6px\x22></i>Screenshot\x20added\x20✓';},_0x53d699['readAsDataURL'](_0x117255);},window['_submitDispute']=function(_0x226ffa){var _0x112da5=(_0x21f9a7('dispType')||{})['value'],_0x1602ba=(_0x21f9a7('dispRank')||{})['value'],_0x5c8e01=(_0x21f9a7('dispMsg')||{})['value'];if(!_0x5c8e01||_0x5c8e01['trim']()['length']<0xa){_0x172094('Thoda\x20detail\x20mein\x20likhiyo','err');return;}var _0x133be7={'match_id':_0x226ffa,'user_id':window['U']?window['U']['uid']:null,'type':_0x112da5,'claimed_rank':_0x1602ba?Number(_0x1602ba):null,'message':_0x5c8e01['trim'](),'screenshot_url':_0x4c0448||null,'status':'open'};if(window['_supa'])window['_supa']['from']('disputes')['insert'](_0x133be7)['then'](function(){_0x172094('✅\x20Dispute\x20submitted!\x20Admin\x20review\x20karega.');if(window['closeModal'])closeModal();})['catch'](function(){if(window['db']){var _0x49296c=_0x573185['ref']('disputes')['push']()['key'];_0x573185['ref']('disputes/'+_0x49296c)['set'](Object['assign']({'id':_0x49296c,'createdAt':Date['now']()},_0x133be7));}_0x172094('✅\x20Dispute\x20submitted!');if(window['closeModal'])closeModal();});else{if(window['db']){var _0x2d7b34=_0x573185['ref']('disputes')['push']()['key'];_0x573185['ref']('disputes/'+_0x2d7b34)['set'](Object['assign']({'id':_0x2d7b34,'createdAt':Date['now']()},_0x133be7)),_0x172094('✅\x20Dispute\x20submitted!');if(window['closeModal'])closeModal();}}_0x4c0448=null;},window['toggleTheme']=function(){document['body']&&document['body']['removeAttribute']('data-theme'),localStorage['setItem']('appTheme','dark'),_0x172094('🌙\x20Dark\x20mode\x20is\x20the\x20only\x20theme','inf');},window['setTheme']=function(_0x5d4eff){document['body']&&document['body']['removeAttribute']('data-theme'),localStorage['setItem']('appTheme','dark');},(function(){localStorage['setItem']('appTheme','dark'),document['body']&&document['body']['removeAttribute']('data-theme');}()),window['showReferralStats']=function(){var _0x1f0160=window['UD'];if(!_0x1f0160)return;var _0x2587a3=window['REFS']||[],_0x5c116c='<div\x20style=\x22padding:8px\x22>';_0x5c116c+='<div\x20style=\x22text-align:center;padding:14px;background:linear-gradient(135deg,rgba(185,100,255,.12),rgba(0,255,156,.06));border-radius:14px;margin-bottom:14px\x22>',_0x5c116c+='<div\x20style=\x22font-size:36px;font-weight:900;color:var(--primary)\x22>'+(_0x1f0160['referralCount']||0x0)+'</div>',_0x5c116c+='<div\x20style=\x22font-size:13px;color:var(--txt2)\x22>Friends\x20Referred</div>',_0x5c116c+='<div\x20style=\x22font-size:20px;font-weight:700;color:#ffd700;margin-top:4px\x22>🪙\x20'+(_0x1f0160['referralCoinsEarned']||0x0)+'</div>',_0x5c116c+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>Coins\x20Earned</div></div>';_0x2587a3['length']>0x0?(_0x5c116c+='<div\x20style=\x22font-size:13px;font-weight:700;margin-bottom:8px\x22>Recent\x20Referrals:</div>',_0x2587a3['slice'](0x0,0x5)['forEach'](function(_0x2c5d45){_0x5c116c+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:8px\x2010px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);margin-bottom:6px\x22>',_0x5c116c+='<div\x20style=\x22width:32px;height:32px;border-radius:10px;background:rgba(0,255,156,.1);display:flex;align-items:center;justify-content:center;font-size:14px\x22>👤</div>',_0x5c116c+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:600\x22>'+(_0x2c5d45['referredName']||'User')+'</div>',_0x5c116c+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+new Date(_0x2c5d45['createdAt']||0x0)['toLocaleDateString']()+'</div></div>',_0x5c116c+='<div\x20style=\x22font-size:13px;font-weight:700;color:#ffd700\x22>+🪙10</div></div>';})):_0x5c116c+='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22>Abhi\x20tak\x20koi\x20referral\x20nahi.\x20Dosto\x20ko\x20invite\x20karo!</div>';_0x5c116c+='</div>';if(window['showModal'])showModal('🎁\x20Referral\x20Stats',_0x5c116c);},window['_isOnline']=!![],window['addEventListener']('online',function(){window['_isOnline']=!![],_0x172094('✅\x20Back\x20online!','ok');var _0x3103bb=document['getElementById']('offlineBar');if(_0x3103bb)_0x3103bb['style']['display']='none';}),window['addEventListener']('offline',function(){window['_isOnline']=![],_0x172094('📶\x20Offline\x20—\x20check\x20internet','err');var _0x4e002d=document['getElementById']('offlineBar');!_0x4e002d?(_0x4e002d=document['createElement']('div'),_0x4e002d['id']='offlineBar',_0x4e002d['style']['cssText']='position:fixed;top:0;left:0;right:0;padding:8px;background:#ff6b6b;color:#fff;font-size:12px;font-weight:700;text-align:center;z-index:9999',_0x4e002d['textContent']='📶\x20You\x20are\x20offline.\x20Some\x20features\x20may\x20not\x20work.',document['body']&&document['body']['appendChild'](_0x4e002d)):_0x4e002d['style']['display']='block';}),window['showMatchFeedback']=function(_0x397590){var _0x17187f='<div\x20style=\x22padding:8px;text-align:center\x22>';_0x17187f+='<div\x20style=\x22font-size:24px;margin-bottom:8px\x22>🎮</div>',_0x17187f+='<div\x20style=\x22font-size:16px;font-weight:700;margin-bottom:4px\x22>Match\x20kaisa\x20tha?</div>',_0x17187f+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:16px\x22>Feedback\x20se\x20platform\x20improve\x20hoga</div>',_0x17187f+='<div\x20style=\x22display:flex;gap:10px;justify-content:center;margin-bottom:16px\x22>',['😍','😊','😐','😕','😠']['forEach'](function(_0x16cdae,_0x596fda){_0x17187f+='<span\x20onclick=\x22window._setFeedback('+(0x5-_0x596fda)+',this)\x22\x20style=\x22font-size:32px;cursor:pointer;opacity:.5;transition:.2s\x22\x20class=\x22fb-emoji\x22>'+_0x16cdae+'</span>';}),_0x17187f+='</div>',_0x17187f+='<textarea\x20id=\x22fbText\x22\x20placeholder=\x22Kuch\x20aur\x20share\x20karna\x20chahte\x20ho?\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:12px;resize:none;height:60px;box-sizing:border-box\x22></textarea>',_0x17187f+='<button\x20onclick=\x22window._submitFeedback(\x27'+_0x397590+'\x27)\x22\x20style=\x22width:100%;margin-top:10px;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer\x22>Submit</button>',_0x17187f+='</div>',window['_fbRating']=0x3;if(window['showModal'])showModal('⭐\x20Match\x20Feedback',_0x17187f);},window['_setFeedback']=function(_0x5cbe0a,_0x59d88f){window['_fbRating']=_0x5cbe0a,document['querySelectorAll']('.fb-emoji')['forEach'](function(_0x4101ab){_0x4101ab['style']['opacity']='0.4',_0x4101ab['style']['transform']='scale(1)';}),_0x59d88f['style']['opacity']='1',_0x59d88f['style']['transform']='scale(1.3)';},window['_submitFeedback']=function(_0x5a4ea3){var _0x3d0d63=(_0x21f9a7('fbText')||{})['value']||'';if(!window['U'])return;if(window['_supa'])window['_supa']['from']('match_feedback')['upsert']({'match_id':_0x5a4ea3,'user_id':window['U']['uid'],'rating':window['_fbRating']||0x3,'feedback':_0x3d0d63},{'onConflict':'user_id,match_id'})['then'](function(){_0x172094('✅\x20Feedback\x20diya!\x20Shukriya\x20🙏');if(window['closeModal'])closeModal();})['catch'](function(){_0x172094('Submit\x20nahi\x20hua','err');});else{if(window['db']){_0x573185['ref']('matchFeedback/'+_0x5a4ea3+'/'+window['U']['uid'])['set']({'rating':window['_fbRating'],'text':_0x3d0d63,'userId':window['U']['uid'],'createdAt':Date['now']()}),_0x172094('✅\x20Feedback\x20diya!\x20Shukriya\x20🙏');if(window['closeModal'])closeModal();}}},window['renderFilterChips']=function(){var _0x4bbb25=['all','solo','duo','squad'],_0x28205e='<div\x20style=\x22display:flex;gap:8px;overflow-x:auto;padding:0\x200\x208px;scrollbar-width:none\x22>';return _0x4bbb25['forEach'](function(_0x21fbbf){var _0x56bbfb=(window['_modeFilter']||'all')===_0x21fbbf;_0x28205e+='<button\x20onclick=\x22window.setModeFilter(\x27'+_0x21fbbf+'\x27)\x22\x20style=\x22padding:6px\x2014px;border-radius:20px;border:1px\x20solid\x20'+(_0x56bbfb?'var(--primary)':'var(--border)')+';background:'+(_0x56bbfb?'rgba(0,255,156,.12)':'transparent')+';color:'+(_0x56bbfb?'var(--primary)':'var(--txt2)')+';font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap\x22>'+_0x21fbbf['toUpperCase']()+'</button>';}),_0x28205e+='</div>',_0x28205e;},window['setModeFilter']=function(_0x24e0f5){window['_modeFilter']=_0x24e0f5;if(window['renderHome'])renderHome();},window['showProfileViews']=function(){var _0x5ecf5c=_0x476875();if(!_0x5ecf5c)return;_0x573185['ref']('profileViews/'+_0x5ecf5c)['once']('value',function(_0x22640f){var _0x555a97=_0x22640f['exists']()?Object['keys'](_0x22640f['val']())['length']:0x0,_0x7ca3dc='<div\x20style=\x22text-align:center;padding:20px\x22>';_0x7ca3dc+='<div\x20style=\x22font-size:48px;font-weight:900;color:var(--primary)\x22>'+_0x555a97+'</div>',_0x7ca3dc+='<div\x20style=\x22font-size:14px;color:var(--txt2)\x22>Players\x20ne\x20tumhara\x20profile\x20dekha</div>',_0x7ca3dc+='</div>';if(window['showModal'])showModal('👀\x20Profile\x20Views',_0x7ca3dc);});},window['_soundOn']=localStorage['getItem']('soundPref')!=='off',window['toggleSound']=function(){window['_soundOn']=!window['_soundOn'],localStorage['setItem']('soundPref',window['_soundOn']?'on':'off'),_0x172094(window['_soundOn']?'🔊\x20Sound\x20on':'🔇\x20Sound\x20off','inf');},window['playSound']=function(_0x42a4ff){if(!window['_soundOn'])return;try{var _0x4751ff=new(window['AudioContext']||window['webkitAudioContext'])(),_0xe5393=_0x4751ff['createOscillator'](),_0x505b25=_0x4751ff['createGain']();_0xe5393['connect'](_0x505b25),_0x505b25['connect'](_0x4751ff['destination']),_0xe5393['frequency']['value']=_0x42a4ff==='join'?0x370:_0x42a4ff==='win'?0x417:_0x42a4ff==='notif'?0x294:0x1b8,_0x505b25['gain']['setValueAtTime'](0.3,_0x4751ff['currentTime']),_0x505b25['gain']['exponentialRampToValueAtTime'](0.001,_0x4751ff['currentTime']+0.3),_0xe5393['start'](_0x4751ff['currentTime']),_0xe5393['stop'](_0x4751ff['currentTime']+0.3);}catch(_0x4c7df5){}},window['haptic']=function(_0x3205d2){if(!navigator['vibrate'])return;if(_0x3205d2==='success')navigator['vibrate']([0x32,0x1e,0x50]);else{if(_0x3205d2==='error')navigator['vibrate']([0x64,0x32,0x64,0x32,0x64]);else{if(_0x3205d2==='notif')navigator['vibrate']([0x1e,0x14,0x1e]);else navigator['vibrate'](0x32);}}},window['_lang']=localStorage['getItem']('appLang')||'hi',window['setLanguage']=function(_0x43c9b8){window['_lang']=_0x43c9b8,localStorage['setItem']('appLang',_0x43c9b8),_0x172094(_0x43c9b8==='hi'?'✅\x20Hindi\x20set':'✅\x20English\x20set','ok');},window['_interestMark']=function(_0x30af51,_0x344a3f){var _0x248a7c=document['getElementById']('intBtn_'+_0x30af51);if(!_0x248a7c)return;_0x248a7c['innerHTML']=_0x344a3f?'<i\x20class=\x22fas\x20fa-check-circle\x22\x20style=\x22color:var(--green)\x22></i>\x20✓\x20Interested':'<i\x20class=\x22fas\x20fa-hand-paper\x22></i>\x20Mark\x20as\x20Interested',_0x248a7c['style']['borderColor']=_0x344a3f?'rgba(0,255,156,.35)':'var(--border)',_0x248a7c['style']['color']=_0x344a3f?'var(--green)':'var(--txt2)';},window['refreshInterests']=function(){var _0x24ec7e=_0x476875();if(!_0x24ec7e||!window['_supa'])return;window['_supa']['rpc']('my_match_interests',{'p_uid':_0x24ec7e})['then'](function(_0x52aa04){var _0x2f2fd6=_0x52aa04&&_0x52aa04['data']||[];_0x2f2fd6['forEach'](function(_0x5a0da6){window['_interestMark'](_0x5a0da6,!![]);});},function(){});},window['toggleInterest']=function(_0x5ca305){var _0x2fa9ed=_0x476875();if(!_0x2fa9ed)return;var _0x25fd8a=window['UD']&&window['UD']['ign']||'';if(!window['_supa']){_0x172094('Interest\x20sewa\x20abhi\x20uplabdh\x20nahi','err');return;}window['_supa']['rpc']('toggle_match_interest',{'p_uid':_0x2fa9ed,'p_match_id':_0x5ca305,'p_name':_0x25fd8a})['then'](function(_0x58047f){var _0x1b84d7=_0x58047f&&_0x58047f['data']||{};if(_0x58047f&&_0x58047f['error']){_0x172094(_0x58047f['error']['message']||'Interest\x20save\x20nahi\x20hua','err');return;}window['_interestMark'](_0x5ca305,!!_0x1b84d7['interested']),_0x172094(_0x1b84d7['interested']?'⚡\x20Interest\x20noted!\x20Admin\x20ko\x20pata\x20chal\x20gaya\x20('+(_0x1b84d7['count']||0x1)+'\x20interested).':'👋\x20Interest\x20removed',_0x1b84d7['interested']?'ok':'inf');},function(_0x186fc3){_0x172094('Interest\x20save\x20nahi\x20hua:\x20'+(_0x186fc3&&_0x186fc3['message']||''),'err');});},window['_chatEsc']=function(_0x2c8261){return String(_0x2c8261==null?'':_0x2c8261)['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;')['replace'](/"/g,'&quot;');},window['_chatBubble']=function(_0x2ca823,_0x54778e){var _0x50b459=_0x2ca823['user_id']===(window['U']&&window['U']['uid']);return'<div\x20class=\x22chat-bub\x22'+(_0x54778e?'\x20data-pending=\x221\x22':'')+(_0x2ca823['id']?'\x20data-id=\x22'+window['_chatEsc'](_0x2ca823['id'])+'\x22':'')+'\x20data-uid=\x22'+window['_chatEsc'](_0x2ca823['user_id']||'')+'\x22\x20data-text=\x22'+window['_chatEsc'](_0x2ca823['text']||'')+'\x22\x20style=\x22display:flex;justify-content:'+(_0x50b459?'flex-end':'flex-start')+'\x22>'+'<div\x20style=\x22max-width:70%;padding:6px\x2010px;border-radius:10px;background:'+(_0x50b459?'rgba(0,255,156,.15)':'var(--card2)')+';font-size:12px\x22>'+'<div\x20style=\x22font-size:10px;color:var(--txt2);margin-bottom:2px\x22>'+window['_chatEsc'](_0x2ca823['name']||'Player')+'</div>'+'<div>'+window['_chatEsc'](_0x2ca823['text']||'')+'</div></div></div>';},window['_chatFindPending']=function(_0x4031ec,_0x420b3d){if(!_0x4031ec)return null;var _0x1e8d6f=_0x4031ec['querySelectorAll']('[data-pending=\x221\x22]');for(var _0xb8f4ef=_0x1e8d6f['length']-0x1;_0xb8f4ef>=0x0;_0xb8f4ef--){if(_0x1e8d6f[_0xb8f4ef]['getAttribute']('data-text')===String(_0x420b3d==null?'':_0x420b3d))return _0x1e8d6f[_0xb8f4ef];}return null;},window['showMatchChat']=function(_0xc67bf2){var _0x191ea1=window['U']&&window['U']['uid']||'',_0x346665='<div\x20style=\x22display:flex;flex-direction:column;height:320px\x22>';_0x346665+='<div\x20style=\x22display:flex;align-items:center;gap:6px;font-size:10px;color:#8fe3ff;padding:0\x202px\x206px\x22><span\x20style=\x22width:6px;height:6px;border-radius:50%;background:#00ff9c;display:inline-block\x22></span>\x20Live\x20—\x20message\x20turant\x20pahunchega</div>',_0x346665+='<div\x20id=\x22matchChatMsgs\x22\x20style=\x22flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px\x22></div>',_0x346665+='<div\x20style=\x22display:flex;gap:8px;padding:8px;border-top:1px\x20solid\x20var(--border)\x22>',_0x346665+='<input\x20type=\x22text\x22\x20id=\x22matchChatIn\x22\x20maxlength=\x22500\x22\x20placeholder=\x22Type\x20message...\x22\x20onkeydown=\x22if(event.key===\x27Enter\x27){window._sendMatchChat(\x27'+_0xc67bf2+'\x27)}\x22\x20style=\x22flex:1;min-width:0;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px\x22>',_0x346665+='<button\x20onclick=\x22window._sendMatchChat(\x27'+_0xc67bf2+'\x27)\x22\x20style=\x22padding:10px\x2016px;border-radius:10px;background:var(--primary);color:#000;font-weight:700;border:none;cursor:pointer;flex-shrink:0\x22><i\x20class=\x22fas\x20fa-paper-plane\x22></i></button>',_0x346665+='</div></div>';if(window['showModal'])showModal('💬\x20Match\x20Chat',_0x346665);var _0x11863f=function(){return _0x21f9a7('matchChatMsgs');},_0x5857ff=function(){if(!window['_supa']||!_0x191ea1)return;window['_supa']['rpc']('get_match_chat',{'p_match_id':_0xc67bf2,'p_uid':_0x191ea1,'p_limit':0x3c})['then'](function(_0xdea048){if(_0xdea048&&_0xdea048['error']){console['warn']('[Chat]\x20load:',_0xdea048['error']['message']);return;}var _0x230ae7=_0x11863f();if(!_0x230ae7)return;var _0x313e69=_0xdea048&&_0xdea048['data']||[],_0x351008='',_0x5055ef=_0x230ae7['querySelectorAll']('[data-pending=\x221\x22]');for(var _0x5a6a4e=0x0;_0x5a6a4e<_0x5055ef['length'];_0x5a6a4e++)_0x351008+=_0x5055ef[_0x5a6a4e]['outerHTML'];_0x230ae7['innerHTML']=_0x313e69['map'](function(_0x373890){return window['_chatBubble'](_0x373890);})['join']('')+_0x351008,_0x230ae7['scrollTop']=_0x230ae7['scrollHeight'];},function(_0x5d1aad){console['warn']('[Chat]\x20load\x20fail:',_0x5d1aad&&_0x5d1aad['message']);});};_0x5857ff();try{window['_matchChatCh']&&window['_supa']&&window['_supa']['removeChannel'](window['_matchChatCh']),window['_matchChatCh']=null,window['_supa']&&(window['_matchChatCh']=window['_supa']['channel']('match-chat-'+_0xc67bf2)['on']('broadcast',{'event':'msg'},function(_0xbec81d){var _0x21df48=_0x11863f();if(!_0x21df48||!_0xbec81d||!_0xbec81d['payload'])return;var _0x221de3=_0xbec81d['payload']||{};if(_0x221de3['id']&&_0x21df48['querySelector']('[data-id=\x22'+window['_chatEsc'](_0x221de3['id'])+'\x22]'))return;var _0x3bd074=window['_chatFindPending'](_0x21df48,_0x221de3['text']||'');if(_0x3bd074&&_0x221de3['user_id']===_0x191ea1){_0x3bd074['removeAttribute']('data-pending');if(_0x221de3['id'])_0x3bd074['setAttribute']('data-id',_0x221de3['id']);}else _0x21df48['insertAdjacentHTML']('beforeend',window['_chatBubble'](_0x221de3));_0x21df48['scrollTop']=_0x21df48['scrollHeight'];})['subscribe']());}catch(_0x2c9ed6){console['warn']('[Chat]\x20realtime\x20channel\x20fail:',_0x2c9ed6&&_0x2c9ed6['message']);}if(window['_matchChatPoll'])clearInterval(window['_matchChatPoll']);window['_matchChatPoll']=setInterval(function(){if(!_0x11863f()){clearInterval(window['_matchChatPoll']);try{if(window['_matchChatCh']&&window['_supa'])window['_supa']['removeChannel'](window['_matchChatCh']);}catch(_0x428eda){}window['_matchChatCh']=null;return;}_0x5857ff();},0x1f40);},window['_sendMatchChat']=function(_0x4a2c5c){var _0x29753a=_0x21f9a7('matchChatIn');if(!_0x29753a||!_0x29753a['value']['trim']())return;var _0x166d87=window['U']&&window['U']['uid']||'';if(!_0x166d87){_0x172094('Pehle\x20login\x20karo','err');return;}var _0x41f5e2=_0x29753a['value']['trim']();if(_0x41f5e2['length']>0x1f4){_0x172094('Message\x20500\x20akshar\x20se\x20bada\x20nahi\x20ho\x20sakta','err');return;}_0x29753a['value']='';var _0x44efd6=_0x21f9a7('matchChatMsgs');_0x44efd6&&(_0x44efd6['insertAdjacentHTML']('beforeend',window['_chatBubble']({'user_id':_0x166d87,'name':window['UD']&&window['UD']['ign']||'Player','text':_0x41f5e2},!![])),_0x44efd6['scrollTop']=_0x44efd6['scrollHeight']);if(!window['_supa']){_0x172094('Chat\x20sewa\x20abhi\x20uplabdh\x20nahi','err');return;}window['_supa']['rpc']('send_match_chat',{'p_match_id':_0x4a2c5c,'p_uid':_0x166d87,'p_name':window['UD']&&window['UD']['ign']||'Player','p_text':_0x41f5e2})['then'](function(_0x454ec4){if(_0x454ec4&&_0x454ec4['error']){var _0x1cdba1=window['_chatFindPending'](_0x44efd6,_0x41f5e2);if(_0x1cdba1)_0x1cdba1['remove']();_0x172094(_0x454ec4['error']['message']||'Message\x20nahi\x20gaya','err');return;}var _0xa022c7=_0x454ec4&&_0x454ec4['data']||null,_0x220508=window['_chatFindPending'](_0x44efd6,_0x41f5e2);if(_0x220508){_0x220508['removeAttribute']('data-pending');if(_0xa022c7&&_0xa022c7['id'])_0x220508['setAttribute']('data-id',_0xa022c7['id']);}try{_0xa022c7&&window['_matchChatCh']&&window['_matchChatCh']['send']&&window['_matchChatCh']['send']({'type':'broadcast','event':'msg','payload':_0xa022c7});}catch(_0x9d33ca){}},function(_0x930cb0){var _0x5034e2=window['_chatFindPending'](_0x44efd6,_0x41f5e2);if(_0x5034e2)_0x5034e2['remove']();_0x172094(_0x930cb0&&_0x930cb0['message']||'Message\x20nahi\x20gaya\x20—\x20dobara\x20try\x20karo','err');});},window['loadDynamicBanner']=function(){_0x573185['ref']('appSettings/banner')['on']('value',function(_0x4d0016){var _0x2eb0cd=document['getElementById']('dynamicBanner');if(!_0x2eb0cd)return;if(_0x4d0016['exists']()&&_0x4d0016['val']()){var _0x4db3a1=_0x4d0016['val']();_0x2eb0cd['style']['display']='block',_0x2eb0cd['textContent']=typeof _0x4db3a1==='string'?_0x4db3a1:_0x4db3a1['text']||'',_0x2eb0cd['style']['background']=_0x4db3a1['color']||'rgba(0,255,156,.1)',_0x2eb0cd['style']['color']=_0x4db3a1['textColor']||'var(--green)';}else _0x2eb0cd['style']['display']='none';});},window['_sessionStart']=Date['now'](),window['_sessionMatches']=0x0,document['addEventListener']('DOMContentLoaded',function(){setTimeout(function(){if(window['checkShowTutorial'])checkShowTutorial();if(window['setupMatchAlerts'])setupMatchAlerts();if(window['loadDynamicBanner'])loadDynamicBanner();},0x7d0);}),console['log']('[Mini\x20eSports]\x20✅\x2050\x20User\x20Features\x20v9\x20loaded\x20(Halal\x20Only)'),window['quickShareResult']=function(_0x2666d1){var _0x4da8b4=window['JR']||{};for(var _0x50b9c0 in _0x4da8b4){if(_0x4da8b4[_0x50b9c0]['matchId']===_0x2666d1&&_0x4da8b4[_0x50b9c0]['result']){var _0x1bde1a=_0x4da8b4[_0x50b9c0]['result'];window['shareResultCard']&&shareResultCard(window['MT']&&window['MT'][_0x2666d1]&&window['MT'][_0x2666d1]['name']||'Match',_0x1bde1a['rank'],_0x1bde1a['kills'],_0x1bde1a['prize']);return;}}_0x172094('Koi\x20result\x20nahi\x20mila\x20abhi','inf');},window['getPlayerBadge']=function(){var _0x122e8d=window['UD'];if(!_0x122e8d||!_0x122e8d['stats'])return'';var _0x5e183f=_0x122e8d['stats'],_0x2c8a76=_0x5e183f['wins']||0x0,_0x2c1412=_0x5e183f['matches']||0x0,_0x5698e0=_0x5e183f['kills']||0x0;if(_0x2c8a76>=0x32)return{'label':'Legend','color':'#ff6b6b','icon':'🏆'};if(_0x2c8a76>=0x14)return{'label':'Elite','color':'#ffd700','icon':'💎'};if(_0x2c8a76>=0xa)return{'label':'Pro','color':'#b964ff','icon':'⭐'};if(_0x2c8a76>=0x5)return{'label':'Rising','color':'#4d96ff','icon':'🚀'};if(_0x2c1412>=0x5)return{'label':'Active','color':'#00ff9c','icon':'🎮'};return{'label':'Rookie','color':'var(--txt2)','icon':'🌱'};},window['renderResultCard']=function(_0x453845){if(!_0x453845||!_0x453845['result'])return'';var _0x32e90c=_0x453845['result'],_0x311c17=window['MT']&&window['MT'][_0x453845['matchId']],_0x5c5070=window['_prizeIcon']?window['_prizeIcon'](_0x311c17):window['GD_ICON']||'💎';return'<div\x20style=\x22margin-top:8px;padding:8px\x2012px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:10px;display:flex;gap:12px;align-items:center\x22>'+'<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:22px;font-weight:900;color:#ffd700\x22>#'+(_0x32e90c['rank']||'-')+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Rank</div></div>'+'<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:22px;font-weight:900;color:#ff6b6b\x22>'+(_0x32e90c['kills']||0x0)+'💀</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Kills</div></div>'+(_0x32e90c['prize']>0x0?'<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:18px;font-weight:900;color:var(--green)\x22>'+_0x5c5070+_0x32e90c['prize']+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Won</div></div>':'')+'<button\x20onclick=\x22window.quickShareResult&&quickShareResult(\x27'+(_0x453845['matchId']||'')+'\x27)\x22\x20style=\x22margin-left:auto;padding:6px\x2012px;border-radius:8px;background:rgba(0,255,156,.1);border:1px\x20solid\x20rgba(0,255,156,.2);color:var(--green);font-size:11px;font-weight:700;cursor:pointer\x22><i\x20class=\x22fas\x20fa-share\x22></i></button>'+'</div>';},window['showCoinHistory']=function(){if(!window['U']||!window['db'])return;_0x573185['ref']('users/'+window['U']['uid']+'/coinHistory')['limitToLast'](0x14)['once']('value',function(_0x4b3f39){var _0x46be38=[];if(_0x4b3f39['exists']())_0x4b3f39['forEach'](function(_0x278800){_0x46be38['unshift'](_0x278800['val']());});var _0x2cd9b7='<div\x20style=\x22display:flex;flex-direction:column;gap:6px\x22>';if(!_0x46be38['length'])_0x2cd9b7+='<p\x20style=\x22text-align:center;color:var(--txt2);padding:30px\x22>Koi\x20coin\x20history\x20nahi</p>';_0x46be38['forEach'](function(_0x5baa43){var _0x7a04d4=_0x5baa43['amount']>0x0;_0x2cd9b7+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border)\x22>',_0x2cd9b7+='<span\x20style=\x22font-size:20px\x22>'+(_0x7a04d4?'🪙':'💸')+'</span>',_0x2cd9b7+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:12px;font-weight:600\x22>'+(_0x5baa43['reason']||'Transaction')+'</div>',_0x2cd9b7+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+new Date(_0x5baa43['ts']||0x0)['toLocaleDateString']()+'</div></div>',_0x2cd9b7+='<div\x20style=\x22font-size:14px;font-weight:700;color:'+(_0x7a04d4?'var(--green)':'#ff6b6b')+'\x22>'+(_0x7a04d4?'+':'')+_0x5baa43['amount']+'\x20🪙</div></div>';}),_0x2cd9b7+='</div>';if(window['showModal'])showModal('🪙\x20Coin\x20History',_0x2cd9b7);});},window['shareTeamInvite']=function(){var _0x4645d5=window['UD'];if(!_0x4645d5)return;var _0x495543=_0x4645d5['referralCode']||window['U']&&window['U']['uid']['substring'](0x0,0x8)['toUpperCase']()||'',_0x236d67='🎮\x20Aye\x20bhai!\x20Mini\x20eSports\x20pe\x20mere\x20squad\x20mein\x20join\x20ho\x20jao!\x20'+'\x0a👤\x20Captain:\x20'+(_0x4645d5['ign']||'Player')+'\x0a🔥\x20FF\x20UID:\x20'+(_0x4645d5['ffUid']||'N/A')+'\x0a🎁\x20Referral\x20Code:\x20'+_0x495543+'\x0a📱\x20'+(typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/');if(navigator['share'])navigator['share']({'text':_0x236d67});else window['copyTxt']&&(copyTxt(_0x236d67),_0x172094('Team\x20invite\x20copied!'));},window['updateActivePulse']=function(){var _0xbca5bb=window['MT']||{},_0x1b42ae=window['JR']||{},_0x152d3d=![];for(var _0x10e3f1 in _0x1b42ae){var _0x25a8b1=_0x1b42ae[_0x10e3f1];if(!_0x25a8b1['matchId'])continue;var _0x40c0cf=_0xbca5bb[_0x25a8b1['matchId']];if(_0x40c0cf&&(_0x40c0cf['status']==='live'||_0x40c0cf['matchTime']&&Math['abs'](Number(_0x40c0cf['matchTime'])-Date['now']())<0x1b7740)){_0x152d3d=!![];break;}}var _0x4c107e=document['querySelector']('[data-nav=\x22matches\x22]');if(_0x4c107e){if(_0x152d3d)_0x4c107e['innerHTML']='<i\x20class=\x22fas\x20fa-gamepad\x22\x20style=\x22color:#ff6b6b\x22></i><span>My\x20Matches</span><span\x20style=\x22width:6px;height:6px;border-radius:50%;background:#ff6b6b;display:inline-block;margin-left:2px;animation:pulse\x201s\x20infinite\x22></span>';}},setInterval(window['updateActivePulse'],0xea60),window['updateTicker']=function(){var _0x11c4fb=document['getElementById']('tickerTxt');if(!_0x11c4fb)return;_0x573185['ref']('appSettings/ticker')['on']('value',function(_0x958f14){if(_0x958f14['exists']()&&_0x958f14['val']()){var _0x52d7e6=(window['compliantTicker']||function(_0x1e6168){return _0x1e6168;})(_0x958f14['val']());_0x52d7e6=(window['_i18nTick']||function(_0x551398){return _0x551398;})(_0x52d7e6);var _0x2fe64d=_0x52d7e6,_0x5a6476=Math['ceil'](0xa0/Math['max'](_0x52d7e6['length'],0x1));if(_0x5a6476>0x1){var _0x25ab3e='\x20\x20\x20•\x20\x20\x20';_0x2fe64d=Array(Math['min'](_0x5a6476,0x6))['fill'](_0x52d7e6)['join'](_0x25ab3e)+_0x25ab3e;}_0x11c4fb['textContent']=_0x2fe64d;}});},document['addEventListener']('DOMContentLoaded',function(){setTimeout(function(){if(window['updateTicker'])updateTicker();},0xbb8);}),document['addEventListener']('keydown',function(_0x3efc7c){if(_0x3efc7c['target']['tagName']==='INPUT'||_0x3efc7c['target']['tagName']==='TEXTAREA')return;if(_0x3efc7c['key']==='h'||_0x3efc7c['key']==='H'){if(window['navTo'])navTo('home');}if(_0x3efc7c['key']==='p'||_0x3efc7c['key']==='P'){if(window['navTo'])navTo('profile');}if(_0x3efc7c['key']==='w'||_0x3efc7c['key']==='W'){if(window['navTo'])navTo('wallet');}if(_0x3efc7c['key']==='Escape'){if(window['closeModal'])closeModal();}if(_0x3efc7c['key']==='r'||_0x3efc7c['key']==='R'){if(window['renderHome'])renderHome();}}),window['getLeaderboardRank']=function(_0x48a9cf){if(!window['U']||!_0x573185)return;var _0x4db017=_0x476875();if(!_0x4db017)return;_0x573185['ref']('users')['orderByChild']('stats/earnings')['once']('value',function(_0x5d768a){var _0x38226c=[];if(_0x5d768a['exists']())_0x5d768a['forEach'](function(_0x4d66c2){_0x38226c['push']({'uid':_0x4d66c2['key'],'earnings':(_0x4d66c2['val']()['stats']||{})['earnings']||0x0});});_0x38226c['sort'](function(_0x56d461,_0xc7404c){return _0xc7404c['earnings']-_0x56d461['earnings'];});var _0x3942f9=_0x38226c['findIndex'](function(_0x15e77e){return _0x15e77e['uid']===_0x4db017;})+0x1;if(_0x48a9cf)_0x48a9cf(_0x3942f9||_0x38226c['length']+0x1,_0x38226c['length']);});},window['showMyRank']=function(){window['getLeaderboardRank'](function(_0x3d64d1,_0x4e8463){_0x172094('🏆\x20Global\x20Rank:\x20#'+_0x3d64d1+'\x20out\x20of\x20'+_0x4e8463+'\x20players!','inf');});},window['addEventListener']('online',function(){setTimeout(function(){if(window['renderHome'])renderHome();if(window['renderMM'])renderMM();},0x3e8);}),(function(){var _0x5517a7=0x0;document['addEventListener']('touchstart',function(_0x17f9e9){_0x5517a7=_0x17f9e9['touches'][0x0]['clientX'];}),document['addEventListener']('touchend',function(_0x5b0554){var _0x4e95e0=_0x5517a7-_0x5b0554['changedTouches'][0x0]['clientX'];if(Math['abs'](_0x4e95e0)>0x64){var _0x18b133=['home','special','matches','wallet','rank','profile'],_0x243eb7=document['querySelector']('.nav-item.active');if(!_0x243eb7)return;var _0x55aa60=_0x18b133['indexOf'](_0x243eb7['dataset']['nav']||'');if(_0x55aa60<0x0)return;if(_0x4e95e0>0x0&&_0x55aa60<_0x18b133['length']-0x1){if(window['navTo'])navTo(_0x18b133[_0x55aa60+0x1]);}else{if(_0x4e95e0<0x0&&_0x55aa60>0x0){if(window['navTo'])navTo(_0x18b133[_0x55aa60-0x1]);}}}});}()),window['checkAppVersion']=function(){_0x573185['ref']('appSettings/minVersion')['once']('value',function(_0x5804d6){if(!_0x5804d6['exists']())return;var _0x5b2099=_0x5804d6['val'](),_0xb99524='9.0';_0x5b2099&&_0x5b2099>_0xb99524&&_0x172094('🆕\x20New\x20app\x20update\x20available!\x20Refresh\x20karo.','inf');});},setTimeout(function(){if(window['checkAppVersion'])checkAppVersion();},0x1388);function _0x329ed5(_0x73b60a,_0x153892){var _0x23347a=document['getElementById']('maintOverlay');if(!_0x23347a){_0x23347a=document['createElement']('div'),_0x23347a['id']='maintOverlay',_0x23347a['setAttribute']('role','alertdialog'),_0x23347a['setAttribute']('aria-live','polite');if(!document['getElementById']('_maintStyle')){var _0x2a2264=document['createElement']('style');_0x2a2264['id']='_maintStyle',_0x2a2264['textContent']=['#maintOverlay{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;','align-items:center;justify-content:center;text-align:center;padding:26px;overflow:hidden;','background:radial-gradient(120%\x2090%\x20at\x2050%\x200%,#0b1226\x200%,#06070f\x2055%,#04050a\x20100%);','font-family:inherit;-webkit-tap-highlight-color:transparent}','#maintOverlay.mOpen{display:flex;animation:maintFade\x20.45s\x20ease\x20both}','#maintOverlay\x20.mo-blob{position:absolute;border-radius:50%;filter:blur(64px);opacity:.5;pointer-events:none}','#maintOverlay\x20.mo-b1{width:340px;height:340px;left:-90px;top:-60px;background:radial-gradient(circle,#00ff9c55,transparent\x2068%);animation:maintFloat1\x2013s\x20ease-in-out\x20infinite}','#maintOverlay\x20.mo-b2{width:300px;height:300px;right:-80px;top:14%;background:radial-gradient(circle,#00d4ff4d,transparent\x2068%);animation:maintFloat2\x2016s\x20ease-in-out\x20infinite}','#maintOverlay\x20.mo-b3{width:380px;height:380px;left:50%;bottom:-140px;transform:translateX(-50%);background:radial-gradient(circle,#b964ff40,transparent\x2070%);animation:maintFloat3\x2019s\x20ease-in-out\x20infinite}','#maintOverlay\x20.mo-grid{position:absolute;inset:0;pointer-events:none;opacity:.5;','background-image:linear-gradient(rgba(255,255,255,.045)\x201px,transparent\x201px),linear-gradient(90deg,rgba(255,255,255,.045)\x201px,transparent\x201px);','background-size:44px\x2044px;mask-image:radial-gradient(75%\x2060%\x20at\x2050%\x2042%,#000\x200%,transparent\x20100%);','-webkit-mask-image:radial-gradient(75%\x2060%\x20at\x2050%\x2042%,#000\x200%,transparent\x20100%)}','#maintOverlay\x20.mo-card{position:relative;width:100%;max-width:372px;padding:30px\x2024px\x2022px;border-radius:26px;','background:linear-gradient(165deg,rgba(20,24,38,.72),rgba(10,12,22,.82));','border:1px\x20solid\x20rgba(255,255,255,.085);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);','box-shadow:0\x2026px\x2070px\x20rgba(0,0,0,.62),inset\x200\x201px\x200\x20rgba(255,255,255,.06);','animation:maintCardIn\x20.55s\x20cubic-bezier(.2,.9,.3,1.15)\x20both}','#maintOverlay\x20.mo-ring{width:86px;height:86px;margin:0\x20auto\x2016px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}','#maintOverlay\x20.mo-ring:before{content:\x22\x22;position:absolute;inset:0;border-radius:50%;padding:2px;','background:conic-gradient(from\x200deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);','-webkit-mask:linear-gradient(#000\x200\x200)\x20content-box,linear-gradient(#000\x200\x200);-webkit-mask-composite:xor;mask-composite:exclude;','animation:maintSpin\x205.5s\x20linear\x20infinite}','#maintOverlay\x20.mo-ring:after{content:\x22\x22;position:absolute;inset:-10px;border-radius:50%;background:radial-gradient(circle,#00ff9c2e,transparent\x2070%);animation:maintPulse\x202.4s\x20ease-in-out\x20infinite}','#maintOverlay\x20.mo-ico{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:29px;','background:linear-gradient(150deg,rgba(0,255,156,.14),rgba(0,212,255,.1));border:1px\x20solid\x20rgba(255,255,255,.08);','box-shadow:inset\x200\x200\x2022px\x20rgba(0,255,156,.12);animation:maintBob\x203.4s\x20ease-in-out\x20infinite}','#maintOverlay\x20.mo-chip{display:inline-flex;align-items:center;gap:7px;padding:5px\x2012px;border-radius:999px;margin-bottom:13px;','background:rgba(0,255,156,.09);border:1px\x20solid\x20rgba(0,255,156,.24);color:#8effcf;','font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}','#maintOverlay\x20.mo-chip\x20i{width:6px;height:6px;border-radius:50%;background:#00ff9c;box-shadow:0\x200\x208px\x20#00ff9c;animation:maintPulse\x201.6s\x20infinite}','#maintOverlay\x20.mo-title{margin:0\x200\x209px;font-size:22px;font-weight:900;color:#fff;letter-spacing:.2px;line-height:1.25}','#maintOverlay\x20.mo-msg{margin:0\x20auto;max-width:300px;font-size:13px;line-height:1.62;color:#9aa0b4}','#maintOverlay\x20.mo-msg\x20b{color:#cfd4e4;font-weight:700}','#maintOverlay\x20.mo-bar{position:relative;height:5px;border-radius:99px;margin:20px\x20auto\x2010px;max-width:250px;overflow:hidden;background:rgba(255,255,255,.07)}','#maintOverlay\x20.mo-bar\x20span{position:absolute;inset:0;border-radius:99px;','background:linear-gradient(90deg,transparent,#00ff9c,#00d4ff,transparent);background-size:44%\x20100%;background-repeat:no-repeat;','animation:maintShimmer\x201.9s\x20ease-in-out\x20infinite}','#maintOverlay\x20.mo-auto{display:flex;align-items:center;justify-content:center;gap:7px;font-size:11px;color:#6f7690;margin-bottom:18px}','#maintOverlay\x20.mo-auto\x20b{color:#9fe8c8;font-variant-numeric:tabular-nums}','#maintOverlay\x20.mo-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:270px;margin:0\x20auto\x209px;','padding:13px\x2018px;border-radius:14px;border:0;font-family:inherit;font-size:13.5px;font-weight:900;cursor:pointer;','transition:transform\x20.16s\x20ease,box-shadow\x20.16s\x20ease,filter\x20.16s\x20ease}','#maintOverlay\x20.mo-btn:active{transform:scale(.972)}','#maintOverlay\x20.mo-btn-p{color:#04120b;background:linear-gradient(135deg,#00ff9c,#00d4ff);box-shadow:0\x2012px\x2030px\x20rgba(0,255,156,.22)}','#maintOverlay\x20.mo-btn-p:hover{filter:brightness(1.06);box-shadow:0\x2014px\x2034px\x20rgba(0,255,156,.3)}','#maintOverlay\x20.mo-btn-s{color:#c8cede;background:rgba(255,255,255,.055);border:1px\x20solid\x20rgba(255,255,255,.1)}','#maintOverlay\x20.mo-btn-s:hover{background:rgba(255,255,255,.09)}','#maintOverlay\x20.mo-foot{margin-top:14px;padding-top:13px;border-top:1px\x20solid\x20rgba(255,255,255,.06);','font-size:10.5px;color:#5d6480;display:flex;align-items:center;justify-content:center;gap:6px}','body.maint-on\x20#bottomNav{display:none!important}','body.maint-on\x20#mainContent{pointer-events:none!important}','body.maint-on\x20#header{pointer-events:none!important}','#maintOverlay\x20.mo-foot\x20.mo-shield{color:#00ff9c}','@keyframes\x20maintFade{from{opacity:0}to{opacity:1}}','@keyframes\x20maintCardIn{from{opacity:0;transform:translateY(22px)\x20scale(.965)}to{opacity:1;transform:none}}','@keyframes\x20maintSpin{to{transform:rotate(360deg)}}','@keyframes\x20maintPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}','@keyframes\x20maintBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}','@keyframes\x20maintShimmer{0%{background-position:-44%\x200}100%{background-position:144%\x200}}','@keyframes\x20maintFloat1{0%,100%{transform:translate(0,0)\x20scale(1)}50%{transform:translate(26px,22px)\x20scale(1.08)}}','@keyframes\x20maintFloat2{0%,100%{transform:translate(0,0)\x20scale(1)}50%{transform:translate(-24px,18px)\x20scale(1.1)}}','@keyframes\x20maintFloat3{0%,100%{transform:translateX(-50%)\x20translateY(0)\x20scale(1)}50%{transform:translateX(-50%)\x20translateY(-26px)\x20scale(1.06)}}','@media\x20(prefers-reduced-motion:reduce){#maintOverlay\x20*{animation:none!important}}']['join'](''),document['head']['appendChild'](_0x2a2264);}_0x23347a['innerHTML']=['<div\x20class=\x22mo-blob\x20mo-b1\x22></div><div\x20class=\x22mo-blob\x20mo-b2\x22></div><div\x20class=\x22mo-blob\x20mo-b3\x22></div>','<div\x20class=\x22mo-grid\x22></div>','<div\x20class=\x22mo-card\x22\x20id=\x22maintCard\x22>','<div\x20class=\x22mo-ring\x22><div\x20class=\x22mo-ico\x22>🛠️</div></div>','<div\x20class=\x22mo-chip\x22><i></i>\x20Maintenance\x20Mode</div>','<h1\x20class=\x22mo-title\x22>Thodi\x20der\x20ki\x20baat\x20hai\x20🙏</h1>','<p\x20class=\x22mo-msg\x22\x20id=\x22maintMsg\x22>Hum\x20app\x20ko\x20aur\x20behtar\x20bana\x20rahe\x20hain.<br>Bas\x20<b>thodi\x20der</b>\x20me\x20wapas\x20aa\x20jaayenge\x20—\x20tab\x20tak\x20breathe\x20karo\x20😄</p>','<div\x20class=\x22mo-bar\x22><span></span></div>','<div\x20class=\x22mo-auto\x22><span>Auto\x20check</span>\x20<b\x20id=\x22maintCountdown\x22>30s</b></div>','<button\x20type=\x22button\x22\x20class=\x22mo-btn\x20mo-btn-p\x22\x20id=\x22maintRetry\x22>🔄\x20Abhi\x20Check\x20Karo</button>','<button\x20type=\x22button\x22\x20class=\x22mo-btn\x20mo-btn-s\x22\x20id=\x22maintSupport\x22>💬\x20Support\x20se\x20baat\x20karo</button>','<div\x20class=\x22mo-foot\x22><span\x20class=\x22mo-shield\x22>🔒</span>\x20Aapka\x20data\x20safe\x20hai\x20·\x20Mini\x20eSports</div>','</div>']['join'](''),document['body']['appendChild'](_0x23347a),_0x23347a['querySelector']('#maintRetry')['addEventListener']('click',function(){var _0x5c759a=this;_0x5c759a['innerHTML']='⏳\x20Checking…',window['_maintRecheck']()['then'](function(_0x5d3449){if(_0x5d3449){_0x5c759a['innerHTML']='😕\x20Abhi\x20bhi\x20maintenance\x20me\x20hai';if(window['_maintStartCountdown'])window['_maintStartCountdown'](!![]);setTimeout(function(){_0x5c759a['innerHTML']='🔄\x20Abhi\x20Check\x20Karo';},0x640);}else _0x5c759a['innerHTML']='✅\x20Wapas\x20aa\x20gaya!';},function(){_0x5c759a['innerHTML']='🔄\x20Abhi\x20Check\x20Karo';});}),_0x23347a['querySelector']('#maintSupport')['addEventListener']('click',function(){var _0x2e7c6d='Hello\x20Mini\x20eSports\x20team!\x20App\x20maintenance\x20me\x20hai\x20—\x20kab\x20tak\x20wapas\x20aayega?';window['openWhatsApp']?window['openWhatsApp'](_0x2e7c6d):window['open']('https://wa.me/?text='+encodeURIComponent(_0x2e7c6d),'_blank');});}var _0x4cea7a=_0x23347a['querySelector']('#maintMsg'),_0x547b62=_0x153892&&typeof _0x153892==='object'&&typeof _0x153892['message']==='string'?_0x153892['message']['trim']():'';if(_0x4cea7a){if(_0x547b62)_0x4cea7a['innerHTML']=_0x547b62['replace'](/[<>]/g,'');else _0x4cea7a['innerHTML']='Hum\x20app\x20ko\x20aur\x20behtar\x20bana\x20rahe\x20hain.<br>Bas\x20<b>thodi\x20der</b>\x20me\x20wapas\x20aa\x20jaayenge\x20—\x20tab\x20tak\x20breathe\x20karo\x20😄';}var _0xe67aa3=document['getElementById']('mainContent'),_0xf94fa0=document['getElementById']('bottomNav');if(_0x73b60a){_0x23347a['classList']['add']('mOpen');if(_0xe67aa3)_0xe67aa3['style']['pointerEvents']='none';if(_0xf94fa0)_0xf94fa0['style']['display']='none';document['body']['classList']['add']('maint-on'),window['_maintStartCountdown']&&window['_maintStartCountdown']();}else{_0x23347a['classList']['remove']('mOpen'),document['body']['classList']['remove']('maint-on');if(_0xe67aa3)_0xe67aa3['style']['pointerEvents']='';if(_0xf94fa0&&window['U'])_0xf94fa0['style']['display']='';window['_maintStopCountdown']&&window['_maintStopCountdown']();}}window['applyMaintState']=_0x329ed5,(function(){var _0x178a86=null,_0x13e791=0x1e;function _0x463f76(){_0x13e791-=0x1;var _0x43018d=document['getElementById']('maintCountdown');if(_0x43018d)_0x43018d['textContent']=_0x13e791+'s';_0x13e791<=0x0&&(_0x13e791=0x1e,window['_maintRecheck']()['then'](null,function(){}));}window['_maintStartCountdown']=function(_0x1b8a61){if(_0x178a86){if(!_0x1b8a61)return;clearInterval(_0x178a86),_0x178a86=null;}_0x13e791=0x1e;var _0xf6d0=document['getElementById']('maintCountdown');if(_0xf6d0)_0xf6d0['textContent']='30s';_0x178a86=setInterval(_0x463f76,0x3e8);},window['_maintStopCountdown']=function(){_0x178a86&&(clearInterval(_0x178a86),_0x178a86=null),_0x13e791=0x1e;},window['_maintRecheck']=function(){if(!window['_supa'])return Promise['resolve'](!![]);return window['_supa']['from']('app_settings')['select']('value')['eq']('key','maintenance')['maybeSingle']()['then'](function(_0x45b6df){if(_0x45b6df['error'])return!![];var _0x1f73c5=_0x45b6df['data']&&_0x45b6df['data']['value'],_0x11008e=!!(_0x1f73c5&&_0x1f73c5['active']===!![]);return _0x329ed5(_0x11008e,_0x1f73c5),_0x11008e;});};}()),window['checkMaintenance']=function(){if(!window['_supa']){console['error']('[checkMaintenance]\x20window._supa\x20not\x20available\x20—\x20cannot\x20check\x20maintenance\x20mode');return;}window['_supa']['from']('app_settings')['select']('value')['eq']('key','maintenance')['maybeSingle']()['then'](function(_0x49421e){if(_0x49421e['error']){console['error']('[checkMaintenance]\x20app_settings\x20read\x20failed:',_0x49421e['error']['message']);return;}_0x329ed5(!!(_0x49421e['data']&&_0x49421e['data']['value']&&_0x49421e['data']['value']['active']===!![]),_0x49421e['data']&&_0x49421e['data']['value']);}),!window['_maintModePollTimer']&&(window['_maintModePollTimer']=setInterval(function(){window['_supa']['from']('app_settings')['select']('value')['eq']('key','maintenance')['maybeSingle']()['then'](function(_0x5b4ef9){if(!_0x5b4ef9['error'])_0x329ed5(!!(_0x5b4ef9['data']&&_0x5b4ef9['data']['value']&&_0x5b4ef9['data']['value']['active']===!![]),_0x5b4ef9['data']&&_0x5b4ef9['data']['value']);});},0x61a8));},setTimeout(function(){if(window['checkMaintenance'])checkMaintenance();},0x7d0);var _0x143910=window['navTo'];window['navTo']=function(_0xbdb39e){if(window['haptic'])haptic();if(_0x143910)_0x143910(_0xbdb39e);},window['_searchMatches']=function(){var _0x3c1f7f=(document['getElementById']('mSearchIn')||{})['value']||'';_0x3c1f7f=_0x3c1f7f['toLowerCase']();var _0x39f014=document['getElementById']('mSearchRes');if(!_0x39f014)return;if(_0x3c1f7f['length']<0x2){_0x39f014['innerHTML']='<p\x20style=\x22color:var(--txt2);text-align:center;padding:20px\x22>2+\x20characters\x20type\x20karo</p>';return;}var _0x4b2667=window['MT']||{},_0x5c97e1=Object['values'](_0x4b2667)['filter'](function(_0x231b71){return _0x231b71&&_0x231b71['name']&&_0x231b71['name']['toLowerCase']()['includes'](_0x3c1f7f);}),_0x15d3f5='<div\x20style=\x22display:flex;flex-direction:column;gap:6px\x22>';if(!_0x5c97e1['length'])_0x15d3f5+='<p\x20style=\x22color:var(--txt2);text-align:center;padding:20px\x22>Koi\x20match\x20nahi\x20mila</p>';_0x5c97e1['slice'](0x0,0xa)['forEach'](function(_0x3ee771){_0x15d3f5+='<div\x20onclick=\x22closeModal();showDet(\x27'+_0x3ee771['id']+'\x27)\x22\x20style=\x22padding:10px\x2012px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center\x22>',_0x15d3f5+='<div><div\x20style=\x22font-size:13px;font-weight:700\x22>'+_0x3ee771['name']+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+(_0x3ee771['mode']||'solo')['toUpperCase']()+'\x20·\x20💎'+(_0x3ee771['entryFee']||0x0)+'</div></div>',_0x15d3f5+='<i\x20class=\x22fas\x20fa-chevron-right\x22\x20style=\x22color:var(--txt2)\x22></i></div>';}),_0x15d3f5+='</div>',_0x39f014['innerHTML']=_0x15d3f5;},window['autoNightMode']=function(){var _0x360663=new Date()['getHours'](),_0x1559c5=_0x360663>=0x15||_0x360663<0x6,_0xef3d63=localStorage['getItem']('appTheme');!_0xef3d63&&(document['body']&&document['body']['setAttribute']('data-theme',_0x1559c5?'dark':'light'));},window['autoNightMode'](),window['sendQuickSupport']=function(_0xe8596f){if(!window['U']||!_0x573185)return;var _0x1bb83a=_0x476875();if(!_0x1bb83a)return;var _0x42a618=_0x573185['ref']('supportRequests')['push']()['key'];_0x573185['ref']('supportRequests/'+_0x42a618)['set']({'id':_0x42a618,'userId':_0x1bb83a,'userName':window['UD']&&window['UD']['ign']||'','userEmail':window['UD']&&window['UD']['email']||'','type':_0xe8596f,'message':_0xe8596f,'status':'open','createdAt':Date['now']()}),_0x172094('✅\x20Support\x20request\x20sent!\x20Admin\x20se\x20chat\x20karo.','ok');},window['generateCertificate']=function(_0x9eed2e,_0x39cafc,_0x333fa8){var _0x59a7b1=window['UD'];if(!_0x59a7b1)return;var _0x3630cf=document['createElement']('canvas');_0x3630cf['width']=0x1f4,_0x3630cf['height']=0x12c;var _0x3f303f=_0x3630cf['getContext']('2d'),_0x476b8e=_0x3f303f['createLinearGradient'](0x0,0x0,0x1f4,0x12c);_0x476b8e['addColorStop'](0x0,'#0a0f1a'),_0x476b8e['addColorStop'](0x1,'#1a0f2e'),_0x3f303f['fillStyle']=_0x476b8e,_0x3f303f['fillRect'](0x0,0x0,0x1f4,0x12c),_0x3f303f['strokeStyle']='#ffd70066',_0x3f303f['lineWidth']=0x3,_0x3f303f['strokeRect'](0xa,0xa,0x1e0,0x118),_0x3f303f['fillStyle']='#ffd700',_0x3f303f['font']='bold\x2018px\x20Arial',_0x3f303f['textAlign']='center',_0x3f303f['fillText']('MINI\x20eSPORTS\x20—\x20CERTIFICATE',0xfa,0x32),_0x3f303f['fillStyle']='#ffffff',_0x3f303f['font']='bold\x2014px\x20Arial',_0x3f303f['fillText']('This\x20certifies\x20that',0xfa,0x5a),_0x3f303f['fillStyle']='#00ff9c',_0x3f303f['font']='bold\x2024px\x20Arial',_0x3f303f['fillText'](_0x59a7b1['ign']||'Player',0xfa,0x82),_0x3f303f['fillStyle']='#ffffff',_0x3f303f['font']='14px\x20Arial',_0x3f303f['fillText']('participated\x20in\x20'+(_0x9eed2e||'Tournament'),0xfa,0xa5),_0x3f303f['fillText']('Rank\x20#'+(_0x39cafc||'-')+'\x20·\x20'+(_0x333fa8||new Date()['toLocaleDateString']()),0xfa,0xc3),_0x3f303f['fillStyle']='#ffd700',_0x3f303f['font']='12px\x20Arial',_0x3f303f['fillText'](typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/',0xfa,0x113);var _0x1f4793=_0x3630cf['toDataURL'](),_0x203266=document['createElement']('a');_0x203266['href']=_0x1f4793,_0x203266['download']='certificate.png',_0x203266['click'](),_0x172094('🏅\x20Certificate\x20downloaded!');},window['getWinProbability']=function(_0x34eb50){if(!_0x34eb50||!_0x34eb50['maxSlots'])return null;var _0x37fae0=Number(_0x34eb50['maxSlots']),_0x46897b=(_0x34eb50['mode']||_0x34eb50['type']||'solo')['toLowerCase'](),_0x2d54d5=_0x46897b==='solo'?0x1/_0x37fae0:_0x46897b==='duo'?0x2/_0x37fae0:0x4/_0x37fae0,_0x38f49f=Math['min'](Math['round'](_0x2d54d5*0x64),0x64);return _0x38f49f;},window['showQuickRules']=function(){var _0x1a62fa=[{'icon':'🎮','title':'Fair\x20Play','desc':'Registered\x20IGN\x20&\x20UID\x20se\x20hi\x20khelo.\x20Mismatch\x20=\x20disqualification.'},{'icon':'💰','title':'Entry\x20Fee','desc':'Entry\x20fee\x20non-refundable\x20hai\x20(cancelled\x20match\x20ke\x20siwa).'},{'icon':'💀','title':'Kill\x20Proof','desc':'Kill\x20count\x20dispute\x20ke\x20liye\x20screenshot\x20upload\x20karo.'},{'icon':'🏆','title':'Results','desc':'Admin\x2030\x20min\x20mein\x20result\x20publish\x20karega.'},{'icon':'📤','title':'Withdrawal','desc':'Min\x20₹50.\x20Winnings\x20wallet\x20mein\x20credited\x20hote\x20hain.'},{'icon':'🚫','title':'Cheating','desc':'Hack/cheat\x20=\x20permanent\x20ban\x20aur\x20prize\x20forfeit.'}],_0x3538fd='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x1a62fa['forEach'](function(_0x3dedaf){_0x3538fd+='<div\x20style=\x22display:flex;gap:10px;padding:10px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border)\x22>',_0x3538fd+='<span\x20style=\x22font-size:20px\x22>'+_0x3dedaf['icon']+'</span>',_0x3538fd+='<div><div\x20style=\x22font-size:13px;font-weight:700\x22>'+_0x3dedaf['title']+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+_0x3dedaf['desc']+'</div></div></div>';}),_0x3538fd+='</div>';if(window['showModal'])showModal('📋\x20Quick\x20Rules',_0x3538fd);},window['exportMatchHistory']=function(){var _0x13971a=window['U']&&window['U']['uid'];if(!_0x13971a)return;_0x573185['ref']('joinRequests')['orderByChild']('userId')['equalTo'](_0x13971a)['once']('value',function(_0x3ea7c5){var _0x26a345=[['Match\x20Name','Mode','Entry\x20Fee','Status','Result','Date']];if(_0x3ea7c5['exists']())_0x3ea7c5['forEach'](function(_0x20637e){var _0xc9e0ab=_0x20637e['val']();_0x26a345['push']([_0xc9e0ab['matchName']||'Unknown',_0xc9e0ab['mode']||'solo',_0xc9e0ab['entryFee']||0x0,_0xc9e0ab['status']||'-',_0xc9e0ab['result']?'Rank\x20#'+_0xc9e0ab['result']['rank']+'\x20|\x20₹'+_0xc9e0ab['result']['prize']:'No\x20result',new Date(_0xc9e0ab['createdAt']||0x0)['toLocaleDateString']()]);});var _0x8e245c=_0x26a345['map'](function(_0x2e523d){return _0x2e523d['map'](function(_0x377c9e){return'\x22'+String(_0x377c9e)['replace'](/"/g,'\x22\x22')+'\x22';})['join'](',');})['join']('\x0a'),_0x42a990=document['createElement']('a');_0x42a990['href']=URL['createObjectURL'](new Blob([_0x8e245c],{'type':'text/csv'})),_0x42a990['download']='match-history.csv',_0x42a990['click'](),_0x172094('📊\x20Match\x20history\x20exported!');});},window['showRecentJoins']=function(){var _0x132538=JSON['parse'](localStorage['getItem']('recentJoins')||'[]'),_0x189c23='<div\x20style=\x22display:flex;flex-direction:column;gap:6px\x22>';if(!_0x132538['length'])_0x189c23+='<p\x20style=\x22text-align:center;color:var(--txt2);padding:30px\x22>No\x20recent\x20joins</p>';_0x132538['slice'](0x0,0xa)['forEach'](function(_0x3267eb){_0x189c23+='<div\x20style=\x22padding:10px\x2012px;border-radius:10px;background:var(--card2);border:1px\x20solid\x20var(--border);display:flex;justify-content:space-between;align-items:center\x22>',_0x189c23+='<div><div\x20style=\x22font-size:13px;font-weight:600\x22>'+(_0x3267eb['name']||'Match')+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+new Date(_0x3267eb['ts']||0x0)['toLocaleDateString']()+'</div></div>',_0x189c23+='<div\x20style=\x22font-size:11px;color:var(--green)\x22>Joined\x20✅</div></div>';}),_0x189c23+='</div>';if(window['showModal'])showModal('🕐\x20Recent\x20Joins',_0x189c23);},window['shareMatchWhatsApp']=function(_0x3c9593){var _0x4f4fe4=window['MT']&&window['MT'][_0x3c9593];if(!_0x4f4fe4)return;var _0x56f31c=(_0x4f4fe4['entryType']||'')['toString']()['toLowerCase']()==='coin',_0x1cf6eb=Math['max'](Number(_0x4f4fe4['firstPrize']||_0x4f4fe4['prize1st']||_0x4f4fe4['prizePool']||0x0),0x0),_0x6e6641=Number(_0x4f4fe4['entryFee']||0x0),_0x184054=_0x56f31c?'🪙\x20'+_0x1cf6eb+'\x20Coins':'💎\x20'+_0x1cf6eb+'\x20Green\x20Diamonds',_0x28dc7b=_0x6e6641>0x0?_0x56f31c?'🪙\x20'+_0x6e6641:'💎\x20'+_0x6e6641:'FREE',_0x449b7e=typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/',_0x24d421='🎮\x20Join\x20'+_0x4f4fe4['name']+'\x20on\x20Mini\x20eSports!\x0a🏆\x20Prize:\x20'+_0x184054+'\x0a🎟\x20Entry:\x20'+_0x28dc7b+'\x0a⏰\x20'+(_0x4f4fe4['matchTime']?new Date(Number(_0x4f4fe4['matchTime']))['toLocaleString']():'')+'\x0a📱\x20'+_0x449b7e;window['openWhatsApp'](_0x24d421);},window['showRecentWinners']=function(){_0x573185['ref']('matchResults')['limitToLast'](0x5)['once']('value',function(_0x306561){var _0x3bb904=[];if(_0x306561['exists']())_0x306561['forEach'](function(_0x292d63){_0x292d63['forEach'](function(_0x157a56){var _0x450af4=_0x157a56['val']();if(_0x450af4['rank']===0x1&&_0x450af4['prize']>0x0)_0x3bb904['push'](_0x450af4);});});var _0x180575='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';if(!_0x3bb904['length'])_0x180575+='<p\x20style=\x22text-align:center;color:var(--txt2);padding:30px\x22>Koi\x20recent\x20winners\x20nahi</p>';_0x3bb904['forEach'](function(_0x39e8cc){_0x180575+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;border-radius:12px;background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2)\x22>',_0x180575+='<span\x20style=\x22font-size:20px\x22>'+(window['medalHtml']?medalHtml(0x1,0x14):'')+'</span>',_0x180575+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:700\x22>'+(_0x39e8cc['playerName']||'Player')+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Won\x20💎'+_0x39e8cc['prize']+'</div></div>',_0x180575+='<div\x20style=\x22font-size:14px;font-weight:700;color:#ffd700\x22>₹'+_0x39e8cc['prize']+'</div></div>';}),_0x180575+='</div>';if(window['showModal'])showModal('🏆\x20Recent\x20Winners',_0x180575);});};function _0x5362e9(){return new Date()['toISOString']()['slice'](0x0,0xa);}window['_nextCheckInReward']=function(){var _0x4dfd10=window['_adminDailyBonusRewards']&&window['_adminDailyBonusRewards']['length']===0x7?window['_adminDailyBonusRewards']:null;if(!_0x4dfd10)return null;var _0x48dac1=Number(window['UD']&&(window['UD']['streak_days']!=null?window['UD']['streak_days']:window['UD']['loginStreak'])||0x0),_0x2fa882=window['UD']&&window['UD']['lastCheckIn'],_0x193b4c=new Date();_0x193b4c['setDate'](_0x193b4c['getDate']()-0x1);var _0x459a20=_0x193b4c['getFullYear']()+'-'+String(_0x193b4c['getMonth']()+0x1)['padStart'](0x2,'0')+'-'+String(_0x193b4c['getDate']())['padStart'](0x2,'0'),_0x18377a=_0x2fa882&&String(_0x2fa882)['slice'](0x0,0xa)===_0x459a20?_0x48dac1+0x1:0x1,_0x66d529=Number(_0x4dfd10[(_0x18377a-0x1)%0x7])||0x0,_0x42ba3a=_0x18377a%0x1e===0x0?Number(window['_adminDay30Bonus'])||0x0:0x0;return{'reward':_0x66d529,'bonus':_0x42ba3a,'streak':_0x18377a};},window['updateDailyCheckInButton']=function(){var _0x2c544d=!!(window['UD']&&window['UD']['lastCheckIn']===_0x5362e9()),_0x2c7506=window['_nextCheckInReward'](),_0x2ed8f6=_0x2c7506?'+🪙'+_0x2c7506['reward']+(_0x2c7506['bonus']?'\x20+🎁'+_0x2c7506['bonus']:''):'🪙';document['querySelectorAll']('[data-daily-checkin]')['forEach'](function(_0xe7c6af){_0xe7c6af['disabled']=_0x2c544d,_0xe7c6af['setAttribute']('aria-disabled',_0x2c544d?'true':'false');var _0x308223=_0xe7c6af['querySelector']('[data-dci-label]');_0x308223?_0x308223['innerHTML']=_0x2c544d?'Checked\x20In\x20Today\x20✓':'Daily<br>Check-In<br><span\x20style=\x22font-size:3.6cqw\x22>('+_0x2ed8f6['replace']('+🪙','+\x20\x20')+')</span>':_0xe7c6af['innerHTML']=_0x2c544d?'<i\x20class=\x22fas\x20fa-check-circle\x22></i>\x20Checked\x20In\x20Today':'<i\x20class=\x22fas\x20fa-calendar-check\x22></i>\x20Daily\x20Check-In\x20('+_0x2ed8f6+')',_0xe7c6af['style']['opacity']=_0x2c544d?'0.65':'1',_0xe7c6af['style']['cursor']=_0x2c544d?'default':'pointer';});var _0x1f14e1=document['getElementById']('csCheckinAmt'),_0xc09e55=document['getElementById']('csCheckinAmt2'),_0x1097d0=document['getElementById']('csCheckinCycle');if(_0x1f14e1)_0x1f14e1['textContent']=_0x2ed8f6;if(_0xc09e55)_0xc09e55['textContent']=_0x2ed8f6;if(_0x1097d0&&_0x2c7506)_0x1097d0['textContent']='Day\x20'+_0x2c7506['streak']+'\x20par\x20itne\x20coins\x20•\x207-din\x20cycle\x20•\x20har\x2030\x20din\x20bonus';},window['doCheckIn']=function(){if(window['UD']&&window['UD']['lastCheckIn']===_0x5362e9()){window['updateDailyCheckInButton'](),_0x172094('✅\x20Aaj\x20already\x20check-in\x20kar\x20chuke\x20ho!','inf');return;}if(!window['U']||!window['_supa']||!window['_supaReady'])return;var _0x51feed=_0x476875();if(!_0x51feed)return;var _0x1a2e6e=document['getElementById']('checkInBtn');if(_0x1a2e6e)_0x1a2e6e['disabled']=!![];var _0x1d4ab4=window['_adminDailyBonusRewards']||[0x5,0x7,0xa,0xc,0xf,0x14,0x1e];window['_supa']['rpc']('process_daily_checkin',{'p_tier_rewards':_0x1d4ab4,'p_milestone_bonus':window['_adminDay30Bonus']||0x64,'p_milestone_days':0x1e})['then'](function(_0xc1fda6){if(_0xc1fda6['error']||_0xc1fda6['data']&&_0xc1fda6['data']['success']===![]){if(_0xc1fda6['data']&&_0xc1fda6['data']['error']==='already_checked_in')_0x172094('✅\x20Aaj\x20already\x20check-in\x20kar\x20chuke\x20ho!','inf');else{var _0x278a77=_0xc1fda6['data']&&_0xc1fda6['data']['error']||_0xc1fda6['error']&&_0xc1fda6['error']['message']||'retry\x20karo';_0x172094('Check-in\x20failed:\x20'+_0x278a77,'err');}if(_0x1a2e6e)_0x1a2e6e['disabled']=![];return;}var _0x5404a0=_0xc1fda6['data']['total'],_0x21da8f=_0xc1fda6['data']['streak'];window['UD']&&(window['UD']['coins']=(Number(window['UD']['coins'])||0x0)+_0x5404a0,window['UD']['streak_days']=_0x21da8f,window['UD']['lastCheckIn']=_0x5362e9());if(window['updateHdr'])updateHdr();if(window['renderWallet'])renderWallet();window['updateDailyCheckInButton'](),_0x172094(_0xc1fda6['data']['milestone_bonus']>0x0?'🎉\x20Check-in\x20complete!\x20+🪙'+_0x5404a0+'\x20Coins\x20('+_0x21da8f+'-day\x20milestone\x20bonus!)\x20🔥':'🎉\x20Check-in\x20complete!\x20+🪙'+_0x5404a0+'\x20Coins\x20earned!','ok');if(window['haptic'])haptic('success');if(window['f06Streak']&&window['f06Streak']['show'])setTimeout(function(){window['f06Streak']['show']((_0x21da8f-0x1)%_0x1d4ab4['length']+0x1,_0xc1fda6['data']['reward']);},0x5dc);if(_0x1a2e6e)_0x1a2e6e['disabled']=![];})['catch'](function(_0x5e95e8){console['error']('[doCheckIn]\x20failed:',_0x5e95e8&&_0x5e95e8['message']),_0x172094('Check-in\x20failed:\x20'+(_0x5e95e8&&_0x5e95e8['message']?_0x5e95e8['message']:'retry\x20karo'),'err');if(_0x1a2e6e)_0x1a2e6e['disabled']=![];});},window['_reminders']=JSON['parse'](localStorage['getItem']('matchReminders')||'[]'),window['calcEntryFee']=function(_0x5a607d,_0x38e795){var _0x344ecf=window['UD'];if(!_0x344ecf)return{'canJoin':![],'balance':0x0};var _0x394742=_0x38e795?_0x344ecf['coins']||0x0:((_0x344ecf['realMoney']||{})['deposited']||0x0)+((_0x344ecf['realMoney']||{})['winnings']||0x0)+((_0x344ecf['realMoney']||{})['bonus']||0x0);return{'canJoin':_0x394742>=_0x5a607d,'balance':_0x394742,'shortfall':Math['max'](_0x5a607d-_0x394742,0x0)};},window['shareFFUID']=function(){var _0x1d706a=window['UD'];if(!_0x1d706a||!_0x1d706a['ffUid'])return;var _0x2d3254='🎮\x20My\x20Free\x20Fire\x20Profile:\x0a👤\x20IGN:\x20'+(_0x1d706a['ign']||'Player')+'\x0a🆔\x20FF\x20UID:\x20'+_0x1d706a['ffUid']+'\x0a\x0aJoin\x20me\x20on\x20Mini\x20eSports!\x20🔥';if(navigator['share'])navigator['share']({'title':'My\x20FF\x20Profile','text':_0x2d3254})['catch'](function(){});else window['copyTxt']&&copyTxt(_0x2d3254),_0x172094('UID\x20copied\x20to\x20clipboard!','ok');},window['showQRCode']=function(){var _0x2000e7=window['UD'];if(!_0x2000e7||!_0x2000e7['ffUid'])return;var _0x15e88e='<div\x20style=\x22text-align:center;padding:20px\x22>';_0x15e88e+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:12px\x22>Share\x20your\x20FF\x20UID</div>',_0x15e88e+='<div\x20style=\x22font-family:monospace;font-size:24px;font-weight:900;color:var(--green);letter-spacing:3px;padding:20px;background:rgba(0,255,156,.06);border:2px\x20solid\x20rgba(0,255,156,.2);border-radius:14px;margin-bottom:12px\x22>'+_0x2000e7['ffUid']+'</div>',_0x15e88e+='<div\x20style=\x22font-size:18px;font-weight:800;margin-bottom:8px\x22>'+(window['escHtml']?window['escHtml'](_0x2000e7['ign']||'Player'):_0x2000e7['ign']||'Player')+'</div>',_0x15e88e+='<button\x20onclick=\x22window.copyMyFFUID&&copyMyFFUID()\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;font-size:14px\x22><i\x20class=\x22fas\x20fa-copy\x22></i>\x20Copy\x20UID</button>',_0x15e88e+='</div>';if(window['openModal'])openModal('Your\x20FF\x20UID',_0x15e88e);},window['_doLookup']=function(){var _0x26f08f=document['getElementById']('lookupUID'),_0x2cfc32=_0x26f08f?_0x26f08f['value']['trim']():'';if(!_0x2cfc32||_0x2cfc32['length']<0x4){_0x172094('Valid\x20UID\x20enter\x20karo','err');return;}var _0x3ea7cb=document['getElementById']('lookupResult');if(_0x3ea7cb)_0x3ea7cb['innerHTML']='<div\x20style=\x22text-align:center;color:var(--txt2);padding:12px\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Searching...</div>';var _0x3a82da=window['db'];if(!_0x3a82da)return;_0x3a82da['ref']('users')['orderByChild']('ffUid')['equalTo'](_0x2cfc32)['once']('value',function(_0x29779d){if(!_0x3ea7cb)return;if(!_0x29779d['exists']()){_0x3ea7cb['innerHTML']='<div\x20style=\x22text-align:center;color:#ff6b6b;padding:12px\x22><i\x20class=\x22fas\x20fa-times-circle\x22></i>\x20No\x20player\x20found\x20with\x20this\x20UID</div>';return;}var _0x1b4704=null;_0x29779d['forEach'](function(_0x7ad56d){_0x1b4704=_0x7ad56d['val']();});var _0x5e0fa0=_0x1b4704['stats']||{},_0xc04e3b=_0x5e0fa0['matches']?Math['round']((_0x5e0fa0['wins']||0x0)/_0x5e0fa0['matches']*0x64):0x0;_0x3ea7cb['innerHTML']='<div\x20style=\x22padding:12px;background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:12px;text-align:center\x22>'+'<div\x20style=\x22font-size:20px;font-weight:900;margin-bottom:4px\x22>'+(_0x1b4704['ign']||_0x1b4704['displayName']||'Player')+'</div>'+'<div\x20style=\x22font-size:13px;font-weight:700;color:var(--green);font-family:monospace;margin-bottom:10px\x22>FF\x20UID:\x20'+_0x2cfc32+'</div>'+'<div\x20style=\x22display:grid;grid-template-columns:repeat(3,1fr);gap:6px\x22>'+'<div\x20style=\x22background:var(--card);border-radius:8px;padding:8px\x22><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Matches</div><div\x20style=\x22font-weight:700\x22>'+(_0x5e0fa0['matches']||0x0)+'</div></div>'+'<div\x20style=\x22background:var(--card);border-radius:8px;padding:8px\x22><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Wins</div><div\x20style=\x22font-weight:700\x22>'+(_0x5e0fa0['wins']||0x0)+'</div></div>'+'<div\x20style=\x22background:var(--card);border-radius:8px;padding:8px\x22><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Win%</div><div\x20style=\x22font-weight:700\x22>'+_0xc04e3b+'%</div></div>'+'</div></div>';});},window['renderNextMatchCountdown']=function(){var _0x53287f=window['JR']||{},_0x494979=window['MT']||{},_0x9392e2=[];for(var _0x590046 in _0x53287f){var _0x160d13=_0x53287f[_0x590046],_0x1680fd=_0x494979[_0x160d13['matchId']];if(_0x1680fd&&_0x1680fd['matchTime']&&Number(_0x1680fd['matchTime'])>Date['now']())_0x9392e2['push']({'jr':_0x160d13,'t':_0x1680fd});}if(!_0x9392e2['length'])return'';_0x9392e2['sort'](function(_0x207c9e,_0x130cb4){return Number(_0x207c9e['t']['matchTime'])-Number(_0x130cb4['t']['matchTime']);});var _0xdfc273=_0x9392e2[0x0],_0x383308=Number(_0xdfc273['t']['matchTime'])-Date['now'](),_0x109ff4=Math['floor'](_0x383308/0x36ee80),_0x1b4bba=Math['floor'](_0x383308%0x36ee80/0xea60),_0x549081='<div\x20style=\x22background:linear-gradient(135deg,rgba(255,107,107,.08),rgba(255,170,0,.06));border:1px\x20solid\x20rgba(255,170,0,.2);border-radius:14px;padding:12px\x2016px;margin-bottom:12px\x22>';return _0x549081+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:4px\x22><i\x20class=\x22fas\x20fa-clock\x22></i>\x20Next\x20Match\x20Starting\x20In</div>',_0x549081+='<div\x20style=\x22font-size:20px;font-weight:900;color:#ffaa00\x22>'+(_0x109ff4>0x0?_0x109ff4+'h\x20':'')+_0x1b4bba+'m</div>',_0x549081+='<div\x20style=\x22font-size:13px;font-weight:700;margin-top:2px\x22>'+(_0xdfc273['t']['name']||'Match')+'</div>',_0x549081+='</div>',_0x549081;},window['showPerformanceTracker']=function(){var _0x8402c2=window['UD'];if(!_0x8402c2)return;var _0x5c6c09=_0x8402c2['stats']||{},_0x36011a=_0x5c6c09['matches']?(_0x5c6c09['wins']/_0x5c6c09['matches']*0x64)['toFixed'](0x1):'0.0',_0x41554b=_0x5c6c09['matches']?(_0x5c6c09['kills']/_0x5c6c09['matches'])['toFixed'](0x1):'0.0',_0x4583e5=_0x5c6c09['matches']?((_0x5c6c09['earnings']||0x0)/_0x5c6c09['matches'])['toFixed'](0x1):'0.0',_0x4c4735='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px;margin-bottom:14px\x22>';[{'label':'Win\x20Rate','value':_0x36011a+'%','icon':'🏆','color':'var(--green)'},{'label':'Kills/Match','value':_0x41554b,'icon':'💀','color':'#ff6b6b'},{'label':'Earn/Match','value':'💎'+_0x4583e5,'icon':'💰','color':'var(--yellow)'},{'label':'Total\x20Matches','value':_0x5c6c09['matches']||0x0,'icon':'🎮','color':'var(--blue)'}]['forEach'](function(_0x32259b){_0x4c4735+='<div\x20style=\x22background:var(--card);border:1px\x20solid\x20var(--border);border-radius:12px;padding:14px;text-align:center\x22>',_0x4c4735+='<div\x20style=\x22font-size:24px;margin-bottom:4px\x22>'+_0x32259b['icon']+'</div>',_0x4c4735+='<div\x20style=\x22font-size:22px;font-weight:900;color:'+_0x32259b['color']+'\x22>'+_0x32259b['value']+'</div>',_0x4c4735+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:2px\x22>'+_0x32259b['label']+'</div>',_0x4c4735+='</div>';}),_0x4c4735+='</div>';var _0x1077cd=(_0x5c6c09['matches']||0x0)>=0x32?'Legend':(_0x5c6c09['matches']||0x0)>=0x14?'Pro':(_0x5c6c09['matches']||0x0)>=0x5?'Regular':'Beginner';_0x4c4735+='<div\x20style=\x22text-align:center;padding:10px;background:rgba(185,100,255,.06);border:1px\x20solid\x20rgba(185,100,255,.15);border-radius:10px\x22><span\x20style=\x22font-size:13px;color:var(--purple);font-weight:700\x22>Player\x20Level:\x20'+_0x1077cd+'\x20🎯</span></div>';if(window['openModal'])openModal('Performance\x20Stats',_0x4c4735);},window['toggleGlassmorphism']=function(){var _0x5b23d3=document['body'],_0x50b724=_0x5b23d3['getAttribute']('data-glass')==='1';_0x5b23d3['setAttribute']('data-glass',_0x50b724?'0':'1'),localStorage['setItem']('glassUI',_0x50b724?'0':'1');if(!_0x50b724){var _0x1e6015=document['getElementById']('_glassStyle')||document['createElement']('style');_0x1e6015['id']='_glassStyle',_0x1e6015['textContent']='.m-card,.mm-card,.card,.modal-box{background:rgba(17,17,24,.7)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;border:1px\x20solid\x20rgba(255,255,255,.08)!important}',document['head']['appendChild'](_0x1e6015),_0x172094('✨\x20Glassmorphism\x20UI\x20on!','ok');}else{var _0x1758f9=document['getElementById']('_glassStyle');if(_0x1758f9)_0x1758f9['remove']();_0x172094('Glassmorphism\x20off','inf');}},(function(){localStorage['getItem']('glassUI')==='1'&&setTimeout(function(){window['toggleGlassmorphism']&&window['toggleGlassmorphism']();},0x1f4);}()),setTimeout(function(){window['registerDeviceFingerprint']&&window['registerDeviceFingerprint']();},0x7d0),setInterval(function(){window['checkInstantRefunds']&&window['checkInstantRefunds']();},0x7530),document['addEventListener']('userDataLoaded',function(){window['applyDynamicWallpaper']&&window['applyDynamicWallpaper']();}),console['log']('[Mini\x20eSports]\x20✅\x20210\x20User\x20Features\x20v11\x20loaded!\x20FF\x20UID\x20shown\x20everywhere.');}());
+/* ====================================================
+   MINI ESPORTS — USER FEATURES v9
+   Halal Only | Teammate Auto-Join Fixed | 50 Features
+   ==================================================== */
+(function () {
+  'use strict';
+  /* FIX: Use getter so db/auth always fresh */
+  function _db() { return window.db; }
+  function _auth() { return window.auth; }
+  var db = { ref: function(p) { return window.db ? window.db.ref(p) : { on:function(){}, once:function(){}, set:function(){}, update:function(){}, push:function(){ return {key:null}; }, transaction:function(){} }; } };
+  var auth = window.auth;
+  function _$(id) { return document.getElementById(id); }
+  function _toast(m, t) { if (window.toast) toast(m, t || 'ok'); else console.log(m); }
+  function _getU() { return window.U; }
+  function _getUD() { return window.UD; }
+  function _safeUid() { var u = window.U; if (!u) { _toast('Please login first', 'err'); return null; } return u.uid; }
+
+  /* =========================================================
+     ✅ KEPT FEATURES (Halal — 22 from original)
+     ========================================================= */
+  /* ==== R24 RESTORE (feature-restore — NOT dead) ====
+     ये सात features पहले गलत-'dead-code' मानकर हट गए थे (d3614a3),
+     पर इनके बटन/कॉल आज भी UI में जिंदा हैं — वापस जोड़े गए।
+     ==== */
+
+window.showTransactionSummary = function() {
+    var WH = window.WH || [];
+    var deps = WH.filter(function(w){ return w.type==='deposit' && (w.status==='approved'||w.status==='done'); });
+    var wds = WH.filter(function(w){ return w.type==='withdraw' && (w.status==='approved'||w.status==='done'); });
+    var totalDep = deps.reduce(function(s,w){ return s+(w.amount||0); }, 0);
+    var totalWd = wds.reduce(function(s,w){ return s+(w.amount||0); }, 0);
+    var UD = window.UD; var win = Math.max(Number(UD && UD.sponsored_winnings) || 0, 0);
+    /* R28j: pehle UD.realMoney.winnings (jise listeners.js greenDiamonds
+       alias karta tha) ₹ ki tarah dikhta tha — ab sponsored_winnings se
+       सच्चा withdrawable prize balance. */
+    var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+    [
+      { l: '💰 Total Deposited', v: '₹'+totalDep, c: 'var(--blue)' },
+      { l: '🏆 Total Winnings', v: '₹'+win, c: 'var(--green)' },
+      { l: '📤 Total Withdrawn', v: '₹'+totalWd, c: '#ffaa00' },
+      { l: '📊 Net Position', v: '₹'+(totalDep+win-totalWd), c: (totalDep+win-totalWd >= 0 ? 'var(--green)' : '#ff6b6b') }
+    ].forEach(function(item) {
+      h += '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center">';
+      h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">' + item.l + '</div>';
+      h += '<div style="font-size:20px;font-weight:900;color:' + item.c + '">' + item.v + '</div></div>';
+    });
+    h += '</div>';
+    if (window.openModal) openModal('Transaction Summary', h);
+  };
+
+window.copyMyFFUID = function() { var UD = window.UD; if (!UD || !UD.ffUid) { _toast('FF UID not set!', 'err'); return; } window.copyTxt && copyTxt(UD.ffUid); _toast('FF UID copied: ' + UD.ffUid, 'ok'); };
+
+window.getDeviceFingerprint = function() {
+    var nav = window.navigator;
+    var screen = window.screen;
+    var fp = [
+      nav.userAgent, nav.language, nav.platform,
+      screen.width + 'x' + screen.height, screen.colorDepth,
+      nav.hardwareConcurrency || '', nav.deviceMemory || '',
+      new Date().getTimezoneOffset()
+    ].join('|');
+    // Simple hash
+    var hash = 0;
+    for (var i = 0; i < fp.length; i++) { hash = ((hash << 5) - hash) + fp.charCodeAt(i); hash |= 0; }
+    return Math.abs(hash).toString(36);
+  };
+
+window.registerDeviceFingerprint = function() {
+    var db = window.db; var U = window.U; if (!db || !U) return;
+    var fp = window.getDeviceFingerprint();
+    db.ref('deviceFingerprints/' + fp).once('value', function(s) {
+      var existing = s.val();
+      if (existing && existing.uid !== U.uid) {
+        // Another account on same device - flag it
+        db.ref('users/' + U.uid + '/multiAccountFlag').set(true);
+        db.ref('users/' + U.uid + '/flaggedDevice').set(fp);
+      } else {
+        db.ref('deviceFingerprints/' + fp).set({ uid: U.uid, lastSeen: Date.now() });
+        db.ref('users/' + U.uid + '/deviceFp').set(fp);
+      }
+    });
+  };
+
+window.checkInstantRefunds = function() {
+    var JR = window.JR || {}, MT = window.MT || {}, U = window.U;
+    if (!window._supa || !U) return;
+    for (var k in JR) {
+      var jr = JR[k]; if (jr.refunded || jr.isTeamMember) continue;
+      var t = MT[jr.matchId]; if (!t) continue;
+      var st = (t.status||'').toLowerCase();
+      if (st === 'cancelled' || st === 'canceled') {
+        (function(joinId, matchName) {
+          /* ✅ A11 FIX (2026-10-06): p_uid bhi bhejo — is app ka Supabase
+             client ANON key par chalta hai (login Firebase ka hai), isliye
+             RPC ke andar auth.jwt()->>'sub' khaali hota hai aur refund
+             hamesha 'Not authorized' deta tha. Server phir bhi refund SIRF
+             usi join par karta hai jiska user_id = p_uid ho. */
+          window._supa.rpc('claim_match_refund', { p_join_id: joinId, p_uid: (window.U && window.U.uid) || null })
+            .then(function(res) {
+              var d = res && res.data;
+              if (!d || !d.success) return;
+              if (window.UD) {
+                if (d.currency === 'coins') { window.UD.coins = (window.UD.coins || 0) + d.refunded; }
+                else { window.UD.sky_diamonds = (window.UD.sky_diamonds || 0) + d.refunded; }
+                if (window.updateHdr) window.updateHdr();
+              }
+              JR[joinId].refunded = true;
+              _toast('⚡ Instant Refund! 💎' + d.refunded + ' wapas mil gaya — ' + matchName + ' cancelled', 'ok');
+            }, function(){});
+        })(k, t.name || 'Match');
+      }
+    }
+  };
+
+window.showReportPlayer = function(matchId, reportedUid, reportedName) {
+    var h = '<div style="padding:4px">';
+    h += '<div style="font-size:13px;font-weight:700;margin-bottom:12px">👤 Reporting: ' + (reportedName||'Player') + '</div>';
+    h += '<div class="f-group"><label>Report Type</label><select class="f-input" id="repType"><option value="cheating">🎮 Cheating / Hack</option><option value="abuse">🤬 Abusive Language</option><option value="afk">🚶 AFK / Not Playing</option><option value="wrong_slot">📍 Wrong Slot</option><option value="result_dispute">⚔️ Result Dispute</option><option value="other">❓ Other</option></select></div>';
+    h += '<div class="f-group"><label>Description</label><textarea class="f-input" id="repDesc" placeholder="Kya hua explain karo..." rows="3"></textarea></div>';
+    h += '<div class="f-group"><label>Proof Screenshot (optional)</label><input type="file" accept="image/*" id="repProofFile" class="f-input" onchange="window._repProof=null;var r=new FileReader();r.onload=function(e){window._repProof=e.target.result;};r.readAsDataURL(this.files[0])"></div>';
+    h += '<button onclick="window.submitReport(\'' + matchId + '\',\'' + (reportedUid||'') + '\')" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;border:none;font-weight:800;font-size:14px;cursor:pointer;margin-top:8px"><i class="fas fa-flag"></i> Submit Report</button>';
+    h += '</div>';
+    if (window.openModal) openModal('🚩 Report Player', h);
+  };
+
+window.submitReport = function(matchId, reportedUid) {
+    var U = window.U; var UD = window.UD; if (!U) return;
+    var type = (document.getElementById('repType')||{}).value || 'other';
+    var desc = (document.getElementById('repDesc')||{}).value || '';
+    if (!desc.trim()) { _toast('Description likhna zaroori hai', 'err'); return; }
+    var _doInsert = function(proofUrl) {
+      var payload = {
+        reporter_id: U.uid, reported_id: reportedUid || null,
+        match_id: matchId, type: type, description: desc.trim(),
+        proof_url: proofUrl || null, status: 'open'
+      };
+      if (window._supa) {
+        window._supa.from('reports').insert(payload)
+          .then(function() { window._repProof = null; _toast('✅ Report submitted!'); if (window.closeModal) closeModal(); })
+          .catch(function() { _toast('Submit nahi hua, dobara try karo', 'err'); });
+      } else if (window.db) {
+        db.ref('reports').push(Object.assign({ createdAt: Date.now() }, payload));
+        window._repProof = null; _toast('✅ Report submitted!'); if (window.closeModal) closeModal();
+      }
+    };
+    /* Upload proof screenshot if present */
+    if (window._repProof && window.uploadToImgBBBase64) {
+      uploadToImgBBBase64(window._repProof, 'report_proof_' + U.uid + '_' + Date.now(), function(err, url) {
+        _doInsert(url || null);
+      });
+    } else {
+      _doInsert(null);
+    }
+  };
+
+window.shareToInstagram = function(matchId) {
+    var MT = window.MT || {}; var t = MT[matchId]; if (!t) return;
+    /* R28j (2026-09-22): stale host (student-4356.github.io) + false
+       cash-claim copy hatao. Prize ab entryType ke hisaab se dikhta hai
+       (coin → 🪙, else 💎 Sky Diamonds) — user ki policy: bina-cheez
+       ka ₹ claim nahi. URL canonical window.APP_URL / current origin. */
+    var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin';
+    var prize = Math.max(Number(t.firstPrize || t.prize1st || 0), 0);
+    var prizeTxt = isCoin ? ('🪙 ' + prize + ' Coins') : ('💎 ' + prize + ' Green Diamonds');
+    var feeNum = Number(t.entryFee || 0);
+    var feeTxt = feeNum > 0 ? (isCoin ? ('🪙 ' + feeNum) : ('💎 ' + feeNum)) : 'FREE';
+    var base = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+    var joinUrl = base + '?join=' + matchId + '&ref=' + (((window.UD && (window.UD.ffUid || window.UD.referralCode))) || '');
+    var text = '🎮 ' + (t.name||'Match') + '\n' +
+      '🏆 1st Prize: ' + prizeTxt + '\n' +
+      '🎟 Entry: ' + feeTxt + '\n' +
+      '⚔️ ' + (t.mode||'solo').toUpperCase() + ' Mode\n' +
+      '🔗 ' + base + '\n' +
+      '#MiniESports #FreeFire';
+
+    if (navigator.share) {
+      navigator.share({ title: t.name||'Match', text: text, url: joinUrl })
+        .catch(function(){});
+    } else {
+      // Copy and open Instagram
+      navigator.clipboard && navigator.clipboard.writeText(text).then(function() {
+        _toast('Caption copied! Instagram pe paste karo 📋', 'ok');
+        setTimeout(function() { window.open('instagram://story-camera', '_blank'); }, 500);
+      }).catch(function() { _toast('Copy failed', 'err'); });
+    }
+  };
+
+window.applyDynamicWallpaper = function() {
+    var UD = window.UD; if (!UD) return;
+    var rk = window.calcRk ? window.calcRk(UD.stats||{}) : { badge:'Bronze', color:'#cd7f32' };
+    var body = document.body;
+    var existing = document.getElementById('_dynWallpaper');
+    if (existing) existing.remove();
+    var style = document.createElement('style');
+    style.id = '_dynWallpaper';
+    var colors = {
+      'Diamond': ['#b964ff','#00d4ff','#ff00ff'],
+      'Platinum': ['#00d4ff','#ffffff','#00ff9c'],
+      'Gold': ['#ffd700','#ff8c00','#ffaa00'],
+      'Silver': ['#c0c0c0','#ffffff','#aaaaaa'],
+      'Bronze': ['#cd7f32','#8b4513','#a0522d']
+    };
+    var c = colors[rk.badge] || colors['Bronze'];
+    style.textContent = '@keyframes wallpaperShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}';
+    // Apply subtle gradient animation to app background
+    var bg = document.getElementById('mainContent') || body;
+    // Just update CSS var for subtle effect, don't break layout
+    body.style.setProperty('--dyn-glow', c[0] + '15');
+    if (body.getAttribute('data-theme') !== 'light') {
+      document.documentElement.style.setProperty('--bg', '#050507');
+      document.getElementById('homeList') && (document.getElementById('homeList').style.background = '');
+    }
+    document.head.appendChild(style);
+  };
+
+
+  /* ─── FEATURE 1: MATCH REMINDER ─── */
+  /* ✅ BUG FIX (2026-10-06) — यह असली जड़ live DB पर नापी गई है:
+     (a) match_reminders टेबल पर anon भूमिका को कोई अनुमति ही नहीं थी ⇒
+         ऐप से सीधा upsert पर 401 "permission denied for table
+         match_reminders" आता था। यानी रिमाइंडर कभी सेव ही नहीं होता था —
+         सिर्फ़ browser का setTimeout चलता था, जो ऐप बंद होते ही मर जाता
+         था (इसीलिए शिकायत: "notification आनी चाहिए थी, आई नहीं" — A6)।
+     (b) 10 मिनट कोड में हार्डकोड था, जबकि admin की सेटिंग
+         matchReminderMins = 30 थी ⇒ admin कुछ भी सेट करे, असर शून्य।
+     ✅ अब: नया RPC set_match_reminder() (SECURITY DEFINER) —
+        • सिर्फ़ match से पहले का समय मानता है, match शुरू हो चुका हो तो
+          साफ़ message के साथ रोक देता है,
+        • चुना हुआ समय बीत चुका हो (मैच नज़दीक हो) तो तुरंत भेजता है,
+        • server cron (send_due_match_reminders) ठीक उसी समय OneSignal
+          push भेजता है — ऐप बंद हो तब भी,
+        • app खुली हो तो साथ में local notification भी।
+     ✅ User अब ख़ुद चुनता है (5/10/15/30/60 मिनट या अपनी मर्ज़ी) और सारा
+        चुनाव ऐप की अपनी UI में — कोई browser popup नहीं। */
+  window._remindMatchName = '';
+  window._matchReminderApply = function (matchId, mins, matchName) {
+    var meUid = (window.U && window.U.uid) || '';
+    if (!meUid) { _toast('Pehle login karo', 'err'); return; }
+    if (!window._supa) { _toast('Reminder sewa abhi uplabdh nahi', 'err'); return; }
+    var _name = matchName || window._remindMatchName || 'Match';
+    var _mins = (mins === null || mins === undefined || mins === '') ? null : Number(mins);
+    window._supa.rpc('set_match_reminder', { p_uid: meUid, p_match_id: matchId, p_mins: _mins })
+      .then(function (res) {
+        if (res && res.error) { _toast(res.error.message || 'Reminder set nahi hua', 'err'); return; }
+        var d = (res && res.data) || {};
+        if (window.closeModal) closeModal();
+
+        /* app khuli ho to local notification bhi — server push iske bina bhi aata hai */
+        var _at = Number(d.remind_at) || 0;
+        var _ms = _at - Date.now();
+        if (_ms > 0 && _ms < 12 * 3600000) {
+          try {
+            if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+              setTimeout(function () {
+                try {
+                  new Notification('⚡ Match shuru hone wala hai!', {
+                    body: _name + ' ' + (d.remind_mins || _mins || '') + ' minute mein start hoga. Room ID ready rakho!',
+                    icon: 'icons/icon-192x192.png?v=20261117g'
+                  });
+                } catch (e) {}
+              }, _ms);
+            } else if (typeof Notification !== 'undefined' && Notification.requestPermission) {
+              Notification.requestPermission();
+            }
+          } catch (e) {}
+        }
+        _toast('⏰ Reminder set! Match se ' + (d.remind_mins || _mins || '') + ' minute pehle notification aayegi.', 'ok');
+      }, function (e) {
+        _toast((e && e.message) || 'Reminder set nahi hua', 'err');
+      });
+  };
+  window._remindCustom = function (matchId) {
+    var el = _$('remCustomMins');
+    var v = el ? Number(el.value) : 0;
+    if (!v || v < 1) { _toast('Kitne minute pehle? (1 se 1440)', 'err'); return; }
+    window._matchReminderApply(matchId, Math.min(1440, Math.round(v)), '');
+  };
+  window.setMatchReminder = function (matchId, matchTime, matchName) {
+    var now = window.serverNow ? window.serverNow() : Date.now();
+    if (!matchTime || Number(matchTime) <= now) {
+      _toast('Match shuru ho chuka hai — ab reminder set nahi ho sakta', 'err');
+      return;
+    }
+    window._remindMatchName = matchName || 'Match';
+    var left = Math.floor((Number(matchTime) - now) / 60000);
+    var def  = Number((window.CFG && window.CFG.matchReminderMins) || 30);
+    var opts = [5, 10, 15, 30, 60, 120];
+    if (opts.indexOf(def) < 0) opts.push(def);          /* admin ki setting hamesha dikhe */
+    opts.sort(function (a, b) { return a - b; });
+    var escName = String(matchName || 'Match').replace(/'/g, "\\'");
+
+    var h = '<div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.5">' +
+            window._chatEsc(matchName || 'Match') + ' — match ' +
+            (left < 60 ? (left + ' minute') : (Math.floor(left / 60) + ' ghante ' + (left % 60) + ' minute')) +
+            ' me shuru hoga. Kitne pehle batana?</div>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
+    opts.forEach(function (m) {
+      var ok = (Number(matchTime) - m * 60000) > now;    /* सिर्फ़ match से पहले का समय */
+      h += '<button ' + (ok
+              ? 'onclick="window._matchReminderApply(\'' + matchId + '\',' + m + ',\'' + escName + '\')"'
+              : 'disabled') +
+           ' style="flex:1 1 92px;padding:12px;border-radius:12px;border:1px solid ' +
+             (ok ? 'rgba(0,255,156,.3)' : 'var(--border)') + ';background:' +
+             (ok ? 'rgba(0,255,156,.08)' : 'var(--card2)') + ';color:' +
+             (ok ? 'var(--green)' : 'var(--txt2)') + ';font-size:13px;font-weight:' +
+             (m === def ? '800' : '600') + ';cursor:' + (ok ? 'pointer' : 'not-allowed') +
+             ';opacity:' + (ok ? '1' : '.45') + '">' + m + ' min pehle' + (m === def ? ' ⭐' : '') + '</button>';
+    });
+    h += '</div>';
+    h += '<div style="display:flex;gap:8px;margin-top:12px">' +
+         '<input type="number" id="remCustomMins" min="1" max="1440" placeholder="Apni marzi (minute)" ' +
+         'style="flex:1 1 140px;min-width:0;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px">' +
+         '<button onclick="window._remindCustom(\'' + matchId + '\')" style="padding:10px 14px;border-radius:10px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;flex-shrink:0">Set</button>' +
+         '</div>';
+    h += '<div style="margin-top:10px;font-size:11px;color:var(--txt2)">⭐ = admin ki default setting. Sirf match se <b>pehle</b> ka samay chun sakte ho — bahut kam samay bacha ho to notification turant chali jayegi.</div>';
+    if (window.showModal) showModal('🔔 Set Match Reminder', h);
+  };
+
+  /* ─── FEATURE 2: PROFILE COMPLETION % BAR ─── */
+  window.getProfileCompletion = function () {
+    var UD = window.UD; if (!UD) return 0;
+    var fields = [
+      { k: 'ign',          w: 35, label: 'Game Name (IGN)' },
+      { k: 'ffUid',        w: 35, label: 'Free Fire UID' },
+      { k: 'phone',        w: 20, label: 'WhatsApp Number' },
+      { k: 'profileImage', w: 10, label: 'Profile Photo' }
+    ];
+    var total = 0;
+    fields.forEach(function (f) { if (UD[f.k]) total += f.w; });
+    return Math.min(total, 100);
+  };
+  window.getProfileMissingFields = function () {
+    var UD = window.UD; if (!UD) return [];
+    var fields = [
+      { k: 'ign',          label: 'Game Name (IGN)' },
+      { k: 'ffUid',        label: 'Free Fire UID' },
+      { k: 'phone',        label: 'WhatsApp Number' },
+      { k: 'profileImage', label: 'Profile Photo' }
+    ];
+    return fields.filter(function(f){ return !UD[f.k]; }).map(function(f){ return f.label; });
+  };
+  window.renderProfileCompletion = function () {
+    var pct = window.getProfileCompletion();
+    var missing = window.getProfileMissingFields ? window.getProfileMissingFields() : [];
+    var color = pct >= 80 ? '#00ff9c' : pct >= 50 ? '#ffd700' : '#ff6b6b';
+    var h = '<div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:14px">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">';
+    h += '<span style="font-size:13px;font-weight:700"><i class="fas fa-id-card" style="color:' + color + '"></i> Profile ' + pct + '% Complete</span>';
+    if (pct < 100) h += '<span style="font-size:11px;color:var(--txt2)">Complete karo!</span>';
+    h += '</div>';
+    h += '<div style="height:6px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden">';
+    h += '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,' + color + ',#00cc7a);border-radius:4px;transition:width .5s"></div></div>';
+    if (missing.length > 0) {
+      h += '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">';
+      missing.forEach(function(m) {
+        h += '<span style="font-size:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:2px 7px;color:#666">+ ' + m + '</span>';
+      });
+      h += '</div>';
+    }
+    h += '</div>';
+    return h;
+  };
+
+  /* ─── FEATURE 3: HOT STREAK SYSTEM ─── */
+  window.getStreakInfo = function () {
+    var UD = window.UD; if (!UD || !UD.stats) return null;
+    var wins = UD.stats.wins || 0, matches = UD.stats.matches || 0;
+    if (wins >= 5) return { emoji: '🔥', label: wins + ' Win Streak!', color: '#ff6b6b' };
+    if (wins >= 3) return { emoji: '⚡', label: '3+ Wins!', color: '#ffd700' };
+    if (matches >= 10) return { emoji: '💪', label: 'Veteran Player', color: '#4d96ff' };
+    return null;
+  };
+
+  /* ─── FEATURE 4: MATCH WATCHLIST / BOOKMARK ─── */
+  var _watchlist = JSON.parse(localStorage.getItem('matchWatchlist') || '[]');
+  window.toggleWatchlist = function (matchId) {
+    var idx = _watchlist.indexOf(matchId);
+    if (idx >= 0) { _watchlist.splice(idx, 1); _toast('Watchlist se hataya', 'inf'); }
+    else { _watchlist.push(matchId); _toast('⭐ Watchlist mein add hua!'); }
+    localStorage.setItem('matchWatchlist', JSON.stringify(_watchlist));
+    if (window.renderHome) renderHome();
+  };
+  window.isWatchlisted = function (id) { return _watchlist.indexOf(id) >= 0; };
+
+
+  /* ─── FEATURE 6: PLAYER STATS MINI CHART ─── */
+  window.renderStatsChart = function () {
+    /* ✅ D100-F5: owner — same stats 6 jagah repeat, UI kharab. Inline chart
+       band; numbers hero card + Performance Stats modal me rahenge. Function
+       symbol zinda hai (purane callers ko '' milta hai, koi crash nahi). */
+    return '';
+    var UD = window.UD; if (!UD || !UD.stats) return '';
+    var st = UD.stats;
+    var bars = [
+      { label: 'Matches', val: st.matches || 0, max: 100, color: '#4d96ff' },
+      { label: 'Wins', val: st.wins || 0, max: Math.max(st.matches || 1, 1), color: '#00ff9c' },
+      { label: 'Kills', val: st.kills || 0, max: 200, color: '#ff6b6b' },
+      { label: 'Earned', val: st.earnings || 0, max: 5000, color: '#ffd700' }
+    ];
+    var h = '<div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px">';
+    h += '<div style="font-size:13px;font-weight:700;margin-bottom:12px"><i class="fas fa-chart-bar" style="color:#4d96ff"></i> Stats Overview</div>';
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+    bars.forEach(function (b) {
+      var pct = Math.min(100, b.max > 0 ? (b.val / b.max * 100) : 0);
+      h += '<div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--txt2)">' + b.label + '</span><span style="font-weight:700;color:' + b.color + '">' + b.val + '</span></div>';
+      h += '<div style="height:6px;background:rgba(255,255,255,.06);border-radius:3px"><div style="height:100%;width:' + pct + '%;background:' + b.color + ';border-radius:3px"></div></div></div>';
+    });
+    h += '</div>';
+    var wr = st.matches > 0 ? Math.round((st.wins || 0) / st.matches * 100) : 0;
+    h += '<div style="margin-top:10px;padding:8px;background:rgba(0,255,106,.06);border-radius:8px;text-align:center;font-size:12px">';
+    h += '<span style="color:var(--txt2)">Win Rate: </span><strong style="color:var(--green)">' + wr + '%</strong> · ';
+    h += '<span style="color:var(--txt2)">Avg Kill: </span><strong style="color:#ff6b6b">' + (st.matches > 0 ? ((st.kills || 0) / st.matches).toFixed(1) : 0) + '</strong></div>';
+    h += '</div>';
+    return h;
+  };
+
+  /* ─── FEATURE 7: PLAYER BIO / STATUS SETTER ─── */
+  window.showSetBio = function () {
+    var UD = window.UD;
+    var h = '<div style="padding:8px">';
+    h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:12px">Apna gaming status set karo (60 chars max)</div>';
+    h += '<input type="text" id="bioInput" maxlength="60" placeholder="e.g. Headshots only 🎯" value="' + (window.escHtml?window.escHtml(UD.bio||''):(UD.bio||'').replace(/"/g,'&quot;')) + '" style="width:100%;padding:12px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:14px;box-sizing:border-box">';
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">';
+    ['Headshots only 🎯', 'Top Fragger 💀', 'Clutch King 👑', 'Rush or Die 🔥', 'Solo Carry 💪', 'Squad Goals 🤝'].forEach(function (s) {
+      h += '<div onclick="document.getElementById(\'bioInput\').value=\'' + s + '\'" style="padding:8px;border-radius:8px;background:var(--card2);border:1px solid var(--border);font-size:11px;cursor:pointer;text-align:center">' + s + '</div>';
+    });
+    h += '</div>';
+    h += '<button onclick="window._saveBio()" style="width:100%;margin-top:14px;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;font-size:14px">Save Bio</button>';
+    h += '</div>';
+    if (window.showModal) showModal('✏️ Set Bio', h);
+  };
+  window._saveBio = function () {
+    var val = (_$('bioInput') || {}).value || '';
+    var uid = _safeUid(); if (!uid) return;
+    db.ref('users/' + uid + '/bio').set(val);
+    _toast('✅ Bio saved!');
+    if (window.closeModal) closeModal();
+    setTimeout(function () { if (window.renderProfile) renderProfile(); }, 500);
+  };
+
+
+  window._kpData = '';
+  window._uploadKP = function (input) {
+    var file = input.files[0]; if (!file) return;
+    /* Bug #45 Fix: Validate file type before upload — reject non-images */
+    if (!file.type.startsWith('image/')) {
+      if (window._toast) _toast('Sirf image files allowed hain! (' + file.type + ')', 'err');
+      input.value = '';
+      return;
+    }
+    /* Also validate file size (max 10MB) */
+    if (file.size > 10 * 1024 * 1024) {
+      if (window._toast) _toast('File too large! Max 10MB allowed.', 'err');
+      input.value = '';
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      window._kpData = e.target.result;
+      var img = _$('kpPreview'); if (img) { img.src = window._kpData; img.style.display = 'block'; }
+    };
+    reader.readAsDataURL(file);
+  };
+  window._submitKP = function (mid) {
+    if (!window._kpData) { _toast('Screenshot select karo!', 'err'); return; }
+    var _doSave = function(screenshotUrl) {
+      var payload = { match_id: mid, user_id: window.U ? window.U.uid : null, screenshot_url: screenshotUrl, kills_claimed: 0, status: 'pending' };
+      if (window._supa) {
+        window._supa.from('kill_proofs').insert(payload)
+          .then(function() { _toast('✅ Kill proof submitted! Admin verify karega.'); window._kpData = ''; if (window.closeModal) closeModal(); })
+          .catch(function() { _toast('Submit nahi hua', 'err'); });
+      } else if (window.db) {
+        db.ref('killProofs/' + (window.U ? window.U.uid : 'u') + '/' + mid).set(Object.assign({ createdAt: Date.now() }, payload));
+        _toast('✅ Kill proof submitted!'); window._kpData = ''; if (window.closeModal) closeModal();
+      }
+    };
+    if (window.uploadToImgBBBase64) {
+      uploadToImgBBBase64(window._kpData, 'kp_' + (window.U ? window.U.uid : '') + '_' + mid, function(err, url) { _doSave(url || window._kpData); });
+    } else { _doSave(window._kpData); }
+  };
+
+  /* ─── FEATURE 10: RESULT SHARE CARD (Canvas Download) ─── */
+  window.shareResultCard = function (matchName, rank, kills, prize) {
+    var UD = window.UD;
+    var canvas = document.createElement('canvas');
+    canvas.width = 400; canvas.height = 220;
+    var ctx = canvas.getContext('2d');
+    var grd = ctx.createLinearGradient(0, 0, 400, 220);
+    grd.addColorStop(0, '#0a0a0f'); grd.addColorStop(1, '#1a1a2e');
+    ctx.fillStyle = grd; ctx.fillRect(0, 0, 400, 220);
+    ctx.fillStyle = '#00ff9c'; ctx.font = 'bold 22px Arial';
+    ctx.fillText('Mini eSports', 20, 36);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Arial';
+    ctx.fillText(matchName || 'Tournament Result', 20, 68);
+    ctx.fillStyle = '#ffd700'; ctx.font = 'bold 48px Arial';
+    ctx.fillText('#' + (rank || 1), 20, 140);
+    ctx.fillStyle = '#aaa'; ctx.font = '14px Arial'; ctx.fillText('Rank', 20, 160);
+    ctx.fillStyle = '#ff6b6b'; ctx.font = 'bold 36px Arial';
+    ctx.fillText((kills || 0) + '💀', 130, 140);
+    ctx.fillStyle = '#aaa'; ctx.font = '14px Arial'; ctx.fillText('Kills', 130, 160);
+    ctx.fillStyle = '#00ff9c'; ctx.font = 'bold 36px Arial';
+    ctx.fillText('₹' + (prize || 0), 250, 140);
+    ctx.fillStyle = '#aaa'; ctx.font = '14px Arial'; ctx.fillText('Won', 250, 160);
+    ctx.fillStyle = '#555'; ctx.font = '12px Arial';
+    ctx.fillText((UD ? UD.ign : '') + ' | ' + ((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/')), 20, 200);
+    var url = canvas.toDataURL();
+    var a = document.createElement('a'); a.href = url; a.download = 'result-card.png'; a.click();
+    _toast('🖼️ Result card download ho rahi hai!');
+  };
+
+  /* ─── FEATURE 11: SEASONAL CHAMPIONSHIP STATS ─── */
+  window.showSeasonStats = function () {
+    var uid = _safeUid(); if (!uid) return;
+    db.ref('season').once('value', function (s) {
+      var season = s.val() || { name: 'Season 1', endDate: null };
+      db.ref('seasonStats/' + uid).once('value', function (ss) {
+        var st = ss.val() || { points: 0 };
+        var h = '<div style="padding:8px;text-align:center">';
+        h += '<div style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:4px">' + (season.name || 'Season 1') + '</div>';
+        h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:16px">Ek season mein sabse zyada points jito!</div>';
+        h += '<div style="font-size:48px;font-weight:900;color:#ffd700">' + (st.points || 0) + '</div>';
+        h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:16px">Season Points</div>';
+        h += '<div style="padding:12px;background:var(--card2);border-radius:12px;font-size:13px">';
+        h += '🏆 Win = +50 pts &nbsp;|&nbsp; 💀 Kill = +5 pts &nbsp;|&nbsp; 🎮 Match = +10 pts</div>';
+        if (season.endDate) h += '<div style="margin-top:10px;font-size:11px;color:var(--txt2)">Season ends: ' + new Date(season.endDate).toLocaleDateString() + '</div>';
+        h += '</div>';
+        if (window.showModal) showModal('🏆 Season Championship', h);
+      });
+    });
+  };
+
+  /* ─── FEATURE 12: MATCH LIVE FEED ─── */
+  window.showMatchFeed = function (matchId) {
+    db.ref('matchFeed/' + matchId).limitToLast(15).once('value', function (s) {
+      var events = [];
+      if (s.exists()) s.forEach(function (c) { events.unshift(c.val()); });
+      var h = '<div style="padding:4px 0">';
+      if (!events.length) h += '<div style="text-align:center;padding:30px;color:var(--txt2)">Live feed match start hone par dikhe ga</div>';
+      events.forEach(function (e) {
+        var icon = e.type === 'kill' ? '💀' : e.type === 'elim' ? '🔴' : '📢';
+        h += '<div style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--border)">';
+        h += '<span style="font-size:18px">' + icon + '</span>';
+        h += '<div><div style="font-size:13px;font-weight:600">' + (window.escHtml?window.escHtml(e.text || 'Event'):e.text || 'Event') + '</div>';
+        h += '<div style="font-size:10px;color:var(--txt2)">' + new Date(e.ts || Date.now()).toLocaleTimeString() + '</div></div>';
+        h += '</div>';
+      });
+      h += '</div>';
+      if (window.showModal) showModal('📡 Live Feed', h);
+    });
+  };
+
+  /* ─── FEATURE 13: ONBOARDING TUTORIAL (First Login) ─── */
+  window.checkShowTutorial = function () {
+    var uid = window.U && window.U.uid;
+    var key = uid ? ('tutorialSeen_' + uid) : 'tutorialSeen';
+    if (localStorage.getItem(key) || localStorage.getItem('tutorialSeen')) return;
+    setTimeout(function () {
+      var steps = [
+        { title: '👋 Welcome to Mini eSports!', body: 'India ka best Free Fire tournament platform!' },
+        { title: '🎮 Matches Join Karo', body: 'Home screen pe matches dekho, entry fee bharo aur join karo.' },
+        { title: '💰 Wallet', body: 'UPI se Sky Diamonds add karo aur matches khelo. Jeetne par Coins, rank aur rewards milte hain — yeh ek skill-based platform hai, real-money prize nahi.' },
+        { title: '👥 Team Mode', body: 'Profile mein Duo/Squad partner set karo aur saath khelo.' },
+        { title: '🏆 Rank karo!', body: 'Matches jeeto, kills lo aur leaderboard pe aao. Good luck!' }
+      ];
+      var cur = 0;
+      function showStep() {
+        var s = steps[cur];
+        var h = '<div style="text-align:center;padding:10px">';
+        h += '<div style="font-size:48px;margin-bottom:12px">' + s.title.split(' ')[0] + '</div>';
+        h += '<div style="font-size:18px;font-weight:800;margin-bottom:8px">' + s.title.slice(s.title.indexOf(' ') + 1) + '</div>';
+        h += '<div style="font-size:14px;color:var(--txt2);margin-bottom:20px">' + s.body + '</div>';
+        h += '<div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">';
+        steps.forEach(function (_, i) { h += '<div style="width:8px;height:8px;border-radius:50%;background:' + (i === cur ? 'var(--primary)' : 'rgba(255,255,255,.2)') + '"></div>'; });
+        h += '</div>';
+        if (cur < steps.length - 1) h += '<button onclick="window._tutNext()" style="width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer">Next →</button>';
+        else h += '<button onclick="window._tutDone()" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#00cc7a);color:#000;font-weight:800;border:none;cursor:pointer">🎮 Let\'s Play!</button>';
+        h += '</div>';
+        if (window.showModal) showModal('🎮 Quick Tour', h);
+      }
+      window._tutNext = function () { cur++; showStep(); };
+      window._tutDone = function () {
+        /* ✅ Audit Fix: reuse the SAME key computed at check-time (closure
+           variable), and always also set the generic fallback key. Previously
+           this recomputed the key from window.U.uid at completion time —
+           if auth resolved in the gap between check and completion, the key
+           used here could differ from the one checked next load, and only
+           one key (not both) was ever set, so the tutorial could reappear. */
+        localStorage.setItem(key, '1');
+        localStorage.setItem('tutorialSeen', '1');
+        if (window.closeModal) closeModal();
+      };
+      showStep();
+    }, 1500);
+  };
+
+
+  /* ─── FEATURE 15: WALLET STATISTICS PANEL ─── */
+  window.renderWalletStats = function () {
+    var UD = window.UD; if (!UD) return '';
+    var wh = window.WH || [];
+    var deps = wh.filter(function (w) { return w.type === 'deposit' && (w.status === 'approved' || w.status === 'done'); });
+    var wds = wh.filter(function (w) { return w.type === 'withdraw' && (w.status === 'approved' || w.status === 'done'); });
+    var totalDep = deps.reduce(function (s, w) { return s + (w.amount || 0); }, 0);
+    var totalWd = wds.reduce(function (s, w) { return s + (w.amount || 0); }, 0);
+    /* ✅ BUG FIX (2026-08-22): "Winning box me ₹35 dikh raha hai jabki wo
+       rupees nahi Green Diamond hain". Root cause: UD.realMoney.winnings
+       is set in listeners.js as a plain ALIAS for UD.greenDiamonds
+       (`realMoney: {..., winnings: UD.greenDiamonds, ...}`) — it was
+       never real currency to begin with, it's an internal name reused
+       from an earlier Firebase-only architecture. This card then
+       rendered that number with a ₹ prefix, showing Green Diamonds
+       (a non-withdrawable, match-win-only badge currency per the
+       Green Diamond info card on the same screen) as if it were rupees.
+       Fixed: this card now uses UD.sponsored_winnings — the actual
+       real-money sponsor-tournament prize balance, which is already the
+       field the "Sponsored Prize" withdrawal card on this same screen
+       correctly formats as ₹. Same currency semantics, both places. */
+    var realWinnings = Math.max(Number(UD.sponsored_winnings) || 0, 0);
+    var h = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">';
+    [['📥 Deposits', deps.length, 'Total: ₹' + totalDep], ['📤 Withdrawals', wds.length, 'Total: ₹' + totalWd], ['🏆 Winnings', '₹' + realWinnings, 'Earned']].forEach(function (d) {
+      h += '<div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center"><div style="font-size:11px;color:var(--txt2);margin-bottom:4px">' + d[0] + '</div><div style="font-size:18px;font-weight:800">' + d[1] + '</div><div style="font-size:10px;color:var(--txt2)">' + d[2] + '</div></div>';
+    });
+    h += '</div>';
+    return h;
+  };
+
+  /* ─── FEATURE 16: PARTNER RATING SYSTEM ─── */
+  window.ratePartner = function (partnerUid, matchId) {
+    var h = '<div style="padding:8px;text-align:center">';
+    h += '<div style="font-size:16px;font-weight:700;margin-bottom:16px">Partner ko rate karo</div>';
+    h += '<div id="starRating" style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">';
+    for (var i = 1; i <= 5; i++) {
+      h += '<span onclick="window._setStar(' + i + ')" style="font-size:36px;cursor:pointer" data-star="' + i + '">⭐</span>';
+    }
+    h += '</div>';
+    h += '<textarea id="rateNote" placeholder="Optional feedback..." style="width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;resize:none;height:70px;box-sizing:border-box"></textarea>';
+    h += '<button onclick="window._submitRating(\'' + partnerUid + '\',\'' + matchId + '\')" style="width:100%;margin-top:12px;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer">Submit Rating</button>';
+    h += '</div>';
+    window._starVal = 5;
+    if (window.showModal) showModal('⭐ Rate Partner', h);
+  };
+  window._setStar = function (n) {
+    window._starVal = n;
+    document.querySelectorAll('[data-star]').forEach(function (el) { el.style.opacity = parseInt(el.dataset.star) <= n ? '1' : '0.3'; });
+  };
+  window._submitRating = function (uid, mid) {
+    db.ref('partnerRatings/' + uid + '/' + mid).set({
+      rating: window._starVal || 5, note: (_$('rateNote') || {}).value || '',
+      raterUid: window.U.uid, matchId: mid, createdAt: Date.now()
+    });
+    db.ref('users/' + uid + '/avgRating').transaction(function (v) { return ((v || 5) * 0.8 + (window._starVal || 5) * 0.2); });
+    _toast('✅ Rating submit hua!');
+    if (window.closeModal) closeModal();
+  };
+
+  /* ─── FEATURE 17: PUSH NOTIFICATION ENABLE ─── */
+  ;
+
+  /* ─── FEATURE 18: ACHIEVEMENT GALLERY ─── */
+  /* Bug #21 Fix: If ui-fixes.js already loaded a newer showAchievements, skip this old version.
+   Order of load: features-user.js loads first → ui-fixes.js overrides properly.
+   This guard prevents the reverse — if called again after ui-fixes.js is loaded. */
+
+  /* Also expose for Profile renderAchievementsHTML */
+  window.renderAchievementsHTML = function () {
+    var UD = window.UD; if (!UD) return '';
+    var st = UD.stats || {};
+    var list = [
+      { title: 'First Blood', earned: (st.wins || 0) >= 1, icon: '🩸' },
+      { title: 'High Flyer', earned: (st.wins || 0) >= 5, icon: '🚀' },
+      { title: 'Kill Machine', earned: (st.kills || 0) >= 50, icon: '💀' },
+      { title: 'Money Maker', earned: (st.earnings || 0) >= 100, icon: '💰' },
+      { title: 'Veteran', earned: (st.matches || 0) >= 25, icon: '🎖️' },
+      { title: 'Influencer', earned: (UD.referralCount || 0) >= 5, icon: '🌟' },
+    ];
+    var earned = list.filter(function (a) { return a.earned; }).length;
+    var h = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">';
+    list.forEach(function (a) {
+      h += '<div title="' + a.title + '" style="width:36px;height:36px;border-radius:10px;background:' + (a.earned ? 'rgba(0,255,156,.12)' : 'rgba(255,255,255,.04)') + ';border:1px solid ' + (a.earned ? 'rgba(0,255,156,.3)' : 'var(--border)') + ';display:flex;align-items:center;justify-content:center;font-size:18px;opacity:' + (a.earned ? '1' : '.3') + '">' + a.icon + '</div>';
+    });
+    h += '</div>';
+    h += '<div style="font-size:11px;color:var(--green)">' + earned + '/' + list.length + ' achievements unlocked</div>';
+    h += '<button onclick="window.showAchievements()" style="margin-top:8px;padding:8px 14px;border-radius:10px;background:rgba(0,255,156,.1);color:var(--green);border:1px solid rgba(0,255,156,.2);font-size:12px;font-weight:700;cursor:pointer">View All</button>';
+    return h;
+  };
+
+  /* ─── FEATURE 19: SMART MATCH RECOMMENDATION ─── */
+  window.getRecommendedMatch = function () {
+    var UD = window.UD, MT = window.MT; if (!UD || !MT) return null;
+    var dep = (UD.realMoney && UD.realMoney.deposited) ? Number(UD.realMoney.deposited) : 0;
+    var budget = dep > 0 ? Math.min(dep * 0.1, 100) : 10;
+    var best = null, bestScore = -1;
+    var tp = UD.duoTeam ? 'duo' : 'solo';
+    Object.values(MT).forEach(function (t) {
+      if (!t || !t.id) return;
+      if (window.hasJ && hasJ(t.id)) return;
+      var fee = Number(t.entryFee) || 0;
+      if (fee > budget) return;
+      var slots = Number(t.joinedSlots || 0), max = Number(t.maxSlots || 1);
+      if (slots >= max) return;
+      var score = (t.prizePool || 0) - fee * 2 + ((slots / max) > 0.3 ? 10 : 0);
+      if ((t.mode || t.type || '').toLowerCase() === tp) score += 20;
+      if (score > bestScore) { bestScore = score; best = t; }
+    });
+    return best;
+  };
+
+  /* ─── FEATURE 20: MATCH ALERT SYSTEM ─── */
+  window.setupMatchAlerts = function () {
+    if (!window.MT || !window.db) return;
+    Object.keys(window.MT).forEach(function (mid) {
+      var t = window.MT[mid]; if (!t.matchTime) return;
+      var ms = Number(t.matchTime) - Date.now() - 300000;
+      if (ms > 0 && ms < 3600000) {
+        setTimeout(function () {
+          if (window.JR) {
+            for (var k in window.JR) {
+              if (window.JR[k].matchId === mid) {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                  new Notification('⚡ Match Starting!', {
+                    body: (t.name || 'Your match') + ' 5 minutes mein start hoga!',
+                    icon: 'icons/icon-192x192.png?v=20261117g'
+                  });
+                }
+                break;
+              }
+            }
+          }
+        }, ms);
+      }
+    });
+  };
+
+  /* ─── FEATURE 21: PROFILE CARD GENERATOR ─── */
+  window.generateProfileCard = function () {
+    var UD = window.UD; if (!UD) return;
+    var st = UD.stats || {};
+    var canvas = document.createElement('canvas');
+    canvas.width = 380; canvas.height = 200;
+    var ctx = canvas.getContext('2d');
+    var g = ctx.createLinearGradient(0, 0, 380, 200);
+    g.addColorStop(0, '#0d0d18'); g.addColorStop(1, '#1a1040');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 380, 200);
+    ctx.strokeStyle = '#00ff9c55'; ctx.lineWidth = 2;
+    ctx.strokeRect(8, 8, 364, 184);
+    ctx.fillStyle = '#00ff9c'; ctx.font = 'bold 14px Arial';
+    ctx.fillText('MINI ESPORTS', 20, 35);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 20px Arial';
+    ctx.fillText(UD.ign || 'Player', 20, 70);
+    ctx.fillStyle = '#aaa'; ctx.font = '12px Arial';
+    ctx.fillText('FF UID: ' + (UD.ffUid || '—'), 20, 90);
+    var stats = [['Matches', st.matches || 0], ['Wins', st.wins || 0], ['Kills', st.kills || 0], ['Earned', '₹' + (st.earnings || 0)]];
+    stats.forEach(function (s, i) {
+      var x = 20 + i * 90;
+      ctx.fillStyle = '#ffd700'; ctx.font = 'bold 18px Arial';
+      ctx.fillText(s[1], x, 135);
+      ctx.fillStyle = '#888'; ctx.font = '11px Arial';
+      ctx.fillText(s[0], x, 152);
+    });
+    ctx.fillStyle = '#444'; ctx.font = '10px Arial';
+    ctx.fillText((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/'), 20, 185);
+    var url = canvas.toDataURL();
+    var a = document.createElement('a'); a.href = url; a.download = 'player-card.png'; a.click();
+    _toast('🎴 Player card downloaded!');
+  };
+
+  /* ─── FEATURE 22: MATCH COUNTDOWN TIMER (per card) ─── */
+  /* NOTE: startMatchTimers is defined in js/match-timer.js — we only set it here
+     if that file hasn't loaded yet (load-order safety guard) */
+  if (!window.startMatchTimers) {
+    window.startMatchTimers = function () {
+      clearInterval(window._timerInterval);
+      window._timerInterval = setInterval(function () {
+        var MT = window.MT || {};
+        Object.keys(MT).forEach(function (mid) {
+          var t = MT[mid]; if (!t || !t.matchTime) return;
+          var el = document.getElementById('timer-' + mid); if (!el) return;
+          var diff = Number(t.matchTime) - Date.now();
+          if (diff <= 0) { el.textContent = ''; return; }
+          if (diff > 86400000) { el.textContent = ''; return; }
+          var h = Math.floor(diff / 3600000);
+          var m = Math.floor((diff % 3600000) / 60000);
+          var s = Math.floor((diff % 60000) / 1000);
+          el.textContent = '⏱ ' + (h > 0 ? h + 'h ' : '') + m + 'm ' + s + 's';
+        });
+      }, 1000);
+    };
+  }
+
+  /* =========================================================
+     🆕 NEW FEATURES (28 New — Total 50)
+     ========================================================= */
+
+  /* ─── NEW FEATURE 23: TEAMMATE AUTO-JOIN SYSTEM (FIXED & COMPLETE) ─── */
+  /* When captain joins, ALL teammates automatically get:
+     1. joinRequest entry (status: joined, isTeamMember: true)
+     2. My Matches mein dikhe
+     3. Room ID notification
+     4. Stats/matches increment
+     5. Admin panel mein unka entry dike
+     6. Real-time notification to teammate's device
+  */
+  window.processTeammateJoins = function (matchId, teamMembers, captainName, matchName, isCoin, tp) {
+    /* ✅ R5 (2026-09-23): CLIENT-SIDE TEAM-ROW BUILDER RETIRED — pehle ye
+       Firebase-only partner joinRequests banata tha (Supabase authority se
+       alag). Ab team join server join_match_team RPC se atomic banta hai
+       (screens/join.js). Ye stub callers ke liye inert rakha hai — koi
+       Firebase join-authority write nahi karta. */
+    return;
+  };
+
+  function _createTeammateJR(pFirebaseUid, pData, matchId, matchName, isCoin, mode, allMembers, captainName, captainFirebaseUid) {
+    if (!pFirebaseUid || pFirebaseUid === captainFirebaseUid) return;
+    // Check if already has joinRequest for this match
+    db.ref('joinRequests').orderByChild('userId').equalTo(pFirebaseUid).once('value', function (s) {
+      var alreadyJoined = false;
+      if (s.exists()) s.forEach(function (c) { if (c.val().matchId === matchId) alreadyJoined = true; });
+      if (alreadyJoined) return;
+
+      // Create joinRequest
+      var pjid = db.ref('joinRequests').push().key;
+      db.ref('joinRequests/' + pjid).set({
+        requestId: pjid,
+        userId: pFirebaseUid,
+        userName: pData.ign || pData.displayName || '',
+        userFFUID: pData.ffUid || '',
+        displayName: pData.displayName || '',
+        userEmail: pData.email || '',
+        matchId: matchId,
+        matchName: matchName || '',
+        entryFee: 0,         // Teammate pays nothing
+        entryType: isCoin ? 'coin' : 'money',
+        mode: mode,
+        status: 'joined',
+        slotsBooked: 0,
+        isTeamMember: true,
+        captainUid: captainFirebaseUid,
+        captainName: captainName || '',
+        teamMembers: allMembers,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      });
+
+      // Increment stats
+      db.ref('users/' + pFirebaseUid + '/stats/matches').transaction(function (m) { return (m || 0) + 1; });
+
+      // Send notification to teammate
+      var nid = db.ref('users/' + pFirebaseUid + '/notifications').push().key;
+      db.ref('users/' + pFirebaseUid + '/notifications/' + nid).set({
+        type: 'team_joined',
+        title: '🎮 Team Match Joined!',
+        body: captainName + ' ne "' + matchName + '" join kiya — tum bhi team mein automatically ho! My Matches mein dekho.',
+        matchId: matchId,
+        matchName: matchName,
+        faIcon: 'fa-users',
+        read: false,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      });
+
+      console.log('[Mini eSports] ✅ Teammate joinRequest created for: ' + (pData.ign || pFirebaseUid));
+    });
+  }
+
+  /* ─── NEW FEATURE 24: MATCH HISTORY DETAILED VIEW ─── */
+  window.showMatchHistory = function () {
+    var uid = _safeUid(); if (!uid) return;
+    db.ref('joinRequests').orderByChild('userId').equalTo(uid).once('value', function (s) {
+      var history = [];
+      if (s.exists()) s.forEach(function (c) {
+        var d = c.val();
+        var t = window.MT && window.MT[d.matchId];
+        history.push({ jr: d, match: t });
+      });
+      history.sort(function (a, b) { return (b.jr.createdAt || 0) - (a.jr.createdAt || 0); });
+      var h = '<div style="display:flex;flex-direction:column;gap:8px">';
+      if (!history.length) h += '<p style="text-align:center;color:var(--txt2);padding:30px">Koi match history nahi</p>';
+      history.slice(0, 20).forEach(function (item) {
+        var jr = item.jr, t = item.match;
+        var isWin = jr.result && jr.result.won;
+        var prize = jr.result ? (jr.result.prize || 0) : 0;
+        h += '<div style="padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border)">';
+        var mid = jr.matchId || '';
+        var matchT = window.MT && window.MT[mid];
+        var isSpecial = matchT && (matchT.isSundaySpecial || matchT.isMonthlySpecial);
+        var specialBadge = isSpecial && window.f29SpecialTournament ? window.f29SpecialTournament.getSpecialBadge(matchT) : '';
+        h += '<div style="display:flex;justify-content:space-between;align-items:start">';
+        h += '<div style="flex:1">';
+        if (specialBadge) h += '<div style="margin-bottom:4px">' + specialBadge + '</div>';
+        h += '<div style="font-size:13px;font-weight:700">' + (jr.matchName || 'Match') + '</div>';
+        h += '<div style="font-size:11px;color:var(--txt2)">' + (jr.mode || 'solo').toUpperCase() + ' · ' + new Date(jr.createdAt || 0).toLocaleDateString() + '</div>';
+        if (jr.isTeamMember) h += '<div style="font-size:10px;color:var(--purple)"><i class="fas fa-crown"></i> ' + (jr.captainName || 'Captain') + ' ki team</div>';
+        if (jr.slotNumber) h += '<div style="font-size:10px;color:var(--blue)">Slot: ' + jr.slotNumber + '</div>';
+        h += '</div>';
+        h += '<div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">';
+        if (prize > 0) h += '<div style="font-size:14px;font-weight:800;color:var(--green)">+💎' + prize + '</div>';
+        h += '<div style="font-size:11px;color:' + (isWin ? 'var(--green)' : 'var(--txt2)') + '">' + (isWin ? '🏆 Won' : '🎮 Played') + '</div>';
+        if (jr.resultStatus === 'completed' && mid) h += '<button onclick="window.showResultScreenshot&&showResultScreenshot(\'' + mid + '\',\'' + (jr.matchName||'Match') + '\')" style="padding:3px 8px;border-radius:6px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);color:var(--blue);font-size:9px;font-weight:700;cursor:pointer"><i class="fas fa-image"></i> Result</button>';
+        if (jr.cashbackGiven) h += '<div style="font-size:9px;color:#ffd700">🪙 Cashback Received</div>';
+        h += '</div></div></div>';
+      });
+      h += '</div>';
+      if (window.showModal) showModal('📋 Match History', h);
+    });
+  };
+
+
+  /* ─── NEW FEATURE 26: IN-APP SUPPORT TICKET TRACKER ─── */
+  window.showMyTickets = function () {
+    var uid = _safeUid(); if (!uid) return;
+    function _renderTicketList(tickets) {
+      tickets.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+      var h = '<div style="display:flex;flex-direction:column;gap:10px">';
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">' +
+           '<span style="font-size:12px;color:var(--txt2)">Tumhare submitted tickets &amp; admin replies</span>' +
+           '<button onclick="if(window.showSupportForm)showSupportForm()" style="padding:6px 12px;border-radius:8px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.3);color:var(--green);font-size:11px;font-weight:700;cursor:pointer">+ New Ticket</button>' +
+           '</div>';
+      if (!tickets.length) {
+        h += '<div style="text-align:center;color:var(--txt2);padding:28px 16px;background:var(--card2);border-radius:12px;border:1px solid var(--border)">' +
+             '<div style="font-size:28px;margin-bottom:6px">🎫</div>' +
+             '<div style="font-size:13px;font-weight:700;color:var(--txt)">Koi ticket submit nahi hua</div>' +
+             '<div style="font-size:11px;margin-top:4px">Koi dikkat ho to "+ New Ticket" dabayein</div>' +
+             '</div>';
+      }
+      var _esc = window.escHtml || function (s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+      tickets.forEach(function (t) {
+        var st = String(t.status || 'open').toLowerCase();
+        var hasReply = !!(t.adminReply || t.admin_reply);
+        var isResolved = (st === 'resolved' || st === 'closed' || st === 'replied' || hasReply);
+        var stColor = isResolved ? 'var(--green)' : '#ffaa00';
+        var stLabel = st === 'resolved' ? '✅ Resolved' : (hasReply ? '💬 Replied' : '⏳ Open');
+        var subj = _esc(t.subject || t.type || 'Support Issue');
+        var msg = _esc(t.message || '');
+        var reply = _esc(t.adminReply || t.admin_reply || '');
+        var dt = t.createdAt ? new Date(t.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+        h += '<div style="padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border)">';
+        h += '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">';
+        h += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:var(--txt);text-transform:capitalize">' + subj + '</div>';
+        h += '<div style="font-size:12px;color:var(--txt2);margin-top:4px;word-break:break-word">' + msg + '</div>';
+        if (dt) h += '<div style="font-size:10px;color:var(--txt2);margin-top:5px;opacity:.75">' + dt + '</div>';
+        h += '</div>';
+        h += '<span style="font-size:11px;font-weight:700;color:' + stColor + ';white-space:nowrap;background:rgba(255,255,255,.04);padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.08)">' + stLabel + '</span>';
+        h += '</div>';
+        if (reply) {
+          h += '<div style="margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(0,255,156,.07);border-left:3px solid var(--green)">' +
+               '<div style="font-size:10px;font-weight:800;color:var(--green);margin-bottom:3px">🛡️ Admin Reply</div>' +
+               '<div style="font-size:12px;color:var(--txt);line-height:1.45;word-break:break-word">' + reply + '</div>' +
+               '</div>';
+        }
+        h += '</div>';
+      });
+      h += '</div>';
+      var _open = window.openModal || window.showModal;
+      if (_open) _open('🎫 My Tickets', h);
+    }
+    if (window._supa) {
+      window._supa.from('support_tickets').select('*').eq('user_id', uid).order('created_at', { ascending: false }).limit(50)
+        .then(function (r) {
+          var list = ((r && r.data) || []).map(function (x) {
+            return {
+              id: x.id,
+              subject: x.subject || 'general',
+              type: x.subject || 'general',
+              message: x.message || '',
+              status: x.status || 'open',
+              adminReply: x.admin_reply || '',
+              createdAt: x.created_at ? new Date(x.created_at).getTime() : 0,
+              repliedAt: x.replied_at ? new Date(x.replied_at).getTime() : 0
+            };
+          });
+          _renderTicketList(list);
+        }, function () { _renderTicketList([]); });
+      return;
+    }
+    db.ref('supportRequests').orderByChild('userId').equalTo(uid).once('value', function (s) {
+      var tickets = [];
+      if (s.exists()) s.forEach(function (c) { tickets.push({ id: c.key, ...c.val() }); });
+      _renderTicketList(tickets);
+    });
+  };
+
+
+  /* ─── NEW FEATURE 28: LIVE ROOM ID COUNTDOWN ─── */
+  window.updateRoomCountdowns = function () {
+    var MT = window.MT || {}, JR = window.JR || {};
+    for (var k in JR) {
+      var jr = JR[k]; if (!jr.matchId) continue;
+      var t = MT[jr.matchId]; if (!t || !t.matchTime) continue;
+      var el = document.getElementById('room-cd-' + jr.matchId); if (!el) continue;
+      var diff = Number(t.matchTime) - Date.now();
+      if (t.roomStatus === 'released') {
+        el.innerHTML = '<span style="color:var(--green);font-size:11px"><i class="fas fa-key"></i> Room ID Released!</span>';
+      } else if (diff > 0) {
+        var h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
+        el.textContent = '🔑 Room ID in: ' + h + 'h ' + m + 'm';
+      }
+    }
+  };
+  setInterval(window.updateRoomCountdowns, 60000);
+
+
+  /* ─── NEW FEATURE 30: PLAYER COMPARISON (vs Friend) ─── */
+  window.showPlayerComparison = function () {
+    var h = '<div style="padding:8px">';
+    h += '<div style="font-size:14px;font-weight:700;margin-bottom:12px">⚔️ Compare with Player</div>';
+    h += '<input type="text" id="cmpUid" placeholder="Enter FF UID to compare" style="width:100%;padding:12px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box;margin-bottom:10px">';
+    h += '<button onclick="window._doCompare()" style="width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer">Compare</button>';
+    h += '</div>';
+    if (window.showModal) showModal('⚔️ Player Compare', h);
+  };
+  window._doCompare = function () {
+    var uid = (_$('cmpUid') || {}).value; if (!uid) return;
+    db.ref('users').orderByChild('ffUid').equalTo(uid.trim()).once('value', function (s) {
+      if (!s.exists()) { _toast('Player nahi mila', 'err'); return; }
+      var other = null; s.forEach(function (c) { other = c.val(); });
+      var me = window.UD; var st1 = me.stats || {}, st2 = other.stats || {};
+      var rows = [['Matches', st1.matches || 0, st2.matches || 0], ['Wins', st1.wins || 0, st2.wins || 0], ['Kills', st1.kills || 0, st2.kills || 0], ['Earnings', '₹' + (st1.earnings || 0), '₹' + (st2.earnings || 0)]];
+      var h = '<div>';
+      h += '<div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:0;margin-bottom:14px">';
+      h += '<div style="text-align:center;padding:12px;background:rgba(0,255,156,.06);border-radius:12px 0 0 12px"><div style="font-size:18px;font-weight:900;color:var(--green)">' + (window.escHtml?window.escHtml(me.ign||'You'):(me.ign||'You')) + '</div><div style="font-size:10px;color:var(--txt2)">You</div></div>';
+      h += '<div style="display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;background:var(--card2)">VS</div>';
+      h += '<div style="text-align:center;padding:12px;background:rgba(255,107,107,.06);border-radius:0 12px 12px 0"><div style="font-size:18px;font-weight:900;color:#ff6b6b">' + (window.escHtml?window.escHtml(other.ign||'Player'):(other.ign||'Player')) + '</div><div style="font-size:10px;color:var(--txt2)">Opponent</div></div>';
+      h += '</div>';
+      rows.forEach(function (r) {
+        var myWin = typeof r[1] === 'number' && typeof r[2] === 'number' && r[1] > r[2];
+        h += '<div style="display:grid;grid-template-columns:1fr 80px 1fr;gap:0;border-bottom:1px solid var(--border);padding:8px 0">';
+        h += '<div style="text-align:center;font-size:14px;font-weight:' + (myWin ? '900' : '400') + ';color:' + (myWin ? 'var(--green)' : 'var(--txt)') + '">' + r[1] + '</div>';
+        h += '<div style="text-align:center;font-size:11px;color:var(--txt2)">' + r[0] + '</div>';
+        h += '<div style="text-align:center;font-size:14px;font-weight:' + (!myWin ? '900' : '400') + ';color:' + (!myWin ? '#ff6b6b' : 'var(--txt)') + '">' + r[2] + '</div>';
+        h += '</div>';
+      });
+      h += '</div>';
+      if (window.showModal) showModal('⚔️ Comparison', h);
+    });
+  };
+
+
+  /* ─── NEW FEATURE 32: RESULT DISPUTE FORM ─── */
+  var _dispScreenshotB64 = null;
+  window.showResultDispute = function (matchId) {
+    /* Safety (Bug T follow-up): bina match-id ke call par form khulne se pehle
+       _submitDispute('undefined') chala jaata tha → match_id='undefined' wali
+       galat/galat-dispute row. Ab user ko seedha Matches screen par bhejte hain
+       jahan har match ka apna "Report Dispute" button sahi id ke saath hai. */
+    if (!matchId) {
+      if (window.closeModal) closeModal();
+      if (window.toast) toast('Match chuno — Matches list se report karo', 'err');
+      if (window.navTo) navTo('matches');
+      return;
+    }
+    _dispScreenshotB64 = null;
+    var h = '<div style="padding:8px">';
+    h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:12px">Galat result ke against complaint submit karo</div>';
+    h += '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Issue Type</label>';
+    h += '<select id="dispType" style="width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px">';
+    h += '<option value="wrong_rank">Wrong Rank Given</option><option value="missing_kills">Kills Count Wrong</option><option value="not_credited">Prize Not Credited</option><option value="other">Other Issue</option>';
+    h += '</select></div>';
+    h += '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Your Actual Rank</label>';
+    h += '<input type="number" id="dispRank" placeholder="e.g. 1" style="width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box"></div>';
+    h += '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Screenshot (optional)</label>';
+    h += '<div onclick="document.getElementById(\'dispSsIn\').click()" id="dispSsBox" style="width:100%;padding:14px;border-radius:10px;background:var(--card2);border:2px dashed var(--border);color:var(--txt2);font-size:12px;text-align:center;cursor:pointer;box-sizing:border-box"><i class=\"fas fa-camera\" style=\"margin-right:6px\"></i>Tap to upload screenshot</div>';
+    h += '<input type="file" id="dispSsIn" accept="image/*" style="display:none" onchange="window._dispLoadSS(this)">';
+    h += '<div id="dispSsPreview" style="display:none;margin-top:6px;text-align:center"><img id="dispSsImg" style="max-width:100%;max-height:150px;border-radius:8px;border:1px solid var(--border)"></div>';
+    h += '</div>';
+    h += '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--txt2);display:block;margin-bottom:4px">Explanation</label>';
+    h += '<textarea id="dispMsg" style="width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;resize:none;height:70px;box-sizing:border-box" placeholder="Details likhiyo..."></textarea></div>';
+    h += '<button onclick="window._submitDispute(\'' + matchId + '\')" style="width:100%;padding:12px;border-radius:12px;background:#ff6b6b;color:#fff;font-weight:800;border:none;cursor:pointer"><i class=\"fas fa-paper-plane\" style=\"margin-right:6px\"></i>Submit Dispute</button>';
+    h += '</div>';
+    if (window.showModal) showModal('⚠️ Report Dispute', h);
+  };
+  window._dispLoadSS = function(inp) {
+    var file = inp.files[0]; if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      _dispScreenshotB64 = e.target.result;
+      var prev = document.getElementById('dispSsPreview'), img = document.getElementById('dispSsImg'), box = document.getElementById('dispSsBox');
+      if(img) img.src = _dispScreenshotB64;
+      if(prev) prev.style.display = 'block';
+      if(box) box.innerHTML = '<i class="fas fa-check-circle" style="color:var(--green);margin-right:6px"></i>Screenshot added ✓';
+    };
+    reader.readAsDataURL(file);
+  };
+  window._submitDispute = function (matchId) {
+    var type = (_$('dispType') || {}).value;
+    var rank = (_$('dispRank') || {}).value;
+    var msg = (_$('dispMsg') || {}).value;
+    if (!msg || msg.trim().length < 10) { _toast('Thoda detail mein likhiyo', 'err'); return; }
+    var payload = {
+      match_id: matchId, user_id: window.U ? window.U.uid : null,
+      type: type, claimed_rank: rank ? Number(rank) : null,
+      message: msg.trim(), screenshot_url: _dispScreenshotB64 || null,
+      status: 'open'
+    };
+    /* ✅ Save to Supabase disputes table */
+    if (window._supa) {
+      window._supa.from('disputes').insert(payload)
+        .then(function() { _toast('✅ Dispute submitted! Admin review karega.'); if (window.closeModal) closeModal(); })
+        .catch(function() {
+          /* Fallback to Firebase RTDB */
+          if (window.db) { var id = db.ref('disputes').push().key; db.ref('disputes/' + id).set(Object.assign({ id: id, createdAt: Date.now() }, payload)); }
+          _toast('✅ Dispute submitted!'); if (window.closeModal) closeModal();
+        });
+    } else if (window.db) {
+      var id = db.ref('disputes').push().key;
+      db.ref('disputes/' + id).set(Object.assign({ id: id, createdAt: Date.now() }, payload));
+      _toast('✅ Dispute submitted!'); if (window.closeModal) closeModal();
+    }
+    _dispScreenshotB64 = null;
+  };
+
+
+  /* ─── DARK MODE ONLY — Light/Neon removed ─── */
+  window.toggleTheme = function () {
+    // Dark mode only — no toggle
+    document.body && document.body.removeAttribute('data-theme');
+    localStorage.setItem('appTheme', 'dark');
+    _toast('🌙 Dark mode is the only theme', 'inf');
+  };
+  window.setTheme = function(theme) {
+    // Always dark
+    document.body && document.body.removeAttribute('data-theme');
+    localStorage.setItem('appTheme', 'dark');
+  };
+  // Force dark on load — override any saved light/neon
+  (function () {
+    localStorage.setItem('appTheme', 'dark');
+    document.body && document.body.removeAttribute('data-theme');
+  })();
+
+  /* ─── NEW FEATURE 34: REFERRAL TRACKER CARD ─── */
+  window.showReferralStats = function () {
+    var UD = window.UD; if (!UD) return;
+    var refs = window.REFS || [];
+    var h = '<div style="padding:8px">';
+    h += '<div style="text-align:center;padding:14px;background:linear-gradient(135deg,rgba(185,100,255,.12),rgba(0,255,156,.06));border-radius:14px;margin-bottom:14px">';
+    h += '<div style="font-size:36px;font-weight:900;color:var(--primary)">' + (UD.referralCount || 0) + '</div>';
+    h += '<div style="font-size:13px;color:var(--txt2)">Friends Referred</div>';
+    h += '<div style="font-size:20px;font-weight:700;color:#ffd700;margin-top:4px">🪙 ' + (UD.referralCoinsEarned || 0) + '</div>';
+    h += '<div style="font-size:11px;color:var(--txt2)">Coins Earned</div></div>';
+    if (refs.length > 0) {
+      h += '<div style="font-size:13px;font-weight:700;margin-bottom:8px">Recent Referrals:</div>';
+      refs.slice(0, 5).forEach(function (r) {
+        h += '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);margin-bottom:6px">';
+        h += '<div style="width:32px;height:32px;border-radius:10px;background:rgba(0,255,156,.1);display:flex;align-items:center;justify-content:center;font-size:14px">👤</div>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:600">' + (r.referredName || 'User') + '</div>';
+        h += '<div style="font-size:10px;color:var(--txt2)">' + new Date(r.createdAt || 0).toLocaleDateString() + '</div></div>';
+        h += '<div style="font-size:13px;font-weight:700;color:#ffd700">+🪙10</div></div>';
+      });
+    } else {
+      h += '<div style="text-align:center;padding:20px;color:var(--txt2)">Abhi tak koi referral nahi. Dosto ko invite karo!</div>';
+    }
+    h += '</div>';
+    if (window.showModal) showModal('🎁 Referral Stats', h);
+  };
+
+  /* ─── NEW FEATURE 35: OFFLINE MODE INDICATOR ─── */
+  window._isOnline = true;
+  window.addEventListener('online', function () {
+    window._isOnline = true;
+    _toast('✅ Back online!', 'ok');
+    var bar = document.getElementById('offlineBar');
+    if (bar) bar.style.display = 'none';
+  });
+  window.addEventListener('offline', function () {
+    window._isOnline = false;
+    _toast('📶 Offline — check internet', 'err');
+    var bar = document.getElementById('offlineBar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'offlineBar';
+      bar.style.cssText = 'position:fixed;top:0;left:0;right:0;padding:8px;background:#ff6b6b;color:#fff;font-size:12px;font-weight:700;text-align:center;z-index:9999';
+      bar.textContent = '📶 You are offline. Some features may not work.';
+      document.body && document.body.appendChild(bar);
+    } else { bar.style.display = 'block'; }
+  });
+
+  /* ─── NEW FEATURE 36: MATCH FEEDBACK (Post-match survey) ─── */
+  window.showMatchFeedback = function (matchId) {
+    var h = '<div style="padding:8px;text-align:center">';
+    h += '<div style="font-size:24px;margin-bottom:8px">🎮</div>';
+    h += '<div style="font-size:16px;font-weight:700;margin-bottom:4px">Match kaisa tha?</div>';
+    h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:16px">Feedback se platform improve hoga</div>';
+    h += '<div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px">';
+    ['😍', '😊', '😐', '😕', '😠'].forEach(function (e, i) {
+      h += '<span onclick="window._setFeedback(' + (5 - i) + ',this)" style="font-size:32px;cursor:pointer;opacity:.5;transition:.2s" class="fb-emoji">' + e + '</span>';
+    });
+    h += '</div>';
+    h += '<textarea id="fbText" placeholder="Kuch aur share karna chahte ho?" style="width:100%;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:12px;resize:none;height:60px;box-sizing:border-box"></textarea>';
+    h += '<button onclick="window._submitFeedback(\'' + matchId + '\')" style="width:100%;margin-top:10px;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer">Submit</button>';
+    h += '</div>';
+    window._fbRating = 3;
+    if (window.showModal) showModal('⭐ Match Feedback', h);
+  };
+  window._setFeedback = function (rating, el) {
+    window._fbRating = rating;
+    document.querySelectorAll('.fb-emoji').forEach(function (e) { e.style.opacity = '0.4'; e.style.transform = 'scale(1)'; });
+    el.style.opacity = '1'; el.style.transform = 'scale(1.3)';
+  };
+  window._submitFeedback = function (matchId) {
+    var text = (_$('fbText') || {}).value || '';
+    if (!window.U) return;
+    if (window._supa) {
+      window._supa.from('match_feedback').upsert({
+        match_id: matchId, user_id: window.U.uid,
+        rating: window._fbRating || 3, feedback: text
+      }, { onConflict: 'user_id,match_id' })
+        .then(function() { _toast('✅ Feedback diya! Shukriya 🙏'); if (window.closeModal) closeModal(); })
+        .catch(function() { _toast('Submit nahi hua', 'err'); });
+    } else if (window.db) {
+      db.ref('matchFeedback/' + matchId + '/' + window.U.uid).set({ rating: window._fbRating, text: text, userId: window.U.uid, createdAt: Date.now() });
+      _toast('✅ Feedback diya! Shukriya 🙏'); if (window.closeModal) closeModal();
+    }
+  };
+
+  /* ─── NEW FEATURE 37: MATCH TYPE FILTER (Quick Filter Chips) ─── */
+  window.renderFilterChips = function () {
+    var modes = ['all', 'solo', 'duo', 'squad'];
+    var h = '<div style="display:flex;gap:8px;overflow-x:auto;padding:0 0 8px;scrollbar-width:none">';
+    modes.forEach(function (m) {
+      var active = (window._modeFilter || 'all') === m;
+      h += '<button onclick="window.setModeFilter(\'' + m + '\')" style="padding:6px 14px;border-radius:20px;border:1px solid ' + (active ? 'var(--primary)' : 'var(--border)') + ';background:' + (active ? 'rgba(0,255,156,.12)' : 'transparent') + ';color:' + (active ? 'var(--primary)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">' + m.toUpperCase() + '</button>';
+    });
+    // Calendar button + the showMatchCalendar feature it opened were both removed per user request
+    /* ✅ (2026-10-07): 🧮 Calculator button + uska Prize Calculator modal bhi
+       HATA diya — user ka faisla. Wajah (B31 audit me nikli): modal ka fee
+       purani jami hui `commission` value (0.15) par chalta tha jo admin ki
+       kisi live setting se judi hi nahi thi (admin 2026-10-04 se wo key likhta
+       hi nahi; asli rate creator_system.sdMatchCommissionPct hai, aur coin
+       match par commission hi nahi lagta) — yaani calculator users ko galat
+       hisaab dikhata tha. Kisi match ka asli prize match card / match detail
+       me hi dikhta hai, wahi single sach hai. */
+    h += '</div>';
+    return h;
+  };
+  window.setModeFilter = function (mode) {
+    window._modeFilter = mode;
+    if (window.renderHome) renderHome();
+  };
+
+  window.showProfileViews = function () {
+    var uid = _safeUid(); if (!uid) return;
+    db.ref('profileViews/' + uid).once('value', function (s) {
+      var count = s.exists() ? Object.keys(s.val()).length : 0;
+      var h = '<div style="text-align:center;padding:20px">';
+      h += '<div style="font-size:48px;font-weight:900;color:var(--primary)">' + count + '</div>';
+      h += '<div style="font-size:14px;color:var(--txt2)">Players ne tumhara profile dekha</div>';
+      h += '</div>';
+      if (window.showModal) showModal('👀 Profile Views', h);
+    });
+  };
+
+  /* ─── NEW FEATURE 40: SOUND TOGGLE ─── */
+  window._soundOn = localStorage.getItem('soundPref') !== 'off';
+  window.toggleSound = function () {
+    window._soundOn = !window._soundOn;
+    localStorage.setItem('soundPref', window._soundOn ? 'on' : 'off');
+    _toast(window._soundOn ? '🔊 Sound on' : '🔇 Sound off', 'inf');
+  };
+  window.playSound = function (type) {
+    if (!window._soundOn) return;
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = type === 'join' ? 880 : type === 'win' ? 1047 : type === 'notif' ? 660 : 440;
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+    } catch (e) { /* Ignore sound errors */ }
+  };
+
+  /* ─── NEW FEATURE 41: HAPTIC FEEDBACK ─── */
+  window.haptic = function (pattern) {
+    if (!navigator.vibrate) return;
+    if (pattern === 'success') navigator.vibrate([50, 30, 80]);
+    else if (pattern === 'error') navigator.vibrate([100, 50, 100, 50, 100]);
+    else if (pattern === 'notif') navigator.vibrate([30, 20, 30]);
+    else navigator.vibrate(50);
+  };
+
+
+  /* ─── NEW FEATURE 43: LANGUAGE PREFERENCE ─── */
+  window._lang = localStorage.getItem('appLang') || 'hi';
+  window.setLanguage = function (lang) {
+    window._lang = lang;
+    localStorage.setItem('appLang', lang);
+    _toast(lang === 'hi' ? '✅ Hindi set' : '✅ English set', 'ok');
+  };
+
+
+  /* ─── NEW FEATURE 45: MATCH INTEREST / GOING SYSTEM ─── */
+  /* (Itihaas: 2026-10-04 se pehle yeh sirf Firebase RTDB `matchInterest/` me
+     jata tha jahan admin dekhta hi nahi tha; 04-10 ko Supabase table par
+     aaya, aur B15 me server RPC par — neeche poori baat.) */
+  /* ✅ B15 REWRITE (2026-10-07): "Mark as Interested" ab server RPC se chalta
+     hai — toggle_match_interest(p_uid, p_match_id, p_name). Pehle yeh seedha
+     Supabase table me likhta tha, jo client ke AUTH token par tika tha (RLS:
+     auth.uid() = user_id) — token sync/refresh na hone par insert chupke se
+     fail ho jata tha aur admin ko kuch nahi milta (live DB me table khaali
+     padi thi — isi liye user ki shikayat thi "data admin tak pahunchta hi
+     nahi"). Ab:
+       * insert/delete server par hota hai (RLS par nirbhar nahi),
+       * RPC us match ka TAAZA count bhi lauta deta hai,
+       * button turant apna naya state dikhata hai,
+       * aur refreshInterests() modal khulte hi "✓ Interested" laga deta hai. */
+  window._interestMark = function (matchId, on) {
+    var b = document.getElementById('intBtn_' + matchId);
+    if (!b) return;
+    b.innerHTML = on
+      ? '<i class="fas fa-check-circle" style="color:var(--green)"></i> ✓ Interested'
+      : '<i class="fas fa-hand-paper"></i> Mark as Interested';
+    b.style.borderColor = on ? 'rgba(0,255,156,.35)' : 'var(--border)';
+    b.style.color = on ? 'var(--green)' : 'var(--txt2)';
+  };
+  window.refreshInterests = function () {
+    var uid = _safeUid(); if (!uid || !window._supa) return;
+    window._supa.rpc('my_match_interests', { p_uid: uid }).then(function (r) {
+      var ids = (r && r.data) || [];
+      ids.forEach(function (mid) { window._interestMark(mid, true); });
+    }, function () { /* state na mile to button waise hi — koi shor nahi */ });
+  };
+  window.toggleInterest = function (matchId) {
+    var uid = _safeUid(); if (!uid) return;
+    var nm = (window.UD && window.UD.ign) || '';
+    if (!window._supa) { _toast('Interest sewa abhi uplabdh nahi', 'err'); return; }
+    window._supa.rpc('toggle_match_interest', { p_uid: uid, p_match_id: matchId, p_name: nm })
+      .then(function (r) {
+        var d = (r && r.data) || {};
+        if (r && r.error) { _toast(r.error.message || 'Interest save nahi hua', 'err'); return; }
+        window._interestMark(matchId, !!d.interested);
+        _toast(d.interested
+          ? '⚡ Interest noted! Admin ko pata chal gaya (' + (d.count || 1) + ' interested).'
+          : '👋 Interest removed', d.interested ? 'ok' : 'inf');
+      }, function (e) {
+        _toast('Interest save nahi hua: ' + ((e && e.message) || ''), 'err');
+      });
+  };
+
+  /* ─── NEW FEATURE 46: TOTAL WINNINGS MILESTONE — ✅ dead no-op hata diya (B19):
+     ise koi call hi nahi karta tha aur iske andar pehle se hi kuch nahi tha
+     ("milestone toasts removed") — B19 me duplicate milestone-UI saaf karte
+     waqt ye khaali function bhi nikal diya, taaki ek hi asli raasta bache. */
+
+  /* ─── NEW FEATURE 47: MATCH CHAT (In-Match Banter) ─── */
+  /* ✅ BUG FIX (2026-10-06) — असली जड़, live DB पर नापी गई (A7/A8):
+     (a) ऐप का Supabase client सिर्फ़ ANON key से बनता है (लॉगिन Firebase का
+         है, Supabase auth का नहीं), इसलिए table की RLS नीति
+         (auth.jwt()->>'sub' = user_id) कभी पूरी नहीं होती — सीधा insert पर
+         401 "new row violates row-level security policy" आता था और select
+         हमेशा ख़ाली [] लौटाता था। नतीजा: message कभी सेव ही नहीं होता था,
+         इसलिए अपना ही message दिखने के लिए दोबारा खोलना पड़ता था।
+     (b) तुरंत डिलीवरी postgres_changes पर थी — SELECT अधिकार न होने से
+         वह event कभी आता ही नहीं, इसलिए चैट "live" थी ही नहीं।
+     ✅ अब: पढ़ना/लिखना SECURITY DEFINER RPC से (get_match_chat /
+        send_match_chat) — सिर्फ़ उसी match में join किए खिलाड़ी को अनुमति,
+        RLS में कोई ढील नहीं दी गई (ग़ैर-खिलाड़ी को 400 मिलता है — जाँचा गया)।
+        तुरंत डिलीवरी Realtime Broadcast चैनल से (anon पर काम करता है —
+        सीधे WebSocket से जाँचा गया) + हर 8 सेकंड DB से ताज़ा करने वाला
+        बचाव-पोल, ताकि कोई संदेश कभी न छूटे। */
+  window._chatEsc = function (s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  window._chatBubble = function (m, pending) {
+    var isMe = m.user_id === (window.U && window.U.uid);
+    return '<div class="chat-bub"' + (pending ? ' data-pending="1"' : '') +
+      (m.id ? ' data-id="' + window._chatEsc(m.id) + '"' : '') +
+      ' data-uid="' + window._chatEsc(m.user_id || '') + '" data-text="' + window._chatEsc(m.text || '') +
+      '" style="display:flex;justify-content:' + (isMe ? 'flex-end' : 'flex-start') + '">' +
+      '<div style="max-width:70%;padding:6px 10px;border-radius:10px;background:' + (isMe ? 'rgba(0,255,156,.15)' : 'var(--card2)') + ';font-size:12px">' +
+      '<div style="font-size:10px;color:var(--txt2);margin-bottom:2px">' + window._chatEsc(m.name || 'Player') + '</div>' +
+      '<div>' + window._chatEsc(m.text || '') + '</div></div></div>';
+  };
+  /* pending (अभी भेजा) bubble ढूँढ़ो — id से नहीं, text की सीधी तुलना से
+     (text में quotes होने पर CSS selector टूट जाता, यह टूटता नहीं) */
+  window._chatFindPending = function (el, text) {
+    if (!el) return null;
+    var list = el.querySelectorAll('[data-pending="1"]');
+    for (var i = list.length - 1; i >= 0; i--) {
+      if (list[i].getAttribute('data-text') === String(text == null ? '' : text)) return list[i];
+    }
+    return null;
+  };
+  window.showMatchChat = function (matchId) {
+    var meUid = (window.U && window.U.uid) || '';
+    var h = '<div style="display:flex;flex-direction:column;height:320px">';
+    h += '<div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#8fe3ff;padding:0 2px 6px"><span style="width:6px;height:6px;border-radius:50%;background:#00ff9c;display:inline-block"></span> Live — message turant pahunchega</div>';
+    h += '<div id="matchChatMsgs" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px"></div>';
+    h += '<div style="display:flex;gap:8px;padding:8px;border-top:1px solid var(--border)">';
+    h += '<input type="text" id="matchChatIn" maxlength="500" placeholder="Type message..." onkeydown="if(event.key===\'Enter\'){window._sendMatchChat(\'' + matchId + '\')}" style="flex:1;min-width:0;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px">';
+    h += '<button onclick="window._sendMatchChat(\'' + matchId + '\')" style="padding:10px 16px;border-radius:10px;background:var(--primary);color:#000;font-weight:700;border:none;cursor:pointer;flex-shrink:0"><i class="fas fa-paper-plane"></i></button>';
+    h += '</div></div>';
+    if (window.showModal) showModal('💬 Match Chat', h);
+
+    var _el = function () { return _$('matchChatMsgs'); };
+
+    /* ── इतिहास DB से (RPC: सिर्फ़ खिलाड़ी को) ── */
+    var _load = function () {
+      if (!window._supa || !meUid) return;
+      window._supa.rpc('get_match_chat', { p_match_id: matchId, p_uid: meUid, p_limit: 60 })
+        .then(function (res) {
+          if (res && res.error) { console.warn('[Chat] load:', res.error.message); return; }
+          var el = _el(); if (!el) return;
+          var rows = (res && res.data) || [];
+          /* अभी भेजे जा रहे (pending) bubbles न छूओ, बाक़ी पूरा repaint */
+          var keep = '';
+          var pend = el.querySelectorAll('[data-pending="1"]');
+          for (var i = 0; i < pend.length; i++) keep += pend[i].outerHTML;
+          el.innerHTML = rows.map(function (m) { return window._chatBubble(m); }).join('') + keep;
+          el.scrollTop = el.scrollHeight;
+        }, function (e) { console.warn('[Chat] load fail:', e && e.message); });
+    };
+    _load();
+
+    /* ── तुरंत डिलीवरी: Realtime Broadcast (RLS का मोहताज नहीं) ── */
+    try {
+      if (window._matchChatCh && window._supa) { window._supa.removeChannel(window._matchChatCh); }
+      window._matchChatCh = null;
+      if (window._supa) {
+        window._matchChatCh = window._supa.channel('match-chat-' + matchId)
+          .on('broadcast', { event: 'msg' }, function (p) {
+            var el = _el(); if (!el || !p || !p.payload) return;
+            var m = p.payload || {};
+            if (m.id && el.querySelector('[data-id="' + window._chatEsc(m.id) + '"]')) return;
+            var mine = window._chatFindPending(el, m.text || '');
+            if (mine && m.user_id === meUid) {
+              /* अपना ही संदेश लौटा → pending पक्का कर दो (दोहरा नहीं) */
+              mine.removeAttribute('data-pending');
+              if (m.id) mine.setAttribute('data-id', m.id);
+            } else {
+              el.insertAdjacentHTML('beforeend', window._chatBubble(m));
+            }
+            el.scrollTop = el.scrollHeight;
+          })
+          .subscribe();
+      }
+    } catch (e) { console.warn('[Chat] realtime channel fail:', e && e.message); }
+
+    /* ── बचाव: हर 8 सेकंड DB से ताज़ा + बंद होने पर सफ़ाई ── */
+    if (window._matchChatPoll) clearInterval(window._matchChatPoll);
+    window._matchChatPoll = setInterval(function () {
+      if (!_el()) {
+        clearInterval(window._matchChatPoll);
+        try { if (window._matchChatCh && window._supa) window._supa.removeChannel(window._matchChatCh); } catch (e) {}
+        window._matchChatCh = null;
+        return;
+      }
+      _load();
+    }, 8000);
+  };
+  window._sendMatchChat = function (matchId) {
+    var inp = _$('matchChatIn'); if (!inp || !inp.value.trim()) return;
+    var meUid = (window.U && window.U.uid) || '';
+    if (!meUid) { _toast('Pehle login karo', 'err'); return; }
+    var _txt = inp.value.trim();
+    if (_txt.length > 500) { _toast('Message 500 akshar se bada nahi ho sakta', 'err'); return; }
+    inp.value = '';
+    var el = _$('matchChatMsgs');
+    /* तुरंत दिखाओ — server से पक्का होने पर pending हटेगा */
+    if (el) {
+      el.insertAdjacentHTML('beforeend', window._chatBubble({ user_id: meUid, name: (window.UD && window.UD.ign) || 'Player', text: _txt }, true));
+      el.scrollTop = el.scrollHeight;
+    }
+    if (!window._supa) { _toast('Chat sewa abhi uplabdh nahi', 'err'); return; }
+    window._supa.rpc('send_match_chat', {
+      p_match_id: matchId, p_uid: meUid,
+      p_name: (window.UD && window.UD.ign) || 'Player', p_text: _txt
+    }).then(function (res) {
+      if (res && res.error) {
+        var p = window._chatFindPending(el, _txt); if (p) p.remove();
+        _toast(res.error.message || 'Message nahi gaya', 'err');
+        return;
+      }
+      var row = (res && res.data) || null;
+      var p2 = window._chatFindPending(el, _txt);
+      if (p2) { p2.removeAttribute('data-pending'); if (row && row.id) p2.setAttribute('data-id', row.id); }
+      /* बाक़ी खिलाड़ियों को तुरंत — broadcast */
+      try {
+        if (row && window._matchChatCh && window._matchChatCh.send) {
+          window._matchChatCh.send({ type: 'broadcast', event: 'msg', payload: row });
+        }
+      } catch (e) { /* broadcast fail ho to 8 सेकंड का poll pakad lega */ }
+    }, function (e) {
+      var p3 = window._chatFindPending(el, _txt); if (p3) p3.remove();
+      _toast((e && e.message) || 'Message nahi gaya — dobara try karo', 'err');
+    });
+  };
+
+  /* ─── NEW FEATURE 49: DYNAMIC BANNER MESSAGES ─── */
+  window.loadDynamicBanner = function () {
+    db.ref('appSettings/banner').on('value', function (s) {
+      var el = document.getElementById('dynamicBanner');
+      if (!el) return;
+      if (s.exists() && s.val()) {
+        var val = s.val();
+        el.style.display = 'block';
+        el.textContent = typeof val === 'string' ? val : (val.text || '');
+        el.style.background = (val.color || 'rgba(0,255,156,.1)');
+        el.style.color = (val.textColor || 'var(--green)');
+      } else { el.style.display = 'none'; }
+    });
+  };
+
+  /* ─── NEW FEATURE 50: SESSION STATS TRACKER ─── */
+  window._sessionStart = Date.now();
+  window._sessionMatches = 0;
+
+  /* =========================================================
+     AUTO INIT
+     ========================================================= */
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () {
+      if (window.checkShowTutorial) checkShowTutorial();
+      if (window.setupMatchAlerts) setupMatchAlerts();
+      if (window.loadDynamicBanner) loadDynamicBanner();
+      /* Bug 68 Fix: startMatchTimers call removed — match-timer.js wraps renderHome() */
+    }, 2000);
+  });
+
+  console.log('[Mini eSports] ✅ 50 User Features v9 loaded (Halal Only)');
+
+  /* =========================================================
+     🆕 NEW 100 FEATURES (51-150) — Halal Only
+     ========================================================= */
+
+  /* ─── FEATURE 51: QUICK RESULT SHARE (Match completed card) ─── */
+  window.quickShareResult = function (matchId) {
+    var JR = window.JR || {};
+    for (var k in JR) {
+      if (JR[k].matchId === matchId && JR[k].result) {
+        var r = JR[k].result;
+        window.shareResultCard && shareResultCard(window.MT && window.MT[matchId] && window.MT[matchId].name || 'Match', r.rank, r.kills, r.prize);
+        return;
+      }
+    }
+    _toast('Koi result nahi mila abhi', 'inf');
+  };
+
+
+
+  /* ─── FEATURE 54: PLAYER BADGE DISPLAY ─── */
+  window.getPlayerBadge = function () {
+    var UD = window.UD; if (!UD || !UD.stats) return '';
+    var st = UD.stats;
+    var wins = st.wins || 0, matches = st.matches || 0, kills = st.kills || 0;
+    if (wins >= 50) return { label: 'Legend', color: '#ff6b6b', icon: '🏆' };
+    if (wins >= 20) return { label: 'Elite', color: '#ffd700', icon: '💎' };
+    if (wins >= 10) return { label: 'Pro', color: '#b964ff', icon: '⭐' };
+    if (wins >= 5) return { label: 'Rising', color: '#4d96ff', icon: '🚀' };
+    if (matches >= 5) return { label: 'Active', color: '#00ff9c', icon: '🎮' };
+    return { label: 'Rookie', color: 'var(--txt2)', icon: '🌱' };
+  };
+
+
+  /* ─── FEATURE 56: NOTIFICATION BADGE COUNT ───
+     🔴 AUDIT FIX (v32.8.4): removed — this used a Firebase-style
+     orderByChild/equalTo query against users/{uid}/notifications that
+     core/db-bridge.js has no handler for (silent no-op), and it was
+     redundant with + fighting over the same #bellDot element as the
+     correct, reactively-triggered updateBell() in core/header.js,
+     which already computes unread count from the real NOTIFS array
+     loaded from Supabase. */
+
+  /* ─── FEATURE 57: MATCH RESULT HISTORY CARD (My Matches) ─── */
+  window.renderResultCard = function (jr) {
+    if (!jr || !jr.result) return '';
+    var r = jr.result;
+    var mt = window.MT && window.MT[jr.matchId];
+    var pSym = window._prizeIcon ? window._prizeIcon(mt) : (window.GD_ICON || '💎');
+    return '<div style="margin-top:8px;padding:8px 12px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px solid rgba(255,215,0,.2);border-radius:10px;display:flex;gap:12px;align-items:center">' +
+      '<div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#ffd700">#' + (r.rank || '-') + '</div><div style="font-size:10px;color:var(--txt2)">Rank</div></div>' +
+      '<div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#ff6b6b">' + (r.kills || 0) + '💀</div><div style="font-size:10px;color:var(--txt2)">Kills</div></div>' +
+      (r.prize > 0 ? '<div style="text-align:center"><div style="font-size:18px;font-weight:900;color:var(--green)">' + pSym + r.prize + '</div><div style="font-size:10px;color:var(--txt2)">Won</div></div>' : '') +
+      '<button onclick="window.quickShareResult&&quickShareResult(\'' + (jr.matchId||'') + '\')" style="margin-left:auto;padding:6px 12px;border-radius:8px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.2);color:var(--green);font-size:11px;font-weight:700;cursor:pointer"><i class="fas fa-share"></i></button>' +
+      '</div>';
+  };
+
+
+
+
+  /* ─── FEATURE 61: COIN BALANCE HISTORY ─── */
+  window.showCoinHistory = function () {
+    if (!window.U || !window.db) return;
+    db.ref('users/' + window.U.uid + '/coinHistory').limitToLast(20).once('value', function (s) {
+      var items = [];
+      if (s.exists()) s.forEach(function (c) { items.unshift(c.val()); });
+      var h = '<div style="display:flex;flex-direction:column;gap:6px">';
+      if (!items.length) h += '<p style="text-align:center;color:var(--txt2);padding:30px">Koi coin history nahi</p>';
+      items.forEach(function (i) {
+        var isEarn = i.amount > 0;
+        h += '<div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border)">';
+        h += '<span style="font-size:20px">' + (isEarn ? '🪙' : '💸') + '</span>';
+        h += '<div style="flex:1"><div style="font-size:12px;font-weight:600">' + (i.reason||'Transaction') + '</div>';
+        h += '<div style="font-size:10px;color:var(--txt2)">' + new Date(i.ts||0).toLocaleDateString() + '</div></div>';
+        h += '<div style="font-size:14px;font-weight:700;color:' + (isEarn ? 'var(--green)' : '#ff6b6b') + '">' + (isEarn ? '+' : '') + i.amount + ' 🪙</div></div>';
+      });
+      h += '</div>';
+      if (window.showModal) showModal('🪙 Coin History', h);
+    });
+  };
+
+
+  /* ─── FEATURE 63: QUICK TEAM INVITE SHARE ─── */
+  window.shareTeamInvite = function () {
+    var UD = window.UD; if (!UD) return;
+    var code = UD.referralCode || (window.U && window.U.uid.substring(0, 8).toUpperCase()) || '';
+    var msg = '🎮 Aye bhai! Mini eSports pe mere squad mein join ho jao! ' +
+      '\n👤 Captain: ' + (UD.ign || 'Player') +
+      '\n🔥 FF UID: ' + (UD.ffUid || 'N/A') +
+      '\n🎁 Referral Code: ' + code +
+      '\n📱 ' + ((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/'));
+    if (navigator.share) navigator.share({ text: msg });
+    else if (window.copyTxt) { copyTxt(msg); _toast('Team invite copied!'); }
+  };
+
+  /* ─── FEATURE 64: ACTIVE MATCH PULSE INDICATOR ─── */
+  window.updateActivePulse = function () {
+    var MT = window.MT || {}, JR = window.JR || {};
+    var hasLive = false;
+    for (var k in JR) {
+      var jr = JR[k];
+      if (!jr.matchId) continue;
+      var t = MT[jr.matchId];
+      if (t && (t.status === 'live' || (t.matchTime && Math.abs(Number(t.matchTime) - Date.now()) < 1800000))) {
+        hasLive = true; break;
+      }
+    }
+    var nav = document.querySelector('[data-nav="matches"]');
+    if (nav) {
+      if (hasLive) nav.innerHTML = '<i class="fas fa-gamepad" style="color:#ff6b6b"></i><span>My Matches</span><span style="width:6px;height:6px;border-radius:50%;background:#ff6b6b;display:inline-block;margin-left:2px;animation:pulse 1s infinite"></span>';
+    }
+  };
+  setInterval(window.updateActivePulse, 60000);
+
+
+  /* ─── FEATURE 66: IN-APP TICKER UPDATE ─── */
+  window.updateTicker = function () {
+    var el = document.getElementById('tickerTxt'); if (!el) return;
+    db.ref('appSettings/ticker').on('value', function (s) {
+      if (s.exists() && s.val()) {
+        var txt = (window.compliantTicker||function(x){return x;})(s.val());   /* D98 F4: halal-stance normalizer */
+        txt = (window._i18nTick||function(x){return x;})(txt);   /* D103 z22: ticker DB text ko lang me swap */
+        /* ✅ Bug 19 Fix: Duplicate text so short ticker always scrolls
+           If text is short (< 80 chars), repeat it so animation always runs */
+        var repeated = txt;
+        var repeatCount = Math.ceil(160 / Math.max(txt.length, 1));
+        if (repeatCount > 1) {
+          var sep = '   •   ';
+          repeated = Array(Math.min(repeatCount, 6)).fill(txt).join(sep) + sep;
+        }
+        el.textContent = repeated;
+      }
+    });
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () { if (window.updateTicker) updateTicker(); }, 3000);
+  });
+
+
+
+
+  /* ─── FEATURE 70: KEYBOARD SHORTCUTS ─── */
+  document.addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'h' || e.key === 'H') { if (window.navTo) navTo('home'); }
+    if (e.key === 'p' || e.key === 'P') { if (window.navTo) navTo('profile'); }
+    if (e.key === 'w' || e.key === 'W') { if (window.navTo) navTo('wallet'); }
+    if (e.key === 'Escape') { if (window.closeModal) closeModal(); }
+    if (e.key === 'r' || e.key === 'R') { if (window.renderHome) renderHome(); }
+  });
+
+  /* ─── FEATURE 71: LEADERBOARD RANK DISPLAY ─── */
+  window.getLeaderboardRank = function (cb) {
+    if (!window.U || !db) return;
+    var uid = _safeUid(); if (!uid) return;
+    db.ref('users').orderByChild('stats/earnings').once('value', function (s) {
+      var users = [];
+      if (s.exists()) s.forEach(function (c) { users.push({ uid: c.key, earnings: (c.val().stats || {}).earnings || 0 }); });
+      users.sort(function (a, b) { return b.earnings - a.earnings; });
+      var rank = users.findIndex(function (u) { return u.uid === uid; }) + 1;
+      if (cb) cb(rank || users.length + 1, users.length);
+    });
+  };
+  window.showMyRank = function () {
+    window.getLeaderboardRank(function (rank, total) {
+      _toast('🏆 Global Rank: #' + rank + ' out of ' + total + ' players!', 'inf');
+    });
+  };
+
+
+  /* ─── FEATURE 73: AUTO REFRESH WHEN BACK ONLINE ─── */
+  window.addEventListener('online', function () {
+    setTimeout(function () {
+      if (window.renderHome) renderHome();
+      if (window.renderMM) renderMM();
+    }, 1000);
+  });
+
+
+
+  /* ─── FEATURE 76: SWIPE GESTURE SUPPORT ─── */
+  (function () {
+    var startX = 0;
+    document.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; });
+    document.addEventListener('touchend', function (e) {
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 100) {
+        var navItems = ['home', 'special', 'matches', 'wallet', 'rank', 'profile'];
+        var activeNav = document.querySelector('.nav-item.active');
+        if (!activeNav) return;
+        var curIdx = navItems.indexOf(activeNav.dataset.nav || '');
+        if (curIdx < 0) return;
+        if (diff > 0 && curIdx < navItems.length - 1) { if (window.navTo) navTo(navItems[curIdx + 1]); }
+        else if (diff < 0 && curIdx > 0) { if (window.navTo) navTo(navItems[curIdx - 1]); }
+      }
+    });
+  })();
+
+  /* ─── FEATURE 77: APP VERSION CHECKER ─── */
+  window.checkAppVersion = function () {
+    db.ref('appSettings/minVersion').once('value', function (s) {
+      if (!s.exists()) return;
+      var minVer = s.val();
+      var curVer = '9.0'; // Current version
+      if (minVer && minVer > curVer) {
+        _toast('🆕 New app update available! Refresh karo.', 'inf');
+      }
+    });
+  };
+  setTimeout(function () { if (window.checkAppVersion) checkAppVersion(); }, 5000);
+
+  /* ─── FEATURE 78: MAINTENANCE MODE CHECK ─── */
+  /* ✅ BUG FIX (2026-09-17): applyMaintState pulled out of checkMaintenance
+     and exposed as window.applyMaintState — matching js/preview-mode.js's
+     identical fix, same root cause. See core/listeners.js's
+     _bootAppSettings() for the full explanation: this file's own realtime
+     channel (previously created inside checkMaintenance, now removed
+     below) lived outside the app's central channel lifecycle and was
+     silently orphaned every time window._supa got recreated on a Firebase
+     token refresh (login, and roughly hourly thereafter) — exactly
+     matching "works after refresh, not while already open". The realtime
+     subscription now lives in core/listeners.js's _bootAppSettings(),
+     which calls this function directly by name. */
+  function applyMaintState(isMaint, cfg) {
+    /* ✅ REDESIGN (2026-09-26): maintenance screen ab ek proper branded
+       "coming back soon" page hai — animated aurora background, glass card,
+       admin ke config message (app_settings.maintenance.message) ka support,
+       auto re-check countdown, aur "Abhi Check Karo" / Support buttons.
+       Behaviour identical: overlay full-screen, main content pointer-events
+       none, bottom nav hidden. Pure CSS/SVG — koi external asset nahi.
+       Baaki panels' call-signature bhi same hai (isMaint boolean); cfg
+       optional hai (message dikhane ke liye). */
+    var overlay = document.getElementById('maintOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'maintOverlay';
+      overlay.setAttribute('role', 'alertdialog');
+      overlay.setAttribute('aria-live', 'polite');
+
+      if (!document.getElementById('_maintStyle')) {
+        var st = document.createElement('style');
+        st.id = '_maintStyle';
+        st.textContent = [
+          '#maintOverlay{position:fixed;inset:0;z-index:99999;display:none;flex-direction:column;',
+            'align-items:center;justify-content:center;text-align:center;padding:26px;overflow:hidden;',
+            'background:radial-gradient(120% 90% at 50% 0%,#0b1226 0%,#06070f 55%,#04050a 100%);',
+            'font-family:inherit;-webkit-tap-highlight-color:transparent}',
+          '#maintOverlay.mOpen{display:flex;animation:maintFade .45s ease both}',
+          /* aurora blobs */
+          '#maintOverlay .mo-blob{position:absolute;border-radius:50%;filter:blur(64px);opacity:.5;pointer-events:none}',
+          '#maintOverlay .mo-b1{width:340px;height:340px;left:-90px;top:-60px;background:radial-gradient(circle,#00ff9c55,transparent 68%);animation:maintFloat1 13s ease-in-out infinite}',
+          '#maintOverlay .mo-b2{width:300px;height:300px;right:-80px;top:14%;background:radial-gradient(circle,#00d4ff4d,transparent 68%);animation:maintFloat2 16s ease-in-out infinite}',
+          '#maintOverlay .mo-b3{width:380px;height:380px;left:50%;bottom:-140px;transform:translateX(-50%);background:radial-gradient(circle,#b964ff40,transparent 70%);animation:maintFloat3 19s ease-in-out infinite}',
+          /* grid */
+          '#maintOverlay .mo-grid{position:absolute;inset:0;pointer-events:none;opacity:.5;',
+            'background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);',
+            'background-size:44px 44px;mask-image:radial-gradient(75% 60% at 50% 42%,#000 0%,transparent 100%);',
+            '-webkit-mask-image:radial-gradient(75% 60% at 50% 42%,#000 0%,transparent 100%)}',
+          /* card */
+          '#maintOverlay .mo-card{position:relative;width:100%;max-width:372px;padding:30px 24px 22px;border-radius:26px;',
+            'background:linear-gradient(165deg,rgba(20,24,38,.72),rgba(10,12,22,.82));',
+            'border:1px solid rgba(255,255,255,.085);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);',
+            'box-shadow:0 26px 70px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.06);',
+            'animation:maintCardIn .55s cubic-bezier(.2,.9,.3,1.15) both}',
+          /* icon ring */
+          '#maintOverlay .mo-ring{width:86px;height:86px;margin:0 auto 16px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center}',
+          '#maintOverlay .mo-ring:before{content:"";position:absolute;inset:0;border-radius:50%;padding:2px;',
+            'background:conic-gradient(from 0deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);',
+            '-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;',
+            'animation:maintSpin 5.5s linear infinite}',
+          '#maintOverlay .mo-ring:after{content:"";position:absolute;inset:-10px;border-radius:50%;background:radial-gradient(circle,#00ff9c2e,transparent 70%);animation:maintPulse 2.4s ease-in-out infinite}',
+          '#maintOverlay .mo-ico{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:29px;',
+            'background:linear-gradient(150deg,rgba(0,255,156,.14),rgba(0,212,255,.1));border:1px solid rgba(255,255,255,.08);',
+            'box-shadow:inset 0 0 22px rgba(0,255,156,.12);animation:maintBob 3.4s ease-in-out infinite}',
+          /* chip + text */
+          '#maintOverlay .mo-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;margin-bottom:13px;',
+            'background:rgba(0,255,156,.09);border:1px solid rgba(0,255,156,.24);color:#8effcf;',
+            'font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}',
+          '#maintOverlay .mo-chip i{width:6px;height:6px;border-radius:50%;background:#00ff9c;box-shadow:0 0 8px #00ff9c;animation:maintPulse 1.6s infinite}',
+          '#maintOverlay .mo-title{margin:0 0 9px;font-size:22px;font-weight:900;color:#fff;letter-spacing:.2px;line-height:1.25}',
+          '#maintOverlay .mo-msg{margin:0 auto;max-width:300px;font-size:13px;line-height:1.62;color:#9aa0b4}',
+          '#maintOverlay .mo-msg b{color:#cfd4e4;font-weight:700}',
+          /* progress */
+          '#maintOverlay .mo-bar{position:relative;height:5px;border-radius:99px;margin:20px auto 10px;max-width:250px;overflow:hidden;background:rgba(255,255,255,.07)}',
+          '#maintOverlay .mo-bar span{position:absolute;inset:0;border-radius:99px;',
+            'background:linear-gradient(90deg,transparent,#00ff9c,#00d4ff,transparent);background-size:44% 100%;background-repeat:no-repeat;',
+            'animation:maintShimmer 1.9s ease-in-out infinite}',
+          '#maintOverlay .mo-auto{display:flex;align-items:center;justify-content:center;gap:7px;font-size:11px;color:#6f7690;margin-bottom:18px}',
+          '#maintOverlay .mo-auto b{color:#9fe8c8;font-variant-numeric:tabular-nums}',
+          /* buttons */
+          '#maintOverlay .mo-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:270px;margin:0 auto 9px;',
+            'padding:13px 18px;border-radius:14px;border:0;font-family:inherit;font-size:13.5px;font-weight:900;cursor:pointer;',
+            'transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}',
+          '#maintOverlay .mo-btn:active{transform:scale(.972)}',
+          '#maintOverlay .mo-btn-p{color:#04120b;background:linear-gradient(135deg,#00ff9c,#00d4ff);box-shadow:0 12px 30px rgba(0,255,156,.22)}',
+          '#maintOverlay .mo-btn-p:hover{filter:brightness(1.06);box-shadow:0 14px 34px rgba(0,255,156,.3)}',
+          '#maintOverlay .mo-btn-s{color:#c8cede;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1)}',
+          '#maintOverlay .mo-btn-s:hover{background:rgba(255,255,255,.09)}',
+          '#maintOverlay .mo-foot{margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.06);',
+            'font-size:10.5px;color:#5d6480;display:flex;align-items:center;justify-content:center;gap:6px}',
+          /* Hard lock: safe-loader/fixes-v8 boot ke baad bottomNav ka inline
+             display:block dobara set kar dete hain (race). Stylesheet !important
+             inline style ko bhi haraa deta hai, isliye nav kisi bhi re-render
+             ke baad chhupa hi rahega jab tak body par maint-on class hai. */
+          'body.maint-on #bottomNav{display:none!important}',
+          'body.maint-on #mainContent{pointer-events:none!important}',
+          'body.maint-on #header{pointer-events:none!important}',
+          '#maintOverlay .mo-foot .mo-shield{color:#00ff9c}',
+          /* keyframes */
+          '@keyframes maintFade{from{opacity:0}to{opacity:1}}',
+          '@keyframes maintCardIn{from{opacity:0;transform:translateY(22px) scale(.965)}to{opacity:1;transform:none}}',
+          '@keyframes maintSpin{to{transform:rotate(360deg)}}',
+          '@keyframes maintPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.9;transform:scale(1.06)}}',
+          '@keyframes maintBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}',
+          '@keyframes maintShimmer{0%{background-position:-44% 0}100%{background-position:144% 0}}',
+          '@keyframes maintFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,22px) scale(1.08)}}',
+          '@keyframes maintFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-24px,18px) scale(1.1)}}',
+          '@keyframes maintFloat3{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}50%{transform:translateX(-50%) translateY(-26px) scale(1.06)}}',
+          '@media (prefers-reduced-motion:reduce){#maintOverlay *{animation:none!important}}'
+        ].join('');
+        document.head.appendChild(st);
+      }
+
+      overlay.innerHTML = [
+        '<div class="mo-blob mo-b1"></div><div class="mo-blob mo-b2"></div><div class="mo-blob mo-b3"></div>',
+        '<div class="mo-grid"></div>',
+        '<div class="mo-card" id="maintCard">',
+          '<div class="mo-ring"><div class="mo-ico">🛠️</div></div>',
+          '<div class="mo-chip"><i></i> Maintenance Mode</div>',
+          '<h1 class="mo-title">Thodi der ki baat hai 🙏</h1>',
+          '<p class="mo-msg" id="maintMsg">Hum app ko aur behtar bana rahe hain.<br>Bas <b>thodi der</b> me wapas aa jaayenge — tab tak breathe karo 😄</p>',
+          '<div class="mo-bar"><span></span></div>',
+          '<div class="mo-auto"><span>Auto check</span> <b id="maintCountdown">30s</b></div>',
+          '<button type="button" class="mo-btn mo-btn-p" id="maintRetry">🔄 Abhi Check Karo</button>',
+          '<button type="button" class="mo-btn mo-btn-s" id="maintSupport">💬 Support se baat karo</button>',
+          '<div class="mo-foot"><span class="mo-shield">🔒</span> Aapka data safe hai · Mini eSports</div>',
+        '</div>'
+      ].join('');
+      document.body.appendChild(overlay);
+
+      /* Buttons — retry: dobara app_settings read; support: WhatsApp */
+      overlay.querySelector('#maintRetry').addEventListener('click', function () {
+        var btn = this;
+        btn.innerHTML = '⏳ Checking…';
+        window._maintRecheck().then(function (still) {
+          if (still) {
+            btn.innerHTML = '😕 Abhi bhi maintenance me hai';
+            if (window._maintStartCountdown) window._maintStartCountdown(true);   /* auto-check window 30s se restart */
+            setTimeout(function () { btn.innerHTML = '🔄 Abhi Check Karo'; }, 1600);
+          }
+          else { btn.innerHTML = '✅ Wapas aa gaya!'; }
+        }, function () { btn.innerHTML = '🔄 Abhi Check Karo'; });
+      });
+      overlay.querySelector('#maintSupport').addEventListener('click', function () {
+        var msg = 'Hello Mini eSports team! App maintenance me hai — kab tak wapas aayega?';
+        if (window.openWhatsApp) { window.openWhatsApp(msg); }
+        else { window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank'); }
+      });
+    }
+
+    /* config message (admin) — set ho to default ki jagah dikhao */
+    var msgEl = overlay.querySelector('#maintMsg');
+    var cfgMsg = cfg && typeof cfg === 'object' && typeof cfg.message === 'string' ? cfg.message.trim() : '';
+    if (msgEl) {
+      if (cfgMsg) msgEl.innerHTML = cfgMsg.replace(/[<>]/g, '');
+      else msgEl.innerHTML = 'Hum app ko aur behtar bana rahe hain.<br>Bas <b>thodi der</b> me wapas aa jaayenge — tab tak breathe karo 😄';
+    }
+
+    var main = document.getElementById('mainContent');
+    var nav = document.getElementById('bottomNav');
+    if (isMaint) {
+      overlay.classList.add('mOpen');
+      if (main) main.style.pointerEvents = 'none';
+      if (nav) nav.style.display = 'none';
+      document.body.classList.add('maint-on');
+      window._maintStartCountdown && window._maintStartCountdown();
+    } else {
+      overlay.classList.remove('mOpen');
+      document.body.classList.remove('maint-on');
+      if (main) main.style.pointerEvents = '';
+      if (nav && window.U) nav.style.display = '';
+      window._maintStopCountdown && window._maintStopCountdown();
+    }
+  }
+  window.applyMaintState = applyMaintState;
+
+  /* ── Auto re-check countdown (30s) — maintenance ke dauraan har 30s par
+        app_settings dobara padhta hai, aur khatam hone par khud-ba-khud
+        overlay hata deta hai. Button ("Abhi Check Karo") bhi same path. ── */
+  (function () {
+    var _t = null, _left = 30;
+    function _tick() {
+      _left -= 1;
+      var el = document.getElementById('maintCountdown');
+      if (el) el.textContent = _left + 's';
+      if (_left <= 0) {
+        _left = 30;
+        window._maintRecheck().then(null, function () {});
+      }
+    }
+    window._maintStartCountdown = function (force) {
+      /* force=true → chalta hua countdown bhi 30s se restart (manual
+         "Abhi Check Karo" ke baad auto-check window fresh honi chahiye;
+         pehle `if (_t) return;` ki wajah se countdown purana hi chalta rehta tha). */
+      if (_t) {
+        if (!force) return;
+        clearInterval(_t); _t = null;
+      }
+      _left = 30;
+      var el = document.getElementById('maintCountdown');
+      if (el) el.textContent = '30s';
+      _t = setInterval(_tick, 1000);
+    };
+    window._maintStopCountdown = function () {
+      if (_t) { clearInterval(_t); _t = null; }
+      _left = 30;
+    };
+    window._maintRecheck = function () {
+      if (!window._supa) return Promise.resolve(true);
+      return window._supa.from('app_settings').select('value').eq('key', 'maintenance').maybeSingle()
+        .then(function (res) {
+          if (res.error) return true;
+          var v = res.data && res.data.value;
+          var still = !!(v && v.active === true);
+          applyMaintState(still, v);
+          return still;
+        });
+    };
+  })();
+
+  window.checkMaintenance = function () {
+    /* ✅ MIGRATED (2026-08-18): Maintenance Mode moved from Firebase RTDB
+       (appSettings/maintenance) to Supabase app_settings — same pattern
+       as preview_mode already used. This removes the dependency on
+       Firebase Console rules deployment, which could never be
+       confirmed/fixed from a coding session alone (see
+       DEVELOPER_GUIDE.md Section 34.11 for the full trace of why the
+       Firebase-based version was suspected broken). Uses Supabase
+       Realtime (postgres_changes, via core/listeners.js's
+       _bootAppSettings — see applyMaintState above) for the live-toggle
+       behavior the old Firebase .on('value') listener provided. */
+    if (!window._supa) {
+      console.error('[checkMaintenance] window._supa not available — cannot check maintenance mode');
+      return;
+    }
+
+    /* Initial read — the realtime subscription (core/listeners.js
+       _bootAppSettings) only fires on future changes, so this one-time
+       read is still needed to pick up whatever state maintenance is
+       ALREADY in at the moment this user opens the app. */
+    window._supa.from('app_settings').select('value').eq('key','maintenance').maybeSingle()
+      .then(function (res) {
+        if (res.error) {
+          console.error('[checkMaintenance] app_settings read failed:', res.error.message);
+          return;
+        }
+        applyMaintState(!!(res.data && res.data.value && res.data.value.active === true), res.data && res.data.value);
+      });
+
+    /* ✅ Safety-net poll — unaffected by the channel-lifecycle bug above
+       (a plain one-shot .then() read can't go stale the way a channel
+       subscription can), kept as defense in depth regardless of whether
+       the realtime channel is healthy. */
+    if (!window._maintModePollTimer) {
+      window._maintModePollTimer = setInterval(function () {
+        window._supa.from('app_settings').select('value').eq('key','maintenance').maybeSingle()
+          .then(function (res) {
+            if (!res.error) applyMaintState(!!(res.data && res.data.value && res.data.value.active === true), res.data && res.data.value);
+          });
+      }, 25000);
+    }
+  };
+  setTimeout(function () { if (window.checkMaintenance) checkMaintenance(); }, 2000);
+
+
+
+  /* ─── FEATURE 80: HAPTIC ON JOIN ─── */
+  var _origNavTo = window.navTo;
+  window.navTo = function (scr) {
+    if (window.haptic) haptic();
+    if (_origNavTo) _origNavTo(scr);
+  };
+
+  window._searchMatches = function () {
+    var q = (document.getElementById('mSearchIn') || {}).value || ''; q = q.toLowerCase();
+    var res = document.getElementById('mSearchRes'); if (!res) return;
+    if (q.length < 2) { res.innerHTML = '<p style="color:var(--txt2);text-align:center;padding:20px">2+ characters type karo</p>'; return; }
+    var MT = window.MT || {};
+    var found = Object.values(MT).filter(function (t) { return t && t.name && t.name.toLowerCase().includes(q); });
+    var h = '<div style="display:flex;flex-direction:column;gap:6px">';
+    if (!found.length) h += '<p style="color:var(--txt2);text-align:center;padding:20px">Koi match nahi mila</p>';
+    found.slice(0, 10).forEach(function (t) {
+      h += '<div onclick="closeModal();showDet(\'' + t.id + '\')" style="padding:10px 12px;border-radius:10px;background:var(--card2);border:1px solid var(--border);cursor:pointer;display:flex;justify-content:space-between;align-items:center">';
+      h += '<div><div style="font-size:13px;font-weight:700">' + t.name + '</div><div style="font-size:11px;color:var(--txt2)">' + (t.mode||'solo').toUpperCase() + ' · 💎' + (t.entryFee||0) + '</div></div>';
+      h += '<i class="fas fa-chevron-right" style="color:var(--txt2)"></i></div>';
+    });
+    h += '</div>';
+    res.innerHTML = h;
+  };
+
+  /* ─── FEATURE 82: NIGHT MODE AUTO ─── */
+  window.autoNightMode = function () {
+    var hr = new Date().getHours();
+    var isNight = hr >= 21 || hr < 6;
+    var saved = localStorage.getItem('appTheme');
+    if (!saved) {
+      document.body && document.body.setAttribute('data-theme', isNight ? 'dark' : 'light');
+    }
+  };
+  window.autoNightMode();
+
+
+  /* ─── FEATURE 84: QUICK SUPPORT CHAT ─── */
+  window.sendQuickSupport = function (issue) {
+    if (!window.U || !db) return;
+    var uid = _safeUid(); if (!uid) return;
+    var id = db.ref('supportRequests').push().key;
+    db.ref('supportRequests/' + id).set({
+      id: id, userId: uid, userName: window.UD && window.UD.ign || '',
+      userEmail: window.UD && window.UD.email || '',
+      type: issue, message: issue, status: 'open', createdAt: Date.now()
+    });
+    _toast('✅ Support request sent! Admin se chat karo.', 'ok');
+  };
+
+  /* ─── FEATURE 85: MATCH PARTICIPATION CERTIFICATE ─── */
+  window.generateCertificate = function (matchName, rank, date) {
+    var UD = window.UD; if (!UD) return;
+    var canvas = document.createElement('canvas');
+    canvas.width = 500; canvas.height = 300;
+    var ctx = canvas.getContext('2d');
+    // Background
+    var g = ctx.createLinearGradient(0, 0, 500, 300);
+    g.addColorStop(0, '#0a0f1a'); g.addColorStop(1, '#1a0f2e');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 500, 300);
+    // Border
+    ctx.strokeStyle = '#ffd70066'; ctx.lineWidth = 3; ctx.strokeRect(10, 10, 480, 280);
+    // Title
+    ctx.fillStyle = '#ffd700'; ctx.font = 'bold 18px Arial'; ctx.textAlign = 'center';
+    ctx.fillText('MINI eSPORTS — CERTIFICATE', 250, 50);
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 14px Arial';
+    ctx.fillText('This certifies that', 250, 90);
+    ctx.fillStyle = '#00ff9c'; ctx.font = 'bold 24px Arial';
+    ctx.fillText(UD.ign || 'Player', 250, 130);
+    ctx.fillStyle = '#ffffff'; ctx.font = '14px Arial';
+    ctx.fillText('participated in ' + (matchName || 'Tournament'), 250, 165);
+    ctx.fillText('Rank #' + (rank || '-') + ' · ' + (date || new Date().toLocaleDateString()), 250, 195);
+    ctx.fillStyle = '#ffd700'; ctx.font = '12px Arial';
+    ctx.fillText((typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/'), 250, 275);
+    var url = canvas.toDataURL();
+    var a = document.createElement('a'); a.href = url; a.download = 'certificate.png'; a.click();
+    _toast('🏅 Certificate downloaded!');
+  };
+
+
+
+  /* ─── FEATURE 88: WIN PROBABILITY DISPLAY ─── */
+  window.getWinProbability = function (t) {
+    if (!t || !t.maxSlots) return null;
+    var slots = Number(t.maxSlots);
+    var mode = (t.mode || t.type || 'solo').toLowerCase();
+    var baseChance = mode === 'solo' ? 1 / slots : mode === 'duo' ? 2 / slots : 4 / slots;
+    var pct = Math.min(Math.round(baseChance * 100), 100);
+    return pct;
+  };
+
+  /* ─── FEATURE 89: STREAK BONUS NOTIFICATION — ✅ HATA DIYA (B19) ───
+     ✅ BUG FIX (2026-10-07, B19 — "double logic/UI"): ye DOOSRI (duplicate)
+     streak-milestone UI thi. Iska toast "N Day Streak Bonus! Extra 🪙 coins
+     earned!" kehta tha — par credit kuch bhi nahi karta tha (jhootha
+     "coins earned"), aur iski milestone list bhi [3,7,14,30] thi jabki
+     asli list [3,7,14,30,60,100] hai. Asli inaam (popup + server RPC
+     claim_streak_milestone) features/premium-creator.js ke
+     checkStreakMilestones() se milta hai — SSOT wahin hai. Net asar:
+     ek hi milestone par user ko DO jagah se DO message milte the.
+     Ab poora duplicate hataya: ye function + iske dono call-sites
+     (core/listeners.js _applyUser, js/fix5-listener-manager.js L1).
+     SSOT chain = admin Settings → app_settings.live_config
+     .streakMilestones (coins/badge) → RPC claim_streak_milestone
+     (atomic claim flag users.streak_milestones_claimed) → popup. */
+
+  /* ─── FEATURE 90: IN-APP RULES SUMMARY ─── */
+  window.showQuickRules = function () {
+    var rules = [
+      { icon: '🎮', title: 'Fair Play', desc: 'Registered IGN & UID se hi khelo. Mismatch = disqualification.' },
+      { icon: '💰', title: 'Entry Fee', desc: 'Entry fee non-refundable hai (cancelled match ke siwa).' },
+      { icon: '💀', title: 'Kill Proof', desc: 'Kill count dispute ke liye screenshot upload karo.' },
+      { icon: '🏆', title: 'Results', desc: 'Admin 30 min mein result publish karega.' },
+      { icon: '📤', title: 'Withdrawal', desc: 'Min ₹50. Winnings wallet mein credited hote hain.' },
+      { icon: '🚫', title: 'Cheating', desc: 'Hack/cheat = permanent ban aur prize forfeit.' },
+    ];
+    var h = '<div style="display:flex;flex-direction:column;gap:8px">';
+    rules.forEach(function (r) {
+      h += '<div style="display:flex;gap:10px;padding:10px;border-radius:10px;background:var(--card2);border:1px solid var(--border)">';
+      h += '<span style="font-size:20px">' + r.icon + '</span>';
+      h += '<div><div style="font-size:13px;font-weight:700">' + r.title + '</div><div style="font-size:11px;color:var(--txt2)">' + r.desc + '</div></div></div>';
+    });
+    h += '</div>';
+    if (window.showModal) showModal('📋 Quick Rules', h);
+  };
+
+
+  /* ─── FEATURE 92: MATCH HISTORY EXPORT ─── */
+  window.exportMatchHistory = function () {
+    var uid = window.U && window.U.uid; if (!uid) return;
+    db.ref('joinRequests').orderByChild('userId').equalTo(uid).once('value', function (s) {
+      var rows = [['Match Name', 'Mode', 'Entry Fee', 'Status', 'Result', 'Date']];
+      if (s.exists()) s.forEach(function (c) {
+        var d = c.val();
+        rows.push([
+          d.matchName || 'Unknown', d.mode || 'solo', d.entryFee || 0, d.status || '-',
+          d.result ? 'Rank #' + d.result.rank + ' | ₹' + d.result.prize : 'No result',
+          new Date(d.createdAt || 0).toLocaleDateString()
+        ]);
+      });
+      var csv = rows.map(function (r) { return r.map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = 'match-history.csv'; a.click();
+      _toast('📊 Match history exported!');
+    });
+  };
+
+
+  /* ─── FEATURE 94: QUICK JOIN HISTORY ─── */
+  window.showRecentJoins = function () {
+    var history = JSON.parse(localStorage.getItem('recentJoins') || '[]');
+    var h = '<div style="display:flex;flex-direction:column;gap:6px">';
+    if (!history.length) h += '<p style="text-align:center;color:var(--txt2);padding:30px">No recent joins</p>';
+    history.slice(0, 10).forEach(function (item) {
+      h += '<div style="padding:10px 12px;border-radius:10px;background:var(--card2);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">';
+      h += '<div><div style="font-size:13px;font-weight:600">' + (item.name||'Match') + '</div><div style="font-size:10px;color:var(--txt2)">' + new Date(item.ts||0).toLocaleDateString() + '</div></div>';
+      h += '<div style="font-size:11px;color:var(--green)">Joined ✅</div></div>';
+    });
+    h += '</div>';
+    if (window.showModal) showModal('🕐 Recent Joins', h);
+  };
+
+
+  /* ─── FEATURE 96: SHARE MATCH ON WHATSAPP ─── */
+  window.shareMatchWhatsApp = function (matchId) {
+    var t = window.MT && window.MT[matchId]; if (!t) return;
+    /* R28j (2026-09-22): false ₹-claim + fake domain (mini-esports.app)
+       hatao. Prize/entry ab entryType ke hisaab se (coin 🪙 / Sky 💎),
+       URL canonical APP_URL / current origin. */
+    var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin';
+    var prize = Math.max(Number(t.firstPrize || t.prize1st || t.prizePool || 0), 0);
+    var fee = Number(t.entryFee || 0);
+    var prizeTxt = isCoin ? ('🪙 ' + prize + ' Coins') : ('💎 ' + prize + ' Green Diamonds');
+    var feeTxt = fee > 0 ? (isCoin ? ('🪙 ' + fee) : ('💎 ' + fee)) : 'FREE';
+    var base = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+    var msg = '🎮 Join ' + t.name + ' on Mini eSports!\n🏆 Prize: ' + prizeTxt + '\n🎟 Entry: ' + feeTxt + '\n⏰ ' + (t.matchTime ? new Date(Number(t.matchTime)).toLocaleString() : '') + '\n📱 ' + base;
+    window.openWhatsApp(msg);
+  };
+
+
+
+  /* ─── FEATURE 99: RECENT WINNERS FEED ─── */
+  window.showRecentWinners = function () {
+    db.ref('matchResults').limitToLast(5).once('value', function (s) {
+      var winners = [];
+      if (s.exists()) s.forEach(function (matchNode) {
+        matchNode.forEach(function (c) {
+          var r = c.val();
+          if (r.rank === 1 && r.prize > 0) winners.push(r);
+        });
+      });
+      var h = '<div style="display:flex;flex-direction:column;gap:8px">';
+      if (!winners.length) h += '<p style="text-align:center;color:var(--txt2);padding:30px">Koi recent winners nahi</p>';
+      winners.forEach(function (w) {
+        h += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2)">';
+        h += '<span style="font-size:20px">' + (window.medalHtml ? medalHtml(1, 20) : '') + '</span>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:700">' + (w.playerName||'Player') + '</div><div style="font-size:10px;color:var(--txt2)">Won 💎' + w.prize + '</div></div>';
+        h += '<div style="font-size:14px;font-weight:700;color:#ffd700">₹' + w.prize + '</div></div>';
+      });
+      h += '</div>';
+      if (window.showModal) showModal('🏆 Recent Winners', h);
+    });
+  };
+
+
+  /* ─── FEATURE 103: DAILY CHECK-IN BUTTON ─── */
+  function _checkInDateToday() {
+    return new Date().toISOString().slice(0, 10);
+  }
+  /* ✅ B26 (2026-10-07): agla check-in reward nikaalo — bilkul wahi cycle jo
+     server (process_daily_checkin) lagata hai: next_streak = (kal check-in hua
+     tha ? streak+1 : 1), position = ((next_streak-1) % 7) + 1, aur har 30 din
+     par milestone bonus. PEHLE button par hardcoded "(+🪙5)" likha tha jabki
+     day 2 se 7,10,12,15,20,30 coins milte hain — UI jhooth bol rahi thi.
+     Config na mile to null lauta deta hai (tab sirf "Daily Check-In" dikhta hai,
+     koi galat number nahi). */
+  window._nextCheckInReward = function () {
+    var tiers = (window._adminDailyBonusRewards && window._adminDailyBonusRewards.length === 7)
+      ? window._adminDailyBonusRewards : null;
+    if (!tiers) return null;
+    /* UD.streak_days asli check-in se aata hai; listeners.js sirf loginStreak
+       set karta hai — dono me se jo mile, wahi lo. */
+    var streak = Number((window.UD && (window.UD.streak_days != null ? window.UD.streak_days : window.UD.loginStreak)) || 0);
+    var last = window.UD && window.UD.lastCheckIn;
+    var y = new Date(); y.setDate(y.getDate() - 1);
+    var yStr = y.getFullYear() + '-' + String(y.getMonth() + 1).padStart(2, '0') + '-' + String(y.getDate()).padStart(2, '0');
+    var next = (last && String(last).slice(0, 10) === yStr) ? (streak + 1) : 1;
+    var reward = Number(tiers[(next - 1) % 7]) || 0;
+    var bonus = (next % 30 === 0) ? (Number(window._adminDay30Bonus) || 0) : 0;
+    return { reward: reward, bonus: bonus, streak: next };
+  };
+  window.updateDailyCheckInButton = function () {
+    var claimed = !!(window.UD && window.UD.lastCheckIn === _checkInDateToday());
+    var _nx = window._nextCheckInReward();
+    var _amtLabel = _nx
+      ? ('+🪙' + _nx.reward + (_nx.bonus ? ' +🎁' + _nx.bonus : ''))
+      : '🪙';
+    document.querySelectorAll('[data-daily-checkin]').forEach(function(btn) {
+      btn.disabled = claimed;
+      btn.setAttribute('aria-disabled', claimed ? 'true' : 'false');
+      /* ✅ D73 (dynamic-data rule): replica button ka [data-dci-label] span
+         sirf LABEL update karta hai — poora innerHTML replace karne se
+         reference-style button toot jata tha. Asli reward (admin-config
+         cycling tiers) hi dikhta hai, hardcoded 5 nahi. */
+      var lbl = btn.querySelector('[data-dci-label]');
+      if (lbl) {
+        lbl.innerHTML = claimed
+          ? 'Checked In Today ✓'
+          : 'Daily<br>Check-In<br><span style="font-size:3.6cqw">(' + _amtLabel.replace('+🪙', '+  ') + ')</span>';
+      } else {
+        btn.innerHTML = claimed
+          ? '<i class="fas fa-check-circle"></i> Checked In Today'
+          : '<i class="fas fa-calendar-check"></i> Daily Check-In (' + _amtLabel + ')';
+      }
+      btn.style.opacity = claimed ? '0.65' : '1';
+      btn.style.cursor = claimed ? 'default' : 'pointer';
+    });
+    /* ✅ B26: Coin Shop ke "Daily Check-In" tile par bhi asli agla reward dikhao
+       (pehle wahan hardcoded "+5🪙 / 7-day streak bonus +50🪙" likha tha, jo
+       day-2 se galat ho jata tha). */
+    var _amt  = document.getElementById('csCheckinAmt');
+    var _amt2 = document.getElementById('csCheckinAmt2');
+    var _cyc  = document.getElementById('csCheckinCycle');
+    if (_amt)  _amt.textContent  = _amtLabel;
+    if (_amt2) _amt2.textContent = _amtLabel;
+    if (_cyc && _nx) _cyc.textContent = 'Day ' + _nx.streak + ' par itne coins • 7-din cycle • har 30 din bonus';
+  };
+  window.doCheckIn = function () {
+    if (window.UD && window.UD.lastCheckIn === _checkInDateToday()) {
+      window.updateDailyCheckInButton();
+      _toast('✅ Aaj already check-in kar chuke ho!', 'inf');
+      return;
+    }
+    /* ✅ FIX (live-testing, 401 on Daily Check-In click): window._supa
+       exists from page-load as an ANON client (see supabase-init-early
+       equivalent in core/db.js) — it only becomes authenticated after
+       syncFirebaseToken() runs and sets window._supaReady. Checking only
+       `!window._supa` let this fire against the anon client during the
+       login window, which process_daily_checkin (an authenticated-only
+       RPC) correctly rejects with 401. Same root cause class as the
+       Admin Panel's matches/commissions race fixed earlier this audit —
+       wait for _supaReady too. */
+    if (!window.U || !window._supa || !window._supaReady) return;
+    var uid = _safeUid(); if (!uid) return;
+    var btn = document.getElementById('checkInBtn');
+    if (btn) btn.disabled = true;
+
+    /* BUG #31/#44 FIX (2026-07): consolidated with fixes-v7.js's _checkStreakFixed to use
+       the same atomic RPC and the same admin-configurable cycling-tier reward structure
+       (window._adminDailyBonusRewards), instead of this file's own separate, simpler
+       "5 coins + every-7-days-50-bonus" calculation — eliminates the previous
+       three-separate-writes race condition entirely (see process_daily_checkin). */
+    var tierRewards = window._adminDailyBonusRewards || [5,7,10,12,15,20,30];
+    window._supa.rpc('process_daily_checkin', { p_tier_rewards: tierRewards, p_milestone_bonus: (window._adminDay30Bonus || 100), p_milestone_days: 30 }) /* BUG #39 FIX */
+      .then(function(r) {
+        if (r.error || (r.data && r.data.success === false)) {
+          if (r.data && r.data.error === 'already_checked_in') {
+            _toast('✅ Aaj already check-in kar chuke ho!', 'inf');
+          } else {
+            var msg = (r.data && r.data.error) || (r.error && r.error.message) || 'retry karo';
+            _toast('Check-in failed: ' + msg, 'err');
+          }
+          if (btn) btn.disabled = false;
+          return;
+        }
+        var totalReward = r.data.total;
+        var newStreak = r.data.streak;
+        if (window.UD) {
+          window.UD.coins = (Number(window.UD.coins) || 0) + totalReward;
+          window.UD.streak_days = newStreak;
+          window.UD.lastCheckIn = _checkInDateToday();
+        }
+        if (window.updateHdr) updateHdr();
+        if (window.renderWallet) renderWallet();
+        window.updateDailyCheckInButton();
+        _toast(r.data.milestone_bonus > 0
+          ? '🎉 Check-in complete! +🪙' + totalReward + ' Coins (' + newStreak + '-day milestone bonus!) 🔥'
+          : '🎉 Check-in complete! +🪙' + totalReward + ' Coins earned!', 'ok');
+        if (window.haptic) haptic('success');
+        if (window.f06Streak && window.f06Streak.show) setTimeout(function(){ window.f06Streak.show(((newStreak-1)%tierRewards.length)+1, r.data.reward); }, 1500);
+        if (btn) btn.disabled = false;
+      })
+      .catch(function(e) {
+        console.error('[doCheckIn] failed:', e && e.message);
+        _toast('Check-in failed: ' + (e && e.message ? e.message : 'retry karo'), 'err');
+        if (btn) btn.disabled = false;
+      });
+  };
+
+
+
+
+  /* ─── FEATURE 107: MATCH REMINDERS LIST ─── */
+  window._reminders = JSON.parse(localStorage.getItem('matchReminders') || '[]');
+
+
+  /* ─── FEATURE 109: MATCH ENTRY FEE CALCULATOR ─── */
+  window.calcEntryFee = function (fee, isCoin) {
+    var UD = window.UD; if (!UD) return { canJoin: false, balance: 0 };
+    var balance = isCoin ? (UD.coins || 0) : ((UD.realMoney || {}).deposited || 0) + ((UD.realMoney || {}).winnings || 0) + ((UD.realMoney || {}).bonus || 0);
+    return { canJoin: balance >= fee, balance: balance, shortfall: Math.max(fee - balance, 0) };
+  };
+
+
+
+  /* ═══════════════════════════════════════════════
+     NEW 100 SMART FEATURES (111-210) — v11
+     All three files: HTML + app.js + features-user.js
+     FF UID shown everywhere user is mentioned
+  ═══════════════════════════════════════════════ */
+
+
+  /* ─── FEATURE 112: SHARE FF UID ─── */
+  window.shareFFUID = function() {
+    var UD = window.UD; if (!UD || !UD.ffUid) return;
+    var text = '🎮 My Free Fire Profile:\n👤 IGN: ' + (UD.ign||'Player') + '\n🆔 FF UID: ' + UD.ffUid + '\n\nJoin me on Mini eSports! 🔥';
+    if (navigator.share) navigator.share({title: 'My FF Profile', text: text}).catch(function(){});
+    else { window.copyTxt && copyTxt(text); _toast('UID copied to clipboard!', 'ok'); }
+  };
+
+  /* ─── FEATURE 113: FF UID QR CODE (text-based) ─── */
+  window.showQRCode = function() {
+    var UD = window.UD; if (!UD || !UD.ffUid) return;
+    var h = '<div style="text-align:center;padding:20px">';
+    h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:12px">Share your FF UID</div>';
+    h += '<div style="font-family:monospace;font-size:24px;font-weight:900;color:var(--green);letter-spacing:3px;padding:20px;background:rgba(0,255,156,.06);border:2px solid rgba(0,255,156,.2);border-radius:14px;margin-bottom:12px">' + UD.ffUid + '</div>';
+    h += '<div style="font-size:18px;font-weight:800;margin-bottom:8px">' + (window.escHtml?window.escHtml(UD.ign||'Player'):(UD.ign||'Player')) + '</div>';
+    h += '<button onclick="window.copyMyFFUID&&copyMyFFUID()" style="width:100%;padding:12px;border-radius:12px;background:var(--primary);color:#000;font-weight:800;border:none;cursor:pointer;font-size:14px"><i class="fas fa-copy"></i> Copy UID</button>';
+    h += '</div>';
+    if (window.openModal) openModal('Your FF UID', h);
+  };
+
+
+
+
+
+
+  window._doLookup = function() {
+    var inp = document.getElementById('lookupUID');
+    var uid = inp ? inp.value.trim() : '';
+    if (!uid || uid.length < 4) { _toast('Valid UID enter karo', 'err'); return; }
+    var res = document.getElementById('lookupResult');
+    if (res) res.innerHTML = '<div style="text-align:center;color:var(--txt2);padding:12px"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+    var db = window.db;
+    if (!db) return;
+    db.ref('users').orderByChild('ffUid').equalTo(uid).once('value', function(s) {
+      if (!res) return;
+      if (!s.exists()) { res.innerHTML = '<div style="text-align:center;color:#ff6b6b;padding:12px"><i class="fas fa-times-circle"></i> No player found with this UID</div>'; return; }
+      var p = null; s.forEach(function(c) { p = c.val(); });
+      var st = (p.stats||{}), wr = st.matches ? Math.round((st.wins||0)/st.matches*100) : 0;
+      res.innerHTML = '<div style="padding:12px;background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:12px;text-align:center">' +
+        '<div style="font-size:20px;font-weight:900;margin-bottom:4px">' + (p.ign||p.displayName||'Player') + '</div>' +
+        '<div style="font-size:13px;font-weight:700;color:var(--green);font-family:monospace;margin-bottom:10px">FF UID: ' + uid + '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">' +
+        '<div style="background:var(--card);border-radius:8px;padding:8px"><div style="font-size:10px;color:var(--txt2)">Matches</div><div style="font-weight:700">' + (st.matches||0) + '</div></div>' +
+        '<div style="background:var(--card);border-radius:8px;padding:8px"><div style="font-size:10px;color:var(--txt2)">Wins</div><div style="font-weight:700">' + (st.wins||0) + '</div></div>' +
+        '<div style="background:var(--card);border-radius:8px;padding:8px"><div style="font-size:10px;color:var(--txt2)">Win%</div><div style="font-weight:700">' + wr + '%</div></div>' +
+        '</div></div>';
+    });
+  };
+
+
+
+
+
+
+
+
+  /* ─── FEATURE 127: LIVE MATCH COUNTDOWN WIDGET ─── */
+  window.renderNextMatchCountdown = function() {
+    var JR = window.JR || {}, MT = window.MT || {};
+    var upcoming = [];
+    for (var k in JR) {
+      var jr = JR[k], t = MT[jr.matchId];
+      if (t && t.matchTime && Number(t.matchTime) > Date.now()) upcoming.push({ jr: jr, t: t });
+    }
+    if (!upcoming.length) return '';
+    upcoming.sort(function(a,b) { return Number(a.t.matchTime) - Number(b.t.matchTime); });
+    var next = upcoming[0];
+    var diff = Number(next.t.matchTime) - Date.now();
+    var h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000);
+    var html = '<div style="background:linear-gradient(135deg,rgba(255,107,107,.08),rgba(255,170,0,.06));border:1px solid rgba(255,170,0,.2);border-radius:14px;padding:12px 16px;margin-bottom:12px">';
+    html += '<div style="font-size:11px;color:var(--txt2);margin-bottom:4px"><i class="fas fa-clock"></i> Next Match Starting In</div>';
+    html += '<div style="font-size:20px;font-weight:900;color:#ffaa00">' + (h > 0 ? h + 'h ' : '') + m + 'm</div>';
+    html += '<div style="font-size:13px;font-weight:700;margin-top:2px">' + (next.t.name||'Match') + '</div>';
+    html += '</div>';
+    return html;
+  };
+
+
+  /* ✅ HATA DIYA (2026-10-07): window._calcPrize — yeh Prize Calculator ke
+     modal (showSmartPrizeCalc) ke saath chalta tha. Wo poora calculator user
+     ke kehne par hat gaya (wajah: purani `commission` value par galat fee
+     dikhata tha) — is liye is marte hue helper ka bhi koi kaam nahi bacha.
+     Dhyan: match-result ke asli prize ka hisaab `_MRD`/match detail se hota
+     hai, is function se kabhi nahi hota tha (iska koi caller nahi tha). */
+
+  /* ─── FEATURE 131: MATCH PERFORMANCE TRACKER ─── */
+  window.showPerformanceTracker = function() {
+    var UD = window.UD; if (!UD) return;
+    var st = UD.stats || {};
+    var wr = st.matches ? (st.wins/st.matches*100).toFixed(1) : '0.0';
+    var kpg = st.matches ? (st.kills/st.matches).toFixed(1) : '0.0';
+    var epg = st.matches ? ((st.earnings||0)/st.matches).toFixed(1) : '0.0';
+    var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">';
+    [
+      { label: 'Win Rate', value: wr + '%', icon: '🏆', color: 'var(--green)' },
+      { label: 'Kills/Match', value: kpg, icon: '💀', color: '#ff6b6b' },
+      { label: 'Earn/Match', value: '💎'+epg, icon: '💰', color: 'var(--yellow)' },
+      { label: 'Total Matches', value: st.matches||0, icon: '🎮', color: 'var(--blue)' }
+    ].forEach(function(item) {
+      h += '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center">';
+      h += '<div style="font-size:24px;margin-bottom:4px">' + item.icon + '</div>';
+      h += '<div style="font-size:22px;font-weight:900;color:' + item.color + '">' + item.value + '</div>';
+      h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + item.label + '</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+    var level = (st.matches||0) >= 50 ? 'Legend' : (st.matches||0) >= 20 ? 'Pro' : (st.matches||0) >= 5 ? 'Regular' : 'Beginner';
+    h += '<div style="text-align:center;padding:10px;background:rgba(185,100,255,.06);border:1px solid rgba(185,100,255,.15);border-radius:10px"><span style="font-size:13px;color:var(--purple);font-weight:700">Player Level: ' + level + ' 🎯</span></div>';
+    if (window.openModal) openModal('Performance Stats', h);
+  };
+
+
+
+  /* ─── GLASSMORPHISM UI TOGGLE ─── */
+  window.toggleGlassmorphism = function() {
+    var body = document.body;
+    var isGlass = body.getAttribute('data-glass') === '1';
+    body.setAttribute('data-glass', isGlass ? '0' : '1');
+    localStorage.setItem('glassUI', isGlass ? '0' : '1');
+    if (!isGlass) {
+      // Apply glassmorphism to cards
+      var s = document.getElementById('_glassStyle') || document.createElement('style');
+      s.id = '_glassStyle';
+      s.textContent = '.m-card,.mm-card,.card,.modal-box{background:rgba(17,17,24,.7)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important;border:1px solid rgba(255,255,255,.08)!important}';
+      document.head.appendChild(s);
+      _toast('✨ Glassmorphism UI on!', 'ok');
+    } else {
+      var s2 = document.getElementById('_glassStyle');
+      if (s2) s2.remove();
+      _toast('Glassmorphism off', 'inf');
+    }
+  };
+  // Auto-apply if saved
+  (function() {
+    if (localStorage.getItem('glassUI') === '1') {
+      setTimeout(function() { window.toggleGlassmorphism && window.toggleGlassmorphism(); }, 500);
+    }
+  })();
+
+  /* Register device fingerprint on load */
+  setTimeout(function() { window.registerDeviceFingerprint && window.registerDeviceFingerprint(); }, 2000);
+  /* Run instant refund check periodically */
+  setInterval(function() { window.checkInstantRefunds && window.checkInstantRefunds(); }, 30000);
+  /* Apply dynamic wallpaper when user data loads */
+  document.addEventListener('userDataLoaded', function() { window.applyDynamicWallpaper && window.applyDynamicWallpaper(); });
+
+  console.log('[Mini eSports] ✅ 210 User Features v11 loaded! FF UID shown everywhere.');
+})();

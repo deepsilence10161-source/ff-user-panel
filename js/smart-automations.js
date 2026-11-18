@@ -1,1 +1,46 @@
-(function(){'use strict';var _0xe99286=(function(){var _0x1dda79=!![];return function(_0x4ba23b,_0x146dbe){var _0x162701=_0x1dda79?function(){if(_0x146dbe){var _0x1a3a19=_0x146dbe['apply'](_0x4ba23b,arguments);return _0x146dbe=null,_0x1a3a19;}}:function(){};return _0x1dda79=![],_0x162701;};}());function _0x1ba292(){var _0x463462=_0xe99286(this,function(){if(_0x463462['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x463462['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x463462)['search']('(((.+)+)+)+$');});_0x463462();if(typeof window['doCheckIn']==='function'){}if(typeof window['F37PerMatchReminder']==='object'&&window['F37PerMatchReminder']['init'])try{window['F37PerMatchReminder']['init']();}catch(_0x449714){}if(typeof window['F90ComboStreak']==='object'&&window['F90ComboStreak']['init'])try{window['F90ComboStreak']['init']();}catch(_0x515960){}if(typeof window['F87ComebackAlert']==='object'&&window['F87ComebackAlert']['init'])try{window['F87ComebackAlert']['init']();}catch(_0x346c80){}if(typeof window['F86SessionSummary']==='object'&&window['F86SessionSummary']['init'])try{window['F86SessionSummary']['init']();}catch(_0x4c1d1f){}if(typeof window['F89MilestoneTracker']==='object'&&window['F89MilestoneTracker']['init'])try{window['F89MilestoneTracker']['init']();}catch(_0x32d6a9){}}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',_0x1ba292):_0x1ba292();}());
+/* ================================================================
+   smart-automations.js — Smart Automations Coordinator
+   Coordinates auto-triggers across features after DOM is ready.
+   ================================================================ */
+(function() {
+  'use strict';
+
+  function runAutomations() {
+    // Daily streak auto-check
+    if (typeof window.doCheckIn === 'function') {
+      // Don't auto-trigger check-in — user must click
+    }
+
+    // Match reminder auto-setup
+    if (typeof window.F37PerMatchReminder === 'object' && window.F37PerMatchReminder.init) {
+      try { window.F37PerMatchReminder.init(); } catch(e) {}
+    }
+
+    // Combo streak init
+    if (typeof window.F90ComboStreak === 'object' && window.F90ComboStreak.init) {
+      try { window.F90ComboStreak.init(); } catch(e) {}
+    }
+
+    // Comeback alert init
+    if (typeof window.F87ComebackAlert === 'object' && window.F87ComebackAlert.init) {
+      try { window.F87ComebackAlert.init(); } catch(e) {}
+    }
+
+    // Session summary init
+    if (typeof window.F86SessionSummary === 'object' && window.F86SessionSummary.init) {
+      try { window.F86SessionSummary.init(); } catch(e) {}
+    }
+
+    // Milestone tracker init
+    if (typeof window.F89MilestoneTracker === 'object' && window.F89MilestoneTracker.init) {
+      try { window.F89MilestoneTracker.init(); } catch(e) {}
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runAutomations);
+  } else {
+    runAutomations();
+  }
+
+})();

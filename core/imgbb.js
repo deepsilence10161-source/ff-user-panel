@@ -1,1 +1,582 @@
-(function(){'use strict';var _0x252ea5=(function(){var _0x50fbe1=!![];return function(_0xd97cf0,_0x2f4082){var _0x457a6b=_0x50fbe1?function(){if(_0x2f4082){var _0xfa6bbb=_0x2f4082['apply'](_0xd97cf0,arguments);return _0x2f4082=null,_0xfa6bbb;}}:function(){};return _0x50fbe1=![],_0x457a6b;};}()),_0x2d68f2=_0x252ea5(this,function(){if(_0x2d68f2['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x2d68f2['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x2d68f2)['search']('(((.+)+)+)+$');});_0x2d68f2();var _0xd5ced0=window['_SUPA_URL']||'https://hddhkculuyrfoevxmlwy.supabase.co',_0x13918c=_0xd5ced0+'/functions/v1/imgbb-upload',_0x5d6991=window['_SUPA_ANON_KEY']||'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po',_0x10f18f=0xea60,_0x28f3a3=0x2,_0x8a504c=0x16e360;function _0xd46f17(_0x56a1a8){try{var _0x31f24c=window['fbAuth']?window['fbAuth']():null;if(!_0x31f24c){_0x56a1a8(null);return;}var _0xb6eb9b=_0x31f24c['currentUser'];if(_0xb6eb9b){_0xb6eb9b['getIdToken']()['then'](_0x56a1a8)['catch'](function(){_0x56a1a8(null);});return;}var _0xb13f39=![],_0x52de8c=_0x31f24c['onAuthStateChanged'](function(_0x303965){if(_0xb13f39)return;_0xb13f39=!![];try{_0x52de8c();}catch(_0x232b6d){}_0x303965?_0x303965['getIdToken']()['then'](_0x56a1a8)['catch'](function(){_0x56a1a8(null);}):_0x56a1a8(null);});setTimeout(function(){if(_0xb13f39)return;_0xb13f39=!![];try{_0x52de8c();}catch(_0x13e98c){}_0x56a1a8(null);},0xfa0);}catch(_0xe9c332){_0x56a1a8(null);}}function _0x49979c(_0x3171de){try{var _0x42d854=window['fbAuth']?window['fbAuth']():null,_0x3c51e5=_0x42d854&&_0x42d854['currentUser'];if(!_0x3c51e5){_0x3171de(null);return;}_0x3c51e5['getIdToken'](!![])['then'](function(_0x443fb3){_0x3171de(_0x443fb3||null);},function(){_0x3171de(null);});}catch(_0x334904){_0x3171de(null);}}function _0x40c7d6(){var _0x3fe0bf=null;try{_0x3fe0bf=window['fbAuth']?window['fbAuth']():null;}catch(_0x1a30d6){}return _0x3fe0bf&&_0x3fe0bf['currentUser']?'Could\x20not\x20verify\x20login\x20—\x20please\x20try\x20again':'Login\x20required\x20to\x20upload';}function _0x5de937(_0x5939cd){if(!_0x5939cd||typeof _0x5939cd==='string')return![];try{if(typeof File!=='undefined'&&_0x5939cd instanceof File)return!![];if(typeof Blob!=='undefined'&&_0x5939cd instanceof Blob)return!![];}catch(_0x1f8269){}return typeof _0x5939cd['size']==='number'&&typeof _0x5939cd['type']==='string';}window['uploadToImgBB']=function(_0x34f704,_0x21bef7,_0x28c0b2){if(typeof _0x34f704==='string')_0x257e53(_0x30a384(_0x34f704),_0x21bef7,_0x28c0b2,_0x1127b0(_0x34f704));else{if(_0x5de937(_0x34f704)||_0x34f704&&_0x34f704['files']&&_0x34f704['files'][0x0]&&typeof _0x34f704['tagName']==='string'){var _0x29a5e2=typeof Blob!=='undefined'&&_0x34f704 instanceof Blob?_0x34f704:_0x34f704['files']&&_0x34f704['files'][0x0];if(!_0x29a5e2){_0x28c0b2('Invalid\x20input',null);return;}var _0x4ba8ad=new FileReader();_0x4ba8ad['onload']=function(_0x5d2ff1){var _0x699628=String(_0x5d2ff1&&_0x5d2ff1['target']&&_0x5d2ff1['target']['result']||'');_0x257e53(_0x30a384(_0x699628),_0x21bef7,_0x28c0b2,_0x1127b0(_0x699628));},_0x4ba8ad['onerror']=function(){_0x28c0b2('File\x20read\x20error',null);},_0x4ba8ad['readAsDataURL'](_0x29a5e2);}else _0x28c0b2('Invalid\x20input',null);}};function _0x30a384(_0x2d0f33){if(typeof _0x2d0f33!=='string')return _0x2d0f33;var _0x43d696=_0x2d0f33['indexOf']('base64,');return _0x43d696>-0x1&&_0x2d0f33['substring'](0x0,_0x43d696)['indexOf']('data:')===0x0?_0x2d0f33['substring'](_0x43d696+0x7):_0x2d0f33;}function _0x1127b0(_0xdd7099){if(typeof _0xdd7099!=='string')return'image/jpeg';var _0x42a71f=/^data:([^;,]+)[;,]/['exec'](_0xdd7099);return _0x42a71f&&_0x42a71f[0x1]||'image/jpeg';}function _0x257e53(_0x414b90,_0x186c6d,_0x1b7d94,_0x2ae350){if(typeof _0x414b90!=='string'||!_0x414b90){_0x1b7d94('Invalid\x20input',null);return;}_0x1f6a07(_0x414b90,_0x2ae350,function(_0x9bfc71){_0x2ab9a4(_0x9bfc71,_0x186c6d,0x0,_0x1b7d94);});}function _0x2ab9a4(_0x41bc6d,_0x2d0fcc,_0xd97bc4,_0x5372bc){_0xd46f17(function(_0x2caaf0){if(_0x2caaf0){_0x3afe1c(_0x41bc6d,_0x2d0fcc,_0x2caaf0,0x0,0x0,'',_0x5372bc);return;}if(_0xd97bc4<0x2){setTimeout(function(){_0x2ab9a4(_0x41bc6d,_0x2d0fcc,_0xd97bc4+0x1,_0x5372bc);},0x5dc*(_0xd97bc4+0x1));return;}_0x5372bc(_0x40c7d6(),null);});}function _0x1f6a07(_0x394718,_0x4e4fab,_0x52fa53){if(typeof _0x394718!=='string'||_0x394718['length']<=_0x8a504c||typeof Image!=='function'){_0x52fa53(_0x394718);return;}try{var _0x567f41=new Image();_0x567f41['onload']=function(){try{var _0x403ffe=0x640,_0x259616=_0x567f41['width'],_0xa9946c=_0x567f41['height'];(_0x259616>_0x403ffe||_0xa9946c>_0x403ffe)&&(_0x259616>_0xa9946c?(_0xa9946c=Math['round'](_0xa9946c*_0x403ffe/_0x259616),_0x259616=_0x403ffe):(_0x259616=Math['round'](_0x259616*_0x403ffe/_0xa9946c),_0xa9946c=_0x403ffe));var _0x1cfa65=document['createElement']('canvas');_0x1cfa65['width']=_0x259616,_0x1cfa65['height']=_0xa9946c,_0x1cfa65['getContext']('2d')['drawImage'](_0x567f41,0x0,0x0,_0x259616,_0xa9946c);var _0x2f903c=String(_0x1cfa65['toDataURL']('image/jpeg',0.82)['split'](',')[0x1]||'');_0x52fa53(_0x2f903c&&_0x2f903c['length']<_0x394718['length']?_0x2f903c:_0x394718);}catch(_0x4323a6){_0x52fa53(_0x394718);}},_0x567f41['onerror']=function(){_0x52fa53(_0x394718);},_0x567f41['src']='data:'+(_0x4e4fab||'image/jpeg')+';base64,'+_0x394718;}catch(_0x18ba62){_0x52fa53(_0x394718);}}function _0x3afe1c(_0x20da77,_0x59cbe5,_0x17dcf9,_0x538fc0,_0x4ec451,_0x9fb562,_0x255dbe){_0x1aac53(_0x20da77,_0x59cbe5,_0x17dcf9,_0x538fc0,function(_0x51e5fc,_0x530cb6,_0x324e2b,_0x5d5be1){if(!_0x51e5fc&&_0x530cb6>=0xc8&&_0x530cb6<0x12c&&_0x324e2b&&_0x324e2b['success']&&_0x324e2b['data']&&_0x324e2b['data']['url']){_0x255dbe(null,_0x324e2b['data']['url'],_0x324e2b['data']['display_url'],_0x324e2b['data']['thumb']&&_0x324e2b['data']['thumb']['url']);return;}if(!_0x51e5fc&&_0x530cb6>=0xc8&&_0x530cb6<0x12c){_0x255dbe(_0x4c1b6c(_0x324e2b,_0x5d5be1)||'Upload\x20failed',null);return;}var _0x3b5787=!_0x51e5fc&&(_0x530cb6===0x191||_0x530cb6===0x193);if(_0x3b5787&&_0x538fc0===0x1&&/missing authorization header/i['test'](_0x4c1b6c(_0x324e2b,_0x5d5be1))){_0x255dbe(_0x9fb562||'Image\x20service\x20update\x20pending\x20—\x20thodi\x20der\x20baad\x20dobara\x20try\x20karo',null);return;}if(_0x3b5787&&_0x538fc0===0x0&&_0x4ec451===0x0){_0x49979c(function(_0x3c6518){if(_0x3c6518)_0x3afe1c(_0x20da77,_0x59cbe5,_0x3c6518,0x0,0x1,'',_0x255dbe);else _0x255dbe(_0x4c1b6c(_0x324e2b,_0x5d5be1)||_0x40c7d6(),null);});return;}if(_0x3b5787){_0x255dbe(_0x4c1b6c(_0x324e2b,_0x5d5be1)||_0x40c7d6(),null);return;}if(!_0x51e5fc&&_0x530cb6>=0x190&&_0x530cb6<0x1f4&&_0x530cb6!==0x198&&_0x530cb6!==0x1ad){_0x255dbe(_0x4c1b6c(_0x324e2b,_0x5d5be1)||'Upload\x20failed\x20(HTTP\x20'+_0x530cb6+')',null);return;}var _0x260867=_0x51e5fc?_0x38fed5(_0x51e5fc):_0x4c1b6c(_0x324e2b,_0x5d5be1)||'Server\x20busy\x20(HTTP\x20'+_0x530cb6+')';if(_0x4ec451<_0x28f3a3){setTimeout(function(){_0x3afe1c(_0x20da77,_0x59cbe5,_0x17dcf9,_0x538fc0,_0x4ec451+0x1,_0x260867,_0x255dbe);},0x384*(_0x4ec451+0x1));return;}if(_0x538fc0===0x0){_0x3afe1c(_0x20da77,_0x59cbe5,_0x17dcf9,0x1,0x0,_0x260867,_0x255dbe);return;}_0x255dbe(_0x260867||_0x9fb562||'Upload\x20failed',null);});}function _0x1aac53(_0x1d9528,_0x1c661c,_0x1704dc,_0xb7472c,_0x38d75d){var _0x31f9c3={'Content-Type':_0xb7472c===0x0?'application/json':'text/plain;charset=UTF-8'};_0xb7472c===0x0&&(_0x31f9c3['apikey']=_0x5d6991,_0x31f9c3['Authorization']='Bearer\x20'+_0x5d6991);var _0x306700={'method':'POST','headers':_0x31f9c3,'body':JSON['stringify']({'image':_0x1d9528,'name':_0x1c661c||undefined,'fb_token':_0x1704dc})},_0x3735d7=null,_0x25b4e6=null;try{typeof AbortController==='function'&&(_0x3735d7=new AbortController(),_0x306700['signal']=_0x3735d7['signal'],_0x25b4e6=setTimeout(function(){try{_0x3735d7['abort']();}catch(_0x213aef){}},_0x10f18f));}catch(_0x3e2240){_0x3735d7=null;}function _0x3d9360(_0x39f3ff,_0x5373f7,_0x4caff6,_0x3a561c){_0x25b4e6&&(clearTimeout(_0x25b4e6),_0x25b4e6=null),_0x38d75d(_0x39f3ff,_0x5373f7,_0x4caff6,_0x3a561c);}try{fetch(_0x13918c,_0x306700)['then'](function(_0x388b0c){return _0x388b0c['text']()['then'](function(_0x1bcf67){var _0x599c17=null;try{_0x599c17=JSON['parse'](_0x1bcf67);}catch(_0x34dda8){}_0x3d9360(null,_0x388b0c['status'],_0x599c17,_0x1bcf67);},function(){_0x3d9360(null,_0x388b0c['status'],null,'');});},function(_0x447c8f){_0x3d9360(_0x447c8f||new Error('Network\x20error'),0x0,null,'');});}catch(_0x5d4c88){_0x3d9360(_0x5d4c88,0x0,null,'');}}function _0x4c1b6c(_0x574f91,_0x46bec7){if(_0x574f91){if(typeof _0x574f91['error']==='string'&&_0x574f91['error'])return _0x574f91['error'];if(_0x574f91['error']&&(_0x574f91['error']['message']||_0x574f91['error']['info']))return _0x574f91['error']['message']||_0x574f91['error']['info'];if(typeof _0x574f91['message']==='string'&&_0x574f91['message'])return _0x574f91['message'];}var _0x3a684a=String(_0x46bec7||'')['replace'](/\s+/g,'\x20')['trim']();return _0x3a684a&&_0x3a684a['length']<=0x8c?_0x3a684a:'';}function _0x38fed5(_0x43a6cd){var _0x55f9b6=String(_0x43a6cd&&(_0x43a6cd['message']||_0x43a6cd['name'])||_0x43a6cd||'');if(/abort|timeout/i['test'](_0x55f9b6))return'Upload\x20timeout\x20—\x20internet\x20slow\x20lag\x20raha\x20hai,\x20dobara\x20try\x20karo';if(/failed to fetch|load failed|networkerror|network request failed|err_|net::/i['test'](_0x55f9b6))return'Network\x20error\x20—\x20internet\x20check\x20karke\x20dobara\x20try\x20karo';return _0x55f9b6||'Upload\x20failed';}function _0x5c8f98(_0x27a9ba,_0x410fe8,_0x1f39b9){var _0x55f9a6=_0x27a9ba==='avatar_url'?'Photo':'Banner';if(!window['DB']||!window['DB']['users']){if(window['toast'])toast(_0x55f9a6+'\x20save\x20failed\x20—\x20service\x20unavailable','err');if(_0x1f39b9)_0x1f39b9(null);return;}var _0xe572f5={};_0xe572f5[_0x27a9ba]=_0x410fe8;var _0x3c8581;try{_0x3c8581=window['DB']['users']['updateImage']?window['DB']['users']['updateImage'](_0x27a9ba,_0x410fe8):window['DB']['users']['update'](_0xe572f5);}catch(_0x1f41d2){if(window['toast'])toast(_0x55f9a6+'\x20save\x20failed\x20—\x20dobara\x20try\x20karo','err');if(_0x1f39b9)_0x1f39b9(null);return;}Promise['resolve'](_0x3c8581)['then'](function(_0x26f46b){if(!_0x26f46b||!_0x26f46b['ok']){var _0x362778=_0x26f46b&&_0x26f46b['error']?String(_0x26f46b['error']):'';console['warn']('[ImgBB]\x20'+_0x55f9a6+'\x20DB\x20save\x20rejected:',_0x362778);var _0x5edaa2;if(_0x362778==='update_not_applied_rls')_0x5edaa2=_0x55f9a6+'\x20save\x20nahi\x20hui\x20(permission)\x20—\x20logout/login\x20karke\x20dobara\x20try\x20karo';else{if(_0x362778==='db_trigger_rewrote_value')_0x5edaa2=_0x55f9a6+'\x20server\x20ne\x20save\x20nahi\x20ki\x20(DB\x20trigger\x20blocked)\x20—\x20support\x20ko\x20report\x20karo';else _0x362778==='not_authenticated'?_0x5edaa2='Login\x20expire\x20ho\x20gaya\x20—\x20dobara\x20login\x20karo':_0x5edaa2=_0x55f9a6+'\x20save\x20failed:\x20'+(_0x362778?_0x362778['slice'](0x0,0x8c):'dobara\x20try\x20karo');}if(window['toast'])toast(_0x5edaa2,'err');if(_0x1f39b9)_0x1f39b9(null);return;}if(window['UD']){if(_0x27a9ba==='avatar_url')window['UD']['profileImage']=_0x410fe8;else window['UD']['bannerImage']=_0x410fe8;}if(_0x1f39b9)_0x1f39b9(_0x410fe8);},function(_0x28487f){console['warn']('[ImgBB]\x20'+_0x55f9a6+'\x20DB\x20save\x20failed:',_0x28487f&&_0x28487f['message']);if(window['toast'])toast(_0x55f9a6+'\x20save\x20failed\x20—\x20internet\x20check\x20karke\x20dobara\x20try\x20karo','err');if(_0x1f39b9)_0x1f39b9(null);});}function _0x4a768a(_0x23bad5,_0x146938,_0x388dc2,_0x185334,_0x22d206){if(typeof _0x23bad5==='string'){_0x22d206(_0x23bad5);return;}_0x4a16dd(_0x23bad5,_0x146938,_0x388dc2,_0x185334,_0x22d206);}window['uploadProfileImage']=function(_0xbe4e82,_0x5202a9){var _0x4f4d2f=window['U']?window['U']['uid']:'user',_0x57cbac='profile_'+_0x4f4d2f+'_'+Date['now']();if(window['toast'])toast('⏳\x20Photo\x20upload\x20ho\x20rahi\x20hai…','inf');_0x4a768a(_0xbe4e82,0x190,0.8,0x96,function(_0x3121ca){if(!_0x3121ca){if(window['toast'])toast('Image\x20read\x20nahi\x20hui\x20—\x20JPG/PNG\x20image\x20dobara\x20choose\x20karo','err');if(_0x5202a9)_0x5202a9(null);return;}window['uploadToImgBB'](_0x3121ca,_0x57cbac,function(_0x2d404e,_0x45e8ad){if(_0x2d404e||!_0x45e8ad){if(window['toast'])toast('Image\x20upload\x20failed:\x20'+(_0x2d404e||'server\x20ne\x20URL\x20nahi\x20diya'),'err');if(_0x5202a9)_0x5202a9(null);return;}_0x5c8f98('avatar_url',_0x45e8ad,_0x5202a9);});});},window['uploadBannerImage']=function(_0x5c0192,_0x24b829){var _0xd83abf=window['U']?window['U']['uid']:'user',_0x2e0077='banner_'+_0xd83abf+'_'+Date['now']();if(window['toast'])toast('⏳\x20Banner\x20upload\x20ho\x20rahi\x20hai…','inf');_0x4a768a(_0x5c0192,0x320,0.75,0xfa,function(_0x5618eb){if(!_0x5618eb){if(window['toast'])toast('Banner\x20image\x20read\x20nahi\x20hui\x20—\x20JPG/PNG\x20dobara\x20choose\x20karo','err');if(_0x24b829)_0x24b829(null);return;}window['uploadToImgBB'](_0x5618eb,_0x2e0077,function(_0x279bd8,_0x3ff99c){if(_0x279bd8||!_0x3ff99c){if(window['toast'])toast('Banner\x20upload\x20failed:\x20'+(_0x279bd8||'server\x20ne\x20URL\x20nahi\x20diya'),'err');if(_0x24b829)_0x24b829(null);return;}_0x5c8f98('banner_url',_0x3ff99c,_0x24b829);});});},window['uploadToImgBBBase64']=function(_0x573150,_0x5d95c9,_0x16503d){_0x257e53(_0x30a384(_0x573150),_0x5d95c9||'img_'+Date['now'](),_0x16503d,_0x1127b0(_0x573150));};function _0x4a16dd(_0x4fc6a8,_0x290405,_0x888b76,_0x1561b0,_0x46d924){var _0xd818d9=![];function _0x197122(_0x28cfba){if(_0xd818d9)return;_0xd818d9=!![],_0x46d924(_0x28cfba||null);}if(!_0x5de937(_0x4fc6a8)||typeof FileReader!=='function'){_0x197122(null);return;}var _0x1f6456;try{_0x1f6456=new FileReader();}catch(_0x347c39){_0x197122(null);return;}_0x1f6456['onload']=function(_0x23a382){var _0x2c4fae=String(_0x23a382&&_0x23a382['target']&&_0x23a382['target']['result']||'');if(!_0x2c4fae||_0x2c4fae['indexOf']('data:')!==0x0){_0x197122(null);return;}if(typeof Image!=='function'){_0x197122(_0x2c4fae);return;}var _0x1a63ef=new Image(),_0x48ea5f=setTimeout(function(){_0x197122(_0x2c4fae);},0x3a98);_0x1a63ef['onload']=function(){if(_0xd818d9)return;clearTimeout(_0x48ea5f);try{var _0x325743=Number(_0x1a63ef['width'])||0x0,_0x7f7058=Number(_0x1a63ef['height'])||0x0;if(!_0x325743||!_0x7f7058){_0x197122(_0x2c4fae);return;}(_0x325743>_0x290405||_0x7f7058>_0x290405)&&(_0x325743>_0x7f7058?(_0x7f7058=Math['max'](0x1,Math['round'](_0x7f7058*_0x290405/_0x325743)),_0x325743=_0x290405):(_0x325743=Math['max'](0x1,Math['round'](_0x325743*_0x290405/_0x7f7058)),_0x7f7058=_0x290405));var _0x20b3b0=document['createElement']('canvas');_0x20b3b0['width']=_0x325743,_0x20b3b0['height']=_0x7f7058;var _0x31c530=_0x20b3b0['getContext']&&_0x20b3b0['getContext']('2d');if(!_0x31c530){_0x197122(_0x2c4fae);return;}_0x31c530['drawImage'](_0x1a63ef,0x0,0x0,_0x325743,_0x7f7058);var _0x1e2cc8=Math['min'](0x1,Math['max'](0.1,Number(_0x888b76)||0.8)),_0x3674de=_0x20b3b0['toDataURL']('image/jpeg',_0x1e2cc8);while(_0x3674de['length']>_0x1561b0*0x55a&&_0x1e2cc8>0.1){_0x1e2cc8=Math['max'](0.1,Math['round']((_0x1e2cc8-0.1)*0xa)/0xa),_0x3674de=_0x20b3b0['toDataURL']('image/jpeg',_0x1e2cc8);}_0x197122(_0x3674de);}catch(_0x562cf1){_0x197122(_0x2c4fae);}},_0x1a63ef['onerror']=function(){clearTimeout(_0x48ea5f),_0x197122(_0x2c4fae);};try{_0x1a63ef['src']=_0x2c4fae;}catch(_0x19f28e){clearTimeout(_0x48ea5f),_0x197122(_0x2c4fae);}},_0x1f6456['onerror']=function(){_0x197122(null);},_0x1f6456['onabort']=function(){_0x197122(null);};try{_0x1f6456['readAsDataURL'](_0x4fc6a8);}catch(_0xc7ed10){_0x197122(null);}}window['compImg']=_0x4a16dd,console['log']('[ImgBB]\x20v35-SAVE-ERROR-VISIBLE\x20ready\x20—\x20DB\x20save\x20failure\x20ka\x20asli\x20reason\x20ab\x20toast\x20me\x20✅');}());
+/* ================================================================
+   IMGBB UPLOAD — core/imgbb.js  v35-SAVE-ERROR-VISIBLE
+   ----------------------------------------------------------------
+   HISTORY (keep this — every past fix here was real, and the next
+   person needs to know which transport shape was already tried):
+   • v32     uploadBannerImage was saving to avatar_url instead of
+             banner_url — fixed to use the correct Supabase column.
+   • v32.6   IMGBB_KEY hataya yahan se — ab Supabase Edge Function
+             (imgbb-upload) use karta hai jo key ko server-side
+             secret se padhta hai. Key ab public nahi hai.
+   • 2026-09 bare firebase.auth() calls → "app-compat/no-app" throw,
+             every upload died. Fixed via window.fbAuth().
+   • 2026-09-15b (v33) "Failed to fetch" on EVERY image upload —
+             root cause + fix documented at _send() below.
+   • 2026-09-16 (v34) Supabase's current Edge gateway also expects the
+             public project key in `apikey`. The client only sent it as
+             Authorization, then its no-header fallback was rejected with
+             `UNAUTHORIZED_NO_AUTH_HEADER / Missing authorization header`.
+             v34 sends the standard Supabase browser header set and keeps
+             the Firebase identity token in the HTTPS request body.
+   • 2026-09-16c (v35) "Photo save failed — dobara try karo" even though
+             ImgBB upload AND banner save both succeeded: avatar_url ka DB
+             update server-side rok gaya (trigger/constraint class ka bug —
+             client ka dono path identical hai) aur purana toast wajah khaa
+             jaata tha. _saveUserImage ab updateImage ka ASLI reason
+             dikhata hai (message + pg code), taaki ek hi screenshot se
+             DB-side culprit pakda jaa sake. Diagnosis + fix SQL:
+             supabase/migrations/20260916_diagnose_avatar_url_save.sql
+
+   ── v33 ROOT CAUSE ("Failed to fetch" / "Screenshot upload failed") ──
+   The request sent a CUSTOM header — X-Firebase-Token — alongside
+   Content-Type + Authorization. A header that isn't on the browser's
+   "simple" list forces a CORS *preflight* (OPTIONS), and the browser
+   then refuses to send the POST unless the preflight's
+   Access-Control-Allow-Headers explicitly allows every single one of
+   those header names.
+
+   Supabase Edge Functions answer that OPTIONS for you and only allow
+   this fixed list — authorization, x-client-info, apikey,
+   content-type (see supabase/supabase#41334: custom headers in the
+   function's own CORS object are dropped at the gateway). "x-firebase-
+   token" was never in it, so the preflight failed and the POST was
+   never sent: fetch() rejected with TypeError("Failed to fetch") with
+   ZERO information about why — which is exactly the red toast seen on
+   profile photo, banner, and Sky Diamond screenshot uploads.
+
+   ── THE FIX (two rules, do not break them) ──
+   1. Only ever send header names the gateway's fixed allow-list
+      contains: Authorization + apikey + Content-Type. Nothing custom.
+      `apikey` is required by the current Supabase Edge gateway; the
+      public anon project key belongs in both standard gateway fields.
+   2. The Firebase token therefore travels in the REQUEST BODY
+      (`fb_token`), not in a header. The Edge Function reads it from
+      there and verifies it server-side against Google's public keys.
+      The token is no less secure in the body — it's the same HTTPS
+      request — it just can't break the preflight.
+
+   Plus, since a bare "Failed to fetch" is useless to debug:
+   • transient failures (network blip / 5xx / timeout) retry with
+     backoff, and if the normal path is still blocked we retry once as
+     a 100% preflight-free request (no Authorization header at all).
+   • every failure is mapped to an actionable message.
+   • oversized images are quietly re-compressed before upload (a raw
+     3-5 MB phone screenshot is also a real reason uploads drop on
+     mobile data — see the size note at SHRINK_ABOVE).
+================================================================ */
+(function() {
+  'use strict';
+
+  var SUPA_URL       = window._SUPA_URL || 'https://hddhkculuyrfoevxmlwy.supabase.co';
+  var IMGBB_PROXY_URL = SUPA_URL + '/functions/v1/imgbb-upload';
+
+  /* BUG FIX (2026-07): SUPA_KEY here matches the fallback already used in
+     core/db.js — this is the public "anon" key, safe to ship client-side.
+     It is only used to get past the Edge Function gateway; it is NOT used
+     as the user's identity any more (see fb_token in the body). */
+  var SUPA_ANON_KEY = window._SUPA_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
+
+  /* Upload tuning */
+  var TIMEOUT_MS         = 60000; /* per attempt */
+  var RETRIES_PER_STAGE  = 2;     /* 3 attempts total per transport stage */
+  var SHRINK_ABOVE       = 1500000; /* base64 chars (~1.1 MB binary) —
+     ABOVE THIS the image is re-compressed before upload. Not cosmetic:
+     a screenshot straight off a modern phone camera/PNG capture is
+     3-6 MB raw, which becomes a ~8 MB JSON body. On weak mobile data
+     that alone makes uploads fail or time out ("Failed to fetch" on a
+     dropped connection), and it burns the user's data. 1600px / q0.82
+     keeps payment proofs fully readable at a fraction of the size. */
+
+  /* ================================================================
+     AUTH — Firebase ID token, resolved from the real app
+     (see core/firebase.js: the app is named "mainApp", so bare
+     firebase.auth() throws app-compat/no-app — ALWAYS use fbAuth()).
+  ================================================================ */
+  function _getAuthToken(cb) {
+    try {
+      var _a = window.fbAuth ? window.fbAuth() : null;
+      if (!_a) { cb(null); return; }
+      var cur = _a.currentUser;
+      if (cur) {
+        cur.getIdToken().then(cb).catch(function() { cb(null); });
+        return;
+      }
+      /* Not ready yet — wait briefly for auth state to restore.
+         (BUG FIX 2026-08: "Login required to upload" even when the user
+         IS logged in — currentUser is momentarily null right after page
+         load / tab switch, before Firebase finishes restoring the
+         session from IndexedDB. The old code gave up instantly.) */
+      var settled = false;
+      var unsub = _a.onAuthStateChanged(function(user) {
+        if (settled) return;
+        settled = true;
+        try { unsub(); } catch (e) {}
+        if (user) { user.getIdToken().then(cb).catch(function() { cb(null); }); }
+        else { cb(null); }
+      });
+      setTimeout(function() {
+        if (settled) return;
+        settled = true;
+        try { unsub(); } catch (e) {}
+        cb(null);
+      }, 4000);
+    } catch (e) { cb(null); }
+  }
+
+  /* Force-refresh the ID token (used when the server says 401 — an
+     expired token would otherwise fail forever with the same answer). */
+  function _refreshToken(cb) {
+    try {
+      var _a = window.fbAuth ? window.fbAuth() : null;
+      var cur = _a && _a.currentUser;
+      if (!cur) { cb(null); return; }
+      cur.getIdToken(true).then(function(t) { cb(t || null); }, function() { cb(null); });
+    } catch (e) { cb(null); }
+  }
+
+  function _loginMsg() {
+    var _a = null;
+    try { _a = window.fbAuth ? window.fbAuth() : null; } catch (e) {}
+    return (_a && _a.currentUser)
+      ? 'Could not verify login — please try again'
+      : 'Login required to upload';
+  }
+
+  /* ================================================================
+     PUBLIC API (signatures unchanged — every caller keeps working)
+  ================================================================ */
+  /* Guarded on purpose: `input instanceof File` throws a TypeError (and
+     took the whole upload path down with it) if File/Blob isn't defined
+     in the current WebView — the string/base64 path below works fine on
+     its own and shouldn't be collateral damage. */
+  function _isFileLike(x) {
+    if (!x || typeof x === 'string') return false;
+    try {
+      if (typeof File !== 'undefined' && x instanceof File) return true;
+      if (typeof Blob !== 'undefined' && x instanceof Blob) return true;
+    } catch (e) {}
+    return typeof x.size === 'number' && typeof x.type === 'string';
+  }
+
+  window.uploadToImgBB = function(input, name, callback) {
+    if (typeof input === 'string') {
+      _doUpload(_stripPrefix(input), name, callback, _mimeOf(input));
+    } else if (_isFileLike(input) || (input && input.files && input.files[0] && typeof input.tagName === 'string')) {
+      /* ✅ BUG Z10 FIX (2026-10-02, WALK11s live-proven): <input type="file">
+         element par bhi .size(number)/.type(string) hone se _isFileLike true
+         ho jaata tha => readAsDataURL(INPUT-ELEMENT) TypeError ('not of type
+         Blob') — season-pass screenshot-upload hamesha mar jaata tha (error
+         sync-throw thi, fallback-branch kabhi chalti hi nahi thi). Ab element
+         aaye to uska files[0] liya jaata hai; File/Blob pehle jaisa hi. */
+      var _blob = (typeof Blob !== 'undefined' && input instanceof Blob) ? input : (input.files && input.files[0]);
+      if (!_blob) { callback('Invalid input', null); return; }
+      var reader = new FileReader();
+      reader.onload  = function(e) {
+        var d = String((e && e.target && e.target.result) || '');
+        _doUpload(_stripPrefix(d), name, callback, _mimeOf(d));
+      };
+      reader.onerror = function()  { callback('File read error', null); };
+      reader.readAsDataURL(_blob);
+    } else {
+      callback('Invalid input', null);
+    }
+  };
+
+  function _stripPrefix(s) {
+    if (typeof s !== 'string') return s;
+    var i = s.indexOf('base64,');
+    return (i > -1 && s.substring(0, i).indexOf('data:') === 0) ? s.substring(i + 7) : s;
+  }
+  function _mimeOf(s) {
+    if (typeof s !== 'string') return 'image/jpeg';
+    var m = /^data:([^;,]+)[;,]/.exec(s);
+    return (m && m[1]) || 'image/jpeg';
+  }
+
+  function _doUpload(b64, name, callback, mime) {
+    if (typeof b64 !== 'string' || !b64) { callback('Invalid input', null); return; }
+    _maybeShrink(b64, mime, function(small) {
+      /* ✅ FIX (2026-09-16): _getAuthToken already waits a few seconds for
+         auth state to restore, but on a fresh WebView/app-open the restore
+         can take a little longer — and the upload used to fail instantly
+         with "Login required" the moment the token wasn't ready. Retry the
+         token a couple of times with backoff before surfacing an error, so
+         a momentary restore lag no longer kills a user-triggered upload. */
+      _authTokenWithRetry(small, name, 0, callback);
+    });
+  }
+
+  function _authTokenWithRetry(b64, name, attempt, callback) {
+    _getAuthToken(function(token) {
+      if (token) { _attempt(b64, name, token, 0, 0, '', callback); return; }
+      if (attempt < 2) {
+        setTimeout(function() { _authTokenWithRetry(b64, name, attempt + 1, callback); }, 1500 * (attempt + 1));
+        return;
+      }
+      callback(_loginMsg(), null);
+    });
+  }
+
+  /* ── Oversized payload guard (see SHRINK_ABOVE) ── */
+  function _maybeShrink(b64, mime, cb) {
+    if (typeof b64 !== 'string' || b64.length <= SHRINK_ABOVE || typeof Image !== 'function') {
+      cb(b64); return;
+    }
+    try {
+      var img = new Image();
+      img.onload = function() {
+        try {
+          var maxDim = 1600, w = img.width, h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+            else       { w = Math.round(w * maxDim / h); h = maxDim; }
+          }
+          var c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          var out = String(c.toDataURL('image/jpeg', 0.82).split(',')[1] || '');
+          cb(out && out.length < b64.length ? out : b64);
+        } catch (e) { cb(b64); }
+      };
+      img.onerror = function() { cb(b64); };
+      img.src = 'data:' + (mime || 'image/jpeg') + ';base64,' + b64;
+    } catch (e) { cb(b64); }
+  }
+
+  /* ================================================================
+     TRANSPORT
+     stage 0 — Supabase's standard browser headers: `apikey`,
+               `Authorization`, and `Content-Type`. All three are on the
+               Edge gateway's fixed CORS allow-list. Earlier code omitted
+               `apikey`; the relay can reject that request before the
+               function runs.
+     stage 1 — no gateway headers, Content-Type text/plain (CORS-simple),
+               Firebase token in the body. This is a genuinely preflight-
+               free recovery path. It works because imgbb-upload is
+               deployed with verify_jwt=false and then cryptographically
+               verifies the Firebase token itself. Only used after stage
+               0 exhausts transient retries.
+  ================================================================ */
+  function _attempt(b64, name, token, stage, attempt, lastMsg, callback) {
+    _send(b64, name, token, stage, function(err, status, data, raw) {
+      /* ── Success ── */
+      if (!err && status >= 200 && status < 300 && data && data.success && data.data && data.data.url) {
+        callback(null, data.data.url, data.data.display_url, data.data.thumb && data.data.thumb.url);
+        return;
+      }
+      if (!err && status >= 200 && status < 300) {
+        /* 2xx but no usable URL — server answered, retrying won't help */
+        callback(_serverMsg(data, raw) || 'Upload failed', null);
+        return;
+      }
+
+      var authFail = !err && (status === 401 || status === 403);
+
+      /* A preflight-free stage-1 request cannot pass while an old
+         deployment still has gateway verify_jwt enabled. Do not replace
+         the real stage-0 network/server reason with the gateway's
+         misleading "Missing authorization header" response. The source-
+         controlled config + deploy workflow turn that gateway check off;
+         the function still verifies Firebase cryptographically itself. */
+      if (authFail && stage === 1 && /missing authorization header/i.test(_serverMsg(data, raw))) {
+        callback(lastMsg || 'Image service update pending — thodi der baad dobara try karo', null);
+        return;
+      }
+
+      /* ── 401/403: refresh the Firebase token once, then retry ──
+         (An expired ID token is the single most common cause of a
+         hard 401 here; refreshing usually makes it succeed.) */
+      if (authFail && stage === 0 && attempt === 0) {
+        _refreshToken(function(fresh) {
+          if (fresh) _attempt(b64, name, fresh, 0, 1, '', callback);
+          else callback(_serverMsg(data, raw) || _loginMsg(), null);
+        });
+        return;
+      }
+      if (authFail) {
+        callback(_serverMsg(data, raw) || _loginMsg(), null);
+        return;
+      }
+
+      /* ── Hard 4xx (bad image, too big, wrong payload): permanent ── */
+      if (!err && status >= 400 && status < 500 && status !== 408 && status !== 429) {
+        callback(_serverMsg(data, raw) || ('Upload failed (HTTP ' + status + ')'), null);
+        return;
+      }
+
+      /* ── Transient: network error / timeout / 5xx / 408 / 429 ── */
+      var msg = err ? _friendly(err) : (_serverMsg(data, raw) || ('Server busy (HTTP ' + status + ')'));
+      if (attempt < RETRIES_PER_STAGE) {
+        setTimeout(function() { _attempt(b64, name, token, stage, attempt + 1, msg, callback); },
+                   900 * (attempt + 1));
+        return;
+      }
+      /* Stage 0 exhausted → try the preflight-free transport once more. */
+      if (stage === 0) { _attempt(b64, name, token, 1, 0, msg, callback); return; }
+      callback(msg || lastMsg || 'Upload failed', null);
+    });
+  }
+
+  function _send(b64, name, token, stage, cb) {
+    /* ⚠️ RULE: stage 0 may use ONLY Supabase's documented standard
+       CORS headers. In particular, never move the Firebase token into a
+       custom header again. `apikey` is not custom from the gateway's
+       perspective; it is part of the fixed allow-list and is required by
+       the current relay. */
+    var headers = { 'Content-Type': (stage === 0 ? 'application/json' : 'text/plain;charset=UTF-8') };
+    if (stage === 0) {
+      headers['apikey'] = SUPA_ANON_KEY;
+      headers['Authorization'] = 'Bearer ' + SUPA_ANON_KEY;
+    }
+
+    var opts = {
+      method: 'POST',
+      headers: headers,
+      /* The Firebase token is in the BODY, not a custom header. The
+         gateway's fixed preflight list accepts the standard project-key
+         headers above, and the Edge Function verifies this identity token
+         itself against Google's public keys. */
+      body: JSON.stringify({ image: b64, name: name || undefined, fb_token: token })
+    };
+
+    var ctl = null, timer = null;
+    try {
+      if (typeof AbortController === 'function') {
+        ctl = new AbortController();
+        opts.signal = ctl.signal;
+        /* A hung request used to leave the UI spinning forever. */
+        timer = setTimeout(function() { try { ctl.abort(); } catch (e) {} }, TIMEOUT_MS);
+      }
+    } catch (e) { ctl = null; }
+
+    function done(err, status, data, raw) {
+      if (timer) { clearTimeout(timer); timer = null; }
+      cb(err, status, data, raw);
+    }
+
+    try {
+      fetch(IMGBB_PROXY_URL, opts).then(function(r) {
+        return r.text().then(function(txt) {
+          var d = null;
+          try { d = JSON.parse(txt); } catch (e) {}
+          done(null, r.status, d, txt);
+        }, function() { done(null, r.status, null, ''); });
+      }, function(e) {
+        /* TypeError("Failed to fetch") lands here — could be offline,
+           a dropped connection, a timeout, or a CORS block. _friendly()
+           turns it into something the user can act on, and _attempt()
+           decides whether to retry / switch transport. */
+        done(e || new Error('Network error'), 0, null, '');
+      });
+    } catch (e) {
+      done(e, 0, null, '');
+    }
+  }
+
+  function _serverMsg(data, raw) {
+    if (data) {
+      if (typeof data.error === 'string' && data.error) return data.error;
+      if (data.error && (data.error.message || data.error.info)) return data.error.message || data.error.info;
+      if (typeof data.message === 'string' && data.message) return data.message;
+    }
+    var t = String(raw || '').replace(/\s+/g, ' ').trim();
+    return (t && t.length <= 140) ? t : '';
+  }
+
+  /* Bare "Failed to fetch" tells the user nothing actionable. */
+  function _friendly(e) {
+    var m = String((e && (e.message || e.name)) || e || '');
+    if (/abort|timeout/i.test(m)) return 'Upload timeout — internet slow lag raha hai, dobara try karo';
+    if (/failed to fetch|load failed|networkerror|network request failed|err_|net::/i.test(m)) {
+      return 'Network error — internet check karke dobara try karo';
+    }
+    return m || 'Upload failed';
+  }
+
+  /* ── Persist a hosted profile/banner URL and only report success after
+     PostgREST confirms that the authenticated user's row was affected.
+     A normal update can return error:null with zero rows when RLS blocks
+     it; DB.users.updateImage() deliberately detects that case. */
+  function _saveUserImage(field, url, callback) {
+    var label = field === 'avatar_url' ? 'Photo' : 'Banner';
+    if (!window.DB || !window.DB.users) {
+      if (window.toast) toast(label + ' save failed — service unavailable', 'err');
+      if (callback) callback(null);
+      return;
+    }
+    var fields = {}; fields[field] = url;
+    var write;
+    try {
+      write = window.DB.users.updateImage
+        ? window.DB.users.updateImage(field, url)
+        : window.DB.users.update(fields);
+    } catch (e) {
+      if (window.toast) toast(label + ' save failed — dobara try karo', 'err');
+      if (callback) callback(null);
+      return;
+    }
+    Promise.resolve(write).then(function(res) {
+      if (!res || !res.ok) {
+        var why = res && res.error ? String(res.error) : '';
+        console.warn('[ImgBB] ' + label + ' DB save rejected:', why);
+        /* ✅ FIX (2026-09-16c): generic "dobara try karo" hata diya — ImgBB
+           upload SUCCESS + banner save SUCCESS ke baad bhi sirf profile
+           PHOTO ka save fail ho raha tha, aur generic toast se asli
+           Postgres reason (trigger FK violation / constraint / column
+           issue) kabhi saamne hi nahi aata tha. Ab DB.users.updateImage ka
+           asli reason hi dikhata hai — ek screenshot culprit bata dega.
+           Jaan-bujhe map kiye gaye codes ko Hinglish line milti hai;
+           baaki raw reason (message + pg code, 180 chars tak) dikhata hai. */
+        var line;
+        if (why === 'update_not_applied_rls') {
+          line = label + ' save nahi hui (permission) — logout/login karke dobara try karo';
+        } else if (why === 'db_trigger_rewrote_value') {
+          line = label + ' server ne save nahi ki (DB trigger blocked) — support ko report karo';
+        } else if (why === 'not_authenticated') {
+          line = 'Login expire ho gaya — dobara login karo';
+        } else {
+          line = label + ' save failed: ' + (why ? why.slice(0, 140) : 'dobara try karo');
+        }
+        if (window.toast) toast(line, 'err');
+        if (callback) callback(null);
+        return;
+      }
+      if (window.UD) {
+        if (field === 'avatar_url') window.UD.profileImage = url;
+        else window.UD.bannerImage = url;
+      }
+      if (callback) callback(url);
+    }, function(e) {
+      console.warn('[ImgBB] ' + label + ' DB save failed:', e && e.message);
+      if (window.toast) toast(label + ' save failed — internet check karke dobara try karo', 'err');
+      if (callback) callback(null);
+    });
+  }
+
+  function _prepareImage(input, maxDim, quality, maxKB, callback) {
+    /* profile.js already compresses the banner once for its instant
+       preview. Accepting that data URL here avoids decoding/compressing
+       the exact same file a second time. Existing File callers remain
+       fully compatible. */
+    if (typeof input === 'string') { callback(input); return; }
+    _compressImage(input, maxDim, quality, maxKB, callback);
+  }
+
+  /* ── Profile image upload ── */
+  window.uploadProfileImage = function(fileOrDataUrl, callback) {
+    var uid  = window.U ? window.U.uid : 'user';
+    var name = 'profile_' + uid + '_' + Date.now();
+    if (window.toast) toast('⏳ Photo upload ho rahi hai…', 'inf');
+    _prepareImage(fileOrDataUrl, 400, 0.8, 150, function(b64) {
+      if (!b64) {
+        if (window.toast) toast('Image read nahi hui — JPG/PNG image dobara choose karo', 'err');
+        if (callback) callback(null);
+        return;
+      }
+      window.uploadToImgBB(b64, name, function(err, url) {
+        if (err || !url) {
+          if (window.toast) toast('Image upload failed: ' + (err || 'server ne URL nahi diya'), 'err');
+          if (callback) callback(null);
+          return;
+        }
+        _saveUserImage('avatar_url', url, callback);
+      });
+    });
+  };
+
+  /* ── Banner image upload ── */
+  window.uploadBannerImage = function(fileOrDataUrl, callback) {
+    var uid  = window.U ? window.U.uid : 'user';
+    var name = 'banner_' + uid + '_' + Date.now();
+    if (window.toast) toast('⏳ Banner upload ho rahi hai…', 'inf');
+    _prepareImage(fileOrDataUrl, 800, 0.75, 250, function(b64) {
+      if (!b64) {
+        if (window.toast) toast('Banner image read nahi hui — JPG/PNG dobara choose karo', 'err');
+        if (callback) callback(null);
+        return;
+      }
+      window.uploadToImgBB(b64, name, function(err, url) {
+        if (err || !url) {
+          if (window.toast) toast('Banner upload failed: ' + (err || 'server ne URL nahi diya'), 'err');
+          if (callback) callback(null);
+          return;
+        }
+        _saveUserImage('banner_url', url, callback);
+      });
+    });
+  };
+
+
+  /* ── Base64 direct upload ── */
+  window.uploadToImgBBBase64 = function(base64, name, callback) {
+    _doUpload(_stripPrefix(base64), name || ('img_' + Date.now()), callback, _mimeOf(base64));
+  };
+
+  /* ── Canonical image compressor ─────────────────────────────────
+     This is deliberately private and then exported. screens/wallet.js
+     used to declare a second global `compImg` later in script order,
+     silently replacing this implementation with one that had no read or
+     decode error handlers. Profile/banner selection could then hang with
+     no callback and no toast on an unsupported/corrupt image. There is now
+     one implementation, every terminal path calls back exactly once, and
+     profile helpers call the private reference so another script cannot
+     accidentally replace it again. */
+  function _compressImage(file, maxDim, quality, maxKB, cb) {
+    var finished = false;
+    function finish(value) {
+      if (finished) return;
+      finished = true;
+      cb(value || null);
+    }
+    if (!_isFileLike(file) || typeof FileReader !== 'function') { finish(null); return; }
+
+    var reader;
+    try { reader = new FileReader(); }
+    catch (e) { finish(null); return; }
+
+    reader.onload = function(e) {
+      var original = String((e && e.target && e.target.result) || '');
+      if (!original || original.indexOf('data:') !== 0) { finish(null); return; }
+      if (typeof Image !== 'function') { finish(original); return; }
+
+      var img = new Image();
+      var decodeTimer = setTimeout(function() {
+        /* Keep the original image rather than hanging forever. The shared
+           uploader will still apply its own size guard/recompression. */
+        finish(original);
+      }, 15000);
+      img.onload = function() {
+        if (finished) return;
+        clearTimeout(decodeTimer);
+        try {
+          var w = Number(img.width) || 0, h = Number(img.height) || 0;
+          if (!w || !h) { finish(original); return; }
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.max(1, Math.round(h * maxDim / w)); w = maxDim; }
+            else       { w = Math.max(1, Math.round(w * maxDim / h)); h = maxDim; }
+          }
+          var c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          var ctx = c.getContext && c.getContext('2d');
+          if (!ctx) { finish(original); return; }
+          ctx.drawImage(img, 0, 0, w, h);
+          var q = Math.min(1, Math.max(0.1, Number(quality) || 0.8));
+          var result = c.toDataURL('image/jpeg', q);
+          while (result.length > maxKB * 1370 && q > 0.1) {
+            q = Math.max(0.1, Math.round((q - 0.1) * 10) / 10);
+            result = c.toDataURL('image/jpeg', q);
+          }
+          finish(result);
+        } catch (e2) { finish(original); }
+      };
+      img.onerror = function() { clearTimeout(decodeTimer); finish(original); };
+      try { img.src = original; } catch (e3) { clearTimeout(decodeTimer); finish(original); }
+    };
+    reader.onerror = function() { finish(null); };
+    reader.onabort = function() { finish(null); };
+    try { reader.readAsDataURL(file); } catch (e4) { finish(null); }
+  }
+  window.compImg = _compressImage;
+
+  console.log('[ImgBB] v35-SAVE-ERROR-VISIBLE ready — DB save failure ka asli reason ab toast me ✅');
+})();

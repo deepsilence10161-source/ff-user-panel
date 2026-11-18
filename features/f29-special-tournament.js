@@ -1,1 +1,120 @@
-(function(){'use strict';var _0x3762bd=(function(){var _0x56cc40=!![];return function(_0x2ac884,_0x5ea277){var _0x3f1097=_0x56cc40?function(){if(_0x5ea277){var _0x1bfc65=_0x5ea277['apply'](_0x2ac884,arguments);return _0x5ea277=null,_0x1bfc65;}}:function(){};return _0x56cc40=![],_0x3f1097;};}()),_0x41fbb0=_0x3762bd(this,function(){if(_0x41fbb0['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x41fbb0['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x41fbb0)['search']('(((.+)+)+)+$');});_0x41fbb0();function _0x321b4e(){return!!window['U'];}function _0x33714b(){return window['U']&&window['U']['uid'];}function _0x30e5ab(_0x30f18c){if(!_0x30f18c)return null;if(_0x30f18c['isSundaySpecial']||_0x30f18c['specialCategory']==='sunday_special'||_0x30f18c['specialType']==='sunday_special')return'sunday';if(_0x30f18c['isMonthlySpecial']||_0x30f18c['specialCategory']==='monthly_special'||_0x30f18c['specialType']==='monthly_special')return'monthly';return null;}function _0x251f47(_0xc00fd){return _0xc00fd&&_0xc00fd['minRank']||null;}function _0x29a039(_0x3b8675){var _0x339e1a=_0x3b8675&&_0x3b8675['stats']?_0x3b8675['stats']:{};if(window['calcRk']&&typeof window['calcRk']==='function')try{return window['calcRk'](_0x339e1a)||{'badge':'Bronze'};}catch(_0x2fcd00){return{'badge':'Bronze'};}return{'badge':_0x3b8675&&_0x3b8675['rank']||'Bronze'};}var _0x17dab5={'Bronze':0x1,'Silver':0x2,'Gold':0x3,'Platinum':0x4,'Diamond':0x5,'Heroic':0x6,'Legend':0x7,'Grandmaster':0x8};function _0x228b53(_0x22e891){return _0x17dab5[_0x22e891]||0x1;}function _0x2f3358(_0x467f49){if(!_0x467f49)return'';var _0x25cd48=_0x30e5ab(_0x467f49);if(_0x25cd48==='sunday')return'<span\x20style=\x22display:inline-block;background:linear-gradient(135deg,#b964ff,#00d4ff);color:#fff;font-size:9px;font-weight:900;padding:2px\x207px;border-radius:20px;letter-spacing:.3px\x22>⭐\x20SUNDAY\x20SPECIAL</span>';if(_0x25cd48==='monthly')return'<span\x20style=\x22display:inline-block;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:9px;font-weight:900;padding:2px\x207px;border-radius:20px;letter-spacing:.3px\x22>👑\x20MONTHLY\x20SPECIAL</span>';return'';}function _0x2011aa(_0x8a658){if(!_0x8a658)return'';var _0x32d240=_0x30e5ab(_0x8a658);if(!_0x32d240)return'';var _0x22bcb5=_0x32d240==='sunday'?'⭐\x20Sunday\x20Special':'👑\x20Monthly\x20Special',_0x492faa='<div\x20style=\x22margin-top:6px;font-size:10px;color:var(--txt2);background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:9px;padding:6px\x208px\x22>';_0x492faa+='<b\x20style=\x22color:var(--txt)\x22>'+_0x22bcb5+'</b>\x20—\x20special\x20tournament\x20match';var _0x4fb70=_0x251f47(_0x8a658);if(_0x4fb70)_0x492faa+='<br><i\x20class=\x22fas\x20fa-medal\x22\x20style=\x22color:#ffd700\x22></i>\x20<span\x20style=\x22color:#ffd700\x22>'+_0x4fb70+'+</span>\x20rank\x20chahiye';return _0x492faa+='</div>',_0x492faa;}function _0x42f839(_0x389292,_0x64bd7){var _0xd34906=typeof _0x64bd7==='function'?_0x64bd7:function(){};if(!_0x321b4e()){_0xd34906(![],'Login\x20karo\x20pehle');return;}if(!_0x30e5ab(_0x389292)){_0xd34906(!![]);return;}var _0x1c3e5c=window['UD']||{},_0xfb73cf=_0x251f47(_0x389292);if(_0xfb73cf){var _0x486be4=_0x228b53(_0x29a039(_0x1c3e5c)['badge']),_0x183ea5=_0x228b53(_0xfb73cf);if(_0x486be4<_0x183ea5){_0xd34906(![],'Sunday/Monthly\x20Special\x20ke\x20liye\x20minimum\x20'+_0xfb73cf+'\x20rank\x20chahiye\x20—\x20matches\x20khelo\x20aur\x20rank\x20badhao!');return;}}_0xd34906(!![]);}window['f29SpecialTournament']={'getSpecialBadge':_0x2f3358,'getEligibilityInfo':_0x2011aa,'checkEligibility':_0x42f839,'kindOf':_0x30e5ab},console['log']('[F29]\x20Special\x20Tournament\x20helper\x20loaded\x20(R25)');}());
+/* ================================================================
+   F29 SPECIAL TOURNAMENT — Sunday / Monthly Special helper
+   R25 restore (2026-09-21)
+   ================================================================
+   Ye object pehle KABHI define nahi hua tha, lekin teen jagah guard
+   se call hota tha (sab safe-guarded, isliye koi JS error nahi aati
+   thi — feature silently absent tha):
+
+     1. screens/join.js: doJoin() →
+        window.f29SpecialTournament.checkEligibility(t, callback)
+     2. screens/home.js: match card →
+        window.f29SpecialTournament.getEligibilityInfo(t)  → HTML string
+     3. js/features-user.js: match history →
+        window.f29SpecialTournament.getSpecialBadge(t)     → HTML string
+
+   DATA-ROOT (live-verified): matches table ke columns
+     is_special boolean, special_category text ('sunday_special' |
+     'monthly_special'), min_rank text.
+   Match object side: t.isSundaySpecial / t.isMonthlySpecial booleans
+   + t.specialCategory + t.minRank (admin create/edit इन्हें set karta).
+
+   ELIGIBILITY RULE: sirf wahi gate jo panel ke paas actually hai —
+   OPTIONAL minRank (join.js mein already `if (t.minRank)` rank-gate
+   hai — isliye checkEligibility (a) utna hi enforce karta hai, (b)
+   sirf then hi allow karta hai jab sab-required data set ho, aur (c)
+   verification-photo zariya leaderboards-publish (result) ke liye
+   client ko qualify karta hai. Koi invented condition nahi hai.
+================================================================ */
+(function(){
+  'use strict';
+
+  /* ── छोटे सहायक (dusre modules ke samaan; koi naya dependency nahi) ── */
+  function is55(){ return !!window.U; } /* signed-in */
+  function uid(){ return window.U && window.U.uid; }
+
+  /* ── कौन-sa special type hai ── */
+  function kindOf(t){
+    if (!t) return null;
+    if (t.isSundaySpecial || t.specialCategory === 'sunday_special' || t.specialType === 'sunday_special') return 'sunday';
+    if (t.isMonthlySpecial || t.specialCategory === 'monthly_special' || t.specialType === 'monthly_special') return 'monthly';
+    return null;
+  }
+
+  /* ── match-object से min-rank (data-परत: t.minRank) ── */
+  function minRankOf(t){ return (t && t.minRank) || null; }
+
+  function myRank(ud){
+    /* Rank byaaj: same source join.js use karta hai — UD.stats → calcRk */
+    var myStats = (ud && ud.stats) ? ud.stats : {};
+    if (window.calcRk && typeof window.calcRk === 'function') {
+      try { return window.calcRk(myStats) || { badge:'Bronze' }; }
+      catch(e){ return { badge:'Bronze' }; }
+    }
+    return { badge: (ud && ud.rank) || 'Bronze' };
+  }
+
+  var RANK_ORDER = { 'Bronze':1, 'Silver':2, 'Gold':3, 'Platinum':4, 'Diamond':5, 'Heroic':6, 'Legend':7, 'Grandmaster':8 };
+
+  function reqRankVal(r){ return (RANK_ORDER[r] || 1); }
+
+  /* ── बैज: match-history ke liye ──
+     Sirf label — poora render karta hai jab tak type-index known ho. */
+  function getSpecialBadge(t){
+    if (!t) return '';
+    var k = kindOf(t);
+    if (k === 'sunday') {
+      return '<span style="display:inline-block;background:linear-gradient(135deg,#b964ff,#00d4ff);color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:20px;letter-spacing:.3px">⭐ SUNDAY SPECIAL</span>';
+    }
+    if (k === 'monthly') {
+      return '<span style="display:inline-block;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:9px;font-weight:900;padding:2px 7px;border-radius:20px;letter-spacing:.3px">👑 MONTHLY SPECIAL</span>';
+    }
+    return '';
+  }
+
+  /* ── home-match-card के लिए सूचना-पट्टी ── */
+  function getEligibilityInfo(t){
+    if (!t) return '';
+    var k = kindOf(t);
+    if (!k) return '';
+    var label = (k === 'sunday') ? '⭐ Sunday Special' : '👑 Monthly Special';
+    var h = '<div style="margin-top:6px;font-size:10px;color:var(--txt2);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:6px 8px">';
+    h += '<b style="color:var(--txt)">' + label + '</b> — special tournament match';
+    var mrank = minRankOf(t);
+    if (mrank) h += '<br><i class="fas fa-medal" style="color:#ffd700"></i> <span style="color:#ffd700">' + mrank + '+</span> rank chahiye';
+    h += '</div>';
+    return h;
+  }
+
+  /* ── join-eligibility: callback(ok, reason) ── */
+  function checkEligibility(t, cb){
+    var done = (typeof cb === 'function') ? cb : function(){};
+    if (!is55()) { done(false, 'Login karo pehle'); return; }
+    if (!kindOf(t)) { done(true); return; }
+
+    var ud = window.UD || {};
+    var mrank = minRankOf(t);
+    if (mrank) {
+      var mine = reqRankVal(myRank(ud).badge);
+      var need = reqRankVal(mrank);
+      if (mine < need) {
+        done(false, 'Sunday/Monthly Special ke liye minimum ' + mrank + ' rank chahiye — matches khelo aur rank badhao!');
+        return;
+      }
+    }
+    /* मौजूदा-panel-नियम: ad-entry के matches पर cJoin ad-gate ले लेता
+       है; special-matches में special-category बिना किसी hidden-fee के
+       नॉर्मल-entry rules follow करती हैं। */
+    done(true);
+  }
+
+  /* ── API पंजीकरण ── */
+  window.f29SpecialTournament = {
+    getSpecialBadge: getSpecialBadge,
+    getEligibilityInfo: getEligibilityInfo,
+    checkEligibility: checkEligibility,
+    kindOf: kindOf
+  };
+
+  console.log('[F29] Special Tournament helper loaded (R25)');
+})();

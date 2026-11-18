@@ -1,1 +1,641 @@
-(function(){'use strict';var _0x31a7ce=(function(){var _0x4387c9=!![];return function(_0x1eb4b4,_0x123301){var _0x387f62=_0x4387c9?function(){if(_0x123301){var _0x51ec53=_0x123301['apply'](_0x1eb4b4,arguments);return _0x123301=null,_0x51ec53;}}:function(){};return _0x4387c9=![],_0x387f62;};}()),_0x1207a6=_0x31a7ce(this,function(){if(_0x1207a6['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x1207a6['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x1207a6)['search']('(((.+)+)+)+$');});_0x1207a6();var _0x44d4db=![],_0x202b8c=['get_my_poll_vote','get_room_credentials','user_has_phone','is_caller_admin','f_referral_leaderboard','f_user_public_profiles'],_0x487324=['early_access_users'],_0xb8f4bb='PREVIEW_READ_ONLY';function _0x44f45d(_0x27f9f7){var _0xd80968={'data':null,'error':{'message':_0x27f9f7||'preview_mode_read_only','code':_0xb8f4bb,'details':null,'hint':null},'count':null,'status':0x193,'statusText':'PREVIEW_READ_ONLY'},_0x1416f0,_0x21ac74=function(){return _0x1416f0;};return _0x1416f0=new Proxy(function(){},{'get':function(_0x181dc2,_0x470fba){if(_0x470fba==='then')return function(_0x277d93,_0xb7e8e5){return Promise['resolve'](_0xd80968)['then'](_0x277d93,_0xb7e8e5);};if(_0x470fba==='catch')return function(_0x27d70e){return Promise['resolve'](_0xd80968)['catch'](_0x27d70e);};if(_0x470fba==='finally')return function(_0x2890b3){return Promise['resolve'](_0xd80968)['finally'](_0x2890b3);};if(_0x470fba==='data')return _0xd80968['data'];if(_0x470fba==='error')return _0xd80968['error'];if(_0x470fba==='count')return _0xd80968['count'];if(_0x470fba==='status')return _0xd80968['status'];return _0x21ac74;},'apply':function(){return _0x1416f0;}}),_0x1416f0;}function _0x16d522(_0x2845ac){window['_previewMode']['lastBlocked']={'fn':_0x2845ac,'at':Date['now']()},_0x15c9a7(_0x2845ac);}function _0xf8e412(_0x2fb25a){if(!_0x2fb25a||_0x2fb25a['__pvFromLocked']||typeof _0x2fb25a['from']!=='function')return _0x2fb25a;try{_0x2fb25a['__pvFromLocked']=!![];}catch(_0x479cd7){return _0x2fb25a;}var _0x46752f=_0x2fb25a['from']['bind'](_0x2fb25a);return _0x2fb25a['from']=function(_0x4f1d74){var _0x2d5eb1=_0x46752f(_0x4f1d74);if(!_0x2d5eb1)return _0x2d5eb1;return['insert','update','delete','upsert']['forEach'](function(_0x120d58){var _0x2fd8c4=typeof _0x2d5eb1[_0x120d58]==='function'?_0x2d5eb1[_0x120d58]['bind'](_0x2d5eb1):null;if(!_0x2fd8c4)return;_0x2d5eb1[_0x120d58]=function(){if(!_0x44d4db)return _0x2fd8c4['apply'](null,arguments);if(_0x120d58==='insert'&&_0x487324['indexOf'](_0x4f1d74)!==-0x1)return _0x2fd8c4['apply'](null,arguments);return _0x16d522(_0x120d58+':'+_0x4f1d74),_0x44f45d('preview_mode_read_only:'+_0x120d58+':'+_0x4f1d74);};}),_0x2d5eb1;},_0x2fb25a;}function _0x31121c(_0x5243ad){if(!_0x5243ad||_0x5243ad['__pvRpcLocked']||typeof _0x5243ad['rpc']!=='function')return _0x5243ad;try{_0x5243ad['__pvRpcLocked']=!![];}catch(_0x247d29){return _0x5243ad;}var _0x2e2431=_0x5243ad['rpc']['bind'](_0x5243ad);return _0x5243ad['rpc']=function(_0x22c145){if(_0x44d4db&&_0x202b8c['indexOf'](_0x22c145)===-0x1)return _0x16d522('rpc:'+_0x22c145),_0x44f45d('preview_mode_read_only:rpc:'+_0x22c145);return _0x2e2431['apply'](null,arguments);},_0x5243ad;}function _0x53d901(_0x4a98b9){if(!_0x4a98b9||_0x4a98b9['__pvStorageLocked']||!_0x4a98b9['storage']||typeof _0x4a98b9['storage']['from']!=='function')return _0x4a98b9;try{_0x4a98b9['__pvStorageLocked']=!![];}catch(_0x395b1c){return _0x4a98b9;}var _0x15ab86=_0x4a98b9['storage']['from']['bind'](_0x4a98b9['storage']);return _0x4a98b9['storage']['from']=function(_0x42218d){var _0x1d9dce=_0x15ab86(_0x42218d);return['upload','uploadToSignedUrl','remove','move','copy','update','createSignedUploadUrl','createSignedUrl']['forEach'](function(_0x3e51e1){var _0x3fa668=_0x1d9dce&&typeof _0x1d9dce[_0x3e51e1]==='function'?_0x1d9dce[_0x3e51e1]['bind'](_0x1d9dce):null;if(!_0x3fa668)return;_0x1d9dce[_0x3e51e1]=function(){if(!_0x44d4db)return _0x3fa668['apply'](null,arguments);return _0x16d522('storage.'+_0x3e51e1+':'+_0x42218d),_0x44f45d('preview_mode_read_only:storage:'+_0x3e51e1);};}),_0x1d9dce;},_0x4a98b9;}function _0x3d210d(_0x485429){try{var _0x14f04c=Object['getPrototypeOf'](_0x485429);if(!_0x14f04c||_0x14f04c['__pvFnProto'])return;var _0x2f7b6=Object['getOwnPropertyDescriptor'](_0x14f04c,'functions');if(!_0x2f7b6||typeof _0x2f7b6['get']!=='function')return;_0x14f04c['__pvFnProto']=!![];var _0xd15f4c=_0x2f7b6['get'];Object['defineProperty'](_0x14f04c,'functions',{'configurable':!![],'get':function(){var _0x3cedf5=_0xd15f4c['call'](this);if(!_0x3cedf5||_0x3cedf5['__pvInvokeLocked']||typeof _0x3cedf5['invoke']!=='function')return _0x3cedf5;try{_0x3cedf5['__pvInvokeLocked']=!![];var _0x1b9e96=_0x3cedf5['invoke']['bind'](_0x3cedf5);_0x3cedf5['invoke']=function(_0x325cd5){if(_0x44d4db)return _0x16d522('functions.invoke:'+_0x325cd5),_0x44f45d('preview_mode_read_only:invoke:'+_0x325cd5);return _0x1b9e96['apply'](null,arguments);};}catch(_0x3e6213){}return _0x3cedf5;}});}catch(_0x15cead){}}function _0x2d18ee(_0x323b64){if(!_0x323b64||_0x323b64['__pvFnLocked'])return _0x323b64;_0x3d210d(_0x323b64);var _0x1fd113=null;try{_0x1fd113=_0x323b64['functions'];}catch(_0xa29c54){return _0x323b64;}if(!_0x1fd113||typeof _0x1fd113['invoke']!=='function')return _0x323b64;try{_0x323b64['__pvFnLocked']=!![];if(!_0x1fd113['__pvInvokeLocked']){_0x1fd113['__pvInvokeLocked']=!![];var _0x52e2b1=_0x1fd113['invoke']['bind'](_0x1fd113);_0x1fd113['invoke']=function(_0x3f82c8){if(_0x44d4db)return _0x16d522('functions.invoke:'+_0x3f82c8),_0x44f45d('preview_mode_read_only:invoke:'+_0x3f82c8);return _0x52e2b1['apply'](null,arguments);};}Object['defineProperty'](_0x323b64,'functions',{'configurable':!![],'get':function(){return _0x1fd113;}});}catch(_0x2c673d){}return _0x323b64;}function _0x47d4c7(_0x966289){if(!_0x966289||_0x966289['__pvAuthLocked']||!_0x966289['auth']||typeof _0x966289['auth']['updateUser']!=='function')return _0x966289;try{_0x966289['__pvAuthLocked']=!![];}catch(_0x282ee7){return _0x966289;}var _0x5305f6=_0x966289['auth']['updateUser']['bind'](_0x966289['auth']);return _0x966289['auth']['updateUser']=function(){if(_0x44d4db)return _0x16d522('auth.updateUser'),Promise['resolve']({'data':{'user':null},'error':{'message':'preview_mode_read_only:auth','code':_0xb8f4bb}});return _0x5305f6['apply'](null,arguments);},_0x966289;}function _0x206ee7(_0xf136c8){if(!_0xf136c8)return _0xf136c8;return _0xf8e412(_0xf136c8),_0x31121c(_0xf136c8),_0x53d901(_0xf136c8),_0x2d18ee(_0xf136c8),_0x47d4c7(_0xf136c8),_0xf136c8;}window['_previewWrapClient']=_0x206ee7;function _0x3350a7(){if(!window['supabase']||typeof window['supabase']['createClient']!=='function')return![];if(window['supabase']['createClient']['__pvPatched'])return!![];var _0x2378b1=window['supabase']['createClient'],_0x360ede=function(){var _0x192106=_0x2378b1['apply'](this,arguments);try{return _0x206ee7(_0x192106);}catch(_0x3186f6){return _0x192106;}};return _0x360ede['__pvPatched']=!![],_0x360ede['__orig']=_0x2378b1,window['supabase']['createClient']=_0x360ede,!![];}function _0x1e91cb(){_0x3350a7();if(window['_supa'])window['_supa']=_0x206ee7(window['_supa']);!window['_pvLockInterval']&&(window['_pvLockInterval']=setInterval(function(){if(!_0x44d4db)return;_0x3350a7();if(window['_supa']&&!window['_supa']['__pvFromLocked'])window['_supa']=_0x206ee7(window['_supa']);},0xfa0));}var _0x2ed038=null;function _0x23f33a(){if(document['getElementById']('_pvStyle'))return;var _0x47c1b6=document['createElement']('style');_0x47c1b6['id']='_pvStyle',_0x47c1b6['textContent']=['#_pvToast{position:fixed;bottom:calc(88px\x20+\x20env(safe-area-inset-bottom,0px));left:50%;','transform:translateX(-50%);width:min(360px,calc(100vw\x20-\x2026px));z-index:99990;','font-family:inherit;-webkit-tap-highlight-color:transparent;pointer-events:none;','animation:pvToastIn\x20.34s\x20cubic-bezier(.2,.9,.3,1.15)\x20both}','#_pvToast\x20.pv-card{position:relative;display:flex;gap:12px;align-items:flex-start;','padding:13px\x2015px\x2014px;border-radius:18px;overflow:hidden;','background:linear-gradient(150deg,rgba(20,24,38,.94),rgba(10,12,22,.96));','backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);','box-shadow:0\x2018px\x2050px\x20rgba(0,0,0,.6),inset\x200\x201px\x200\x20rgba(255,255,255,.06)}','#_pvToast\x20.pv-card:before{content:\x22\x22;position:absolute;inset:0;border-radius:inherit;padding:1.4px;','background:conic-gradient(from\x20140deg,rgba(0,255,156,.85),rgba(0,212,255,.75),rgba(185,100,255,.7),rgba(255,215,0,.75),rgba(0,255,156,.85));','-webkit-mask:linear-gradient(#000\x200\x200)\x20content-box,linear-gradient(#000\x200\x200);-webkit-mask-composite:xor;','mask-composite:exclude;opacity:.85;animation:pvSpin\x206s\x20linear\x20infinite}','#_pvToast\x20.pv-glow{position:absolute;inset:-40%\x20-60%;background:radial-gradient(closest-side,rgba(0,255,156,.16),transparent\x2070%);','animation:pvBreathe\x203.2s\x20ease-in-out\x20infinite;pointer-events:none}','#_pvToast\x20.pv-ico{position:relative;flex-shrink:0;width:42px;height:42px;border-radius:14px;','display:flex;align-items:center;justify-content:center;font-size:20px;','background:linear-gradient(150deg,rgba(0,255,156,.18),rgba(0,212,255,.12));','border:1px\x20solid\x20rgba(0,255,156,.3);box-shadow:0\x200\x200\x200\x20rgba(0,255,156,.28);','animation:pvPulse\x202.1s\x20ease-out\x20infinite}','#_pvToast\x20.pv-body{min-width:0;flex:1}','#_pvToast\x20.pv-chip{display:inline-flex;align-items:center;gap:5px;padding:2px\x208px;border-radius:999px;','background:rgba(0,255,156,.1);border:1px\x20solid\x20rgba(0,255,156,.26);color:#8effcf;','font-size:8.5px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:5px}','#_pvToast\x20.pv-chip\x20i{width:5px;height:5px;border-radius:50%;background:#00ff9c;box-shadow:0\x200\x206px\x20#00ff9c;animation:pvBlink\x201.4s\x20infinite}','#_pvToast\x20.pv-title{font-size:13px;font-weight:900;color:#fff;letter-spacing:.2px;line-height:1.25}','#_pvToast\x20.pv-msg{font-size:11.5px;color:#9aa0b4;margin-top:4px;line-height:1.5}','#_pvToast\x20.pv-msg\x20b{color:#dfe6ff;font-weight:800}','#_pvToast\x20.pv-bar{position:absolute;left:0;right:0;bottom:0;height:2.5px;background:rgba(255,255,255,.06);overflow:hidden;border-radius:0\x200\x2018px\x2018px}','#_pvToast\x20.pv-bar\x20span{display:block;height:100%;width:100%;transform-origin:left;','background:linear-gradient(90deg,#00ff9c,#00d4ff);animation:pvDrain\x202.6s\x20linear\x20forwards}','@keyframes\x20pvToastIn{from{opacity:0;transform:translateX(-50%)\x20translateY(16px)\x20scale(.94)}to{opacity:1;transform:translateX(-50%)\x20translateY(0)\x20scale(1)}}','@keyframes\x20pvToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%)\x20translateY(10px)\x20scale(.97)}}','@keyframes\x20pvSpin{to{transform:rotate(360deg)}}','@keyframes\x20pvBreathe{0%,100%{opacity:.5}50%{opacity:1}}','@keyframes\x20pvPulse{0%{box-shadow:0\x200\x200\x200\x20rgba(0,255,156,.3)}70%{box-shadow:0\x200\x200\x2012px\x20rgba(0,255,156,0)}100%{box-shadow:0\x200\x200\x200\x20rgba(0,255,156,0)}}','@keyframes\x20pvDrain{from{transform:scaleX(1)}to{transform:scaleX(0)}}','@keyframes\x20pvBlink{0%,100%{opacity:1}50%{opacity:.25}}','@keyframes\x20pvScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}','@keyframes\x20pvShine{0%{background-position:0%\x2050%}100%{background-position:300%\x2050%}}','.mc-join.join-vo{background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03))!important;','color:#c8d2ee!important;border:1px\x20dashed\x20rgba(255,255,255,.3)!important;letter-spacing:.4px;','display:flex;align-items:center;justify-content:center;gap:6px;opacity:1!important}','.mc-join.join-vo:before{content:\x22🔒\x22;font-size:12px}','@media\x20(prefers-reduced-motion:\x20reduce){#_pvToast\x20*,#_pvToast{animation:none!important}}']['join'](''),document['head']['appendChild'](_0x47c1b6);}function _0x15c9a7(_0x2ac487){if(_0x2ed038)return;_0x2ed038=setTimeout(function(){_0x2ed038=null;},0x7d0);var _0x5ddd42=document['getElementById']('_pvToast');if(_0x5ddd42)_0x5ddd42['remove']();var _0x2574b5='';if(_0x2ac487){var _0x5007b1={'rpc:validate_and_join_match':'Match\x20join','rpc:join_clan':'Clan\x20join','rpc:leave_clan':'Clan\x20leave','rpc:cast_poll_vote':'Vote','rpc:redeem_voucher':'Voucher\x20redeem','rpc:claim_ad_reward':'Ad\x20reward','rpc:submit_age_verification':'Verification\x20submit','rpc:start_free_trial':'Free\x20trial','rpc:contribute_to_squad_bank':'Squad\x20bank','rpc:purchase_cosmetic':'Purchase'};_0x2574b5=_0x5007b1[_0x2ac487]||'';if(!_0x2574b5){if(/^rpc:/['test'](_0x2ac487))_0x2574b5='Ye\x20feature';else{if(/^insert:|^update:|^delete:|^upsert:/['test'](_0x2ac487))_0x2574b5='Ye\x20action';else{if(/^storage\./['test'](_0x2ac487))_0x2574b5='Upload';else{if(/^functions\.invoke:/['test'](_0x2ac487))_0x2574b5='Payment\x20/\x20upload';else{if(/^auth\./['test'](_0x2ac487))_0x2574b5='Profile\x20update';}}}}}}_0x23f33a();var _0x45c6a9=document['createElement']('div');_0x45c6a9['id']='_pvToast',_0x45c6a9['setAttribute']('role','status'),_0x45c6a9['innerHTML']=['<div\x20class=\x22pv-card\x22>','<div\x20class=\x22pv-glow\x22></div>','<div\x20class=\x22pv-ico\x22>👀</div>','<div\x20class=\x22pv-body\x22>','<div\x20class=\x22pv-chip\x22><i></i>\x20Preview</div>','<div\x20class=\x22pv-title\x22>Preview\x20Mode\x20—\x20View\x20Only</div>','<div\x20class=\x22pv-msg\x22>',(_0x2574b5?'<b>'+_0x2574b5+'</b>\x20launch\x20ke\x20baad\x20unlock\x20hoga.\x20':'')+'Abhi\x20aap\x20sab\x20kuch\x20dekh\x20sakte\x20ho\x20—\x20sirf\x20actions\x20band\x20hain.\x20🚀','</div>','</div>','<div\x20class=\x22pv-bar\x22><span></span></div>','</div>']['join'](''),document['body']['appendChild'](_0x45c6a9),setTimeout(function(){_0x45c6a9['parentNode']&&(_0x45c6a9['style']['animation']='pvToastOut\x20.3s\x20ease\x20forwards',setTimeout(function(){if(_0x45c6a9['parentNode'])_0x45c6a9['remove']();},0x12c));},0xa28);}function _0x314646(_0x273dc2){if(!_0x44d4db)return;var _0x195f32=_0x273dc2?_0x273dc2['target']||_0x273dc2['srcElement']:null;if(_0x195f32){var _0x1d3665=_0x195f32['closest']('.nav-item')||_0x195f32['closest']('[data-nav]')||_0x195f32['closest']('.hdr-bell')||_0x195f32['closest']('.status-tabs')||_0x195f32['closest']('.c-pill')||_0x195f32['closest']('.sp-toggle')||_0x195f32['closest']('.mode-filter')||_0x195f32['closest']('.tab-btn')||_0x195f32['closest']('.filter-tab')||_0x195f32['closest']('#_pvShareBtn')||_0x195f32['closest']('.ticker-wrap')||_0x195f32['closest']('#maintOverlay');if(_0x1d3665)return;var _0x4aa5bd=(_0x195f32['tagName']||'')['toLowerCase'](),_0x431ed5=_0x4aa5bd==='input'&&(_0x195f32['type']||'')['toLowerCase']()==='file';if(_0x195f32['closest']&&_0x195f32['closest']('#maintOverlay'))return;var _0x4bb0e1=_0x4aa5bd==='button'||_0x431ed5||_0x4aa5bd==='textarea'||_0x4aa5bd==='select'||_0x4aa5bd==='input'&&(_0x195f32['type']||'')['toLowerCase']()!=='search'||_0x195f32['getAttribute']('onclick')||_0x195f32['closest']('button')||_0x195f32['closest']('.btn,\x20[role=\x22button\x22],\x20.nav-item,\x20.tab,\x20[data-action]');if(!_0x4bb0e1)return;}return _0x273dc2&&_0x273dc2['preventDefault']&&_0x273dc2['preventDefault'](),_0x273dc2&&_0x273dc2['stopPropagation']&&_0x273dc2['stopPropagation'](),_0x15c9a7(null),![];}window['_previewBlockHandler']=_0x314646;var _0x49a76d=null;function _0x4b67bb(){!_0x49a76d&&(_0x49a76d=function(_0x113676){_0x314646(_0x113676);},document['addEventListener']('click',_0x49a76d,!![]),document['addEventListener']('submit',_0x49a76d,!![]),document['addEventListener']('change',function(_0x432c7b){var _0x19a578=_0x432c7b&&_0x432c7b['target'];if(!_0x44d4db||!_0x19a578)return;(_0x19a578['tagName']||'')['toLowerCase']()==='input'&&(_0x19a578['type']||'')['toLowerCase']()==='file'&&(_0x432c7b['preventDefault'](),_0x432c7b['stopPropagation'](),_0x15c9a7('storage.upload'));},!![]));}function _0x2079e1(){_0x49a76d&&(document['removeEventListener']('click',_0x49a76d,!![]),document['removeEventListener']('submit',_0x49a76d,!![]),_0x49a76d=null);var _0x5d8f77=document['getElementById']('_pvToast');if(_0x5d8f77)_0x5d8f77['remove']();}function _0x3669b5(_0x2c1f28){var _0x1e344f=document['querySelector']('.ticker-wrap'),_0x3939fa=document['getElementById']('tickerTxt');if(!_0x1e344f)return;if(_0x3939fa)_0x3939fa['style']['display']='none';if(document['getElementById']('_pvTickerRow'))return;_0x23f33a();var _0x30a749=_0x2c1f28&&_0x2c1f28['launchDate']?'\x20·\x20🚀\x20Launch:\x20'+_0x2c1f28['launchDate']:'';_0x1e344f['style']['cssText']=['overflow:hidden;padding:0;position:relative;','background:linear-gradient(120deg,rgba(0,255,156,.10),rgba(0,212,255,.07)\x2045%,rgba(185,100,255,.09));','border-bottom:1px\x20solid\x20rgba(0,255,156,.2);','box-shadow:0\x206px\x2020px\x20rgba(0,0,0,.35),inset\x200\x201px\x200\x20rgba(255,255,255,.05)']['join']('');var _0x16019f=document['createElement']('div');_0x16019f['id']='_pvTickerRow',_0x16019f['style']['cssText']='display:flex;align-items:center;gap:9px;width:100%;padding:7px\x2012px\x208px;position:relative;overflow:hidden';var _0x121eaf=document['createElement']('div');_0x121eaf['style']['cssText']=['flex-shrink:0;width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;','background:linear-gradient(150deg,rgba(0,255,156,.22),rgba(0,212,255,.14));border:1px\x20solid\x20rgba(0,255,156,.34);','box-shadow:0\x200\x2014px\x20rgba(0,255,156,.18)']['join'](''),_0x121eaf['textContent']='👀';var _0x4e0b8d=document['createElement']('div');_0x4e0b8d['style']['cssText']='flex:1;min-width:0;overflow:hidden;position:relative';var _0x4aeb95=document['createElement']('span');_0x4aeb95['style']['cssText']=['display:inline-block;white-space:nowrap;padding-left:100%;font-size:12px;font-weight:800;letter-spacing:.2px;','background:linear-gradient(90deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);','background-size:300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;','animation:pvShine\x205s\x20linear\x20infinite,pvScroll\x2019s\x20linear\x20infinite']['join'](''),_0x4aeb95['textContent']='Preview\x20Mode\x20—\x20View\x20Only'+_0x30a749+'\x20\x20•\x20\x20Sab\x20kuch\x20dekho,\x20actions\x20launch\x20ke\x20baad\x20unlock\x20honge\x20\x20•\x20\x20🪙\x20Coins\x20+\x20rewards\x20\x20•\x20\x20🏆\x20Free\x20Fire\x20Tournaments\x20\x20•\x20\x20👥\x20Teams\x20&\x20Leaderboards';var _0x4b8835=document['createElement']('div');_0x4b8835['style']['cssText']=['flex-shrink:0;display:inline-flex;align-items:center;gap:5px;padding:3px\x208px;border-radius:999px;','background:rgba(0,0,0,.35);border:1px\x20solid\x20rgba(255,255,255,.14);color:#dfe6ff;','font-size:8.5px;font-weight:900;letter-spacing:1.2px']['join'](''),_0x4b8835['innerHTML']='<i\x20style=\x22width:5px;height:5px;border-radius:50%;background:#00ff9c;box-shadow:0\x200\x207px\x20#00ff9c;display:inline-block;animation:pvBlink\x201.4s\x20infinite\x22></i>LIVE\x20PREVIEW';var _0x5d2dd8=document['createElement']('button');_0x5d2dd8['id']='_pvShareBtn',_0x5d2dd8['onclick']=window['_pvShare'],_0x5d2dd8['style']['cssText']=['flex-shrink:0;padding:4px\x2011px;border-radius:999px;cursor:pointer;font-family:inherit;','background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,255,156,.16));','border:1px\x20solid\x20rgba(0,212,255,.38);color:#bfeaff;font-size:10.5px;font-weight:900;white-space:nowrap']['join'](''),_0x5d2dd8['innerHTML']='📤\x20Share',_0x4e0b8d['appendChild'](_0x4aeb95),_0x16019f['appendChild'](_0x121eaf),_0x16019f['appendChild'](_0x4e0b8d),_0x16019f['appendChild'](_0x4b8835),_0x16019f['appendChild'](_0x5d2dd8),_0x1e344f['appendChild'](_0x16019f);}function _0xdd4b88(){var _0x5cce95=document['getElementById']('_pvTickerRow');if(_0x5cce95)_0x5cce95['remove']();var _0x4f277d=document['getElementById']('tickerTxt');if(_0x4f277d)_0x4f277d['style']['display']='';var _0x46c0cd=document['querySelector']('.ticker-wrap');if(_0x46c0cd)_0x46c0cd['style']['cssText']='';}window['_pvShare']=function(){var _0x2da3f3=window['UD']||{},_0x57c358=window['U'],_0x273bf1=_0x2da3f3['referralCode']||(_0x57c358?_0x57c358['uid']['substring'](0x0,0x8)['toUpperCase']():''),_0xcecc5=window['location']['href'],_0x5dafb6='🎮\x20Mini\x20eSports\x20is\x20launching\x20soon!\x0a\x0a🏆\x20Skill-based\x20Free\x20Fire\x20Tournaments\x0a🪙\x20Free\x20coins\x20+\x20💎\x20diamonds\x20rewards\x20·\x20🏅\x20Live\x20Leaderboards\x0a\x0a📲\x20Join\x20Early:\x0a'+_0xcecc5+(_0x273bf1?'\x0a\x0a🎁\x20Referral\x20Code:\x20*'+_0x273bf1+'*':'');navigator['share']?navigator['share']({'title':'Mini\x20eSports\x20—\x20Coming\x20Soon','text':_0x5dafb6})['catch'](function(){window['openWhatsApp']?window['openWhatsApp'](_0x5dafb6):window['location']['href']='https://wa.me/?text='+encodeURIComponent(_0x5dafb6);}):window['openWhatsApp']?window['openWhatsApp'](_0x5dafb6):window['location']['href']='https://wa.me/?text='+encodeURIComponent(_0x5dafb6);};function _0x4419a0(_0x30f7de){_0x30f7de=_0x30f7de||{};var _0x208ca6=_0x44d4db;_0x44d4db=_0x30f7de['active']===!![];if(_0x44d4db){if(!_0x208ca6){var _0x263bc4=function(_0x1b5fd1){if(document['querySelector']('.ticker-wrap'))_0x3669b5(_0x30f7de),_0x4b67bb(),_0x1e91cb(),window['U']&&window['_supa']&&window['_supa']['from']('early_access_users')['insert']({'user_id':window['U']['uid'],'name':(window['UD']||{})['displayName']||(window['UD']||{})['ign']||'','joined_at':new Date()['toISOString'](),'platform':/Android/['test'](navigator['userAgent'])?'android':'web'},{'onConflict':'user_id','ignoreDuplicates':!![]})['then'](null,function(_0x5f4ce4){console['warn']('[PreviewMode]\x20early_access_users\x20insert\x20failed:',_0x5f4ce4&&_0x5f4ce4['message']);});else _0x1b5fd1<0x14&&setTimeout(function(){_0x263bc4(_0x1b5fd1+0x1);},0x12c);};_0x263bc4(0x0);}else _0x1e91cb();}else _0x208ca6&&(_0xdd4b88(),_0x2079e1());}window['applyPreviewCfg']=_0x4419a0;function _0x143fa4(){if(!window['_supa']){setTimeout(_0x143fa4,0x320);return;}window['_supa']['from']('app_settings')['select']('value')['eq']('key','preview_mode')['maybeSingle']()['then'](function(_0x3b6f9b){if(_0x3b6f9b['error']){console['error']('[PreviewMode]\x20read\x20failed:',_0x3b6f9b['error']['message']);return;}_0x4419a0(_0x3b6f9b['data']&&_0x3b6f9b['data']['value']);}),!window['_pvModePollTimer']&&(window['_pvModePollTimer']=setInterval(function(){window['_supa']['from']('app_settings')['select']('value')['eq']('key','preview_mode')['maybeSingle']()['then'](function(_0x23f7de){if(!_0x23f7de['error'])_0x4419a0(_0x23f7de['data']&&_0x23f7de['data']['value']);});},0x61a8));}var _0x39713f=0x0,_0xdb22f5=setInterval(function(){_0x39713f++;if(window['boot']){clearInterval(_0xdb22f5);var _0x1d5e34=window['boot'];window['boot']=function(){_0x1d5e34['apply'](this,arguments),setTimeout(_0x143fa4,0x258);};}_0x39713f>0x28&&(clearInterval(_0xdb22f5),_0x143fa4());},0x12c);document['addEventListener']('visibilitychange',function(){if(document['hidden'])return;var _0x3b2393=document['querySelector']('#_pvTickerRow\x20span,\x20.ticker-preview-txt');if(!_0x3b2393)return;_0x3b2393['style']['animation']='none',void _0x3b2393['offsetWidth'],_0x3b2393['style']['animation']='';}),window['_previewMode']={'check':_0x143fa4,'isActive':function(){return _0x44d4db;},'lastBlocked':null,'readOnlyRpcs':_0x202b8c['slice'](),'wrapClient':_0x206ee7},_0x3350a7(),console['log']('[Mini\x20eSports]\x20✅\x20Preview\x20Mode\x20v6.0\x20—\x20strict\x20view-only\x20(client\x20write-lock\x20+\x20DOM\x20guards)');}());
+/* ================================================================
+   MINI eSPORTS — PREVIEW MODE v6.0   (2026-09-26)
+
+   Preview mode = STRICT VIEW-ONLY user panel.
+   Sab kuch dikhta hai (matches, wallet, leaderboard, clan, profile…)
+   lekin user koi action nahi kar sakta — na match join, na request,
+   na clan join, na vote, na redeem, na upload, kuch bhi nahi.
+
+   v5.1 me sirf CLICK events block hote the (DOM-level) — jo bhi action
+   programmatically ya click ke alawa trigger hota tha (auto-run code,
+   keyboard submit, ya koi bhi .rpc()/.insert() call) wo chalta rehta
+   tha. v6 me asli enforcement CLIENT LAYER par hai:
+
+     1. @supabase client ka write-lock — client.from(t).insert/update/
+        delete/upsert, client.rpc(), client.storage.*, client.functions.
+        invoke(), client.auth.updateUser → sab ek blocked result dete
+        hain ({data:null, error:{code:'PREVIEW_READ_ONLY'}}), to koi
+        write kabhi network tak jaati hi nahi.
+     2. Reads (select) 100% chalu rehte hain — view-only ka matlab
+        dekhna, isliye reads kabhi block nahi hote.
+     3. Read-only RPC allowlist (leaderboard / poll / room info jaise
+        pure-read functions) — sirf view ke liye.
+     4. DOM layer: click + submit + file-change par friendly toast,
+        aur ek `window._previewMode.lastBlocked` telemetry flag
+        (live testing + debugging ke liye).
+     5. Factory patch: window.supabase.createClient bhi wrapped hai —
+        token refresh par jab window._supa dobara banta hai (core/db.js
+        ke 3 creation points) tab bhi lock zinda rehta hai, aur ek
+        safety-net interval (sirf preview active hone par) kisi bhi
+        naye client instance ko dobara wrap kar deta hai.
+
+   Intentional exception: `early_access_users` insert allowed hai — yeh
+   user ka "action" nahi, preview enrollment record hai (R29D fix), aur
+   economy/actions par iska koi asar nahi.
+   ================================================================ */
+(function () {
+  'use strict';
+
+  var _previewActive = false;
+
+  /* ── Pure-read RPC allowlist (view karne wale functions) ── */
+  var READ_ONLY_RPC = [
+    'get_my_poll_vote',       /* apna vote dekhna */
+    'get_room_credentials',   /* eligible user ko room info dikhana (read) */
+    'user_has_phone',         /* signup/verification read-helper */
+    'is_caller_admin',        /* role badge */
+    'f_referral_leaderboard', /* leaderboard view */
+    'f_user_public_profiles'  /* public profiles view */
+  ];
+
+  /* ── Intentional write exception (enrollment record, koi action nahi) ── */
+  var ALLOWED_INSERT_TABLES = ['early_access_users'];
+
+  var BLOCK_CODE = 'PREVIEW_READ_ONLY';
+
+  /* ════════════════ 1. Blocked-result builder ════════════════
+     Supabase builders chainable + thenable hote hain. Yeh builder
+     kisi bhi chain (.insert().select().eq().single()) ko safely
+     absorb karta hai aur last me wahi {data:null,error} resolve
+     karta hai jo ek normal failed call deta — isliye caller code
+     kabhi crash nahi hota. */
+  function _blockedBuilder(reason) {
+    var result = {
+      data: null,
+      error: { message: reason || 'preview_mode_read_only', code: BLOCK_CODE, details: null, hint: null },
+      count: null, status: 403, statusText: 'PREVIEW_READ_ONLY'
+    };
+    var proxy;
+    var passthrough = function () { return proxy; };
+    proxy = new Proxy(function () {}, {
+      get: function (_t, prop) {
+        if (prop === 'then') return function (onF, onR) { return Promise.resolve(result).then(onF, onR); };
+        if (prop === 'catch') return function (onR) { return Promise.resolve(result).catch(onR); };
+        if (prop === 'finally') return function (onFi) { return Promise.resolve(result).finally(onFi); };
+        if (prop === 'data') return result.data;
+        if (prop === 'error') return result.error;
+        if (prop === 'count') return result.count;
+        if (prop === 'status') return result.status;
+        return passthrough;
+      },
+      apply: function () { return proxy; }
+    });
+    return proxy;
+  }
+
+  function _note(fnLabel) {
+    window._previewMode.lastBlocked = { fn: fnLabel, at: Date.now() };
+    _flashPreview(fnLabel);
+  }
+
+  /* ════════════════ 2. Client write-lock ════════════════ */
+  function _lockFrom(client) {
+    if (!client || client.__pvFromLocked || typeof client.from !== 'function') return client;
+    try { client.__pvFromLocked = true; } catch (e) { return client; }
+
+    var origFrom = client.from.bind(client);
+    client.from = function (table) {
+      var q = origFrom(table);
+      if (!q) return q;
+      ['insert', 'update', 'delete', 'upsert'].forEach(function (m) {
+        var orig = (typeof q[m] === 'function') ? q[m].bind(q) : null;
+        if (!orig) return;
+        q[m] = function () {
+          if (!_previewActive) return orig.apply(null, arguments);
+          if (m === 'insert' && ALLOWED_INSERT_TABLES.indexOf(table) !== -1) return orig.apply(null, arguments);
+          _note(m + ':' + table);
+          return _blockedBuilder('preview_mode_read_only:' + m + ':' + table);
+        };
+      });
+      return q;
+    };
+    return client;
+  }
+
+  function _lockRpc(client) {
+    if (!client || client.__pvRpcLocked || typeof client.rpc !== 'function') return client;
+    try { client.__pvRpcLocked = true; } catch (e) { return client; }
+    var origRpc = client.rpc.bind(client);
+    client.rpc = function (fn) {
+      if (_previewActive && READ_ONLY_RPC.indexOf(fn) === -1) {
+        _note('rpc:' + fn);
+        return _blockedBuilder('preview_mode_read_only:rpc:' + fn);
+      }
+      return origRpc.apply(null, arguments);
+    };
+    return client;
+  }
+
+  function _lockStorage(client) {
+    if (!client || client.__pvStorageLocked || !client.storage || typeof client.storage.from !== 'function') return client;
+    try { client.__pvStorageLocked = true; } catch (e) { return client; }
+    var origStorageFrom = client.storage.from.bind(client.storage);
+    client.storage.from = function (bucket) {
+      var b = origStorageFrom(bucket);
+      ['upload', 'uploadToSignedUrl', 'remove', 'move', 'copy', 'update', 'createSignedUploadUrl', 'createSignedUrl'].forEach(function (m) {
+        var orig = (b && typeof b[m] === 'function') ? b[m].bind(b) : null;
+        if (!orig) return;
+        b[m] = function () {
+          if (!_previewActive) return orig.apply(null, arguments);
+          _note('storage.' + m + ':' + bucket);
+          return _blockedBuilder('preview_mode_read_only:storage:' + m);
+        };
+      });
+      return b;
+    };
+    return client;
+  }
+
+  /* SupabaseClient.functions ek GETTER hai (supabase-js v2):
+       get functions() { return new FunctionsClient(this.functionsUrl.href, {...}) }
+     Matlab har `client.functions` access par ek NAYA FunctionsClient milta hai — isliye
+     instance par invoke patch karne se asli call bach jaati thi (live test me pakda gaya:
+     functions.invoke server tak pahunch raha tha, "Edge Function returned a non-2xx").
+     Ab: prototype ka getter hi wrap hota hai, aur jo client wapas milta hai uspar invoke
+     lock lagta hai; instance par bhi ek shadow getter define karte hain (belt & braces). */
+  function _lockFunctionsProto(client) {
+    try {
+      var proto = Object.getPrototypeOf(client);
+      if (!proto || proto.__pvFnProto) return;
+      var desc = Object.getOwnPropertyDescriptor(proto, 'functions');
+      if (!desc || typeof desc.get !== 'function') return;
+      proto.__pvFnProto = true;
+      var origGet = desc.get;
+      Object.defineProperty(proto, 'functions', {
+        configurable: true,
+        get: function () {
+          var real = origGet.call(this);
+          if (!real || real.__pvInvokeLocked || typeof real.invoke !== 'function') return real;
+          try {
+            real.__pvInvokeLocked = true;
+            var origInvoke = real.invoke.bind(real);
+            real.invoke = function (name) {
+              if (_previewActive) {
+                /* preview me koi edge-function call nahi: payment (paytm-*),
+                   upload (imgbb), push registration, admin gateway — sab actions */
+                _note('functions.invoke:' + name);
+                return _blockedBuilder('preview_mode_read_only:invoke:' + name);
+              }
+              return origInvoke.apply(null, arguments);
+            };
+          } catch (e) {}
+          return real;
+        }
+      });
+    } catch (e) {}
+  }
+
+  function _lockFunctions(client) {
+    if (!client || client.__pvFnLocked) return client;
+    _lockFunctionsProto(client);
+    var fns = null;
+    try { fns = client.functions; } catch (e) { return client; }
+    if (!fns || typeof fns.invoke !== 'function') return client;
+    try {
+      client.__pvFnLocked = true;
+      if (!fns.__pvInvokeLocked) {
+        fns.__pvInvokeLocked = true;
+        var origInvoke = fns.invoke.bind(fns);
+        fns.invoke = function (name) {
+          if (_previewActive) {
+            _note('functions.invoke:' + name);
+            return _blockedBuilder('preview_mode_read_only:invoke:' + name);
+          }
+          return origInvoke.apply(null, arguments);
+        };
+      }
+      /* getter ko instance par shadow karo — har access par wahi locked instance mile */
+      Object.defineProperty(client, 'functions', { configurable: true, get: function () { return fns; } });
+    } catch (e) {}
+    return client;
+  }
+
+  function _lockAuth(client) {
+    if (!client || client.__pvAuthLocked || !client.auth || typeof client.auth.updateUser !== 'function') return client;
+    try { client.__pvAuthLocked = true; } catch (e) { return client; }
+    var orig = client.auth.updateUser.bind(client.auth);
+    client.auth.updateUser = function () {
+      if (_previewActive) {
+        _note('auth.updateUser');
+        return Promise.resolve({ data: { user: null }, error: { message: 'preview_mode_read_only:auth', code: BLOCK_CODE } });
+      }
+      return orig.apply(null, arguments);
+    };
+    return client;
+  }
+
+  function wrapClient(client) {
+    if (!client) return client;
+    _lockFrom(client);
+    _lockRpc(client);
+    _lockStorage(client);
+    _lockFunctions(client);
+    _lockAuth(client);
+    return client;
+  }
+  window._previewWrapClient = wrapClient;   /* debug/testing hook */
+
+  /* Factory patch — core/db.js jahan bhi naya client banaye, lock laga rahe */
+  function patchFactory() {
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') return false;
+    if (window.supabase.createClient.__pvPatched) return true;
+    var orig = window.supabase.createClient;
+    var patched = function () {
+      var c = orig.apply(this, arguments);
+      try { return wrapClient(c); } catch (e) { return c; }
+    };
+    patched.__pvPatched = true;
+    patched.__orig = orig;
+    window.supabase.createClient = patched;
+    return true;
+  }
+
+  function armLock() {
+    patchFactory();
+    if (window._supa) window._supa = wrapClient(window._supa);
+    if (!window._pvLockInterval) {
+      window._pvLockInterval = setInterval(function () {
+        if (!_previewActive) return;           /* idle par kuch nahi karta */
+        patchFactory();
+        if (window._supa && !window._supa.__pvFromLocked) window._supa = wrapClient(window._supa);
+      }, 4000);
+    }
+  }
+
+  /* ════════════════ 3. Toast UX — REDESIGN v6.2 (2026-09-27) ════════════════
+   Pehle wala toast ek flat dark card tha. Ab: glass card + gradient border ring +
+   pulsing icon + "PREVIEW MODE" chip + auto-dismiss progress bar. Text same rehta
+   hai (title me "Preview Mode — View Only" — test/compat ke liye). */
+  var _flashTimer = null;
+  function _pvUIStyle() {
+    if (document.getElementById('_pvStyle')) return;
+    var s = document.createElement('style');
+    s.id = '_pvStyle';
+    s.textContent = [
+      /* toast shell */
+      '#_pvToast{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom,0px));left:50%;',
+        'transform:translateX(-50%);width:min(360px,calc(100vw - 26px));z-index:99990;',
+        'font-family:inherit;-webkit-tap-highlight-color:transparent;pointer-events:none;',
+        'animation:pvToastIn .34s cubic-bezier(.2,.9,.3,1.15) both}',
+      '#_pvToast .pv-card{position:relative;display:flex;gap:12px;align-items:flex-start;',
+        'padding:13px 15px 14px;border-radius:18px;overflow:hidden;',
+        'background:linear-gradient(150deg,rgba(20,24,38,.94),rgba(10,12,22,.96));',
+        'backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);',
+        'box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06)}',
+      /* gradient border ring */
+      '#_pvToast .pv-card:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;',
+        'background:conic-gradient(from 140deg,rgba(0,255,156,.85),rgba(0,212,255,.75),rgba(185,100,255,.7),rgba(255,215,0,.75),rgba(0,255,156,.85));',
+        '-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;',
+        'mask-composite:exclude;opacity:.85;animation:pvSpin 6s linear infinite}',
+      /* glow sweep */
+      '#_pvToast .pv-glow{position:absolute;inset:-40% -60%;background:radial-gradient(closest-side,rgba(0,255,156,.16),transparent 70%);',
+        'animation:pvBreathe 3.2s ease-in-out infinite;pointer-events:none}',
+      /* icon */
+      '#_pvToast .pv-ico{position:relative;flex-shrink:0;width:42px;height:42px;border-radius:14px;',
+        'display:flex;align-items:center;justify-content:center;font-size:20px;',
+        'background:linear-gradient(150deg,rgba(0,255,156,.18),rgba(0,212,255,.12));',
+        'border:1px solid rgba(0,255,156,.3);box-shadow:0 0 0 0 rgba(0,255,156,.28);',
+        'animation:pvPulse 2.1s ease-out infinite}',
+      /* text */
+      '#_pvToast .pv-body{min-width:0;flex:1}',
+      '#_pvToast .pv-chip{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;',
+        'background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.26);color:#8effcf;',
+        'font-size:8.5px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:5px}',
+      '#_pvToast .pv-chip i{width:5px;height:5px;border-radius:50%;background:#00ff9c;box-shadow:0 0 6px #00ff9c;animation:pvBlink 1.4s infinite}',
+      '#_pvToast .pv-title{font-size:13px;font-weight:900;color:#fff;letter-spacing:.2px;line-height:1.25}',
+      '#_pvToast .pv-msg{font-size:11.5px;color:#9aa0b4;margin-top:4px;line-height:1.5}',
+      '#_pvToast .pv-msg b{color:#dfe6ff;font-weight:800}',
+      /* auto-dismiss bar */
+      '#_pvToast .pv-bar{position:absolute;left:0;right:0;bottom:0;height:2.5px;background:rgba(255,255,255,.06);overflow:hidden;border-radius:0 0 18px 18px}',
+      '#_pvToast .pv-bar span{display:block;height:100%;width:100%;transform-origin:left;',
+        'background:linear-gradient(90deg,#00ff9c,#00d4ff);animation:pvDrain 2.6s linear forwards}',
+      /* keyframes */
+      '@keyframes pvToastIn{from{opacity:0;transform:translateX(-50%) translateY(16px) scale(.94)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}',
+      '@keyframes pvToastOut{from{opacity:1}to{opacity:0;transform:translateX(-50%) translateY(10px) scale(.97)}}',
+      '@keyframes pvSpin{to{transform:rotate(360deg)}}',
+      '@keyframes pvBreathe{0%,100%{opacity:.5}50%{opacity:1}}',
+      '@keyframes pvPulse{0%{box-shadow:0 0 0 0 rgba(0,255,156,.3)}70%{box-shadow:0 0 0 12px rgba(0,255,156,0)}100%{box-shadow:0 0 0 0 rgba(0,255,156,0)}}',
+      '@keyframes pvDrain{from{transform:scaleX(1)}to{transform:scaleX(0)}}',
+      '@keyframes pvBlink{0%,100%{opacity:1}50%{opacity:.25}}',
+      /* ticker */
+      '@keyframes pvScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}',
+      '@keyframes pvShine{0%{background-position:0% 50%}100%{background-position:300% 50%}}',
+      /* view-only join buttons (home cards) */
+      '.mc-join.join-vo{background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03))!important;',
+        'color:#c8d2ee!important;border:1px dashed rgba(255,255,255,.3)!important;letter-spacing:.4px;',
+        'display:flex;align-items:center;justify-content:center;gap:6px;opacity:1!important}',
+      '.mc-join.join-vo:before{content:"🔒";font-size:12px}',
+      '@media (prefers-reduced-motion: reduce){#_pvToast *,#_pvToast{animation:none!important}}'
+    ].join('');
+    document.head.appendChild(s);
+  }
+
+  function _flashPreview(fnLabel) {
+    if (_flashTimer) return;
+    _flashTimer = setTimeout(function () { _flashTimer = null; }, 2000);
+
+    var old = document.getElementById('_pvToast');
+    if (old) old.remove();
+
+    var actionTxt = '';
+    if (fnLabel) {
+      var map = {
+        'rpc:validate_and_join_match': 'Match join', 'rpc:join_clan': 'Clan join',
+        'rpc:leave_clan': 'Clan leave', 'rpc:cast_poll_vote': 'Vote', 'rpc:redeem_voucher': 'Voucher redeem',
+        'rpc:claim_ad_reward': 'Ad reward',   /* ✅ B30: check-in hata — uski entry bhi gayi */
+        'rpc:submit_age_verification': 'Verification submit', 'rpc:start_free_trial': 'Free trial',
+        'rpc:contribute_to_squad_bank': 'Squad bank', 'rpc:purchase_cosmetic': 'Purchase'
+      };
+      actionTxt = map[fnLabel] || '';
+      if (!actionTxt) {
+        if (/^rpc:/.test(fnLabel)) actionTxt = 'Ye feature';
+        else if (/^insert:|^update:|^delete:|^upsert:/.test(fnLabel)) actionTxt = 'Ye action';
+        else if (/^storage\./.test(fnLabel)) actionTxt = 'Upload';
+        else if (/^functions\.invoke:/.test(fnLabel)) actionTxt = 'Payment / upload';
+        else if (/^auth\./.test(fnLabel)) actionTxt = 'Profile update';
+      }
+    }
+
+    _pvUIStyle();
+
+    var toast = document.createElement('div');
+    toast.id = '_pvToast';
+    toast.setAttribute('role', 'status');
+    toast.innerHTML = [
+      '<div class="pv-card">',
+        '<div class="pv-glow"></div>',
+        '<div class="pv-ico">👀</div>',
+        '<div class="pv-body">',
+          '<div class="pv-chip"><i></i> Preview</div>',
+          '<div class="pv-title">Preview Mode — View Only</div>',
+          '<div class="pv-msg">',
+            (actionTxt ? '<b>' + actionTxt + '</b> launch ke baad unlock hoga. ' : '') +
+            'Abhi aap sab kuch dekh sakte ho — sirf actions band hain. 🚀',
+          '</div>',
+        '</div>',
+        '<div class="pv-bar"><span></span></div>',
+      '</div>'
+    ].join('');
+    document.body.appendChild(toast);
+    setTimeout(function () {
+      if (toast.parentNode) {
+        toast.style.animation = 'pvToastOut .3s ease forwards';
+        setTimeout(function () { if (toast.parentNode) toast.remove(); }, 300);
+      }
+    }, 2600);
+  }
+
+/* ════════════════ 4. DOM layer — click / submit / file-change ════════════════ */
+  function showPreviewBlock(e) {
+    if (!_previewActive) return;
+    var target = e ? (e.target || e.srcElement) : null;
+    if (target) {
+      /* Allow nav tabs, filters, scroll, share */
+      var allowEl = target.closest('.nav-item') || target.closest('[data-nav]') ||
+                    target.closest('.hdr-bell') || target.closest('.status-tabs') ||
+                    target.closest('.c-pill') || target.closest('.sp-toggle') ||
+                    target.closest('.mode-filter') || target.closest('.tab-btn') ||
+                    target.closest('.filter-tab') || target.closest('#_pvShareBtn') ||
+                    target.closest('.ticker-wrap') || target.closest('#maintOverlay');
+      if (allowEl) return;
+
+      var tag = (target.tagName || '').toLowerCase();
+      var isFileInput = tag === 'input' && (target.type || '').toLowerCase() === 'file';
+      /* Reload/retry jaise app-level screens (maintenance overlay) aur apna
+         toast preview mode me bhi kaam karte rahenge — warna maintenance ke
+         "Abhi Check Karo" / Support buttons preview ke saath chalta nahi. */
+      if (target.closest && target.closest('#maintOverlay')) return;
+      var shouldBlock = (
+        tag === 'button' || isFileInput || tag === 'textarea' || tag === 'select' ||
+        (tag === 'input' && (target.type || '').toLowerCase() !== 'search') ||
+        target.getAttribute('onclick') || target.closest('button') ||
+        target.closest('.btn, [role="button"], .nav-item, .tab, [data-action]')
+      );
+      if (!shouldBlock) return;
+    }
+    e && e.preventDefault && e.preventDefault();
+    e && e.stopPropagation && e.stopPropagation();
+    _flashPreview(null);
+    return false;
+  }
+  window._previewBlockHandler = showPreviewBlock;
+
+  var _blockHandler = null;
+  function enableBlock() {
+    if (!_blockHandler) {
+      _blockHandler = function (e) { showPreviewBlock(e); };
+      document.addEventListener('click', _blockHandler, true);
+      document.addEventListener('submit', _blockHandler, true);
+      document.addEventListener('change', function (e) {
+        var t = e && e.target;
+        if (!_previewActive || !t) return;
+        if ((t.tagName || '').toLowerCase() === 'input' && (t.type || '').toLowerCase() === 'file') {
+          e.preventDefault(); e.stopPropagation(); _flashPreview('storage.upload');
+        }
+      }, true);
+    }
+  }
+  function disableBlock() {
+    if (_blockHandler) {
+      document.removeEventListener('click', _blockHandler, true);
+      document.removeEventListener('submit', _blockHandler, true);
+      _blockHandler = null;
+    }
+    var t = document.getElementById('_pvToast');
+    if (t) t.remove();
+  }
+
+  /* ── Ticker (REDESIGN v6.2): glass strip + icon chip + marquee + LIVE chip ── */
+  function injectTickerPreview(cfg) {
+    var tickerWrap = document.querySelector('.ticker-wrap');
+    var tickerTxt  = document.getElementById('tickerTxt');
+    if (!tickerWrap) return;
+
+    if (tickerTxt) tickerTxt.style.display = 'none';
+    if (document.getElementById('_pvTickerRow')) return;
+
+    _pvUIStyle();
+    var launchText = (cfg && cfg.launchDate) ? ' · 🚀 Launch: ' + cfg.launchDate : '';
+
+    tickerWrap.style.cssText = [
+      'overflow:hidden;padding:0;position:relative;',
+      'background:linear-gradient(120deg,rgba(0,255,156,.10),rgba(0,212,255,.07) 45%,rgba(185,100,255,.09));',
+      'border-bottom:1px solid rgba(0,255,156,.2);',
+      'box-shadow:0 6px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)'
+    ].join('');
+
+    var row = document.createElement('div');
+    row.id = '_pvTickerRow';
+    row.style.cssText = 'display:flex;align-items:center;gap:9px;width:100%;padding:7px 12px 8px;position:relative;overflow:hidden';
+
+    var chip = document.createElement('div');
+    chip.style.cssText = [
+      'flex-shrink:0;width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;',
+      'background:linear-gradient(150deg,rgba(0,255,156,.22),rgba(0,212,255,.14));border:1px solid rgba(0,255,156,.34);',
+      'box-shadow:0 0 14px rgba(0,255,156,.18)'
+    ].join('');
+    chip.textContent = '👀';
+
+    /* marquee viewport */
+    var vp = document.createElement('div');
+    vp.style.cssText = 'flex:1;min-width:0;overflow:hidden;position:relative';
+    var txt = document.createElement('span');
+    txt.style.cssText = [
+      'display:inline-block;white-space:nowrap;padding-left:100%;font-size:12px;font-weight:800;letter-spacing:.2px;',
+      'background:linear-gradient(90deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);',
+      'background-size:300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;',
+      'animation:pvShine 5s linear infinite,pvScroll 19s linear infinite'
+    ].join('');
+    txt.textContent = 'Preview Mode — View Only' + launchText +
+      '  •  Sab kuch dekho, actions launch ke baad unlock honge  •  🪙 Coins + rewards  •  🏆 Free Fire Tournaments  •  👥 Teams & Leaderboards';
+
+    /* LIVE chip */
+    var live = document.createElement('div');
+    live.style.cssText = [
+      'flex-shrink:0;display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:999px;',
+      'background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.14);color:#dfe6ff;',
+      'font-size:8.5px;font-weight:900;letter-spacing:1.2px'
+    ].join('');
+    live.innerHTML = '<i style="width:5px;height:5px;border-radius:50%;background:#00ff9c;box-shadow:0 0 7px #00ff9c;display:inline-block;animation:pvBlink 1.4s infinite"></i>LIVE PREVIEW';
+
+    var shareBtn = document.createElement('button');
+    shareBtn.id = '_pvShareBtn';
+    shareBtn.onclick = window._pvShare;
+    shareBtn.style.cssText = [
+      'flex-shrink:0;padding:4px 11px;border-radius:999px;cursor:pointer;font-family:inherit;',
+      'background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,255,156,.16));',
+      'border:1px solid rgba(0,212,255,.38);color:#bfeaff;font-size:10.5px;font-weight:900;white-space:nowrap'
+    ].join('');
+    shareBtn.innerHTML = '📤 Share';
+
+    vp.appendChild(txt);
+    row.appendChild(chip);
+    row.appendChild(vp);
+    row.appendChild(live);
+    row.appendChild(shareBtn);
+    tickerWrap.appendChild(row);
+  }
+
+  function removeTickerPreview() {
+    var row = document.getElementById('_pvTickerRow');
+    if (row) row.remove();
+    var tickerTxt = document.getElementById('tickerTxt');
+    if (tickerTxt) tickerTxt.style.display = '';
+    var tickerWrap = document.querySelector('.ticker-wrap');
+    if (tickerWrap) tickerWrap.style.cssText = '';
+  }
+
+  /* Share */
+  window._pvShare = function () {
+    var ud = window.UD || {}; var U = window.U;
+    var code = ud.referralCode || (U ? U.uid.substring(0, 8).toUpperCase() : '');
+    var url  = window.location.href;
+    var msg  = '🎮 Mini eSports is launching soon!\n\n🏆 Skill-based Free Fire Tournaments\n🪙 Free coins + 💎 diamonds rewards · 🏅 Live Leaderboards\n\n📲 Join Early:\n' + url +
+               (code ? '\n\n🎁 Referral Code: *' + code + '*' : '');
+    if (navigator.share) {
+      navigator.share({ title: 'Mini eSports — Coming Soon', text: msg }).catch(function () {
+        window.openWhatsApp ? window.openWhatsApp(msg) : (window.location.href = 'https://wa.me/?text=' + encodeURIComponent(msg));
+      });
+    } else {
+      window.openWhatsApp ? window.openWhatsApp(msg) : (window.location.href = 'https://wa.me/?text=' + encodeURIComponent(msg));
+    }
+  };
+
+  /* ════════════════ 5. Config apply (Supabase app_settings.preview_mode) ════════════════ */
+  function applyPreviewCfg(cfg) {
+    cfg = cfg || {};
+    var wasActive = _previewActive;
+    _previewActive = cfg.active === true;
+
+    if (_previewActive) {
+      if (!wasActive) {
+        var tryInject = function (n) {
+          if (document.querySelector('.ticker-wrap')) {
+            injectTickerPreview(cfg);
+            enableBlock();
+            armLock();                       /* ← asli write-lock */
+            if (window.U && window._supa) {
+              /* R29D FIX (2026-09-22): INSERT-only enrollment (upsert ko
+                 UPDATE privilege chahiye tha jo is table par nahi hai).
+                 v6 me yeh insert allowed list me hai — preview enrollment
+                 ek metadata record hai, user action nahi. */
+              window._supa.from('early_access_users').insert({
+                user_id: window.U.uid,
+                name: (window.UD || {}).displayName || (window.UD || {}).ign || '',
+                joined_at: new Date().toISOString(),
+                platform: /Android/.test(navigator.userAgent) ? 'android' : 'web'
+              }, { onConflict: 'user_id', ignoreDuplicates: true }).then(null, function (e) { console.warn('[PreviewMode] early_access_users insert failed:', e && e.message); });
+            }
+          } else if (n < 20) {
+            setTimeout(function () { tryInject(n + 1); }, 300);
+          }
+        };
+        tryInject(0);
+      } else {
+        armLock();                           /* already active — lock re-arm (new client instance ho sakta hai) */
+      }
+    } else {
+      if (wasActive) {
+        removeTickerPreview();
+        disableBlock();
+      }
+    }
+  }
+  window.applyPreviewCfg = applyPreviewCfg;
+
+  function checkPreviewMode() {
+    if (!window._supa) { setTimeout(checkPreviewMode, 800); return; }
+
+    window._supa.from('app_settings').select('value').eq('key', 'preview_mode').maybeSingle()
+      .then(function (res) {
+        if (res.error) { console.error('[PreviewMode] read failed:', res.error.message); return; }
+        applyPreviewCfg(res.data && res.data.value);
+      });
+
+    if (!window._pvModePollTimer) {
+      window._pvModePollTimer = setInterval(function () {
+        window._supa.from('app_settings').select('value').eq('key', 'preview_mode').maybeSingle()
+          .then(function (res) { if (!res.error) applyPreviewCfg(res.data && res.data.value); });
+      }, 25000);
+    }
+  }
+
+  /* Hook into boot */
+  var _t = 0;
+  var _iv = setInterval(function () {
+    _t++;
+    if (window.boot) {
+      clearInterval(_iv);
+      var _ob = window.boot;
+      window.boot = function () {
+        _ob.apply(this, arguments);
+        setTimeout(checkPreviewMode, 600);
+      };
+    }
+    if (_t > 40) { clearInterval(_iv); checkPreviewMode(); }
+  }, 300);
+
+  /* Ticker animation resume (M6/L1 fixes preserved) */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) return;
+    var txt = document.querySelector('#_pvTickerRow span, .ticker-preview-txt');
+    if (!txt) return;
+    txt.style.animation = 'none';
+    void txt.offsetWidth;
+    txt.style.animation = '';
+  });
+
+  window._previewMode = {
+    check: checkPreviewMode,
+    isActive: function () { return _previewActive; },
+    lastBlocked: null,
+    readOnlyRpcs: READ_ONLY_RPC.slice(),
+    wrapClient: wrapClient
+  };
+
+  /* Boot ke turant baad factory patch lagao (client create hone se pehle
+     ho sakta hai ya baad me — dono case interval cover karta hai). */
+  patchFactory();
+
+  console.log('[Mini eSports] ✅ Preview Mode v6.0 — strict view-only (client write-lock + DOM guards)');
+})();

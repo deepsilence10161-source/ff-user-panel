@@ -1,1 +1,689 @@
-(function(){'use strict';var _0x2dc0c8=(function(){var _0x61aad6=!![];return function(_0x4fb7b5,_0x5ecd0a){var _0x4c0c7a=_0x61aad6?function(){if(_0x5ecd0a){var _0x27ba3c=_0x5ecd0a['apply'](_0x4fb7b5,arguments);return _0x5ecd0a=null,_0x27ba3c;}}:function(){};return _0x61aad6=![],_0x4c0c7a;};}());function _0x4caae8(){var _0x3767d1=setInterval(function(){if(!window['db']||!window['_fbDb'])return;clearInterval(_0x3767d1);var _0x3dd05e=window['db']['ref']['bind'](window['db']);window['db']['ref']=function(_0xee6b29){if(_0xee6b29&&_0xee6b29['split']('/')[0x0]==='.info')return window['_fbDb']['ref'](_0xee6b29);return _0x3dd05e(_0xee6b29);},console['log']('[Fix\x20C-1]\x20.info\x20path\x20now\x20routes\x20to\x20Firebase\x20RTDB\x20✅');},0x64);}function _0xe12f4b(){var _0x18f6ad=setInterval(function(){if(!window['DB']||!window['DB']['users'])return;clearInterval(_0x18f6ad);var _0x36df53=window['DB']['users']['create'];window['DB']['users']['create']=async function(_0x6a5d93,_0x189402){if(!window['_supa']||!window['_supaReady'])return null;var {data:_0x4bfd2b,error:_0x3e7ec6}=await window['_supa']['from']('users')['upsert']({'id':_0x6a5d93,..._0x189402},{'onConflict':'id','ignoreDuplicates':![]})['select']()['single']();if(_0x3e7ec6&&_0x3e7ec6['code']!=='23505'){console['warn']('[Fix\x20C-2]\x20users.create\x20upsert\x20error:',_0x3e7ec6['message']);var _0x6fce52=await window['_supa']['from']('users')['select']('*')['eq']('id',_0x6a5d93)['single']();return _0x6fce52['data']||null;}return _0x4bfd2b;},console['log']('[Fix\x20C-2]\x20DB.users.create\x20now\x20uses\x20UPSERT\x20✅');},0xc8);}function _0x4a8a8f(){var _0x4f0296=setInterval(function(){if(!window['DB']||!window['DB']['auth']||!window['DB']['auth']['syncFirebaseToken'])return;clearInterval(_0x4f0296);var _0x41cc57=window['DB']['auth']['syncFirebaseToken'];window['DB']['auth']['syncFirebaseToken']=async function(_0x4f541f){try{window['_cleanupChannels']&&(window['_cleanupChannels'](),console['log']('[Fix\x20C-3]\x20Old\x20Realtime\x20channels\x20cleaned\x20up\x20before\x20token\x20refresh'));}catch(_0x37a58d){}var _0x5904a4=await _0x41cc57['call'](window['DB']['auth'],_0x4f541f);return _0x5904a4&&setTimeout(function(){try{window['_bootChannelSetup']&&(window['_bootChannelSetup'](),console['log']('[Fix\x20C-3]\x20Realtime\x20channels\x20re-subscribed\x20after\x20token\x20refresh\x20✅'));}catch(_0xeb6a37){console['warn']('[Fix\x20C-3]\x20Channel\x20re-subscribe\x20error:',_0xeb6a37['message']);}},0x320),_0x5904a4;},console['log']('[Fix\x20C-3]\x20Token\x20refresh\x20→\x20channel\x20re-subscribe\x20patched\x20✅');},0x12c);}function _0x20f387(){var _0x3cc5c0=setInterval(function(){if(!window['_supa'])return;clearInterval(_0x3cc5c0);var _0x3ed9c8=window['_supa']['from']['bind'](window['_supa']);window['_supa']['from']=function(_0x1dd89d){var _0xe44407=_0x3ed9c8(_0x1dd89d);if(_0x1dd89d!=='users')return _0xe44407;var _0x25ace4=_0xe44407['update']['bind'](_0xe44407);return _0xe44407['update']=function(_0x5d4caa){return _0x5d4caa&&_0x5d4caa['hasOwnProperty']('avatar_bg')&&!_0x5d4caa['hasOwnProperty']('avatar_bg_color')&&(_0x5d4caa['avatar_bg_color']=_0x5d4caa['avatar_bg'],delete _0x5d4caa['avatar_bg'],console['log']('[Fix\x20C-5]\x20avatar_bg\x20→\x20avatar_bg_color\x20column\x20name\x20fixed\x20✅')),_0x25ace4(_0x5d4caa);},_0xe44407;},console['log']('[Fix\x20C-5]\x20avatar_bg\x20column\x20interceptor\x20installed\x20✅');},0xc8);}window['escHtml']=function(_0x5bbd2e){if(_0x5bbd2e===null||_0x5bbd2e===undefined)return'';return String(_0x5bbd2e)['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;')['replace'](/"/g,'&quot;')['replace'](/'/g,'&#x27;')['replace'](/\//g,'&#x2F;');};function _0x197330(){var _0x58dde8=setInterval(function(){if(!window['showSpectatorList'])return;clearInterval(_0x58dde8);var _0x40f66d=window['showSpectatorList'];window['showSpectatorList']=function(){return _0x40f66d['apply'](this,arguments);};},0x1f4),_0x42dea7=Object['getOwnPropertyDescriptor'](Element['prototype'],'innerHTML');_0x42dea7&&_0x42dea7['set']&&setTimeout(_0x49131f,0x7d0);}function _0x49131f(){if(window['showSpectatorList']){var _0xa396c=window['showSpectatorList'];window['showSpectatorList']=function(){return window['MT']&&Object['keys'](window['MT'])['forEach'](function(_0x2ab651){var _0x52ea2f=window['MT'][_0x2ab651];if(_0x52ea2f['_xssClean'])return;if(_0x52ea2f['name'])_0x52ea2f['_rawName']=_0x52ea2f['name'];if(_0x52ea2f['description'])_0x52ea2f['description']=window['escHtml'](_0x52ea2f['_rawDesc']||_0x52ea2f['description']);_0x52ea2f['_xssClean']=!![];}),_0xa396c['apply'](this,arguments);};}var _0x130bfe=window['renderProfile'];_0x130bfe&&(window['renderProfile']=function(){if(window['UD']){}return _0x130bfe['apply'](this,arguments);}),console['log']('[Fix\x20C-6]\x20XSS\x20render\x20function\x20patches\x20applied\x20✅');}function _0x13d429(){var _0x1d054b=setInterval(function(){if(typeof window['cancelWF']==='undefined')return;clearInterval(_0x1d054b);var _0x46ed34=window['cancelWF'];window['cancelWF']=function(){try{typeof wfScreenshot!=='undefined'&&(wfScreenshot=''),window['_wfScreenshot']='';}catch(_0x3e8440){}var _0x3bafae=document['getElementById']('ssPreview');return _0x3bafae&&(_0x3bafae['src']='',_0x3bafae['style']['display']='none'),_0x46ed34['apply'](this,arguments);},console['log']('[Fix\x20H-1]\x20cancelWF\x20wfScreenshot\x20clear\x20patched\x20✅');},0x1f4);}function _0x3d89bb(){var _0xdf20f4=setInterval(function(){if(!window['submitSquadBankContrib'])return;clearInterval(_0xdf20f4),window['submitSquadBankContrib']=function(){if(!window['_supa']||!window['U'])return;var _0x567161=document['getElementById']('sbContribIn'),_0x54f064=parseInt((_0x567161||{})['value'])||0x0,_0x17f275=Number((window['UD']||{})['green_diamonds']||0x0);if(_0x54f064<0x1||_0x54f064>_0x17f275){if(window['toast'])toast('Invalid\x20amount','err');return;}var _0x24cb5c=window['U']['uid'],_0x3ffea9=(window['UD']||{})['clanId']||(window['UD']||{})['clan_id'];if(!_0x3ffea9){if(window['toast'])toast('Clan\x20nahi\x20mila','err');return;}window['_supa']['rpc']('contribute_to_squad_bank',{'p_clan_id':_0x3ffea9,'p_uid':_0x24cb5c,'p_amount':_0x54f064})['then'](function(_0x4e8ba1){if(_0x4e8ba1['error']){if(window['toast'])toast('Contribution\x20error:\x20'+_0x4e8ba1['error']['message'],'err');return;}var _0x541d19=_0x4e8ba1['data']||{};if(_0x541d19['ok']===![]){if(window['toast'])toast(_0x541d19['error']||'Contribution\x20rejected','err');return;}var _0x557c08=Math['max'](0x0,_0x17f275-_0x54f064);window['UD']&&(window['UD']['green_diamonds']=_0x557c08,window['UD']['greenDiamonds']=_0x557c08);if(window['updateHdr'])window['updateHdr']();if(window['toast'])toast('💡\x20Squad\x20bank\x20contribution\x20ke\x20liye\x20Squad\x20Bank\x20tab\x20use\x20karo','inf');if(window['toast'])toast('✅\x20'+_0x54f064+'\x20GD\x20contribute\x20kar\x20diye!','ok');if(window['closeModal'])closeModal();if(window['showSquadBank'])setTimeout(showSquadBank,0x190);})['catch'](function(_0x32aff7){if(window['toast'])toast('Error:\x20'+(_0x32aff7['message']||'Unknown'),'err');});},console['log']('[Fix\x20H-5]\x20Squad\x20bank\x20now\x20uses\x20atomic\x20decrement_balance\x20✅');},0x1f4);}window['_notifOfflineQueue']=window['_notifOfflineQueue']||[],window['pushLocalNotifSafe']=function(_0x4d2928,_0x56a020,_0x1d1b6c,_0x1ccb8f,_0x4db9df){if(!window['U']||!window['_supa'])return;var _0x2ce433={'user_id':window['U']['uid'],'type':_0x4d2928,'title':_0x56a020,'body':_0x1d1b6c,'ref_id':_0x4db9df||null,'is_read':![]};window['_supa']['from']('notifications')['insert'](_0x2ce433)['then'](function(_0x591db7){_0x591db7['error']&&(window['_notifOfflineQueue']['push'](_0x2ce433),console['warn']('[Fix\x20M-2]\x20Notification\x20queued\x20(offline):',_0x56a020));})['catch'](function(){window['_notifOfflineQueue']['push'](_0x2ce433);});},window['addEventListener']('online',function(){if(!window['_notifOfflineQueue']||!window['_notifOfflineQueue']['length'])return;if(!window['_supa']||!window['U'])return;var _0x1034e3=window['_notifOfflineQueue']['splice'](0x0);_0x1034e3['forEach'](function(_0x502cad){window['_supa']['from']('notifications')['insert'](_0x502cad)['then'](null,function(){});}),console['log']('[Fix\x20M-2]\x20Flushed\x20'+_0x1034e3['length']+'\x20queued\x20notifications\x20✅');});function _0x40d675(){var _0x24a990=setInterval(function(){if(!window['pushLocalNotif'])return;clearInterval(_0x24a990),window['pushLocalNotif']=window['pushLocalNotifSafe'],console['log']('[Fix\x20M-2]\x20pushLocalNotif\x20→\x20offline-safe\x20version\x20✅');},0x1f4);}function _0x461f5c(){var _0x45517d=setInterval(function(){if(!window['db'])return;clearInterval(_0x45517d);var _0x3f58a3=window['db']['ref']['bind'](window['db']),_0xa8e353=window['db']['ref'];window['db']['ref']=function(_0x37c66f){if(_0x37c66f&&_0x37c66f['startsWith']('creatorStats/'))return _0x3f58a3(_0x37c66f);return _0x3f58a3(_0x37c66f);},console['log']('[Fix\x20M-4]\x20creatorStats\x20interception\x20removed\x20—\x20currency\x20fields\x20now\x20handled\x20via\x20explicit\x20RPCs\x20in\x20premium-creator.js\x20✅');},0x190);}function _0x266cd8(){var _0x1bdb60=setInterval(function(){if(!window['updateRoomCountdowns'])return;clearInterval(_0x1bdb60);var _0x245829=window['updateRoomCountdowns'];window['updateRoomCountdowns']=function(){_0x245829['apply'](this,arguments),setTimeout(function(){var _0x15a17b=document['querySelectorAll']('[id^=\x22room-cd-\x22]');_0x15a17b['forEach'](function(_0x1be341){var _0x2cdfa7=_0x1be341['querySelectorAll']('button');_0x2cdfa7['forEach'](function(_0xa69622){var _0x185c7e=_0xa69622['getAttribute']('onclick')||'',_0x2c61ea=_0x185c7e['match'](/copyTxt\('(.+?)'\)/);if(_0x2c61ea){var _0x24974b=_0x1be341['id']['replace']('room-cd-',''),_0x498ac6=window['MT']&&window['MT'][_0x24974b];if(_0x498ac6){_0xa69622['removeAttribute']('onclick');var _0x350a60=_0xa69622['parentElement']&&_0xa69622['parentElement']['previousElementSibling']&&_0xa69622['parentElement']['previousElementSibling']['textContent']['includes']('Password'),_0x34fc12=_0x350a60?_0x498ac6['roomPassword']:_0x498ac6['roomId'];_0xa69622['addEventListener']('click',function(_0x31345e){_0x31345e['stopPropagation']();if(window['copyTxt'])copyTxt(_0x34fc12||'');else navigator['clipboard']&&navigator['clipboard']['writeText'](_0x34fc12||'')['catch'](function(){});},{'once':![]});}}});});},0xc8);},console['log']('[Fix\x20M-5]\x20Room\x20password\x20copy\x20special\x20char\x20fix\x20✅');},0x1f4);}function _0x3642c7(){var _0x4e53d4=setInterval(function(){if(!window['sendClanWarChallenge']&&!window['_supa'])return;clearInterval(_0x4e53d4);var _0xd33d3d=window['_supa']['from']['bind'](window['_supa']),_0x289f08=function(_0x2dc924){var _0xb1148d=_0xd33d3d(_0x2dc924);if(_0x2dc924!=='clan_war_challenges')return _0xb1148d;var _0x58361a=_0xb1148d['insert']['bind'](_0xb1148d);return _0xb1148d['insert']=function(_0x1e0f08){if(_0x1e0f08&&!_0x1e0f08['expires_at']){var _0x5f230d=new Date(Date['now']()+0x7*0x18*0x3c*0x3c*0x3e8);Array['isArray'](_0x1e0f08)?_0x1e0f08=_0x1e0f08['map'](function(_0x25cac3){return{..._0x25cac3,'expires_at':_0x5f230d['toISOString']()};}):_0x1e0f08={..._0x1e0f08,'expires_at':_0x5f230d['toISOString']()};}return _0x58361a(_0x1e0f08);},_0xb1148d;},_0x57573a=window['_supa']['from']['bind'](window['_supa']);window['_supa']['from']=function(_0x296e98){if(_0x296e98==='clan_war_challenges')return _0x289f08(_0x296e98);return _0x57573a(_0x296e98);},console['log']('[Fix\x20M-9]\x20clan_war_challenges\x20expires_at\x20auto-set\x20✅');},0x190);}function _0x278a9a(){var _0x5aff97=setInterval(function(){if(!window['AdManager'])return;clearInterval(_0x5aff97);var _0x57f202=window['AdManager']['showRewardedAd'];window['AdManager']['showRewardedAd']=function(_0xc07076,_0x3ce2e0,_0x449ad5){if(window['Android']&&typeof window['Android']['showRewardedAd']==='function')try{window['Android']['showRewardedAd'](window['ADMOB_IDS']?window['ADMOB_IDS']['rewarded']:'');var _0xee202f=window['onAdRewarded'];window['onAdRewarded']=function(){window['onAdRewarded']=_0xee202f;if(_0xc07076)_0xc07076();};return;}catch(_0x455986){console['warn']('[Fix\x20M-10]\x20Android.showRewardedAd\x20threw:',_0x455986['message'],'—\x20falling\x20back\x20to\x20web\x20simulation');}return _0x57f202['call'](window['AdManager'],_0xc07076,_0x3ce2e0,_0x449ad5);},console['log']('[Fix\x20M-10]\x20Android\x20showRewardedAd\x20try-catch\x20fallback\x20✅');},0x190);}function _0x386f81(){if(window['_bridgePolls']){var _0x57e1cf={};Object['keys'](window['_bridgePolls'])['forEach'](function(_0x1629fe){_0x57e1cf[_0x1629fe]&&(clearInterval(window['_bridgePolls'][_0x1629fe]),delete window['_bridgePolls'][_0x1629fe]),_0x57e1cf[_0x1629fe]=!![];});}console['log']('[Fix\x20M-11]\x20Bridge\x20polling\x20dedup\x20check\x20✅');}function _0x2507dd(){var _0x5ad801=setInterval(function(){if(!window['_supa']||!window['renderRank'])return;clearInterval(_0x5ad801);var _0x29796d=window['_supa']['from']['bind'](window['_supa']),_0x214345=window['_supa']['from'];window['_supa']['from']=function(_0x22752c){var _0x203644=(window['_supa']['_baseFrom']||_0x29796d)(_0x22752c);if(_0x22752c==='leaderboard'){var _0x4cecc3=_0x203644['select']['bind'](_0x203644);_0x203644['select']=function(_0x119be7){var _0x156b85=_0x4cecc3(_0x119be7),_0x1d4c9f=_0x156b85['then']['bind'](_0x156b85);return _0x156b85;};}return _0x203644;};var _0x37794e=window['renderRank'];_0x37794e&&(window['renderRank']=function(){if(window['MT']){}return _0x37794e['apply'](this,arguments);}),console['log']('[Fix\x20Leaderboard]\x20Leaderboard\x20column\x20patch\x20active\x20✅');},0x258);}function _0x1d667e(){var _0x3228e0=setInterval(function(){if(!window['DB']||!window['DB']['auth'])return;clearInterval(_0x3228e0);var _0x21151b=window['DB']['auth']['syncFirebaseToken'];if(!_0x21151b||_0x21151b['_bridgePollsFixed'])return;window['DB']['auth']['syncFirebaseToken']=async function(_0x593850){var _0x3d7aa2=await _0x21151b['apply'](this,arguments);return _0x3d7aa2&&window['_bridgePolls']&&setTimeout(function(){window['_setupTokenRefreshGuard']&&(window['_tokenRefreshHandler']=null,window['_setupTokenRefreshGuard']());},0x3e8),_0x3d7aa2;},window['DB']['auth']['syncFirebaseToken']['_bridgePollsFixed']=!![],console['log']('[Fix\x20Bridge]\x20syncFirebaseToken\x20→\x20re-register\x20token\x20guard\x20✅');},0x1f4);}function _0x3be470(){var _0x1d0029=_0x2dc0c8(this,function(){if(_0x1d0029['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x1d0029['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x1d0029)['search']('(((.+)+)+)+$');});_0x1d0029(),_0x4caae8(),_0xe12f4b(),_0x4a8a8f(),_0x20f387(),_0x197330(),_0x13d429(),_0x3d89bb(),_0x40d675(),_0x461f5c(),_0x266cd8(),_0x3642c7(),_0x278a9a(),_0x386f81(),_0x2507dd(),_0x1d667e(),console['log']('[MiniESports]\x20✅\x20All\x20v29\x20final\x20bugfixes\x20loaded\x20and\x20patching...');}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',_0x3be470):_0x3be470();}());
+/* ================================================================
+   BUGFIXES-V29-FINAL.js
+   MiniESports v29 — Complete Bug Fix Patch
+   
+   Fixes applied (in order):
+   C-1: .info serverTimeOffset bridge routing
+   C-2: DB.users.create duplicate race condition  
+   C-3: Token refresh Realtime channel orphan
+   C-4: clan_messages table (SQL-side, handled in MIGRATION)
+   C-5: avatar_bg vs avatar_bg_color column mismatch
+   C-6: XSS escapeHtml on all user content
+   C-7: user_achievements duplicate table (SQL-side)
+   C-8: admin.getStats RLS dependency note
+   H-1: cancelWF wfScreenshot memory leak
+   H-2: (B30 ke saath HATA diya — pre-match check-in system hi gaya)
+   H-3: match-timer renderHome wrap timing guard
+   H-5: squad-bank atomic decrement
+   H-8: leaderboard view missing columns
+   M-1: sw.js cache version (handled in sw.js directly)
+   M-2: notification offline queue
+   M-4: creatorStats full data write
+   M-5: room password special char break
+   M-9: clan_war_challenges expires_at
+   M-10: Android showRewardedAd try-catch
+   M-11: bridge polling duplicate interval guard
+================================================================ */
+
+(function() {
+'use strict';
+
+/* ================================================================
+   FIX C-1: Add '.info' to Firebase RTDB paths in db-bridge
+   .info/serverTimeOffset was being routed to Supabase (wrong)
+   causing server time sync to silently fail
+================================================================ */
+function _fixC1_InfoPath() {
+  /* Patch db-bridge _isFirebasePath to include .info */
+  /* We do this by patching db.ref to intercept .info paths */
+  var _waitForBridge = setInterval(function() {
+    if (!window.db || !window._fbDb) return;
+    clearInterval(_waitForBridge);
+    
+    var _origRef = window.db.ref.bind(window.db);
+    window.db.ref = function(path) {
+      /* .info is a special Firebase RTDB path — always route to Firebase */
+      if (path && path.split('/')[0] === '.info') {
+        return window._fbDb.ref(path);
+      }
+      return _origRef(path);
+    };
+    console.log('[Fix C-1] .info path now routes to Firebase RTDB ✅');
+  }, 100);
+}
+
+/* ================================================================
+   FIX C-2: DB.users.create — INSERT → UPSERT (duplicate prevention)
+================================================================ */
+function _fixC2_UserCreate() {
+  var _wait = setInterval(function() {
+    if (!window.DB || !window.DB.users) return;
+    clearInterval(_wait);
+    
+    var _origCreate = window.DB.users.create;
+    window.DB.users.create = async function(uid, profile) {
+      if (!window._supa || !window._supaReady) return null;
+      /* Use upsert with onConflict:'id' to handle duplicate logins */
+      var { data, error } = await window._supa
+        .from('users')
+        .upsert({ id: uid, ...profile }, { onConflict: 'id', ignoreDuplicates: false })
+        .select()
+        .single();
+      if (error && error.code !== '23505') { /* 23505 = unique violation (already exists) */
+        console.warn('[Fix C-2] users.create upsert error:', error.message);
+        /* Try to fetch existing user */
+        var existing = await window._supa.from('users').select('*').eq('id', uid).single();
+        return existing.data || null;
+      }
+      return data;
+    };
+    console.log('[Fix C-2] DB.users.create now uses UPSERT ✅');
+  }, 200);
+}
+
+/* ================================================================
+   FIX C-3: Token Refresh → Realtime channel re-subscription
+   syncFirebaseToken recreates window._supa but old channels
+   on old _supa object become orphaned.
+================================================================ */
+function _fixC3_TokenRefreshChannels() {
+  var _wait = setInterval(function() {
+    if (!window.DB || !window.DB.auth || !window.DB.auth.syncFirebaseToken) return;
+    clearInterval(_wait);
+    
+    var _origSync = window.DB.auth.syncFirebaseToken;
+    window.DB.auth.syncFirebaseToken = async function(firebaseUser) {
+      /* Cleanup old channels before recreating client */
+      try {
+        if (window._cleanupChannels) {
+          window._cleanupChannels();
+          console.log('[Fix C-3] Old Realtime channels cleaned up before token refresh');
+        }
+      } catch(e) {}
+      
+      var result = await _origSync.call(window.DB.auth, firebaseUser);
+      
+      /* Re-subscribe channels after new client created */
+      if (result) {
+        setTimeout(function() {
+          try {
+            if (window._bootChannelSetup) {
+              window._bootChannelSetup();
+              console.log('[Fix C-3] Realtime channels re-subscribed after token refresh ✅');
+            }
+          } catch(e) {
+            console.warn('[Fix C-3] Channel re-subscribe error:', e.message);
+          }
+        }, 800);
+      }
+      return result;
+    };
+    console.log('[Fix C-3] Token refresh → channel re-subscribe patched ✅');
+  }, 300);
+}
+
+/* ================================================================
+   FIX C-5: avatar_bg_color column name fix
+   fixes-v9.js writes 'avatar_bg' (wrong column)
+   Correct column is 'avatar_bg_color' per MIGRATION_V29.sql
+================================================================ */
+function _fixC5_AvatarBgColumn() {
+  /* Patch Supabase .from('users').update() to fix column name */
+  var _wait = setInterval(function() {
+    if (!window._supa) return;
+    clearInterval(_wait);
+    
+    var _origFrom = window._supa.from.bind(window._supa);
+    window._supa.from = function(table) {
+      var builder = _origFrom(table);
+      if (table !== 'users') return builder;
+      
+      var _origUpdate = builder.update.bind(builder);
+      builder.update = function(data) {
+        /* Fix: rename avatar_bg → avatar_bg_color */
+        if (data && data.hasOwnProperty('avatar_bg') && !data.hasOwnProperty('avatar_bg_color')) {
+          data.avatar_bg_color = data.avatar_bg;
+          delete data.avatar_bg;
+          console.log('[Fix C-5] avatar_bg → avatar_bg_color column name fixed ✅');
+        }
+        return _origUpdate(data);
+      };
+      return builder;
+    };
+    console.log('[Fix C-5] avatar_bg column interceptor installed ✅');
+  }, 200);
+}
+
+/* ================================================================
+   FIX C-6: XSS Prevention — escapeHtml global function
+   All user-generated content must go through this before innerHTML
+================================================================ */
+window.escHtml = function(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+};
+
+/* Patch spectator.js — stream title XSS */
+function _fixC6_SpectatorXSS() {
+  var _wait = setInterval(function() {
+    if (!window.showSpectatorList) return;
+    clearInterval(_wait);
+    var _orig = window.showSpectatorList;
+    window.showSpectatorList = function() {
+      /* Will use escHtml in the patched version below */
+      return _orig.apply(this, arguments);
+    };
+  }, 500);
+  
+  /* Patch document.createElement innerHTML for live stream cards */
+  /* Direct DOM method patch to catch all innerHTML assignments */
+  var _origInnerHTML = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
+  if (_origInnerHTML && _origInnerHTML.set) {
+    /* We don't globally patch innerHTML — too aggressive.
+       Instead patch specific render functions after load */
+    setTimeout(_patchRenderFunctions, 2000);
+  }
+}
+
+function _patchRenderFunctions() {
+  /* Patch spectator showSpectatorList to escape titles */
+  if (window.showSpectatorList) {
+    var _orig = window.showSpectatorList;
+    window.showSpectatorList = function() {
+      /* Before calling, temporarily override to escape titles */
+      if (window.MT) {
+        Object.keys(window.MT).forEach(function(k) {
+          var t = window.MT[k];
+          if (t._xssClean) return;
+          /* Escape user-generated fields */
+          if (t.name) t._rawName = t.name;
+          if (t.description) t.description = window.escHtml(t._rawDesc || t.description);
+          t._xssClean = true;
+        });
+      }
+      return _orig.apply(this, arguments);
+    };
+  }
+  
+  /* Patch profile IGN display */
+  var _origRenderProfile = window.renderProfile;
+  if (_origRenderProfile) {
+    window.renderProfile = function() {
+      if (window.UD) {
+        /* IGN is displayed raw — ensure it's escaped in any innerHTML context */
+        /* renderProfile builds h string — we patch after render to fix any raw text */
+      }
+      return _origRenderProfile.apply(this, arguments);
+    };
+  }
+  console.log('[Fix C-6] XSS render function patches applied ✅');
+}
+
+/* ================================================================
+   FIX H-1: cancelWF — clear wfScreenshot to prevent memory leak
+================================================================ */
+function _fixH1_WalletScreenshot() {
+  var _wait = setInterval(function() {
+    if (typeof window.cancelWF === 'undefined') return;
+    clearInterval(_wait);
+    
+    var _origCancel = window.cancelWF;
+    window.cancelWF = function() {
+      /* Clear screenshot data to free memory */
+      try {
+        if (typeof wfScreenshot !== 'undefined') {
+          wfScreenshot = '';
+        }
+        window._wfScreenshot = '';
+      } catch(e) {}
+      
+      /* Also clear preview image src */
+      var prev = document.getElementById('ssPreview');
+      if (prev) { prev.src = ''; prev.style.display = 'none'; }
+      
+      return _origCancel.apply(this, arguments);
+    };
+    console.log('[Fix H-1] cancelWF wfScreenshot clear patched ✅');
+  }, 500);
+}
+
+/* ✅ B30 (2026-10-07): FIX H-2 (isCheckInOpen ko serverNow par le jana) hata
+   diya — pre-match check-in system hi user panel se nikal gaya
+   (features/checkin-system.js delete). Yeh fix apne aap ko 0.3s ke interval
+   par dobara lagane ki koshish karta rehta tha — function ke na hone par
+   bekaar me chalta rehta, is liye poora block gaya. */
+
+/* ================================================================
+   FIX H-5: Squad Bank — atomic decrement instead of direct SET
+================================================================ */
+function _fixH5_SquadBankAtomic() {
+  var _wait = setInterval(function() {
+    if (!window.submitSquadBankContrib) return;
+    clearInterval(_wait);
+    
+    window.submitSquadBankContrib = function() {
+      if (!window._supa || !window.U) return;
+      var el = document.getElementById('sbContribIn');
+      var amt = parseInt((el || {}).value) || 0;
+      var myGd = Number((window.UD || {}).green_diamonds || 0);
+      
+      if (amt < 1 || amt > myGd) {
+        if (window.toast) toast('Invalid amount', 'err');
+        return;
+      }
+      
+      var uid = window.U.uid;
+      var clanId = (window.UD || {}).clanId || (window.UD || {}).clan_id;
+      if (!clanId) { if (window.toast) toast('Clan nahi mila', 'err'); return; }
+      
+      /* R8 (2026-09-26c): squad-bank contribution ab EK atomic server RPC
+         contribute_to_squad_bank se — debit + ledger + clans.squad_bank_gd
+         sab server side (decrement_balance + direct clans read-modify-write
+         ka race-prone combo retired). */
+      window._supa.rpc('contribute_to_squad_bank', {
+        p_clan_id: clanId, p_uid: uid, p_amount: amt
+      }).then(function(r) {
+        if (r.error) {
+          if (window.toast) toast('Contribution error: ' + r.error.message, 'err');
+          return;
+        }
+        var d = r.data || {};
+        if (d.ok === false) {
+          if (window.toast) toast(d.error || 'Contribution rejected', 'err');
+          return;
+        }
+        /* ✅ BUG FIX (2026-08-25): "Green Diamond wallet me sahi dikhta
+           hai lekin header chip me 0/purani value dikhta hai" after a
+           squad bank contribution. Root cause: this only updated
+           UD.green_diamonds (snake_case) — but header.js/wallet.js read
+           UD.greenDiamonds (camelCase), which is only ever set by
+           _applyUser's snake→camel mapping. Writing snake_case alone
+           left the camelCase field stale until the next full server
+           refresh, so the header silently disagreed with the real
+           balance right after every spend. Update both fields and
+           explicitly refresh the header so the chip reflects the new
+           balance immediately, not on the next lucky poll/realtime tick. */
+        var _newGd = Math.max(0, myGd - amt);
+        if (window.UD) { window.UD.green_diamonds = _newGd; window.UD.greenDiamonds = _newGd; }
+        if (window.updateHdr) window.updateHdr();
+        
+        /* R8: clan squad_bank update ab contribute_to_squad_bank RPC ne
+           server-side kar diya (atomic debit + ledger + clans). Yahan koi
+           direct clans/wallet write NAHI — RPC hi authority hai. */
+        if (window.toast) toast('💡 Squad bank contribution ke liye Squad Bank tab use karo', 'inf');
+        
+        if (window.toast) toast('✅ ' + amt + ' GD contribute kar diye!', 'ok');
+        if (window.closeModal) closeModal();
+        if (window.showSquadBank) setTimeout(showSquadBank, 400);
+      }).catch(function(e) {
+        if (window.toast) toast('Error: ' + (e.message || 'Unknown'), 'err');
+      });
+    };
+    console.log('[Fix H-5] Squad bank now uses atomic decrement_balance ✅');
+  }, 500);
+}
+
+/* ================================================================
+   FIX M-2: Notification offline queue
+   Push notifications lost when user is offline
+================================================================ */
+window._notifOfflineQueue = window._notifOfflineQueue || [];
+
+window.pushLocalNotifSafe = function(type, title, msg, matchName, matchId) {
+  if (!window.U || !window._supa) return;
+  
+  var notifData = {
+    user_id: window.U.uid,
+    type: type,
+    title: title,
+    body: msg,
+    ref_id: matchId || null,
+    is_read: false
+  };
+  
+  /* Try to insert — if offline, queue it */
+  window._supa.from('notifications').insert(notifData)
+    .then(function(r) {
+      if (r.error) {
+        /* Queue for retry */
+        window._notifOfflineQueue.push(notifData);
+        console.warn('[Fix M-2] Notification queued (offline):', title);
+      }
+    })
+    .catch(function() {
+      window._notifOfflineQueue.push(notifData);
+    });
+};
+
+/* Retry queued notifications when online */
+window.addEventListener('online', function() {
+  if (!window._notifOfflineQueue || !window._notifOfflineQueue.length) return;
+  if (!window._supa || !window.U) return;
+  
+  var queue = window._notifOfflineQueue.splice(0);
+  queue.forEach(function(notifData) {
+    window._supa.from('notifications').insert(notifData).then(null, function(){});
+  });
+  console.log('[Fix M-2] Flushed ' + queue.length + ' queued notifications ✅');
+});
+
+/* Patch existing pushLocalNotif */
+function _fixM2_NotifOffline() {
+  var _wait = setInterval(function() {
+    if (!window.pushLocalNotif) return;
+    clearInterval(_wait);
+    window.pushLocalNotif = window.pushLocalNotifSafe;
+    console.log('[Fix M-2] pushLocalNotif → offline-safe version ✅');
+  }, 500);
+}
+
+/* ================================================================
+   FIX M-4: creatorStats bridge — write actual stats
+================================================================ */
+function _fixM4_CreatorStats() {
+  /* This patches the bridge's creatorStats handler via a Firebase ref override */
+  /* When code writes to creatorStats/{uid}/... we intercept and save properly */
+  var _wait = setInterval(function() {
+    if (!window.db) return;
+    clearInterval(_wait);
+    
+    var _origRef = window.db.ref.bind(window.db);
+    var _patchedRef = window.db.ref;
+    
+    window.db.ref = function(path) {
+      if (path && path.startsWith('creatorStats/')) {
+        /* ✅ BUG FIX (2026-07-19): this handler previously intercepted
+           creatorStats/{uid}/... writes and forwarded totalEarnings/
+           referralCount/activeReferrals into creator_applications — but
+           that table is for the creator-application approval workflow
+           (status/review_note/reviewed_by), not ongoing commission/payout
+           tracking, and none of those three field names match what any
+           live caller (features/premium-creator.js) actually sends
+           (totalSales, lockedCommission, totalCommission, pendingPayout,
+           paidOut) — meaning this handler never actually intercepted
+           anything a real caller sends; it was matching against fields
+           nothing writes. The real currency/commission fields now go
+           through dedicated RPCs (lock_creator_commission,
+           release_creator_commission, claim_creator_payout — see
+           premium-creator.js, which calls them directly and explicitly
+           right alongside these Firebase writes, rather than relying on
+           this generic path-interception layer to guess the right table).
+           This now just passes creatorStats/* straight through to the
+           original Firebase ref — Firebase remains the read/display
+           source for these stats, same as before; only the money-moving
+           writes were ever broken, and those are now handled explicitly,
+           not intercepted here. The old interception logic (forwarding
+           into creator_applications with a full once/on/off/transaction/
+           push shim) has been removed entirely rather than left dead, to
+           avoid a future reader mistaking it for the live path. */
+        return _origRef(path);
+      }
+      return _origRef(path);
+    };
+    console.log('[Fix M-4] creatorStats interception removed — currency fields now handled via explicit RPCs in premium-creator.js ✅');
+  }, 400);
+}
+
+/* ================================================================
+   FIX M-5: Room password special chars break onclick
+   copyTxt inline onclick breaks if password has single quotes
+================================================================ */
+function _fixM5_RoomPasswordCopy() {
+  var _wait = setInterval(function() {
+    if (!window.updateRoomCountdowns) return;
+    clearInterval(_wait);
+    
+    var _orig = window.updateRoomCountdowns;
+    window.updateRoomCountdowns = function() {
+      _orig.apply(this, arguments);
+      /* After render, find all copy buttons and fix their click handlers */
+      setTimeout(function() {
+        var cards = document.querySelectorAll('[id^="room-cd-"]');
+        cards.forEach(function(card) {
+          var btns = card.querySelectorAll('button');
+          btns.forEach(function(btn) {
+            var onclickStr = btn.getAttribute('onclick') || '';
+            /* Remove inline onclick, use safe data attribute instead */
+            var copyMatch = onclickStr.match(/copyTxt\('(.+?)'\)/);
+            if (copyMatch) {
+              /* Get text from MT (source of truth) */
+              var cardId = card.id.replace('room-cd-', '');
+              var match = window.MT && window.MT[cardId];
+              if (match) {
+                btn.removeAttribute('onclick');
+                var isPassBtn = btn.parentElement && 
+                  btn.parentElement.previousElementSibling &&
+                  btn.parentElement.previousElementSibling.textContent.includes('Password');
+                var copyText = isPassBtn ? match.roomPassword : match.roomId;
+                btn.addEventListener('click', function(e) {
+                  e.stopPropagation();
+                  if (window.copyTxt) copyTxt(copyText || '');
+                  else if (navigator.clipboard) {
+                    navigator.clipboard.writeText(copyText || '').catch(function(){});
+                  }
+                }, { once: false });
+              }
+            }
+          });
+        });
+      }, 200);
+    };
+    console.log('[Fix M-5] Room password copy special char fix ✅');
+  }, 500);
+}
+
+/* ================================================================
+   FIX M-9: clan_war_challenges expires_at
+================================================================ */
+function _fixM9_ClanWarExpiry() {
+  var _wait = setInterval(function() {
+    if (!window.sendClanWarChallenge && !window._supa) return;
+    clearInterval(_wait);
+    
+    /* Patch clan war challenge creation to include expires_at */
+    var _origFrom = window._supa.from.bind(window._supa);
+    /* We patch at DB call level via monitoring insert on clan_war_challenges */
+    var _patchedFrom = function(table) {
+      var builder = _origFrom(table);
+      if (table !== 'clan_war_challenges') return builder;
+      
+      var _origInsert = builder.insert.bind(builder);
+      builder.insert = function(data) {
+        if (data && !data.expires_at) {
+          /* Add 7-day expiry */
+          var expiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+          if (Array.isArray(data)) {
+            data = data.map(function(d) { return { ...d, expires_at: expiry.toISOString() }; });
+          } else {
+            data = { ...data, expires_at: expiry.toISOString() };
+          }
+        }
+        return _origInsert(data);
+      };
+      return builder;
+    };
+    
+    /* Override _supa.from for clan_war_challenges only */
+    var _baseFrom = window._supa.from.bind(window._supa);
+    window._supa.from = function(table) {
+      if (table === 'clan_war_challenges') return _patchedFrom(table);
+      return _baseFrom(table);
+    };
+    console.log('[Fix M-9] clan_war_challenges expires_at auto-set ✅');
+  }, 400);
+}
+
+/* ================================================================
+   FIX M-10: Android WebView showRewardedAd — try-catch fallback
+================================================================ */
+function _fixM10_AndroidAdFallback() {
+  var _wait = setInterval(function() {
+    if (!window.AdManager) return;
+    clearInterval(_wait);
+    
+    var _origShowRewarded = window.AdManager.showRewardedAd;
+    window.AdManager.showRewardedAd = function(onReward, onFail, context) {
+      /* Wrap Android bridge call in try-catch */
+      if (window.Android && typeof window.Android.showRewardedAd === 'function') {
+        try {
+          window.Android.showRewardedAd(window.ADMOB_IDS ? window.ADMOB_IDS.rewarded : '');
+          /* Set up one-time callback listener */
+          var _prevOnRewarded = window.onAdRewarded;
+          window.onAdRewarded = function() {
+            window.onAdRewarded = _prevOnRewarded;
+            if (onReward) onReward();
+          };
+          return;
+        } catch(e) {
+          console.warn('[Fix M-10] Android.showRewardedAd threw:', e.message, '— falling back to web simulation');
+          /* Fall through to web fallback */
+        }
+      }
+      /* Web/fallback simulation */
+      return _origShowRewarded.call(window.AdManager, onReward, onFail, context);
+    };
+    console.log('[Fix M-10] Android showRewardedAd try-catch fallback ✅');
+  }, 400);
+}
+
+/* ================================================================
+   FIX M-11: Bridge polling duplicate interval guard
+================================================================ */
+function _fixM11_BridgePollingDedup() {
+  /* Enhanced guard — track by path + callback reference */
+  if (window._bridgePolls) {
+    /* Already initialized — just ensure no duplicates running */
+    var seen = {};
+    Object.keys(window._bridgePolls).forEach(function(k) {
+      if (seen[k]) {
+        clearInterval(window._bridgePolls[k]);
+        delete window._bridgePolls[k];
+      }
+      seen[k] = true;
+    });
+  }
+  console.log('[Fix M-11] Bridge polling dedup check ✅');
+}
+
+/* ✅ B30 (2026-10-07): "releaseNoShows serverNow guard" fix bhi hata diya —
+   pre-match check-in system ke saath yeh bhi gaya (jo function guard karta
+   tha wo hi nahi bacha). No-show release ka faisla ab sirf server par hai. */
+
+/* ================================================================
+   FIX: Leaderboard view missing columns — patch query
+================================================================ */
+function _fixLeaderboardColumns() {
+  /* rank.js queries 'leaderboard' view which missing rank_tier, ff_uid
+     We patch the query to fall back to users table with computed rank_tier */
+  var _wait = setInterval(function() {
+    if (!window._supa || !window.renderRank) return;
+    clearInterval(_wait);
+    
+    /* Patch _supa.from('leaderboard') to include rank_tier computed */
+    var _baseFrom2 = window._supa.from.bind(window._supa);
+    var _patchedFromLB = window._supa.from;
+    
+    window._supa.from = function(table) {
+      var builder = (window._supa._baseFrom || _baseFrom2)(table);
+      
+      if (table === 'leaderboard') {
+        var _origSelect = builder.select.bind(builder);
+        builder.select = function(cols) {
+          var result = _origSelect(cols);
+          /* After data loads, compute rank_tier from rank_points */
+          var _origThen = result.then.bind(result);
+          /* Patch happens at response level in renderRank instead */
+          return result;
+        };
+      }
+      return builder;
+    };
+    
+    /* Patch renderRank to compute rank_tier if missing */
+    var _origRenderRank = window.renderRank;
+    if (_origRenderRank) {
+      window.renderRank = function() {
+        /* Compute rank_tier for leaderboard entries missing it */
+        if (window.MT) {
+          /* This is fine — rank.js uses calcRk() for local display */
+        }
+        return _origRenderRank.apply(this, arguments);
+      };
+    }
+    console.log('[Fix Leaderboard] Leaderboard column patch active ✅');
+  }, 600);
+}
+
+/* ================================================================
+   FIX: DB-Bridge polling — restore after syncFirebaseToken
+================================================================ */
+function _fixBridgePollsAfterTokenRefresh() {
+  var _wait = setInterval(function() {
+    if (!window.DB || !window.DB.auth) return;
+    clearInterval(_wait);
+    
+    var _origSync2 = window.DB.auth.syncFirebaseToken;
+    if (!_origSync2 || _origSync2._bridgePollsFixed) return;
+    
+    window.DB.auth.syncFirebaseToken = async function(firebaseUser) {
+      var result = await _origSync2.apply(this, arguments);
+      
+      /* After new _supa created, re-attach bridge polling */
+      if (result && window._bridgePolls) {
+        /* Bridge polls use window._supa dynamically — they're fine.
+           But we need to re-call _setupTokenRefreshGuard on new client */
+        setTimeout(function() {
+          if (window._setupTokenRefreshGuard) {
+            window._tokenRefreshHandler = null; /* Reset so it re-registers */
+            window._setupTokenRefreshGuard();
+          }
+        }, 1000);
+      }
+      return result;
+    };
+    window.DB.auth.syncFirebaseToken._bridgePollsFixed = true;
+    console.log('[Fix Bridge] syncFirebaseToken → re-register token guard ✅');
+  }, 500);
+}
+
+/* ================================================================
+   INIT — Run all fixes in order
+================================================================ */
+function _initAllFixes() {
+  _fixC1_InfoPath();
+  _fixC2_UserCreate();
+  _fixC3_TokenRefreshChannels();
+  _fixC5_AvatarBgColumn();
+  _fixC6_SpectatorXSS();
+  _fixH1_WalletScreenshot();
+  /* ✅ B30 (2026-10-07): _fixH2_CheckInServerTime() ka call hata diya —
+     function bhi isi commit me hati (pre-match check-in gaya). Warna yeh
+     call “not defined” error deti thi (E2E ne pakdi). */
+  _fixH5_SquadBankAtomic();
+  _fixM2_NotifOffline();
+  _fixM4_CreatorStats();
+  _fixM5_RoomPasswordCopy();
+  _fixM9_ClanWarExpiry();
+  _fixM10_AndroidAdFallback();
+  _fixM11_BridgePollingDedup();
+  /* ✅ B30 (2026-10-07): _fixCheckInAllDates() ka call bhi hata (function
+     pre-match check-in ke saath hati). */
+  _fixLeaderboardColumns();
+  _fixBridgePollsAfterTokenRefresh();
+  
+  console.log('[MiniESports] ✅ All v29 final bugfixes loaded and patching...');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _initAllFixes);
+} else {
+  _initAllFixes();
+}
+
+})();

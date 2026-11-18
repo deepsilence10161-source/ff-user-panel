@@ -1,1 +1,147 @@
-(function(){'use strict';var _0x2d1300=(function(){var _0x5d619a=!![];return function(_0x6d21d2,_0x3c4619){var _0x4176d=_0x5d619a?function(){if(_0x3c4619){var _0x1adf98=_0x3c4619['apply'](_0x6d21d2,arguments);return _0x3c4619=null,_0x1adf98;}}:function(){};return _0x5d619a=![],_0x4176d;};}()),_0x505409=_0x2d1300(this,function(){if(_0x505409['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x505409['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x505409)['search']('(((.+)+)+)+$');});_0x505409();function _0x3b3e2b(){return window['_supa'];}function _0x4c34f7(){return window['U']&&window['U']['uid'];}function _0x34cabc(){return window['UD']||{};}var _0x5b5a74=[{'id':'banner_fire','name':'Fire\x20Banner','icon':'🔥','cost':0x32,'type':'banner','desc':'Fire\x20theme\x20clan\x20banner'},{'id':'banner_neon','name':'Neon\x20Banner','icon':'💜','cost':0x50,'type':'banner','desc':'Purple\x20neon\x20clan\x20banner'},{'id':'badge_champion','name':'Champion\x20Badge','icon':'🏆','cost':0x78,'type':'badge','desc':'Clan\x20badge\x20for\x20all\x20members'},{'id':'tag_elite','name':'[ELITE]\x20Tag','icon':'⭐','cost':0x96,'type':'tag','desc':'[ELITE]\x20prefix\x20for\x20all\x20members'},{'id':'room_theme','name':'Gold\x20Room','icon':'✨','cost':0xc8,'type':'theme','desc':'Gold\x20theme\x20in\x20clan\x20matches'},{'id':'badge_ghost','name':'Ghost\x20Badge','icon':'👻','cost':0x64,'type':'badge','desc':'Ghost\x20badge\x20for\x20all\x20members'},{'id':'banner_ice','name':'Ice\x20Banner','icon':'❄️','cost':0x3c,'type':'banner','desc':'Ice\x20clan\x20banner'},{'id':'tag_shadow','name':'[SHADOW]\x20Tag','icon':'🌑','cost':0xb4,'type':'tag','desc':'[SHADOW]\x20dark\x20glow\x20tag'}];window['showSquadBank']=function(){if(!_0x4c34f7()){if(window['toast'])toast('Login\x20karo','err');return;}var _0x48f8d7=_0x34cabc()['clan_id']||_0x34cabc()['clanId'];if(!_0x48f8d7){if(window['toast'])toast('Pehle\x20clan\x20join\x20ya\x20create\x20karo!','err');return;}openModal('💰\x20Squad\x20Bank','<div\x20id=\x22sbContent\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>');if(!_0x3b3e2b()){document['getElementById']('sbContent')['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}_0x3b3e2b()['from']('clans')['select']('id,name,squad_bank_gd,squad_bank_unlocked,squad_bank_contributors')['eq']('id',_0x48f8d7)['single']()['then'](function(_0x36655b){_0x215a17(_0x48f8d7,_0x36655b['data']||{});})['catch'](function(){_0x215a17(_0x48f8d7,{});});};function _0x215a17(_0x5bb6db,_0x2696b1){var _0x4030b4=document['getElementById']('sbContent');if(!_0x4030b4)return;var _0x541ad3=Number(_0x2696b1['squad_bank_gd']||0x0),_0x911453=_0x2696b1['squad_bank_unlocked']||{},_0x56a7bf=_0x2696b1['squad_bank_contributors']||{},_0x5d822a=Number(_0x34cabc()['green_diamonds']||0x0),_0x45555c=Object['entries'](_0x56a7bf)['sort'](function(_0xd12e3b,_0x5a258a){return(_0x5a258a[0x1]['gd']||0x0)-(_0xd12e3b[0x1]['gd']||0x0);})[0x0],_0x3ef438='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1.5px\x20solid\x20rgba(0,255,156,.2);border-radius:16px;padding:16px;margin-bottom:14px\x22>';_0x3ef438+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between\x22>',_0x3ef438+='<div><div\x20style=\x22font-size:11px;color:var(--txt2);font-weight:700;margin-bottom:3px\x22>SQUAD\x20BANK</div><div\x20style=\x22font-size:26px;font-weight:900;color:var(--green)\x22>💎\x20'+_0x541ad3+'\x20GD</div><div\x20style=\x22font-size:11px;color:var(--txt2);\x22>'+(_0x2696b1['name']||'Clan')+'\x20ka\x20shared\x20pool</div></div>',_0x3ef438+='<button\x20onclick=\x22window.contributeToBank(\x27'+_0x5bb6db+'\x27)\x22\x20style=\x22padding:10px\x2014px;border-radius:11px;border:1px\x20solid\x20rgba(0,255,156,.3);background:rgba(0,255,156,.15);color:var(--green);font-size:12px;font-weight:800;cursor:pointer\x22>➕\x20Contribute</button>',_0x3ef438+='</div><div\x20style=\x22margin-top:10px;font-size:11px;color:var(--txt2)\x22>Mera\x20balance:\x20💎\x20'+_0x5d822a+'\x20GD'+(_0x45555c?'\x20·\x20Top:\x20'+_0x45555c[0x1]['ign']:'')+'</div></div>',_0x3ef438+='<div\x20style=\x22font-size:13px;font-weight:800;color:var(--txt);margin-bottom:10px\x22>🎨\x20Clan\x20Cosmetics</div>',_0x3ef438+='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>',_0x5b5a74['forEach'](function(_0xbd4c71){var _0x9ce4f9=!!_0x911453[_0xbd4c71['id']],_0x18e1cb=_0x541ad3>=_0xbd4c71['cost'];_0x3ef438+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:12px\x2014px;border-radius:13px;background:'+(_0x9ce4f9?'rgba(0,255,156,.06)':'var(--card)')+';border:1.5px\x20solid\x20'+(_0x9ce4f9?'rgba(0,255,156,.25)':'var(--border)')+'\x22>',_0x3ef438+='<div\x20style=\x22font-size:28px;width:36px;text-align:center\x22>'+_0xbd4c71['icon']+'</div>',_0x3ef438+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:800\x22>'+_0xbd4c71['name']+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+_0xbd4c71['desc']+'</div><div\x20style=\x22font-size:11px;color:#00d4ff;margin-top:3px\x22>'+_0xbd4c71['type']+'</div></div>',_0x3ef438+=_0x9ce4f9?'<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:18px\x22>✅</div><div\x20style=\x22font-size:10px;color:var(--green);font-weight:700\x22>Unlocked</div></div>':'<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:13px;font-weight:900;color:#00d4ff;margin-bottom:5px\x22>💎\x20'+_0xbd4c71['cost']+'</div><button\x20onclick=\x22window.unlockClanCosmetic(\x27'+_0x5bb6db+'\x27,\x27'+_0xbd4c71['id']+'\x27,'+_0xbd4c71['cost']+')\x22\x20style=\x22padding:7px\x2012px;border-radius:9px;border:1px\x20solid\x20'+(_0x18e1cb?'rgba(0,212,255,.4)':'rgba(255,255,255,.1)')+';background:'+(_0x18e1cb?'rgba(0,212,255,.1)':'transparent')+';color:'+(_0x18e1cb?'#00d4ff':'var(--txt2)')+';font-size:11px;font-weight:800;cursor:'+(_0x18e1cb?'pointer':'not-allowed')+'\x22>Unlock</button></div>',_0x3ef438+='</div>';}),_0x3ef438+='</div>';var _0x1bfadc=Object['entries'](_0x56a7bf)['sort'](function(_0x58e6d7,_0x1e6300){return(_0x1e6300[0x1]['gd']||0x0)-(_0x58e6d7[0x1]['gd']||0x0);})['slice'](0x0,0x5);_0x1bfadc['length']&&(_0x3ef438+='<div\x20style=\x22margin-top:14px\x22><div\x20style=\x22font-size:13px;font-weight:800;margin-bottom:8px\x22>👑\x20Top\x20Contributors</div><div\x20style=\x22display:flex;flex-direction:column;gap:6px\x22>',_0x1bfadc['forEach'](function(_0x553fdd,_0x3f3a3a){_0x3ef438+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:9px\x2012px;border-radius:10px;background:var(--card);border:1px\x20solid\x20var(--border)\x22><span>'+(window['medalHtml']?medalHtml(_0x3f3a3a+0x1,0x10):'#'+(_0x3f3a3a+0x1))+'</span><div\x20style=\x22flex:1;font-size:13px;font-weight:700\x22>'+(_0x553fdd[0x1]['ign']||'Player')+'</div><span\x20style=\x22font-size:12px;font-weight:800;color:#00d4ff\x22>💎\x20'+(_0x553fdd[0x1]['gd']||0x0)+'</span></div>';}),_0x3ef438+='</div></div>'),_0x4030b4['innerHTML']=_0x3ef438;}window['contributeToBank']=function(_0x3f9e84){var _0xaede6=Number(_0x34cabc()['green_diamonds']||0x0);if(_0xaede6<0x1){if(window['toast'])toast('Tumhare\x20paas\x20Green\x20Diamonds\x20nahi\x20hain','err');return;}var _0x486e5d=document['getElementById']('modalB');if(!_0x486e5d)return;var _0x50a87e='<div\x20style=\x22text-align:center;margin-bottom:16px\x22><div\x20style=\x22font-size:40px;margin-bottom:8px\x22>💎</div><div\x20style=\x22font-size:16px;font-weight:800\x22>Contribute\x20karo\x20Squad\x20Bank\x20mein</div><div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:4px\x22>Mera\x20balance:\x20'+_0xaede6+'\x20Green\x20Diamonds</div></div>';_0x50a87e+='<div\x20style=\x22margin-bottom:14px\x22><input\x20id=\x22sbContribIn\x22\x20type=\x22number\x22\x20min=\x221\x22\x20max=\x22'+_0xaede6+'\x22\x20value=\x2210\x22\x20style=\x22width:100%;padding:12px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:18px;font-weight:800;text-align:center;box-sizing:border-box\x22></div>',_0x50a87e+='<div\x20style=\x22display:flex;gap:8px;margin-bottom:14px\x22>',[0x5,0xa,0x14,0x32]['filter'](function(_0xad0df4){return _0xad0df4<=_0xaede6;})['forEach'](function(_0x2db923){_0x50a87e+='<button\x20onclick=\x22document.getElementById(\x27sbContribIn\x27).value='+_0x2db923+'\x22\x20style=\x22flex:1;padding:8px;border-radius:10px;border:1px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer\x22>'+_0x2db923+'</button>';}),_0x50a87e+='</div><button\x20onclick=\x22window._doContribute(\x27'+_0x3f9e84+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--green),#00d4ff);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>💎\x20Contribute\x20Karo</button>',_0x486e5d['innerHTML']=_0x50a87e,setTimeout(function(){var _0x5cef21=document['getElementById']('sbContribIn');_0x5cef21&&(_0x5cef21['focus'](),_0x5cef21['select']());},0x64);},window['_doContribute']=function(_0x57d3f6){var _0x34b04b=document['getElementById']('sbContribIn');if(!_0x34b04b)return;var _0x5e119d=parseInt(_0x34b04b['value'])||0x0,_0x308bae=Number(_0x34cabc()['green_diamonds']||0x0);if(_0x5e119d<0x1||_0x5e119d>_0x308bae){if(window['toast'])toast('Invalid\x20amount','err');return;}if(!_0x3b3e2b()||!_0x4c34f7()||!_0x34cabc()){if(window['toast'])toast('Login\x20karo','err');return;}_0x3b3e2b()['rpc']('contribute_to_squad_bank',{'p_clan_id':_0x57d3f6,'p_uid':_0x4c34f7(),'p_amount':_0x5e119d})['then'](function(_0x2fa0e2){if(_0x2fa0e2&&_0x2fa0e2['error']){if(window['toast'])toast('Error:\x20'+_0x2fa0e2['error']['message'],'err');return;}if(_0x2fa0e2&&_0x2fa0e2['data']&&_0x2fa0e2['data']['ok']===![]){if(window['toast'])toast(_0x2fa0e2['data']['error']||'Error','err');return;}window['UD']&&(window['UD']['green_diamonds']=_0x308bae-_0x5e119d,window['UD']['greenDiamonds']=_0x308bae-_0x5e119d);if(window['updateHdr'])updateHdr();if(window['logActivity'])logActivity('join','💎\x20'+_0x5e119d+'\x20GD\x20Squad\x20Bank\x20mein\x20contribute\x20kiya');if(window['toast'])toast('✅\x20'+_0x5e119d+'\x20GD\x20contribute\x20kar\x20diye!','ok');if(window['closeModal'])closeModal();})['catch'](function(){if(window['toast'])toast('Error\x20deducting\x20GD','err');});},window['unlockClanCosmetic']=function(_0x4a03c1,_0x8672d6,_0x5729b2){if(!_0x3b3e2b()||!_0x4c34f7()){if(window['toast'])toast('Login\x20karo','err');return;}_0x3b3e2b()['rpc']('unlock_squad_bank_cosmetic',{'p_clan_id':_0x4a03c1,'p_item_id':_0x8672d6,'p_cost':_0x5729b2,'p_uid':_0x4c34f7()})['then'](function(_0x46a450){if(_0x46a450&&_0x46a450['error']){if(window['toast'])toast('Error:\x20'+_0x46a450['error']['message'],'err');return;}if(_0x46a450&&_0x46a450['data']&&_0x46a450['data']['ok']===![]){if(window['toast'])toast(_0x46a450['data']['error']||'Error','err');return;}var _0x3d5bd8=_0x5b5a74['find'](function(_0x10a1bd){return _0x10a1bd['id']===_0x8672d6;})||{'name':_0x8672d6,'icon':'🎨'};_0x3b3e2b()['from']('clan_members')['select']('user_id')['eq']('clan_id',_0x4a03c1)['then'](function(_0x610963){(_0x610963['data']||[])['forEach'](function(_0x147449){_0x3b3e2b()['from']('notifications')['insert']({'user_id':_0x147449['user_id'],'type':'clan_cosmetic','title':_0x3d5bd8['icon']+'\x20Clan\x20Cosmetic\x20Unlock!','body':'\x22'+_0x3d5bd8['name']+'\x22\x20squad\x20bank\x20se\x20unlock\x20ho\x20gayi!','ref_id':null,'is_read':![]})['then'](null,function(){});});})['catch'](function(){});if(window['logActivity'])logActivity('win',_0x3d5bd8['icon']+'\x20'+_0x3d5bd8['name']+'\x20clan\x20ke\x20liye\x20unlock\x20hua!');if(window['toast'])toast('🎉\x20'+_0x3d5bd8['icon']+'\x20'+_0x3d5bd8['name']+'\x20unlock!','ok');if(window['closeModal'])closeModal();})['catch'](function(){if(window['toast'])toast('Error','err');});};var _0x7fdd6a=0x0,_0x51efb7=setInterval(function(){_0x7fdd6a++;if(_0x7fdd6a>0x3c){clearInterval(_0x51efb7);return;}var _0x263f61=document['querySelector']('.special-pills');if(!_0x263f61||_0x263f61['querySelector']('#_sbPill')){if(_0x263f61)clearInterval(_0x51efb7);return;}clearInterval(_0x51efb7);var _0x4d8a2a=document['createElement']('div');_0x4d8a2a['id']='_sbPill',_0x4d8a2a['className']='special-pill',_0x4d8a2a['style']['cssText']='background:rgba(0,255,156,.08);border:1px\x20solid\x20rgba(0,255,156,.2);color:var(--green)',_0x4d8a2a['innerHTML']='<i\x20class=\x22fas\x20fa-coins\x22\x20style=\x22font-size:11px\x22></i>\x20Squad\x20Bank',_0x4d8a2a['onclick']=function(){if(window['showSquadBank'])showSquadBank();},_0x263f61['appendChild'](_0x4d8a2a);},0x190);}());
+/* ================================================================
+   SQUAD BANK v2.0 — 100% Supabase
+   Uses clans table: squad_bank_gd, squad_bank_unlocked (jsonb), squad_bank_contributors (jsonb)
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+function _ud(){ return window.UD||{}; }
+
+var COSMETICS=[
+  {id:'banner_fire',name:'Fire Banner',icon:'🔥',cost:50,type:'banner',desc:'Fire theme clan banner'},
+  {id:'banner_neon',name:'Neon Banner',icon:'💜',cost:80,type:'banner',desc:'Purple neon clan banner'},
+  {id:'badge_champion',name:'Champion Badge',icon:'🏆',cost:120,type:'badge',desc:'Clan badge for all members'},
+  {id:'tag_elite',name:'[ELITE] Tag',icon:'⭐',cost:150,type:'tag',desc:'[ELITE] prefix for all members'},
+  {id:'room_theme',name:'Gold Room',icon:'✨',cost:200,type:'theme',desc:'Gold theme in clan matches'},
+  {id:'badge_ghost',name:'Ghost Badge',icon:'👻',cost:100,type:'badge',desc:'Ghost badge for all members'},
+  {id:'banner_ice',name:'Ice Banner',icon:'❄️',cost:60,type:'banner',desc:'Ice clan banner'},
+  {id:'tag_shadow',name:'[SHADOW] Tag',icon:'🌑',cost:180,type:'tag',desc:'[SHADOW] dark glow tag'},
+];
+
+window.showSquadBank=function(){
+  if(!_uid()){if(window.toast)toast('Login karo','err');return;}
+  var clanId=_ud().clan_id||_ud().clanId;
+  if(!clanId){if(window.toast)toast('Pehle clan join ya create karo!','err');return;}
+  openModal('💰 Squad Bank','<div id="sbContent"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>');
+  if(!_s()){document.getElementById('sbContent').innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  _s().from('clans').select('id,name,squad_bank_gd,squad_bank_unlocked,squad_bank_contributors').eq('id',clanId).single()
+  .then(function(r){_renderSquadBank(clanId,r.data||{});})
+  .catch(function(){_renderSquadBank(clanId,{});});
+};
+
+function _renderSquadBank(clanId,clan){
+  var c=document.getElementById('sbContent');if(!c)return;
+  var gd=Number(clan.squad_bank_gd||0);
+  var unlocked=clan.squad_bank_unlocked||{};
+  var contributors=clan.squad_bank_contributors||{};
+  var myGd=Number(_ud().green_diamonds||0);
+  var topContrib=Object.entries(contributors).sort(function(a,b){return(b[1].gd||0)-(a[1].gd||0)})[0];
+  var h='<div style="background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1.5px solid rgba(0,255,156,.2);border-radius:16px;padding:16px;margin-bottom:14px">';
+  h+='<div style="display:flex;align-items:center;justify-content:space-between">';
+  h+='<div><div style="font-size:11px;color:var(--txt2);font-weight:700;margin-bottom:3px">SQUAD BANK</div><div style="font-size:26px;font-weight:900;color:var(--green)">💎 '+gd+' GD</div><div style="font-size:11px;color:var(--txt2);">'+(clan.name||'Clan')+' ka shared pool</div></div>';
+  h+='<button onclick="window.contributeToBank(\''+clanId+'\')" style="padding:10px 14px;border-radius:11px;border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.15);color:var(--green);font-size:12px;font-weight:800;cursor:pointer">➕ Contribute</button>';
+  h+='</div><div style="margin-top:10px;font-size:11px;color:var(--txt2)">Mera balance: 💎 '+myGd+' GD'+(topContrib?' · Top: '+topContrib[1].ign:'')+'</div></div>';
+  h+='<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:10px">🎨 Clan Cosmetics</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:8px">';
+  COSMETICS.forEach(function(item){
+    var isUnlocked=!!(unlocked[item.id]);
+    var canAfford=gd>=item.cost;
+    h+='<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:'+(isUnlocked?'rgba(0,255,156,.06)':'var(--card)')+';border:1.5px solid '+(isUnlocked?'rgba(0,255,156,.25)':'var(--border)')+'">';
+    h+='<div style="font-size:28px;width:36px;text-align:center">'+item.icon+'</div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:800">'+item.name+'</div><div style="font-size:11px;color:var(--txt2)">'+item.desc+'</div><div style="font-size:11px;color:#00d4ff;margin-top:3px">'+item.type+'</div></div>';
+    h+=isUnlocked?'<div style="text-align:center"><div style="font-size:18px">✅</div><div style="font-size:10px;color:var(--green);font-weight:700">Unlocked</div></div>':'<div style="text-align:center"><div style="font-size:13px;font-weight:900;color:#00d4ff;margin-bottom:5px">💎 '+item.cost+'</div><button onclick="window.unlockClanCosmetic(\''+clanId+'\',\''+item.id+'\','+item.cost+')" style="padding:7px 12px;border-radius:9px;border:1px solid '+(canAfford?'rgba(0,212,255,.4)':'rgba(255,255,255,.1)')+';background:'+(canAfford?'rgba(0,212,255,.1)':'transparent')+';color:'+(canAfford?'#00d4ff':'var(--txt2)')+';font-size:11px;font-weight:800;cursor:'+(canAfford?'pointer':'not-allowed')+'">Unlock</button></div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  // Contributors
+  var contribs=Object.entries(contributors).sort(function(a,b){return(b[1].gd||0)-(a[1].gd||0)}).slice(0,5);
+  if(contribs.length){
+    h+='<div style="margin-top:14px"><div style="font-size:13px;font-weight:800;margin-bottom:8px">👑 Top Contributors</div><div style="display:flex;flex-direction:column;gap:6px">';
+    contribs.forEach(function(e,i){
+      h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:var(--card);border:1px solid var(--border)"><span>'+(window.medalHtml?medalHtml(i+1,16):'#'+(i+1))+'</span><div style="flex:1;font-size:13px;font-weight:700">'+(e[1].ign||'Player')+'</div><span style="font-size:12px;font-weight:800;color:#00d4ff">💎 '+(e[1].gd||0)+'</span></div>';
+    });
+    h+='</div></div>';
+  }
+  c.innerHTML=h;
+}
+
+window.contributeToBank=function(clanId){
+  var myGd=Number(_ud().green_diamonds||0);
+  if(myGd<1){if(window.toast)toast('Tumhare paas Green Diamonds nahi hain','err');return;}
+  var mb=document.getElementById('modalB');if(!mb)return;
+  var h='<div style="text-align:center;margin-bottom:16px"><div style="font-size:40px;margin-bottom:8px">💎</div><div style="font-size:16px;font-weight:800">Contribute karo Squad Bank mein</div><div style="font-size:12px;color:var(--txt2);margin-top:4px">Mera balance: '+myGd+' Green Diamonds</div></div>';
+  h+='<div style="margin-bottom:14px"><input id="sbContribIn" type="number" min="1" max="'+myGd+'" value="10" style="width:100%;padding:12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:18px;font-weight:800;text-align:center;box-sizing:border-box"></div>';
+  h+='<div style="display:flex;gap:8px;margin-bottom:14px">';
+  [5,10,20,50].filter(function(v){return v<=myGd;}).forEach(function(v){h+='<button onclick="document.getElementById(\'sbContribIn\').value='+v+'" style="flex:1;padding:8px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer">'+v+'</button>';});
+  h+='</div><button onclick="window._doContribute(\''+clanId+'\')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--green),#00d4ff);color:#000;font-size:14px;font-weight:900;cursor:pointer">💎 Contribute Karo</button>';
+  mb.innerHTML=h;
+  setTimeout(function(){var el=document.getElementById('sbContribIn');if(el){el.focus();el.select();}},100);
+};
+
+window._doContribute=function(clanId){
+  var el=document.getElementById('sbContribIn');if(!el)return;
+  var amt=parseInt(el.value)||0;
+  var myGd=Number(_ud().green_diamonds||0);
+  if(amt<1||amt>myGd){if(window.toast)toast('Invalid amount','err');return;}
+  if(!_s()||!_uid()||!_ud()){if(window.toast)toast('Login karo','err');return;}
+  /* ✅ BUG FIX (2026-07-17): was two separate, non-atomic calls (deduct via
+     decrement_balance, then a plain select-then-update on clans) — two
+     members contributing at the same instant could race on the same
+     squad_bank_gd read, and the second update() would silently overwrite
+     the first, discarding that contribution even though the diamonds had
+     already been deducted from that user. contribute_to_squad_bank does
+     both halves atomically in one locked transaction. */
+  _s().rpc('contribute_to_squad_bank',{p_clan_id:clanId,p_uid:_uid(),p_amount:amt})
+  .then(function(res){
+    if(res&&res.error){if(window.toast)toast('Error: '+res.error.message,'err');return;}
+    if(res&&res.data&&res.data.ok===false){if(window.toast)toast(res.data.error||'Error','err');return;}
+    /* ✅ BUG FIX (2026-08-25): only green_diamonds (snake_case) was
+       updated here — header.js/wallet.js read greenDiamonds (camelCase),
+       so calling updateHdr() right after still showed the stale value.
+       Same root cause as the other squad-bank fix in bugfixes-v29-final.js. */
+    if(window.UD){window.UD.green_diamonds=myGd-amt;window.UD.greenDiamonds=myGd-amt;}
+    if(window.updateHdr)updateHdr();
+    if(window.logActivity)logActivity('join','💎 '+amt+' GD Squad Bank mein contribute kiya');
+    if(window.toast)toast('✅ '+amt+' GD contribute kar diye!','ok');
+    if(window.closeModal)closeModal();
+  }).catch(function(){if(window.toast)toast('Error deducting GD','err');});
+};
+
+window.unlockClanCosmetic=function(clanId,itemId,cost){
+  if(!_s()||!_uid()){if(window.toast)toast('Login karo','err');return;}
+  /* ✅ BUG FIX (2026-07-17): was a plain select-then-update with no lock —
+     two members trying to unlock two different cosmetics at the same
+     moment could race on the same squad_bank_gd/squad_bank_unlocked read,
+     silently losing one unlock. unlock_squad_bank_cosmetic locks the clan
+     row for the duration of the check-and-update. */
+  _s().rpc('unlock_squad_bank_cosmetic',{p_clan_id:clanId,p_item_id:itemId,p_cost:cost,p_uid:_uid()})
+  .then(function(res){
+    if(res&&res.error){if(window.toast)toast('Error: '+res.error.message,'err');return;}
+    if(res&&res.data&&res.data.ok===false){if(window.toast)toast(res.data.error||'Error','err');return;}
+    var item=COSMETICS.find(function(c){return c.id===itemId;})||{name:itemId,icon:'🎨'};
+    // Notify clan members
+    _s().from('clan_members').select('user_id').eq('clan_id',clanId)
+    .then(function(m){
+      (m.data||[]).forEach(function(mem){
+        _s().from('notifications').insert({user_id:mem.user_id,type:'clan_cosmetic',title:item.icon+' Clan Cosmetic Unlock!',body:'"'+item.name+'" squad bank se unlock ho gayi!',ref_id:null,is_read:false}).then(null, function(){});
+      });
+    }).catch(function(){});
+    if(window.logActivity)logActivity('win',item.icon+' '+item.name+' clan ke liye unlock hua!');
+    if(window.toast)toast('🎉 '+item.icon+' '+item.name+' unlock!','ok');
+    if(window.closeModal)closeModal();
+  }).catch(function(){if(window.toast)toast('Error','err');});
+};
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>60){clearInterval(_t);return;}
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_sbPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_sbPill';p.className='special-pill';
+  p.style.cssText='background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.2);color:var(--green)';
+  p.innerHTML='<i class="fas fa-coins" style="font-size:11px"></i> Squad Bank';
+  p.onclick=function(){if(window.showSquadBank)showSquadBank();};
+  row.appendChild(p);
+},400);
+})();

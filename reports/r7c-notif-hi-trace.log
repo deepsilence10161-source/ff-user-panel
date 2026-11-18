@@ -1,0 +1,25 @@
+
+=== qa4/hi notif === nodes=1195 heap=10.7MB overlays=4 clickables=39 cards=11
+  screenText: सूचनाएं 11 notifications Clear All 💬 R7 Dot Test 2 Dot-style badge test #2 (QA-only). 7h ago 💬 R7 Dot Test 1 Dot-style badge test #1 (QA-only). 7h ago 🏆 R7 Count Test 3 Badge count-pill test #3 (QA
+  card0: 💬 R7 Dot Test 2Dot-style badge test #2 (QA-only). 7h ago
+  card1: 💬 R7 Dot Test 1Dot-style badge test #1 (QA-only). 7h ago
+  card2: 🏆 R7 Count Test 3Badge count-pill test #3 (QA-only). 7h ago
+  card3: 🏆 R7 Count Test 2Badge count-pill test #2 (QA-only). 7h ago
+  card4: 🏆 R7 Count Test 1Badge count-pill test #1 (QA-only). 7h ago
+  card5: 🏆 R7 Count Test 5Badge count-pill test #5 (QA-only). 7h ago
+  card6: 🏆 R7 Count Test 4Badge count-pill test #4 (QA-only). 7h ago
+  card7: 💬 R7 Unread Test 2Doosra unread notification (QA-only). 7h ago
+  ix0 "" onclick="showUserSearch()" → nodes=1184 heap=10.7MB overlays=4 clickables=37 alive=true crashed=false errs=0
+  ix1 "" onclick="navTo('notif')" → nodes=1184 heap=10.7MB overlays=0 clickables=35 alive=true crashed=false errs=0
+  ix2 "" onclick="openSupport()" → nodes=1204 heap=10.7MB overlays=4 clickables=40 alive=true crashed=false errs=0
+  ix3 "645" onclick="navTo('wallet')" → nodes=1204 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+  ix4 "40" onclick="navTo('wallet')" → nodes=1204 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+  ix5 "15" onclick="navTo('wallet')" → nodes=1204 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+  ix6 "Buy SkyDiamonds ›" onclick="startAdd()" → nodes=1196 heap=10.7MB overlays=4 clickables=26 alive=true crashed=false errs=0
+  ix7 "Checked In Today ✓ ›" onclick="window.doCheckIn&&doCheckIn()" → nodes=1196 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+  ix8 "Earn Coins ›" onclick="showCoinShop()" → nodes=1196 heap=10.7MB overlays=0 clickables=25 alive=true crashed=false errs=0
+  ix9 "Coin History" onclick="window.showCoinHistory&&showCoinHi" → nodes=1196 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+  ix10 "Summary" onclick="window.showTransactionSummary&&sho" → nodes=1196 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+  ix11 "All" onclick="setWFilter('all')" → nodes=1196 heap=10.7MB overlays=0 clickables=21 alive=true crashed=false errs=0
+
+TRACE DONE: combos=1 problem=0 → /home/user/ff-user-panel/reports/d103-notif-hi-trace/trace.json

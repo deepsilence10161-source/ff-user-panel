@@ -1,1 +1,674 @@
-var _0x3e7f94=(function(){var _0x320509=!![];return function(_0x41cc9e,_0x551429){var _0x1f1b5e=_0x320509?function(){if(_0x551429){var _0x337586=_0x551429['apply'](_0x41cc9e,arguments);return _0x551429=null,_0x337586;}}:function(){};return _0x320509=![],_0x1f1b5e;};}()),_0x3ee2f8=_0x3e7f94(this,function(){if(_0x3ee2f8['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3ee2f8['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3ee2f8)['search']('(((.+)+)+)+$');});_0x3ee2f8(),window['medalHtml']=function(_0x2ba8b6,_0x5c8b52){_0x2ba8b6=Number(_0x2ba8b6)||0x0;var _0x5967c6=Number(_0x5c8b52)||0x14;if(_0x2ba8b6<0x1)return'<span\x20style=\x22font-weight:800;color:var(--txt2,#8b9bb4)\x22>—</span>';var _0x3e2afc=_0x2ba8b6===0x1?'gold':_0x2ba8b6===0x2?'silver':_0x2ba8b6===0x3?'bronze':'';if(!_0x3e2afc)return'<span\x20style=\x22font-weight:800;color:var(--txt2,#8b9bb4)\x22>#'+_0x2ba8b6+'</span>';return'<img\x20src=\x22assets/img/ranks/'+_0x3e2afc+'.png?v=20261117g\x22\x20alt=\x22#'+_0x2ba8b6+'\x22\x20width=\x22'+_0x5967c6+'\x22\x20height=\x22'+_0x5967c6+'\x22\x20style=\x22object-fit:contain;vertical-align:middle\x22\x20onerror=\x22this.outerHTML=\x27#'+_0x2ba8b6+'\x27\x22>';},window['cleanLabel']=function(_0x5b70a8){return _0x5b70a8=String(_0x5b70a8==null?'':_0x5b70a8),_0x5b70a8['replace'](/[\uD800-\uDBFF][\uDC00-\uDFFF]/g,'\x20')['replace'](/[\u2190-\u21FF\u2300-\u27BF\u2B00-\u2BFF\uFE0F\u20E3]/g,'\x20')['replace'](/\s+/g,'\x20')['trim']();},window['premTierName']=function(_0x2cf1e4){return _0x2cf1e4=Number(_0x2cf1e4)||0x0,_0x2cf1e4>=0x3?'Diamond':_0x2cf1e4===0x2?'Gold':_0x2cf1e4===0x1?'Silver':'Premium';},window['tierIconHtml']=function(_0x406791,_0xc8f27d){_0x406791=String(_0x406791==null?'':_0x406791)['toLowerCase']();var _0x3895ba=_0x406791['indexOf']('bronze')===0x0?'bronze':_0x406791['indexOf']('silver')===0x0?'silver':_0x406791['indexOf']('gold')===0x0?'gold':_0x406791['indexOf']('platinum')===0x0?'platinum':_0x406791['indexOf']('diamond')===0x0?'diamond':_0x406791['indexOf']('legend')===0x0?'legend':'';if(!_0x3895ba)return'';var _0x209459=Number(_0xc8f27d)||0x10;return'<img\x20src=\x22assets/img/ranks/'+_0x3895ba+'.png?v=20261117g\x22\x20alt=\x22'+_0x3895ba+'\x22\x20width=\x22'+_0x209459+'\x22\x20height=\x22'+_0x209459+'\x22\x20style=\x22object-fit:contain;vertical-align:middle\x22\x20onerror=\x22this.style.display=\x27none\x27\x22>';},window['premTierIcon']=function(_0x53bd3a){_0x53bd3a=Number(_0x53bd3a)||0x0;var _0xeedd59=_0x53bd3a>=0x3?'diamond':_0x53bd3a===0x2?'gold':_0x53bd3a===0x1?'silver':'ribbon';return'assets/img/premium/'+_0xeedd59+'.png?v=20261117g';},window['escHtml']=function(_0x43e241){if(_0x43e241===null||_0x43e241===undefined)return'';return String(_0x43e241)['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;')['replace'](/"/g,'&quot;')['replace'](/'/g,'&#x27;')['replace'](/\//g,'&#x2F;');},window['escAttrJs']=function(_0xd7b447){if(!window['escHtml'])return String(_0xd7b447==null?'':_0xd7b447);return window['escHtml'](String(_0xd7b447==null?'':_0xd7b447)['replace'](/\\/g,'\x5c\x5c')['replace'](/'/g,'\x5c\x27'));},window['compliantTicker']=function(_0x508223){return String(_0x508223==null?'':_0x508223)['replace'](/earn\s+money/gi,'Coins\x20&\x20Diamonds\x20jeeto')['replace'](/real\s+money/gi,'real\x20rewards');};function $(_0x744da8){return document['getElementById'](_0x744da8);}function toast(_0x3b126e,_0x1a4e51){var _0x25ec6d=$('toast-wrap');if(!_0x25ec6d)return;var _0x2e89bd=document['createElement']('div');_0x2e89bd['className']='toast-item\x20t'+(_0x1a4e51||'ok');var _0x85b964=_0x1a4e51==='err'?'exclamation-circle':_0x1a4e51==='inf'?'info-circle':'check-circle';_0x2e89bd['innerHTML']='<i\x20class=\x22fas\x20fa-'+_0x85b964+'\x22></i>'+(window['escHtml']?window['escHtml'](_0x3b126e==null?'':_0x3b126e):String(_0x3b126e==null?'':_0x3b126e)),_0x25ec6d['appendChild'](_0x2e89bd),setTimeout(function(){_0x2e89bd['remove']();},0x708);}function timeAgo(_0x1391d4){if(!_0x1391d4)return'';var _0x5b77d9=Date['now']()-_0x1391d4;if(_0x5b77d9<0xea60)return'Just\x20now';if(_0x5b77d9<0x36ee80)return Math['floor'](_0x5b77d9/0xea60)+'m\x20ago';if(_0x5b77d9<0x5265c00)return Math['floor'](_0x5b77d9/0x36ee80)+'h\x20ago';var _0x13d20a=Math['floor'](_0x5b77d9/0x5265c00);return(_0x13d20a>0x0?_0x13d20a:0x1)+'d\x20ago';}function fmtTime(_0x2e61bd){if(!_0x2e61bd)return'Time\x20Not\x20Announced';var _0x37cd02=Number(_0x2e61bd);if(isNaN(_0x37cd02)||_0x37cd02<=0x0)return'Time\x20Not\x20Announced';var _0x113d5b=Date['now'](),_0x2a8cdb=_0x37cd02-_0x113d5b;if(_0x2a8cdb<=0x0){var _0x54442d=_0x113d5b-_0x37cd02;if(_0x54442d<0x36ee80)return'Live\x20Now';return'Match\x20Ended';}if(_0x2a8cdb<=0x493e0){var _0x33c4cc=Math['ceil'](_0x2a8cdb/0xea60);return'Starting\x20in\x20'+_0x33c4cc+'\x20min!';}if(_0x2a8cdb<0x5265c00){var _0x2626f6=Math['floor'](_0x2a8cdb/0x36ee80),_0x21c872=Math['floor'](_0x2a8cdb%0x36ee80/0xea60);return'Starts\x20in:\x20'+_0x2626f6+'h\x20'+_0x21c872+'m';}var _0x56d482=new Date(_0x37cd02),_0x5cac86=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],_0x34f748=_0x56d482['getHours'](),_0x54296b=_0x34f748>=0xc?'PM':'AM';return _0x34f748=_0x34f748%0xc||0xc,_0x56d482['getDate']()['toString']()['padStart'](0x2,'0')+'\x20'+_0x5cac86[_0x56d482['getMonth']()]+'\x20'+_0x56d482['getFullYear']()+',\x20'+_0x34f748['toString']()['padStart'](0x2,'0')+':'+_0x56d482['getMinutes']()['toString']()['padStart'](0x2,'0')+'\x20'+_0x54296b;}function titleCase(_0x343c64){if(!_0x343c64)return'';return _0x343c64['replace'](/\w\S*/g,function(_0x251104){return _0x251104['charAt'](0x0)['toUpperCase']()+_0x251104['substr'](0x1)['toLowerCase']();});}function copyTxt(_0xc4a752){navigator['clipboard']&&navigator['clipboard']['writeText']&&document['hasFocus']()?navigator['clipboard']['writeText'](_0xc4a752)['then'](function(){toast('✅\x20Copied!','ok');})['catch'](function(){fbCopy(_0xc4a752);}):fbCopy(_0xc4a752);}function fbCopy(_0x283081){try{var _0x44c805=document['createElement']('textarea');_0x44c805['value']=_0x283081,_0x44c805['style']['cssText']='position:fixed;left:-9999px;top:-9999px;opacity:0',_0x44c805['setAttribute']('readonly',''),document['body']['appendChild'](_0x44c805);if(navigator['userAgent']['match'](/ipad|iphone/i)){var _0x116b8b=document['createRange']();_0x116b8b['selectNodeContents'](_0x44c805);var _0xa369c6=window['getSelection']();_0xa369c6['removeAllRanges'](),_0xa369c6['addRange'](_0x116b8b),_0x44c805['setSelectionRange'](0x0,0xf423f);}else _0x44c805['select']();var _0x23fb47=document['execCommand']('copy');document['body']['removeChild'](_0x44c805),_0x23fb47?toast('✅\x20Copied!','ok'):toast('📋\x20Manually\x20select\x20and\x20copy:\x20'+_0x283081['substring'](0x0,0x1e)+'...','inf');}catch(_0x27679b){toast('📋\x20Copy\x20nahi\x20hua\x20—\x20manually\x20select\x20karo','err');}}function effSt(_0x9d535d){if(!_0x9d535d)return'upcoming';var _0x3f652f=(_0x9d535d['status']||'')['toString']()['toLowerCase']()['trim']();if(_0x3f652f==='cancelled'||_0x3f652f==='canceled')return'cancelled';if(_0x3f652f==='resultpublished'||_0x3f652f==='result_published')return'resultPublished';if(_0x3f652f==='completed'||_0x3f652f==='finished'||_0x3f652f==='ended'||_0x3f652f==='done')return'completed';var _0x3049b5=Number(_0x9d535d['matchTime']);if(!_0x3049b5||_0x3049b5<=0x0)return _0x3f652f||'upcoming';var _0x2a3b0e=Date['now'](),_0x2fef26=Number(_0x9d535d['roomReleaseMinutes'])||0x5,_0x58952a=_0x3049b5-_0x2fef26*0xea60;(_0x9d535d['roomStatus']==='released'||_0x9d535d['roomReleasedAt'])&&(_0x58952a=Math['min'](_0x58952a,Number(_0x9d535d['roomReleasedAt'])||_0x58952a));if(_0x2a3b0e<_0x58952a)return'upcoming';if(_0x2a3b0e>=_0x58952a&&_0x2a3b0e<_0x3049b5+0x36ee80)return'live';return'completed';}function getSavedTeam(_0xbc7b7a){if(!UD)return null;if(_0xbc7b7a==='duo'){var _0xc69d43=UD['duoTeam'];if(_0xc69d43&&_0xc69d43['memberUid'])return{'partners':[_0xc69d43]};if(UD['partnerUid'])return{'partners':[{'memberUid':UD['partnerUid'],'memberName':'Linked\x20Partner'}]};try{var _0x2d911d=JSON['parse'](localStorage['getItem']('lastDuoPartner'));if(_0x2d911d&&_0x2d911d['uid'])return{'partners':[{'memberUid':_0x2d911d['uid'],'memberName':_0x2d911d['name']||'Partner'}]};}catch(_0x40bcb8){}}if(_0xbc7b7a==='squad'){var _0x3253ce=UD['squadTeam']&&UD['squadTeam']['members']||[];if(_0x3253ce['length']>0x0)return{'partners':_0x3253ce['map'](function(_0x210533){return{'memberUid':_0x210533['uid'],'memberName':_0x210533['name']};})};try{var _0x2d911d=JSON['parse'](localStorage['getItem']('lastSquadPartners'));if(_0x2d911d&&_0x2d911d['length'])return{'partners':_0x2d911d['map'](function(_0xb2ed27){return{'memberUid':_0xb2ed27['uid'],'memberName':_0xb2ed27['name']};})};}catch(_0x21b4fd){}}return null;}function validateSavedPartners(_0x491f48,_0x56bc72){var _0x3a4323=[],_0x1d2ce6=_0x491f48['length'];if(_0x1d2ce6===0x0){_0x56bc72([]);return;}_0x491f48['forEach'](function(_0x1a8e61,_0xebbc49){if(!_0x1a8e61['memberUid']){_0x1d2ce6--;if(_0x1d2ce6===0x0)_0x56bc72(_0x3a4323);return;}_findUserByFF(_0x1a8e61['memberUid'],function(_0x3e16a8,_0xb11aa3){_0xb11aa3?_0x3a4323['push']({'index':_0xebbc49,'uid':_0x1a8e61['memberUid'],'name':_0xb11aa3?_0xb11aa3['ign']||_0xb11aa3['displayName']||_0x1a8e61['memberName']:_0x1a8e61['memberName'],'data':_0xb11aa3,'valid':!![]}):_0x3a4323['push']({'index':_0xebbc49,'uid':_0x1a8e61['memberUid'],'name':_0x1a8e61['memberName'],'valid':![]});_0x1d2ce6--;if(_0x1d2ce6===0x0)_0x56bc72(_0x3a4323);});});}function autoFillSavedTeam(_0x266243){if(!UD)return;if(_0x266243==='duo'){var _0x1f66ce=UD['duoTeam'];if(!_0x1f66ce||!_0x1f66ce['memberUid'])try{var _0x37456e=JSON['parse'](localStorage['getItem']('lastDuoPartner'));if(_0x37456e&&_0x37456e['uid'])_0x1f66ce={'memberUid':_0x37456e['uid'],'memberName':_0x37456e['name']||'Partner'};}catch(_0x2bc722){}if(_0x1f66ce&&_0x1f66ce['memberUid']){var _0x3e2327=_0x1f66ce['memberUid'],_0x3860b2=_0x1f66ce['memberFfUid']||_0x1f66ce['memberUid'];if(_0x3e2327&&_0x3860b2&&_0x3e2327!==_0x3860b2){var _0x2e461b={'ign':_0x1f66ce['memberName']||'Partner','displayName':_0x1f66ce['memberName']||'Partner','ffUid':_0x3860b2};_0x2e461b['_fbUid']=_0x3e2327,partnerCache[0x1]=_0x2e461b;var _0x2e45cc=$('partnerUid1');if(_0x2e45cc){_0x2e45cc['value']=_0x3860b2;var _0x4d1300=$('partnerSt1');if(_0x4d1300)_0x4d1300['innerHTML']='<span\x20class=\x22pf-ok\x22>✓\x20Linked:\x20'+(window['escHtml']?window['escHtml'](_0x1f66ce['memberName']||'Partner'):_0x1f66ce['memberName']||'Partner')+'</span>';var _0x20ea63=$('partnerName1');if(_0x20ea63)_0x20ea63['innerHTML']='<span\x20style=\x22color:var(--green)\x22>✅\x20'+(window['escHtml']?window['escHtml'](_0x1f66ce['memberName']||'Partner'):_0x1f66ce['memberName']||'Partner')+'</span>';}console['log']('[Team]\x20Duo\x20cache\x20loaded\x20directly:\x20fbUid='+_0x3e2327+'\x20ffUid='+_0x3860b2);}else{var _0x2e45cc=$('partnerUid1');if(_0x2e45cc){_0x2e45cc['value']=_0x3860b2;var _0x20ea63=$('partnerName1');if(_0x20ea63)_0x20ea63['innerHTML']='<span\x20style=\x22color:var(--green)\x22>✅\x20Auto-filled:\x20'+(window['escHtml']?window['escHtml'](_0x1f66ce['memberName']||'Partner'):_0x1f66ce['memberName']||'Partner')+'</span>';valPartner(0x1);}}}}if(_0x266243==='squad'){var _0x392f17=UD['squadTeam'],_0xbf8dd6=_0x392f17&&_0x392f17['members']||[];if(!_0xbf8dd6['length'])try{var _0x44cc53=JSON['parse'](localStorage['getItem']('lastSquadPartners'));if(_0x44cc53&&_0x44cc53['length'])_0xbf8dd6=_0x44cc53;}catch(_0xe8de14){}for(var _0x1ba0f5=0x0;_0x1ba0f5<Math['min'](_0xbf8dd6['length'],0x3);_0x1ba0f5++){var _0x55e45b=_0xbf8dd6[_0x1ba0f5];if(!_0x55e45b)continue;var _0x5a7c73=_0x55e45b['uid'],_0x5b2d01=_0x55e45b['ffUid']||_0x55e45b['uid'],_0xf394e7=_0x1ba0f5+0x1;if(_0x5a7c73&&_0x5b2d01&&_0x5a7c73!==_0x5b2d01){var _0x2e461b={'ign':_0x55e45b['name']||'Partner','displayName':_0x55e45b['name']||'Partner','ffUid':_0x5b2d01};_0x2e461b['_fbUid']=_0x5a7c73,partnerCache[_0xf394e7]=_0x2e461b;var _0x2e45cc=$('partnerUid'+_0xf394e7);if(_0x2e45cc){_0x2e45cc['value']=_0x5b2d01;var _0x4d1300=$('partnerSt'+_0xf394e7);if(_0x4d1300)_0x4d1300['innerHTML']='<span\x20class=\x22pf-ok\x22>✓\x20Linked:\x20'+(window['escHtml']?window['escHtml'](_0x55e45b['name']||'Partner'):_0x55e45b['name']||'Partner')+'</span>';var _0x20ea63=$('partnerName'+_0xf394e7);if(_0x20ea63)_0x20ea63['innerHTML']='<span\x20style=\x22color:var(--green)\x22>✅\x20'+(window['escHtml']?window['escHtml'](_0x55e45b['name']||'Partner'):_0x55e45b['name']||'Partner')+'</span>';}}else{if(_0x5b2d01){var _0x2e45cc=$('partnerUid'+_0xf394e7);if(_0x2e45cc){_0x2e45cc['value']=_0x5b2d01;var _0x20ea63=$('partnerName'+_0xf394e7);if(_0x20ea63)_0x20ea63['innerHTML']='<span\x20style=\x22color:var(--green)\x22>✅\x20Auto-filled:\x20'+(window['escHtml']?window['escHtml'](_0x55e45b['name']||'Partner'):_0x55e45b['name']||'Partner')+'</span>';valPartner(_0xf394e7);}}}}}console['log']('[Mini\x20eSports]\x20✅\x20Auto-fill\x20team\x20complete\x20for\x20mode:\x20'+_0x266243);}function getMatchStatus(_0x161583,_0x16a3b8){var _0x3f420d=Date['now'](),_0x30dcaa=Number(_0x161583);if(_0x16a3b8==='resultPublished'||_0x16a3b8==='result_published')return'resultPublished';if(!_0x30dcaa||_0x30dcaa<=0x0)return _0x16a3b8||'upcoming';var _0x22e1d7=_0x30dcaa+0x36ee80;if(_0x3f420d<_0x30dcaa)return'upcoming';if(_0x3f420d>=_0x30dcaa&&_0x3f420d<_0x22e1d7)return'live';return'completed';}window['_prizeIcon']=function(_0x4964c3){if(!_0x4964c3)return window['GD_ICON']||'💎';var _0x1cb2ab=String(_0x4964c3['prizeType']||_0x4964c3['prize_type']||'')['toLowerCase'](),_0x1b4588=String(_0x4964c3['entryType']||_0x4964c3['entry_type']||'')['toLowerCase']();if(_0x4964c3['isSponsored']||_0x4964c3['is_sponsored']||_0x1cb2ab==='inr'||_0x1cb2ab==='cash')return'₹';if(_0x1cb2ab==='coin'||_0x1cb2ab==='coins'||!_0x1cb2ab&&(_0x1b4588==='coin'||_0x1b4588==='coins'||_0x1b4588==='ad'||_0x1b4588==='free'))return'🪙';if(_0x1cb2ab==='skydiamond'||_0x1cb2ab==='sky_diamond'||_0x1cb2ab==='sky')return'💎';return window['GD_ICON']||'<img\x20src=\x22green-diamond.png\x22\x20alt=\x22GD\x22\x20class=\x22gd-icon\x22>';},window['nativeShareText']=function(_0x41b30a,_0x1d6720,_0x280bd4){var _0x216984=String(_0x1d6720||'');_0x280bd4&&_0x216984['indexOf'](_0x280bd4)===-0x1&&(_0x216984=_0x216984?_0x216984+'\x0a\x0a'+_0x280bd4:String(_0x280bd4));if(window['Android']&&typeof window['Android']['nativeShare']==='function')try{return window['Android']['nativeShare'](String(_0x41b30a||'Mini\x20eSports'),_0x216984),!![];}catch(_0x3d3050){}if(window['Android']&&typeof window['Android']['nativeShareWhatsApp']==='function')try{return window['Android']['nativeShareWhatsApp'](_0x216984),!![];}catch(_0x94e6be){}if(navigator['share']){var _0x206860={'title':String(_0x41b30a||'Mini\x20eSports'),'text':String(_0x1d6720||'')};if(_0x280bd4)_0x206860['url']=String(_0x280bd4);return navigator['share'](_0x206860)['catch'](function(_0xacf1bc){(!_0xacf1bc||_0xacf1bc['name']!=='AbortError')&&copyTxt(_0x216984);}),!![];}return copyTxt(_0x216984),![];};if(window['Android']&&(typeof window['Android']['nativeShare']==='function'||typeof window['Android']['nativeShareWhatsApp']==='function'))try{navigator['share']=function(_0x4162c1){return new Promise(function(_0x58d81f,_0x2e71df){try{var _0x5db0bf=_0x4162c1||{};window['nativeShareText'](_0x5db0bf['title']||'Mini\x20eSports',_0x5db0bf['text']||'',_0x5db0bf['url']||''),_0x58d81f();}catch(_0x4fb7a4){_0x2e71df(_0x4fb7a4);}});};}catch(_0x4ebab4){}function shareApp(){var _0x3a8c39=UD&&UD['referralCode']?UD['referralCode']:U?U['uid']['substring'](0x0,0x8)['toUpperCase']():'',_0x161ca8='🎮\x20Join\x20me\x20on\x20Mini\x20eSports\x20—\x20Free\x20Fire\x20tournaments!\x20🔥\x0a\x0a🪙\x20Play\x20matches,\x20win\x20coins\x20&\x20💎\x20diamonds!\x0a🎁\x20Use\x20my\x20referral\x20code:\x20'+_0x3a8c39+'\x20to\x20get\x20bonus\x20coins!\x0a\x0a👇\x20Download\x20now:',_0x1519fc=typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['href'];window['nativeShareText']('Mini\x20eSports\x20-\x20Play\x20Free\x20Fire\x20Tournaments!',_0x161ca8,_0x1519fc);}function shareMatch(_0x526bc8){var _0x333c0d=MT[_0x526bc8];if(!_0x333c0d)return;var _0x3344ff=effSt?effSt(_0x333c0d):(_0x333c0d['status']||'')['toLowerCase']();if(_0x3344ff==='cancelled'){if(window['toast'])toast('Yeh\x20match\x20cancel\x20ho\x20gaya\x20hai','inf');return;}if(_0x3344ff==='completed'){if(window['toast'])toast('Yeh\x20match\x20already\x20complete\x20ho\x20gaya','inf');return;}var _0x44e9ae=(_0x333c0d['entryType']||'')['toLowerCase']()==='coin',_0x131b34=_0x44e9ae?'🪙\x20'+(_0x333c0d['entryFee']||0x0)+'\x20Coins':'💎'+(_0x333c0d['entryFee']||0x0),_0x59513d=UD&&UD['referralCode']?UD['referralCode']:'',_0x5c7f0c='🎮\x20Join\x20\x22'+(_0x333c0d['name']||'Match')+'\x22\x20on\x20Mini\x20eSports!\x0a\x0a🎯\x20Entry:\x20'+_0x131b34+'\x0a🗺️\x20Map:\x20'+titleCase(_0x333c0d['map']||'Unknown')+'\x0a⏰\x20'+fmtTime(_0x333c0d['matchTime']);if(_0x59513d)_0x5c7f0c+='\x0a\x0a🎁\x20Use\x20code\x20'+_0x59513d+'\x20for\x20bonus\x20coins!';var _0x5c58b9=typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['href'];window['nativeShareText'](_0x333c0d['name']||'Mini\x20eSports\x20Match',_0x5c7f0c,_0x5c58b9);}function isOk(){return UD&&(UD['profileStatus']==='approved'||UD['profileStatus']==='complete'||UD['profileStatus']==='verified');}function isVO(){return!UD||UD['profileStatus']!=='approved'&&UD['profileStatus']!=='complete'&&UD['profileStatus']!=='verified';}function isPremiumActive(_0x252dd3){if(!UD||!UD['premium'])return![];var _0xa4ac66=Number(UD['premium']['tier']||UD['premium_level']||0x0);if(_0xa4ac66<=0x0)return![];if(_0x252dd3&&_0xa4ac66<_0x252dd3)return![];var _0x2b8e17=UD['premium']['expiresAt']||0x0;if(_0x2b8e17&&_0x2b8e17<Date['now']())return![];return!![];}function hasJ(_0x587a52){for(var _0x4b75d0 in JR){if(JR[_0x4b75d0]['matchId']===_0x587a52)return!![];}return![];}function getJoinRole(_0x20a31a){for(var _0x3ff5cf in JR){var _0x103fdb=JR[_0x3ff5cf];if(_0x103fdb['matchId']!==_0x20a31a)continue;if(_0x103fdb['isTeamMember']&&_0x103fdb['captainUid'])return'member';if(_0x103fdb['captainUid']===undefined||_0x103fdb['captainUid']===null)return'captain';}return null;}function getMoneyBal(){if(!UD)return 0x0;var _0x47aff4=UD['realMoney']||{'deposited':0x0,'winnings':0x0,'bonus':0x0};return Math['max'](Number(_0x47aff4['deposited'])||0x0,0x0)+Math['max'](Number(_0x47aff4['winnings'])||0x0,0x0)+Math['max'](Number(_0x47aff4['bonus'])||0x0,0x0);}history['pushState'](null,null,null),window['addEventListener']('popstate',function(_0x45b9e7){_0x45b9e7['preventDefault'](),history['pushState'](null,null,null),goBack();});function goBack(){var _0x499500=document['getElementById']('loginScreen');if(_0x499500&&_0x499500['style']['display']!=='none'&&window['curScr']==='login'){window['Android']&&typeof window['Android']['exitApp']==='function'&&window['Android']['exitApp']();return;}var _0x444e7d=document['getElementById']('coinShopModal');if(_0x444e7d&&_0x444e7d['style']['display']!=='none'&&_0x444e7d['style']['display']!==''){if(window['closeCoinShop'])closeCoinShop();else _0x444e7d['style']['display']='none';return;}var _0x1403a1=document['getElementById']('profSettingsSheet');if(_0x1403a1){closeProfileSettings();return;}var _0xaecf13=document['getElementById']('_refCodePopup');if(_0xaecf13){_0xaecf13['remove']();return;}var _0x5bf5e5=document['getElementById']('_avatarBgModal');if(_0x5bf5e5){_0x5bf5e5['remove']();return;}var _0x53cd96=$('rpContainer');if(_0x53cd96&&_0x53cd96['children']['length']>0x0){_0x53cd96['innerHTML']='';return;}var _0x48c999=$('modalOv');if(_0x48c999&&_0x48c999['classList']['contains']('show')){closeModal();return;}var _0x296ac9=$('walletFlow');if(_0x296ac9&&_0x296ac9['style']['display']!=='none'&&_0x296ac9['style']['display']!==''){cancelWF();return;}if(curScr==='notif'||curScr==='chat'){navTo(prevScr||'home');return;}if(curScr!=='home'){navTo('home');return;}try{history['pushState'](null,null,null);}catch(_0x4b8604){}}function _findUserByFF(_0x5ce776,_0x43eb30){if(!_0x5ce776||!window['_supa']){_0x43eb30(null,null);return;}window['_supa']['from']('user_public_profiles')['select']('id,ign,ff_uid,avatar_url,profile_status,total_matches,total_wins,total_kills')['eq']('ff_uid',_0x5ce776)['neq']('id',window['U']?window['U']['uid']:'')['limit'](0x1)['maybeSingle']()['then'](function(_0x3cb8db){if(!_0x3cb8db['data']){_0x43eb30(null,null);return;}var _0x22b2d7=_0x3cb8db['data'];_0x43eb30(_0x22b2d7['id'],{'ign':_0x22b2d7['ign']||'','displayName':_0x22b2d7['ign']||'','ffUid':_0x22b2d7['ff_uid']||'','profileImage':_0x22b2d7['avatar_url']||'','profileStatus':_0x22b2d7['profile_status']||'','coins':_0x22b2d7['coins']||0x0,'skyDiamonds':_0x22b2d7['sky_diamonds']||0x0,'stats':{'matches':_0x22b2d7['total_matches']||0x0,'wins':_0x22b2d7['total_wins']||0x0,'kills':_0x22b2d7['total_kills']||0x0}});})['catch'](function(){_0x43eb30(null,null);});}function _findUserByIGN(_0x4c4642,_0x52c846){if(!_0x4c4642||!window['_supa']){_0x52c846(null,null);return;}window['_supa']['from']('user_public_profiles')['select']('id,ign,ff_uid,avatar_url,profile_status')['ilike']('ign',_0x4c4642)['limit'](0x1)['maybeSingle']()['then'](function(_0x3bc3f1){_0x52c846(_0x3bc3f1['data']?_0x3bc3f1['data']['id']:null,_0x3bc3f1['data']?Object['assign'](_0x3bc3f1['data'],{'ign':_0x3bc3f1['data']['ign'],'displayName':_0x3bc3f1['data']['ign'],'ffUid':_0x3bc3f1['data']['ff_uid'],'profileImage':_0x3bc3f1['data']['avatar_url'],'profileStatus':_0x3bc3f1['data']['profile_status']}):null);})['catch'](function(){_0x52c846(null,null);});}function _findUserByPhone(_0x3db4e7,_0x5f2c69){if(!_0x3db4e7||!window['_supa']){_0x5f2c69(null,null);return;}window['_supa']['rpc']('user_has_phone',{'p_phone':_0x3db4e7})['then'](function(_0x51a2d5){if(_0x51a2d5['error']){_0x5f2c69(null,null);return;}var _0x1ec395=!!(_0x51a2d5['data']&&_0x51a2d5['data']['found']);_0x5f2c69(_0x1ec395?'phone-taken':null,null);})['catch'](function(){_0x5f2c69(null,null);});}function _waShareUrl(_0x5091c9,_0x1705e7){var _0x35c64b=_0x1705e7?String(_0x1705e7)['replace'](/[^0-9]/g,''):'';return'https://wa.me/'+_0x35c64b+'?text='+encodeURIComponent(_0x5091c9);}window['openWhatsApp']=function(_0x2f5fa2,_0x46d3a3){if(window['Android']&&window['Android']['nativeShareWhatsApp']&&!_0x46d3a3){window['Android']['nativeShareWhatsApp'](_0x2f5fa2);return;}var _0x39cf9e=_waShareUrl(_0x2f5fa2,_0x46d3a3);window['location']['href']=_0x39cf9e;},window['_waShareUrl']=_waShareUrl;
+
+/* ================================================================
+   ✅ D100-F1/F2/F3 (2026-11-09, owner order): REAL asset helpers —
+   leaderboard me 🥇🥈🥉 emoji ki jagah asli medal IMAGES
+   (assets/img/ranks/gold|silver|bronze.png jo pehle se repo me hain),
+   premium tiers ke naam store jaise (Silver/Gold/Diamond + icon),
+   aur equipped TITLE saaf text (✨⚡🎯 decor hatkar).
+================================================================ */
+window.medalHtml = function(n, size) {
+  n = Number(n) || 0;
+  var s = Number(size) || 20;
+  if (n < 1) return '<span style="font-weight:800;color:var(--txt2,#8b9bb4)">—</span>';
+  var f = n === 1 ? 'gold' : n === 2 ? 'silver' : n === 3 ? 'bronze' : '';
+  if (!f) return '<span style="font-weight:800;color:var(--txt2,#8b9bb4)">#' + n + '</span>';
+  return '<img src="assets/img/ranks/' + f + '.png?v=20261117g" alt="#' + n + '" width="' + s + '" height="' + s + '" style="object-fit:contain;vertical-align:middle" onerror="this.outerHTML=\'#' + n + '\'">';
+};
+window.cleanLabel = function(s) {
+  s = String(s == null ? '' : s);
+  /* emoji + dingbats + symbols (✨⚡🎯⭐🥇 etc.) hatao — sirf saaf text */
+  return s
+    .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, ' ')   /* surrogate-pair emoji */
+    .replace(/[\u2190-\u21FF\u2300-\u27BF\u2B00-\u2BFF\uFE0F\u20E3]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+};
+window.premTierName = function(l) {
+  l = Number(l) || 0;
+  return l >= 3 ? 'Diamond' : l === 2 ? 'Gold' : l === 1 ? 'Silver' : 'Premium';
+};
+window.tierIconHtml = function(t, size) {
+  /* ✅ D101 (owner: "🥉🥈🥇 bahut jagah show ho rahe"): rank TIER ke liye
+     asli badge IMAGES (assets/img/ranks/*) — emoji ki jagah. Naam match
+     prefix se (Gold/Silver/…); asset na ho (Heroic etc.) to '' return. */
+  t = String(t == null ? '' : t).toLowerCase();
+  var f = t.indexOf('bronze') === 0 ? 'bronze'
+        : t.indexOf('silver') === 0 ? 'silver'
+        : t.indexOf('gold') === 0 ? 'gold'
+        : t.indexOf('platinum') === 0 ? 'platinum'
+        : t.indexOf('diamond') === 0 ? 'diamond'
+        : t.indexOf('legend') === 0 ? 'legend' : '';
+  if (!f) return '';
+  var s = Number(size) || 16;
+  return '<img src="assets/img/ranks/' + f + '.png?v=20261117g" alt="' + f + '" width="' + s + '" height="' + s + '" style="object-fit:contain;vertical-align:middle" onerror="this.style.display=\'none\'">';
+};
+window.premTierIcon = function(l) {
+  l = Number(l) || 0;
+  var f = l >= 3 ? 'diamond' : l === 2 ? 'gold' : l === 1 ? 'silver' : 'ribbon';
+  return 'assets/img/premium/' + f + '.png?v=20261117g';
+};
+
+/* ================================================================
+   Bug C-6 Fix: escHtml — sanitize user-generated content before innerHTML
+   Use this on: user IGN, bio, stream title, match name, any user input
+================================================================ */
+window.escHtml = function(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+};
+
+/* ================================================================
+   D99-F1b: escAttrJs — inline onclick="fn('<value>')" jaise ATTRIBUTE+JS
+   dono contexts ke liye. Pehle JS-string escape (\ aur '), phire escHtml
+   (jo " ko &quot; aur ' ko &#x27; banata hai) — isse HTML attribute bhi
+   nahi tootta aur JS string bhi. Purana `.replace(/'/g,"\\'")` sirf '
+   dekhta tha; ign/clan-name me `"` daal kar attribute hi tod diya jata tha
+   (users.ign par DB CHECK sirf < > rokta hai, " nahi).
+================================================================ */
+window.escAttrJs = function (str) {
+  if (!window.escHtml) return String(str == null ? '' : str);
+  return window.escHtml(String(str == null ? '' : str).replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
+};
+
+
+/* ====== D98 F4: ticker compliance normalizer — real-money wording halal stance ke against ====== */
+window.compliantTicker = function (t) {
+  return String(t == null ? '' : t)
+    .replace(/earn\s+money/gi, 'Coins & Diamonds jeeto')
+    .replace(/real\s+money/gi, 'real rewards');
+};
+/* ====== HELPERS ====== */
+function $(id) { return document.getElementById(id); }
+
+function toast(msg, type) {
+  var w = $('toast-wrap'); if (!w) return;
+  var d = document.createElement('div');
+  d.className = 'toast-item t' + (type || 'ok');
+  var ic = type === 'err' ? 'exclamation-circle' : type === 'inf' ? 'info-circle' : 'check-circle';
+  /* ✅ D99-F1c: toast message ab ESCAPE hota hai. Bahut se toast me user-controlled
+     string aati hai (RPC error.message, ign, clan name, ticket text, opponent name) —
+     raw innerHTML me jaane se ye ek stored/reflected-XSS sink tha. Scan 2026-11-09:
+     koi bhi caller jaan-boojh kar HTML nahi bhejta, isliye escape safe hai. */
+  d.innerHTML = '<i class="fas fa-' + ic + '"></i>' + (window.escHtml ? window.escHtml(msg == null ? '' : msg) : String(msg == null ? '' : msg));
+  w.appendChild(d);
+  setTimeout(function() { d.remove(); }, 1800);
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  var d = Date.now() - ts;
+  if (d < 60000) return 'Just now';
+  if (d < 3600000) return Math.floor(d / 60000) + 'm ago';
+  if (d < 86400000) return Math.floor(d / 3600000) + 'h ago';
+  var days = Math.floor(d / 86400000);
+  return (days > 0 ? days : 1) + 'd ago';
+}
+
+function fmtTime(mt) {
+  if (!mt) return 'Time Not Announced';
+  var ts = Number(mt);
+  if (isNaN(ts) || ts <= 0) return 'Time Not Announced';
+  var now = Date.now(), diff = ts - now;
+  // Match time has passed
+  if (diff <= 0) {
+    var elapsed = now - ts;
+    if (elapsed < 3600000) return 'Live Now'; // within 1 hour after start
+    return 'Match Ended';
+  }
+  // Within 5 minutes — going live soon
+  if (diff <= 300000) {
+    var mins = Math.ceil(diff / 60000);
+    return 'Starting in ' + mins + ' min!';
+  }
+  // Within 24 hours
+  if (diff < 86400000) {
+    var h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000);
+    return 'Starts in: ' + h + 'h ' + m + 'm';
+  }
+  // More than 24 hours — show full date
+  var d = new Date(ts);
+  var mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var hr = d.getHours(), ap = hr >= 12 ? 'PM' : 'AM';
+  hr = hr % 12 || 12;
+  return d.getDate().toString().padStart(2, '0') + ' ' + mo[d.getMonth()] + ' ' + d.getFullYear() + ', ' + hr.toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0') + ' ' + ap;
+}
+
+function titleCase(s) {
+  if (!s) return '';
+  return s.replace(/\w\S*/g, function(t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); });
+}
+
+function copyTxt(t) {
+  /* Bug 30 Fix + Bug 60 Fix: clipboard API requires document focus.
+     Without document.hasFocus() check, clipboard.writeText silently fails
+     when app is in background / user just switched tabs. */
+  if (navigator.clipboard && navigator.clipboard.writeText && document.hasFocus()) {
+    navigator.clipboard.writeText(t)
+      .then(function() { toast('✅ Copied!', 'ok'); })
+      .catch(function() { fbCopy(t); }); /* Permission denied — use fallback */
+  } else {
+    fbCopy(t);
+  }
+}
+function fbCopy(t) {
+  /* Fallback for iOS 13+ and older browsers */
+  try {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+    ta.setAttribute('readonly', '');
+    document.body.appendChild(ta);
+    /* iOS requires a range selection */
+    if (navigator.userAgent.match(/ipad|iphone/i)) {
+      var range = document.createRange();
+      range.selectNodeContents(ta);
+      var sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+      ta.setSelectionRange(0, 999999);
+    } else {
+      ta.select();
+    }
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    if (ok) {
+      toast('✅ Copied!', 'ok');
+    } else {
+      /* Manual instruction as last resort */
+      toast('📋 Manually select and copy: ' + t.substring(0, 30) + '...', 'inf');
+    }
+  } catch(e) {
+    toast('📋 Copy nahi hua — manually select karo', 'err');
+  }
+}
+
+/* ====== SMART MATCH STATUS ====== */
+/* Rules (STRICT — recalculated FRESH on every call):
+   - Admin terminal states ALWAYS win (cancelled/completed/finished/ended/done)
+   - Time-based automatic transitions:
+     * Upcoming: now < matchTime - 5 minutes
+     * Live: matchTime - 5min <= now < matchTime + 20min
+     * Completed: now >= matchTime + 20 minutes (auto on UI)
+   - Room ID release does NOT change status
+   - 5 min early = players can see room & prepare
+   - 20 min after = match auto-completes on UI
+   - If Admin updates matchTime, status recalculates based on NEW time
+   - Match status NEVER jumps to completed before 20 min past start
+*/
+function effSt(t) {
+  if (!t) return 'upcoming';
+  var st = (t.status || '').toString().toLowerCase().trim();
+
+  // Admin-controlled terminal states (HIGHEST PRIORITY)
+  if (st === 'cancelled' || st === 'canceled') return 'cancelled';
+  if (st === 'resultpublished' || st === 'result_published') return 'resultPublished';
+  if (st === 'completed' || st === 'finished' || st === 'ended' || st === 'done') return 'completed';
+
+  var mt = Number(t.matchTime);
+  if (!mt || mt <= 0) return st || 'upcoming';
+
+  var now = Date.now();
+  var relMin = Number(t.roomReleaseMinutes) || 5;
+  var liveAt = mt - (relMin * 60000); // go live relMin minutes before match
+
+  // If room already released → go live immediately
+  if (t.roomStatus === 'released' || t.roomReleasedAt) {
+    liveAt = Math.min(liveAt, Number(t.roomReleasedAt) || liveAt);
+  }
+
+  if (now < liveAt) return 'upcoming';                    // before liveAt = upcoming
+  if (now >= liveAt && now < mt + 3600000) return 'live'; // liveAt to +1hr after match = live
+  return 'completed';                                      // after 1hr = completed
+}
+
+/* ====== SMART DUO/SQUAD JOIN HELPER ====== */
+/* Checks if user has a saved partner for duo/squad.
+   Returns the saved team data or null.
+   Priority: Firebase profile > localStorage */
+function getSavedTeam(mode) {
+  if (!UD) return null;
+  if (mode === 'duo') {
+    // Priority 1: duoTeam object
+    var duoT = UD.duoTeam;
+    if (duoT && duoT.memberUid) return { partners: [duoT] };
+    // Priority 2: partnerUid field (quick lookup)
+    if (UD.partnerUid) return { partners: [{ memberUid: UD.partnerUid, memberName: 'Linked Partner' }] };
+    // Priority 3: localStorage fallback
+    try {
+      var saved = JSON.parse(localStorage.getItem('lastDuoPartner'));
+      if (saved && saved.uid) return { partners: [{ memberUid: saved.uid, memberName: saved.name || 'Partner' }] };
+    } catch(e) {}
+  }
+  if (mode === 'squad') {
+    var sqMembers = (UD.squadTeam && UD.squadTeam.members) || [];
+    if (sqMembers.length > 0) return { partners: sqMembers.map(function(m) { return { memberUid: m.uid, memberName: m.name }; }) };
+    try {
+      var saved = JSON.parse(localStorage.getItem('lastSquadPartners'));
+      if (saved && saved.length) return { partners: saved.map(function(m) { return { memberUid: m.uid, memberName: m.name }; }) };
+    } catch(e) {}
+  }
+  return null;
+}
+
+/* Validate saved partners in background before allowing join */
+function validateSavedPartners(partners, callback) {
+  var validated = [];
+  var pending = partners.length;
+  if (pending === 0) { callback([]); return; }
+  partners.forEach(function(p, idx) {
+    if (!p.memberUid) { pending--; if (pending === 0) callback(validated); return; }
+    _findUserByFF(p.memberUid, function(fbKey, found) {
+      if (found) {
+        validated.push({
+          index: idx,
+          uid: p.memberUid,
+          name: found ? (found.ign || found.displayName || p.memberName) : p.memberName,
+          data: found,
+          valid: true
+        });
+      } else {
+        validated.push({ index: idx, uid: p.memberUid, name: p.memberName, valid: false });
+      }
+      pending--;
+      if (pending === 0) callback(validated);
+    });
+  });
+}
+
+/* ====== AUTO-FILL SAVED TEAM HELPER ====== */
+/* After join modal renders, auto-fill partner fields from saved team data
+   Priority: 1) Saved team in Firebase profile, 2) Last used team in localStorage */
+function autoFillSavedTeam(mode) {
+  if (!UD) return;
+  
+  if (mode === 'duo') {
+    var duoT = UD.duoTeam;
+    /* Fallback to localStorage if no saved team in profile */
+    if (!duoT || !duoT.memberUid) {
+      try {
+        var saved = JSON.parse(localStorage.getItem('lastDuoPartner'));
+        if (saved && saved.uid) duoT = { memberUid: saved.uid, memberName: saved.name || 'Partner' }; // localStorage stores ffUid
+      } catch(e) {}
+    }
+    if (duoT && duoT.memberUid) {
+      /* duoTeam.memberUid = Firebase UID (fb key), memberFfUid = FF UID */
+      /* We need to put FF UID in the input field, but ALSO set _fbUid in cache */
+      var fbUid = duoT.memberUid;   // This is the Firebase UID
+      var ffUid = duoT.memberFfUid || duoT.memberUid; // memberFfUid = FF UID if stored separately
+
+      /* If we have the firebase UID stored directly, populate cache directly without re-query */
+      if (fbUid && ffUid && fbUid !== ffUid) {
+        /* We have both — directly populate partnerCache */
+        var pData = { ign: duoT.memberName || 'Partner', displayName: duoT.memberName || 'Partner', ffUid: ffUid };
+        pData._fbUid = fbUid;
+        partnerCache[1] = pData;
+        /* Also update the input UI */
+        var inp = $('partnerUid1');
+        if (inp) {
+          inp.value = ffUid;
+          var st = $('partnerSt1');
+          if (st) st.innerHTML = '<span class="pf-ok">✓ Linked: ' + (window.escHtml?window.escHtml(duoT.memberName || 'Partner'):duoT.memberName || 'Partner') + '</span>';
+          var nm = $('partnerName1');
+          if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ ' + (window.escHtml?window.escHtml(duoT.memberName || 'Partner'):duoT.memberName || 'Partner') + '</span>';
+        }
+        console.log('[Team] Duo cache loaded directly: fbUid=' + fbUid + ' ffUid=' + ffUid);
+      } else {
+        /* Fallback: ffUid lookup (localStorage case or old data) */
+        var inp = $('partnerUid1');
+        if (inp) {
+          inp.value = ffUid;
+          var nm = $('partnerName1');
+          if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ Auto-filled: ' + (window.escHtml?window.escHtml(duoT.memberName || 'Partner'):duoT.memberName || 'Partner') + '</span>';
+          valPartner(1); // will do Firebase query and set _fbUid
+        }
+      }
+    }
+  }
+  
+  if (mode === 'squad') {
+    var sqData = UD.squadTeam;
+    var sqMembers = (sqData && sqData.members) || [];
+    /* Fallback to localStorage */
+    if (!sqMembers.length) {
+      try {
+        var savedSq = JSON.parse(localStorage.getItem('lastSquadPartners'));
+        if (savedSq && savedSq.length) sqMembers = savedSq;
+      } catch(e) {}
+    }
+    for (var i = 0; i < Math.min(sqMembers.length, 3); i++) {
+      var sm = sqMembers[i];
+      if (!sm) continue;
+      var smFbUid = sm.uid;     // Firebase UID (stored from previous join)
+      var smFfUid = sm.ffUid || sm.uid; // FF UID
+      var idx = i + 1;
+      if (smFbUid && smFfUid && smFbUid !== smFfUid) {
+        /* Direct cache populate */
+        var pData = { ign: sm.name || 'Partner', displayName: sm.name || 'Partner', ffUid: smFfUid };
+        pData._fbUid = smFbUid;
+        partnerCache[idx] = pData;
+        var inp = $('partnerUid' + idx);
+        if (inp) {
+          inp.value = smFfUid;
+          var st = $('partnerSt' + idx);
+          if (st) st.innerHTML = '<span class="pf-ok">✓ Linked: ' + (window.escHtml?window.escHtml(sm.name||'Partner'):sm.name||'Partner') + '</span>';
+          var nm = $('partnerName' + idx);
+          if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ ' + (window.escHtml?window.escHtml(sm.name || 'Partner'):sm.name || 'Partner') + '</span>';
+        }
+      } else if (smFfUid) {
+        var inp = $('partnerUid' + idx);
+        if (inp) {
+          inp.value = smFfUid;
+          var nm = $('partnerName' + idx);
+          if (nm) nm.innerHTML = '<span style="color:var(--green)">✅ Auto-filled: ' + (window.escHtml?window.escHtml(sm.name || 'Partner'):sm.name || 'Partner') + '</span>';
+          valPartner(idx);
+        }
+      }
+    }
+  }
+  
+  console.log('[Mini eSports] ✅ Auto-fill team complete for mode: ' + mode);
+}
+
+/* ====== 1-HOUR STATUS (Alternate — used where needed) ====== */
+function getMatchStatus(matchTime, storedStatus) {
+  var now = Date.now();
+  var startTime = Number(matchTime);
+  // If result already published, always completed
+  if (storedStatus === 'resultPublished' || storedStatus === 'result_published') return 'resultPublished';
+  if (!startTime || startTime <= 0) return storedStatus || 'upcoming';
+  var endTime = startTime + 3600000; // 1 hour = 60 * 60 * 1000
+  // ONLY go live at matchTime, never before
+  if (now < startTime) return 'upcoming';
+  if (now >= startTime && now < endTime) return 'live';
+  return 'completed';
+}
+
+/* ====== NATIVE ANDROID / WEB SHARE HELPER + PRIZE ICON HELPER ====== */
+window._prizeIcon = function(t) {
+  if (!t) return (window.GD_ICON || '💎');
+  var pt = String(t.prizeType || t.prize_type || '').toLowerCase();
+  var et = String(t.entryType || t.entry_type || '').toLowerCase();
+  if (t.isSponsored || t.is_sponsored || pt === 'inr' || pt === 'cash') return '₹';
+  if (pt === 'coin' || pt === 'coins' || (!pt && (et === 'coin' || et === 'coins' || et === 'ad' || et === 'free'))) return '🪙';
+  if (pt === 'skydiamond' || pt === 'sky_diamond' || pt === 'sky') return '💎';
+  return window.GD_ICON || '<img src="green-diamond.png" alt="GD" class="gd-icon">';
+};
+
+window.nativeShareText = function(title, text, url) {
+  var fullText = String(text || '');
+  if (url && fullText.indexOf(url) === -1) {
+    fullText = fullText ? (fullText + '\n\n' + url) : String(url);
+  }
+  if (window.Android && typeof window.Android.nativeShare === 'function') {
+    try {
+      window.Android.nativeShare(String(title || 'Mini eSports'), fullText);
+      return true;
+    } catch (e) {}
+  }
+  if (window.Android && typeof window.Android.nativeShareWhatsApp === 'function') {
+    try {
+      window.Android.nativeShareWhatsApp(fullText);
+      return true;
+    } catch (e) {}
+  }
+  if (navigator.share) {
+    var payload = { title: String(title || 'Mini eSports'), text: String(text || '') };
+    if (url) payload.url = String(url);
+    navigator.share(payload).catch(function(err) {
+      if (!err || err.name !== 'AbortError') {
+        copyTxt(fullText);
+      }
+    });
+    return true;
+  }
+  copyTxt(fullText);
+  return false;
+};
+
+/* Bridge navigator.share to Android.nativeShare inside the Android APK */
+if (window.Android && (typeof window.Android.nativeShare === 'function' || typeof window.Android.nativeShareWhatsApp === 'function')) {
+  try {
+    navigator.share = function(data) {
+      return new Promise(function(resolve, reject) {
+        try {
+          var d = data || {};
+          window.nativeShareText(d.title || 'Mini eSports', d.text || '', d.url || '');
+          resolve();
+        } catch (e) { reject(e); }
+      });
+    };
+  } catch (e) {}
+}
+
+/* ====== SHARE APP FUNCTION ====== */
+/* R28k (2026-09-22): "win REAL CASH" false-claim tha — entry-fee wali
+   prizes ₹ nahi (sponsored-tournaments alag, admin-approve). Coins +
+   diamonds + referral-bonus hi asli reward hain. */
+function shareApp() {
+  var refCode = (UD && UD.referralCode) ? UD.referralCode : (U ? U.uid.substring(0, 8).toUpperCase() : '');
+  var text = '🎮 Join me on Mini eSports — Free Fire tournaments! 🔥\n\n🪙 Play matches, win coins & 💎 diamonds!\n🎁 Use my referral code: ' + refCode + ' to get bonus coins!\n\n👇 Download now:';
+  var url = (typeof window.APP_URL === 'string' && window.APP_URL) || window.location.href;
+  window.nativeShareText('Mini eSports - Play Free Fire Tournaments!', text, url);
+}
+
+/* ====== SHARE MATCH FUNCTION ====== */
+function shareMatch(id) {
+  var t = MT[id]; if (!t) return;
+  /* Bug 78 Fix: Don't allow sharing cancelled/completed matches */
+  var _es = effSt ? effSt(t) : (t.status || '').toLowerCase();
+  if (_es === 'cancelled') {
+    if (window.toast) toast('Yeh match cancel ho gaya hai', 'inf');
+    return;
+  }
+  if (_es === 'completed') {
+    if (window.toast) toast('Yeh match already complete ho gaya', 'inf');
+    return;
+  }
+  var isCoin = ((t.entryType || '').toLowerCase() === 'coin');
+  var entryText = isCoin ? '🪙 ' + (t.entryFee || 0) + ' Coins' : '💎' + (t.entryFee || 0);
+  var refCode = (UD && UD.referralCode) ? UD.referralCode : '';
+  var text = '🎮 Join "' + (t.name || 'Match') + '" on Mini eSports!\n\n🎯 Entry: ' + entryText + '\n🗺️ Map: ' + titleCase(t.map || 'Unknown') + '\n⏰ ' + fmtTime(t.matchTime);
+  if (refCode) text += '\n\n🎁 Use code ' + refCode + ' for bonus coins!';
+  var url = (typeof window.APP_URL === 'string' && window.APP_URL) || window.location.href;
+  window.nativeShareText(t.name || 'Mini eSports Match', text, url);
+}
+
+/* ====== ACCESS CONTROL ====== */
+/* BUG FIX (2026-08): the admin_approve_profile RPC used to write
+   profile_status = 'complete' (now fixed at the DB level to write
+   'approved' instead), but any user approved while that bug was live
+   still has 'complete' sitting in their row. Accept both values here as
+   defense-in-depth so already-approved-but-mislabeled users aren't
+   stuck on View Only forever waiting for a re-approval. */
+function isOk() { return UD && (UD.profileStatus === 'approved' || UD.profileStatus === 'complete' || UD.profileStatus === 'verified'); }
+function isVO() { return !UD || (UD.profileStatus !== 'approved' && UD.profileStatus !== 'complete' && UD.profileStatus !== 'verified'); }
+
+/* Premium check (2026-08): centralizes tier + expiry so every feature
+   gate (profile photo, banner, live-stream, etc) reads the same truth
+   instead of each screen re-deriving it slightly differently.
+   p_minTier lets a gate require a specific tier or above — e.g. Creator
+   Program is a Gold+ (tier 2+) perk per the Premium tier list in
+   features/premium.js, while profile photo/banner is any tier (1+). */
+function isPremiumActive(p_minTier) {
+  if (!UD || !UD.premium) return false;
+  var tier = Number(UD.premium.tier || UD.premium_level || 0);
+  if (tier <= 0) return false;
+  if (p_minTier && tier < p_minTier) return false;
+  var exp = UD.premium.expiresAt || 0;
+  if (exp && exp < Date.now()) return false; // expired
+  return true;
+}
+function hasJ(mid) {
+  for (var k in JR) {
+    if (JR[k].matchId === mid) return true;
+  }
+  return false;
+}
+function getJoinRole(mid) {
+  for (var k in JR) {
+    var jr = JR[k]; if (jr.matchId !== mid) continue;
+    if (jr.isTeamMember && jr.captainUid) return 'member';
+    if (jr.captainUid === undefined || jr.captainUid === null) return 'captain';
+  }
+  return null;
+}
+function getMoneyBal() {
+  if (!UD) return 0;
+  var rm = UD.realMoney || { deposited: 0, winnings: 0, bonus: 0 };
+  return Math.max(Number(rm.deposited) || 0, 0) + Math.max(Number(rm.winnings) || 0, 0) + Math.max(Number(rm.bonus) || 0, 0);
+}
+
+/* ====== BACK BUTTON (ENHANCED) ====== */
+/* Push state on load so first back press doesn't exit */
+history.pushState(null, null, null);
+window.addEventListener('popstate', function(e) {
+  /* ALWAYS prevent default browser back behavior */
+  e.preventDefault();
+  /* Re-push state so we never run out of history entries */
+  history.pushState(null, null, null);
+  /* Handle what to close/navigate */
+  goBack();
+});
+
+function goBack() {
+  /* ── Priority -1 (✅ FIX 2026-10-06): Login screen par back = app band ──
+     Pehle yahan login screen ka koi case hi nahi tha, isliye har back press
+     Priority 6 par jaakar bas history re-push karta rehta tha — user ko
+     lagta tha "back button chalta hi nahi". Ab login screen par back press
+     seedha app band karti hai (Android bridge se), jo wahan sahi vyavhaar hai. */
+  var _ls = document.getElementById('loginScreen');
+  if (_ls && _ls.style.display !== 'none' && window.curScr === 'login') {
+    if (window.Android && typeof window.Android.exitApp === 'function') {
+      window.Android.exitApp();
+    }
+    return;
+  }
+  /* Priority 0: Close Earn Coins (coinShopModal) if open */
+  var csm = document.getElementById('coinShopModal');
+  if (csm && csm.style.display !== 'none' && csm.style.display !== '') {
+    if (window.closeCoinShop) closeCoinShop(); else csm.style.display = 'none';
+    return;
+  }
+  /* Priority 0a: Close profile settings sheet */
+  var ps = document.getElementById('profSettingsSheet');
+  if (ps) { closeProfileSettings(); return; }
+  /* Priority 0b: Close referral popup or avatar bg modal */
+  var rcp = document.getElementById('_refCodePopup');
+  if (rcp) { rcp.remove(); return; }
+  var abm = document.getElementById('_avatarBgModal');
+  if (abm) { abm.remove(); return; }
+  /* Priority 1: Close Room ID Popup */
+  var rp = $('rpContainer');
+  if (rp && rp.children.length > 0) { rp.innerHTML = ''; return; }
+  /* Priority 2: Close any open modal */
+  var mo = $('modalOv');
+  if (mo && mo.classList.contains('show')) { closeModal(); return; }
+  /* Priority 3: Close wallet flow (back to wallet main) */
+  var wf = $('walletFlow');
+  if (wf && wf.style.display !== 'none' && wf.style.display !== '') { cancelWF(); return; }
+  /* Priority 4: Navigate back from sub-screens */
+  if (curScr === 'notif' || curScr === 'chat') { navTo(prevScr || 'home'); return; }
+  /* Priority 5: Navigate to home from any other screen */
+  if (curScr !== 'home') { navTo('home'); return; }
+  /* Priority 6: Already on home — re-push state to prevent exit */
+  try { history.pushState(null, null, null); } catch(e) {}
+}
+
+/* ====== NAVIGATION ====== */
+
+/* Helper: Find user by FF UID using Supabase */
+function _findUserByFF(ffUid, callback) {
+  if (!ffUid || !window._supa) { callback(null, null); return; }
+  /* BUG #38 FIX (2026-07-30): moved to user_public_profiles view — base 'users' table
+     is now own-row-only. Also dropped coins/sky_diamonds from the select: exposing another
+     player's wallet balance in a "find by FF UID" lookup was unnecessary over-exposure even
+     before the security fix; UI falls back to 0 for these via the existing ||0 defaults. */
+  window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,profile_status,total_matches,total_wins,total_kills')
+    .eq('ff_uid', ffUid).neq('id', window.U ? window.U.uid : '').limit(1).maybeSingle()
+    .then(function(r) {
+      if (!r.data) { callback(null, null); return; }
+      var u = r.data;
+      callback(u.id, { ign: u.ign||'', displayName: u.ign||'', ffUid: u.ff_uid||'', profileImage: u.avatar_url||'', profileStatus: u.profile_status||'', coins: u.coins||0, skyDiamonds: u.sky_diamonds||0, stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 } });
+    }).catch(function() { callback(null, null); });
+}
+function _findUserByIGN(ign, callback) {
+  if (!ign || !window._supa) { callback(null, null); return; }
+  /* ✅ BUG FIX (2026-10-04): exact-match (case-sensitive) ki jagah ilike —
+     "singham7" ya "Singham7" dono se milega. */
+  window._supa.from('user_public_profiles').select('id,ign,ff_uid,avatar_url,profile_status').ilike('ign', ign).limit(1).maybeSingle()
+    .then(function(r) { callback(r.data ? r.data.id : null, r.data ? Object.assign(r.data, { ign: r.data.ign, displayName: r.data.ign, ffUid: r.data.ff_uid, profileImage: r.data.avatar_url, profileStatus: r.data.profile_status }) : null); })
+    .catch(function() { callback(null, null); });
+}
+function _findUserByPhone(phone, callback) {
+  if (!phone || !window._supa) { callback(null, null); return; }
+  /* ✅ PRIVACY FIX (2026-09-22): user_public_profiles view se phone
+     column हटा दिया गया (anon/cross-user phone leak — live-proven).
+     Ab secure RPC `user_has_phone` se sirf existence-check hota hai:
+     SECURITY DEFINER, sirf authenticated role, किसी ka uid/phone/ign
+     output नहीं होता — caller ko bas {found:true/false} milta hai.
+     callers (profile.js dup-check) को sirf id chahiye thi; ab wahi
+     boolean semantics ke saath work karta hai. */
+  window._supa.rpc('user_has_phone', { p_phone: phone })
+    .then(function(r) {
+      if (r.error) { callback(null, null); return; }
+      var found = !!(r.data && r.data.found);
+      callback(found ? 'phone-taken' : null, null);
+    })
+    .catch(function() { callback(null, null); });
+}
+
+/* ✅ BUG FIX (2026-08-24, supersedes 2026-08-23 attempt): "WhatsApp abhi
+   bhi nahi khulta — net::ERR_UNKNOWN_URL_SCHEME" was actually caused BY
+   the previous fix, not solved by it. That fix switched the navigation
+   to a raw intent://send/?...#Intent;scheme=https;package=com.whatsapp;
+   ...;end URL set via window.location.href. The intent:// scheme is
+   only ever parsed by Chrome's OWN navigation/link-click handler on
+   Android — it is NOT a real URL scheme the underlying WebView/OS can
+   resolve. Setting it via window.location.href from JS (not a genuine
+   user-gesture <a> click that Chrome's navigation layer intercepts)
+   skips that special-case parsing entirely and gets handed to the
+   WebView/OS as a literal, unknown scheme — exactly the
+   net::ERR_UNKNOWN_URL_SCHEME seen live. This affects ANY context that
+   isn't specifically Chrome-for-Android intercepting a real click:
+   the in-app WebView wrapper, desktop, iOS, or even a plain Chrome tab
+   opened directly (as confirmed live) — so it broke WhatsApp sharing
+   universally, not just in the one edge case it was trying to fix.
+   Fix: back to the simple, universal https://wa.me/ deep link — this
+   is WhatsApp's own official click-to-chat URL, and both Android and
+   iOS natively redirect it straight into the WhatsApp app if installed
+   (no intent:// gymnastics needed), falling back to WhatsApp Web/Play
+   Store automatically if not. Every WhatsApp share button in the app
+   uses this one function so the fix lives in exactly one place. */
+function _waShareUrl(msg, phone) {
+  var digits = phone ? String(phone).replace(/[^0-9]/g, '') : '';
+  return 'https://wa.me/' + digits + '?text=' + encodeURIComponent(msg);
+}
+window.openWhatsApp = function(msg, phone) {
+  /* ✅ FEATURE (2026-08-29): Junaid ka explicit, repeated final
+     instruction — "kahi bhi apk me url use na ho WhatsApp kholne ke
+     liye, direct app khole package name se". Inside the wrapped APK,
+     window.Android.nativeShareWhatsApp() is a real Intent.ACTION_SEND
+     addressed directly at the com.whatsapp package (see MainActivity.
+     java's AndroidBridge) — it builds and parses ZERO URLs of any
+     kind, so it is structurally immune to the entire
+     net::ERR_UNKNOWN_URL_SCHEME bug class every previous URL-based
+     attempt (wa.me, intent://, whatsapp://) kept running into across
+     many sessions. Only when a SPECIFIC phone number is targeted (a
+     feature the native intent can't do — ACTION_SEND to a package
+     opens WhatsApp's own chat picker, it can't pre-select a contact)
+     or when running outside the APK entirely (plain browser/PWA,
+     where window.Android doesn't exist) does this fall back to the
+     wa.me web link. */
+  if (window.Android && window.Android.nativeShareWhatsApp && !phone) {
+    window.Android.nativeShareWhatsApp(msg);
+    return;
+  }
+  var url = _waShareUrl(msg, phone);
+  /* Same-tab navigation — window.open()/target=_blank gets popup-blocked
+     inside WebViews far more often than a plain top-level navigation. */
+  window.location.href = url;
+};
+window._waShareUrl = _waShareUrl;

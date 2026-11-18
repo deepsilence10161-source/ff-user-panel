@@ -1,1 +1,65 @@
-var _0x2ce769=(function(){var _0x49b387=!![];return function(_0x523e6c,_0x39ea9b){var _0x45e433=_0x49b387?function(){if(_0x39ea9b){var _0x53ebd7=_0x39ea9b['apply'](_0x523e6c,arguments);return _0x39ea9b=null,_0x53ebd7;}}:function(){};return _0x49b387=![],_0x45e433;};}()),_0x2d188b=_0x2ce769(this,function(){if(_0x2d188b['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x2d188b['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x2d188b)['search']('(((.+)+)+)+$');});_0x2d188b();function navTo(_0x5052ec){if(_0x5052ec===curScr&&_0x5052ec!=='notif'&&_0x5052ec!=='chat')return;prevScr=curScr,curScr=_0x5052ec,history['pushState'](null,null,null),document['querySelectorAll']('.screen')['forEach'](function(_0x195f58){_0x195f58['classList']['remove']('active');});var _0x19e92e=$('scr'+_0x5052ec['charAt'](0x0)['toUpperCase']()+_0x5052ec['slice'](0x1));if(_0x19e92e)_0x19e92e['classList']['add']('active');document['querySelectorAll']('.nav-item')['forEach'](function(_0x9d3de){_0x9d3de['classList']['toggle']('active',_0x9d3de['dataset']['nav']===_0x5052ec);});var _0x2fe09a=$('mainContent');if(_0x2fe09a)_0x2fe09a['scrollTop']=0x0;if(_0x5052ec==='rank')renderRank();if(_0x5052ec==='profile')renderProfile();if(_0x5052ec==='chat')startChat();if(_0x5052ec==='wallet'){renderWallet();if(window['_loadWallet'])window['_loadWallet']();}if(_0x5052ec==='notif'){renderNotifs();if(NOTIFS['length']&&U){var _0x47a236={};NOTIFS['forEach'](function(_0x3efa07){if(!_0x3efa07['_key'])return;_0x47a236[_0x3efa07['_key']]=!![],_0x3efa07['_localRead']=!![],_READ_KEYS[_0x3efa07['_key']]=!![];});if(UD){if(!UD['readNotifications'])UD['readNotifications']={};Object['assign'](UD['readNotifications'],_0x47a236);}updateBell(),_saveReadKeys(),window['_supa']&&U&&window['_supa']['from']('notifications')['update']({'is_read':!![]})['eq']('user_id',U['uid'])['in']('id',Object['keys'](_0x47a236))['then'](null,function(){});}}}var _ST_LABELS={'upcoming':'⏱️\x20Upcoming','live':'🔴\x20Live','completed':'✅\x20Completed','cancelled':'🚫\x20Cancelled'};function setST(_0x37f4e1,_0xf799a5){if(_0x37f4e1==='home'){hSF=_0xf799a5;var _0x4476d5=document['querySelector']('#homeStatusDd\x20.dd-current');if(_0x4476d5&&_ST_LABELS[_0xf799a5])_0x4476d5['textContent']=_ST_LABELS[_0xf799a5];renderHome();}else{mmSF=_0xf799a5;var _0x2f4652=document['querySelector']('#mmStatusDd\x20.dd-current');if(_0x2f4652&&_ST_LABELS[_0xf799a5])_0x2f4652['textContent']=_ST_LABELS[_0xf799a5];renderMM();}}function setCat(_0x4ecd39){hCF=_0x4ecd39,document['querySelectorAll']('#homeCat\x20.c-pill')['forEach'](function(_0x59e095){_0x59e095['classList']['toggle']('active',_0x59e095['dataset']['cat']===_0x4ecd39);}),renderHome();}
+function navTo(scr) {
+  if (scr === curScr && scr !== 'notif' && scr !== 'chat') return;
+  prevScr = curScr; curScr = scr;
+  history.pushState(null, null, null);
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = $('scr' + scr.charAt(0).toUpperCase() + scr.slice(1));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.toggle('active', n.dataset.nav === scr); });
+  /* Reset scroll to top */
+  var mc = $('mainContent'); if (mc) mc.scrollTop = 0;
+  if (scr === 'rank') renderRank();
+  if (scr === 'profile') renderProfile();
+  if (scr === 'chat') startChat();
+  if (scr === 'wallet') { renderWallet(); if (window._loadWallet) window._loadWallet(); }
+  if (scr === 'notif') {
+    renderNotifs();
+    /* FIX: Mark all as read when user opens notification tab */
+    if (NOTIFS.length && U) {
+      var rdUpdates = {};
+      NOTIFS.forEach(function(n) {
+        if (!n._key) return;
+        rdUpdates[n._key] = true;
+        n._localRead = true;
+        _READ_KEYS[n._key] = true; // persistent — survives any NOTIFS rebuild
+      });
+      if (UD) {
+        if (!UD.readNotifications) UD.readNotifications = {};
+        Object.assign(UD.readNotifications, rdUpdates);
+      }
+      updateBell();
+      _saveReadKeys();
+      /* Supabase handles read status — mark all via batch update */
+      if (window._supa && U) {
+        window._supa.from('notifications')
+          .update({ is_read: true })
+          .eq('user_id', U.uid)
+          .in('id', Object.keys(rdUpdates))
+          .then(null, function(){});
+      }
+    }
+  }
+}
+/* UPDATED (2026-08 redesign #2): status filter is now a custom dark
+   dropdown (core/custom-dropdown.js), not a native <select> — keep the
+   displayed label in sync with hSF/mmSF whenever set programmatically. */
+var _ST_LABELS = { upcoming:'⏱️ Upcoming', live:'🔴 Live', completed:'✅ Completed', cancelled:'🚫 Cancelled' };
+function setST(w, v) {
+  if (w === 'home') {
+    hSF = v;
+    var cur = document.querySelector('#homeStatusDd .dd-current');
+    if (cur && _ST_LABELS[v]) cur.textContent = _ST_LABELS[v];
+    renderHome();
+  } else {
+    mmSF = v;
+    var mCur = document.querySelector('#mmStatusDd .dd-current');
+    if (mCur && _ST_LABELS[v]) mCur.textContent = _ST_LABELS[v];
+    renderMM();
+  }
+}
+function setCat(v) {
+  hCF = v;
+  document.querySelectorAll('#homeCat .c-pill').forEach(function(p) { p.classList.toggle('active', p.dataset.cat === v); });
+  renderHome();
+}
+

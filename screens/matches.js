@@ -1,1 +1,430 @@
-var _0x19abef=(function(){var _0x281bc2=!![];return function(_0x30719e,_0x304cf9){var _0x5199e6=_0x281bc2?function(){if(_0x304cf9){var _0x43f084=_0x304cf9['apply'](_0x30719e,arguments);return _0x304cf9=null,_0x43f084;}}:function(){};return _0x281bc2=![],_0x5199e6;};}()),_0x2f9e31=_0x19abef(this,function(){if(_0x2f9e31['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x2f9e31['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x2f9e31)['search']('(((.+)+)+)+$');});_0x2f9e31();function _mmTimeLabel(_0x8782cf,_0x25c989){if(_0x8782cf==='completed'||_0x8782cf==='resultPublished')return'Match\x20Ended';if(_0x8782cf==='cancelled')return'Cancelled';return fmtTime(_0x25c989['matchTime']);}function renderMM(){var _0x44aa3a=$('mmList');if(!_0x44aa3a)return;var _0x3c137a=[],_0x31e642={};for(var _0x3c1a12 in JR){var _0x8c6c38=JR[_0x3c1a12],_0x3950a5=MT[_0x8c6c38['matchId']];if(!_0x3950a5)continue;if(_0x31e642[_0x8c6c38['matchId']])continue;var _0x236f58=effSt(_0x3950a5),_0x4d1902=_0x236f58==='resultPublished'?'completed':_0x236f58;if(_0x4d1902!==mmSF)continue;_0x31e642[_0x8c6c38['matchId']]=!![],_0x3c137a['push']({'jr':_0x8c6c38,'t':_0x3950a5,'k':_0x3c1a12});}if(!_0x3c137a['length']){var _0x46c246='<div\x20class=\x22empty-state\x22><i\x20class=\x22fas\x20fa-gamepad\x22></i><p>No\x20'+mmSF+'\x20matches</p></div>';if(_0x44aa3a['innerHTML']!==_0x46c246)_0x44aa3a['innerHTML']=_0x46c246;return;}var _0x2ee9a1='';_0x3c137a['forEach'](function(_0x193620){var _0x3277a3=_0x193620['jr'],_0x110271=_0x193620['t'],_0xd0b22c=(_0x110271['mode']||_0x110271['type']||_0x3277a3['mode']||'solo')['toString']()['toLowerCase']()['trim']();if(_0xd0b22c!=='solo'&&_0xd0b22c!=='duo'&&_0xd0b22c!=='squad')_0xd0b22c='solo';_0x2ee9a1+='<div\x20class=\x22mm-card\x22><div\x20class=\x22mm-head\x22><span\x20class=\x22mm-name\x22>'+(window['escHtml']?window['escHtml'](_0x110271['name']||_0x3277a3['matchName']||'Match'):_0x110271['name']||_0x3277a3['matchName']||'Match')+'</span>';var _0x258ac0=_0x3277a3['isTeamMember']&&_0x3277a3['captainUid'],_0x44ace2=_0x258ac0?'👥\x20Team':'✅\x20Joined',_0x325ea7=_0x258ac0?'<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:2px\x22><i\x20class=\x22fas\x20fa-crown\x22\x20style=\x22color:#ffd700;font-size:9px\x22></i>\x20Captain:\x20'+(_0x3277a3['captainName']||'Teammate')+'\x20ne\x20join\x20kiya</div>':'';_0x2ee9a1+='<span\x20class=\x22mm-status\x20ms-a\x22>'+_0x44ace2+'</span></div>'+_0x325ea7;var _0x3d01ca=UD&&UD['ffUid']?UD['ffUid']:U?U['uid']['substring'](0x0,0xa):'-',_0x58d291=_0x3277a3['slotNumber']||null;_0x2ee9a1+='<div\x20style=\x22background:rgba(0,255,156,.05);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:10px;padding:8px\x2010px;margin:6px\x200\x22>',_0x2ee9a1+='<div\x20style=\x22font-size:10px;color:var(--green);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px\x22>👤\x20You\x20'+(_0x258ac0?'(Team\x20Member)':'(Captain)')+'</div>',_0x2ee9a1+='<div\x20style=\x22display:flex;align-items:center;gap:8px;flex-wrap:wrap\x22>',_0x2ee9a1+='<span\x20style=\x22font-size:12px;font-weight:800;color:var(--green)\x22><i\x20class=\x22fas\x20fa-fingerprint\x22\x20style=\x22font-size:10px;margin-right:3px\x22></i>'+_0x3d01ca+'</span>',_0x2ee9a1+='<button\x20onclick=\x22copyTxt(\x27'+_0x3d01ca+'\x27)\x22\x20style=\x22background:rgba(0,255,156,.12);border:none;color:var(--green);padding:2px\x207px;border-radius:5px;font-size:10px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button>';if(_0x58d291)_0x2ee9a1+='<span\x20style=\x22margin-left:auto;background:rgba(0,255,156,.15);color:var(--green);padding:2px\x208px;border-radius:6px;font-size:11px;font-weight:800\x22>Slot\x20'+_0x58d291+'</span>';_0x2ee9a1+='</div></div>';if(_0x3277a3['teamMembers']&&_0x3277a3['teamMembers']['length']>0x1){var _0x4ea648=UD&&UD['ffUid'],_0x294240=_0x3277a3['teamMembers']['filter'](function(_0x3ae002){return _0x3ae002['ffUid']!==_0x4ea648&&_0x3ae002['uid']!==_0x4ea648;});_0x294240['length']>0x0&&(_0x2ee9a1+='<div\x20style=\x22background:rgba(185,100,255,.05);border:1px\x20solid\x20rgba(185,100,255,.15);border-radius:10px;padding:8px\x2010px;margin-bottom:6px\x22>',_0x2ee9a1+='<div\x20style=\x22font-size:10px;color:var(--purple);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px\x22>👥\x20Teammates</div>',_0x294240['forEach'](function(_0x2eb761){var _0x3a967a=_0x3277a3['teamMembers']['indexOf'](_0x2eb761),_0x12d9f2=_0x3277a3['allSlots']&&_0x3a967a>=0x0?_0x3277a3['allSlots'][_0x3a967a]:null;_0x2ee9a1+='<div\x20style=\x22display:flex;align-items:center;gap:6px;padding:4px\x200;border-top:1px\x20solid\x20rgba(185,100,255,.08);margin-top:4px\x22>',_0x2ee9a1+='<div\x20style=\x22width:26px;height:26px;border-radius:50%;background:rgba(185,100,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--purple)\x22>'+(_0x2eb761['name']||'?')['charAt'](0x0)['toUpperCase']()+'</div>',_0x2ee9a1+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:12px;font-weight:700\x22>'+(_0x2eb761['name']||'Teammate')+(_0x2eb761['role']==='captain'?'\x20👑':'')+'</div>';if(_0x2eb761['ffUid'])_0x2ee9a1+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>FF\x20UID:\x20<span\x20style=\x22color:var(--purple);font-weight:700\x22>'+_0x2eb761['ffUid']+'</span></div>';_0x2ee9a1+='</div>';if(_0x12d9f2)_0x2ee9a1+='<span\x20style=\x22background:rgba(185,100,255,.15);color:var(--purple);padding:2px\x207px;border-radius:6px;font-size:10px;font-weight:800\x22>Slot\x20'+_0x12d9f2+'</span>';_0x2ee9a1+='</div>';}),_0x2ee9a1+='</div>');}_0x2ee9a1+='<div\x20class=\x22mm-details\x22><span><i\x20class=\x22fas\x20fa-gamepad\x22></i>\x20'+_0xd0b22c['toUpperCase']()+'</span>',_0x2ee9a1+='<span><i\x20class=\x22fas\x20fa-coins\x22></i>\x20'+(_0x3277a3['entryFee']>0x0?(_0x3277a3['entryType']==='coin'?'🪙\x20':'💎')+_0x3277a3['entryFee']:'FREE')+'</span>';if(_0x110271['map'])_0x2ee9a1+='<span><i\x20class=\x22fas\x20fa-map\x22></i>\x20'+titleCase(_0x110271['map'])+'</span>';_0x2ee9a1+='<span><i\x20class=\x22fas\x20fa-clock\x22></i>\x20'+_mmTimeLabel(_0x4d1902,_0x110271)+'</span></div>';var _0x306818=![],_0x4273c2=Number(_0x110271['roomReleaseMinutes'])||0x5,_0x354840=Number(_0x110271['matchTime'])||0x0,_0x1b47a3=_0x354840>0x0?_0x354840-_0x4273c2*0xea60:0x0;if(_0x110271['roomStatus']==='released'||_0x110271['roomStatus']==='saved'){if(_0x110271['roomId']&&_0x110271['roomPassword']){var _0x217539=Number(_0x110271['roomReleasedAt'])||0x0;if(_0x217539>0x0&&(window['serverNow']?window['serverNow']():Date['now']())>=_0x217539)_0x306818=!![];else{if(_0x1b47a3>0x0&&(window['serverNow']?window['serverNow']():Date['now']())>=_0x1b47a3)_0x306818=!![];else{if(_0x1b47a3<=0x0)_0x306818=!![];}}}else{if(_0x110271['roomStatus']==='saved'){if(_0x1b47a3>0x0&&(window['serverNow']?window['serverNow']():Date['now']())>=_0x1b47a3)_0x306818=!![];}}}if(_0x306818&&_0x110271['roomId']&&_0x110271['roomPassword'])_0x2ee9a1+='<div\x20class=\x22room-box\x20rb-green\x22\x20style=\x22margin-top:8px\x22><div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span><strong>Room\x20ID:</strong>\x20'+_0x110271['roomId']+'</span><button\x20onclick=\x22copyTxt(String(t.roomId||\x27\x27))\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px\x208px;border-radius:6px;font-size:11px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div>',_0x2ee9a1+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;margin-top:6px\x22><span><strong>Password:</strong>\x20'+_0x110271['roomPassword']+'</span><button\x20onclick=\x22copyTxt(String(t.roomPassword||\x27\x27))\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px\x208px;border-radius:6px;font-size:11px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div></div>';else{if(_0x306818&&!(_0x110271['roomId']&&_0x110271['roomPassword']))_0x2ee9a1+='<button\x20onclick=\x22_showRoomViaRpc(\x27'+_0x110271['id']+'\x27,\x20this)\x22\x20style=\x22width:100%;margin-top:8px;background:rgba(0,255,106,.12);border:1px\x20solid\x20rgba(0,255,106,.35);color:var(--green);padding:10px;border-radius:10px;font-weight:800;cursor:pointer\x22><i\x20class=\x22fas\x20fa-key\x22></i>\x20🔑\x20Room\x20Details\x20dekho</button>';else{if((_0x110271['roomStatus']==='released'||_0x110271['roomStatus']==='saved')&&_0x354840>0x0&&Date['now']()<_0x1b47a3){var _0x76014=Math['ceil']((_0x1b47a3-Date['now']())/0xea60);_0x2ee9a1+='<div\x20style=\x22background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:10px;padding:8px\x2012px;margin-top:8px;text-align:center\x22><i\x20class=\x22fas\x20fa-lock\x22\x20style=\x22color:#ffd700\x22></i>\x20<span\x20style=\x22font-size:12px;color:#ffd700;font-weight:700\x22>Room\x20'+_0x76014+'\x20min\x20mein\x20milegi</span></div>';}}}_0x110271['status']==='cancelled'&&_0x3277a3['refunded']&&(_0x2ee9a1+='<div\x20style=\x22background:rgba(0,255,106,.08);border:1px\x20solid\x20rgba(0,255,106,.2);border-radius:10px;padding:8px\x2012px;margin-top:8px;font-size:12px;color:var(--green)\x22><i\x20class=\x22fas\x20fa-check-circle\x22></i>\x20Entry\x20fee\x20refunded</div>');if(_0x3277a3['result']&&window['renderResultCard'])_0x2ee9a1+=renderResultCard(_0x3277a3);_0x110271['creatorUid']&&effSt(_0x110271)==='completed'&&(_0x2ee9a1+='<button\x20onclick=\x22window.rateCreatorMatch&&rateCreatorMatch(\x27'+_0x110271['id']+'\x27,\x27'+_0x110271['creatorUid']+'\x27)\x22\x20style=\x22width:100%;padding:8px;border-radius:8px;background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2);color:#ffd700;font-size:11px;font-weight:700;cursor:pointer;margin-top:6px\x22><i\x20class=\x22fas\x20fa-star\x22></i>\x20Is\x20Creator\x20Match\x20Ko\x20Rate\x20Karo</button>');_0x2ee9a1+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:6px;margin-top:8px\x22>';var _0xde0839=effSt(_0x110271),_0x318cd9=_0x3277a3['result']||_0x110271['resultPublished']||_0x110271['status']==='resultPublished'||_0xde0839==='resultPublished';if(_0x318cd9)_0x2ee9a1+='<button\x20onclick=\x22(function(){if(window.showMatchEndAd){window.showMatchEndAd(function(){window.showResultPage&&showResultPage(\x27'+_0x110271['id']+'\x27)});}else{window.showResultPage&&showResultPage(\x27'+_0x110271['id']+'\x27);}})()\x22\x20style=\x22padding:8px;border-radius:8px;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,140,0,.08));border:1px\x20solid\x20rgba(255,215,0,.35);color:#ffd700;font-size:11px;font-weight:800;cursor:pointer\x22><i\x20class=\x22fas\x20fa-trophy\x22></i>\x20View\x20Result</button>';else _0xde0839!=='completed'?_0x2ee9a1+='<button\x20onclick=\x22window.showMatchChat&&showMatchChat(\x27'+_0x110271['id']+'\x27)\x22\x20style=\x22padding:8px;border-radius:8px;background:rgba(185,100,255,.08);border:1px\x20solid\x20rgba(185,100,255,.15);color:var(--purple);font-size:11px;font-weight:700;cursor:pointer\x22><i\x20class=\x22fas\x20fa-comments\x22></i>\x20Chat</button>':_0x2ee9a1+='<div></div>';_0x2ee9a1+='<button\x20onclick=\x22showDet(\x27'+_0x110271['id']+'\x27)\x22\x20style=\x22padding:8px;border-radius:8px;background:rgba(0,255,156,.08);border:1px\x20solid\x20rgba(0,255,156,.15);color:var(--green);font-size:11px;font-weight:700;cursor:pointer\x22><i\x20class=\x22fas\x20fa-info-circle\x22></i>\x20Details</button>',_0x2ee9a1+='</div>',_0x2ee9a1+='</div>';});if(_0x44aa3a['innerHTML']!==_0x2ee9a1)_0x44aa3a['innerHTML']=_0x2ee9a1;try{if(window['_i18nApply'])window['_i18nApply']();}catch(_0x52ce56){}if(window['updateRoomCountdowns'])updateRoomCountdowns();}function showDet(_0x43d53c){var _0x53dc7b=MT[_0x43d53c];if(!_0x53dc7b)return;history['pushState'](null,null,null);var _0x403b86=(_0x53dc7b['mode']||_0x53dc7b['type']||'solo')['toString']()['toLowerCase']()['trim']();if(_0x403b86!=='solo'&&_0x403b86!=='duo'&&_0x403b86!=='squad')_0x403b86='solo';var _0x19a9df=(_0x53dc7b['entryType']||'')['toString']()['toLowerCase']()==='coin'||(_0x53dc7b['entryType']||'')['toString']()['toLowerCase']()==='coins',_0x552e68='',_0x60b6aa=UD&&UD['ffUid']?UD['ffUid']:'';_0x60b6aa&&(_0x552e68+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2014px;margin-bottom:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:12px\x22>',_0x552e68+='<div\x20style=\x22width:38px;height:38px;border-radius:50%;background:rgba(0,255,156,.12);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--green)\x22>'+(UD['ign']||'P')['charAt'](0x0)['toUpperCase']()+'</div>',_0x552e68+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>Playing\x20As</div><div\x20style=\x22font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px\x22>'+(window['escHtml']?window['escHtml'](UD['ign']||'Player'):UD['ign']||'Player')+(window['premiumRibbonHtml']?premiumRibbonHtml(0x10):'')+'</div><div\x20style=\x22font-size:12px;font-weight:700;color:var(--green)\x22>FF\x20UID:\x20'+_0x60b6aa+'</div></div>',_0x552e68+='<button\x20onclick=\x22copyTxt(\x27'+_0x60b6aa+'\x27)\x22\x20style=\x22background:rgba(0,255,156,.12);border:none;color:var(--green);padding:8px\x2010px;border-radius:8px;font-size:11px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button>',_0x552e68+='</div>');_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Match\x20Name</span><span\x20class=\x22dv\x22>'+(window['escHtml']?window['escHtml'](_0x53dc7b['name']||'Match'):_0x53dc7b['name']||'Match')+'</span></div>',_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Mode</span><span\x20class=\x22dv\x22>'+_0x403b86['toUpperCase']()+'</span></div>';_0x53dc7b['matchType']&&_0x53dc7b['matchType']!=='normal'&&_0x53dc7b['matchType']!==(_0x53dc7b['mode']||'solo')['toLowerCase']()&&(_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Match\x20Type</span><span\x20class=\x22dv\x22>'+_0x53dc7b['matchType']+'</span></div>');if(_0x53dc7b['map'])_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Map</span><span\x20class=\x22dv\x22>'+titleCase(_0x53dc7b['map'])+'</span></div>';_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Start\x20Time</span><span\x20class=\x22dv\x20blue\x22>'+fmtTime(_0x53dc7b['matchTime'])+'</span></div>',_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Entry\x20Fee</span><span\x20class=\x22dv\x20'+(_0x19a9df?'yellow':'green')+'\x22>'+(_0x19a9df?'🪙\x20':'💎')+(_0x53dc7b['entryFee']||0x0)+'</span></div>',_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>Slots</span><span\x20class=\x22dv\x22>'+(_0x53dc7b['joinedSlots']||0x0)+'/'+(_0x53dc7b['maxSlots']||0x0)+'</span></div>';var _0x3d7a01=_0x53dc7b['firstPrize']||_0x53dc7b['prize1st']||0x0,_0x503475=_0x53dc7b['secondPrize']||_0x53dc7b['prize2nd']||0x0,_0x24c5e5=_0x53dc7b['thirdPrize']||_0x53dc7b['prize3rd']||0x0,_0x3ea99c=window['_prizeIcon']?window['_prizeIcon'](_0x53dc7b):_0x19a9df?'🪙':window['GD_ICON']||'💚';if(_0x3d7a01||_0x503475||_0x24c5e5){_0x552e68+='<div\x20style=\x22margin-top:14px;padding:14px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:12px\x22>',_0x552e68+='<div\x20style=\x22font-size:14px;font-weight:700;color:var(--yellow);margin-bottom:10px\x22><i\x20class=\x22fas\x20fa-trophy\x22></i>\x20Prize\x20Breakdown</div>';if(_0x3d7a01)_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>'+(window['medalHtml']?medalHtml(0x1,0xd):'')+'\x201st\x20Prize</span><span\x20class=\x22dv\x20green\x22>'+_0x3ea99c+_0x3d7a01+'</span></div>';if(_0x503475)_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>'+(window['medalHtml']?medalHtml(0x2,0xd):'')+'\x202nd\x20Prize</span><span\x20class=\x22dv\x22>'+_0x3ea99c+_0x503475+'</span></div>';if(_0x24c5e5)_0x552e68+='<div\x20class=\x22d-row\x22><span\x20class=\x22dl\x22>'+(window['medalHtml']?medalHtml(0x3,0xd):'')+'\x203rd\x20Prize</span><span\x20class=\x22dv\x22>'+_0x3ea99c+_0x24c5e5+'</span></div>';_0x552e68+='</div>';}if(_0x53dc7b['description'])_0x552e68+='<div\x20style=\x22margin-top:12px;padding:12px;background:var(--card);border-radius:10px;font-size:13px;color:var(--txt2);line-height:1.5\x22>'+_0x53dc7b['description']+'</div>';var _0xa83d43=Number(_0x53dc7b['roomReleaseMinutes'])||0x5,_0x322e8b=Number(_0x53dc7b['matchTime'])||0x0,_0x4f3e44=_0x322e8b>0x0?_0x322e8b-_0xa83d43*0xea60:0x0,_0x352f60=![];if(_0x53dc7b['roomId']&&_0x53dc7b['roomPassword']){if(_0x53dc7b['roomStatus']==='released'){var _0xc3bd78=Number(_0x53dc7b['roomReleasedAt'])||0x0;if(_0xc3bd78>0x0&&Date['now']()>=_0xc3bd78)_0x352f60=!![];else{if(_0x4f3e44>0x0&&Date['now']()>=_0x4f3e44)_0x352f60=!![];else{if(_0x4f3e44<=0x0)_0x352f60=!![];}}}else _0x53dc7b['roomStatus']==='saved'&&_0x4f3e44>0x0&&Date['now']()>=_0x4f3e44&&(_0x352f60=!![]);}if(_0x352f60)hasJ(_0x43d53c)?(_0x552e68+='<div\x20class=\x22room-box\x20rb-green\x22\x20style=\x22margin-top:12px\x22><div\x20class=\x22rp-label\x22>Room\x20ID</div><div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span\x20class=\x22room-big\x22>'+_0x53dc7b['roomId']+'</span><button\x20onclick=\x22copyTxt(\x27'+String(_0x53dc7b['roomId']||'')['replace'](/'/g,'\x5c\x27')+'\x27)\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px\x2010px;border-radius:8px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div>',_0x552e68+='<div\x20class=\x22rp-label\x22\x20style=\x22margin-top:8px\x22>Password</div><div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span\x20class=\x22room-big\x22>'+_0x53dc7b['roomPassword']+'</span><button\x20onclick=\x22copyTxt(\x27'+String(_0x53dc7b['roomPassword']||'')['replace'](/'/g,'\x5c\x27')+'\x27)\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px\x2010px;border-radius:8px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div></div>'):_0x552e68+='<div\x20class=\x22room-box\x20rb-yellow\x22\x20style=\x22margin-top:12px\x22><i\x20class=\x22fas\x20fa-lock\x22></i>\x20Join\x20the\x20match\x20to\x20see\x20room\x20details</div>';else{var _0x20ea97=(_0x53dc7b['status']||'')['toLowerCase']();_0x20ea97==='completed'||_0x20ea97==='finished'||_0x20ea97==='ended'||_0x20ea97==='cancelled'?_0x552e68+='<div\x20class=\x22room-box\x20rb-grey\x22\x20style=\x22margin-top:12px;opacity:.75\x22><i\x20class=\x22fas\x20fa-flag-checkered\x22></i>\x20'+(_0x20ea97==='cancelled'?'Match\x20cancel\x20ho\x20gaya':'Match\x20khatam\x20ho\x20chuka\x20hai')+'</div>':_0x552e68+='<div\x20class=\x22room-box\x20rb-blue\x22\x20style=\x22margin-top:12px\x22><i\x20class=\x22fas\x20fa-clock\x22></i>\x20Room\x20details\x20will\x20be\x20shared\x20before\x20match\x20start</div>';}var _0x50adaa=window['serverNow']?window['serverNow']():Date['now'](),_0x5c1172=(_0x53dc7b['status']||'')['toLowerCase'](),_0x41c2ec=Number(_0x53dc7b['matchTime'])>0x0&&_0x50adaa>=Number(_0x53dc7b['matchTime'])||['live','ongoing','started','in_progress','completed','ended','cancelled']['indexOf'](_0x5c1172)>=0x0;!_0x41c2ec&&(_0x552e68+='<button\x20onclick=\x22shareMatch(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:14px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-share-alt\x22></i>\x20Share\x20Match\x20—\x20Invite\x20Friends</button>');!_0x41c2ec&&_0x53dc7b['matchTime']&&Number(_0x53dc7b['matchTime'])>_0x50adaa&&(_0x552e68+='<button\x20onclick=\x22window.setMatchReminder&&setMatchReminder(\x27'+_0x43d53c+'\x27,'+_0x53dc7b['matchTime']+',\x27'+(_0x53dc7b['name']||'Match')+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-bell\x22></i>\x20Set\x20Match\x20Reminder</button>');_0x552e68+='<button\x20id=\x22intBtn_'+_0x43d53c+'\x22\x20data-int-btn=\x22'+_0x43d53c+'\x22\x20onclick=\x22window.toggleInterest&&toggleInterest(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-hand-paper\x22></i>\x20Mark\x20as\x20Interested</button>';hasJ(_0x43d53c)&&(_0x552e68+='<button\x20onclick=\x22window.showMatchChat&&showMatchChat(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(185,100,255,.2);background:rgba(185,100,255,.06);color:var(--purple);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-comments\x22></i>\x20Match\x20Chat</button>',_0x552e68+='<button\x20onclick=\x22window.showResultDispute&&showResultDispute(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(255,170,0,.2);background:rgba(255,170,0,.06);color:#ffaa00;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-exclamation-triangle\x22></i>\x20Report\x20Dispute</button>',_0x552e68+='<button\x20onclick=\x22window.showReportPlayer&&showReportPlayer(\x27'+_0x43d53c+'\x27,\x27\x27,\x27Player\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(255,46,46,.2);background:rgba(255,46,46,.06);color:var(--red);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-flag\x22></i>\x20🚩\x20Report\x20Player\x20with\x20Proof</button>');effSt(_0x53dc7b)==='completed'&&hasJ(_0x43d53c)&&(_0x552e68+='<button\x20onclick=\x22window.showMatchFeedback&&showMatchFeedback(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(255,215,0,.2);background:rgba(255,215,0,.06);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-star\x22></i>\x20Rate\x20This\x20Match</button>');!hasJ(_0x43d53c)&&effSt(_0x53dc7b)!=='completed'&&(_0x552e68+='<button\x20onclick=\x22giftTicket(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(255,215,0,.25);background:rgba(255,215,0,.07);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-gift\x22></i>\x20🎁\x20Gift\x20Entry\x20to\x20Friend</button>');if(_0x403b86!=='solo'&&!hasJ(_0x43d53c)){_0x552e68+='<button\x20onclick=\x22showTeamQR(\x27'+_0x43d53c+'\x27)\x22\x20style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(0,212,255,.25);background:rgba(0,212,255,.07);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-qrcode\x22></i>\x20QR\x20Code\x20se\x20Team\x20Join\x20karo</button>';var _0x498229=(_0x53dc7b['teamMode']||_0x53dc7b['matchType']||'')['toLowerCase'](),_0x23a5e5=_0x498229['includes']('squad')||_0x53dc7b['gameMode']==='squad',_0x240bdb=_0x498229['includes']('duo')||_0x53dc7b['gameMode']==='duo',_0x3dd8a5=window['CFG']&&window['CFG']['autoSquadEnabled'];if(_0x3dd8a5&&(_0x23a5e5||_0x240bdb)&&effSt(_0x53dc7b)==='upcoming'){var _0x224de2=_0x23a5e5?'squad':'duo',_0x3cb1c5=_0x23a5e5?0x4:0x2;_0x552e68+='<button\x20onclick=\x22if(window.showAutoSquadJoin)showAutoSquadJoin(\x27'+_0x43d53c+'\x27,\x27'+_0x224de2+'\x27)\x22\x20'+'style=\x22width:100%;margin-top:8px;padding:12px;border-radius:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.06));border:1px\x20solid\x20rgba(0,255,156,.2);color:var(--green);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22>'+'<i\x20class=\x22fas\x20fa-users\x22></i>\x20Akele\x20ho?\x20Auto\x20'+(_0x23a5e5?'Squad':'Duo')+'\x20Join\x20Karo!</button>';}}(_0x53dc7b['streamLink']||_0x53dc7b['youtubeLink'])&&effSt(_0x53dc7b)==='live'&&window['CFG']&&window['CFG']['watchEarnEnabled']&&(_0x552e68+='<button\x20onclick=\x22if(window.startWatching)startWatching(\x27'+_0x43d53c+'\x27)\x22\x20'+'style=\x22width:100%;margin-top:8px;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(255,68,68,.12),rgba(204,0,0,.08));border:1px\x20solid\x20rgba(255,68,68,.25);color:#ff6b6b;font-size:13px;font-weight:800;cursor:pointer\x22>'+'<span\x20style=\x22display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4444;margin-right:7px;vertical-align:middle\x22></span>👀\x20Watch\x20&\x20Earn\x20Coins</button>');openModal('Match\x20Details',_0x552e68);if(window['refreshInterests'])try{window['refreshInterests']();}catch(_0x5c9367){}}function giftTicket(_0x3307e8){var _0x4e1001=MT[_0x3307e8];if(!_0x4e1001)return;var _0x37558f=Number(_0x4e1001['entryFee'])||0x0,_0x53bd21=(_0x4e1001['entryType']||'')['toLowerCase']()==='coin'||(_0x4e1001['entryType']||'')['toString']()['toLowerCase']()==='coins',_0x3b8b89=_0x53bd21?UD['coins']||0x0:getMoneyBal();if(_0x3b8b89<_0x37558f){toast('Insufficient\x20balance\x20to\x20gift\x20entry','err');return;}var _0x24106d='<div\x20style=\x22text-align:center;padding:8px\x22>';_0x24106d+='<div\x20style=\x22font-size:40px;margin-bottom:8px\x22>🎁</div>',_0x24106d+='<div\x20style=\x22font-size:15px;font-weight:800;margin-bottom:4px\x22>Gift\x20Match\x20Entry</div>',_0x24106d+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:16px\x22>Apne\x20dost\x20ke\x20FF\x20UID\x20enter\x20karo\x20—\x20unki\x20entry\x20fee\x20tumhare\x20wallet\x20se\x20kategi</div>',_0x24106d+='<div\x20style=\x22background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:10px;padding:12px;margin-bottom:12px;font-size:13px\x22>',_0x24106d+='<span\x20style=\x22color:var(--txt2)\x22>Match:</span>\x20<strong>'+(window['escHtml']?window['escHtml'](_0x4e1001['name']||'Match'):_0x4e1001['name']||'Match')+'</strong><br>',_0x24106d+='<span\x20style=\x22color:var(--txt2)\x22>Fee:</span>\x20<strong\x20style=\x22color:#ffd700\x22>'+(_0x53bd21?'🪙\x20':'💎')+_0x37558f+'\x20will\x20be\x20deducted\x20from\x20you</strong></div>',_0x24106d+='<input\x20id=\x22giftToUid\x22\x20class=\x22f-input\x22\x20placeholder=\x22Friend\x20ka\x20FF\x20UID\x22\x20style=\x22margin-bottom:12px\x22>',_0x24106d+='<button\x20onclick=\x22confirmGiftTicket(\x27'+_0x3307e8+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:none;font-weight:800;font-size:14px;cursor:pointer\x22>🎁\x20Send\x20Gift\x20Entry!</button>',_0x24106d+='</div>',openModal('Gift\x20a\x20Ticket',_0x24106d);}function confirmGiftTicket(_0x2d0008){var _0x1a8f0d=MT[_0x2d0008];if(!_0x1a8f0d)return;var _0x142cf8=($('giftToUid')||{})['value'];if(!_0x142cf8||_0x142cf8['trim']()['length']<0x5){toast('Valid\x20FF\x20UID\x20enter\x20karo','err');return;}_0x142cf8=_0x142cf8['trim']();var _0x1f8fc5=(_0x1a8f0d['entryType']||'')['toLowerCase']()==='coin'||(_0x1a8f0d['entryType']||'')['toString']()['toLowerCase']()==='coins',_0x27c265=Number(_0x1a8f0d['entryFee'])||0x0;_findUserByFF(_0x142cf8,function(_0x4a9685,_0x5fb3b7){if(!_0x4a9685||!_0x5fb3b7){toast('Player\x20not\x20found\x20with\x20this\x20FF\x20UID','err');return;}if(_0x4a9685===U['uid']){toast('Apne\x20aap\x20ko\x20gift\x20nahi\x20kar\x20sakte\x20😄','err');return;}window['_supa']['rpc']('gift_match_entry',{'p_match_id':_0x2d0008,'p_to_uid':_0x4a9685})['then'](function(_0x252d00){var _0x1fbd12=_0x252d00&&_0x252d00['data'];if(_0x252d00&&_0x252d00['error']||_0x1fbd12&&_0x1fbd12['ok']===![]){toast(_0x1fbd12&&_0x1fbd12['error']||'Gift\x20send\x20failed\x20—\x20retry\x20karo','err'),console['error']('[Gift]',_0x252d00&&_0x252d00['error']||_0x1fbd12);return;}closeModal(),toast('🎁\x20Gift\x20ticket\x20sent\x20successfully!','ok');})['catch'](function(_0x3e6478){toast('Gift\x20send\x20failed\x20—\x20retry\x20karo','err'),console['error']('[Gift]',_0x3e6478);});});}function showTeamQR(_0x422a10){var _0x263b47=MT[_0x422a10];if(!_0x263b47)return;var _0x4764f4=typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/',_0x50ba82=_0x4764f4+'?join='+_0x422a10+'&ref='+(UD['ffUid']||U['uid']['substr'](0x0,0x8)),_0x23b9fe='<div\x20style=\x22text-align:center;padding:8px\x22>';_0x23b9fe+='<div\x20style=\x22font-size:14px;font-weight:800;margin-bottom:4px\x22>📱\x20QR\x20Code\x20se\x20Join\x20karo</div>',_0x23b9fe+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:12px\x22>Apne\x20teammate\x20ko\x20yeh\x20QR\x20scan\x20karne\x20do\x20—\x20wo\x20directly\x20is\x20match\x20lobby\x20mein\x20aa\x20jayega</div>',_0x23b9fe+='<div\x20style=\x22background:#fff;padding:16px;border-radius:12px;display:inline-block;margin-bottom:12px\x22>',_0x23b9fe+='<img\x20src=\x22https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(_0x50ba82)+'\x22\x20style=\x22width:180px;height:180px;display:block\x22>',_0x23b9fe+='</div>',_0x23b9fe+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:8px\x22>Ya\x20link\x20share\x20karo:</div>',_0x23b9fe+='<div\x20style=\x22display:flex;gap:8px\x22>',_0x23b9fe+='<input\x20readonly\x20value=\x22'+_0x50ba82+'\x22\x20class=\x22f-input\x22\x20style=\x22flex:1;font-size:10px\x22>',_0x23b9fe+='<button\x20onclick=\x22copyTxt(\x27'+_0x50ba82+'\x27)\x22\x20style=\x22padding:10px\x2014px;border-radius:10px;background:rgba(0,255,106,.12);border:1px\x20solid\x20rgba(0,255,106,.2);color:var(--green);cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button>',_0x23b9fe+='</div></div>',openModal('🔗\x20Team\x20QR',_0x23b9fe);}
+/* ✅ R8 FIX (2026-09-30): match card ka time label status-aware.
+   Pehle completed match par bhi "Starts in: 0h 23m" (countdown) dikhta tha
+   kyunki fmtTime() sirf matchTime dekhta hai, match status nahi. */
+function _mmTimeLabel(displaySt, t) {
+  if (displaySt === 'completed' || displaySt === 'resultPublished') return 'Match Ended';
+  if (displaySt === 'cancelled') return 'Cancelled';
+  return fmtTime(t.matchTime);
+}
+
+function renderMM() {
+  var l = $('mmList'); if (!l) return;
+  var f = [];
+  var seenMatchIds = {}; // DEDUP: one card per matchId per user
+  for (var k in JR) {
+    var jr = JR[k], t = MT[jr.matchId]; if (!t) continue;
+    // Skip if already showing this matchId
+    if (seenMatchIds[jr.matchId]) continue;
+    var es = effSt(t);
+    // resultPublished treated as completed for display
+    var displaySt = (es === 'resultPublished') ? 'completed' : es;
+    if (displaySt !== mmSF) continue;
+    seenMatchIds[jr.matchId] = true;
+    f.push({ jr: jr, t: t, k: k });
+  }
+  if (!f.length) {
+    var _emptyHTML = '<div class="empty-state"><i class="fas fa-gamepad"></i><p>No ' + mmSF + ' matches</p></div>';
+    if (l.innerHTML !== _emptyHTML) l.innerHTML = _emptyHTML;
+    return;
+  }
+  var h = '';
+  f.forEach(function(item) {
+    var jr = item.jr, t = item.t;
+    var tp = (t.mode || t.type || jr.mode || 'solo').toString().toLowerCase().trim();
+    if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+    h += '<div class="mm-card"><div class="mm-head"><span class="mm-name">' + (window.escHtml?window.escHtml(t.name||jr.matchName||'Match'):(t.name||jr.matchName||'Match')) + '</span>';
+    var _isTeamMember = jr.isTeamMember && jr.captainUid;
+    var _statusLabel = _isTeamMember ? '👥 Team' : '✅ Joined';
+    var _captainNote = _isTeamMember ? '<div style="font-size:11px;color:var(--txt2);margin-top:2px"><i class="fas fa-crown" style="color:#ffd700;font-size:9px"></i> Captain: ' + (jr.captainName || 'Teammate') + ' ne join kiya</div>' : '';
+    h += '<span class="mm-status ms-a">' + _statusLabel + '</span></div>' + _captainNote;
+
+    /* MY INFO ROW */
+    var _myFFUID = (UD && UD.ffUid) ? UD.ffUid : (U ? U.uid.substring(0,10) : '-');
+    var _mySlot = jr.slotNumber || null;
+    h += '<div style="background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.15);border-radius:10px;padding:8px 10px;margin:6px 0">';
+    h += '<div style="font-size:10px;color:var(--green);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">👤 You ' + (_isTeamMember ? '(Team Member)' : '(Captain)') + '</div>';
+    h += '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+    h += '<span style="font-size:12px;font-weight:800;color:var(--green)"><i class="fas fa-fingerprint" style="font-size:10px;margin-right:3px"></i>' + _myFFUID + '</span>';
+    h += '<button onclick="copyTxt(\'' + _myFFUID + '\')" style="background:rgba(0,255,156,.12);border:none;color:var(--green);padding:2px 7px;border-radius:5px;font-size:10px;cursor:pointer"><i class="fas fa-copy"></i></button>';
+    if (_mySlot) h += '<span style="margin-left:auto;background:rgba(0,255,156,.15);color:var(--green);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:800">Slot ' + _mySlot + '</span>';
+    h += '</div></div>';
+
+    /* TEAMMATE ROWS for duo/squad */
+    if (jr.teamMembers && jr.teamMembers.length > 1) {
+      var myFfUid = UD && UD.ffUid;
+      var teammates = jr.teamMembers.filter(function(m) { return m.ffUid !== myFfUid && m.uid !== myFfUid; });
+      if (teammates.length > 0) {
+        h += '<div style="background:rgba(185,100,255,.05);border:1px solid rgba(185,100,255,.15);border-radius:10px;padding:8px 10px;margin-bottom:6px">';
+        h += '<div style="font-size:10px;color:var(--purple);font-weight:700;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">👥 Teammates</div>';
+        teammates.forEach(function(m) {
+          /* Find original index in full teamMembers array for correct slot */
+          var origIdx = jr.teamMembers.indexOf(m);
+          var mSlot = (jr.allSlots && origIdx >= 0) ? jr.allSlots[origIdx] : null;
+          h += '<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-top:1px solid rgba(185,100,255,.08);margin-top:4px">';
+          h += '<div style="width:26px;height:26px;border-radius:50%;background:rgba(185,100,255,.15);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--purple)">' + (m.name||'?').charAt(0).toUpperCase() + '</div>';
+          h += '<div style="flex:1"><div style="font-size:12px;font-weight:700">' + (m.name||'Teammate') + (m.role==='captain'?' 👑':'') + '</div>';
+          if (m.ffUid) h += '<div style="font-size:10px;color:var(--txt2)">FF UID: <span style="color:var(--purple);font-weight:700">' + m.ffUid + '</span></div>';
+          h += '</div>';
+          if (mSlot) h += '<span style="background:rgba(185,100,255,.15);color:var(--purple);padding:2px 7px;border-radius:6px;font-size:10px;font-weight:800">Slot ' + mSlot + '</span>';
+          h += '</div>';
+        });
+        h += '</div>';
+      }
+    }
+    /* Match details chips */
+    h += '<div class="mm-details"><span><i class="fas fa-gamepad"></i> ' + tp.toUpperCase() + '</span>';
+    h += '<span><i class="fas fa-coins"></i> ' + (jr.entryFee > 0 ? (jr.entryType==='coin'?'🪙 ':'💎') + jr.entryFee : 'FREE') + '</span>';
+    if (t.map) h += '<span><i class="fas fa-map"></i> ' + titleCase(t.map) + '</span>';
+    /* ✅ R8 FIX (2026-09-30): completed/resultPublished match ke card par pehle
+       "Starts in: Xh Ym" jaisa countdown dikhta rehta tha (fmtTime sirf time dekhta
+       hai, status nahi) — ab status ke hisaab se sahi label. */
+    h += '<span><i class="fas fa-clock"></i> ' + _mmTimeLabel(displaySt, t) + '</span></div>';
+    /* Room display: show ONLY if within release time window - regardless of roomStatus */
+    var _roomReady = false;
+    var _relMin = Number(t.roomReleaseMinutes) || 5;
+    var _matchMsec = Number(t.matchTime) || 0;
+    var _releaseAt = _matchMsec > 0 ? _matchMsec - (_relMin * 60000) : 0;
+    /* ✅ R3 (2026-09-20): creds MT me nahi hote (room-leak fix) — readiness
+       roomStatus se, creds RPC se (_showRoomViaRpc). In-memory creds ho
+       (ek baar fetch ke baad) to inline box warna fetch-button. */
+    if (t.roomStatus === 'released' || t.roomStatus === 'saved') {
+      if (t.roomId && t.roomPassword) {
+        /* Released manually by admin — respect timing: show only if release time has passed */
+        var _releasedAt = Number(t.roomReleasedAt) || 0;
+        /* Show if: manual release time has passed OR auto-release time has passed */
+        if (_releasedAt > 0 && (window.serverNow?window.serverNow():Date.now()) >= _releasedAt) _roomReady = true;
+        else if (_releaseAt > 0 && (window.serverNow?window.serverNow():Date.now()) >= _releaseAt) _roomReady = true;
+        else if (_releaseAt <= 0) _roomReady = true; // no matchTime set, show anyway
+      } else if (t.roomStatus === 'saved') {
+        if (_releaseAt > 0 && (window.serverNow?window.serverNow():Date.now()) >= _releaseAt) _roomReady = true;
+      }
+    }
+    if (_roomReady && t.roomId && t.roomPassword) {
+      h += '<div class="room-box rb-green" style="margin-top:8px"><div style="display:flex;justify-content:space-between;align-items:center"><span><strong>Room ID:</strong> ' + t.roomId + '</span><button onclick="copyTxt(String(t.roomId||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span><strong>Password:</strong> ' + t.roomPassword + '</span><button onclick="copyTxt(String(t.roomPassword||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
+    } else if (_roomReady && !(t.roomId && t.roomPassword)) {
+      h += '<button onclick="_showRoomViaRpc(\'' + t.id + '\', this)" style="width:100%;margin-top:8px;background:rgba(0,255,106,.12);border:1px solid rgba(0,255,106,.35);color:var(--green);padding:10px;border-radius:10px;font-weight:800;cursor:pointer"><i class="fas fa-key"></i> 🔑 Room Details dekho</button>';
+    } else if ((t.roomStatus === 'released' || t.roomStatus === 'saved') && _matchMsec > 0 && Date.now() < _releaseAt) {
+      /* Room saved but not yet time to show — show countdown */
+      var _minLeft = Math.ceil((_releaseAt - Date.now()) / 60000);
+      h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px 12px;margin-top:8px;text-align:center"><i class="fas fa-lock" style="color:#ffd700"></i> <span style="font-size:12px;color:#ffd700;font-weight:700">Room ' + _minLeft + ' min mein milegi</span></div>';
+    }
+    if (t.status === 'cancelled' && jr.refunded) {
+      h += '<div style="background:rgba(0,255,106,.08);border:1px solid rgba(0,255,106,.2);border-radius:10px;padding:8px 12px;margin-top:8px;font-size:12px;color:var(--green)"><i class="fas fa-check-circle"></i> Entry fee refunded</div>';
+    }
+    // Feature 57: Result card
+    if (jr.result && window.renderResultCard) h += renderResultCard(jr);
+    /* Rate the creator — only for creator-hosted, completed matches
+       (2026-08). Uses t.creatorUid, populated in core/listeners.js's
+       _toMT. Encourages honest feedback → feeds creator_rating, which
+       feeds the auto-strike-on-low-rating safety net. */
+    if (t.creatorUid && effSt(t) === 'completed') {
+      h += '<button onclick="window.rateCreatorMatch&&rateCreatorMatch(\'' + t.id + '\',\'' + t.creatorUid + '\')" style="width:100%;padding:8px;border-radius:8px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);color:#ffd700;font-size:11px;font-weight:700;cursor:pointer;margin-top:6px"><i class="fas fa-star"></i> Is Creator Match Ko Rate Karo</button>';
+    }
+    /* ✅ Bug W FIX (2026-10-01): check-in button sirf Match Details modal me
+       tha — wahan bhi wo unreachable tha. Ab seedha "My Matches" card par,
+       jahan user ko apna joined match dikhta hai. id alag (checkinCardBtn_)
+       hai taaki modal wale button se duplicate-id na ho. Sirf upcoming
+       match par (cancelled/completed par koi matlab nahi). */
+    /* ✅ B30 (2026-10-07): pre-match check-in poora hata diya — yeh block
+       (aur neeche match-detail wala) marte hue check-in system ko call karta
+       tha. Wajah poore feature ki hi thi: check-in ka asli kaam auto-refund /
+       slot-release tha, wo policy 2026-10-03 me hi hat chuki thi — is liye
+       button ka koi matlab nahi bacha tha. */
+
+    /* Action buttons row — split into 2 halves */
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
+    /* Left: Result button (if resultPublished/completed) else Chat button */
+    var _matchSt = effSt(t);
+    /* ✅ R8 FIX (2026-09-30): server 'completed' + result_published_at likhta hai
+       (naam 'resultPublished' nahi), isliye t.resultPublished bhi check karo —
+       warna publish hone ke baad bhi View Result button kabhi aata hi nahi tha. */
+    var _hasResult = jr.result || t.resultPublished || t.status === 'resultPublished' || _matchSt === 'resultPublished';
+    if (_hasResult) {
+      /* Result publish hua hai — Chat ki jagah Result button dikhao */
+      h += '<button onclick="(function(){if(window.showMatchEndAd){window.showMatchEndAd(function(){window.showResultPage&&showResultPage(\'' + t.id + '\')});}else{window.showResultPage&&showResultPage(\'' + t.id + '\');}})()" style="padding:8px;border-radius:8px;background:linear-gradient(135deg,rgba(255,215,0,.15),rgba(255,140,0,.08));border:1px solid rgba(255,215,0,.35);color:#ffd700;font-size:11px;font-weight:800;cursor:pointer"><i class="fas fa-trophy"></i> View Result</button>';
+    } else if (_matchSt !== 'completed') {
+      /* Match ongoing/upcoming — Chat button */
+      h += '<button onclick="window.showMatchChat&&showMatchChat(\'' + t.id + '\')" style="padding:8px;border-radius:8px;background:rgba(185,100,255,.08);border:1px solid rgba(185,100,255,.15);color:var(--purple);font-size:11px;font-weight:700;cursor:pointer"><i class="fas fa-comments"></i> Chat</button>';
+    } else {
+      h += '<div></div>';
+    }
+    /* Right: Details button */
+    h += '<button onclick="showDet(\'' + t.id + '\')" style="padding:8px;border-radius:8px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.15);color:var(--green);font-size:11px;font-weight:700;cursor:pointer"><i class="fas fa-info-circle"></i> Details</button>';
+    h += '</div>';
+    h += '</div>';
+  });
+  /* ✅ FIX (live-testing): same content-diff guard as renderHome() —
+     avoid a full innerHTML replace (which detaches any in-flight click
+     target) when the rendered content hasn't actually changed. */
+  if (l.innerHTML !== h) l.innerHTML = h;
+  try { if (window._i18nApply) window._i18nApply(); } catch (e) {}   /* D103 z24: async render ke turant baad apply — English flash khatam */
+
+  if (window.updateRoomCountdowns) updateRoomCountdowns();
+}
+
+/* ====== SHOW MATCH DETAILS ====== */
+function showDet(id) {
+  var t = MT[id]; if (!t) return;
+  history.pushState(null, null, null);
+  var tp = (t.mode || t.type || 'solo').toString().toLowerCase().trim();
+  if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+  /* ✅ BUG FIX (2026-09-14): same class of bug as screens/home.js —
+     category must come from entryType alone, not from whether fee
+     happens to be zero. */
+  var isCoin = (t.entryType || '').toString().toLowerCase() === 'coin' || (t.entryType || '').toString().toLowerCase() === 'coins'; /* BUG-HUNT R1 plural */
+  var h = '';
+  var _detFFUID = (UD && UD.ffUid) ? UD.ffUid : '';
+  if (_detFFUID) {
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;margin-bottom:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.04));border:1px solid rgba(0,255,156,.2);border-radius:12px">';
+    h += '<div style="width:38px;height:38px;border-radius:50%;background:rgba(0,255,156,.12);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--green)">' + (UD.ign||'P').charAt(0).toUpperCase() + '</div>';
+    /* ✅ 2026-10-12: premium ribbon IGN ke aage (apna status, UD se live) */
+    h += '<div style="flex:1"><div style="font-size:11px;color:var(--txt2)">Playing As</div><div style="font-size:14px;font-weight:800;display:flex;align-items:center;gap:6px">' + (window.escHtml?window.escHtml(UD.ign||'Player'):(UD.ign||'Player')) + (window.premiumRibbonHtml ? premiumRibbonHtml(16) : '') + '</div><div style="font-size:12px;font-weight:700;color:var(--green)">FF UID: ' + _detFFUID + '</div></div>';
+    h += '<button onclick="copyTxt(\'' + _detFFUID + '\')" style="background:rgba(0,255,156,.12);border:none;color:var(--green);padding:8px 10px;border-radius:8px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i></button>';
+    h += '</div>';
+  }
+  h += '<div class="d-row"><span class="dl">Match Name</span><span class="dv">' + (window.escHtml?window.escHtml(t.name||'Match'):(t.name||'Match')) + '</span></div>';
+  h += '<div class="d-row"><span class="dl">Mode</span><span class="dv">' + tp.toUpperCase() + '</span></div>';
+  // Only show Match Type for special tournaments
+  if (t.matchType && t.matchType !== 'normal' && t.matchType !== (t.mode||'solo').toLowerCase()) {
+    h += '<div class="d-row"><span class="dl">Match Type</span><span class="dv">' + t.matchType + '</span></div>';
+  }
+  if (t.map) h += '<div class="d-row"><span class="dl">Map</span><span class="dv">' + titleCase(t.map) + '</span></div>';
+  h += '<div class="d-row"><span class="dl">Start Time</span><span class="dv blue">' + fmtTime(t.matchTime) + '</span></div>';
+  // Prize Pool removed from detail
+  h += '<div class="d-row"><span class="dl">Entry Fee</span><span class="dv ' + (isCoin ? 'yellow' : 'green') + '">' + (isCoin ? '🪙 ' : '💎') + (t.entryFee || 0) + '</span></div>';
+  h += '<div class="d-row"><span class="dl">Slots</span><span class="dv">' + (t.joinedSlots || 0) + '/' + (t.maxSlots || 0) + '</span></div>';
+  var _d1 = t.firstPrize || t.prize1st || 0;
+  var _d2 = t.secondPrize || t.prize2nd || 0;
+  var _d3 = t.thirdPrize || t.prize3rd || 0;
+  var _detPrSym = window._prizeIcon ? window._prizeIcon(t) : (isCoin ? '🪙' : (window.GD_ICON || '💚')); /* BUG-HUNT R1: GD prize ka fallback 💎(sky) galat tha */
+  if (_d1 || _d2 || _d3) {
+    h += '<div style="margin-top:14px;padding:14px;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,215,0,.02));border:1px solid rgba(255,215,0,.2);border-radius:12px">';
+    h += '<div style="font-size:14px;font-weight:700;color:var(--yellow);margin-bottom:10px"><i class="fas fa-trophy"></i> Prize Breakdown</div>';
+    if (_d1) h += '<div class="d-row"><span class="dl">' + (window.medalHtml?medalHtml(1,13):'') + ' 1st Prize</span><span class="dv green">' + _detPrSym + _d1 + '</span></div>';
+    if (_d2) h += '<div class="d-row"><span class="dl">' + (window.medalHtml?medalHtml(2,13):'') + ' 2nd Prize</span><span class="dv">' + _detPrSym + _d2 + '</span></div>';
+    if (_d3) h += '<div class="d-row"><span class="dl">' + (window.medalHtml?medalHtml(3,13):'') + ' 3rd Prize</span><span class="dv">' + _detPrSym + _d3 + '</span></div>';
+    h += '</div>';
+  }
+  if (t.description) h += '<div style="margin-top:12px;padding:12px;background:var(--card);border-radius:10px;font-size:13px;color:var(--txt2);line-height:1.5">' + t.description + '</div>';
+  /* Room display: timing-based (same logic as My Matches) */
+  var _dRelMin = Number(t.roomReleaseMinutes) || 5;
+  var _dMatchMs = Number(t.matchTime) || 0;
+  var _dReleaseAt = _dMatchMs > 0 ? _dMatchMs - (_dRelMin * 60000) : 0;
+  var _dRoomReady = false;
+  if (t.roomId && t.roomPassword) {
+    if (t.roomStatus === 'released') {
+      var _dRelAt = Number(t.roomReleasedAt) || 0;
+      if (_dRelAt > 0 && Date.now() >= _dRelAt) _dRoomReady = true;
+      else if (_dReleaseAt > 0 && Date.now() >= _dReleaseAt) _dRoomReady = true;
+      else if (_dReleaseAt <= 0) _dRoomReady = true;
+    } else if (t.roomStatus === 'saved' && _dReleaseAt > 0 && Date.now() >= _dReleaseAt) {
+      _dRoomReady = true;
+    }
+  }
+  if (_dRoomReady) {
+    if (hasJ(id)) {
+      /* ✅ BUG FIX (2026-08-22): onclick="copyTxt(String(t.roomId...))" ran
+         in GLOBAL scope on click — 't' only exists inside this function's
+         closure, so clicking threw "t is not defined" and silently did
+         nothing. Baking the actual room ID/password string literal into
+         the onclick (like every other copy button in this file already
+         does) fixes it. */
+      h += '<div class="room-box rb-green" style="margin-top:12px"><div class="rp-label">Room ID</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="room-big">' + t.roomId + '</span><button onclick="copyTxt(\'' + String(t.roomId||'').replace(/'/g,"\\'") + '\')" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
+      h += '<div class="rp-label" style="margin-top:8px">Password</div><div style="display:flex;justify-content:space-between;align-items:center"><span class="room-big">' + t.roomPassword + '</span><button onclick="copyTxt(\'' + String(t.roomPassword||'').replace(/'/g,"\\'") + '\')" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
+    } else { h += '<div class="room-box rb-yellow" style="margin-top:12px"><i class="fas fa-lock"></i> Join the match to see room details</div>'; }
+  } else {
+    /* ✅ BUG FIX (2026-10-04): pehle match khatam hone ke baad bhi
+       "Room details will be shared before match start" dikhta tha — ab
+       status ke hisaab se sahi message. */
+    var _dSt = (t.status || '').toLowerCase();
+    if (_dSt === 'completed' || _dSt === 'finished' || _dSt === 'ended' || _dSt === 'cancelled') {
+      h += '<div class="room-box rb-grey" style="margin-top:12px;opacity:.75"><i class="fas fa-flag-checkered"></i> ' + (_dSt === 'cancelled' ? 'Match cancel ho gaya' : 'Match khatam ho chuka hai') + '</div>';
+    } else {
+      h += '<div class="room-box rb-blue" style="margin-top:12px"><i class="fas fa-clock"></i> Room details will be shared before match start</div>';
+    }
+  }
+  /* ✅ BUG FIX (2026-10-06, A5): match शुरू (live) होते ही Match Info से
+     "Share Match — Invite Friends" और "Set Match Reminder" दोनों पंक्तियाँ
+     ग़ायब होनी चाहिए।
+     पहले की गड़बड़: share button सिर्फ़ cancelled/completed पर हटता था,
+     और reminder की शर्त में सिर्फ़ समय देखा जाता था — status 'live' होने पर
+     भी दोनों दिखते रहते थे (live match का invite/reminder बेमानी है, और
+     बाद का reminder server पर भी रद्द हो जाता है)।
+     अब एक ही जगह तय होता है: _started। */
+  var _mtNow = (window.serverNow ? window.serverNow() : Date.now());
+  var _matchStatus = (t.status || '').toLowerCase();
+  var _started = (Number(t.matchTime) > 0 && _mtNow >= Number(t.matchTime)) ||
+                 ['live', 'ongoing', 'started', 'in_progress', 'completed', 'ended', 'cancelled'].indexOf(_matchStatus) >= 0;
+  if (!_started) {
+    h += '<button onclick="shareMatch(\'' + id + '\')" style="width:100%;margin-top:14px;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-share-alt"></i> Share Match — Invite Friends</button>';
+  }
+
+  // Watchlist button removed
+
+  // Feature 1: Match Reminder — sirf match se PEHLE (A5/A6)
+  if (!_started && t.matchTime && Number(t.matchTime) > _mtNow) {
+    h += '<button onclick="window.setMatchReminder&&setMatchReminder(\'' + id + '\',' + t.matchTime + ',\'' + (t.name||'Match') + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-bell"></i> Set Match Reminder</button>';
+  }
+
+  // Feature 45: Interest toggle — ✅ B15 (2026-10-07): button par id + data-int-btn
+  // lagaya taaki uska ASLI state dikhe ("✓ Interested" agar pehle se hai).
+  // State modal khulte hi server RPC my_match_interests se aati hai (neeche
+  // openModal ke baad refreshInterests call dekho) — pehle user ko pata hi
+  // nahi chalta tha ki wo pehle se interested hai ya nahi.
+  h += '<button id="intBtn_' + id + '" data-int-btn="' + id + '" onclick="window.toggleInterest&&toggleInterest(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-hand-paper"></i> Mark as Interested</button>';
+
+  // Feature 8: Roster Viewer
+  // View Roster button removed
+
+  // Feature 47: Match Chat (for joined players)
+  if (hasJ(id)) {
+    h += '<button onclick="window.showMatchChat&&showMatchChat(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(185,100,255,.2);background:rgba(185,100,255,.06);color:var(--purple);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-comments"></i> Match Chat</button>';
+    // Kill Proof separate button removed — screenshot added inside Report Dispute
+    h += '<button onclick="window.showResultDispute&&showResultDispute(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(255,170,0,.2);background:rgba(255,170,0,.06);color:#ffaa00;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-exclamation-triangle"></i> Report Dispute</button>';
+    // ✅ REMOVED (2026-08-22): "Result Share Karo (+20🪙)" — per explicit
+    // instruction, the coin-for-sharing incentive is being removed
+    // platform-wide (no reason to pay coins for a share). See growth.js
+    // giveShareCoins() removal for the full cleanup.
+    h += '<button onclick="window.showReportPlayer&&showReportPlayer(\'' + id + '\',\'\',\'Player\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(255,46,46,.2);background:rgba(255,46,46,.06);color:var(--red);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-flag"></i> 🚩 Report Player with Proof</button>';
+  }
+
+  // Live Feed button removed
+
+  // ── Pre-match Check-In button — ✅ B30 (2026-10-07) HATA DIYA ──
+  /* ✅ Bug W FIX (2026-10-01): yeh block pehle `if (tp !== 'solo' && !hasJ(id))`
+     ke andar tha, jabki renderCheckInBtn() ke pehle hi line par
+     `if (!window.hasJ(matchId)) return ''` likha hai — do bilkul contradictory
+     shartein, isliye button KABHI render hi nahi hota tha (kisi bhi mode me,
+     kisi bhi user ke liye). Live nuksaan: koi user check-in kar hi nahi sakta
+     tha ⇒ checked_in hamesha false ⇒ server cron
+     internal_process_no_show_refunds har paid player ka entry match se 5 min
+     pehle hi no_show karke refund kar deta tha aur slot chura deta tha
+     (WALK10l me live proof: checkinBtn_<id> = None, saath hi refund+ledger+
+     notification sab fire ho gaye). Ab block bahar hai: joined player ko,
+     kisi bhi mode (solo/duo/squad) me, milega. Cancelled/completed par
+     dikhate nahi (wahan countdown ka koi matlab nahi). */
+  /* ✅ B30: match-detail ka check-in button bhi hata (dekho upar wala note) */
+
+  // Feature 36: Post-match feedback
+  if (effSt(t) === 'completed' && hasJ(id)) {
+    h += '<button onclick="window.showMatchFeedback&&showMatchFeedback(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(255,215,0,.2);background:rgba(255,215,0,.06);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-star"></i> Rate This Match</button>';
+  }
+
+  // Gift a Ticket — send match entry to a friend
+  if (!hasJ(id) && effSt(t) !== 'completed') {
+    h += '<button onclick="giftTicket(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(255,215,0,.25);background:rgba(255,215,0,.07);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-gift"></i> 🎁 Gift Entry to Friend</button>';
+  }
+  // QR Team Up — show QR for friend to scan and join squad
+  if (tp !== 'solo' && !hasJ(id)) {
+    h += '<button onclick="showTeamQR(\'' + id + '\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1px solid rgba(0,212,255,.25);background:rgba(0,212,255,.07);color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-qrcode"></i> QR Code se Team Join karo</button>';
+
+    // ── Auto-Squad/Duo join option ──
+    var _tm = (t.teamMode||t.matchType||'').toLowerCase();
+    var _isSquad = _tm.includes('squad') || t.gameMode === 'squad';
+    var _isDuo   = _tm.includes('duo')   || t.gameMode === 'duo';
+    var _autoEnabled = window.CFG && window.CFG.autoSquadEnabled;
+    if (_autoEnabled && (_isSquad || _isDuo) && effSt(t) === 'upcoming') {
+      var _autoMode = _isSquad ? 'squad' : 'duo';
+      var _autoNeeded = _isSquad ? 4 : 2;
+      h += '<button onclick="if(window.showAutoSquadJoin)showAutoSquadJoin(\'' + id + '\',\''+_autoMode+'\')" ' +
+        'style="width:100%;margin-top:8px;padding:12px;border-radius:12px;background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.2);color:var(--green);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">' +
+        '<i class="fas fa-users"></i> Akele ho? Auto ' + (_isSquad?'Squad':'Duo') + ' Join Karo!</button>';
+    }
+  }
+
+  /* ── ✅ D7 FIX (2026-10-07): Watch & Earn button ──────────────────
+     Yeh block PEHLE upar wale `if (tp !== 'solo' && !hasJ(id))` ke ANDAR
+     pada tha (QR/Auto-Squad ke saath) — us ka matlab tha:
+       • solo live match me button KABHI nahi dikhta tha,
+       • jo match tum khel rahe ho (hasJ true) us me bhi nahi dikhta tha.
+     Yaani Watch & Earn sirf non-solo + non-joined case me hi milta tha,
+     jabki live match dekhne wale asli log wahi joined/solo players hote
+     hain (aur _toMT mapper bhi pehle stream link gira deta tha — dono
+     mila kar feature user panel se lagbhag pahunch hi nahi sakta tha).
+     Ab yeh block top-level par hai: sirf 3 asli shartein — match ka
+     stream link ho, match abhi LIVE ho, aur watchEarn config me ON ho. */
+  if ((t.streamLink || t.youtubeLink) && effSt(t) === 'live' && window.CFG && window.CFG.watchEarnEnabled) {
+    h += '<button onclick="if(window.startWatching)startWatching(\'' + id + '\')" ' +
+      'style="width:100%;margin-top:8px;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(255,68,68,.12),rgba(204,0,0,.08));border:1px solid rgba(255,68,68,.25);color:#ff6b6b;font-size:13px;font-weight:800;cursor:pointer">' +
+      '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4444;margin-right:7px;vertical-align:middle"></span>👀 Watch & Earn Coins</button>';
+  }
+
+  openModal('Match Details', h);
+  /* ✅ B15: modal khulte hi apne interest ka asli state lao (server se) */
+  if (window.refreshInterests) { try { window.refreshInterests(); } catch (e) {} }
+}
+
+/* ====== GIFT TICKET ====== */
+function giftTicket(matchId) {
+  var t = MT[matchId]; if (!t) return;
+  var fee = Number(t.entryFee) || 0;
+  var isCoin = (t.entryType || '').toLowerCase() === 'coin' || (t.entryType || '').toString().toLowerCase() === 'coins'; /* BUG-HUNT R1 plural */
+  var bal = isCoin ? (UD.coins||0) : getMoneyBal();
+  if (bal < fee) { toast('Insufficient balance to gift entry', 'err'); return; }
+  var h = '<div style="text-align:center;padding:8px">';
+  h += '<div style="font-size:40px;margin-bottom:8px">🎁</div>';
+  h += '<div style="font-size:15px;font-weight:800;margin-bottom:4px">Gift Match Entry</div>';
+  h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:16px">Apne dost ke FF UID enter karo — unki entry fee tumhare wallet se kategi</div>';
+  h += '<div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:12px;margin-bottom:12px;font-size:13px">';
+  h += '<span style="color:var(--txt2)">Match:</span> <strong>' + (window.escHtml?window.escHtml(t.name||'Match'):(t.name||'Match')) + '</strong><br>';
+  h += '<span style="color:var(--txt2)">Fee:</span> <strong style="color:#ffd700">' + (isCoin ? '🪙 ' : '💎') + fee + ' will be deducted from you</strong></div>';
+  h += '<input id="giftToUid" class="f-input" placeholder="Friend ka FF UID" style="margin-bottom:12px">';
+  h += '<button onclick="confirmGiftTicket(\'' + matchId + '\')" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:none;font-weight:800;font-size:14px;cursor:pointer">🎁 Send Gift Entry!</button>';
+  h += '</div>';
+  openModal('Gift a Ticket', h);
+}
+function confirmGiftTicket(matchId) {
+  var t = MT[matchId]; if (!t) return;
+  var ffUid = ($('giftToUid')||{}).value; if (!ffUid || ffUid.trim().length < 5) { toast('Valid FF UID enter karo', 'err'); return; }
+  ffUid = ffUid.trim();
+  var isCoin = (t.entryType||'').toLowerCase() === 'coin' || (t.entryType || '').toString().toLowerCase() === 'coins'; /* BUG-HUNT R1 plural */
+  var fee = Number(t.entryFee)||0;
+  // Find user by FF UID
+  _findUserByFF(ffUid, function(friendUid, friendData) {
+    if (!friendUid || !friendData) { toast('Player not found with this FF UID', 'err'); return; }
+    if (friendUid === U.uid) { toast('Apne aap ko gift nahi kar sakte 😄', 'err'); return; }
+    /* ✅ Round-8 FIX (2026-09-20k): purana flow deduct aur ticket-insert ALAG
+       calls karta tha — insert fail hone par paisa katta reh jata, aur koi bhi
+       direct PostgREST insert se BINA pay ke ticket bana sakta tha (policy sirf
+       from_uid check karti thi). Ab ek hi server-side RPC: atomic debit +
+       ticket + ledger + notif, fee/insufficient/self-gift server verify karta hai. */
+    window._supa.rpc('gift_match_entry', { p_match_id: matchId, p_to_uid: friendUid })
+      .then(function(gr) {
+        var d = gr && gr.data;
+        if ((gr && gr.error) || (d && d.ok === false)) {
+          toast((d && d.error) || 'Gift send failed — retry karo', 'err');
+          console.error('[Gift]', (gr && gr.error) || d);
+          return;
+        }
+        closeModal();
+        toast('🎁 Gift ticket sent successfully!', 'ok');
+      }).catch(function(e) {
+        toast('Gift send failed — retry karo', 'err');
+        console.error('[Gift]', e);
+      });
+  });
+}
+
+/* ====== QR TEAM UP ====== */
+function showTeamQR(matchId) {
+  var t = MT[matchId]; if (!t) return;
+  /* R28j (2026-09-22): stale host student-4356.github.io -> canonical base */
+  var _base = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+  var joinLink = _base + '?join=' + matchId + '&ref=' + (UD.ffUid||U.uid.substr(0,8));
+  var h = '<div style="text-align:center;padding:8px">';
+  h += '<div style="font-size:14px;font-weight:800;margin-bottom:4px">📱 QR Code se Join karo</div>';
+  h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">Apne teammate ko yeh QR scan karne do — wo directly is match lobby mein aa jayega</div>';
+  // Generate QR using API
+  h += '<div style="background:#fff;padding:16px;border-radius:12px;display:inline-block;margin-bottom:12px">';
+  h += '<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(joinLink) + '" style="width:180px;height:180px;display:block">';
+  h += '</div>';
+  h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:8px">Ya link share karo:</div>';
+  h += '<div style="display:flex;gap:8px">';
+  h += '<input readonly value="' + joinLink + '" class="f-input" style="flex:1;font-size:10px">';
+  h += '<button onclick="copyTxt(\'' + joinLink + '\')" style="padding:10px 14px;border-radius:10px;background:rgba(0,255,106,.12);border:1px solid rgba(0,255,106,.2);color:var(--green);cursor:pointer"><i class="fas fa-copy"></i></button>';
+  h += '</div></div>';
+  openModal('🔗 Team QR', h);
+}
+
+/* ====== JOIN SYSTEM ====== */

@@ -1,1 +1,970 @@
-(function(){'use strict';var _0x1133ad=(function(){var _0x2a939c=!![];return function(_0x477223,_0x12feba){var _0x5d9d06=_0x2a939c?function(){if(_0x12feba){var _0x2a0bf4=_0x12feba['apply'](_0x477223,arguments);return _0x12feba=null,_0x2a0bf4;}}:function(){};return _0x2a939c=![],_0x5d9d06;};}());function _0x478c52(){return window['_supa'];}function _0x24320f(){return window['U']&&window['U']['uid'];}function _0x4e45f1(_0x4b13c4,_0x1e8311){if(window['toast'])window['toast'](_0x4b13c4,_0x1e8311||'inf');}function _0xe5ed7(){return window['UD']&&(window['UD']['ign']||window['UD']['displayName'])||'Player';}function _0x220fea(_0x41c7ce,_0x3f867d,_0x386371,_0x35f97b){var _0x572917=_0x1133ad(this,function(){if(_0x572917['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x572917['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x572917)['search']('(((.+)+)+)+$');});_0x572917();var _0x5c4046=0x0,_0x10549f=_0x386371||0x96,_0x1c0a7c=_0x35f97b||0x3a98,_0x1b3d9c=setInterval(function(){_0x5c4046+=_0x10549f;if(_0x41c7ce()){clearInterval(_0x1b3d9c);try{_0x3f867d();}catch(_0x443239){console['error']('[V30]',_0x443239);}}else{if(_0x5c4046>=_0x1c0a7c)clearInterval(_0x1b3d9c);}},_0x10549f);}function _0x1dadb3(){return Math['random']()['toString'](0x24)['substr'](0x2,0x8)['toUpperCase']()['replace'](/[^A-Z0-9]/g,'0');}var _0x5394c6=0xa;_0x220fea(function(){return window['_supa']&&window['getUserClan']!==undefined;},function(){window['getUserClan']=function(_0x2b27b1,_0x2ec72b){var _0x54a191,_0x5c0522;typeof _0x2b27b1==='function'?(_0x54a191=_0x24320f(),_0x5c0522=_0x2b27b1):(_0x54a191=_0x2b27b1,_0x5c0522=_0x2ec72b);if(!_0x54a191||!_0x478c52()){if(_0x5c0522)_0x5c0522(null);return;}_0x478c52()['from']('user_public_profiles')['select']('clan_id')['eq']('id',_0x54a191)['maybeSingle']()['then'](function(_0x1a7a0e){var _0x33d803=_0x1a7a0e['data']&&_0x1a7a0e['data']['clan_id'];if(!_0x33d803){_0x5c0522(null);return;}Promise['all']([_0x478c52()['from']('clans')['select']('*')['eq']('id',_0x33d803)['maybeSingle'](),_0x478c52()['from']('clan_members')['select']('user_id,\x20role,\x20joined_at')['eq']('clan_id',_0x33d803)])['then'](function(_0x297288){var _0x20e2f1=_0x297288[0x0]['data'],_0x25b1ce=_0x297288[0x1]['data']||[];if(!_0x20e2f1){_0x5c0522(null);return;}var _0x5d934d=_0x25b1ce['map'](function(_0x34ca69){return _0x34ca69['user_id'];});if(!_0x5d934d['length']){_0x5c0522(_0x2c9ca5(_0x20e2f1,{},[]));return;}_0x478c52()['from']('user_public_profiles')['select']('id,\x20ign,\x20avatar_url,\x20rank_points')['in']('id',_0x5d934d)['then'](function(_0x3116a0){var _0x21d97b={};(_0x3116a0['data']||[])['forEach'](function(_0x15d74d){_0x21d97b[_0x15d74d['id']]=_0x15d74d;}),_0x5c0522(_0x2c9ca5(_0x20e2f1,_0x21d97b,_0x25b1ce));})['catch'](function(){_0x5c0522(_0x2c9ca5(_0x20e2f1,{},_0x25b1ce));});})['catch'](function(_0x372684){console['warn']('[V30\x20#1]\x20getUserClan:',_0x372684['message']),_0x5c0522(null);});})['catch'](function(){_0x5c0522(null);});};function _0x2c9ca5(_0x30e642,_0x83ac10,_0x12fa29){var _0x43e58f={};_0x12fa29['forEach'](function(_0x4e05c9){var _0x2328a5=_0x83ac10[_0x4e05c9['user_id']]||{};_0x43e58f[_0x4e05c9['user_id']]={'uid':_0x4e05c9['user_id'],'ign':_0x2328a5['ign']||'Player','avatar':_0x2328a5['avatar_url']||'','role':_0x4e05c9['role']||'member','rankPoints':_0x2328a5['rank_points']||0x0,'joinedAt':_0x4e05c9['joined_at'],'gd':0x0};});var _0x3ca398=_0x30e642['join_code']||(_0x30e642['id']||'')['replace'](/-/g,'')['substr'](0x0,0x8)['toUpperCase']();return{'_id':_0x30e642['id'],'id':_0x30e642['id'],'name':_0x30e642['name']||'','tag':_0x30e642['tag']||'','emblem':_0x30e642['emblem']||_0x30e642['badge']||'🏰','badge':_0x30e642['emblem']||_0x30e642['badge']||'🏰','leader':_0x30e642['leader_uid']||'','memberCount':_0x30e642['total_members']||Object['keys'](_0x43e58f)['length'],'weeklyScore':_0x30e642['weekly_score']||0x0,'totalWins':_0x30e642['total_wins']||0x0,'totalKills':_0x30e642['total_kills']||0x0,'weeklyRank':0x0,'join_code':_0x3ca398,'members':_0x43e58f};}console['log']('[V30\x20#1a]\x20getUserClan\x20Supabase\x20patch\x20✅'),window['_doCreateClan']=async function(){if(!_0x478c52()||!_0x24320f())return;var _0x273e78=((document['getElementById']('_cName')||{})['value']||'')['trim'](),_0x30a41f=((document['getElementById']('_cTag')||{})['value']||'')['toUpperCase']()['trim']();if(!_0x273e78){_0x4e45f1('Clan\x20ka\x20naam\x20daalo!','err');return;}if(!_0x30a41f||_0x30a41f['length']<0x2){_0x4e45f1('Tag\x202-4\x20chars\x20ka\x20hona\x20chahiye!','err');return;}var _0x44a848='🏰';document['querySelectorAll']('[id^=\x22_emb_\x22]')['forEach'](function(_0x5d22e1){_0x5d22e1['style']['background']&&_0x5d22e1['style']['background']['indexOf']('rgba(255,215,0')!==-0x1&&(_0x44a848=_0x5d22e1['textContent']['trim']()||_0x44a848);});var _0x1fb8d8=_0x24320f(),_0x1fa70b=window['UD']&&(window['UD']['clanId']||window['UD']['clan_id']);if(_0x1fa70b){var _0x1ad4d8=await _0x478c52()['from']('clans')['select']('id')['eq']('id',_0x1fa70b)['maybeSingle']();if(_0x1ad4d8&&_0x1ad4d8['data']&&_0x1ad4d8['data']['id']){_0x4e45f1('Pehle\x20apna\x20current\x20clan\x20chhodo!','err');return;}await _0x478c52()['from']('users')['update']({'clan_id':null})['eq']('id',_0x1fb8d8),window['UD']&&(window['UD']['clanId']=null,window['UD']['clan_id']=null);}var _0x490e9c=_0x1dadb3();_0x478c52()['from']('clans')['insert']({'name':_0x273e78,'tag':_0x30a41f['substr'](0x0,0x4),'emblem':_0x44a848,'badge':_0x44a848,'leader_uid':_0x1fb8d8,'total_members':0x1,'weekly_score':0x0,'total_wins':0x0,'total_kills':0x0,'is_private':![],'join_code':_0x490e9c})['select']()['single']()['then'](function(_0x1860a3){if(_0x1860a3['error']){_0x4e45f1('Error:\x20'+_0x1860a3['error']['message'],'err');return;}var _0x8dc312=_0x1860a3['data']['id'];return _0x478c52()['from']('clan_members')['insert']({'clan_id':_0x8dc312,'user_id':_0x1fb8d8,'role':'leader'})['then'](function(){return _0x478c52()['from']('users')['update']({'clan_id':_0x8dc312})['eq']('id',_0x1fb8d8);})['then'](function(){window['UD']&&(window['UD']['clanId']=_0x8dc312,window['UD']['clan_id']=_0x8dc312);_0x4e45f1('✅\x20Clan\x20\x22'+_0x273e78+'\x22\x20ban\x20gaya!\x20Code:\x20'+_0x490e9c,'ok');if(window['closeModal'])closeModal();});})['catch'](function(_0x4a8a8a){_0x4e45f1('Clan\x20create\x20error:\x20'+(_0x4a8a8a['message']||'retry\x20karo'),'err');});},window['_doCreateClan']['_v30Supa']=!![],console['log']('[V30\x20#1]\x20_doCreateClan\x20Supabase\x20patch\x20✅'),window['joinClan']=async function(_0x516aec){if(!_0x478c52()||!_0x24320f())return;if(!_0x516aec){_0x4e45f1('Clan\x20ID\x20ya\x20code\x20daalo!','err');return;}var _0xf5b7a9=_0x24320f(),_0x10ccd7=window['UD']&&(window['UD']['clanId']||window['UD']['clan_id']);if(_0x10ccd7){var _0x3c5163=await Promise['all']([_0x478c52()['from']('clans')['select']('id')['eq']('id',_0x10ccd7)['maybeSingle'](),_0x478c52()['from']('user_public_profiles')['select']('clan_id')['eq']('id',_0xf5b7a9)['maybeSingle']()]),_0x477eb1=_0x3c5163[0x0]&&_0x3c5163[0x0]['data']&&_0x3c5163[0x0]['data']['id'],_0x1364ae=_0x3c5163[0x1]&&_0x3c5163[0x1]['data']&&_0x3c5163[0x1]['data']['clan_id'];if(_0x477eb1&&_0x1364ae===_0x10ccd7){_0x4e45f1('Pehle\x20apna\x20current\x20clan\x20chhodo!','err');return;}await _0x478c52()['from']('users')['update']({'clan_id':null})['eq']('id',_0xf5b7a9),window['UD']&&(window['UD']['clanId']=null,window['UD']['clan_id']=null);}var _0x945c7c=_0x516aec['toString']()['trim']()['toUpperCase'](),_0x7c04a3=/^[0-9a-f]{8}-[0-9a-f]{4}-/i['test'](_0x516aec),_0x4be839;_0x7c04a3?_0x4be839=_0x478c52()['from']('clans')['select']('id,\x20name,\x20total_members,\x20emblem,\x20badge')['eq']('id',_0x516aec)['maybeSingle']():_0x4be839=_0x478c52()['from']('clans')['select']('id,\x20name,\x20total_members,\x20emblem,\x20badge')['eq']('join_code',_0x945c7c)['maybeSingle'](),_0x4be839['then'](function(_0x194623){if(!_0x194623['data']){_0x4e45f1('Clan\x20nahi\x20mila!\x20Code\x20dobara\x20check\x20karo.','err');return;}var _0xe99aab=_0x194623['data'];if((_0xe99aab['total_members']||0x0)>=_0x5394c6){_0x4e45f1('Clan\x20full\x20hai!\x20('+_0xe99aab['total_members']+'/'+_0x5394c6+')','err');return;}_0x478c52()['rpc']('join_clan',{'p_user_id':_0xf5b7a9,'p_clan_id':_0xe99aab['id'],'p_ign':_0xe5ed7(),'p_max_members':_0x5394c6})['then'](function(_0x7448b6){var _0x41891a=_0x7448b6&&_0x7448b6['data']||{};if(_0x41891a['ok']===![]||_0x41891a['error']){var _0x9ce3e8=_0x41891a['error']==='clan_full'?'Clan\x20full\x20ho\x20gaya!':_0x41891a['error']==='already_in_clan'?'Pehle\x20current\x20clan\x20chhodo!':_0x41891a['error']==='Already\x20in\x20clan'?'Pehle\x20se\x20member\x20ho!':'Join\x20error:\x20'+(_0x41891a['error']||'unknown');_0x4e45f1(_0x9ce3e8,'err');return;}_0x51a37a(_0xe99aab);})['catch'](function(){_0xaaf585(_0xf5b7a9,_0xe99aab);});})['catch'](function(){_0x4e45f1('Service\x20unavailable,\x20retry\x20karo','err');});};function _0x51a37a(_0x5cfe90){window['UD']&&(window['UD']['clanId']=_0x5cfe90['id'],window['UD']['clan_id']=_0x5cfe90['id']);var _0x1e4c17=_0x5cfe90['emblem']||_0x5cfe90['badge']||'🏰';_0x4e45f1('✅\x20'+_0x1e4c17+'\x20\x22'+(_0x5cfe90['name']||'Clan')+'\x22\x20join\x20kar\x20liya!','ok');if(window['closeModal'])closeModal();}function _0xaaf585(_0x474492,_0x24e38d){_0x4e45f1('Clan\x20join\x20RPC\x20se\x20hi\x20hoga\x20—\x20dobara\x20try\x20karo','err');}window['_doJoinByCode']=function(){var _0x4461a3=((document['getElementById']('_cCode')||{})['value']||'')['toUpperCase']()['trim']()['substr'](0x0,0x8);if(!_0x4461a3||_0x4461a3['length']<0x6){_0x4e45f1('Valid\x20code\x20daalo!\x20(6-8\x20chars)','err');return;}window['joinClan'](_0x4461a3);},console['log']('[V30\x20#1]\x20joinClan\x20+\x20_doJoinByCode\x20Supabase\x20patch\x20✅'),window['leaveClan']=function(_0x27d4da){if(!_0x478c52()||!_0x24320f())return;if(!confirm('Kya\x20aap\x20sach\x20mein\x20clan\x20chhodni\x20chahte\x20ho?\x20Yeh\x20action\x20undo\x20nahi\x20ho\x20sakta.'))return;var _0xe7c158=_0x24320f();Promise['resolve'](_0x478c52()['rpc']('leave_clan',{'p_user_id':_0xe7c158,'p_clan_id':_0x27d4da}))['then'](function(_0x36289b){var _0x70c517=_0x36289b&&_0x36289b['error']||null,_0x4dee35=_0x36289b&&_0x36289b['data']||{};if(_0x70c517){_0x4e45f1('Leave\x20error:\x20'+(_0x70c517['message']||'RPC\x20failed'),'err');return;}if(_0x4dee35&&typeof _0x4dee35==='object'&&_0x4dee35['ok']===![]){_0x4e45f1('Leave\x20error:\x20'+(_0x4dee35['error']||'failed'),'err');return;}_0x5c94c8();},function(_0x6624ac){_0x4e45f1('Leave\x20error:\x20'+(_0x6624ac&&_0x6624ac['message']||'retry\x20karo'),'err');});function _0x5c94c8(){window['UD']&&(delete window['UD']['clanId'],delete window['UD']['clan_id'],window['UD']['clanId']=null,window['UD']['clan_id']=null);_0x4e45f1('Clan\x20chhod\x20diya!','ok');if(window['closeModal'])closeModal();}},window['disbandClan']=function(_0x4e4ade){if(!_0x478c52()||!_0x24320f())return;if(!confirm('DISBAND\x20CLAN?\x20Yeh\x20clan\x20aur\x20sare\x20members\x20permanently\x20remove\x20honge!'))return;var _0x48a16b=_0x24320f();function _0x44fa8c(){window['UD']&&(delete window['UD']['clanId'],delete window['UD']['clan_id'],window['UD']['clanId']=null,window['UD']['clan_id']=null);_0x4e45f1('Clan\x20disband\x20kar\x20diya!','ok');if(window['closeModal'])closeModal();}function _0x174ecb(){_0x478c52()['from']('users')['update']({'clan_id':null})['eq']('clan_id',_0x4e4ade)['then'](function(){return _0x478c52()['from']('clan_members')['delete']()['eq']('clan_id',_0x4e4ade);})['then'](function(){return _0x478c52()['from']('clans')['delete']()['eq']('id',_0x4e4ade)['eq']('leader_uid',_0x48a16b);})['then'](function(){_0x44fa8c();})['then'](null,function(_0x5a383a){_0x4e45f1('Disband\x20error:\x20'+(_0x5a383a&&_0x5a383a['message']||'retry\x20karo'),'err');});}_0x478c52()['rpc']('disband_clan',{'p_clan_id':_0x4e4ade})['then'](function(_0x23c2ed){if(_0x23c2ed&&_0x23c2ed['error']){var _0x1dfbaa=_0x23c2ed['error']&&_0x23c2ed['error']['message']||'';if(_0x23c2ed['error']['code']==='PGRST202'||/not found/i['test'](_0x1dfbaa)){_0x174ecb();return;}_0x4e45f1('Disband\x20error:\x20'+(_0x1dfbaa||'failed'),'err');return;}var _0x33149b=_0x23c2ed&&_0x23c2ed['data'];if(_0x33149b&&_0x33149b['ok']===![]){var _0x101bc3=_0x33149b['error']==='not_leader'?'Sirf\x20leader\x20disband\x20kar\x20sakta\x20hai':_0x33149b['error']||'failed';_0x4e45f1('Disband\x20error:\x20'+_0x101bc3,'err');return;}_0x44fa8c();},function(){_0x174ecb();});},window['kickClanMember']=function(_0x4c6a2a,_0x4d3c18){if(!_0x478c52()||!_0x24320f())return;function _0x47824d(){_0x478c52()['from']('clan_members')['delete']()['eq']('clan_id',_0x4c6a2a)['eq']('user_id',_0x4d3c18)['then'](function(){return _0x478c52()['from']('users')['update']({'clan_id':null})['eq']('id',_0x4d3c18);})['then'](function(){return _0x478c52()['from']('clans')['select']('total_members')['eq']('id',_0x4c6a2a)['single']();})['then'](function(_0x15d4f4){var _0x51b631=_0x15d4f4['data']&&_0x15d4f4['data']['total_members']||0x1;return _0x478c52()['from']('clans')['update']({'total_members':Math['max'](0x0,_0x51b631-0x1)})['eq']('id',_0x4c6a2a);})['then'](function(){_0x4e45f1('Member\x20kick\x20kar\x20diya!','ok');if(window['closeModal'])closeModal();setTimeout(function(){if(window['showClanHome'])showClanHome();},0x12c);})['then'](null,function(_0x19f160){_0x4e45f1('Kick\x20error:\x20'+(_0x19f160&&_0x19f160['message']||'retry\x20karo'),'err');});}_0x478c52()['rpc']('kick_clan_member',{'p_clan_id':_0x4c6a2a,'p_member_uid':_0x4d3c18})['then'](function(_0x333739){if(_0x333739&&_0x333739['error']){var _0xea4f71=_0x333739['error']&&_0x333739['error']['message']||'';if(_0x333739['error']['code']==='PGRST202'||/not found/i['test'](_0xea4f71)){_0x47824d();return;}_0x4e45f1('Kick\x20error:\x20'+(_0xea4f71||'failed'),'err');return;}var _0x4db8c6=_0x333739&&_0x333739['data'];if(_0x4db8c6&&_0x4db8c6['ok']===![]){var _0x221021=_0x4db8c6['error']==='not_leader'?'Sirf\x20leader\x20kick\x20kar\x20sakta\x20hai':_0x4db8c6['error']==='not_a_member'?'Ye\x20member\x20is\x20clan\x20me\x20nahi\x20hai':_0x4db8c6['error']||'failed';_0x4e45f1('Kick\x20error:\x20'+_0x221021,'err');return;}_0x4e45f1('Member\x20kick\x20kar\x20diya!','ok');if(window['closeModal'])closeModal();setTimeout(function(){if(window['showClanHome'])showClanHome();},0x12c);},function(){_0x47824d();});},console['log']('[V30\x20#1]\x20leaveClan\x20/\x20disbandClan\x20/\x20kickClanMember\x20Supabase\x20✅'),window['showClanLeaderboardFull']=function(){if(!_0x478c52()){_0x4e45f1('Service\x20unavailable','err');return;}var _0x24ea89=window['GDI']||function(_0x17dd8d){return'<img\x20src=\x22js/green-diamond.png?v=20261117g\x22\x20style=\x22width:'+(_0x17dd8d||0xe)+'px;height:'+(_0x17dd8d||0xe)+'px;vertical-align:middle\x22>';};_0x478c52()['from']('clans')['select']('id,\x20name,\x20emblem,\x20badge,\x20tag,\x20weekly_score,\x20total_wins,\x20total_members')['order']('weekly_score',{'ascending':![]})['limit'](0x14)['then'](function(_0x25f2b7){var _0x96141b=_0x25f2b7['data']||[],_0x26a9c2=window['UD']&&(window['UD']['clanId']||window['UD']['clan_id'])||'',_0x1445b8=[0x1f4,0x12c,0xc8,0x0,0x0,0x0,0x0,0x0,0x0,0x32],_0x221107='<div\x20style=\x22font-size:11px;color:#666;margin-bottom:10px\x22>Weekly\x20rewards:\x20Top\x203\x20clans\x20ko\x20Green\x20Diamonds\x20(Monday\x20reset)</div>';!_0x96141b['length']?_0x221107+='<div\x20style=\x22text-align:center;padding:24px;color:#666\x22>Abhi\x20koi\x20clan\x20nahi\x20hai!</div>':_0x96141b['forEach'](function(_0x32a561,_0x4f5685){var _0x166b3f=_0x4f5685+0x1,_0x34aa19=window['medalHtml'](_0x166b3f,_0x166b3f<=0x3?0x14:0xd),_0x160de2=_0x32a561['id']===_0x26a9c2,_0x42bda0=_0x1445b8[Math['min'](0x9,_0x4f5685)]||0x0,_0x2622c8=_0x32a561['emblem']||_0x32a561['badge']||'🏰',_0x162acc=_0x32a561['total_members']||0x0,_0x14691c=_0x160de2?'.07':_0x166b3f<=0x3?'.06':'.04',_0x1d77b7=_0x160de2?'.15':_0x166b3f<=0x3?'.1':'.06';_0x221107+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:rgba(255,255,255,'+_0x14691c+');border:1px\x20solid\x20rgba(255,255,255,'+_0x1d77b7+');margin-bottom:8px\x22>',_0x221107+='<div\x20style=\x22font-size:22px;width:32px;text-align:center\x22>'+_0x34aa19+'</div>',_0x221107+='<div\x20style=\x22font-size:24px\x22>'+_0x2622c8+'</div>',_0x221107+='<div\x20style=\x22flex:1\x22>',_0x221107+='<div\x20style=\x22font-size:14px;font-weight:800;color:#fff\x22>'+(_0x32a561['name']||'Clan')+(_0x160de2?'\x20(Aapka)':'')+'</div>',_0x221107+='<div\x20style=\x22font-size:10px;color:#888\x22>'+_0x162acc+'\x20members\x20&bull;\x20'+_0x24ea89(0xb)+'\x20'+(_0x32a561['weekly_score']||0x0)+'\x20pts</div>',_0x221107+='</div>',_0x42bda0&&(_0x221107+='<div\x20style=\x22text-align:right\x22>',_0x221107+='<div\x20style=\x22font-size:12px;font-weight:800;color:#00ff64\x22>'+_0x24ea89(0xd)+'\x20'+_0x42bda0+'</div>',_0x221107+='<div\x20style=\x22font-size:9px;color:#555\x22>weekly</div>',_0x221107+='</div>'),_0x221107+='</div>';});if(window['openModal'])openModal('🏆\x20Clan\x20Leaderboard',_0x221107);})['catch'](function(){_0x4e45f1('Leaderboard\x20load\x20nahi\x20hua','err');});},console['log']('[V30\x20#1]\x20showClanLeaderboardFull\x20Supabase\x20✅'),window['showClanChat']=function(_0x3e17ed){if(!_0x478c52()||!_0x24320f())return;var _0x4f80f7=_0x24320f(),_0x5bc472=_0xe5ed7(),_0x278230=null,_0x2d345d='<div\x20id=\x22_clanChatMsgs\x22\x20style=\x22height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px\x200;margin-bottom:12px\x22></div>';_0x2d345d+='<div\x20style=\x22display:flex;gap:8px\x22>',_0x2d345d+='<input\x20id=\x22_ccInput\x22\x20type=\x22text\x22\x20maxlength=\x22100\x22\x20placeholder=\x22Message\x20likho...\x22',_0x2d345d+='\x20style=\x22flex:1;padding:10px\x2012px;border-radius:11px;border:1px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px\x22',_0x2d345d+='\x20onkeydown=\x22if(event.key===\x27Enter\x27)window._sendClanMsg(\x27'+_0x3e17ed+'\x27)\x22>',_0x2d345d+='<button\x20onclick=\x22window._sendClanMsg(\x27'+_0x3e17ed+'\x27)\x22\x20style=\x22padding:10px\x2016px;border-radius:11px;border:none;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-weight:900;cursor:pointer;font-size:13px\x22>Send</button>',_0x2d345d+='</div>';if(window['openModal'])openModal('💬\x20Clan\x20Chat',_0x2d345d);_0x478c52()['from']('clan_messages')['select']('id,\x20sender_id,\x20sender_ign,\x20message,\x20created_at')['eq']('clan_id',_0x3e17ed)['order']('created_at',{'ascending':!![]})['limit'](0x32)['then'](function(_0x673c6b){var _0x4de681=document['getElementById']('_clanChatMsgs');if(!_0x4de681)return;(_0x673c6b['data']||[])['forEach'](function(_0x3c6e17){_0x100b88(_0x3c6e17,_0x4de681,_0x4f80f7);}),_0x4de681['scrollTop']=_0x4de681['scrollHeight'];});try{_0x278230=_0x478c52()['channel']('clan_chat_'+_0x3e17ed)['on']('postgres_changes',{'event':'INSERT','schema':'public','table':'clan_messages','filter':'clan_id=eq.'+_0x3e17ed},function(_0x4c04fb){var _0x1deb8d=document['getElementById']('_clanChatMsgs');if(!_0x1deb8d){if(_0x278230)try{_0x278230['unsubscribe']();}catch(_0x4ad143){}return;}_0x100b88(_0x4c04fb['new'],_0x1deb8d,_0x4f80f7),_0x1deb8d['scrollTop']=_0x1deb8d['scrollHeight'];})['subscribe'](function(_0x41198f){_0x41198f==='CHANNEL_ERROR'&&(console['warn']('[V30]\x20Clan\x20chat\x20realtime\x20failed\x20—\x20using\x20polling\x20fallback'),_0x1cde68(_0x3e17ed,_0x4f80f7));});}catch(_0x389229){console['warn']('[V30]\x20Realtime\x20subscribe\x20error:',_0x389229['message']),_0x1cde68(_0x3e17ed,_0x4f80f7);}var _0x424e7f=window['closeModal'];window['closeModal']=function(){if(_0x278230){try{_0x278230['unsubscribe']();}catch(_0x531c3a){}_0x278230=null;}window['closeModal']=_0x424e7f;if(_0x424e7f)_0x424e7f();},window['_sendClanMsg']=function(_0x578c47){var _0x5e9a4b=document['getElementById']('_ccInput');if(!_0x5e9a4b||!_0x5e9a4b['value']['trim']())return;var _0x48eba2=_0x5e9a4b['value']['trim']()['substr'](0x0,0x64);_0x5e9a4b['value']='',_0x478c52()['from']('clan_messages')['insert']({'clan_id':_0x578c47,'sender_id':_0x4f80f7,'sender_ign':_0x5bc472,'message':_0x48eba2})['then'](null,function(){_0x4e45f1('Message\x20send\x20nahi\x20hua','err');});};};var _0x5865c3=null;function _0x1cde68(_0x26bd67,_0x8c2a89){var _0x929280=setInterval(function(){var _0x520026=document['getElementById']('_clanChatMsgs');if(!_0x520026){clearInterval(_0x929280);return;}var _0x4e43cd=_0x478c52()['from']('clan_messages')['select']('id,\x20sender_id,\x20sender_ign,\x20message,\x20created_at')['eq']('clan_id',_0x26bd67)['order']('created_at',{'ascending':!![]})['limit'](0x32);if(_0x5865c3)_0x4e43cd=_0x4e43cd['gt']('created_at',_0x5865c3);_0x4e43cd['then'](function(_0x3d7671){(_0x3d7671['data']||[])['forEach'](function(_0x5a4d50){_0x100b88(_0x5a4d50,_0x520026,_0x8c2a89),_0x5865c3=_0x5a4d50['created_at'];});if(_0x3d7671['data']&&_0x3d7671['data']['length'])_0x520026['scrollTop']=_0x520026['scrollHeight'];});},0xfa0);}function _0x100b88(_0x3e7958,_0xbfb72b,_0x50821e){if(!_0xbfb72b||!_0x3e7958)return;var _0x38f2c5=_0x3e7958['sender_id']===_0x50821e,_0x24653=function(_0x7fe1f2){return String(_0x7fe1f2||'')['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;');},_0x11bac1=document['createElement']('div');_0x11bac1['style']['cssText']='display:flex;flex-direction:'+(_0x38f2c5?'row-reverse':'row')+';gap:6px;align-items:flex-end',_0x11bac1['innerHTML']='<div\x20style=\x22max-width:75%;padding:8px\x2012px;border-radius:'+(_0x38f2c5?'14px\x2014px\x204px\x2014px':'14px\x2014px\x2014px\x204px')+';background:'+(_0x38f2c5?'rgba(0,212,255,.15)':'rgba(255,255,255,.07)')+';border:1px\x20solid\x20'+(_0x38f2c5?'rgba(0,212,255,.25)':'rgba(255,255,255,.1)')+'\x22>'+'<div\x20style=\x22font-size:10px;color:'+(_0x38f2c5?'#00d4ff':'#888')+';margin-bottom:3px;font-weight:700\x22>'+(_0x38f2c5?'You':_0x24653(_0x3e7958['sender_ign']||'Player'))+'</div>'+'<div\x20style=\x22font-size:12px;color:#ddd\x22>'+_0x24653(_0x3e7958['message'])+'</div>'+'</div>',_0xbfb72b['appendChild'](_0x11bac1);}console['log']('[V30\x20#1]\x20showClanChat\x20Supabase\x20Realtime\x20✅'),window['updateClanScore']=function(_0x1e9223,_0x3a0297,_0x46a69e){if(!_0x478c52()||!window['UD'])return;var _0x84152b=window['UD']['clanId']||window['UD']['clan_id'];if(!_0x84152b)return;var _0x46d659=(_0x3a0297||0x0)*0x1+(_0x46a69e?0x1:0x0)*0x5;_0x478c52()['rpc']('increment_clan_score',{'p_clan_id':_0x84152b,'p_score':_0x46d659,'p_wins':_0x46a69e?0x1:0x0,'p_kills':_0x3a0297||0x0})['then'](null,function(){});},console['log']('[V30\x20#1]\x20updateClanScore\x20Supabase\x20✅');var _0x22a5eb=window['showJoinClanByCode'];window['showJoinClanByCode']=function(){var _0x3ea754='<div\x20style=\x22font-size:13px;color:#aaa;margin-bottom:12px\x22>Dost\x20ne\x20invite\x20code\x20diya\x20hoga\x20—\x20woh\x20daalo:</div>';_0x3ea754+='<input\x20id=\x22_cCode\x22\x20type=\x22text\x22\x20maxlength=\x228\x22\x20placeholder=\x228-char\x20code\x20(e.g.\x20AB12CD34)\x22',_0x3ea754+='\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1.5px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:16px;letter-spacing:2px;text-align:center;box-sizing:border-box;text-transform:uppercase;margin-bottom:16px\x22>',_0x3ea754+='<button\x20onclick=\x22window._doJoinByCode()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:1.5px\x20solid\x20rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:14px;font-weight:900;cursor:pointer\x22>Join\x20Karo\x20→</button>';if(window['openModal'])openModal('🔑\x20Code\x20se\x20Join',_0x3ea754);};var _0x5bf3b9=window['showClanHome'];window['showClanHome']=function(){if(!window['U']||!window['UD']){_0x4e45f1('Pehle\x20login\x20karo!','err');return;}window['getUserClan'](function(_0x2512a8){if(_0x2512a8){!_0x2512a8['join_code']&&(_0x2512a8['join_code']=(_0x2512a8['id']||'')['replace'](/-/g,'')['substr'](0x0,0x8)['toUpperCase']());_0x5bf3b9&&_0x5bf3b9();var _0x2f1019=window['openModal'];window['openModal']=function(_0x37e0b9,_0x13fd09){if(_0x2512a8['join_code']&&_0x13fd09&&_0x13fd09['indexOf']('Clan\x20Invite\x20Code')!==-0x1){var _0x414133=(_0x2512a8['_id']||'')['substr'](0x0,0x8)['toUpperCase']();_0x414133&&_0x2512a8['join_code']!==_0x414133&&(_0x13fd09=_0x13fd09['replace'](_0x414133,_0x2512a8['join_code']));}window['openModal']=_0x2f1019;if(_0x2f1019)_0x2f1019(_0x37e0b9,_0x13fd09);};}else _0x5bf3b9&&_0x5bf3b9();});},console['log']('[V30\x20#1]\x20showClanHome\x20join_code\x20display\x20patch\x20✅');}),_0x220fea(function(){return window['DB']&&window['DB']['admin'];},function(){async function _0x1470dd(){if(!_0x478c52()||!_0x24320f())return![];try{var _0x4a8749=await _0x478c52()['from']('users')['select']('is_admin')['eq']('id',_0x24320f())['maybeSingle']();return!!(_0x4a8749['data']&&_0x4a8749['data']['is_admin']);}catch(_0x384ae2){return![];}}var _0x3aa3c2=window['DB']['admin']['getPendingJoinRequests'];window['DB']['admin']['getPendingJoinRequests']=async function(){if(!await _0x1470dd())return console['warn']('[V30\x20#36]\x20getPendingJoinRequests:\x20access\x20denied\x20(not\x20admin)'),[];return _0x3aa3c2?_0x3aa3c2['apply'](window['DB']['admin'],arguments):[];};var _0x412418=window['DB']['admin']['getCreatorApplications'];window['DB']['admin']['getCreatorApplications']=async function(){if(!await _0x1470dd())return console['warn']('[V30\x20#36]\x20getCreatorApplications:\x20access\x20denied\x20(not\x20admin)'),[];return _0x412418?_0x412418['apply'](window['DB']['admin'],arguments):[];};var _0x2f102e=window['DB']['admin']['setCreatorStatus'];window['DB']['admin']['setCreatorStatus']=async function(_0x1237b6,_0x39207a,_0x104a35){if(!await _0x1470dd())return console['warn']('[V30\x20#36]\x20setCreatorStatus:\x20access\x20denied\x20(not\x20admin)'),null;return _0x2f102e?_0x2f102e['apply'](window['DB']['admin'],arguments):null;},console['log']('[V30\x20#36]\x20Admin\x20role\x20checks:\x20getPendingJoinRequests\x20/\x20getCreatorApplications\x20/\x20setCreatorStatus\x20✅');}),_0x220fea(function(){return window['cJoin']!==undefined;},function(){var _0x572716=window['cJoin'];window['cJoin']=function(_0x23058e){if(!_0x478c52()||!_0x23058e||window['MT']&&window['MT'][_0x23058e]){_0x572716(_0x23058e);return;}_0x478c52()['from']('matches')['select']('status,\x20max_slots,\x20filled_slots')['eq']('id',_0x23058e)['single']()['then'](function(_0x2d9fd1){if(!_0x2d9fd1['data']){_0x4e45f1('Match\x20nahi\x20mila!','err');return;}var _0x3f9e94=_0x2d9fd1['data'],_0x477125=(_0x3f9e94['status']||'')['toLowerCase']();if(_0x477125==='cancelled'){_0x4e45f1('Match\x20cancel\x20ho\x20gaya!','err');return;}if(_0x477125==='completed'){_0x4e45f1('Match\x20khatam\x20ho\x20gaya!','err');return;}if(_0x477125==='live'){}var _0x20c185=Number(_0x3f9e94['filled_slots'])||0x0,_0x3dd63c=Number(_0x3f9e94['max_slots'])||0x64;if(_0x20c185>=_0x3dd63c){_0x4e45f1('Match\x20full\x20ho\x20gaya!\x20('+_0x20c185+'/'+_0x3dd63c+')','err');try{var _0x36a781=document['querySelectorAll']('button[onclick*=\x22cJoin(\x27'+_0x23058e+'\x27\x22],'+'button[onclick*=\x22cJoin(\x27'+_0x23058e+'\x27)\x22]');_0x36a781['forEach'](function(_0xabbb4d){_0xabbb4d['disabled']=!![],_0xabbb4d['textContent']='Full',_0xabbb4d['style']['cssText']+=';opacity:.5;cursor:not-allowed';});}catch(_0x4b8d2d){}return;}_0x572716(_0x23058e);})['catch'](function(){_0x572716(_0x23058e);});},console['log']('[V30\x20#34]\x20cJoin\x20Supabase\x20re-validate\x20slots\x20on\x20click\x20✅');}),_0x220fea(function(){return window['_supa']&&window['showAvatarBgPicker']!==undefined;},function(){var _0x402839=window['showAvatarBgPicker'];window['showAvatarBgPicker']=function(){window['_supa']&&window['U']&&window['_supa']['from']('users')['select']('avatar_bg_color')['eq']('id',window['U']['uid'])['maybeSingle']()['then'](function(_0x62788d){if(_0x62788d['data']&&_0x62788d['data']['avatar_bg_color']){if(window['UD'])window['UD']['avatarBgColor']=_0x62788d['data']['avatar_bg_color'];}})['catch'](function(){});if(_0x402839)_0x402839();},console['log']('[V30\x20#11]\x20Avatar\x20bg\x20color\x20reads\x20from\x20Supabase\x20✅');}),console['log']('╔══════════════════════════════════════════════════════╗'),console['log']('║\x20\x20MiniESports\x20BUGFIX\x20v30\x20FINAL\x20loaded\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('║\x20\x20Bug\x20#1\x20\x20\x20:\x20Clan\x20100%\x20Supabase\x20✅\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('║\x20\x20Bug\x20#1a\x20\x20:\x20getUserClan\x20signature\x20fixed\x20✅\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('║\x20\x20Bug\x20#7\x20\x20\x20:\x20Clan\x20Chat\x20Supabase\x20Realtime\x20✅\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('║\x20\x20Bug\x20#11\x20\x20:\x20Avatar\x20bg\x20Supabase\x20sync\x20✅\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('║\x20\x20Bug\x20#36\x20\x20:\x20Admin\x20role\x20checks\x20✅\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('║\x20\x20Bug\x20#34\x20\x20:\x20cJoin\x20re-validates\x20on\x20click\x20✅\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20║'),console['log']('╚══════════════════════════════════════════════════════╝');}());
+/* ================================================================
+   MINI eSPORTS — BUGFIX v30 FINAL
+   Must load LAST in index.html (after bugfixes-v29-final.js)
+
+   WHAT THIS FIXES (verified against actual v29 code):
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   [CRITICAL] Bug #1  — Clan system 100% Supabase rewrite
+                        getUserClan, createClan, joinClan, leaveClan,
+                        disbandClan, kickMember, leaderboard, chat,
+                        updateClanScore — all Firebase removed
+   [CRITICAL] Bug #36 — Admin role checks: getPendingJoinRequests,
+                        getCreatorApplications, setCreatorStatus
+                        now validate is_admin before returning data
+   [CRITICAL] Bug #1a — getUserClan signature mismatch (patch in
+                        fixes-v29-all-bugs.js changes (cb)→(uid,cb)
+                        but all callers still use (cb) only)
+   [HIGH]     Bug #34 — cJoin re-validates slots from Supabase on
+                        click — not just render-time check
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ALREADY FIXED in v29 (do NOT re-patch):
+   XSS (escHtml) ✅  Battle pass server validation ✅
+   Referral upsert ✅  Score hooks (city/clan/duel/mentor) ✅
+   Token refresh resubscribe ✅  Offline queue logout ✅
+   Team join data (teamMembers/slotNumber/captainUid) ✅
+   Kill proof validation ✅  Room password copy ✅
+   Offline queue match status ✅  Firebase auth ↔ Supabase sync ✅
+================================================================ */
+
+(function () {
+  'use strict';
+
+  /* ─── Utilities ─── */
+  function _s()  { return window._supa; }
+  function _uid(){ return window.U && window.U.uid; }
+  function _t(m, type) { if (window.toast) window.toast(m, type || 'inf'); }
+  function _ign(){ return (window.UD && (window.UD.ign || window.UD.displayName)) || 'Player'; }
+
+  /* waitFor: poll until condition is true, then run callback */
+  function waitFor(cond, cb, ms, limit) {
+    var elapsed = 0, iv = ms || 150, max = limit || 15000;
+    var t = setInterval(function() {
+      elapsed += iv;
+      if (cond()) { clearInterval(t); try { cb(); } catch(e){ console.error('[V30]', e); } }
+      else if (elapsed >= max) clearInterval(t);
+    }, iv);
+  }
+
+  /* Generate 8-char alphanumeric invite code */
+  function _genCode() {
+    return Math.random().toString(36).substr(2, 8).toUpperCase().replace(/[^A-Z0-9]/g, '0');
+  }
+
+  var MAX_MEMBERS = 10;
+
+  /* ════════════════════════════════════════════════════════
+     BUG #1 — CLAN SYSTEM: 100% SUPABASE
+     Rule: Firebase = ONLY analytics + crashlytics + support
+     chat + Google login. Clans → Supabase only.
+  ════════════════════════════════════════════════════════ */
+
+  waitFor(
+    function() { return window._supa && window.getUserClan !== undefined; },
+    function() {
+
+    /* ──────────────────────────────────────────────────────
+       BUG #1a — getUserClan: Fix signature mismatch
+       Old signature in clan.js:  getUserClan(cb)
+       Broken patch in v29:        getUserClan(uid, cb)
+       New fix: handles BOTH calling styles
+    ────────────────────────────────────────────────────── */
+    window.getUserClan = function(uidOrCallback, maybeCb) {
+      var uid, cb;
+
+      /* Detect calling style */
+      if (typeof uidOrCallback === 'function') {
+        /* Old style: getUserClan(callback) */
+        uid = _uid();
+        cb  = uidOrCallback;
+      } else {
+        /* New style: getUserClan(uid, callback) */
+        uid = uidOrCallback;
+        cb  = maybeCb;
+      }
+
+      if (!uid || !_s()) { if (cb) cb(null); return; }
+
+      /* 1. Get user's clan_id from Supabase users table */
+      _s().from('user_public_profiles').select('clan_id').eq('id', uid).maybeSingle() /* BUG #38 FIX */
+        .then(function(r) {
+          var clanId = r.data && r.data.clan_id;
+          if (!clanId) { cb(null); return; }
+
+          /* 2. Fetch clan + members in parallel */
+          Promise.all([
+            _s().from('clans')
+              .select('*')
+              .eq('id', clanId)
+              .maybeSingle(),
+            _s().from('clan_members')
+              .select('user_id, role, joined_at')
+              .eq('clan_id', clanId)
+          ])
+          .then(function(results) {
+            var clan    = results[0].data;
+            var members = results[1].data || [];
+            if (!clan) { cb(null); return; }
+
+            var memberIds = members.map(function(m) { return m.user_id; });
+            if (!memberIds.length) {
+              cb(_buildClan(clan, {}, []));
+              return;
+            }
+
+            /* 3. Fetch member profiles */
+            _s().from('user_public_profiles') /* BUG #38 FIX */
+              .select('id, ign, avatar_url, rank_points')
+              .in('id', memberIds)
+              .then(function(ur) {
+                var uMap = {};
+                (ur.data || []).forEach(function(u) { uMap[u.id] = u; });
+                cb(_buildClan(clan, uMap, members));
+              })
+              .catch(function() { cb(_buildClan(clan, {}, members)); });
+          })
+          .catch(function(e) {
+            console.warn('[V30 #1] getUserClan:', e.message);
+            cb(null);
+          });
+        })
+        .catch(function() { cb(null); });
+    };
+
+    /* Build Firebase-compatible clan object from Supabase data */
+    function _buildClan(clan, uMap, members) {
+      var membersObj = {};
+      members.forEach(function(m) {
+        var u = uMap[m.user_id] || {};
+        membersObj[m.user_id] = {
+          uid:        m.user_id,
+          ign:        u.ign || 'Player',
+          avatar:     u.avatar_url || '',
+          role:       m.role || 'member',
+          rankPoints: u.rank_points || 0,
+          joinedAt:   m.joined_at,
+          gd:         0
+        };
+      });
+      var code = clan.join_code
+        || (clan.id || '').replace(/-/g,'').substr(0,8).toUpperCase();
+      return {
+        _id:         clan.id,
+        id:          clan.id,
+        name:        clan.name         || '',
+        tag:         clan.tag          || '',
+        emblem:      clan.emblem       || clan.badge || '🏰',
+        badge:       clan.emblem       || clan.badge || '🏰',
+        leader:      clan.leader_uid    || '',
+        memberCount: clan.total_members || Object.keys(membersObj).length,
+        weeklyScore: clan.weekly_score  || 0,
+        totalWins:   clan.total_wins    || 0,
+        totalKills:  clan.total_kills   || 0,
+        weeklyRank:  0,
+        join_code:   code,
+        members:     membersObj
+      };
+    }
+
+    console.log('[V30 #1a] getUserClan Supabase patch ✅');
+
+    /* ──────────────────────────────────────────────────────
+       CREATE CLAN — Supabase only
+    ────────────────────────────────────────────────────── */
+    window._doCreateClan = async function() {
+      if (!_s() || !_uid()) return;
+      var name = ((document.getElementById('_cName') || {}).value || '').trim();
+      var tag  = ((document.getElementById('_cTag')  || {}).value || '').toUpperCase().trim();
+      if (!name) { _t('Clan ka naam daalo!', 'err'); return; }
+      if (!tag || tag.length < 2) { _t('Tag 2-4 chars ka hona chahiye!', 'err'); return; }
+
+      /* Read selected emblem from UI */
+      var selEmb = '🏰';
+      document.querySelectorAll('[id^="_emb_"]').forEach(function(el) {
+        if (el.style.background && el.style.background.indexOf('rgba(255,215,0') !== -1) {
+          selEmb = el.textContent.trim() || selEmb;
+        }
+      });
+
+      /* Check user not already in a clan */
+      /* ✅ BUG FIX (2026-08-23): "User ka clan ban gaya tha lekin dikhta
+         nahi tha, aur dobara banane par 'pehle current clan chhodo'
+         aata tha" — root cause found and cleaned up in the DB (a
+         since-fixed legacy code path had set users.clan_id to a
+         synthetic key that never matched any real clans row). But this
+         check itself just trusted UD.clan_id blindly, with no
+         verification the clan it points to actually exists — so ANY
+         future orphaned pointer (a failed clan_members insert after
+         clans insert succeeds, a disbanded clan not clearing member
+         pointers, etc.) would silently re-lock the user out again with
+         zero visible clan and zero way to create a new one. Now verifies
+         against the real clans table first and self-heals (clears the
+         stale pointer) instead of trusting a cached client value. */
+      /* R8 FINAL (2026-09-26) — VARIABLE-ORDER FIX (clan self-heal cleanup):
+         the self-heal UPDATE below referenced `uid` while its declaration
+         (`var uid = _uid();`) sat AFTER the block. var-hoisting made `uid`
+         undefined at that point, so the update ran as `id=eq.undefined` and
+         the orphaned pointer was never cleared — exactly the lockout this
+         self-heal was written to prevent. uid is now declared first. */
+      var uid  = _uid();
+      var myOldClan = window.UD && (window.UD.clanId || window.UD.clan_id);
+      if (myOldClan) {
+        var _stillReal = await _s().from('clans').select('id').eq('id', myOldClan).maybeSingle();
+        if (_stillReal && _stillReal.data && _stillReal.data.id) {
+          _t('Pehle apna current clan chhodo!', 'err'); return;
+        }
+        /* Orphaned pointer — self-heal silently and let creation proceed */
+        await _s().from('users').update({ clan_id: null }).eq('id', uid);
+        if (window.UD) { window.UD.clanId = null; window.UD.clan_id = null; }
+      }
+
+      var code = _genCode();
+
+      _s().from('clans').insert({
+        name:          name,
+        tag:           tag.substr(0, 4),
+        emblem:        selEmb,
+        badge:         selEmb,
+        leader_uid:    uid,
+        total_members: 1,
+        weekly_score:  0,
+        total_wins:    0,
+        total_kills:   0,
+        is_private:    false,
+        join_code:     code
+      }).select().single()
+        .then(function(r) {
+          if (r.error) { _t('Error: ' + r.error.message, 'err'); return; }
+          var clanId = r.data.id;
+
+          /* Add creator as leader in clan_members */
+          return _s().from('clan_members').insert({
+            clan_id: clanId, user_id: uid, role: 'leader'
+          }).then(function() {
+            /* Update user's clan_id in Supabase */
+            return _s().from('users').update({ clan_id: clanId }).eq('id', uid);
+          }).then(function() {
+            /* Update local cache — set both naming conventions */
+            if (window.UD) { window.UD.clanId = clanId; window.UD.clan_id = clanId; }
+            _t('✅ Clan "' + name + '" ban gaya! Code: ' + code, 'ok');
+            if (window.closeModal) closeModal();
+          });
+        })
+        .catch(function(e) { _t('Clan create error: ' + (e.message || 'retry karo'), 'err'); });
+    };
+    window._doCreateClan._v30Supa = true; /* marker so other modules never silently clobber this with a broken Firebase-only version */
+
+    console.log('[V30 #1] _doCreateClan Supabase patch ✅');
+
+    /* ──────────────────────────────────────────────────────
+       JOIN CLAN — Supabase only (by clan ID or join_code)
+    ────────────────────────────────────────────────────── */
+    window.joinClan = async function(clanIdOrCode) {
+      if (!_s() || !_uid()) return;
+      if (!clanIdOrCode) { _t('Clan ID ya code daalo!', 'err'); return; }
+
+      /* ✅ BUG FIX (2026-08-23): same self-heal as _doCreateClan above —
+         don't trust a cached UD.clan_id without verifying the clan it
+         points to still exists. */
+      /* R8 FINAL (2026-09-26): declaration order normalised (uid first) so the
+         self-heal and the join RPC always use the same verified uid. */
+      var uid  = _uid();
+      var myOldClan = window.UD && (window.UD.clanId || window.UD.clan_id);
+      if (myOldClan) {
+        /* ✅ BUG Z8 FIX (2026-10-02, WALK10s run5 live-catch): sirf clan-EXIST
+           kaafi nahi tha — kick/hue leader-removal ke baad UD.clanId STALE
+           reh jaata tha (clan zaroor abhi bhi exist karta hai) aur genuine
+           re-join 'Pehle apna current clan chhodo!' se hamesha reject ho
+           jaata tha jab tak user page-reload na kare. Ab DB-TRUTH:
+           profiles.clan_id bhi verify — stale-UD par DB hi maano. */
+        var _both2 = await Promise.all([
+          _s().from('clans').select('id').eq('id', myOldClan).maybeSingle(),
+          _s().from('user_public_profiles').select('clan_id').eq('id', uid).maybeSingle()
+        ]);
+        var _clanStillReal = _both2[0] && _both2[0].data && _both2[0].data.id;
+        var _dbClanId = _both2[1] && _both2[1].data && _both2[1].data.clan_id;
+        if (_clanStillReal && _dbClanId === myOldClan) {
+          _t('Pehle apna current clan chhodo!', 'err'); return;
+        }
+        await _s().from('users').update({ clan_id: null }).eq('id', uid);
+        if (window.UD) { window.UD.clanId = null; window.UD.clan_id = null; }
+      }
+
+      var code = clanIdOrCode.toString().trim().toUpperCase();
+
+      /* Determine lookup strategy */
+      var isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(clanIdOrCode);
+      var query;
+      if (isUuid) {
+        query = _s().from('clans')
+          .select('id, name, total_members, emblem, badge')
+          .eq('id', clanIdOrCode)
+          .maybeSingle();
+      } else {
+        /* join_code lookup */
+        query = _s().from('clans')
+          .select('id, name, total_members, emblem, badge')
+          .eq('join_code', code)
+          .maybeSingle();
+      }
+
+      query.then(function(r) {
+        if (!r.data) { _t('Clan nahi mila! Code dobara check karo.', 'err'); return; }
+        var clan = r.data;
+        if ((clan.total_members || 0) >= MAX_MEMBERS) {
+          _t('Clan full hai! (' + clan.total_members + '/' + MAX_MEMBERS + ')', 'err');
+          return;
+        }
+
+        /* Try atomic RPC first */
+        _s().rpc('join_clan', {
+          p_user_id:     uid,
+          p_clan_id:     clan.id,
+          p_ign:         _ign(),
+          p_max_members: MAX_MEMBERS
+        })
+        .then(function(rpcRes) {
+          /* R8: join_clan ka server contract 'ok' hai (success nahi) —
+             pehle client 'success' check karta tha jo hamesha undefined rehta
+             tha, isliye failed join bhi 'join kar liya' bol deta tha. */
+          var res = (rpcRes && rpcRes.data) || {};
+          if (res.ok === false || res.error) {
+            var msg = res.error === 'clan_full'      ? 'Clan full ho gaya!'
+                    : res.error === 'already_in_clan' ? 'Pehle current clan chhodo!'
+                    : res.error === 'Already in clan' ? 'Pehle se member ho!'
+                    : 'Join error: ' + (res.error || 'unknown');
+            _t(msg, 'err'); return;
+          }
+          _afterJoin(clan);
+        })
+        .catch(function() {
+          /* RPC not yet deployed — fallback to direct insert */
+          _joinDirect(uid, clan);
+        });
+      })
+      .catch(function() { _t('Service unavailable, retry karo', 'err'); });
+    };
+
+    function _afterJoin(clan) {
+      if (window.UD) { window.UD.clanId = clan.id; window.UD.clan_id = clan.id; }
+      var em = clan.emblem || clan.badge || '🏰';
+      _t('✅ ' + em + ' "' + (clan.name || 'Clan') + '" join kar liya!', 'ok');
+      if (window.closeModal) closeModal();
+    }
+
+    function _joinDirect(uid, clan) {
+      /* R8 (2026-09-26c): direct clan_members/clans/users join-write retired —
+         join_clan RPC hi canonical hai (caller identity + membership server-
+         verified). Fallback ab NO-OP; RPC fail = join fail. */
+      _t('Clan join RPC se hi hoga — dobara try karo', 'err');
+    }
+
+    /* _doJoinByCode: uses join_code column (not UUID prefix) */
+    window._doJoinByCode = function() {
+      var code = ((document.getElementById('_cCode') || {}).value || '')
+        .toUpperCase().trim().substr(0, 8);
+      if (!code || code.length < 6) { _t('Valid code daalo! (6-8 chars)', 'err'); return; }
+      window.joinClan(code);
+    };
+
+    console.log('[V30 #1] joinClan + _doJoinByCode Supabase patch ✅');
+
+    /* ──────────────────────────────────────────────────────
+       LEAVE CLAN — canonical RPC is the SOLE authority
+       R8 FINAL (2026-09-26): the direct-Supabase fallback
+       (clan_members.delete() → users.update({clan_id:null})) is REMOVED.
+       leave_clan RPC verifies the caller server-side, and moves membership
+       + clan counter + user pointer atomically. A failed RPC = failed leave:
+       we surface the error and change NOTHING locally (no silent fallback,
+       no client-side direct write).
+    ────────────────────────────────────────────────────── */
+    window.leaveClan = function(clanId) {
+      if (!_s() || !_uid()) return;
+      if (!confirm('Kya aap sach mein clan chhodni chahte ho? Yeh action undo nahi ho sakta.')) return;
+      var uid = _uid();
+
+      Promise.resolve(_s().rpc('leave_clan', { p_user_id: uid, p_clan_id: clanId }))
+        .then(function(res) {
+          var err  = (res && res.error) || null;
+          var data = (res && res.data) || {};
+          if (err) {
+            _t('Leave error: ' + (err.message || 'RPC failed'), 'err');
+            return;
+          }
+          if (data && typeof data === 'object' && data.ok === false) {
+            _t('Leave error: ' + (data.error || 'failed'), 'err');
+            return;
+          }
+          _afterLeave();
+        }, function(e) {
+          _t('Leave error: ' + ((e && e.message) || 'retry karo'), 'err');
+        });
+
+      function _afterLeave() {
+        if (window.UD) {
+          delete window.UD.clanId;
+          delete window.UD.clan_id;
+          window.UD.clanId   = null;
+          window.UD.clan_id  = null;
+        }
+        _t('Clan chhod diya!', 'ok');
+        if (window.closeModal) closeModal();
+      }
+    };
+
+    /* ──────────────────────────────────────────────────────
+       DISBAND CLAN — Supabase only
+    ────────────────────────────────────────────────────── */
+    /* ✅ BUG Z4 FIX (2026-10-02, WALK10s live-proven): purana 3-step chain
+       half-disband karta tha — clans par DELETE policy hi nahi thi (0-rows
+       silent), members sirf leader ki apni row, baaki users ka clan_id
+       stale. Ab server-authoritative disband_clan RPC (leader-verified,
+       atomic: users.clan_id clear + members + war-challenges + clan).
+       Missing-RPC par legacy chain fallback. */
+    window.disbandClan = function(clanId) {
+      if (!_s() || !_uid()) return;
+      if (!confirm('DISBAND CLAN? Yeh clan aur sare members permanently remove honge!')) return;
+      var uid = _uid();
+
+      function _afterDisband() {
+        if (window.UD) {
+          delete window.UD.clanId;
+          delete window.UD.clan_id;
+          window.UD.clanId   = null;
+          window.UD.clan_id  = null;
+        }
+        _t('Clan disband kar diya!', 'ok');
+        if (window.closeModal) closeModal();
+      }
+
+      function _disbandLegacy() {
+        _s().from('users').update({ clan_id: null }).eq('clan_id', clanId)
+          .then(function() {
+            return _s().from('clan_members').delete().eq('clan_id', clanId);
+          })
+          .then(function() {
+            return _s().from('clans').delete().eq('id', clanId).eq('leader_uid', uid);
+          })
+          .then(function() {
+            _afterDisband();
+          })
+          .then(null, function(e) { _t('Disband error: ' + (e && e.message || 'retry karo'), 'err'); });
+      }
+
+      _s().rpc('disband_clan', { p_clan_id: clanId })
+        .then(function(res) {
+          if (res && res.error) {
+            var msg = (res.error && res.error.message) || '';
+            if (res.error.code === 'PGRST202' || /not found/i.test(msg)) { _disbandLegacy(); return; }
+            _t('Disband error: ' + (msg || 'failed'), 'err'); return;
+          }
+          var d = res && res.data;
+          if (d && d.ok === false) {
+            var em = d.error === 'not_leader' ? 'Sirf leader disband kar sakta hai' : (d.error || 'failed');
+            _t('Disband error: ' + em, 'err'); return;
+          }
+          _afterDisband();
+        }, function() { _disbandLegacy(); });
+    };
+
+    /* ──────────────────────────────────────────────────────
+       KICK MEMBER — Supabase only
+    ────────────────────────────────────────────────────── */
+    /* ✅ BUG Z3 FIX (2026-10-02, WALK10s live-proven): purana 4-step
+       direct-write chain leader ke liye bhi 0-rows "success" deta tha
+       (cm_delete_own + users_update_own RLS) => member row bachi rehti thi
+       par 'kick ho gaya' toast aa jaata tha. Ab server-authoritative
+       kick_clan_member RPC (leader-verified); missing-RPC par legacy chain. */
+    window.kickClanMember = function(clanId, memberUid) {
+      if (!_s() || !_uid()) return;
+
+      function _kickLegacy() {
+        _s().from('clan_members').delete()
+          .eq('clan_id', clanId).eq('user_id', memberUid)
+          .then(function() {
+            return _s().from('users').update({ clan_id: null })
+              .eq('id', memberUid);
+          })
+          .then(function() {
+            return _s().from('clans')
+              .select('total_members')
+              .eq('id', clanId)
+              .single();
+          })
+          .then(function(r) {
+            var cur = (r.data && r.data.total_members) || 1;
+            return _s().from('clans')
+              .update({ total_members: Math.max(0, cur - 1) })
+              .eq('id', clanId);
+          })
+          .then(function() {
+            _t('Member kick kar diya!', 'ok');
+            if (window.closeModal) closeModal();
+            setTimeout(function() { if (window.showClanHome) showClanHome(); }, 300);
+          })
+          .then(null, function(e) { _t('Kick error: ' + (e && e.message || 'retry karo'), 'err'); });
+      }
+
+      _s().rpc('kick_clan_member', { p_clan_id: clanId, p_member_uid: memberUid })
+        .then(function(res) {
+          if (res && res.error) {
+            var msg = (res.error && res.error.message) || '';
+            if (res.error.code === 'PGRST202' || /not found/i.test(msg)) { _kickLegacy(); return; }
+            _t('Kick error: ' + (msg || 'failed'), 'err'); return;
+          }
+          var d = res && res.data;
+          if (d && d.ok === false) {
+            var em = d.error === 'not_leader' ? 'Sirf leader kick kar sakta hai'
+                   : d.error === 'not_a_member' ? 'Ye member is clan me nahi hai'
+                   : d.error || 'failed';
+            _t('Kick error: ' + em, 'err'); return;
+          }
+          _t('Member kick kar diya!', 'ok');
+          if (window.closeModal) closeModal();
+          setTimeout(function() { if (window.showClanHome) showClanHome(); }, 300);
+        }, function() { _kickLegacy(); });
+    };
+
+    console.log('[V30 #1] leaveClan / disbandClan / kickClanMember Supabase ✅');
+
+    /* ──────────────────────────────────────────────────────
+       CLAN LEADERBOARD — Supabase only
+    ────────────────────────────────────────────────────── */
+    window.showClanLeaderboardFull = function() {
+      if (!_s()) { _t('Service unavailable', 'err'); return; }
+      var GDI = window.GDI || function(s) {
+        return '<img src="js/green-diamond.png?v=20261117g" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle">';
+      };
+
+      _s().from('clans')
+        .select('id, name, emblem, badge, tag, weekly_score, total_wins, total_members')
+        .order('weekly_score', { ascending: false })
+        .limit(20)
+        .then(function(r) {
+          var clans   = r.data || [];
+          var myClanId = (window.UD && (window.UD.clanId || window.UD.clan_id)) || '';
+          var rewards  = [500, 300, 200, 0, 0, 0, 0, 0, 0, 50];
+
+          var h = '<div style="font-size:11px;color:#666;margin-bottom:10px">Weekly rewards: Top 3 clans ko Green Diamonds (Monday reset)</div>';
+
+          if (!clans.length) {
+            h += '<div style="text-align:center;padding:24px;color:#666">Abhi koi clan nahi hai!</div>';
+          } else {
+            clans.forEach(function(clan, idx) {
+              var rank  = idx + 1;
+              var medal = window.medalHtml(rank, rank <= 3 ? 20 : 13); /* D100-F1 */
+              var myC   = clan.id === myClanId;
+              var rew   = rewards[Math.min(9, idx)] || 0;
+              var em    = clan.emblem || clan.badge || '🏰';
+              var mc    = clan.total_members || 0;
+              var bg    = myC ? '.07' : rank <= 3 ? '.06' : '.04';
+              var bdr   = myC ? '.15' : rank <= 3 ? '.1' : '.06';
+
+              h += '<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:rgba(255,255,255,' + bg + ');border:1px solid rgba(255,255,255,' + bdr + ');margin-bottom:8px">';
+              h += '<div style="font-size:22px;width:32px;text-align:center">' + medal + '</div>';
+              h += '<div style="font-size:24px">' + em + '</div>';
+              h += '<div style="flex:1">';
+              h += '<div style="font-size:14px;font-weight:800;color:#fff">' + (clan.name || 'Clan') + (myC ? ' (Aapka)' : '') + '</div>';
+              h += '<div style="font-size:10px;color:#888">' + mc + ' members &bull; ' + GDI(11) + ' ' + (clan.weekly_score || 0) + ' pts</div>';
+              h += '</div>';
+              if (rew) {
+                h += '<div style="text-align:right">';
+                h += '<div style="font-size:12px;font-weight:800;color:#00ff64">' + GDI(13) + ' ' + rew + '</div>';
+                h += '<div style="font-size:9px;color:#555">weekly</div>';
+                h += '</div>';
+              }
+              h += '</div>';
+            });
+          }
+
+          if (window.openModal) openModal('🏆 Clan Leaderboard', h);
+        })
+        .catch(function() { _t('Leaderboard load nahi hua', 'err'); });
+    };
+
+    console.log('[V30 #1] showClanLeaderboardFull Supabase ✅');
+
+    /* ──────────────────────────────────────────────────────
+       CLAN CHAT — Supabase Realtime (not Firebase clanChats/)
+    ────────────────────────────────────────────────────── */
+    window.showClanChat = function(clanId) {
+      if (!_s() || !_uid()) return;
+      var uid  = _uid();
+      var ign  = _ign();
+      var _ch  = null;   /* Realtime channel reference */
+
+      /* Build chat UI */
+      var h = '<div id="_clanChatMsgs" style="height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0;margin-bottom:12px"></div>';
+      h += '<div style="display:flex;gap:8px">';
+      h += '<input id="_ccInput" type="text" maxlength="100" placeholder="Message likho..."';
+      h += ' style="flex:1;padding:10px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px"';
+      h += ' onkeydown="if(event.key===\'Enter\')window._sendClanMsg(\''+clanId+'\')">';
+      h += '<button onclick="window._sendClanMsg(\''+clanId+'\')" style="padding:10px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-weight:900;cursor:pointer;font-size:13px">Send</button>';
+      h += '</div>';
+
+      if (window.openModal) openModal('💬 Clan Chat', h);
+
+      /* Load last 50 messages */
+      _s().from('clan_messages')
+        .select('id, sender_id, sender_ign, message, created_at')
+        .eq('clan_id', clanId)
+        .order('created_at', { ascending: true })
+        .limit(50)
+        .then(function(r) {
+          var el = document.getElementById('_clanChatMsgs');
+          if (!el) return;
+          (r.data || []).forEach(function(m) { _appendMsg(m, el, uid); });
+          el.scrollTop = el.scrollHeight;
+        });
+
+      /* Supabase Realtime subscription — listen for new messages */
+      try {
+        _ch = _s().channel('clan_chat_' + clanId)
+          .on('postgres_changes', {
+            event:  'INSERT',
+            schema: 'public',
+            table:  'clan_messages',
+            filter: 'clan_id=eq.' + clanId
+          }, function(payload) {
+            var el = document.getElementById('_clanChatMsgs');
+            if (!el) { if (_ch) { try { _ch.unsubscribe(); } catch(e){} } return; }
+            _appendMsg(payload.new, el, uid);
+            el.scrollTop = el.scrollHeight;
+          })
+          .subscribe(function(status) {
+            if (status === 'CHANNEL_ERROR') {
+              console.warn('[V30] Clan chat realtime failed — using polling fallback');
+              _startChatPoll(clanId, uid);
+            }
+          });
+      } catch(e) {
+        console.warn('[V30] Realtime subscribe error:', e.message);
+        _startChatPoll(clanId, uid);
+      }
+
+      /* Intercept closeModal to unsubscribe */
+      var _prevClose = window.closeModal;
+      window.closeModal = function() {
+        if (_ch) { try { _ch.unsubscribe(); } catch(e){} _ch = null; }
+        window.closeModal = _prevClose;
+        if (_prevClose) _prevClose();
+      };
+
+      /* Send message */
+      window._sendClanMsg = function(cid) {
+        var inp = document.getElementById('_ccInput');
+        if (!inp || !inp.value.trim()) return;
+        var msg = inp.value.trim().substr(0, 100);
+        inp.value = '';
+        _s().from('clan_messages').insert({
+          clan_id:    cid,
+          sender_id:  uid,
+          sender_ign: ign,
+          message:    msg
+        }).then(null, function() { _t('Message send nahi hua', 'err'); });
+      };
+    };
+
+    /* Polling fallback for Realtime failures */
+    var _chatPollLast = null;
+    function _startChatPoll(clanId, uid) {
+      var piv = setInterval(function() {
+        var el = document.getElementById('_clanChatMsgs');
+        if (!el) { clearInterval(piv); return; }
+        var q = _s().from('clan_messages')
+          .select('id, sender_id, sender_ign, message, created_at')
+          .eq('clan_id', clanId)
+          .order('created_at', { ascending: true })
+          .limit(50);
+        if (_chatPollLast) q = q.gt('created_at', _chatPollLast);
+        q.then(function(r) {
+          (r.data || []).forEach(function(m) {
+            _appendMsg(m, el, uid);
+            _chatPollLast = m.created_at;
+          });
+          if (r.data && r.data.length) el.scrollTop = el.scrollHeight;
+        });
+      }, 4000);
+    }
+
+    /* Append a message bubble (safe — escapes user content) */
+    function _appendMsg(m, el, myUid) {
+      if (!el || !m) return;
+      var isMe = m.sender_id === myUid;
+      var safe = function(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      };
+      var div = document.createElement('div');
+      div.style.cssText = 'display:flex;flex-direction:' + (isMe ? 'row-reverse' : 'row') + ';gap:6px;align-items:flex-end';
+      div.innerHTML =
+        '<div style="max-width:75%;padding:8px 12px;border-radius:' +
+        (isMe ? '14px 14px 4px 14px' : '14px 14px 14px 4px') +
+        ';background:' + (isMe ? 'rgba(0,212,255,.15)' : 'rgba(255,255,255,.07)') +
+        ';border:1px solid ' + (isMe ? 'rgba(0,212,255,.25)' : 'rgba(255,255,255,.1)') + '">' +
+        '<div style="font-size:10px;color:' + (isMe ? '#00d4ff' : '#888') + ';margin-bottom:3px;font-weight:700">' +
+        (isMe ? 'You' : safe(m.sender_ign || 'Player')) + '</div>' +
+        '<div style="font-size:12px;color:#ddd">' + safe(m.message) + '</div>' +
+        '</div>';
+      el.appendChild(div);
+    }
+
+    console.log('[V30 #1] showClanChat Supabase Realtime ✅');
+
+    /* ──────────────────────────────────────────────────────
+       UPDATE CLAN SCORE — Supabase atomic RPC
+    ────────────────────────────────────────────────────── */
+    window.updateClanScore = function(uid, kills, wins) {
+      if (!_s() || !window.UD) return;
+      var clanId = window.UD.clanId || window.UD.clan_id;
+      if (!clanId) return;
+      var score = (kills || 0) * 1 + (wins ? 1 : 0) * 5;
+
+      _s().rpc('increment_clan_score', {
+        p_clan_id: clanId,
+        p_score:   score,
+        p_wins:    wins  ? 1 : 0,
+        p_kills:   kills || 0
+      }).then(null, function() { /* BUG Z5 FIX: is supabase-js build ke rpc()-thenable me .catch nahi hota — .catch access hi TypeError throw karta tha => request start se pehle hi crash, clan score kabhi update nahi hota tha */
+        /* R8 (2026-09-26c): NO direct-clan-write fallback — clan economy ab
+           sirf server RPC se hi likhi jaati hai (clans aur users ke direct
+           economy UPDATEs guard/clamp kar diye gaye hain; read-modify-write
+           fallback race-susceptible tha). RPC fail = score drop; server
+           publish_match_results/increment_clan_score already do this. */
+      });
+    };
+
+    console.log('[V30 #1] updateClanScore Supabase ✅');
+
+    /* ──────────────────────────────────────────────────────
+       Also update showJoinClanByCode invite display
+       Use join_code instead of UUID prefix
+    ────────────────────────────────────────────────────── */
+    var _origShowJoinByCode = window.showJoinClanByCode;
+    window.showJoinClanByCode = function() {
+      var h = '<div style="font-size:13px;color:#aaa;margin-bottom:12px">Dost ne invite code diya hoga — woh daalo:</div>';
+      h += '<input id="_cCode" type="text" maxlength="8" placeholder="8-char code (e.g. AB12CD34)"';
+      h += ' style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:16px;letter-spacing:2px;text-align:center;box-sizing:border-box;text-transform:uppercase;margin-bottom:16px">';
+      h += '<button onclick="window._doJoinByCode()" style="width:100%;padding:14px;border-radius:13px;border:1.5px solid rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:14px;font-weight:900;cursor:pointer">Join Karo →</button>';
+      if (window.openModal) openModal('🔑 Code se Join', h);
+    };
+
+    /* Also patch invite code display in _showMyClan (shows join_code not UUID prefix) */
+    var _origShowClanHome = window.showClanHome;
+    window.showClanHome = function() {
+      if (!window.U || !window.UD) {
+        _t('Pehle login karo!', 'err'); return;
+      }
+      window.getUserClan(function(clan) {
+        if (clan) {
+          /* Inject correct join_code into clan object for display */
+          if (!clan.join_code) {
+            clan.join_code = (clan.id || '').replace(/-/g, '').substr(0, 8).toUpperCase();
+          }
+          /* Patch the invite code display in the existing UI by modifying
+             the rendered HTML after the original function renders */
+          _origShowClanHome && _origShowClanHome();
+          /* Actually, _origShowClanHome calls getUserClan(cb) which we now control,
+             so it will correctly get the Supabase data. But it still shows
+             (clan._id||'').substring(0,8) for the invite code. Intercept openModal. */
+          var _prevOpen = window.openModal;
+          window.openModal = function(title, html) {
+            /* Replace the UUID-based invite code with join_code */
+            if (clan.join_code && html && html.indexOf('Clan Invite Code') !== -1) {
+              /* The invite code div shows first 8 chars of _id */
+              var oldCode = (clan._id || '').substr(0, 8).toUpperCase();
+              if (oldCode && clan.join_code !== oldCode) {
+                html = html.replace(oldCode, clan.join_code);
+              }
+            }
+            window.openModal = _prevOpen;
+            if (_prevOpen) _prevOpen(title, html);
+          };
+        } else {
+          _origShowClanHome && _origShowClanHome();
+        }
+      });
+    };
+
+    console.log('[V30 #1] showClanHome join_code display patch ✅');
+
+  });  /* end waitFor clan */
+
+
+  /* ════════════════════════════════════════════════════════
+     BUG #36 — ADMIN ROLE CHECKS
+     getPendingJoinRequests, getCreatorApplications,
+     setCreatorStatus — add is_admin validation
+  ════════════════════════════════════════════════════════ */
+
+  waitFor(
+    function() { return window.DB && window.DB.admin; },
+    function() {
+
+    async function _checkAdmin() {
+      if (!_s() || !_uid()) return false;
+      try {
+        var r = await _s().from('users')
+          .select('is_admin')
+          .eq('id', _uid())
+          .maybeSingle();
+        return !!(r.data && r.data.is_admin);
+      } catch(e) { return false; }
+    }
+
+    /* Patch getPendingJoinRequests */
+    var _orig_GPJR = window.DB.admin.getPendingJoinRequests;
+    window.DB.admin.getPendingJoinRequests = async function() {
+      if (!(await _checkAdmin())) {
+        console.warn('[V30 #36] getPendingJoinRequests: access denied (not admin)');
+        return [];
+      }
+      return _orig_GPJR ? _orig_GPJR.apply(window.DB.admin, arguments) : [];
+    };
+
+    /* Patch getCreatorApplications */
+    var _orig_GCA = window.DB.admin.getCreatorApplications;
+    window.DB.admin.getCreatorApplications = async function() {
+      if (!(await _checkAdmin())) {
+        console.warn('[V30 #36] getCreatorApplications: access denied (not admin)');
+        return [];
+      }
+      return _orig_GCA ? _orig_GCA.apply(window.DB.admin, arguments) : [];
+    };
+
+    /* Patch setCreatorStatus */
+    var _orig_SCS = window.DB.admin.setCreatorStatus;
+    window.DB.admin.setCreatorStatus = async function(appId, status, note) {
+      if (!(await _checkAdmin())) {
+        console.warn('[V30 #36] setCreatorStatus: access denied (not admin)');
+        return null;
+      }
+      return _orig_SCS ? _orig_SCS.apply(window.DB.admin, arguments) : null;
+    };
+
+    console.log('[V30 #36] Admin role checks: getPendingJoinRequests / getCreatorApplications / setCreatorStatus ✅');
+
+  });  /* end waitFor admin */
+
+
+  /* ════════════════════════════════════════════════════════
+     BUG #34 — cJoin: Re-validate slots from Supabase on click
+     Problem: slots checked at render time only.
+     If match fills between render and click → error UX.
+  ════════════════════════════════════════════════════════ */
+
+  waitFor(
+    function() { return window.cJoin !== undefined; },
+    function() {
+
+    var _origCJoin = window.cJoin;
+
+    window.cJoin = function(matchId) {
+      if (!_s() || !matchId || (window.MT && window.MT[matchId])) {
+        /* MT[matchId] is already kept fresh in <0.3s via Realtime + pulse,
+           and validate_and_join_match enforces capacity atomically on server.
+           Open confirmation modal immediately (0ms) for instant UX. */
+        _origCJoin(matchId);
+        return;
+      }
+
+      /* Fallback if match not yet in MT cache */
+      _s().from('matches')
+        .select('status, max_slots, filled_slots')
+        .eq('id', matchId)
+        .single()
+        .then(function(r) {
+          if (!r.data) {
+            _t('Match nahi mila!', 'err');
+            return;
+          }
+          var m      = r.data;
+          var status = (m.status || '').toLowerCase();
+
+          /* Check match status */
+          if (status === 'cancelled') {
+            _t('Match cancel ho gaya!', 'err');
+            return;
+          }
+          if (status === 'completed') {
+            _t('Match khatam ho gaya!', 'err');
+            return;
+          }
+          if (status === 'live') {
+            /* Live matches: check if match has actually started (past matchTime) */
+            /* This is handled inside _origCJoin — allow through */
+          }
+
+          /* Check slots */
+          var filled = Number(m.filled_slots) || 0;
+          var max    = Number(m.max_slots)    || 100;
+          if (filled >= max) {
+            _t('Match full ho gaya! (' + filled + '/' + max + ')', 'err');
+            /* Disable the button in UI */
+            try {
+              var btns = document.querySelectorAll(
+                'button[onclick*="cJoin(\'' + matchId + '\'"],' +
+                'button[onclick*="cJoin(\''+matchId+'\')"]'
+              );
+              btns.forEach(function(b) {
+                b.disabled = true;
+                b.textContent = 'Full';
+                b.style.cssText += ';opacity:.5;cursor:not-allowed';
+              });
+            } catch(e) {}
+            return;
+          }
+
+          /* All checks passed — proceed */
+          _origCJoin(matchId);
+        })
+        .catch(function() {
+          /* Supabase unreachable — proceed anyway (server RPC will handle validation) */
+          _origCJoin(matchId);
+        });
+    };
+
+  console.log('[V30 #34] cJoin Supabase re-validate slots on click ✅');
+
+  });  /* end waitFor cJoin */
+
+
+  /* ════════════════════════════════════════════════════════
+     BUG #11 — Avatar bg color: read from Supabase after save
+     fixes-v9.js writes to both Firebase + Supabase.
+     Fix: After save, re-fetch user from Supabase to update UD.
+  ════════════════════════════════════════════════════════ */
+
+  waitFor(
+    function() { return window._supa && window.showAvatarBgPicker !== undefined; },
+    function() {
+      var _origPicker = window.showAvatarBgPicker;
+      window.showAvatarBgPicker = function() {
+        /* Load current bg from Supabase users (canonical source) */
+        if (window._supa && window.U) {
+          window._supa.from('users').select('avatar_bg_color').eq('id', window.U.uid).maybeSingle()
+            .then(function(r) {
+              if (r.data && r.data.avatar_bg_color) {
+                if (window.UD) window.UD.avatarBgColor = r.data.avatar_bg_color;
+              }
+            }).catch(function(){});
+        }
+        if (_origPicker) _origPicker();
+      };
+      console.log('[V30 #11] Avatar bg color reads from Supabase ✅');
+    }
+  );  /* end waitFor showAvatarBgPicker */
+
+
+  /* ════════════════════════════════════════════════════════
+     SUMMARY
+  ════════════════════════════════════════════════════════ */
+  console.log('╔══════════════════════════════════════════════════════╗');
+  console.log('║  MiniESports BUGFIX v30 FINAL loaded                 ║');
+  console.log('║  Bug #1   : Clan 100% Supabase ✅                    ║');
+  console.log('║  Bug #1a  : getUserClan signature fixed ✅           ║');
+  console.log('║  Bug #7   : Clan Chat Supabase Realtime ✅           ║');
+  console.log('║  Bug #11  : Avatar bg Supabase sync ✅               ║');
+  console.log('║  Bug #36  : Admin role checks ✅                     ║');
+  console.log('║  Bug #34  : cJoin re-validates on click ✅           ║');
+  console.log('╚══════════════════════════════════════════════════════╝');
+
+})();

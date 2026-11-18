@@ -1,0 +1,23 @@
+  mem qa4/hi/home: heap=10.7MB nodes=1187
+clicks qa4/hi/home done, findings=0 dialogs=0
+  mem qa4/hi/rank: heap=10.7MB nodes=1123
+clicks qa4/hi/rank done, findings=0 dialogs=0
+  mem qa4/hi/matches: heap=10.7MB nodes=1085
+clicks qa4/hi/matches done, findings=0 dialogs=0
+  mem qa4/hi/wallet: heap=10.7MB nodes=1123
+clicks qa4/hi/wallet done, findings=0 dialogs=0
+  mem qa4/hi/profile: heap=10.7MB nodes=1123
+clicks qa4/hi/profile done, findings=0 dialogs=0
+  mem qa4/hi/notif: heap=10.7MB nodes=1123
+clicks qa4/hi/notif done, findings=0 dialogs=0
+  mem qa4/hi/special: heap=10.7MB nodes=1085
+clicks qa4/hi/special done, findings=0 dialogs=0
+  mem qa4/hi/clan: heap=10.7MB nodes=1078
+clicks qa4/hi/clan done, findings=0 dialogs=0
+  mem qa4/hi/settings: heap=10.7MB nodes=1085
+clicks qa4/hi/settings done, findings=0 dialogs=0
+  ‼ PAGE CLOSED qa4/hi screen=settings ix=10 2026-11-15T15:42:16.450Z
+CLICK MATRIX FINDINGS: 0 | NATIVE DIALOGS: 0
+OVERLAYS FORCE-CLEANED (per acct/lang): {}
+RENDERER CRASHES: 0 []
+  ‼ BROWSER DISCONNECTED (pura browser mara — sandbox OOM-kill?) 2026-11-15T15:42:16.510Z

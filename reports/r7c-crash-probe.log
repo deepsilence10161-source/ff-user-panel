@@ -1,0 +1,19 @@
+
+=== qa4/en — notif screen clickables: 39 (crashed=false) ===
+  ix0 <div> "" onclick="showUserSearch()" imgs=0
+  ix1 <div> "" onclick="navTo('notif')" imgs=0
+  ix2 <div#hdrSupportBtn> "" onclick="openSupport()" imgs=0
+  ix3 <div> "645" onclick="navTo('wallet')" imgs=1
+  ix4 <div> "40" onclick="navTo('wallet')" imgs=1
+  ix5 <div> "15" onclick="navTo('wallet')" imgs=1
+  ix6 <i> "" onclick="goBack()" imgs=0
+  ix7 <button> "Clear All" onclick="clearAllNotifs()" imgs=0
+  → ix0 OK | "" | onclick="showUserSearch()" | mem 11.3→11.3 MB | errs=0
+  → ix1 OK | "" | onclick="navTo('notif')" | mem 12.1→12.1 MB | errs=0
+  → ix2 OK | "" | onclick="openSupport()" | mem 12.1→12.1 MB | errs=0
+  → ix3 OK | "645" | onclick="navTo('wallet')" | mem 12.1→12.1 MB | errs=0
+  → ix4 OK | "40" | onclick="navTo('wallet')" | mem 11.3→11.3 MB | errs=0
+  → ix5 OK | "15" | onclick="navTo('wallet')" | mem 12.1→12.1 MB | errs=0
+
+CRASH PROBE: runs=6 OK=6 PROBLEM=0
+json → /home/user/ff-user-panel/reports/d103-notif-crash-probe/crash-probe.json

@@ -1,0 +1,26 @@
+name: Supabase SQL (repo-committed migration)
+
+# ═══════════════════════════════════════════════════════════════
+#  Sirf repo me committed supabase/migrations/*.sql file apply
+#  karti hai (tools/supabase-sql.mjs path validate karta hai).
+#  Har apply git history + run log me auditable. Manual dispatch.
+# ═══════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+    inputs:
+      migration:
+        description: 'supabase/migrations/<file>.sql'
+        required: true
+        default: 'supabase/migrations/20261029_apk_cleanup_client_read.sql'
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply migration (Management API)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: node tools/supabase-sql.mjs "${{ github.event.inputs.migration }}"

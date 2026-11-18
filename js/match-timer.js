@@ -1,1 +1,146 @@
-(function(){var _0x3efa60=(function(){var _0x4033a8=!![];return function(_0x2b3474,_0x1ed54b){var _0x5d53f4=_0x4033a8?function(){if(_0x1ed54b){var _0x3c43fd=_0x1ed54b['apply'](_0x2b3474,arguments);return _0x1ed54b=null,_0x3c43fd;}}:function(){};return _0x4033a8=![],_0x5d53f4;};}()),_0x208fe8=null;(function _0xe43d53(){var _0x1bfcf7=_0x3efa60(this,function(){if(_0x1bfcf7['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x1bfcf7['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x1bfcf7)['search']('(((.+)+)+)+$');});_0x1bfcf7();if(document['getElementById']('_mtTimerCss'))return;var _0x3dfe87=document['createElement']('style');_0x3dfe87['id']='_mtTimerCss',_0x3dfe87['textContent']='[id^=\x22timer-\x22]{font-variant-numeric:tabular-nums;font-feature-settings:\x22tnum\x22;min-width:74px;display:inline-block;text-align:center;transition:color\x20.2s\x20ease}'+'[id^=\x22timer-\x22].mt-live{color:#ff003c;animation:pulse\x201.2s\x20infinite}'+'[id^=\x22timer-\x22].mt-soon{color:#ff003c;font-weight:900;animation:pulse\x20.5s\x20infinite}'+'[id^=\x22timer-\x22].mt-warn{color:#ffaa00}'+'[id^=\x22timer-\x22].mt-calm{color:#00d4ff}'+'[id^=\x22timer-\x22].mt-dead{color:#666;animation:none;font-weight:400}',(document['head']||document['documentElement'])['appendChild'](_0x3dfe87);}());function _0x325159(_0x27de46,_0x4a8de1){if(_0x27de46['_mtCls']===_0x4a8de1)return;_0x27de46['_mtCls']=_0x4a8de1,_0x27de46['className']=(_0x27de46['className']||'')['replace'](/\bmt-(live|soon|warn|calm|dead)\b/g,'')['trim']();if(_0x4a8de1)_0x27de46['className']=(_0x27de46['className']?_0x27de46['className']+'\x20':'')+_0x4a8de1;}function _0x39c1b1(_0x147384,_0x471762){if(_0x147384['_mtTxt']===_0x471762)return;_0x147384['_mtTxt']=_0x471762,_0x147384['textContent']=_0x471762;}function _0x2bedcf(){_0x208fe8&&(clearInterval(_0x208fe8),window['_timerInterval']=null),_0x208fe8=setInterval(function(){for(var _0xba587a in MT){var _0x4b55a1=document['getElementById']('timer-'+_0xba587a);if(!_0x4b55a1)continue;var _0x415c6f=MT[_0xba587a],_0x544884=(_0x415c6f['status']||_0x415c6f['matchStatus']||'')['toLowerCase']();if(_0x544884==='completed'||_0x544884==='cancelled'||_0x415c6f['resultPublished']){_0x39c1b1(_0x4b55a1,_0x544884==='cancelled'?'Cancelled':'Ended'),_0x325159(_0x4b55a1,'mt-dead');continue;}var _0x848028=Number(_0x415c6f['matchTime']);if(!_0x848028){_0x39c1b1(_0x4b55a1,'');continue;}var _0x56db8a=_0x848028-(window['serverNow']?window['serverNow']():Date['now']());if(_0x56db8a>0x5265c00){var _0x22b1d0=Math['floor'](_0x56db8a/0x5265c00);_0x39c1b1(_0x4b55a1,_0x22b1d0+'d\x20'+Math['floor'](_0x56db8a%0x5265c00/0x36ee80)+'h'),_0x325159(_0x4b55a1,'mt-calm');}else{if(_0x56db8a>0x36ee80){var _0x661da8=Math['floor'](_0x56db8a/0x36ee80),_0x338993=Math['floor'](_0x56db8a%0x36ee80/0xea60);_0x39c1b1(_0x4b55a1,_0x661da8+'h\x20'+_0x338993+'m'),_0x325159(_0x4b55a1,'mt-calm');}else{if(_0x56db8a>0xea60){var _0x1d3694=Math['floor'](_0x56db8a/0xea60),_0x191f19=Math['floor'](_0x56db8a%0xea60/0x3e8);_0x39c1b1(_0x4b55a1,_0x1d3694+'m\x20'+_0x191f19+'s'),_0x325159(_0x4b55a1,_0x56db8a<0x493e0?'mt-warn':'mt-calm');}else{if(_0x56db8a>0x0)_0x39c1b1(_0x4b55a1,'⚡\x20'+Math['floor'](_0x56db8a/0x3e8)+'s'),_0x325159(_0x4b55a1,'mt-soon');else _0x56db8a>-0x124f80?(_0x39c1b1(_0x4b55a1,'🔴\x20LIVE'),_0x325159(_0x4b55a1,'mt-live')):(_0x39c1b1(_0x4b55a1,'Ended'),_0x325159(_0x4b55a1,'mt-dead'));}}}}},0x3e8),window['_timerInterval']=_0x208fe8;}var _0x37d61f=null;function _0x2b7c32(){clearTimeout(_0x37d61f),_0x37d61f=setTimeout(_0x2bedcf,0x96);}var _0x342bec=window['renderHome'];_0x342bec&&(window['renderHome']=function(){_0x342bec(),_0x2b7c32();});var _0x7c79b7=window['renderSP'];_0x7c79b7&&(window['renderSP']=function(){_0x7c79b7(),_0x2b7c32();}),window['startMatchTimers']=_0x2bedcf,console['log']('[Mini\x20eSports]\x20✅\x20Feature\x201:\x20Match\x20Timer\x20loaded\x20(smooth-update\x20fix\x202026-10-06)');}());
+/* ====== FEATURE 1: LIVE COUNTDOWN TIMER ON MATCH CARDS ====== */
+/* Shows real-time countdown on every match card, updates every second */
+
+/* Bug 68 Fix: _timerInterval exposed as window._timerInterval so renderHome()
+   can check !window._timerInterval before calling startMatchTimers() again.
+   Without this, every renderHome() call creates a NEW interval → multiple intervals
+   run simultaneously (effectively running "twice per second" or more). */
+
+/* ══════════════════════════════════════════════════════════════════════
+   ✅ FIX (2026-10-06) — "match start wali counting smooth nahi hai, baar
+   baar UI kharab karti hai"
+   ──────────────────────────────────────────────────────────────────────
+   असली वजहें (live code-reading se siddh):
+     1. हर सेकंड `el.innerHTML = '<span …>🔴 LIVE</span>'` दोबारा लिखा जाता था
+        → span नया बनता, उसकी CSS animation हर सेकंड शुरू से चलती → चमकना/
+        झटका (flicker) — यही "UI kharab karti hai" वाला असर था।
+     2. `el.style.color/fontWeight/animation` हर tick पर सेट होते थे — भले
+        value वही हो — जिससे बेवजह style-recalc + repaint होता था।
+     3. जब text बदलता (मसलन "5m 9s" → "5m 8s") तो digits की चौड़ाई बदलने से
+        पूरा row hilti थी (layout shift).
+
+   अब:
+     • text सिर्फ़ तभी लिखा जाता है जब वह असल में बदला हो (change-guard)।
+     • innerHTML कभी नहीं — हमेशा textContent (+ class से animation)।
+     • style सिर्फ़ state बदलने पर लगते हैं (हर सेकंड नहीं)।
+     • font-variant-numeric: tabular-nums + min-width → digits की चौड़ाई fix,
+       इसलिए कोई layout shift नहीं।
+   ══════════════════════════════════════════════════════════════════════ */
+
+(function() {
+  var _timerInterval = null;
+
+  /* एक बार का CSS — digits की चौड़ाई स्थिर + LIVE बैज की animation CSS से */
+  (function injectTimerCss() {
+    if (document.getElementById('_mtTimerCss')) return;
+    var s = document.createElement('style');
+    s.id = '_mtTimerCss';
+    s.textContent =
+      '[id^="timer-"]{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";min-width:74px;display:inline-block;text-align:center;transition:color .2s ease}' +
+      '[id^="timer-"].mt-live{color:#ff003c;animation:pulse 1.2s infinite}' +
+      '[id^="timer-"].mt-soon{color:#ff003c;font-weight:900;animation:pulse .5s infinite}' +
+      '[id^="timer-"].mt-warn{color:#ffaa00}' +
+      '[id^="timer-"].mt-calm{color:#00d4ff}' +
+      '[id^="timer-"].mt-dead{color:#666;animation:none;font-weight:400}';
+    (document.head || document.documentElement).appendChild(s);
+  })();
+
+  /* सिर्फ़ ज़रूरत पर class बदलो (हर tick नहीं) */
+  function setState(el, cls) {
+    if (el._mtCls === cls) return;
+    el._mtCls = cls;
+    el.className = (el.className || '').replace(/\bmt-(live|soon|warn|calm|dead)\b/g, '').trim();
+    if (cls) el.className = (el.className ? el.className + ' ' : '') + cls;
+  }
+  /* text सिर्फ़ बदलने पर लिखो */
+  function setText(el, txt) {
+    if (el._mtTxt === txt) return;
+    el._mtTxt = txt;
+    el.textContent = txt;
+  }
+
+  function startMatchTimers() {
+    /* Bug 24 Fix: Guard against multiple concurrent intervals */
+    if (_timerInterval) {
+      clearInterval(_timerInterval);
+      window._timerInterval = null;
+    }
+    _timerInterval = setInterval(function() {
+      for (var mid in MT) {
+        var el = document.getElementById('timer-' + mid);
+        if (!el) continue;
+        var t = MT[mid];
+        /* L7 Fix: Stop timer for completed/cancelled matches immediately */
+        var st = (t.status || t.matchStatus || '').toLowerCase();
+        if (st === 'completed' || st === 'cancelled' || t.resultPublished) {
+          setText(el, st === 'cancelled' ? 'Cancelled' : 'Ended');
+          setState(el, 'mt-dead');
+          continue;
+        }
+        var mt = Number(t.matchTime);
+        if (!mt) { setText(el, ''); continue; }
+        var diff = mt - (window.serverNow ? window.serverNow() : Date.now());
+
+        if (diff > 86400000) {
+          var days = Math.floor(diff / 86400000);
+          setText(el, days + 'd ' + Math.floor((diff % 86400000) / 3600000) + 'h');
+          setState(el, 'mt-calm');
+        } else if (diff > 3600000) {
+          var h = Math.floor(diff / 3600000);
+          var m1 = Math.floor((diff % 3600000) / 60000);
+          setText(el, h + 'h ' + m1 + 'm');
+          setState(el, 'mt-calm');
+        } else if (diff > 60000) {
+          var m2 = Math.floor(diff / 60000);
+          var s2 = Math.floor((diff % 60000) / 1000);
+          setText(el, m2 + 'm ' + s2 + 's');
+          setState(el, diff < 300000 ? 'mt-warn' : 'mt-calm');
+        } else if (diff > 0) {
+          setText(el, '⚡ ' + Math.floor(diff / 1000) + 's');
+          setState(el, 'mt-soon');
+        } else if (diff > -1200000) {
+          /* LIVE — pehle har second innerHTML se span dobara banta tha
+             (animation restart = flicker). Ab text ek baar + CSS class. */
+          setText(el, '🔴 LIVE');
+          setState(el, 'mt-live');
+        } else {
+          setText(el, 'Ended');
+          setState(el, 'mt-dead');
+        }
+      }
+    }, 1000);
+    /* Bug 68 Fix: Expose interval ID as window._timerInterval so home.js guard works */
+    window._timerInterval = _timerInterval;
+  }
+
+  /* Bug 24 Fix: Debounced wrapper prevents rapid re-calls after each renderHome
+     (listeners.js calls renderHome on every MT change — each would restart timers) */
+  var _timerDebounce = null;
+  function debouncedStartTimers() {
+    clearTimeout(_timerDebounce);
+    _timerDebounce = setTimeout(startMatchTimers, 150);
+  }
+
+  /* Hook into renderHome to start timers after cards are rendered.
+     Use debounced version to coalesce rapid successive render calls. */
+  var _origRenderHome = window.renderHome;
+  if (_origRenderHome) {
+    window.renderHome = function() {
+      _origRenderHome();
+      debouncedStartTimers();
+    };
+  }
+
+  var _origRenderSP = window.renderSP;
+  if (_origRenderSP) {
+    window.renderSP = function() {
+      _origRenderSP();
+      debouncedStartTimers();
+    };
+  }
+
+  /* Export for manual use */
+  window.startMatchTimers = startMatchTimers;
+
+  console.log('[Mini eSports] ✅ Feature 1: Match Timer loaded (smooth-update fix 2026-10-06)');
+})();

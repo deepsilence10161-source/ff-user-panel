@@ -1,1 +1,77 @@
-(function(){'use strict';var _0x5e758e=(function(){var _0x499d09=!![];return function(_0x3fb19d,_0x18ba5a){var _0x474170=_0x499d09?function(){if(_0x18ba5a){var _0x24f93a=_0x18ba5a['apply'](_0x3fb19d,arguments);return _0x18ba5a=null,_0x24f93a;}}:function(){};return _0x499d09=![],_0x474170;};}());function _0x2d990d(_0x2ec6b8){var _0x5d341b=(_0x2ec6b8||document)['querySelectorAll']('img:not([loading])');_0x5d341b['forEach'](function(_0x37f77c){_0x37f77c['setAttribute']('loading','lazy');if(!_0x37f77c['hasAttribute']('decoding'))_0x37f77c['setAttribute']('decoding','async');!_0x37f77c['complete']&&(_0x37f77c['style']['opacity']='0',_0x37f77c['style']['transition']='opacity\x200.3s',_0x37f77c['onload']=function(){_0x37f77c['style']['opacity']='1';},_0x37f77c['onerror']=function(){_0x37f77c['style']['opacity']='1';});});}var _0x22bcce=new MutationObserver(function(_0x18bd7e){_0x18bd7e['forEach'](function(_0x273617){_0x273617['addedNodes']['forEach'](function(_0x5b465f){if(_0x5b465f['nodeType']!==0x1)return;if(_0x5b465f['tagName']==='IMG')!_0x5b465f['getAttribute']('loading')&&(_0x5b465f['setAttribute']('loading','lazy'),_0x5b465f['setAttribute']('decoding','async'));else _0x5b465f['querySelectorAll']&&_0x2d990d(_0x5b465f);});});});window['injectLazy']=function(_0x59c140){if(typeof _0x59c140!=='string')return _0x59c140;return _0x59c140['replace'](/<img(?![^>]*\bloading=)/gi,'<img\x20loading=\x22lazy\x22\x20decoding=\x22async\x22');};function _0x396eac(){var _0x3c8f19=_0x5e758e(this,function(){if(_0x3c8f19['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3c8f19['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3c8f19)['search']('(((.+)+)+)+$');});_0x3c8f19(),_0x22bcce['observe'](document['body']||document['documentElement'],{'childList':!![],'subtree':!![]}),_0x2d990d(document),console['log']('[Mini\x20eSports]\x20✅\x20Fix\x208:\x20Lazy\x20loading\x20observer\x20active.');}document['body']?_0x396eac():document['addEventListener']('DOMContentLoaded',_0x396eac);var _0x3c5544=null;window['addEventListener']('hashchange',function(){clearTimeout(_0x3c5544),_0x3c5544=setTimeout(function(){_0x2d990d(document);},0xc8);});}());
+/* ============================================================
+   FIX 8: LAZY LOADING FOR IMAGES
+   - Dynamically rendered img tags pe loading="lazy" add karo
+   - MutationObserver se DOM changes track karo
+   - Existing images bhi cover karo on load
+   ============================================================ */
+
+(function() {
+  'use strict';
+
+  /* ── Patch all img elements in a container ── */
+  function patchImgs(root) {
+    var imgs = (root || document).querySelectorAll('img:not([loading])');
+    imgs.forEach(function(img) {
+      img.setAttribute('loading', 'lazy');
+      /* Also add decoding=async for paint perf */
+      if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+      /* Fade-in when loaded */
+      if (!img.complete) {
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.3s';
+        img.onload = function() { img.style.opacity = '1'; };
+        img.onerror = function() { img.style.opacity = '1'; };
+      }
+    });
+  }
+
+  /* ── Observe dynamic DOM additions ── */
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(node) {
+        if (node.nodeType !== 1) return; // element nodes only
+        if (node.tagName === 'IMG') {
+          if (!node.getAttribute('loading')) {
+            node.setAttribute('loading', 'lazy');
+            node.setAttribute('decoding', 'async');
+          }
+        } else if (node.querySelectorAll) {
+          patchImgs(node);
+        }
+      });
+    });
+  });
+
+  /* ── Simple global HTML string patcher ── */
+  /* Call this before setting innerHTML anywhere */
+  window.injectLazy = function(html) {
+    if (typeof html !== 'string') return html;
+    return html.replace(/<img(?![^>]*\bloading=)/gi, '<img loading="lazy" decoding="async"');
+  };
+  /* Lazy loading via MutationObserver only — no createElement override */
+
+  /* ── Start observing ── */
+  function startObserver() {
+    observer.observe(document.body || document.documentElement, {
+      childList: true,
+      subtree: true
+    });
+    /* Patch existing images */
+    patchImgs(document);
+    console.log('[Mini eSports] ✅ Fix 8: Lazy loading observer active.');
+  }
+
+  if (document.body) {
+    startObserver();
+  } else {
+    document.addEventListener('DOMContentLoaded', startObserver);
+  }
+
+  /* ── Re-patch on screen changes (SPA navigation) ── */
+  var _patchTimer = null;
+  window.addEventListener('hashchange', function() {
+    clearTimeout(_patchTimer);
+    _patchTimer = setTimeout(function() { patchImgs(document); }, 200);
+  });
+
+})();

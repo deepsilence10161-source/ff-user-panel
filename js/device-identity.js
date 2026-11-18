@@ -1,1 +1,172 @@
-(function(){'use strict';var _0x113634=(function(){var _0x506298=!![];return function(_0x5d9d0e,_0x3a06dc){var _0x58595c=_0x506298?function(){if(_0x3a06dc){var _0x276d1d=_0x3a06dc['apply'](_0x5d9d0e,arguments);return _0x3a06dc=null,_0x276d1d;}}:function(){};return _0x506298=![],_0x58595c;};}()),_0x5980e2=_0x113634(this,function(){if(_0x5980e2['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x5980e2['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x5980e2)['search']('(((.+)+)+)+$');});_0x5980e2();async function _0x27f1ac(_0x4bedd0){if(window['crypto']&&window['crypto']['subtle']){var _0x4b83ac=new TextEncoder()['encode'](_0x4bedd0),_0x281495=await crypto['subtle']['digest']('SHA-256',_0x4b83ac);return Array['from'](new Uint8Array(_0x281495))['map'](function(_0x4eb5e7){return _0x4eb5e7['toString'](0x10)['padStart'](0x2,'0');})['join']('');}var _0x216ba2=0x1505;for(var _0x4de85e=0x0;_0x4de85e<_0x4bedd0['length'];_0x4de85e++){_0x216ba2=(_0x216ba2<<0x5)+_0x216ba2+_0x4bedd0['charCodeAt'](_0x4de85e),_0x216ba2|=0x0;}return Math['abs'](_0x216ba2)['toString'](0x10)['padStart'](0x10,'0');}function _0x59ffd5(){try{var _0x53fbc2=document['createElement']('canvas');_0x53fbc2['width']=0x118,_0x53fbc2['height']=0x3c;var _0x1a4b87=_0x53fbc2['getContext']('2d');_0x1a4b87['textBaseline']='top',_0x1a4b87['font']='14px\x20Arial,sans-serif',_0x1a4b87['fillStyle']='#f60',_0x1a4b87['fillRect'](0x0,0x0,0x118,0x3c),_0x1a4b87['fillStyle']='#069',_0x1a4b87['fillText']('MiniESports\uD83C\uDFAE',0x2,0x4),_0x1a4b87['fillStyle']='rgba(102,204,0,.8)',_0x1a4b87['fillText'](navigator['userAgent']['slice'](0x0,0x28),0x5,0x1c),_0x1a4b87['strokeStyle']='#b964ff',_0x1a4b87['lineWidth']=1.5,_0x1a4b87['beginPath'](),_0x1a4b87['arc'](0x78,0x1e,0x14,0x0,Math['PI']*0x2),_0x1a4b87['stroke'](),_0x1a4b87['font']='11px\x20\x22Courier\x20New\x22',_0x1a4b87['fillStyle']='#00d4ff',_0x1a4b87['fillText'](screen['width']+'x'+screen['height'],0x96,0x2c);var _0x96d116=_0x53fbc2['toDataURL']('image/png'),_0x11815f=0x0,_0x4e4209=_0x96d116['length'];while(_0x4e4209--){_0x11815f=(_0x11815f<<0x5)-_0x11815f+_0x96d116['charCodeAt'](_0x4e4209),_0x11815f|=0x0;}return'CV'+Math['abs'](_0x11815f)['toString'](0x24)['toUpperCase']()['padStart'](0xa,'0');}catch(_0x14cd34){return'canvas_err';}}function _0xb534e1(){try{var _0x2697a1=document['createElement']('canvas'),_0x471196=_0x2697a1['getContext']('webgl')||_0x2697a1['getContext']('experimental-webgl');if(!_0x471196)return'no_webgl';var _0x18540d=_0x471196['getExtension']('WEBGL_debug_renderer_info'),_0x491506=_0x18540d?_0x471196['getParameter'](_0x18540d['UNMASKED_VENDOR_WEBGL']):_0x471196['getParameter'](_0x471196['VENDOR']),_0x1d5801=_0x18540d?_0x471196['getParameter'](_0x18540d['UNMASKED_RENDERER_WEBGL']):_0x471196['getParameter'](_0x471196['RENDERER']);return(_0x491506||'')+'|'+(_0x1d5801||'');}catch(_0x5a8934){return'webgl_err';}}function _0x57aa5a(){return new Promise(function(_0x276a41){var _0x551f3b=setTimeout(function(){console['warn']('[DeviceID]\x20Audio\x20fingerprint\x20timeout\x20—\x20using\x20no_audio\x20fallback'),_0x276a41('no_audio_timeout');},0x7d0);try{var _0x2c21db=window['OfflineAudioContext']||window['webkitOfflineAudioContext'];if(!_0x2c21db){clearTimeout(_0x551f3b),_0x276a41('no_audio');return;}var _0x519413=new _0x2c21db(0x1,0xac44,0xac44),_0x11da0a=_0x519413['createOscillator'](),_0x3ea7fd=_0x519413['createDynamicsCompressor']();_0x11da0a['type']='triangle',_0x11da0a['frequency']['value']=0x2710,[['threshold',-0x32],['knee',0x28],['ratio',0xc],['attack',0x0],['release',0.25]]['forEach'](function(_0x2d9132){try{_0x3ea7fd[_0x2d9132[0x0]]['value']=_0x2d9132[0x1];}catch(_0x38f55c){}}),_0x11da0a['connect'](_0x3ea7fd),_0x3ea7fd['connect'](_0x519413['destination']),_0x11da0a['start'](0x0),_0x519413['startRendering'](),_0x519413['oncomplete']=function(_0x26cd56){clearTimeout(_0x551f3b);var _0x49c525=_0x26cd56['renderedBuffer']['getChannelData'](0x0),_0x56c62a=0x0;for(var _0x80da4b=0x1194;_0x80da4b<0x1388;_0x80da4b++)_0x56c62a+=Math['abs'](_0x49c525[_0x80da4b]);_0x276a41('A'+_0x56c62a['toString']()['slice'](0x0,0xc));},setTimeout(function(){_0x276a41('audio_to');},0x190);}catch(_0xbda9e7){_0x276a41('audio_err');}});}function _0x2e86ed(){return[screen['width'],screen['height'],screen['colorDepth'],navigator['hardwareConcurrency']||0x0,navigator['deviceMemory']||0x0,navigator['maxTouchPoints']||0x0,navigator['language']||'',Intl['DateTimeFormat']()['resolvedOptions']()['timeZone']||'',navigator['platform']||'',navigator['connection']&&navigator['connection']['effectiveType']||'']['join']('|');}function _0x4f087f(){return[!!window['indexedDB']?'1':'0',!!window['localStorage']?'1':'0',!!window['crypto']?'1':'0',!!window['GPU']?'1':'0']['join']('');}window['generateAdvancedFingerprint']=async function(){var _0x213b16=sessionStorage['getItem']('_mes_dfp');if(_0x213b16&&_0x213b16['startsWith']('DFP_'))return _0x213b16;var _0x16215e=await _0x57aa5a(),_0x5136e6=[_0x59ffd5(),_0xb534e1(),_0x16215e,_0x2e86ed(),_0x4f087f()]['join'](':::'),_0x29e897=await _0x27f1ac(_0x5136e6),_0x2b1423='DFP_'+_0x29e897['substring'](0x0,0x14)['toUpperCase']();return sessionStorage['setItem']('_mes_dfp',_0x2b1423),_0x2b1423;},document['addEventListener']('DOMContentLoaded',function(){var _0x3cdbde=0x0,_0x40b680=setInterval(function(){_0x3cdbde++;window['U']&&window['U']['uid']&&window['db']&&(clearInterval(_0x40b680),window['generateAdvancedFingerprint']()['then'](function(_0x1eb8eb){window['db']['ref']('users/'+window['U']['uid']+'/lastFP')['set'](_0x1eb8eb),window['db']['ref']('deviceJoins')['once']('value',function(_0x29acee){if(!_0x29acee['exists']())return;_0x29acee['forEach'](function(_0x186db0){_0x186db0['forEach'](function(_0xa37d07){var _0x9b06c5=_0xa37d07['val']();_0x9b06c5&&_0x9b06c5['uid']&&_0x9b06c5['uid']!==window['U']['uid']&&_0x186db0['key']['indexOf'](_0x1eb8eb['replace']('DFP_','')['substring'](0x0,0xa))>=0x0&&window['db']['ref']('deviceAnomalies')['push']({'uid':window['U']['uid'],'otherUid':_0x9b06c5['uid'],'fp':_0x1eb8eb,'type':'multi_account','detectedAt':Date['now']()});});});});}));if(_0x3cdbde>0x28)clearInterval(_0x40b680);},0x1f4);}),console['log']('[DeviceFP]\x20✅\x20Advanced\x20fingerprint\x20system\x20loaded\x20(anti-cheat)');}());
+/* ════════════════════════════════════════════════════════════════
+   DEVICE FINGERPRINT — Anti-Cheat Only
+   Auth = Firebase Google Login (auth.js handles it)
+   This file ONLY generates fingerprint for:
+   · Multi-account detection
+   · Fake player detection
+   · Admin alert on device switch
+
+   generateAdvancedFingerprint() — 5 layers combined → SHA-256
+════════════════════════════════════════════════════════════════ */
+
+(function() {
+'use strict';
+
+/* ── SHA-256 ── */
+async function _sha256(str) {
+  if (window.crypto && window.crypto.subtle) {
+    var buf  = new TextEncoder().encode(str);
+    var hash = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(hash))
+      .map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+  }
+  /* Fallback djb2 */
+  var h = 5381;
+  for (var i=0;i<str.length;i++){ h=((h<<5)+h)+str.charCodeAt(i); h|=0; }
+  return Math.abs(h).toString(16).padStart(16,'0');
+}
+
+/* Layer 1: Canvas */
+function _canvasLayer() {
+  try {
+    var c = document.createElement('canvas');
+    c.width = 280; c.height = 60;
+    var ctx = c.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial,sans-serif';
+    ctx.fillStyle = '#f60';   ctx.fillRect(0,0,280,60);
+    ctx.fillStyle = '#069';   ctx.fillText('MiniESports\uD83C\uDFAE', 2, 4);
+    ctx.fillStyle = 'rgba(102,204,0,.8)';
+    ctx.fillText(navigator.userAgent.slice(0,40), 5, 28);
+    ctx.strokeStyle = '#b964ff'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(120,30,20,0,Math.PI*2); ctx.stroke();
+    ctx.font = '11px "Courier New"';
+    ctx.fillStyle = '#00d4ff';
+    ctx.fillText(screen.width+'x'+screen.height, 150, 44);
+    var data = c.toDataURL('image/png');
+    var h = 0, i = data.length;
+    while(i--){ h=((h<<5)-h)+data.charCodeAt(i); h|=0; }
+    return 'CV' + Math.abs(h).toString(36).toUpperCase().padStart(10,'0');
+  } catch(e){ return 'canvas_err'; }
+}
+
+/* Layer 2: WebGL */
+function _webglLayer() {
+  try {
+    var c  = document.createElement('canvas');
+    var gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (!gl) return 'no_webgl';
+    var ext      = gl.getExtension('WEBGL_debug_renderer_info');
+    var vendor   = ext ? gl.getParameter(ext.UNMASKED_VENDOR_WEBGL)   : gl.getParameter(gl.VENDOR);
+    var renderer = ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+    return (vendor||'') + '|' + (renderer||'');
+  } catch(e){ return 'webgl_err'; }
+}
+
+/* Layer 3: Audio */
+function _audioLayer() {
+  return new Promise(function(resolve) {
+    /* Bug #84 Fix: Add 2-second timeout for Safari/blocked browsers */
+    var _audioTimeout = setTimeout(function() {
+      console.warn('[DeviceID] Audio fingerprint timeout — using no_audio fallback');
+      resolve('no_audio_timeout');
+    }, 2000);
+
+    try {
+      var AC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      if (!AC) { clearTimeout(_audioTimeout); resolve('no_audio'); return; }
+      var ctx = new AC(1, 44100, 44100);
+      var osc = ctx.createOscillator();
+      var cmp = ctx.createDynamicsCompressor();
+      osc.type = 'triangle'; osc.frequency.value = 10000;
+      [['threshold',-50],['knee',40],['ratio',12],['attack',0],['release',.25]]
+        .forEach(function(p){ try{ cmp[p[0]].value=p[1]; }catch(e){} });
+      osc.connect(cmp); cmp.connect(ctx.destination);
+      osc.start(0); ctx.startRendering();
+      ctx.oncomplete = function(e) {
+        clearTimeout(_audioTimeout);
+        var buf = e.renderedBuffer.getChannelData(0);
+        var sum = 0; for(var i=4500;i<5000;i++) sum += Math.abs(buf[i]);
+        resolve('A' + sum.toString().slice(0,12));
+      };
+      setTimeout(function(){ resolve('audio_to'); }, 400);
+    } catch(e){ resolve('audio_err'); }
+  });
+}
+
+/* Layer 4: Hardware */
+function _hwLayer() {
+  return [
+    screen.width, screen.height, screen.colorDepth,
+    navigator.hardwareConcurrency  || 0,
+    navigator.deviceMemory         || 0,
+    navigator.maxTouchPoints       || 0,
+    navigator.language             || '',
+    Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+    navigator.platform             || '',
+    (navigator.connection && navigator.connection.effectiveType) || ''
+  ].join('|');
+}
+
+/* Layer 5: Storage capabilities */
+function _storageLayer() {
+  return [
+    !!window.indexedDB    ?'1':'0',
+    !!window.localStorage ?'1':'0',
+    !!window.crypto       ?'1':'0',
+    !!window.GPU          ?'1':'0'
+  ].join('');
+}
+
+/* ── Main fingerprint generator ── */
+window.generateAdvancedFingerprint = async function() {
+  var cached = sessionStorage.getItem('_mes_dfp');
+  if (cached && cached.startsWith('DFP_')) return cached;
+
+  var audio = await _audioLayer();
+  var raw   = [_canvasLayer(), _webglLayer(), audio, _hwLayer(), _storageLayer()].join(':::');
+  var hash  = await _sha256(raw);
+  var fp    = 'DFP_' + hash.substring(0,20).toUpperCase();
+
+  sessionStorage.setItem('_mes_dfp', fp);
+  return fp;
+};
+
+/* ── Auto-generate on load and save to Firebase ── */
+document.addEventListener('DOMContentLoaded', function() {
+  /* Wait for user to be signed in, then save fingerprint */
+  var _fpCheckCount = 0;
+  var _fpIv = setInterval(function() {
+    _fpCheckCount++;
+    if (window.U && window.U.uid && window.db) {
+      clearInterval(_fpIv);
+      window.generateAdvancedFingerprint().then(function(fp) {
+        window.db.ref('users/' + window.U.uid + '/lastFP').set(fp);
+        window.db.ref('deviceJoins').once('value', function(s) {
+          /* Anti-cheat: check if same FP used by another UID */
+          if (!s.exists()) return;
+          s.forEach(function(devSnap) {
+            devSnap.forEach(function(matchSnap) {
+              var rec = matchSnap.val();
+              if (rec && rec.uid && rec.uid !== window.U.uid &&
+                  devSnap.key.indexOf(fp.replace('DFP_','').substring(0,10)) >= 0) {
+                /* Same device, different account → alert admin */
+                window.db.ref('deviceAnomalies').push({
+                  uid:       window.U.uid,
+                  otherUid:  rec.uid,
+                  fp:        fp,
+                  type:      'multi_account',
+                  detectedAt: Date.now()
+                });
+              }
+            });
+          });
+        });
+      });
+    }
+    if (_fpCheckCount > 40) clearInterval(_fpIv);
+  }, 500);
+});
+
+console.log('[DeviceFP] ✅ Advanced fingerprint system loaded (anti-cheat)');
+})();

@@ -1,1 +1,62 @@
-var _0x3ea3b2=(function(){var _0x5539f9=!![];return function(_0x49c275,_0x384e08){var _0x13ea5e=_0x5539f9?function(){if(_0x384e08){var _0x29abd9=_0x384e08['apply'](_0x49c275,arguments);return _0x384e08=null,_0x29abd9;}}:function(){};return _0x5539f9=![],_0x13ea5e;};}()),_0x439f2f=_0x3ea3b2(this,function(){if(_0x439f2f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x439f2f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x439f2f)['search']('(((.+)+)+)+$');});_0x439f2f();function updateHdr(){if(!UD)return;var _0x4b5351=Number(UD['coins'])||0x0,_0x1eac94=Math['max'](Number(UD['skyDiamonds'])||0x0,0x0),_0x53135a=$('hdrCoins'),_0x1a0d29=$('hdrMoney');if(_0x53135a){var _0x5d1acb=Number(_0x53135a['textContent'])||0x0;_0x53135a['textContent']=_0x4b5351,_0x4b5351!==_0x5d1acb&&_0x5d1acb>0x0&&(_0x53135a['parentElement']['style']['animation']='none',_0x53135a['parentElement']['offsetHeight'],_0x53135a['parentElement']['style']['animation']='pulse\x200.5s\x20ease');}if(_0x1a0d29){var _0x481a97=Number(_0x1a0d29['textContent'])||0x0;_0x1a0d29['textContent']=parseFloat(_0x1eac94['toFixed'](0x2)),_0x1eac94!==_0x481a97&&_0x481a97>0x0&&(_0x1a0d29['parentElement']['style']['animation']='none',_0x1a0d29['parentElement']['offsetHeight'],_0x1a0d29['parentElement']['style']['animation']='pulse\x200.5s\x20ease');}var _0x565a22=$('hdrGD');if(_0x565a22){var _0x3c7377=Math['max'](Number(UD['greenDiamonds'])||0x0,0x0);_0x565a22['textContent']=_0x3c7377;}}function updateBell(){var _0x3dc160=$('bellDot');if(!_0x3dc160)return;var _0x37c1d0=0x0,_0x1f9f05=UD&&UD['readNotifications']||{};NOTIFS['forEach'](function(_0x340793){if(!_READ_KEYS[_0x340793['_key']]&&!_0x1f9f05[_0x340793['_key']]&&!_0x340793['_localRead'])_0x37c1d0++;}),_0x37c1d0>0x0?(_0x3dc160['style']['display']='block',_0x37c1d0>0x3?(_0x3dc160['style']['cssText']='display:flex;align-items:center;justify-content:center;min-width:15px;height:15px;padding:0\x203px;border-radius:8px;background:#ff4444;color:#fff;font-size:9px;font-weight:800;position:absolute;top:-3px;right:-3px;z-index:10;',_0x3dc160['textContent']=_0x37c1d0>0x9?'9+':_0x37c1d0):(_0x3dc160['style']['cssText']='display:block;width:8px;height:8px;border-radius:50%;background:#ff4444;position:absolute;top:-1px;right:-1px;z-index:10;',_0x3dc160['textContent']='')):(_0x3dc160['style']['display']='none',_0x3dc160['textContent']='');}
+/* ====== UPDATE HEADER ====== */
+function updateHdr() {
+  if (!UD) return;
+  var coins = Number(UD.coins) || 0;
+  /* R28j (2026-09-22): hdrMoney chip 💎 = Sky Diamonds (sirf deposited/
+     purchased). Pehle getMoneyBal() = deposited+winnings+bonus sab जोड़
+     देता था, isliye Sky-Diamond chip par Green-Diamond + bonus मिलाकर
+     ग़लत नंबर दिखता था (Green Diamonds ka apna #hdrGD chip अलग है)। */
+  var money = Math.max(Number(UD.skyDiamonds) || 0, 0);
+  var hc = $('hdrCoins'), hm = $('hdrMoney');
+  if (hc) {
+    var oldC = Number(hc.textContent) || 0;
+    hc.textContent = coins;
+    if (coins !== oldC && oldC > 0) {
+      hc.parentElement.style.animation = 'none';
+      hc.parentElement.offsetHeight;
+      hc.parentElement.style.animation = 'pulse 0.5s ease';
+    }
+  }
+  if (hm) {
+    var oldM = Number(hm.textContent) || 0;
+    hm.textContent = parseFloat(money.toFixed(2));
+    if (money !== oldM && oldM > 0) {
+      hm.parentElement.style.animation = 'none';
+      hm.parentElement.offsetHeight;
+      hm.parentElement.style.animation = 'pulse 0.5s ease';
+    }
+  }
+  /* Green Diamond header chip */
+  var hgd = $('hdrGD');
+  if (hgd) {
+    var gd = Math.max(Number(UD.greenDiamonds) || 0, 0);
+    hgd.textContent = gd;
+  }
+}
+
+/* ====== BELL ====== */
+function updateBell() {
+  var dot = $('bellDot'); if (!dot) return;
+  var unread = 0;
+  var rd = (UD && UD.readNotifications) || {};
+  // Count ALL notifications — unread = not in _READ_KEYS, not in Firebase readNotifications, not locally marked
+  NOTIFS.forEach(function(n) {
+    if (!_READ_KEYS[n._key] && !rd[n._key] && !n._localRead) unread++;
+  });
+  if (unread > 0) {
+    dot.style.display = 'block';
+    if (unread > 3) {
+      // Show number for 4+ unread
+      dot.style.cssText = 'display:flex;align-items:center;justify-content:center;min-width:15px;height:15px;padding:0 3px;border-radius:8px;background:#ff4444;color:#fff;font-size:9px;font-weight:800;position:absolute;top:-3px;right:-3px;z-index:10;';
+      dot.textContent = unread > 9 ? '9+' : unread;
+    } else {
+      // Just a small dot for 1-3 unread
+      dot.style.cssText = 'display:block;width:8px;height:8px;border-radius:50%;background:#ff4444;position:absolute;top:-1px;right:-1px;z-index:10;';
+      dot.textContent = '';
+    }
+  } else {
+    dot.style.display = 'none';
+    dot.textContent = '';
+  }
+}
+

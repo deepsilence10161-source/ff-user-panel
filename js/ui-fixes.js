@@ -1,1 +1,783 @@
-function _safeFnCall(_0x2f05e6){if(!_0x2f05e6)return;var _0x2e1d10={'mesShowTerms':function(){if(window['mesShowTerms'])window['mesShowTerms']();},'mesShowPrivacy':function(){if(window['mesShowPrivacy'])window['mesShowPrivacy']();},'mesTDSSummary':function(){if(window['mesTDSSummary'])window['mesTDSSummary']();},'mesShowKYC':function(){if(window['mesShowKYC'])window['mesShowKYC']();},'mesRG':function(){if(window['mesRG'])window['mesRG']();},'mesDispute':function(){if(window['mesDispute'])window['mesDispute']();},'showLogin':function(){if(window['showLogin'])window['showLogin']();},'navTo':function(){}};for(var _0x1bd519 in _0x2e1d10){if(_0x2f05e6['indexOf'](_0x1bd519)>-0x1){_0x2e1d10[_0x1bd519]();return;}}}(function(){'use strict';var _0xb2c2e4=(function(){var _0x598b35=!![];return function(_0x7a5141,_0x9010d5){var _0x418e3c=_0x598b35?function(){if(_0x9010d5){var _0x3b55e1=_0x9010d5['apply'](_0x7a5141,arguments);return _0x9010d5=null,_0x3b55e1;}}:function(){};return _0x598b35=![],_0x418e3c;};}()),_0x378cd6=_0xb2c2e4(this,function(){if(_0x378cd6['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x378cd6['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x378cd6)['search']('(((.+)+)+)+$');});_0x378cd6();function _0x4123c3(){var _0x3b53ef=document['querySelector']('.hdr-left');if(!_0x3b53ef||_0x3b53ef['dataset']['fixed'])return;_0x3b53ef['dataset']['fixed']='1',_0x3b53ef['innerHTML']='<div\x20style=\x22display:flex;align-items:flex-start;gap:6px\x22>'+'<i\x20class=\x22fas\x20fa-fire\x22\x20aria-hidden=\x22true\x22\x20style=\x22color:#ff2e2e;font-size:20px;filter:drop-shadow(0\x200\x208px\x20rgba(255,46,46,.8));margin-top:2px;animation:firePulse\x201.5s\x20ease-in-out\x20infinite\x22></i>'+'<h1\x20class=\x22hdr-name\x22\x20style=\x22margin:0;line-height:1.15;display:block\x22>'+'<span\x20style=\x22display:block;font-size:17px;font-weight:900;background:linear-gradient(135deg,#00ff6a,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent\x22>Mini</span>'+'<span\x20style=\x22display:block;font-size:13px;font-weight:800;color:#aaa;margin-top:-2px\x22>eSports</span>'+'</h1>'+'</div>';if(!document['getElementById']('_fpStyle')){var _0x2b1275=document['createElement']('style');_0x2b1275['id']='_fpStyle',_0x2b1275['textContent']='@keyframes\x20firePulse{0%,100%{transform:scale(1);filter:drop-shadow(0\x200\x206px\x20rgba(255,46,46,.7))}50%{transform:scale(1.15);filter:drop-shadow(0\x200\x2012px\x20rgba(255,100,0,.9))}}',document['head']['appendChild'](_0x2b1275);}}function _0x96297d(){if(document['getElementById']('_diaStyle'))return;var _0x1142dc=document['createElement']('style');_0x1142dc['id']='_diaStyle',_0x1142dc['textContent']=['@keyframes\x20diaShine{0%{filter:drop-shadow(0\x200\x203px\x20rgba(0,212,255,.4))\x20brightness(1)}','25%{filter:drop-shadow(0\x200\x208px\x20rgba(0,212,255,.9))\x20brightness(1.3)}','50%{filter:drop-shadow(0\x200\x2016px\x20rgba(185,100,255,.8))\x20brightness(1.5)\x20saturate(1.4)}','75%{filter:drop-shadow(0\x200\x208px\x20rgba(0,255,156,.7))\x20brightness(1.3)}','100%{filter:drop-shadow(0\x200\x203px\x20rgba(0,212,255,.4))\x20brightness(1)}}','@keyframes\x20diaFloat{0%,100%{transform:translateY(0)\x20scale(1)}50%{transform:translateY(-2px)\x20scale(1.05)}}','.chip-money\x20span:first-child{animation:diaShine\x202.5s\x20ease-in-out\x20infinite,diaFloat\x203s\x20ease-in-out\x20infinite;display:inline-block}','.hdr-chip.chip-money{background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(185,100,255,.1));border:1px\x20solid\x20rgba(0,212,255,.25)}']['join'](''),document['head']['appendChild'](_0x1142dc);}function _0x3b923b(){if(document['getElementById']('_rankAnim'))return;var _0x412bd6=document['createElement']('style');_0x412bd6['id']='_rankAnim',_0x412bd6['textContent']=['@keyframes\x20podRise{from{opacity:0;transform:translateY(40px)\x20scale(.9)}to{opacity:1;transform:translateY(0)\x20scale(1)}}','@keyframes\x20podRise2{from{opacity:0;transform:translateY(60px)\x20scale(.85)}to{opacity:1;transform:translateY(0)\x20scale(1)}}','@keyframes\x20rankRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}','@keyframes\x20goldSpin{0%{box-shadow:0\x200\x2024px\x20rgba(255,215,0,.8),0\x200\x2048px\x20rgba(255,180,0,.4)}','33%{box-shadow:0\x200\x2030px\x20rgba(255,215,0,1),0\x200\x2060px\x20rgba(255,200,0,.6),0\x200\x2090px\x20rgba(255,150,0,.3)}','66%{box-shadow:0\x200\x2024px\x20rgba(255,180,0,.9),0\x200\x2048px\x20rgba(255,215,0,.5)}','100%{box-shadow:0\x200\x2024px\x20rgba(255,215,0,.8),0\x200\x2048px\x20rgba(255,180,0,.4)}}','.pod-item.p1{animation:podRise\x20.6s\x20cubic-bezier(.34,1.56,.64,1)\x20.1s\x20both}','.pod-item.p2{animation:podRise2\x20.6s\x20cubic-bezier(.34,1.56,.64,1)\x20.25s\x20both}','.pod-item.p3{animation:podRise2\x20.6s\x20cubic-bezier(.34,1.56,.64,1)\x20.35s\x20both}','.pod-item.p1\x20.pod-ava{animation:goldSpin\x203s\x20ease-in-out\x20infinite!important}','.rank-row{animation:rankRowIn\x20.4s\x20ease\x20both}','.rank-row:nth-child(1){animation-delay:.05s}','.rank-row:nth-child(2){animation-delay:.1s}','.rank-row:nth-child(3){animation-delay:.15s}','.rank-row:nth-child(4){animation-delay:.2s}','.rank-row:nth-child(5){animation-delay:.25s}','.rank-row:nth-child(6){animation-delay:.3s}','.rank-row:nth-child(n+7){animation-delay:.35s}','.rank-podium{background:radial-gradient(ellipse\x20at\x2050%\x20110%,rgba(255,215,0,.12)\x200%,rgba(185,100,255,.04)\x2040%,transparent\x2070%)!important}']['join'](''),document['head']['appendChild'](_0x412bd6);}function _0x45262e(){var _0xbbbb=document['querySelector']('.ticker-txt');if(!_0xbbbb||_0xbbbb['dataset']['styled'])return;_0xbbbb['dataset']['styled']='1',_0xbbbb['style']['cssText']+=';background:linear-gradient(90deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:13px';}function _0x5ae4b2(){if(!document['getElementById']('_gapStyle')){var _0x338d88=document['createElement']('style');_0x338d88['id']='_gapStyle',_0x338d88['textContent']='.c-pills{margin-bottom:4px!important}.s-tabs{margin-bottom:4px!important}.s-tab{margin-bottom:0!important}',document['head']['appendChild'](_0x338d88);}}function _0x7f66e7(){var _0x108c74=window['closeProfileSettings'];if(!window['closeProfileSettings']||window['_legalFixed'])return;window['_legalFixed']=!![];}function _0x4714aa(){var _0x3f3743=new MutationObserver(function(){var _0x2f6d15=document['querySelector']('.f07-weekly-btn');if(_0x2f6d15)_0x2f6d15['remove']();var _0x20dcce=document['querySelector']('.prof-btn:not(.f07-weekly-btn)');});_0x3f3743['observe'](document['body'],{'childList':!![],'subtree':!![]});}function _0x4e8608(){var _0x461ba7=new MutationObserver(function(){document['querySelectorAll']('button')['forEach'](function(_0x317201){_0x317201['textContent']&&_0x317201['textContent']['trim']()==='🧮\x20Calculator'&&_0x317201['remove']();});});_0x461ba7['observe'](document['body'],{'childList':!![],'subtree':!![]});}function _0x73d07e(){if(typeof MutationObserver==='undefined')return;var _0x476d58=new MutationObserver(function(){var _0x794a67=document['getElementById']('_diamondConvCard');if(_0x794a67){var _0x334e71=_0x794a67['querySelector']('[style*=\x22TDS\x22]');if(_0x334e71)_0x334e71['style']['display']='none';_0x794a67['querySelectorAll']('div')['forEach'](function(_0x3d8269){_0x3d8269['textContent']&&(_0x3d8269['textContent']['indexOf']('100\x20💎')>-0x1||_0x3d8269['textContent']['indexOf']('Koi\x20TDS')>-0x1)&&(_0x3d8269['style']['display']='none');});}});_0x476d58['observe'](document['body'],{'childList':!![],'subtree':!![]});}function _0x624c35(){var _0x4f502d=window['showProfileSettings'];if(!_0x4f502d||window['_3dRemoved'])return;window['_3dRemoved']=!![],window['showProfileSettings']=function(){_0x4f502d['apply'](this,arguments),setTimeout(function(){var _0x444c6e=document['getElementById']('profSettingsSheet');if(!_0x444c6e)return;_0x444c6e['querySelectorAll']('div[onclick]')['forEach'](function(_0x23281c){_0x23281c['textContent']&&(_0x23281c['textContent']['indexOf']('3D\x20Player\x20Card')>-0x1||_0x23281c['textContent']['indexOf']('3D\x20Card')>-0x1)&&_0x23281c['remove']();});},0x64);};}function _0x18b420(){var _0x58fc6a=window['showRewardsStore'];if(!_0x58fc6a||window['_rewardPatched'])return;window['_rewardPatched']=!![],window['showRewardsStore']=function(){_0x58fc6a['apply'](this,arguments),setTimeout(function(){var _0x308371=document['getElementById']('modalB');if(!_0x308371)return;_0x308371['querySelectorAll']('button')['forEach'](function(_0x16401e){_0x16401e['textContent']&&(_0x16401e['textContent']['indexOf']('Redeem')>-0x1||_0x16401e['textContent']['indexOf']('Buy')>-0x1||_0x16401e['textContent']['indexOf']('Need\x20more')>-0x1)&&(_0x16401e['disabled']=!![],_0x16401e['style']['background']='rgba(255,255,255,.04)',_0x16401e['style']['color']='#555',_0x16401e['style']['border']='1px\x20solid\x20rgba(255,255,255,.06)',_0x16401e['textContent']='🔜\x20Coming\x20Soon');});var _0x2d3e73=_0x308371['querySelector']('._comingSoonBanner');if(!_0x2d3e73){var _0x5f280f=document['createElement']('div');_0x5f280f['className']='_comingSoonBanner',_0x5f280f['style']['cssText']='background:rgba(255,170,0,.08);border:1px\x20solid\x20rgba(255,170,0,.2);border-radius:12px;padding:10px\x2014px;margin-bottom:14px;font-size:12px;color:#ffaa00;text-align:center',_0x5f280f['innerHTML']='🚧\x20Rewards\x20Store\x20launching\x20soon!\x20Items\x20available\x20after\x20official\x20app\x20launch.';try{_0x308371['insertBefore'](_0x5f280f,_0x308371['firstChild']);}catch(_0x289c90){}}},0xc8);};}function _0x4ae1bf(){var _0x3a9fec=window['showRivalCard'];if(window['_rivalPatched'])return;window['_rivalPatched']=!![],window['showRivalCard']=function(){if(!window['UD']||!window['U']||!window['db'])return;var _0x5ab426=window['UD'],_0x2f620d=_0x5ab426['rival'];if(!_0x2f620d){var _0x8efe16='<div\x20style=\x22text-align:center;padding:16px\x200\x2020px\x22>';_0x8efe16+='<div\x20style=\x22font-size:48px;margin-bottom:10px\x22>🎯</div>',_0x8efe16+='<div\x20style=\x22font-size:16px;font-weight:800;color:#ff4444;margin-bottom:6px\x22>Set\x20Your\x20Rival</div>',_0x8efe16+='<div\x20style=\x22font-size:12px;color:#888;line-height:1.6;margin-bottom:20px\x22>Kisi\x20player\x20ko\x20rival\x20set\x20karo\x20—\x20har\x20match\x20mein\x20unhe\x20beat\x20karne\x20ki\x20koshish\x20karo!</div>',_0x8efe16+='</div>',_0x8efe16+='<div\x20style=\x22margin-bottom:14px\x22>',_0x8efe16+='<label\x20style=\x22font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px\x22>Search\x20by\x20IGN</label>',_0x8efe16+='<div\x20style=\x22display:flex;gap:8px\x22>',_0x8efe16+='<input\x20id=\x22_rivalSearch\x22\x20type=\x22text\x22\x20placeholder=\x22Enter\x20player\x20IGN...\x22\x20style=\x22flex:1;padding:12px\x2014px;border-radius:12px;background:rgba(255,255,255,.07);border:1px\x20solid\x20rgba(255,255,255,.12);color:#fff;font-size:14px;outline:none\x22>',_0x8efe16+='<button\x20onclick=\x22window._searchRival()\x22\x20style=\x22padding:12px\x2016px;border-radius:12px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-weight:800;font-size:13px;cursor:pointer\x22>Search</button>',_0x8efe16+='</div></div>',_0x8efe16+='<div\x20id=\x22_rivalResults\x22\x20style=\x22min-height:40px\x22></div>';if(window['openModal'])openModal('🎯\x20My\x20Rival',_0x8efe16);return;}_0x3a9fec?_0x3a9fec['apply'](this,arguments):window['db']['ref']('users/'+_0x2f620d['uid'])['once']('value',function(_0x380d16){if(!_0x380d16['exists']())return;var _0x3c8d3f=_0x380d16['val'](),_0x284b6d=_0x5ab426['stats']||{},_0x4a31de=_0x3c8d3f['stats']||{},_0x5702b8='<div\x20style=\x22text-align:center;padding:8px\x200\x2014px\x22>';_0x5702b8+='<div\x20style=\x22font-size:28px;margin-bottom:6px\x22>🎯</div>',_0x5702b8+='<div\x20style=\x22font-size:16px;font-weight:800;color:#ff4444;margin-bottom:4px\x22>Your\x20Rival</div>',_0x5702b8+='<div\x20style=\x22font-size:13px;color:#aaa\x22>'+(_0x3c8d3f['ign']||_0x3c8d3f['displayName']||'Player')+'</div>',_0x5702b8+='</div>';var _0x271c36=[{'label':'Matches','me':_0x284b6d['matches']||0x0,'them':_0x4a31de['matches']||0x0},{'label':'Kills','me':_0x284b6d['kills']||0x0,'them':_0x4a31de['kills']||0x0},{'label':'Wins','me':_0x284b6d['wins']||0x0,'them':_0x4a31de['wins']||0x0},{'label':'Earned','me':_0x284b6d['earnings']||0x0,'them':_0x4a31de['earnings']||0x0}];_0x5702b8+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x20auto\x201fr;gap:8px;margin-bottom:14px\x22>',_0x271c36['forEach'](function(_0x270d04){var _0x1e2e61=_0x270d04['me']>=_0x270d04['them'];_0x5702b8+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:16px;font-weight:900;color:'+(_0x1e2e61?'#00ff9c':'#fff')+'\x22>'+_0x270d04['me']+'</div><div\x20style=\x22font-size:10px;color:#666\x22>You</div></div>',_0x5702b8+='<div\x20style=\x22text-align:center;font-size:10px;color:#666;align-self:center;padding-top:6px\x22>'+_0x270d04['label']+'</div>',_0x5702b8+='<div\x20style=\x22text-align:left\x22><div\x20style=\x22font-size:16px;font-weight:900;color:'+(!_0x1e2e61?'#ff4444':'#fff')+'\x22>'+_0x270d04['them']+'</div><div\x20style=\x22font-size:10px;color:#666\x22>Rival</div></div>';}),_0x5702b8+='</div>',_0x5702b8+='<button\x20onclick=\x22window.db.ref(\x27users/\x27+window.U.uid+\x27/rival\x27).remove();if(window.closeModal)closeModal();if(window.toast)toast(\x27Rival\x20removed\x27,\x27ok\x27)\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:rgba(255,68,68,.1);border:1px\x20solid\x20rgba(255,68,68,.2);color:#ff4444;font-weight:700;cursor:pointer;margin-bottom:8px\x22>Remove\x20Rival</button>',_0x5702b8+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:10px;border-radius:10px;background:rgba(255,255,255,.06);border:none;color:#aaa;cursor:pointer\x22>Close</button>';if(window['openModal'])openModal('🎯\x20Rival\x20Stats',_0x5702b8);});},window['_searchRival']=function(){var _0x42ca72=(document['getElementById']('_rivalSearch')||{})['value'];if(!_0x42ca72||!_0x42ca72['trim']())return;_0x42ca72=_0x42ca72['trim']();var _0x41b3f0=document['getElementById']('_rivalResults');if(_0x41b3f0)_0x41b3f0['innerHTML']='<div\x20style=\x22text-align:center;padding:12px;color:#888;font-size:12px\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Searching...</div>';window['db']['ref']('users')['orderByChild']('ign')['equalTo'](_0x42ca72)['once']('value',function(_0x3b6a51){var _0x380b07=[];if(_0x3b6a51['exists']())_0x3b6a51['forEach'](function(_0x57edce){if(_0x57edce['key']!==window['U']['uid'])_0x380b07['push']({'uid':_0x57edce['key'],'data':_0x57edce['val']()});});if(!_0x380b07['length']){window['db']['ref']('users')['orderByChild']('displayName')['equalTo'](_0x42ca72)['once']('value',function(_0x30a4d3){var _0x1b83cf=[];if(_0x30a4d3['exists']())_0x30a4d3['forEach'](function(_0x5e65ee){if(_0x5e65ee['key']!==window['U']['uid'])_0x1b83cf['push']({'uid':_0x5e65ee['key'],'data':_0x5e65ee['val']()});});_0x4eeaf7(_0x1b83cf);});return;}_0x4eeaf7(_0x380b07);});};function _0x4eeaf7(_0x1d2eb7){var _0x50c1f3=document['getElementById']('_rivalResults');if(!_0x50c1f3)return;if(!_0x1d2eb7['length']){_0x50c1f3['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:#666;font-size:13px\x22>No\x20player\x20found\x20with\x20this\x20IGN</div>';return;}var _0x2c4b22='';_0x1d2eb7['slice'](0x0,0x5)['forEach'](function(_0x568535){var _0x58425d=_0x568535['data'],_0x3ed592=_0x58425d['stats']||{};_0x2c4b22+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:12px;margin-bottom:8px\x22>',_0x2c4b22+='<div\x20style=\x22width:40px;height:40px;border-radius:50%;background:rgba(255,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#ff4444\x22>'+(_0x58425d['ign']||_0x58425d['displayName']||'?')['charAt'](0x0)['toUpperCase']()+'</div>',_0x2c4b22+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:700\x22>'+(_0x58425d['ign']||_0x58425d['displayName']||'Player')+'</div>',_0x2c4b22+='<div\x20style=\x22font-size:11px;color:#666\x22>M:'+(_0x3ed592['matches']||0x0)+'\x20·\x20K:'+(_0x3ed592['kills']||0x0)+'\x20·\x20W:'+(_0x3ed592['wins']||0x0)+'</div></div>',_0x2c4b22+='<button\x20onclick=\x22window._setRivalById(\x27'+_0x568535['uid']+'\x27,\x27'+(_0x58425d['ign']||_0x58425d['displayName']||'Player')+'\x27)\x22\x20style=\x22padding:8px\x2014px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-weight:800;font-size:12px;cursor:pointer\x22>Set\x20Rival</button>',_0x2c4b22+='</div>';}),_0x50c1f3['innerHTML']=_0x2c4b22;}window['_setRivalById']=function(_0x59ca81,_0x4379ce){if(!window['U']||!window['db'])return;window['db']['ref']('users/'+window['U']['uid']+'/rival')['set']({'uid':_0x59ca81,'name':_0x4379ce,'setAt':Date['now']()});if(window['toast'])toast('🎯\x20Rival\x20set:\x20'+_0x4379ce,'ok');if(window['closeModal'])closeModal();};}var _0x95519e=[{'id':'first_blood','icon':'🩸','title':'First\x20Blood','levels':[{'level':0x1,'desc':'Play\x201\x20match','check':function(_0x3a8008){return(_0x3a8008['matches']||0x0)>=0x1;}},{'level':0x2,'desc':'Play\x205\x20matches','check':function(_0x278350){return(_0x278350['matches']||0x0)>=0x5;}},{'level':0x3,'desc':'Play\x2010\x20matches','check':function(_0x364cd3){return(_0x364cd3['matches']||0x0)>=0xa;}}]},{'id':'winner','icon':'🏆','title':'Champion','levels':[{'level':0x1,'desc':'Win\x201\x20match','check':function(_0x2762be){return(_0x2762be['wins']||0x0)>=0x1;}},{'level':0x2,'desc':'Win\x205\x20matches','check':function(_0x4160d4){return(_0x4160d4['wins']||0x0)>=0x5;}},{'level':0x3,'desc':'Win\x2015\x20matches','check':function(_0x40d835){return(_0x40d835['wins']||0x0)>=0xf;}}]},{'id':'kill_machine','icon':'💀','title':'Kill\x20Machine','levels':[{'level':0x1,'desc':'10\x20total\x20kills','check':function(_0x5a4368){return(_0x5a4368['kills']||0x0)>=0xa;}},{'level':0x2,'desc':'50\x20total\x20kills','check':function(_0x547898){return(_0x547898['kills']||0x0)>=0x32;}},{'level':0x3,'desc':'100\x20total\x20kills','check':function(_0x18cf5e){return(_0x18cf5e['kills']||0x0)>=0x64;}}]},{'id':'earner','icon':'💎','title':'Diamond\x20Earner','levels':[{'level':0x1,'desc':'Earn\x20💎50','check':function(_0x24175b){return(_0x24175b['earnings']||0x0)>=0x32;}},{'level':0x2,'desc':'Earn\x20💎200','check':function(_0x35732b){return(_0x35732b['earnings']||0x0)>=0xc8;}},{'level':0x3,'desc':'Earn\x20💎500','check':function(_0x222db7){return(_0x222db7['earnings']||0x0)>=0x1f4;}}]},{'id':'veteran','icon':'🎖️','title':'Veteran','levels':[{'level':0x1,'desc':'25\x20matches','check':function(_0x36560e){return(_0x36560e['matches']||0x0)>=0x19;}},{'level':0x2,'desc':'50\x20matches','check':function(_0x2cb8ea){return(_0x2cb8ea['matches']||0x0)>=0x32;}},{'level':0x3,'desc':'100\x20matches','check':function(_0x286605){return(_0x286605['matches']||0x0)>=0x64;}}]},{'id':'referrer','icon':'🤝','title':'Influencer','levels':[{'level':0x1,'desc':'Refer\x201\x20friend','check':function(_0x35bc0f,_0x2dd6c0){return(_0x2dd6c0['referralCount']||0x0)>=0x1;}},{'level':0x2,'desc':'Refer\x205\x20friends','check':function(_0x145247,_0x31980a){return(_0x31980a['referralCount']||0x0)>=0x5;}},{'level':0x3,'desc':'Refer\x2010\x20friends','check':function(_0x4530df,_0x1882bb){return(_0x1882bb['referralCount']||0x0)>=0xa;}}]},{'id':'streak','icon':'🔥','title':'On\x20Fire','levels':[{'level':0x1,'desc':'3\x20day\x20streak','check':function(_0x2362f8,_0x4d0b89){return(_0x4d0b89['loginStreak']||0x0)>=0x3;}},{'level':0x2,'desc':'7\x20day\x20streak','check':function(_0x6ec215,_0x1282cc){return(_0x1282cc['loginStreak']||0x0)>=0x7;}},{'level':0x3,'desc':'30\x20day\x20streak','check':function(_0x28c605,_0x3eebd7){return(_0x3eebd7['loginStreak']||0x0)>=0x1e;}}]},{'id':'depositor','icon':'💰','title':'High\x20Roller','levels':[{'level':0x1,'desc':'Add\x20💎100','check':function(_0x3f7588,_0x45a0ee){return((_0x45a0ee['realMoney']||{})['deposited']||0x0)>=0x64;}},{'level':0x2,'desc':'Add\x20💎300','check':function(_0x4560e8,_0x4bcccf){return((_0x4bcccf['realMoney']||{})['deposited']||0x0)>=0x12c;}},{'level':0x3,'desc':'Add\x20💎500','check':function(_0x58b7aa,_0x27dc3c){return((_0x27dc3c['realMoney']||{})['deposited']||0x0)>=0x1f4;}}]}];function _0x141232(_0x431812){var _0x6436c5=window['UD'];if(!_0x6436c5)return 0x0;var _0x34b67d=_0x6436c5['stats']||{},_0x11956c=0x0;return _0x431812['levels']['forEach'](function(_0x27deeb){if(_0x27deeb['check'](_0x34b67d,_0x6436c5))_0x11956c=_0x27deeb['level'];}),_0x11956c;}window['showAchievements']=function(){var _0xf05f64=window['UD'];if(!_0xf05f64)return;var _0x48234b=0x0;_0x95519e['forEach'](function(_0x12b14b){if(_0x141232(_0x12b14b)>0x0)_0x48234b++;});var _0x1ac797='<div\x20style=\x22text-align:center;margin-bottom:16px\x22>';_0x1ac797+='<div\x20style=\x22font-size:28px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent\x22>'+_0x48234b+'/'+_0x95519e['length']+'</div>',_0x1ac797+='<div\x20style=\x22font-size:12px;color:#888\x22>Achievements\x20Unlocked</div></div>',_0x1ac797+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px\x22>',_0x95519e['forEach'](function(_0x59af30){var _0x1b000c=_0x141232(_0x59af30),_0x4f76f4=_0x59af30['levels']['length'],_0x5d668b=_0x1b000c>0x0,_0x14743e=_0x59af30['levels'][_0x1b000c]||null;_0x1ac797+='<div\x20style=\x22padding:12px;border-radius:14px;background:'+(_0x5d668b?'rgba(255,215,0,.07)':'rgba(255,255,255,.03)')+';border:1px\x20solid\x20'+(_0x5d668b?'rgba(255,215,0,.2)':'rgba(255,255,255,.06)')+';position:relative;overflow:hidden\x22>';if(_0x5d668b){_0x1ac797+='<div\x20style=\x22position:absolute;top:8px;right:8px;display:flex;gap:2px\x22>';for(var _0x4b9d76=0x1;_0x4b9d76<=_0x4f76f4;_0x4b9d76++){_0x1ac797+='<div\x20style=\x22width:8px;height:8px;border-radius:50%;background:'+(_0x4b9d76<=_0x1b000c?'#ffd700':'rgba(255,255,255,.1)')+';box-shadow:'+(_0x4b9d76<=_0x1b000c?'0\x200\x204px\x20rgba(255,215,0,.6)':'none')+'\x22></div>';}_0x1ac797+='</div>';}_0x1ac797+='<div\x20style=\x22font-size:26px;margin-bottom:6px\x22>'+_0x59af30['icon']+'</div>',_0x1ac797+='<div\x20style=\x22font-size:12px;font-weight:800;color:'+(_0x5d668b?'#ffd700':'#aaa')+'\x22>'+_0x59af30['title']+'</div>',_0x5d668b?(_0x1ac797+='<div\x20style=\x22font-size:10px;color:#00ff9c;margin-top:2px;font-weight:700\x22>Level\x20'+_0x1b000c+'\x20✅</div>',_0x14743e?_0x1ac797+='<div\x20style=\x22font-size:9px;color:#666;margin-top:3px\x22>Next:\x20'+_0x14743e['desc']+'</div>':_0x1ac797+='<div\x20style=\x22font-size:9px;color:#ffd700;margin-top:3px\x22>Max\x20Level!</div>'):(_0x1ac797+='<div\x20style=\x22font-size:9px;color:#555;margin-top:3px\x22>'+_0x59af30['levels'][0x0]['desc']+'</div>',_0x1ac797+='<div\x20style=\x22font-size:9px;color:#444;margin-top:2px\x22>🔒\x20Locked</div>'),_0x1ac797+='</div>';}),_0x1ac797+='</div>';if(window['openModal'])openModal('🏅\x20Achievements',_0x1ac797);else{if(window['showModal'])showModal('🏅\x20Achievements',_0x1ac797);}},window['renderAchievementsHTML']=function(){var _0x43fd5b=window['UD'];if(!_0x43fd5b)return'';var _0x40564a=0x0;_0x95519e['forEach'](function(_0x36f134){if(_0x141232(_0x36f134)>0x0)_0x40564a++;});var _0x206b9c='<div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px\x22>';return _0x95519e['forEach'](function(_0x4bf71a){var _0x2e70f9=_0x141232(_0x4bf71a),_0x30864e=_0x2e70f9>0x0;_0x206b9c+='<div\x20title=\x22'+_0x4bf71a['title']+'\x20Lv.'+_0x2e70f9+'\x22\x20style=\x22width:36px;height:36px;border-radius:10px;background:'+(_0x30864e?'rgba(255,215,0,.12)':'rgba(255,255,255,.04)')+';border:1px\x20solid\x20'+(_0x30864e?'rgba(255,215,0,.3)':'var(--border)')+';display:flex;align-items:center;justify-content:center;font-size:18px;opacity:'+(_0x30864e?'1':'.3')+';position:relative\x22>'+_0x4bf71a['icon'];if(_0x2e70f9>0x0)_0x206b9c+='<div\x20style=\x22position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ffd700,#ff8c00);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:#000\x22>'+_0x2e70f9+'</div>';_0x206b9c+='</div>';}),_0x206b9c+='</div>',_0x206b9c+='<div\x20style=\x22font-size:11px;color:#00ff9c\x22>'+_0x40564a+'/'+_0x95519e['length']+'\x20achievements\x20unlocked</div>',_0x206b9c+='<button\x20onclick=\x22window.showAchievements&&showAchievements()\x22\x20style=\x22margin-top:8px;padding:8px\x2014px;border-radius:10px;background:rgba(255,215,0,.1);color:#ffd700;border:1px\x20solid\x20rgba(255,215,0,.2);font-size:12px;font-weight:700;cursor:pointer\x22>View\x20All\x20Achievements</button>',_0x206b9c;},window['generateStatCard']=function(){var _0xab7562=window['UD'],_0x3bdea4=window['U'];if(!_0xab7562||!_0x3bdea4)return;var _0x426fc6=_0xab7562['stats']||{},_0x7817f3=_0x426fc6['matches']>0x0?Math['round'](_0x426fc6['wins']/_0x426fc6['matches']*0x64):0x0,_0x9e07e0=_0x426fc6['matches']>0x0?((_0x426fc6['kills']||0x0)/_0x426fc6['matches'])['toFixed'](0x1):'0',_0x19bbe5='<div\x20style=\x22background:linear-gradient(135deg,#050507,#0a0a14);border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:18px;padding:20px;position:relative;overflow:hidden\x22>';_0x19bbe5+='<div\x20style=\x22position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:rgba(0,255,156,.06);border-radius:50%;filter:blur(20px)\x22></div>',_0x19bbe5+='<div\x20style=\x22position:absolute;bottom:-40px;left:-40px;width:100px;height:100px;background:rgba(185,100,255,.06);border-radius:50%;filter:blur(20px)\x22></div>',_0x19bbe5+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between;margin-bottom:16px\x22>',_0x19bbe5+='<div\x20style=\x22display:flex;align-items:center;gap:8px\x22><span\x20style=\x22font-size:16px\x22>🎮</span><span\x20style=\x22font-size:13px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent\x22>Mini\x20eSports</span></div>';var _0x130e75=typeof window['APP_URL']==='string'&&window['APP_URL']||window['location']['origin']+'/';_0x19bbe5+='<div\x20style=\x22font-size:9px;color:#333\x22>'+_0x130e75['replace'](/^https?:\/\//,'')+'</div>',_0x19bbe5+='</div>',_0x19bbe5+='<div\x20style=\x22margin-bottom:14px\x22>',_0x19bbe5+='<div\x20style=\x22font-size:22px;font-weight:900;color:#fff\x22>'+(window['escHtml']?window['escHtml'](_0xab7562['ign']||_0xab7562['displayName']||'Player'):_0xab7562['ign']||_0xab7562['displayName']||'Player')+'</div>',_0x19bbe5+='<div\x20style=\x22font-size:11px;color:#555;margin-top:2px\x22>FF\x20UID:\x20'+(_0xab7562['ffUid']||'—')+'</div>',_0x19bbe5+='</div>';var _0x2afc00=[{'l':'Matches','v':_0x426fc6['matches']||0x0,'c':'#00d4ff'},{'l':'Wins','v':_0x426fc6['wins']||0x0,'c':'#00ff9c'},{'l':'Win\x20Rate','v':_0x7817f3+'%','c':'#ffd700'},{'l':'Kills','v':_0x426fc6['kills']||0x0,'c':'#ff4444'},{'l':'Earned','v':'💎'+(_0x426fc6['earnings']||0x0),'c':'#b964ff'},{'l':'K/Match','v':_0x9e07e0,'c':'#ffaa00'}];_0x19bbe5+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:8px;margin-bottom:14px\x22>',_0x2afc00['forEach'](function(_0x54c84f){_0x19bbe5+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center\x22>',_0x19bbe5+='<div\x20style=\x22font-size:16px;font-weight:900;color:'+_0x54c84f['c']+'\x22>'+_0x54c84f['v']+'</div>',_0x19bbe5+='<div\x20style=\x22font-size:9px;color:#555;margin-top:2px\x22>'+_0x54c84f['l']+'</div>',_0x19bbe5+='</div>';}),_0x19bbe5+='</div>',_0x19bbe5+='<div\x20style=\x22text-align:center;font-size:10px;font-weight:800;background:linear-gradient(90deg,#00ff9c,#b964ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:.4\x22>MINI\x20eSPORTS</div>',_0x19bbe5+='</div>',_0x19bbe5+='<div\x20style=\x22font-size:11px;color:#555;text-align:center;margin-top:8px\x22>Long\x20press\x20image\x20to\x20save</div>',_0x19bbe5+='<button\x20onclick=\x22window._shareStatCard&&_shareStatCard()\x22\x20style=\x22width:100%;margin-top:10px;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:14px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-share-alt\x22\x20style=\x22margin-right:8px\x22></i>Share\x20Stat\x20Card</button>';if(window['openModal'])openModal('📊\x20Your\x20Stat\x20Card',_0x19bbe5);},window['_shareStatCard']=function(){var _0xebb9da=window['UD'];if(!_0xebb9da)return;var _0x7e9e8f=_0xebb9da['stats']||{},_0x5dc941='🎮\x20Mini\x20eSports\x20—\x20My\x20Stats!\x0a\x0a'+'👤\x20'+(_0xebb9da['ign']||_0xebb9da['displayName']||'Player')+'\x0a'+'🎯\x20Matches:\x20'+(_0x7e9e8f['matches']||0x0)+'\x0a'+'🏆\x20Wins:\x20'+(_0x7e9e8f['wins']||0x0)+'\x0a'+'💀\x20Kills:\x20'+(_0x7e9e8f['kills']||0x0)+'\x0a'+'💎\x20Earned:\x20'+(_0x7e9e8f['earnings']||0x0)+'\x0a\x0a'+'📲\x20Play\x20on\x20Mini\x20eSports:\x20'+window['location']['origin']+'/FF-User-Panel/';if(navigator['share'])navigator['share']({'title':'My\x20Stats','text':_0x5dc941})['catch'](function(){});else{if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x5dc941);}};function _0x1ebf96(){var _0x5d0003=new MutationObserver(function(){var _0x144210=document['getElementById']('_previewOverlay');if(!_0x144210)return;var _0x3c8d71=document['getElementById']('_pvShareBtn');_0x3c8d71&&(_0x3c8d71['style']['cursor']='pointer');});_0x5d0003['observe'](document['body'],{'childList':!![],'subtree':!![]});}function _0x115ad2(){var _0x5db66b=new MutationObserver(function(){document['querySelectorAll']('.sp-tog-btn')['forEach'](function(_0x52d36e){_0x52d36e['textContent']==='Weekly'&&!_0x52d36e['dataset']['relabeled']&&(_0x52d36e['textContent']='Sunday\x20Special',_0x52d36e['dataset']['relabeled']='1');});});_0x5db66b['observe'](document['body'],{'childList':!![],'subtree':!![]}),setTimeout(function(){document['querySelectorAll']('.sp-tog-btn')['forEach'](function(_0x56aaae){_0x56aaae['textContent']==='Weekly'&&!_0x56aaae['dataset']['relabeled']&&(_0x56aaae['textContent']='Sunday\x20Special',_0x56aaae['dataset']['relabeled']='1');});},0x1f4);}function _0x5ea364(){if(!document['getElementById']('_matchCardStyle')){var _0xb9cfda=document['createElement']('style');_0xb9cfda['id']='_matchCardStyle',_0xb9cfda['textContent']=['@keyframes\x20cardGlow{0%,100%{box-shadow:0\x208px\x2032px\x20rgba(0,0,0,.5)}50%{box-shadow:0\x2012px\x2040px\x20rgba(0,255,156,.08),0\x200\x200\x201px\x20rgba(0,255,156,.05)}}','.m-card{animation:cardGlow\x204s\x20ease-in-out\x20infinite!important;transition:transform\x20.2s,box-shadow\x20.2s!important}','.m-card:active{transform:scale(.98)!important}']['join'](''),document['head']['appendChild'](_0xb9cfda);}}function _0x4218ed(){var _0x3777ae=window['generateAdvancedPlayerCard'];if(!_0x3777ae||window['_cardPatched'])return;window['_cardPatched']=!![],window['generateAdvancedPlayerCard']=function(){var _0x5846ad=window['UD'];if(!_0x5846ad)return;var _0x4c3253=_0x5846ad['stats']||{},_0x2bd9d0=window['calcRk']?window['calcRk'](_0x4c3253):{'badge':'Player','emoji':'🎮','color':'#00ff9c'},_0x32c1a5=_0x5846ad['profileImage']?'<img\x20src=\x22'+_0x5846ad['profileImage']+'\x22\x20style=\x22width:100%;height:100%;object-fit:cover;border-radius:50%\x22>':'<div\x20style=\x22width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#000\x22>'+(_0x5846ad['ign']||_0x5846ad['displayName']||'P')['charAt'](0x0)['toUpperCase']()+'</div>',_0x29313b='<div\x20style=\x22position:relative;overflow:hidden\x22>';_0x29313b+='<div\x20id=\x22_pcAnimBg\x22\x20style=\x22background:linear-gradient(135deg,#050507,#0d0b16,#050507);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:20px;padding:20px;text-align:center;position:relative;overflow:hidden\x22>',_0x29313b+='<div\x20style=\x22position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse\x20at\x2050%\x200%,rgba(0,255,156,.08),transparent\x2060%);pointer-events:none\x22></div>',_0x29313b+='<div\x20style=\x22width:80px;height:80px;border-radius:50%;margin:0\x20auto\x2012px;border:3px\x20solid\x20'+(_0x2bd9d0['color']||'#00ff9c')+';box-shadow:0\x200\x2020px\x20'+(_0x2bd9d0['color']||'#00ff9c')+'66,0\x200\x2040px\x20'+(_0x2bd9d0['color']||'#00ff9c')+'22;animation:goldSpin\x203s\x20ease-in-out\x20infinite;position:relative\x22>'+_0x32c1a5+'</div>',_0x29313b+='<div\x20style=\x22font-size:22px;font-weight:900;color:#fff;margin-bottom:4px\x22>'+(window['escHtml']?window['escHtml'](_0x5846ad['ign']||_0x5846ad['displayName']||'Player'):_0x5846ad['ign']||_0x5846ad['displayName']||'Player')+'</div>',_0x29313b+='<div\x20style=\x22font-size:11px;color:#555;margin-bottom:12px\x22>FF\x20UID:\x20'+(_0x5846ad['ffUid']||'—')+'</div>',_0x29313b+='<div\x20style=\x22display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.1);border-radius:20px;padding:5px\x2014px;margin-bottom:16px\x22>',_0x29313b+='<span\x20style=\x22font-size:18px\x22>'+_0x2bd9d0['emoji']+'</span><span\x20style=\x22font-size:12px;font-weight:700;color:'+(_0x2bd9d0['color']||'#00ff9c')+'\x22>'+_0x2bd9d0['badge']+'</span></div>',_0x29313b+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:8px;margin-bottom:16px\x22>',[{'l':'Matches','v':_0x4c3253['matches']||0x0,'c':'#00d4ff'},{'l':'Wins','v':_0x4c3253['wins']||0x0,'c':'#00ff9c'},{'l':'Kills','v':_0x4c3253['kills']||0x0,'c':'#ff4444'}]['forEach'](function(_0x576124){_0x29313b+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:12px;padding:10px\x22>',_0x29313b+='<div\x20style=\x22font-size:22px;font-weight:900;color:'+_0x576124['c']+'\x22>'+_0x576124['v']+'</div>',_0x29313b+='<div\x20style=\x22font-size:9px;color:#555;margin-top:2px\x22>'+_0x576124['l']+'</div></div>';}),_0x29313b+='</div>';var _0xba719f=_0x4c3253['matches']>0x0?Math['round'](_0x4c3253['wins']/_0x4c3253['matches']*0x64):0x0;_0x29313b+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:10px;padding:8px;margin-bottom:0\x22>Win\x20Rate:\x20<strong\x20style=\x22color:#00ff9c\x22>'+_0xba719f+'%</strong></div>',_0x29313b+='</div></div>',_0x29313b+='<button\x20onclick=\x22window.generateProfileCard&&generateProfileCard()\x22\x20style=\x22width:100%;margin-top:12px;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:14px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-share-alt\x22\x20style=\x22margin-right:8px\x22></i>Share\x20Card</button>';if(window['openModal'])openModal('My\x20Player\x20Card',_0x29313b);};}function _0x36a4f3(){var _0x19f90c=window['showProfileUpdate'];if(!_0x19f90c||window['_ffLocked'])return;window['_ffLocked']=!![],window['showProfileUpdate']=function(){var _0x445500=window['UD'];if(!_0x445500){_0x19f90c();return;}var _0x23a806=_0x445500['ffUid']&&_0x445500['ffUid']['trim']()['length']>=0x5,_0x5a515b=_0x445500['profileStatus']==='approved'||_0x445500['profileVerified'],_0x3d6430=_0x5a515b?'Profile\x20Update':'Profile\x20Verification',_0x560fc8=_0x5a515b?'Submit\x20Update':'Submit\x20for\x20Verification',_0x3bc9c3='<div\x20class=\x22f-group\x22><label>In-Game\x20Name\x20(IGN)</label><input\x20type=\x22text\x22\x20class=\x22f-input\x22\x20id=\x22puIgn\x22\x20placeholder=\x22Your\x20Free\x20Fire\x20IGN\x22\x20value=\x22'+(window['escHtml']?window['escHtml'](_0x445500['ign']||''):_0x445500['ign']||'')+'\x22></div>';if(_0x23a806&&_0x5a515b)_0x3bc9c3+='<div\x20class=\x22f-group\x22><label>Free\x20Fire\x20UID\x20<span\x20style=\x22color:#ffd700;font-size:10px\x22>🔒\x20Locked\x20after\x20first\x20verification</span></label>',_0x3bc9c3+='<input\x20type=\x22text\x22\x20class=\x22f-input\x22\x20id=\x22puUid\x22\x20value=\x22'+(_0x445500['ffUid']||'')+'\x22\x20readonly\x20style=\x22opacity:.6;cursor:not-allowed\x22></div>',_0x3bc9c3+='<div\x20style=\x22background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.15);border-radius:10px;padding:10px;font-size:11px;color:#ffaa00;margin-bottom:10px\x22><i\x20class=\x22fas\x20fa-lock\x22></i>\x20FF\x20UID\x20ek\x20baar\x20set\x20hone\x20ke\x20baad\x20change\x20nahi\x20hogi.\x20Agar\x20issue\x20hai\x20to\x20admin\x20se\x20contact\x20karo.</div>';else!_0x23a806?(_0x3bc9c3+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:10px;padding:10px;font-size:11px;color:#00ff9c;margin-bottom:6px\x22><i\x20class=\x22fas\x20fa-info-circle\x22></i>\x20FF\x20UID\x20ek\x20baar\x20set\x20hone\x20ke\x20baad\x20change\x20nahi\x20kar\x20sakte\x20—\x20sahi\x20UID\x20daalna!</div>',_0x3bc9c3+='<div\x20class=\x22f-group\x22><label>Free\x20Fire\x20UID\x20(5-15\x20digits)</label><input\x20type=\x22text\x22\x20class=\x22f-input\x22\x20id=\x22puUid\x22\x20placeholder=\x22Your\x20FF\x20UID\x22\x20value=\x22'+(window['escHtml']?window['escHtml'](_0x445500['ffUid']||''):_0x445500['ffUid']||'')+'\x22></div>'):_0x3bc9c3+='<div\x20class=\x22f-group\x22><label>Free\x20Fire\x20UID\x20(5-15\x20digits)</label><input\x20type=\x22text\x22\x20class=\x22f-input\x22\x20id=\x22puUid\x22\x20placeholder=\x22Your\x20FF\x20UID\x22\x20value=\x22'+(window['escHtml']?window['escHtml'](_0x445500['ffUid']||''):_0x445500['ffUid']||'')+'\x22></div>';_0x3bc9c3+='<div\x20class=\x22f-group\x22><label>WhatsApp\x20Number\x20<span\x20style=\x22font-size:10px;color:var(--txt2)\x22>(prizes\x20ke\x20liye)</span></label><input\x20type=\x22tel\x22\x20class=\x22f-input\x22\x20id=\x22puPhone\x22\x20placeholder=\x2210-digit\x20number\x22\x20maxlength=\x2210\x22\x20value=\x22'+(_0x445500['phone']||'')+'\x22></div>',_0x3bc9c3+='<div\x20class=\x22f-warn\x22><i\x20class=\x22fas\x20fa-exclamation-triangle\x22></i>\x20Only\x20real\x20Free\x20Fire\x20IGN\x20and\x20UID\x20allowed.\x20Fake\x20info\x20=\x20disqualified.</div>',_0x3bc9c3+='<button\x20class=\x22f-btn\x20fb-orange\x22\x20style=\x22margin-top:14px\x22\x20onclick=\x22doProfileUpdate()\x22>'+_0x560fc8+'</button>';if(window['openModal'])openModal(_0x3d6430,_0x3bc9c3);};}function _0xa1036a(){_0x4123c3(),_0x96297d(),_0x3b923b(),_0x45262e(),_0x5ae4b2(),_0x7f66e7(),_0x4714aa(),_0x4e8608(),_0x73d07e(),_0x624c35(),_0x18b420(),_0x4ae1bf(),_0x1ebf96(),_0x115ad2(),_0x5ea364(),_0x4218ed(),_0x36a4f3();}var _0x1a19ec=0x0,_0xd9c7c5=setInterval(function(){_0x1a19ec++;if(document['body']&&window['db']&&window['U']){clearInterval(_0xd9c7c5),_0xa1036a();var _0x5ebcb4=window['navTo'];if(_0x5ebcb4)window['navTo']=function(_0x421191){_0x5ebcb4['apply'](this,arguments),setTimeout(_0x4123c3,0x64),setTimeout(_0x45262e,0xc8),setTimeout(_0x115ad2,0x12c);};}_0x1a19ec>0x1e&&(clearInterval(_0xd9c7c5),_0xa1036a());},0x12c);console['log']('[Mini\x20eSports]\x20✅\x20UI\x20Fixes\x20Master\x20loaded');}());
+/* Security Fix for ui-fixes.js eval() — whitelist-based function dispatcher */
+function _safeFnCall(fn) {
+  if (!fn) return;
+  var fnMap = {
+    'mesShowTerms':   function() { if (window.mesShowTerms)   window.mesShowTerms(); },
+    'mesShowPrivacy': function() { if (window.mesShowPrivacy) window.mesShowPrivacy(); },
+    'mesTDSSummary':  function() { if (window.mesTDSSummary)  window.mesTDSSummary(); },
+    'mesShowKYC':     function() { if (window.mesShowKYC)     window.mesShowKYC(); },
+    'mesRG':          function() { if (window.mesRG)          window.mesRG(); },
+    'mesDispute':     function() { if (window.mesDispute)     window.mesDispute(); },
+    'showLogin':      function() { if (window.showLogin)      window.showLogin(); },
+    'navTo':          function() { /* navTo handled elsewhere */ },
+  };
+  for (var key in fnMap) {
+    if (fn.indexOf(key) > -1) { fnMap[key](); return; }
+  }
+}
+/* ================================================================
+   MINI eSPORTS — UI FIXES MASTER FILE
+   Fixes: Header, Diamond, Rank, Achievements+Levels, Legal,
+          Special Tab, Weekly Challenge remove, Rival, Profile,
+          Calculator remove, TDS text, Rewards Coming Soon,
+          3D Card remove, Stat Card, Match Card, Ticker animation
+   ================================================================ */
+(function () {
+'use strict';
+
+/* ══════════════════════════════════════════════
+   1. HEADER FIX
+   🔥 Mini
+   eSports   (fire icon top-left, name stacked)
+   Online count moved left, search+bell adjusted
+══════════════════════════════════════════════ */
+function fixHeader() {
+  var hdrLeft = document.querySelector('.hdr-left');
+  if (!hdrLeft || hdrLeft.dataset.fixed) return;
+  hdrLeft.dataset.fixed = '1';
+  hdrLeft.innerHTML =
+    '<div style="display:flex;align-items:flex-start;gap:6px">' +
+      '<i class="fas fa-fire" aria-hidden="true" style="color:#ff2e2e;font-size:20px;filter:drop-shadow(0 0 8px rgba(255,46,46,.8));margin-top:2px;animation:firePulse 1.5s ease-in-out infinite"></i>' +
+      '<h1 class="hdr-name" style="margin:0;line-height:1.15;display:block">' +
+        '<span style="display:block;font-size:17px;font-weight:900;background:linear-gradient(135deg,#00ff6a,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mini</span>' +
+        '<span style="display:block;font-size:13px;font-weight:800;color:#aaa;margin-top:-2px">eSports</span>' +
+      '</h1>' +
+    '</div>';
+
+  /* Add firePulse animation */
+  if (!document.getElementById('_fpStyle')) {
+    var s = document.createElement('style');
+    s.id = '_fpStyle';
+    s.textContent = '@keyframes firePulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 6px rgba(255,46,46,.7))}50%{transform:scale(1.15);filter:drop-shadow(0 0 12px rgba(255,100,0,.9))}}';
+    document.head.appendChild(s);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   2. DIAMOND SPARKLE ANIMATION
+   💎 mein chamak add karo
+══════════════════════════════════════════════ */
+function addDiamondSparkle() {
+  if (document.getElementById('_diaStyle')) return;
+  var s = document.createElement('style');
+  s.id = '_diaStyle';
+  s.textContent = [
+    '@keyframes diaShine{0%{filter:drop-shadow(0 0 3px rgba(0,212,255,.4)) brightness(1)}',
+    '25%{filter:drop-shadow(0 0 8px rgba(0,212,255,.9)) brightness(1.3)}',
+    '50%{filter:drop-shadow(0 0 16px rgba(185,100,255,.8)) brightness(1.5) saturate(1.4)}',
+    '75%{filter:drop-shadow(0 0 8px rgba(0,255,156,.7)) brightness(1.3)}',
+    '100%{filter:drop-shadow(0 0 3px rgba(0,212,255,.4)) brightness(1)}}',
+    '@keyframes diaFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.05)}}',
+    '.chip-money span:first-child{animation:diaShine 2.5s ease-in-out infinite,diaFloat 3s ease-in-out infinite;display:inline-block}',
+    '.hdr-chip.chip-money{background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(185,100,255,.1));border:1px solid rgba(0,212,255,.25)}'
+  ].join('');
+  document.head.appendChild(s);
+}
+
+/* ══════════════════════════════════════════════
+   3. RANK PAGE ANIMATIONS
+   Beautiful enter animations, particles, glow
+══════════════════════════════════════════════ */
+function addRankAnimations() {
+  if (document.getElementById('_rankAnim')) return;
+  var s = document.createElement('style');
+  s.id = '_rankAnim';
+  s.textContent = [
+    /* Pod items slide-in from bottom */
+    '@keyframes podRise{from{opacity:0;transform:translateY(40px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}',
+    '@keyframes podRise2{from{opacity:0;transform:translateY(60px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}',
+    '@keyframes rankRowIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}',
+    /* Gold sparkle */
+    '@keyframes goldSpin{0%{box-shadow:0 0 24px rgba(255,215,0,.8),0 0 48px rgba(255,180,0,.4)}',
+    '33%{box-shadow:0 0 30px rgba(255,215,0,1),0 0 60px rgba(255,200,0,.6),0 0 90px rgba(255,150,0,.3)}',
+    '66%{box-shadow:0 0 24px rgba(255,180,0,.9),0 0 48px rgba(255,215,0,.5)}',
+    '100%{box-shadow:0 0 24px rgba(255,215,0,.8),0 0 48px rgba(255,180,0,.4)}}',
+    '.pod-item.p1{animation:podRise .6s cubic-bezier(.34,1.56,.64,1) .1s both}',
+    '.pod-item.p2{animation:podRise2 .6s cubic-bezier(.34,1.56,.64,1) .25s both}',
+    '.pod-item.p3{animation:podRise2 .6s cubic-bezier(.34,1.56,.64,1) .35s both}',
+    '.pod-item.p1 .pod-ava{animation:goldSpin 3s ease-in-out infinite!important}',
+    '.rank-row{animation:rankRowIn .4s ease both}',
+    /* Stagger rank rows */
+    '.rank-row:nth-child(1){animation-delay:.05s}',
+    '.rank-row:nth-child(2){animation-delay:.1s}',
+    '.rank-row:nth-child(3){animation-delay:.15s}',
+    '.rank-row:nth-child(4){animation-delay:.2s}',
+    '.rank-row:nth-child(5){animation-delay:.25s}',
+    '.rank-row:nth-child(6){animation-delay:.3s}',
+    '.rank-row:nth-child(n+7){animation-delay:.35s}',
+    /* Podium glow bg */
+    '.rank-podium{background:radial-gradient(ellipse at 50% 110%,rgba(255,215,0,.12) 0%,rgba(185,100,255,.04) 40%,transparent 70%)!important}'
+  ].join('');
+  document.head.appendChild(s);
+}
+
+/* ══════════════════════════════════════════════
+   4. TICKER ANIMATION (stylish gradient scroll)
+══════════════════════════════════════════════ */
+function styleTickerText() {
+  var ticker = document.querySelector('.ticker-txt');
+  if (!ticker || ticker.dataset.styled) return;
+  ticker.dataset.styled = '1';
+  ticker.style.cssText += ';background:linear-gradient(90deg,#00ff9c,#00d4ff,#b964ff,#ffd700,#00ff9c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:13px';
+}
+
+/* ══════════════════════════════════════════════
+   5. HOME PAGE GAP — reduce between tabs and match list
+══════════════════════════════════════════════ */
+function fixHomeGap() {
+  if (!document.getElementById('_gapStyle')) {
+    var s = document.createElement('style');
+    s.id = '_gapStyle';
+    s.textContent = '.c-pills{margin-bottom:4px!important}.s-tabs{margin-bottom:4px!important}.s-tab{margin-bottom:0!important}';
+    document.head.appendChild(s);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   6. LEGAL BUTTONS FIX
+   Delay badha do 500ms — sheet animation ke baad modal khule
+══════════════════════════════════════════════ */
+function fixLegalButtons() {
+  /* Override closeProfileSettings to use longer delay for legal */
+  var _origClose = window.closeProfileSettings;
+  if (!window.closeProfileSettings || window._legalFixed) return;
+  window._legalFixed = true;
+
+}
+
+/* ══════════════════════════════════════════════
+   7. WEEKLY CHALLENGE → ACHIEVEMENT (Profile)
+   f07 Weekly Challenge button hatao,
+   Achievement section upar lao
+══════════════════════════════════════════════ */
+function fixWeeklyChallengeToAchievement() {
+  /* Remove f07 weekly challenge button from profile */
+  var obs = new MutationObserver(function() {
+    var wBtn = document.querySelector('.f07-weekly-btn');
+    if (wBtn) wBtn.remove();
+
+    /* Achievement section ko profile mein properly place karo */
+    var achBtn = document.querySelector('.prof-btn:not(.f07-weekly-btn)');
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+}
+
+/* ══════════════════════════════════════════════
+   8. CALCULATOR BUTTON HATAO (filter chips se)
+══════════════════════════════════════════════ */
+function removeCalculatorBtn() {
+  var obs2 = new MutationObserver(function() {
+    document.querySelectorAll('button').forEach(function(btn) {
+      if (btn.textContent && btn.textContent.trim() === '🧮 Calculator') {
+        btn.remove();
+      }
+    });
+  });
+  obs2.observe(document.body, { childList: true, subtree: true });
+}
+
+/* ══════════════════════════════════════════════
+   9. TDS TEXT HATAO (wallet mein)
+   "TDS OFF/ON" text aur "100 💎 = ₹100" line
+══════════════════════════════════════════════ */
+function hideTDSTextInWallet() {
+  /* R28j (2026-09-22): 'Diamond -> ₹ Conversion' card ab diamond-system.js
+     inject nahi karta (halal model — diamonds ₹ nahi bante), isliye ye
+     observer ab natural no-op hai. Observed-card cleanup ab zaroorat nahi. */
+  if (typeof MutationObserver === 'undefined') return;
+  var obs3 = new MutationObserver(function() {
+    /* Diamond conversion card mein sirf withdrawal button aur amount dikhao */
+    var card = document.getElementById('_diamondConvCard');
+    if (card) {
+      /* TDS OFF/ON badge hatao */
+      var badge = card.querySelector('[style*="TDS"]');
+      if (badge) badge.style.display = 'none';
+      /* "100 💎 = ₹100" line hatao */
+      card.querySelectorAll('div').forEach(function(d) {
+        if (d.textContent && (d.textContent.indexOf('100 💎') > -1 || d.textContent.indexOf('Koi TDS') > -1)) {
+          d.style.display = 'none';
+        }
+      });
+    }
+  });
+  obs3.observe(document.body, { childList: true, subtree: true });
+}
+
+/* ══════════════════════════════════════════════
+   10. 3D PLAYER CARD BUTTON HATAO
+══════════════════════════════════════════════ */
+function remove3DCardButton() {
+  /* Settings sheet se hatao */
+  var _origShowSettings = window.showProfileSettings;
+  if (!_origShowSettings || window._3dRemoved) return;
+  window._3dRemoved = true;
+  window.showProfileSettings = function() {
+    _origShowSettings.apply(this, arguments);
+    setTimeout(function() {
+      var sheet = document.getElementById('profSettingsSheet');
+      if (!sheet) return;
+      sheet.querySelectorAll('div[onclick]').forEach(function(d) {
+        if (d.textContent && (d.textContent.indexOf('3D Player Card') > -1 || d.textContent.indexOf('3D Card') > -1)) {
+          d.remove();
+        }
+      });
+    }, 100);
+  };
+}
+
+/* ══════════════════════════════════════════════
+   11. REWARDS STORE — Coming Soon badges
+══════════════════════════════════════════════ */
+function patchRewardsStore() {
+  var _origStore = window.showRewardsStore;
+  if (!_origStore || window._rewardPatched) return;
+  window._rewardPatched = true;
+  window.showRewardsStore = function() {
+    _origStore.apply(this, arguments);
+    setTimeout(function() {
+      /* Find all redeem buttons and replace with Coming Soon */
+      var modal = document.getElementById('modalB');
+      if (!modal) return;
+      modal.querySelectorAll('button').forEach(function(btn) {
+        if (btn.textContent && (btn.textContent.indexOf('Redeem') > -1 || btn.textContent.indexOf('Buy') > -1 || btn.textContent.indexOf('Need more') > -1)) {
+          btn.disabled = true;
+          btn.style.background = 'rgba(255,255,255,.04)';
+          btn.style.color = '#555';
+          btn.style.border = '1px solid rgba(255,255,255,.06)';
+          btn.textContent = '🔜 Coming Soon';
+        }
+      });
+      /* Add banner at top */
+      var existing = modal.querySelector('._comingSoonBanner');
+      if (!existing) {
+        var banner = document.createElement('div');
+        banner.className = '_comingSoonBanner';
+        banner.style.cssText = 'background:rgba(255,170,0,.08);border:1px solid rgba(255,170,0,.2);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#ffaa00;text-align:center';
+        banner.innerHTML = '🚧 Rewards Store launching soon! Items available after official app launch.';
+        try{modal.insertBefore(banner, modal.firstChild);}catch(e){}
+      }
+    }, 200);
+  };
+}
+
+/* ══════════════════════════════════════════════
+   12. RIVAL SET OPTION ADD
+   showRivalCard mein set rival option add karo
+══════════════════════════════════════════════ */
+function patchRivalCard() {
+  var _origRival = window.showRivalCard;
+  if (window._rivalPatched) return;
+  window._rivalPatched = true;
+
+  window.showRivalCard = function() {
+    if (!window.UD || !window.U || !window.db) return;
+
+    var UD = window.UD;
+    var rival = UD.rival;
+
+    if (!rival) {
+      /* No rival set — show search UI */
+      var h = '<div style="text-align:center;padding:16px 0 20px">';
+      h += '<div style="font-size:48px;margin-bottom:10px">🎯</div>';
+      h += '<div style="font-size:16px;font-weight:800;color:#ff4444;margin-bottom:6px">Set Your Rival</div>';
+      h += '<div style="font-size:12px;color:#888;line-height:1.6;margin-bottom:20px">Kisi player ko rival set karo — har match mein unhe beat karne ki koshish karo!</div>';
+      h += '</div>';
+      h += '<div style="margin-bottom:14px">';
+      h += '<label style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Search by IGN</label>';
+      h += '<div style="display:flex;gap:8px">';
+      h += '<input id="_rivalSearch" type="text" placeholder="Enter player IGN..." style="flex:1;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;font-size:14px;outline:none">';
+      h += '<button onclick="window._searchRival()" style="padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-weight:800;font-size:13px;cursor:pointer">Search</button>';
+      h += '</div></div>';
+      h += '<div id="_rivalResults" style="min-height:40px"></div>';
+      if (window.openModal) openModal('🎯 My Rival', h);
+      return;
+    }
+
+    /* Has rival — show comparison */
+    if (_origRival) {
+      _origRival.apply(this, arguments);
+    } else {
+      window.db.ref('users/' + rival.uid).once('value', function(s) {
+        if (!s.exists()) return;
+        var rd = s.val();
+        var myStats = (UD.stats || {});
+        var theirStats = (rd.stats || {});
+        var h = '<div style="text-align:center;padding:8px 0 14px">';
+        h += '<div style="font-size:28px;margin-bottom:6px">🎯</div>';
+        h += '<div style="font-size:16px;font-weight:800;color:#ff4444;margin-bottom:4px">Your Rival</div>';
+        h += '<div style="font-size:13px;color:#aaa">' + (rd.ign || rd.displayName || 'Player') + '</div>';
+        h += '</div>';
+        var stats = [{label:'Matches',me:myStats.matches||0,them:theirStats.matches||0},{label:'Kills',me:myStats.kills||0,them:theirStats.kills||0},{label:'Wins',me:myStats.wins||0,them:theirStats.wins||0},{label:'Earned',me:myStats.earnings||0,them:theirStats.earnings||0}];
+        h += '<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin-bottom:14px">';
+        stats.forEach(function(cs) {
+          var myWin = cs.me >= cs.them;
+          h += '<div style="text-align:right"><div style="font-size:16px;font-weight:900;color:' + (myWin?'#00ff9c':'#fff') + '">' + cs.me + '</div><div style="font-size:10px;color:#666">You</div></div>';
+          h += '<div style="text-align:center;font-size:10px;color:#666;align-self:center;padding-top:6px">' + cs.label + '</div>';
+          h += '<div style="text-align:left"><div style="font-size:16px;font-weight:900;color:' + (!myWin?'#ff4444':'#fff') + '">' + cs.them + '</div><div style="font-size:10px;color:#666">Rival</div></div>';
+        });
+        h += '</div>';
+        h += '<button onclick="window.db.ref(\'users/\'+window.U.uid+\'/rival\').remove();if(window.closeModal)closeModal();if(window.toast)toast(\'Rival removed\',\'ok\')" style="width:100%;padding:10px;border-radius:10px;background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.2);color:#ff4444;font-weight:700;cursor:pointer;margin-bottom:8px">Remove Rival</button>';
+        h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:10px;border-radius:10px;background:rgba(255,255,255,.06);border:none;color:#aaa;cursor:pointer">Close</button>';
+        if (window.openModal) openModal('🎯 Rival Stats', h);
+      });
+    }
+  };
+
+  /* Search rival function */
+  window._searchRival = function() {
+    var q = (document.getElementById('_rivalSearch') || {}).value;
+    if (!q || !q.trim()) return;
+    q = q.trim();
+    var res = document.getElementById('_rivalResults');
+    if (res) res.innerHTML = '<div style="text-align:center;padding:12px;color:#888;font-size:12px"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
+    window.db.ref('users').orderByChild('ign').equalTo(q).once('value', function(s) {
+      var results = [];
+      if (s.exists()) s.forEach(function(c) {
+        if (c.key !== window.U.uid) results.push({ uid: c.key, data: c.val() });
+      });
+      if (!results.length) {
+        /* Try displayName */
+        window.db.ref('users').orderByChild('displayName').equalTo(q).once('value', function(s2) {
+          var r2 = [];
+          if (s2.exists()) s2.forEach(function(c) { if (c.key !== window.U.uid) r2.push({ uid: c.key, data: c.val() }); });
+          renderRivalResults(r2);
+        });
+        return;
+      }
+      renderRivalResults(results);
+    });
+  };
+
+  function renderRivalResults(results) {
+    var res = document.getElementById('_rivalResults');
+    if (!res) return;
+    if (!results.length) {
+      res.innerHTML = '<div style="text-align:center;padding:16px;color:#666;font-size:13px">No player found with this IGN</div>';
+      return;
+    }
+    var h = '';
+    results.slice(0, 5).forEach(function(r) {
+      var d = r.data;
+      var st = d.stats || {};
+      h += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:8px">';
+      h += '<div style="width:40px;height:40px;border-radius:50%;background:rgba(255,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#ff4444">' + (d.ign||d.displayName||'?').charAt(0).toUpperCase() + '</div>';
+      h += '<div style="flex:1"><div style="font-size:14px;font-weight:700">' + (d.ign||d.displayName||'Player') + '</div>';
+      h += '<div style="font-size:11px;color:#666">M:' + (st.matches||0) + ' · K:' + (st.kills||0) + ' · W:' + (st.wins||0) + '</div></div>';
+      h += '<button onclick="window._setRivalById(\'' + r.uid + '\',\'' + (d.ign||d.displayName||'Player') + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-weight:800;font-size:12px;cursor:pointer">Set Rival</button>';
+      h += '</div>';
+    });
+    res.innerHTML = h;
+  }
+
+  window._setRivalById = function(uid, name) {
+    if (!window.U || !window.db) return;
+    window.db.ref('users/' + window.U.uid + '/rival').set({ uid: uid, name: name, setAt: Date.now() });
+    if (window.toast) toast('🎯 Rival set: ' + name, 'ok');
+    if (window.closeModal) closeModal();
+  };
+}
+
+/* ══════════════════════════════════════════════
+   13. ACHIEVEMENT SYSTEM WITH LEVELS (v2)
+   Merged showAchievements with levels
+══════════════════════════════════════════════ */
+var ACHIEVEMENTS_V2 = [
+  {
+    id: 'first_blood', icon: '🩸', title: 'First Blood',
+    levels: [
+      { level: 1, desc: 'Play 1 match', check: function(s){ return (s.matches||0)>=1; } },
+      { level: 2, desc: 'Play 5 matches', check: function(s){ return (s.matches||0)>=5; } },
+      { level: 3, desc: 'Play 10 matches', check: function(s){ return (s.matches||0)>=10; } }
+    ]
+  },
+  {
+    id: 'winner', icon: '🏆', title: 'Champion',
+    levels: [
+      { level: 1, desc: 'Win 1 match', check: function(s){ return (s.wins||0)>=1; } },
+      { level: 2, desc: 'Win 5 matches', check: function(s){ return (s.wins||0)>=5; } },
+      { level: 3, desc: 'Win 15 matches', check: function(s){ return (s.wins||0)>=15; } }
+    ]
+  },
+  {
+    id: 'kill_machine', icon: '💀', title: 'Kill Machine',
+    levels: [
+      { level: 1, desc: '10 total kills', check: function(s){ return (s.kills||0)>=10; } },
+      { level: 2, desc: '50 total kills', check: function(s){ return (s.kills||0)>=50; } },
+      { level: 3, desc: '100 total kills', check: function(s){ return (s.kills||0)>=100; } }
+    ]
+  },
+  {
+    id: 'earner', icon: '💎', title: 'Diamond Earner',
+    levels: [
+      { level: 1, desc: 'Earn 💎50', check: function(s){ return (s.earnings||0)>=50; } },
+      { level: 2, desc: 'Earn 💎200', check: function(s){ return (s.earnings||0)>=200; } },
+      { level: 3, desc: 'Earn 💎500', check: function(s){ return (s.earnings||0)>=500; } }
+    ]
+  },
+  {
+    id: 'veteran', icon: '🎖️', title: 'Veteran',
+    levels: [
+      { level: 1, desc: '25 matches', check: function(s){ return (s.matches||0)>=25; } },
+      { level: 2, desc: '50 matches', check: function(s){ return (s.matches||0)>=50; } },
+      { level: 3, desc: '100 matches', check: function(s){ return (s.matches||0)>=100; } }
+    ]
+  },
+  {
+    id: 'referrer', icon: '🤝', title: 'Influencer',
+    levels: [
+      { level: 1, desc: 'Refer 1 friend', check: function(s,ud){ return (ud.referralCount||0)>=1; } },
+      { level: 2, desc: 'Refer 5 friends', check: function(s,ud){ return (ud.referralCount||0)>=5; } },
+      { level: 3, desc: 'Refer 10 friends', check: function(s,ud){ return (ud.referralCount||0)>=10; } }
+    ]
+  },
+  {
+    id: 'streak', icon: '🔥', title: 'On Fire',
+    levels: [
+      { level: 1, desc: '3 day streak', check: function(s,ud){ return (ud.loginStreak||0)>=3; } },
+      { level: 2, desc: '7 day streak', check: function(s,ud){ return (ud.loginStreak||0)>=7; } },
+      { level: 3, desc: '30 day streak', check: function(s,ud){ return (ud.loginStreak||0)>=30; } }
+    ]
+  },
+  {
+    id: 'depositor', icon: '💰', title: 'High Roller',
+    levels: [
+      { level: 1, desc: 'Add 💎100', check: function(s,ud){ return ((ud.realMoney||{}).deposited||0)>=100; } },
+      { level: 2, desc: 'Add 💎300', check: function(s,ud){ return ((ud.realMoney||{}).deposited||0)>=300; } },
+      { level: 3, desc: 'Add 💎500', check: function(s,ud){ return ((ud.realMoney||{}).deposited||0)>=500; } }
+    ]
+  }
+];
+
+function getAchLevel(ach) {
+  var UD = window.UD; if (!UD) return 0;
+  var st = UD.stats || {};
+  var curLevel = 0;
+  ach.levels.forEach(function(l) {
+    if (l.check(st, UD)) curLevel = l.level;
+  });
+  return curLevel;
+}
+
+window.showAchievements = function() {
+  var UD = window.UD; if (!UD) return;
+  var unlocked = 0;
+  ACHIEVEMENTS_V2.forEach(function(a) { if (getAchLevel(a) > 0) unlocked++; });
+
+  var h = '<div style="text-align:center;margin-bottom:16px">';
+  h += '<div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">' + unlocked + '/' + ACHIEVEMENTS_V2.length + '</div>';
+  h += '<div style="font-size:12px;color:#888">Achievements Unlocked</div></div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+
+  ACHIEVEMENTS_V2.forEach(function(ach) {
+    var curLv = getAchLevel(ach);
+    var maxLv = ach.levels.length;
+    var unlk = curLv > 0;
+    var nextLv = ach.levels[curLv] || null;
+
+    h += '<div style="padding:12px;border-radius:14px;background:' + (unlk?'rgba(255,215,0,.07)':'rgba(255,255,255,.03)') + ';border:1px solid ' + (unlk?'rgba(255,215,0,.2)':'rgba(255,255,255,.06)') + ';position:relative;overflow:hidden">';
+
+    /* Level stars */
+    if (unlk) {
+      h += '<div style="position:absolute;top:8px;right:8px;display:flex;gap:2px">';
+      for (var i = 1; i <= maxLv; i++) {
+        h += '<div style="width:8px;height:8px;border-radius:50%;background:' + (i<=curLv?'#ffd700':'rgba(255,255,255,.1)') + ';box-shadow:' + (i<=curLv?'0 0 4px rgba(255,215,0,.6)':'none') + '"></div>';
+      }
+      h += '</div>';
+    }
+
+    h += '<div style="font-size:26px;margin-bottom:6px">' + ach.icon + '</div>';
+    h += '<div style="font-size:12px;font-weight:800;color:' + (unlk?'#ffd700':'#aaa') + '">' + ach.title + '</div>';
+
+    if (unlk) {
+      h += '<div style="font-size:10px;color:#00ff9c;margin-top:2px;font-weight:700">Level ' + curLv + ' ✅</div>';
+      if (nextLv) {
+        h += '<div style="font-size:9px;color:#666;margin-top:3px">Next: ' + nextLv.desc + '</div>';
+      } else {
+        h += '<div style="font-size:9px;color:#ffd700;margin-top:3px">Max Level!</div>';
+      }
+    } else {
+      h += '<div style="font-size:9px;color:#555;margin-top:3px">' + ach.levels[0].desc + '</div>';
+      h += '<div style="font-size:9px;color:#444;margin-top:2px">🔒 Locked</div>';
+    }
+    h += '</div>';
+  });
+
+  h += '</div>';
+  if (window.openModal) openModal('🏅 Achievements', h);
+  else if (window.showModal) showModal('🏅 Achievements', h);
+};
+
+/* Also update profile achievements display */
+window.renderAchievementsHTML = function() {
+  var UD = window.UD; if (!UD) return '';
+  var unlocked = 0;
+  ACHIEVEMENTS_V2.forEach(function(a) { if (getAchLevel(a) > 0) unlocked++; });
+  var h = '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">';
+  ACHIEVEMENTS_V2.forEach(function(a) {
+    var lv = getAchLevel(a);
+    var unlk = lv > 0;
+    h += '<div title="' + a.title + ' Lv.' + lv + '" style="width:36px;height:36px;border-radius:10px;background:' + (unlk?'rgba(255,215,0,.12)':'rgba(255,255,255,.04)') + ';border:1px solid ' + (unlk?'rgba(255,215,0,.3)':'var(--border)') + ';display:flex;align-items:center;justify-content:center;font-size:18px;opacity:' + (unlk?'1':'.3') + ';position:relative">' + a.icon;
+    if (lv > 0) h += '<div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ffd700,#ff8c00);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:#000">' + lv + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  h += '<div style="font-size:11px;color:#00ff9c">' + unlocked + '/' + ACHIEVEMENTS_V2.length + ' achievements unlocked</div>';
+  h += '<button onclick="window.showAchievements&&showAchievements()" style="margin-top:8px;padding:8px 14px;border-radius:10px;background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.2);font-size:12px;font-weight:700;cursor:pointer">View All Achievements</button>';
+  return h;
+};
+
+/* ══════════════════════════════════════════════
+   14. STAT CARD BEAUTIFY
+══════════════════════════════════════════════ */
+window.generateStatCard = function() {
+  var UD = window.UD; var U = window.U;
+  if (!UD || !U) return;
+  var stats = UD.stats || {};
+  var winRate = stats.matches > 0 ? Math.round((stats.wins / stats.matches) * 100) : 0;
+  var kpm = stats.matches > 0 ? ((stats.kills||0)/stats.matches).toFixed(1) : '0';
+
+  var h = '<div style="background:linear-gradient(135deg,#050507,#0a0a14);border:1px solid rgba(0,255,156,.2);border-radius:18px;padding:20px;position:relative;overflow:hidden">';
+  /* Glow effects */
+  h += '<div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:rgba(0,255,156,.06);border-radius:50%;filter:blur(20px)"></div>';
+  h += '<div style="position:absolute;bottom:-40px;left:-40px;width:100px;height:100px;background:rgba(185,100,255,.06);border-radius:50%;filter:blur(20px)"></div>';
+  /* Header */
+  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">';
+  h += '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px">🎮</span><span style="font-size:13px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mini eSports</span></div>';
+  /* R28j (2026-09-22): stale host -> canonical base */
+  var _baseUrl = (typeof window.APP_URL === 'string' && window.APP_URL) || (window.location.origin + '/');
+  h += '<div style="font-size:9px;color:#333">' + _baseUrl.replace(/^https?:\/\//,'') + '</div>';
+  h += '</div>';
+  /* Player name */
+  h += '<div style="margin-bottom:14px">';
+  h += '<div style="font-size:22px;font-weight:900;color:#fff">' + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + '</div>';
+  h += '<div style="font-size:11px;color:#555;margin-top:2px">FF UID: ' + (UD.ffUid || '—') + '</div>';
+  h += '</div>';
+  /* Stats grid */
+  var items = [
+    {l:'Matches',v:stats.matches||0,c:'#00d4ff'},{l:'Wins',v:stats.wins||0,c:'#00ff9c'},
+    {l:'Win Rate',v:winRate+'%',c:'#ffd700'},{l:'Kills',v:stats.kills||0,c:'#ff4444'},
+    {l:'Earned',v:'💎'+(stats.earnings||0),c:'#b964ff'},{l:'K/Match',v:kpm,c:'#ffaa00'}
+  ];
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">';
+  items.forEach(function(item) {
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center">';
+    h += '<div style="font-size:16px;font-weight:900;color:' + item.c + '">' + item.v + '</div>';
+    h += '<div style="font-size:9px;color:#555;margin-top:2px">' + item.l + '</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  /* Watermark */
+  h += '<div style="text-align:center;font-size:10px;font-weight:800;background:linear-gradient(90deg,#00ff9c,#b964ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:.4">MINI eSPORTS</div>';
+  h += '</div>';
+
+  h += '<div style="font-size:11px;color:#555;text-align:center;margin-top:8px">Long press image to save</div>';
+  h += '<button onclick="window._shareStatCard&&_shareStatCard()" style="width:100%;margin-top:10px;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:14px;cursor:pointer"><i class="fas fa-share-alt" style="margin-right:8px"></i>Share Stat Card</button>';
+
+  if (window.openModal) openModal('📊 Your Stat Card', h);
+};
+
+window._shareStatCard = function() {
+  var UD = window.UD; if (!UD) return;
+  var stats = UD.stats || {};
+  var msg = '🎮 Mini eSports — My Stats!\n\n' +
+    '👤 ' + (UD.ign||UD.displayName||'Player') + '\n' +
+    '🎯 Matches: ' + (stats.matches||0) + '\n' +
+    '🏆 Wins: ' + (stats.wins||0) + '\n' +
+    '💀 Kills: ' + (stats.kills||0) + '\n' +
+    '💎 Earned: ' + (stats.earnings||0) + '\n\n' +
+    '📲 Play on Mini eSports: ' + window.location.origin + '/FF-User-Panel/';
+  if (navigator.share) navigator.share({ title: 'My Stats', text: msg }).catch(function(){});
+  else if (navigator.clipboard) navigator.clipboard.writeText(msg);
+};
+
+/* ══════════════════════════════════════════════
+   15. PREVIEW SCREEN — Fix share button onclick
+   (uses window._pvShare which includes referral code)
+══════════════════════════════════════════════ */
+function fixPreviewShareButton() {
+  var obs4 = new MutationObserver(function() {
+    var pvOverlay = document.getElementById('_previewOverlay');
+    if (!pvOverlay) return;
+    var shareDiv = document.getElementById('_pvShareBtn');
+    if (shareDiv) {
+      shareDiv.style.cursor = 'pointer';
+    }
+  });
+  obs4.observe(document.body, { childList: true, subtree: true });
+}
+
+/* ══════════════════════════════════════════════
+   16. SPECIAL TAB: Weekly → Sunday Special fix
+   spType 'weekly' = sunday_special in admin
+══════════════════════════════════════════════ */
+function fixSpecialTabLabels() {
+  /* Fix toggle button text */
+  var obs5 = new MutationObserver(function() {
+    document.querySelectorAll('.sp-tog-btn').forEach(function(btn) {
+      if (btn.textContent === 'Weekly' && !btn.dataset.relabeled) {
+        btn.textContent = 'Sunday Special';
+        btn.dataset.relabeled = '1';
+      }
+    });
+  });
+  obs5.observe(document.body, { childList: true, subtree: true });
+  /* Do once immediately */
+  setTimeout(function() {
+    document.querySelectorAll('.sp-tog-btn').forEach(function(btn) {
+      if (btn.textContent === 'Weekly' && !btn.dataset.relabeled) {
+        btn.textContent = 'Sunday Special';
+        btn.dataset.relabeled = '1';
+      }
+    });
+  }, 500);
+}
+
+/* ══════════════════════════════════════════════
+   17. MATCH INVITE CARD BEAUTIFY
+══════════════════════════════════════════════ */
+function beautifyMatchCard() {
+  if (!document.getElementById('_matchCardStyle')) {
+    var s = document.createElement('style');
+    s.id = '_matchCardStyle';
+    s.textContent = [
+      '@keyframes cardGlow{0%,100%{box-shadow:0 8px 32px rgba(0,0,0,.5)}50%{box-shadow:0 12px 40px rgba(0,255,156,.08),0 0 0 1px rgba(0,255,156,.05)}}',
+      '.m-card{animation:cardGlow 4s ease-in-out infinite!important;transition:transform .2s,box-shadow .2s!important}',
+      '.m-card:active{transform:scale(.98)!important}'
+    ].join('');
+    document.head.appendChild(s);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   18. PLAYER CARD ANIMATION
+══════════════════════════════════════════════ */
+function beautifyPlayerCard() {
+  var _origCard = window.generateAdvancedPlayerCard;
+  if (!_origCard || window._cardPatched) return;
+  window._cardPatched = true;
+
+  window.generateAdvancedPlayerCard = function() {
+    var UD = window.UD; if (!UD) return;
+    var st = UD.stats || {};
+    var rk = window.calcRk ? window.calcRk(st) : { badge: 'Player', emoji: '🎮', color: '#00ff9c' };
+    var av = UD.profileImage
+      ? '<img src="' + UD.profileImage + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      : '<div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#000">' + (UD.ign||UD.displayName||'P').charAt(0).toUpperCase() + '</div>';
+
+    var h = '<div style="position:relative;overflow:hidden">';
+    /* Animated background */
+    h += '<div id="_pcAnimBg" style="background:linear-gradient(135deg,#050507,#0d0b16,#050507);border:1px solid rgba(0,255,156,.15);border-radius:20px;padding:20px;text-align:center;position:relative;overflow:hidden">';
+    h += '<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,255,156,.08),transparent 60%);pointer-events:none"></div>';
+    /* Avatar */
+    h += '<div style="width:80px;height:80px;border-radius:50%;margin:0 auto 12px;border:3px solid ' + (rk.color||'#00ff9c') + ';box-shadow:0 0 20px ' + (rk.color||'#00ff9c') + '66,0 0 40px ' + (rk.color||'#00ff9c') + '22;animation:goldSpin 3s ease-in-out infinite;position:relative">' + av + '</div>';
+    /* Name */
+    h += '<div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:4px">' + (window.escHtml?window.escHtml(UD.ign||UD.displayName||'Player'):(UD.ign||UD.displayName||'Player')) + '</div>';
+    h += '<div style="font-size:11px;color:#555;margin-bottom:12px">FF UID: ' + (UD.ffUid || '—') + '</div>';
+    /* Rank badge */
+    h += '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 14px;margin-bottom:16px">';
+    h += '<span style="font-size:18px">' + rk.emoji + '</span><span style="font-size:12px;font-weight:700;color:' + (rk.color||'#00ff9c') + '">' + rk.badge + '</span></div>';
+    /* Stats */
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">';
+    [{l:'Matches',v:st.matches||0,c:'#00d4ff'},{l:'Wins',v:st.wins||0,c:'#00ff9c'},{l:'Kills',v:st.kills||0,c:'#ff4444'}].forEach(function(x){
+      h += '<div style="background:rgba(255,255,255,.04);border-radius:12px;padding:10px">';
+      h += '<div style="font-size:22px;font-weight:900;color:' + x.c + '">' + x.v + '</div>';
+      h += '<div style="font-size:9px;color:#555;margin-top:2px">' + x.l + '</div></div>';
+    });
+    h += '</div>';
+    /* Win rate */
+    var wr = st.matches > 0 ? Math.round((st.wins/st.matches)*100) : 0;
+    h += '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:10px;padding:8px;margin-bottom:0">Win Rate: <strong style="color:#00ff9c">' + wr + '%</strong></div>';
+    h += '</div></div>';
+    h += '<button onclick="window.generateProfileCard&&generateProfileCard()" style="width:100%;margin-top:12px;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:14px;cursor:pointer"><i class="fas fa-share-alt" style="margin-right:8px"></i>Share Card</button>';
+
+    if (window.openModal) openModal('My Player Card', h);
+  };
+}
+
+/* ══════════════════════════════════════════════
+   19. FF UID LOCK after first set
+══════════════════════════════════════════════ */
+function lockFFUIDAfterSet() {
+  var _origShowProfileUpdate = window.showProfileUpdate;
+  if (!_origShowProfileUpdate || window._ffLocked) return;
+  window._ffLocked = true;
+  window.showProfileUpdate = function() {
+    var UD = window.UD; if (!UD) { _origShowProfileUpdate(); return; }
+    var ffSet = UD.ffUid && UD.ffUid.trim().length >= 5;
+    var isVerified = UD.profileStatus === 'approved' || UD.profileVerified;
+
+    /* ✅ BUG FIX (2026-08-25): this modal was titled "Profile Update" and
+       its button said "Submit for Verification" for EVERY user, new or
+       already-verified — even though doProfileUpdate() already routes
+       new users to profile_requests ("New Verifications" queue) and
+       already-verified users to profile_updates ("Profile Updates"
+       queue) correctly server-side. The modal text just never reflected
+       which one was actually about to happen, which is what made a
+       brand-new user's submission look like it "went to the wrong
+       queue" — it didn't, the wording was just misleading. */
+    var modalTitle = isVerified ? 'Profile Update' : 'Profile Verification';
+    var submitLabel = isVerified ? 'Submit Update' : 'Submit for Verification';
+
+    /* If FF UID already set and verified — lock it */
+    var h = '<div class="f-group"><label>In-Game Name (IGN)</label><input type="text" class="f-input" id="puIgn" placeholder="Your Free Fire IGN" value="' + (window.escHtml?window.escHtml(UD.ign || ''):(UD.ign || '')) + '"></div>';
+    if (ffSet && isVerified) {
+      h += '<div class="f-group"><label>Free Fire UID <span style="color:#ffd700;font-size:10px">🔒 Locked after first verification</span></label>';
+      h += '<input type="text" class="f-input" id="puUid" value="' + (UD.ffUid || '') + '" readonly style="opacity:.6;cursor:not-allowed"></div>';
+      h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15);border-radius:10px;padding:10px;font-size:11px;color:#ffaa00;margin-bottom:10px"><i class="fas fa-lock"></i> FF UID ek baar set hone ke baad change nahi hogi. Agar issue hai to admin se contact karo.</div>';
+    } else if (!ffSet) {
+      h += '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:10px;padding:10px;font-size:11px;color:#00ff9c;margin-bottom:6px"><i class="fas fa-info-circle"></i> FF UID ek baar set hone ke baad change nahi kar sakte — sahi UID daalna!</div>';
+      h += '<div class="f-group"><label>Free Fire UID (5-15 digits)</label><input type="text" class="f-input" id="puUid" placeholder="Your FF UID" value="' + (window.escHtml?window.escHtml(UD.ffUid || ''):(UD.ffUid || '')) + '"></div>';
+    } else {
+      h += '<div class="f-group"><label>Free Fire UID (5-15 digits)</label><input type="text" class="f-input" id="puUid" placeholder="Your FF UID" value="' + (window.escHtml?window.escHtml(UD.ffUid || ''):(UD.ffUid || '')) + '"></div>';
+    }
+    h += '<div class="f-group"><label>WhatsApp Number <span style="font-size:10px;color:var(--txt2)">(prizes ke liye)</span></label><input type="tel" class="f-input" id="puPhone" placeholder="10-digit number" maxlength="10" value="' + (UD.phone || '') + '"></div>';
+    h += '<div class="f-warn"><i class="fas fa-exclamation-triangle"></i> Only real Free Fire IGN and UID allowed. Fake info = disqualified.</div>';
+    h += '<button class="f-btn fb-orange" style="margin-top:14px" onclick="doProfileUpdate()">' + submitLabel + '</button>';
+    if (window.openModal) openModal(modalTitle, h);
+  };
+}
+
+/* ══════════════════════════════════════════════
+   INIT — Run all fixes
+══════════════════════════════════════════════ */
+function runAll() {
+  fixHeader();
+  addDiamondSparkle();
+  addRankAnimations();
+  styleTickerText();
+  fixHomeGap();
+  fixLegalButtons();
+  fixWeeklyChallengeToAchievement();
+  removeCalculatorBtn();
+  hideTDSTextInWallet();
+  remove3DCardButton();
+  patchRewardsStore();
+  patchRivalCard();
+  fixPreviewShareButton();
+  fixSpecialTabLabels();
+  beautifyMatchCard();
+  beautifyPlayerCard();
+  lockFFUIDAfterSet();
+}
+
+/* Wait for DOM + Firebase */
+var _initTry = 0;
+var _initIv = setInterval(function() {
+  _initTry++;
+  if (document.body && window.db && window.U) {
+    clearInterval(_initIv);
+    runAll();
+    /* Re-run header on navTo */
+    var _ov = window.navTo;
+    if (_ov) window.navTo = function(s) {
+      _ov.apply(this, arguments);
+      setTimeout(fixHeader, 100);
+      setTimeout(styleTickerText, 200);
+      setTimeout(fixSpecialTabLabels, 300);
+    };
+  }
+  if (_initTry > 30) { clearInterval(_initIv); runAll(); }
+}, 300);
+
+console.log('[Mini eSports] ✅ UI Fixes Master loaded');
+})();

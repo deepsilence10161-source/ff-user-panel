@@ -1,1 +1,101 @@
-(function(){'use strict';var _0x54a9a5=(function(){var _0x250e9e=!![];return function(_0x3151e6,_0x3735a6){var _0x2fb1b2=_0x250e9e?function(){if(_0x3735a6){var _0x46e8ba=_0x3735a6['apply'](_0x3151e6,arguments);return _0x3735a6=null,_0x46e8ba;}}:function(){};return _0x250e9e=![],_0x2fb1b2;};}());var _0x2a1df0=['admin_adjust_wallet','admin_approve_profile','admin_confirm_creator_cheat','admin_create_sponsored_match','admin_dismiss_creator_flag','admin_distribute_sponsored_prize','admin_end_current_season','admin_reject_profile','admin_revoke_referral_bonus','admin_reward_suggestion','admin_roll_battle_pass_season','admin_send_broadcast_notification','admin_send_notification','admin_set_coins','admin_set_fraud_score','admin_sync_user_balance','approve_creator_application','approve_premium','cancel_match_with_refunds','cancel_premium','correct_match_result','publish_match_results','reject_creator_application','release_eligible_commissions','resolve_sd_request','resolve_sponsored_withdrawal','set_user_ban_status'],_0x5a010a='admin-gateway';function _0x18fa45(_0x2a2478){if(!_0x2a2478||_0x2a2478['__r8GatewayPatched'])return _0x2a2478;try{_0x2a2478['__r8GatewayPatched']=!![];}catch(_0x170503){return _0x2a2478;}if(typeof _0x2a2478['rpc']!=='function')return _0x2a2478;var _0x2a5c04=_0x2a2478['rpc']['bind'](_0x2a2478);return _0x2a2478['rpc']=function(_0x225571,_0x5a87a7,_0x208571){if(_0x2a1df0['indexOf'](_0x225571)===-0x1)return _0x2a5c04(_0x225571,_0x5a87a7,_0x208571);if(!_0x2a2478['functions']||typeof _0x2a2478['functions']['invoke']!=='function')return Promise['resolve']({'data':null,'error':{'message':'admin-gateway:\x20supabase-js\x20functions.invoke\x20unavailable'}});var _0x21c6c3;try{_0x21c6c3=_0x2a2478['functions']['invoke'](_0x5a010a,{'body':{'fn':_0x225571,'args':_0x5a87a7||{}}});}catch(_0x4447a2){_0x21c6c3=Promise['reject'](_0x4447a2);}return Promise['resolve'](_0x21c6c3)['then'](function(_0x314b4c){if(_0x314b4c&&_0x314b4c['error'])return{'data':null,'error':_0x314b4c['error']};return{'data':_0x314b4c?_0x314b4c['data']:null,'error':null};},function(_0x1c8757){return{'data':null,'error':{'message':_0x1c8757&&_0x1c8757['message']||'admin-gateway\x20unreachable'}};});},_0x2a2478;}function _0x550d2c(){var _0x2396fc=_0x54a9a5(this,function(){if(_0x2396fc['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x2396fc['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x2396fc)['search']('(((.+)+)+)+$');});_0x2396fc();if(!window['supabase']||typeof window['supabase']['createClient']!=='function')return![];if(window['supabase']['createClient']['__r8GatewayPatched'])return!![];var _0x1a7732=window['supabase']['createClient'],_0x5f1a1f=function(){return _0x18fa45(_0x1a7732['apply'](this,arguments));};try{_0x5f1a1f['__r8GatewayPatched']=!![];}catch(_0x4b9fd7){}window['supabase']['createClient']=_0x5f1a1f;if(window['_supa'])window['_supa']=_0x18fa45(window['_supa']);return!![];}if(!_0x550d2c())var _0x3bcb2a=0x0,_0x2a2f44=setInterval(function(){if(_0x550d2c()||++_0x3bcb2a>0xc8)clearInterval(_0x2a2f44);},0x64);document['addEventListener']('supabase:ready',function(){if(window['_supa'])window['_supa']=_0x18fa45(window['_supa']);}),console['log']('%c[R8\x20Gateway]\x20admin-only\x20RPCs\x20routed\x20via\x20trusted\x20backend\x20path\x20('+_0x2a1df0['length']+'\x20fns)','color:#00d4ff;font-weight:700');}());
+/* ══════════════════════════════════════════════════════════════════════════
+   r8-admin-gateway-shim.js   (2026-09-26d · R8 FINAL, FIX #2)
+
+   Admin-only RPCs are no longer executable by the anon/authenticated Postgres
+   roles (see migration 2026-09-26d-R8-FINAL-DB-HARDENING.sql). The Admin Panel
+   reaches them through the project's trusted backend path — the Supabase Edge
+   Function `admin-gateway`, which verifies the Firebase ID token on the
+   server, re-checks users.is_admin in the database, and then executes the
+   RPC with the service role.  No service_role key exists in this frontend.
+
+   This shim is a transparent transport swap: it wraps the Supabase client's
+   `.rpc()` so that ONLY the allow-listed admin functions go through the
+   gateway. Every other RPC (all normal user/creator/cron paths) is untouched.
+   Response shape is preserved exactly ({ data, error }), and a gateway
+   failure is surfaced as an error — there is NO silent fallback to a direct
+   client write.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* Exactly the admin-only RPCs revoked in the R8 FINAL migration. */
+  var GW_FNS = [
+    'admin_adjust_wallet', 'admin_approve_profile', 'admin_confirm_creator_cheat',
+    'admin_create_sponsored_match', 'admin_dismiss_creator_flag', 'admin_distribute_sponsored_prize',
+    'admin_end_current_season', 'admin_reject_profile', 'admin_revoke_referral_bonus',
+    'admin_reward_suggestion', 'admin_roll_battle_pass_season', 'admin_send_broadcast_notification',
+    'admin_send_notification', 'admin_set_coins', 'admin_set_fraud_score', 'admin_sync_user_balance',
+    'approve_creator_application', 'approve_premium', 'cancel_match_with_refunds', 'cancel_premium',
+    'correct_match_result', 'publish_match_results', 'reject_creator_application',
+    'release_eligible_commissions', 'resolve_sd_request', 'resolve_sponsored_withdrawal',
+    'set_user_ban_status'
+  ];
+  var GW_NAME = 'admin-gateway';
+
+  function wrapClient(client) {
+    if (!client || client.__r8GatewayPatched) return client;
+    try { client.__r8GatewayPatched = true; } catch (e) { return client; }
+    if (typeof client.rpc !== 'function') return client;
+
+    var origRpc = client.rpc.bind(client);
+
+    client.rpc = function (fn, args, opts) {
+      if (GW_FNS.indexOf(fn) === -1) return origRpc(fn, args, opts);
+
+      if (!client.functions || typeof client.functions.invoke !== 'function') {
+        return Promise.resolve({
+          data: null,
+          error: { message: 'admin-gateway: supabase-js functions.invoke unavailable' }
+        });
+      }
+
+      var call;
+      try {
+        call = client.functions.invoke(GW_NAME, { body: { fn: fn, args: args || {} } });
+      } catch (e) {
+        call = Promise.reject(e);
+      }
+
+      return Promise.resolve(call).then(function (res) {
+        if (res && res.error) return { data: null, error: res.error };
+        return { data: res ? res.data : null, error: null };
+      }, function (e) {
+        return { data: null, error: { message: (e && e.message) || 'admin-gateway unreachable' } };
+      });
+    };
+
+    return client;
+  }
+
+  function patchCreateClient() {
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') return false;
+    if (window.supabase.createClient.__r8GatewayPatched) return true;
+
+    var orig = window.supabase.createClient;
+    var patched = function () { return wrapClient(orig.apply(this, arguments)); };
+    try { patched.__r8GatewayPatched = true; } catch (e) { /* ignore */ }
+    window.supabase.createClient = patched;
+
+    /* any client that was created before this shim loaded */
+    if (window._supa) window._supa = wrapClient(window._supa);
+    return true;
+  }
+
+  if (!patchCreateClient()) {
+    var tries = 0;
+    var iv = setInterval(function () {
+      if (patchCreateClient() || ++tries > 200) clearInterval(iv);
+    }, 100);
+  }
+
+  /* supabase-init-early.js fires this when it creates its (pre-login) client,
+     and syncFirebaseToken() recreates the client afterwards — both are covered
+     by the createClient patch above; this listener only covers the ordering
+     where the event fires before the patch is installed. */
+  document.addEventListener('supabase:ready', function () {
+    if (window._supa) window._supa = wrapClient(window._supa);
+  });
+
+  console.log('%c[R8 Gateway] admin-only RPCs routed via trusted backend path (' +
+    GW_FNS.length + ' fns)', 'color:#00d4ff;font-weight:700');
+})();

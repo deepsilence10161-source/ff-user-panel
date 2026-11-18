@@ -1,1 +1,154 @@
-(function(){'use strict';var _0x1e6b3c=(function(){var _0x52b677=!![];return function(_0x2fba82,_0xc4eed9){var _0x37fae1=_0x52b677?function(){if(_0xc4eed9){var _0x35056b=_0xc4eed9['apply'](_0x2fba82,arguments);return _0xc4eed9=null,_0x35056b;}}:function(){};return _0x52b677=![],_0x37fae1;};}()),_0x5ac135=_0x1e6b3c(this,function(){if(_0x5ac135['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x5ac135['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x5ac135)['search']('(((.+)+)+)+$');});_0x5ac135();function _0x45c4c8(){return window['_supa'];}function _0x2957ab(){return window['U']&&window['U']['uid'];}function _0x4c5b75(){return window['UD']||{};}function _0x151063(){var _0x2789ad=new Date(),_0x297332=_0x2789ad['getDay'](),_0x26cc3a=new Date(_0x2789ad);return _0x26cc3a['setDate'](_0x2789ad['getDate']()-((_0x297332===0x0?0x7:_0x297332)-0x1)),_0x26cc3a['setHours'](0x0,0x0,0x0,0x0),_0x26cc3a['toISOString']()['substring'](0x0,0xa);}window['showClanWar']=function(){if(!_0x2957ab()){if(window['toast'])toast('Login\x20karo','err');return;}var _0x33f53f=_0x4c5b75()['clan_id']||_0x4c5b75()['clanId'];if(!_0x33f53f){openModal('⚔️\x20Clan\x20War','<div\x20style=\x22text-align:center;padding:24px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;margin-bottom:10px\x22>⚔️</div><p>Clan\x20join\x20karo\x20pehle!</p><button\x20onclick=\x22navTo(\x27clan\x27)\x22\x20style=\x22margin-top:10px;padding:11px\x2022px;border-radius:12px;border:none;background:var(--green);color:#000;font-weight:800;cursor:pointer\x22>Clan\x20Join\x20Karo</button></div>');return;}openModal('⚔️\x20Clan\x20War','<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>'),_0x2ff5c8(_0x33f53f);};function _0x2ff5c8(_0x415363){var _0x36e214=document['getElementById']('modalB');if(!_0x36e214)return;if(!_0x45c4c8()){_0x36e214['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}var _0x39ba44=_0x151063();_0x45c4c8()['from']('clan_wars')['select']('*')['eq']('week',_0x39ba44)['or']('clan_a_id.eq.'+_0x415363+',clan_b_id.eq.'+_0x415363)['eq']('status','active')['maybeSingle']()['then'](function(_0x144989){_0x44b8fc(_0x36e214,_0x415363,_0x144989['data'],_0x39ba44);})['catch'](function(){_0x471a3f(_0x36e214,_0x415363,_0x39ba44);});}function _0x44b8fc(_0x3f9bbc,_0x1ef8a1,_0x38fe6f,_0x24cf88){if(!_0x38fe6f){_0x471a3f(_0x3f9bbc,_0x1ef8a1,_0x24cf88);return;}var _0x19ebf7=_0x38fe6f['clan_a_id']===_0x1ef8a1,_0x1f93de=_0x19ebf7?_0x38fe6f['clan_a_name']:_0x38fe6f['clan_b_name'],_0x5ec81a=_0x19ebf7?_0x38fe6f['clan_b_name']:_0x38fe6f['clan_a_name'],_0x54380d=_0x19ebf7?_0x38fe6f['clan_a_score']||0x0:_0x38fe6f['clan_b_score']||0x0,_0x37d0d3=_0x19ebf7?_0x38fe6f['clan_b_score']||0x0:_0x38fe6f['clan_a_score']||0x0,_0x28e270=_0x54380d>_0x37d0d3,_0xa15775=_0x54380d+_0x37d0d3||0x1,_0x3d276f=Math['round'](_0x54380d/_0xa15775*0x64),_0x459dac='<div\x20style=\x22background:linear-gradient(135deg,rgba(255,68,68,.08),rgba(255,107,0,.04));border:1.5px\x20solid\x20rgba(255,68,68,.2);border-radius:16px;padding:14px;margin-bottom:14px;text-align:center\x22>';_0x459dac+='<div\x20style=\x22font-size:11px;color:rgba(255,107,107,.7);font-weight:800;letter-spacing:2px\x22>WEEKLY\x20WAR</div>';var _0x4795d1=new Date(_0x151063());_0x4795d1['setDate'](_0x4795d1['getDate']()+0x6);var _0x195710=Math['ceil']((_0x4795d1-new Date())/0x5265c00);_0x459dac+='<div\x20style=\x22font-size:11px;color:rgba(255,165,0,.8)\x22>⏰\x20'+Math['max'](0x0,_0x195710)+'\x20days\x20left</div></div>',_0x459dac+='<div\x20style=\x22display:flex;align-items:center;gap:10px;margin-bottom:14px\x22>',_0x459dac+='<div\x20style=\x22flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(0,255,156,.06);border:1.5px\x20solid\x20rgba(0,255,156,.25)\x22><div\x20style=\x22font-size:24px;font-weight:900;color:var(--green)\x22>'+_0x54380d+'</div><div\x20style=\x22font-size:12px;font-weight:700\x22>'+(window['escHtml']?window['escHtml'](_0x1f93de):_0x1f93de)+'</div><div\x20style=\x22font-size:10px;color:var(--green)\x22>YOU</div></div>',_0x459dac+='<div\x20style=\x22text-align:center;padding:8px\x22><div\x20style=\x22font-size:18px;font-weight:900;color:#ff6b6b\x22>VS</div><div\x20style=\x22font-size:11px;color:'+(_0x28e270?'var(--green)':'#ff6b6b')+';font-weight:700\x22>'+(_0x28e270?'WINNING':'LOSING')+'</div></div>',_0x459dac+='<div\x20style=\x22flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(255,68,68,.06);border:1.5px\x20solid\x20rgba(255,68,68,.2)\x22><div\x20style=\x22font-size:24px;font-weight:900;color:#ff6b6b\x22>'+_0x37d0d3+'</div><div\x20style=\x22font-size:12px;font-weight:700\x22>'+(window['escHtml']?window['escHtml'](_0x5ec81a):_0x5ec81a)+'</div></div>',_0x459dac+='</div>',_0x459dac+='<div\x20style=\x22height:8px;background:rgba(255,68,68,.3);border-radius:8px;overflow:hidden;margin-bottom:14px\x22><div\x20style=\x22height:100%;width:'+_0x3d276f+'%;background:linear-gradient(90deg,var(--green),#00d4ff);border-radius:8px\x22></div></div>',_0x459dac+='<div\x20style=\x22padding:10px\x2014px;border-radius:12px;background:rgba(255,165,0,.06);border:1px\x20solid\x20rgba(255,165,0,.2);font-size:11px;color:var(--txt2)\x22>⚔️\x20Win=15pts\x20·\x20Kill=2pts\x20·\x20Match=1pt<br>🏆\x20Winner\x20clan\x20ko\x20exclusive\x20War\x20Champion\x20badge!</div>',_0x3f9bbc['innerHTML']=_0x459dac;}function _0x471a3f(_0x36a200,_0x36a46b,_0x4aa84c){if(!_0x45c4c8()){_0x36a200['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}var _0x59a232='<div\x20style=\x22font-size:13px;font-weight:800;color:var(--txt);margin-bottom:8px\x22>🏆\x20Weekly\x20Standings</div>';_0x59a232+='<div\x20id=\x22cwStandList\x22><div\x20style=\x22text-align:center;padding:12px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>',_0x59a232+='<div\x20style=\x22margin-top:12px\x22><button\x20onclick=\x22window.challengeClanToWar(\x27'+_0x36a46b+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b6b,#ff4444);color:#fff;font-size:14px;font-weight:900;cursor:pointer\x22>⚔️\x20Kisi\x20Clan\x20ko\x20Challenge\x20Karo</button></div>',_0x36a200['innerHTML']=_0x59a232,_0x45c4c8()['from']('clan_wars')['select']('clan_a_id,clan_a_name,clan_b_id,clan_b_name,clan_a_score,clan_b_score')['eq']('week',_0x4aa84c)['then'](function(_0x27bdc5){var _0x48cc31=_0x27bdc5['data']||[],_0x266d5d={};_0x48cc31['forEach'](function(_0x33a564){if(!_0x266d5d[_0x33a564['clan_a_id']])_0x266d5d[_0x33a564['clan_a_id']]={'name':_0x33a564['clan_a_name'],'score':0x0};if(!_0x266d5d[_0x33a564['clan_b_id']])_0x266d5d[_0x33a564['clan_b_id']]={'name':_0x33a564['clan_b_name'],'score':0x0};_0x266d5d[_0x33a564['clan_a_id']]['score']+=_0x33a564['clan_a_score']||0x0,_0x266d5d[_0x33a564['clan_b_id']]['score']+=_0x33a564['clan_b_score']||0x0;});var _0x226fab=Object['entries'](_0x266d5d)['sort'](function(_0x4b75d4,_0x228684){return _0x228684[0x1]['score']-_0x4b75d4[0x1]['score'];}),_0x5aed89=document['getElementById']('cwStandList');if(!_0x5aed89)return;if(!_0x226fab['length']){_0x5aed89['innerHTML']='<div\x20style=\x22text-align:center;font-size:12px;color:var(--txt2)\x22>Abhi\x20koi\x20clan\x20registered\x20nahi</div>';return;}var _0x14c20f='<div\x20style=\x22display:flex;flex-direction:column;gap:6px\x22>';_0x226fab['forEach'](function(_0x47eada,_0x9cd7fd){var _0x576a17=_0x47eada[0x0]===_0x36a46b;_0x14c20f+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;border-radius:11px;background:'+(_0x576a17?'rgba(0,255,156,.06)':'var(--card)')+';border:1px\x20solid\x20'+(_0x576a17?'rgba(0,255,156,.25)':'var(--border)')+'\x22>',_0x14c20f+='<span>'+(window['medalHtml']?medalHtml(_0x9cd7fd+0x1,0x10):'#'+(_0x9cd7fd+0x1))+'</span><div\x20style=\x22flex:1;font-size:13px;font-weight:700\x22>'+_0x47eada[0x1]['name']+'</div>',_0x14c20f+='<span\x20style=\x22font-size:13px;font-weight:900;color:'+(_0x576a17?'var(--green)':'var(--txt)')+'\x22>'+_0x47eada[0x1]['score']+'</span></div>';}),_0x14c20f+='</div>',_0x5aed89['innerHTML']=_0x14c20f;})['catch'](function(){var _0x14654a=document['getElementById']('cwStandList');if(_0x14654a)_0x14654a['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center;font-size:12px\x22>Error</div>';});}window['challengeClanToWar']=function(_0x15ad65){if(!_0x45c4c8())return;openModal('⚔️\x20Clan\x20Challenge','<div\x20id=\x22cwClanPickWrap\x22><div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>'),_0x45c4c8()['from']('clans')['select']('id,name,total_members')['neq']('id',_0x15ad65)['order']('total_members',{'ascending':![]})['limit'](0xf)['then'](function(_0x185d2e){var _0x684b85=_0x185d2e['data']||[],_0x33d754=document['getElementById']('cwClanPickWrap');if(!_0x33d754)return;if(!_0x684b85['length']){_0x33d754['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22>Koi\x20clan\x20available\x20nahi</div>';return;}var _0x4a9dac=_0x4c5b75()['clanName']||'My\x20Clan',_0x209497='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x684b85['forEach'](function(_0x24cb58){_0x209497+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:12px\x2014px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x209497+='<div\x20style=\x22font-size:28px\x22>🛡️</div><div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:800\x22>'+(window['escHtml']?window['escHtml'](_0x24cb58['name']||'Clan'):_0x24cb58['name']||'Clan')+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>👥\x20'+(_0x24cb58['total_members']||0x0)+'\x20members</div></div>',_0x209497+='<button\x20onclick=\x22window._sendWarChallenge(\x27'+_0x15ad65+'\x27,\x27'+_0x24cb58['id']+'\x27,\x27'+(window['escAttrJs']?window['escAttrJs'](_0x24cb58['name']||'Clan'):_0x24cb58['name']||'Clan')+'\x27,\x27'+(window['escAttrJs']?window['escAttrJs'](_0x4a9dac):_0x4a9dac)+'\x27,this)\x22\x20style=\x22padding:8px\x2012px;border-radius:9px;border:1px\x20solid\x20rgba(255,107,107,.3);background:rgba(255,107,107,.08);color:#ff6b6b;font-size:11px;font-weight:800;cursor:pointer\x22>⚔️\x20Challenge</button></div>';}),_0x209497+='</div>',_0x33d754['innerHTML']=_0x209497;})['catch'](function(){var _0x1c5223=document['getElementById']('cwClanPickWrap');if(_0x1c5223)_0x1c5223['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error</div>';});},window['_sendWarChallenge']=function(_0x1b55c7,_0xd9f443,_0x22e04d,_0x4304d7,_0x59bfa0){if(!_0x45c4c8())return;_0x59bfa0&&(_0x59bfa0['disabled']=!![],_0x59bfa0['textContent']='Sending...');var _0x38d8c7=_0x151063();_0x45c4c8()['from']('clan_war_challenges')['insert']({'week':_0x38d8c7,'from_clan':_0x1b55c7,'from_name':_0x4304d7,'to_clan':_0xd9f443,'to_name':_0x22e04d,'status':'pending','expires_at':new Date(Date['now']()+0x7*0x18*0x3c*0x3c*0x3e8)['toISOString']()})['then'](function(_0x500918){if(_0x500918&&_0x500918['error']){_0x59bfa0&&(_0x59bfa0['disabled']=![],_0x59bfa0['textContent']='⚔️\x20Challenge');if(window['toast'])toast('Challenge\x20bhej\x20nahi\x20saki:\x20'+(_0x500918['error']['message']||_0x500918['error']['code']||'error'),'err');return;}_0x45c4c8()['from']('clans')['select']('leader_uid')['eq']('id',_0xd9f443)['maybeSingle']()['then'](function(_0x40612d){_0x40612d['data']&&_0x40612d['data']['leader_uid']&&_0x45c4c8()['from']('notifications')['insert']({'user_id':_0x40612d['data']['leader_uid'],'type':'clan_war_challenge','title':'⚔️\x20Clan\x20War\x20Challenge!','body':_0x4304d7+'\x20ne\x20tumhare\x20clan\x20ko\x20war\x20challenge\x20bheja!','ref_id':null,'is_read':![]})['then'](null,function(){});})['catch'](function(){});if(window['toast'])toast('⚔️\x20Challenge\x20bhej\x20diya\x20'+_0x22e04d+'\x20ko!','ok');if(window['closeModal'])closeModal();})['catch'](function(_0x5a8b53){_0x59bfa0&&(_0x59bfa0['disabled']=![],_0x59bfa0['textContent']='⚔️\x20Challenge');if(window['toast'])toast('Error','err');});},window['updateClanWarScore']=function(_0x1e6a6e,_0x3baf7a){if(!_0x45c4c8()||!_0x2957ab()||!window['UD'])return;var _0x55f91a=window['UD']['clan_id']||window['UD']['clanId'];if(!_0x55f91a)return;var _0x226ac2=_0x151063(),_0x5dcfd8=(_0x1e6a6e?0xf:0x0)+(_0x3baf7a||0x0)*0x2+0x1;_0x45c4c8()['from']('clan_wars')['select']('id,clan_a_id,clan_a_score,clan_b_score')['eq']('week',_0x226ac2)['or']('clan_a_id.eq.'+_0x55f91a+',clan_b_id.eq.'+_0x55f91a)['eq']('status','active')['maybeSingle']()['then'](function(_0x194622){if(!_0x194622['data'])return;var _0x14071d=_0x194622['data']['clan_a_id']===_0x55f91a,_0xafa4ce=_0x14071d?'clan_a_score':'clan_b_score',_0x16d580=_0x194622['data'][_0xafa4ce]||0x0,_0x355392={};_0x355392[_0xafa4ce]=_0x16d580+_0x5dcfd8,_0x45c4c8()['from']('clan_wars')['update'](_0x355392)['eq']('id',_0x194622['data']['id'])['then'](null,function(){});})['catch'](function(){});};var _0x9752de=0x0,_0x5cff9c=setInterval(function(){_0x9752de++;if(_0x9752de>0x50){clearInterval(_0x5cff9c);return;}if(!window['UD'])return;var _0x36f743=window['UD']['clan_id']||window['UD']['clanId'];if(!_0x36f743)return;var _0xce46dd=document['querySelector']('.special-pills');if(!_0xce46dd||_0xce46dd['querySelector']('#_cwPill')){if(_0xce46dd)clearInterval(_0x5cff9c);return;}clearInterval(_0x5cff9c);var _0x2e178e=document['createElement']('div');_0x2e178e['id']='_cwPill',_0x2e178e['className']='special-pill',_0x2e178e['style']['cssText']='background:rgba(255,68,68,.08);border:1px\x20solid\x20rgba(255,68,68,.25);color:#ff6b6b',_0x2e178e['innerHTML']='<i\x20class=\x22fas\x20fa-shield-alt\x22\x20style=\x22font-size:11px\x22></i>\x20Clan\x20War',_0x2e178e['onclick']=function(){if(window['showClanWar'])showClanWar();},_0xce46dd['appendChild'](_0x2e178e);},0x258);}());
+/* ================================================================
+   CLAN WAR v2.0 — 100% Supabase
+   Tables: clan_wars(id,week,clan_a_id,clan_a_name,clan_b_id,clan_b_name,clan_a_score,clan_b_score,status,winner_id)
+           clan_war_challenges(id,week,from_clan,from_name,to_clan,to_name,status)
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+function _ud(){ return window.UD||{}; }
+function _week(){ var d=new Date(),day=d.getDay(),mon=new Date(d);mon.setDate(d.getDate()-((day===0?7:day)-1));mon.setHours(0,0,0,0);return mon.toISOString().substring(0,10); }
+
+window.showClanWar=function(){
+  if(!_uid()){if(window.toast)toast('Login karo','err');return;}
+  var clanId=_ud().clan_id||_ud().clanId;
+  if(!clanId){openModal('⚔️ Clan War','<div style="text-align:center;padding:24px;color:var(--txt2)"><div style="font-size:36px;margin-bottom:10px">⚔️</div><p>Clan join karo pehle!</p><button onclick="navTo(\'clan\')" style="margin-top:10px;padding:11px 22px;border-radius:12px;border:none;background:var(--green);color:#000;font-weight:800;cursor:pointer">Clan Join Karo</button></div>');return;}
+  openModal('⚔️ Clan War','<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>');
+  _loadClanWarData(clanId);
+};
+
+function _loadClanWarData(myClanId){
+  var mb=document.getElementById('modalB');if(!mb)return;
+  if(!_s()){mb.innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  var week=_week();
+  _s().from('clan_wars').select('*').eq('week',week).or('clan_a_id.eq.'+myClanId+',clan_b_id.eq.'+myClanId).eq('status','active').maybeSingle()
+  .then(function(r){ _renderActiveWar(mb,myClanId,r.data,week); })
+  .catch(function(){ _renderWarLobby(mb,myClanId,week); });
+}
+
+function _renderActiveWar(mb,myClanId,war,week){
+  if(!war){_renderWarLobby(mb,myClanId,week);return;}
+  var isClan1=war.clan_a_id===myClanId;
+  var myClanName=isClan1?war.clan_a_name:war.clan_b_name;
+  var oppName=isClan1?war.clan_b_name:war.clan_a_name;
+  var myScore=isClan1?(war.clan_a_score||0):(war.clan_b_score||0);
+  var oppScore=isClan1?(war.clan_b_score||0):(war.clan_a_score||0);
+  var winning=myScore>oppScore;
+  var total=myScore+oppScore||1; var myPct=Math.round(myScore/total*100);
+  var h='<div style="background:linear-gradient(135deg,rgba(255,68,68,.08),rgba(255,107,0,.04));border:1.5px solid rgba(255,68,68,.2);border-radius:16px;padding:14px;margin-bottom:14px;text-align:center">';
+  h+='<div style="font-size:11px;color:rgba(255,107,107,.7);font-weight:800;letter-spacing:2px">WEEKLY WAR</div>';
+  var dEnd=new Date(_week());dEnd.setDate(dEnd.getDate()+6);var dleft=Math.ceil((dEnd-new Date())/86400000);
+  h+='<div style="font-size:11px;color:rgba(255,165,0,.8)">⏰ '+Math.max(0,dleft)+' days left</div></div>';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">';
+  h+='<div style="flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(0,255,156,.06);border:1.5px solid rgba(0,255,156,.25)"><div style="font-size:24px;font-weight:900;color:var(--green)">'+myScore+'</div><div style="font-size:12px;font-weight:700">'+(window.escHtml?window.escHtml(myClanName):myClanName)+'</div><div style="font-size:10px;color:var(--green)">YOU</div></div>';
+  h+='<div style="text-align:center;padding:8px"><div style="font-size:18px;font-weight:900;color:#ff6b6b">VS</div><div style="font-size:11px;color:'+(winning?'var(--green)':'#ff6b6b')+';font-weight:700">'+(winning?'WINNING':'LOSING')+'</div></div>';
+  h+='<div style="flex:1;text-align:center;padding:12px;border-radius:13px;background:rgba(255,68,68,.06);border:1.5px solid rgba(255,68,68,.2)"><div style="font-size:24px;font-weight:900;color:#ff6b6b">'+oppScore+'</div><div style="font-size:12px;font-weight:700">'+(window.escHtml?window.escHtml(oppName):oppName)+'</div></div>';
+  h+='</div>';
+  h+='<div style="height:8px;background:rgba(255,68,68,.3);border-radius:8px;overflow:hidden;margin-bottom:14px"><div style="height:100%;width:'+myPct+'%;background:linear-gradient(90deg,var(--green),#00d4ff);border-radius:8px"></div></div>';
+  h+='<div style="padding:10px 14px;border-radius:12px;background:rgba(255,165,0,.06);border:1px solid rgba(255,165,0,.2);font-size:11px;color:var(--txt2)">⚔️ Win=15pts · Kill=2pts · Match=1pt<br>🏆 Winner clan ko exclusive War Champion badge!</div>';
+  mb.innerHTML=h;
+}
+
+function _renderWarLobby(mb,myClanId,week){
+  if(!_s()){mb.innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  var h='<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:8px">🏆 Weekly Standings</div>';
+  h+='<div id="cwStandList"><div style="text-align:center;padding:12px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>';
+  h+='<div style="margin-top:12px"><button onclick="window.challengeClanToWar(\''+myClanId+'\')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b6b,#ff4444);color:#fff;font-size:14px;font-weight:900;cursor:pointer">⚔️ Kisi Clan ko Challenge Karo</button></div>';
+  mb.innerHTML=h;
+  _s().from('clan_wars').select('clan_a_id,clan_a_name,clan_b_id,clan_b_name,clan_a_score,clan_b_score').eq('week',week)
+  .then(function(r){
+    var wars=r.data||[]; var cityScores={};
+    wars.forEach(function(w){
+      if(!cityScores[w.clan_a_id])cityScores[w.clan_a_id]={name:w.clan_a_name,score:0};
+      if(!cityScores[w.clan_b_id])cityScores[w.clan_b_id]={name:w.clan_b_name,score:0};
+      cityScores[w.clan_a_id].score+=(w.clan_a_score||0);
+      cityScores[w.clan_b_id].score+=(w.clan_b_score||0);
+    });
+    var sorted=Object.entries(cityScores).sort(function(a,b){return b[1].score-a[1].score;});
+    var ll=document.getElementById('cwStandList');if(!ll)return;
+    if(!sorted.length){ll.innerHTML='<div style="text-align:center;font-size:12px;color:var(--txt2)">Abhi koi clan registered nahi</div>';return;}
+    var lh='<div style="display:flex;flex-direction:column;gap:6px">';
+    sorted.forEach(function(e,i){
+      var isMe=e[0]===myClanId;
+      lh+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:'+(isMe?'rgba(0,255,156,.06)':'var(--card)')+';border:1px solid '+(isMe?'rgba(0,255,156,.25)':'var(--border)')+'">';
+      lh+='<span>'+(window.medalHtml?medalHtml(i+1,16):'#'+(i+1))+'</span><div style="flex:1;font-size:13px;font-weight:700">'+e[1].name+'</div>';
+      lh+='<span style="font-size:13px;font-weight:900;color:'+(isMe?'var(--green)':'var(--txt)')+'">'+e[1].score+'</span></div>';
+    });
+    lh+='</div>';ll.innerHTML=lh;
+  }).catch(function(){var ll=document.getElementById('cwStandList');if(ll)ll.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:12px">Error</div>';});
+}
+
+window.challengeClanToWar=function(myClanId){
+  if(!_s())return;
+  openModal('⚔️ Clan Challenge','<div id="cwClanPickWrap"><div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>');
+  _s().from('clans').select('id,name,total_members').neq('id',myClanId).order('total_members',{ascending:false}).limit(15)
+  .then(function(r){
+    var clans=r.data||[];var w=document.getElementById('cwClanPickWrap');if(!w)return;
+    if(!clans.length){w.innerHTML='<div style="text-align:center;padding:20px;color:var(--txt2)">Koi clan available nahi</div>';return;}
+    var myClanName=_ud().clanName||'My Clan';
+    var h='<div style="display:flex;flex-direction:column;gap:8px">';
+    clans.forEach(function(c){
+      h+='<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;background:var(--card);border:1px solid var(--border)">';
+      h+='<div style="font-size:28px">🛡️</div><div style="flex:1"><div style="font-size:13px;font-weight:800">'+(window.escHtml?window.escHtml(c.name||'Clan'):c.name||'Clan')+'</div><div style="font-size:11px;color:var(--txt2)">👥 '+(c.total_members||0)+' members</div></div>';
+      h+='<button onclick="window._sendWarChallenge(\''+myClanId+'\',\''+c.id+'\',\''+(window.escAttrJs?window.escAttrJs(c.name||'Clan'):c.name||'Clan')+'\',\''+(window.escAttrJs?window.escAttrJs(myClanName):myClanName)+'\',this)" style="padding:8px 12px;border-radius:9px;border:1px solid rgba(255,107,107,.3);background:rgba(255,107,107,.08);color:#ff6b6b;font-size:11px;font-weight:800;cursor:pointer">⚔️ Challenge</button></div>';
+    });
+    h+='</div>';w.innerHTML=h;
+  }).catch(function(){var w=document.getElementById('cwClanPickWrap');if(w)w.innerHTML='<div style="color:#ff6b6b;text-align:center">Error</div>';});
+};
+
+window._sendWarChallenge=function(fromId,toId,toName,fromName,btn){
+  if(!_s())return;
+  if(btn){btn.disabled=true;btn.textContent='Sending...';}
+  var week=_week();
+  /* ✅ BUG Z7 FIX (2026-10-02, WALK10s live-proven): insert-ka error-response
+     bhi is .then(ok) shakha me aata tha — RLS/FK fail par bhi 'Challenge bhej
+     diya' success-toast jhoota dikhta tha aur DB me row kabhi nahi banti thi.
+     Ab r.error pehle check — error par sahi err-toast + button restore. */
+  _s().from('clan_war_challenges').insert({week:week,from_clan:fromId,from_name:fromName,to_clan:toId,to_name:toName,status:'pending',expires_at:new Date(Date.now()+7*24*60*60*1000).toISOString()}) /* Bug M-9 Fix: 7-day expiry */
+  .then(function(r){
+    if(r&&r.error){
+      if(btn){btn.disabled=false;btn.textContent='⚔️ Challenge';}
+      if(window.toast)toast('Challenge bhej nahi saki: '+(r.error.message||r.error.code||'error'),'err');
+      return;
+    }
+    // Notify clan leader
+    _s().from('clans').select('leader_uid').eq('id',toId).maybeSingle().then(function(r){
+      if(r.data&&r.data.leader_uid){
+        _s().from('notifications').insert({user_id:r.data.leader_uid,type:'clan_war_challenge',title:'⚔️ Clan War Challenge!',body:fromName+' ne tumhare clan ko war challenge bheja!',ref_id:null,is_read:false}).then(null, function(){});
+      }
+    }).catch(function(){});
+    if(window.toast)toast('⚔️ Challenge bhej diya '+toName+' ko!','ok');
+    if(window.closeModal)closeModal();
+  }).catch(function(e){if(btn){btn.disabled=false;btn.textContent='⚔️ Challenge';}if(window.toast)toast('Error','err');});
+};
+
+window.updateClanWarScore=function(wins,kills){
+  if(!_s()||!_uid()||!window.UD)return;
+  var clanId=window.UD.clan_id||window.UD.clanId;if(!clanId)return;
+  var week=_week();var score=(wins?15:0)+(kills||0)*2+1;
+  _s().from('clan_wars').select('id,clan_a_id,clan_a_score,clan_b_score').eq('week',week).or('clan_a_id.eq.'+clanId+',clan_b_id.eq.'+clanId).eq('status','active').maybeSingle()
+  .then(function(r){
+    if(!r.data)return;
+    var isClan1=r.data.clan_a_id===clanId;
+    var col=isClan1?'clan_a_score':'clan_b_score';
+    var curScore=r.data[col]||0;
+    var upd={};upd[col]=curScore+score;
+    _s().from('clan_wars').update(upd).eq('id',r.data.id).then(null, function(){});
+  }).catch(function(){});
+};
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>80){clearInterval(_t);return;}
+  if(!window.UD)return;
+  var clanId=window.UD.clan_id||window.UD.clanId;if(!clanId)return;
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_cwPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_cwPill';p.className='special-pill';
+  p.style.cssText='background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.25);color:#ff6b6b';
+  p.innerHTML='<i class="fas fa-shield-alt" style="font-size:11px"></i> Clan War';
+  p.onclick=function(){if(window.showClanWar)showClanWar();};
+  row.appendChild(p);
+},600);
+})();

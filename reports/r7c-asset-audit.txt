@@ -1,0 +1,10 @@
+ASSET AUDIT (r7c) — LIVE Pages vs LOCAL source, 61 real art assets
+TOTAL=61  OK(md5 match)=61  PROBLEM=0  total_bytes=3245612 (3.10 MB)
+  badges     23 assets live+local identical
+  frames     1 assets live+local identical
+  icons      6 assets live+local identical
+  premium    4 assets live+local identical
+  ranks      6 assets live+local identical
+  root       1 assets live+local identical
+  special    3 assets live+local identical
+  titles     17 assets live+local identical

@@ -1,1 +1,140 @@
-(function(){'use strict';var _0x374aba=(function(){var _0x239bf7=!![];return function(_0x41246e,_0xb0c196){var _0x3c22c7=_0x239bf7?function(){if(_0xb0c196){var _0x1d34d8=_0xb0c196['apply'](_0x41246e,arguments);return _0xb0c196=null,_0x1d34d8;}}:function(){};return _0x239bf7=![],_0x3c22c7;};}()),_0x371f17=_0x374aba(this,function(){if(_0x371f17['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x371f17['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x371f17)['search']('(((.+)+)+)+$');});_0x371f17();window['_modeFilter']=window['_modeFilter']||'all',window['_rankFilter']=window['_rankFilter']||'all';var _0x5ec612=[{'v':'all','label':'All\x20Ranks','color':'var(--txt2)'},{'v':'Bronze','label':'Bronze','color':'#cd7f32'},{'v':'Silver','label':'Silver','color':'#c0c0c0'},{'v':'Gold','label':'Gold','color':'#ffd700'},{'v':'Platinum','label':'Platinum','color':'#e0e0ff'},{'v':'Diamond','label':'Diamond','color':'#00d4ff'},{'v':'Legend','label':'👑\x20Legend','color':'#b964ff'}];function _0x4f8a00(_0x166e10){var _0x485275=window['getRankTier']?window['getRankTier'](_0x166e10):null;return _0x485275?_0x485275['name']:'Bronze';}var _0x4801c=null,_0x101a1e=0x0,_0x35b431=setInterval(function(){_0x101a1e++;if(_0x101a1e>0x3c){clearInterval(_0x35b431);return;}if(typeof window['renderHome']!=='function')return;if(window['_rankMatchmakePatched'])return;clearInterval(_0x35b431),window['_rankMatchmakePatched']=!![],_0x4801c=window['renderHome'],window['renderHome']=function(){_0x4801c['call'](this),setTimeout(_0x4b4560,0x3c);};},0x12c);window['renderFilterChips']=function(){var _0x18f4d5='<div\x20class=\x22filter-chips-row\x22\x20style=\x22display:flex;gap:6px;overflow-x:auto;padding:0\x200\x208px;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-bottom:4px\x22>';return[['all','🎮\x20All'],['solo','Solo'],['duo','Duo'],['squad','Squad']]['forEach'](function(_0x58020f){var _0xb6f4e6=window['_modeFilter']===_0x58020f[0x0];_0x18f4d5+='<button\x20onclick=\x22window._modeFilter=\x27'+_0x58020f[0x0]+'\x27;if(window.renderHome)renderHome();\x22\x20style=\x22flex-shrink:0;padding:6px\x2014px;border-radius:20px;border:none;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;background:'+(_0xb6f4e6?'var(--primary)':'rgba(255,255,255,.07)')+';color:'+(_0xb6f4e6?'#000':'var(--txt)')+'\x22>'+_0x58020f[0x1]+'</button>';}),_0x18f4d5+='</div>',_0x18f4d5;};var _0x5145d9={'all':'All\x20Ranks','Bronze':'Bronze','Silver':'Silver','Gold':'Gold','Platinum':'Platinum','Diamond':'Diamond','Legend':'Legend'};function _0x345def(){var _0x4f78c2=document['querySelector']('#homeRankDd\x20.dd-current');if(_0x4f78c2&&window['_rankFilter']&&_0x5145d9[window['_rankFilter']])_0x4f78c2['textContent']=_0x5145d9[window['_rankFilter']];}window['_rankFilterFn']=function(_0x4160fc){if(!window['_rankFilter']||window['_rankFilter']==='all')return!![];var _0x3c7b36=window['UD']&&window['UD']['rank_points']||0x0;if(_0x4160fc['rank_min']!==undefined&&_0x3c7b36<Number(_0x4160fc['rank_min']))return![];if(_0x4160fc['rank_max']!==undefined&&_0x3c7b36>Number(_0x4160fc['rank_max']))return![];var _0x2c020d=_0x4160fc['rank_tier']||'all';if(_0x2c020d!=='all'&&_0x2c020d!==window['_rankFilter'])return![];return!![];};var _0x693ed1=0x0,_0x3a8758=setInterval(function(){_0x693ed1++;if(_0x693ed1>0x50){clearInterval(_0x3a8758);return;}if(!window['_rankMatchmakePatched']||typeof window['renderHome']!=='function')return;clearInterval(_0x3a8758);var _0x52f228=window['renderHome'];window['renderHome']=function(){var _0x11519a=[];if(window['MT']&&window['_rankFilter']&&window['_rankFilter']!=='all')for(var _0x4ff6ca in window['MT']){!window['_rankFilterFn'](window['MT'][_0x4ff6ca])&&(window['MT'][_0x4ff6ca]['_rankHidden']=!![],_0x11519a['push'](_0x4ff6ca));}_0x52f228['call'](this),_0x11519a['forEach'](function(_0x3f9fdc){if(window['MT'][_0x3f9fdc])delete window['MT'][_0x3f9fdc]['_rankHidden'];});};},0x15e);function _0x4b4560(){_0x345def();}var _0x2ad1a6=0x0,_0x3cd8c0=setInterval(function(){_0x2ad1a6++;if(_0x2ad1a6>0x50){clearInterval(_0x3cd8c0);return;}if(!window['UD']||!window['UD']['rank_points']===undefined)return;clearInterval(_0x3cd8c0);var _0x52d85e=window['UD']['rank_points']||0x0,_0x500e59=_0x4f8a00(_0x52d85e),_0x241080={'Bronze':'#cd7f32','Silver':'#c0c0c0','Gold':'#ffd700','Platinum':'#e0e0ff','Diamond':'#00d4ff','Legend':'#b964ff'},_0x35cb35=document['getElementById']('_rkHdrPill');if(_0x35cb35)return;var _0x5ec066=document['createElement']('div');_0x5ec066['id']='_rkHdrPill',_0x5ec066['style']['cssText']='display:inline-flex;align-items:center;gap:4px;padding:3px\x209px;border-radius:20px;background:'+_0x241080[_0x500e59]+'11;border:1px\x20solid\x20'+_0x241080[_0x500e59]+'33;font-size:11px;font-weight:800;color:'+_0x241080[_0x500e59]+';cursor:pointer;margin-left:6px',_0x5ec066['innerHTML']=(window['tierIconHtml']?tierIconHtml(_0x500e59,0xc):'')+'\x20'+_0x500e59,_0x5ec066['title']='Your\x20Rank\x20Tier\x20—\x20'+_0x52d85e+'\x20RP',_0x5ec066['onclick']=function(){window['_rankFilter']=_0x500e59,_0x345def();if(window['renderHome'])renderHome();toast('Showing\x20'+_0x500e59+'\x20matches\x20only','ok');};var _0x12ecc1=document['querySelector']('.header-right,.hdr-right,header\x20.right');if(_0x12ecc1)_0x12ecc1['appendChild'](_0x5ec066);},0x258);}());
+/* ================================================================
+   MINI eSPORTS — SKILL-BASED MATCHMAKING v1.0
+   Rank filter chips on home screen
+   Also enforces match rank_min / rank_max set by admin
+   Provides renderFilterChips() for home.js
+================================================================ */
+(function(){
+'use strict';
+
+/* ── Global filter state ── */
+window._modeFilter = window._modeFilter || 'all';
+window._rankFilter = window._rankFilter || 'all';
+
+/* BUG #27 FIX (2026-07): filter dropdown was missing Platinum and Legend as filter
+   options entirely (a player at those ranks couldn't even be filtered for), and _tier()
+   used the same wrong 4-tier thresholds found in mentor.js/friends.js/squad-finder.js/
+   player-card.js — now matches the canonical window.RANK_TIERS. */
+var RANK_TIERS=[
+  {v:'all',  label:'All Ranks', color:'var(--txt2)'},
+  {v:'Bronze',label:'Bronze', color:'#cd7f32'},
+  {v:'Silver',label:'Silver', color:'#c0c0c0'},
+  {v:'Gold',  label:'Gold',   color:'#ffd700'},
+  {v:'Platinum',label:'Platinum',color:'#e0e0ff'},
+  {v:'Diamond',label:'Diamond',color:'#00d4ff'},
+  {v:'Legend',label:'👑 Legend',color:'#b964ff'},
+];
+
+/* ── Helper: get rank tier from rank points ── */
+function _tier(pts){
+  var t=(window.getRankTier?window.getRankTier(pts):null);
+  return t?t.name:'Bronze';
+}
+
+/* ── Inject rank filter logic into renderHome ── */
+var _origRenderHome=null;
+var _injRH=0,_injRHT=setInterval(function(){
+  _injRH++; if(_injRH>60){ clearInterval(_injRHT); return; }
+  if(typeof window.renderHome!=='function') return;
+  if(window._rankMatchmakePatched) return;
+  clearInterval(_injRHT);
+  window._rankMatchmakePatched=true;
+  _origRenderHome=window.renderHome;
+  window.renderHome=function(){
+    /* Before rendering, apply rank filter to MT */
+    _origRenderHome.call(this);
+    /* After render, insert rank chips row if not already present */
+    setTimeout(_ensureRankChips,60);
+  };
+},300);
+
+/* Provide renderFilterChips for home.js */
+/* UPDATED (2026-08 redesign): the rank filter row here used to render a
+   second horizontal-scroll chip row (All Ranks/Bronze/Silver/.../Legend)
+   below the mode chips. That's now the "Rank" <select> dropdown sitting
+   next to "Status" in the new filter-dd-row (see index.html #homeRankSel
+   and screens/home.js). Removed the duplicate row so rank filtering has
+   exactly one UI control, not two. _rankFilterFn below (the actual
+   enforcement logic) is unchanged — only this row's markup is gone. */
+window.renderFilterChips = function(){
+  var h='<div class="filter-chips-row" style="display:flex;gap:6px;overflow-x:auto;padding:0 0 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-bottom:4px">';
+  /* Mode filters */
+  [['all','🎮 All'],['solo','Solo'],['duo','Duo'],['squad','Squad']].forEach(function(m){
+    var active=window._modeFilter===m[0];
+    h+='<button onclick="window._modeFilter=\''+m[0]+'\';if(window.renderHome)renderHome();" style="flex-shrink:0;padding:6px 14px;border-radius:20px;border:none;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;background:'+(active?'var(--primary)':'rgba(255,255,255,.07)')+';color:'+(active?'#000':'var(--txt)')+'">'+m[1]+'</button>';
+  });
+  h+='</div>';
+  return h;
+};
+
+/* Keep the homeRankDd custom dropdown's displayed label in sync with
+   window._rankFilter whenever it changes from somewhere other than the
+   dropdown itself (e.g. a saved preference restored on boot, or the
+   "My Rank" pill's onclick below). */
+var _RANK_LABELS = { all:'All Ranks', Bronze:'Bronze', Silver:'Silver', Gold:'Gold', Platinum:'Platinum', Diamond:'Diamond', Legend:'Legend' }; /* D101: dropdown text — emoji nahi */
+function _syncRankSelect(){
+  var cur=document.querySelector('#homeRankDd .dd-current');
+  if(cur && window._rankFilter && _RANK_LABELS[window._rankFilter]) cur.textContent=_RANK_LABELS[window._rankFilter];
+}
+
+/* Also apply rank filter in home.js render loop via window._rankFilterFn */
+window._rankFilterFn=function(t){
+  if(!window._rankFilter||window._rankFilter==='all') return true;
+  var myRp=(window.UD&&window.UD.rank_points)||0;
+  /* Admin-set rank limits on match */
+  if(t.rank_min!==undefined&&myRp<Number(t.rank_min)) return false;
+  if(t.rank_max!==undefined&&myRp>Number(t.rank_max)) return false;
+  /* Player's own filter preference */
+  var matchTier=t.rank_tier||'all';
+  if(matchTier!=='all'&&matchTier!==window._rankFilter) return false;
+  return true;
+};
+
+/* Patch the home.js render to also call _rankFilterFn */
+/* We monkey-patch after the fact by patching window._modeFilter check */
+var _origFilterPatch=0,_origFPT=setInterval(function(){
+  _origFilterPatch++; if(_origFilterPatch>80){ clearInterval(_origFPT); return; }
+  if(!window._rankMatchmakePatched||typeof window.renderHome!=='function') return;
+  clearInterval(_origFPT);
+  var orig2=window.renderHome;
+  window.renderHome=function(){
+    /* Patch MT temporarily */
+    var hidden=[];
+    if(window.MT&&window._rankFilter&&window._rankFilter!=='all'){
+      for(var id in window.MT){
+        if(!window._rankFilterFn(window.MT[id])){ window.MT[id]._rankHidden=true; hidden.push(id); }
+      }
+    }
+    orig2.call(this);
+    /* Restore */
+    hidden.forEach(function(id){ if(window.MT[id]) delete window.MT[id]._rankHidden; });
+  };
+},350);
+
+/* ── Ensure rank dropdown reflects current filter state ── */
+function _ensureRankChips(){
+  _syncRankSelect();
+}
+
+
+/* ── "My Rank" quick display pill in header ── */
+var _rkHdrI=0,_rkHdrT=setInterval(function(){
+  _rkHdrI++; if(_rkHdrI>80){ clearInterval(_rkHdrT); return; }
+  if(!window.UD||!window.UD.rank_points===undefined) return;
+  clearInterval(_rkHdrT);
+  var rp=window.UD.rank_points||0;
+  var tier=_tier(rp);
+  var colors={Bronze:'#cd7f32',Silver:'#c0c0c0',Gold:'#ffd700',Platinum:'#e0e0ff',Diamond:'#00d4ff',Legend:'#b964ff'};
+  var existing=document.getElementById('_rkHdrPill');
+  if(existing) return;
+  var pill=document.createElement('div');
+  pill.id='_rkHdrPill';
+  pill.style.cssText='display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:'+colors[tier]+'11;border:1px solid '+colors[tier]+'33;font-size:11px;font-weight:800;color:'+colors[tier]+';cursor:pointer;margin-left:6px';
+  pill.innerHTML=(window.tierIconHtml?tierIconHtml(tier,12):'')+' '+tier;
+  pill.title='Your Rank Tier — '+rp+' RP';
+  pill.onclick=function(){ window._rankFilter=tier; _syncRankSelect(); if(window.renderHome) renderHome(); toast('Showing '+tier+' matches only','ok'); };
+  var hdr=document.querySelector('.header-right,.hdr-right,header .right');
+  if(hdr) hdr.appendChild(pill);
+},600);
+
+})();

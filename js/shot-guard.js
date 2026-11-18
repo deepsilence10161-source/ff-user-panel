@@ -1,1 +1,66 @@
-(function(){var _0x463808=(function(){var _0x2494a7=!![];return function(_0x37a0d3,_0x5226c0){var _0x140b67=_0x2494a7?function(){if(_0x5226c0){var _0x2bf91f=_0x5226c0['apply'](_0x37a0d3,arguments);return _0x5226c0=null,_0x2bf91f;}}:function(){};return _0x2494a7=![],_0x140b67;};}()),_0x35f509=_0x463808(this,function(){if(_0x35f509['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x35f509['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x35f509)['search']('(((.+)+)+)+$');});_0x35f509(),window['_ffShotHash']=function(_0x373c35,_0x22c3c5){try{var _0x4614ad=String(_0x373c35||'');if(!_0x4614ad){_0x22c3c5(null);return;}if(window['crypto']&&crypto['subtle']&&crypto['subtle']['digest']){var _0x3109ae=new TextEncoder()['encode'](_0x4614ad);crypto['subtle']['digest']('SHA-256',_0x3109ae)['then'](function(_0x26573a){var _0x3bddf4=Array['prototype']['slice']['call'](new Uint8Array(_0x26573a));_0x22c3c5(_0x3bddf4['map'](function(_0x183a6d){return('0'+_0x183a6d['toString'](0x10))['slice'](-0x2);})['join'](''));})['catch'](function(){_0x22c3c5(_0x1044f3(_0x4614ad));});}else _0x22c3c5(_0x1044f3(_0x4614ad));}catch(_0x267f6b){_0x22c3c5(null);}};function _0x1044f3(_0x30425e){var _0x44c75c=0x811c9dc5,_0x188c9a=0x1000193;for(var _0x14bfa1=0x0;_0x14bfa1<_0x30425e['length'];_0x14bfa1++){_0x44c75c=(_0x44c75c^_0x30425e['charCodeAt'](_0x14bfa1))*0x1000193>>>0x0,_0x188c9a=(_0x188c9a+_0x30425e['charCodeAt'](_0x14bfa1)*(_0x14bfa1+0x7)^_0x188c9a>>>0xd)>>>0x0;}return'f'+_0x44c75c['toString'](0x10)+_0x188c9a['toString'](0x10);}window['_ffShotDup']=function(_0x239f5d,_0x3a0255){if(!_0x239f5d||!window['_supa']){_0x3a0255(![]);return;}var _0x43c807=function(_0xb83fd8,_0x35aefe){return window['_supa']['from'](_0xb83fd8)['select']('id')['eq'](_0x35aefe,_0x239f5d)['in']('status',['pending','approved'])['limit'](0x1)['then'](function(_0x566a85){return!!(_0x566a85['data']&&_0x566a85['data']['length']);},function(){return![];});};Promise['all']([_0x43c807('premium_requests','img_hash'),_0x43c807('sd_requests','img_hash'),_0x43c807('season_pass_requests','img_hash')])['then'](function(_0xc17819){_0x3a0255(_0xc17819['some'](Boolean));},function(){_0x3a0255(![]);});},window['_ffGuardShot']=function(_0x13d449,_0x3f4a6c,_0x4e8013){window['_ffShotHash'](_0x13d449,function(_0x5fb615){if(!_0x5fb615){_0x3f4a6c(null);return;}window['_ffShotDup'](_0x5fb615,function(_0x10b1f2){if(_0x10b1f2){if(window['toast'])window['toast']('❌\x20Ye\x20screenshot\x20pehle\x20hi\x20kisi\x20request\x20me\x20use\x20ho\x20chuka\x20hai\x20—\x20duplicate\x20allowed\x20nahi.\x20Nayi\x20screenshot\x20bhejiye.','err');_0x4e8013();}else _0x3f4a6c(_0x5fb615);});});};}());
+/* ================================================================
+   ✅ D76 (2026-11-06, owner): "koi bhi user duplicate screenshot na
+   bhej sake — high advanced system chahiye."
+   3-layer anti-duplicate-screenshot guard:
+     1) CLIENT: screenshot select hote hi SHA-256 hash banta hai aur
+        teeno request tables (premium_requests / sd_requests /
+        season_pass_requests) me pending+approved hashes se match hota
+        hai → duplicate milte hi selection REJECT + clear toast.
+     2) PAYLOAD: har insert me img_hash jaata hai (sd_requests me pehle
+        se tha; ab premium + season_pass me bhi column hai).
+     3) SERVER: DB trigger (migration 20261107_shot_hash_dedup) kisi bhi
+        table me duplicate img_hash insert hone par EXCEPTION deta hai —
+        client bypass ho tab bhi duplicate kabhi save NAHI hota.
+   ================================================================ */
+(function () {
+  window._ffShotHash = function (dataUri, cb) {
+    try {
+      var s = String(dataUri || '');
+      if (!s) { cb(null); return; }
+      if (window.crypto && crypto.subtle && crypto.subtle.digest) {
+        var bytes = new TextEncoder().encode(s);
+        crypto.subtle.digest('SHA-256', bytes).then(function (buf) {
+          var arr = Array.prototype.slice.call(new Uint8Array(buf));
+          cb(arr.map(function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''));
+        }).catch(function () { cb(_ffFallback(s)); });
+      } else cb(_ffFallback(s));
+    } catch (e) { cb(null); }
+  };
+  function _ffFallback(s) {
+    /* FNV-1a 64-bit-ish fallback (crypto.subtle na ho to) */
+    var h1 = 0x811c9dc5, h2 = 0x01000193;
+    for (var i = 0; i < s.length; i++) {
+      h1 = ((h1 ^ s.charCodeAt(i)) * 16777619) >>> 0;
+      h2 = ((h2 + s.charCodeAt(i) * (i + 7)) ^ (h2 >>> 13)) >>> 0;
+    }
+    return 'f' + h1.toString(16) + h2.toString(16);
+  }
+
+  /* teeno tables me pending/approved hash dhundo */
+  window._ffShotDup = function (hash, cb) {
+    if (!hash || !window._supa) { cb(false); return; }
+    var q = function (table, col) {
+      return window._supa.from(table).select('id')
+        .eq(col, hash).in('status', ['pending', 'approved']).limit(1)
+        .then(function (r) { return !!(r.data && r.data.length); }, function () { return false; });
+    };
+    Promise.all([
+      q('premium_requests', 'img_hash'),
+      q('sd_requests', 'img_hash'),
+      q('season_pass_requests', 'img_hash'),
+    ]).then(function (res) { cb(res.some(Boolean)); }, function () { cb(false); });
+  };
+
+  /* select-time guard: onOk(hash) ya onDup() */
+  window._ffGuardShot = function (dataUri, onOk, onDup) {
+    window._ffShotHash(dataUri, function (h) {
+      if (!h) { onOk(null); return; }
+      window._ffShotDup(h, function (dup) {
+        if (dup) {
+          if (window.toast) window.toast('❌ Ye screenshot pehle hi kisi request me use ho chuka hai — duplicate allowed nahi. Nayi screenshot bhejiye.', 'err');
+          onDup();
+        } else onOk(h);
+      });
+    });
+  };
+})();

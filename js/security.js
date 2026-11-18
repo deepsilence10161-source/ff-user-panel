@@ -1,1 +1,232 @@
-(function(){'use strict';var _0x2212d7=(function(){var _0x18efb5=!![];return function(_0x5c39e0,_0x41252f){var _0x4ef8f4=_0x18efb5?function(){if(_0x41252f){var _0x1c3dff=_0x41252f['apply'](_0x5c39e0,arguments);return _0x41252f=null,_0x1c3dff;}}:function(){};return _0x18efb5=![],_0x4ef8f4;};}()),_0x25580b=_0x2212d7(this,function(){if(_0x25580b['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x25580b['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x25580b)['search']('(((.+)+)+)+$');});_0x25580b();function _0xc1d646(){var _0x2b588c=[];try{var _0x583c0e=document['createElement']('canvas');_0x583c0e['width']=0xc8,_0x583c0e['height']=0x32;var _0x3b6f4f=_0x583c0e['getContext']('2d');_0x3b6f4f['textBaseline']='alphabetic',_0x3b6f4f['fillStyle']='#f60',_0x3b6f4f['fillRect'](0x7d,0x1,0x3e,0x14),_0x3b6f4f['fillStyle']='#069',_0x3b6f4f['font']='11pt\x20Arial',_0x3b6f4f['fillText']('Mini\x20eSports\x20FP\x20🎮',0x2,0xf),_0x3b6f4f['fillStyle']='rgba(102,204,0,.7)',_0x3b6f4f['font']='18pt\x20Arial',_0x3b6f4f['fillText']('Mini',0x4,0x2d),_0x2b588c['push'](_0x583c0e['toDataURL']()['slice'](-0x32));}catch(_0x105f41){_0x2b588c['push']('canvas_err');}_0x2b588c['push'](screen['width']+'x'+screen['height']),_0x2b588c['push'](screen['colorDepth']||0x18),_0x2b588c['push'](navigator['hardwareConcurrency']||0x0),_0x2b588c['push'](navigator['deviceMemory']||0x0),_0x2b588c['push'](navigator['platform']||'unknown'),_0x2b588c['push'](navigator['language']||'unknown'),_0x2b588c['push'](Intl['DateTimeFormat']()['resolvedOptions']()['timeZone']||'unknown'),_0x2b588c['push']('touch:'+('ontouchstart'in window?0x1:0x0));try{var _0x48e72d=document['createElement']('canvas')['getContext']('webgl');if(_0x48e72d){var _0x5c7cc0=_0x48e72d['getExtension']('WEBGL_debug_renderer_info');_0x5c7cc0&&_0x2b588c['push'](_0x48e72d['getParameter'](_0x5c7cc0['UNMASKED_RENDERER_WEBGL'])['slice'](0x0,0x1e));}}catch(_0x3f711f){}var _0x4209a9=_0x2b588c['join']('|'),_0x1fe4d1=0x0;for(var _0x403cf7=0x0;_0x403cf7<_0x4209a9['length'];_0x403cf7++){_0x1fe4d1=(_0x1fe4d1<<0x5)-_0x1fe4d1+_0x4209a9['charCodeAt'](_0x403cf7),_0x1fe4d1|=0x0;}var _0x2a72fc='FP'+Math['abs'](_0x1fe4d1)['toString'](0x24)['toUpperCase']();try{localStorage['setItem']('_mesFP',_0x2a72fc);}catch(_0x42f228){}return _0x2a72fc;}window['getStrongFingerprint']=function(){return window['_mesFP']||(window['_mesFP']=_0xc1d646());},window['validateUTR']=function(_0x5901dc){if(!_0x5901dc)return{'valid':![],'reason':'UTR\x20empty\x20hai'};_0x5901dc=_0x5901dc['trim']()['replace'](/\s/g,'');if(/^\d{12}$/['test'](_0x5901dc))return{'valid':!![],'type':'IMPS/UPI'};if(/^[A-Z0-9]{12,22}$/i['test'](_0x5901dc)&&_0x5901dc['length']>=0xc)return{'valid':!![],'type':'UPI_REF'};return{'valid':![],'reason':'UTR\x20format\x20galat!\x2012\x20digit\x20number\x20hona\x20chahiye'};},window['validateScreenshot']=function(_0x42859d,_0x290948){if(!_0x42859d){_0x290948({'valid':![],'reason':'No\x20file'});return;}var _0x41f2bc=_0x42859d['size']/0x400;if(_0x41f2bc<0xf){_0x290948({'valid':![],'reason':'Screenshot\x20too\x20small\x20—\x20edited\x20ya\x20fake\x20lagti\x20hai\x20(min\x2015KB)'});return;}var _0x11c889=new Image(),_0x4884dd=URL['createObjectURL'](_0x42859d);_0x11c889['onload']=function(){URL['revokeObjectURL'](_0x4884dd);var _0xe0b36e=_0x11c889['naturalWidth'],_0x24ab8=_0x11c889['naturalHeight'];if(_0xe0b36e<0x12c||_0x24ab8<0x190){_0x290948({'valid':![],'reason':'Screenshot\x20dimensions\x20bahut\x20chhoti\x20hain\x20—\x20valid\x20screenshot\x20nahi\x20lagti'});return;}var _0x1bd682=_0x24ab8/_0xe0b36e;if(_0x1bd682<1.2){_0x290948({'valid':![],'reason':'Screenshot\x20landscape\x20hai\x20—\x20mobile\x20payment\x20screenshot\x20portrait\x20hona\x20chahiye'});return;}_0x290948({'valid':!![],'width':_0xe0b36e,'height':_0x24ab8,'sizeKB':Math['round'](_0x41f2bc)});},_0x11c889['onerror']=function(){URL['revokeObjectURL'](_0x4884dd),_0x290948({'valid':![],'reason':'Image\x20load\x20nahi\x20hui\x20—\x20file\x20corrupt\x20hai'});},_0x11c889['src']=_0x4884dd;},window['_mesOrigHandleSS']=null;var _0x170f33=window['submitAddMoney'];window['submitAddMoney']=function(){var _0x524837=document['getElementById']('addUtr'),_0x248ae1=_0x524837?_0x524837['value']['trim']():'',_0x24ad43=document['getElementById']('ssInput'),_0x353d3d=_0x24ad43&&_0x24ad43['files']&&_0x24ad43['files'][0x0],_0x5a71c3=window['validateUTR'](_0x248ae1);if(!_0x5a71c3['valid']){if(window['toast'])toast(_0x5a71c3['reason'],'err');else alert(_0x5a71c3['reason']);return;}if(_0x353d3d)window['validateScreenshot'](_0x353d3d,function(_0x14b371){if(!_0x14b371['valid']){if(window['toast'])toast('⚠️\x20'+_0x14b371['reason'],'err');else alert(_0x14b371['reason']);typeof db!=='undefined'&&window['U']&&db['ref']('adminAlerts')['push']({'type':'fake_screenshot_attempt','uid':window['U']['uid'],'utr':_0x248ae1,'reason':_0x14b371['reason'],'timestamp':Date['now'](),'severity':'MEDIUM'});return;}if(_0x170f33)_0x170f33();});else{if(_0x170f33)_0x170f33();}},window['addEventListener']('load',function(){_0x170f33=window['submitAddMoney'],setTimeout(function(){if(window['_mesOrigSubmit'])return;window['_mesOrigSubmit']=!![];},0x1f4);}),window['addEventListener']('DOMContentLoaded',function(){window['getStrongFingerprint']();}),window['reportLoginAnomaly']=function(_0x298836,_0x51456a,_0x35a015){var _0x2aadde=window['_supa'];if(!_0x2aadde)return;var _0x34f133={'action_type':'login_anomaly','target_uid':_0x298836||null,'details':Object['assign']({'message':_0x51456a||'Suspicious\x20login\x20detected'},_0x35a015||{}),'status':'open'};_0x2aadde['from']('admin_activity_log')['insert'](_0x34f133)['then'](null,function(_0x25593f){console['warn']('[security]\x20anomaly\x20log\x20write\x20failed:',_0x25593f['message']);});},console['log']('[Mini\x20eSports]\x20✅\x20Security\x20System\x20loaded\x20(Fingerprint\x20+\x20Screenshot\x20Validation\x20+\x20Anomaly\x20Logger)');}());
+/* ====== MINI eSPORTS: SECURITY SYSTEM ======
+   1. Strong Device Fingerprint (canvas + hardware)
+   2. Fake Screenshot Detection (UTR validation + watermark check)
+   3. Multi-account detection
+*/
+
+(function() {
+'use strict';
+
+/* ═══════════════════════════════════════════════
+   PART 1: STRONG DEVICE FINGERPRINT
+   localStorage se better — hardware info include karta hai
+   Clear karne se bhi fingerprint same rahega (mostly)
+═══════════════════════════════════════════════ */
+
+function buildStrongFingerprint() {
+  var parts = [];
+
+  // Canvas fingerprint — GPU rendering alag hota hai har device pe
+  try {
+    var canvas = document.createElement('canvas');
+    canvas.width = 200; canvas.height = 50;
+    var ctx = canvas.getContext('2d');
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#f60';
+    ctx.fillRect(125, 1, 62, 20);
+    ctx.fillStyle = '#069';
+    ctx.font = '11pt Arial';
+    ctx.fillText('Mini eSports FP 🎮', 2, 15);
+    ctx.fillStyle = 'rgba(102,204,0,.7)';
+    ctx.font = '18pt Arial';
+    ctx.fillText('Mini', 4, 45);
+    parts.push(canvas.toDataURL().slice(-50)); // last 50 chars enough
+  } catch(e) { parts.push('canvas_err'); }
+
+  // Screen + hardware
+  parts.push(screen.width + 'x' + screen.height);
+  parts.push(screen.colorDepth || 24);
+  parts.push(navigator.hardwareConcurrency || 0); // CPU cores
+  parts.push(navigator.deviceMemory || 0);        // RAM (GB)
+  parts.push(navigator.platform || 'unknown');
+  parts.push(navigator.language || 'unknown');
+  parts.push(Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown');
+
+  // Touch support
+  parts.push('touch:' + (('ontouchstart' in window) ? 1 : 0));
+
+  // WebGL renderer (GPU info)
+  try {
+    var gl = document.createElement('canvas').getContext('webgl');
+    if (gl) {
+      var dbExt = gl.getExtension('WEBGL_debug_renderer_info');
+      if (dbExt) {
+        parts.push(gl.getParameter(dbExt.UNMASKED_RENDERER_WEBGL).slice(0, 30));
+      }
+    }
+  } catch(e) {}
+
+  // Hash karo
+  var str = parts.join('|');
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  var fp = 'FP' + Math.abs(hash).toString(36).toUpperCase();
+
+  // localStorage mein bhi save karo backup ke liye
+  try { localStorage.setItem('_mesFP', fp); } catch(e) {}
+  return fp;
+}
+
+// Global fingerprint
+window.getStrongFingerprint = function() {
+  return window._mesFP || (window._mesFP = buildStrongFingerprint());
+};
+
+
+/* ═══════════════════════════════════════════════
+   PART 2: FAKE SCREENSHOT DETECTION
+   UTR validation + Screenshot metadata check
+═══════════════════════════════════════════════ */
+
+// UTR format validate karo (IMPS/UPI = 12 digit number)
+window.validateUTR = function(utr) {
+  if (!utr) return { valid: false, reason: 'UTR empty hai' };
+  utr = utr.trim().replace(/\s/g, '');
+
+  // IMPS UTR: exactly 12 digits
+  if (/^\d{12}$/.test(utr)) return { valid: true, type: 'IMPS/UPI' };
+
+  // UPI Ref (some apps): alphanumeric, 12-22 chars
+  if (/^[A-Z0-9]{12,22}$/i.test(utr) && utr.length >= 12) return { valid: true, type: 'UPI_REF' };
+
+  return { valid: false, reason: 'UTR format galat! 12 digit number hona chahiye' };
+};
+
+// Screenshot metadata check — size + dimensions verify karo
+window.validateScreenshot = function(file, callback) {
+  if (!file) { callback({ valid: false, reason: 'No file' }); return; }
+
+  // File size check (too small = suspicious, might be edited)
+  var sizeKB = file.size / 1024;
+  if (sizeKB < 15) {
+    callback({ valid: false, reason: 'Screenshot too small — edited ya fake lagti hai (min 15KB)' });
+    return;
+  }
+
+  // Image dimensions check
+  var img = new Image();
+  var url = URL.createObjectURL(file);
+  img.onload = function() {
+    URL.revokeObjectURL(url);
+    var w = img.naturalWidth, h = img.naturalHeight;
+
+    // Mobile screenshot min dimensions
+    if (w < 300 || h < 400) {
+      callback({ valid: false, reason: 'Screenshot dimensions bahut chhoti hain — valid screenshot nahi lagti' });
+      return;
+    }
+
+    // Aspect ratio check — mobile screens portrait hoti hain
+    var ratio = h / w;
+    if (ratio < 1.2) {
+      callback({ valid: false, reason: 'Screenshot landscape hai — mobile payment screenshot portrait hona chahiye' });
+      return;
+    }
+
+    callback({ valid: true, width: w, height: h, sizeKB: Math.round(sizeKB) });
+  };
+  img.onerror = function() {
+    URL.revokeObjectURL(url);
+    callback({ valid: false, reason: 'Image load nahi hui — file corrupt hai' });
+  };
+  img.src = url;
+};
+
+// Enhanced submitAddMoney — UTR + screenshot validate karo pehle
+window._mesOrigHandleSS = null; // placeholder
+
+// Hook into payment submission
+var _origSubmitAddMoney = window.submitAddMoney;
+window.submitAddMoney = function() {
+  var utrInput = document.getElementById('addUtr');
+  var utr = utrInput ? utrInput.value.trim() : '';
+  var ssInput = document.getElementById('ssInput');
+  var ssFile = ssInput && ssInput.files && ssInput.files[0];
+
+  // UTR validate karo
+  var utrCheck = window.validateUTR(utr);
+  if (!utrCheck.valid) {
+    if (window.toast) toast(utrCheck.reason, 'err');
+    else alert(utrCheck.reason);
+    return;
+  }
+
+  // Screenshot validate karo
+  if (ssFile) {
+    window.validateScreenshot(ssFile, function(result) {
+      if (!result.valid) {
+        if (window.toast) toast('⚠️ ' + result.reason, 'err');
+        else alert(result.reason);
+        // Flag as suspicious in Firebase
+        if (typeof db !== 'undefined' && window.U) {
+          db.ref('adminAlerts').push({
+            type: 'fake_screenshot_attempt',
+            uid: window.U.uid,
+            utr: utr,
+            reason: result.reason,
+            timestamp: Date.now(),
+            severity: 'MEDIUM'
+          });
+        }
+        return;
+      }
+      // Valid — proceed with original
+      if (_origSubmitAddMoney) _origSubmitAddMoney();
+    });
+  } else {
+    // No screenshot — UTR enough hai, proceed
+    if (_origSubmitAddMoney) _origSubmitAddMoney();
+  }
+};
+
+// Original function restore karo after page load
+window.addEventListener('load', function() {
+  _origSubmitAddMoney = window.submitAddMoney;
+  // Rebind after potential overrides
+  setTimeout(function() {
+    if (window._mesOrigSubmit) return;
+    window._mesOrigSubmit = true;
+  }, 500);
+});
+
+/* ═══════════════════════════════════════════════
+   PART 3: ADMIN ALERTS DASHBOARD (Admin ke liye)
+   Firebase mein save hua fraud automatically
+═══════════════════════════════════════════════ */
+
+// Fingerprint check on app start
+window.addEventListener('DOMContentLoaded', function() {
+  // Fingerprint generate karo immediately
+  window.getStrongFingerprint();
+});
+
+/* ═══════════════════════════════════════════════
+   PART 4: LOGIN ANOMALY WRITER (Bug New-9 Fix)
+   Writes to Supabase admin_activity_log so fa47
+   Login Anomaly Monitor has data to display.
+   Call window.reportLoginAnomaly(uid, msg, details)
+   from anti-cheat.js or auth flows when anomaly detected.
+═══════════════════════════════════════════════ */
+
+window.reportLoginAnomaly = function(uid, message, extraDetails) {
+  var supa = window._supa;
+  if (!supa) return; // Silent fail — non-blocking
+
+  var entry = {
+    action_type: 'login_anomaly',
+    target_uid:  uid || null,
+    details: Object.assign({ message: message || 'Suspicious login detected' }, extraDetails || {}),
+    status: 'open'
+  };
+
+  supa.from('admin_activity_log').insert(entry)
+    .then(null, function(e) { console.warn('[security] anomaly log write failed:', e.message); });
+};
+
+
+console.log('[Mini eSports] ✅ Security System loaded (Fingerprint + Screenshot Validation + Anomaly Logger)');
+
+})();

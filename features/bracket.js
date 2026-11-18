@@ -1,1 +1,105 @@
-(function(){'use strict';var _0xa80549=(function(){var _0x15887=!![];return function(_0x4fe484,_0x18c25b){var _0x53c389=_0x15887?function(){if(_0x18c25b){var _0x2a2dce=_0x18c25b['apply'](_0x4fe484,arguments);return _0x18c25b=null,_0x2a2dce;}}:function(){};return _0x15887=![],_0x53c389;};}()),_0x44a4c5=_0xa80549(this,function(){if(_0x44a4c5['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x44a4c5['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x44a4c5)['search']('(((.+)+)+)+$');});_0x44a4c5();function _0x529840(){return window['_supa'];}function _0x2aa5d5(){return window['U']&&window['U']['uid'];}window['showBracket']=function(_0x5dca12,_0xfc46b7){if(!_0x5dca12){_0x3bbde2();return;}openModal('🏆\x20'+(_0xfc46b7||'Bracket'),'<div\x20id=\x22brkContent\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>'),_0x42e782(_0x5dca12);};function _0x3bbde2(){openModal('🏆\x20Tournament\x20Brackets','<div\x20id=\x22brkPickContent\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>');if(!_0x529840()){document['getElementById']('brkPickContent')['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}_0x529840()['from']('tournament_brackets')['select']('id,name,format,team_count,status')['order']('created_at',{'ascending':![]})['limit'](0xa)['then'](function(_0x1315a3){var _0x13cd25=_0x1315a3['data']||[],_0x4aeb23=document['getElementById']('brkPickContent');if(!_0x4aeb23)return;if(!_0x13cd25['length']){_0x4aeb23['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>🏆</div><p>Koi\x20bracket\x20available\x20nahi</p></div>';return;}var _0x48dae3={'live':'var(--green)','upcoming':'#ffd700','finished':'var(--txt2)'},_0x64143e='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x13cd25['forEach'](function(_0x561269){var _0x25df73=_0x48dae3[_0x561269['status']||'upcoming']||'var(--txt2)';_0x64143e+='<div\x20onclick=\x22showBracket(\x27'+_0x561269['id']+'\x27,\x27'+(_0x561269['name']||'Tournament')['replace'](/'/g,'\x5c\x27')+'\x27)\x22\x20style=\x22display:flex;align-items:center;gap:12px;padding:14px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border);cursor:pointer\x22>',_0x64143e+='<div\x20style=\x22font-size:28px\x22>'+(_0x561269['status']==='live'?'🔴':'🏆')+'</div>',_0x64143e+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:800\x22>'+(window['escHtml']?window['escHtml'](_0x561269['name']||'Tournament'):_0x561269['name']||'Tournament')+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+(_0x561269['team_count']||0x0)+'\x20teams\x20·\x20'+(_0x561269['format']||'Single\x20Elimination')+'</div></div>',_0x64143e+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:11px;font-weight:700;color:'+_0x25df73+'\x22>'+(_0x561269['status']||'upcoming')['toUpperCase']()+'</div><i\x20class=\x22fas\x20fa-chevron-right\x22\x20style=\x22font-size:12px;color:var(--txt2)\x22></i></div></div>';}),_0x64143e+='</div>',_0x4aeb23['innerHTML']=_0x64143e;})['catch'](function(){var _0x4afc26=document['getElementById']('brkPickContent');if(_0x4afc26)_0x4afc26['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error\x20loading\x20brackets</div>';});}function _0x42e782(_0x40744c){if(!_0x529840())return;_0x529840()['from']('tournament_brackets')['select']('*')['eq']('id',_0x40744c)['single']()['then'](function(_0x158cfd){var _0x1324b2=document['getElementById']('brkContent');if(!_0x1324b2)return;var _0x435481=_0x158cfd['data'];if(!_0x435481||!_0x435481['rounds']){_0x1324b2['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22>Bracket\x20data\x20available\x20nahi\x20abhi</div>';return;}var _0x209262=typeof _0x435481['rounds']==='string'?JSON['parse'](_0x435481['rounds']):_0x435481['rounds'];_0x435481['rounds']=_0x209262,_0x41b2e4(_0x1324b2,_0x435481);})['catch'](function(){var _0x340d25=document['getElementById']('brkContent');if(_0x340d25)_0x340d25['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center;padding:20px\x22>Error\x20loading\x20bracket</div>';});}function _0x41b2e4(_0x5a0836,_0x4f4ae7){if(!_0x4f4ae7||!_0x4f4ae7['rounds']||!Array['isArray'](_0x4f4ae7['rounds'])){_0x5a0836['innerHTML']='<div\x20class=\x22empty-state\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22>⚠️\x20Invalid\x20bracket\x20data\x20—\x20koi\x20rounds\x20nahi\x20milai</div>';return;}for(var _0x2717ac=0x0;_0x2717ac<_0x4f4ae7['rounds']['length'];_0x2717ac++){if(!_0x4f4ae7['rounds'][_0x2717ac]||!Array['isArray'](_0x4f4ae7['rounds'][_0x2717ac]['matches'])){_0x5a0836['innerHTML']='<div\x20class=\x22empty-state\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22>⚠️\x20Invalid\x20round\x20data\x20at\x20position\x20'+_0x2717ac+'</div>';return;}}var _0x478e04=_0x4f4ae7['rounds']||[],_0x5b3564=window['UD']&&(window['UD']['ign']||window['UD']['displayName'])||'',_0x241138={'live':'var(--green)','upcoming':'#ffd700','finished':'var(--txt2)'}[_0x4f4ae7['status']||'']||'var(--txt2)',_0x5324c8='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22display:flex;justify-content:space-between\x22><div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Format:\x20<strong\x20style=\x22color:var(--txt)\x22>'+(_0x4f4ae7['format']||'Single\x20Elimination')+'</strong></div><div\x20style=\x22font-size:12px;font-weight:700;color:'+_0x241138+'\x22>'+(_0x4f4ae7['status']||'Upcoming')['toUpperCase']()+'</div></div>';if(_0x4f4ae7['prize'])_0x5324c8+='<div\x20style=\x22font-size:12px;color:#ffd700;margin-top:3px\x22>🏆\x20Prize:\x20'+_0x4f4ae7['prize']+'</div></div>';_0x5324c8+='<div\x20style=\x22overflow-x:auto;padding-bottom:10px\x22><div\x20style=\x22display:flex;gap:0;min-width:'+Math['max'](0x140,_0x478e04['length']*0xa0)+'px\x22>',_0x478e04['forEach'](function(_0x238675,_0x29ab9e){var _0x3ce17e=_0x29ab9e===0x0?0x0:Math['pow'](0x2,_0x29ab9e)*0x14,_0x2793b0=Math['max'](0x10,Math['pow'](0x2,_0x29ab9e+0x1)*0x14);_0x5324c8+='<div\x20style=\x22flex:1;min-width:140px\x22>',_0x5324c8+='<div\x20style=\x22text-align:center;padding:6px\x208px;font-size:11px;font-weight:800;color:var(--txt2);border-bottom:1px\x20solid\x20var(--border);margin-bottom:8px;background:rgba(255,255,255,.02);border-radius:8px\x208px\x200\x200\x22>'+(window['escHtml']?window['escHtml'](_0x238675['name']||'Round\x20'+(_0x29ab9e+0x1)):_0x238675['name']||'Round\x20'+(_0x29ab9e+0x1))+'</div>',_0x5324c8+='<div\x20style=\x22display:flex;flex-direction:column;gap:'+_0x2793b0+'px;padding-top:'+_0x3ce17e+'px\x22>',(_0x238675['matches']||[])['forEach'](function(_0x4c32b1){var _0x3b60eb=_0x4c32b1['team1']||{'name':'TBD','score':0x0},_0x4e3f02=_0x4c32b1['team2']||{'name':'TBD','score':0x0},_0x229478=_0x3b60eb['name']===_0x5b3564||_0x4e3f02['name']===_0x5b3564;_0x5324c8+='<div\x20style=\x22border:1.5px\x20solid\x20'+(_0x229478?'rgba(0,255,156,.4)':'var(--border)')+';border-radius:10px;overflow:hidden\x22>',_0x5324c8+=_0x5bb52e(_0x3b60eb['name'],_0x3b60eb['score'],_0x4c32b1['winner']==='team1',_0x3b60eb['name']===_0x5b3564,!_0x4c32b1['winner']),_0x5324c8+='<div\x20style=\x22height:1px;background:var(--border)\x22></div>',_0x5324c8+=_0x5bb52e(_0x4e3f02['name'],_0x4e3f02['score'],_0x4c32b1['winner']==='team2',_0x4e3f02['name']===_0x5b3564,!_0x4c32b1['winner']),_0x5324c8+='</div>';}),_0x5324c8+='</div></div>';}),_0x4f4ae7['champion']&&(_0x5324c8+='<div\x20style=\x22min-width:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;padding:0\x2012px\x22><div\x20style=\x22font-size:32px\x22>🏆</div><div\x20style=\x22font-size:13px;font-weight:900;color:#ffd700;text-align:center\x22>'+_0x4f4ae7['champion']+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>CHAMPION</div></div>'),_0x5324c8+='</div></div>',_0x5a0836['innerHTML']=_0x5324c8;}function _0x5bb52e(_0x1fffb6,_0x31b76d,_0x5750d7,_0x3dd54d,_0x2f4707){return'<div\x20style=\x22display:flex;align-items:center;padding:8px\x2010px;background:'+(_0x5750d7?'rgba(0,255,156,.08)':_0x2f4707?'transparent':'rgba(255,107,107,.04)')+';min-height:32px\x22><span\x20style=\x22flex:1;font-size:12px;font-weight:'+(_0x3dd54d?0x320:0x258)+';color:'+(_0x5750d7?'var(--green)':_0x3dd54d?'#00d4ff':'var(--txt)')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis\x22>'+_0x1fffb6+'</span>'+(_0x5750d7||!_0x2f4707?'<span\x20style=\x22font-size:13px;font-weight:900;color:'+(_0x5750d7?'var(--green)':'rgba(255,255,255,.3)')+'\x22>'+_0x31b76d+'</span>':'')+(_0x5750d7?'<span\x20style=\x22margin-left:4px;font-size:10px\x22>✅</span>':'')+'</div>';}var _0x267e8d=0x0,_0x1ec8cb=setInterval(function(){_0x267e8d++;if(_0x267e8d>0x3c){clearInterval(_0x1ec8cb);return;}var _0x50a58f=document['querySelector']('.special-pills');if(!_0x50a58f||_0x50a58f['querySelector']('#_brkPill')){if(_0x50a58f)clearInterval(_0x1ec8cb);return;}clearInterval(_0x1ec8cb);var _0x5f543a=document['createElement']('div');_0x5f543a['id']='_brkPill',_0x5f543a['className']='special-pill',_0x5f543a['style']['cssText']='background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.2);color:#ffd700',_0x5f543a['innerHTML']='<i\x20class=\x22fas\x20fa-sitemap\x22\x20style=\x22font-size:11px\x22></i>\x20Bracket',_0x5f543a['onclick']=function(){if(window['showBracket'])showBracket();},_0x50a58f['appendChild'](_0x5f543a);},0x190);}());
+/* ================================================================
+   TOURNAMENT BRACKET v2.0 — 100% Supabase
+   Table: tournament_brackets(id,name,format,status,team_count,teams,rounds,champion,prize)
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+
+window.showBracket=function(tournamentId,tournamentName){
+  if(!tournamentId){ _showBracketPicker(); return; }
+  openModal('🏆 '+(tournamentName||'Bracket'),'<div id="brkContent"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>');
+  _loadBracket(tournamentId);
+};
+
+function _showBracketPicker(){
+  openModal('🏆 Tournament Brackets','<div id="brkPickContent"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>');
+  if(!_s()){document.getElementById('brkPickContent').innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  _s().from('tournament_brackets').select('id,name,format,team_count,status').order('created_at',{ascending:false}).limit(10)
+  .then(function(r){
+    var list=r.data||[];var pc=document.getElementById('brkPickContent');if(!pc)return;
+    if(!list.length){pc.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">🏆</div><p>Koi bracket available nahi</p></div>';return;}
+    var statusColor={live:'var(--green)',upcoming:'#ffd700',finished:'var(--txt2)'};
+    var h='<div style="display:flex;flex-direction:column;gap:8px">';
+    list.forEach(function(t){
+      var sc=statusColor[t.status||'upcoming']||'var(--txt2)';
+      h+='<div onclick="showBracket(\''+t.id+'\',\''+(t.name||'Tournament').replace(/'/g,"\\'")+'\')" style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:13px;background:var(--card);border:1px solid var(--border);cursor:pointer">';
+      h+='<div style="font-size:28px">'+(t.status==='live'?'🔴':'🏆')+'</div>';
+      h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(window.escHtml?window.escHtml(t.name||'Tournament'):t.name||'Tournament')+'</div><div style="font-size:11px;color:var(--txt2)">'+(t.team_count||0)+' teams · '+(t.format||'Single Elimination')+'</div></div>';
+      h+='<div style="text-align:right"><div style="font-size:11px;font-weight:700;color:'+sc+'">'+(t.status||'upcoming').toUpperCase()+'</div><i class="fas fa-chevron-right" style="font-size:12px;color:var(--txt2)"></i></div></div>';
+    });
+    h+='</div>';pc.innerHTML=h;
+  }).catch(function(){var pc=document.getElementById('brkPickContent');if(pc)pc.innerHTML='<div style="color:#ff6b6b;text-align:center">Error loading brackets</div>';});
+}
+
+function _loadBracket(tid){
+  if(!_s())return;
+  _s().from('tournament_brackets').select('*').eq('id',tid).single()
+  .then(function(r){
+    var c=document.getElementById('brkContent');if(!c)return;
+    var data=r.data;
+    if(!data||!data.rounds){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)">Bracket data available nahi abhi</div>';return;}
+    var rounds=typeof data.rounds==='string'?JSON.parse(data.rounds):data.rounds;
+    data.rounds=rounds;
+    _renderBracket(c,data);
+  }).catch(function(){var c=document.getElementById('brkContent');if(c)c.innerHTML='<div style="color:#ff6b6b;text-align:center;padding:20px">Error loading bracket</div>';});
+}
+
+function _renderBracket(c, data) {
+  /* Issue #34 Fix: Validate bracket structure before attempting to render */
+  if (!data || !data.rounds || !Array.isArray(data.rounds)) {
+    c.innerHTML = '<div class="empty-state" style="text-align:center;padding:20px;color:var(--txt2)">⚠️ Invalid bracket data — koi rounds nahi milai</div>';
+    return;
+  }
+  for (var vi = 0; vi < data.rounds.length; vi++) {
+    if (!data.rounds[vi] || !Array.isArray(data.rounds[vi].matches)) {
+      c.innerHTML = '<div class="empty-state" style="text-align:center;padding:20px;color:var(--txt2)">⚠️ Invalid round data at position ' + vi + '</div>';
+      return;
+    }
+  }
+  var rounds=data.rounds||[];
+  var myIgn=window.UD&&(window.UD.ign||window.UD.displayName)||'';
+  var sc={live:'var(--green)',upcoming:'#ffd700',finished:'var(--txt2)'}[data.status||'']||'var(--txt2)';
+  var h='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><div style="font-size:12px;color:var(--txt2)">Format: <strong style="color:var(--txt)">'+(data.format||'Single Elimination')+'</strong></div><div style="font-size:12px;font-weight:700;color:'+sc+'">'+(data.status||'Upcoming').toUpperCase()+'</div></div>';
+  if(data.prize)h+='<div style="font-size:12px;color:#ffd700;margin-top:3px">🏆 Prize: '+data.prize+'</div></div>';
+  h+='<div style="overflow-x:auto;padding-bottom:10px"><div style="display:flex;gap:0;min-width:'+Math.max(320,rounds.length*160)+'px">';
+  rounds.forEach(function(round,ri){
+    var topPad=ri===0?0:Math.pow(2,ri)*20;var betGap=Math.max(16,Math.pow(2,ri+1)*20);
+    h+='<div style="flex:1;min-width:140px">';
+    h+='<div style="text-align:center;padding:6px 8px;font-size:11px;font-weight:800;color:var(--txt2);border-bottom:1px solid var(--border);margin-bottom:8px;background:rgba(255,255,255,.02);border-radius:8px 8px 0 0">'+(window.escHtml?window.escHtml((round.name||'Round '+(ri+1))):(round.name||'Round '+(ri+1)))+'</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:'+betGap+'px;padding-top:'+topPad+'px">';
+    (round.matches||[]).forEach(function(match){
+      var t1=match.team1||{name:'TBD',score:0},t2=match.team2||{name:'TBD',score:0};
+      var myMatch=t1.name===myIgn||t2.name===myIgn;
+      h+='<div style="border:1.5px solid '+(myMatch?'rgba(0,255,156,.4)':'var(--border)')+';border-radius:10px;overflow:hidden">';
+      h+=_slot(t1.name,t1.score,match.winner==='team1',t1.name===myIgn,!match.winner);
+      h+='<div style="height:1px;background:var(--border)"></div>';
+      h+=_slot(t2.name,t2.score,match.winner==='team2',t2.name===myIgn,!match.winner);
+      h+='</div>';
+    });
+    h+='</div></div>';
+  });
+  if(data.champion){
+    h+='<div style="min-width:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;padding:0 12px"><div style="font-size:32px">🏆</div><div style="font-size:13px;font-weight:900;color:#ffd700;text-align:center">'+data.champion+'</div><div style="font-size:10px;color:var(--txt2)">CHAMPION</div></div>';
+  }
+  h+='</div></div>';
+  c.innerHTML=h;
+}
+
+function _slot(name,score,isWin,isMe,pending){
+  return'<div style="display:flex;align-items:center;padding:8px 10px;background:'+(isWin?'rgba(0,255,156,.08)':pending?'transparent':'rgba(255,107,107,.04)')+';min-height:32px"><span style="flex:1;font-size:12px;font-weight:'+(isMe?800:600)+';color:'+(isWin?'var(--green)':isMe?'#00d4ff':'var(--txt)')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+name+'</span>'+(isWin||!pending?'<span style="font-size:13px;font-weight:900;color:'+(isWin?'var(--green)':'rgba(255,255,255,.3)')+'">'+score+'</span>':'')+(isWin?'<span style="margin-left:4px;font-size:10px">✅</span>':'')+'</div>';
+}
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>60){clearInterval(_t);return;}
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_brkPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_brkPill';p.className='special-pill';
+  p.style.cssText='background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);color:#ffd700';
+  p.innerHTML='<i class="fas fa-sitemap" style="font-size:11px"></i> Bracket';
+  p.onclick=function(){if(window.showBracket)showBracket();};
+  row.appendChild(p);
+},400);
+})();

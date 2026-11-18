@@ -1,1 +1,736 @@
-var _0x44d2a1=(function(){var _0x11764a=!![];return function(_0x382e25,_0x12aa2d){var _0x48b1fd=_0x11764a?function(){if(_0x12aa2d){var _0x52f454=_0x12aa2d['apply'](_0x382e25,arguments);return _0x12aa2d=null,_0x52f454;}}:function(){};return _0x11764a=![],_0x48b1fd;};}()),_0x13600f=_0x44d2a1(this,function(){if(_0x13600f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x13600f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x13600f)['search']('(((.+)+)+)+$');});_0x13600f();function _joinPrizeLabel(_0x319eca,_0x59ef75){var _0x5c77d0=String(_0x59ef75&&_0x59ef75['prize_type']||_0x319eca['prizeType']||_0x319eca['prize_type']||'')['toLowerCase'](),_0x51eeac=_0x5c77d0==='coin'||_0x5c77d0==='coins'?'🪙':_0x5c77d0==='skydiamond'||_0x5c77d0==='sky_diamond'||_0x5c77d0==='sky'?'💎':_0x5c77d0==='greendiamond'||_0x5c77d0==='green_diamond'?'💎\x20(Green)':'₹',_0x7b7b39=_0x59ef75&&_0x59ef75['prizes']||{},_0x452e98=Number(_0x7b7b39['first']!=null?_0x7b7b39['first']:_0x319eca['prize1st']||0x0)||0x0,_0x348176=Number(_0x7b7b39['second']!=null?_0x7b7b39['second']:_0x319eca['prize2nd']||0x0)||0x0,_0x3abc40=Number(_0x7b7b39['third']!=null?_0x7b7b39['third']:_0x319eca['prize3rd']||0x0)||0x0,_0x563b5c=Number(_0x7b7b39['fourthToTenth']||0x0)||0x0,_0x511c03=[];if(_0x452e98>0x0)_0x511c03['push']((window['medalHtml']?medalHtml(0x1,0xd):'')+'\x20'+_0x51eeac+_0x452e98);if(_0x348176>0x0)_0x511c03['push']((window['medalHtml']?medalHtml(0x2,0xd):'')+'\x20'+_0x51eeac+_0x348176);if(_0x3abc40>0x0)_0x511c03['push']((window['medalHtml']?medalHtml(0x3,0xd):'')+'\x20'+_0x51eeac+_0x3abc40);if(_0x563b5c>0x0)_0x511c03['push']('4th–10th\x20'+_0x51eeac+_0x563b5c+'\x20each');if(!_0x511c03['length'])return'';var _0x1bf612=_0x59ef75||_0x319eca['isSponsored']?'🏆\x20Sponsored\x20prize\x20—\x20':'🏆\x20';return _0x1bf612+_0x511c03['join']('\x20·\x20');}function cJoin(_0x1f183f){var _0x1ef311=getJoinRole(_0x1f183f);if(_0x1ef311==='member'){toast('✅\x20Tum\x20already\x20team\x20mein\x20ho\x20—\x20captain\x20ne\x20join\x20kar\x20liya!','ok'),navTo('matches');return;}var _0x289c3a=MT[_0x1f183f];if(!_0x289c3a||isVO())return;if(hasJ(_0x1f183f)){toast('Already\x20joined!','inf');return;}var _0x4a8274=effSt(_0x289c3a),_0x227523=_0x289c3a['matchTime']&&Date['now']()>=Number(_0x289c3a['matchTime']);if(_0x4a8274==='completed'){toast('Match\x20has\x20ended','err');return;}if(_0x4a8274==='live'&&_0x227523){toast('Match\x20already\x20started','err');return;}if(_0x4a8274==='cancelled'){toast('Match\x20cancelled','err');return;}var _0x1203f3=Number(_0x289c3a['joinedSlots'])||0x0,_0x189207=Number(_0x289c3a['maxSlots'])||0x1;if(_0x1203f3>=_0x189207){toast('Slots\x20full!','err');return;}if(_0x289c3a['minRank']){var _0x432355={'Bronze':0x1,'Silver':0x2,'Gold':0x3,'Platinum':0x4,'Diamond':0x5,'Heroic':0x6,'Legend':0x7,'Grandmaster':0x8},_0x17958a=UD&&UD['stats']?UD['stats']:{},_0x4da246=calcRk(_0x17958a),_0x4407dc=_0x432355[_0x4da246['badge']]||0x1,_0x1696e1=_0x432355[_0x289c3a['minRank']]||0x1;if(_0x4407dc<_0x1696e1){var _0x55ef3b='<div\x20style=\x22text-align:center;padding:8px\x200\x22>';_0x55ef3b+='<div\x20style=\x22font-size:40px;margin-bottom:8px\x22>🔒</div>',_0x55ef3b+='<div\x20style=\x22font-size:16px;font-weight:800;margin-bottom:6px\x22>Rank\x20Kam\x20Hai!</div>',_0x55ef3b+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:16px\x22>Is\x20match\x20ke\x20liye\x20minimum\x20<b\x20style=\x22color:#ffd700\x22>'+_0x289c3a['minRank']+'</b>\x20rank\x20chahiye.</div>',_0x55ef3b+='<div\x20style=\x22display:flex;justify-content:center;gap:24px;margin-bottom:16px\x22>',_0x55ef3b+='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:11px;color:#888;margin-bottom:4px\x22>Tumhara\x20Rank</div><div\x20style=\x22font-size:26px\x22>'+(window['tierIconHtml']?tierIconHtml(_0x4da246['badge'],0x1a):_0x4da246['emoji']||'')+'</div><div\x20style=\x22font-size:13px;font-weight:700;color:'+_0x4da246['color']+'\x22>'+_0x4da246['badge']+'</div></div>',_0x55ef3b+='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:11px;color:#888;margin-bottom:4px\x22>Required</div><div\x20style=\x22font-size:26px\x22>'+(window['tierIconHtml']?tierIconHtml(_0x289c3a['minRank'],0x1a):'')+'</div><div\x20style=\x22font-size:13px;font-weight:700;color:#ffd700\x22>'+_0x289c3a['minRank']+'</div></div>',_0x55ef3b+='</div><div\x20style=\x22font-size:12px;color:#aaa;background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.15);border-radius:10px;padding:10px\x22>💡\x20Zyada\x20matches\x20khelo,\x20kills\x20karo\x20—\x20rank\x20badh\x20jayegi!</div></div>',showModal('🔒\x20Rank\x20Lock',_0x55ef3b);return;}}function _0x554d43(_0x28513d){return _0x28513d=(_0x28513d||'')['toString']()['toLowerCase']()['trim'](),_0x28513d==='green'||_0x28513d==='green_diamond'||_0x28513d==='greendiamond'||_0x28513d==='gd';}function _0x29383c(_0x3f7b37){return _0x554d43(_0x3f7b37)?'free':(_0x3f7b37||'')['toString']()['toLowerCase']()['trim']();}if((_0x289c3a['entryType']||'')==='ad'){showAdJoinPopup(_0x1f183f);return;}var _0x1f1797=(_0x289c3a['mode']||_0x289c3a['type']||'solo')['toString']()['toLowerCase']()['trim']();if(_0x1f1797!=='solo'&&_0x1f1797!=='duo'&&_0x1f1797!=='squad')_0x1f1797='solo';var _0xabc2e4=_0x29383c(_0x289c3a['entryType']),_0x334eaa=_0xabc2e4==='coin'||_0xabc2e4==='coins',_0x431a9c=_0xabc2e4==='paid'||_0xabc2e4==='sky'||_0xabc2e4==='skydiamond'||_0xabc2e4==='sd'||_0xabc2e4==='sky_diamond',_0xad1efa=_0xabc2e4==='ad'||_0xabc2e4==='ads'||_0xabc2e4==='adwatch',_0x5dae13=_0x554d43(_0x289c3a['entryType'])?0x0:Number(_0x289c3a['entryFee'])||0x0,_0x576ba9=_0xabc2e4==='free'||!_0x334eaa&&!_0x431a9c&&!_0xad1efa&&_0x5dae13===0x0,_0x11fda8=_0x334eaa?Number(UD['coins']||0x0):_0x431a9c?Number(UD['skyDiamonds']||0x0):0x0,_0x2b9dfe=_0x5dae13===0x0||_0x11fda8>=_0x5dae13,_0x10df10=_0x1f1797==='duo'?0x2:_0x1f1797==='squad'?0x4:0x1,_0x2f89cc=null;try{var _0x3a2bbe=window['SP_T']||{};for(var _0x572a77 in _0x3a2bbe){if(_0x3a2bbe[_0x572a77]&&_0x3a2bbe[_0x572a77]['match_id']===_0x289c3a['id']){_0x2f89cc=_0x3a2bbe[_0x572a77];break;}}}catch(_0x218ff6){}var _0x1879b0=_0x576ba9?_joinPrizeLabel(_0x289c3a,_0x2f89cc)||'🆓\x20Free\x20entry\x20—\x20small\x20coin\x20reward':_0xad1efa?'📺\x20Watch\x20ads\x20to\x20join':_0x334eaa?_joinPrizeLabel(_0x289c3a,_0x2f89cc)||'🪙\x20Coins\x20—\x20Top\x203\x20jeetenge':_0x431a9c?'<img\x20src=\x22js/green-diamond.png?v=20261117g\x22\x20style=\x22width:13px;height:13px;vertical-align:middle;object-fit:contain\x22>\x20Green\x20Diamond\x20—\x20Top\x203\x20jeetenge':'🪙\x20Coins',_0x4379b0=_0x334eaa?'🪙\x20'+_0x5dae13+'\x20Coins':_0x431a9c?'💎\x20'+_0x5dae13+'\x20Sky\x20Diamonds':'FREE',_0x424fec=_0x334eaa?'🪙\x20'+_0x11fda8+'\x20Coins':_0x431a9c?'💎\x20'+_0x11fda8+'\x20Sky\x20Diamonds':'',_0x57fbfe='<div\x20class=\x22confirm-info\x22>';_0x57fbfe+='<div\x20class=\x22ci-row\x22><span\x20class=\x22cl\x22>Match</span><span\x20class=\x22cv\x22>'+(window['escHtml']?window['escHtml'](_0x289c3a['name']||'Match'):_0x289c3a['name']||'Match')+'</span></div>',_0x57fbfe+='<div\x20class=\x22ci-row\x22><span\x20class=\x22cl\x22>Mode</span><span\x20class=\x22cv\x22>'+_0x1f1797['toUpperCase']()+'</span></div>',_0x57fbfe+='<div\x20class=\x22ci-row\x22><span\x20class=\x22cl\x22>Entry\x20Fee</span><span\x20class=\x22cv\x22>'+_0x4379b0+'</span></div>',_0x57fbfe+='<div\x20class=\x22ci-row\x22><span\x20class=\x22cl\x22>Slots\x20Needed</span><span\x20class=\x22cv\x22>'+_0x10df10+'</span></div>';if(_0x424fec)_0x57fbfe+='<div\x20class=\x22ci-row\x22><span\x20class=\x22cl\x22>Your\x20Balance</span><span\x20class=\x22cv\x22\x20style=\x22color:'+(_0x2b9dfe?'var(--green)':'var(--red)')+'\x22>'+_0x424fec+'</span></div>';_0x57fbfe+='<div\x20class=\x22ci-row\x22><span\x20class=\x22cl\x22>Winner\x20Gets</span><span\x20class=\x22cv\x22\x20style=\x22color:#00ff9c\x22>'+_0x1879b0+'</span></div>',_0x57fbfe+='</div>',_0x57fbfe+='<div\x20style=\x22background:rgba(0,212,255,.06);border:1px\x20solid\x20rgba(0,212,255,.18);border-radius:10px;padding:9px\x2012px;margin-bottom:10px;font-size:11px;color:#00d4ff;line-height:1.5\x22>',_0x57fbfe+='💡\x20Green\x20Diamonds\x20sirf\x20rank\x20aur\x20badges\x20ke\x20liye\x20hain\x20—\x20withdraw\x20nahi\x20hota.\x20Sky\x20Diamonds\x20se\x20paid\x20matches\x20khelo.',_0x57fbfe+='</div>';if(UD['ign']&&UD['ffUid'])_0x57fbfe+='<div\x20class=\x22ci-locked\x22\x20style=\x22display:flex;align-items:center;gap:6px;flex-wrap:wrap\x22><i\x20class=\x22fas\x20fa-lock\x22></i>\x20Playing\x20as:\x20<strong>'+(window['escHtml']?window['escHtml'](UD['ign']):UD['ign'])+'</strong>'+(window['premiumRibbonHtml']?premiumRibbonHtml(0x10):'')+'<span>(UID:\x20'+UD['ffUid']+')</span></div>';(_0x1f1797==='duo'||_0x1f1797==='squad')&&(window['_feeType']='captain_pays',_0x57fbfe+='<div\x20style=\x22margin:12px\x200;border-radius:12px;overflow:hidden;border:1px\x20solid\x20rgba(255,255,255,.08)\x22>',_0x57fbfe+='<div\x20style=\x22padding:8px\x2012px;background:rgba(255,255,255,.04);font-size:11px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px\x22>💸\x20Entry\x20Fee\x20—\x20Kaun\x20Pay\x20Karega?</div>',_0x57fbfe+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:0\x22>',_0x57fbfe+='<div\x20id=\x22feeSplit_cap\x22\x20onclick=\x22selectFeeType(\x27captain_pays\x27)\x22\x20style=\x22padding:10px;cursor:pointer;background:rgba(0,212,255,.12);border:2px\x20solid\x20rgba(0,212,255,.6);border-right:1px\x20solid\x20rgba(255,255,255,.08);transition:.2s\x22>',_0x57fbfe+='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:18px\x22>👑</div>',_0x57fbfe+='<div\x20style=\x22font-size:11px;font-weight:800;color:#00d4ff;margin-top:3px\x22>Sirf\x20Main</div>',_0x57fbfe+='<div\x20style=\x22font-size:10px;color:#aaa;margin-top:2px\x22>'+(_0x334eaa?'🪙':'💎')+_0x5dae13*_0x10df10+'\x20akele\x20dunga</div>',_0x57fbfe+='<div\x20style=\x22font-size:9px;color:#ffd700;margin-top:3px\x22>⚠️\x20Saari\x20earning\x20bhi\x20mujhe\x20milegi</div></div></div>',_0x57fbfe+='<div\x20id=\x22feeSplit_each\x22\x20onclick=\x22selectFeeType(\x27each_pays\x27)\x22\x20style=\x22padding:10px;cursor:pointer;background:rgba(255,255,255,.02);border:2px\x20solid\x20transparent;transition:.2s\x22>',_0x57fbfe+='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:18px\x22>🤝</div>',_0x57fbfe+='<div\x20style=\x22font-size:11px;font-weight:800;color:#00ff9c;margin-top:3px\x22>Sab\x20Apna\x20Denge</div>',_0x57fbfe+='<div\x20style=\x22font-size:10px;color:#aaa;margin-top:2px\x22>Har\x20player\x20'+(_0x334eaa?'🪙':'💎')+_0x5dae13+'\x20dega</div>',_0x57fbfe+='<div\x20style=\x22font-size:9px;color:#00ff9c;margin-top:3px\x22>✅\x20Har\x20player\x20apna\x20prize\x20pata\x20hai</div></div></div>',_0x57fbfe+='</div></div>');if(_0x1f1797==='duo'){var _0x50e016=getSavedTeam('duo');_0x57fbfe+='<div\x20style=\x22margin:14px\x200\x22><div\x20style=\x22font-size:14px;font-weight:700;margin-bottom:4px\x22><i\x20class=\x22fas\x20fa-users\x22></i>\x20Partner\x20Details</div>';_0x50e016&&_0x50e016['partners'][0x0]&&_0x50e016['partners'][0x0]['memberUid']&&(_0x57fbfe+='<div\x20id=\x22savedTeamCard\x22\x20style=\x22background:rgba(0,255,106,.06);border:1px\x20solid\x20rgba(0,255,106,.2);border-radius:12px;padding:12px;margin-bottom:8px\x22>',_0x57fbfe+='<div\x20style=\x22display:flex;align-items:center;gap:8px;margin-bottom:6px\x22><i\x20class=\x22fas\x20fa-link\x22\x20style=\x22color:var(--green);font-size:16px\x22></i><span\x20style=\x22font-size:13px;font-weight:700;color:var(--green)\x22>Linked\x20Partner\x20—\x20Auto\x20Joined!</span></div>',_0x57fbfe+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px\x22>',_0x57fbfe+='<div\x20style=\x22width:40px;height:40px;border-radius:50%;background:rgba(0,255,106,.12);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--green)\x22>'+(_0x50e016['partners'][0x0]['memberName']||'P')['charAt'](0x0)['toUpperCase']()+'</div>',_0x57fbfe+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:700\x22>'+(_0x50e016['partners'][0x0]['memberName']||'Partner')+'</div>',_0x57fbfe+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>FF\x20UID:\x20'+_0x50e016['partners'][0x0]['memberUid']+'</div></div>',_0x57fbfe+='<span\x20id=\x22savedPartnerSt1\x22\x20style=\x22font-size:11px;color:var(--blue);padding:4px\x208px;border-radius:6px;background:rgba(0,212,255,.1)\x22>Verifying...</span></div>',_0x57fbfe+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:8px;text-align:center\x22><i\x20class=\x22fas\x20fa-info-circle\x22></i>\x20Partner\x20will\x20be\x20auto-added.\x20No\x20action\x20needed.</div></div>',_0x57fbfe+='<div\x20style=\x22text-align:center;margin-bottom:4px\x22><span\x20style=\x22font-size:11px;color:var(--txt2);cursor:pointer;text-decoration:underline\x22\x20onclick=\x22showManualPartner(\x27duo\x27)\x22>Use\x20different\x20partner?</span></div>',_0x57fbfe+='<div\x20id=\x22manualPartnerWrap\x22\x20style=\x22display:none\x22>');_0x57fbfe+='<div\x20class=\x22partner-field\x22><span\x20class=\x22pf-num\x22>2</span><input\x20type=\x22text\x22\x20id=\x22partnerUid1\x22\x20placeholder=\x22Enter\x20Partner\x20FF\x20UID\x22\x20oninput=\x22valPartner(1)\x22><span\x20id=\x22partnerSt1\x22\x20class=\x22pf-status\x22></span></div>',_0x57fbfe+='<div\x20id=\x22partnerName1\x22\x20style=\x22font-size:12px;color:var(--txt2);margin-top:-6px;margin-bottom:8px\x22></div>';if(_0x50e016&&_0x50e016['partners'][0x0]&&_0x50e016['partners'][0x0]['memberUid'])_0x57fbfe+='</div>';_0x57fbfe+='</div>';}if(_0x1f1797==='squad'){var _0x56c28c=getSavedTeam('squad');_0x57fbfe+='<div\x20style=\x22margin:14px\x200\x22><div\x20style=\x22font-size:14px;font-weight:700;margin-bottom:4px\x22><i\x20class=\x22fas\x20fa-users\x22></i>\x20Squad\x20Details</div>';if(_0x56c28c&&_0x56c28c['partners']['length']===0x3)_0x57fbfe+='<div\x20id=\x22savedTeamCard\x22\x20style=\x22background:rgba(0,255,106,.06);border:1px\x20solid\x20rgba(0,255,106,.2);border-radius:12px;padding:12px;margin-bottom:8px\x22>',_0x57fbfe+='<div\x20style=\x22display:flex;align-items:center;gap:8px;margin-bottom:8px\x22><i\x20class=\x22fas\x20fa-link\x22\x20style=\x22color:var(--green);font-size:16px\x22></i><span\x20style=\x22font-size:13px;font-weight:700;color:var(--green)\x22>Linked\x20Squad\x20—\x20Auto\x20Joined!</span></div>',_0x56c28c['partners']['forEach'](function(_0x18ad11,_0x3fbe72){_0x57fbfe+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:8px;background:var(--card);border-radius:10px;margin-bottom:4px\x22>',_0x57fbfe+='<div\x20style=\x22width:32px;height:32px;border-radius:50%;background:rgba(0,255,106,.12);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--green)\x22>'+(_0x3fbe72+0x2)+'</div>',_0x57fbfe+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:600\x22>'+(_0x18ad11['memberName']||'Partner')+'</div>',_0x57fbfe+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>FF\x20UID:\x20'+_0x18ad11['memberUid']+'</div></div>',_0x57fbfe+='<span\x20id=\x22savedPartnerSt'+(_0x3fbe72+0x1)+'\x22\x20style=\x22font-size:11px;color:var(--blue);padding:3px\x206px;border-radius:6px;background:rgba(0,212,255,.1)\x22>Verifying...</span></div>';}),_0x57fbfe+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:8px;text-align:center\x22><i\x20class=\x22fas\x20fa-info-circle\x22></i>\x20All\x20partners\x20auto-added.\x20No\x20action\x20needed.</div></div>',_0x57fbfe+='<div\x20style=\x22text-align:center;margin-bottom:4px\x22><span\x20style=\x22font-size:11px;color:var(--txt2);cursor:pointer;text-decoration:underline\x22\x20onclick=\x22showManualPartner(\x27squad\x27)\x22>Enter\x20manually\x20instead?</span></div>',_0x57fbfe+='<div\x20id=\x22manualPartnerWrap\x22\x20style=\x22display:none\x22>';else _0x56c28c&&_0x56c28c['partners']['length']>0x0&&(_0x57fbfe+='<div\x20style=\x22display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px\x2012px;background:rgba(0,255,106,.06);border:1px\x20solid\x20rgba(0,255,106,.15);border-radius:10px\x22><i\x20class=\x22fas\x20fa-bolt\x22\x20style=\x22color:var(--green)\x22></i><span\x20style=\x22flex:1;font-size:12px;color:var(--green);font-weight:600\x22>Saved\x20'+_0x56c28c['partners']['length']+'\x20member(s)!\x20Auto-filling...</span></div>');for(var _0x32ee14=0x1;_0x32ee14<=0x3;_0x32ee14++){_0x57fbfe+='<div\x20class=\x22partner-field\x22><span\x20class=\x22pf-num\x22>'+(_0x32ee14+0x1)+'</span><input\x20type=\x22text\x22\x20id=\x22partnerUid'+_0x32ee14+'\x22\x20placeholder=\x22Partner\x20'+_0x32ee14+'\x20FF\x20UID\x22\x20oninput=\x22valPartner('+_0x32ee14+')\x22><span\x20id=\x22partnerSt'+_0x32ee14+'\x22\x20class=\x22pf-status\x22></span></div>',_0x57fbfe+='<div\x20id=\x22partnerName'+_0x32ee14+'\x22\x20style=\x22font-size:12px;color:var(--txt2);margin-top:-6px;margin-bottom:8px\x22></div>';}if(_0x56c28c&&_0x56c28c['partners']['length']===0x3)_0x57fbfe+='</div>';_0x57fbfe+='</div>';}_0x57fbfe+='<div\x20class=\x22ci-warn\x22><i\x20class=\x22fas\x20fa-exclamation-triangle\x22></i>\x20You\x20must\x20play\x20using\x20your\x20registered\x20IGN\x20&\x20UID.\x20Mismatch\x20=\x20disqualification.</div>';if(!_0x2b9dfe)_0x57fbfe+='<div\x20style=\x22color:var(--red);font-size:13px;font-weight:600;margin-top:10px;text-align:center\x22>❌\x20Insufficient\x20balance!</div>';var _0x2bc778=_0x1f1797!=='solo'?(window['_feeType']||'captain_pays')==='captain_pays'?_0x5dae13*_0x10df10:_0x5dae13:_0x5dae13,_0x38b031=_0x11fda8>=_0x2bc778;_0x57fbfe+='<button\x20class=\x22f-btn\x20fb-green\x22\x20style=\x22margin-top:14px\x22\x20id=\x22confirmJoinBtn\x22\x20onclick=\x22doJoin(\x27'+_0x1f183f+'\x27)\x22\x20'+(_0x38b031?'':'disabled')+'>Confirm\x20Join\x20('+_0x10df10+'\x20Slot'+(_0x10df10>0x1?'s':'')+')</button>';if(!_0x38b031)_0x57fbfe+='<div\x20style=\x22font-size:11px;color:var(--red);text-align:center;margin-top:4px\x22>⚠️\x20Insufficient\x20balance.\x20Wallet\x20recharge\x20karo.</div>';openModal('Join\x20Tournament',_0x57fbfe),(_0x1f1797==='duo'||_0x1f1797==='squad')&&setTimeout(function(){var _0x1acf03=getSavedTeam(_0x1f1797);if(_0x1acf03&&_0x1acf03['partners']['length']>0x0){var _0x3dd960=$('savedTeamCard');_0x3dd960?validateSavedPartners(_0x1acf03['partners'],function(_0x5e4113){var _0x5bd68d=!![];_0x5e4113['forEach'](function(_0x45eb8c){var _0x4256e0=$('savedPartnerSt'+(_0x45eb8c['index']+0x1));if(_0x45eb8c['valid']){if(_0x4256e0)_0x4256e0['innerHTML']='<span\x20style=\x22color:var(--green)\x22>✓\x20Verified</span>';partnerCache[_0x45eb8c['index']+0x1]=_0x45eb8c['data'];}else{if(_0x4256e0)_0x4256e0['innerHTML']='<span\x20style=\x22color:var(--red)\x22>✗\x20Not\x20found</span>';_0x5bd68d=![];}}),!_0x5bd68d?(toast('Some\x20saved\x20partners\x20not\x20found.\x20Enter\x20manually.','err'),showManualPartner(_0x1f1797)):console['log']('[Mini\x20eSports]\x20✅\x20All\x20saved\x20partners\x20verified\x20for\x20'+_0x1f1797);}):autoFillSavedTeam(_0x1f1797);}},0x12c);}function selectFeeType(_0x5eb903){window['_feeType']=_0x5eb903;var _0x14a642=document['getElementById']('feeSplit_cap'),_0x293eb0=document['getElementById']('feeSplit_each');_0x14a642&&(_0x14a642['style']['background']=_0x5eb903==='captain_pays'?'rgba(0,212,255,.12)':'rgba(255,255,255,.02)',_0x14a642['style']['border']=_0x5eb903==='captain_pays'?'2px\x20solid\x20rgba(0,212,255,.6)':'2px\x20solid\x20transparent'),_0x293eb0&&(_0x293eb0['style']['background']=_0x5eb903==='each_pays'?'rgba(0,255,156,.1)':'rgba(255,255,255,.02)',_0x293eb0['style']['border']=_0x5eb903==='each_pays'?'2px\x20solid\x20rgba(0,255,156,.5)':'2px\x20solid\x20transparent');}function showManualPartner(_0x11c033){var _0x58a873=$('manualPartnerWrap'),_0x5d33a8=$('savedTeamCard');if(_0x58a873)_0x58a873['style']['display']='';if(_0x5d33a8)_0x5d33a8['style']['display']='none';partnerCache={},setTimeout(function(){autoFillSavedTeam(_0x11c033);},0x64);}function valPartner(_0x24b36e){var _0x3e8a81=$('partnerUid'+_0x24b36e),_0x131df9=$('partnerSt'+_0x24b36e),_0x5a32d6=$('partnerName'+_0x24b36e);if(!_0x3e8a81||!_0x131df9)return;var _0x3391fd=_0x3e8a81['value']['trim']();if(!_0x3391fd){_0x131df9['innerHTML']='';if(_0x5a32d6)_0x5a32d6['textContent']='';return;}if(_0x3391fd['length']<0x5){_0x131df9['innerHTML']='<span\x20class=\x22pf-err\x22>Too\x20short</span>';if(_0x5a32d6)_0x5a32d6['textContent']='';return;}if(_0x3391fd===UD['ffUid']){_0x131df9['innerHTML']='<span\x20class=\x22pf-err\x22>Can\x27t\x20add\x20yourself</span>';if(_0x5a32d6)_0x5a32d6['textContent']='';return;}_0x131df9['innerHTML']='<span\x20style=\x22color:var(--blue)\x22>...</span>',_findUserByFF(_0x3391fd,function(_0x3f2018,_0x3f6c8e){if(_0x3f6c8e&&_0x3f2018){_0x131df9['innerHTML']='<span\x20class=\x22pf-ok\x22>✓\x20Found</span>';if(_0x5a32d6)_0x5a32d6['textContent']=_0x3f6c8e['ign']||_0x3f6c8e['displayName']||'Player';partnerCache[_0x24b36e]=_0x3f6c8e,partnerCache[_0x24b36e]['_fbUid']=_0x3f2018;}else{_0x131df9['innerHTML']='<span\x20class=\x22pf-err\x22>✗\x20Not\x20found</span>';if(_0x5a32d6)_0x5a32d6['textContent']='';delete partnerCache[_0x24b36e];}});}var _joinInFlight=![];window['_jifTimer']=null;function doJoin(_0x54082a){if(window['mesCheckExclusion']&&window['mesCheckExclusion']())return;var _0x5c06a4=MT[_0x54082a];if(!_0x5c06a4)return;var _0x17799e=(_0x5c06a4['mode']||_0x5c06a4['type']||'solo')['toString']()['toLowerCase']()['trim']();if(_0x17799e!=='solo'&&_0x17799e!=='duo'&&_0x17799e!=='squad')_0x17799e='solo';if(window['f29SpecialTournament']&&(_0x5c06a4['matchType']==='sunday_special'||_0x5c06a4['matchType']==='monthly_special'||_0x5c06a4['isSundaySpecial']||_0x5c06a4['isMonthlySpecial'])){window['f29SpecialTournament']['checkEligibility'](_0x5c06a4,function(_0x3507cc,_0x5d84b3){if(!_0x3507cc){toast('❌\x20'+(_0x5d84b3||'Aap\x20is\x20match\x20ke\x20liye\x20eligible\x20nahi\x20hain\x20abhi'),'err');return;}_doJoinCore(_0x54082a,_0x5c06a4,_0x17799e);});return;}_doJoinCore(_0x54082a,_0x5c06a4,_0x17799e);}var _sessionJoinedMatches={};function _teamPayload(_0x4835ba,_0x2d6453){var _0x4a5121=_0x4835ba==='duo'?0x1:_0x4835ba==='squad'?0x3:0x0,_0x27351c=[{'uid':U['uid'],'ign':UD&&UD['ign']||''}];if(_0x4a5121===0x0){_0x2d6453(_0x27351c);return;}var _0xfdf0f3=[];for(var _0x53902f=0x1;_0x53902f<=_0x4a5121;_0x53902f++){if(partnerCache[_0x53902f])_0xfdf0f3['push'](partnerCache[_0x53902f]);}if(_0xfdf0f3['length']!==_0x4a5121){_0x2d6453(null);return;}var _0x143c65=![],_0x4973f5=_0x27351c['slice'](),_0x2bddcf=0x0;function _0x2dea6b(){if(_0x143c65)return;_0x2bddcf===_0x4a5121&&(_0x143c65=!![],_0x2d6453(_0x4973f5));}_0xfdf0f3['forEach'](function(_0x4a2251){function _0x191480(_0x21f85e){if(_0x143c65)return;if(!_0x21f85e){_0x143c65=!![],_0x2d6453(null);return;}_0x4973f5['push']({'uid':_0x21f85e,'ign':_0x4a2251['ign']||_0x4a2251['displayName']||''}),_0x2bddcf++,_0x2dea6b();}if(_0x4a2251['_fbUid'])_0x191480(_0x4a2251['_fbUid']);else _0x4a2251['ffUid']?window['_findUserByFF'](_0x4a2251['ffUid'],function(_0x582c80){_0x191480(_0x582c80);}):_0x191480(null);});}function _mirrorTeamFirebase(_0x5e8881,_0x454f6e,_0x81b4b,_0x23d335,_0xd3a774,_0x60f65c){if(!_0x81b4b||_0x81b4b['length']<0x2)return;var _0x50ce80=window['_feeType']||'captain_pays',_0x1f50de=_normET(_0xd3a774['entryType']),_0x1c82a2=_0x1f50de==='coin'||_0x1f50de==='coins',_0xae96d1=_0x1f50de==='paid'||_0x1f50de==='sky'||_0x1f50de==='skydiamond'||_0x1f50de==='sd'||_0x1f50de==='sky_diamond',_0x38d36f=_0x1f50de==='ad'||_0x1f50de==='ads',_0x5376f2=Number(_0xd3a774['entryFee'])||0x0;for(var _0x19ee1d=0x1;_0x19ee1d<_0x81b4b['length'];_0x19ee1d++){var _0x54e9fd=_0x81b4b[_0x19ee1d],_0x320acf=_0x50ce80==='each_pays'?_0x5376f2:0x0,_0x515986=_0x60f65c?_0x60f65c[_0x19ee1d]||_0x60f65c[0x0]:null,_0xfd9e79=db['ref']('joinRequests')['push']()['key'];db['ref']('joinRequests/'+_0xfd9e79)['set']({'requestId':_0xfd9e79,'userId':_0x54e9fd['uid'],'userName':_0x54e9fd['ign']||'','userFFUID':_0x54e9fd['ffUid']||'','displayName':_0x54e9fd['ign']||'','matchId':_0x5e8881,'matchName':_0xd3a774['name']||'','entryFee':_0x320acf,'entryType':_0x1c82a2?'coin':_0xae96d1?'sky_diamond':_0x38d36f?'ad':'free','mode':_0x454f6e,'status':'joined','slotsBooked':0x0,'teamMembers':JSON['stringify'](_0x81b4b['map'](function(_0x23fe68){return{'uid':_0x23fe68['ffUid']||_0x23fe68['uid'],'name':_0x23fe68['ign']||''};})),'captainUid':U['uid'],'captainName':UD&&UD['ign']||'','slotNumber':_0x515986||null,'allSlots':_0x60f65c||null,'feeType':_0x50ce80,'isTeamMember':!![],'createdAt':Date['now']()});var _0x11478a=db['ref']('users/'+_0x54e9fd['uid']+'/notifications')['push']()['key'];db['ref']('users/'+_0x54e9fd['uid']+'/notifications/'+_0x11478a)['set']({'type':'team_joined','title':'🎮\x20Match\x20Joined!','body':(UD['ign']||'Captain')+'\x20ne\x20team\x20join\x20kiya\x20—\x20\x22'+(_0xd3a774['name']||'match')+'\x22.\x20'+(_0x50ce80==='each_pays'&&_0x320acf>0x0?'Entry\x20fee\x20tumhare\x20wallet\x20se\x20kati\x20gai.':'Captain\x20ne\x20fee\x20di\x20hai.'),'matchId':_0x5e8881,'read':![],'createdAt':Date['now']()});}void _0x23d335;try{_0x454f6e==='duo'&&_0x81b4b[0x1]&&(localStorage['setItem']('lastDuoPartner',JSON['stringify']({'uid':_0x81b4b[0x1]['ffUid']||_0x81b4b[0x1]['uid'],'name':_0x81b4b[0x1]['ign']||''})),db['ref']('users/'+U['uid']+'/duoTeam')['set']({'memberUid':_0x81b4b[0x1]['uid'],'memberFfUid':_0x81b4b[0x1]['ffUid']||'','memberName':_0x81b4b[0x1]['ign']||'','addedAt':Date['now']()}));if(_0x454f6e==='squad'){var _0x2ee121=_0x81b4b['slice'](0x1)['map'](function(_0x25d7e1){return{'uid':_0x25d7e1['uid'],'ffUid':_0x25d7e1['ffUid']||'','name':_0x25d7e1['ign']||''};}),_0x134f49=_0x2ee121['map'](function(_0x238c4d){return{'uid':_0x238c4d['ffUid']||_0x238c4d['uid'],'name':_0x238c4d['name']};});localStorage['setItem']('lastSquadPartners',JSON['stringify'](_0x134f49)),db['ref']('users/'+U['uid']+'/squadTeam')['set']({'members':_0x2ee121,'updatedAt':Date['now']()});}}catch(_0x48d2a4){}}function _inviteTeammatesAndJoin(_0x2be541,_0xb01bf7,_0x343216,_0x54c0bb){function _0x1f189a(_0x475814){clearTimeout(window['_jifTimer']),_joinInFlight=![],setLoading(null,![]),toast('❌\x20'+(_0x475814||'Join\x20failed'),'err');}if(!_0x54c0bb||_0x54c0bb['length']<0x2){_0x1f189a('Team\x20members\x20missing');return;}var _0x3957dd=[];for(var _0x19b9c0=0x1;_0x19b9c0<_0x54c0bb['length'];_0x19b9c0++){if(_0x54c0bb[_0x19b9c0]&&_0x54c0bb[_0x19b9c0]['uid'])_0x3957dd['push'](_0x54c0bb[_0x19b9c0]['uid']);}if(!_0x3957dd['length']){_0x1f189a('Teammates\x20verify\x20nahi\x20huye');return;}if(!window['_supa']){_0x1f189a('Service\x20unavailable');return;}window['_supa']['rpc']('invite_team_members',{'p_match_id':_0x2be541,'p_mode':_0x343216,'p_fee_type':window['_feeType']||'captain_pays','p_member_uids':_0x3957dd})['then'](function(_0x9e386a){var _0x1bf545=_0x9e386a&&_0x9e386a['data'];if(_0x9e386a&&_0x9e386a['error']||_0x1bf545&&_0x1bf545['ok']===![]){_0x1f189a(_0x1bf545&&_0x1bf545['error']||_0x9e386a&&_0x9e386a['error']&&_0x9e386a['error']['message']||'Invite\x20nahi\x20bhej\x20paaye');return;}toast('📨\x20Team\x20invites\x20bhej\x20diye!\x20Teammates\x20accept\x20karein,\x20phir\x20dobara\x20Join\x20dabao.','inf');if(window['closeModal'])closeModal();if(curScr==='home'&&window['renderHome'])renderHome();})['catch'](function(_0x368072){_0x1f189a(_0x368072&&_0x368072['message']?_0x368072['message']:'Invite\x20failed');});}async function _doJoinCore(_0x558cca,_0x4a112d,_0x3d1d0d){if(_joinInFlight){toast('⏳\x20Join\x20processing...\x20please\x20wait','inf');return;}_joinInFlight=!![];var _0x5c0da3=setTimeout(function(){_joinInFlight=![];},0x7530),_0x3176c1=Object['values'](JR||{})['find'](function(_0xf13ee6){return _0xf13ee6['matchId']===_0x558cca&&(_0xf13ee6['status']==='pending'||_0xf13ee6['status']==='approved'||_0xf13ee6['status']==='joined');});if(_0x3176c1){clearTimeout(_0x5c0da3),_joinInFlight=![],toast('✅\x20Aap\x20is\x20match\x20mein\x20already\x20join\x20ho\x20chuke\x20ho!','inf');return;}var _0x138eab=_normET(_0x4a112d['entryType']),_0x358d35=_0x138eab==='coin'||_0x138eab==='coins',_0x28e99f=_0x138eab==='paid'||_0x138eab==='sky'||_0x138eab==='skydiamond'||_0x138eab==='sd'||_0x138eab==='sky_diamond',_0x1688e8=_0x138eab==='ad'||_0x138eab==='ads',_0x18abc4=Number(_0x4a112d['entryFee'])||0x0,_0x2456da=_0x3d1d0d==='duo'?0x2:_0x3d1d0d==='squad'?0x4:0x1,_0x405b47=[{'uid':UD['ffUid']||'','name':UD['ign']||UD['displayName']||'','role':'captain'}];if(_0x3d1d0d==='duo'){if(!partnerCache[0x1]){var _0x471d78=getSavedTeam('duo');if(_0x471d78&&_0x471d78['partners'][0x0]&&_0x471d78['partners'][0x0]['memberUid']){toast('Verifying\x20linked\x20partner...','inf');return;}toast('Validate\x20partner\x20UID\x20first','err');return;}_0x405b47['push']({'uid':partnerCache[0x1]['ffUid'],'name':partnerCache[0x1]['ign']||partnerCache[0x1]['displayName']||'','role':'member'});}if(_0x3d1d0d==='squad')for(var _0x12328e=0x1;_0x12328e<=0x3;_0x12328e++){if(!partnerCache[_0x12328e]){var _0x886177=getSavedTeam('squad');if(_0x886177&&_0x886177['partners']['length']===0x3){toast('Verifying\x20linked\x20squad...','inf');return;}toast('Validate\x20all\x203\x20partner\x20UIDs','err');return;}for(var _0x5f2de1=0x1;_0x5f2de1<_0x12328e;_0x5f2de1++){if(partnerCache[_0x5f2de1]['ffUid']===partnerCache[_0x12328e]['ffUid']){toast('Duplicate\x20partner\x20UID!','err');return;}}_0x405b47['push']({'uid':partnerCache[_0x12328e]['ffUid'],'name':partnerCache[_0x12328e]['ign']||partnerCache[_0x12328e]['displayName']||'','role':'member'});}var _0x2e40f4=Number(_0x4a112d['filledSlots']||_0x4a112d['joinedSlots']||0x0),_0x4bc50a=_0x2e40f4+0x1,_0x3728e9=[];if(_0x3d1d0d==='solo')_0x3728e9=[String(_0x4bc50a)];else{if(_0x3d1d0d==='duo'){var _0x59af13=Math['ceil'](_0x4bc50a/0x2);_0x3728e9=[_0x59af13+'/1',_0x59af13+'/2'];}else{var _0x486816=Math['ceil'](_0x4bc50a/0x4);_0x3728e9=[_0x486816+'/1',_0x486816+'/2',_0x486816+'/3',_0x486816+'/4'];}}var _0xa10681=_0x3728e9[0x0],_0x1c2037=![];Object['keys'](JR)['forEach'](function(_0x34cd4e){var _0x2d5b26=JR[_0x34cd4e];_0x2d5b26&&_0x2d5b26['matchId']===_0x558cca&&_0x2d5b26['userId']===U['uid']&&_0x2d5b26['status']!=='cancelled'&&(_0x1c2037=!![]);});if(_0x1c2037){toast('⚠️\x20Tum\x20already\x20is\x20match\x20mein\x20join\x20ho!','err'),setLoading(null,![]);return;}var _0x26d657=db['ref']('joinRequests')['push']()['key'],_0x598dff=_0x3d1d0d!=='solo'?window['_feeType']||'captain_pays':'solo',_0x5ee334=_0x598dff==='each_pays'&&_0x3d1d0d!=='solo'?_0x18abc4:_0x18abc4*_0x2456da,_0xe1b6fe=_0x598dff==='captain_pays'?_0x18abc4*_0x2456da:_0x18abc4,_0x306a37=_0x358d35?'coins':'sky_diamonds',_0x3d3842={'requestId':_0x26d657,'userName':UD['ign']||'','userFFUID':UD['ffUid']||'','ign':UD['ign']||'','displayName':UD['displayName']||'','userEmail':UD['email']||'','matchName':_0x4a112d['name']||'','mode':_0x3d1d0d,'slotsBooked':_0x2456da,'teamMembers':JSON['stringify'](_0x405b47||[]),'slotNumber':_0xa10681,'allSlots':JSON['stringify'](_0x3728e9||[]),'captainUid':_0x3d1d0d!=='solo'?U['uid']:null,'feeType':_0x598dff,'perPlayerFee':_0x5ee334,'isTeamMember':![],'createdAt':Date['now']()};if(!window['_supa']||!window['_supaReady']){clearTimeout(_0x5c0da3),_joinInFlight=![],setLoading(null,![]),toast('❌\x20Service\x20unavailable\x20—\x20join\x20nahi\x20ho\x20paya.','err');return;}var _0x33a80a=Object['assign']({'requestId':_0x26d657,'userId':U['uid'],'matchId':_0x558cca,'entryFee':0x0,'entryType':'free','status':'joined','createdAt':Date['now']()},_0x3d3842);function _0xa31c7a(){db['ref']('joinRequests/'+_0x26d657)['set'](Object['assign']({'requestId':_0x26d657,'userId':U['uid'],'matchId':_0x558cca,'entryFee':_0xe1b6fe,'entryType':_0x358d35?'coin':_0x28e99f?'sky_diamond':_0x1688e8?'ad':'free','status':'joined','createdAt':Date['now']()},_0x3d3842));}function _0x1bf0a7(_0x1fedf2){clearTimeout(_0x5c0da3),_joinInFlight=![],setLoading(null,![]);var _0x3474dc=_0x1fedf2&&_0x1fedf2['message']||(_0x1fedf2==null?'Join\x20failed':String(_0x1fedf2));if(_0x3474dc==='Aap\x20already\x20join\x20ho\x20chuke\x20ho')toast('✅\x20Aap\x20is\x20match\x20mein\x20already\x20join\x20ho\x20chuke\x20ho!','inf');else toast('❌\x20'+_0x3474dc,'err');}if(_0x3d1d0d==='solo'){window['_supa']['rpc']('validate_and_join_match',{'p_uid':U['uid'],'p_match_id':_0x558cca,'p_entry_fee':_0xe1b6fe,'p_currency':_0x306a37,'p_join_data':_0x3d3842})['then'](function(_0x1ee17e){if(_0x1ee17e&&_0x1ee17e['error']){_0x1bf0a7(_0x1ee17e['error']);return;}if(_0x1ee17e&&_0x1ee17e['data']&&_0x1ee17e['data']['ok']===![]){_0x1bf0a7(_0x1ee17e['data']['error']);return;}if(_0xe1b6fe>0x0){if(_0x358d35)UD['coins']=Math['max']((UD['coins']||0x0)-_0xe1b6fe,0x0);else{UD['skyDiamonds']=Math['max']((UD['skyDiamonds']||0x0)-_0xe1b6fe,0x0);if(UD['realMoney'])UD['realMoney']['deposited']=Math['max']((UD['realMoney']['deposited']||0x0)-_0xe1b6fe,0x0);}}_0xa31c7a(),_afterJoinSuccess(_0x558cca,_0x4a112d,_0x3d1d0d,_0x26d657,_0x3728e9);})['catch'](function(_0x207fe6){_0x1bf0a7(_0x207fe6);});return;}_teamPayload(_0x3d1d0d,function(_0x5aba21){if(!_0x5aba21){clearTimeout(_0x5c0da3),_joinInFlight=![],setLoading(null,![]),toast('❌\x20Team\x20members\x20verify\x20nahi\x20huye\x20—\x20dobara\x20check\x20karo','err');return;}window['_supa']['rpc']('join_match_team',{'p_match_id':_0x558cca,'p_mode':_0x3d1d0d,'p_fee_type':window['_feeType']||'captain_pays','p_team':_0x5aba21})['then'](function(_0x1201c6){if(_0x1201c6&&_0x1201c6['error']){_0x1bf0a7(_0x1201c6['error']);return;}if(_0x1201c6&&_0x1201c6['data']&&_0x1201c6['data']['ok']===![]){if(_0x1201c6['data']['code']==='TEAM_NOT_AUTHORIZED'||(_0x1201c6['data']['error']||'')['indexOf']('authorize')!==-0x1){clearTimeout(_0x5c0da3),_joinInFlight=![],setLoading(null,![]),_inviteTeammatesAndJoin(_0x558cca,_0x4a112d,_0x3d1d0d,_0x5aba21);return;}_0x1bf0a7(_0x1201c6['data']['error']);return;}var _0x52fa5d=window['_feeType']==='each_pays'?_0x18abc4:_0xe1b6fe||_0x18abc4*(_0x3d1d0d==='duo'?0x2:0x4);if(_0x358d35)UD['coins']=Math['max']((UD['coins']||0x0)-_0x52fa5d,0x0);else{if(_0x28e99f)UD['skyDiamonds']=Math['max']((UD['skyDiamonds']||0x0)-_0x52fa5d,0x0);}if(UD['realMoney']&&_0x28e99f)UD['realMoney']['deposited']=Math['max']((UD['realMoney']['deposited']||0x0)-_0x52fa5d,0x0);_0xa31c7a(),_mirrorTeamFirebase(_0x558cca,_0x3d1d0d,_0x5aba21,_0x26d657,_0x4a112d,_0x3728e9),_afterJoinSuccess(_0x558cca,_0x4a112d,_0x3d1d0d,_0x26d657,_0x3728e9);})['catch'](function(_0x332d2b){_0x1bf0a7(_0x332d2b);});});return;}function deductMoney(_0x540c86,_0x4a2dd5){console['warn']('[deductMoney]\x20legacy\x20helper\x20(no-op)\x20—\x20server\x20RPC\x20use\x20karo');}function _afterJoinSuccess(_0x1dbd1e,_0x27b440,_0x49dced,_0xd7fbd,_0x19d57b){clearTimeout(window['_jifTimer']),_joinInFlight=![],closeModal(),partnerCache={},toast('🎮\x20Joined\x20successfully!\x20Room\x20ID\x20match\x20time\x20pe\x20milega.','ok'),_sessionJoinedMatches[U['uid']+'_'+_0x1dbd1e]=!![];if(!window['JR'])window['JR']={};JR[_0xd7fbd]={'matchId':_0x1dbd1e,'userId':U['uid'],'status':'joined','mode':_0x49dced,'createdAt':Date['now']()};var _0x4ae398=Number(_0x27b440&&_0x27b440['entryFee'])||0x0;if(_0x4ae398>0x0){if(!window['TXNS'])window['TXNS']=[];var _0x38bfba=String(_0x27b440&&_0x27b440['entryType']||'')['toLowerCase']()==='coin';window['TXNS']['unshift']({'_key':'join_'+_0xd7fbd,'type':'debit','amount':-_0x4ae398,'description':'Joined:\x20'+(_0x27b440&&(_0x27b440['name']||_0x27b440['title'])||'Match'),'reason':'match_entry','refId':_0x1dbd1e,'currency':_0x38bfba?'coins':'sky_diamonds','timestamp':Date['now'](),'read':!![]});}if(window['_loadTransactions'])setTimeout(function(){window['_loadTransactions']();},0x190);if(curScr==='home'&&window['renderHome'])renderHome();if(window['renderSponsoredTournaments'])renderSponsoredTournaments();if(window['renderMM'])setTimeout(renderMM,0x1f4);window['analytics']&&window['analytics']['joinMatch']&&analytics['joinMatch'](_0x1dbd1e,_0x27b440['entryFee']||0x0,_0x27b440['entryType']||'free');if(window['logActivity'])logActivity('join','Joined\x20match:\x20'+(_0x27b440['name']||'Match'));}function setLoading(_0x2f9c85,_0x24d4d7){var _0x595c87=_0x2f9c85||document['getElementById']('confirmJoinBtn');if(!_0x595c87)return;_0x595c87['disabled']=_0x24d4d7,_0x595c87['textContent']=_0x24d4d7?'⏳\x20Processing...':'Confirm\x20Join';}
+/* ====== JOIN SYSTEM ====== */
+/* ✅ B12 (2026-10-07): sponsored/free match ka asli prize summary —
+   admin ne jo prize set kiya wahi text yahan banta hai.
+   Priority: sponsored_tournaments row (admin ka asli chuna hua) → match row. */
+function _joinPrizeLabel(t, sp) {
+  var ptRaw = String((sp && sp.prize_type) || t.prizeType || t.prize_type || '').toLowerCase();
+  var unit = (ptRaw === 'coin' || ptRaw === 'coins') ? '🪙'
+           : (ptRaw === 'skydiamond' || ptRaw === 'sky_diamond' || ptRaw === 'sky') ? '💎'
+           : (ptRaw === 'greendiamond' || ptRaw === 'green_diamond') ? '💎 (Green)'
+           : '₹';
+  var pz = (sp && sp.prizes) || {};
+  var p1 = Number(pz.first  != null ? pz.first  : (t.prize1st || 0)) || 0;
+  var p2 = Number(pz.second != null ? pz.second : (t.prize2nd || 0)) || 0;
+  var p3 = Number(pz.third  != null ? pz.third  : (t.prize3rd || 0)) || 0;
+  var p4 = Number(pz.fourthToTenth || 0) || 0;
+  var parts = [];
+  if (p1 > 0) parts.push((window.medalHtml?medalHtml(1,13):'') + ' ' + unit + p1);
+  if (p2 > 0) parts.push((window.medalHtml?medalHtml(2,13):'') + ' ' + unit + p2);
+  if (p3 > 0) parts.push((window.medalHtml?medalHtml(3,13):'') + ' ' + unit + p3);
+  if (p4 > 0) parts.push('4th–10th ' + unit + p4 + ' each');
+  if (!parts.length) return '';
+  var head = (sp || t.isSponsored) ? '🏆 Sponsored prize — ' : '🏆 ';
+  return head + parts.join(' · ');
+}
+
+function cJoin(id) {
+  // Check if already joined (as captain or team member)
+  var _role = getJoinRole(id);
+  if (_role === 'member') {
+    toast('✅ Tum already team mein ho — captain ne join kar liya!', 'ok');
+    navTo('matches'); return;
+  }
+  var t = MT[id]; if (!t || isVO()) return;
+  if (hasJ(id)) { toast('Already joined!', 'inf'); return; }
+  var es = effSt(t);
+  var matchActuallyStarted = t.matchTime && Date.now() >= Number(t.matchTime);
+  // Allow join during upcoming OR early live window (5 min before start)
+  if (es === 'completed') { toast('Match has ended', 'err'); return; }
+  if (es === 'live' && matchActuallyStarted) { toast('Match already started', 'err'); return; }
+  if (es === 'cancelled') { toast('Match cancelled', 'err'); return; }
+  var js = Number(t.joinedSlots) || 0, ms = Number(t.maxSlots) || 1;
+  if (js >= ms) { toast('Slots full!', 'err'); return; }
+
+  // ── RANK CHECK (if match has minRank set) ──
+  if (t.minRank) {
+    var rankOrder = { 'Bronze':1, 'Silver':2, 'Gold':3, 'Platinum':4, 'Diamond':5, 'Heroic':6, 'Legend':7, 'Grandmaster':8 };
+    var myStats = (UD && UD.stats) ? UD.stats : {};
+    var myRankObj = calcRk(myStats);
+    var myRankVal = rankOrder[myRankObj.badge] || 1;
+    var reqRankVal = rankOrder[t.minRank] || 1;
+    if (myRankVal < reqRankVal) {
+      var rh = '<div style="text-align:center;padding:8px 0">';
+      rh += '<div style="font-size:40px;margin-bottom:8px">🔒</div>';
+      rh += '<div style="font-size:16px;font-weight:800;margin-bottom:6px">Rank Kam Hai!</div>';
+      rh += '<div style="font-size:13px;color:var(--txt2);margin-bottom:16px">Is match ke liye minimum <b style="color:#ffd700">' + t.minRank + '</b> rank chahiye.</div>';
+      rh += '<div style="display:flex;justify-content:center;gap:24px;margin-bottom:16px">';
+      rh += '<div style="text-align:center"><div style="font-size:11px;color:#888;margin-bottom:4px">Tumhara Rank</div><div style="font-size:26px">' + (window.tierIconHtml?tierIconHtml(myRankObj.badge,26):(myRankObj.emoji||'')) + '</div><div style="font-size:13px;font-weight:700;color:' + myRankObj.color + '">' + myRankObj.badge + '</div></div>';
+      rh += '<div style="text-align:center"><div style="font-size:11px;color:#888;margin-bottom:4px">Required</div><div style="font-size:26px">' + (window.tierIconHtml?tierIconHtml(t.minRank,26):'') + '</div><div style="font-size:13px;font-weight:700;color:#ffd700">' + t.minRank + '</div></div>';
+      rh += '</div><div style="font-size:12px;color:#aaa;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15);border-radius:10px;padding:10px">💡 Zyada matches khelo, kills karo — rank badh jayegi!</div></div>';
+      showModal('🔒 Rank Lock', rh); return;
+    }
+  }
+
+  // ── AD-BASED MATCH ──
+/* ✅ D87 (07-Nov-2026, owner: "entry fee sirf ads, sky diamond ya coin se —
+   green diamond se nahi"): Green Diamond ENTRY currency abolished. Legacy
+   GD-entry match rows (DB me ab koi nahi) free samjhe jaate hain — GD se
+   fee kabhi nahi kat-ti. Prize currency GD reh sakti hai (wo alag cheez). */
+function _gdLegacy(x){ x=(x||'').toString().toLowerCase().trim(); return x==='green'||x==='green_diamond'||x==='greendiamond'||x==='gd'; }
+function _normET(x){ return _gdLegacy(x) ? 'free' : (x||'').toString().toLowerCase().trim(); }
+  if ((t.entryType || '') === 'ad') { showAdJoinPopup(id); return; }
+
+  var tp = (t.mode || t.type || 'solo').toString().toLowerCase().trim();
+  if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+  var entryTypeRaw = _normET(t.entryType);
+  var isCoin   = entryTypeRaw === 'coin' || entryTypeRaw === 'coins';
+  /* ✅ MATCH-FLOW-E2E FIX #1 (2026-10-30): 'sky_diamond' (server ka asli
+     entry_type string) is list me tha hi nahi, aur GREEN DIAMOND ka koi
+     branch hi nahi tha → bal=0 → Confirm Join button green-diamond matches
+     me HAMESHA disabled rehta (live proof: MF run 40985057330, MF19
+     'confirmJoinBtn(p6): disabled'). Ab dono currencies first-class hain. */
+  var isSkyDia = entryTypeRaw === 'paid' || entryTypeRaw === 'sky' || entryTypeRaw === 'skydiamond' || entryTypeRaw === 'sd' || entryTypeRaw === 'sky_diamond';
+  var isAd     = entryTypeRaw === 'ad'   || entryTypeRaw === 'ads' || entryTypeRaw === 'adwatch';
+  var fee      = _gdLegacy(t.entryType) ? 0 : (Number(t.entryFee) || 0);
+  var isFree   = entryTypeRaw === 'free' || (!isCoin && !isSkyDia && !isAd && fee === 0);
+  /* ✅ BUG FIX: was using UD.realMoney.deposited (Firebase/old) — now uses UD.skyDiamonds (Supabase) */
+  var bal = isCoin ? Number(UD.coins || 0) : isSkyDia ? Number(UD.skyDiamonds || 0) : 0;
+  var enough = fee === 0 || bal >= fee;
+  var slotsNeeded = tp === 'duo' ? 2 : tp === 'squad' ? 4 : 1;
+  /* Prize info based on match type */
+  // Correct 3-currency model: Ad→Coins, Coin→SkyDia, Paid→GreenDia
+  /* ✅ FIX: Coin match prize = Coins (was wrongly showing Sky Diamonds) */
+  /* ✅ B12 FIX (2026-10-07): "Sponsored match info me 'winner gets free
+     entry + small coin rewards' ki jagah ADMIN ka chuna hua dikhe."
+     Pehle har free/sponsored match par ye ek hi hardcoded line aati thi.
+     Ab agar match ke prizes hain (sponsored tournaments me admin khud
+     1st/2nd/3rd/4th-10th + prize type chunta hai) to wahi dikhaya jaata
+     hai — sponsored row se sabse pehle (wo admin ka asli chuna hua data
+     hai), warna match row ke apne prizes se. Sirf jab sach me kuch bhi
+     prize set na ho, purani line fallback rehti hai. */
+  var _spRow = null;
+  try {
+    var _spAll = window.SP_T || {};
+    for (var _k in _spAll) { if (_spAll[_k] && _spAll[_k].match_id === t.id) { _spRow = _spAll[_k]; break; } }
+  } catch (e) {}
+  /* ✅ FIX (live-testing 2026-10-07): coin match par bhi admin ke ASLI prizes
+     dikhao. Pehle B12 ka fix sirf sponsored/free match par laga tha, isliye
+     coin match banate waqt admin ne jo 1st/2nd/3rd coins set kiye the, join
+     sheet unhe chhupa kar hardcoded "🪙 Coins — Top 3 jeetenge" dikha deta
+     tha (user ko pata hi nahi chalta tha kitna milega). Ab wahi _joinPrizeLabel
+     pehle try hota hai; kuch bhi set na ho to purani line fallback rehti hai. */
+  var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
+    : isAd   ? '📺 Watch ads to join'
+    : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261117g" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : '🪙 Coins';
+  var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
+  var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';
+  var h = '<div class="confirm-info">';
+  h += '<div class="ci-row"><span class="cl">Match</span><span class="cv">' + (window.escHtml?window.escHtml(t.name||'Match'):(t.name||'Match')) + '</span></div>';
+  h += '<div class="ci-row"><span class="cl">Mode</span><span class="cv">' + tp.toUpperCase() + '</span></div>';
+  h += '<div class="ci-row"><span class="cl">Entry Fee</span><span class="cv">' + feeLabel + '</span></div>';
+  h += '<div class="ci-row"><span class="cl">Slots Needed</span><span class="cv">' + slotsNeeded + '</span></div>';
+  if (balLabel) h += '<div class="ci-row"><span class="cl">Your Balance</span><span class="cv" style="color:' + (enough ? 'var(--green)' : 'var(--red)') + '">' + balLabel + '</span></div>';
+  h += '<div class="ci-row"><span class="cl">Winner Gets</span><span class="cv" style="color:#00ff9c">' + prizeLabel + '</span></div>';
+  h += '</div>';
+  /* Withdrawal info */
+  h += '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);border-radius:10px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#00d4ff;line-height:1.5">';
+  h += '💡 Green Diamonds sirf rank aur badges ke liye hain — withdraw nahi hota. Sky Diamonds se paid matches khelo.';
+  h += '</div>';
+  /* ✅ 2026-10-12: premium ribbon IGN ke aage (apna status, UD se live) */
+  if (UD.ign && UD.ffUid) h += '<div class="ci-locked" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><i class="fas fa-lock"></i> Playing as: <strong>' + (window.escHtml?window.escHtml(UD.ign):UD.ign) + '</strong>' + (window.premiumRibbonHtml ? premiumRibbonHtml(16) : '') + '<span>(UID: ' + UD.ffUid + ')</span></div>';
+
+  /* FEE SPLIT SELECTOR — only for duo/squad */
+  if (tp === 'duo' || tp === 'squad') {
+    window._feeType = 'captain_pays'; // default
+    h += '<div style="margin:12px 0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08)">';
+    h += '<div style="padding:8px 12px;background:rgba(255,255,255,.04);font-size:11px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px">💸 Entry Fee — Kaun Pay Karega?</div>';
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0">';
+    // Captain pays all
+    h += '<div id="feeSplit_cap" onclick="selectFeeType(\'captain_pays\')" style="padding:10px;cursor:pointer;background:rgba(0,212,255,.12);border:2px solid rgba(0,212,255,.6);border-right:1px solid rgba(255,255,255,.08);transition:.2s">';
+    h += '<div style="text-align:center"><div style="font-size:18px">👑</div>';
+    h += '<div style="font-size:11px;font-weight:800;color:#00d4ff;margin-top:3px">Sirf Main</div>';
+    h += '<div style="font-size:10px;color:#aaa;margin-top:2px">' + (isCoin?'🪙':'💎') + (fee * slotsNeeded) + ' akele dunga</div>';
+    h += '<div style="font-size:9px;color:#ffd700;margin-top:3px">⚠️ Saari earning bhi mujhe milegi</div></div></div>';
+    // Each pays own
+    h += '<div id="feeSplit_each" onclick="selectFeeType(\'each_pays\')" style="padding:10px;cursor:pointer;background:rgba(255,255,255,.02);border:2px solid transparent;transition:.2s">';
+    h += '<div style="text-align:center"><div style="font-size:18px">🤝</div>';
+    h += '<div style="font-size:11px;font-weight:800;color:#00ff9c;margin-top:3px">Sab Apna Denge</div>';
+    h += '<div style="font-size:10px;color:#aaa;margin-top:2px">Har player ' + (isCoin?'🪙':'💎') + fee + ' dega</div>';
+    h += '<div style="font-size:9px;color:#00ff9c;margin-top:3px">✅ Har player apna prize pata hai</div></div></div>';
+    h += '</div></div>';
+  }
+  if (tp === 'duo') {
+    var savedDuo = getSavedTeam('duo');
+    h += '<div style="margin:14px 0"><div style="font-size:14px;font-weight:700;margin-bottom:4px"><i class="fas fa-users"></i> Partner Details</div>';
+    if (savedDuo && savedDuo.partners[0] && savedDuo.partners[0].memberUid) {
+      /* SAVED PARTNER EXISTS — HIDE UID input completely, use saved partner silently */
+      h += '<div id="savedTeamCard" style="background:rgba(0,255,106,.06);border:1px solid rgba(0,255,106,.2);border-radius:12px;padding:12px;margin-bottom:8px">';
+      h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><i class="fas fa-link" style="color:var(--green);font-size:16px"></i><span style="font-size:13px;font-weight:700;color:var(--green)">Linked Partner — Auto Joined!</span></div>';
+      h += '<div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:10px">';
+      h += '<div style="width:40px;height:40px;border-radius:50%;background:rgba(0,255,106,.12);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--green)">' + (savedDuo.partners[0].memberName || 'P').charAt(0).toUpperCase() + '</div>';
+      h += '<div style="flex:1"><div style="font-size:14px;font-weight:700">' + (savedDuo.partners[0].memberName || 'Partner') + '</div>';
+      h += '<div style="font-size:11px;color:var(--txt2)">FF UID: ' + savedDuo.partners[0].memberUid + '</div></div>';
+      h += '<span id="savedPartnerSt1" style="font-size:11px;color:var(--blue);padding:4px 8px;border-radius:6px;background:rgba(0,212,255,.1)">Verifying...</span></div>';
+      h += '<div style="font-size:11px;color:var(--txt2);margin-top:8px;text-align:center"><i class="fas fa-info-circle"></i> Partner will be auto-added. No action needed.</div></div>';
+      h += '<div style="text-align:center;margin-bottom:4px"><span style="font-size:11px;color:var(--txt2);cursor:pointer;text-decoration:underline" onclick="showManualPartner(\'duo\')">Use different partner?</span></div>';
+      h += '<div id="manualPartnerWrap" style="display:none">';
+    }
+    h += '<div class="partner-field"><span class="pf-num">2</span><input type="text" id="partnerUid1" placeholder="Enter Partner FF UID" oninput="valPartner(1)"><span id="partnerSt1" class="pf-status"></span></div>';
+    h += '<div id="partnerName1" style="font-size:12px;color:var(--txt2);margin-top:-6px;margin-bottom:8px"></div>';
+    if (savedDuo && savedDuo.partners[0] && savedDuo.partners[0].memberUid) h += '</div>';
+    h += '</div>';
+  }
+  if (tp === 'squad') {
+    var savedSquad = getSavedTeam('squad');
+    h += '<div style="margin:14px 0"><div style="font-size:14px;font-weight:700;margin-bottom:4px"><i class="fas fa-users"></i> Squad Details</div>';
+    if (savedSquad && savedSquad.partners.length === 3) {
+      /* ALL 3 LINKED — HIDE UID inputs, use saved squad silently */
+      h += '<div id="savedTeamCard" style="background:rgba(0,255,106,.06);border:1px solid rgba(0,255,106,.2);border-radius:12px;padding:12px;margin-bottom:8px">';
+      h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><i class="fas fa-link" style="color:var(--green);font-size:16px"></i><span style="font-size:13px;font-weight:700;color:var(--green)">Linked Squad — Auto Joined!</span></div>';
+      savedSquad.partners.forEach(function(p, pi) {
+        h += '<div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--card);border-radius:10px;margin-bottom:4px">';
+        h += '<div style="width:32px;height:32px;border-radius:50%;background:rgba(0,255,106,.12);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--green)">' + (pi + 2) + '</div>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:600">' + (p.memberName || 'Partner') + '</div>';
+        h += '<div style="font-size:11px;color:var(--txt2)">FF UID: ' + p.memberUid + '</div></div>';
+        h += '<span id="savedPartnerSt' + (pi + 1) + '" style="font-size:11px;color:var(--blue);padding:3px 6px;border-radius:6px;background:rgba(0,212,255,.1)">Verifying...</span></div>';
+      });
+      h += '<div style="font-size:11px;color:var(--txt2);margin-top:8px;text-align:center"><i class="fas fa-info-circle"></i> All partners auto-added. No action needed.</div></div>';
+      h += '<div style="text-align:center;margin-bottom:4px"><span style="font-size:11px;color:var(--txt2);cursor:pointer;text-decoration:underline" onclick="showManualPartner(\'squad\')">Enter manually instead?</span></div>';
+      h += '<div id="manualPartnerWrap" style="display:none">';
+    } else if (savedSquad && savedSquad.partners.length > 0) {
+      h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;background:rgba(0,255,106,.06);border:1px solid rgba(0,255,106,.15);border-radius:10px"><i class="fas fa-bolt" style="color:var(--green)"></i><span style="flex:1;font-size:12px;color:var(--green);font-weight:600">Saved ' + savedSquad.partners.length + ' member(s)! Auto-filling...</span></div>';
+    }
+    for (var i = 1; i <= 3; i++) {
+      h += '<div class="partner-field"><span class="pf-num">' + (i + 1) + '</span><input type="text" id="partnerUid' + i + '" placeholder="Partner ' + i + ' FF UID" oninput="valPartner(' + i + ')"><span id="partnerSt' + i + '" class="pf-status"></span></div>';
+      h += '<div id="partnerName' + i + '" style="font-size:12px;color:var(--txt2);margin-top:-6px;margin-bottom:8px"></div>';
+    }
+    if (savedSquad && savedSquad.partners.length === 3) h += '</div>';
+    h += '</div>';
+  }
+  h += '<div class="ci-warn"><i class="fas fa-exclamation-triangle"></i> You must play using your registered IGN & UID. Mismatch = disqualification.</div>';
+  if (!enough) h += '<div style="color:var(--red);font-size:13px;font-weight:600;margin-top:10px;text-align:center">❌ Insufficient balance!</div>';
+  /* Balance check depends on feeType selection */
+  var totalFeeForMe = (tp !== 'solo') ? ((window._feeType||'captain_pays') === 'captain_pays' ? fee * slotsNeeded : fee) : fee;
+  var enoughForMe = bal >= totalFeeForMe;
+  h += '<button class="f-btn fb-green" style="margin-top:14px" id="confirmJoinBtn" onclick="doJoin(\'' + id + '\')" ' + (enoughForMe ? '' : 'disabled') + '>Confirm Join (' + slotsNeeded + ' Slot' + (slotsNeeded > 1 ? 's' : '') + ')</button>';
+  if (!enoughForMe) h += '<div style="font-size:11px;color:var(--red);text-align:center;margin-top:4px">⚠️ Insufficient balance. Wallet recharge karo.</div>';
+  openModal('Join Tournament', h);
+  
+  /* AUTO-FILL or AUTO-VALIDATE saved teammates after modal renders */
+  if (tp === 'duo' || tp === 'squad') {
+    setTimeout(function() {
+      var saved = getSavedTeam(tp);
+      if (saved && saved.partners.length > 0) {
+        /* If saved team card is showing (all partners saved), validate in background */
+        var savedCard = $('savedTeamCard');
+        if (savedCard) {
+          validateSavedPartners(saved.partners, function(results) {
+            var allValid = true;
+            results.forEach(function(r) {
+              var stEl = $('savedPartnerSt' + (r.index + 1));
+              if (r.valid) {
+                if (stEl) stEl.innerHTML = '<span style="color:var(--green)">✓ Verified</span>';
+                partnerCache[r.index + 1] = r.data;
+              } else {
+                if (stEl) stEl.innerHTML = '<span style="color:var(--red)">✗ Not found</span>';
+                allValid = false;
+              }
+            });
+            if (!allValid) {
+              toast('Some saved partners not found. Enter manually.', 'err');
+              showManualPartner(tp);
+            } else {
+              console.log('[Mini eSports] ✅ All saved partners verified for ' + tp);
+            }
+          });
+        } else {
+          /* Partial saved team — auto-fill the fields */
+          autoFillSavedTeam(tp);
+        }
+      }
+    }, 300);
+  }
+}
+
+/* Show manual partner entry fields (when user wants different partner) */
+function selectFeeType(type) {
+  window._feeType = type;
+  var capEl = document.getElementById('feeSplit_cap');
+  var eachEl = document.getElementById('feeSplit_each');
+  if (capEl) {
+    capEl.style.background = type === 'captain_pays' ? 'rgba(0,212,255,.12)' : 'rgba(255,255,255,.02)';
+    capEl.style.border = type === 'captain_pays' ? '2px solid rgba(0,212,255,.6)' : '2px solid transparent';
+  }
+  if (eachEl) {
+    eachEl.style.background = type === 'each_pays' ? 'rgba(0,255,156,.1)' : 'rgba(255,255,255,.02)';
+    eachEl.style.border = type === 'each_pays' ? '2px solid rgba(0,255,156,.5)' : '2px solid transparent';
+  }
+}
+
+function showManualPartner(mode) {
+  var wrap = $('manualPartnerWrap');
+  var card = $('savedTeamCard');
+  if (wrap) wrap.style.display = '';
+  if (card) card.style.display = 'none';
+  /* Clear partnerCache so user must fill manually */
+  partnerCache = {};
+  /* Auto-fill from saved data as starting point */
+  setTimeout(function() { autoFillSavedTeam(mode); }, 100);
+}
+
+function valPartner(n) {
+  var inp = $('partnerUid' + n), st = $('partnerSt' + n), nm = $('partnerName' + n);
+  if (!inp || !st) return;
+  var uid = inp.value.trim();
+  if (!uid) { st.innerHTML = ''; if (nm) nm.textContent = ''; return; }
+  if (uid.length < 5) { st.innerHTML = '<span class="pf-err">Too short</span>'; if (nm) nm.textContent = ''; return; }
+  if (uid === UD.ffUid) { st.innerHTML = '<span class="pf-err">Can\'t add yourself</span>'; if (nm) nm.textContent = ''; return; }
+  st.innerHTML = '<span style="color:var(--blue)">...</span>';
+  _findUserByFF(uid, function(foundKey, found) {
+    if (found && foundKey) {
+      st.innerHTML = '<span class="pf-ok">✓ Found</span>';
+      if (nm) nm.textContent = found.ign || found.displayName || 'Player';
+      partnerCache[n] = found;
+      partnerCache[n]._fbUid = foundKey;
+    } else { st.innerHTML = '<span class="pf-err">✗ Not found</span>'; if (nm) nm.textContent = ''; delete partnerCache[n]; }
+  });
+}
+
+/* ── Bug 10 Fix: Global join processing flag — prevents rapid double-clicks ── */
+var _joinInFlight = false;
+window._jifTimer = null;
+
+function doJoin(id) {
+  // ✅ LEGAL: Self-exclusion check
+  if (window.mesCheckExclusion && window.mesCheckExclusion()) return;
+  var t = MT[id]; if (!t) return;
+  var tp = (t.mode || t.type || 'solo').toString().toLowerCase().trim();
+  if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+  /* Special Tournament eligibility check */
+  if (window.f29SpecialTournament && (t.matchType === 'sunday_special' || t.matchType === 'monthly_special' || t.isSundaySpecial || t.isMonthlySpecial)) {
+    window.f29SpecialTournament.checkEligibility(t, function(ok, reason) {
+      if (!ok) { toast('❌ ' + (reason || 'Aap is match ke liye eligible nahi hain abhi'), 'err'); return; }
+      _doJoinCore(id, t, tp);
+    });
+    return;
+  }
+  _doJoinCore(id, t, tp);
+}
+
+/* Bug #18 Fix: Session-level join dedup — blocks duplicate joins if lock releases early */
+var _sessionJoinedMatches = {};
+
+/* ✅ R5: server-authoritative team payload builder — captain + partners as
+   SUPABASE UIDs (users.id). Server join_match_team team[0].uid === auth.uid()
+   verify karta hai; partners की fee/eligibility server derive karta hai.
+   Client sirf ids चुनता है, kabhi amount/currency नहीं। */
+function _teamPayload(tp, cb) {
+  var need = tp === 'duo' ? 1 : (tp === 'squad' ? 3 : 0);
+  var team = [{ uid: U.uid, ign: (UD && UD.ign) || '' }];
+  if (need === 0) { cb(team); return; }
+  var parts = [];
+  for (var i = 1; i <= need; i++) { if (partnerCache[i]) parts.push(partnerCache[i]); }
+  if (parts.length !== need) { cb(null); return; }
+  var resolved = false;
+  var out = team.slice();
+  var done = 0;
+  function finish() {
+    if (resolved) return;
+    if (done === need) { resolved = true; cb(out); }
+  }
+  parts.forEach(function(p) {
+    function pushResolved(uid) {
+      if (resolved) return;
+      if (!uid) { resolved = true; cb(null); return; }
+      out.push({ uid: uid, ign: (p.ign || p.displayName || '') });
+      done++;
+      finish();
+    }
+    if (p._fbUid) { pushResolved(p._fbUid); }
+    else if (p.ffUid) { window._findUserByFF(p.ffUid, function(k) { pushResolved(k); }); }
+    else { pushResolved(null); }
+  });
+}
+
+/* ✅ R5: Firebase MIRROR-only team rows (server success के बाद; admin roster/
+   realtime display के लिए — कभी authority नहीं)। Supabase join_requests ही
+   सच है; ये sirf दृश्य-कॉपी हैं, financial/authoritative write नहीं। */
+function _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots) {
+  if (!teamArr || teamArr.length < 2) return;
+  var _feeType = window._feeType || 'captain_pays';
+  var entryType = _normET(t.entryType);
+  var isCoin = entryType === 'coin' || entryType === 'coins';
+  var isSkyDia = entryType === 'paid' || entryType === 'sky' || entryType === 'skydiamond' || entryType === 'sd' || entryType === 'sky_diamond';
+  /* ✅ MATCH-FLOW-E2E FIX #4b: mirror me green ko 'free' na banao */
+  var isAdT = entryType === 'ad' || entryType === 'ads';
+  var fee = Number(t.entryFee) || 0;
+  for (var i = 1; i < teamArr.length; i++) {
+    var m = teamArr[i];
+    var pEntryFee = (_feeType === 'each_pays') ? fee : 0;
+    var pSlot = assignedSlots ? (assignedSlots[i] || assignedSlots[0]) : null;
+    var pjid = db.ref('joinRequests').push().key;
+    db.ref('joinRequests/' + pjid).set({
+      requestId: pjid, userId: m.uid, userName: m.ign || '',
+      userFFUID: m.ffUid || '', displayName: m.ign || '',
+      matchId: id, matchName: t.name || '', entryFee: pEntryFee,
+      entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAdT ? 'ad' : 'free',
+      mode: tp, status: 'joined', slotsBooked: 0,
+      teamMembers: JSON.stringify(teamArr.map(function(x){ return { uid: x.ffUid || x.uid, name: x.ign || '' }; })),
+      captainUid: U.uid, captainName: (UD && UD.ign) || '',
+      slotNumber: pSlot || null, allSlots: assignedSlots || null,
+      feeType: _feeType, isTeamMember: true, createdAt: Date.now()
+    });
+    /* Firebase-only partner notification (display) */
+    var notifId = db.ref('users/' + m.uid + '/notifications').push().key;
+    db.ref('users/' + m.uid + '/notifications/' + notifId).set({
+      type: 'team_joined', title: '🎮 Match Joined!',
+      body: (UD.ign || 'Captain') + ' ne team join kiya — "' + (t.name || 'match') + '". ' +
+            ((_feeType === 'each_pays' && pEntryFee > 0) ? 'Entry fee tumhare wallet se kati gai.' : 'Captain ne fee di hai.'),
+      matchId: id, read: false, createdAt: Date.now()
+    });
+  }
+  /* captain mirror already written by caller (_joinData path) */
+  void jid;
+
+  /* saved-team persistence (next-join UX; non-financial social metadata).
+     Security: display-only, bridge user-scoped, Supabase से ख़ुद भी कुछ नहीं गिराता। */
+  try {
+    if (tp === 'duo' && teamArr[1]) {
+      localStorage.setItem('lastDuoPartner', JSON.stringify({ uid: teamArr[1].ffUid || teamArr[1].uid, name: teamArr[1].ign || '' }));
+      db.ref('users/' + U.uid + '/duoTeam').set({ memberUid: teamArr[1].uid, memberFfUid: teamArr[1].ffUid || '', memberName: teamArr[1].ign || '', addedAt: Date.now() });
+    }
+    if (tp === 'squad') {
+      var sq = teamArr.slice(1).map(function(m){ return { uid: m.uid, ffUid: m.ffUid || '', name: m.ign || '' }; });
+      var saved = sq.map(function(m){ return { uid: m.ffUid || m.uid, name: m.name }; });
+      localStorage.setItem('lastSquadPartners', JSON.stringify(saved));
+      db.ref('users/' + U.uid + '/squadTeam').set({ members: sq, updatedAt: Date.now() });
+    }
+  } catch(e) {}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   R6 — _inviteTeammatesAndJoin (TEAM AUTHORIZATION FLOW)
+   ═══════════════════════════════════════════════════════════════════
+   Server join_match_team ne TEAM_NOT_AUTHORIZED diya = teammates ne
+   abhi consent nahi diya. Captain ko automate-friendly tarika chahiye.
+   Yahan captain ke naam se team_invitations banti hain (RPC), members
+   ko notification jaati hai. Member jab accept karta hai (notification
+   se ya profile se), tabhi server join karne deta hai. Retry join बाद
+   में manually (यह security boundary kabhi auto-bypass नहीं करता —
+   कोई wallet/slot/join write sirf server accept ke baad). */
+function _inviteTeammatesAndJoin(id, t, tp, teamArr) {
+  function _fail(msg) {
+    clearTimeout(window._jifTimer); _joinInFlight = false;
+    setLoading(null, false);
+    toast('❌ ' + (msg || 'Join failed'), 'err');
+  }
+  if (!teamArr || teamArr.length < 2) { _fail('Team members missing'); return; }
+  var memberIds = [];
+  for (var i = 1; i < teamArr.length; i++) {
+    if (teamArr[i] && teamArr[i].uid) memberIds.push(teamArr[i].uid);
+  }
+  if (!memberIds.length) { _fail('Teammates verify nahi huye'); return; }
+  if (!window._supa) { _fail('Service unavailable'); return; }
+  window._supa.rpc('invite_team_members', {
+    p_match_id: id,
+    p_mode: tp,
+    p_fee_type: (window._feeType || 'captain_pays'),
+    p_member_uids: memberIds
+  }).then(function(ir) {
+    var idata = ir && ir.data;
+    if ((ir && ir.error) || (idata && idata.ok === false)) {
+      _fail((idata && idata.error) || ((ir && ir.error) && ir.error.message) || 'Invite nahi bhej paaye');
+      return;
+    }
+    toast('📨 Team invites bhej diye! Teammates accept karein, phir dobara Join dabao.', 'inf');
+    if (window.closeModal) closeModal();
+    if (curScr === 'home' && window.renderHome) renderHome();
+  }).catch(function(e) { _fail(e && e.message ? e.message : 'Invite failed'); });
+}
+
+async function _doJoinCore(id, t, tp) {
+  /* ✅ Bug 10 Fix: Prevent rapid double-clicks / duplicate join requests */
+  if (_joinInFlight) {
+    toast('⏳ Join processing... please wait', 'inf');
+    return;
+  }
+  _joinInFlight = true;
+  /* Auto-release after 8 seconds in case of error/timeout */
+  /* Bug #18 Fix: 8s→30s prevents premature lock release on slow networks */
+  var _jifTimer = setTimeout(function() { _joinInFlight = false; }, 30000);
+  /* Also check if user already has a pending joinRequest for this match */
+  var _existingJR = Object.values(JR || {}).find(function(jr) {
+    return jr.matchId === id && (jr.status === 'pending' || jr.status === 'approved' || jr.status === 'joined');
+  });
+  if (_existingJR) {
+    clearTimeout(_jifTimer); _joinInFlight = false;
+    toast('✅ Aap is match mein already join ho chuke ho!', 'inf');
+    return;
+  }
+  /* ✅ FIX: free matches (entryFee=0) must NOT be treated as coin matches */
+  var _et2   = _normET(t.entryType);
+  var isCoin  = _et2 === 'coin' || _et2 === 'coins';
+  var isSkyDia= _et2 === 'paid' || _et2 === 'sky' || _et2 === 'skydiamond' || _et2 === 'sd' || _et2 === 'sky_diamond';
+  /* ✅ MATCH-FLOW-E2E FIX #2 (2026-10-30): green-diamond match ka fee
+     SKY wallet se kat raha tha (_supaCol = isCoin ? 'coins' : 'sky_diamonds'
+     — green ka branch hi nahi). Live proof: MF run 40985057330 MF19/MF30 —
+     green match join+refund sky_diamonds me gaya. GALAT WALLET = paisa bug. */
+  var isAd    = _et2 === 'ad'   || _et2 === 'ads';
+  var fee = Number(t.entryFee) || 0;
+  var slotsNeeded = tp === 'duo' ? 2 : tp === 'squad' ? 4 : 1;
+  var team = [{ uid: UD.ffUid || '', name: UD.ign || UD.displayName || '', role: 'captain' }];
+  if (tp === 'duo') {
+    /* Check if partner is linked (saved) — use directly without manual input */
+    if (!partnerCache[1]) {
+      /* No partner validated yet — check if saved partner is available */
+      var savedDuo = getSavedTeam('duo');
+      if (savedDuo && savedDuo.partners[0] && savedDuo.partners[0].memberUid) {
+        /* Use saved partner silently — but need to verify they exist */
+        toast('Verifying linked partner...', 'inf');
+        return; /* Wait for background validation to populate partnerCache */
+      }
+      toast('Validate partner UID first', 'err'); return;
+    }
+    team.push({ uid: partnerCache[1].ffUid, name: partnerCache[1].ign || partnerCache[1].displayName || '', role: 'member' });
+  }
+  if (tp === 'squad') {
+    for (var i = 1; i <= 3; i++) {
+      if (!partnerCache[i]) {
+        /* Check if saved squad exists — use directly */
+        var savedSquad = getSavedTeam('squad');
+        if (savedSquad && savedSquad.partners.length === 3) {
+          toast('Verifying linked squad...', 'inf');
+          return; /* Wait for background validation */
+        }
+        toast('Validate all 3 partner UIDs', 'err'); return;
+      }
+      for (var j = 1; j < i; j++) { if (partnerCache[j].ffUid === partnerCache[i].ffUid) { toast('Duplicate partner UID!', 'err'); return; } }
+      team.push({ uid: partnerCache[i].ffUid, name: partnerCache[i].ign || partnerCache[i].displayName || '', role: 'member' });
+    }
+  }
+  /* ✅ R5: PRE-BOOKING REMOVED — pehle client yahan `joinedSlots`/`filledSlots`
+     Firebase transaction chala kar slots book karta tha (server fills se
+     pehle hi capacity modify). Ab SINGLE authority = server: slots server
+     validate_and_join_match / join_match_team ke ANDAR atomic bharte hain
+     (उसी से capacity enforce hoti hai). Yahan sirf DISPLAY-ONLY slot labels
+     bante hain (asali slot room/manager server ke result se). */
+  var _serverFilled = Number(t.filledSlots || t.joinedSlots || 0);
+  var firstSlotNum = _serverFilled + 1;
+  var assignedSlots = [];
+  if (tp === 'solo') {
+    assignedSlots = [String(firstSlotNum)];
+  } else if (tp === 'duo') {
+    var teamNum = Math.ceil(firstSlotNum / 2);
+    assignedSlots = [teamNum + '/1', teamNum + '/2'];
+  } else { // squad
+    var teamNumS = Math.ceil(firstSlotNum / 4);
+    assignedSlots = [teamNumS+'/1', teamNumS+'/2', teamNumS+'/3', teamNumS+'/4'];
+  }
+  var mySlot = assignedSlots[0]; // captain/solo gets first slot
+
+  // DUPLICATE JOIN CHECK - prevent same user joining same match twice
+  var existingJoin = false;
+  Object.keys(JR).forEach(function(k) {
+    var jr = JR[k];
+    if (jr && jr.matchId === id && jr.userId === U.uid && jr.status !== 'cancelled') {
+      existingJoin = true;
+    }
+  });
+  if (existingJoin) {
+    toast('⚠️ Tum already is match mein join ho!', 'err');
+    setLoading(null, false);
+    return;
+  }
+  var jid = db.ref('joinRequests').push().key;
+    var _feeType = (tp !== 'solo') ? (window._feeType || 'captain_pays') : 'solo';
+    /* Bug High #7 Fix: Calculate per-player fee correctly based on selected split mode.
+       captain_pays → captain pays full fee × slotsNeeded (already correct)
+       each_pays    → captain pays only 1× fee; each member pays their own share
+       The RPC and join_requests row now receive fee_split so the backend can
+       charge each team member individually when each_pays is selected. */
+    var _perPlayerFee = (_feeType === 'each_pays' && tp !== 'solo') ? fee : fee * slotsNeeded;
+    // captain always pays their own share = fee; extra members pay separately
+    var _captainFee = (_feeType === 'captain_pays') ? fee * slotsNeeded : fee;
+
+    /* ✅ Bug 23 Fix: Use server-side atomic validate_and_join_match RPC
+       This prevents client-side JS bypass of entry fee deduction.
+       RPC handles: balance check, duplicate join check, deduction, JR creation atomically */
+    var _supaCol = isCoin ? 'coins' : 'sky_diamonds'; /* D87: GD entry abolished */
+    var _joinData = {
+      requestId: jid, userName: UD.ign || '', userFFUID: UD.ffUid || '',
+      /* ✅ R28m FIX (2026-09-22): server RPC validate_and_join_match
+         ign_at_join = COALESCE(p_join_data->>'ign','') लिखता है — par ye
+         _joinData kabhi `ign` key bhejti hi nahi thi (sirf userName), isliye
+         har paid join me ign_at_join DB me KHALI reh jata tha (live proven:
+         5 coin rows sab ''). Ab wahi key server chahta hai wahi bhej rahe hain. */
+      ign: UD.ign || '', displayName: UD.displayName || '', userEmail: UD.email || '',
+      matchName: t.name || '', mode: tp, slotsBooked: slotsNeeded,
+      teamMembers: JSON.stringify(team || []), slotNumber: mySlot,
+      allSlots: JSON.stringify(assignedSlots || []),
+      captainUid: tp !== 'solo' ? U.uid : null,
+      feeType: _feeType,          // 'captain_pays' | 'each_pays' | 'solo'
+      perPlayerFee: _perPlayerFee, // Bug High #7 Fix: actual amount each player owes
+      isTeamMember: false, createdAt: Date.now()
+    };
+
+    /* ✅ R5 FIX: SINGLE SERVER-AUTHORITATIVE JOIN — solo→validate_and_join_match,
+       duo/squad→join_match_team. Client sirf ids/एक request bhejता है; fee,
+       currency, eligibility, capacity, debit सब server atomic. NO fallback:
+       RPC fail = join fail. Firebase sirf success ke baad mirror. */
+    if (!window._supa || !window._supaReady) {
+      clearTimeout(_jifTimer); _joinInFlight = false;
+      setLoading(null, false);
+      toast('❌ Service unavailable — join nahi ho paya.', 'err');
+      return;
+    }
+    var _freeJoinData = Object.assign({
+      requestId: jid, userId: U.uid, matchId: id,
+      entryFee: 0, entryType: 'free', status: 'joined', createdAt: Date.now()
+    }, _joinData);
+
+    function _mirrorCaptain() {
+      db.ref('joinRequests/' + jid).set(Object.assign({
+        requestId: jid, userId: U.uid, matchId: id,
+        entryFee: _captainFee,
+        entryType: isCoin ? 'coin' : isSkyDia ? 'sky_diamond' : isAd ? 'ad' : 'free',
+        status: 'joined', createdAt: Date.now()
+      }, _joinData));
+    }
+
+    function _joinFailed(err) {
+      clearTimeout(_jifTimer); _joinInFlight = false;
+      setLoading(null, false);
+      var msg = (err && err.message) || (err == null ? 'Join failed' : String(err));
+      if (msg === 'Aap already join ho chuke ho') toast('✅ Aap is match mein already join ho chuke ho!', 'inf');
+      else toast('❌ ' + msg, 'err');
+    }
+
+    if (tp === 'solo') {
+      window._supa.rpc('validate_and_join_match', {
+        p_uid: U.uid, p_match_id: id,
+        p_entry_fee: _captainFee, p_currency: _supaCol,
+        p_join_data: _joinData
+      }).then(function(r) {
+        if (r && r.error) { _joinFailed(r.error); return; }
+        if (r && r.data && r.data.ok === false) { _joinFailed(r.data.error); return; }
+        if (_captainFee > 0) {
+          if (isCoin) UD.coins = Math.max((UD.coins||0) - _captainFee, 0);
+          else { UD.skyDiamonds = Math.max((UD.skyDiamonds||0)-_captainFee,0); if(UD.realMoney) UD.realMoney.deposited = Math.max((UD.realMoney.deposited||0)-_captainFee,0); }
+        }
+        _mirrorCaptain();
+        _afterJoinSuccess(id, t, tp, jid, assignedSlots);
+      }).catch(function(e) { _joinFailed(e); });
+      return;
+    }
+
+    /* duo/squad → join_match_team (server validates team, locks ALL rows,
+       verifies sab ki balance, atomic debit, no partial payment) */
+    _teamPayload(tp, function(teamArr) {
+      if (!teamArr) {
+        clearTimeout(_jifTimer); _joinInFlight = false;
+        setLoading(null, false);
+        toast('❌ Team members verify nahi huye — dobara check karo', 'err');
+        return;
+      }
+      window._supa.rpc('join_match_team', {
+        p_match_id: id, p_mode: tp,
+        p_fee_type: (window._feeType || 'captain_pays'),
+        p_team: teamArr
+      }).then(function(r) {
+        if (r && r.error) { _joinFailed(r.error); return; }
+        if (r && r.data && r.data.ok === false) {
+          /* ══ R6 TEAM AUTHORIZATION ══
+             Server sirf unhi teammates का wallet/slot/join मानता है जिन्होंने
+             consent दिया हो (accepted team invitation या auto-squad matched
+             team). Any other UID = पूरा join reject (0 debits, 0 slots).
+             `code` machine-readable, `error` human-friendly (दोनो fallback). */
+          if (r.data.code === 'TEAM_NOT_AUTHORIZED'
+              || (r.data.error || '').indexOf('authorize') !== -1) {
+            clearTimeout(_jifTimer); _joinInFlight = false;
+            setLoading(null, false);
+            _inviteTeammatesAndJoin(id, t, tp, teamArr);
+            return;
+          }
+          _joinFailed(r.data.error); return;
+        }
+        var _myFee = (window._feeType === 'each_pays') ? fee : (_captainFee || fee * (tp === 'duo' ? 2 : 4));
+        if (isCoin) UD.coins = Math.max((UD.coins||0) - _myFee, 0);
+        else if (isSkyDia) UD.skyDiamonds = Math.max((UD.skyDiamonds||0) - _myFee, 0);
+        if (UD.realMoney && isSkyDia) UD.realMoney.deposited = Math.max((UD.realMoney.deposited||0) - _myFee, 0);
+        _mirrorCaptain();
+        /* partner rows: Firebase mirror only (admin roster display) — Supabase
+           join_requests already has authoritative rows (server ne banaye) */
+        _mirrorTeamFirebase(id, tp, teamArr, jid, t, assignedSlots);
+        _afterJoinSuccess(id, t, tp, jid, assignedSlots);
+      }).catch(function(e) { _joinFailed(e); });
+    });
+    return;
+}
+
+function deductMoney(amt, reason) {
+  /* ✅ R5 (2026-09-23): relinquished global legacy helper — old (pre-R5)
+     गिफ्ट flows ab server RPC gift_match_entry से atomic हैं, और team
+     से join अब join_match_team से server-authoritative है. Yे helper ab
+     koi caller nahi rakhta (grep-verified: sirf legacy fixes-v7 gift था,
+     जो R5 में inert). Purani direct client-payment logic HATA DI (double-
+     debit/unsafe-path band) — ab sirf no-op placeholder, koi financial write
+     nahi. */
+  console.warn('[deductMoney] legacy helper (no-op) — server RPC use karo');
+}
+
+/* ── _afterJoinSuccess — called after join RPC/DB write confirmed ── */
+function _afterJoinSuccess(id, t, tp, jid, assignedSlots) {
+  clearTimeout(window._jifTimer);
+  _joinInFlight = false;
+  closeModal();
+  partnerCache = {};
+  toast('🎮 Joined successfully! Room ID match time pe milega.', 'ok');
+  _sessionJoinedMatches[U.uid + '_' + id] = true; /* Bug #18 dedup mark — R28b: uid→U.uid ("uid is not defined" fix) */
+  /* Update local JR cache immediately so hasJ() works without reload */
+  if (!window.JR) window.JR = {};
+  JR[jid] = { matchId: id, userId: U.uid, status: 'joined', mode: tp, createdAt: Date.now() };
+  /* Immediately record entry-fee debit in local TXNS + sync from Supabase wallet_transactions */
+  var _joinFee = Number(t && t.entryFee) || 0;
+  if (_joinFee > 0) {
+    if (!window.TXNS) window.TXNS = [];
+    var _isCoinEntry = (String((t && t.entryType) || '').toLowerCase() === 'coin');
+    window.TXNS.unshift({
+      _key: 'join_' + jid,
+      type: 'debit',
+      amount: -_joinFee,
+      description: 'Joined: ' + ((t && (t.name || t.title)) || 'Match'),
+      reason: 'match_entry',
+      refId: id,
+      currency: _isCoinEntry ? 'coins' : 'sky_diamonds',
+      timestamp: Date.now(),
+      read: true
+    });
+  }
+  if (window._loadTransactions) setTimeout(function() { window._loadTransactions(); }, 400);
+  /* ✅ BUG FIX (2026-09-16): "Match join karne ke baad match section me
+     show hi nahi ho raha, join button bhi joined nahi dikh raha, refresh
+     karne par hi sahi dikhta hai" — JR[jid] above already makes hasJ(id)
+     return true immediately, and the join count (t.joinedSlots) was also
+     already bumped by the caller before _afterJoinSuccess runs — but
+     nothing ever re-rendered the Home screen itself to actually reflect
+     it. Only renderMM() (My Matches tab) was re-rendered, 500ms later.
+     If the user was looking at Home (the normal case — that's where the
+     Join button lives), the card there kept showing the stale pre-join
+     state until the 15s poll/realtime event happened to land, or until
+     they manually refreshed. Re-rendering both screens here — Home
+     immediately (data is already correct in memory) and My Matches
+     shortly after (unchanged timing/reason) — fixes this for whichever
+     screen the user is actually on. curScr check avoids wastefully
+     re-rendering a screen that isn't even mounted. */
+  if (curScr === 'home' && window.renderHome) renderHome();
+  if (window.renderSponsoredTournaments) renderSponsoredTournaments();
+  /* Refresh My Matches tab */
+  if (window.renderMM) setTimeout(renderMM, 500);
+  /* Analytics */
+  if (window.analytics && window.analytics.joinMatch) {
+    analytics.joinMatch(id, t.entryFee || 0, t.entryType || 'free');
+  }
+  /* logActivity for activity feed */
+  if (window.logActivity) logActivity('join', 'Joined match: ' + (t.name || 'Match'));
+}
+
+/* ── setLoading — show/hide loading state on join button ── */
+function setLoading(btn, on) {
+  var b = btn || document.getElementById('confirmJoinBtn');
+  if (!b) return;
+  b.disabled = on;
+  b.textContent = on ? '⏳ Processing...' : 'Confirm Join';
+}
+

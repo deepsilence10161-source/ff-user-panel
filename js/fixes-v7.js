@@ -1,1 +1,864 @@
-(function(){'use strict';var _0x1fe7c2=(function(){var _0x5d7dfb=!![];return function(_0x60475e,_0x15f29f){var _0x3abf22=_0x5d7dfb?function(){if(_0x15f29f){var _0x4e5b14=_0x15f29f['apply'](_0x60475e,arguments);return _0x15f29f=null,_0x4e5b14;}}:function(){};return _0x5d7dfb=![],_0x3abf22;};}());function _0x14ba5b(_0x6fc5f0,_0xc2bc4b,_0x2b8717){var _0x19602f=_0x1fe7c2(this,function(){if(_0x19602f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x19602f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x19602f)['search']('(((.+)+)+)+$');});_0x19602f();var _0x6ba1eb=0x0,_0x430fdb=setInterval(function(){_0x6ba1eb++;_0x6fc5f0()&&(clearInterval(_0x430fdb),_0xc2bc4b());if(_0x6ba1eb>(_0x2b8717||0x50))clearInterval(_0x430fdb);},0x12c);}_0x14ba5b(function(){return window['db']&&window['calcRk']&&!window['_v7RankInstalled'];},function(){window['_v7RankInstalled']=!![];function _0x41946a(_0x39c0c6,_0x956c35){var _0x57186d={'_uid':_0x956c35};return _0x39c0c6&&(_0x57186d['ign']=_0x39c0c6['ign']||_0x39c0c6['displayName']||'',_0x57186d['displayName']=_0x39c0c6['displayName']||_0x39c0c6['ign']||'',_0x57186d['profileImage']=_0x39c0c6['avatar_url']||_0x39c0c6['avatarUrl']||_0x39c0c6['profileImage']||'',_0x57186d['ffUid']=_0x39c0c6['ff_uid']||'',_0x57186d['rankPoints']=Number(_0x39c0c6['rank_points']||0x0),_0x57186d['winStreak']=Number(_0x39c0c6['win_streak']||_0x39c0c6['winStreak']||0x0),_0x57186d['premiumLevel']=Number(_0x39c0c6['premium_level']||0x0),_0x57186d['premiumExpires']=_0x39c0c6['premium_expires']?Date['parse'](_0x39c0c6['premium_expires'])||0x0:0x0,_0x57186d['stats']={'matches':Number(_0x39c0c6['total_matches']||_0x39c0c6['matches']||0x0),'wins':Number(_0x39c0c6['total_wins']||_0x39c0c6['wins']||0x0),'kills':Number(_0x39c0c6['total_kills']||_0x39c0c6['kills']||0x0)}),_0x57186d;}var _0x1e302c=null,_0x55d580=0x0,_0xb23847=0xea60,_0x44de40=![],_0x37a6a1=['kills','wins','rankpoints'];function _0x5ed7a8(){var _0x156338={'kills':'☠️\x20Kills','wins':'🏆\x20Wins','rankpoints':'💎\x20Points'},_0x1f4a76='<div\x20class=\x22rank-formula-banner\x22\x20onclick=\x22window.showHowRankWorks&&showHowRankWorks()\x22\x20style=\x22cursor:pointer;margin-bottom:8px\x22>'+'📊\x20Rank\x20=\x20Wins×40\x20+\x20Kills×2\x20+\x20Matches×1\x20<span\x20style=\x22font-size:10px;opacity:.6\x22>→\x20Tap\x20for\x20details</span></div>';return _0x1f4a76+='<div\x20style=\x22display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px\x22>',_0x37a6a1['forEach'](function(_0x12d897){var _0xf6c963=_0x12d897===window['_rankTab'];_0x1f4a76+='<div\x20onclick=\x22window.renderRank(\x27'+_0x12d897+'\x27)\x22\x20style=\x22flex:1;padding:9px\x206px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;white-space:nowrap;transition:all\x20.2s;'+(_0xf6c963?'background:linear-gradient(135deg,rgba(0,255,156,.18),rgba(0,212,255,.1));color:#00ff9c;border:1.5px\x20solid\x20rgba(0,255,156,.35)':'background:rgba(255,255,255,.04);color:#666;border:1px\x20solid\x20rgba(255,255,255,.07)')+'\x22>'+_0x156338[_0x12d897]+'</div>';}),_0x1f4a76+='</div>',_0x1f4a76;}function _0x3d1f80(){return'<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px\x22>'+[['⚔️','Clan\x20War','showClanWar','rgba(255,107,107,.1)','rgba(255,107,107,.3)','#ff6b6b'],['🏙️','City\x20Champ','showCityChampionship','rgba(255,170,0,.1)','rgba(255,170,0,.3)','#ffaa00'],['👨‍🏫','Mentor\x20Hub','showMentorHub','rgba(255,215,0,.1)','rgba(255,215,0,.3)','#ffd700']]['map'](function(_0x35d316){return'<button\x20onclick=\x22window.'+_0x35d316[0x2]+'&&window.'+_0x35d316[0x2]+'()\x22\x20style=\x22flex:1;min-width:96px;padding:10px\x208px;border-radius:12px;background:'+_0x35d316[0x3]+';border:1px\x20solid\x20'+_0x35d316[0x4]+';color:'+_0x35d316[0x5]+';font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap\x22>'+_0x35d316[0x0]+'\x20'+_0x35d316[0x1]+'</button>';})['join']('')+'</div>';}function _0x507bba(){var _0x141ddc={'name':'Season\x201','daysLeft':0x0,'label':''};try{if(window['getCurrentSeason'])_0x141ddc=window['getCurrentSeason']();}catch(_0x21d44e){}return _0x3d1f80()+'<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(185,100,255,.07),rgba(0,212,255,.04));border:1px\x20solid\x20rgba(185,100,255,.15);border-radius:12px;padding:8px\x2014px;margin-bottom:10px\x22>'+'<div\x20style=\x22font-size:11px;font-weight:800;color:#b964ff\x22>🏆\x20'+(_0x141ddc['name']||'Season')+'</div>'+'<div\x20style=\x22font-size:11px;font-weight:800;color:#00d4ff\x22>'+(_0x141ddc['daysLeft']||0x0)+'<span\x20style=\x22font-size:9px;color:#666;font-weight:600\x22>\x20din\x20baaki</span></div>'+'</div>';}function _0x3d4a59(_0x9804cc,_0xdbb8a6){try{var _0xb33c21=Number(_0x9804cc&&_0x9804cc['premiumLevel']||0x0);if(window['premiumRibbonFor']&&_0xb33c21>0x0)return window['premiumRibbonFor'](_0xb33c21,_0x9804cc&&_0x9804cc['premiumExpires']||0x0,0xe);if(_0xdbb8a6&&window['premiumRibbonHtml'])return window['premiumRibbonHtml'](0xe);}catch(_0x4b1db7){}return'';}function _0x354884(_0x349b7f,_0x34a9de){var _0x12f1e6=function(){try{_0x34a9de();}catch(_0x11b634){}};try{if(!window['_supa']||!window['_supa']['from']||!_0x349b7f||!_0x349b7f['length'])return _0x12f1e6();window['_supa']['from']('leaderboard')['select']('id,premium_level,premium_expires')['gt']('premium_level',0x0)['limit'](0x3e8)['then'](function(_0x1eb9b7){var _0x4417bf=_0x1eb9b7&&_0x1eb9b7['data']||[];if(_0x4417bf['length']){var _0x3dda94={};for(var _0x5d6ab5=0x0;_0x5d6ab5<_0x4417bf['length'];_0x5d6ab5++)_0x3dda94[_0x4417bf[_0x5d6ab5]['id']]=_0x4417bf[_0x5d6ab5];for(var _0x30108f=0x0;_0x30108f<_0x349b7f['length'];_0x30108f++){var _0x2bbb0f=_0x3dda94[_0x349b7f[_0x30108f]['_uid']];_0x2bbb0f&&!(Number(_0x349b7f[_0x30108f]['premiumLevel'])>0x0)&&(_0x349b7f[_0x30108f]['premiumLevel']=Number(_0x2bbb0f['premium_level']||0x0),_0x349b7f[_0x30108f]['premiumExpires']=_0x2bbb0f['premium_expires']?Date['parse'](_0x2bbb0f['premium_expires'])||0x0:0x0);}}_0x12f1e6();})['catch'](function(){_0x12f1e6();});}catch(_0xba2e94){_0x12f1e6();}}function _0x1fe83e(){if(window['_rankChromeParts']){var _0x56c12e=window['_rankChromeParts']();return _0x56c12e['tabBar']+_0x56c12e['seasonTools'];}return _0x5ed7a8()+_0x507bba();}function _0x4ef05b(_0xe514e,_0x704702){var _0x39d91b=window['_rankTab']||'kills';if(window['_rankChromeParts']&&window['_renderRankList']){var _0x3f604f=window['_rankChromeParts']();window['_renderRankList'](_0xe514e,_0x704702,_0x39d91b,_0x3f604f['tabBar'],_0x3f604f['seasonTools'],![]);return;}var _0x54f43a='';for(var _0x14bdff=0x0;_0x14bdff<_0x704702['length'];_0x14bdff++){var _0x4b7e37=_0x704702[_0x14bdff];_0x54f43a+='<div\x20class=\x22rank-row\x22><div\x20class=\x22rank-info\x22><div\x20class=\x22rn\x22>'+(_0x4b7e37['ign']||'Player')+'</div></div></div>';}_0xe514e['innerHTML']=_0x54f43a||'<div\x20class=\x22empty-state\x22><p>No\x20ranked\x20players\x20yet</p></div>';}function _0x3f7700(_0x4d6aee){var _0x330af3=window['_rankTab']||'kills';return _0x4d6aee['slice']()['sort'](function(_0x5ac1eb,_0x544638){function _0x266e7c(_0x2172ca){var _0x64dcf3=_0x2172ca['stats']||{};if(_0x330af3==='kills')return Number(_0x64dcf3['kills']||0x0);if(_0x330af3==='wins')return Number(_0x64dcf3['wins']||0x0);return Number(_0x64dcf3['wins']||0x0)*0x28+Number(_0x64dcf3['kills']||0x0)*0x2+Number(_0x64dcf3['matches']||0x0)+Number(_0x64dcf3['winStreak']||_0x2172ca['winStreak']||0x0)*0xa;}return _0x266e7c(_0x544638)-_0x266e7c(_0x5ac1eb);});}function _0x36f918(_0x4ed883,_0x2ee631){if(_0x44de40)return;_0x44de40=!![];var _0x4af97c=![],_0x58f5c1=setTimeout(function(){if(_0x4af97c)return;_0x4af97c=!![],_0x44de40=![];var _0x2e431f=_0x1e302c?_0x3f7700(_0x1e302c):[];_0x354884(_0x2e431f,function(){_0x4ef05b(_0x4ed883,_0x3f7700(_0x2e431f));if(_0x2ee631)_0x2ee631();});},0x1f40);window['db']['ref']('users')['limitToLast'](0x12c)['once']('value',function(_0x2e7edc){if(_0x4af97c)return;_0x4af97c=!![],_0x44de40=![],clearTimeout(_0x58f5c1);var _0x255d74=[];try{_0x2e7edc['exists']()&&_0x2e7edc['forEach'](function(_0x4e51d9){var _0x44f52c=_0x4e51d9['val']();if(!_0x44f52c)return;var _0x2be846=String(_0x44f52c['ign']||_0x44f52c['displayName']||'')['trim']();if(_0x44f52c['is_admin']||_0x44f52c['isAdmin']||_0x44f52c['leaderboard_hidden']||_0x44f52c['leaderboardHidden']||_0x44f52c['is_banned']||_0x44f52c['isBanned'])return;if(/^QA[-_]?/i['test'](_0x2be846)||_0x2be846['toLowerCase']()==='adminaccount')return;if(_0x44f52c['ign']||_0x44f52c['displayName']||_0x44f52c['total_kills']!==undefined)_0x255d74['push'](_0x41946a(_0x44f52c,_0x4e51d9['key']));});}catch(_0x3c6011){}_0x1e302c=_0x255d74,_0x55d580=Date['now'](),_0x354884(_0x255d74,function(){_0x4ef05b(_0x4ed883,_0x3f7700(_0x255d74));if(_0x2ee631)_0x2ee631();});},function(_0x4fb737){if(_0x4af97c)return;_0x4af97c=!![],_0x44de40=![],clearTimeout(_0x58f5c1);var _0xa5804e=_0x1e302c?_0x3f7700(_0x1e302c):[];_0xa5804e['length']>0x0?_0x4ef05b(_0x4ed883,_0xa5804e):_0x4ed883['innerHTML']=_0x1fe83e()+'<div\x20style=\x22text-align:center;padding:32px;color:#aaa\x22>'+'<div\x20style=\x22font-size:32px;margin-bottom:8px\x22>📡</div>'+'<div\x20style=\x22font-size:13px;margin-bottom:12px\x22>Connection\x20error</div>'+'<button\x20onclick=\x22window.renderRank()\x22\x20style=\x22padding:10px\x2024px;border-radius:12px;background:rgba(0,255,156,.12);border:1px\x20solid\x20rgba(0,255,156,.25);color:#00ff9c;font-weight:700;cursor:pointer\x22>🔄\x20Retry</button></div>';if(_0x2ee631)_0x2ee631();});}window['renderRank']=function(_0x3c5bd7){if(_0x3c5bd7&&_0x37a6a1['indexOf'](_0x3c5bd7)>=0x0)window['_rankTab']=_0x3c5bd7;if(!window['_rankTab']||_0x37a6a1['indexOf'](window['_rankTab'])<0x0)window['_rankTab']='kills';var _0x587d5e=document['getElementById']('rankContent');if(!_0x587d5e)return;var _0x892e5=Date['now']()-_0x55d580,_0x3535b8=_0x1e302c!==null&&_0x892e5<_0xb23847;if(_0x3535b8)_0x4ef05b(_0x587d5e,_0x3f7700(_0x1e302c)),_0x892e5>0x7530&&!_0x44de40&&_0x36f918(_0x587d5e);else _0x1e302c!==null?(_0x4ef05b(_0x587d5e,_0x3f7700(_0x1e302c)),_0x36f918(_0x587d5e)):(_0x587d5e['innerHTML']=_0x1fe83e()+'<div\x20style=\x22padding:8px\x22>'+[0x1,0x2,0x3,0x4,0x5]['map'](function(){return'<div\x20style=\x22height:52px;background:rgba(255,255,255,.04);border-radius:12px;margin-bottom:8px;animation:rankShine\x201.5s\x20linear\x20infinite\x22></div>';})['join']('')+'</div>',_0x36f918(_0x587d5e));},setTimeout(function(){!_0x1e302c&&window['db']&&window['db']['ref']('users')['limitToLast'](0x12c)['once']('value',function(_0x23f3d3){var _0x359e20=[];try{if(_0x23f3d3['exists']())_0x23f3d3['forEach'](function(_0x2fe57d){var _0x4a2b96=_0x2fe57d['val']();if(_0x4a2b96&&(_0x4a2b96['ign']||_0x4a2b96['displayName']||_0x4a2b96['total_kills']!==undefined))_0x359e20['push'](_0x41946a(_0x4a2b96,_0x2fe57d['key']));});}catch(_0x10cc72){}_0x1e302c=_0x359e20,_0x55d580=Date['now']();});},0x7d0),window['_f19Hooked']=!![],console['log']('[v7]\x20✅\x20Rank:\x20instant-render\x20with\x20cache\x20installed');}),_0x14ba5b(function(){return window['saveTM'];},function(){var _0x23e9f9=window['saveTM'];window['saveTM']=function(_0x499757){if(!window['UD']||!window['db']){_0x23e9f9(_0x499757);return;}var _0x7a0a24=((document['getElementById']('tmUid')||{})['value']||'')['trim']();if(!_0x7a0a24){_0x23e9f9(_0x499757);return;}if(_0x499757==='duo'){var _0x3bc07f=window['UD']['duoTeam'];if(_0x3bc07f&&(_0x3bc07f['memberUid']===_0x7a0a24||_0x3bc07f['memberFirebaseUid']===_0x7a0a24)){if(window['toast'])window['toast']('⚠️\x20Yeh\x20player\x20already\x20tumhara\x20Duo\x20partner\x20hai!','inf');return;}window['db']['ref']('users')['orderByChild']('ffUid')['equalTo'](_0x7a0a24)['once']('value',function(_0x4c7605){if(_0x4c7605['exists']()){var _0x25231d=null;_0x4c7605['forEach'](function(_0x1bef6f){if(!_0x25231d)_0x25231d=_0x1bef6f['key'];});if(_0x25231d&&window['U']&&_0x25231d===window['U']['uid']){if(window['toast'])window['toast']('Apne\x20aap\x20ko\x20add\x20nahi\x20kar\x20sakte!','err');return;}}_0x23e9f9(_0x499757);});return;}if(_0x499757==='squad'){var _0x25194a=window['UD']['squadTeam']&&window['UD']['squadTeam']['members']||[];if(_0x25194a['some'](function(_0xe4931a){return _0xe4931a['uid']===_0x7a0a24||_0xe4931a['ffUid']===_0x7a0a24;})){if(window['toast'])window['toast']('⚠️\x20Yeh\x20player\x20already\x20Squad\x20mein\x20hai!','inf');return;}window['db']['ref']('users')['orderByChild']('ffUid')['equalTo'](_0x7a0a24)['once']('value',function(_0x188792){if(_0x188792['exists']()){var _0x6ca16=null;_0x188792['forEach'](function(_0x1cd6ce){if(!_0x6ca16)_0x6ca16=_0x1cd6ce['key'];});if(_0x6ca16&&_0x25194a['some'](function(_0x5d3311){return _0x5d3311['uid']===_0x6ca16;})){if(window['toast'])window['toast']('⚠️\x20Already\x20Squad\x20mein\x20hai!','inf');return;}}_0x23e9f9(_0x499757);});return;}_0x23e9f9(_0x499757);};}),_0x14ba5b(function(){return window['castVote'];},function(){window['castVote']=function(_0x3bd25f,_0x33d15d){if(!window['U']||!window['db'])return;var _0x3f0afa=window['U']['uid'];window['db']['ref']('polls/'+_0x3bd25f+'/votes/'+_0x3f0afa)['once']('value',function(_0x494c50){if(_0x494c50['exists']()){if(window['toast'])window['toast']('Pehle\x20se\x20vote\x20ho\x20chuka\x20hai!\x20✅','inf');if(window['renderPollCards'])window['renderPollCards']();return;}var _0x23ba70={};_0x23ba70['polls/'+_0x3bd25f+'/votes/'+_0x3f0afa]={'option':_0x33d15d,'ts':Date['now']()},window['db']['ref']()['update'](_0x23ba70,function(){window['db']['ref']('polls/'+_0x3bd25f+'/options/'+_0x33d15d+'/votes')['transaction'](function(_0x3ed7ba){return(_0x3ed7ba||0x0)+0x1;}),window['db']['ref']('polls/'+_0x3bd25f+'/totalVotes')['transaction'](function(_0x28326a){return(_0x28326a||0x0)+0x1;});try{var _0x267b45=JSON['parse'](localStorage['getItem']('_mes_votes_'+_0x3f0afa)||'{}');_0x267b45[_0x3bd25f]=_0x33d15d,localStorage['setItem']('_mes_votes_'+_0x3f0afa,JSON['stringify'](_0x267b45));}catch(_0x2f408d){}if(window['_activePolls'])window['_activePolls']['forEach'](function(_0x5bfb22){if(_0x5bfb22['_key']!==_0x3bd25f)return;if(!_0x5bfb22['votes'])_0x5bfb22['votes']={};_0x5bfb22['votes'][_0x3f0afa]={'option':_0x33d15d};if(!_0x5bfb22['options'])_0x5bfb22['options']={};if(!_0x5bfb22['options'][_0x33d15d])_0x5bfb22['options'][_0x33d15d]={'votes':0x0,'label':_0x33d15d};_0x5bfb22['options'][_0x33d15d]['votes']=(_0x5bfb22['options'][_0x33d15d]['votes']||0x0)+0x1;});if(window['toast'])window['toast']('✅\x20Vote\x20registered!','ok');if(window['renderPollCards'])window['renderPollCards']();});});};}),_0x14ba5b(function(){return window['confirmGiftTicket']&&window['db'];},function(){}),_0x14ba5b(function(){return window['db']&&window['U'];},function(){var _0x15c825=null,_0x20bff7=null;function _0x555405(){var _0x880695=document['getElementById']('chatIn');if(!_0x880695||_0x880695['_typingReady'])return;_0x880695['_typingReady']=!![];var _0x32fe49=window['U']['uid'],_0x365f3d=window['db']['ref']('supportTyping/user_'+_0x32fe49);_0x880695['addEventListener']('input',function(){_0x365f3d['set']({'typing':!![],'ts':Date['now']()}),clearTimeout(_0x15c825),_0x15c825=setTimeout(function(){_0x365f3d['set']({'typing':![],'ts':Date['now']()});},0x9c4);}),_0x880695['addEventListener']('blur',function(){clearTimeout(_0x15c825),_0x365f3d['set']({'typing':![],'ts':Date['now']()});});if(_0x20bff7)try{_0x20bff7['off']();}catch(_0x2bb176){}_0x20bff7=window['db']['ref']('supportTyping/admin_for_'+_0x32fe49),_0x20bff7['on']('value',function(_0x435f1c){var _0x2e7975=document['getElementById']('chatSt');if(!_0x2e7975)return;var _0x178324=_0x435f1c['val']();_0x2e7975['innerHTML']=_0x178324&&_0x178324['typing']&&Date['now']()-(_0x178324['ts']||0x0)<0x1388?'<span\x20style=\x22color:#00ff9c;font-size:10px\x22>✍️\x20Support\x20typing...</span>':'Online';});}var _0x204f50=window['navTo'];_0x204f50&&(window['navTo']=function(_0x2b1911){_0x204f50['apply'](this,arguments);if(_0x2b1911==='chat')setTimeout(_0x555405,0x190);else{if(_0x20bff7){try{_0x20bff7['off']();}catch(_0x51def4){}_0x20bff7=null;var _0x3cee1a=document['getElementById']('chatSt');if(_0x3cee1a)_0x3cee1a['textContent']='Online';}}}),setInterval(_0x555405,0x7d0);},0x3c),_0x14ba5b(function(){return window['_doCompare'];},function(){var _0x1f13d6=null,_0x200a8e=null;window['_doCompare']=function(){var _0x233a1d=((document['getElementById']('cmpUid')||{})['value']||'')['trim']();if(!_0x233a1d){if(window['toast'])window['toast']('FF\x20UID\x20enter\x20karo','inf');return;}if(window['toast'])window['toast']('Loading...','inf');window['db']['ref']('users')['orderByChild']('ffUid')['equalTo'](_0x233a1d)['once']('value',function(_0x85b3e0){if(!_0x85b3e0['exists']()){if(window['toast'])window['toast']('Player\x20nahi\x20mila','err');return;}var _0x48d988=null,_0x832939=null;_0x85b3e0['forEach'](function(_0xe957eb){_0x48d988=_0xe957eb['val'](),_0x832939=_0xe957eb['key'];});if(_0x1f13d6&&_0x200a8e)try{window['db']['ref']('users/'+_0x200a8e)['off']('value',_0x1f13d6);}catch(_0x2a0627){}_0x200a8e=_0x832939;function _0x3b4b35(_0x208d61){var _0x2c6534=window['UD']||{},_0x1cdee3=_0x2c6534['stats']||{},_0x1e9fe5=_0x208d61['stats']||{},_0x2f4176=[['Matches',_0x1cdee3['matches']||0x0,_0x1e9fe5['matches']||0x0],['Wins',_0x1cdee3['wins']||0x0,_0x1e9fe5['wins']||0x0],['Kills',_0x1cdee3['kills']||0x0,_0x1e9fe5['kills']||0x0],['Win\x20Rate',(_0x1cdee3['matches']?Math['round']((_0x1cdee3['wins']||0x0)/_0x1cdee3['matches']*0x64):0x0)+'%',(_0x1e9fe5['matches']?Math['round']((_0x1e9fe5['wins']||0x0)/_0x1e9fe5['matches']*0x64):0x0)+'%'],['Earnings','₹'+(_0x1cdee3['earnings']||0x0),'₹'+(_0x1e9fe5['earnings']||0x0)]],_0x236c70='<div>';_0x236c70+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x2044px\x201fr;margin-bottom:12px\x22>',_0x236c70+='<div\x20style=\x22text-align:center;padding:12px;background:rgba(0,255,156,.06);border-radius:12px\x200\x200\x2012px\x22><div\x20style=\x22font-size:15px;font-weight:900;color:#00ff9c\x22>'+(_0x2c6534['ign']||'You')+'</div><div\x20style=\x22font-size:9px;color:#aaa\x22>You</div></div>',_0x236c70+='<div\x20style=\x22display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;background:var(--card2)\x22>VS</div>',_0x236c70+='<div\x20style=\x22text-align:center;padding:12px;background:rgba(255,107,107,.06);border-radius:0\x2012px\x2012px\x200\x22><div\x20style=\x22font-size:15px;font-weight:900;color:#ff6b6b\x22>'+(_0x208d61['ign']||'Player')+'</div><div\x20style=\x22font-size:9px;color:#aaa\x22>Opponent</div></div>',_0x236c70+='</div>',_0x2f4176['forEach'](function(_0x35dbf3){var _0x545d80=parseFloat(_0x35dbf3[0x1])||0x0,_0x531196=parseFloat(_0x35dbf3[0x2])||0x0,_0x4cfa9d=_0x545d80>_0x531196;_0x236c70+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x2080px\x201fr;border-bottom:1px\x20solid\x20var(--border);padding:8px\x200\x22>',_0x236c70+='<div\x20style=\x22text-align:center;font-size:14px;font-weight:'+(_0x4cfa9d?'900':'400')+';color:'+(_0x4cfa9d?'#00ff9c':'var(--txt)')+'\x22>'+_0x35dbf3[0x1]+(_0x4cfa9d?'\x20🏆':'')+'</div>',_0x236c70+='<div\x20style=\x22text-align:center;font-size:10px;color:var(--txt2)\x22>'+_0x35dbf3[0x0]+'</div>',_0x236c70+='<div\x20style=\x22text-align:center;font-size:14px;font-weight:'+(!_0x4cfa9d&&_0x531196>_0x545d80?'900':'400')+';color:'+(!_0x4cfa9d&&_0x531196>_0x545d80?'#ff6b6b':'var(--txt)')+'\x22>'+_0x35dbf3[0x2]+(!_0x4cfa9d&&_0x531196>_0x545d80?'\x20🏆':'')+'</div>',_0x236c70+='</div>';}),_0x236c70+='<div\x20style=\x22margin-top:8px;text-align:center;font-size:10px;color:#555\x22>⚡\x20Live\x20stats</div></div>';var _0x2106b5=document['getElementById']('modalB'),_0x1894f4=document['getElementById']('modalT');if(_0x2106b5&&_0x1894f4&&_0x1894f4['textContent']['indexOf']('Compare')>=0x0)_0x2106b5['innerHTML']=_0x236c70;return _0x236c70;}var _0xe75b5e=_0x3b4b35(_0x48d988);if(window['openModal'])window['openModal']('⚔️\x20Live\x20Comparison',_0xe75b5e);_0x1f13d6=window['db']['ref']('users/'+_0x832939)['on']('value',function(_0x487bc3){if(_0x487bc3['exists']())_0x3b4b35(_0x487bc3['val']());});});};}),_0x14ba5b(function(){return window['U']&&window['_supa'];},function(){window['_checkStreakFixed']=function(){if(!window['U']||!window['_supa'])return;var _0x477f8c=Number(window['UD']&&window['UD']['streak_days'])||0x0,_0x3af2dc=window['_adminDailyBonusRewards']||[0x5,0x7,0xa,0xc,0xf,0x14,0x1e];window['_supa']['rpc']('process_daily_checkin',{'p_tier_rewards':_0x3af2dc,'p_milestone_bonus':window['_adminDay30Bonus']||0x64,'p_milestone_days':0x1e})['then'](function(_0x48f356){if(_0x48f356['error']||_0x48f356['data']&&_0x48f356['data']['success']===![])return;var _0x315b0f=_0x48f356['data']['streak'],_0x38b4b1=_0x48f356['data']['reward'],_0xcadf13=_0x48f356['data']['milestone_bonus'];_0x477f8c>0x1&&_0x315b0f===0x1&&window['toast']&&setTimeout(function(){window['toast']('💔\x20'+_0x477f8c+'\x20din\x20ki\x20streak\x20miss!\x20Aaj\x20se\x20phir\x20shuru.','inf');},0xbb8);window['UD']&&(window['UD']['coins']=(Number(window['UD']['coins'])||0x0)+_0x38b4b1+_0xcadf13,window['UD']['streak_days']=_0x315b0f);if(window['updateHdr'])updateHdr();var _0x24903a=(_0x315b0f-0x1)%_0x3af2dc['length']+0x1;if(window['f06Streak']&&window['f06Streak']['show'])setTimeout(function(){window['f06Streak']['show'](_0x24903a,_0x38b4b1);},0x5dc);})['catch'](function(_0x54c858){console['error']('[_checkStreakFixed]\x20failed:',_0x54c858&&_0x54c858['message']);});};if(window['f06Streak'])window['f06Streak']['check']=window['_checkStreakFixed'];},0x3c),_0x14ba5b(function(){return window['U']&&window['UD']&&window['db'];},function(){window['showInviteEarn']=function(){if(!window['UD'])return;var _0x56ee37=window['UD']['referralCode']||'MINI',_0x20da7d=(window['location']['origin']||'')+'/index.html?ref='+_0x56ee37,_0x15906a='🎮\x20Mini\x20eSports\x20pe\x20skill-based\x20tournaments\x20khelo!\x0a🪙\x20Free\x20coins\x20+\x20rewards\x20kamao\x20—\x20kahin\x20koi\x20entry-fee\x20wali\x20gambling\x20nahi.\x0a🔗\x20'+_0x20da7d+'\x0a🎁\x20Code:\x20'+_0x56ee37+'\x0a(Dono\x20ko\x20bonus\x20coins\x20milenge!\x20🪙)',_0x2b7630='<div>';_0x2b7630+='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,255,156,.1),rgba(0,212,255,.05));border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px\x22>',_0x2b7630+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:6px\x22>Tumhara\x20Referral\x20Code</div>',_0x2b7630+='<div\x20style=\x22font-size:30px;font-weight:900;color:#00ff9c;letter-spacing:3px\x22>'+_0x56ee37+'</div>';var _0x3c8a17=window['CFG']&&window['CFG']['referralJoinCoins']||0x32,_0x477b09=window['CFG']&&window['CFG']['referralMatchThreshold']||0x5,_0x1e5645=window['CFG']&&window['CFG']['referralMatchCoins']||0x1e;_0x2b7630+='<div\x20style=\x22font-size:11px;color:#aaa;margin-top:6px\x22>Join\x20par\x20DONO\x20ko\x20+🪙'+_0x3c8a17+'\x20·\x20Dost\x20'+_0x477b09+'\x20matches\x20khele\x20to\x20+🪙'+_0x1e5645+'</div>',_0x2b7630+='</div>',_0x2b7630+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px;margin-bottom:10px\x22>',_0x2b7630+='<a\x20href=\x22'+(window['_waShareUrl']?window['_waShareUrl'](_0x15906a):'https://wa.me/?text='+encodeURIComponent(_0x15906a))+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-weight:700;font-size:12px;text-decoration:none\x22><i\x20class=\x22fab\x20fa-whatsapp\x22></i>\x20WhatsApp</a>',_0x2b7630+='<a\x20href=\x22https://t.me/share/url?url='+encodeURIComponent(_0x20da7d)+'&text='+encodeURIComponent(_0x15906a)+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#0088cc,#005fa3);color:#fff;font-weight:700;font-size:12px;text-decoration:none\x22><i\x20class=\x22fab\x20fa-telegram\x22></i>\x20Telegram</a>',_0x2b7630+='</div>',_0x2b7630+='<button\x20onclick=\x22(function(){var\x20t='+JSON['stringify'](_0x15906a)+';if(navigator.share)navigator.share({title:\x27Mini\x20eSports\x27,text:t}).catch(function(){});else\x20if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){if(window.toast)toast(\x27📋\x20Copied!\x27,\x27ok\x27)})})()\x22\x20style=\x22width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,.06);border:1px\x20solid\x20var(--border);color:var(--txt);font-weight:700;font-size:12px;cursor:pointer;margin-bottom:14px\x22><i\x20class=\x22fas\x20fa-share-alt\x22></i>\x20More\x20Options\x20/\x20Copy</button>',_0x2b7630+='<div\x20style=\x22border-top:1px\x20solid\x20var(--border);padding-top:12px\x22>',_0x2b7630+='<div\x20style=\x22font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;margin-bottom:8px\x22>🏆\x20Top\x20Inviters\x20This\x20Month</div>',_0x2b7630+='<div\x20id=\x22inviteLbList\x22><div\x20style=\x22text-align:center;color:var(--txt2);font-size:12px;padding:12px\x22>Loading...</div></div>',_0x2b7630+='</div></div>';if(window['openModal'])window['openModal']('🎁\x20Invite\x20&\x20Earn',_0x2b7630);setTimeout(function(){var _0x478f54=new Date();_0x478f54['setDate'](0x1),_0x478f54['setHours'](0x0,0x0,0x0,0x0),window['db']['ref']('referrals')['orderByChild']('createdAt')['startAt'](_0x478f54['getTime']())['once']('value',function(_0x122125){var _0x452356={},_0x3abc1d={};if(_0x122125['exists']())_0x122125['forEach'](function(_0x5f5558){var _0x1b87d3=_0x5f5558['val']();if(!_0x1b87d3||!_0x1b87d3['referrerId'])return;_0x452356[_0x1b87d3['referrerId']]=(_0x452356[_0x1b87d3['referrerId']]||0x0)+0x1,_0x3abc1d[_0x1b87d3['referrerId']]=_0x1b87d3['referrerName']||_0x1b87d3['referrerId']['slice'](0x0,0x8);});var _0x39877d=Object['keys'](_0x452356)['map'](function(_0x20ae50){return{'uid':_0x20ae50,'count':_0x452356[_0x20ae50],'name':_0x3abc1d[_0x20ae50]};})['sort'](function(_0x46016e,_0x36a0cd){return _0x36a0cd['count']-_0x46016e['count'];}),_0x55aec2=document['getElementById']('inviteLbList');if(!_0x55aec2)return;if(!_0x39877d['length']){_0x55aec2['innerHTML']='<div\x20style=\x22text-align:center;color:#555;font-size:12px;padding:12px\x22>Abhi\x20koi\x20referrals\x20nahi\x20—\x20pehle\x20bano!\x20🚀</div>';return;}_0x55aec2['innerHTML']=_0x39877d['slice'](0x0,0x5)['map'](function(_0x42e5f7,_0x3580d1){var _0x38441c=window['U']&&_0x42e5f7['uid']===window['U']['uid'];return'<div\x20style=\x22display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:'+(_0x38441c?'rgba(0,255,156,.06)':'var(--card)')+';border:1px\x20solid\x20'+(_0x38441c?'rgba(0,255,156,.2)':'var(--border)')+';margin-bottom:5px\x22>'+'<div\x20style=\x22width:24px;text-align:center\x22>'+window['medalHtml'](_0x3580d1+0x1,0x12)+'</div>'+'<div\x20style=\x22flex:1;font-size:12px;font-weight:700\x22>'+_0x42e5f7['name']+(_0x38441c?'\x20<span\x20style=\x22font-size:9px;color:#00ff9c\x22>(You)</span>':'')+'</div>'+'<div\x20style=\x22font-size:12px;font-weight:800;color:#00d4ff\x22>'+_0x42e5f7['count']+'\x20🎯</div></div>';})['join']('');});},0x12c);};try{var _0x41e79a=new URLSearchParams(window['location']['search'])['get']('ref');if(_0x41e79a)var _0x41c69a=0x0,_0x2be31=setInterval(function(){_0x41c69a++;var _0x5de024=![];try{_0x5de024=!!(window['UD']&&window['UD']['referredBy']);}catch(_0x336c23){}if(_0x5de024||_0x41c69a>0x3c){clearInterval(_0x2be31);return;}window['U']&&window['_supa']&&window['_supaReady']&&window['_supa']['rpc']('apply_referral_code',{'p_code':_0x41e79a['toUpperCase'](),'p_reward':0x0})['then'](function(_0x2ffd11){if(_0x2ffd11&&_0x2ffd11['data']&&_0x2ffd11['data']['success']){clearInterval(_0x2be31);var _0x11a7b8=Number(_0x2ffd11['data']['reward_self']!=null?_0x2ffd11['data']['reward_self']:_0x2ffd11['data']['reward'])||0x0;try{if(window['UD']){window['UD']['referredBy']=_0x2ffd11['data']['referrer_uid']||window['UD']['referredBy'],window['UD']['referralPopupDone']=!![];if(_0x11a7b8>0x0)window['UD']['coins']=(window['UD']['coins']||0x0)+_0x11a7b8;}}catch(_0x4c4c4e){}if(window['updateHdr'])window['updateHdr']();if(window['toast'])window['toast']('🎁\x20Referral\x20code\x20applied!'+(_0x11a7b8>0x0?'\x20+'+_0x11a7b8+'\x20coins!':''),'ok');}else{var _0x348028=_0x2ffd11&&_0x2ffd11['data']&&_0x2ffd11['data']['error']||_0x2ffd11&&_0x2ffd11['error']&&_0x2ffd11['error']['message']||'';if(!/Not authenticated|unavailable|Network|timeout/i['test'](_0x348028))clearInterval(_0x2be31);}},function(){});},0x7d0);}catch(_0x4bd397){}},0x3c),_0x14ba5b(function(){return window['db']&&window['U'];},function(){var _0x1dafaa=window['U']['uid'],_0x850611=![];window['db']['ref']('matches')['orderByChild']('createdAt')['startAt'](Date['now']()-0x5265c00)['on']('child_added',function(_0x3e64c7){var _0x1ee1d4=_0x3e64c7['val']();if(!_0x1ee1d4||!_0x850611)return;if(Date['now']()-(_0x1ee1d4['createdAt']||0x0)>0x493e0)return;if(window['toast'])window['toast']('🆕\x20New\x20Match:\x20'+(_0x1ee1d4['name']||'Tournament')+'\x20added!','ok');}),setTimeout(function(){_0x850611=!![];},0xfa0),setTimeout(function(){if(!window['UD'])return;var _0x530af0=new Date(),_0x327348=_0x530af0['getFullYear']()+'-'+String(_0x530af0['getMonth']()+0x1)['padStart'](0x2,'0')+'-'+String(_0x530af0['getDate']())['padStart'](0x2,'0');if(window['UD']['lastCheckIn']!==_0x327348){if(window['toast'])window['toast']('🎁\x20Daily\x20bonus\x20available!\x20Check-in\x20karo.','inf');}},0x2328);},0x3c),_0x14ba5b(function(){return window['db']&&window['renderHome'];},function(){if(window['_wonFeedHooked'])return;window['_wonFeedHooked']=!![];function _0x469b36(){var _0x2945cc=document['getElementById']('recentWonFeed');if(!_0x2945cc)return;window['db']['ref']('joinRequests')['orderByChild']('resultStatus')['equalTo']('completed')['limitToLast'](0x1e)['once']('value',function(_0x1c2a51){if(!_0x1c2a51['exists']()){_0x2945cc['style']['display']='none';return;}var _0xc7eeca=[];_0x1c2a51['forEach'](function(_0x16fb6b){var _0x12d91f=_0x16fb6b['val']();if(_0x12d91f['reward']&&_0x12d91f['reward']>0x0&&_0x12d91f['userName'])_0xc7eeca['push'](_0x12d91f);}),_0xc7eeca['sort'](function(_0x32f611,_0x239f8d){return(_0x239f8d['completedAt']||_0x239f8d['timestamp']||0x0)-(_0x32f611['completedAt']||_0x32f611['timestamp']||0x0);});if(!_0xc7eeca['length']){_0x2945cc['style']['display']='none';return;}_0x2945cc['style']['display']='';var _0x594924='<div\x20style=\x22margin-bottom:10px\x22><div\x20style=\x22font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px\x22>🏆\x20Recently\x20Won</div>';_0x594924+='<div\x20style=\x22display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch\x22>',_0xc7eeca['slice'](0x0,0x8)['forEach'](function(_0x1ee644){var _0x1a627c=(_0x1ee644['userName']||'Player')['slice'](0x0,0xa),_0x4cdb69=Math['floor']((Date['now']()-(_0x1ee644['completedAt']||_0x1ee644['timestamp']||Date['now']()))/0xea60),_0x331bd3=_0x4cdb69<0x3c?_0x4cdb69+'m\x20ago':Math['floor'](_0x4cdb69/0x3c)+'h\x20ago';_0x594924+='<div\x20style=\x22min-width:90px;background:linear-gradient(135deg,rgba(0,255,156,.06),rgba(255,215,0,.03));border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:12px;padding:10px;flex-shrink:0;text-align:center\x22>',_0x594924+='<div\x20style=\x22font-size:18px;margin-bottom:3px\x22>🏆</div>',_0x594924+='<div\x20style=\x22font-size:10px;font-weight:700;color:var(--txt)\x22>'+_0x1a627c+'</div>',_0x594924+='<div\x20style=\x22font-size:13px;font-weight:900;color:#00ff9c\x22>₹'+_0x1ee644['reward']+'</div>',_0x594924+='<div\x20style=\x22font-size:9px;color:var(--txt2)\x22>'+_0x331bd3+'</div>',_0x594924+='</div>';}),_0x594924+='</div></div>',_0x2945cc['innerHTML']=_0x594924;});}var _0x3aea4e=window['renderHome'];window['renderHome']=function(){_0x3aea4e['apply'](this,arguments),setTimeout(function(){var _0x18587b=document['getElementById']('homeList');if(!_0x18587b)return;if(!document['getElementById']('recentWonFeed'))try{var _0x42ac7a=document['createElement']('div');_0x42ac7a['id']='recentWonFeed',_0x42ac7a['style']['cssText']='display:none;padding:0\x200\x204px',_0x18587b['parentNode']['insertBefore'](_0x42ac7a,_0x18587b);}catch(_0x4be1c3){}_0x469b36();},0x1f4);},setTimeout(function(){var _0x1e4b4d=document['getElementById']('homeList');if(!_0x1e4b4d)return;if(!document['getElementById']('recentWonFeed'))try{var _0xe5dbd=document['createElement']('div');_0xe5dbd['id']='recentWonFeed',_0xe5dbd['style']['cssText']='display:none;padding:0\x200\x204px',_0x1e4b4d['parentNode']['insertBefore'](_0xe5dbd,_0x1e4b4d);}catch(_0x499ec5){}_0x469b36();},0xdac),setInterval(_0x469b36,0xea60);},0x3c),window['shareMatchWhatsApp']=function(_0x20ca87,_0x29adf3,_0x5578e3){var _0x4d9301=window['UD']&&window['UD']['referralCode']||'MINI',_0x214033=typeof window['APP_URL']==='string'&&window['APP_URL']||(window['location']&&window['location']['origin']||'')+'/',_0x2151d6='🎮\x20मैंने\x20MINI\x20ESPORTS\x20पर\x20\x22'+(_0x29adf3||'match')+'\x22\x20join\x20की!\x0a🏆\x20Prize\x20Pool:\x20'+(_0x5578e3||0x0)+'\x0a🔥\x20तुम\x20भी\x20join\x20करो!\x0a📲\x20'+_0x214033+'\x0a🎁\x20Code:\x20'+_0x4d9301+'\x20(Dono\x20को\x20🪙\x20bonus)',_0x12cc61='<div>';_0x12cc61+='<div\x20style=\x22background:rgba(0,0,0,.4);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--txt2);line-height:1.8;white-space:pre-wrap\x22>'+_0x2151d6+'</div>',_0x12cc61+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px;margin-bottom:10px\x22>',_0x12cc61+='<a\x20href=\x22'+(window['_waShareUrl']?window['_waShareUrl'](_0x2151d6):'https://wa.me/?text='+encodeURIComponent(_0x2151d6))+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-weight:700;font-size:12px;text-decoration:none\x22><i\x20class=\x22fab\x20fa-whatsapp\x22></i>\x20WhatsApp</a>',_0x12cc61+='<a\x20href=\x22https://t.me/share/url?url='+encodeURIComponent(_0x214033)+'&text='+encodeURIComponent(_0x2151d6)+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#0088cc,#005fa3);color:#fff;font-weight:700;font-size:12px;text-decoration:none\x22><i\x20class=\x22fab\x20fa-telegram\x22></i>\x20Telegram</a>',_0x12cc61+='</div>',_0x12cc61+='<button\x20onclick=\x22(function(){var\x20m='+JSON['stringify'](_0x2151d6)+';if(navigator.share)navigator.share({title:\x27Mini\x20eSports\x27,text:m}).catch(function(){});else\x20if(navigator.clipboard)navigator.clipboard.writeText(m).then(function(){if(window.toast)toast(\x27Copied!\x27,\x27ok\x27)})})()\x22\x20style=\x22width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,.06);border:1px\x20solid\x20var(--border);color:var(--txt);font-weight:700;font-size:12px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-share-alt\x22></i>\x20More\x20Options</button>',_0x12cc61+='</div>';if(window['openModal'])window['openModal']('📢\x20Share\x20Match',_0x12cc61);};var _0x6a686d=document['createElement']('style');_0x6a686d['textContent']='@keyframes\x20pulse{0%,100%{opacity:1}50%{opacity:.4}}'+'#recentWonFeed>div>div:last-child::-webkit-scrollbar{display:none}'+'.rank-row{transition:background\x20.2s}'+'#inviteEarnBtn:active{opacity:.85}',document['head']['appendChild'](_0x6a686d),console['log']('[Mini\x20eSports]\x20✅\x20fixes-v7\x20v3\x20—\x20Rank\x20INSTANT\x20cache,\x208\x20bugs\x20fixed,\x205\x20features');}());
+/* ═══════════════════════════════════════════════════════════════════
+   MINI ESPORTS — fixes-v7.js  (v3 — Intermittent Blank FIXED)
+   
+   ROOT CAUSE OF INTERMITTENT BLANK:
+   - renderRank always shows spinner → Firebase fetch → render
+   - On slow connection: spinner = "blank" for 2-4 seconds
+   - renderRank('city') call from app.js re-triggers render mid-display
+   - f19 re-hook wraps our function but timing can break chain
+   
+   SOLUTION:
+   - Cache leaderboard users after first fetch
+   - On revisit: show cached data INSTANTLY, refresh in background  
+   - Ignore invalid tabs ('city' etc)
+   - f19 disabled (our renderRank already has referral button built in)
+   - Single installation with flag guard
+   ═══════════════════════════════════════════════════════════════════ */
+(function () {
+'use strict';
+
+/* ─── waitFor: fires callback ONCE when condition met ─── */
+function waitFor(fn, cb, max) {
+  var t = 0, iv = setInterval(function () {
+    t++;
+    if (fn()) { clearInterval(iv); cb(); }
+    if (t > (max || 80)) clearInterval(iv);
+  }, 300);
+}
+
+/* ═══════════════════════════════════════════════════════
+   ██  RANK SCREEN — COMPLETE FIX  ██
+   Never blank again:
+   1. Show cached data INSTANTLY on repeat visits
+   2. Spinner only on very first load (< 1 second usually)
+   3. Background refresh keeps data fresh
+   4. 8s timeout fallback
+   5. Handles 'city' and any invalid tab gracefully
+   6. Single install with flag
+═══════════════════════════════════════════════════════ */
+waitFor(function () { return window.db && window.calcRk && !window._v7RankInstalled; }, function () {
+  window._v7RankInstalled = true;
+
+  /* R28o FIX: db.ref('users') list-read अब Supabase bridge से flat shape
+     (total_wins/total_kills/total_matches/avatar_url) देता है, पुराने
+     Firebase {stats:{...}} shape नहीं। renderUsers (नीचे) u.stats.kills
+     पढ़ता था → हमेशा 0। Normalizer flat→stats map करता है। */
+  function _normRankUser(u, key) {
+    var o = { _uid: key };
+    if (u) {
+      o.ign         = u.ign || u.displayName || '';
+      o.displayName = u.displayName || u.ign || '';
+      o.profileImage = u.avatar_url || u.avatarUrl || u.profileImage || '';
+      o.ffUid       = u.ff_uid || '';
+      o.rankPoints  = Number(u.rank_points || 0);
+      o.winStreak   = Number(u.win_streak || u.winStreak || 0);
+      /* ✅ 2026-10-13d: premium ribbon ke liye. Firebase mirror me premium
+         fields ho to yahin se, warna _mergeRankPremium() Supabase
+         leaderboard (public read) se bhar deta hai. */
+      o.premiumLevel   = Number(u.premium_level || 0);
+      o.premiumExpires = u.premium_expires ? (Date.parse(u.premium_expires) || 0) : 0;
+      o.stats = {
+        matches: Number(u.total_matches || u.matches || 0),
+        wins:    Number(u.total_wins    || u.wins   || 0),
+        kills:   Number(u.total_kills   || u.kills  || 0)
+      };
+    }
+    return o;
+  }
+
+  /* Cache for instant repeat renders */
+  var _cachedUsers = null;
+  var _cacheTime = 0;
+  var CACHE_TTL = 60000; /* 1 minute cache */
+  var _fetchInProgress = false;
+  var _validTabs = ['kills', 'wins', 'rankpoints'];
+
+  /* ── Build tab bar HTML ── */
+  function buildTabBar() {
+    var labels = { kills: '☠️ Kills', wins: '🏆 Wins', rankpoints: '💎 Points' };
+    var h = '<div class="rank-formula-banner" onclick="window.showHowRankWorks&&showHowRankWorks()" style="cursor:pointer;margin-bottom:8px">' +
+      '📊 Rank = Wins×40 + Kills×2 + Matches×1 <span style="font-size:10px;opacity:.6">→ Tap for details</span></div>';
+    h += '<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">';
+    _validTabs.forEach(function (t) {
+      var active = t === window._rankTab;
+      h += '<div onclick="window.renderRank(\'' + t + '\')" style="flex:1;padding:9px 6px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;white-space:nowrap;transition:all .2s;' +
+        (active ? 'background:linear-gradient(135deg,rgba(0,255,156,.18),rgba(0,212,255,.1));color:#00ff9c;border:1.5px solid rgba(0,255,156,.35)'
+                : 'background:rgba(255,255,255,.04);color:#666;border:1px solid rgba(255,255,255,.07)') + '">' + labels[t] + '</div>';
+    });
+    h += '</div>';
+    return h;
+  }
+
+  /* ── Build season banner HTML ──
+     Simplified (2026-08): reduced padding/font sizes and merged the
+     name+label onto a tighter single line so it doesn't compete
+     visually with the rank-formula banner right above it. */
+  /* ✅ B28 (2026-10-07): Clan War / City Championship / Mentor Hub — teeno
+     screens (features/clan-war.js, city-championship.js, mentor.js) pehle
+     panel me KAHIN se khulte hi nahi the (koi button inhe call hi nahi
+     karta tha — users ke liye ye features pahunch se bahar the). Ye row
+     Rank tab par teen saaf tool buttons deta hai.
+     ⚠️ ZAROORI: live rank screen YAHI file banati hai (ye window.renderRank
+     ko replace karti hai — screens/rank.js wala renderer live me chalta hi
+     nahi). Isliye row yahan hai; screens/rank.js me bhi wahi row rakhi hai
+     taaki agar wo path dobara zinda ho to feature gayab na ho. */
+  function buildRankTools() {
+    return '<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
+      [['⚔️','Clan War','showClanWar','rgba(255,107,107,.1)','rgba(255,107,107,.3)','#ff6b6b'],
+       ['🏙️','City Champ','showCityChampionship','rgba(255,170,0,.1)','rgba(255,170,0,.3)','#ffaa00'],
+       ['👨‍🏫','Mentor Hub','showMentorHub','rgba(255,215,0,.1)','rgba(255,215,0,.3)','#ffd700']].map(function(t){
+        return '<button onclick="window.' + t[2] + '&&window.' + t[2] + '()" style="flex:1;min-width:96px;padding:10px 8px;border-radius:12px;background:' + t[3] + ';border:1px solid ' + t[4] + ';color:' + t[5] + ';font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">' + t[0] + ' ' + t[1] + '</button>';
+      }).join('') +
+      '</div>';
+  }
+
+  function buildSeasonBanner() {
+    var season = { name: 'Season 1', daysLeft: 0, label: '' };
+    try { if (window.getCurrentSeason) season = window.getCurrentSeason(); } catch (e) {}
+    /* B28: banner ke saath tools row bhi (neeche wale saare render paths —
+       normal list, error/retry, empty — isi ek jagah se aa jaate hain). */
+    return buildRankTools() +
+      '<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(185,100,255,.07),rgba(0,212,255,.04));border:1px solid rgba(185,100,255,.15);border-radius:12px;padding:8px 14px;margin-bottom:10px">' +
+      '<div style="font-size:11px;font-weight:800;color:#b964ff">🏆 ' + (season.name || 'Season') + '</div>' +
+      '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#666;font-weight:600"> din baaki</span></div>' +
+      '</div>';
+  }
+
+  /* ── Premium ribbon (IGN ke aage) ──────────────────────────────────
+     ⚠️ ZAROORI SABAK (2026-10-13d): leaderboard ki ASLI screen YAHI file
+     banati hai (window.renderRank neeche). screens/rank.js me bhi ribbon
+     code hai, par wo screen live me render hI nahi hota (uska renderRank
+     is file se overwrite ho jata hai) — isliye ribbon yahan must hai,
+     warna feature "code me hai par app me nahi". ─────────────────────── */
+  function _rowRibbon(u, isMe) {
+    try {
+      var lvl = Number((u && u.premiumLevel) || 0);
+      if (window.premiumRibbonFor && lvl > 0) return window.premiumRibbonFor(lvl, (u && u.premiumExpires) || 0, 14);
+      /* apni row: UD se live (doosron ka premium public leaderboard se aata hai) */
+      if (isMe && window.premiumRibbonHtml) return window.premiumRibbonHtml(14);
+    } catch (e) {}
+    return '';
+  }
+
+  /* Supabase leaderboard se premium_level/premium_expires merge — sirf
+     premium rows (chhota payload). Fail ho to chup-chaap chor do: ribbon
+     na dikhe, baaki screen normally chalti rahe ("jhoota ribbon" nahi). */
+  function _mergeRankPremium(users, done) {
+    var _fin = function () { try { done(); } catch (e) {} };
+    try {
+      if (!window._supa || !window._supa.from || !users || !users.length) return _fin();
+      window._supa.from('leaderboard').select('id,premium_level,premium_expires')
+        .gt('premium_level', 0).limit(1000)
+        .then(function (r) {
+          var rows = (r && r.data) || [];
+          if (rows.length) {
+            var map = {};
+            for (var i = 0; i < rows.length; i++) map[rows[i].id] = rows[i];
+            for (var j = 0; j < users.length; j++) {
+              var m = map[users[j]._uid];
+              if (m && !(Number(users[j].premiumLevel) > 0)) {
+                users[j].premiumLevel   = Number(m.premium_level || 0);
+                users[j].premiumExpires = m.premium_expires ? (Date.parse(m.premium_expires) || 0) : 0;
+              }
+            }
+          }
+          _fin();
+        }).catch(function () { _fin(); });
+    } catch (e) { _fin(); }
+  }
+
+  function _chromeHtml() {
+    if (window._rankChromeParts) { var c = window._rankChromeParts(); return c.tabBar + c.seasonTools; }
+    return buildTabBar() + buildSeasonBanner();
+  }
+
+  /* ── Render the full leaderboard with users array ──
+     ✅ D70 (2026-11-06): ye renderer ab rank.js ke RANK ARENA replica ko
+     delegate karta hai (chrome + arena + rows + referral button sab wahin).
+     Pehle yahan apna purana podium + "#N YOU" card tha jo arena ko live par
+     dabaa deta tha — owner ko naya UI dikhta hi nahi tha. fixes-v7 ka asli
+     kaam (premium-level merge + cache + instant render) waisa hi chalta hai. */
+  function renderUsers(rc, users) {
+    var sortKey = window._rankTab || 'kills';
+    if (window._rankChromeParts && window._renderRankList) {
+      var cp = window._rankChromeParts();
+      window._renderRankList(rc, users, sortKey, cp.tabBar, cp.seasonTools, false);
+      return;
+    }
+    /* fail-safe: rank.js na mile to purana simple list */
+    var h = '';
+    for (var i = 0; i < users.length; i++) {
+      var u = users[i];
+      h += '<div class="rank-row"><div class="rank-info"><div class="rn">' + (u.ign || 'Player') + '</div></div></div>';
+    }
+    rc.innerHTML = h || '<div class="empty-state"><p>No ranked players yet</p></div>';
+  }
+
+  /* ── Sort users by current tab ── */
+  function sortUsers(users) {
+    var curTab = window._rankTab || 'kills';
+    return users.slice().sort(function(a, b) {
+      function v(u) {
+        var st = u.stats||{};
+        if (curTab==='kills') return Number(st.kills||0);
+        if (curTab==='wins') return Number(st.wins||0);
+        return Number(st.wins||0)*40+Number(st.kills||0)*2+Number(st.matches||0)+Number(st.winStreak||u.winStreak||0)*10;
+      }
+      return v(b)-v(a);
+    });
+  }
+
+  /* ── Fetch fresh data from Firebase ── */
+  function fetchAndRender(rc, onComplete) {
+    if (_fetchInProgress) return;
+    _fetchInProgress = true;
+
+    var _done = false;
+    var _timeoutId = setTimeout(function() {
+      if (_done) return;
+      _done = true;
+      _fetchInProgress = false;
+      /* Use cached if available, otherwise empty */
+      var users = _cachedUsers ? sortUsers(_cachedUsers) : [];
+      _mergeRankPremium(users, function () {
+        renderUsers(rc, sortUsers(users));
+        if (onComplete) onComplete();
+      });
+    }, 8000);
+
+    window.db.ref('users').limitToLast(300).once('value', function(snap) {
+      if (_done) return;
+      _done = true;
+      _fetchInProgress = false;
+      clearTimeout(_timeoutId);
+
+      var users = [];
+      try {
+        if (snap.exists()) {
+          snap.forEach(function(c) {
+            var u = c.val();
+            if (!u) return;
+            var nm = String(u.ign || u.displayName || '').trim();
+            if (u.is_admin || u.isAdmin || u.leaderboard_hidden || u.leaderboardHidden || u.is_banned || u.isBanned) return;
+            if (/^QA[-_]?/i.test(nm) || nm.toLowerCase() === 'adminaccount') return;
+            if (u.ign || u.displayName || u.total_kills !== undefined) users.push(_normRankUser(u, c.key));
+          });
+        }
+      } catch(e) {}
+
+      _cachedUsers = users;
+      _cacheTime = Date.now();
+
+      /* premium ribbon ka data Supabase leaderboard se merge, phir render */
+      _mergeRankPremium(users, function () {
+        renderUsers(rc, sortUsers(users));
+        if (onComplete) onComplete();
+      });
+
+    }, function(err) {
+      /* Firebase error */
+      if (_done) return;
+      _done = true;
+      _fetchInProgress = false;
+      clearTimeout(_timeoutId);
+      var users = _cachedUsers ? sortUsers(_cachedUsers) : [];
+      if (users.length > 0) {
+        renderUsers(rc, users); /* Show cached */
+      } else {
+        rc.innerHTML = _chromeHtml() +
+          '<div style="text-align:center;padding:32px;color:#aaa">' +
+          '<div style="font-size:32px;margin-bottom:8px">📡</div>' +
+          '<div style="font-size:13px;margin-bottom:12px">Connection error</div>' +
+          '<button onclick="window.renderRank()" style="padding:10px 24px;border-radius:12px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:700;cursor:pointer">🔄 Retry</button></div>';
+      }
+      if (onComplete) onComplete();
+    });
+  }
+
+  /* ── THE MAIN renderRank — installed once, never blank ── */
+  window.renderRank = function(tab) {
+    /* Ignore invalid tabs like 'city' */
+    if (tab && _validTabs.indexOf(tab) >= 0) window._rankTab = tab;
+    if (!window._rankTab || _validTabs.indexOf(window._rankTab) < 0) window._rankTab = 'kills';
+
+    var rc = document.getElementById('rankContent');
+    if (!rc) return;
+
+    var cacheAge = Date.now() - _cacheTime;
+    var hasFreshCache = _cachedUsers !== null && cacheAge < CACHE_TTL;
+
+    if (hasFreshCache) {
+      /* ✅ INSTANT render from cache — NO spinner, NO blank */
+      renderUsers(rc, sortUsers(_cachedUsers));
+      /* Background refresh if cache > 30s old */
+      if (cacheAge > 30000 && !_fetchInProgress) {
+        fetchAndRender(rc);
+      }
+    } else if (_cachedUsers !== null) {
+      /* Has old cache — show it immediately, refresh in background */
+      renderUsers(rc, sortUsers(_cachedUsers));
+      fetchAndRender(rc);
+    } else {
+      /* Very first load only — show minimal skeleton, not blank spinner */
+      rc.innerHTML = _chromeHtml() +
+        '<div style="padding:8px">' +
+        [1,2,3,4,5].map(function(){ return '<div style="height:52px;background:rgba(255,255,255,.04);border-radius:12px;margin-bottom:8px;animation:rankShine 1.5s linear infinite"></div>'; }).join('') +
+        '</div>';
+      fetchAndRender(rc);
+    }
+  };
+
+  /* Kick off an initial background fetch so cache is warm before user taps Rank */
+  setTimeout(function() {
+    if (!_cachedUsers && window.db) {
+      window.db.ref('users').limitToLast(300).once('value', function(snap) {
+        var users = [];
+        try { if(snap.exists()) snap.forEach(function(c){ var u=c.val(); if(u&&(u.ign||u.displayName||u.total_kills!==undefined)) users.push(_normRankUser(u, c.key)); }); } catch(e) {}
+        _cachedUsers = users;
+        _cacheTime = Date.now();
+      });
+    }
+  }, 2000);
+
+  /* Block f19 from re-hooking (our renderRank already has referral button) */
+  window._f19Hooked = true;
+
+  console.log('[v7] ✅ Rank: instant-render with cache installed');
+});
+
+/* ════════════════════════════════════════════
+   FIX #11 — TEAM DUPLICATE CHECK
+════════════════════════════════════════════ */
+waitFor(function(){ return window.saveTM; }, function(){
+  var orig = window.saveTM;
+  window.saveTM = function(mode) {
+    if (!window.UD || !window.db) { orig(mode); return; }
+    var uid = ((document.getElementById('tmUid')||{}).value||'').trim();
+    if (!uid) { orig(mode); return; }
+
+    if (mode === 'duo') {
+      var ex = window.UD.duoTeam;
+      if (ex && (ex.memberUid===uid || ex.memberFirebaseUid===uid)) {
+        if (window.toast) window.toast('⚠️ Yeh player already tumhara Duo partner hai!', 'inf'); return;
+      }
+      window.db.ref('users').orderByChild('ffUid').equalTo(uid).once('value', function(s) {
+        if (s.exists()) {
+          var fbUid=null; s.forEach(function(c){if(!fbUid)fbUid=c.key;});
+          if (fbUid && window.U && fbUid===window.U.uid) { if(window.toast)window.toast('Apne aap ko add nahi kar sakte!','err'); return; }
+        }
+        orig(mode);
+      });
+      return;
+    }
+
+    if (mode === 'squad') {
+      var members = (window.UD.squadTeam && window.UD.squadTeam.members)||[];
+      if (members.some(function(m){return m.uid===uid||m.ffUid===uid;})) {
+        if(window.toast)window.toast('⚠️ Yeh player already Squad mein hai!','inf'); return;
+      }
+      window.db.ref('users').orderByChild('ffUid').equalTo(uid).once('value', function(s) {
+        if (s.exists()) {
+          var fbUid=null; s.forEach(function(c){if(!fbUid)fbUid=c.key;});
+          if (fbUid && members.some(function(m){return m.uid===fbUid;})) {
+            if(window.toast)window.toast('⚠️ Already Squad mein hai!','inf'); return;
+          }
+        }
+        orig(mode);
+      });
+      return;
+    }
+    orig(mode);
+  };
+});
+
+/* ════════════════════════════════════════════
+   FIX #12 — UTR MANDATORY IN WITHDRAWAL  [R28j: REMOVED]
+   Ye wrapper legacy diamond-SYSTEM ke cash-withdrawal modal
+   (_confirmDiamondWD) mein "UTR Number" field inject karta tha.
+   R28j (2026-09-22) se diamond → ₹ cash withdrawal halal-model
+   ke tahat hata di gayi hai (sirf sponsored winnings
+   withdrawable, UPI-only — screens/wallet.js
+   submitSponsoredWd). Ye dono waitFor wrappers ab obsolete
+   hain aur hata diye gaye.
+════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════
+   FIX #13 — POLL INSTANT RESULT
+════════════════════════════════════════════ */
+waitFor(function(){ return window.castVote; }, function(){
+  window.castVote = function(pollKey, optionKey) {
+    if (!window.U||!window.db) return;
+    var uid = window.U.uid;
+    window.db.ref('polls/'+pollKey+'/votes/'+uid).once('value', function(s) {
+      if (s.exists()) {
+        if (window.toast) window.toast('Pehle se vote ho chuka hai! ✅','inf');
+        if (window.renderPollCards) window.renderPollCards();
+        return;
+      }
+      var upd = {}; upd['polls/'+pollKey+'/votes/'+uid] = {option:optionKey,ts:Date.now()};
+      window.db.ref().update(upd, function() {
+        window.db.ref('polls/'+pollKey+'/options/'+optionKey+'/votes').transaction(function(v){return(v||0)+1;});
+        window.db.ref('polls/'+pollKey+'/totalVotes').transaction(function(v){return(v||0)+1;});
+        try {
+          var mv = JSON.parse(localStorage.getItem('_mes_votes_'+uid)||'{}');
+          mv[pollKey] = optionKey;
+          localStorage.setItem('_mes_votes_'+uid, JSON.stringify(mv));
+        } catch(e) {}
+        if (window._activePolls) window._activePolls.forEach(function(p) {
+          if (p._key!==pollKey) return;
+          if (!p.votes) p.votes={};
+          p.votes[uid]={option:optionKey};
+          if (!p.options) p.options={};
+          if (!p.options[optionKey]) p.options[optionKey]={votes:0,label:optionKey};
+          p.options[optionKey].votes=(p.options[optionKey].votes||0)+1;
+        });
+        if (window.toast) window.toast('✅ Vote registered!','ok');
+        if (window.renderPollCards) window.renderPollCards();
+      });
+    });
+  };
+});
+
+/* ════════════════════════════════════════════
+   FIX #14 — GIFT TICKET joinRequest CREATE
+   ✅ R5 (2026-09-23): LEGACY OVERRIDE REMOVED — ye Firebase-only flow
+   (client apne coins khud db.ref().transaction() se deduct karta tha +
+   fake giftTickets/joinRequests likhta tha) secure confirmGiftTicket() को
+   later-load में overwrite kar deta tha (screens/matches.js का RPC-based
+   implementation). R5 से gift sirf server gift_match_entry() RPC se —
+   matches.js का secure confirmGiftTicket ही एकमात्र ACTIVE flow hai.
+   Ye waitFor ab koi override नहीं करता (inert stub) ताकि script-order
+   कभी वापस insecure न बना सके।
+════════════════════════════════════════════ */
+waitFor(function(){ return window.confirmGiftTicket && window.db; }, function(){
+  /* R5: inert — secure confirmGiftTicket (screens/matches.js → gift_match_entry RPC)
+     को वापस नहीं छेड़ा जाता। Legacy Firebase gift path disabled. */
+});
+
+/* ════════════════════════════════════════════
+   FIX #15 — TYPING INDICATOR
+════════════════════════════════════════════ */
+waitFor(function(){ return window.db && window.U; }, function(){
+  var _typingTO=null, _adminRef=null;
+
+  function initTyping() {
+    var chatIn = document.getElementById('chatIn');
+    if (!chatIn || chatIn._typingReady) return;
+    chatIn._typingReady = true;
+    var uid = window.U.uid;
+    var typRef = window.db.ref('supportTyping/user_'+uid);
+
+    chatIn.addEventListener('input', function() {
+      typRef.set({typing:true,ts:Date.now()});
+      clearTimeout(_typingTO);
+      _typingTO = setTimeout(function(){typRef.set({typing:false,ts:Date.now()});}, 2500);
+    });
+    chatIn.addEventListener('blur', function() {
+      clearTimeout(_typingTO);
+      typRef.set({typing:false,ts:Date.now()});
+    });
+
+    if (_adminRef) { try{_adminRef.off();}catch(e){} }
+    _adminRef = window.db.ref('supportTyping/admin_for_'+uid);
+    _adminRef.on('value', function(sn) {
+      var el = document.getElementById('chatSt'); if (!el) return;
+      var d = sn.val();
+      el.innerHTML = (d&&d.typing&&(Date.now()-(d.ts||0))<5000)
+        ? '<span style="color:#00ff9c;font-size:10px">✍️ Support typing...</span>'
+        : 'Online';
+    });
+  }
+
+  var origNav = window.navTo;
+  if (origNav) {
+    window.navTo = function(scr) {
+      origNav.apply(this, arguments);
+      if (scr==='chat') { setTimeout(initTyping, 400); }
+      else if (_adminRef) {
+        try{_adminRef.off();}catch(e){}
+        _adminRef = null;
+        var cst = document.getElementById('chatSt');
+        if (cst) cst.textContent = 'Online';
+      }
+    };
+  }
+  setInterval(initTyping, 2000);
+}, 60);
+
+/* ════════════════════════════════════════════
+   FIX #16 — CALENDAR — fully removed (was a runtime
+   DOM-removal hack patching around a calendar feature;
+   the actual calendar code itself has now been deleted
+   from features-user.js and match-history.js, so this
+   patch has nothing left to clean up)
+════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════
+   FIX #17 — PLAYER COMPARISON REALTIME
+════════════════════════════════════════════ */
+waitFor(function(){return window._doCompare;}, function(){
+  var _lsn=null, _oUid=null;
+  window._doCompare = function() {
+    var ffUid = ((document.getElementById('cmpUid')||{}).value||'').trim();
+    if(!ffUid){if(window.toast)window.toast('FF UID enter karo','inf');return;}
+    if(window.toast)window.toast('Loading...','inf');
+    window.db.ref('users').orderByChild('ffUid').equalTo(ffUid).once('value', function(s) {
+      if(!s.exists()){if(window.toast)window.toast('Player nahi mila','err');return;}
+      var oData=null,fbUid=null;
+      s.forEach(function(c){oData=c.val();fbUid=c.key;});
+      if(_lsn&&_oUid){try{window.db.ref('users/'+_oUid).off('value',_lsn);}catch(e){}}
+      _oUid=fbUid;
+      function render(other){
+        var me=window.UD||{},s1=me.stats||{},s2=other.stats||{};
+        var rows=[['Matches',s1.matches||0,s2.matches||0],['Wins',s1.wins||0,s2.wins||0],['Kills',s1.kills||0,s2.kills||0],
+          ['Win Rate',(s1.matches?Math.round((s1.wins||0)/s1.matches*100):0)+'%',(s2.matches?Math.round((s2.wins||0)/s2.matches*100):0)+'%'],
+          ['Earnings','₹'+(s1.earnings||0),'₹'+(s2.earnings||0)]];
+        var h='<div>';
+        h+='<div style="display:grid;grid-template-columns:1fr 44px 1fr;margin-bottom:12px">';
+        h+='<div style="text-align:center;padding:12px;background:rgba(0,255,156,.06);border-radius:12px 0 0 12px"><div style="font-size:15px;font-weight:900;color:#00ff9c">'+(me.ign||'You')+'</div><div style="font-size:9px;color:#aaa">You</div></div>';
+        h+='<div style="display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;background:var(--card2)">VS</div>';
+        h+='<div style="text-align:center;padding:12px;background:rgba(255,107,107,.06);border-radius:0 12px 12px 0"><div style="font-size:15px;font-weight:900;color:#ff6b6b">'+(other.ign||'Player')+'</div><div style="font-size:9px;color:#aaa">Opponent</div></div>';
+        h+='</div>';
+        rows.forEach(function(r){
+          var v1=parseFloat(r[1])||0,v2=parseFloat(r[2])||0,myWin=v1>v2;
+          h+='<div style="display:grid;grid-template-columns:1fr 80px 1fr;border-bottom:1px solid var(--border);padding:8px 0">';
+          h+='<div style="text-align:center;font-size:14px;font-weight:'+(myWin?'900':'400')+';color:'+(myWin?'#00ff9c':'var(--txt)')+'">'+r[1]+(myWin?' 🏆':'')+'</div>';
+          h+='<div style="text-align:center;font-size:10px;color:var(--txt2)">'+r[0]+'</div>';
+          h+='<div style="text-align:center;font-size:14px;font-weight:'+(!myWin&&v2>v1?'900':'400')+';color:'+(!myWin&&v2>v1?'#ff6b6b':'var(--txt)')+'">'+r[2]+(!myWin&&v2>v1?' 🏆':'')+'</div>';
+          h+='</div>';
+        });
+        h+='<div style="margin-top:8px;text-align:center;font-size:10px;color:#555">⚡ Live stats</div></div>';
+        var mb=document.getElementById('modalB'),mt=document.getElementById('modalT');
+        if(mb&&mt&&mt.textContent.indexOf('Compare')>=0) mb.innerHTML=h;
+        return h;
+      }
+      var initH=render(oData);
+      if(window.openModal) window.openModal('⚔️ Live Comparison',initH);
+      _lsn=window.db.ref('users/'+fbUid).on('value',function(sn){if(sn.exists())render(sn.val());});
+    });
+  };
+});
+
+/* ════════════════════════════════════════════
+   FIX #18 — STREAK RESET BUG
+   🔴 AUDIT FIX (v32.8.4): this used to read/write lastLoginDate/
+   loginStreak/totalLoginStreak — Firebase-style fields core/db-bridge.js
+   has no mapping for. The write silently no-op'd and the read always
+   came back empty, so `last` was always '', the "already ran today"
+   guard never engaged, and this fired (and paid out a free reward)
+   on every single app open — an active coin-farming exploit. Rewritten
+   to use window._supa directly against the real, already-migrated
+   columns (users.last_checkin_date / users.streak_days) — the same
+   ones the manual Daily Check-In button (window.doCheckIn) uses, so
+   the two can't double-pay the same day.
+════════════════════════════════════════════ */
+waitFor(function(){return window.U&&window._supa;}, function(){
+  window._checkStreakFixed = function(){
+    if(!window.U||!window._supa) return;
+    /* BUG #31/#44 FIX (2026-07): now shares the EXACT SAME atomic RPC as window.doCheckIn
+       (features-user.js) — process_daily_checkin() — instead of its own separate
+       read-then-three-writes sequence. This closes the race condition the original comment
+       above already flagged as a concern ("the two can't double-pay the same day") by making
+       it structurally impossible rather than relying on a best-effort shared-column check:
+       the RPC row-locks the user and does the already-checked-in check and all writes in one
+       transaction, so this trigger and the manual button genuinely cannot both succeed for
+       the same day even if they fire at the exact same moment. */
+    var prevStreak = Number(window.UD && window.UD.streak_days) || 0;
+    var tierRewards = window._adminDailyBonusRewards || [5,7,10,12,15,20,30];
+    window._supa.rpc('process_daily_checkin', { p_tier_rewards: tierRewards, p_milestone_bonus: (window._adminDay30Bonus || 100), p_milestone_days: 30 }) /* BUG #39 FIX */
+      .then(function(r){
+        if (r.error || (r.data && r.data.success === false)) return; /* silent — this is the background/automatic trigger */
+        var newStreak = r.data.streak, reward = r.data.reward, bonus = r.data.milestone_bonus;
+        if (prevStreak > 1 && newStreak === 1 && window.toast) {
+          setTimeout(function(){ window.toast('💔 ' + prevStreak + ' din ki streak miss! Aaj se phir shuru.', 'inf'); }, 3000);
+        }
+        if (window.UD) { window.UD.coins = (Number(window.UD.coins) || 0) + reward + bonus; window.UD.streak_days = newStreak; }
+        if (window.updateHdr) updateHdr();
+        var cycleStreak = ((newStreak - 1) % tierRewards.length) + 1;
+        if (window.f06Streak && window.f06Streak.show) setTimeout(function(){ window.f06Streak.show(cycleStreak, reward); }, 1500);
+      })
+      .catch(function(e){ console.error('[_checkStreakFixed] failed:', e && e.message); });
+  };
+  if(window.f06Streak) window.f06Streak.check=window._checkStreakFixed;
+  /* ✅ FIX (gehri audit, 2026-10-07): yahan pehle `waitFor(UD → setTimeout(_checkStreakFixed, 2000))`
+     tha — yani app kholte hi, login ke 2 second baad, check-in apne-aap (bina user ke click)
+     ho jata tha. Live me pakda gaya (asli RPC-stack proof): naya user jab wallet kholta tha to
+     button pehle se "Checked In Today" likha hota tha, coins chup-chaap +5 ho chuke hote the,
+     aur asli Daily Check-In button dead ho gaya tha — user kabhi khud check-in kar hi nahi sakta
+     tha (UI ka poora 7-din cycle bekaar). Ab check-in SIRF user ke click par hota hai
+     (window.doCheckIn, wallet ka button) — jo process_daily_checkin RPC row-lock karke chalata
+     hai, isliye ek din me ek hi baar reward mil sakta hai. _checkStreakFixed function khud
+     bacha hua hai (window.f06Streak.check) — koi UI ise jaan-boojh kar bula sake to chalega,
+     par login par apne-aap nahi. */
+},60);
+
+/* ════════════════════════════════════════════
+   ✨ INVITE & EARN
+════════════════════════════════════════════ */
+waitFor(function(){return window.U&&window.UD&&window.db;},function(){
+  window.showInviteEarn=function(){
+    if(!window.UD) return;
+    var code=window.UD.referralCode||'MINI';
+    var link=(window.location.origin||'')+'/index.html?ref='+code;
+    var msg='🎮 Mini eSports pe skill-based tournaments khelo!\n🪙 Free coins + rewards kamao — kahin koi entry-fee wali gambling nahi.\n🔗 '+link+'\n🎁 Code: '+code+'\n(Dono ko bonus coins milenge! 🪙)';
+    var h='<div>';
+    h+='<div style="background:linear-gradient(135deg,rgba(0,255,156,.1),rgba(0,212,255,.05));border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px">';
+    h+='<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">Tumhara Referral Code</div>';
+    h+='<div style="font-size:30px;font-weight:900;color:#00ff9c;letter-spacing:3px">'+code+'</div>';
+    /* ✅ B20 (2026-10-07): yahan hardcoded "Tum: 150 coins, Dost: 50" tha —
+       wo JHooTH tha (150 kahin se nahi milta) aur admin ki setting
+       badalne par bhi yahi purana number dikhata rehta. Ab wahi sach
+       jo server lagu karta hai: join par DONO ko referralJoinCoins,
+       aur dost ke referralMatchThreshold matches poore hone par
+       referrer ko referralMatchCoins. */
+    var _rJoin  = (window.CFG && window.CFG.referralJoinCoins) || 50;
+    var _rMThr  = (window.CFG && window.CFG.referralMatchThreshold) || 5;
+    var _rMatch = (window.CFG && window.CFG.referralMatchCoins) || 30;
+    h+='<div style="font-size:11px;color:#aaa;margin-top:6px">Join par DONO ko +🪙'+_rJoin+' · Dost '+_rMThr+' matches khele to +🪙'+_rMatch+'</div>';
+    h+='</div>';
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">';
+    /* ✅ BUG FIX (2026-08-25, supersedes 2026-08-23 attempt): this
+       Invite & Earn modal was the one remaining place still building a
+       raw intent://send/?...#Intent;...;end URL — net::ERR_UNKNOWN_URL_
+       SCHEME both in-app WebView and plain Chrome (confirmed live,
+       screenshot). core/utils.js already fixed this exact problem
+       properly on 2026-08-24 (see _waShareUrl there for the full root-
+       cause writeup): intent:// is only parsed by Chrome's OWN link-
+       click handler on Android, not a real scheme the WebView/OS can
+       resolve, and every other WhatsApp button in the app already
+       routes through window.openWhatsApp / _waShareUrl. This file just
+       never got updated to match — reintroducing the exact bug that
+       fix eliminated everywhere else. Using the shared helper here too
+       so there's only ever one WhatsApp link implementation. */
+    h+='<a href="'+(window._waShareUrl?window._waShareUrl(msg):('https://wa.me/?text='+encodeURIComponent(msg)))+'" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-weight:700;font-size:12px;text-decoration:none"><i class="fab fa-whatsapp"></i> WhatsApp</a>';
+    h+='<a href="https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(msg)+'" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#0088cc,#005fa3);color:#fff;font-weight:700;font-size:12px;text-decoration:none"><i class="fab fa-telegram"></i> Telegram</a>';
+    h+='</div>';
+    h+='<button onclick="(function(){var t='+JSON.stringify(msg)+';if(navigator.share)navigator.share({title:\'Mini eSports\',text:t}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){if(window.toast)toast(\'📋 Copied!\',\'ok\')})})()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--txt);font-weight:700;font-size:12px;cursor:pointer;margin-bottom:14px"><i class="fas fa-share-alt"></i> More Options / Copy</button>';
+    h+='<div style="border-top:1px solid var(--border);padding-top:12px">';
+    h+='<div style="font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;margin-bottom:8px">🏆 Top Inviters This Month</div>';
+    h+='<div id="inviteLbList"><div style="text-align:center;color:var(--txt2);font-size:12px;padding:12px">Loading...</div></div>';
+    h+='</div></div>';
+    if(window.openModal) window.openModal('🎁 Invite & Earn',h);
+    setTimeout(function(){
+      var ms=new Date();ms.setDate(1);ms.setHours(0,0,0,0);
+      window.db.ref('referrals').orderByChild('createdAt').startAt(ms.getTime()).once('value',function(s){
+        var counts={},names={};
+        if(s.exists()) s.forEach(function(c){var r=c.val();if(!r||!r.referrerId)return;counts[r.referrerId]=(counts[r.referrerId]||0)+1;names[r.referrerId]=r.referrerName||r.referrerId.slice(0,8);});
+        var sorted=Object.keys(counts).map(function(u){return{uid:u,count:counts[u],name:names[u]};}).sort(function(a,b){return b.count-a.count;});
+        var el=document.getElementById('inviteLbList');if(!el)return;
+        if(!sorted.length){el.innerHTML='<div style="text-align:center;color:#555;font-size:12px;padding:12px">Abhi koi referrals nahi — pehle bano! 🚀</div>';return;}
+        /* D100-F1: medals ab real img assets (window.medalHtml) */
+        el.innerHTML=sorted.slice(0,5).map(function(p,i){
+          var isMe=window.U&&p.uid===window.U.uid;
+          return '<div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:'+(isMe?'rgba(0,255,156,.06)':'var(--card)')+';border:1px solid '+(isMe?'rgba(0,255,156,.2)':'var(--border)')+';margin-bottom:5px">'+
+            '<div style="width:24px;text-align:center">'+window.medalHtml(i+1,18)+'</div>'+
+            '<div style="flex:1;font-size:12px;font-weight:700">'+p.name+(isMe?' <span style="font-size:9px;color:#00ff9c">(You)</span>':'')+'</div>'+
+            '<div style="font-size:12px;font-weight:800;color:#00d4ff">'+p.count+' 🎯</div></div>';
+        }).join('');
+      });
+    },300);
+  };
+
+  /* ✅ BUG FIX (2026-08-25): the late-injection "Invite & Earn" button
+     hook that used to live here has been removed — it was the actual
+     root cause of the button blinking on/off (see the full explanation
+     in screens/profile.js's renderProfile, where the button is now
+     built as a native part of the profile HTML on every render instead
+     of being raced in 400ms after the fact). Nothing else in this file
+     depends on window._inviteHooked, so it's safe to just drop this. */
+
+  /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet RPC"
+     audit — this was a FOURTH independent referral-credit
+     implementation in this codebase (alongside profile.js's dead
+     one, referral-system-fix.js's real live one, and db.js's
+     DB.referrals.apply, also dead). It credited an arbitrary OTHER
+     user's uid (refUid) with a hardcoded 150 coins directly — this
+     was already silently failing before this session even started,
+     since increment_balance's pre-existing admin check already
+     rejected crediting someone else's uid from a non-admin caller
+     (confirmed: this exact code path could never have worked).
+     Replaced with a call into the same real, secure
+     apply_referral_code RPC that referral-system-fix.js's
+     window.applyReferralCode already uses — so a URL-based referral
+     link now actually works, correctly, instead of silently no-oping
+     forever. */
+  /* URL referral bonus */
+  /* ✅ B20 (2026-10-07): pehle yeh sirf tab chalta tha jab page khulte
+     waqt hi window.U + window._supa maujood ho — yaani link se aaya
+     NAYA user (jo pehle LOGIN karta hai) uske liye window.U abhi null
+     hota tha, isliye {?ref=} wala bonus uske case me kabhi apply hi
+     nahi hota tha (chup-chaap). Ab urlRef yaad rakhte hain aur login
+     hote hi (U + _supa ready) ek baar apply karte hain — 2 minute tak
+     retry, phir chhod dete hain. Referral row ka UNIQUE + UD.referredBy
+     dobara-apply rok deta hai, isliye repeat attempt bekaar nahi —
+     balki chup-chaap safe hai (RPC khud idempotent-safe hai). */
+  try {
+    var urlRef=new URLSearchParams(window.location.search).get('ref');
+    if(urlRef){
+      var _refTries=0;
+      var _refTimer=setInterval(function(){
+        _refTries++;
+        /* ✅ B20: yahan pehle referralPopupDone bhi check hota tha — par wo
+           flag sirf "popup dikha diya" batata hai, apply hua ya nahi NAHI.
+           Naye user ko popup khulte hi flag true ho jata tha aur ye retry
+           chup-chaap band ho jata tha. Ab sirf ASLI apply (referredBy)
+           dekhkar rukta hai. */
+        var already=false;
+        try { already = !!(window.UD && window.UD.referredBy); } catch(e){}
+        if(already || _refTries>60){ clearInterval(_refTimer); return; }
+        if(window.U && window._supa && window._supaReady){
+          window._supa.rpc('apply_referral_code', { p_code: urlRef.toUpperCase(), p_reward:0 })
+            .then(function(r){
+              if(r && r.data && r.data.success){
+                clearInterval(_refTimer);
+                var _self=Number(r.data.reward_self != null ? r.data.reward_self : r.data.reward)||0;
+                try { if(window.UD){ window.UD.referredBy=r.data.referrer_uid||window.UD.referredBy; window.UD.referralPopupDone=true;
+                      if(_self>0) window.UD.coins=(window.UD.coins||0)+_self; } } catch(e){}
+                if(window.updateHdr) window.updateHdr();
+                if(window.toast) window.toast('🎁 Referral code applied!'+(_self>0?(' +'+_self+' coins!'):''),'ok');
+              } else {
+                /* D103 fix (16-Nov): bearer-token sync login ke baad 1-2s leta hai;
+                   pehla attempt 'Not authenticated' laata tha aur loop chup-chaap
+                   band ho jata tha — ?ref attribution dead. Ab transient errors par
+                   retry jaari, terminal (invalid/already) par hi rukta hai. */
+                var _em=(r && r.data && r.data.error)||(r && r.error && r.error.message)||'';
+                if(!/Not authenticated|unavailable|Network|timeout/i.test(_em)) clearInterval(_refTimer);
+              }
+            }, function(){ /* network error → agla tick retry */ });
+        }
+      },2000);
+    }
+  } catch(e){}
+},60);
+
+/* ════════════════════════════════════════════
+   ✨ ADMIN DAILY BONUS CONFIG
+   ✅ B26 (2026-10-07): yahan pehle Firebase RTDB
+   `appSettings/dailyBonusRewards` ka listener tha (day1..7 + day30Bonus ko
+   window._adminDailyBonusRewards / _adminDay30Bonus me utaarta tha).
+   Wo path 2026-08 ki Supabase migration ke baad MARA hua tha (live me wahan
+   value hi nahi thi), aur admin ka Daily Bonus Editor bhi ab Supabase
+   live_config.dailyBonusRewards par likhta hai — isliye ye listener hata
+   diya. Ab yeh dono globals features/app-config.js _applyCfg() me set hote
+   hain (live_config.dailyBonusRewards se), yani ek hi source, ek hi sach.
+════════════════════════════════════════════ */
+/* ════════════════════════════════════════════
+   ✨ PUSH NOTIFICATIONS+
+════════════════════════════════════════════ */
+waitFor(function(){return window.db&&window.U;},function(){
+  var uid=window.U.uid, _ready=false;
+  window.db.ref('matches').orderByChild('createdAt').startAt(Date.now()-86400000).on('child_added',function(s){
+    var m=s.val();if(!m||!_ready)return;
+    if((Date.now()-(m.createdAt||0))>300000)return;
+    if(window.toast)window.toast('🆕 New Match: '+(m.name||'Tournament')+' added!','ok');
+  });
+  setTimeout(function(){_ready=true;},4000);
+  setTimeout(function(){
+    if(!window.UD)return;
+    /* BUG FIX (2026-08): this always fired the "Daily bonus available"
+       toast even right after check-in, because UD.lastCheckIn is stored
+       as a Postgres date string ("YYYY-MM-DD") while this compared it
+       against new Date().toDateString() ("Tue Aug 11 2026") — two
+       formats that can never be equal, so the check-in-done branch was
+       unreachable. Fix: compare against the same YYYY-MM-DD format. */
+    var _today = new Date();
+    var _todayISO = _today.getFullYear() + '-' + String(_today.getMonth()+1).padStart(2,'0') + '-' + String(_today.getDate()).padStart(2,'0');
+    if(window.UD.lastCheckIn!==_todayISO)
+      if(window.toast)window.toast('🎁 Daily bonus available! Check-in karo.','inf');
+  },9000);
+},60);
+
+/* ════════════════════════════════════════════
+   ✨ RECENTLY WON FEED
+════════════════════════════════════════════ */
+waitFor(function(){return window.db&&window.renderHome;},function(){
+  if(window._wonFeedHooked)return;window._wonFeedHooked=true;
+  function loadFeed(){
+    var el=document.getElementById('recentWonFeed');if(!el)return;
+    window.db.ref('joinRequests').orderByChild('resultStatus').equalTo('completed').limitToLast(30).once('value',function(s){
+      if(!s.exists()){el.style.display='none';return;}
+      var winners=[];
+      s.forEach(function(c){var jr=c.val();if(jr.reward&&jr.reward>0&&jr.userName)winners.push(jr);});
+      winners.sort(function(a,b){return(b.completedAt||b.timestamp||0)-(a.completedAt||a.timestamp||0);});
+      if(!winners.length){el.style.display='none';return;}
+      el.style.display='';
+      var h='<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:800;color:var(--txt2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🏆 Recently Won</div>';
+      h+='<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">';
+      winners.slice(0,8).forEach(function(jr){
+        var name=(jr.userName||'Player').slice(0,10);
+        var mins=Math.floor((Date.now()-(jr.completedAt||jr.timestamp||Date.now()))/60000);
+        var tStr=mins<60?mins+'m ago':Math.floor(mins/60)+'h ago';
+        h+='<div style="min-width:90px;background:linear-gradient(135deg,rgba(0,255,156,.06),rgba(255,215,0,.03));border:1px solid rgba(0,255,156,.15);border-radius:12px;padding:10px;flex-shrink:0;text-align:center">';
+        h+='<div style="font-size:18px;margin-bottom:3px">🏆</div>';
+        h+='<div style="font-size:10px;font-weight:700;color:var(--txt)">'+name+'</div>';
+        h+='<div style="font-size:13px;font-weight:900;color:#00ff9c">₹'+jr.reward+'</div>';
+        h+='<div style="font-size:9px;color:var(--txt2)">'+tStr+'</div>';
+        h+='</div>';
+      });
+      h+='</div></div>';
+      el.innerHTML=h;
+    });
+  }
+  var origRH=window.renderHome;
+  window.renderHome=function(){
+    origRH.apply(this,arguments);
+    setTimeout(function(){
+      var hl=document.getElementById('homeList');if(!hl)return;
+      if(!document.getElementById('recentWonFeed')){
+        try {
+          var d=document.createElement('div');d.id='recentWonFeed';d.style.cssText='display:none;padding:0 0 4px';
+          hl.parentNode.insertBefore(d,hl);
+        } catch(e) { /* home screen re-rendered mid-flight — skip, non-critical decoration */ }
+      }
+      loadFeed();
+    },500);
+  };
+  setTimeout(function(){
+    var hl=document.getElementById('homeList');if(!hl)return;
+    if(!document.getElementById('recentWonFeed')){
+      try {
+        var d=document.createElement('div');d.id='recentWonFeed';d.style.cssText='display:none;padding:0 0 4px';
+        hl.parentNode.insertBefore(d,hl);
+      } catch(e) { /* home screen re-rendered mid-flight — skip, non-critical decoration */ }
+    }
+    loadFeed();
+  },3500);
+  setInterval(loadFeed,60000);
+},60);
+
+/* ════════════════════════════════════════════
+   ✨ WHATSAPP/TELEGRAM MATCH SHARE
+════════════════════════════════════════════ */
+window.shareMatchWhatsApp=function(matchId,matchName,prize){
+  /* R28j (2026-09-22): ye legacy version features-user.js ke live
+     version se override ho jata hai; false ₹-claim + fake domain
+     (mini-esports.app) hataye. Prize entryType-dependent hota hai —
+     is signature mein entryType nahi milta, isliye bina currency
+     symbol ke (number hi sach hai, ₹ ka jhootha claim nahi). */
+  var code=(window.UD&&window.UD.referralCode)||'MINI';
+  var link=(typeof window.APP_URL==='string'&&window.APP_URL)||((window.location&&window.location.origin)||'')+'/';
+  var msg='🎮 मैंने MINI ESPORTS पर "'+(matchName||'match')+'" join की!\n🏆 Prize Pool: '+(prize||0)+'\n🔥 तुम भी join करो!\n📲 '+link+'\n🎁 Code: '+code+' (Dono को 🪙 bonus)';
+  var h='<div>';
+  h+='<div style="background:rgba(0,0,0,.4);border-radius:12px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--txt2);line-height:1.8;white-space:pre-wrap">'+msg+'</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">';
+  h+='<a href="'+(window._waShareUrl?window._waShareUrl(msg):('https://wa.me/?text='+encodeURIComponent(msg)))+'" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-weight:700;font-size:12px;text-decoration:none"><i class="fab fa-whatsapp"></i> WhatsApp</a>';
+  h+='<a href="https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(msg)+'" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#0088cc,#005fa3);color:#fff;font-weight:700;font-size:12px;text-decoration:none"><i class="fab fa-telegram"></i> Telegram</a>';
+  h+='</div>';
+  h+='<button onclick="(function(){var m='+JSON.stringify(msg)+';if(navigator.share)navigator.share({title:\'Mini eSports\',text:m}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(m).then(function(){if(window.toast)toast(\'Copied!\',\'ok\')})})()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--txt);font-weight:700;font-size:12px;cursor:pointer"><i class="fas fa-share-alt"></i> More Options</button>';
+  h+='</div>';
+  if(window.openModal)window.openModal('📢 Share Match',h);
+};
+
+/* ════════════════════════════════════════════
+   STYLES
+════════════════════════════════════════════ */
+var _s=document.createElement('style');
+_s.textContent='@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}'+
+  '#recentWonFeed>div>div:last-child::-webkit-scrollbar{display:none}'+
+  '.rank-row{transition:background .2s}'+
+  '#inviteEarnBtn:active{opacity:.85}';
+document.head.appendChild(_s);
+
+console.log('[Mini eSports] ✅ fixes-v7 v3 — Rank INSTANT cache, 8 bugs fixed, 5 features');
+})();

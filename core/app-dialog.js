@@ -1,1 +1,324 @@
-(function(){'use strict';var _0x39261f=(function(){var _0x59083c=!![];return function(_0x1e65ba,_0xd8bedf){var _0x33766c=_0x59083c?function(){if(_0xd8bedf){var _0x35b3fc=_0xd8bedf['apply'](_0x1e65ba,arguments);return _0xd8bedf=null,_0x35b3fc;}}:function(){};return _0x59083c=![],_0x33766c;};}()),_0x40016c=_0x39261f(this,function(){if(_0x40016c['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x40016c['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x40016c)['search']('(((.+)+)+)+$');});_0x40016c();if(window['__appDialogReady'])return;window['__appDialogReady']=!![];var _0x1b7a67='_appDlgStyle';function _0x28a716(){if(document['getElementById'](_0x1b7a67))return;var _0x3c1000=''+'#_appDlgOv{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;'+'background:rgba(0,0,0,.72);backdrop-filter:blur(3px);padding:18px}'+'#_appDlgOv.show{display:flex}'+'#_appDlgCard{width:100%;max-width:360px;background:var(--card,#15151c);border:1px\x20solid\x20var(--border,#2a2a36);'+'border-radius:18px;padding:20px\x2018px\x2016px;box-shadow:0\x2018px\x2050px\x20rgba(0,0,0,.6);'+'animation:_appDlgIn\x20.16s\x20ease-out}'+'@keyframes\x20_appDlgIn{from{transform:translateY(10px)\x20scale(.97);opacity:0}to{transform:none;opacity:1}}'+'#_appDlgIcon{font-size:30px;text-align:center;margin-bottom:8px}'+'#_appDlgMsg{font-size:14px;line-height:1.55;color:var(--txt,#eaeaea);text-align:center;white-space:pre-wrap;'+'word-break:break-word;max-height:46vh;overflow:auto}'+'#_appDlgIn{display:none;width:100%;margin-top:12px;padding:11px\x2012px;border-radius:11px;'+'background:var(--card2,#1d1d26);border:1px\x20solid\x20var(--border,#2a2a36);color:var(--txt,#eaeaea);font-size:14px;box-sizing:border-box}'+'#_appDlgBtns{display:flex;gap:10px;margin-top:16px}'+'#_appDlgBtns\x20button{flex:1;padding:12px;border-radius:12px;border:none;font-size:14px;font-weight:800;cursor:pointer}'+'#_appDlgOk{background:var(--primary,#00ff9c);color:#001b10}'+'#_appDlgOk.danger{background:#ff4444;color:#fff}'+'#_appDlgNo{background:transparent;color:var(--txt2,#9aa0aa);border:1px\x20solid\x20var(--border,#2a2a36)!important}',_0x14d43d=document['createElement']('style');_0x14d43d['id']=_0x1b7a67,_0x14d43d['textContent']=_0x3c1000,document['head']['appendChild'](_0x14d43d);}function _0x5517d4(){if(document['getElementById']('_appDlgOv'))return;_0x28a716();var _0x405697=document['createElement']('div');_0x405697['id']='_appDlgOv',_0x405697['innerHTML']='<div\x20id=\x22_appDlgCard\x22\x20role=\x22dialog\x22\x20aria-modal=\x22true\x22>'+'<div\x20id=\x22_appDlgIcon\x22></div>'+'<div\x20id=\x22_appDlgMsg\x22></div>'+'<input\x20id=\x22_appDlgIn\x22\x20type=\x22text\x22\x20autocomplete=\x22off\x22>'+'<div\x20id=\x22_appDlgBtns\x22>'+'<button\x20id=\x22_appDlgNo\x22\x20type=\x22button\x22>Cancel</button>'+'<button\x20id=\x22_appDlgOk\x22\x20type=\x22button\x22>OK</button>'+'</div></div>',document['body']['appendChild'](_0x405697),_0x405697['addEventListener']('click',function(_0x52954c){if(_0x52954c['target']===_0x405697)_0xff3b89(![]);}),document['getElementById']('_appDlgNo')['addEventListener']('click',function(){_0xff3b89(![]);}),document['getElementById']('_appDlgOk')['addEventListener']('click',function(){_0xff3b89(!![]);}),document['addEventListener']('keydown',function(_0xfe75c3){if(!_0x2ad725)return;if(_0xfe75c3['key']==='Escape')_0xfe75c3['preventDefault'](),_0xff3b89(![]);else{if(_0xfe75c3['key']==='Enter'&&_0x48621d!=='prompt')_0xfe75c3['preventDefault'](),_0xff3b89(!![]);else _0xfe75c3['key']==='Enter'&&_0x48621d==='prompt'&&(_0xfe75c3['preventDefault'](),_0xff3b89(!![]));}});}var _0x2ad725=![],_0x48621d='alert',_0x384796=null,_0xa2f14d={};function _0x5411e2(_0x257a1c,_0x3c0417,_0x37a457){_0x5517d4(),_0x48621d=_0x257a1c,_0xa2f14d=_0x37a457||{},_0x452c30=!!_0xa2f14d['_shim'],_0x2ad725=!![];var _0x5b2885=document['getElementById']('_appDlgOv');document['getElementById']('_appDlgIcon')['textContent']=_0xa2f14d['icon']||(_0x257a1c==='confirm'?'❓':_0x257a1c==='prompt'?'✍️':_0x37a457&&_0x37a457['danger']?'⚠️':'ℹ️'),document['getElementById']('_appDlgMsg')['innerHTML']=_0x70db38(_0x3c0417);var _0x62d437=document['getElementById']('_appDlgIn');_0x62d437['style']['display']=_0x257a1c==='prompt'?'block':'none',_0x62d437['value']=_0x257a1c==='prompt'?_0xa2f14d['defaultValue']||'':'',_0x62d437['placeholder']=_0xa2f14d['placeholder']||'';var _0x41ca57=document['getElementById']('_appDlgOk');_0x41ca57['textContent']=_0xa2f14d['okText']||(_0x257a1c==='confirm'?'Haan,\x20karo':'OK'),_0x41ca57['className']=_0xa2f14d['danger']?'danger':'';var _0x247ec3=document['getElementById']('_appDlgNo');_0x247ec3['textContent']=_0xa2f14d['cancelText']||'Cancel',_0x247ec3['style']['display']=_0x257a1c==='alert'?'none':'block',_0x5b2885['classList']['add']('show');try{if(_0x257a1c==='prompt')setTimeout(function(){_0x62d437['focus']();},0x28);}catch(_0x267bb7){}}function _0x9e5880(){var _0x311375=document['getElementById']('_appDlgOv');if(_0x311375)_0x311375['classList']['remove']('show');_0x2ad725=![];}function _0xff3b89(_0x4de55b){if(!_0x2ad725)return;var _0x5ceb1c=document['getElementById']('_appDlgIn')['value'],_0x2521ce=_0x48621d,_0x907e43=_0x384796,_0x5ccdb9=_0xa2f14d,_0x2aeb07=_0x452c30;_0x384796=null,_0x9e5880();if(_0x907e43)try{_0x907e43(_0x4de55b?_0x2521ce==='prompt'?_0x5ceb1c:!![]:_0x2521ce==='prompt'?null:![]);}catch(_0x22d045){}try{if(_0x4de55b&&typeof _0x5ccdb9['onYes']==='function')_0x5ccdb9['onYes'](_0x2521ce==='prompt'?_0x5ceb1c:undefined);if(!_0x4de55b&&typeof _0x5ccdb9['onNo']==='function')_0x5ccdb9['onNo']();}catch(_0x143e68){console['warn']('[AppDialog]\x20callback\x20fail:',_0x143e68&&_0x143e68['message']);}_0x4de55b?_0x2aeb07&&(_0x5668f2['push']({'mode':_0x2521ce,'v':_0x2521ce==='prompt'?_0x5ceb1c:!![]}),_0x25e02f()):(_0x5668f2=[],_0x45f1a2=0x0,_0x1e3c07=null,_0x452c30=![]);}function _0x70db38(_0x1b2c76){return String(_0x1b2c76==null?'':_0x1b2c76)['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;');}window['appAlert']=function(_0x3ed521,_0x55cdc3){return new Promise(function(_0x2d53a7){_0x5411e2('alert',_0x3ed521,_0x55cdc3),_0x384796=function(){_0x2d53a7(!![]);};});},window['appConfirm']=function(_0x2ec479,_0x247992){if(typeof _0x247992==='function')_0x247992={'onYes':_0x247992};return new Promise(function(_0xb1f5e8){_0x5411e2('confirm',_0x2ec479,_0x247992),_0x384796=_0xb1f5e8;});},window['appConfirmCb']=function(_0x10def3,_0x338e05,_0x2f5129,_0x3b3554){return _0x3b3554=_0x3b3554||{},_0x3b3554['onYes']=_0x338e05,_0x3b3554['onNo']=_0x2f5129,window['appConfirm'](_0x10def3,_0x3b3554);},window['appPrompt']=function(_0x2a0385,_0x3d4a65,_0x4715c9){return typeof _0x3d4a65==='object'&&_0x3d4a65!==null&&(_0x4715c9=_0x3d4a65,_0x3d4a65=''),new Promise(function(_0x114682){_0x5411e2('prompt',_0x2a0385,Object['assign']({'defaultValue':_0x3d4a65||''},_0x4715c9||{})),_0x384796=_0x114682;});};var _0x5668f2=[],_0x45f1a2=0x0,_0xa3d6ce=![],_0x36e334=![],_0x1e3c07=null,_0x452c30=![];function _0x69b68a(_0xcc329){var _0x237cee=_0x5668f2[_0x45f1a2];if(_0x237cee&&_0x237cee['mode']===_0xcc329)return _0x45f1a2++,{'hit':!![],'v':_0x237cee['v']};return{'hit':![]};}function _0x25e02f(){if(!_0x1e3c07)return;var _0x52107d=_0x1e3c07,_0x43108a=_0x5668f2['length'];_0x45f1a2=0x0,_0xa3d6ce=!![],_0x36e334=!![],window['__appDialogBypass']=!![],setTimeout(function(){try{_0x52107d();}catch(_0x27073f){console['warn']('[AppDialog]\x20replay\x20fail:',_0x27073f&&_0x27073f['message']);}setTimeout(function(){_0x36e334=![];},0x0),setTimeout(function(){window['__appDialogBypass']=![];var _0xd27c76=document['getElementById']('_appDlgOv')&&document['getElementById']('_appDlgOv')['classList']['contains']('show');_0x43108a>0x0&&_0x45f1a2===0x0&&!_0xd27c76&&window['appAlert']('Kaam\x20poora\x20nahi\x20hua\x20—\x20kripya\x20wahi\x20button\x20ek\x20baar\x20dobara\x20dabaiye.',{'icon':'⚠️'});},0x708);},0x1e);}document['addEventListener']('click',function(_0x326c36){var _0xa7cae4=_0x326c36['target'],_0x2af114=!!(_0xa7cae4&&_0xa7cae4['closest']&&_0xa7cae4['closest']('#_appDlgOv')),_0x549c91=_0xa7cae4&&_0xa7cae4['closest']&&!_0x2af114?_0xa7cae4['closest']('[onclick],\x20button,\x20a,\x20.nav-item,\x20.filter-tab,\x20.tab'):null;if(_0x549c91)window['__appDialogLastEl']=_0x549c91;!_0x2af114&&!_0x36e334&&!window['__appDialogReplayClick']&&(_0x5668f2=[],_0x45f1a2=0x0,_0xa3d6ce=![],_0x452c30=![]);},!![]);function _0x42f25c(){var _0x413a5d=window['__appDialogLastEl'];if(_0x413a5d&&_0x413a5d['click'])return function(){window['__appDialogReplayClick']=!![];try{_0x413a5d['click']();}finally{window['__appDialogReplayClick']=![];}};return null;}function _0x3032b6(){_0x5668f2=_0x5668f2['slice'](0x0,_0x45f1a2),_0xa3d6ce=![];}var _0x7234e3=window['alert'],_0x5c0100=window['confirm'],_0x3bbdd9=window['prompt'];window['alert']=function(_0xb0df58){if(_0xa3d6ce)return;_0x452c30=![],window['appAlert'](_0xb0df58,{'icon':'ℹ️'});},window['confirm']=function(_0x324b2a){if(_0xa3d6ce){var _0x37fc61=_0x69b68a('confirm');if(_0x37fc61['hit'])return!!_0x37fc61['v'];_0x3032b6();}return _0x1e3c07=_0x42f25c(),_0x452c30=!![],window['appConfirm'](_0x324b2a,{'icon':'⚠️','_shim':!![]}),![];},window['prompt']=function(_0x202fc4,_0x24d477){if(_0xa3d6ce){var _0xa1b23d=_0x69b68a('prompt');if(_0xa1b23d['hit'])return _0xa1b23d['v'];_0x3032b6();}return _0x1e3c07=_0x42f25c(),_0x452c30=!![],window['appPrompt'](_0x202fc4,_0x24d477||'',{'_shim':!![]}),null;},window['__appDialogState']=function(){return{'q':_0x5668f2['slice'](),'cur':_0x45f1a2,'bypass':_0xa3d6ce,'replaying':_0x36e334,'shim':_0x452c30,'lastEl':window['__appDialogLastEl']?window['__appDialogLastEl']['id']||window['__appDialogLastEl']['className']||'?':null};},window['_appDialogNatives']={'alert':_0x7234e3,'confirm':_0x5c0100,'prompt':_0x3bbdd9},console['log']('[AppDialog]\x20ready\x20—\x20koi\x20browser\x20popup\x20nahi,\x20sab\x20app-UI\x20(B3)');}());
+/* ================================================================
+   APP DIALOG — core/app-dialog.js  (Mini eSports USER PANEL)
+
+   ✅ BUG FIX (2026-10-06, B3):
+   Shikayat: "koi bhi browser popup na aaye — '…github.io says' jaisa
+   popup nahi, har confirm app ki apni UI me ho."
+
+   Pehle app me 12 jagah native confirm()/alert()/prompt() the — WebView
+   aur browser dono me wo BADE, bhade, white system popup dikhate hain
+   jinme app ka rang-roop kahin nahi hota (aur WebView me upar
+   "deepsilence10161-source.github.io" likha aata hai). Naya user
+   ghabra jata tha.
+
+   Ab: apna overlay (aapke theme ke rang, gol kone, bade saaf button) —
+   ⌨️ Enter = theek, Esc = cancel, bahar tap karne par band.
+   Isi liye kaam ki teen soorten:
+     • window.appAlert(msg, opts)            → Promise (OK dabane par)
+     • window.appConfirm(msg, opts)          → Promise<true|false>
+     • window.appPrompt(label, def, opts)    → Promise<string|null>
+     • window.appConfirmCb(msg, onYes, onNo) → purane callback andaaz me
+
+   Saath me ek SURAKSHA-JAAL (neeche): agar koi aisi jagah bach gayi ho
+   jise hum badalna bhool gaye aur wo phir bhi native confirm() bulaye,
+   to wo bhi isi app-UI dialog me badal jayegi — user ko browser popup
+   kabhi nahi dikhega. (Click wale handler se bulaya gaya confirm bilkul
+   theek chalta hai: "Yes" dabane par wahi button dobara apne aap chalta
+   hai, aapko dobara nahi dabana padta.)
+================================================================ */
+(function () {
+  'use strict';
+  if (window.__appDialogReady) return;
+  window.__appDialogReady = true;
+
+  var _styleId = '_appDlgStyle';
+
+  function _injectCss() {
+    if (document.getElementById(_styleId)) return;
+    var css = ''
+      + '#_appDlgOv{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;'
+      + 'background:rgba(0,0,0,.72);backdrop-filter:blur(3px);padding:18px}'
+      + '#_appDlgOv.show{display:flex}'
+      + '#_appDlgCard{width:100%;max-width:360px;background:var(--card,#15151c);border:1px solid var(--border,#2a2a36);'
+      + 'border-radius:18px;padding:20px 18px 16px;box-shadow:0 18px 50px rgba(0,0,0,.6);'
+      + 'animation:_appDlgIn .16s ease-out}'
+      + '@keyframes _appDlgIn{from{transform:translateY(10px) scale(.97);opacity:0}to{transform:none;opacity:1}}'
+      + '#_appDlgIcon{font-size:30px;text-align:center;margin-bottom:8px}'
+      + '#_appDlgMsg{font-size:14px;line-height:1.55;color:var(--txt,#eaeaea);text-align:center;white-space:pre-wrap;'
+      + 'word-break:break-word;max-height:46vh;overflow:auto}'
+      + '#_appDlgIn{display:none;width:100%;margin-top:12px;padding:11px 12px;border-radius:11px;'
+      + 'background:var(--card2,#1d1d26);border:1px solid var(--border,#2a2a36);color:var(--txt,#eaeaea);font-size:14px;box-sizing:border-box}'
+      + '#_appDlgBtns{display:flex;gap:10px;margin-top:16px}'
+      + '#_appDlgBtns button{flex:1;padding:12px;border-radius:12px;border:none;font-size:14px;font-weight:800;cursor:pointer}'
+      + '#_appDlgOk{background:var(--primary,#00ff9c);color:#001b10}'
+      + '#_appDlgOk.danger{background:#ff4444;color:#fff}'
+      + '#_appDlgNo{background:transparent;color:var(--txt2,#9aa0aa);border:1px solid var(--border,#2a2a36)!important}';
+    var st = document.createElement('style');
+    st.id = _styleId;
+    st.textContent = css;
+    document.head.appendChild(st);
+  }
+
+  function _build() {
+    if (document.getElementById('_appDlgOv')) return;
+    _injectCss();
+    var ov = document.createElement('div');
+    ov.id = '_appDlgOv';
+    ov.innerHTML = '<div id="_appDlgCard" role="dialog" aria-modal="true">'
+      + '<div id="_appDlgIcon"></div>'
+      + '<div id="_appDlgMsg"></div>'
+      + '<input id="_appDlgIn" type="text" autocomplete="off">'
+      + '<div id="_appDlgBtns">'
+      +   '<button id="_appDlgNo" type="button">Cancel</button>'
+      +   '<button id="_appDlgOk" type="button">OK</button>'
+      + '</div></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function (e) { if (e.target === ov) _answer(false); });
+    document.getElementById('_appDlgNo').addEventListener('click', function () { _answer(false); });
+    document.getElementById('_appDlgOk').addEventListener('click', function () { _answer(true); });
+    document.addEventListener('keydown', function (e) {
+      if (!_open) return;
+      if (e.key === 'Escape') { e.preventDefault(); _answer(false); }
+      else if (e.key === 'Enter' && _mode !== 'prompt') { e.preventDefault(); _answer(true); }
+      else if (e.key === 'Enter' && _mode === 'prompt') { e.preventDefault(); _answer(true); }
+    });
+  }
+
+  var _open = false, _mode = 'alert', _resolve = null, _opts = {};
+
+  function _show(mode, message, opts) {
+    _build();
+    _mode = mode; _opts = opts || {};
+    _shimFlow = !!_opts._shim;
+    _open = true;
+    var ov = document.getElementById('_appDlgOv');
+    document.getElementById('_appDlgIcon').textContent = _opts.icon ||
+      (mode === 'confirm' ? '❓' : mode === 'prompt' ? '✍️' : (opts && opts.danger ? '⚠️' : 'ℹ️'));
+    document.getElementById('_appDlgMsg').innerHTML = _esc(message);
+    var inp = document.getElementById('_appDlgIn');
+    inp.style.display = (mode === 'prompt') ? 'block' : 'none';
+    inp.value = (mode === 'prompt') ? (_opts.defaultValue || '') : '';
+    inp.placeholder = _opts.placeholder || '';
+    var ok = document.getElementById('_appDlgOk');
+    ok.textContent = _opts.okText || (mode === 'confirm' ? 'Haan, karo' : 'OK');
+    ok.className = _opts.danger ? 'danger' : '';
+    var no = document.getElementById('_appDlgNo');
+    no.textContent = _opts.cancelText || 'Cancel';
+    no.style.display = (mode === 'alert') ? 'none' : 'block';
+    ov.classList.add('show');
+    try { if (mode === 'prompt') setTimeout(function () { inp.focus(); }, 40); } catch (e) {}
+  }
+
+  function _hide() {
+    var ov = document.getElementById('_appDlgOv');
+    if (ov) ov.classList.remove('show');
+    _open = false;
+  }
+
+  function _answer(yes) {
+    if (!_open) return;
+    var val = document.getElementById('_appDlgIn').value;
+    var mode = _mode, res = _resolve, opts = _opts, shim = _shimFlow;
+    _resolve = null;
+    _hide();
+    if (res) {
+      try { res(yes ? (mode === 'prompt' ? val : true) : (mode === 'prompt' ? null : false)); } catch (e) {}
+    }
+    /* callback andaaz (purane code me aam) */
+    try {
+      if (yes && typeof opts.onYes === 'function') opts.onYes(mode === 'prompt' ? val : undefined);
+      if (!yes && typeof opts.onNo === 'function') opts.onNo();
+    } catch (e) { console.warn('[AppDialog] callback fail:', e && e.message); }
+    /* ☝️ SURAKSHA-JAAL: agar ye dialog kisi purane native confirm() ki
+       jagah khula tha, to "Haan" dabane par wahi button apne aap dobara
+       chal jata hai (bypass ke saath) — user ko dobara nahi dabana padta. */
+    if (yes) {
+      /* ✅ BUG FIX (2026-10-08): sirf SURAKSHA-JAAL wale dialog ka jawab
+         yaad rakho aur wahi button dobara chalao. Seedhe
+         appConfirm/appPrompt (promise andaaz) ka jawab purani queue me
+         ghusne se wo kisi purane button ko dobara chala deta tha. */
+      if (shim) {
+        _q.push({ mode: mode, v: (mode === 'prompt' ? val : true) }); /* jawab yaad rakho */
+        _startReplay();                                              /* wahi button dobara, jawab sath */
+      }
+    } else {
+      _q = []; _cur = 0; _replay = null; _shimFlow = false;          /* cancel — kuch nahi, saaf */
+    }
+  }
+
+  function _esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /* ── सार्वजनिक API ── */
+  window.appAlert = function (message, opts) {
+    return new Promise(function (res) { _show('alert', message, opts); _resolve = function () { res(true); }; });
+  };
+  window.appConfirm = function (message, opts) {
+    if (typeof opts === 'function') opts = { onYes: opts };
+    return new Promise(function (res) { _show('confirm', message, opts); _resolve = res; });
+  };
+  window.appConfirmCb = function (message, onYes, onNo, opts) {
+    opts = opts || {}; opts.onYes = onYes; opts.onNo = onNo;
+    return window.appConfirm(message, opts);
+  };
+  window.appPrompt = function (message, defaultValue, opts) {
+    if (typeof defaultValue === 'object' && defaultValue !== null) { opts = defaultValue; defaultValue = ''; }
+    return new Promise(function (res) {
+      _show('prompt', message, Object.assign({ defaultValue: defaultValue || '' }, opts || {}));
+      _resolve = res;
+    });
+  };
+
+  /* ── SURAKSHA-JAAL (multi-step flows ke sath) ───────────────────
+     Sabse ahem baat: kai jagah pehle ACCOUNT/REASON poocha jata hai
+     (prompt) aur phir "pakka?" (confirm) — jaise Ban: pehle reason,
+     phir "Ban user X? Reason: Y". Native me ye do popup lagataar aate
+     the. Ab:
+       1. Pehla jawab aap app-UI me dete ho (reason likh kar / Haan).
+       2. Wahi button apne aap dobara chalta hai aur aapke diye hue
+          jawab apne aap laga diye jate hain (queue) — dobara nahi poocha
+          jata, aur koi native popup bhi nahi.
+       3. Agar kisi nayi shakh (branch) me kuch naya poocha jaye, to wo
+          phir se app-UI me hi dikhega — native kabhi nahi.
+     "Cancel" dabane par kuch nahi hota (bilkul native jaisa) aur queue
+     saaf ho jati hai, taki agli baar button dabane par fresh shuru ho. */
+  var _q = [], _cur = 0, _bypass = false, _replaying = false, _replay = null;
+  /* ✅ BUG FIX (2026-10-08, live E2E): ye dialog kis type ka hai —
+     (a) purane native confirm()/prompt()/alert() ki jagah (SURAKSHA-JAAL, _shim),
+         to jawab yaad rakhna + wahi button dobara chalana THEEK hai;
+     (b) seedha window.appConfirm/appPrompt/appAlert (promise andaaz) —
+         iska jawab queue me nahi ghusna chahiye (warna purana button
+         apne aap dobara chal jata tha = duplicate action ka khatra). */
+  var _shimFlow = false;
+
+  function _nextQueued(mode) {
+    var e = _q[_cur];
+    if (e && e.mode === mode) { _cur++; return { hit: true, v: e.v }; }
+    return { hit: false };
+  }
+
+  function _startReplay() {
+    if (!_replay) return;
+    var fn = _replay, before = _q.length;
+    _cur = 0; _bypass = true; _replaying = true;
+    /* Rate-limit/duplicate-click guards ko batao ki ye user ka dobara click
+       NAHI hai — wahi ek action apne aap aage badh raha hai. */
+    window.__appDialogBypass = true;
+    setTimeout(function () {
+      try { fn(); } catch (e) { console.warn('[AppDialog] replay fail:', e && e.message); }
+      setTimeout(function () { _replaying = false; }, 0);
+      /* 1.8 second baad dekho: replay ne apna jawab kharch kiya? Agar nahi
+         (button band tha / guard ne rok diya), to user ko chup-chaap kuch
+         na-hone ki jagah saaf batao. */
+      setTimeout(function () {
+        window.__appDialogBypass = false;
+        var kuchPuchhaJaRahaHai = document.getElementById('_appDlgOv')
+          && document.getElementById('_appDlgOv').classList.contains('show');
+        if (before > 0 && _cur === 0 && !kuchPuchhaJaRahaHai) {
+          window.appAlert('Kaam poora nahi hua — kripya wahi button ek baar dobara dabaiye.', { icon: '⚠️' });
+        }
+      }, 1800);
+    }, 30);
+  }
+
+  /* naya click (asli user ka) = purani queue bekaar, saaf karo */
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    /* Hamare hi dialog ke andar ka click "asli kaam wala button" nahi hai —
+       isliye na yaad rakho, na queue saaf karo (warna apna hi jawab ud jata). */
+    var inDlg = !!(t && t.closest && t.closest('#_appDlgOv'));
+    var el = (t && t.closest && !inDlg)
+      ? t.closest('[onclick], button, a, .nav-item, .filter-tab, .tab') : null;
+    if (el) window.__appDialogLastEl = el;
+    /* ⚠️ BUG FIX (2026-10-08, live E2E me pakda gaya): pehle yahan
+       `!_bypass` bhi shart thi. Lekin ek flow poora hone ke baad _bypass
+       TRUE hi reh jata hai (usko reset karne wala 1.8s wala timer sirf
+       window.__appDialogBypass ko chhoota hai), is liye agli click par
+       purani queue saaf hoti hi nahi thi.
+       Asli asar (admin panel, live): Ban (prompt+confirm) ke baad Unban
+       (sirf confirm) — “Unban?” dialog baar-baar khulta rehta tha, OK
+       dabane par kuch nahi hota tha, DB me is_banned=true hi padi rehti
+       thi (page reload ke bina chhutkara nahi).
+       Ab: HAR naYA click queue saaf karta hai (chahe _bypass purana pada ho),
+       bas replay ka apna click chhod kar — wo _replaying/_appDialogReplayClick
+       se pahchana jata hai. */
+    if (!inDlg && !_replaying && !window.__appDialogReplayClick) {
+      _q = []; _cur = 0; _bypass = false; _shimFlow = false;
+    }
+  }, true);
+
+  /* ✅ BUG FIX (2026-10-08): replay ka apna click "naya user click" NAHI hai —
+     is liye us ek click ke dauran chhota flag laga dete hain, taki upar wala
+     click-listener isi click par queue saaf na kar de (warna abhi-abhi diya
+     hua jawab ud jata aur kaam aage hi nahi badhta). */
+  function _replayFromLastEl() {
+    var el = window.__appDialogLastEl;
+    if (el && el.click) return function () {
+      window.__appDialogReplayClick = true;
+      try { el.click(); } finally { window.__appDialogReplayClick = false; }
+    };
+    return null;
+  }
+
+  /* ⚠️ BUG FIX (2026-10-08, live E2E): queue me is soorten ka jawab na mila =
+     nayi shakh. Tab sirf utne jawab rakho jitne is flow ne sach me kharch kiye
+     (_cur tak) — baaki bekaar hain. Poori queue saaf karna galat tha: async
+     flows me (jaise Ban: prompt → [await token] → confirm) replay ka fn()
+     await par ruk jata hai, _replaying pehle hi false ho chuka hota hai —
+     “naya flow” maan kar queue saaf karne se user ka diya hua REASON ud jata
+     tha aur prompt↔confirm ka infinite loop ban jata tha (live me M4 ban hi
+     nahi hota tha). Prefix rakhne se replay ko bilkul wahi jawab milta hai
+     jo user ne diya tha. */
+  function _shimBranchReset() {
+    _q = _q.slice(0, _cur);
+    _bypass = false;
+  }
+
+  var _nativeAlert = window.alert, _nativeConfirm = window.confirm, _nativePrompt = window.prompt;
+  window.alert = function (msg) {
+    /* ✅ BUG FIX (2026-10-08, live-testing): alert ka jawab flow ke natije ko
+       badalta nahi — is liye ise na queue me likho, na apne-aap-replay karo.
+       Pehle aisa hota tha, aur uski wajah se "kaam ke baad ka alert"
+       (jaise confirm → delete → alert('Delete ho gaya')) poore action ko
+       DOBARA chala deta tha — yani delete/credit DO baar! (Live E2E me pakda
+       gaya.) Ab: replay ke dauran, jab user wahi alert pehle hi dekh chuka
+       hai, chup-chaap nikal jata hai; warna app-UI me saaf dikhta hai. */
+    if (_bypass) return;
+    _shimFlow = false;
+    window.appAlert(msg, { icon: 'ℹ️' });
+  };
+  window.confirm = function (msg) {
+    if (_bypass) {
+      var r = _nextQueued('confirm');
+      if (r.hit) return !!r.v;
+      _shimBranchReset();          /* nayi shakh — app-UI me poocho */
+    }
+    _replay = _replayFromLastEl();
+    _shimFlow = true;
+    window.appConfirm(msg, { icon: '⚠️', _shim: true });
+    return false;                  /* natija dialog se (replay ke zariye) */
+  };
+  window.prompt = function (msg, def) {
+    if (_bypass) {
+      var r = _nextQueued('prompt');
+      if (r.hit) return r.v;
+      _shimBranchReset();          /* nayi shakh — app-UI me poocho */
+    }
+    _replay = _replayFromLastEl();
+    _shimFlow = true;
+    window.appPrompt(msg, def || '', { _shim: true });
+    return null;
+  };
+
+  /* zaroorat pade to purane wapas (debugging ke liye) */
+  /* E2E/debug ke liye — kis waqt kaun sa jawab line me hai, ye dikhata hai */
+  window.__appDialogState = function () {
+    return { q: _q.slice(), cur: _cur, bypass: _bypass, replaying: _replaying, shim: _shimFlow,
+             lastEl: window.__appDialogLastEl ? (window.__appDialogLastEl.id || window.__appDialogLastEl.className || '?') : null };
+  };
+  window._appDialogNatives = { alert: _nativeAlert, confirm: _nativeConfirm, prompt: _nativePrompt };
+
+  console.log('[AppDialog] ready — koi browser popup nahi, sab app-UI (B3)');
+})();

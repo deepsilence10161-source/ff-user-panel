@@ -1,1 +1,326 @@
-(function(){'use strict';var _0x50b497=(function(){var _0x11484b=!![];return function(_0x3ce484,_0xb71f53){var _0x35f2d9=_0x11484b?function(){if(_0xb71f53){var _0x9984e1=_0xb71f53['apply'](_0x3ce484,arguments);return _0xb71f53=null,_0x9984e1;}}:function(){};return _0x11484b=![],_0x35f2d9;};}());var _0xf2fc2a=null,_0x5d71d0=null,_0x4fa592=null,_0x4a3f1a=null;window['startWatching']=function(_0x1418aa){if(!window['U']){toast('Login\x20karo\x20pehle','err');return;}if(_0x5d71d0===_0x1418aa){toast('Pehle\x20se\x20dekh\x20rahe\x20ho!\x20👀','inf');return;}var _0x54ca68=window['MT']&&window['MT'][_0x1418aa];if(!_0x54ca68){window['_supa']?window['_supa']['from']('matches')['select']('*')['eq']('id',_0x1418aa)['single']()['then'](function(_0x28c7be){if(_0x28c7be['data']){if(!window['MT'])window['MT']={};window['MT'][_0x1418aa]=_0x28c7be['data'],window['startWatching'](_0x1418aa);}else toast('Match\x20nahi\x20mila','err');},function(){toast('Match\x20nahi\x20mila','err');}):toast('Match\x20nahi\x20mila','err');return;}if(!_0x54ca68['streamLink']&&!_0x54ca68['youtubeLink']&&!_0x54ca68['stream_link']&&!_0x54ca68['youtube_link']){toast('Is\x20match\x20ka\x20live\x20stream\x20available\x20nahi\x20hai','inf');return;}var _0x153abc=window['CFG']&&window['CFG']['watchDailyLimitMins']||0x1e,_0x723f34=window['CFG']&&window['CFG']['watchCoinsPerInterval']||0x2,_0x58c128=window['CFG']&&window['CFG']['watchIntervalMins']||0x1,_0x437d8d=new Date()['toISOString']()['split']('T')[0x0];DB['watchEarn']['getTodayTotal']()['then'](function(_0x3f9a1c){var _0x268393=_0x3f9a1c?_0x3f9a1c['totalMins']:0x0;if(_0x268393>=_0x153abc){toast('Aaj\x20ki\x20daily\x20limit\x20'+_0x153abc+'\x20min\x20ho\x20gayi!\x20Kal\x20dobara\x20aao\x20🌙','inf');return;}_0x5d71d0=_0x1418aa,_0x4fa592=Date['now']();try{window['db']&&window['U']&&(window['db']['ref']('matches/'+_0x1418aa+'/spectators/'+window['U']['uid'])['set']({'uid':window['U']['uid'],'ign':window['UD']&&window['UD']['ign']||'Spectator','joinedAt':Date['now'](),'lastPing':Date['now']()}),window['db']['ref']('matches/'+_0x1418aa+'/spectatorCount')['transaction'](function(_0x3a5d10){return(_0x3a5d10||0x0)+0x1;}));}catch(_0x3878ad){}_0x50e31f(_0x1418aa,_0x54ca68,_0x153abc-_0x268393,_0x723f34,_0x58c128),_0x4a3f1a=setInterval(function(){if(!_0x5d71d0){clearInterval(_0x4a3f1a);return;}try{window['db']&&window['U']&&window['db']['ref']('matches/'+_0x5d71d0+'/spectators/'+window['U']['uid']+'/lastPing')['set'](Date['now']());}catch(_0x1f3813){}},0x7530);try{if(window['_supa'])window['_supa']['rpc']('watch_earn_beat',{'p_match_id':_0x1418aa});}catch(_0x41ea99){}_0x4a3f1a=setInterval(function(){if(!_0x5d71d0)return;try{if(window['_supa'])window['_supa']['rpc']('watch_earn_beat',{'p_match_id':_0x5d71d0});}catch(_0x43162){}},0x7530);var _0x10f0ac=_0x58c128*0xea60;_0xf2fc2a=setInterval(function(){if(!_0x5d71d0){clearInterval(_0xf2fc2a);return;}var _0x33a44f=window['MT']&&window['MT'][_0x5d71d0],_0xf77423=_0x33a44f?(_0x33a44f['status']||_0x33a44f['matchStatus']||_0x33a44f['gameStatus']||'')['toLowerCase']():'',_0x11c40e=_0xf77423==='completed'||_0xf77423==='cancelled'||_0xf77423==='resultpublished'||_0x33a44f&&_0x33a44f['resultPublished'];if(_0x11c40e){clearInterval(_0xf2fc2a),clearInterval(_0x4a3f1a),_0x5d71d0=null,toast('Match\x20khatam\x20ho\x20gaya\x20—\x20Watch\x20&\x20Earn\x20ended.','inf');var _0x37d457=document['getElementById']('watchEarnBar');if(_0x37d457)_0x37d457['remove']();return;}window['_supa']&&window['U']&&window['_supa']['rpc']('claim_watch_earn_reward',{'p_match_id':_0x5d71d0})['then'](function(_0x909446){var _0x13250a=_0x909446&&_0x909446['data'];if(!_0x13250a||!_0x13250a['success']){clearInterval(_0xf2fc2a),clearInterval(_0x4a3f1a),_0x5d71d0=null;var _0x2d9893=document['getElementById']('watchEarnBar');if(_0x2d9893)_0x2d9893['remove']();if(_0x13250a&&_0x13250a['error'])toast(_0x13250a['error'],'inf');return;}if(window['UD']){window['UD']['coins']=(window['UD']['coins']||0x0)+_0x13250a['coinsEarned'];if(window['updateHdr'])updateHdr();}toast('+'+_0x13250a['coinsEarned']+'🪙\x20Watch\x20bonus\x20mila!','ok');var _0x123fc8=document['getElementById']('watchCoinsEarned');if(_0x123fc8)_0x123fc8['textContent']=parseInt(_0x123fc8['textContent']||0x0)+_0x13250a['coinsEarned'];},function(){});},_0x10f0ac),toast('👀\x20Watch\x20karna\x20shuru!\x20Har\x20'+_0x58c128+'\x20min\x20mein\x20+'+_0x723f34+'🪙','ok');})['catch'](function(){_0x5d71d0=_0x1418aa,_0x4fa592=Date['now'](),_0x50e31f(_0x1418aa,_0x54ca68,_0x153abc,_0x723f34,_0x58c128),toast('👀\x20Watch\x20karna\x20shuru!','ok');});};function _0x50e31f(_0x37bb4e,_0x11ae32,_0x3d7a99,_0x2c2252,_0xb36e66){var _0x1a7ce1=document['getElementById']('watchEarnBar');if(_0x1a7ce1)_0x1a7ce1['remove']();var _0x5bee17=document['createElement']('div');_0x5bee17['id']='watchEarnBar',_0x5bee17['style']['cssText']='position:fixed;bottom:70px;left:0;right:0;z-index:8888;padding:0\x2012px';var _0x57b695=_0x11ae32['streamLink']||_0x11ae32['youtubeLink']||_0x11ae32['stream_link']||_0x11ae32['youtube_link']||'#';_0x5bee17['innerHTML']='<div\x20style=\x22background:linear-gradient(135deg,#1a0d2e,#0d1a2e);border:1.5px\x20solid\x20rgba(185,100,255,.3);border-radius:14px;padding:12px\x2014px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)\x22>'+'<div\x20style=\x22width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse\x201s\x20infinite;flex-shrink:0\x22></div>'+'<div\x20style=\x22flex:1;min-width:0\x22>'+'<div\x20style=\x22font-size:12px;font-weight:800;color:#b964ff\x22>👀\x20LIVE\x20Watch\x20&\x20Earn</div>'+'<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:1px\x22>'+(_0xb36e66<=0x1?'+'+_0x2c2252+'🪙\x20per\x20minute':'Har\x20'+_0xb36e66+'\x20min\x20=\x20+'+_0x2c2252+'🪙')+'\x20•\x20<span\x20id=\x22watchTimeLeft\x22>'+_0x3d7a99+'\x20min\x20baaki</span></div>'+'</div>'+'<div\x20style=\x22text-align:right;flex-shrink:0\x22>'+'<div\x20style=\x22font-size:16px;font-weight:900;color:#ffd700\x22>+<span\x20id=\x22watchCoinsEarned\x22>0</span>🪙</div>'+'<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>earned</div>'+'</div>'+'<a\x20href=\x22'+_0x57b695+'\x22\x20target=\x22_blank\x22\x20style=\x22padding:7px\x2012px;border-radius:10px;background:linear-gradient(135deg,#ff0000,#cc0000);border:none;color:#fff;font-size:11px;font-weight:800;text-decoration:none;flex-shrink:0\x22><i\x20class=\x22fab\x20fa-youtube\x22></i>\x20Watch</a>'+'<button\x20onclick=\x22stopWatching()\x22\x20style=\x22padding:7px\x2010px;border-radius:10px;background:rgba(255,255,255,.06);border:1px\x20solid\x20rgba(255,255,255,.1);color:var(--txt2);font-size:11px;cursor:pointer\x22>✕</button>'+'</div>',document['body']['appendChild'](_0x5bee17);}window['stopWatching']=function(){if(!_0x5d71d0)return;clearInterval(_0xf2fc2a),clearInterval(_0x4a3f1a);try{window['db']&&window['U']&&(window['db']['ref']('matches/'+_0x5d71d0+'/spectators/'+window['U']['uid'])['remove'](),window['db']['ref']('matches/'+_0x5d71d0+'/spectatorCount')['transaction'](function(_0x2e43ce){return Math['max']((_0x2e43ce||0x0)-0x1,0x0);}));}catch(_0x487f6a){}_0x5d71d0=null,_0x4fa592=null;var _0xdb38ed=document['getElementById']('watchEarnBar');if(_0xdb38ed)_0xdb38ed['remove']();toast('Watch\x20session\x20end.\x20Kal\x20dobara\x20aana!\x20👋','inf');},(function(){var _0x203b79=_0x50b497(this,function(){if(_0x203b79['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x203b79['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x203b79)['search']('(((.+)+)+)+$');});_0x203b79();function _0x465c2f(){window['_watchMatchId']&&typeof window['stopWatching']==='function'&&window['stopWatching']();}document['addEventListener']('visibilitychange',function(){if(document['visibilityState']==='hidden')_0x465c2f();}),window['addEventListener']('pagehide',_0x465c2f),window['addEventListener']('beforeunload',_0x465c2f);}()),window['renderSpectatorCount']=function(_0x346253){var _0x16dc27=window['MT']&&window['MT'][_0x346253],_0x326647=_0x16dc27?_0x16dc27['spectatorCount']||_0x16dc27['spectator_count']||0x0:0x0;if(!_0x326647)return'';return'<span\x20style=\x22font-size:10px;color:#ff4444;font-weight:700\x22>'+'<span\x20style=\x22display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff4444;margin-right:3px;vertical-align:middle\x22></span>'+_0x326647+'\x20watching</span>';},window['showLiveSpectateList']=function(){if(!window['_supa']){toast('Connection\x20error','err');return;}var _0x4b32f1=[],_0x465b29=[];function _0x52b53d(){var _0x44879e='',_0xd419e4=_0x4b32f1['length']+_0x465b29['length'];!_0xd419e4?_0x44879e='<div\x20style=\x22text-align:center;padding:24px\x22><div\x20style=\x22font-size:32px;margin-bottom:8px\x22>📺</div><div\x20style=\x22color:var(--txt2)\x22>Abhi\x20koi\x20live\x20match\x20nahi\x20—\x20jab\x20match\x20live\x20ho\x20tab\x20yahan\x20dikhega</div></div>':(_0x44879e='<div\x20style=\x22display:flex;flex-direction:column;gap:10px\x22>',_0x4b32f1['forEach'](function(_0x406cdb){var _0x1ba157=_0x406cdb['stream_link']||'';if(!_0x1ba157)return;_0x44879e+='<div\x20style=\x22background:rgba(255,0,0,.04);border:1px\x20solid\x20rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px\x22>',_0x44879e+='<div\x20style=\x22width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse\x201s\x20infinite;flex-shrink:0\x22></div>',_0x44879e+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:800\x22>'+(window['_chatEsc']?window['_chatEsc'](_0x406cdb['stream_title']||_0x406cdb['ign']+'\x20—\x20Live'):_0x406cdb['stream_title']||_0x406cdb['ign']+'\x20—\x20Live')+'</div>',_0x44879e+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:2px\x22>🔴\x20'+(window['_chatEsc']?window['_chatEsc'](_0x406cdb['ign']||'Player'):_0x406cdb['ign']||'Player')+'\x20•\x20Live\x20stream</div></div>',_0x44879e+='<button\x20onclick=\x22window.watchStream(\x27'+String(_0x1ba157)['replace'](/'/g,'\x5c\x27')+'\x27)\x22\x20style=\x22padding:8px\x2014px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer\x22>👀\x20Watch</button>',_0x44879e+='</div>';}),_0x465b29['forEach'](function(_0x20219e){var _0x2555da=_0x20219e['spectator_count']||0x0;_0x44879e+='<div\x20style=\x22background:rgba(255,0,0,.04);border:1px\x20solid\x20rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px\x22>',_0x44879e+='<div\x20style=\x22width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse\x201s\x20infinite;flex-shrink:0\x22></div>',_0x44879e+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:800\x22>'+(_0x20219e['title']||'Match')+'</div>',_0x44879e+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:2px\x22>'+_0x2555da+'\x20watching\x20•\x20'+(_0x20219e['mode']||'BR')+'</div></div>',_0x44879e+='<button\x20onclick=\x22startWatching(\x27'+_0x20219e['id']+'\x27)\x22\x20style=\x22padding:8px\x2014px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer\x22>👀\x20Watch</button>',_0x44879e+='</div>';}),_0x44879e+='</div>');if(window['openModal'])openModal('📺\x20Live\x20Matches',_0x44879e);}var _0x10ad42=function(){window['_supa']['from']('user_public_profiles')['select']('id,ign,stream_link,stream_title,is_live')['eq']('is_live',!![])['not']('stream_link','is',null)['limit'](0x14)['then'](function(_0x264e27){_0x4b32f1=(_0x264e27['data']||[])['filter'](function(_0x2f58b7){return _0x2f58b7['stream_link'];}),_0x52b53d();},function(){_0x52b53d();});};window['_supa']['from']('user_live_streams')['select']('id,ign,stream_link,stream_title,stream_live_until')['limit'](0x14)['then'](function(_0x1b1ded){_0x4b32f1=(_0x1b1ded['data']||[])['filter'](function(_0x13b981){return _0x13b981['stream_link'];}),_0x52b53d();},function(){_0x10ad42();}),window['_supa']['from']('matches')['select']('id,title,mode,status,stream_link,youtube_link,spectator_count')['eq']('status','live')['limit'](0xa)['then'](function(_0xa55ba8){_0x465b29=(_0xa55ba8['data']||[])['filter'](function(_0x199fd7){return _0x199fd7['stream_link']||_0x199fd7['youtube_link'];}),_0x52b53d();},function(){});},window['watchStream']=function(_0x310757){if(!_0x310757){if(window['toast'])toast('Stream\x20link\x20nahi\x20mila','err');return;}var _0x1ac3ea=_0x310757,_0x50113c=_0x310757['match'](/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/))([\w-]{6,})/);if(_0x50113c&&_0x50113c[0x1])_0x1ac3ea='https://www.youtube.com/embed/'+_0x50113c[0x1];var _0x37be38='<div\x20style=\x22position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000\x22>';_0x37be38+='<iframe\x20src=\x22'+_0x1ac3ea+'\x22\x20style=\x22position:absolute;top:0;left:0;width:100%;height:100%;border:0\x22\x20allow=\x22accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture\x22\x20allowfullscreen></iframe>',_0x37be38+='</div>',_0x37be38+='<div\x20style=\x22text-align:center;margin-top:10px\x22><a\x20href=\x22'+_0x310757+'\x22\x20target=\x22_blank\x22\x20rel=\x22noopener\x22\x20style=\x22color:#00d4ff;font-size:12px\x22>🔗\x20YouTube\x20par\x20kholo</a></div>';if(window['openModal'])openModal('🔴\x20Live\x20Stream',_0x37be38);};}());
+/* ================================================================
+   WATCH & EARN SPECTATOR — watch-earn.js
+   v31 FIX — Daily limit + match status via Supabase only
+   Firebase presence for spectators kept as optional/silent
+================================================================ */
+
+(function() {
+'use strict';
+
+var _watchInterval = null;
+var _watchMatchId  = null;
+var _watchStart    = null;
+var _pingInterval  = null;
+
+/* ── Start Watching ── */
+window.startWatching = function(matchId) {
+  if (!window.U) { toast('Login karo pehle', 'err'); return; }
+  if (_watchMatchId === matchId) { toast('Pehle se dekh rahe ho! 👀', 'inf'); return; }
+
+  var t = window.MT && window.MT[matchId];
+  if (!t) {
+    if (window._supa) {
+      window._supa.from('matches').select('*').eq('id', matchId).single()
+        .then(function(r) {
+          if (r.data) {
+            if (!window.MT) window.MT = {};
+            window.MT[matchId] = r.data;
+            window.startWatching(matchId);
+          } else { toast('Match nahi mila', 'err'); }
+        }, function() { toast('Match nahi mila', 'err'); });
+    } else { toast('Match nahi mila', 'err'); }
+    return;
+  }
+  if (!t.streamLink && !t.youtubeLink && !t.stream_link && !t.youtube_link) {
+    toast('Is match ka live stream available nahi hai', 'inf'); return;
+  }
+
+  var dailyLimit       = (window.CFG && window.CFG.watchDailyLimitMins)   || 30;
+  var coinsPerInterval = (window.CFG && window.CFG.watchCoinsPerInterval)  || 2;
+  /* ✅ B31 (2026-10-06): fallback 5 → 1. Owner-confirmed rule "2 coins PER
+     MINUTE" hai (B17); CFG ka default bhi 1 hai (features/app-config.js).
+     Purana fallback 5 rehne se config load fail hone par chupke se
+     2 coins / 5 min (yaani 5 guna dheema) ho jata tha — config aur fallback
+     ka rate ek hi hona chahiye. */
+  var intervalMins     = (window.CFG && window.CFG.watchIntervalMins)      || 1;
+
+  /* ✅ Check daily limit via Supabase watch_earn_log (not Firebase) */
+  var today = new Date().toISOString().split('T')[0];
+
+  DB.watchEarn.getTodayTotal().then(function(earned) {
+    var todayMins  = earned ? earned.totalMins  : 0;
+    if (todayMins >= dailyLimit) {
+      toast('Aaj ki daily limit ' + dailyLimit + ' min ho gayi! Kal dobara aao 🌙', 'inf');
+      return;
+    }
+
+    _watchMatchId = matchId;
+    _watchStart   = Date.now();
+
+    /* Optional Firebase presence — silent fail if Firebase unavailable */
+    try {
+      if (window.db && window.U) {
+        window.db.ref('matches/' + matchId + '/spectators/' + window.U.uid).set({
+          uid: window.U.uid, ign: (window.UD && window.UD.ign) || 'Spectator',
+          joinedAt: Date.now(), lastPing: Date.now()
+        });
+        window.db.ref('matches/' + matchId + '/spectatorCount').transaction(function(v) {
+          return (v || 0) + 1;
+        });
+      }
+    } catch(e) {}
+
+    showWatchUI(matchId, t, dailyLimit - todayMins, coinsPerInterval, intervalMins);
+
+    /* Ping timer — Firebase presence (silent fail) */
+    _pingInterval = setInterval(function() {
+      if (!_watchMatchId) { clearInterval(_pingInterval); return; }
+      try {
+        if (window.db && window.U) {
+          window.db.ref('matches/' + _watchMatchId + '/spectators/' + window.U.uid + '/lastPing').set(Date.now());
+        }
+      } catch(e) {}
+    }, 30000);
+
+    /* D34 (report#3): server-side watch heartbeat — isi ke bina
+       claim_watch_earn_reward reward nahi deta (spoof-proofing). */
+    try {
+      if (window._supa) window._supa.rpc('watch_earn_beat', { p_match_id: matchId });
+    } catch (e) {}
+    _pingInterval = setInterval(function () {
+      if (!_watchMatchId) return;
+      try { if (window._supa) window._supa.rpc('watch_earn_beat', { p_match_id: _watchMatchId }); } catch (e) {}
+    }, 30000);
+
+    /* Coin reward timer */
+    var msInterval = intervalMins * 60000;
+    _watchInterval = setInterval(function() {
+      if (!_watchMatchId) { clearInterval(_watchInterval); return; }
+
+      /* ✅ Check match status from Supabase-backed MT (not Firebase) */
+      var mt = window.MT && window.MT[_watchMatchId];
+      var matchStatus = mt ? ((mt.status || mt.matchStatus || mt.gameStatus || '')).toLowerCase() : '';
+      var isEnded = matchStatus === 'completed' || matchStatus === 'cancelled' ||
+                    matchStatus === 'resultpublished' || (mt && mt.resultPublished);
+
+      if (isEnded) {
+        clearInterval(_watchInterval);
+        clearInterval(_pingInterval);
+        _watchMatchId = null;
+        toast('Match khatam ho gaya — Watch & Earn ended.', 'inf');
+        var bar = document.getElementById('watchEarnBar');
+        if (bar) bar.remove();
+        return;
+      }
+
+      /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet
+         RPC" audit found this timer credited coins by calling
+         increment_balance() directly from the client with a
+         client-computed amount — anyone could open devtools and call
+         the same RPC with any amount they wanted, completely
+         bypassing this timer, the daily limit, and the match-status
+         check entirely (increment_balance had no way to know if the
+         amount/reason was legitimate). Replaced with
+         claim_watch_earn_reward(matchId) — a dedicated server-side
+         RPC that itself re-verifies the match is live, re-checks the
+         daily limit against real logged rows (not the client's
+         cached total), rate-limits rapid repeat calls, and computes
+         the reward amount from server-side config — the client no
+         longer supplies any amount at all. */
+      if (window._supa && window.U) {
+        window._supa.rpc('claim_watch_earn_reward', { p_match_id: _watchMatchId })
+          .then(function(res) {
+            var d = res && res.data;
+            if (!d || !d.success) {
+              /* Server rejected (limit reached, match ended, etc.) —
+                 stop the local timer so the UI doesn't keep pretending
+                 to earn when nothing is actually being credited. */
+              clearInterval(_watchInterval);
+              clearInterval(_pingInterval);
+              _watchMatchId = null;
+              var bar = document.getElementById('watchEarnBar');
+              if (bar) bar.remove();
+              if (d && d.error) toast(d.error, 'inf');
+              return;
+            }
+            if (window.UD) {
+              window.UD.coins = (window.UD.coins || 0) + d.coinsEarned;
+              if (window.updateHdr) updateHdr();
+            }
+            toast('+' + d.coinsEarned + '🪙 Watch bonus mila!', 'ok');
+            var el = document.getElementById('watchCoinsEarned');
+            if (el) el.textContent = (parseInt(el.textContent || 0) + d.coinsEarned);
+          }, function(){});
+      }
+    }, msInterval);
+
+    toast('👀 Watch karna shuru! Har ' + intervalMins + ' min mein +' + coinsPerInterval + '🪙', 'ok');
+  }).catch(function() {
+    /* Fallback if DB query fails — allow watch without daily limit check */
+    _watchMatchId = matchId;
+    _watchStart   = Date.now();
+    showWatchUI(matchId, t, dailyLimit, coinsPerInterval, intervalMins);
+    toast('👀 Watch karna shuru!', 'ok');
+  });
+};
+
+/* ── Watch UI Bar ── */
+function showWatchUI(matchId, t, minsLeft, coinsPerInterval, intervalMins) {
+  var existing = document.getElementById('watchEarnBar');
+  if (existing) existing.remove();
+
+  var bar = document.createElement('div');
+  bar.id  = 'watchEarnBar';
+  bar.style.cssText = 'position:fixed;bottom:70px;left:0;right:0;z-index:8888;padding:0 12px';
+
+  var streamUrl = t.streamLink || t.youtubeLink || t.stream_link || t.youtube_link || '#';
+
+  bar.innerHTML =
+    '<div style="background:linear-gradient(135deg,#1a0d2e,#0d1a2e);border:1.5px solid rgba(185,100,255,.3);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px)">' +
+    '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>' +
+    '<div style="flex:1;min-width:0">' +
+      '<div style="font-size:12px;font-weight:800;color:#b964ff">👀 LIVE Watch & Earn</div>' +
+      /* ✅ FIX (2026-10-06): copy ab config se — interval 1 min ho to
+         "Har 1 min = +2🪙" ki jagah saaf "+2🪙 per minute" dikhe. */
+      '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (intervalMins <= 1 ? '+' + coinsPerInterval + '🪙 per minute' : 'Har ' + intervalMins + ' min = +' + coinsPerInterval + '🪙') + ' • <span id="watchTimeLeft">' + minsLeft + ' min baaki</span></div>' +
+    '</div>' +
+    '<div style="text-align:right;flex-shrink:0">' +
+      '<div style="font-size:16px;font-weight:900;color:#ffd700">+<span id="watchCoinsEarned">0</span>🪙</div>' +
+      '<div style="font-size:10px;color:var(--txt2)">earned</div>' +
+    '</div>' +
+    '<a href="' + streamUrl + '" target="_blank" style="padding:7px 12px;border-radius:10px;background:linear-gradient(135deg,#ff0000,#cc0000);border:none;color:#fff;font-size:11px;font-weight:800;text-decoration:none;flex-shrink:0"><i class="fab fa-youtube"></i> Watch</a>' +
+    '<button onclick="stopWatching()" style="padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--txt2);font-size:11px;cursor:pointer">✕</button>' +
+    '</div>';
+
+  document.body.appendChild(bar);
+}
+
+/* ── Stop Watching ── */
+window.stopWatching = function() {
+  if (!_watchMatchId) return;
+  clearInterval(_watchInterval);
+  clearInterval(_pingInterval);
+
+  /* Optional Firebase cleanup */
+  try {
+    if (window.db && window.U) {
+      window.db.ref('matches/' + _watchMatchId + '/spectators/' + window.U.uid).remove();
+      window.db.ref('matches/' + _watchMatchId + '/spectatorCount').transaction(function(v) {
+        return Math.max((v || 0) - 1, 0);
+      });
+    }
+  } catch(e) {}
+
+  _watchMatchId = null;
+  _watchStart   = null;
+
+  var bar = document.getElementById('watchEarnBar');
+  if (bar) bar.remove();
+  toast('Watch session end. Kal dobara aana! 👋', 'inf');
+};
+
+/* ── Auto-stop on tab hide / unload ── */
+(function() {
+  function _autoStop() {
+    if (window._watchMatchId && typeof window.stopWatching === 'function') {
+      window.stopWatching();
+    }
+  }
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') _autoStop();
+  });
+  window.addEventListener('pagehide',    _autoStop);
+  window.addEventListener('beforeunload', _autoStop);
+})();
+
+/* ── Spectator Count Display ── */
+window.renderSpectatorCount = function(matchId) {
+  var mt = window.MT && window.MT[matchId];
+  var count = mt ? (mt.spectatorCount || mt.spectator_count || 0) : 0;
+  if (!count) return '';
+  return '<span style="font-size:10px;color:#ff4444;font-weight:700">' +
+         '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff4444;margin-right:3px;vertical-align:middle"></span>' +
+         count + ' watching</span>';
+};
+
+/* ── Show Live Matches to Spectate ── */
+/* ✅ BUG FIX (2026-10-04): "Live matches dikhte hi nahi" + "live stream on
+   karne par users ko video dikhti hi nahi". Root cause: ye function sirf
+   `matches` (status='live') padhta tha — lekin creator ka "Go Live" stream
+   `users.is_live` + `stream_link` mein save hota hai (aur users table RLS
+   own-row-only hai, isliye viewers ko wahan dikhta hi nahi). Live streams
+   `user_public_profiles` VIEW mein expose hote hain (is_live, stream_link,
+   stream_title) — ab wahan se aate hain. Live MATCH streams bhi dikhte hain. */
+window.showLiveSpectateList = function() {
+  if (!window._supa) { toast('Connection error', 'err'); return; }
+  var _userStreams = [], _matchStreams = [];
+  function _render() {
+    var h = '';
+    var total = _userStreams.length + _matchStreams.length;
+    if (!total) {
+      h = '<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">📺</div><div style="color:var(--txt2)">Abhi koi live match nahi — jab match live ho tab yahan dikhega</div></div>';
+    } else {
+      h = '<div style="display:flex;flex-direction:column;gap:10px">';
+      _userStreams.forEach(function(u) {
+        var link = u.stream_link || '';
+        if (!link) return;
+        h += '<div style="background:rgba(255,0,0,.04);border:1px solid rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px">';
+        h += '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (window._chatEsc ? window._chatEsc(u.stream_title || (u.ign + ' — Live')) : (u.stream_title || (u.ign + ' — Live'))) + '</div>';
+        h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">🔴 ' + (window._chatEsc ? window._chatEsc(u.ign || 'Player') : (u.ign || 'Player')) + ' • Live stream</div></div>';
+        h += '<button onclick="window.watchStream(\'' + String(link).replace(/'/g, "\\'") + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer">👀 Watch</button>';
+        h += '</div>';
+      });
+      _matchStreams.forEach(function(m) {
+        var count = m.spectator_count || 0;
+        h += '<div style="background:rgba(255,0,0,.04);border:1px solid rgba(255,0,0,.15);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px">';
+        h += '<div style="width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse 1s infinite;flex-shrink:0"></div>';
+        h += '<div style="flex:1"><div style="font-size:13px;font-weight:800">' + (m.title || 'Match') + '</div>';
+        h += '<div style="font-size:11px;color:var(--txt2);margin-top:2px">' + count + ' watching • ' + (m.mode || 'BR') + '</div></div>';
+        h += '<button onclick="startWatching(\'' + m.id + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-size:12px;font-weight:800;cursor:pointer">👀 Watch</button>';
+        h += '</div>';
+      });
+      h += '</div>';
+    }
+    if (window.openModal) openModal('📺 Live Matches', h);
+  }
+  /* 1. User live streams (user_public_profiles view — RLS-safe) */
+  /* ✅ D70: user_live_streams VIEW — server-side TTL (6h window). Purani
+     atki hui streams (NULL stream_live_until) view me aati hi nahi. */
+  var _legacyUserStreams = function() {
+    window._supa.from('user_public_profiles')
+      .select('id,ign,stream_link,stream_title,is_live')
+      .eq('is_live', true).not('stream_link', 'is', null).limit(20)
+      .then(function(r) { _userStreams = (r.data || []).filter(function(u){ return u.stream_link; }); _render(); },
+            function() { _render(); });
+  };
+  window._supa.from('user_live_streams')
+    .select('id,ign,stream_link,stream_title,stream_live_until')
+    .limit(20)
+    .then(function(r) { _userStreams = (r.data || []).filter(function(u){ return u.stream_link; }); _render(); },
+          function() { _legacyUserStreams(); });   /* migration abhi lagi nahi? legacy path */
+  /* 2. Live match streams (matches table) */
+  window._supa.from('matches').select('id,title,mode,status,stream_link,youtube_link,spectator_count')
+    .eq('status', 'live').limit(10)
+    .then(function(r) {
+      _matchStreams = (r.data || []).filter(function(m) { return m.stream_link || m.youtube_link; });
+      _render();
+    }, function() {});
+};
+
+/* ✅ BUG FIX (2026-10-04): stream player modal — YouTube link ko embed
+   karke dikhata hai (pehle "Watch" sirf match-based tha, user stream ke
+   liye kuch nahi tha). */
+window.watchStream = function(link) {
+  if (!link) { if (window.toast) toast('Stream link nahi mila', 'err'); return; }
+  var _embed = link;
+  var _yt = link.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|live\/))([\w-]{6,})/);
+  if (_yt && _yt[1]) _embed = 'https://www.youtube.com/embed/' + _yt[1];
+  var h = '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000">';
+  h += '<iframe src="' + _embed + '" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
+  h += '</div>';
+  h += '<div style="text-align:center;margin-top:10px"><a href="' + link + '" target="_blank" rel="noopener" style="color:#00d4ff;font-size:12px">🔗 YouTube par kholo</a></div>';
+  if (window.openModal) openModal('🔴 Live Stream', h);
+};
+
+})();

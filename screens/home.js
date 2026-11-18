@@ -1,1 +1,740 @@
-var _0x51f48c=(function(){var _0x273ae9=!![];return function(_0x257874,_0xf6b423){var _0x283d79=_0x273ae9?function(){if(_0xf6b423){var _0x467b0d=_0xf6b423['apply'](_0x257874,arguments);return _0xf6b423=null,_0x467b0d;}}:function(){};return _0x273ae9=![],_0x283d79;};}()),_0x371859=_0x51f48c(this,function(){if(_0x371859['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x371859['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x371859)['search']('(((.+)+)+)+$');});_0x371859();function _injectSearchStyles(){if(document['getElementById']('usrSrchV2'))return;var _0x3648a6=document['createElement']('style');_0x3648a6['id']='usrSrchV2',_0x3648a6['textContent']='#usrSrchInput{width:100%;box-sizing:border-box;padding:13px\x2016px\x2013px\x2042px;border-radius:16px;font-size:14px;font-weight:600;'+'background:rgba(255,255,255,.06);border:1px\x20solid\x20rgba(255,255,255,.12);color:var(--txt);outline:none;transition:.18s}'+'#usrSrchInput:focus{border-color:rgba(0,255,156,.55);box-shadow:0\x200\x200\x203px\x20rgba(0,255,156,.12),0\x200\x2018px\x20rgba(0,255,156,.15);background:rgba(255,255,255,.08)}'+'#usrSrchInput::placeholder{color:#7c8593;font-weight:500}'+'.usrSrchCard{transition:transform\x20.12s,border-color\x20.12s}'+'.usrSrchCard:active{transform:scale(.985)}'+'#usrSrchResults::-webkit-scrollbar{width:4px}#usrSrchResults::-webkit-scrollbar-thumb{background:rgba(0,255,156,.25);border-radius:4px}',document['head']['appendChild'](_0x3648a6);}function showUserSearch(){_injectSearchStyles();var _0x3ad984='<div>';_0x3ad984+='<div\x20style=\x22display:flex;align-items:center;gap:8px;margin-bottom:10px\x22>'+'<span\x20style=\x22width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:15px;'+'background:linear-gradient(140deg,rgba(0,255,156,.2),rgba(0,212,255,.14));border:1px\x20solid\x20rgba(0,255,156,.35);box-shadow:0\x200\x2014px\x20rgba(0,255,156,.2)\x22>🔍</span>'+'<span\x20style=\x22font-size:12px;color:#8b93a0;font-weight:600\x22>IGN\x20ya\x20FF\x20UID\x20se\x20koi\x20bhi\x20player\x20dhundo</span></div>',_0x3ad984+='<div\x20style=\x22position:relative;margin-bottom:10px\x22>',_0x3ad984+='<i\x20class=\x22fas\x20fa-search\x22\x20style=\x22position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#00ff9c;font-size:13px;pointer-events:none\x22></i>',_0x3ad984+='<input\x20type=\x22text\x22\x20id=\x22usrSrchInput\x22\x20placeholder=\x22IGN\x20ya\x20FF\x20UID\x20search\x20karo...\x22\x20autocomplete=\x22off\x22\x20',_0x3ad984+='oninput=\x22liveSearchUsers(this.value)\x22>',_0x3ad984+='</div>',_0x3ad984+='<div\x20id=\x22usrSrchResults\x22\x20style=\x22max-height:52vh;overflow-y:auto;padding:2px\x22></div>',_0x3ad984+='</div>',openModal('🔍\x20Search\x20Players',_0x3ad984),setTimeout(function(){var _0x43fe5b=document['getElementById']('usrSrchInput');if(_0x43fe5b)_0x43fe5b['focus']();},0x64);}var _searchTimer=null;function liveSearchUsers(_0x69e250){_0x69e250=(_0x69e250||'')['trim']();var _0x9d65b7=document['getElementById']('usrSrchResults');if(!_0x9d65b7)return;if(_0x69e250['length']<0x1){_0x9d65b7['innerHTML']='<div\x20style=\x22text-align:center;padding:26px\x2016px;color:#8b93a0\x22><div\x20style=\x22font-size:30px;opacity:.35;margin-bottom:6px\x22>🎮</div><p\x20style=\x22font-size:12px;font-weight:600\x22>Type\x20karo\x20search\x20karne\x20ke\x20liye...</p></div>';return;}_0x9d65b7['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:#8b93a0\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22\x20style=\x22color:#00ff9c\x22></i>\x20<span\x20style=\x22font-size:12px;font-weight:600\x22>Searching...</span></div>',clearTimeout(_searchTimer),_searchTimer=setTimeout(function(){if(!window['_supa']){renderSearchResults([],_0x69e250);return;}window['_supa']['from']('user_public_profiles')['select']('id,ign,ff_uid,avatar_url,profile_status,city,total_matches,total_wins,total_kills')['or']('ign.ilike.%'+_0x69e250+'%,ff_uid.ilike.%'+_0x69e250+'%')['eq']('is_banned',![])['limit'](0xa)['then'](function(_0xc2ed03){var _0x587c51=window['U']&&window['U']['uid']||'',_0x1bf629=(_0xc2ed03['data']||[])['filter'](function(_0x11475e){return _0x11475e['id']!==_0x587c51;})['map'](function(_0x2b6c37){return{'uid':_0x2b6c37['id'],'u':{'ign':_0x2b6c37['ign']||'','displayName':_0x2b6c37['ign']||'','ffUid':_0x2b6c37['ff_uid']||'','profileImage':_0x2b6c37['avatar_url']||'','profileStatus':_0x2b6c37['profile_status']||'','city':_0x2b6c37['city']||'','stats':{'matches':_0x2b6c37['total_matches']||0x0,'wins':_0x2b6c37['total_wins']||0x0,'kills':_0x2b6c37['total_kills']||0x0}}};});renderSearchResults(_0x1bf629,_0x69e250);})['catch'](function(){renderSearchResults([],_0x69e250);});},0x12c);}function renderSearchResults(_0x23966e,_0x12b936){var _0x2c4fc7=document['getElementById']('usrSrchResults');if(!_0x2c4fc7)return;if(!_0x23966e['length']){_0x2c4fc7['innerHTML']='<div\x20style=\x22text-align:center;padding:34px\x2016px;color:#8b93a0\x22><div\x20style=\x22width:58px;height:58px;margin:0\x20auto\x2010px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.1);opacity:.6\x22>🔍</div><p\x20style=\x22font-size:13px;font-weight:700;color:#cdd3dc\x22>Koi\x20player\x20nahi\x20mila</p><p\x20style=\x22font-size:11px;margin-top:3px\x22>\x22'+(window['escHtml']?window['escHtml'](_0x12b936):_0x12b936)+'\x22\x20se\x20koi\x20match\x20nahi\x20hua</p></div>';return;}var _0x4a0bcf='';_0x23966e['forEach'](function(_0x1d4de2){var _0x4cbda2=_0x1d4de2['u'],_0x2037f9=_0x1d4de2['uid'],_0x5ae5bf=_0x2037f9===(U&&U['uid']),_0x4b3e5e=_0x4cbda2['stats']||{},_0x4c0c8d=_0x4cbda2['profileImage']?'<img\x20src=\x22'+_0x4cbda2['profileImage']+'\x22\x20style=\x22width:100%;height:100%;border-radius:50%;object-fit:cover\x22>':'<span\x20style=\x22font-size:16px;font-weight:800;color:#041018\x22>'+(_0x4cbda2['ign']||_0x4cbda2['displayName']||'?')['charAt'](0x0)['toUpperCase']()+'</span>';_0x4a0bcf+='<div\x20class=\x22usrSrchCard\x22\x20onclick=\x22viewPublicProfile(\x27'+_0x2037f9+'\x27)\x22\x20style=\x22display:flex;align-items:center;gap:12px;padding:11px\x2012px;border-radius:16px;margin-bottom:8px;cursor:pointer;'+'background:linear-gradient(120deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px\x20solid\x20rgba(255,255,255,.09)\x22>',_0x4a0bcf+='<div\x20style=\x22width:46px;height:46px;flex-shrink:0;border-radius:50%;padding:2px;background:conic-gradient(from\x20210deg,#00ff9c,#00d4ff,#b964ff,#00ff9c)\x22>'+'<div\x20style=\x22width:100%;height:100%;border-radius:50%;background:linear-gradient(140deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;overflow:hidden\x22>'+_0x4c0c8d+'</div></div>',_0x4a0bcf+='<div\x20style=\x22flex:1;min-width:0\x22>',_0x4a0bcf+='<div\x20style=\x22font-size:14px;font-weight:800;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis\x22>'+(window['escHtml']?window['escHtml'](_0x4cbda2['ign']||_0x4cbda2['displayName']||'Player'):_0x4cbda2['ign']||_0x4cbda2['displayName']||'Player')+(_0x5ae5bf?'\x20<span\x20style=\x22font-size:10px;color:var(--green)\x22>(You)</span>':'')+'</div>',_0x4a0bcf+='<div\x20style=\x22display:flex;align-items:center;gap:6px;margin:3px\x200\x205px;flex-wrap:wrap\x22>',_0x4a0bcf+='<span\x20style=\x22font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.06);border:1px\x20solid\x20rgba(255,255,255,.1);padding:2px\x208px;border-radius:8px\x22>FF:\x20'+(_0x4cbda2['ffUid']||'—')+'</span>';if(_0x4cbda2['profileStatus'])_0x4a0bcf+='<span\x20style=\x22font-size:10px;color:#8b93a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px\x22>'+(window['escHtml']?window['escHtml'](_0x4cbda2['profileStatus']):_0x4cbda2['profileStatus'])+'</span>';_0x4a0bcf+='</div>',_0x4a0bcf+='<div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap\x22>',[['🎮',_0x4b3e5e['matches']||0x0],['<img\x20src=\x22assets/img/icons/trophy.png\x22\x20alt=\x22\x22\x20style=\x22width:12px;height:12px;object-fit:contain;vertical-align:-2px\x22>',_0x4b3e5e['wins']||0x0],['💀',_0x4b3e5e['kills']||0x0]]['forEach'](function(_0x2d5fa4){_0x4a0bcf+='<span\x20style=\x22font-size:10px;font-weight:700;color:#cdd3dc;background:rgba(0,255,156,.07);border:1px\x20solid\x20rgba(0,255,156,.16);padding:2px\x208px;border-radius:8px\x22>'+_0x2d5fa4[0x0]+'\x20'+_0x2d5fa4[0x1]+'</span>';}),_0x4a0bcf+='</div></div>',_0x4a0bcf+='<i\x20class=\x22fas\x20fa-chevron-right\x22\x20style=\x22color:#5b6472;font-size:11px\x22></i>',_0x4a0bcf+='</div>';}),_0x2c4fc7['innerHTML']=_0x4a0bcf;}function viewPublicProfile(_0x150499){closeModal();if(!window['_supa']){toast('Service\x20unavailable','err');return;}window['_supa']['from']('user_public_profiles')['select']('*')['eq']('id',_0x150499)['single']()['then'](function(_0x174813){if(!_0x174813['data']){toast('Player\x20nahi\x20mila','err');return;}var _0x219a3e=_0x174813['data'];_0x219a3e['ign']=_0x219a3e['ign']||'',_0x219a3e['ffUid']=_0x219a3e['ff_uid']||'',_0x219a3e['profileImage']=_0x219a3e['avatar_url']||'';var _0x2fac13={'matches':_0x219a3e['total_matches']||0x0,'wins':_0x219a3e['total_wins']||0x0,'kills':_0x219a3e['total_kills']||0x0,'earnings':0x0},_0x420c05=_0x2fac13['matches']>0x0?Math['round'](_0x2fac13['wins']/_0x2fac13['matches']*0x64):0x0,_0x2d6010='';if(window['PCARD2'])_0x2d6010+='<div\x20id=\x22pubPc2Host\x22\x20style=\x22margin:0\x200\x2012px;border-radius:18px;overflow:hidden;border:1px\x20solid\x20rgba(255,255,255,.12);background:#0a0e2e;box-shadow:0\x208px\x2026px\x20rgba(0,0,0,.4)\x22></div>';else{var _0x4902a7=_0x219a3e['profileImage']?'<img\x20src=\x22'+_0x219a3e['profileImage']+'\x22\x20style=\x22width:100%;height:100%;border-radius:50%;object-fit:cover\x22>':'<span\x20style=\x22font-size:32px;font-weight:700\x22>'+(_0x219a3e['ign']||'?')['charAt'](0x0)['toUpperCase']()+'</span>';_0x2d6010+='<div\x20style=\x22text-align:center;padding-bottom:12px\x22>',_0x2d6010+='<div\x20style=\x22width:80px;height:80px;border-radius:50%;background:rgba(0,255,156,.1);border:3px\x20solid\x20rgba(0,255,156,.3);display:flex;align-items:center;justify-content:center;margin:0\x20auto\x2010px\x22>'+_0x4902a7+'</div>',_0x2d6010+='<div\x20style=\x22font-size:20px;font-weight:900\x22>'+(window['escHtml']?window['escHtml'](_0x219a3e['ign']||'Player'):_0x219a3e['ign']||'Player')+'</div>',_0x2d6010+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:2px\x22>FF\x20UID:\x20<strong\x20style=\x22color:var(--green)\x22>'+(_0x219a3e['ffUid']||'—')+'</strong></div>';if(_0x219a3e['bio'])_0x2d6010+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:6px;font-style:italic\x22>\x22'+(window['escHtml']?window['escHtml'](_0x219a3e['bio']):_0x219a3e['bio'])+'\x22</div>';_0x2d6010+='</div>',_0x2d6010+='<div\x20style=\x22display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px\x22>',[['🎮',_0x2fac13['matches'],'Matches'],['<img\x20src=\x22assets/img/icons/trophy.png\x22\x20alt=\x22\x22\x20style=\x22width:18px;height:18px;object-fit:contain\x22>',_0x2fac13['wins'],'Wins'],['💀',_0x2fac13['kills'],'Kills']]['forEach'](function(_0x263d91){_0x2d6010+='<div\x20style=\x22text-align:center;padding:10px;background:var(--card2);border-radius:10px;border:1px\x20solid\x20var(--border)\x22>',_0x2d6010+='<div\x20style=\x22font-size:18px\x22>'+_0x263d91[0x0]+'</div><div\x20style=\x22font-size:16px;font-weight:800\x22>'+_0x263d91[0x1]+'</div>',_0x2d6010+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x263d91[0x2]+'</div></div>';}),_0x2d6010+='</div>';var _0x3dfcaf=_0x2fac13['matches']>0x0?Math['round'](_0x2fac13['wins']/_0x2fac13['matches']*0x64):0x0;_0x2d6010+='<div\x20style=\x22padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px\x20solid\x20rgba(0,255,156,.12)\x22>',_0x2d6010+='Win\x20Rate:\x20<strong\x20style=\x22color:var(--green)\x22>'+_0x3dfcaf+'%</strong>',_0x2d6010+='</div>';}if(_0x219a3e['bio'])_0x2d6010+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin:0\x200\x2010px;font-style:italic;text-align:center\x22>\x22'+(window['escHtml']?window['escHtml'](_0x219a3e['bio']):_0x219a3e['bio'])+'\x22</div>';window['PCARD2']&&(_0x2d6010+='<div\x20style=\x22padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px\x20solid\x20rgba(0,255,156,.12)\x22>Win\x20Rate:\x20<strong\x20style=\x22color:var(--green)\x22>'+_0x420c05+'%</strong></div>');openModal('👤\x20'+(_0x219a3e['ign']||'Player'),_0x2d6010);if(window['PCARD2']){var _0x22207d={'name':_0x219a3e['ign']||'Player','uid':_0x219a3e['ff_uid']||'—','level':_0x219a3e['level']||0x1,'xp':_0x219a3e['exp']||0x0,'xpNeed':0xa*(_0x219a3e['level']||0x1),'pts':_0x219a3e['rank_points']||0x0,'tier':String(_0x219a3e['rank_tier']||'Bronze'),'title':_0x219a3e['title']||'','stats':[_0x2fac13['matches'],_0x2fac13['kills'],_0x2fac13['wins'],_0x2fac13['matches']?(_0x2fac13['kills']/_0x2fac13['matches'])['toFixed'](0x1):'0.0',_0x420c05+'%'],'photo':_0x219a3e['avatar_url']||'','banner':_0x219a3e['banner_url']||'','vip':!!_0x219a3e['is_vip'],'premHtml':(function(){var _0x31369d=Number(_0x219a3e['premium_level']||0x0);if(_0x31369d<0x1)return'';var _0x4cbafb=_0x219a3e['premium_expires']?new Date(_0x219a3e['premium_expires'])['getTime']():0x0;if(_0x4cbafb&&_0x4cbafb<Date['now']())return'';return(window['premTierIcon']?'<img\x20src=\x22'+premTierIcon(_0x31369d)+'\x22\x20alt=\x22\x22\x20style=\x22height:1.15em;width:1.15em;object-fit:contain;vertical-align:-2px\x22>\x20':'')+(window['premTierName']?premTierName(_0x31369d):'Premium');}()),'prem':(function(){var _0x40c4ef=Number(_0x219a3e['premium_level']||0x0);if(_0x40c4ef<0x1)return'';var _0x5aebab=_0x219a3e['premium_expires']?new Date(_0x219a3e['premium_expires'])['getTime']():0x0;if(_0x5aebab&&_0x5aebab<Date['now']())return'';return window['premTierName']?premTierName(_0x40c4ef):'Premium';}()),'premLevel':Number(_0x219a3e['premium_level']||0x0),'badges':window['getEarnedBadges']?(function(){try{return window['getEarnedBadges'](_0x2fac13)['slice'](0x0,0x3)['map'](function(_0x4a35ac){return _0x4a35ac['img'];});}catch(_0x32ce0d){return[];}}()):[]},_0x173e73=document['getElementById']('pubPc2Host');if(_0x173e73)window['PCARD2']['mount'](_0x173e73,_0x22207d,null,{'public':!![]});}})['catch'](function(){toast('Player\x20nahi\x20mila','err');});}function mcHTML(_0x345f45){var _0x3f6240=effSt(_0x345f45),_0x13da51=(_0x345f45['mode']||_0x345f45['type']||'solo')['toString']()['toLowerCase']()['trim']();if(_0x13da51!=='solo'&&_0x13da51!=='duo'&&_0x13da51!=='squad')_0x13da51='solo';console['log']('[Mini\x20eSports]\x20Card:\x20'+(_0x345f45['name']||'?')+'\x20mode='+_0x13da51+'\x20(mode='+_0x345f45['mode']+',\x20type='+_0x345f45['type']+')');var _0x1cf8a7=(_0x345f45['entryType']||'')['toString']()['toLowerCase']()['trim']();if(_0x1cf8a7==='green'||_0x1cf8a7==='green_diamond'||_0x1cf8a7==='greendiamond'||_0x1cf8a7==='gd')_0x1cf8a7='free';var _0x324489=_0x1cf8a7==='ad',_0x56da08=!_0x324489&&(_0x1cf8a7==='coin'||_0x1cf8a7==='coins'),_0xd81be=hasJ(_0x345f45['id']),_0x2d1846=Number(_0x345f45['joinedSlots'])||0x0,_0x4d23c8=Number(_0x345f45['maxSlots'])||0x1,_0x4c8221=Math['min'](Math['round'](_0x2d1846/_0x4d23c8*0x64),0x64),_0x32ef12=_0x13da51==='duo'?'badge-duo':_0x13da51==='squad'?'badge-squad':'badge-solo',_0x543425=_0x324489?'<span\x20style=\x22color:#ff9f1c;font-weight:800;font-size:12px\x22>📺\x20'+(Number(_0x345f45['adsRequired'])||0x2)+'\x20Ads\x20Watch</span>':_0x56da08?'<span\x20class=\x22fee-coin\x22>🪙\x20'+(_0x345f45['entryFee']||0x0)+'</span>':_0x1cf8a7==='free'?'<span\x20class=\x22fee-coin\x22>🎁\x20Free</span>':'<span\x20class=\x22fee-money\x22>💎'+(_0x345f45['entryFee']||0x0)+'</span>',_0x438a77=fmtTime(_0x345f45['matchTime']);if(_0x438a77==='Time\x20Not\x20Announced')_0x438a77='<span\x20class=\x22time-val\x22>Time\x20Not\x20Announced</span>';else _0x438a77='<span\x20class=\x22time-val\x22>'+_0x438a77+'</span>';var _0x3bf608=_0x13da51==='squad'?'#b964ff':_0x13da51==='duo'?'#00d4ff':'#00ff9c',_0x4c1098=_0x4c8221>=0x46,_0x5b9247=_0x345f45['isFeatured']||_0x345f45['isSpecial'],_0x3fbc4d=_0x3f6240==='live'?'0\x200\x2020px\x20'+_0x3bf608+'55':'0\x204px\x2020px\x20rgba(0,0,0,.35)',_0x5b76e0=window['isPremiumActive']&&isPremiumActive()?!![]:![],_0x5d9e58='<div\x20class=\x22rb-wrap'+(_0x5b76e0?'\x20rb-glow':'')+'\x22\x20style=\x22margin:0\x200\x2012px\x22><div\x20class=\x22m-card\x20rb-inner\x22\x20data-match-id=\x22'+_0x345f45['id']+'\x22\x20style=\x22position:relative;overflow:hidden;box-shadow:'+_0x3fbc4d+';margin:0\x22>';_0x5d9e58+='<div\x20style=\x22position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,'+_0x3bf608+'20,transparent\x2070%);pointer-events:none\x22></div>';if(_0x4c1098)_0x5d9e58+='<div\x20style=\x22position:absolute;top:10px;left:-1px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;font-size:9px;font-weight:900;padding:3px\x2010px\x203px\x206px;border-radius:0\x2020px\x2020px\x200;letter-spacing:.5px\x22>🔥\x20HOT</div>';if(_0x345f45['isMonthlySpecial']||_0x345f45['specialCategory']==='monthly_special')_0x5d9e58+='<div\x20style=\x22position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:8px;font-weight:900;padding:2px\x208px;border-radius:20px;letter-spacing:.3px\x22>👑\x20MONTHLY</div>';else{if(_0x345f45['isSundaySpecial']||_0x345f45['specialCategory']==='sunday_special')_0x5d9e58+='<div\x20style=\x22position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#b964ff,#00d4ff);color:#fff;font-size:8px;font-weight:900;padding:2px\x208px;border-radius:20px;letter-spacing:.3px\x22>⭐\x20SUNDAY</div>';}_0x5d9e58+='<div\x20class=\x22mc-top\x22\x20style=\x22'+(_0x4c1098?'padding-top:22px':'')+'\x22><div\x20class=\x22mc-head\x22><span\x20class=\x22mc-name\x22\x20style=\x22font-size:16px;font-weight:800;letter-spacing:-.2px\x22>'+(window['escHtml']?window['escHtml'](_0x345f45['name']||'Match'):_0x345f45['name']||'Match')+'</span><div\x20class=\x22mc-badges\x22><span\x20class=\x22badge\x20'+_0x32ef12+'\x22\x20style=\x22background:'+_0x3bf608+'22;color:'+_0x3bf608+';border:1px\x20solid\x20'+_0x3bf608+'55;font-weight:800\x22>'+_0x13da51['toUpperCase']()+'</span>';if(_0x56da08)_0x5d9e58+='<span\x20class=\x22badge\x20badge-coin\x22>COIN</span>';if(_0x324489)_0x5d9e58+='<span\x20class=\x22badge\x22\x20style=\x22background:rgba(255,159,28,.15);color:#ff9f1c;border:1px\x20solid\x20rgba(255,159,28,.3);font-weight:800\x22>📺\x20AD\x20FREE</span>';_0x345f45['minRank']&&(_0x5d9e58+='<span\x20class=\x22badge\x22\x20style=\x22background:rgba(255,215,0,.1);color:#ffd700;border:1px\x20solid\x20rgba(255,215,0,.25);font-weight:800\x22>'+(window['tierIconHtml']?tierIconHtml(_0x345f45['minRank'],0xc):'')+'\x20'+_0x345f45['minRank']+'+</span>');if(_0x3f6240==='live')_0x5d9e58+='<span\x20class=\x22badge\x20badge-live\x22\x20style=\x22animation:hotPulse\x201.5s\x20infinite\x22>🔴\x20LIVE</span>';_0x5d9e58+='</div></div>';if(_0x345f45['creatorUid'])_0x5d9e58+='<div\x20onclick=\x22event.stopPropagation();if(window.showCreatorProfile)showCreatorProfile(\x27'+_0x345f45['creatorUid']+'\x27)\x22\x20style=\x22display:inline-flex;align-items:center;gap:4px;margin:4px\x200;padding:3px\x209px;border-radius:20px;background:rgba(0,255,156,.08);border:1px\x20solid\x20rgba(0,255,156,.2);font-size:10px;font-weight:700;color:#00ff9c;cursor:pointer\x22>🎮\x20Creator\x20Hosted</div>';if(_0x3f6240==='live'){var _0x58acf3=_0x345f45['matchTime']&&(window['serverNow']?window['serverNow']():Date['now']())>=Number(_0x345f45['matchTime']);_0x58acf3?_0x5d9e58+='<div\x20class=\x22mc-live\x22><i\x20class=\x22fas\x20fa-circle\x22></i>\x20Match\x20is\x20Live\x20Now</div>':_0x5d9e58+='<span\x20style=\x22font-size:11px;color:var(--yellow);font-weight:600\x22><i\x20class=\x22fas\x20fa-clock\x22\x20style=\x22animation:none;margin-right:3px\x22></i>Starting\x20Soon</span>';}var _0x1168a3={'battle_royale':'Battle\x20Royale','clash_squad':'Clash\x20Squad','sniper_only':'Sniper\x20Only','shotgun_only':'Shotgun\x20Only','pistol_only':'Pistol\x20Only','no_heal':'No\x20Heal','rush_only':'Rush\x20Only'},_0x56e2d3=_0x1168a3[_0x345f45['matchSubType']]||_0x345f45['matchType']||'Battle\x20Royale',_0x1073c3=String(_0x345f45['prizeType']||'')['toLowerCase'](),_0x16cdbe=String(_0x345f45['entryType']||'')['toLowerCase'](),_0x2a0c1a=window['_prizeIcon']?window['_prizeIcon'](_0x345f45):_0x1073c3==='coin'||_0x1073c3==='coins'||_0x1073c3==='cash'||_0x16cdbe==='coin'||_0x16cdbe==='coins'?'🪙':window['GD_ICON']||'💚';_0x5d9e58+='<div\x20class=\x22mc-sub\x22><span><i\x20class=\x22fas\x20fa-gamepad\x22></i>\x20'+_0x56e2d3+'</span>';if(_0x345f45['map'])_0x5d9e58+='<span><i\x20class=\x22fas\x20fa-map\x22></i>\x20'+titleCase(_0x345f45['map'])+'</span>';var _0x10b396=Number(_0x345f45['perKillPrize']||_0x345f45['perKill'])||0x0;if(_0x10b396)_0x5d9e58+='<span\x20style=\x22color:#ff6b6b\x22><i\x20class=\x22fas\x20fa-skull\x22></i>\x20'+_0x2a0c1a+_0x10b396+'/Kill</span>';_0x5d9e58+='</div></div>';var _0x597848=Number(_0x345f45['firstPrize']||_0x345f45['prize1st'])||0x0,_0x2eb88b=Number(_0x345f45['secondPrize']||_0x345f45['prize2nd'])||0x0,_0x23aaa0=Number(_0x345f45['thirdPrize']||_0x345f45['prize3rd'])||0x0;if(_0x597848||_0x2eb88b||_0x23aaa0){_0x5d9e58+='<div\x20class=\x22mc-prizes\x22>';var _0x54a743=[{'cls':'mc-prize-1','icon':'<img\x20src=\x22assets/img/icons/trophy.png\x22\x20alt=\x22\x22\x20style=\x22width:20px;height:20px;object-fit:contain\x22>','rank':'1st\x20PRIZE','val':_0x597848},{'cls':'mc-prize-2','icon':window['medalHtml']?medalHtml(0x2,0x14):'','rank':'2nd\x20PRIZE','val':_0x2eb88b},{'cls':'mc-prize-3','icon':window['medalHtml']?medalHtml(0x3,0x14):'','rank':'3rd\x20PRIZE','val':_0x23aaa0}];_0x54a743['forEach'](function(_0x533079){if(!_0x533079['val']||_0x533079['val']<=0x0)return;_0x5d9e58+='<div\x20class=\x22mc-prize-box\x20'+_0x533079['cls']+'\x22>',_0x5d9e58+='<div\x20class=\x22mc-prize-icon\x22>'+_0x533079['icon']+'</div>',_0x5d9e58+='<div\x20class=\x22mc-prize-rank\x22>'+_0x533079['rank']+'</div>',_0x5d9e58+='<div\x20class=\x22mc-prize-amt\x22>'+_0x2a0c1a+_0x533079['val']+'</div>',_0x5d9e58+='</div>';}),_0x5d9e58+='</div>';}var _0x2d0818=Number(_0x345f45['perKillPrize']||_0x345f45['perKill'])||0x0,_0x5e189e=_0x2d0818?'<span\x20class=\x22kill-val\x22><i\x20class=\x22fas\x20fa-skull\x22\x20style=\x22font-size:11px;margin-right:2px\x22></i>'+_0x2a0c1a+_0x2d0818+'/Kill</span>':'<span\x20style=\x22color:var(--txt2);font-size:11px;font-weight:600\x22>N/A</span>';_0x5d9e58+='<div\x20class=\x22mc-mid\x22\x20style=\x22grid-template-columns:30%\x2030%\x2040%\x22>',_0x5d9e58+='<div\x20class=\x22mc-cell\x22\x20style=\x22border-right:1px\x20solid\x20rgba(0,229,255,.12)\x22><label\x20style=\x22color:#00e5ff99\x22>Entry\x20Fee</label>'+_0x543425+'</div>',_0x5d9e58+='<div\x20class=\x22mc-cell\x22\x20style=\x22border-right:1px\x20solid\x20rgba(255,107,107,.12)\x22><label\x20style=\x22color:#ff6b6b99\x22>Per\x20Kill</label>'+_0x5e189e+'</div>',_0x5d9e58+='<div\x20class=\x22mc-cell\x22><label\x20style=\x22color:#b964ff99\x22>Start\x20Time</label>'+_0x438a77+'</div></div>',_0x5d9e58+='<div\x20class=\x22mc-bot\x22><div\x20class=\x22mc-slots\x22><div\x20class=\x22mc-slots-txt\x22>'+_0x2d1846+'/'+_0x4d23c8+'\x20Slots\x20('+_0x4c8221+'%\x20Full)</div>',_0x5d9e58+='<div\x20class=\x22mc-bar\x22><div\x20class=\x22mc-bar-fill\x22\x20style=\x22width:'+_0x4c8221+'%\x22></div></div>',_0x5d9e58+='<div\x20id=\x22timer-'+_0x345f45['id']+'\x22\x20style=\x22font-size:11px;font-weight:700;margin-top:4px;color:#ffaa00;min-height:14px\x22></div></div>',_0x5d9e58+='<div\x20class=\x22mc-info-btn\x22\x20onclick=\x22shareMatch(\x27'+_0x345f45['id']+'\x27)\x22\x20title=\x22Invite\x20Card\x22><i\x20class=\x22fas\x20fa-share-alt\x22></i></div>',_0x5d9e58+='<div\x20class=\x22mc-info-btn\x22\x20onclick=\x22showDet(\x27'+_0x345f45['id']+'\x27)\x22><i\x20class=\x22fas\x20fa-info-circle\x22></i></div>';var _0x282dbd=_0x345f45['matchTime']&&(window['serverNow']?window['serverNow']():Date['now']())>=Number(_0x345f45['matchTime']);if(isVO())_0x5d9e58+='<button\x20class=\x22mc-join\x20join-vo\x22\x20disabled>View\x20Only</button>';else{if(_0xd81be)_0x5d9e58+='<button\x20class=\x22mc-join\x20joined\x22\x20disabled>Joined\x20✔️</button>';else{if(_0x2d1846>=_0x4d23c8)_0x5d9e58+='<button\x20class=\x22mc-join\x20join-full\x22\x20disabled>Full</button>';else{if(_0x3f6240==='completed')_0x5d9e58+='<button\x20class=\x22mc-join\x20join-dis\x22\x20disabled>Ended</button>';else{if(_0x3f6240==='live'&&_0x282dbd)_0x5d9e58+='<button\x20class=\x22mc-join\x20join-dis\x22\x20disabled>Started</button>';else{if(_0x3f6240==='live'&&!_0x282dbd)_0x5d9e58+=_0x324489?'<button\x20class=\x22mc-join\x20join-ok\x22\x20onclick=\x22cJoin(\x27'+_0x345f45['id']+'\x27)\x22\x20style=\x22background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;border:none\x22>📺\x20Watch\x20Ad\x20&\x20Join</button>':'<button\x20class=\x22mc-join\x20join-ok\x22\x20onclick=\x22cJoin(\x27'+_0x345f45['id']+'\x27)\x22>Join</button>';else _0x5d9e58+=_0x324489?'<button\x20class=\x22mc-join\x20join-ok\x22\x20onclick=\x22cJoin(\x27'+_0x345f45['id']+'\x27)\x22\x20style=\x22background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;letter-spacing:0.5px;border:none\x22>📺\x20Watch\x20Ad\x20&\x20Join</button>':'<button\x20class=\x22mc-join\x20join-ok\x22\x20onclick=\x22cJoin(\x27'+_0x345f45['id']+'\x27)\x22>⚡\x20JOIN</button>';}}}}}return(_0x345f45['isSundaySpecial']||_0x345f45['isMonthlySpecial'])&&window['f29SpecialTournament']&&(_0x5d9e58+=window['f29SpecialTournament']['getEligibilityInfo'](_0x345f45)),_0x5d9e58+='</div></div>',_0x5d9e58+='</div>',_0x5d9e58;}function renderHome(){try{var _0xab8e03=$('homeList');if(!_0xab8e03)return;var _0x3d5fca=[];for(var _0x19109 in MT){var _0x1ccfaf=MT[_0x19109];if(!_0x1ccfaf['maxSlots']||_0x1ccfaf['maxSlots']<=0x0)continue;if(_0x1ccfaf['isSponsored'])continue;var _0x47576f=effSt(_0x1ccfaf);if(_0x47576f==='cancelled')continue;if(_0x47576f!==hSF)continue;if(_0x1ccfaf['specialType']&&_0x1ccfaf['specialType']!=='normal'&&_0x1ccfaf['specialType']!=='')continue;var _0x4bc558=(_0x1ccfaf['entryType']||'')['toString']()['toLowerCase']()['trim']();if(_0x4bc558==='green'||_0x4bc558==='green_diamond'||_0x4bc558==='greendiamond'||_0x4bc558==='gd')_0x4bc558='free';var _0x28f53e=hCF['toString']()['toLowerCase']()['trim'](),_0xc81989=![];if(_0x28f53e==='all')_0xc81989=!![];else{if(_0x28f53e==='coin')_0xc81989=_0x4bc558==='coin';else{if(_0x28f53e==='ad')_0xc81989=_0x4bc558==='ad';else _0xc81989=_0x4bc558!=='coin'&&_0x4bc558!=='ad';}}if(!_0xc81989)continue;if(window['_modeFilter']&&window['_modeFilter']!=='all'){var _0x15c367=(_0x1ccfaf['mode']||_0x1ccfaf['type']||'solo')['toLowerCase']();if(_0x15c367!==window['_modeFilter'])continue;}_0x3d5fca['push'](_0x1ccfaf);}_0x3d5fca['sort'](function(_0x129add,_0x5e9603){return(Number(_0x129add['matchTime'])||0x0)-(Number(_0x5e9603['matchTime'])||0x0);}),console['log']('[Mini\x20eSports]\x20renderHome:\x20'+_0x3d5fca['length']+'\x20matches\x20for\x20tab='+hCF+'\x20status='+hSF);var _0x47b4a7='';_0x47b4a7+='<div\x20id=\x22dynamicBanner\x22\x20style=\x22display:none;margin-bottom:10px;padding:8px\x2012px;border-radius:10px;font-size:12px;font-weight:700;text-align:center\x22></div>';var _0x5a18c3=document['getElementById']('sponsoredTournamentsBlock'),_0x200b9c=_0x5a18c3?_0x5a18c3['innerHTML']:'',_0x7c7751='<div\x20id=\x22sponsoredTournamentsBlock\x22>'+_0x200b9c+'</div>';if(window['renderFilterChips'])_0x47b4a7+=renderFilterChips();_0x47b4a7+=_0x7c7751;if(window['renderSeasonCountdownStrip'])try{_0x47b4a7+=renderSeasonCountdownStrip();}catch(_0x3e6b92){}var _0x4af5d5=_0x47b4a7+(_0x3d5fca['length']?_0x3d5fca['map'](mcHTML)['join'](''):'<div\x20class=\x22empty-state\x22><i\x20class=\x22fas\x20fa-trophy\x22></i><p>'+(String(hCF)['toLowerCase']()==='all'?'No\x20matches\x20':'No\x20'+hCF+'\x20matches\x20')+(String(hSF)['toLowerCase']()==='upcoming'?'right\x20now\x20—\x20naya\x20match\x20jald\x20aayega!':hSF)+'</p></div>');if(_0xab8e03['innerHTML']!==_0x4af5d5){_0xab8e03['innerHTML']=_0x4af5d5;if(window['renderSponsoredTournaments'])window['renderSponsoredTournaments']();if(window['refreshLoginStreakToday'])try{refreshLoginStreakToday();try{if(window['notifyNewBadges'])window['notifyNewBadges']();}catch(_0xbeaf8a){}try{if(window['refreshSeasonChampion'])window['refreshSeasonChampion']();}catch(_0x127862){}}catch(_0xb96c74){}}if(window['_sessionMatches']!==undefined)window['_sessionMatches']++;}catch(_0x587166){console['error']('[renderHome]',_0x587166);var _0x4ae6d9=document['getElementById']('homeList');if(_0x4ae6d9)_0x4ae6d9['innerHTML']='<div\x20class=\x22empty-state\x22><i\x20class=\x22fas\x20fa-exclamation-triangle\x22\x20style=\x22color:#ff6b6b\x22></i><p>Screen\x20error.\x20<a\x20onclick=\x22location.reload()\x22\x20style=\x22color:#00d4ff;cursor:pointer\x22>Refresh</a></p></div>';}}var SP_MATCH=window['SP_MATCH']=window['SP_MATCH']||{};function _fetchSponsoredMatchStatus(_0x40a5cf){if(!window['_supa']||SP_MATCH[_0x40a5cf]==='loading')return;SP_MATCH[_0x40a5cf]='loading',window['_supa']['from']('matches')['select']('id,status,scheduled_at,max_slots,filled_slots,mode,map,per_kill_prize,match_sub_type')['eq']('id',_0x40a5cf)['maybeSingle']()['then'](function(_0x48d687){SP_MATCH[_0x40a5cf]=_0x48d687&&_0x48d687['data']?_0x48d687['data']:null;if(window['renderSponsoredTournaments'])renderSponsoredTournaments();},function(){SP_MATCH[_0x40a5cf]=null;});}window['renderSponsoredTournaments']=function(){var _0x36e82e=document['getElementById']('sponsoredTournamentsBlock');if(!_0x36e82e)return;var _0x41d6d5=Object['keys'](SP_T);if(!_0x41d6d5['length']){if(_0x36e82e['innerHTML']!=='')_0x36e82e['innerHTML']='';return;}var _0x577491='';_0x41d6d5['forEach'](function(_0x256502){var _0x10ff52=SP_T[_0x256502],_0x4f6db6=_0x10ff52['prizes']||{},_0x9f28ac=Number(_0x10ff52['prize_pool']||0x0),_0x29dbde=_0x10ff52['match_id']?MT[_0x10ff52['match_id']]:null;if(!_0x29dbde&&_0x10ff52['match_id']){if(SP_MATCH[_0x10ff52['match_id']]===undefined)_fetchSponsoredMatchStatus(_0x10ff52['match_id']);else{if(SP_MATCH[_0x10ff52['match_id']]&&SP_MATCH[_0x10ff52['match_id']]!=='loading')_0x29dbde=SP_MATCH[_0x10ff52['match_id']];}}var _0xa5671=_0x29dbde?_0x29dbde['status']:_0x10ff52['match_id']?null:'upcoming';if(_0xa5671!==null&&_0xa5671!==hSF)return;if(_0xa5671===null&&hSF!=='upcoming')return;var _0x4ad016='🎁\x20Sponsored',_0x3e919e='rgba(255,215,0,.15)',_0x515c39='#ffd700';if(_0x29dbde){if(_0x29dbde['status']==='live')_0x4ad016='🔴\x20Live',_0x3e919e='rgba(255,60,60,.15)',_0x515c39='#ff3c3c';else _0x29dbde['status']==='completed'?(_0x4ad016='✅\x20Completed',_0x3e919e='rgba(0,212,255,.15)',_0x515c39='#00d4ff'):(_0x4ad016='⏱\x20Upcoming',_0x3e919e='rgba(0,255,156,.15)',_0x515c39='var(--green)');}var _0x57f4b1=_0x29dbde||{},_0x27bc88=(_0x57f4b1['mode']||_0x57f4b1['gameMode']||'solo')['toString']()['toLowerCase']()['trim']();if(_0x27bc88!=='solo'&&_0x27bc88!=='duo'&&_0x27bc88!=='squad')_0x27bc88='solo';var _0x1e288f=_0x27bc88==='squad'?'#b964ff':_0x27bc88==='duo'?'#00d4ff':'#00ff9c',_0x4ad1be=Number(_0x57f4b1['filledSlots']||_0x57f4b1['filled_slots'])||0x0,_0x2f70d8=Number(_0x57f4b1['maxSlots']||_0x57f4b1['max_slots'])||0x0,_0x405cdc=_0x2f70d8?Math['min'](Math['round'](_0x4ad1be/_0x2f70d8*0x64),0x64):0x0,_0xa1cffe=_0x57f4b1['map']?titleCase(_0x57f4b1['map']):'',_0xc256a5=Number(_0x57f4b1['perKillPrize']||_0x57f4b1['per_kill_prize'])||0x0,_0x36ffd9=_0x57f4b1['matchTime']||(_0x57f4b1['scheduled_at']?new Date(_0x57f4b1['scheduled_at'])['getTime']():0x0),_0x549305=_0x36ffd9?fmtTime(_0x36ffd9):'Time\x20Not\x20Announced';_0x577491+='<div\x20class=\x22m-card\x22\x20data-match-id=\x22'+(_0x10ff52['match_id']||_0x57f4b1['id']||'')+'\x22\x20style=\x22border-top:3px\x20solid\x20#ffd700;position:relative;overflow:hidden;box-shadow:0\x204px\x2024px\x20rgba(255,215,0,.15);background:linear-gradient(180deg,rgba(255,215,0,.05),transparent\x2040%)\x22>',_0x577491+='<div\x20style=\x22position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,215,0,.16),transparent\x2070%);pointer-events:none\x22></div>',_0x577491+='<div\x20class=\x22mc-top\x22>',_0x577491+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;margin-bottom:6px\x22>',_0x577491+='<div\x20style=\x22font-size:15px;font-weight:900;color:#ffd700;letter-spacing:-.2px\x22><i\x20class=\x22fas\x20fa-star\x22></i>\x20'+(window['escHtml']?escHtml(_0x10ff52['title']||'Sponsored\x20Tournament'):_0x10ff52['title']||'Sponsored\x20Tournament')+'</div>',_0x577491+='<span\x20style=\x22background:'+_0x3e919e+';color:'+_0x515c39+';padding:3px\x209px;border-radius:8px;font-size:10px;font-weight:800;flex-shrink:0;margin-left:8px\x22>'+_0x4ad016+'</span></div>',_0x577491+='<div\x20style=\x22display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px\x22>',_0x577491+='<span\x20style=\x22background:rgba(255,215,0,.1);color:#ffd700;border:1px\x20solid\x20rgba(255,215,0,.25);padding:2px\x209px;border-radius:20px;font-size:10px;font-weight:800\x22><i\x20class=\x22fas\x20fa-handshake\x22></i>\x20'+(window['escHtml']?escHtml(_0x10ff52['sponsor_name']||'—'):_0x10ff52['sponsor_name']||'—')+'</span>',_0x577491+='<span\x20style=\x22font-size:10px;color:var(--txt2);font-weight:600\x22>Koi\x20entry\x20fee\x20nahi\x20—\x20sirf\x20free\x20tournament!</span></div>',_0x577491+='<div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap\x22>',_0x577491+='<span\x20class=\x22badge\x22\x20style=\x22background:'+_0x1e288f+'22;color:'+_0x1e288f+';border:1px\x20solid\x20'+_0x1e288f+'55;font-weight:800;padding:4px\x2010px;border-radius:8px;font-size:10px\x22>'+_0x27bc88['toUpperCase']()+'</span>';if(_0xa1cffe)_0x577491+='<span\x20style=\x22font-size:11px;color:var(--txt2);font-weight:600;display:inline-flex;align-items:center;gap:4px\x22><i\x20class=\x22fas\x20fa-map\x22></i>\x20'+_0xa1cffe+'</span>';_0x577491+='</div></div>';var _0x1b0842=String(_0x10ff52['prize_type']||_0x57f4b1&&_0x57f4b1['prizeType']||'cash')['toLowerCase'](),_0x5aef13=_0x1b0842==='coin'||_0x1b0842==='coins'?'🪙':_0x1b0842==='skydiamond'||_0x1b0842==='sky_diamond'||_0x1b0842==='sky'?'💎':_0x1b0842==='greendiamond'||_0x1b0842==='green_diamond'?'<img\x20src=\x22js/green-diamond.png?v=20261117g\x22\x20style=\x22width:12px;height:12px;vertical-align:middle;object-fit:contain\x22>':'₹';if(_0x4f6db6['first']||_0x4f6db6['second']||_0x4f6db6['third']||_0x9f28ac){_0x577491+='<div\x20class=\x22mc-prizes\x22>';var _0x2df7ce=[{'cls':'mc-prize-1','icon':'<img\x20src=\x22assets/img/icons/trophy.png\x22\x20alt=\x22\x22\x20style=\x22width:20px;height:20px;object-fit:contain\x22>','rank':'1st\x20PRIZE','val':Number(_0x4f6db6['first'])||0x0},{'cls':'mc-prize-2','icon':window['medalHtml']?medalHtml(0x2,0x14):'','rank':'2nd\x20PRIZE','val':Number(_0x4f6db6['second'])||0x0},{'cls':'mc-prize-3','icon':window['medalHtml']?medalHtml(0x3,0x14):'','rank':'3rd\x20PRIZE','val':Number(_0x4f6db6['third'])||0x0}];_0x2df7ce['forEach'](function(_0x20c03d){if(!_0x20c03d['val']||_0x20c03d['val']<=0x0)return;_0x577491+='<div\x20class=\x22mc-prize-box\x20'+_0x20c03d['cls']+'\x22>',_0x577491+='<div\x20class=\x22mc-prize-icon\x22>'+_0x20c03d['icon']+'</div>',_0x577491+='<div\x20class=\x22mc-prize-rank\x22>'+_0x20c03d['rank']+'</div>',_0x577491+='<div\x20class=\x22mc-prize-amt\x22>'+_0x5aef13+_0x20c03d['val']+'</div>',_0x577491+='</div>';}),_0x577491+='</div>';if(_0x9f28ac)_0x577491+='<div\x20style=\x22font-size:10px;color:var(--txt2);font-weight:700;margin:-4px\x200\x208px;text-align:right\x22>Total\x20Pool:\x20<span\x20style=\x22color:var(--green)\x22>'+_0x5aef13+_0x9f28ac+'</span></div>';if(Number(_0x4f6db6['fourthToTenth'])>0x0)_0x577491+='<div\x20style=\x22font-size:10px;color:var(--txt2);font-weight:700;margin:-4px\x200\x208px;text-align:right\x22>4th–10th:\x20<span\x20style=\x22color:var(--green)\x22>'+_0x5aef13+Number(_0x4f6db6['fourthToTenth'])+'\x20each</span></div>';}_0x577491+='<div\x20class=\x22mc-mid\x22\x20style=\x22grid-template-columns:30%\x2030%\x2040%\x22>',_0x577491+='<div\x20class=\x22mc-cell\x22\x20style=\x22border-right:1px\x20solid\x20rgba(0,229,255,.12)\x22><label\x20style=\x22color:#00e5ff99\x22>Entry\x20Fee</label><span\x20style=\x22color:var(--green);font-weight:800;font-size:12px\x22>FREE</span></div>',_0x577491+='<div\x20class=\x22mc-cell\x22\x20style=\x22border-right:1px\x20solid\x20rgba(255,107,107,.12)\x22><label\x20style=\x22color:#ff6b6b99\x22>Per\x20Kill</label>'+(_0xc256a5?'<span\x20class=\x22kill-val\x22><i\x20class=\x22fas\x20fa-skull\x22\x20style=\x22font-size:11px;margin-right:2px\x22></i>'+_0x5aef13+_0xc256a5+'/Kill</span>':'<span\x20style=\x22color:var(--txt2);font-size:11px;font-weight:600\x22>N/A</span>')+'</div>',_0x577491+='<div\x20class=\x22mc-cell\x22><label\x20style=\x22color:#b964ff99\x22>Start\x20Time</label><span\x20class=\x22time-val\x22>'+_0x549305+'</span></div></div>';_0x2f70d8&&(_0x577491+='<div\x20class=\x22mc-bot\x22\x20style=\x22border-top:none;padding-top:0\x22>',_0x577491+='<div\x20class=\x22mc-slots\x22\x20style=\x22width:100%\x22><div\x20class=\x22mc-slots-txt\x22>'+_0x4ad1be+'/'+_0x2f70d8+'\x20Slots\x20('+_0x405cdc+'%\x20Full)</div>',_0x577491+='<div\x20class=\x22mc-bar\x22><div\x20class=\x22mc-bar-fill\x22\x20style=\x22width:'+_0x405cdc+'%;background:linear-gradient(90deg,#ffd700,#ff8c00)\x22></div></div></div>',_0x577491+='</div>');_0x577491+='<div\x20style=\x22padding:10px\x2014px\x2014px\x22>';var _0x3ef7b2=_0x10ff52['match_id']&&window['hasJ']&&hasJ(_0x10ff52['match_id']);if(_0x3ef7b2)_0x577491+='<button\x20class=\x22f-btn\x22\x20style=\x22width:100%;font-weight:800;background:rgba(0,255,156,.12);color:var(--green);border:1px\x20solid\x20rgba(0,255,156,.3)\x22\x20disabled>✅\x20Joined</button>';else{if(_0x10ff52['match_id']&&MT[_0x10ff52['match_id']]){var _0x2b8a9c=MT[_0x10ff52['match_id']],_0x64a882=window['effSt']?effSt(_0x2b8a9c):String(_0x2b8a9c['status']||'upcoming')['toLowerCase'](),_0x1cce15=_0x2b8a9c['matchTime']&&(window['serverNow']?window['serverNow']():Date['now']())>=Number(_0x2b8a9c['matchTime']);if(_0x64a882==='completed'||_0x64a882==='resultPublished')_0x577491+='<button\x20class=\x22f-btn\x22\x20style=\x22width:100%;font-weight:800;background:rgba(0,212,255,.1);color:#00d4ff;border:1px\x20solid\x20rgba(0,212,255,.25)\x22\x20disabled>✅\x20Match\x20Completed</button>';else{if(_0x64a882==='cancelled')_0x577491+='<button\x20class=\x22f-btn\x22\x20style=\x22width:100%;font-weight:800;background:rgba(255,46,46,.1);color:#ff2e2e;border:1px\x20solid\x20rgba(255,46,46,.25)\x22\x20disabled>🚫\x20Match\x20Cancelled</button>';else _0x64a882==='live'&&_0x1cce15?_0x577491+='<button\x20class=\x22f-btn\x22\x20style=\x22width:100%;font-weight:800;background:rgba(255,107,107,.12);color:#ff6b6b;border:1px\x20solid\x20rgba(255,107,107,.3)\x22\x20disabled>🔴\x20Match\x20Started</button>':_0x577491+='<button\x20class=\x22f-btn\x22\x20style=\x22width:100%;font-weight:800;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:none\x22\x20onclick=\x22cJoin(\x27'+_0x10ff52['match_id']+'\x27)\x22>⚡\x20Join\x20Now</button>';}}else{if(_0x29dbde&&_0x29dbde['status']==='completed')_0x577491+='<button\x20class=\x22f-btn\x22\x20style=\x22width:100%;font-weight:800;background:rgba(0,212,255,.1);color:#00d4ff;border:1px\x20solid\x20rgba(0,212,255,.25)\x22\x20disabled>✅\x20Match\x20Completed</button>';else _0x10ff52['match_id']?_0x577491+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Match\x20load\x20ho\x20raha\x20hai...\x20<a\x20onclick=\x22navTo(\x27matches\x27)\x22\x20style=\x22color:#00d4ff;cursor:pointer\x22>Matches\x20tab\x20me\x20dekho</a></div>':_0x577491+='<div\x20style=\x22font-size:10px;color:#ff9f1c\x22>⚠\x20Is\x20tournament\x20ka\x20match\x20link\x20nahi\x20hai\x20—\x20admin\x20se\x20contact\x20karo</div>';}}_0x577491+='</div></div>';});if(_0x36e82e['innerHTML']!==_0x577491)_0x36e82e['innerHTML']=_0x577491;try{if(window['_i18nApply'])window['_i18nApply']();}catch(_0x3c2cb0){}};function renderSP(){var _0x457b0f=$('specialList');if(!_0x457b0f)return;var _0x383357=[];for(var _0x81b8a7 in MT){var _0x4f4b6b=MT[_0x81b8a7],_0x591957=(_0x4f4b6b['specialType']||_0x4f4b6b['matchType']||'')['toString']()['toLowerCase'](),_0x100a63=_0x4f4b6b['isSpecial']===!![]||_0x591957&&_0x591957!=='normal'&&_0x591957!=='';if(!_0x100a63)continue;var _0x3aa5ec=(_0x4f4b6b['specialType']||_0x4f4b6b['matchType']||'weekly')['toString']()['toLowerCase'](),_0xd1881=_0x3aa5ec==='sunday_special'||_0x3aa5ec==='weekly'?'weekly':'monthly';if(_0xd1881!==spType)continue;_0x383357['push'](_0x4f4b6b);}_0x383357['sort'](function(_0x574bbb,_0x561927){return(Number(_0x574bbb['matchTime'])||0x0)-(Number(_0x561927['matchTime'])||0x0);});var _0x1ff53c=spType==='weekly'?'Sunday\x20Special':'Monthly\x20Special',_0x4e57a3=_0x383357['length']?_0x383357['map'](mcHTML)['join'](''):'<div\x20class=\x22empty-state\x22><i\x20class=\x22fas\x20fa-crown\x22></i><p>No\x20'+_0x1ff53c+'\x20matches</p></div>';if(_0x457b0f['innerHTML']!==_0x4e57a3)_0x457b0f['innerHTML']=_0x4e57a3;updateCD(_0x383357);}function setSpec(_0x3a95d6,_0x5f5945){spType=_0x3a95d6,document['querySelectorAll']('.sp-tog-btn')['forEach'](function(_0x2617d4){_0x2617d4['classList']['remove']('active');});if(_0x5f5945)_0x5f5945['classList']['add']('active');renderSP();}function updateCD(_0x146e1c){if(cdInt)clearInterval(cdInt);var _0x27b5a7=null;_0x146e1c['forEach'](function(_0x2c9fa1){var _0x2bd464=Number(_0x2c9fa1['matchTime']);if(_0x2bd464&&_0x2bd464>(window['serverNow']?window['serverNow']():Date['now']())&&(!_0x27b5a7||_0x2bd464<_0x27b5a7))_0x27b5a7=_0x2bd464;});var _0x786d2=document['querySelector']('.cd-wrap'),_0xe78afc=$('cdEmptyNote');!_0xe78afc&&_0x786d2&&(_0xe78afc=document['createElement']('div'),_0xe78afc['id']='cdEmptyNote',_0xe78afc['style']['cssText']='text-align:center;color:#8888aa;font-size:12px;padding:2px\x200\x2014px',_0x786d2['parentNode']['insertBefore'](_0xe78afc,_0x786d2));if(!_0x27b5a7){if(_0x786d2)_0x786d2['style']['display']='none';_0xe78afc&&(_0xe78afc['style']['display']='block',_0xe78afc['innerHTML']='⏳\x20Abhi\x20koi\x20special\x20scheduled\x20nahi\x20—\x20next\x20special\x20announce\x20hote\x20hi\x20countdown\x20yahan\x20chalega!');return;}if(_0x786d2)_0x786d2['style']['display']='';if(_0xe78afc)_0xe78afc['style']['display']='none';function _0x4448ad(){var _0x5dae3f=_0x27b5a7-(window['serverNow']?window['serverNow']():Date['now']());if(_0x5dae3f<=0x0){$('cdD')['textContent']='00',$('cdH')['textContent']='00',$('cdM')['textContent']='00',$('cdS')['textContent']='00',clearInterval(cdInt);return;}$('cdD')['textContent']=String(Math['floor'](_0x5dae3f/0x5265c00))['padStart'](0x2,'0'),$('cdH')['textContent']=String(Math['floor'](_0x5dae3f%0x5265c00/0x36ee80))['padStart'](0x2,'0'),$('cdM')['textContent']=String(Math['floor'](_0x5dae3f%0x36ee80/0xea60))['padStart'](0x2,'0'),$('cdS')['textContent']=String(Math['floor'](_0x5dae3f%0xea60/0x3e8))['padStart'](0x2,'0');}_0x4448ad(),cdInt=setInterval(_0x4448ad,0x3e8);}
+/* ====== USER SEARCH ====== */
+/* ✅ D95 (2026-11-09, owner live report): search UI ko beautiful/attractive/
+   stylish banana tha + searched user ki profile "border line se bahar"
+   dikh rahi thi. Ab: glass-glow search box, gradient-ring result cards,
+   stats pills; aur public profile modal me PCARD2 art ek clipped rounded
+   frame (#pubPc2Host: border-radius+overflow:hidden) ke ANDAR render hota
+   hai — banner/art kabhi border se bahar nahi ja sakta. */
+function _injectSearchStyles() {
+  if (document.getElementById('usrSrchV2')) return;
+  var s = document.createElement('style');
+  s.id = 'usrSrchV2';
+  s.textContent =
+    '#usrSrchInput{width:100%;box-sizing:border-box;padding:13px 16px 13px 42px;border-radius:16px;font-size:14px;font-weight:600;' +
+    'background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--txt);outline:none;transition:.18s}' +
+    '#usrSrchInput:focus{border-color:rgba(0,255,156,.55);box-shadow:0 0 0 3px rgba(0,255,156,.12),0 0 18px rgba(0,255,156,.15);background:rgba(255,255,255,.08)}' +
+    '#usrSrchInput::placeholder{color:#7c8593;font-weight:500}' +
+    '.usrSrchCard{transition:transform .12s,border-color .12s}' +
+    '.usrSrchCard:active{transform:scale(.985)}' +
+    '#usrSrchResults::-webkit-scrollbar{width:4px}#usrSrchResults::-webkit-scrollbar-thumb{background:rgba(0,255,156,.25);border-radius:4px}';
+  document.head.appendChild(s);
+}
+function showUserSearch() {
+  _injectSearchStyles();
+  var h = '<div>';
+  h += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">' +
+       '<span style="width:34px;height:34px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:15px;' +
+       'background:linear-gradient(140deg,rgba(0,255,156,.2),rgba(0,212,255,.14));border:1px solid rgba(0,255,156,.35);box-shadow:0 0 14px rgba(0,255,156,.2)">🔍</span>' +
+       '<span style="font-size:12px;color:#8b93a0;font-weight:600">IGN ya FF UID se koi bhi player dhundo</span></div>';
+  h += '<div style="position:relative;margin-bottom:10px">';
+  h += '<i class="fas fa-search" style="position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#00ff9c;font-size:13px;pointer-events:none"></i>';
+  h += '<input type="text" id="usrSrchInput" placeholder="IGN ya FF UID search karo..." autocomplete="off" ';
+  h += 'oninput="liveSearchUsers(this.value)">';
+  h += '</div>';
+  h += '<div id="usrSrchResults" style="max-height:52vh;overflow-y:auto;padding:2px"></div>';
+  h += '</div>';
+  openModal('🔍 Search Players', h);
+  setTimeout(function() { var el = document.getElementById('usrSrchInput'); if (el) el.focus(); }, 100);
+}
+
+var _searchTimer = null;
+function liveSearchUsers(q) {
+  q = (q || '').trim();
+  var res = document.getElementById('usrSrchResults'); if (!res) return;
+  if (q.length < 1) { res.innerHTML = '<div style="text-align:center;padding:26px 16px;color:#8b93a0"><div style="font-size:30px;opacity:.35;margin-bottom:6px">🎮</div><p style="font-size:12px;font-weight:600">Type karo search karne ke liye...</p></div>'; return; }
+  res.innerHTML = '<div style="text-align:center;padding:20px;color:#8b93a0"><i class="fas fa-spinner fa-spin" style="color:#00ff9c"></i> <span style="font-size:12px;font-weight:600">Searching...</span></div>';
+  clearTimeout(_searchTimer);
+  // Search from 1 char onwards
+  _searchTimer = setTimeout(function() {
+    if (!window._supa) { renderSearchResults([], q); return; }
+    window._supa.from('user_public_profiles') /* BUG #38 FIX */
+      .select('id,ign,ff_uid,avatar_url,profile_status,city,total_matches,total_wins,total_kills')
+      .or('ign.ilike.%' + q + '%,ff_uid.ilike.%' + q + '%')
+      .eq('is_banned', false).limit(10)
+      .then(function(r) {
+        /* ✅ BUG FIX (2026-10-04): search results mein user ko KHUD KI row
+           nahi dikhni chahiye — own uid filter kiya. */
+        var _myUid = (window.U && window.U.uid) || '';
+        var results = (r.data || []).filter(function(u) { return u.id !== _myUid; }).map(function(u) {
+          return { uid: u.id, u: { ign: u.ign||'', displayName: u.ign||'', ffUid: u.ff_uid||'', profileImage: u.avatar_url||'', profileStatus: u.profile_status||'', city: u.city||'', stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 } } };
+        });
+        renderSearchResults(results, q);
+      }).catch(function() { renderSearchResults([], q); });
+  }, 300);
+}
+
+function renderSearchResults(results, q) {
+  var res = document.getElementById('usrSrchResults'); if (!res) return;
+  if (!results.length) {
+    res.innerHTML = '<div style="text-align:center;padding:34px 16px;color:#8b93a0"><div style="width:58px;height:58px;margin:0 auto 10px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);opacity:.6">🔍</div><p style="font-size:13px;font-weight:700;color:#cdd3dc">Koi player nahi mila</p><p style="font-size:11px;margin-top:3px">\"' + (window.escHtml?window.escHtml(q):q) + '\" se koi match nahi hua</p></div>';
+    return;
+  }
+  var h = '';
+  results.forEach(function(item) {
+    var u = item.u, uid = item.uid;
+    var isSelf = uid === (U && U.uid);
+    var st = u.stats || {};
+    var av = u.profileImage
+      ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover">'
+      : '<span style="font-size:16px;font-weight:800;color:#041018">' + (u.ign || u.displayName || '?').charAt(0).toUpperCase() + '</span>';
+    h += '<div class="usrSrchCard" onclick="viewPublicProfile(\'' + uid + '\')" style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:16px;margin-bottom:8px;cursor:pointer;' +
+         'background:linear-gradient(120deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09)">';
+    /* gradient ring avatar */
+    h += '<div style="width:46px;height:46px;flex-shrink:0;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#00ff9c,#00d4ff,#b964ff,#00ff9c)">' +
+         '<div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(140deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;overflow:hidden">' + av + '</div></div>';
+    h += '<div style="flex:1;min-width:0">';
+    h += '<div style="font-size:14px;font-weight:800;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + (isSelf ? ' <span style="font-size:10px;color:var(--green)">(You)</span>' : '') + '</div>';
+    h += '<div style="display:flex;align-items:center;gap:6px;margin:3px 0 5px;flex-wrap:wrap">';
+    h += '<span style="font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:2px 8px;border-radius:8px">FF: ' + (u.ffUid || '—') + '</span>';
+    if (u.profileStatus) h += '<span style="font-size:10px;color:#8b93a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">' + (window.escHtml?window.escHtml(u.profileStatus):u.profileStatus) + '</span>';
+    h += '</div>';
+    h += '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+    [['🎮', st.matches || 0], ['<img src="assets/img/icons/trophy.png" alt="" style="width:12px;height:12px;object-fit:contain;vertical-align:-2px">', st.wins || 0], ['💀', st.kills || 0]].forEach(function(p) {
+      h += '<span style="font-size:10px;font-weight:700;color:#cdd3dc;background:rgba(0,255,156,.07);border:1px solid rgba(0,255,156,.16);padding:2px 8px;border-radius:8px">' + p[0] + ' ' + p[1] + '</span>';
+    });
+    h += '</div></div>';
+    h += '<i class="fas fa-chevron-right" style="color:#5b6472;font-size:11px"></i>';
+    h += '</div>';
+  });
+  res.innerHTML = h;
+}
+
+function viewPublicProfile(uid) {
+  closeModal();
+  if (!window._supa) { toast('Service unavailable', 'err'); return; }
+  window._supa.from('user_public_profiles').select('*').eq('id', uid).single() /* BUG #38 FIX */
+    .then(function(r) {
+      if (!r.data) { toast('Player nahi mila', 'err'); return; }
+      var u = r.data;
+      u.ign = u.ign || ''; u.ffUid = u.ff_uid || ''; u.profileImage = u.avatar_url || '';
+      var st = { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0, earnings: 0 };
+      var wr0 = st.matches > 0 ? Math.round(st.wins / st.matches * 100) : 0;
+      /* ✅ D83 (owner: "search karne par bekar ui vala card"): ab searched
+         user ka card bhi wahi PCARD2 replica (photo/banner/tier/stats dynamic) */
+      var h = '';
+      if (window.PCARD2) {
+        /* ✅ D95: clipped rounded frame — art/banner kabhi border line se
+           bahar nahi dikhega (overflow:hidden + border-radius) */
+        h += '<div id="pubPc2Host" style="margin:0 0 12px;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#0a0e2e;box-shadow:0 8px 26px rgba(0,0,0,.4)"></div>';
+      } else {
+        var av = u.profileImage
+          ? '<img src="' + u.profileImage + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover">'
+          : '<span style="font-size:32px;font-weight:700">' + (u.ign || '?').charAt(0).toUpperCase() + '</span>';
+        h += '<div style="text-align:center;padding-bottom:12px">';
+      h += '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,156,.1);border:3px solid rgba(0,255,156,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">' + av + '</div>';
+      h += '<div style="font-size:20px;font-weight:900">' + (window.escHtml?window.escHtml(u.ign||'Player'):(u.ign||'Player')) + '</div>';
+      h += '<div style="font-size:12px;color:var(--txt2);margin-top:2px">FF UID: <strong style="color:var(--green)">' + (u.ffUid || '—') + '</strong></div>';
+      if (u.bio) h += '<div style="font-size:12px;color:var(--txt2);margin-top:6px;font-style:italic">"' + (window.escHtml?window.escHtml(u.bio):u.bio) + '"</div>';
+      h += '</div>';
+      h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">';
+      [['🎮', st.matches, 'Matches'], ['<img src="assets/img/icons/trophy.png" alt="" style="width:18px;height:18px;object-fit:contain">', st.wins, 'Wins'], ['💀', st.kills, 'Kills']].forEach(function(d) {
+        h += '<div style="text-align:center;padding:10px;background:var(--card2);border-radius:10px;border:1px solid var(--border)">';
+        h += '<div style="font-size:18px">' + d[0] + '</div><div style="font-size:16px;font-weight:800">' + d[1] + '</div>';
+        h += '<div style="font-size:10px;color:var(--txt2)">' + d[2] + '</div></div>';
+      });
+      h += '</div>';
+      var wr = st.matches > 0 ? Math.round(st.wins / st.matches * 100) : 0;
+      h += '<div style="padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px solid rgba(0,255,156,.12)">';
+      h += 'Win Rate: <strong style="color:var(--green)">' + wr + '%</strong>';
+      h += '</div>';
+      }
+      if (u.bio) h += '<div style="font-size:12px;color:var(--txt2);margin:0 0 10px;font-style:italic;text-align:center">"' + (window.escHtml?window.escHtml(u.bio):u.bio) + '"</div>';
+      if (window.PCARD2) {
+        h += '<div style="padding:10px;background:rgba(0,255,156,.06);border-radius:10px;text-align:center;font-size:12px;border:1px solid rgba(0,255,156,.12)">Win Rate: <strong style="color:var(--green)">' + wr0 + '%</strong></div>';
+      }
+      openModal('👤 ' + (u.ign || 'Player'), h);
+      if (window.PCARD2) {
+        var _pd = {
+          name: u.ign || 'Player', uid: u.ff_uid || '—',
+          level: u.level || 1, xp: u.exp || 0, xpNeed: 10 * (u.level || 1),
+          pts: u.rank_points || 0, tier: String(u.rank_tier || 'Bronze'),
+          title: u.title || '',
+          stats: [st.matches, st.kills, st.wins, st.matches ? (st.kills / st.matches).toFixed(1) : '0.0', wr0 + '%'],
+          photo: u.avatar_url || '', banner: u.banner_url || '', vip: !!u.is_vip,
+          /* ✅ D83: prem chip + earned badges bhi own-card jaise (dynamic,
+             stats/view se compute — art me baked nahi) */
+          premHtml: (function () {
+            var _pt = Number(u.premium_level || 0);
+            if (_pt < 1) return '';
+            var _ex = u.premium_expires ? new Date(u.premium_expires).getTime() : 0;
+            if (_ex && _ex < Date.now()) return '';
+            return (window.premTierIcon ? '<img src="' + premTierIcon(_pt) + '" alt="" style="height:1.15em;width:1.15em;object-fit:contain;vertical-align:-2px"> ' : '') + (window.premTierName ? premTierName(_pt) : 'Premium'); /* D101→D103 */
+          })(),
+          /* ✅ D103: prem = sirf TEXT (PCARD2 fallback esc karta hai); icon
+             HTML premHtml me — pehle HTML yahan tha jo esc() hoke literal
+             "<img …>" garbage dikhta tha public card par */
+          prem: (function () {
+            var _pt = Number(u.premium_level || 0);
+            if (_pt < 1) return '';
+            var _ex = u.premium_expires ? new Date(u.premium_expires).getTime() : 0;
+            if (_ex && _ex < Date.now()) return '';
+            return window.premTierName ? premTierName(_pt) : 'Premium';
+          })(),
+          premLevel: Number(u.premium_level || 0),
+          badges: (window.getEarnedBadges ? (function () { try { return window.getEarnedBadges(st).slice(0, 3).map(function (b) { return b.img; }); } catch (e) { return []; } })() : [])
+        };
+        var _ph = document.getElementById('pubPc2Host');
+        if (_ph) window.PCARD2.mount(_ph, _pd, null, { public: true });
+      }
+    }).catch(function() { toast('Player nahi mila', 'err'); });
+}
+
+
+/* ====== MATCH CARD HTML ====== */
+function mcHTML(t) {
+  var es = effSt(t);
+  /* Check t.mode FIRST (preferred), then t.type as fallback */
+  var tp = (t.mode || t.type || 'solo').toString().toLowerCase().trim();
+  if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+  console.log('[Mini eSports] Card: ' + (t.name||'?') + ' mode=' + tp + ' (mode=' + t.mode + ', type=' + t.type + ')');
+  var et = (t.entryType || '').toString().toLowerCase().trim();
+  /* ✅ D87: GD entry currency abolished — legacy rows free dikho */
+  if (et === 'green' || et === 'green_diamond' || et === 'greendiamond' || et === 'gd') et = 'free';
+  var isAd = et === 'ad';
+  /* ✅ BUG FIX (2026-09-14): Number(t.entryFee)===0 fallback treated ANY
+     match with entryFee=0 as a Coin match, even when entryType was
+     genuinely 'paid'/'sky_diamond'. This is exactly why Sky Diamond
+     matches whose entry_fee had been corrupted to 0 by an admin-panel
+     sync bug (see admin-supabase-sync.js's now-disabled
+     _watchMatchCreation) displayed as Coin/₹0 in this app — a display
+     bug riding on top of a data bug, but this half was still wrong on
+     its own: a genuinely free 'paid' match with fee 0 (e.g. admin
+     hasn't set it yet) should show as Free/Paid, not silently relabel
+     itself Coin. Only entryType (what the admin actually chose) should
+     decide the category — entryFee is just an amount, not a type. */
+  var isCoin = !isAd && (et === 'coin' || et === 'coins'); /* ✅ D87: DB plural 'coins' bhi coin hi hai — warna card par galat 💎 icon dikhta tha */
+  var joined = hasJ(t.id);
+  var js = Number(t.joinedSlots) || 0, ms = Number(t.maxSlots) || 1;
+  var pct = Math.min(Math.round(js / ms * 100), 100);
+  var bc = tp === 'duo' ? 'badge-duo' : tp === 'squad' ? 'badge-squad' : 'badge-solo';
+  var feeHTML = isAd ? '<span style="color:#ff9f1c;font-weight:800;font-size:12px">📺 ' + (Number(t.adsRequired)||2) + ' Ads Watch</span>' : (isCoin ? '<span class="fee-coin">🪙 ' + (t.entryFee || 0) + '</span>' : (et === 'free' ? '<span class="fee-coin">🎁 Free</span>' : '<span class="fee-money">💎' + (t.entryFee || 0) + '</span>'));
+  var timeHTML = fmtTime(t.matchTime);
+  if (timeHTML === 'Time Not Announced') timeHTML = '<span class="time-val">Time Not Announced</span>';
+  else timeHTML = '<span class="time-val">' + timeHTML + '</span>';
+
+  var modeClr = tp==='squad' ? '#b964ff' : tp==='duo' ? '#00d4ff' : '#00ff9c';
+  // Hot badge: match full > 70% OR prize > 200
+  var isHot = (pct >= 70);
+  var isFeatured = t.isFeatured || t.isSpecial;
+  var glowStr = es === 'live' ? '0 0 20px ' + modeClr + '55' : '0 4px 20px rgba(0,0,0,.35)';
+  /* ✅ BUG Y FIX (2026-10-02): auto-squad ka _showQueueBanner card ko
+     '[data-match-id="…"]' se dhoondta hai — attribute kahin set hi nahi
+     hota tha ⇒ queue banner + 8s poll (jo matched-par Team-Ready card
+     bhi kholta hai) KABHI nahi chalta tha. Ab card par attribute set. */
+  /* ✅ BUG FIX (2026-10-04) Bug 8: premium user ke liye match card par
+     "unlimited colours" animated rainbow glow border (styles.css .rb-wrap).
+     Non-premium ke liye layout bilkul same. */
+  /* ✅ D76 (2026-11-07, owner): "match card UI new screenshot jaisi exact" —
+     screenshot me HAR card par neon rainbow border tha. Ab sab cards par
+     animated rainbow frame (styles.css .rb-wrap); premium viewer ko extra
+     halo glow (.rb-glow) — premium difference bhi barkarar. */
+  var _mViewerPrem = (window.isPremiumActive && isPremiumActive()) ? true : false;
+  var h = '<div class="rb-wrap' + (_mViewerPrem ? ' rb-glow' : '') + '" style="margin:0 0 12px"><div class="m-card rb-inner" data-match-id="' + t.id + '" style="position:relative;overflow:hidden;box-shadow:' + glowStr + ';margin:0">';
+  h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,' + modeClr + '20,transparent 70%);pointer-events:none"></div>';
+  if (isHot) h += '<div style="position:absolute;top:10px;left:-1px;background:linear-gradient(135deg,#ff4500,#ff8c00);color:#fff;font-size:9px;font-weight:900;padding:3px 10px 3px 6px;border-radius:0 20px 20px 0;letter-spacing:.5px">🔥 HOT</div>';
+  if (t.isMonthlySpecial || t.specialCategory === 'monthly_special') h += '<div style="position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:8px;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:.3px">👑 MONTHLY</div>'; 
+  else if (t.isSundaySpecial || t.specialCategory === 'sunday_special') h += '<div style="position:absolute;top:10px;right:8px;background:linear-gradient(135deg,#b964ff,#00d4ff);color:#fff;font-size:8px;font-weight:900;padding:2px 8px;border-radius:20px;letter-spacing:.3px">⭐ SUNDAY</div>'; 
+  h += '<div class="mc-top" style="' + (isHot?'padding-top:22px':'') + '"><div class="mc-head"><span class="mc-name" style="font-size:16px;font-weight:800;letter-spacing:-.2px">' + (window.escHtml ? window.escHtml(t.name || 'Match') : (t.name || 'Match')) + '</span><div class="mc-badges"><span class="badge ' + bc + '" style="background:' + modeClr + '22;color:' + modeClr + ';border:1px solid ' + modeClr + '55;font-weight:800">' + tp.toUpperCase() + '</span>';
+  if (isCoin) h += '<span class="badge badge-coin">COIN</span>';
+  if (isAd) h += '<span class="badge" style="background:rgba(255,159,28,.15);color:#ff9f1c;border:1px solid rgba(255,159,28,.3);font-weight:800">📺 AD FREE</span>';
+  if (t.minRank) { h += '<span class="badge" style="background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.25);font-weight:800">' + (window.tierIconHtml?tierIconHtml(t.minRank,12):'') + ' ' + t.minRank + '+</span>'; } /* D101 */
+  if (es === 'live') h += '<span class="badge badge-live" style="animation:hotPulse 1.5s infinite">🔴 LIVE</span>';
+  h += '</div></div>';
+  if (t.creatorUid) h += '<div onclick="event.stopPropagation();if(window.showCreatorProfile)showCreatorProfile(\'' + t.creatorUid + '\')" style="display:inline-flex;align-items:center;gap:4px;margin:4px 0;padding:3px 9px;border-radius:20px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.2);font-size:10px;font-weight:700;color:#00ff9c;cursor:pointer">🎮 Creator Hosted</div>';
+  if (es === 'live') {
+    var matchStarted = t.matchTime && (window.serverNow?window.serverNow():Date.now()) >= Number(t.matchTime);
+    if (matchStarted) {
+      h += '<div class="mc-live"><i class="fas fa-circle"></i> Match is Live Now</div>';
+    } else {
+      h += '<span style="font-size:11px;color:var(--yellow);font-weight:600"><i class="fas fa-clock" style="animation:none;margin-right:3px"></i>Starting Soon</span>';
+    }
+  }
+  var _subTypeMap = { battle_royale:'Battle Royale', clash_squad:'Clash Squad', sniper_only:'Sniper Only', shotgun_only:'Shotgun Only', pistol_only:'Pistol Only', no_heal:'No Heal', rush_only:'Rush Only' };
+  var _subTypeLbl = _subTypeMap[t.matchSubType] || t.matchType || 'Battle Royale';
+  var _prPT = String(t.prizeType||'').toLowerCase(), _prET = String(t.entryType||'').toLowerCase();
+  var _prSym = window._prizeIcon ? window._prizeIcon(t) : ((_prPT==='coin'||_prPT==='coins'||_prPT==='cash'||_prET==='coin'||_prET==='coins') ? '🪙' : (window.GD_ICON || '💚')); /* ✅ BUG-HUNT R1: plural 'coins' prize par 💎/GD icon galat tha */
+  h += '<div class="mc-sub"><span><i class="fas fa-gamepad"></i> ' + _subTypeLbl + '</span>';
+  if (t.map) h += '<span><i class="fas fa-map"></i> ' + titleCase(t.map) + '</span>';
+  var _subPerKill = Number(t.perKillPrize || t.perKill) || 0;
+  if (_subPerKill) h += '<span style="color:#ff6b6b"><i class="fas fa-skull"></i> ' + _prSym + _subPerKill + '/Kill</span>';
+
+  h += '</div></div>';
+
+  /* PRIZE BOXES - screenshot jaisa neon style */
+  var _p1 = Number(t.firstPrize || t.prize1st) || 0;
+  var _p2 = Number(t.secondPrize || t.prize2nd) || 0;
+  var _p3 = Number(t.thirdPrize || t.prize3rd) || 0;
+  if (_p1 || _p2 || _p3) {
+    h += '<div class="mc-prizes">';
+    var prizeDefs = [
+      { cls:'mc-prize-1', icon:'<img src="assets/img/icons/trophy.png" alt="" style="width:20px;height:20px;object-fit:contain">', rank:'1st PRIZE', val:_p1 },
+      { cls:'mc-prize-2', icon:(window.medalHtml?medalHtml(2,20):''), rank:'2nd PRIZE', val:_p2 },
+      { cls:'mc-prize-3', icon:(window.medalHtml?medalHtml(3,20):''), rank:'3rd PRIZE', val:_p3 }
+    ];
+    prizeDefs.forEach(function(p) {
+      /* M8 Fix: Skip boxes where prize is 0 or null — prevents showing "💎0" */
+      if (!p.val || p.val <= 0) return;
+      h += '<div class="mc-prize-box ' + p.cls + '">';
+      h += '<div class="mc-prize-icon">' + p.icon + '</div>';
+      h += '<div class="mc-prize-rank">' + p.rank + '</div>';
+      /* Prize symbol based on prizeType: coin matches → 🪙, SD/paid matches → Green Diamond icon */
+      h += '<div class="mc-prize-amt">' + _prSym + p.val + '</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  /* BOTTOM 3-COL ROW: Entry Fee 30% | Per Kill 30% | Time 40% — NO prize pool box */
+  var perKillVal = Number(t.perKillPrize || t.perKill) || 0;
+  var perKillHTML = perKillVal
+    ? '<span class="kill-val"><i class="fas fa-skull" style="font-size:11px;margin-right:2px"></i>' + _prSym + perKillVal + '/Kill</span>'
+    : '<span style="color:var(--txt2);font-size:11px;font-weight:600">N/A</span>';
+  h += '<div class="mc-mid" style="grid-template-columns:30% 30% 40%">';
+  h += '<div class="mc-cell" style="border-right:1px solid rgba(0,229,255,.12)"><label style="color:#00e5ff99">Entry Fee</label>' + feeHTML + '</div>';
+  h += '<div class="mc-cell" style="border-right:1px solid rgba(255,107,107,.12)"><label style="color:#ff6b6b99">Per Kill</label>' + perKillHTML + '</div>';
+  h += '<div class="mc-cell"><label style="color:#b964ff99">Start Time</label>' + timeHTML + '</div></div>';
+  h += '<div class="mc-bot"><div class="mc-slots"><div class="mc-slots-txt">' + js + '/' + ms + ' Slots (' + pct + '% Full)</div>';
+  h += '<div class="mc-bar"><div class="mc-bar-fill" style="width:' + pct + '%"></div></div>';
+  h += '<div id="timer-' + t.id + '" style="font-size:11px;font-weight:700;margin-top:4px;color:#ffaa00;min-height:14px"></div></div>';
+  // Share button removed from card
+  h += '<div class="mc-info-btn" onclick="shareMatch(\'' + t.id + '\')" title="Invite Card"><i class="fas fa-share-alt"></i></div>';
+  h += '<div class="mc-info-btn" onclick="showDet(\'' + t.id + '\')"><i class="fas fa-info-circle"></i></div>';
+
+  // Determine if match actually started (past matchTime) or just in prep window
+  var matchActuallyStarted = t.matchTime && (window.serverNow?window.serverNow():Date.now()) >= Number(t.matchTime);
+
+  if (isVO()) h += '<button class="mc-join join-vo" disabled>View Only</button>';
+  else if (joined) h += '<button class="mc-join joined" disabled>Joined ✔️</button>';
+  else if (js >= ms) h += '<button class="mc-join join-full" disabled>Full</button>';
+  else if (es === 'completed') h += '<button class="mc-join join-dis" disabled>Ended</button>';
+  else if (es === 'live' && matchActuallyStarted) h += '<button class="mc-join join-dis" disabled>Started</button>';
+  else if (es === 'live' && !matchActuallyStarted) h += isAd ? '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')" style="background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;border:none">📺 Watch Ad & Join</button>' : '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')">Join</button>';
+  else h += isAd ? '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')" style="background:linear-gradient(135deg,#ff9f1c,#ff6b00);color:#fff;font-weight:800;letter-spacing:0.5px;border:none">📺 Watch Ad & Join</button>' : '<button class="mc-join join-ok" onclick="cJoin(\'' + t.id + '\')">⚡ JOIN</button>'; /* D76: outline-neon pill, owner screenshot replica */
+  /* Special Tournament eligibility info */
+  if ((t.isSundaySpecial || t.isMonthlySpecial) && window.f29SpecialTournament) {
+    h += window.f29SpecialTournament.getEligibilityInfo(t);
+  }
+  h += '</div></div>';
+  h += '</div>'; /* close rainbow wrapper — D76: ab har card par hai */
+  return h;
+}
+
+/* ====== RENDER HOME ====== */
+function renderHome() {
+  try {
+  var l = $('homeList'); if (!l) return;
+  var f = [];
+  for (var id in MT) {
+    var t = MT[id];
+    if (!t.maxSlots || t.maxSlots <= 0) continue;
+    /* ✅ BUG FIX (2026-09-16): "Sponsor match do jagah dikh raha hai, ek
+       hi join karne par dono joined show hote hain" — admin_create_sponsored_match
+       creates ONE real matches row (is_sponsored=true) plus a matching
+       sponsored_tournaments branding row. renderSponsoredTournaments()
+       already renders that branding card with its own dedicated "Join
+       Now"/"Joined" button at the top of Home (see below), reading the
+       SAME underlying match by s.match_id. This normal-list loop had no
+       exclusion for sponsored matches, so the identical match — same id,
+       same join_requests row once joined — also rendered again here as a
+       second, ordinary match card. Both cards called the same cJoin(id),
+       which is why joining one always showed the other as joined too:
+       they were never two different matches, just the same one drawn
+       twice. Skip sponsored matches here; the dedicated sponsored block
+       is their only render location now. */
+    if (t.isSponsored) continue;
+    var es = effSt(t);
+    if (es === 'cancelled') continue;
+    /* Keep result-published matches visible in completed tab */
+    if (es !== hSF) continue;
+    /* ✅ Bug 5 Fix: isSpecial is never set as boolean; use specialType string check */
+    if (t.specialType && t.specialType !== 'normal' && t.specialType !== '') continue;
+    var tEntry = (t.entryType || '').toString().toLowerCase().trim();
+    if (tEntry === 'green' || tEntry === 'green_diamond' || tEntry === 'greendiamond' || tEntry === 'gd') tEntry = 'free'; /* D87 */
+    var wantCat = hCF.toString().toLowerCase().trim();
+    var catMatch = false;
+    /* ✅ BUG FIX (2026-09-14): same class of bug as mcHTML's isCoin —
+       Number(t.entryFee)===0 / >0 checks let a corrupted or not-yet-set
+       entry_fee silently move a match between Coin/Paid tabs regardless
+       of its real entryType. Filter purely on entryType, which is what
+       the admin actually chose for the match. */
+    if (wantCat === 'all') catMatch = true;
+    else if (wantCat === 'coin') catMatch = (tEntry === 'coin');
+    else if (wantCat === 'ad') catMatch = (tEntry === 'ad');
+    else catMatch = (tEntry !== 'coin' && tEntry !== 'ad');
+    if (!catMatch) continue;
+    // Mode filter from Feature 37
+    if (window._modeFilter && window._modeFilter !== 'all') {
+      var mMode = (t.mode || t.type || 'solo').toLowerCase();
+      if (mMode !== window._modeFilter) continue;
+    }
+    f.push(t);
+  }
+  f.sort(function(a, b) { return (Number(a.matchTime) || 0) - (Number(b.matchTime) || 0); });
+  console.log('[Mini eSports] renderHome: ' + f.length + ' matches for tab=' + hCF + ' status=' + hSF);
+
+  // Build header with widgets
+  var topHtml = '';
+  // Feature 14: Quick Stats Widget
+  /* Removed promotional home widget */
+  // Feature 2: Profile Completion Bar — ONLY in profile section, not home
+  // (profile section mein f41 already render karta hai)
+  // Dynamic Banner (Feature 49)
+  topHtml += '<div id="dynamicBanner" style="display:none;margin-bottom:10px;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;text-align:center"></div>';
+  /* ✅ BUG FIX (2026-08-25): sponsored tournaments were "blinking" — showing
+     for an instant then disappearing, over and over. Root cause: renderHome()
+     runs very frequently (every match-timer tick, every realtime match
+     update — every few seconds in practice) and always rebuilt this as a
+     brand-new EMPTY div, then did a full l.innerHTML replace. That wiped out
+     whatever renderSponsoredTournaments() had separately filled in, every
+     single time, until the next 15s poll/realtime sponsored-tournament event
+     happened to re-run and refill it — so the block cycled
+     empty→filled→empty rapidly and looked like it was flickering in and out.
+     Fix: carry forward whatever sponsored HTML is already on screen instead
+     of starting from empty, and re-run the real renderer right after this
+     replace so it's never left blank even for one frame. */
+  var _existingSpEl = document.getElementById('sponsoredTournamentsBlock');
+  var _existingSpHtml = _existingSpEl ? _existingSpEl.innerHTML : '';
+  var _sponsoredBlockHtml = '<div id="sponsoredTournamentsBlock">' + _existingSpHtml + '</div>';
+  // Trust badges row — removed per request (2026-07)
+  // Feature 37: Mode Filter Chips
+  /* ✅ BUG FIX (2026-09-05): "sponsored match all+solo+duo+squad vali
+     row ke niche dikhne chahiye jaise baki match dikhte hain" —
+     sponsoredTournamentsBlock was being appended to topHtml BEFORE
+     renderFilterChips(), so sponsored cards always rendered above the
+     All/Solo/Duo/Squad row instead of in the normal match list
+     position below it. Swapped the order: filter chips first, then
+     the sponsored block, matching where normal match cards sit. */
+  if (window.renderFilterChips) topHtml += renderFilterChips();
+  topHtml += _sponsoredBlockHtml;
+  /* ✅ USER-ATTRACTION (2026-10-12, badge-engine.js): "🎯 Agla Inaam"
+     strip — sabse kareeb wala locked badge/title + progress. Near-miss
+     hook: jo player 90% paas hai wo khelna band nahi karta. Dikhane
+     ka data pehle se maujood tha (_assetProgress); ab screen par hai.
+     Fail-safe: function na ho to '' (purana home waisa hi). */
+  /* ✅ OWNER ORDER (2026-11-03): 'agla-inaam' row PERMANENTLY removed from home. */
+  /* ✅ USER-ATTRACTION (2026-10-13, master plan 3.8): SEASON countdown +
+     apni position + Top-3 ka near-miss ("2 kills door"). Season ka
+     endDate na ho to strip hi nahi aata (jhooti deadline kabhi nahi). */
+  if (window.renderSeasonCountdownStrip) { try { topHtml += renderSeasonCountdownStrip(); } catch (e) {} }
+  /* ✅ USER-ATTRACTION (2026-10-13, master plan 3.6): 7-दिन check-in streak
+     strip — asli streak_days + Week Warrior kala; aaj ki check-in ro render ke
+     baad (refreshLoginStreakToday) se pakki hoti hai. Fail-safe: '' */
+  /* 3.8/11: Season Champion ka bada ailaan (3 din) — placeholder jise
+     refreshSeasonChampion() asli row se bhar deta hai */
+  /* ✅ OWNER ORDER (2026-11-03): 'season-champion' row PERMANENTLY removed from home. */
+  /* ✅ OWNER ORDER (2026-11-03): 'checkin-strip' row PERMANENTLY removed from home. */
+  // Recommended widget removed
+
+  var _newHTML = topHtml + (f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-trophy"></i><p>' + (String(hCF).toLowerCase() === 'all' ? 'No matches ' : 'No ' + hCF + ' matches ') + (String(hSF).toLowerCase() === 'upcoming' ? 'right now — naya match jald aayega!' : hSF) + '</p></div>');
+  /* ✅ FIX (live-testing, User Desktop click failure on match-card badges
+     e.g. "Solo"): renderHome() fires on every realtime match update (see
+     core/listeners.js) and always did a full l.innerHTML replace, even
+     when the rendered content was byte-identical to what's already
+     there (e.g. an update to a DIFFERENT match, or a heartbeat/no-op
+     event). That constant full-DOM-replace meant any element the user
+     (or a test) was mid-click on could go stale ("Element is not
+     attached to the DOM") purely from bad luck in timing — same root
+     cause class as the "Recently Won" banner crash fixed earlier
+     (BUG L-5, insertBefore). Skipping the replace when content is
+     unchanged removes the vast majority of these no-op replaces without
+     needing a full virtual-DOM diff rewrite. */
+  if (l.innerHTML !== _newHTML) {
+    l.innerHTML = _newHTML;
+    /* Re-sync the sponsored block against the real SP_T data right after
+       the replace above (which only carried forward whatever HTML was
+       already there, not necessarily still accurate) — see fix note above. */
+    if (window.renderSponsoredTournaments) window.renderSponsoredTournaments();
+    /* 3.6: streak strip par "aaj check-in ho gaya?" asli row se — DOM lagne ke BAAD */
+    if (window.refreshLoginStreakToday) { try { refreshLoginStreakToday();
+      /* 3.9: badge unlock / near-unlock push (client wale 2 kism) — asli
+         earned list ka diff se, har reward par ek hi baar (badge-engine) */
+      try { if (window.notifyNewBadges) window.notifyNewBadges(); } catch (e) {}
+      /* champion banner asli row se (aur UD.season_champion flag — champion kala) */
+      try { if (window.refreshSeasonChampion) window.refreshSeasonChampion(); } catch (e) {} } catch (e) {} }
+  }
+  /* Bug 24/68 Fix: match-timer.js wraps renderHome with debounced timer start.
+     Direct call removed — match-timer.js handles this via its renderHome wrapper. */
+  /* Promotional banners removed */
+  // Feature 20: session match counter
+  if (window._sessionMatches !== undefined) window._sessionMatches++;
+  } catch(e) {
+    console.error('[renderHome]', e);
+    var _l = document.getElementById('homeList');
+    if (_l) _l.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle" style="color:#ff6b6b"></i><p>Screen error. <a onclick="location.reload()" style="color:#00d4ff;cursor:pointer">Refresh</a></p></div>';
+  }
+}
+
+/* ====== RENDER SPONSORED TOURNAMENTS ====== */
+/* ✅ BUG FIX (2026-08-24): new — this section never existed in the User
+   Panel before this session, which is the actual root cause of
+   "sponsored match admin panel me ban gaya, show bhi hua, lekin user
+   panel me nahi ho raha" (see firebase.js SP_T + listeners.js
+   _bootSponsored for the data-loading half of this fix). */
+/* ✅ BUG FIX (2026-09-05): "Sponsored match ka upcoming/live/completed
+   status hi nahi hai" — root cause confirmed live via direct DB query:
+   the badge logic below has always correctly read realMatch.status,
+   but realMatch = MT[s.match_id] and MT is only ever populated by
+   _loadMatches() (core/listeners.js), which deliberately only fetches
+   matches with status IN ('upcoming','live') OR (completed AND
+   scheduled_at within the last 7 days) — a real, correct performance
+   limit for the normal match feed. Every sponsored match currently in
+   the DB is completed and older than 7 days, so it NEVER enters MT at
+   all — the card falls through to the "Match load ho raha hai..."
+   branch forever, which is why no real status badge ever showed.
+   Fix: sponsored cards must not depend on MT's windowed cache at all.
+   Added a small dedicated fetch (SP_MATCH) that looks up each
+   sponsored tournament's linked match directly by id, with no age
+   limit — same one-time-per-id fetch pattern as other lazy caches in
+   this file, refreshed whenever a sponsored row references an id not
+   yet in the cache. */
+var SP_MATCH = window.SP_MATCH = window.SP_MATCH || {}; // match_id -> {status,...}, no 7-day limit
+function _fetchSponsoredMatchStatus(matchId) {
+  if (!window._supa || SP_MATCH[matchId] === 'loading') return;
+  SP_MATCH[matchId] = 'loading';
+  /* ✅ FEATURE (2026-09-16): expanded select — the sponsored card was
+     redesigned to show full match details (mode, map, slots, per-kill,
+     start time) the same way a normal match card does, matching them
+     needs these columns, not just id/status/scheduled_at/max_slots. */
+  window._supa.from('matches').select('id,status,scheduled_at,max_slots,filled_slots,mode,map,per_kill_prize,match_sub_type')
+    .eq('id', matchId).maybeSingle()
+    .then(function(r) {
+      SP_MATCH[matchId] = (r && r.data) ? r.data : null;
+      if (window.renderSponsoredTournaments) renderSponsoredTournaments();
+    }, function() { SP_MATCH[matchId] = null; });
+}
+/* ✅ REDESIGN (2026-09-16): the sponsored card was missing almost every
+   detail a normal match card shows (mode, map, per-kill, slots/capacity,
+   start-time countdown) and looked visibly less finished than the plain
+   match cards below it. Rebuilt using the same visual pieces as mcHTML()
+   (prize boxes, mode badge, entry/kill/time cell row, slots bar) so a
+   sponsored tournament now looks at least as good as — and clearly more
+   special than, via the gold sponsor header — a normal match, instead of
+   the old bare title+badges+button layout. All existing behavior (status
+   resolution via MT/SP_MATCH, hSF tab filtering, hasJ-based Joined state,
+   no-flicker diffing) is unchanged. */
+window.renderSponsoredTournaments = function() {
+  var el = document.getElementById('sponsoredTournamentsBlock');
+  if (!el) return; // Home not currently mounted — will pick up SP_T next render
+  var ids = Object.keys(SP_T);
+  if (!ids.length) { if (el.innerHTML !== '') el.innerHTML = ''; return; }
+  var h = '';
+  ids.forEach(function(id) {
+    var s = SP_T[id];
+    var prizes = s.prizes || {};
+    var pool = Number(s.prize_pool || 0);
+    /* ✅ BUG FIX (2026-08-29): "sponsor match Active status pe show
+       hota hai" — this badge was hardcoded to "🟢 Active" always,
+       completely independent of the real linked match's actual
+       live/upcoming/completed status. Now reads the real match status
+       when known — first from MT (fast path, covers fresh matches
+       that are already loaded for the normal feed), falling back to
+       the dedicated SP_MATCH lookup above for older/completed matches
+       MT's windowed cache doesn't carry (see 2026-09-05 fix note). */
+    var realMatch = s.match_id ? MT[s.match_id] : null;
+    if (!realMatch && s.match_id) {
+      if (SP_MATCH[s.match_id] === undefined) _fetchSponsoredMatchStatus(s.match_id);
+      else if (SP_MATCH[s.match_id] && SP_MATCH[s.match_id] !== 'loading') realMatch = SP_MATCH[s.match_id];
+    }
+    /* ✅ BUG FIX (2026-09-05): "sponsored match Completed hone ke baad
+       bhi Upcoming/Live/Completed tab teeno me dikhta hai" — this
+       block computed the right status badge (fix above) but never
+       actually filtered the card against hSF (the Upcoming/Live/
+       Completed dropdown that every normal match card respects, see
+       home.js line ~225's `if (es !== hSF) continue`). Sponsored cards
+       always rendered regardless of which tab was selected. Now
+       skipped here the same way normal matches are, once the real
+       status is known — a sponsored match whose status doesn't match
+       hSF just doesn't render in this pass. While the real status is
+       still loading (realMatch null, fetch in flight) the card is
+       shown only under the 'upcoming' tab, matching how a brand new
+       match behaves before its status is confirmed. */
+    var resolvedStatus = realMatch ? realMatch.status : (s.match_id ? null : 'upcoming');
+    if (resolvedStatus !== null && resolvedStatus !== hSF) return;
+    if (resolvedStatus === null && hSF !== 'upcoming') return;
+
+    var badgeText = '🎁 Sponsored', badgeBg = 'rgba(255,215,0,.15)', badgeColor = '#ffd700';
+    if (realMatch) {
+      if (realMatch.status === 'live') { badgeText = '🔴 Live'; badgeBg = 'rgba(255,60,60,.15)'; badgeColor = '#ff3c3c'; }
+      else if (realMatch.status === 'completed') { badgeText = '✅ Completed'; badgeBg = 'rgba(0,212,255,.15)'; badgeColor = '#00d4ff'; }
+      else { badgeText = '⏱ Upcoming'; badgeBg = 'rgba(0,255,156,.15)'; badgeColor = 'var(--green)'; }
+    }
+
+    /* Pull mode/map/slots/per-kill/time from whichever source has them
+       (MT is richer & fresher when available; SP_MATCH is the fallback
+       for older matches — see _fetchSponsoredMatchStatus above). */
+    var rm = realMatch || {};
+    var tp = (rm.mode || rm.gameMode || 'solo').toString().toLowerCase().trim();
+    if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+    var modeClr = tp === 'squad' ? '#b964ff' : tp === 'duo' ? '#00d4ff' : '#00ff9c';
+    var js = Number(rm.filledSlots || rm.filled_slots) || 0;
+    var ms = Number(rm.maxSlots || rm.max_slots) || 0;
+    var pct = ms ? Math.min(Math.round(js / ms * 100), 100) : 0;
+    var mapName = rm.map ? titleCase(rm.map) : '';
+    var perKill = Number(rm.perKillPrize || rm.per_kill_prize) || 0;
+    var matchTimeMs = rm.matchTime || (rm.scheduled_at ? new Date(rm.scheduled_at).getTime() : 0);
+    var timeHTML = matchTimeMs ? fmtTime(matchTimeMs) : 'Time Not Announced';
+
+    h += '<div class="m-card" data-match-id="' + (s.match_id || rm.id || '') + '" style="border-top:3px solid #ffd700;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(255,215,0,.15);background:linear-gradient(180deg,rgba(255,215,0,.05),transparent 40%)">';
+    h += '<div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,215,0,.16),transparent 70%);pointer-events:none"></div>';
+
+    /* ── Sponsor header strip — wrapped in .mc-top's own padding
+       (14px 14px 8px) since .m-card itself has no padding of its own;
+       every section below it (mc-prizes/mc-mid/mc-bot) supplies its own
+       padding already, only this header block needed it explicitly. ── */
+    h += '<div class="mc-top">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+    h += '<div style="font-size:15px;font-weight:900;color:#ffd700;letter-spacing:-.2px"><i class="fas fa-star"></i> ' + (window.escHtml ? escHtml(s.title||'Sponsored Tournament') : (s.title||'Sponsored Tournament')) + '</div>';
+    h += '<span style="background:' + badgeBg + ';color:' + badgeColor + ';padding:3px 9px;border-radius:8px;font-size:10px;font-weight:800;flex-shrink:0;margin-left:8px">' + badgeText + '</span></div>';
+    h += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">';
+    h += '<span style="background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.25);padding:2px 9px;border-radius:20px;font-size:10px;font-weight:800"><i class="fas fa-handshake"></i> ' + (window.escHtml ? escHtml(s.sponsor_name||'—') : (s.sponsor_name||'—')) + '</span>';
+    h += '<span style="font-size:10px;color:var(--txt2);font-weight:600">Koi entry fee nahi — sirf free tournament!</span></div>';
+
+    /* ── Mode / map badges (same visual language as a normal match card) ── */
+    h += '<div style="display:flex;gap:6px;flex-wrap:wrap">';
+    h += '<span class="badge" style="background:' + modeClr + '22;color:' + modeClr + ';border:1px solid ' + modeClr + '55;font-weight:800;padding:4px 10px;border-radius:8px;font-size:10px">' + tp.toUpperCase() + '</span>';
+    if (mapName) h += '<span style="font-size:11px;color:var(--txt2);font-weight:600;display:inline-flex;align-items:center;gap:4px"><i class="fas fa-map"></i> ' + mapName + '</span>';
+    h += '</div></div>'; /* /.mc-top */
+
+    /* ── Prize boxes — 1st/2nd/3rd, same style as mcHTML. ──
+       ✅ B11 FIX (2026-10-07): yahan currency HARDCODED 💎 thi, aur upar
+       comment tak likha tha "Sponsored tournaments are always Sky Diamond
+       (💎) prizes" — jo galat tha. Admin ab create karte waqt prize type
+       chunta hai (₹ Real Money / 🪙 Coins) aur wo value DB me
+       sponsored_tournaments.prize_type + matches.prize_type me aati hai.
+       User ko wahi dikhna chahiye jo admin ne chuna — warna user galat
+       currency ka bharosa karke join karta hai. (Default = ₹ real money,
+       kyunki sponsored prize ka asli maqsad cash hi hai.) */
+    var _spTypeRaw = String(s.prize_type || (rm && rm.prizeType) || 'cash').toLowerCase();
+    var _spUnit = (_spTypeRaw === 'coin' || _spTypeRaw === 'coins') ? '🪙'
+                : (_spTypeRaw === 'skydiamond' || _spTypeRaw === 'sky_diamond' || _spTypeRaw === 'sky') ? '💎'
+                : (_spTypeRaw === 'greendiamond' || _spTypeRaw === 'green_diamond')
+                    ? '<img src="js/green-diamond.png?v=20261117g" style="width:12px;height:12px;vertical-align:middle;object-fit:contain">'
+                : '₹';
+    if (prizes.first || prizes.second || prizes.third || pool) {
+      h += '<div class="mc-prizes">';
+      var prizeDefs = [
+        { cls:'mc-prize-1', icon:'<img src="assets/img/icons/trophy.png" alt="" style="width:20px;height:20px;object-fit:contain">', rank:'1st PRIZE', val:Number(prizes.first)||0 },
+        { cls:'mc-prize-2', icon:(window.medalHtml?medalHtml(2,20):''), rank:'2nd PRIZE', val:Number(prizes.second)||0 },
+        { cls:'mc-prize-3', icon:(window.medalHtml?medalHtml(3,20):''), rank:'3rd PRIZE', val:Number(prizes.third)||0 }
+      ];
+      prizeDefs.forEach(function(p) {
+        if (!p.val || p.val <= 0) return;
+        h += '<div class="mc-prize-box ' + p.cls + '">';
+        h += '<div class="mc-prize-icon">' + p.icon + '</div>';
+        h += '<div class="mc-prize-rank">' + p.rank + '</div>';
+        h += '<div class="mc-prize-amt">' + _spUnit + p.val + '</div>';
+        h += '</div>';
+      });
+      h += '</div>';
+      if (pool) h += '<div style="font-size:10px;color:var(--txt2);font-weight:700;margin:-4px 0 8px;text-align:right">Total Pool: <span style="color:var(--green)">' + _spUnit + pool + '</span></div>';
+      /* ✅ B11: admin ka 4th-10th wala amount bhi user ko dikhe (chhupa na rahe) */
+      if (Number(prizes.fourthToTenth) > 0) h += '<div style="font-size:10px;color:var(--txt2);font-weight:700;margin:-4px 0 8px;text-align:right">4th–10th: <span style="color:var(--green)">' + _spUnit + Number(prizes.fourthToTenth) + ' each</span></div>';
+    }
+
+    /* ── Entry / Per-Kill / Start-time row — identical layout to mcHTML ── */
+    h += '<div class="mc-mid" style="grid-template-columns:30% 30% 40%">';
+    h += '<div class="mc-cell" style="border-right:1px solid rgba(0,229,255,.12)"><label style="color:#00e5ff99">Entry Fee</label><span style="color:var(--green);font-weight:800;font-size:12px">FREE</span></div>';
+    h += '<div class="mc-cell" style="border-right:1px solid rgba(255,107,107,.12)"><label style="color:#ff6b6b99">Per Kill</label>' + (perKill ? '<span class="kill-val"><i class="fas fa-skull" style="font-size:11px;margin-right:2px"></i>' + _spUnit + perKill + '/Kill</span>' : '<span style="color:var(--txt2);font-size:11px;font-weight:600">N/A</span>') + '</div>';
+    h += '<div class="mc-cell"><label style="color:#b964ff99">Start Time</label><span class="time-val">' + timeHTML + '</span></div></div>';
+
+    /* ── Slots bar (only when we actually know capacity) ── */
+    if (ms) {
+      h += '<div class="mc-bot" style="border-top:none;padding-top:0">';
+      h += '<div class="mc-slots" style="width:100%"><div class="mc-slots-txt">' + js + '/' + ms + ' Slots (' + pct + '% Full)</div>';
+      h += '<div class="mc-bar"><div class="mc-bar-fill" style="width:' + pct + '%;background:linear-gradient(90deg,#ffd700,#ff8c00)"></div></div></div>';
+      h += '</div>';
+    }
+
+    /* ── Join button / status footer — wrapped in its own padded
+       container since it sits after mc-bot/mc-mid (which are flush to
+       the card edges by design) and would otherwise be unpadded. ── */
+    h += '<div style="padding:10px 14px 14px">';
+    var alreadyJoined = s.match_id && window.hasJ && hasJ(s.match_id);
+    if (alreadyJoined) {
+      h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(0,255,156,.12);color:var(--green);border:1px solid rgba(0,255,156,.3)" disabled>✅ Joined</button>';
+    } else if (s.match_id && MT[s.match_id]) {
+      /* ✅ BUG FIX (2026-09-30, live-testing): sponsored/free-tournament card
+         ka "⚡ Join Now" match ke STATUS ko dekhta hi nahi tha — khatam ho
+         chuke (ya shuru ho chuke / cancelled) sponsored match par bhi active
+         Join button dikhta tha. Click par kuch nahi hota tha (cJoin() andar
+         se "Match khatam ho gaya!" toast deke rok deta hai) — yani card user
+         ko galat bata raha tha ki wo join kar sakta hai. Ab CTA wahi status
+         gate use karta hai jo normal match card upar use karta hai. */
+      var _spMatch   = MT[s.match_id];
+      var _spEs      = (window.effSt ? effSt(_spMatch) : String(_spMatch.status || 'upcoming').toLowerCase());
+      var _spStarted = _spMatch.matchTime && ((window.serverNow ? window.serverNow() : Date.now()) >= Number(_spMatch.matchTime));
+      if (_spEs === 'completed' || _spEs === 'resultPublished') {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(0,212,255,.1);color:#00d4ff;border:1px solid rgba(0,212,255,.25)" disabled>✅ Match Completed</button>';
+      } else if (_spEs === 'cancelled') {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(255,46,46,.1);color:#ff2e2e;border:1px solid rgba(255,46,46,.25)" disabled>🚫 Match Cancelled</button>';
+      } else if (_spEs === 'live' && _spStarted) {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(255,107,107,.12);color:#ff6b6b;border:1px solid rgba(255,107,107,.3)" disabled>🔴 Match Started</button>';
+      } else {
+        h += '<button class="f-btn" style="width:100%;font-weight:800;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;border:none" onclick="cJoin(\'' + s.match_id + '\')">⚡ Join Now</button>';
+      }
+    } else if (realMatch && realMatch.status === 'completed') {
+      /* ✅ BUG FIX (2026-09-05): realMatch here can only be non-null via
+         the SP_MATCH fallback above (MT[s.match_id] was just checked
+         false) — meaning we now KNOW this match is completed, not
+         still loading. Showing "Match load ho raha hai..." forever for
+         an actually-completed match was the misleading half of the
+         same bug the badge fix above addresses. */
+      h += '<button class="f-btn" style="width:100%;font-weight:800;background:rgba(0,212,255,.1);color:#00d4ff;border:1px solid rgba(0,212,255,.25)" disabled>✅ Match Completed</button>';
+    } else if (s.match_id) {
+      h += '<div style="font-size:10px;color:var(--txt2)">Match load ho raha hai... <a onclick="navTo(\'matches\')" style="color:#00d4ff;cursor:pointer">Matches tab me dekho</a></div>';
+    } else {
+      h += '<div style="font-size:10px;color:#ff9f1c">⚠ Is tournament ka match link nahi hai — admin se contact karo</div>';
+    }
+    h += '</div></div>';
+  });
+  if (el.innerHTML !== h) el.innerHTML = h;
+  try { if (window._i18nApply) window._i18nApply(); } catch (e) {}   /* D103 z24: async render ke turant baad apply — English flash khatam */
+};
+
+/* ====== RENDER SPECIAL ====== */
+function renderSP() {
+  var l = $('specialList'); if (!l) return;
+  var f = [];
+  for (var id in MT) {
+    var t = MT[id];
+    /* ✅ Bug 5 Fix: check specialType string, not isSpecial boolean */
+    var _st = (t.specialType || t.matchType || '').toString().toLowerCase();
+    var _isSpecial = t.isSpecial === true || (_st && _st !== 'normal' && _st !== '');
+    if (!_isSpecial) continue;
+    /* sunday_special OR weekly maps to spType='weekly', monthly_special maps to 'monthly' */
+    var st = (t.specialType || t.matchType || 'weekly').toString().toLowerCase();
+    var mappedType = (st === 'sunday_special' || st === 'weekly') ? 'weekly' : 'monthly';
+    if (mappedType !== spType) continue; f.push(t);
+  }
+  f.sort(function(a, b) { return (Number(a.matchTime) || 0) - (Number(b.matchTime) || 0); });
+  var label = spType === 'weekly' ? 'Sunday Special' : 'Monthly Special';
+  var _spHTML = f.length ? f.map(mcHTML).join('') : '<div class="empty-state"><i class="fas fa-crown"></i><p>No ' + label + ' matches</p></div>';
+  /* ✅ FIX (live-testing): same content-diff guard as renderHome/renderMM */
+  if (l.innerHTML !== _spHTML) l.innerHTML = _spHTML;
+  updateCD(f);
+}
+function setSpec(type, el) {
+  spType = type;
+  document.querySelectorAll('.sp-tog-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderSP();
+}
+function updateCD(list) {
+  if (cdInt) clearInterval(cdInt);
+  var next = null;
+  list.forEach(function(t) { var mt = Number(t.matchTime); if (mt && mt > (window.serverNow?window.serverNow():Date.now()) && (!next || mt < next)) next = mt; });
+  var _cdw = document.querySelector('.cd-wrap');
+  var _cdn = $('cdEmptyNote');
+  if (!_cdn && _cdw) { _cdn = document.createElement('div'); _cdn.id = 'cdEmptyNote'; _cdn.style.cssText = 'text-align:center;color:#8888aa;font-size:12px;padding:2px 0 14px'; _cdw.parentNode.insertBefore(_cdn, _cdw); }
+  if (!next) { if (_cdw) _cdw.style.display = 'none'; if (_cdn) { _cdn.style.display = 'block'; _cdn.innerHTML = '⏳ Abhi koi special scheduled nahi — next special announce hote hi countdown yahan chalega!'; } return; }
+  if (_cdw) _cdw.style.display = ''; if (_cdn) _cdn.style.display = 'none';
+  function tick() {
+    var diff = next - (window.serverNow?window.serverNow():Date.now());
+    if (diff <= 0) { $('cdD').textContent = '00'; $('cdH').textContent = '00'; $('cdM').textContent = '00'; $('cdS').textContent = '00'; clearInterval(cdInt); return; }
+    $('cdD').textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
+    $('cdH').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+    $('cdM').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    $('cdS').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+  }
+  tick(); cdInt = setInterval(tick, 1000);
+}

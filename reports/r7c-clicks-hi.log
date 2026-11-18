@@ -1,0 +1,14 @@
+clicks qa4/hi/home done, findings=0 dialogs=0
+clicks qa4/hi/rank done, findings=0 dialogs=0
+clicks qa4/hi/matches done, findings=0 dialogs=0
+clicks qa4/hi/wallet done, findings=0 dialogs=0
+clicks qa4/hi/profile done, findings=0 dialogs=0
+clicks qa4/hi/notif done, findings=21 dialogs=0
+node:internal/process/promises:391
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+browserContext.close: Target page, context or browser has been closed
+    at /home/user/ff-user-panel/async /home/user/ff-user-panel/tools/audit/d103-clicks.cjs:118:5
+
+Node.js v20.20.2

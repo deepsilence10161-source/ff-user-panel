@@ -1,1 +1,382 @@
-(function(){'use strict';var _0x4e3344=(function(){var _0x16256b=!![];return function(_0x411426,_0x5c78f4){var _0x302b24=_0x16256b?function(){if(_0x5c78f4){var _0x4f5940=_0x5c78f4['apply'](_0x411426,arguments);return _0x5c78f4=null,_0x4f5940;}}:function(){};return _0x16256b=![],_0x302b24;};}());function _0x1c512a(_0x15a343,_0x46c3d8,_0x15946f){var _0x5f013c=_0x4e3344(this,function(){if(_0x5f013c['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x5f013c['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x5f013c)['search']('(((.+)+)+)+$');});_0x5f013c();var _0x2166ef=0x0,_0x9f028c=0x96,_0x14e3ca=setInterval(function(){_0x2166ef+=_0x9f028c;if(_0x15a343())clearInterval(_0x14e3ca),_0x46c3d8();else _0x2166ef>=(_0x15946f||0x2ee0)&&clearInterval(_0x14e3ca);},_0x9f028c);}var _0x5c2d14=setTimeout(function(){var _0x22f7c0=document['getElementById']('splash'),_0x51747b=document['getElementById']('loginScreen');_0x22f7c0&&_0x22f7c0['style']['display']!=='none'&&(_0x22f7c0['style']['opacity']='0',_0x22f7c0['style']['transition']='opacity\x200.4s',setTimeout(function(){if(_0x22f7c0)_0x22f7c0['style']['display']='none';if(_0x51747b&&_0x51747b['style']['display']==='none')_0x51747b['style']['display']='flex';},0x190));},0x1388);_0x1c512a(function(){return window['_authFired']===!![];},function(){clearTimeout(_0x5c2d14);},0x1770),_0x1c512a(function(){return window['U']&&window['db']&&document['getElementById']('mainContent');},function(){setTimeout(function(){var _0x229fd4=document['getElementById']('mainContent'),_0x3c3e49=document['getElementById']('header'),_0x26704d=document['getElementById']('bottomNav'),_0x242003=document['getElementById']('loginScreen'),_0x41a0b3=document['getElementById']('splash');if(!_0x229fd4)return;var _0x420672=_0x229fd4['style']['display']!=='none'&&_0x229fd4['style']['display']!=='';if(_0x420672)return;if(window['U']&&window['UD']){console['warn']('[v8]\x20mainContent\x20blank\x20detected\x20—\x20force\x20showing\x20UI');if(_0x41a0b3)_0x41a0b3['style']['display']='none';if(_0x242003)_0x242003['style']['display']='none';if(_0x3c3e49)_0x3c3e49['style']['display']='';if(_0x26704d)_0x26704d['style']['display']='';_0x229fd4['style']['display']='';try{if(window['renderHome'])renderHome();}catch(_0x4feaf7){}try{if(window['updateHdr'])updateHdr();}catch(_0x4c0aa5){}}},0xdac);},0x3a98);var _0xe010bc=null;_0x1c512a(function(){return typeof window['navTo']==='function'&&!window['_v8NavWrapped'];},function(){window['_v8NavWrapped']=!![],_0xe010bc=window['navTo'],window['navTo']=function(_0x258150){try{_0xe010bc['call'](this,_0x258150);}catch(_0x3af953){console['error']('[v8]\x20navTo\x20error:',_0x3af953);}_0x258150==='wallet'&&setTimeout(function(){var _0xd130d1=document['getElementById']('walletMain'),_0x256377=document['getElementById']('walletFlow');_0xd130d1&&_0xd130d1['style']['display']==='none'&&(_0xd130d1['style']['display']='');_0x256377&&_0x256377['style']['display']!=='none'&&_0x256377['style']['display']!==''&&(_0x256377['style']['display']='none');try{if(window['renderWallet'])renderWallet();}catch(_0x53ec24){}},0xc8);};});function _0x19d626(_0x6c2389,_0x2c6b52){_0x1c512a(function(){return typeof window[_0x6c2389]==='function'&&!window[_0x6c2389]['_v8Safe'];},function(){var _0x44db8d=window[_0x6c2389],_0x368579=function(){try{return _0x44db8d['apply'](this,arguments);}catch(_0x463a22){console['error']('[v8]\x20'+_0x6c2389+'\x20error:',_0x463a22);var _0x1be53d=_0x2c6b52&&document['getElementById'](_0x2c6b52);_0x1be53d&&!_0x1be53d['_v8ErrShown']&&(_0x1be53d['_v8ErrShown']=!![],_0x1be53d['innerHTML']='<div\x20style=\x22text-align:center;padding:40px\x2020px\x22>'+'<div\x20style=\x22font-size:36px;margin-bottom:10px\x22>⚠️</div>'+'<div\x20style=\x22font-size:14px;font-weight:700;color:#ff6b6b;margin-bottom:8px\x22>Screen\x20load\x20error</div>'+'<div\x20style=\x22font-size:12px;color:#aaa;margin-bottom:16px\x22>Refresh\x20karo</div>'+'<button\x20onclick=\x22location.reload()\x22\x20style=\x22padding:10px\x2022px;border-radius:10px;'+'background:rgba(0,212,255,.15);border:1px\x20solid\x20rgba(0,212,255,.3);color:#00d4ff;'+'font-weight:700;cursor:pointer\x22>🔄\x20Refresh</button></div>');}};_0x368579['_v8Safe']=!![],window[_0x6c2389]=_0x368579;});}_0x19d626('renderHome','homeList'),_0x19d626('renderSP','specialList'),_0x19d626('renderMM','mmList'),_0x19d626('renderWallet','walletHist'),_0x19d626('renderProfile','profileContent'),_0x19d626('renderNotifs','notifList'),_0x19d626('renderRank','rankContent'),_0x1c512a(function(){return typeof window['renderRank']==='function'&&!window['_v8RankFixed'];},function(){window['_v8RankFixed']=!![];var _0x432301=window['renderRank'];window['renderRank']=function(_0x23d0e0){var _0x355dcc=['kills','wins','rankpoints'],_0xc9f910=_0x23d0e0&&_0x355dcc['indexOf'](_0x23d0e0)!==-0x1?_0x23d0e0:window['_rankTab']||'kills';window['_rankTab']=_0xc9f910;try{_0x432301['call'](this,_0xc9f910);}catch(_0x43a667){console['error']('[v8]\x20renderRank\x20error:',_0x43a667);var _0x5eacb7=document['getElementById']('rankContent');if(_0x5eacb7)_0x5eacb7['innerHTML']='<div\x20style=\x22text-align:center;padding:40px\x22><div\x20style=\x22font-size:48px;opacity:.2\x22>🏆</div><p\x20style=\x22color:#666;margin-top:12px\x22>Leaderboard\x20load\x20ho\x20raha\x20hai...</p><button\x20onclick=\x22renderRank()\x22\x20style=\x22margin-top:12px;padding:10px\x2020px;border-radius:10px;background:rgba(0,255,156,.12);border:1px\x20solid\x20rgba(0,255,156,.25);color:#00ff9c;font-weight:700;cursor:pointer\x22>↺\x20Retry</button></div>';}};});var _0x125537=['renderHome','renderMM','renderSP','renderWallet','renderProfile','renderRank','navTo','openModal','closeModal','hasJ','effSt','cJoin','doJoin','boot','updateHdr','toast'];window['addEventListener']('load',function(){setTimeout(function(){_0x125537['forEach'](function(_0x46bbc4){typeof window[_0x46bbc4]!=='function'&&console['error']('[v8]\x20CRITICAL\x20MISSING:\x20'+_0x46bbc4+'()\x20—\x20app\x20may\x20malfunction');}),console['log']('[v8]\x20✅\x20Critical\x20function\x20check\x20complete');if(window['_v7RankInstalled']){}},0x7d0);}),_0x1c512a(function(){return window['auth']&&typeof window['auth']['getRedirectResult']==='function'&&!window['_v8RedirectChecked'];},function(){window['_v8RedirectChecked']=!![],auth['getRedirectResult']()['then'](function(_0x3afd80){})['catch'](function(_0x46f9f9){_0x46f9f9&&_0x46f9f9['code']!=='auth/no-current-user'&&console['warn']('[v8]\x20Redirect\x20result\x20error:',_0x46f9f9['code']);});}),_0x1c512a(function(){return typeof window['openModal']==='function'&&!window['_v8ModalFixed'];},function(){window['_v8ModalFixed']=!![];var _0x51c723=window['openModal'];window['openModal']=function(_0x1da249,_0x49d690){try{_0x51c723['call'](this,_0x1da249,_0x49d690);var _0x2e6a47=document['getElementById']('modalB');if(_0x2e6a47)_0x2e6a47['scrollTop']=0x0;}catch(_0x56bd20){console['error']('[v8]\x20openModal\x20error:',_0x56bd20);}},window['showModal']=window['openModal'];}),_0x1c512a(function(){return typeof window['boot']==='function'&&!window['_v8BootFixed'];},function(){window['_v8BootFixed']=!![];var _0x1b1798=window['boot'];window['boot']=function(){if(window['_bootCalled']){console['warn']('[v8]\x20boot()\x20called\x20again\x20—\x20ignoring\x20to\x20prevent\x20duplicate\x20listeners');return;}return _0x1b1798['apply'](this,arguments);};}),_0x1c512a(function(){return document['getElementById']('tickerTxt')&&!window['_v8TickerFixed'];},function(){window['_v8TickerFixed']=!![],setInterval(function(){var _0xf0055=document['getElementById']('tickerTxt');if(!_0xf0055)return;var _0x1309dc=window['getComputedStyle'](_0xf0055);(!_0x1309dc['animationDuration']||_0x1309dc['animationDuration']==='0s')&&(_0xf0055['style']['animation']='none',void _0xf0055['offsetHeight'],_0xf0055['style']['animation']='');},0x2710);}),_0x1c512a(function(){return typeof window['showCoinShop']==='function'&&!window['_v8CoinShopFixed'];},function(){window['_v8CoinShopFixed']=!![];var _0x30c11f=window['showCoinShop'];window['showCoinShop']=function(){try{_0x30c11f['call'](this);var _0x50104d=document['getElementById']('coinShopModal');_0x50104d&&_0x50104d['style']['display']!=='flex'&&(_0x50104d['style']['display']='flex');}catch(_0xf28171){}};}),_0x1c512a(function(){return window['MT']&&window['U']&&window['UD']&&!window['_v8ScreenGuardSet'];},function(){window['_v8ScreenGuardSet']=!![],setInterval(function(){var _0x27b110=window['curScr'];if(!_0x27b110||!window['U']||!window['UD'])return;var _0x28c762={'home':{'el':'homeList','fn':'renderHome'},'matches':{'el':'mmList','fn':'renderMM'},'special':{'el':'specialList','fn':'renderSP'},'wallet':{'el':'walletHist','fn':'renderWallet'},'profile':{'el':'profileContent','fn':'renderProfile'},'rank':{'el':'rankContent','fn':'renderRank'}},_0x1176e3=_0x28c762[_0x27b110];if(!_0x1176e3)return;var _0x28ce6c=document['getElementById'](_0x1176e3['el']);if(!_0x28ce6c)return;var _0x293dac=_0x28ce6c['children']['length']===0x0&&_0x28ce6c['textContent']['trim']()==='';if(_0x293dac&&typeof window[_0x1176e3['fn']]==='function'){console['log']('[v8]\x20Empty\x20screen\x20detected\x20('+_0x27b110+')\x20—\x20re-rendering');try{window[_0x1176e3['fn']]();}catch(_0x1bd820){}}},0xfa0);}),window['addEventListener']('error',function(_0x3bcbb3){var _0x471951=_0x3bcbb3&&_0x3bcbb3['message']||'Unknown\x20error',_0x5dcc86=_0x3bcbb3&&_0x3bcbb3['filename']?_0x3bcbb3['filename']['split']('/')['pop']():'unknown';console['warn']('[v8]\x20Caught\x20global\x20error\x20from\x20'+_0x5dcc86+':\x20'+_0x471951);if(_0x5dcc86&&_0x5dcc86['indexOf']('features/')!==-0x1)return _0x3bcbb3['preventDefault']&&_0x3bcbb3['preventDefault'](),!![];}),window['addEventListener']('unhandledrejection',function(_0x2665a6){var _0x5098a7=_0x2665a6&&_0x2665a6['reason'],_0x4dfe67=_0x5098a7&&_0x5098a7['message']||String(_0x5098a7)||'Promise\x20rejected';if(_0x4dfe67['indexOf']('permission')!==-0x1||_0x4dfe67['indexOf']('PERMISSION_DENIED')!==-0x1)return;console['warn']('[v8]\x20Unhandled\x20promise\x20rejection:',_0x4dfe67);}),console['log']('[Mini\x20eSports]\x20✅\x20fixes-v8.js\x20loaded\x20—\x20all\x20guards\x20active');}());
+/* ═══════════════════════════════════════════════════════════════════
+   MINI ESPORTS — fixes-v8.js
+   
+   ROOT CAUSES FIXED:
+   1. Blank screen — multiple guaranteed fallbacks
+   2. Script load failures — graceful error recovery
+   3. Feature file errors — isolated, app continues
+   4. Race conditions — proper init sequencing
+   5. renderRank city tab crash — hardened
+   6. Wallet blank — display:none guard
+   7. Splash stuck — hard timeout + fallback
+   ═══════════════════════════════════════════════════════════════════ */
+
+(function () {
+  'use strict';
+
+  /* ─── waitFor: fires callback ONCE when condition met ─── */
+  function waitFor(fn, cb, maxMs) {
+    var elapsed = 0, interval = 150;
+    var iv = setInterval(function () {
+      elapsed += interval;
+      if (fn()) { clearInterval(iv); cb(); }
+      else if (elapsed >= (maxMs || 12000)) { clearInterval(iv); }
+    }, interval);
+  }
+
+  /* ──────────────────────────────────────────────────────
+     1. SPLASH HARD GUARD
+     Agar onAuthStateChanged 5 sec mein na aaye — splash
+     hatao, login screen dikhao. App KABHI stuck nahi rehega.
+  ─────────────────────────────────────────────────────── */
+  var _splashKillTimer = setTimeout(function () {
+    var sp = document.getElementById('splash');
+    var ls = document.getElementById('loginScreen');
+    if (sp && sp.style.display !== 'none') {
+      sp.style.opacity = '0';
+      sp.style.transition = 'opacity 0.4s';
+      setTimeout(function () {
+        if (sp) sp.style.display = 'none';
+        if (ls && ls.style.display === 'none') ls.style.display = 'flex';
+      }, 400);
+    }
+  }, 5000);
+
+  /* Cancel if auth fires normally */
+  waitFor(
+    function () { return window._authFired === true; },
+    function () { clearTimeout(_splashKillTimer); },
+    6000
+  );
+
+  /* ──────────────────────────────────────────────────────
+     2. MAIN CONTENT BLANK SCREEN GUARD
+     Agar user login ho lekin mainContent display:none reh
+     jaaye (race condition) — force show karo.
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return window.U && window.db && document.getElementById('mainContent'); },
+    function () {
+      setTimeout(function () {
+        var mc = document.getElementById('mainContent');
+        var hdr = document.getElementById('header');
+        var nav = document.getElementById('bottomNav');
+        var ls  = document.getElementById('loginScreen');
+        var sp  = document.getElementById('splash');
+
+        if (!mc) return;
+
+        /* Already visible — kuch karne ki zarurat nahi */
+        var isVisible = mc.style.display !== 'none' && mc.style.display !== '';
+        if (isVisible) return;
+
+        /* Sirf tab force karo jab user actually logged in ho */
+        if (window.U && window.UD) {
+          console.warn('[v8] mainContent blank detected — force showing UI');
+          if (sp)  sp.style.display  = 'none';
+          if (ls)  ls.style.display  = 'none';
+          if (hdr) hdr.style.display = '';
+          if (nav) nav.style.display = '';
+          mc.style.display = '';
+
+          /* Re-trigger home render */
+          try { if (window.renderHome) renderHome(); } catch(e) {}
+          try { if (window.updateHdr)  updateHdr(); }  catch(e) {}
+        }
+      }, 3500); /* 3.5 sec — enough time for normal boot */
+    },
+    15000
+  );
+
+  /* ──────────────────────────────────────────────────────
+     3. WALLET SCREEN BLANK GUARD
+     walletMain kabhi display:none na rahe jab screen active ho
+  ─────────────────────────────────────────────────────── */
+  var _origNavTo = null;
+  waitFor(function () { return typeof window.navTo === 'function' && !window._v8NavWrapped; }, function () {
+    window._v8NavWrapped = true;
+    _origNavTo = window.navTo;
+    window.navTo = function (scr) {
+      try { _origNavTo.call(this, scr); } catch (e) {
+        console.error('[v8] navTo error:', e);
+      }
+      /* After navigation, ensure wallet screen is not blank */
+      if (scr === 'wallet') {
+        setTimeout(function () {
+          var wm = document.getElementById('walletMain');
+          var wf = document.getElementById('walletFlow');
+          if (wm && (wm.style.display === 'none')) {
+            wm.style.display = '';
+          }
+          if (wf && wf.style.display !== 'none' && wf.style.display !== '') {
+            /* walletFlow accidentally open — reset */
+            wf.style.display = 'none';
+          }
+          try { if (window.renderWallet) renderWallet(); } catch(e) {}
+        }, 200);
+      }
+    };
+  });
+
+  /* ──────────────────────────────────────────────────────
+     4. RENDERHOME / RENDERSP / RENDERMM SAFE WRAPPERS
+     Koi bhi crash hone pe empty-state dikhao, app crash na kare
+  ─────────────────────────────────────────────────────── */
+  function safeWrap(fnName, fallbackElId) {
+    waitFor(function () { return typeof window[fnName] === 'function' && !window[fnName]._v8Safe; }, function () {
+      var orig = window[fnName];
+      var wrapped = function () {
+        try { return orig.apply(this, arguments); }
+        catch (e) {
+          console.error('[v8] ' + fnName + ' error:', e);
+          var el = fallbackElId && document.getElementById(fallbackElId);
+          if (el && !el._v8ErrShown) {
+            el._v8ErrShown = true;
+            el.innerHTML = '<div style="text-align:center;padding:40px 20px">' +
+              '<div style="font-size:36px;margin-bottom:10px">⚠️</div>' +
+              '<div style="font-size:14px;font-weight:700;color:#ff6b6b;margin-bottom:8px">Screen load error</div>' +
+              '<div style="font-size:12px;color:#aaa;margin-bottom:16px">Refresh karo</div>' +
+              '<button onclick="location.reload()" style="padding:10px 22px;border-radius:10px;' +
+              'background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.3);color:#00d4ff;' +
+              'font-weight:700;cursor:pointer">🔄 Refresh</button></div>';
+          }
+        }
+      };
+      wrapped._v8Safe = true;
+      window[fnName] = wrapped;
+    });
+  }
+  safeWrap('renderHome',    'homeList');
+  safeWrap('renderSP',      'specialList');
+  safeWrap('renderMM',      'mmList');
+  safeWrap('renderWallet',  'walletHist');
+  safeWrap('renderProfile', 'profileContent');
+  safeWrap('renderNotifs',  'notifList');
+  safeWrap('renderRank',    'rankContent');
+
+  /* ──────────────────────────────────────────────────────
+     5. RENDERRANK — CITY TAB & INVALID TAB CRASH FIX
+     'city' tab fire hone pe crash hota tha — ignore karo
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return typeof window.renderRank === 'function' && !window._v8RankFixed; },
+    function () {
+      window._v8RankFixed = true;
+      var origRank = window.renderRank;
+      window.renderRank = function (tab) {
+        /* Valid tabs only */
+        var validTabs = ['kills', 'wins', 'rankpoints'];
+        var safeTab = (tab && validTabs.indexOf(tab) !== -1) ? tab : (window._rankTab || 'kills');
+        window._rankTab = safeTab;
+        try { origRank.call(this, safeTab); } catch (e) {
+          console.error('[v8] renderRank error:', e);
+          var rc = document.getElementById('rankContent');
+          if (rc) rc.innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:48px;opacity:.2">🏆</div><p style="color:#666;margin-top:12px">Leaderboard load ho raha hai...</p><button onclick="renderRank()" style="margin-top:12px;padding:10px 20px;border-radius:10px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:700;cursor:pointer">↺ Retry</button></div>';
+        }
+      };
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     6. FEATURE FILE ERROR ISOLATION
+     Har feature file window.* expose karti hai.
+     Koi crash kare to sirf wo feature disabled ho, app nahi.
+     This is enforced by checking if critical functions still
+     exist after all scripts load.
+  ─────────────────────────────────────────────────────── */
+  var CRITICAL_FNS = [
+    'renderHome', 'renderMM', 'renderSP', 'renderWallet',
+    'renderProfile', 'renderRank', 'navTo', 'openModal',
+    'closeModal', 'hasJ', 'effSt', 'cJoin', 'doJoin',
+    'boot', 'updateHdr', 'toast'
+  ];
+
+  /* After all scripts load, verify critical functions exist */
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      CRITICAL_FNS.forEach(function (fn) {
+        if (typeof window[fn] !== 'function') {
+          console.error('[v8] CRITICAL MISSING: ' + fn + '() — app may malfunction');
+        }
+      });
+      console.log('[v8] ✅ Critical function check complete');
+
+      /* f29 referral integration — f19 disabled (v7 already handles this) */
+      if (window._v7RankInstalled) {
+      }
+    }, 2000);
+  });
+
+  /* ──────────────────────────────────────────────────────
+     7. AUTH REDIRECT RESULT HANDLER
+     signInWithRedirect ka result handle karo (popup fail hone pe)
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return window.auth && typeof window.auth.getRedirectResult === 'function' && !window._v8RedirectChecked; },
+    function () {
+      window._v8RedirectChecked = true;
+      auth.getRedirectResult().then(function (result) {
+        /* Result handle hoga onAuthStateChanged mein — kuch karne ki zarurat nahi */
+      }).catch(function (err) {
+        if (err && err.code !== 'auth/no-current-user') {
+          console.warn('[v8] Redirect result error:', err.code);
+        }
+      });
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     8. MODAL OVERLAY ACCESSIBILITY FIX
+     modal-overlay pe 'show' class missing rehti thi kabhi kabhi
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return typeof window.openModal === 'function' && !window._v8ModalFixed; },
+    function () {
+      window._v8ModalFixed = true;
+      var origOpen = window.openModal;
+      window.openModal = function (title, html) {
+        try {
+          origOpen.call(this, title, html);
+          /* Ensure overlay is scrolled to top */
+          var mb = document.getElementById('modalB');
+          if (mb) mb.scrollTop = 0;
+        } catch(e) {
+          console.error('[v8] openModal error:', e);
+        }
+      };
+      window.showModal = window.openModal;
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     9. DOUBLE-BOOT PREVENTION
+     Firebase listeners baar baar attach hone se memory leak
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return typeof window.boot === 'function' && !window._v8BootFixed; },
+    function () {
+      window._v8BootFixed = true;
+      var origBoot = window.boot;
+      window.boot = function () {
+        if (window._bootCalled) {
+          console.warn('[v8] boot() called again — ignoring to prevent duplicate listeners');
+          return;
+        }
+        /* Do NOT set window._bootCalled = true before origBoot runs!
+           core/listeners.js boot() checks `if (window._bootCalled) return;` at entry
+           and sets `window._bootCalled = true` itself once `U` is present. */
+        return origBoot.apply(this, arguments);
+      };
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     10. TICKER ANIMATION FIX
+     Ticker scroll animation khatam ho jaati thi on some browsers
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return document.getElementById('tickerTxt') && !window._v8TickerFixed; },
+    function () {
+      window._v8TickerFixed = true;
+      /* Re-apply ticker animation if it stops */
+      setInterval(function () {
+        var tt = document.getElementById('tickerTxt');
+        if (!tt) return;
+        var style = window.getComputedStyle(tt);
+        /* If animation has stopped (duration 0 or none), restart it */
+        if (!style.animationDuration || style.animationDuration === '0s') {
+          tt.style.animation = 'none';
+          void tt.offsetHeight; /* force reflow */
+          tt.style.animation = '';
+        }
+      }, 10000);
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     11. COIN SHOP MODAL DISPLAY FIX
+     coinShopModal kabhi display:flex nahi ho pata tha
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return typeof window.showCoinShop === 'function' && !window._v8CoinShopFixed; },
+    function () {
+      window._v8CoinShopFixed = true;
+      var orig = window.showCoinShop;
+      window.showCoinShop = function () {
+        try {
+          orig.call(this);
+          var modal = document.getElementById('coinShopModal');
+          if (modal && modal.style.display !== 'flex') {
+            modal.style.display = 'flex';
+          }
+        } catch(e) {}
+      };
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     12. RENDER ON SCREEN SWITCH — ensure renders happen
+     Screens switch hone ke baad agar data already loaded
+     ho but render nahi hua to force karo
+  ─────────────────────────────────────────────────────── */
+  waitFor(
+    function () { return window.MT && window.U && window.UD && !window._v8ScreenGuardSet; },
+    function () {
+      window._v8ScreenGuardSet = true;
+
+      /* Check every 4s: agar screen active hai but content empty hai to re-render */
+      setInterval(function () {
+        var cur = window.curScr;
+        if (!cur || !window.U || !window.UD) return;
+
+        var checks = {
+          home:    { el: 'homeList',      fn: 'renderHome' },
+          matches: { el: 'mmList',        fn: 'renderMM' },
+          special: { el: 'specialList',   fn: 'renderSP' },
+          wallet:  { el: 'walletHist',    fn: 'renderWallet' },
+          profile: { el: 'profileContent', fn: 'renderProfile' },
+          rank:    { el: 'rankContent',   fn: 'renderRank' }
+        };
+
+        var c = checks[cur];
+        if (!c) return;
+        var el = document.getElementById(c.el);
+        if (!el) return;
+
+        /* Only re-render if content is truly empty (not loading) */
+        var isEmpty = el.children.length === 0 && el.textContent.trim() === '';
+        if (isEmpty && typeof window[c.fn] === 'function') {
+          console.log('[v8] Empty screen detected (' + cur + ') — re-rendering');
+          try { window[c.fn](); } catch(e) {}
+        }
+      }, 4000);
+    }
+  );
+
+  /* ──────────────────────────────────────────────────────
+     13. SETINTERVAL / SETTIMEOUT ERROR SHIELD
+     Global uncaught errors se app crash na ho
+  ─────────────────────────────────────────────────────── */
+  window.addEventListener('error', function (e) {
+    /* Log silently — don't rethrow */
+    var msg = (e && e.message) || 'Unknown error';
+    var src = (e && e.filename) ? e.filename.split('/').pop() : 'unknown';
+    console.warn('[v8] Caught global error from ' + src + ': ' + msg);
+
+    /* If it's from a feature file, don't let it affect core */
+    if (src && src.indexOf('features/') !== -1) {
+      e.preventDefault && e.preventDefault();
+      return true;
+    }
+  });
+
+  window.addEventListener('unhandledrejection', function (e) {
+    var reason = e && e.reason;
+    var msg = (reason && reason.message) || String(reason) || 'Promise rejected';
+    /* Firebase permission errors — normal when user not logged in */
+    if (msg.indexOf('permission') !== -1 || msg.indexOf('PERMISSION_DENIED') !== -1) return;
+    console.warn('[v8] Unhandled promise rejection:', msg);
+  });
+
+  console.log('[Mini eSports] ✅ fixes-v8.js loaded — all guards active');
+})();

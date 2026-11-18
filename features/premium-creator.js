@@ -1,1 +1,763 @@
-(function(){'use strict';var _0x1732c8=(function(){var _0x4bea47=!![];return function(_0x26585e,_0x205b3d){var _0x1227a=_0x4bea47?function(){if(_0x205b3d){var _0x2e5815=_0x205b3d['apply'](_0x26585e,arguments);return _0x205b3d=null,_0x2e5815;}}:function(){};return _0x4bea47=![],_0x1227a;};}()),_0x50c186=_0x1732c8(this,function(){if(_0x50c186['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x50c186['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x50c186)['search']('(((.+)+)+)+$');});_0x50c186();function _0x28baf4(){return window['db'];}function _0x1bcb30(){return window['U']&&window['U']['uid'];}function _0xae4dd0(){return window['UD']||{};}window['checkStreakMilestones']=function(){if(!_0x1bcb30()||!window['_supa'])return;var _0x1abd3c=Number(_0xae4dd0()['loginStreak']||0x0),_0x28e6c5=_0xae4dd0()['streakMilestonesClaimed']||{},_0x3ccc33=window['CFG']&&window['CFG']['streakMilestones']||{},_0x17c6c2=[0x3,0x7,0xe,0x1e,0x3c,0x64]['map'](function(_0x2f9f65){var _0x2f20a1={0x3:{'coins':0x14,'badge':null},0x7:{'coins':0x64,'badge':'🔥\x20Unstoppable'},0xe:{'coins':0xc8,'badge':null},0x1e:{'coins':0x1f4,'badge':'⚡\x20Dedicated'},0x3c:{'coins':0x3e8,'badge':'👑\x20Legend'},0x64:{'coins':0x7d0,'badge':'🌟\x20Immortal'}},_0x1c297a=_0x3ccc33[_0x2f9f65]||_0x2f20a1[_0x2f9f65]||{'coins':0x32,'badge':null};return{'day':_0x2f9f65,'coins':Number(_0x1c297a['coins']||0x32),'badge':_0x1c297a['badge']||null,'label':_0x2f9f65+'-Day\x20Streak!'};});_0x17c6c2['forEach'](function(_0x35f8b6){_0x1abd3c>=_0x35f8b6['day']&&!_0x28e6c5['day_'+_0x35f8b6['day']]&&window['_supa']['rpc']('claim_streak_milestone',{'p_day':_0x35f8b6['day'],'p_coins':_0x35f8b6['coins'],'p_badge':_0x35f8b6['badge']})['then'](function(_0x5607b9){var _0xe94ca4=_0x5607b9&&_0x5607b9['data'];if(_0x5607b9['error']||!_0xe94ca4||!_0xe94ca4['ok'])return;if(!window['UD'])window['UD']={};if(!window['UD']['streakMilestonesClaimed'])window['UD']['streakMilestonesClaimed']={};window['UD']['streakMilestonesClaimed']['day_'+_0x35f8b6['day']]=!![];if(_0xe94ca4['already_claimed'])return;if(typeof _0xe94ca4['new_balance']==='number')window['UD']['coins']=_0xe94ca4['new_balance'];if(window['updateHdr'])window['updateHdr']();setTimeout(function(){_0x46d8a3(_0x35f8b6);},0x3e8);},function(){});});};function _0x46d8a3(_0x4f2273){var _0x589f27='<div\x20style=\x22text-align:center;padding:10px\x200\x22>';_0x589f27+='<div\x20style=\x22font-size:56px;margin-bottom:12px\x22>🔥</div>',_0x589f27+='<div\x20style=\x22font-size:20px;font-weight:900;color:#ffd700;margin-bottom:6px\x22>'+_0x4f2273['label']+'</div>',_0x589f27+='<div\x20style=\x22font-size:14px;color:var(--txt2);margin-bottom:16px\x22>Login\x20streak\x20'+_0x4f2273['day']+'\x20din!</div>',_0x589f27+='<div\x20style=\x22background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.25);border-radius:14px;padding:14px;margin-bottom:14px\x22>',_0x589f27+='<div\x20style=\x22font-size:28px;font-weight:900;color:#ffd700\x22>+'+_0x4f2273['coins']+'\x20🪙</div>',_0x589f27+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:4px\x22>Streak\x20Bonus\x20Coins</div>';_0x4f2273['badge']&&(_0x589f27+='<div\x20style=\x22margin-top:8px;font-size:13px;font-weight:700;color:#b964ff\x22>'+_0x4f2273['badge']+'\x20badge\x20mila!</div>');_0x589f27+='</div>',_0x589f27+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer\x22>🎉\x20Awesome!</button>',_0x589f27+='</div>';if(window['openModal'])openModal('🔥\x20Streak\x20Milestone!',_0x589f27);if(window['updateHdr'])window['updateHdr']();}var _0x43d9d6=![],_0x557fc4=null;window['_wrapCheckIn']=function(){if(_0x43d9d6)return;_0x43d9d6=!![],_0x557fc4=window['doCheckIn'],window['doCheckIn']=function(){if(_0x557fc4)_0x557fc4['apply'](this,arguments);setTimeout(window['checkStreakMilestones'],0x320);};};function _0x3db3af(){var _0x233cc9=_0xae4dd0()['premium'];if(!_0x233cc9||!_0x233cc9['tier']||_0x233cc9['tier']<=0x0)return 0x0;if(_0x233cc9['expiresAt']&&_0x233cc9['expiresAt']<Date['now']())return 0x0;return Number(_0x233cc9['tier']||_0x233cc9['premiumTier']||0x1);}window['getPremiumTier']=_0x3db3af,window['isPremium']=function(){return _0x3db3af()>0x0;},window['checkPremiumMonthlyBonus']=function(){if(!_0x1bcb30()||!window['_supa'])return;var _0x3be1e7=_0x3db3af();if(!_0x3be1e7)return;var _0x43f815=window['CFG']&&window['CFG']['premium']&&window['CFG']['premium']['bonuses'],_0x47336b=_0x43f815||{0x1:0x32,0x2:0x96,0x3:0x190},_0x273492=_0x47336b[_0x3be1e7]||0x0;if(!_0x273492)return;window['_supa']['rpc']('claim_premium_monthly_bonus',{'p_tier':_0x3be1e7,'p_bonus_coins':_0x273492})['then'](function(_0x397c2c){var _0xb9b815=_0x397c2c&&_0x397c2c['data'];if(!_0xb9b815||!_0xb9b815['ok'])return;window['UD']&&(window['UD']['coins']=(window['UD']['coins']||0x0)+_0x273492);var _0x1ca186=_0x3be1e7===0x3?'Diamond':_0x3be1e7===0x2?'Gold':'Silver';toast('💎\x20'+_0x1ca186+'\x20Monthly\x20Bonus:\x20+'+_0x273492+'🪙\x20Coins!','ok');if(window['updateHdr'])window['updateHdr']();},function(){});},window['renderPremiumCard']=function(){var _0x5bdc5f=_0x3db3af(),_0x4386ad=window['CFG']&&window['CFG']['premium']&&window['CFG']['premium']['bonuses'],_0x1d1775=_0x4386ad||{0x1:0x32,0x2:0x96,0x3:0x190},_0x4394dc={0x1:'Silver',0x2:'Gold',0x3:'Diamond'},_0x17cf2e={0x1:'#ffd700',0x2:'#00d4ff',0x3:'#b964ff'},_0x359168=window['CFG']&&window['CFG']['premium']&&window['CFG']['premium']['prices'],_0x3f918c=_0x359168?{0x1:'₹'+_0x359168[0x1],0x2:'₹'+_0x359168[0x2],0x3:'₹'+_0x359168[0x3]}:{0x1:'₹49',0x2:'₹99',0x3:'₹199'};if(!_0x5bdc5f){var _0x16a31c='<div\x20style=\x22background:linear-gradient(135deg,rgba(185,100,255,.08),rgba(255,215,0,.05));border:1.5px\x20solid\x20rgba(185,100,255,.2);border-radius:16px;padding:16px;margin-bottom:12px\x22>';return _0x16a31c+='<div\x20style=\x22font-size:13px;font-weight:800;color:#b964ff;margin-bottom:8px\x22>👑\x20Premium\x20Upgrade\x20Karo</div>',_0x16a31c+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:8px;margin-bottom:12px\x22>',[0x1,0x2,0x3]['forEach'](function(_0xb7ecdc){_0x16a31c+='<div\x20style=\x22background:rgba(0,0,0,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer;border:1px\x20solid\x20rgba(255,255,255,.08)\x22\x20onclick=\x22window.showPremiumUpgrade&&showPremiumUpgrade('+_0xb7ecdc+')\x22>',_0x16a31c+='<div\x20style=\x22font-size:13px;font-weight:900;color:'+_0x17cf2e[_0xb7ecdc]+'\x22>'+_0x4394dc[_0xb7ecdc]+'</div>',_0x16a31c+='<div\x20style=\x22font-size:16px;font-weight:900;color:#fff;margin:4px\x200\x22>'+_0x3f918c[_0xb7ecdc]+'</div>',_0x16a31c+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>+'+_0x1d1775[_0xb7ecdc]+'🪙/mo</div>',_0x16a31c+='</div>';}),_0x16a31c+='</div>',_0x16a31c+='<div\x20style=\x22font-size:11px;color:var(--txt2);line-height:1.7\x22>✅\x20Ad-free\x20results\x20&nbsp;✅\x20Monthly\x20bonus\x20coins<br>✅\x20Premium\x20badge\x20&nbsp;✅\x20Photo/Banner\x20change</div>',_0x16a31c+='</div>',_0x16a31c;}var _0x517b47=_0xae4dd0()['premium']||{},_0x59141d=_0x517b47['expiresAt']?new Date(_0x517b47['expiresAt'])['toLocaleDateString']('en-IN'):'Unknown',_0x4b1837=_0x17cf2e[_0x5bdc5f]||'#ffd700',_0x16a31c='<div\x20style=\x22background:linear-gradient(135deg,rgba('+(_0x5bdc5f===0x3?'185,100,255':_0x5bdc5f===0x2?'0,212,255':'255,215,0')+',.08),transparent);border:1.5px\x20solid\x20rgba('+(_0x5bdc5f===0x3?'185,100,255':_0x5bdc5f===0x2?'0,212,255':'255,215,0')+',.25);border-radius:16px;padding:16px;margin-bottom:12px\x22>';return _0x16a31c+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between;margin-bottom:10px\x22>',_0x16a31c+='<div\x20style=\x22font-size:14px;font-weight:900;color:'+_0x4b1837+'\x22>👑\x20'+_0x4394dc[_0x5bdc5f]+'\x20Premium</div>',_0x16a31c+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Expires:\x20'+_0x59141d+'</div>',_0x16a31c+='</div>',_0x16a31c+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px\x22>',[['🚫\x20Ads','Result\x20se\x20pehle\x20ad\x20nahi'],['🖼️\x20Photo/Banner','Profile\x20photo\x20+\x20banner\x20change'],['+'+_0x1d1775[_0x5bdc5f]+'🪙','Monthly\x20bonus'],['💎\x20Badge',_0x4394dc[_0x5bdc5f]+'\x20profile\x20badge']]['forEach'](function(_0x5e9159){_0x16a31c+='<div\x20style=\x22background:rgba(0,0,0,.2);border-radius:10px;padding:8px;font-size:11px\x22><div\x20style=\x22font-weight:800;color:'+_0x4b1837+'\x22>'+_0x5e9159[0x0]+'</div><div\x20style=\x22color:var(--txt2);margin-top:2px\x22>'+_0x5e9159[0x1]+'</div></div>';}),_0x16a31c+='</div>',_0x16a31c+='<button\x20onclick=\x22if(window.showPremiumUpgrade)showPremiumUpgrade();\x22\x20style=\x22width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1px\x20solid\x20'+_0x4b1837+'55;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,140,0,.06));color:'+_0x4b1837+';font-size:13px;font-weight:900;cursor:pointer\x22>👑\x20Plans\x20/\x20Renew\x20Dekho</button>',_0x16a31c+='</div></div>',_0x16a31c;},window['showCreatorDashboard']=function(){if(!_0x1bcb30()||!window['_supa']){toast('Login\x20karo\x20pehle','err');return;}window['_supa']['from']('users')['select']('is_creator,creator_code,creator_rating,creator_rating_count,creator_strikes,creator_suspended_until,creator_suspended_permanently')['eq']('id',_0x1bcb30())['single']()['then'](function(_0x385bcb){var _0x3df696=_0x385bcb['data']||{};if(!_0x3df696['is_creator']){_0x3e882a();return;}Promise['all']([window['_supa']['from']('creator_stats')['select']('*')['eq']('user_id',_0x1bcb30())['maybeSingle'](),window['_supa']['from']('creator_codes')['select']('*')['eq']('user_id',_0x1bcb30())['maybeSingle']()])['then'](function(_0x1cf209){var _0xd2f9a8=_0x1cf209[0x0]&&_0x1cf209[0x0]['data']||{'total_matches':0x0,'total_earnings':0x0},_0x256bfa=_0x1cf209[0x1]&&_0x1cf209[0x1]['data']||{'code':_0x3df696['creator_code']||''};_0x410499(_0x256bfa,_0xd2f9a8,_0x3df696);});});};function _0x3e882a(){if(!window['_supa']){toast('Service\x20unavailable','err');return;}window['_supa']['from']('app_settings')['select']('value')['eq']('key','creator_system')['maybeSingle']()['then'](function(_0x3924a9){var _0x4ac677=_0x3924a9&&_0x3924a9['data']&&_0x3924a9['data']['value']||{};window['__creatorFreeMode']=Number(_0x4ac677['creatorFreeMode']||0x0)===0x1,_0x593362();})['catch'](function(){window['__creatorFreeMode']=![],_0x593362();});}function _0x593362(){var _0x550b24=window['__creatorFreeMode']||(window['isPremiumActive']?isPremiumActive(0x2):![]);if(!_0x550b24){var _0x4d4b4c='<div\x20style=\x22text-align:center;padding:8px\x200\x22>';_0x4d4b4c+='<div\x20style=\x22font-size:48px;margin-bottom:12px\x22>👑</div>',_0x4d4b4c+='<div\x20style=\x22font-size:17px;font-weight:900;margin-bottom:8px\x22>Gold\x20Premium\x20Chahiye</div>',_0x4d4b4c+='<div\x20style=\x22font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:18px\x22>Creator\x20Program\x20—\x20apne\x20matches\x20host\x20karo,\x20referral\x20commission\x20kamao\x20—\x20ye\x20ek\x20<strong\x20style=\x22color:#ffd700\x22>Gold\x20ya\x20usse\x20upar</strong>\x20Premium\x20perk\x20hai.</div>',_0x4d4b4c+='<button\x20onclick=\x22if(window.closeModal)closeModal();if(window.showPremiumUpgrade)showPremiumUpgrade();\x22\x20style=\x22width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer\x22>👑\x20Premium\x20Dekho</button>',_0x4d4b4c+='</div>';if(window['openModal'])openModal('🔵\x20Creator\x20Program',_0x4d4b4c);return;}window['_supa']['from']('creator_applications')['select']('creator_code,status,created_at')['eq']('user_id',_0x1bcb30())['maybeSingle']()['then'](function(_0x51c082){if(_0x51c082['data']){var _0x2ccb0e=_0x51c082['data'],_0x4bec7b=_0x2ccb0e['status']==='pending'?'⏳\x20Pending\x20review':_0x2ccb0e['status']==='rejected'?'❌\x20Rejected':_0x2ccb0e['status'],_0x11c24a='<div\x20style=\x22text-align:center;padding:8px\x200\x22>';_0x11c24a+='<div\x20style=\x22font-size:48px;margin-bottom:12px\x22>📋</div>',_0x11c24a+='<div\x20style=\x22font-size:17px;font-weight:900;margin-bottom:8px\x22>Application\x20Already\x20Submitted</div>',_0x11c24a+='<div\x20style=\x22background:rgba(0,212,255,.06);border:1px\x20solid\x20rgba(0,212,255,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left\x22>',_0x11c24a+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Code</div><div\x20style=\x22font-size:16px;font-weight:800;color:#00d4ff;margin-bottom:8px\x22>'+(_0x2ccb0e['creator_code']||'')+'</div>',_0x11c24a+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Status</div><div\x20style=\x22font-size:14px;font-weight:800\x22>'+_0x4bec7b+'</div>',_0x11c24a+='</div>';if(_0x2ccb0e['status']==='pending')_0x11c24a+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Admin\x2024hr\x20mein\x20review\x20karega.\x20Yahan\x20naya\x20application\x20submit\x20nahi\x20ho\x20sakta\x20jab\x20tak\x20yeh\x20resolve\x20na\x20ho.</div>';else _0x2ccb0e['status']==='rejected'&&(_0x11c24a+='<button\x20onclick=\x22if(window._supa)window._supa.from(\x27creator_applications\x27).delete().eq(\x27user_id\x27,\x27'+_0x1bcb30()+'\x27).then(function(){if(window.closeModal)closeModal();showCreatorSignup();})\x22\x20style=\x22width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer\x22>🔄\x20Dobara\x20Apply\x20Karo</button>');_0x11c24a+='</div>';if(window['openModal'])openModal('🔵\x20Creator\x20Program',_0x11c24a);return;}_0x1b161b();},function(){_0x1b161b();});}function _0x1b161b(){var _0x348169='<div\x20style=\x22text-align:center;padding:8px\x200\x22>';_0x348169+='<div\x20style=\x22font-size:48px;margin-bottom:12px\x22>🔵</div>',_0x348169+='<div\x20style=\x22font-size:17px;font-weight:900;margin-bottom:8px\x22>Creator\x20Ban\x20Jao!</div>',_0x348169+='<div\x20style=\x22font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px\x22>',_0x348169+='Apne\x20YouTube/Instagram\x20followers\x20ko\x20Mini\x20eSports\x20pe\x20lao\x20apne\x20code\x20se.<br>';var _0x1dff60=window['CFG']&&window['CFG']['sdMatchCommissionPct']||0xf;_0x348169+='Jab\x20aap\x20<strong\x20style=\x22color:#00d4ff\x22>apna\x20hosted\x20Sky\x20Diamond\x20match</strong>\x20khilwaate\x20ho\x20aur\x20koi\x20user\x20usme\x20<strong\x20style=\x22color:#00d4ff\x22>Sky\x20Diamond\x20kharch\x20karke\x20join\x20karta\x20hai</strong>,\x20tumhe\x20har\x20match\x20pe\x20<strong\x20style=\x22color:#00d4ff\x22>'+_0x1dff60+'%\x20commission</strong>\x20milta\x20hai!',_0x348169+='</div>',_0x348169+='<div\x20style=\x22background:rgba(0,212,255,.06);border:1px\x20solid\x20rgba(0,212,255,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left\x22>',_0x348169+='<div\x20style=\x22font-size:12px;font-weight:700;color:#00d4ff;margin-bottom:8px\x22>💰\x20Kaise\x20kaam\x20karta\x20hai</div>',_0x348169+='<div\x20style=\x22font-size:12px;color:var(--txt2);line-height:1.9\x22>',_0x348169+='1️⃣\x20Apna\x20code\x20banao,\x20followers\x20ko\x20share\x20karo<br>',_0x348169+='2️⃣\x20Woh\x20signup\x20pe\x20tumhara\x20code\x20daalte\x20hain<br>',_0x348169+='3️⃣\x20Jab\x20aap\x20apne\x20<strong\x20style=\x22color:#00d4ff\x22>hosted\x20Sky\x20Diamond\x20match</strong>\x20mein\x20kisi\x20bhi\x20user\x20ko\x20sky\x20diamond\x20kharch\x20karwaate\x20ho,\x20tumhe\x20<strong\x20style=\x22color:#00d4ff\x22>'+_0x1dff60+'%\x20commission</strong>\x20milta\x20hai\x20—\x20<strong\x20style=\x22color:#00ff9c\x22>sirf\x20hosted\x20Sky\x20Diamond\x20matches\x20par</strong>\x20(coin/green\x20diamond\x20matches\x20par\x20koi\x20commission\x20nahi)<br>',_0x348169+='4️⃣\x20Apna\x20khud\x20ka\x20chhota\x20tournament\x20bhi\x20host\x20kar\x20sakte\x20ho\x20—\x20room\x20set\x20karo,\x20result\x20submit\x20karo',_0x348169+='</div>',_0x348169+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:8px;padding-top:8px;border-top:1px\x20solid\x20rgba(0,212,255,.15)\x22>ℹ️\x20Sirf\x20khareedne\x20se\x20commission\x20nahi\x20milta\x20—\x20referral\x20ko\x20real\x20match\x20khelna\x20hoga.\x20Result\x20submit\x20hote\x20hi\x20auto-verify\x20hota\x20hai;\x20sirf\x20suspicious\x20cases\x20Admin\x20dekhta\x20hai.</div>',_0x348169+='</div>',_0x348169+='<div\x20class=\x22f-group\x22><label>Apna\x20Creator\x20Code\x20banao</label>',_0x348169+='<input\x20type=\x22text\x22\x20id=\x22newCreatorCode\x22\x20class=\x22f-input\x22\x20placeholder=\x22e.g.\x20BEAST_GAMER\x20(letters\x20+\x20_\x20only)\x22\x20style=\x22text-transform:uppercase\x22></div>',_0x348169+='<div\x20class=\x22f-group\x22><label>YouTube\x20/\x20Instagram\x20Channel\x20Link</label>',_0x348169+='<input\x20type=\x22text\x22\x20id=\x22creatorChannelUrl\x22\x20class=\x22f-input\x22\x20placeholder=\x22https://youtube.com/@...\x22></div>',_0x348169+='<div\x20class=\x22f-group\x22><label>Approximate\x20Followers</label>',_0x348169+='<select\x20id=\x22creatorFollowers\x22\x20class=\x22f-input\x22><option\x20value=\x221k-5k\x22>1K–5K</option><option\x20value=\x225k-10k\x22>5K–10K</option><option\x20value=\x2210k-50k\x22>10K–50K</option><option\x20value=\x2250k+\x22>50K+</option></select></div>',_0x348169+='<button\x20onclick=\x22submitCreatorSignup()\x22\x20style=\x22width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer\x22><i\x20class=\x22fas\x20fa-rocket\x22></i>\x20Creator\x20Program\x20Join\x20Karo</button>',_0x348169+='</div>';window['__creatorFreeMode']&&(_0x348169='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.12));border:1px\x20solid\x20rgba(0,255,156,.35);border-radius:12px;padding:10px\x2012px;margin-bottom:12px;text-align:center\x22>'+'<div\x20style=\x22font-size:15px;font-weight:900;color:#00ff9c\x22>🆓\x20CREATOR\x20MODE\x20FREE\x20—\x20LIMITED\x20TIME!</div>'+'<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:4px\x22>Abhi\x20Gold\x20Premium\x20ki\x20zaroorat\x20NAHI\x20—\x20seedha\x20apply\x20karo,\x20apne\x20matches\x20host\x20karo,\x20commission\x20kamao.\x20Baad\x20me\x20ye\x20wapas\x20paid\x20ho\x20jayega,\x20isliye\x20abhi\x20join\x20kar\x20lo.</div></div>'+_0x348169);if(window['openModal'])openModal(window['__creatorFreeMode']?'🆓\x20Creator\x20Program\x20(FREE)':'🔵\x20Creator\x20Program',_0x348169);}window['submitCreatorSignup']=function(){var _0x1e3bbb=((document['getElementById']('newCreatorCode')||{})['value']||'')['toUpperCase']()['trim']()['replace'](/[^A-Z0-9_]/g,''),_0x2a45d3=((document['getElementById']('creatorChannelUrl')||{})['value']||'')['trim'](),_0x2c0353=(document['getElementById']('creatorFollowers')||{})['value']||'1k-5k';if(!_0x1e3bbb||_0x1e3bbb['length']<0x4){toast('Code\x20min\x204\x20characters\x20(letters\x20+\x20_\x20only)','err');return;}if(!_0x2a45d3){toast('Channel\x20URL\x20daalo','err');return;}if(!window['_supa']){toast('Service\x20unavailable','err');return;}window['_supa']['from']('creator_applications')['insert']({'user_id':_0x1bcb30(),'creator_code':_0x1e3bbb,'status':'pending','channel_url':_0x2a45d3,'followers':_0x2c0353})['then'](function(_0x49d6be){if(_0x49d6be['error']){var _0x273665=_0x49d6be['error']['code']==='23505'?'Aapka\x20application\x20already\x20submit\x20ho\x20chuka\x20hai':_0x49d6be['error']['message']||'Submit\x20failed';toast(_0x273665,'err');return;}if(window['closeModal'])closeModal();toast('✅\x20Creator\x20request\x20submit\x20ho\x20gayi!\x20Admin\x2024hr\x20mein\x20approve\x20karega.','ok');});};function _0x410499(_0x297ae5,_0x283c25,_0x37385e){var _0x4b9b74='',_0x38b557=_0x297ae5['code']||'';_0x37385e=_0x37385e||{};var _0x54776c=_0x37385e['creator_suspended_permanently'],_0x206115=_0x37385e['creator_suspended_until']&&new Date(_0x37385e['creator_suspended_until'])>new Date();if(_0x54776c)_0x4b9b74+='<div\x20style=\x22background:rgba(255,60,60,.1);border:1.5px\x20solid\x20rgba(255,60,60,.35);border-radius:14px;padding:14px;margin-bottom:14px;text-align:center\x22>',_0x4b9b74+='<div\x20style=\x22font-size:14px;font-weight:800;color:#ff6b6b\x22>🚫\x20Permanently\x20Banned</div>',_0x4b9b74+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:6px\x22>Repeated\x20cheating\x20ke\x20wajah\x20se\x20Creator\x20Program\x20se\x20permanently\x20ban\x20kar\x20diya\x20gaya\x20hai.</div></div>';else{if(_0x206115)_0x4b9b74+='<div\x20style=\x22background:rgba(255,170,0,.08);border:1.5px\x20solid\x20rgba(255,170,0,.3);border-radius:14px;padding:14px;margin-bottom:14px;text-align:center\x22>',_0x4b9b74+='<div\x20style=\x22font-size:14px;font-weight:800;color:#ffaa00\x22>⏸️\x20Hosting\x20Suspended</div>',_0x4b9b74+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:6px\x22>'+new Date(_0x37385e['creator_suspended_until'])['toLocaleDateString']('en-IN')+'\x20tak\x20match\x20host\x20nahi\x20kar\x20sakte.\x20Strikes:\x20'+(_0x37385e['creator_strikes']||0x0)+'/6.</div></div>';else(_0x37385e['creator_strikes']||0x0)>0x0&&(_0x4b9b74+='<div\x20style=\x22background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:12px;padding:10px\x2012px;margin-bottom:12px;font-size:11px;color:#ffd700\x22>⚠️\x20'+_0x37385e['creator_strikes']+'/6\x20strikes\x20—\x203\x20strikes\x20pe\x20hosting\x2030\x20din\x20suspend\x20hoti\x20hai.</div>');}var _0x2ce5dd=Number(_0x37385e['creator_rating']||0x5),_0x47a149='';for(var _0x530c7e=0x1;_0x530c7e<=0x5;_0x530c7e++)_0x47a149+=_0x530c7e<=Math['round'](_0x2ce5dd)?'★':'☆';_0x4b9b74+='<div\x20style=\x22text-align:center;margin-bottom:12px\x22><span\x20style=\x22color:#ffd700;font-size:15px\x22>'+_0x47a149+'</span>\x20<span\x20style=\x22font-size:11px;color:#888\x22>'+_0x2ce5dd['toFixed'](0x1)+'\x20('+(_0x37385e['creator_rating_count']||0x0)+'\x20ratings)</span></div>',_0x4b9b74+='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,100,255,.08),rgba(0,212,255,.05));border:1.5px\x20solid\x20rgba(0,212,255,.25);border-radius:16px;padding:16px;margin-bottom:14px\x22>',_0x4b9b74+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between;margin-bottom:8px\x22>',_0x4b9b74+='<div\x20style=\x22font-size:13px;font-weight:800;color:#00d4ff\x22>🔵\x20Creator\x20Code</div><span\x20style=\x22color:#00ff9c;font-weight:700;font-size:12px\x22>✅\x20Active</span>',_0x4b9b74+='</div>',_0x4b9b74+='<div\x20style=\x22font-size:28px;font-weight:900;color:#fff;letter-spacing:3px;margin-bottom:6px\x22>'+_0x38b557+'</div>',_0x4b9b74+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>Followers\x20signup\x20pe\x20ye\x20code\x20daalein\x20—\x20commission\x20tabhi\x20milega\x20jab\x20aap\x20unhe\x20apne\x20hosted\x20Sky\x20Diamond\x20paid\x20match\x20mein\x20khilwaoge</div>',_0x4b9b74+='<button\x20onclick=\x22copyCreatorCode(\x27'+_0x38b557+'\x27)\x22\x20style=\x22margin-top:8px;padding:7px\x2014px;border-radius:10px;background:rgba(0,212,255,.12);border:1px\x20solid\x20rgba(0,212,255,.25);color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i>\x20Code\x20Copy</button>',_0x4b9b74+='</div>',_0x4b9b74+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px;margin-bottom:14px\x22>',[{'label':'Referred\x20Matches\x20Played','val':_0x283c25['total_matches']||0x0,'unit':'matches','color':'#00d4ff'},{'label':'Total\x20Commission','val':'💎'+(_0x283c25['total_earnings']||0x0),'unit':'earned\x20(referrals)','color':'#00ff9c'}]['forEach'](function(_0x4279b4){_0x4b9b74+='<div\x20style=\x22background:rgba(255,255,255,.03);border:1px\x20solid\x20rgba(255,255,255,.07);border-radius:12px;padding:12px\x22>',_0x4b9b74+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-bottom:4px\x22>'+_0x4279b4['label']+'</div>',_0x4b9b74+='<div\x20style=\x22font-size:20px;font-weight:900;color:'+_0x4279b4['color']+'\x22>'+_0x4279b4['val']+'</div>',_0x4b9b74+='<div\x20style=\x22font-size:10px;color:#555\x22>'+_0x4279b4['unit']+'</div></div>';}),_0x4b9b74+='</div>';var _0x2a8f95='https://deepsilence10161-source.github.io/ff-user-panel/?ref='+_0x38b557,_0x131dc4='🎮\x20Mini\x20eSports\x20pe\x20Free\x20Fire\x20tournaments!\x0a🪙\x20Free\x20coins,\x20ranked\x20matches!\x0a\x0aMere\x20code\x20se\x20join\x20karo:\x20'+_0x38b557+'\x0a👉\x20'+_0x2a8f95;_0x4b9b74+='<div\x20style=\x22background:rgba(255,255,255,.03);border:1px\x20solid\x20rgba(255,255,255,.07);border-radius:12px;padding:12px;margin-bottom:10px\x22>',_0x4b9b74+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:6px\x22>Tumhara\x20Referral\x20Link</div>',_0x4b9b74+='<div\x20style=\x22font-size:11px;color:#00d4ff;word-break:break-all\x22>'+_0x2a8f95+'</div>',_0x4b9b74+='</div>',_0x4b9b74+='<button\x20onclick=\x22doShareCreatorLink(\x27'+encodeURIComponent(_0x131dc4)+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px\x22><i\x20class=\x22fab\x20fa-whatsapp\x22></i>\x20Promote\x20on\x20WhatsApp</button>',_0x4b9b74+='<button\x20onclick=\x22showCreatorEarnings()\x22\x20style=\x22width:100%;padding:11px;border-radius:11px;background:rgba(185,100,255,.08);border:1px\x20solid\x20rgba(185,100,255,.2);color:#b964ff;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:8px\x22>📊\x20Commission\x20History\x20Dekho</button>',_0x4b9b74+='<div\x20style=\x22height:1px;background:rgba(255,255,255,.07);margin:14px\x200\x22></div>',_0x4b9b74+='<div\x20style=\x22font-size:13px;font-weight:800;color:#00ff9c;margin-bottom:8px\x22>🎮\x20Match\x20Hosting</div>',_0x4b9b74+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:10px\x22>Apna\x20khud\x20ka\x20chhota\x20tournament\x20host\x20karo\x20—\x20room\x20set\x20karo,\x20result\x20submit\x20karo.\x20Payout\x20Admin\x20verify\x20karke\x20karega.</div>';_0x54776c||_0x206115?_0x4b9b74+='<button\x20disabled\x20style=\x22width:100%;padding:11px;border-radius:11px;background:rgba(255,255,255,.03);border:1px\x20solid\x20rgba(255,255,255,.06);color:#555;font-size:13px;font-weight:700;cursor:not-allowed\x22>🔒\x20Hosting\x20Unavailable</button>':(_0x4b9b74+='<button\x20onclick=\x22if(window.closeModal)closeModal();if(window.showCreatorMatchForm)showCreatorMatchForm();\x22\x20style=\x22width:100%;padding:11px;border-radius:11px;background:rgba(0,255,156,.08);border:1px\x20solid\x20rgba(0,255,156,.2);color:#00ff9c;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px\x22>➕\x20Naya\x20Match\x20Host\x20Karo</button>',_0x4b9b74+='<button\x20onclick=\x22if(window.closeModal)closeModal();if(window.showMyCreatorMatches)showMyCreatorMatches();\x22\x20style=\x22width:100%;padding:11px;border-radius:11px;background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);color:#aaa;font-size:12px;font-weight:700;cursor:pointer\x22>📋\x20Mere\x20Matches</button>');var _0x2c0bdf=window['isPremiumActive']?isPremiumActive(0x2):![];_0x4b9b74+='<div\x20style=\x22height:1px;background:rgba(255,255,255,.07);margin:14px\x200\x22></div>',_0x4b9b74+='<div\x20style=\x22font-size:13px;font-weight:800;color:#ff6b35;margin-bottom:8px\x22>📡\x20Live\x20Stream\x20Slot</div>';_0x2c0bdf?(_0x4b9b74+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:10px\x22>Premium\x20member\x20ho\x20—\x20apna\x20live\x20stream\x20link\x20app\x20mein\x20dikha\x20sakte\x20ho,\x20apna\x20YouTube\x20watch-time\x20badhao!</div>',_0x4b9b74+='<button\x20onclick=\x22if(window.closeModal)closeModal();if(window.showStreamSettings)showStreamSettings();\x22\x20style=\x22width:100%;padding:11px;border-radius:11px;background:rgba(255,107,53,.1);border:1px\x20solid\x20rgba(255,107,53,.25);color:#ff6b35;font-size:13px;font-weight:700;cursor:pointer\x22>🎥\x20Live\x20Stream\x20Setup</button>'):(_0x4b9b74+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:10px\x22>Apni\x20live\x20stream\x20ka\x20link\x20app\x20mein\x20dikhana\x20chahte\x20ho\x20(apna\x20YouTube\x20watch-time\x20badhane\x20ke\x20liye)?\x20Ye\x20ek\x20<strong\x20style=\x22color:#ffd700\x22>Premium</strong>\x20perk\x20hai.</div>',_0x4b9b74+='<button\x20onclick=\x22if(window.closeModal)closeModal();if(window.showPremiumUpgrade)showPremiumUpgrade();\x22\x20style=\x22width:100%;padding:11px;border-radius:11px;background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.25);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer\x22>👑\x20Premium\x20Dekho</button>');if(window['openModal'])openModal('🔵\x20Creator\x20Dashboard',_0x4b9b74);}window['copyCreatorCode']=function(_0x1a1903){if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x1a1903);toast('Code\x20copy\x20ho\x20gaya!\x20🎉','ok');},window['doShareCreatorLink']=function(_0x1ca835){window['openWhatsApp'](decodeURIComponent(_0x1ca835));},window['showCreatorEarnings']=function(){if(!_0x1bcb30()||!window['_supa'])return;var _0x56692a='<div\x20id=\x22_credEarnBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div>';if(window['openModal'])openModal('📊\x20Commission\x20History',_0x56692a);window['_supa']['from']('creator_commissions')['select']('*')['eq']('creator_uid',_0x1bcb30())['order']('created_at',{'ascending':![]})['limit'](0x32)['then'](function(_0x58e811){var _0x2e97ed=_0x58e811['data']||[],_0x2484f4=document['getElementById']('_credEarnBody');if(!_0x2484f4)return;if(!_0x2e97ed['length']){_0x2484f4['innerHTML']='<div\x20style=\x22padding:10px;font-size:13px\x22>Abhi\x20tak\x20koi\x20commission\x20nahi\x20aayi</div>';return;}var _0x1ce7f2='';_0x2e97ed['forEach'](function(_0xcb038c){var _0x1447d5=_0xcb038c['status']==='eligible'||_0xcb038c['status']==='paid'?'#00ff9c':'#ffd700',_0x336de5=_0xcb038c['status']==='hold'?'Hold\x20(7\x20din)':_0xcb038c['status']==='eligible'?'Eligible':_0xcb038c['status']==='paid'?'Paid':_0xcb038c['status'];_0x1ce7f2+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;padding:10px\x200;border-bottom:1px\x20solid\x20rgba(255,255,255,.05)\x22>',_0x1ce7f2+='<div><div\x20style=\x22font-size:12px;font-weight:700\x22>Match\x20Commission</div><div\x20style=\x22font-size:10px;color:#666\x22>'+new Date(_0xcb038c['created_at'])['toLocaleDateString']('en-IN')+'</div></div>',_0x1ce7f2+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:14px;font-weight:800;color:#00d4ff\x22>+'+_0xcb038c['amount']+'\x20💎</div><div\x20style=\x22font-size:10px;color:'+_0x1447d5+'\x22>'+_0x336de5+'</div></div>',_0x1ce7f2+='</div>';}),_0x2484f4['innerHTML']=_0x1ce7f2;},function(){var _0x198e93=document['getElementById']('_credEarnBody');if(_0x198e93)_0x198e93['innerHTML']='<div\x20style=\x22padding:10px;font-size:13px;color:#ff6b6b\x22>Load\x20failed</div>';});};var _0x7e8ba9=[{'id':'city_king','icon':'🌆','title':'City\x20King','desc':'Apni\x20city\x20mein\x203\x20baar\x20#1\x20rank\x20lo','check':function(){return Number((_0xae4dd0()['stats']||{})['cityTopOneCount']||0x0)>=0x3;}},{'id':'unstoppable','icon':'🔥','title':'Unstoppable','desc':'7-day\x20login\x20streak\x20maintain\x20karo','check':function(){return Number(_0xae4dd0()['loginStreak']||0x0)>=0x7;}},{'id':'veteran','icon':'🎖️','title':'Veteran','desc':'100\x20matches\x20complete\x20karo','check':function(){return Number((_0xae4dd0()['stats']||{})['matches']||0x0)>=0x64;}},{'id':'slayer','icon':'⚡','title':'Slayer','desc':'500\x20total\x20kills\x20karo','check':function(){return Number((_0xae4dd0()['stats']||{})['kills']||0x0)>=0x1f4;}},{'id':'legend','icon':'👑','title':'Legend','desc':'50\x20matches\x20jeeto','check':function(){return Number((_0xae4dd0()['stats']||{})['wins']||0x0)>=0x32;}},{'id':'recruiter','icon':'🤝','title':'Recruiter','desc':'10\x20friends\x20refer\x20karo','check':function(){return Number(_0xae4dd0()['referralCount']||0x0)>=0xa;}},{'id':'wealthy','icon':'💎','title':'Diamond\x20Hoarder','desc':'1000\x20Green\x20Diamonds\x20kamao','check':function(){return Number(_0xae4dd0()['greenDiamonds']||0x0)>=0x3e8;}},{'id':'clan_chief','icon':'⚔️','title':'Clan\x20Chief','desc':'Clan\x20banao\x20aur\x205\x20members\x20rakho','check':function(){var _0xc34e15=_0xae4dd0()['clan'];return _0xc34e15&&_0xc34e15['isLeader']&&Number(_0xc34e15['memberCount']||0x0)>=0x5;}}];window['checkAndAwardAchievements']=function(){if(!_0x1bcb30()||!_0x28baf4())return;var _0x290bfb=_0xae4dd0()['achievementsV3']||{};_0x7e8ba9['forEach'](function(_0x354ecc){if(_0x290bfb[_0x354ecc['id']])return;try{_0x354ecc['check']&&_0x354ecc['check']()&&(_0x28baf4()['ref']('users/'+_0x1bcb30()+'/achievementsV3/'+_0x354ecc['id'])['set']({'awardedAt':Date['now']()}),_0x2a4b89(_0x354ecc));}catch(_0x4da39e){}});},window['showAchievementsV3']=function(){var _0x5a4b01=_0xae4dd0()['achievementsV3']||{},_0x418d28='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px\x22>';_0x7e8ba9['forEach'](function(_0x49868f){var _0x5c1222=!!_0x5a4b01[_0x49868f['id']],_0x18eb70=![];try{_0x18eb70=_0x49868f['check']&&_0x49868f['check']();}catch(_0x7f05c1){}_0x418d28+='<div\x20style=\x22background:rgba(255,255,255,.03);border:1px\x20solid\x20rgba(255,255,255,'+(_0x5c1222?'.2':'.06')+');border-radius:14px;padding:12px;text-align:center;opacity:'+(_0x5c1222?'1':_0x18eb70?'.9':'.45')+'\x22>',_0x418d28+='<div\x20style=\x22font-size:30px;margin-bottom:6px\x22>'+_0x49868f['icon']+'</div>',_0x418d28+='<div\x20style=\x22font-size:12px;font-weight:800;color:'+(_0x5c1222?'#ffd700':'var(--txt)')+'\x22>'+_0x49868f['title']+'</div>',_0x418d28+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:4px;line-height:1.4\x22>'+_0x49868f['desc']+'</div>';if(_0x5c1222)_0x418d28+='<div\x20style=\x22margin-top:6px;font-size:10px;color:#00ff9c;font-weight:700\x22>✅\x20Earned</div>';else{if(_0x18eb70)_0x418d28+='<div\x20style=\x22margin-top:6px;font-size:10px;color:#ffd700;font-weight:700\x22>🎉\x20Claim!</div>';}_0x418d28+='</div>';}),_0x418d28+='</div>';if(window['openModal'])openModal('🏅\x20Achievements',_0x418d28);};function _0x2a4b89(_0xfea889){var _0x4b9d83='<div\x20style=\x22text-align:center;padding:8px\x200\x22>';_0x4b9d83+='<div\x20style=\x22font-size:56px;margin-bottom:12px\x22>'+_0xfea889['icon']+'</div>',_0x4b9d83+='<div\x20style=\x22font-size:18px;font-weight:900;color:#ffd700;margin-bottom:6px\x22>Achievement\x20Unlock!</div>',_0x4b9d83+='<div\x20style=\x22font-size:22px;font-weight:900;margin-bottom:6px\x22>'+_0xfea889['title']+'</div>',_0x4b9d83+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:16px\x22>'+_0xfea889['desc']+'</div>',_0x4b9d83+='<div\x20style=\x22background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:12px;padding:10px;margin-bottom:14px\x22>',_0x4b9d83+='<div\x20style=\x22font-size:22px;font-weight:900;color:#ffd700\x22>+50\x20🪙</div>',_0x4b9d83+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:3px\x22>Achievement\x20Bonus</div></div>',_0x4b9d83+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer\x22>🔥\x20Let\x27s\x20Go!</button>',_0x4b9d83+='</div>',setTimeout(function(){if(window['openModal'])openModal('🏅\x20New\x20Achievement!',_0x4b9d83);if(window['updateHdr'])window['updateHdr']();},0x5dc);}function _0x273a5c(){if(!window['db']||!window['U']||!window['UD']){setTimeout(_0x273a5c,0x5dc);return;}setTimeout(function(){window['_wrapCheckIn']&&window['_wrapCheckIn'](),window['checkPremiumMonthlyBonus']&&window['checkPremiumMonthlyBonus'](),window['checkStreakMilestones']&&window['checkStreakMilestones'](),window['checkAndAwardAchievements']&&window['checkAndAwardAchievements']();},0xbb8),console['log']('✅\x20premium-creator-system.js\x20loaded');}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(_0x273a5c,0x7d0);}):setTimeout(_0x273a5c,0x7d0),window['_premiumCreatorInitFn']=_0x273a5c,window['initPremiumCreator']=_0x273a5c,window['showCreatorEarnings']=function(){if(!_0x1bcb30()||!window['_supa'])return;var _0x565aa5='<div\x20id=\x22_credEarnBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div>';if(window['openModal'])openModal('💰\x20Commission\x20Earnings',_0x565aa5);window['_supa']['from']('creator_commissions')['select']('match_id,amount,currency,status,eligible_at,created_at')['eq']('creator_uid',_0x1bcb30())['order']('created_at',{'ascending':![]})['limit'](0x32)['then'](function(_0x9b38a){var _0x16d563=_0x9b38a['data']||[],_0x403173=document['getElementById']('_credEarnBody');if(!_0x16d563['length']){if(_0x403173)_0x403173['innerHTML']='<div\x20style=\x22text-align:center;color:#888;padding:20px\x22>Koi\x20commission\x20history\x20nahi\x20abhi.<br><br>Pehle\x20match\x20host\x20karo\x20aur\x20complete\x20karo!</div>';return;}var _0x2b17f9='<div\x20style=\x22display:grid;gap:8px\x22>';_0x16d563['forEach'](function(_0xce3178){var _0x2d50c6=_0xce3178['status']||'hold',_0x466377=_0x2d50c6==='paid'?'#00ff9c':_0x2d50c6==='eligible'?'#ffd700':'#aaa',_0x45ce56=_0x2d50c6==='paid'?'✅\x20Paid':_0x2d50c6==='eligible'?'💰\x20Eligible':_0x2d50c6==='pending_payout'?'⏳\x20Payout\x20pending':'🔒\x20Hold',_0x34a0f2=_0xce3178['created_at']?new Date(_0xce3178['created_at'])['toLocaleDateString']('en-IN'):'',_0x27afe0=_0xce3178['eligible_at']&&_0x2d50c6==='hold'?'\x20(eligible:\x20'+new Date(_0xce3178['eligible_at'])['toLocaleDateString']('en-IN')+')':'',_0x8a19d=_0xce3178['currency']==='gd'?(_0xce3178['amount']||0x0)+'\x20🟢\x20GD':'₹'+(_0xce3178['amount']||0x0);_0x2b17f9+='<div\x20style=\x22background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.07);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr\x20auto;gap:8px;align-items:center\x22>',_0x2b17f9+='<div>',_0x2b17f9+='<div\x20style=\x22font-size:11px;color:#888\x22>Match:\x20'+String(_0xce3178['match_id']||'')['slice'](0x0,0x8)+'...\x20·\x20'+_0x34a0f2+'</div>',_0x2b17f9+='<div\x20style=\x22font-size:10px;color:'+_0x466377+'\x22>'+_0x45ce56+_0x27afe0+'</div>',_0x2b17f9+='</div>',_0x2b17f9+='<div\x20style=\x22font-size:15px;font-weight:900;color:#b964ff\x22>'+_0x8a19d+'</div>',_0x2b17f9+='</div>';});var _0x4929c2=_0x16d563['filter'](function(_0x456a7d){return _0x456a7d['status']==='eligible'&&_0x456a7d['currency']==='inr';})['reduce'](function(_0x2ab936,_0x1df119){return _0x2ab936+(Number(_0x1df119['amount'])||0x0);},0x0);_0x4929c2>=(window['CFG']&&window['CFG']['creatorMinPayout']||0x64)&&(_0x2b17f9+='<button\x20onclick=\x22requestMatchCommissionPayout('+_0x4929c2+')\x22\x20style=\x22width:100%;margin-top:10px;padding:12px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:13px;font-weight:800;cursor:pointer\x22>💰\x20₹'+_0x4929c2+'\x20Payout\x20Request</button>');_0x2b17f9+='</div>';if(_0x403173)_0x403173['innerHTML']=_0x2b17f9;else{if(window['openModal'])openModal('💰\x20Commission\x20Earnings',_0x2b17f9);}},function(_0x1148ab){var _0x24f771=document['querySelector']('#_credEarnBody');if(_0x24f771)_0x24f771['innerHTML']='<div\x20style=\x22text-align:center;color:#ff6b6b;padding:20px\x22>Load\x20failed</div>';});},window['requestMatchCommissionPayout']=function(_0x2c0efd){if(!_0x1bcb30()||!window['_supa'])return;if(!confirm('₹'+_0x2c0efd+'\x20match\x20commission\x20payout\x20request\x20karo?'))return;window['_supa']['rpc']('claim_match_commission_payout')['then'](function(_0x45d3fa){if(_0x45d3fa['error']||_0x45d3fa['data']&&_0x45d3fa['data']['success']===![]){var _0x46c234=_0x45d3fa['data']&&_0x45d3fa['data']['error']||_0x45d3fa['error']&&_0x45d3fa['error']['message']||'Unknown\x20error';console['error']('[Creator]\x20claim_match_commission_payout\x20failed:',_0x46c234);if(window['toast'])toast('⚠️\x20Payout\x20claim\x20sync\x20fail:\x20'+_0x46c234,'err');return;}toast('✅\x20Payout\x20request\x20submit!\x20Admin\x20process\x20karega.','ok');});if(window['closeModal'])closeModal();};}());
+/* ================================================================
+   PREMIUM + CREATOR SYSTEM — premium-creator-system.js
+   Mini eSports User Panel v12
+   
+   1. Streak Milestones (Day 7 / 30 / 100)
+   2. Premium Enforcement (ad-free, monthly bonus, premium badge)
+   3. Creator Dashboard (Blue Diamond commission)
+   4. Achievements v3 (City King, Unstoppable, Veteran etc.)
+   ================================================================ */
+
+(function() {
+'use strict';
+
+function db()  { return window.db;  }
+function uid() { return window.U && window.U.uid; }
+function ud()  { return window.UD || {}; }
+
+/* ================================================================
+   1. STREAK MILESTONES
+   ================================================================ */
+/* ✅ BUG FIX (2026-08-24): "Streak Milestone popup har app refresh par
+   aati hai aur 20 coin faltu me add ho jate hain". Root cause was
+   twofold:
+     1. This entire feature was still pure Firebase RTDB
+        (db().ref(...).transaction(...)) — completely disconnected from
+        the Supabase `users` row this app otherwise reads UD from. The
+        claimed-flag was written to Firebase, but UD.streakMilestonesClaimed
+        was never populated from anywhere (no such Supabase column
+        existed, and _applyUser in listeners.js never read one) — so
+        `claimed['day_3']` was ALWAYS empty on every single load,
+        the `streak >= m.day` check passed again, and the Firebase
+        transaction fired again, crediting +20 coins AGAIN — every load.
+     2. initPremiumCreator() called this unconditionally on every app
+        boot (3s after UD ready), not just after a genuine check-in —
+        so even with claim-tracking fixed, this would still evaluate on
+        every load (harmlessly, once actually idempotent, but wastefully).
+   Fix: moved entirely to Supabase — streak_milestones_claimed JSONB
+   column + a single atomic claim_streak_milestone RPC (same
+   FOR-UPDATE-locked, check-and-set-in-one-transaction pattern as the
+   already-correct purchase_cosmetic RPC) so concurrent/repeated calls
+   can never double-credit. UD.streakMilestonesClaimed is now populated
+   from the real Supabase column in listeners.js's _applyUser. */
+window.checkStreakMilestones = function() {
+  if (!uid() || !window._supa) return;
+  var streak = Number(ud().loginStreak || 0);
+  var claimed = ud().streakMilestonesClaimed || {};
+
+  var _smCfg = (window.CFG && window.CFG.streakMilestones) || {};
+  var MILESTONES = [3,7,14,30,60,100].map(function(d){
+    var def = {3:{coins:20,badge:null},7:{coins:100,badge:'🔥 Unstoppable'},14:{coins:200,badge:null},30:{coins:500,badge:'⚡ Dedicated'},60:{coins:1000,badge:'👑 Legend'},100:{coins:2000,badge:'🌟 Immortal'}};
+    var cfg = _smCfg[d] || def[d] || {coins:50,badge:null};
+    return { day: d, coins: Number(cfg.coins||50), badge: cfg.badge||null, label: d+'-Day Streak!' };
+  });
+
+  MILESTONES.forEach(function(m) {
+    if (streak >= m.day && !claimed['day_' + m.day]) {
+      window._supa.rpc('claim_streak_milestone', {
+        p_day: m.day, p_coins: m.coins, p_badge: m.badge
+      }).then(function(r) {
+        var res = r && r.data;
+        if (r.error || !res || !res.ok) return; /* silent — no coins, no popup, safe to retry next load */
+        if (!window.UD) window.UD = {};
+        if (!window.UD.streakMilestonesClaimed) window.UD.streakMilestonesClaimed = {};
+        window.UD.streakMilestonesClaimed['day_' + m.day] = true;
+        if (res.already_claimed) return; /* someone else's call already claimed it — no popup, no re-credit */
+        if (typeof res.new_balance === 'number') window.UD.coins = res.new_balance;
+        if (window.updateHdr) window.updateHdr();
+        setTimeout(function() { showStreakCelebration(m); }, 1000);
+      }, function(){ /* network error — silent, safe to retry next load */ });
+    }
+  });
+};
+
+function showStreakCelebration(m) {
+  var h = '<div style="text-align:center;padding:10px 0">';
+  h += '<div style="font-size:56px;margin-bottom:12px">🔥</div>';
+  h += '<div style="font-size:20px;font-weight:900;color:#ffd700;margin-bottom:6px">' + m.label + '</div>';
+  h += '<div style="font-size:14px;color:var(--txt2);margin-bottom:16px">Login streak ' + m.day + ' din!</div>';
+  h += '<div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:14px;padding:14px;margin-bottom:14px">';
+  h += '<div style="font-size:28px;font-weight:900;color:#ffd700">+' + m.coins + ' 🪙</div>';
+  h += '<div style="font-size:12px;color:var(--txt2);margin-top:4px">Streak Bonus Coins</div>';
+  if (m.badge) {
+    h += '<div style="margin-top:8px;font-size:13px;font-weight:700;color:#b964ff">' + m.badge + ' badge mila!</div>';
+  }
+  h += '</div>';
+  h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer">🎉 Awesome!</button>';
+  h += '</div>';
+  if (window.openModal) openModal('🔥 Streak Milestone!', h);
+  if (window.updateHdr) window.updateHdr();
+}
+
+// Upgrade doCheckIn to call milestone check — lazy wrap on first call
+var _checkInWrapped = false;
+var _origDoCheckIn = null;
+window._wrapCheckIn = function() {
+  if (_checkInWrapped) return;
+  _checkInWrapped = true;
+  _origDoCheckIn = window.doCheckIn;
+  window.doCheckIn = function() {
+    if (_origDoCheckIn) _origDoCheckIn.apply(this, arguments);
+    setTimeout(window.checkStreakMilestones, 800);
+  };
+};
+// Will be called from init() after all scripts load
+
+/* ================================================================
+   2. PREMIUM ENFORCEMENT
+   ================================================================ */
+function getPremiumTier() {
+  var p = ud().premium;
+  /* BUG #4/#5/#29 FIX (2026-07): same root cause as getUserPremiumTier in premium.js —
+     no .active field is ever populated, active status is derived from tier+expiry. */
+  if (!p || !p.tier || p.tier <= 0) return 0;
+  if (p.expiresAt && p.expiresAt < Date.now()) return 0;
+  return Number(p.tier || p.premiumTier || 1);
+}
+window.getPremiumTier = getPremiumTier;
+window.isPremium = function() { return getPremiumTier() > 0; };
+
+// MONTHLY BONUS COINS — auto credit on login
+/* ✅ BUG FIX (2026-08-22, CRITICAL): "Monthly Premium Bonus milta hai har
+   app refresh par, jabki monthly hona chahiye". Root cause: the
+   "already claimed this month" check/write used a fake Firebase-style
+   bridge path (users/{uid}/premiumMonthlyBonus/{monthKey}) that has NO
+   matching case in core/db-bridge.js's users/{uid}/{field} dispatch —
+   it fell through to the generic "unmapped field, silently succeed"
+   no-op. That means .once('value') always read back nothing (so the
+   "already claimed" guard never actually blocked), and .set(true)
+   persisted nothing (so there was never anything TO read back next
+   time either). Net effect: the bonus paid out again on every single
+   app load, forever. Fixed by moving both the claim-check AND the
+   credit into one atomic Supabase RPC (claim_premium_monthly_bonus)
+   backed by a UNIQUE(user_id, month_key) constraint — the DB itself
+   now refuses a second claim in the same month, so this can't
+   regress even if the bridge path is wrong for some other field too. */
+window.checkPremiumMonthlyBonus = function() {
+  if (!uid() || !window._supa) return;
+  var tier = getPremiumTier();
+  if (!tier) return;
+
+  var _pm = window.CFG && window.CFG.premium && window.CFG.premium.bonuses;
+  var bonusMap = _pm || { 1: 50, 2: 150, 3: 400 };
+  var bonus = bonusMap[tier] || 0;
+  if (!bonus) return;
+
+  window._supa.rpc('claim_premium_monthly_bonus', { p_tier: tier, p_bonus_coins: bonus }).then(function(r) {
+    var res = r && r.data;
+    if (!res || !res.ok) return; // already claimed this month, or not authenticated — silent, expected
+    if (window.UD) { window.UD.coins = (window.UD.coins || 0) + bonus; }
+    var tierName = tier === 3 ? 'Diamond' : tier === 2 ? 'Gold' : 'Silver';
+    toast('💎 ' + tierName + ' Monthly Bonus: +' + bonus + '🪙 Coins!', 'ok');
+    if (window.updateHdr) window.updateHdr();
+  }, function() { /* network error — silently skip, will retry next load */ });
+};
+
+
+
+// PREMIUM STATUS CARD — shown in profile
+window.renderPremiumCard = function() {
+  var tier = getPremiumTier();
+  var _pm = window.CFG && window.CFG.premium && window.CFG.premium.bonuses;
+  var bonusMap = _pm || { 1: 50, 2: 150, 3: 400 };
+  var nameMap  = { 1: 'Silver', 2: 'Gold', 3: 'Diamond' };
+  var colorMap = { 1: '#ffd700', 2: '#00d4ff', 3: '#b964ff' };
+  var _pp = window.CFG && window.CFG.premium && window.CFG.premium.prices;
+  var priceMap = _pp ? {1:'₹'+_pp[1],2:'₹'+_pp[2],3:'₹'+_pp[3]} : { 1: '₹49', 2: '₹99', 3: '₹199' };
+
+  if (!tier) {
+    // Non-premium — show upgrade card
+    var h = '<div style="background:linear-gradient(135deg,rgba(185,100,255,.08),rgba(255,215,0,.05));border:1.5px solid rgba(185,100,255,.2);border-radius:16px;padding:16px;margin-bottom:12px">';
+    h += '<div style="font-size:13px;font-weight:800;color:#b964ff;margin-bottom:8px">👑 Premium Upgrade Karo</div>';
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">';
+    [1,2,3].forEach(function(t) {
+      h += '<div style="background:rgba(0,0,0,.3);border-radius:12px;padding:10px;text-align:center;cursor:pointer;border:1px solid rgba(255,255,255,.08)" onclick="window.showPremiumUpgrade&&showPremiumUpgrade(' + t + ')">';
+      h += '<div style="font-size:13px;font-weight:900;color:' + colorMap[t] + '">' + nameMap[t] + '</div>';
+      h += '<div style="font-size:16px;font-weight:900;color:#fff;margin:4px 0">' + priceMap[t] + '</div>';
+      h += '<div style="font-size:10px;color:var(--txt2)">+' + bonusMap[t] + '🪙/mo</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+    h += '<div style="font-size:11px;color:var(--txt2);line-height:1.7">✅ Ad-free results &nbsp;✅ Monthly bonus coins<br>✅ Premium badge &nbsp;✅ Photo/Banner change</div>';
+    h += '</div>';
+    return h;
+  }
+
+  // Premium user card
+  var p = ud().premium || {};
+  var expDate = p.expiresAt ? new Date(p.expiresAt).toLocaleDateString('en-IN') : 'Unknown';
+  var col = colorMap[tier] || '#ffd700';
+  var h = '<div style="background:linear-gradient(135deg,rgba(' + (tier===3?'185,100,255':tier===2?'0,212,255':'255,215,0') + ',.08),transparent);border:1.5px solid rgba(' + (tier===3?'185,100,255':tier===2?'0,212,255':'255,215,0') + ',.25);border-radius:16px;padding:16px;margin-bottom:12px">';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+  h += '<div style="font-size:14px;font-weight:900;color:' + col + '">👑 ' + nameMap[tier] + ' Premium</div>';
+  h += '<div style="font-size:10px;color:var(--txt2)">Expires: ' + expDate + '</div>';
+  h += '</div>';
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  [['🚫 Ads', 'Result se pehle ad nahi'], ['🖼️ Photo/Banner', 'Profile photo + banner change'], ['+' + bonusMap[tier] + '🪙', 'Monthly bonus'], ['💎 Badge', nameMap[tier] + ' profile badge']].forEach(function(f) {
+    h += '<div style="background:rgba(0,0,0,.2);border-radius:10px;padding:8px;font-size:11px"><div style="font-weight:800;color:' + col + '">' + f[0] + '</div><div style="color:var(--txt2);margin-top:2px">' + f[1] + '</div></div>';
+  });
+  h += '</div>';
+  /* ✅ BUG Z2 FIX (2026-10-02): premium-active card me plans kholne ka koi
+     button hi nahi tha — active user Premium Club/Renew tak pahunch hi nahi
+     sakta tha (profile par showPremiumUpgrade sirf non-premium card me tha). */
+  h += '<button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade();" style="width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1px solid ' + col + '55;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,140,0,.06));color:' + col + ';font-size:13px;font-weight:900;cursor:pointer">👑 Plans / Renew Dekho</button>';
+  h += '</div></div>';
+  return h;
+};
+
+/* ================================================================
+   3. CREATOR DASHBOARD — Blue Diamond Commission Tracking
+   ================================================================ */
+/* ================================================================
+   3. CREATOR PROGRAM (2026-08 full rewrite)
+   Redesigned per product decision:
+   - Commission triggers on REFERRED-USER SPEND in a paid match (Sky
+     Diamonds), not on purchase. Enforced server-side in
+     validate_and_join_match — see that RPC's migration notes. This
+     file only reads/displays state; it never computes commission.
+   - Admin creates all real-money matches (anti-fraud) — creators do
+     NOT self-host matches. A creator's job is purely to refer players
+     via their code/link; every match a referred player pays real Sky
+     Diamonds to join earns the creator the server-configured commission
+     (SD match = 15%, coin match = 10% — live_config.creator_system),
+     automatically, for as long as that player keeps playing — not a
+     one-time payout.
+   - Live-streaming your own gameplay/matches is a PREMIUM perk (see
+     showPremiumInfo), not a Creator Program perk — a creator without
+     Premium can still refer and earn, they just don't get the
+     in-app live-stream slot unless they also subscribe.
+   - Talks to the real Supabase tables directly (creator_codes,
+     creator_stats, creator_commissions) instead of the old
+     Firebase-RTDB-shaped db().ref(...) calls, which silently failed
+     to sync because core/db-bridge.js never mapped `creatorProfile`
+     at all (confirmed: grep of the bridge found zero handling for
+     that path — every signup before this rewrite was writing to a
+     dead end).
+   ================================================================ */
+window.showCreatorDashboard = function() {
+  if (!uid() || !window._supa) { toast('Login karo pehle', 'err'); return; }
+
+  window._supa.from('users').select('is_creator,creator_code,creator_rating,creator_rating_count,creator_strikes,creator_suspended_until,creator_suspended_permanently').eq('id', uid()).single().then(function(r) {
+    var me = r.data || {};
+    if (!me.is_creator) { showCreatorSignup(); return; }
+
+    Promise.all([
+      window._supa.from('creator_stats').select('*').eq('user_id', uid()).maybeSingle(),
+      window._supa.from('creator_codes').select('*').eq('user_id', uid()).maybeSingle()
+    ]).then(function(results) {
+      var stats = (results[0] && results[0].data) || { total_matches: 0, total_earnings: 0 };
+      var codeRow = (results[1] && results[1].data) || { code: me.creator_code || '' };
+      renderCreatorDash(codeRow, stats, me);
+    });
+  });
+};
+
+function showCreatorSignup() {
+  /* GROWTH MODE (2026-11-01, owner decision): app_settings.creator_system.creatorFreeMode
+     == 1 → Creator Program temporarily FREE (no Gold Premium gate) — chhote
+     creators/YouTubers laane ke liye taaki app grow kare. Admin panel → App
+     Settings → Creator section me toggle hai (0 = wapas normal/paid gate).
+     Flag on-demand read hota hai (signup kholte waqt) — realtime ki zaroorat
+     nahi, signup roz ka flow nahi. */
+  if (!window._supa) { toast('Service unavailable', 'err'); return; }
+  window._supa.from('app_settings').select('value').eq('key', 'creator_system').maybeSingle()
+    .then(function (sr) {
+      var v = (sr && sr.data && sr.data.value) || {};
+      window.__creatorFreeMode = Number(v.creatorFreeMode || 0) === 1;
+      _showCreatorSignupGated();
+    })
+    .catch(function () { window.__creatorFreeMode = false; _showCreatorSignupGated(); });
+}
+
+function _showCreatorSignupGated() {
+  /* GATED (2026-08, confirmed by product decision): Creator Program is
+     a Premium perk — you must already be a paying Premium member to
+     apply. This makes sense two ways: (1) it filters signups to people
+     who've already shown real intent/investment in the platform, and
+     (2) it ties Premium's value directly to "this is how you unlock
+     hosting your own matches + earning commission", not just cosmetic
+     perks. Match-hosting privileges (creator_create_match RPC) don't
+     independently re-check Premium status — being an approved creator
+     already implies it, since approval only happens after this gate. */
+  var _premActive = window.__creatorFreeMode || (window.isPremiumActive ? isPremiumActive(2) : false);
+  if (!_premActive) {
+    var gh = '<div style="text-align:center;padding:8px 0">';
+    gh += '<div style="font-size:48px;margin-bottom:12px">👑</div>';
+    gh += '<div style="font-size:17px;font-weight:900;margin-bottom:8px">Gold Premium Chahiye</div>';
+    gh += '<div style="font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:18px">Creator Program — apne matches host karo, referral commission kamao — ye ek <strong style="color:#ffd700">Gold ya usse upar</strong> Premium perk hai.</div>';
+    gh += '<button onclick="if(window.closeModal)closeModal();if(window.showPremiumUpgrade)showPremiumUpgrade();" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer">👑 Premium Dekho</button>';
+    gh += '</div>';
+    if (window.openModal) openModal('🔵 Creator Program', gh);
+    return;
+  }
+
+  /* ✅ BUG FIX (2026-08-23): "Creator Program Join pe click karne par
+     'ye code pehle se liya hua hai' error aata hai jabki code naya
+     hota hai". Root cause: creator_applications has UNIQUE(user_id),
+     NOT unique(creator_code) — the 23505 conflict fires when the SAME
+     USER already has an application row (any status), regardless of
+     what code they type this time. submitCreatorSignup's error-message
+     mapping wrongly assumed any 23505 meant "code taken", which is
+     never actually what that constraint checks. This showed up for a
+     real user who genuinely had a pending application from a previous
+     day — the fresh code they typed the second time was never the
+     problem. Fix: check for an existing application FIRST and show its
+     real status instead of a blank signup form the user can never
+     successfully submit through. */
+  window._supa.from('creator_applications').select('creator_code,status,created_at').eq('user_id', uid()).maybeSingle().then(function(ar) {
+    if (ar.data) {
+      var app = ar.data;
+      var statusLabel = app.status === 'pending' ? '⏳ Pending review'
+                       : app.status === 'rejected' ? '❌ Rejected'
+                       : app.status;
+      var ph = '<div style="text-align:center;padding:8px 0">';
+      ph += '<div style="font-size:48px;margin-bottom:12px">📋</div>';
+      ph += '<div style="font-size:17px;font-weight:900;margin-bottom:8px">Application Already Submitted</div>';
+      ph += '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
+      ph += '<div style="font-size:12px;color:var(--txt2)">Code</div><div style="font-size:16px;font-weight:800;color:#00d4ff;margin-bottom:8px">' + (app.creator_code || '') + '</div>';
+      ph += '<div style="font-size:12px;color:var(--txt2)">Status</div><div style="font-size:14px;font-weight:800">' + statusLabel + '</div>';
+      ph += '</div>';
+      if (app.status === 'pending') {
+        ph += '<div style="font-size:12px;color:var(--txt2)">Admin 24hr mein review karega. Yahan naya application submit nahi ho sakta jab tak yeh resolve na ho.</div>';
+      } else if (app.status === 'rejected') {
+        ph += '<button onclick="if(window._supa)window._supa.from(\'creator_applications\').delete().eq(\'user_id\',\''+uid()+'\').then(function(){if(window.closeModal)closeModal();showCreatorSignup();})" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">🔄 Dobara Apply Karo</button>';
+      }
+      ph += '</div>';
+      if (window.openModal) openModal('🔵 Creator Program', ph);
+      return;
+    }
+    _renderCreatorSignupForm();
+  }, function() { _renderCreatorSignupForm(); });
+}
+
+function _renderCreatorSignupForm() {
+
+  var h = '<div style="text-align:center;padding:8px 0">';
+  h += '<div style="font-size:48px;margin-bottom:12px">🔵</div>';
+  h += '<div style="font-size:17px;font-weight:900;margin-bottom:8px">Creator Ban Jao!</div>';
+  h += '<div style="font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px">';
+  h += 'Apne YouTube/Instagram followers ko Mini eSports pe lao apne code se.<br>';
+  /* ✅ BUG FIX (2026-10-04): commission SIRF hosted Sky Diamond match par
+     (jahan user sky diamond kharch kare) — pct admin-set (CFG) se, hardcoded nahi. */
+  var _sdPct = (window.CFG && window.CFG.sdMatchCommissionPct) || 15;
+  h += 'Jab aap <strong style="color:#00d4ff">apna hosted Sky Diamond match</strong> khilwaate ho aur koi user usme <strong style="color:#00d4ff">Sky Diamond kharch karke join karta hai</strong>, tumhe har match pe <strong style="color:#00d4ff">' + _sdPct + '% commission</strong> milta hai!';
+  h += '</div>';
+  h += '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
+  h += '<div style="font-size:12px;font-weight:700;color:#00d4ff;margin-bottom:8px">💰 Kaise kaam karta hai</div>';
+  h += '<div style="font-size:12px;color:var(--txt2);line-height:1.9">';
+  h += '1️⃣ Apna code banao, followers ko share karo<br>';
+  h += '2️⃣ Woh signup pe tumhara code daalte hain<br>';
+  h += '3️⃣ Jab aap apne <strong style="color:#00d4ff">hosted Sky Diamond match</strong> mein kisi bhi user ko sky diamond kharch karwaate ho, tumhe <strong style="color:#00d4ff">' + _sdPct + '% commission</strong> milta hai — <strong style="color:#00ff9c">sirf hosted Sky Diamond matches par</strong> (coin/green diamond matches par koi commission nahi)<br>';
+  h += '4️⃣ Apna khud ka chhota tournament bhi host kar sakte ho — room set karo, result submit karo';
+  h += '</div>';
+  h += '<div style="font-size:10px;color:var(--txt2);margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,212,255,.15)">ℹ️ Sirf khareedne se commission nahi milta — referral ko real match khelna hoga. Result submit hote hi auto-verify hota hai; sirf suspicious cases Admin dekhta hai.</div>';
+  h += '</div>';
+  h += '<div class="f-group"><label>Apna Creator Code banao</label>';
+  h += '<input type="text" id="newCreatorCode" class="f-input" placeholder="e.g. BEAST_GAMER (letters + _ only)" style="text-transform:uppercase"></div>';
+  h += '<div class="f-group"><label>YouTube / Instagram Channel Link</label>';
+  h += '<input type="text" id="creatorChannelUrl" class="f-input" placeholder="https://youtube.com/@..."></div>';
+  h += '<div class="f-group"><label>Approximate Followers</label>';
+  h += '<select id="creatorFollowers" class="f-input"><option value="1k-5k">1K–5K</option><option value="5k-10k">5K–10K</option><option value="10k-50k">10K–50K</option><option value="50k+">50K+</option></select></div>';
+  h += '<button onclick="submitCreatorSignup()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer"><i class="fas fa-rocket"></i> Creator Program Join Karo</button>';
+  h += '</div>';
+  /* GROWTH MODE banner (2026-11-01): free_mode ON → sabse upar FREE badge */
+  if (window.__creatorFreeMode) {
+    h = '<div style="background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.12));border:1px solid rgba(0,255,156,.35);border-radius:12px;padding:10px 12px;margin-bottom:12px;text-align:center">' +
+        '<div style="font-size:15px;font-weight:900;color:#00ff9c">🆓 CREATOR MODE FREE — LIMITED TIME!</div>' +
+        '<div style="font-size:11px;color:var(--txt2);margin-top:4px">Abhi Gold Premium ki zaroorat NAHI — seedha apply karo, apne matches host karo, commission kamao. Baad me ye wapas paid ho jayega, isliye abhi join kar lo.</div></div>' + h;
+  }
+  if (window.openModal) openModal(window.__creatorFreeMode ? '🆓 Creator Program (FREE)' : '🔵 Creator Program', h);
+}
+
+window.submitCreatorSignup = function() {
+  var code    = ((document.getElementById('newCreatorCode')||{}).value||'').toUpperCase().trim().replace(/[^A-Z0-9_]/g,'');
+  var channel = ((document.getElementById('creatorChannelUrl')||{}).value||'').trim();
+  var followers = ((document.getElementById('creatorFollowers')||{}).value||'1k-5k');
+
+  if (!code || code.length < 4) { toast('Code min 4 characters (letters + _ only)', 'err'); return; }
+  if (!channel) { toast('Channel URL daalo', 'err'); return; }
+  if (!window._supa) { toast('Service unavailable', 'err'); return; }
+
+  /* ✅ BUG FIX (2026-10-04): channel_url + followers insert nahi ho rahe the
+     (form collect hota tha par DB mein save nahi) — isliye admin panel ke
+     Creator Applications table mein Channel/Followers box khali tha. */
+  window._supa.from('creator_applications').insert({
+    user_id: uid(), creator_code: code, status: 'pending',
+    channel_url: channel, followers: followers
+  }).then(function(r) {
+    if (r.error) {
+      /* ✅ BUG FIX (2026-08-23): creator_applications has UNIQUE(user_id),
+         not unique(creator_code) — a 23505 here means the user already
+         has an application (from a race with a second tap, since the
+         normal case is now caught earlier by showCreatorSignup's
+         pre-check), not that the CODE they typed is taken by someone
+         else. The old message ("ye code pehle se liya hua hai") was
+         actively misleading users into retyping a different code that
+         was never going to fix anything. */
+      var msg = r.error.code === '23505' ? 'Aapka application already submit ho chuka hai' : (r.error.message || 'Submit failed');
+      toast(msg, 'err');
+      return;
+    }
+    if (window.closeModal) closeModal();
+    toast('✅ Creator request submit ho gayi! Admin 24hr mein approve karega.', 'ok');
+  });
+};
+
+function renderCreatorDash(codeRow, stats, me) {
+  var h = '';
+  var code = codeRow.code || '';
+  me = me || {};
+
+  // Suspension banner — clear, upfront, tells the creator exactly why
+  // and for how long, instead of them silently failing to host.
+  var _permBan = me.creator_suspended_permanently;
+  var _tempSuspend = me.creator_suspended_until && new Date(me.creator_suspended_until) > new Date();
+  if (_permBan) {
+    h += '<div style="background:rgba(255,60,60,.1);border:1.5px solid rgba(255,60,60,.35);border-radius:14px;padding:14px;margin-bottom:14px;text-align:center">';
+    h += '<div style="font-size:14px;font-weight:800;color:#ff6b6b">🚫 Permanently Banned</div>';
+    h += '<div style="font-size:12px;color:var(--txt2);margin-top:6px">Repeated cheating ke wajah se Creator Program se permanently ban kar diya gaya hai.</div></div>';
+  } else if (_tempSuspend) {
+    h += '<div style="background:rgba(255,170,0,.08);border:1.5px solid rgba(255,170,0,.3);border-radius:14px;padding:14px;margin-bottom:14px;text-align:center">';
+    h += '<div style="font-size:14px;font-weight:800;color:#ffaa00">⏸️ Hosting Suspended</div>';
+    h += '<div style="font-size:12px;color:var(--txt2);margin-top:6px">' + new Date(me.creator_suspended_until).toLocaleDateString('en-IN') + ' tak match host nahi kar sakte. Strikes: ' + (me.creator_strikes||0) + '/6.</div></div>';
+  } else if ((me.creator_strikes||0) > 0) {
+    h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:#ffd700">⚠️ ' + me.creator_strikes + '/6 strikes — 3 strikes pe hosting 30 din suspend hoti hai.</div>';
+  }
+
+  // Rating summary
+  var _rating = Number(me.creator_rating || 5);
+  var _stars = ''; for (var si=1; si<=5; si++) _stars += (si <= Math.round(_rating) ? '★' : '☆');
+  h += '<div style="text-align:center;margin-bottom:12px"><span style="color:#ffd700;font-size:15px">' + _stars + '</span> <span style="font-size:11px;color:#888">' + _rating.toFixed(1) + ' (' + (me.creator_rating_count||0) + ' ratings)</span></div>';
+
+  // Creator code card
+  h += '<div style="background:linear-gradient(135deg,rgba(0,100,255,.08),rgba(0,212,255,.05));border:1.5px solid rgba(0,212,255,.25);border-radius:16px;padding:16px;margin-bottom:14px">';
+  h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">';
+  h += '<div style="font-size:13px;font-weight:800;color:#00d4ff">🔵 Creator Code</div><span style="color:#00ff9c;font-weight:700;font-size:12px">✅ Active</span>';
+  h += '</div>';
+  h += '<div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:3px;margin-bottom:6px">' + code + '</div>';
+  /* ✅ BUG FIX (2026-10-04): text galat tha ("commission tabhi milega jab woh
+     paid match khelenge") — sahi: tab milega jab aap unhe apne hosted Sky
+     Diamond paid match mein khilwao. */
+  h += '<div style="font-size:11px;color:var(--txt2)">Followers signup pe ye code daalein — commission tabhi milega jab aap unhe apne hosted Sky Diamond paid match mein khilwaoge</div>';
+  h += '<button onclick="copyCreatorCode(\'' + code + '\')" style="margin-top:8px;padding:7px 14px;border-radius:10px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.25);color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer"><i class="fas fa-copy"></i> Code Copy</button>';
+  h += '</div>';
+
+  // Stats grid — tied to real creator_stats columns (total_matches, total_earnings)
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">';
+  [
+    { label: 'Referred Matches Played', val: stats.total_matches||0, unit: 'matches', color: '#00d4ff' },
+    { label: 'Total Commission', val: '💎'+(stats.total_earnings||0), unit: 'earned (referrals)', color: '#00ff9c' },
+  ].forEach(function(s) {
+    h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px">';
+    h += '<div style="font-size:10px;color:var(--txt2);margin-bottom:4px">' + s.label + '</div>';
+    h += '<div style="font-size:20px;font-weight:900;color:' + s.color + '">' + s.val + '</div>';
+    h += '<div style="font-size:10px;color:#555">' + s.unit + '</div></div>';
+  });
+  h += '</div>';
+
+  // Share link
+  var shareLink = 'https://deepsilence10161-source.github.io/ff-user-panel/?ref=' + code;
+  var shareMsg = '🎮 Mini eSports pe Free Fire tournaments!\n🪙 Free coins, ranked matches!\n\nMere code se join karo: ' + code + '\n👉 ' + shareLink;
+
+  h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px;margin-bottom:10px">';
+  h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">Tumhara Referral Link</div>';
+  h += '<div style="font-size:11px;color:#00d4ff;word-break:break-all">' + shareLink + '</div>';
+  h += '</div>';
+
+  h += '<button onclick="doShareCreatorLink(\'' + encodeURIComponent(shareMsg) + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px"><i class="fab fa-whatsapp"></i> Promote on WhatsApp</button>';
+
+  h += '<button onclick="showCreatorEarnings()" style="width:100%;padding:11px;border-radius:11px;background:rgba(185,100,255,.08);border:1px solid rgba(185,100,255,.2);color:#b964ff;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:8px">📊 Commission History Dekho</button>';
+
+  // Match Hosting (2026-08 reinstated, secure RPC-backed — see
+  // features/creator-match-host.js for the security model). Lets the
+  // creator run their own small-stakes matches instead of only ever
+  // referring players into admin-run ones.
+  h += '<div style="height:1px;background:rgba(255,255,255,.07);margin:14px 0"></div>';
+  h += '<div style="font-size:13px;font-weight:800;color:#00ff9c;margin-bottom:8px">🎮 Match Hosting</div>';
+  h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:10px">Apna khud ka chhota tournament host karo — room set karo, result submit karo. Payout Admin verify karke karega.</div>';
+  if (_permBan || _tempSuspend) {
+    h += '<button disabled style="width:100%;padding:11px;border-radius:11px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:#555;font-size:13px;font-weight:700;cursor:not-allowed">🔒 Hosting Unavailable</button>';
+  } else {
+    h += '<button onclick="if(window.closeModal)closeModal();if(window.showCreatorMatchForm)showCreatorMatchForm();" style="width:100%;padding:11px;border-radius:11px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.2);color:#00ff9c;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px">➕ Naya Match Host Karo</button>';
+    h += '<button onclick="if(window.closeModal)closeModal();if(window.showMyCreatorMatches)showMyCreatorMatches();" style="width:100%;padding:11px;border-radius:11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:#aaa;font-size:12px;font-weight:700;cursor:pointer">📋 Mere Matches</button>';
+  }
+
+  var _premActive = window.isPremiumActive ? isPremiumActive(2) : false;
+  h += '<div style="height:1px;background:rgba(255,255,255,.07);margin:14px 0"></div>';
+  h += '<div style="font-size:13px;font-weight:800;color:#ff6b35;margin-bottom:8px">📡 Live Stream Slot</div>';
+  if (_premActive) {
+    h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:10px">Premium member ho — apna live stream link app mein dikha sakte ho, apna YouTube watch-time badhao!</div>';
+    h += '<button onclick="if(window.closeModal)closeModal();if(window.showStreamSettings)showStreamSettings();" style="width:100%;padding:11px;border-radius:11px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);color:#ff6b35;font-size:13px;font-weight:700;cursor:pointer">🎥 Live Stream Setup</button>';
+  } else {
+    h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:10px">Apni live stream ka link app mein dikhana chahte ho (apna YouTube watch-time badhane ke liye)? Ye ek <strong style="color:#ffd700">Premium</strong> perk hai.</div>';
+    h += '<button onclick="if(window.closeModal)closeModal();if(window.showPremiumUpgrade)showPremiumUpgrade();" style="width:100%;padding:11px;border-radius:11px;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);color:#ffd700;font-size:13px;font-weight:700;cursor:pointer">👑 Premium Dekho</button>';
+  }
+
+  if (window.openModal) openModal('🔵 Creator Dashboard', h);
+}
+
+window.copyCreatorCode = function(code) {
+  if (navigator.clipboard) navigator.clipboard.writeText(code);
+  toast('Code copy ho gaya! 🎉', 'ok');
+};
+
+window.doShareCreatorLink = function(encodedMsg) {
+  window.openWhatsApp(decodeURIComponent(encodedMsg));
+};
+
+window.showCreatorEarnings = function() {
+  if (!uid() || !window._supa) return;
+  var h = '<div id="_credEarnBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('📊 Commission History', h);
+  window._supa.from('creator_commissions').select('*').eq('creator_uid', uid()).order('created_at', { ascending: false }).limit(50)
+    .then(function(r) {
+      var rows = r.data || [];
+      var body = document.getElementById('_credEarnBody');
+      if (!body) return;
+      if (!rows.length) { body.innerHTML = '<div style="padding:10px;font-size:13px">Abhi tak koi commission nahi aayi</div>'; return; }
+      var bh = '';
+      rows.forEach(function(c) {
+        var statusColor = c.status === 'eligible' || c.status === 'paid' ? '#00ff9c' : '#ffd700';
+        var statusLabel = c.status === 'hold' ? 'Hold (7 din)' : c.status === 'eligible' ? 'Eligible' : c.status === 'paid' ? 'Paid' : c.status;
+        bh += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)">';
+        bh += '<div><div style="font-size:12px;font-weight:700">Match Commission</div><div style="font-size:10px;color:#666">' + new Date(c.created_at).toLocaleDateString('en-IN') + '</div></div>';
+        bh += '<div style="text-align:right"><div style="font-size:14px;font-weight:800;color:#00d4ff">+' + c.amount + ' 💎</div><div style="font-size:10px;color:' + statusColor + '">' + statusLabel + '</div></div>';
+        bh += '</div>';
+      });
+      body.innerHTML = bh;
+    }, function() {
+      var body = document.getElementById('_credEarnBody');
+      if (body) body.innerHTML = '<div style="padding:10px;font-size:13px;color:#ff6b6b">Load failed</div>';
+    });
+};
+
+/* ================================================================
+   4. ACHIEVEMENTS V3 — City King + Unstoppable + Enhanced
+   ================================================================ */
+var ACHIEVEMENTS_V3_EXTRA = [
+  {
+    id: 'city_king', icon: '🌆', title: 'City King',
+    desc: 'Apni city mein 3 baar #1 rank lo',
+    check: function() { return Number((ud().stats||{}).cityTopOneCount||0) >= 3; }
+  },
+  {
+    id: 'unstoppable', icon: '🔥', title: 'Unstoppable',
+    desc: '7-day login streak maintain karo',
+    check: function() { return Number(ud().loginStreak||0) >= 7; }
+  },
+  {
+    id: 'veteran', icon: '🎖️', title: 'Veteran',
+    desc: '100 matches complete karo',
+    check: function() { return Number((ud().stats||{}).matches||0) >= 100; }
+  },
+  {
+    id: 'slayer', icon: '⚡', title: 'Slayer',
+    desc: '500 total kills karo',
+    check: function() { return Number((ud().stats||{}).kills||0) >= 500; }
+  },
+  {
+    id: 'legend', icon: '👑', title: 'Legend',
+    desc: '50 matches jeeto',
+    check: function() { return Number((ud().stats||{}).wins||0) >= 50; }
+  },
+  {
+    id: 'recruiter', icon: '🤝', title: 'Recruiter',
+    desc: '10 friends refer karo',
+    check: function() { return Number(ud().referralCount||0) >= 10; }
+  },
+  {
+    id: 'wealthy', icon: '💎', title: 'Diamond Hoarder',
+    desc: '1000 Green Diamonds kamao',
+    check: function() { return Number(ud().greenDiamonds||0) >= 1000; }
+  },
+  {
+    id: 'clan_chief', icon: '⚔️', title: 'Clan Chief',
+    desc: 'Clan banao aur 5 members rakho',
+    check: function() { var c = ud().clan; return c && c.isLeader && Number(c.memberCount||0) >= 5; }
+  },
+];
+
+window.checkAndAwardAchievements = function() {
+  if (!uid() || !db()) return;
+  var owned = ud().achievementsV3 || {};
+
+  ACHIEVEMENTS_V3_EXTRA.forEach(function(a) {
+    if (owned[a.id]) return; // already awarded
+    try {
+      if (a.check && a.check()) {
+        db().ref('users/' + uid() + '/achievementsV3/' + a.id).set({ awardedAt: Date.now() });
+        /* ✅ R5 (2026-09-23): +50 coin credit REMOVED — general bridge coins
+           credit path security se block hai (2026-09-08), yani pehle bhi
+           actually credit NAHI hota tha; jabki popup गलत दिखता tha.
+           Achievement award display-only है (कोई financial credit नहीं,
+           कोई false promise नहीं)। */
+        showAchievementPopup(a);
+      }
+    } catch(e) {}
+  });
+};
+
+window.showAchievementsV3 = function() {
+  var owned = ud().achievementsV3 || {};
+  var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+  ACHIEVEMENTS_V3_EXTRA.forEach(function(a) {
+    var isOwned = !!owned[a.id];
+    var unlocked = false;
+    try { unlocked = a.check && a.check(); } catch(e) {}
+    h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,' + (isOwned?'.2':'.06') + ');border-radius:14px;padding:12px;text-align:center;opacity:' + (isOwned?'1':unlocked?'.9':'.45') + '">';
+    h += '<div style="font-size:30px;margin-bottom:6px">' + a.icon + '</div>';
+    h += '<div style="font-size:12px;font-weight:800;color:' + (isOwned?'#ffd700':'var(--txt)') + '">' + a.title + '</div>';
+    h += '<div style="font-size:10px;color:var(--txt2);margin-top:4px;line-height:1.4">' + a.desc + '</div>';
+    if (isOwned) h += '<div style="margin-top:6px;font-size:10px;color:#00ff9c;font-weight:700">✅ Earned</div>';
+    else if (unlocked) h += '<div style="margin-top:6px;font-size:10px;color:#ffd700;font-weight:700">🎉 Claim!</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  if (window.openModal) openModal('🏅 Achievements', h);
+};
+
+function showAchievementPopup(a) {
+  var h = '<div style="text-align:center;padding:8px 0">';
+  h += '<div style="font-size:56px;margin-bottom:12px">' + a.icon + '</div>';
+  h += '<div style="font-size:18px;font-weight:900;color:#ffd700;margin-bottom:6px">Achievement Unlock!</div>';
+  h += '<div style="font-size:22px;font-weight:900;margin-bottom:6px">' + a.title + '</div>';
+  h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:16px">' + a.desc + '</div>';
+  h += '<div style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:12px;padding:10px;margin-bottom:14px">';
+  h += '<div style="font-size:22px;font-weight:900;color:#ffd700">+50 🪙</div>';
+  h += '<div style="font-size:11px;color:var(--txt2);margin-top:3px">Achievement Bonus</div></div>';
+  h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer">🔥 Let\'s Go!</button>';
+  h += '</div>';
+  setTimeout(function() {
+    if (window.openModal) openModal('🏅 New Achievement!', h);
+    if (window.updateHdr) window.updateHdr();
+  }, 1500);
+}
+
+/* ================================================================
+   INIT — run on app ready
+   ================================================================ */
+function initPremiumCreator() {
+  if (!window.db || !window.U || !window.UD) {
+    setTimeout(initPremiumCreator, 1500);
+    return;
+  }
+  // Run checks after small delay so UD is fully loaded
+  setTimeout(function() {
+    window._wrapCheckIn && window._wrapCheckIn();
+    window.checkPremiumMonthlyBonus && window.checkPremiumMonthlyBonus();
+    window.checkStreakMilestones    && window.checkStreakMilestones();
+    window.checkAndAwardAchievements && window.checkAndAwardAchievements();
+  }, 3000);
+  console.log('✅ premium-creator-system.js loaded');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(initPremiumCreator, 2000); });
+} else {
+  setTimeout(initPremiumCreator, 2000);
+}
+
+window._premiumCreatorInitFn = initPremiumCreator;
+window.initPremiumCreator    = initPremiumCreator; /* ✅ inside IIFE scope */
+
+/* ================================================================
+   CREATOR VIDEO UPLOAD FORM (C2) — ✅ B24 (2026-10-07) ME HATA DIYA
+   ────────────────────────────────────────────────────────────────
+   Yahan window.submitCreatorVideo() tha jo video ko Firebase
+   `creatorVideos/` me likhta aur Supabase `creator_videos` me mirror karta.
+   YE POORA FEATURE MARA HUA THA, isliye hata diya:
+     * is function ka koi caller hi nahi tha (koi button/form ise nahi
+       bulata tha — code search se confirm),
+     * user panel me video DEKHNE ki koi screen nahi thi aur coin-earning
+       wala koi path nahi tha (admin ki "Creator Video System" settings
+       jhoothi thi — wo bhi hata di gayi),
+     * admin panel me videos review karne ka koi page nahi tha,
+     * `creator_videos` table khaali (0 rows) thi.
+   User panel me sirf ASLI watch feature hai: Watch & Earn (match ka live
+   stream dekhne par coins — features/watch-earn.js).
+   ================================================================ */
+
+/* ================================================================
+   MY CREATOR VIDEOS LIST
+   ================================================================ */
+
+/* ================================================================
+   CREATOR MATCH FORM (C3) — delegated to creator-match-host.js
+   ================================================================ */
+// showCreatorMatchForm(), showMyCreatorMatches() — defined in creator-match-host.js
+
+/* ================================================================
+   CREATOR EARNINGS VIEW (C4)
+   ================================================================ */
+window.showCreatorEarnings = function() {
+  if (!uid() || !window._supa) return;
+  var h = '<div id="_credEarnBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('💰 Commission Earnings', h);
+
+  /* R29E P1-FIX (2026-09-22): purana is view ka data Firebase
+     `creatorCommission/{uid}` mirror se aata tha — jo user-bridge me
+     kabhi map hi nahi tha (0 results hamesha). Ab seedha single source
+     of truth Supabase `creator_commissions` ledger se padhta hai. */
+  window._supa.from('creator_commissions')
+    .select('match_id,amount,currency,status,eligible_at,created_at')
+    .eq('creator_uid', uid())
+    .order('created_at', { ascending: false }).limit(50)
+    .then(function(r) {
+      var list = r.data || [];
+      var body = document.getElementById('_credEarnBody');
+      if (!list.length) {
+        if (body) body.innerHTML = '<div style="text-align:center;color:#888;padding:20px">Koi commission history nahi abhi.<br><br>Pehle match host karo aur complete karo!</div>';
+        return;
+      }
+      var grid = '<div style="display:grid;gap:8px">';
+      list.forEach(function(c) {
+        var st = c.status || 'hold';
+        var stColor = st === 'paid' ? '#00ff9c' : st === 'eligible' ? '#ffd700' : '#aaa';
+        var stLabel = st === 'paid' ? '✅ Paid' : st === 'eligible' ? '💰 Eligible' : (st === 'pending_payout' ? '⏳ Payout pending' : '🔒 Hold');
+        var dtStr   = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN') : '';
+        var eligStr = c.eligible_at && st === 'hold' ? ' (eligible: ' + new Date(c.eligible_at).toLocaleDateString('en-IN') + ')' : '';
+        var amtStr  = c.currency === 'gd' ? (c.amount||0) + ' 🟢 GD' : '₹' + (c.amount||0);
+
+        grid += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center">';
+        grid += '<div>';
+        grid += '<div style="font-size:11px;color:#888">Match: ' + String(c.match_id||'').slice(0,8) + '... · ' + dtStr + '</div>';
+        grid += '<div style="font-size:10px;color:' + stColor + '">' + stLabel + eligStr + '</div>';
+        grid += '</div>';
+        grid += '<div style="font-size:15px;font-weight:900;color:#b964ff">' + amtStr + '</div>';
+        grid += '</div>';
+      });
+
+      var eligInr = list.filter(function(c){ return c.status === 'eligible' && c.currency === 'inr'; })
+                       .reduce(function(s,c){ return s + (Number(c.amount)||0); }, 0);
+      if (eligInr >= ((window.CFG && window.CFG.creatorMinPayout) || 100)) {
+        grid += '<button onclick="requestMatchCommissionPayout(' + eligInr + ')" style="width:100%;margin-top:10px;padding:12px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:13px;font-weight:800;cursor:pointer">💰 ₹' + eligInr + ' Payout Request</button>';
+      }
+      grid += '</div>';
+      if (body) body.innerHTML = grid;
+      else if (window.openModal) openModal('💰 Commission Earnings', grid);
+    }, function(err) {
+      var body = document.querySelector('#_credEarnBody');
+      if (body) body.innerHTML = '<div style="text-align:center;color:#ff6b6b;padding:20px">Load failed</div>';
+    });
+};
+
+window.requestMatchCommissionPayout = function(amount) {
+  if (!uid() || !window._supa) return;
+  if (!confirm('₹' + amount + ' match commission payout request karo?')) return;
+  /* R29E P1-FIX: server-authoritative claim_match_commission_payout atomically
+     (a) eligible→pending_payout transition + (b) creator_payouts pending row
+     banata hai. Purana RTDB `creatorPayouts` push user-bridge me map hi nahi
+     tha (silent drop) — ab wo path hata diya. */
+  window._supa.rpc('claim_match_commission_payout').then(function(res) {
+    if (res.error || (res.data && res.data.success === false)) {
+      var msg = (res.data && res.data.error) || (res.error && res.error.message) || 'Unknown error';
+      console.error('[Creator] claim_match_commission_payout failed:', msg);
+      if (window.toast) toast('⚠️ Payout claim sync fail: ' + msg, 'err');
+      return;
+    }
+    toast('✅ Payout request submit! Admin process karega.', 'ok');
+  });
+  if (window.closeModal) closeModal();
+};
+
+})();

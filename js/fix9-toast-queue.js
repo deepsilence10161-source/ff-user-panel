@@ -1,1 +1,167 @@
-(function(){'use strict';var _0x506d8f=(function(){var _0x1d11e9=!![];return function(_0x29da7e,_0x4213d4){var _0x1b85f9=_0x1d11e9?function(){if(_0x4213d4){var _0x5d7513=_0x4213d4['apply'](_0x29da7e,arguments);return _0x4213d4=null,_0x5d7513;}}:function(){};return _0x1d11e9=![],_0x1b85f9;};}()),_0x34bc3c=_0x506d8f(this,function(){if(_0x34bc3c['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x34bc3c['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x34bc3c)['search']('(((.+)+)+)+$');});_0x34bc3c();var _0xd6861d=0x898,_0x9dd331=0x64,_0x5f0ea7=0x3,_0x56fd04=0x5dc,_0x23e070=[],_0x1b4453=[],_0x1a2794={},_0x4483c3=![],_0x192389=0x0,_0x58317f={'err':0x3,'inf':0x2,'ok':0x1};function _0x1ff024(){var _0x19fa1b=document['getElementById']('toast-wrap');return!_0x19fa1b&&(_0x19fa1b=document['createElement']('div'),_0x19fa1b['id']='toast-wrap',_0x19fa1b['style']['cssText']='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:90%;max-width:340px',document['body']['appendChild'](_0x19fa1b)),_0x19fa1b;}function _0x60f2e4(_0x45fec6){var _0x21bdc4=_0x1ff024();if(_0x1b4453['length']>=_0x5f0ea7){var _0x294e62=_0x1b4453['shift']();_0x294e62&&_0x294e62['parentNode']&&_0x294e62['parentNode']['removeChild'](_0x294e62);}var _0x5bb26c=document['createElement']('div');_0x5bb26c['className']='toast-item\x20t'+(_0x45fec6['type']||'ok');var _0x115582=_0x45fec6['type']==='err'?'exclamation-circle':_0x45fec6['type']==='inf'?'info-circle':'check-circle';return _0x5bb26c['innerHTML']='<i\x20class=\x22fas\x20fa-'+_0x115582+'\x22></i>'+(window['escHtml']?window['escHtml'](_0x45fec6['msg']==null?'':_0x45fec6['msg']):String(_0x45fec6['msg']==null?'':_0x45fec6['msg'])),_0x5bb26c['style']['cssText']+=';animation:toastIn\x20.25s\x20ease;pointer-events:auto',_0x5bb26c['title']='Tap\x20to\x20dismiss',_0x5bb26c['onclick']=function(){_0x589f19(_0x5bb26c);},_0x21bdc4['appendChild'](_0x5bb26c),_0x1b4453['push'](_0x5bb26c),setTimeout(function(){_0x589f19(_0x5bb26c);},_0x45fec6['duration']||_0xd6861d),!![];}function _0x589f19(_0x5aaac4){_0x5aaac4['style']['opacity']='0',_0x5aaac4['style']['transform']='translateY(8px)',_0x5aaac4['style']['transition']='all\x20.2s',setTimeout(function(){if(_0x5aaac4['parentNode'])_0x5aaac4['remove']();_0x1b4453=_0x1b4453['filter'](function(_0x15948e){return _0x15948e!==_0x5aaac4;}),setTimeout(_0xbbaf5a,_0x9dd331);},0xc8);}function _0xbbaf5a(){if(!_0x23e070['length']){_0x4483c3=![];return;}if(_0x1b4453['length']>=_0x5f0ea7){_0x4483c3=![];return;}_0x23e070['sort'](function(_0xb2451b,_0x31efff){return(_0x58317f[_0x31efff['type']]||0x1)-(_0x58317f[_0xb2451b['type']]||0x1);});var _0x1492c5=_0x23e070['shift']();_0x60f2e4(_0x1492c5)?_0x23e070['length']&&_0x1b4453['length']<_0x5f0ea7&&setTimeout(_0xbbaf5a,_0x9dd331):(_0x23e070['unshift'](_0x1492c5),setTimeout(_0xbbaf5a,0x12c));}var _0x1338ab=window['toast'];window['toast']=function(_0x12e3b0,_0x5d4279,_0x335234){if(!_0x12e3b0)return;_0x335234=_0x335234||{};var _0x3328b8=_0x5d4279+':'+_0x12e3b0,_0x323af5=Date['now']();if(_0x1a2794[_0x3328b8]&&_0x323af5-_0x1a2794[_0x3328b8]<_0x56fd04)return;_0x1a2794[_0x3328b8]=_0x323af5,setTimeout(function(){delete _0x1a2794[_0x3328b8];},_0x56fd04+0x64),_0x23e070['push']({'id':++_0x192389,'msg':_0x12e3b0,'type':_0x5d4279||'ok','duration':_0x335234['duration']||_0xd6861d,'priority':_0x58317f[_0x5d4279]||0x1}),!_0x4483c3&&(_0x4483c3=!![],setTimeout(_0xbbaf5a,0x0));};if(!document['getElementById']('toastQueueStyle')){var _0x23c2e4=document['createElement']('style');_0x23c2e4['id']='toastQueueStyle',_0x23c2e4['textContent']=['@keyframes\x20toastIn\x20{','\x20\x20from\x20{\x20opacity:0;\x20transform:translateY(12px)\x20scale(.95);\x20}','\x20\x20to\x20\x20\x20{\x20opacity:1;\x20transform:translateY(0)\x20scale(1);\x20}','}','#toast-wrap\x20.toast-item\x20{','\x20\x20transition:\x20opacity\x20.2s,\x20transform\x20.2s;','\x20\x20cursor:\x20pointer;','}']['join'](''),document['head']['appendChild'](_0x23c2e4);}window['toastUrgent']=function(_0x3c9c98,_0x296ef0){window['toast'](_0x3c9c98,_0x296ef0||'err',{'priority':0xa});if(_0x23e070['length']>0x1){var _0x240bd6=_0x23e070['pop']();_0x23e070['unshift'](_0x240bd6);}!_0x4483c3&&(_0x4483c3=!![],setTimeout(_0xbbaf5a,0x0));},window['toastClear']=function(){_0x23e070=[],_0x1b4453['forEach'](function(_0x1360fd){if(_0x1360fd['parentNode'])_0x1360fd['remove']();}),_0x1b4453=[];},console['log']('[Mini\x20eSports]\x20✅\x20Fix\x209:\x20Toast\x20Queue\x20System\x20loaded.');}());
+/* ============================================================
+   FIX 9: TOAST NOTIFICATION QUEUE SYSTEM
+   - Ek finish ho to agla dikhao
+   - Max 3 toasts visible at once
+   - Priority levels: err > inf > ok
+   - Duplicate suppression
+   ============================================================ */
+
+(function() {
+  'use strict';
+
+  var TOAST_DURATION  = 2200;   // ms each toast stays
+  var TOAST_GAP       = 100;    // ms between toasts
+  var MAX_VISIBLE     = 3;      // max toasts on screen at once
+  var DEDUP_WINDOW    = 1500;   // suppress duplicate within ms
+
+  var _queue    = [];    // { msg, type, priority, id }
+  var _active   = [];    // currently displayed toast elements
+  var _lastMsgs = {};    // dedup: msg → timestamp
+  var _running  = false;
+  var _idSeq    = 0;
+
+  /* Priority map */
+  var PRIORITY = { err: 3, inf: 2, ok: 1 };
+
+  /* ── Ensure toast-wrap exists ── */
+  function getWrap() {
+    var w = document.getElementById('toast-wrap');
+    if (!w) {
+      w = document.createElement('div');
+      w.id = 'toast-wrap';
+      w.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:90%;max-width:340px';
+      document.body.appendChild(w);
+    }
+    return w;
+  }
+
+  /* ── Show one toast element ── */
+  function showOne(item) {
+    var w = getWrap();
+    /* Issue #37 Fix: When at MAX_VISIBLE, evict the oldest toast instead of
+       returning false and re-queuing — high-volume events now always appear. */
+    if (_active.length >= MAX_VISIBLE) {
+      var oldest = _active.shift();
+      if (oldest && oldest.parentNode) { oldest.parentNode.removeChild(oldest); }
+    }
+
+    var d = document.createElement('div');
+    d.className = 'toast-item t' + (item.type || 'ok');
+    var ic = item.type === 'err' ? 'exclamation-circle'
+           : item.type === 'inf' ? 'info-circle'
+           : 'check-circle';
+    /* ✅ D99-F1c: queue renderer hi asli toast sink hai (window.toast override) —
+       yahan bhi msg escape, warna baaki app ke saare toast raw innerHTML the. */
+    d.innerHTML = '<i class="fas fa-' + ic + '"></i>' + (window.escHtml ? window.escHtml(item.msg == null ? '' : item.msg) : String(item.msg == null ? '' : item.msg));
+    d.style.cssText += ';animation:toastIn .25s ease;pointer-events:auto';
+    d.title = 'Tap to dismiss';
+    d.onclick = function() { dismiss(d); };
+
+    w.appendChild(d);
+    _active.push(d);
+
+    setTimeout(function() { dismiss(d); }, item.duration || TOAST_DURATION);
+    return true;
+  }
+
+  /* ── Dismiss a toast and process queue ── */
+  function dismiss(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(8px)';
+    el.style.transition = 'all .2s';
+    setTimeout(function() {
+      if (el.parentNode) el.remove();
+      _active = _active.filter(function(a) { return a !== el; });
+      /* Process next in queue */
+      setTimeout(pump, TOAST_GAP);
+    }, 200);
+  }
+
+  /* ── Process queue ── */
+  function pump() {
+    if (!_queue.length) { _running = false; return; }
+    if (_active.length >= MAX_VISIBLE) { _running = false; return; }
+
+    /* Sort by priority (high first) */
+    _queue.sort(function(a, b) { return (PRIORITY[b.type]||1) - (PRIORITY[a.type]||1); });
+
+    var item = _queue.shift();
+    if (showOne(item)) {
+      /* Continue pumping if queue has more and slots available */
+      if (_queue.length && _active.length < MAX_VISIBLE) {
+        setTimeout(pump, TOAST_GAP);
+      }
+    } else {
+      /* Slot not available — put back and retry */
+      _queue.unshift(item);
+      setTimeout(pump, 300);
+    }
+  }
+
+  /* ── Public toast() — replaces original ── */
+  var _origToast = window.toast;
+
+  window.toast = function(msg, type, opts) {
+    if (!msg) return;
+    opts = opts || {};
+
+    /* Deduplicate */
+    var dedup = type + ':' + msg;
+    var now = Date.now();
+    if (_lastMsgs[dedup] && now - _lastMsgs[dedup] < DEDUP_WINDOW) return;
+    _lastMsgs[dedup] = now;
+
+    /* Clean up old dedup entries */
+    setTimeout(function() { delete _lastMsgs[dedup]; }, DEDUP_WINDOW + 100);
+
+    _queue.push({
+      id:       ++_idSeq,
+      msg:      msg,
+      type:     type || 'ok',
+      duration: opts.duration || TOAST_DURATION,
+      priority: PRIORITY[type] || 1
+    });
+
+    if (!_running) {
+      _running = true;
+      setTimeout(pump, 0);
+    }
+  };
+
+  /* ── Inject CSS animation if not present ── */
+  if (!document.getElementById('toastQueueStyle')) {
+    var style = document.createElement('style');
+    style.id = 'toastQueueStyle';
+    style.textContent = [
+      '@keyframes toastIn {',
+      '  from { opacity:0; transform:translateY(12px) scale(.95); }',
+      '  to   { opacity:1; transform:translateY(0) scale(1); }',
+      '}',
+      '#toast-wrap .toast-item {',
+      '  transition: opacity .2s, transform .2s;',
+      '  cursor: pointer;',
+      '}'
+    ].join('');
+    document.head.appendChild(style);
+  }
+
+  /* ── Helper: urgent toast that jumps queue ── */
+  window.toastUrgent = function(msg, type) {
+    window.toast(msg, type || 'err', { priority: 10 });
+    /* Force to front */
+    if (_queue.length > 1) {
+      var last = _queue.pop();
+      _queue.unshift(last);
+    }
+    if (!_running) { _running = true; setTimeout(pump, 0); }
+  };
+
+  /* ── Helper: clear all toasts ── */
+  window.toastClear = function() {
+    _queue = [];
+    _active.forEach(function(el) { if (el.parentNode) el.remove(); });
+    _active = [];
+  };
+
+  console.log('[Mini eSports] ✅ Fix 9: Toast Queue System loaded.');
+})();

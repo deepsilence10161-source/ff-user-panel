@@ -1,0 +1,52 @@
+15:39:01 matrix pid=49841 shuru
+15:39:01 total_rss=49MB available=1309MB chromium_procs=0
+0 peak=49MB
+15:39:09 total_rss=739MB available=1049MB chromium_procs=7 peak=739MB
+15:39:17 total_rss=734MB available=1048MB chromium_procs=7 peak=739MB
+15:39:25 total_rss=726MB available=1056MB chromium_procs=7 peak=739MB
+15:39:33 total_rss=751MB available=1054MB chromium_procs=7 peak=751MB
+15:39:41 total_rss=764MB available=1021MB chromium_procs=7 peak=764MB
+15:39:49 total_rss=754MB available=1029MB chromium_procs=7 peak=764MB
+15:39:57 total_rss=783MB available=1014MB chromium_procs=7 peak=783MB
+15:40:05 total_rss=778MB available=1038MB chromium_procs=7 peak=783MB
+15:40:13 total_rss=764MB available=1038MB chromium_procs=7 peak=783MB
+15:40:21 total_rss=795MB available=995MB chromium_procs=7 peak=795MB
+15:40:29 total_rss=794MB available=1000MB chromium_procs=7 peak=795MB
+15:40:38 total_rss=840MB available=946MB chromium_procs=7 peak=840MB
+15:40:46 total_rss=802MB available=1011MB chromium_procs=7 peak=840MB
+15:40:54 total_rss=783MB available=991MB chromium_procs=7 peak=840MB
+15:41:02 total_rss=854MB available=866MB chromium_procs=7 peak=854MB
+15:41:10 total_rss=934MB available=863MB chromium_procs=7 peak=934MB
+15:41:18 total_rss=903MB available=889MB chromium_procs=7 peak=934MB
+15:41:26 total_rss=929MB available=881MB chromium_procs=7 peak=934MB
+15:41:34 total_rss=704MB available=494MB chromium_procs=7 peak=934MB
+15:41:42 total_rss=785MB available=758MB chromium_procs=7 peak=934MB
+15:41:50 total_rss=762MB available=760MB chromium_procs=7 peak=934MB
+15:41:58 total_rss=843MB available=731MB chromium_procs=7 peak=934MB
+15:42:06 total_rss=777MB available=767MB chromium_procs=7 peak=934MB
+15:42:14 total_rss=738MB available=827MB chromium_procs=7 peak=934MB
+15:42:22 matrix exit=0 peak_rss=934MB
+=== matrix log tail ===
+  mem qa4/hi/home: heap=10.7MB nodes=1187
+clicks qa4/hi/home done, findings=0 dialogs=0
+  mem qa4/hi/rank: heap=10.7MB nodes=1123
+clicks qa4/hi/rank done, findings=0 dialogs=0
+  mem qa4/hi/matches: heap=10.7MB nodes=1085
+clicks qa4/hi/matches done, findings=0 dialogs=0
+  mem qa4/hi/wallet: heap=10.7MB nodes=1123
+clicks qa4/hi/wallet done, findings=0 dialogs=0
+  mem qa4/hi/profile: heap=10.7MB nodes=1123
+clicks qa4/hi/profile done, findings=0 dialogs=0
+  mem qa4/hi/notif: heap=10.7MB nodes=1123
+clicks qa4/hi/notif done, findings=0 dialogs=0
+  mem qa4/hi/special: heap=10.7MB nodes=1085
+clicks qa4/hi/special done, findings=0 dialogs=0
+  mem qa4/hi/clan: heap=10.7MB nodes=1078
+clicks qa4/hi/clan done, findings=0 dialogs=0
+  mem qa4/hi/settings: heap=10.7MB nodes=1085
+clicks qa4/hi/settings done, findings=0 dialogs=0
+  ‼ PAGE CLOSED qa4/hi screen=settings ix=10 2026-11-15T15:42:16.450Z
+CLICK MATRIX FINDINGS: 0 | NATIVE DIALOGS: 0
+RENDERER CRASHES: 0 []
+  ‼ BROWSER DISCONNECTED (pura browser mara — sandbox OOM-kill?) 2026-11-15T15:42:16.510Z
+=== peak RSS = 934 MB (sandbox total ~1982 MB) ===

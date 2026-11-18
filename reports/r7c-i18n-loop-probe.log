@@ -1,0 +1,20 @@
+
+=== i18n LOOP PROBE — qa4/hi — https://deepsilence10161-source.github.io/ff-user-panel/index.html ===
+  live file check: {"fixRev":20261115,"hasRaw":"function","hasGuarded":"function","nvErr":null,"scripts":["js/i18n-apply.js?v=20261114d"],"i18nResources":[{"name":"js/i18n-apply.js?v=20261114d","size":2806,"dur":1356}]}
+  network responses for i18n-apply: [{"url":"-source.github.io/ff-user-panel/js/i18n-apply.js?v=20261114d","status":200,"len":2506}]
+  notif screen par 12s idle — text-node writes gin raha hoon...
+   t+1s writes=-1 heap=11.3MB nodes=1195
+   t+2s writes=-1 heap=11.3MB nodes=1195
+   t+3s writes=-1 heap=11.3MB nodes=1195
+   t+4s writes=-1 heap=11.3MB nodes=1195
+   t+5s writes=-1 heap=11.3MB nodes=1195
+   t+6s writes=-1 heap=11.3MB nodes=1195
+   t+7s writes=-1 heap=11.3MB nodes=1195
+   t+8s writes=-1 heap=11.3MB nodes=1195
+   t+9s writes=-1 heap=11.3MB nodes=1195
+   t+10s writes=-1 heap=11.3MB nodes=1195
+   t+11s writes=-1 heap=11.3MB nodes=1195
+   t+12s writes=-1 heap=11.3MB nodes=1195
+
+  TOTAL writes during idle: -1 | alive: true | crashed: false
+  json → /home/user/ff-user-panel/reports/d103-i18n-loop-probe/loop-probe.json

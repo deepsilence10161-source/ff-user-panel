@@ -1,1 +1,188 @@
-(function(){'use strict';var _0x22bca3=(function(){var _0x5f30d7=!![];return function(_0xd3ce18,_0x3173b6){var _0x10e874=_0x5f30d7?function(){if(_0x3173b6){var _0x41af01=_0x3173b6['apply'](_0xd3ce18,arguments);return _0x3173b6=null,_0x41af01;}}:function(){};return _0x5f30d7=![],_0x10e874;};}()),_0x596017=_0x22bca3(this,function(){if(_0x596017['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x596017['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x596017)['search']('(((.+)+)+)+$');});_0x596017();function _0x167973(){return window['_supa'];}function _0x5ea174(){return window['U']&&window['U']['uid'];}function _0x52d70b(){return window['UD']||{};}var _0x362373={};window['sendDuelChallenge']=function(_0x41f910,_0x204e27){if(!_0x5ea174()||!_0x52d70b()){if(window['toast'])toast('Login\x20karo','err');return;}if(_0x41f910===_0x5ea174()){if(window['toast'])toast('Khud\x20ko\x20challenge\x20nahi\x20kar\x20sakte!','err');return;}var _0xcc1230=Date['now']();if(_0x362373[_0x41f910]&&_0xcc1230-_0x362373[_0x41f910]<0x7530){var _0x1221af=Math['ceil']((0x7530-(_0xcc1230-_0x362373[_0x41f910]))/0x3e8);if(window['toast'])toast('⏳\x20'+_0x1221af+'s\x20wait\x20karo,\x20phir\x20challenge\x20karo!','err');return;}_0x362373[_0x41f910]=_0xcc1230;var _0x46924f=_0x52d70b()['ign']||_0x52d70b()['displayName']||'Player',_0x42d2d7='<div\x20style=\x22text-align:center;padding:10px\x200\x2016px\x22><div\x20style=\x22font-size:48px;margin-bottom:8px\x22>⚔️</div>';_0x42d2d7+='<div\x20style=\x22font-size:18px;font-weight:900\x22>'+(window['escHtml']?window['escHtml'](_0x204e27):_0x204e27)+'\x20ko\x20Challenge\x20Karo</div>',_0x42d2d7+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:4px\x22>Same\x20match\x20mein\x20khelo\x20—\x20score\x20compare\x20hoga</div></div>',_0x42d2d7+='<div\x20style=\x22margin-bottom:14px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:8px\x22>Match\x20Type</div><div\x20style=\x22display:flex;gap:8px\x22>',[['solo','🎯\x20Solo','Highest\x20kills\x20wins'],['duo','👥\x20Duo','Combined\x20kills'],['squad','💣\x20Squad','Best\x20rank\x20wins']]['forEach'](function(_0x5631e3,_0x5ce87d){_0x42d2d7+='<button\x20onclick=\x22_duelSelMode(this,\x27'+_0x5631e3[0x0]+'\x27)\x22\x20class=\x22_duelModeBtn\x22\x20style=\x22flex:1;padding:10px\x206px;border-radius:12px;border:1.5px\x20solid\x20var(--border);background:'+(_0x5ce87d===0x0?'var(--primary)':'transparent')+';color:'+(_0x5ce87d===0x0?'#000':'var(--txt)')+';font-size:11px;font-weight:700;cursor:pointer;line-height:1.4\x22\x20data-sel=\x22'+(_0x5ce87d===0x0?_0x5631e3[0x0]:'')+'\x22>'+_0x5631e3[0x1]+'<br><span\x20style=\x22font-size:9px;opacity:.7\x22>'+_0x5631e3[0x2]+'</span></button>';}),_0x42d2d7+='</div></div>',_0x42d2d7+='<div\x20style=\x22margin-bottom:14px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Taunt\x20(optional)</div>',_0x42d2d7+='<input\x20id=\x22duelTauntIn\x22\x20type=\x22text\x22\x20maxlength=\x2250\x22\x20placeholder=\x22e.g.\x20Haaraaunga\x20tujhe...\x22\x20style=\x22width:100%;padding:11px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box\x22></div>',_0x42d2d7+='<div\x20id=\x22duelRecordCard\x22\x20style=\x22margin-bottom:14px\x22></div>',_0x42d2d7+='<button\x20onclick=\x22window._submitDuelChallenge(\x27'+_0x41f910+'\x27,\x27'+(window['escAttrJs']?window['escAttrJs'](_0x204e27):_0x204e27)+'\x27);\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b6b,#ff4444);color:#fff;font-size:14px;font-weight:900;cursor:pointer\x22>⚔️\x20Challenge\x20Bhejo!</button>',openModal('⚔️\x20Duel\x20Challenge',_0x42d2d7),setTimeout(function(){var _0x145ed0=document['querySelectorAll']('._duelModeBtn');_0x145ed0[0x0]&&(_0x145ed0[0x0]['style']['background']='var(--primary)',_0x145ed0[0x0]['style']['color']='#000',_0x145ed0[0x0]['dataset']['sel']='solo'),_0x83f238(_0x41f910,_0x204e27);},0x50);},window['_duelSelMode']=function(_0x299c76,_0xde5144){document['querySelectorAll']('._duelModeBtn')['forEach'](function(_0x3dd6a8){_0x3dd6a8['style']['background']='transparent',_0x3dd6a8['style']['color']='var(--txt)',_0x3dd6a8['dataset']['sel']='';}),_0x299c76['style']['background']='var(--primary)',_0x299c76['style']['color']='#000',_0x299c76['dataset']['sel']=_0xde5144;};function _0x83f238(_0x5e668c,_0x16d1fc){var _0xe0e112=document['getElementById']('duelRecordCard');if(!_0xe0e112||!_0x167973()||!_0x5ea174())return;_0x167973()['from']('duel_records')['select']('wins,losses')['eq']('user_id',_0x5ea174())['eq']('opponent_id',_0x5e668c)['single']()['then'](function(_0x207e96){var _0x5dbd3f=_0x207e96['data']||{'wins':0x0,'losses':0x0},_0x2b6a67=(_0x5dbd3f['wins']||0x0)+(_0x5dbd3f['losses']||0x0);if(!_0x2b6a67){_0xe0e112['innerHTML']='';return;}_0xe0e112['innerHTML']='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2014px;border-radius:12px;background:rgba(255,255,255,.04);border:1px\x20solid\x20var(--border)\x22><span\x20style=\x22font-size:12px;color:var(--txt2)\x22>vs\x20'+(window['escHtml']?window['escHtml'](_0x16d1fc):_0x16d1fc)+':</span><span\x20style=\x22font-size:14px;font-weight:800;color:var(--green)\x22>'+(_0x5dbd3f['wins']||0x0)+'\x20W</span><span\x20style=\x22color:var(--txt2)\x22>\x20/\x20</span><span\x20style=\x22font-size:14px;font-weight:800;color:#ff6b6b\x22>'+(_0x5dbd3f['losses']||0x0)+'\x20L</span><span\x20style=\x22margin-left:auto;font-size:10px;color:var(--txt2)\x22>'+_0x2b6a67+'\x20duels</span></div>';})['catch'](function(){_0xe0e112['innerHTML']='';});}window['_submitDuelChallenge']=function(_0x4c57da,_0x52b04d){if(!_0x167973()||!_0x5ea174()||!_0x52d70b()){if(window['toast'])toast('Login\x20karo','err');return;}var _0x4b45e4=document['querySelector']('._duelModeBtn[data-sel]:not([data-sel=\x22\x22])'),_0x37aa26=_0x4b45e4?_0x4b45e4['dataset']['sel']:'solo',_0x424366=(document['getElementById']('duelTauntIn')||{})['value']||'',_0x4c153f=_0x52d70b()['ign']||_0x52d70b()['displayName']||'Player';_0x167973()['from']('duel_challenges')['insert']({'challenger_uid':_0x5ea174(),'challenger_ign':_0x4c153f,'opponent_uid':_0x4c57da,'challengee_ign':_0x52b04d,'mode':_0x37aa26,'taunt':_0x424366['trim'](),'status':'pending'})['then'](function(_0x561bd7){var _0x1589bc=_0x561bd7['data']&&_0x561bd7['data'][0x0]&&_0x561bd7['data'][0x0]['id']||null;_0x167973()['from']('notifications')['insert']({'user_id':_0x4c57da,'type':'duel_challenge','title':'⚔️\x20Duel\x20Challenge!','body':_0x4c153f+'\x20ne\x20tumhe\x201v1\x20challenge\x20bheja!\x20('+_0x37aa26['toUpperCase']()+')'+(_0x424366?'\x20—\x20\x22'+_0x424366+'\x22':''),'ref_id':_0x1589bc?String(_0x1589bc):null,'is_read':![]})['then'](null,function(){});if(window['logActivity'])logActivity('join','⚔️\x20'+(window['escHtml']?window['escHtml'](_0x52b04d):_0x52b04d)+'\x20ko\x20duel\x20challenge\x20bheja');if(window['toast'])toast('⚔️\x20Challenge\x20bhej\x20diya\x20'+(window['escHtml']?window['escHtml'](_0x52b04d):_0x52b04d)+'\x20ko!','ok');if(window['closeModal'])closeModal();})['catch'](function(_0x281050){if(window['toast'])toast('Error:\x20'+(_0x281050['message']||'Try\x20again'),'err');});},window['showMyChallenges']=function(){if(!_0x5ea174()){if(window['toast'])toast('Login\x20karo','err');return;}openModal('⚔️\x20My\x20Challenges','<div\x20id=\x22chalContent\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>'),_0x13d25c();};function _0x13d25c(){var _0x56d91e=document['getElementById']('chalContent');if(!_0x56d91e||!_0x167973()||!_0x5ea174())return;_0x167973()['from']('duel_challenges')['select']('*')['or']('challenger_uid.eq.'+_0x5ea174()+',opponent_uid.eq.'+_0x5ea174())['order']('created_at',{'ascending':![]})['limit'](0x14)['then'](function(_0x3827fb){var _0x342468=_0x3827fb['data']||[],_0x32546b=_0x342468['filter'](function(_0x170e9b){return _0x170e9b['opponent_uid']===_0x5ea174()&&_0x170e9b['status']==='pending';}),_0x5b60fd=_0x342468['filter'](function(_0x5da169){return _0x5da169['status']!=='pending';}),_0x4db0ad='';_0x32546b['length']&&(_0x4db0ad+='<div\x20style=\x22font-size:13px;font-weight:800;color:#ff6b6b;margin-bottom:8px\x22>🔔\x20Incoming\x20('+_0x32546b['length']+')</div>',_0x32546b['forEach'](function(_0x2d4765){_0x4db0ad+=_0x302825(_0x2d4765,!![]);}));_0x5b60fd['length']&&(_0x4db0ad+='<div\x20style=\x22font-size:13px;font-weight:800;color:var(--txt2);margin:14px\x200\x208px\x22>📜\x20History</div>',_0x5b60fd['slice'](0x0,0xa)['forEach'](function(_0x3b222b){var _0x2ec28a=_0x3b222b['challenger_uid']===_0x5ea174(),_0x1c5c6c=_0x2ec28a&&_0x3b222b['result']==='challenger_win'||!_0x2ec28a&&_0x3b222b['result']==='challengee_win';_0x4db0ad+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;border-radius:12px;background:var(--card);border:1px\x20solid\x20var(--border);margin-bottom:7px\x22>',_0x4db0ad+='<span\x20style=\x22font-size:20px\x22>'+(_0x1c5c6c?'🏆':'💀')+'</span>',_0x4db0ad+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:700\x22>vs\x20'+(window['escHtml']?window['escHtml'](_0x2ec28a?_0x3b222b['challengee_ign']:_0x3b222b['challenger_ign']):_0x2ec28a?_0x3b222b['challengee_ign']:_0x3b222b['challenger_ign'])+'</div>',_0x4db0ad+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+(_0x3b222b['mode']||'solo')['toUpperCase']()+'</div></div>',_0x4db0ad+='<span\x20style=\x22font-size:12px;font-weight:800;color:'+(_0x1c5c6c?'var(--green)':'#ff6b6b')+'\x22>'+(_0x1c5c6c?'WIN':'LOSS')+'</span></div>';}));if(!_0x4db0ad)_0x4db0ad='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>⚔️</div><p>Koi\x20challenges\x20nahi</p></div>';_0x56d91e['innerHTML']=_0x4db0ad;})['catch'](function(){_0x56d91e['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center;padding:20px\x22>Error\x20loading\x20challenges</div>';});}function _0x302825(_0x30cf37,_0x1eff85){var _0x20623e='<div\x20style=\x22padding:14px;border-radius:14px;background:rgba(255,107,107,.06);border:1.5px\x20solid\x20rgba(255,107,107,.25);margin-bottom:10px\x22>';_0x20623e+='<div\x20style=\x22display:flex;align-items:center;gap:10px;margin-bottom:10px\x22><div\x20style=\x22font-size:28px\x22>⚔️</div>',_0x20623e+='<div><div\x20style=\x22font-size:14px;font-weight:800\x22>'+(_0x1eff85?_0x30cf37['challenger_ign']:_0x30cf37['challengee_ign'])+'\x20ka\x20Challenge!</div>',_0x20623e+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>'+(_0x30cf37['mode']||'solo')['toUpperCase']()+'</div>';if(_0x30cf37['taunt'])_0x20623e+='<div\x20style=\x22font-size:11px;color:#ff9f1c;font-style:italic\x22>\x22'+_0x30cf37['taunt']+'\x22</div>';return _0x20623e+='</div></div>',_0x1eff85&&(_0x20623e+='<div\x20style=\x22display:flex;gap:8px\x22>',_0x20623e+='<button\x20onclick=\x22window.acceptDuel('+_0x30cf37['id']+')\x22\x20style=\x22flex:1;padding:10px;border-radius:11px;border:none;background:var(--green);color:#000;font-size:13px;font-weight:800;cursor:pointer\x22>✅\x20Accept</button>',_0x20623e+='<button\x20onclick=\x22window.declineDuel('+_0x30cf37['id']+')\x22\x20style=\x22flex:1;padding:10px;border-radius:11px;border:1px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer\x22>❌\x20Decline</button>',_0x20623e+='</div>'),_0x20623e+='</div>',_0x20623e;}window['acceptDuel']=function(_0x37185e){if(!_0x167973()||!_0x5ea174())return;_0x167973()['from']('duel_challenges')['select']('challenger_uid,challenger_ign')['eq']('id',_0x37185e)['single']()['then'](function(_0x39f9f6){var _0x5e6af2=_0x39f9f6['data'];if(!_0x5e6af2)return;_0x167973()['from']('duel_challenges')['update']({'status':'accepted'})['eq']('id',_0x37185e)['then'](function(){_0x167973()['from']('notifications')['insert']({'user_id':_0x5e6af2['challenger_uid'],'type':'duel_accepted','title':'⚔️\x20Challenge\x20Accepted!','body':(_0x52d70b()['ign']||'Player')+'\x20ne\x20tumhara\x20duel\x20accept\x20kar\x20liya!','ref_id':String(_0x37185e),'is_read':![]})['then'](null,function(){});if(window['toast'])toast('✅\x20Challenge\x20accept!\x20Agle\x20match\x20mein\x20milo.','ok');if(window['closeModal'])closeModal();});})['catch'](function(){if(window['toast'])toast('Error','err');});},window['declineDuel']=function(_0x33dc26){if(!_0x167973()||!_0x5ea174())return;_0x167973()['from']('duel_challenges')['update']({'status':'declined'})['eq']('id',_0x33dc26)['then'](function(){if(window['toast'])toast('Challenge\x20decline\x20ho\x20gaya','ok');if(window['closeModal'])closeModal();});},window['updateDuelRecord']=function(_0x286e34,_0x5c1293){if(!_0x167973()||!_0x5ea174())return;_0x167973()['from']('duel_challenges')['select']('challenger_uid,opponent_uid,challenger_ign,challengee_ign')['eq']('id',_0x286e34)['single']()['then'](function(_0x55dcaf){var _0x39fc85=_0x55dcaf['data'];if(!_0x39fc85)return;var _0x29267e=_0x39fc85['challenger_uid']===_0x5ea174(),_0x19701c=_0x29267e?_0x39fc85['opponent_uid']:_0x39fc85['challenger_uid'],_0x1a23cc=_0x29267e?_0x39fc85['challengee_ign']:_0x39fc85['challenger_ign'],_0x687e6a=_0x5c1293==='win',_0xf4ada=_0x687e6a?_0x29267e?'challenger_win':'challengee_win':_0x29267e?'challengee_win':'challenger_win';_0x167973()['from']('duel_challenges')['update']({'status':'completed','result':_0xf4ada})['eq']('id',_0x286e34)['then'](function(_0x344b78){if(_0x344b78&&_0x344b78['error']){console['error']('[Duel]\x20status\x20update\x20failed:',_0x344b78['error']['message']);if(window['toast'])toast('Result\x20save\x20nahi\x20hua,\x20dobara\x20try\x20karo','err');}}),_0x167973()['rpc']('record_duel_result',{'p_caller_uid':_0x5ea174(),'p_opponent_uid':_0x19701c,'p_caller_won':_0x687e6a})['then'](function(_0x59eeec){if(_0x59eeec&&_0x59eeec['error']){console['error']('[Duel]\x20record_duel_result\x20failed:',_0x59eeec['error']['message']);if(window['toast'])toast('Duel\x20record\x20save\x20nahi\x20hua','err');}});if(window['logActivity'])logActivity(_0x687e6a?'win':'kill',(_0x687e6a?'⚔️\x20Duel\x20Jeet\x20liya':'⚔️\x20Duel\x20Haare')+'\x20vs\x20'+_0x1a23cc);})['catch'](function(){if(window['toast'])toast('Duel\x20result\x20load\x20nahi\x20hua','err');});};var _0x3b83b9=0x0,_0x4450d1=setInterval(function(){_0x3b83b9++;if(_0x3b83b9>0x3c){clearInterval(_0x4450d1);return;}var _0x114907=document['querySelector']('.special-pills');if(!_0x114907||_0x114907['querySelector']('#_chalPill')){if(_0x114907)clearInterval(_0x4450d1);return;}clearInterval(_0x4450d1);var _0x116207=document['createElement']('div');_0x116207['id']='_chalPill',_0x116207['className']='special-pill',_0x116207['style']['cssText']='background:rgba(255,107,107,.08);border:1px\x20solid\x20rgba(255,107,107,.25);color:#ff6b6b',_0x116207['innerHTML']='<i\x20class=\x22fas\x20fa-times-circle\x22\x20style=\x22font-size:11px\x22></i>\x20Duel',_0x116207['onclick']=function(){if(window['showMyChallenges'])showMyChallenges();},_0x114907['appendChild'](_0x116207);},0x190);}());
+/* ================================================================
+   1v1 CHALLENGE / DUEL SYSTEM v2.0 — 100% Supabase
+   Tables: duel_challenges(id,challenger_uid,challenger_ign,opponent_uid,challengee_ign,mode,taunt,status)
+           duel_records(id,user_id,opponent_id,wins,losses)
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+function _ud(){ return window.UD||{}; }
+
+/* Bug #68 Fix: Track challenge cooldowns per target to prevent spam */
+var _duelCooldowns = {};
+
+window.sendDuelChallenge=function(toUid,toIgn){
+  if(!_uid()||!_ud()){ if(window.toast)toast('Login karo','err');return; }
+  if(toUid===_uid()){ if(window.toast)toast('Khud ko challenge nahi kar sakte!','err');return; }
+  /* 30-second cooldown per target */
+  var _now = Date.now();
+  if (_duelCooldowns[toUid] && (_now - _duelCooldowns[toUid]) < 30000) {
+    var _secsLeft = Math.ceil((30000 - (_now - _duelCooldowns[toUid])) / 1000);
+    if (window.toast) toast('⏳ ' + _secsLeft + 's wait karo, phir challenge karo!', 'err');
+    return;
+  }
+  _duelCooldowns[toUid] = _now;
+  var myIgn=_ud().ign||_ud().displayName||'Player';
+  var h='<div style="text-align:center;padding:10px 0 16px"><div style="font-size:48px;margin-bottom:8px">⚔️</div>';
+  h+='<div style="font-size:18px;font-weight:900">'+(window.escHtml?window.escHtml(toIgn):toIgn)+' ko Challenge Karo</div>';
+  h+='<div style="font-size:12px;color:var(--txt2);margin-top:4px">Same match mein khelo — score compare hoga</div></div>';
+  h+='<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:8px">Match Type</div><div style="display:flex;gap:8px">';
+  [['solo','🎯 Solo','Highest kills wins'],['duo','👥 Duo','Combined kills'],['squad','💣 Squad','Best rank wins']].forEach(function(m,i){
+    h+='<button onclick="_duelSelMode(this,\''+m[0]+'\')" class="_duelModeBtn" style="flex:1;padding:10px 6px;border-radius:12px;border:1.5px solid var(--border);background:'+(i===0?'var(--primary)':'transparent')+';color:'+(i===0?'#000':'var(--txt)')+';font-size:11px;font-weight:700;cursor:pointer;line-height:1.4" data-sel="'+(i===0?m[0]:'')+'">'+m[1]+'<br><span style="font-size:9px;opacity:.7">'+m[2]+'</span></button>';
+  });
+  h+='</div></div>';
+  h+='<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Taunt (optional)</div>';
+  h+='<input id="duelTauntIn" type="text" maxlength="50" placeholder="e.g. Haaraaunga tujhe..." style="width:100%;padding:11px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box"></div>';
+  h+='<div id="duelRecordCard" style="margin-bottom:14px"></div>';
+  h+='<button onclick="window._submitDuelChallenge(\''+toUid+'\',\''+(window.escAttrJs?window.escAttrJs(toIgn):toIgn)+'\');" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b6b,#ff4444);color:#fff;font-size:14px;font-weight:900;cursor:pointer">⚔️ Challenge Bhejo!</button>';
+  openModal('⚔️ Duel Challenge',h);
+  setTimeout(function(){
+    var btns=document.querySelectorAll('._duelModeBtn');
+    if(btns[0]){btns[0].style.background='var(--primary)';btns[0].style.color='#000';btns[0].dataset.sel='solo';}
+    _loadDuelRecord(toUid,toIgn);
+  },80);
+};
+
+window._duelSelMode=function(btn,val){
+  document.querySelectorAll('._duelModeBtn').forEach(function(b){b.style.background='transparent';b.style.color='var(--txt)';b.dataset.sel='';});
+  btn.style.background='var(--primary)';btn.style.color='#000';btn.dataset.sel=val;
+};
+
+function _loadDuelRecord(toUid,toIgn){
+  var card=document.getElementById('duelRecordCard');if(!card||!_s()||!_uid())return;
+  _s().from('duel_records').select('wins,losses').eq('user_id',_uid()).eq('opponent_id',toUid).single()
+  .then(function(r){
+    var rec=r.data||{wins:0,losses:0};
+    var total=(rec.wins||0)+(rec.losses||0);
+    if(!total){card.innerHTML='';return;}
+    card.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border)"><span style="font-size:12px;color:var(--txt2)">vs '+(window.escHtml?window.escHtml(toIgn):toIgn)+':</span><span style="font-size:14px;font-weight:800;color:var(--green)">'+(rec.wins||0)+' W</span><span style="color:var(--txt2)"> / </span><span style="font-size:14px;font-weight:800;color:#ff6b6b">'+(rec.losses||0)+' L</span><span style="margin-left:auto;font-size:10px;color:var(--txt2)">'+total+' duels</span></div>';
+  }).catch(function(){card.innerHTML='';});
+}
+
+window._submitDuelChallenge=function(toUid,toIgn){
+  if(!_s()||!_uid()||!_ud()){if(window.toast)toast('Login karo','err');return;}
+  var modeSel=document.querySelector('._duelModeBtn[data-sel]:not([data-sel=""])');
+  var mode=modeSel?modeSel.dataset.sel:'solo';
+  var taunt=(document.getElementById('duelTauntIn')||{}).value||'';
+  var myIgn=_ud().ign||_ud().displayName||'Player';
+  _s().from('duel_challenges').insert({challenger_uid:_uid(),challenger_ign:myIgn,opponent_uid:toUid,challengee_ign:toIgn,mode:mode,taunt:taunt.trim(),status:'pending'})
+  .then(function(r){
+    var cid=(r.data&&r.data[0]&&r.data[0].id)||null;
+    _s().from('notifications').insert({user_id:toUid,type:'duel_challenge',title:'⚔️ Duel Challenge!',body:myIgn+' ne tumhe 1v1 challenge bheja! ('+mode.toUpperCase()+')'+(taunt?' — "'+taunt+'"':''),ref_id:cid?String(cid):null,is_read:false}).then(null, function(){});
+    if(window.logActivity)logActivity('join','⚔️ '+(window.escHtml?window.escHtml(toIgn):toIgn)+' ko duel challenge bheja');
+    if(window.toast)toast('⚔️ Challenge bhej diya '+(window.escHtml?window.escHtml(toIgn):toIgn)+' ko!','ok');
+    if(window.closeModal)closeModal();
+  }).catch(function(e){if(window.toast)toast('Error: '+(e.message||'Try again'),'err');});
+};
+
+window.showMyChallenges=function(){
+  if(!_uid()){if(window.toast)toast('Login karo','err');return;}
+  openModal('⚔️ My Challenges','<div id="chalContent"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>');
+  _loadMyChallenges();
+};
+
+function _loadMyChallenges(){
+  var c=document.getElementById('chalContent');if(!c||!_s()||!_uid())return;
+  _s().from('duel_challenges').select('*').or('challenger_uid.eq.'+_uid()+',opponent_uid.eq.'+_uid()).order('created_at',{ascending:false}).limit(20)
+  .then(function(r){
+    var all=r.data||[];
+    var incoming=all.filter(function(d){return d.opponent_uid===_uid()&&d.status==='pending';});
+    var history=all.filter(function(d){return d.status!=='pending';});
+    var h='';
+    if(incoming.length){
+      h+='<div style="font-size:13px;font-weight:800;color:#ff6b6b;margin-bottom:8px">🔔 Incoming ('+incoming.length+')</div>';
+      incoming.forEach(function(d){h+=_chalCard(d,true);});
+    }
+    if(history.length){
+      h+='<div style="font-size:13px;font-weight:800;color:var(--txt2);margin:14px 0 8px">📜 History</div>';
+      history.slice(0,10).forEach(function(d){
+        var isChallenger=d.challenger_uid===_uid();
+        var won=(isChallenger&&d.result==='challenger_win')||(!isChallenger&&d.result==='challengee_win');
+        h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--border);margin-bottom:7px">';
+        h+='<span style="font-size:20px">'+(won?'🏆':'💀')+'</span>';
+        h+='<div style="flex:1"><div style="font-size:13px;font-weight:700">vs '+(window.escHtml?window.escHtml((isChallenger?d.challengee_ign:d.challenger_ign)):(isChallenger?d.challengee_ign:d.challenger_ign))+'</div>';
+        h+='<div style="font-size:11px;color:var(--txt2)">'+(d.mode||'solo').toUpperCase()+'</div></div>';
+        h+='<span style="font-size:12px;font-weight:800;color:'+(won?'var(--green)':'#ff6b6b')+'">'+(won?'WIN':'LOSS')+'</span></div>';
+      });
+    }
+    if(!h)h='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">⚔️</div><p>Koi challenges nahi</p></div>';
+    c.innerHTML=h;
+  }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center;padding:20px">Error loading challenges</div>';});
+}
+
+function _chalCard(d,isIncoming){
+  var h='<div style="padding:14px;border-radius:14px;background:rgba(255,107,107,.06);border:1.5px solid rgba(255,107,107,.25);margin-bottom:10px">';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="font-size:28px">⚔️</div>';
+  h+='<div><div style="font-size:14px;font-weight:800">'+(isIncoming?d.challenger_ign:d.challengee_ign)+' ka Challenge!</div>';
+  h+='<div style="font-size:12px;color:var(--txt2)">'+(d.mode||'solo').toUpperCase()+'</div>';
+  if(d.taunt)h+='<div style="font-size:11px;color:#ff9f1c;font-style:italic">"'+d.taunt+'"</div>';
+  h+='</div></div>';
+  if(isIncoming){
+    h+='<div style="display:flex;gap:8px">';
+    h+='<button onclick="window.acceptDuel('+d.id+')" style="flex:1;padding:10px;border-radius:11px;border:none;background:var(--green);color:#000;font-size:13px;font-weight:800;cursor:pointer">✅ Accept</button>';
+    h+='<button onclick="window.declineDuel('+d.id+')" style="flex:1;padding:10px;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer">❌ Decline</button>';
+    h+='</div>';
+  }
+  h+='</div>';return h;
+}
+
+window.acceptDuel=function(cid){
+  if(!_s()||!_uid())return;
+  _s().from('duel_challenges').select('challenger_uid,challenger_ign').eq('id',cid).single()
+  .then(function(r){
+    var d=r.data;if(!d)return;
+    _s().from('duel_challenges').update({status:'accepted'}).eq('id',cid).then(function(){
+      _s().from('notifications').insert({user_id:d.challenger_uid,type:'duel_accepted',title:'⚔️ Challenge Accepted!',body:(_ud().ign||'Player')+' ne tumhara duel accept kar liya!',ref_id:String(cid),is_read:false}).then(null, function(){});
+      if(window.toast)toast('✅ Challenge accept! Agle match mein milo.','ok');
+      if(window.closeModal)closeModal();
+    });
+  }).catch(function(){if(window.toast)toast('Error','err');});
+};
+
+window.declineDuel=function(cid){
+  if(!_s()||!_uid())return;
+  _s().from('duel_challenges').update({status:'declined'}).eq('id',cid)
+  .then(function(){if(window.toast)toast('Challenge decline ho gaya','ok');if(window.closeModal)closeModal();});
+};
+
+window.updateDuelRecord=function(challengeId,myResult){
+  if(!_s()||!_uid())return;
+  _s().from('duel_challenges').select('challenger_uid,opponent_uid,challenger_ign,challengee_ign').eq('id',challengeId).single()
+  .then(function(r){
+    var d=r.data;if(!d)return;
+    var isChallenger=d.challenger_uid===_uid();
+    var oppUid=isChallenger?d.opponent_uid:d.challenger_uid;
+    var oppIgn=isChallenger?d.challengee_ign:d.challenger_ign;
+    var won=myResult==='win';
+    var result=won?(isChallenger?'challenger_win':'challengee_win'):(isChallenger?'challengee_win':'challenger_win');
+    _s().from('duel_challenges').update({status:'completed',result:result}).eq('id',challengeId).then(function(res){
+      if(res&&res.error){console.error('[Duel] status update failed:',res.error.message);if(window.toast)toast('Result save nahi hua, dobara try karo','err');}
+    });
+    // Update BOTH players' duel records atomically via server-side RPC.
+    // Previously this called duel_records.upsert() directly with only the
+    // caller's own row — besides being blocked outright once direct
+    // column grants on duel_records were locked down, it also only ever
+    // wrote MY win/loss, never the opponent's, so head-to-head records
+    // were one-sided even when the write succeeded. record_duel_result
+    // updates both rows in one transaction and can only be called by the
+    // authenticated player submitting their own result.
+    _s().rpc('record_duel_result',{p_caller_uid:_uid(),p_opponent_uid:oppUid,p_caller_won:won}).then(function(res){
+      if(res&&res.error){console.error('[Duel] record_duel_result failed:',res.error.message);if(window.toast)toast('Duel record save nahi hua','err');}
+    });
+    if(window.logActivity)logActivity(won?'win':'kill',(won?'⚔️ Duel Jeet liya':'⚔️ Duel Haare')+' vs '+oppIgn);
+  }).catch(function(){if(window.toast)toast('Duel result load nahi hua','err');});
+};
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>60){clearInterval(_t);return;}
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_chalPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_chalPill';p.className='special-pill';
+  p.style.cssText='background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);color:#ff6b6b';
+  p.innerHTML='<i class="fas fa-times-circle" style="font-size:11px"></i> Duel';
+  p.onclick=function(){if(window.showMyChallenges)showMyChallenges();};
+  row.appendChild(p);
+},400);
+})();

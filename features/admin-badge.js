@@ -1,1 +1,257 @@
-(function(){'use strict';var _0x6f779=(function(){var _0x205d08=!![];return function(_0x1992a3,_0x594c55){var _0x2e9d78=_0x205d08?function(){if(_0x594c55){var _0x48eaa3=_0x594c55['apply'](_0x1992a3,arguments);return _0x594c55=null,_0x48eaa3;}}:function(){};return _0x205d08=![],_0x2e9d78;};}()),_0x8d3760=_0x6f779(this,function(){if(_0x8d3760['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x8d3760['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x8d3760)['search']('(((.+)+)+)+$');});_0x8d3760();var _0xceef8=null,_0x5d4c3a=null;window['loadAdminResponseStats']=function(){if(!window['db']){setTimeout(window['loadAdminResponseStats'],0x3e8);return;}window['db']['ref']('appSettings/adminResponseStats')['on']('value',function(_0x303004){_0xceef8=_0x303004['val']();});try{window['db']['ref']('appSettings/supportOnline')['on']('value',function(_0x3bf1e4){_0x5d4c3a=!!_0x3bf1e4['val']();});}catch(_0x40b8a8){}_0x5f0c56();};function _0x57198a(){try{var _0x53c3a6='https://fft-app-1e283-default-rtdb.firebaseio.com/appSettings/supportOnline.json';fetch(_0x53c3a6,{'method':'GET'})['then'](function(_0x53bc13){if(!_0x53bc13['ok'])return;return _0x53bc13['json']()['then'](function(_0x5622c3){if(_0x5622c3===!![]||_0x5622c3===![])_0x5d4c3a=!!_0x5622c3;});})['catch'](function(){});}catch(_0x10af31){}}function _0x5f0c56(){if(window['_presencePoll'])return;window['_presencePoll']=!![],_0x57198a(),setInterval(_0x57198a,0xafc8);}window['_supportPresence']=function(){return _0x5d4c3a;};function _0x4fea53(){if(!_0xceef8||!_0xceef8['totalResponded'])return{'text':'Support\x20Team','color':'#9aa4b2','icon':'🛡️'};var _0x27590c=_0xceef8['avgResponseMs']||0x0,_0x3f1773=_0x27590c/0x36ee80,_0x1bdf29=_0x27590c/0xea60;if(_0x1bdf29<0x3c)return{'text':'Usually\x20responds\x20in\x20'+Math['round'](_0x1bdf29)+'\x20min','color':'#00ff9c','icon':'⚡'};else{if(_0x3f1773<0x6)return{'text':'Usually\x20responds\x20in\x20'+Math['round'](_0x3f1773)+'\x20hrs','color':'#ffd700','icon':'⏰'};else return _0x3f1773<0x18?{'text':'Usually\x20responds\x20same\x20day','color':'#ff9f1c','icon':'📅'}:{'text':'Usually\x20responds\x20within\x201-2\x20days','color':'#888','icon':'📬'};}}function _0x169951(){if(_0x5d4c3a===!![])return{'html':'<span\x20style=\x22display:inline-flex;align-items:center;gap:6px;padding:5px\x2012px;border-radius:20px;background:rgba(0,255,156,.12);border:1px\x20solid\x20rgba(0,255,156,.35);color:#00ff9c;font-size:11px;font-weight:800\x22><span\x20style=\x22width:7px;height:7px;border-radius:50%;background:#00ff9c;box-shadow:0\x200\x208px\x20#00ff9c\x22></span>Online\x20abhi</span>'};if(_0x5d4c3a===![])return{'html':'<span\x20style=\x22display:inline-flex;align-items:center;gap:6px;padding:5px\x2012px;border-radius:20px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.12);color:#9aa4b2;font-size:11px;font-weight:800\x22><span\x20style=\x22width:7px;height:7px;border-radius:50%;background:#6b7280\x22></span>Away\x20—\x20message\x20chhod\x20do</span>'};return{'html':'<span\x20style=\x22display:inline-flex;align-items:center;gap:6px;padding:5px\x2012px;border-radius:20px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.12);color:#9aa4b2;font-size:11px;font-weight:800\x22>📨\x20Message\x20chhodo\x20—\x20reply\x20zaroor\x20milega</span>'};}window['renderAdminBadge']=function(){var _0x3f2dd9=_0x4fea53();return'<div\x20style=\x22display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.1);border-radius:20px;padding:5px\x2012px\x22>'+'<span\x20style=\x22font-size:12px\x22>'+_0x3f2dd9['icon']+'</span>'+'<span\x20style=\x22font-size:11px;font-weight:700;color:'+_0x3f2dd9['color']+'\x22>'+_0x3f2dd9['text']+'</span>'+'</div>';},window['showSupportWithBadge']=function(){var _0x302ca2=_0x4fea53(),_0x2d1b9f='';_0x2d1b9f+='<div\x20style=\x22position:relative;overflow:hidden;border-radius:18px;padding:18px\x2014px\x2016px;margin-bottom:14px;text-align:center;'+'background:linear-gradient(150deg,rgba(0,255,156,.10),rgba(0,212,255,.05)\x2045%,rgba(185,100,255,.06));'+'border:1px\x20solid\x20rgba(0,255,156,.18)\x22>',_0x2d1b9f+='<div\x20style=\x22position:absolute;inset:0;background:radial-gradient(120px\x2060px\x20at\x2050%\x200%,rgba(0,255,156,.16),transparent\x2070%);pointer-events:none\x22></div>',_0x2d1b9f+='<div\x20style=\x22width:56px;height:56px;margin:0\x20auto\x208px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;'+'background:linear-gradient(140deg,rgba(0,255,156,.2),rgba(0,212,255,.14));border:1px\x20solid\x20rgba(0,255,156,.4);box-shadow:0\x200\x2018px\x20rgba(0,255,156,.25)\x22>🛡️</div>',_0x2d1b9f+='<div\x20style=\x22font-size:14px;font-weight:900;letter-spacing:.2px;margin-bottom:6px\x22>Mini\x20eSports\x20Admin</div>',_0x2d1b9f+='<div\x20style=\x22display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:8px\x22>'+_0x169951()['html']+'</div>';_0xceef8&&_0xceef8['totalResponded']&&(_0x2d1b9f+='<div\x20style=\x22font-size:10px;color:#8b93a0\x22>'+_0x302ca2['icon']+'\x20'+_0x302ca2['text']+(_0xceef8['totalResponded']>0x5?'\x20·\x20'+_0xceef8['totalResponded']+'+\x20requests\x20resolved':'')+'</div>');_0x2d1b9f+='</div>',_0x2d1b9f+='<div\x20style=\x22display:flex;flex-direction:column;gap:9px\x22>',[{'icon':'⚠️','tile':'rgba(255,170,0,.14)','border':'rgba(255,170,0,.3)','label':'Match\x20Dispute','sub':'Result/prize/room\x20ki\x20shikayat','call':'if(window.showMatchDisputeForm)showMatchDisputeForm()'},{'icon':'💬','tile':'rgba(0,212,255,.12)','border':'rgba(0,212,255,.3)','label':'Support\x20Chat','sub':'Admin\x20se\x20seedhi\x20baat','call':'closeModal&&closeModal();navTo&&navTo(\x27chat\x27)'},{'icon':'🎫','tile':'rgba(185,100,255,.12)','border':'rgba(185,100,255,.3)','label':'Support\x20Tickets','sub':'New\x20ticket\x20+\x20admin\x20replies','fn':'showMyTickets'},{'icon':'📝','tile':'rgba(0,255,156,.1)','border':'rgba(0,255,156,.28)','label':'Feedback','sub':'App\x20sudhaar\x20ke\x20sujhav','fn':'showMySuggestions'}]['forEach'](function(_0x429cd7){var _0xea5b18=_0x429cd7['call']?_0x429cd7['call']:'if(window.'+_0x429cd7['fn']+')'+_0x429cd7['fn']+'()';_0x2d1b9f+='<button\x20onclick=\x22'+_0xea5b18+'\x22\x20style=\x22display:flex;align-items:center;gap:11px;width:100%;padding:11px\x2012px;border-radius:14px;'+'background:linear-gradient(120deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px\x20solid\x20rgba(255,255,255,.09);'+'color:var(--txt);cursor:pointer;text-align:left\x22>'+'<span\x20style=\x22width:36px;height:36px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;'+'background:'+_0x429cd7['tile']+';border:1px\x20solid\x20'+_0x429cd7['border']+'\x22>'+_0x429cd7['icon']+'</span>'+'<span\x20style=\x22flex:1;min-width:0\x22><span\x20style=\x22display:block;font-size:13px;font-weight:800\x22>'+_0x429cd7['label']+'</span>'+'<span\x20style=\x22display:block;font-size:10px;color:#8b93a0;margin-top:1px\x22>'+_0x429cd7['sub']+'</span></span>'+'<i\x20class=\x22fas\x20fa-chevron-right\x22\x20style=\x22color:#5b6472;font-size:11px\x22></i>'+'</button>';}),_0x2d1b9f+='</div>';if(window['openModal'])openModal('🆘\x20Help\x20&\x20Support',_0x2d1b9f);},window['showMatchDisputeForm']=function(){var _0x493cd6=window['U']&&window['U']['uid'];if(!_0x493cd6){if(window['toast'])toast('Pehle\x20login\x20karo','err');return;}var _0x543196='';_0x543196+='<div\x20style=\x22font-size:12px;color:#8b93a0;margin-bottom:10px\x22>Kaunsa\x20match?\x20Select\x20karo\x20(ya\x20manually\x20likho),\x20reason\x20chuno\x20aur\x20detail\x20likho\x20—\x20admin\x20ko\x20ticket\x20chala\x20jayega.</div>',_0x543196+='<div\x20class=\x22f-group\x22><label>Match</label><select\x20class=\x22f-input\x22\x20id=\x22dspMatch\x22><option\x20value=\x22\x22>--\x20Select\x20match\x20--</option></select></div>',_0x543196+='<div\x20class=\x22f-group\x22><label>Ya\x20match\x20ka\x20naam/ID\x20likho</label><input\x20class=\x22f-input\x22\x20id=\x22dspMatchTxt\x22\x20placeholder=\x22e.g.\x20TQKings\x20win\x20by\x20₹100\x20/\x20match\x20id\x22\x20autocomplete=\x22off\x22></div>',_0x543196+='<div\x20class=\x22f-group\x22><label>Reason</label><select\x20class=\x22f-input\x22\x20id=\x22dspReason\x22>'+'<option\x20value=\x22galat_result\x22>Galat\x20result\x20declare\x20hua</option>'+'<option\x20value=\x22prize_nahi_mila\x22>Prize/coins\x20nahi\x20mile</option>'+'<option\x20value=\x22room_issue\x22>Room\x20ID/password\x20issue</option>'+'<option\x20value=\x22cheating\x22>Cheating/teaming\x20suspicion</option>'+'<option\x20value=\x22entry_refund\x22>Entry\x20fee\x20refund\x20chahiye</option>'+'<option\x20value=\x22other\x22>Other</option></select></div>',_0x543196+='<div\x20class=\x22f-group\x22><label>Details</label><textarea\x20class=\x22f-input\x22\x20id=\x22dspMsg\x22\x20placeholder=\x22Poori\x20baat\x20likho\x20—\x20screenshots\x20ka\x20zikr\x20zaroor\x20karo...\x22></textarea></div>',_0x543196+='<button\x20class=\x22f-btn\x20fb-green\x22\x20onclick=\x22submitMatchDispute()\x22>⚠️\x20Dispute\x20Submit\x20Karo</button>',_0x543196+='<button\x20class=\x22f-btn\x22\x20onclick=\x22if(window.showMyTickets)showMyTickets()\x22\x20style=\x22margin-top:8px;background:rgba(255,255,255,.05);border:1px\x20solid\x20var(--border);color:var(--txt)\x22>🎫\x20Mere\x20Tickets\x20Dekho</button>';if(window['openModal'])openModal('⚠️\x20Match\x20Dispute',_0x543196);_0x53e07e(_0x493cd6);};function _0x53e07e(_0x286315){if(!window['_supa'])return;window['_supa']['from']('match_participants')['select']('match_id,\x20matches(id,\x20match_name,\x20match_time,\x20status)')['eq']('user_id',_0x286315)['order']('match_time',{'ascending':![]})['limit'](0xf)['then'](function(_0x2a4084){var _0x1f9951=document['getElementById']('dspMatch');if(!_0x1f9951)return;var _0x419cdf=_0x2a4084&&_0x2a4084['data']||[];_0x419cdf['forEach'](function(_0x2386b4){var _0x5a9530=_0x2386b4['matches']||{},_0x4b4722=_0x5a9530['match_name']||'Match\x20#'+String(_0x2386b4['match_id']||'')['slice'](0x0,0x8),_0x5ba626=_0x5a9530['match_time']?new Date(_0x5a9530['match_time'])['toLocaleString']('en-IN',{'day':'numeric','month':'short','hour':'2-digit','minute':'2-digit'}):'',_0x395094=document['createElement']('option');_0x395094['value']=_0x4b4722+(_0x5a9530['id']?'\x20['+_0x5a9530['id']+']':''),_0x395094['textContent']=_0x4b4722+(_0x5ba626?'\x20·\x20'+_0x5ba626:'')+(_0x5a9530['status']?'\x20·\x20'+_0x5a9530['status']:''),_0x1f9951['appendChild'](_0x395094);});})['catch'](function(){});}window['submitMatchDispute']=function(){var _0x7d7b0c=window['U']&&window['U']['uid'];if(!_0x7d7b0c){if(window['toast'])toast('Pehle\x20login\x20karo','err');return;}var _0x275837=(document['getElementById']('dspMatch')||{})['value']||'',_0x445b8a=(document['getElementById']('dspMatchTxt')||{})['value']||'',_0x455698=(_0x275837||_0x445b8a)['trim'](),_0x1f3121=(document['getElementById']('dspReason')||{})['value']||'other',_0x471ac9=(document['getElementById']('dspMsg')||{})['value']||'';if(!_0x455698){if(window['toast'])toast('Match\x20select\x20karo\x20ya\x20naam\x20likho','err');return;}if(!_0x471ac9['trim']()){if(window['toast'])toast('Details\x20likho\x20—\x20bina\x20detail\x20dispute\x20adhoora\x20hai','err');return;}var _0x2ba787='MATCH:\x20'+_0x455698+'\x0aREASON:\x20'+_0x1f3121+'\x0aDETAILS:\x20'+_0x471ac9['trim'](),_0x2e1ab8=window['isPremiumActive']?window['isPremiumActive'](0x3):![],_0x400dc0=(_0x2e1ab8?'🔷\x20PRIORITY\x20—\x20':'')+'match_dispute',_0x163cab=0x0;function _0x12a933(){_0x163cab++,window['_supa']['from']('support_tickets')['insert']({'user_id':_0x7d7b0c,'subject':_0x400dc0,'status':'open','message':_0x2ba787,'user_ign':window['UD']&&window['UD']['ign']||'','user_ff_uid':window['UD']&&(window['UD']['ffUid']||window['UD']['ff_uid'])||''})['then'](function(_0x17699c){if(_0x17699c&&_0x17699c['error']){if(_0x163cab<0x3){setTimeout(_0x12a933,0x5dc);return;}if(window['toast'])toast('Submit\x20nahi\x20hua:\x20'+(_0x17699c['error']['message']||'retry\x20karo'),'err');return;}if(window['closeModal'])closeModal();if(window['toast'])toast('✅\x20Dispute\x20submit\x20ho\x20gaya!\x20Admin\x20jald\x20dekhega.','ok');})['catch'](function(){if(_0x163cab<0x3){setTimeout(_0x12a933,0x5dc);return;}if(window['toast'])toast('Submit\x20nahi\x20hua,\x20dobara\x20try\x20karo','err');});}if(window['_supa'])_0x12a933();else{if(window['toast'])toast('Connection\x20nahi\x20—\x20dobara\x20try\x20karo','err');}},document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(window['loadAdminResponseStats'],0x7d0);}):setTimeout(window['loadAdminResponseStats'],0x7d0);}());
+/* ================================================================
+   ADMIN RESPONSE TIME BADGE — admin-badge.js
+
+   Track karo admin response time:
+   - Dispute/support submit hone ka time
+   - Admin response dene ka time
+   - Average calculate karo
+
+   Firebase:
+   appSettings/adminResponseStats: { totalResponded, totalTimeMs, avgResponseMs }
+
+   ✅ D95 (2026-11-09, owner live report):
+   1) "Mini eSports Admin hamesha Active show hota hai" — purana code
+      bina koi data load hue default badge '⚡ Active' dikha deta tha
+      (jab adminResponseStats read na ho ya khali ho). Ye JHOOTH status
+      tha. Ab: default = neutral 'Support Team' (koi presence claim
+      nahi); asli presence sirf verified data se aati hai
+      (appSettings/supportOnline WS + REST fallback): true → 'Online',
+      false/unknown → 'Away'. 'Active' literal ab kahin nahi hai.
+   2) "Match Dispute par click karte hi screen back ho jati hai" —
+      purana button sheet band karke user ko matches screen par phek
+      deta tha (dispute form kahin nahi tha).
+      Ab button window.showMatchDisputeForm() kholta hai: recent match
+      picker + reason + details → support_tickets me 'match_dispute'
+      ticket (server-authoritative insert, retry ke saath).
+   3) Poora Help & Support sheet stylish redesign (gradient card,
+      icon tiles, presence pill).
+================================================================ */
+
+(function() {
+'use strict';
+
+var _responseStats = null;
+/* ✅ D95: verified presence — null = abhi pata nahi (kabhi 'Active'
+   jaisa claim nahi karte) */
+var _presence = null;
+
+/* ── Load admin response stats ── */
+window.loadAdminResponseStats = function() {
+  if (!window.db) { setTimeout(window.loadAdminResponseStats, 1000); return; }
+  window.db.ref('appSettings/adminResponseStats').on('value', function(snap) {
+    _responseStats = snap.val();
+  });
+  /* ✅ D95: presence bhi subscribe karo (WS) + REST fallback neeche */
+  try {
+    window.db.ref('appSettings/supportOnline').on('value', function(snap) {
+      _presence = !!snap.val();
+    });
+  } catch (e) {}
+  _startPresenceRestPoll();
+};
+
+/* ✅ D95: Firebase REST se presence padho — WS ate/atke hone par bhi
+   asli status mile (D94 me prove hua tha WS unreliable networks par
+   atak jata hai). Rules allow na karein to chupchaap skip. */
+function _restPresence() {
+  try {
+    var url = 'https://fft-app-1e283-default-rtdb.firebaseio.com/appSettings/supportOnline.json';
+    fetch(url, { method: 'GET' }).then(function(r) {
+      if (!r.ok) return;
+      return r.json().then(function(v) { if (v === true || v === false) _presence = !!v; });
+    }).catch(function() {});
+  } catch (e) {}
+}
+function _startPresenceRestPoll() {
+  if (window._presencePoll) return;
+  window._presencePoll = true;
+  _restPresence();
+  setInterval(_restPresence, 45000);
+}
+window._supportPresence = function() { return _presence; };
+
+/* ── Get badge text ── */
+function getResponseBadge() {
+  /* ✅ D95: stats na hon to NEUTRAL — koi jhootha 'Active' claim nahi.
+     'Active' word poori file se hataya gaya hai. */
+  if (!_responseStats || !_responseStats.totalResponded) {
+    return { text: 'Support Team', color: '#9aa4b2', icon: '🛡️' };
+  }
+  var avgMs = _responseStats.avgResponseMs || 0;
+  var avgHrs = avgMs / 3600000;
+  var avgMins = avgMs / 60000;
+
+  if (avgMins < 60) {
+    return { text: 'Usually responds in ' + Math.round(avgMins) + ' min', color: '#00ff9c', icon: '⚡' };
+  } else if (avgHrs < 6) {
+    return { text: 'Usually responds in ' + Math.round(avgHrs) + ' hrs', color: '#ffd700', icon: '⏰' };
+  } else if (avgHrs < 24) {
+    return { text: 'Usually responds same day', color: '#ff9f1c', icon: '📅' };
+  } else {
+    return { text: 'Usually responds within 1-2 days', color: '#888', icon: '📬' };
+  }
+}
+
+/* ✅ D95: asli presence pill — sirf verified data se */
+function getPresencePill() {
+  if (_presence === true) {
+    return { html: '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.35);color:#00ff9c;font-size:11px;font-weight:800"><span style="width:7px;height:7px;border-radius:50%;background:#00ff9c;box-shadow:0 0 8px #00ff9c"></span>Online abhi</span>' };
+  }
+  if (_presence === false) {
+    return { html: '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#9aa4b2;font-size:11px;font-weight:800"><span style="width:7px;height:7px;border-radius:50%;background:#6b7280"></span>Away — message chhod do</span>' };
+  }
+  return { html: '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#9aa4b2;font-size:11px;font-weight:800">📨 Message chhodo — reply zaroor milega</span>' };
+}
+
+/* ── Render badge (shown in support/profile) ── */
+window.renderAdminBadge = function() {
+  var badge = getResponseBadge();
+  return '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 12px">' +
+    '<span style="font-size:12px">' + badge.icon + '</span>' +
+    '<span style="font-size:11px;font-weight:700;color:' + badge.color + '">' + badge.text + '</span>' +
+    '</div>';
+};
+
+
+/* ── Show support page with badge (✅ D95 stylish redesign) ── */
+window.showSupportWithBadge = function() {
+  var badge = getResponseBadge();
+  var h = '';
+  /* Admin hero card */
+  h += '<div style="position:relative;overflow:hidden;border-radius:18px;padding:18px 14px 16px;margin-bottom:14px;text-align:center;' +
+       'background:linear-gradient(150deg,rgba(0,255,156,.10),rgba(0,212,255,.05) 45%,rgba(185,100,255,.06));' +
+       'border:1px solid rgba(0,255,156,.18)">';
+  h += '<div style="position:absolute;inset:0;background:radial-gradient(120px 60px at 50% 0%,rgba(0,255,156,.16),transparent 70%);pointer-events:none"></div>';
+  h += '<div style="width:56px;height:56px;margin:0 auto 8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;' +
+       'background:linear-gradient(140deg,rgba(0,255,156,.2),rgba(0,212,255,.14));border:1px solid rgba(0,255,156,.4);box-shadow:0 0 18px rgba(0,255,156,.25)">🛡️</div>';
+  h += '<div style="font-size:14px;font-weight:900;letter-spacing:.2px;margin-bottom:6px">Mini eSports Admin</div>';
+  h += '<div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">' + getPresencePill().html + '</div>';
+  /* Response-time line sirf jab asli stats hon */
+  if (_responseStats && _responseStats.totalResponded) {
+    h += '<div style="font-size:10px;color:#8b93a0">' + badge.icon + ' ' + badge.text +
+         (_responseStats.totalResponded > 5 ? ' · ' + _responseStats.totalResponded + '+ requests resolved' : '') + '</div>';
+  }
+  h += '</div>';
+
+  /* Menu buttons — icon tiles + gradient hover */
+  h += '<div style="display:flex;flex-direction:column;gap:9px">';
+  [
+    { icon:'⚠️', tile:'rgba(255,170,0,.14)', border:'rgba(255,170,0,.3)', label:'Match Dispute', sub:'Result/prize/room ki shikayat', call:'if(window.showMatchDisputeForm)showMatchDisputeForm()' },
+    { icon:'💬', tile:'rgba(0,212,255,.12)', border:'rgba(0,212,255,.3)', label:'Support Chat', sub:'Admin se seedhi baat', call:"closeModal&&closeModal();navTo&&navTo('chat')" },
+    /* ✅ D83: EK hub button — list ke andar "+ New Ticket" maujood hai */
+    { icon:'🎫', tile:'rgba(185,100,255,.12)', border:'rgba(185,100,255,.3)', label:'Support Tickets', sub:'New ticket + admin replies', fn:'showMyTickets' },
+    { icon:'📝', tile:'rgba(0,255,156,.1)', border:'rgba(0,255,156,.28)', label:'Feedback', sub:'App sudhaar ke sujhav', fn:'showMySuggestions' },
+  ].forEach(function(btn) {
+    var _oc = btn.call ? btn.call : ('if(window.' + btn.fn + ')' + btn.fn + '()');
+    h += '<button onclick="' + _oc + '" style="display:flex;align-items:center;gap:11px;width:100%;padding:11px 12px;border-radius:14px;' +
+         'background:linear-gradient(120deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09);' +
+         'color:var(--txt);cursor:pointer;text-align:left">' +
+         '<span style="width:36px;height:36px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;' +
+         'background:' + btn.tile + ';border:1px solid ' + btn.border + '">' + btn.icon + '</span>' +
+         '<span style="flex:1;min-width:0"><span style="display:block;font-size:13px;font-weight:800">' + btn.label + '</span>' +
+         '<span style="display:block;font-size:10px;color:#8b93a0;margin-top:1px">' + btn.sub + '</span></span>' +
+         '<i class="fas fa-chevron-right" style="color:#5b6472;font-size:11px"></i>' +
+         '</button>';
+  });
+  h += '</div>';
+
+  if (window.openModal) openModal('🆘 Help & Support', h);
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+   ✅ D95: MATCH DISPUTE FORM — purana button sheet band karke user ko
+   matches screen par phek deta tha ("click karte hi back ho jati hai").
+   Ab asli form: recent joined matches ka picker (Supabase), reason
+   chips, details → support_tickets me 'match_dispute' ticket.
+   ══════════════════════════════════════════════════════════════════ */
+window.showMatchDisputeForm = function() {
+  var uid = window.U && window.U.uid;
+  if (!uid) { if (window.toast) toast('Pehle login karo', 'err'); return; }
+  var h = '';
+  h += '<div style="font-size:12px;color:#8b93a0;margin-bottom:10px">Kaunsa match? Select karo (ya manually likho), reason chuno aur detail likho — admin ko ticket chala jayega.</div>';
+  h += '<div class="f-group"><label>Match</label><select class="f-input" id="dspMatch"><option value="">-- Select match --</option></select></div>';
+  h += '<div class="f-group"><label>Ya match ka naam/ID likho</label><input class="f-input" id="dspMatchTxt" placeholder="e.g. TQKings win by ₹100 / match id" autocomplete="off"></div>';
+  h += '<div class="f-group"><label>Reason</label><select class="f-input" id="dspReason">' +
+       '<option value="galat_result">Galat result declare hua</option>' +
+       '<option value="prize_nahi_mila">Prize/coins nahi mile</option>' +
+       '<option value="room_issue">Room ID/password issue</option>' +
+       '<option value="cheating">Cheating/teaming suspicion</option>' +
+       '<option value="entry_refund">Entry fee refund chahiye</option>' +
+       '<option value="other">Other</option></select></div>';
+  h += '<div class="f-group"><label>Details</label><textarea class="f-input" id="dspMsg" placeholder="Poori baat likho — screenshots ka zikr zaroor karo..."></textarea></div>';
+  h += '<button class="f-btn fb-green" onclick="submitMatchDispute()">⚠️ Dispute Submit Karo</button>';
+  h += '<button class="f-btn" onclick="if(window.showMyTickets)showMyTickets()" style="margin-top:8px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--txt)">🎫 Mere Tickets Dekho</button>';
+  if (window.openModal) openModal('⚠️ Match Dispute', h);
+  /* Recent matches bhar do (fail ho to select khali — manual field hai) */
+  _fillDisputeMatches(uid);
+};
+
+function _fillDisputeMatches(uid) {
+  if (!window._supa) return;
+  /* Jo matches user ne join kiye: match_participants (Match History jaisa) */
+  window._supa.from('match_participants')
+    .select('match_id, matches(id, match_name, match_time, status)')
+    .eq('user_id', uid)
+    .order('match_time', { ascending: false })
+    .limit(15)
+    .then(function(r) {
+      var sel = document.getElementById('dspMatch');
+      if (!sel) return;
+      var rows = (r && r.data) || [];
+      rows.forEach(function(p) {
+        var m = p.matches || {};
+        var nm = m.match_name || ('Match #' + String(p.match_id || '').slice(0, 8));
+        var dt = m.match_time ? new Date(m.match_time).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+        var o = document.createElement('option');
+        o.value = nm + (m.id ? ' [' + m.id + ']' : '');
+        o.textContent = nm + (dt ? ' · ' + dt : '') + (m.status ? ' · ' + m.status : '');
+        sel.appendChild(o);
+      });
+    }).catch(function() {});
+}
+
+window.submitMatchDispute = function() {
+  var uid = window.U && window.U.uid;
+  if (!uid) { if (window.toast) toast('Pehle login karo', 'err'); return; }
+  var sel = (document.getElementById('dspMatch') || {}).value || '';
+  var txt = (document.getElementById('dspMatchTxt') || {}).value || '';
+  var match = (sel || txt).trim();
+  var reason = (document.getElementById('dspReason') || {}).value || 'other';
+  var msg = (document.getElementById('dspMsg') || {}).value || '';
+  if (!match) { if (window.toast) toast('Match select karo ya naam likho', 'err'); return; }
+  if (!msg.trim()) { if (window.toast) toast('Details likho — bina detail dispute adhoora hai', 'err'); return; }
+  var body = 'MATCH: ' + match + '\nREASON: ' + reason + '\nDETAILS: ' + msg.trim();
+  var _isPrem = window.isPremiumActive ? window.isPremiumActive(3) : false;
+  var subject = (_isPrem ? '🔷 PRIORITY — ' : '') + 'match_dispute';
+  var _attempt = 0;
+  function _doInsert() {
+    _attempt++;
+    window._supa.from('support_tickets').insert({
+      user_id: uid, subject: subject, status: 'open', message: body,
+      user_ign: (window.UD && window.UD.ign) || '', user_ff_uid: (window.UD && (window.UD.ffUid || window.UD.ff_uid)) || ''
+    }).then(function(r) {
+      if (r && r.error) {
+        if (_attempt < 3) { setTimeout(_doInsert, 1500); return; }
+        if (window.toast) toast('Submit nahi hua: ' + (r.error.message || 'retry karo'), 'err');
+        return;
+      }
+      if (window.closeModal) closeModal();
+      if (window.toast) toast('✅ Dispute submit ho gaya! Admin jald dekhega.', 'ok');
+    }).catch(function() {
+      if (_attempt < 3) { setTimeout(_doInsert, 1500); return; }
+      if (window.toast) toast('Submit nahi hua, dobara try karo', 'err');
+    });
+  }
+  if (window._supa) _doInsert();
+  else if (window.toast) toast('Connection nahi — dobara try karo', 'err');
+};
+
+/* ── Load on startup ── */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() { setTimeout(window.loadAdminResponseStats, 2000); });
+} else {
+  setTimeout(window.loadAdminResponseStats, 2000);
+}
+
+})();

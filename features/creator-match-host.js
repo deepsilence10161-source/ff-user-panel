@@ -1,1 +1,670 @@
-(function(){'use strict';var _0x3b72c8=(function(){var _0x25da26=!![];return function(_0x1174e1,_0x441afe){var _0x123e71=_0x25da26?function(){if(_0x441afe){var _0x464292=_0x441afe['apply'](_0x1174e1,arguments);return _0x441afe=null,_0x464292;}}:function(){};return _0x25da26=![],_0x123e71;};}()),_0x241275=_0x3b72c8(this,function(){if(_0x241275['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x241275['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x241275)['search']('(((.+)+)+)+$');});_0x241275();function _0x1e552d(){return window['U']&&window['U']['uid'];}function _0x52d02f(){return window['UD']||{};}function _0x39212a(_0x50c7b1,_0x500744){if(window['toast'])window['toast'](_0x50c7b1,_0x500744);}window['showCreatorMatchForm']=function(){if(!_0x52d02f()['isCreator']&&!_0x52d02f()['is_creator']){_0x39212a('Sirf\x20approved\x20creators\x20match\x20host\x20kar\x20sakte\x20hain','err');return;}var _0x38ccb8='<div\x20style=\x22padding:4px\x200\x22>';_0x38ccb8+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:12px;padding:10px\x2012px;margin-bottom:14px;font-size:11px;color:#00ff9c;line-height:1.6\x22>ℹ️\x20Chhote-stakes\x20matches\x20—\x20max\x20₹50\x20entry,\x20100\x20players,\x203\x20active\x20matches\x20ek\x20waqt\x20mein.\x20Result\x20submit\x20karne\x20ke\x20baad\x20Admin\x20final\x20payout\x20verify\x20karega.</div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>🏆\x20Match\x20Name</label>',_0x38ccb8+='<input\x20type=\x22text\x22\x20id=\x22cmName\x22\x20class=\x22f-input\x22\x20placeholder=\x22e.g.\x20BEAST_GAMER\x20Solo\x20Cup\x22\x20maxlength=\x2260\x22></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>🎮\x20Match\x20Type</label>',_0x38ccb8+='<select\x20id=\x22cmType\x22\x20class=\x22f-input\x22>',_0x38ccb8+='<option\x20value=\x22coins\x22>🪙\x20Coin\x20Match</option>',_0x38ccb8+='<option\x20value=\x22sky_diamond\x22>💎\x20Sky\x20Diamond\x20Match</option>',_0x38ccb8+='</select></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>💰\x20Entry\x20Fee\x20(max\x2050)</label>',_0x38ccb8+='<input\x20type=\x22number\x22\x20id=\x22cmFee\x22\x20class=\x22f-input\x22\x20value=\x2210\x22\x20min=\x221\x22\x20max=\x2250\x22></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>👥\x20Max\x20Players</label>',_0x38ccb8+='<select\x20id=\x22cmMaxPlayers\x22\x20class=\x22f-input\x22>',[0xa,0x19,0x32,0x64]['forEach'](function(_0x206326){_0x38ccb8+='<option\x20value=\x22'+_0x206326+'\x22'+(_0x206326===0x19?'\x20selected':'')+'>'+_0x206326+'\x20Players</option>';}),_0x38ccb8+='</select></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>🎯\x20Mode</label>',_0x38ccb8+='<select\x20id=\x22cmMode\x22\x20class=\x22f-input\x22>',['Solo','Duo','Squad']['forEach'](function(_0x48021d){_0x38ccb8+='<option\x20value=\x22'+_0x48021d['toLowerCase']()+'\x22>'+_0x48021d+'</option>';}),_0x38ccb8+='</select></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>💀\x20Per\x20Kill\x20Points</label>',_0x38ccb8+='<input\x20type=\x22number\x22\x20id=\x22cmKillPts\x22\x20class=\x22f-input\x22\x20value=\x221\x22\x20min=\x220\x22\x20max=\x2210\x22></div>',_0x38ccb8+='<div\x20style=\x22background:rgba(255,215,0,.05);border:1px\x20solid\x20rgba(255,215,0,.15);border-radius:12px;padding:10px\x2012px;margin:4px\x200\x2010px;font-size:10px;color:#ffd700\x22>🏆\x20Prize\x20pool\x20tumhare\x20match\x20ke\x20max\x20collection\x20(players\x20×\x20entry\x20fee)\x20se\x20zyada\x20nahi\x20ho\x20sakta</div>',_0x38ccb8+='<div\x20style=\x22font-size:10px;color:#00d4ff;margin:-4px\x200\x208px\x22>ℹ️\x20💎\x20Sky\x20Diamond\x20sirf\x20<b>entry\x20fee</b>\x20ke\x20liye\x20hai\x20—\x20jeetne\x20par\x20prize\x20hamesha\x20<b>Green\x20Diamond\x20💎</b>\x20me\x20milta\x20hai.</div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>'+(window['medalHtml']?medalHtml(0x1,0xd):'')+'\x201st\x20Prize</label>',_0x38ccb8+='<input\x20type=\x22number\x22\x20id=\x22cmPrize1\x22\x20class=\x22f-input\x22\x20value=\x220\x22\x20min=\x220\x22></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>'+(window['medalHtml']?medalHtml(0x2,0xd):'')+'\x202nd\x20Prize</label>',_0x38ccb8+='<input\x20type=\x22number\x22\x20id=\x22cmPrize2\x22\x20class=\x22f-input\x22\x20value=\x220\x22\x20min=\x220\x22></div>',_0x38ccb8+='<div\x20class=\x22f-group\x22><label>'+(window['medalHtml']?medalHtml(0x3,0xd):'')+'\x203rd\x20Prize</label>',_0x38ccb8+='<input\x20type=\x22number\x22\x20id=\x22cmPrize3\x22\x20class=\x22f-input\x22\x20value=\x220\x22\x20min=\x220\x22></div>';var _0x4e26f8=new Date(Date['now']()+0x1e*0x3c*0x3e8)['toISOString']()['slice'](0x0,0x10);_0x38ccb8+='<div\x20class=\x22f-group\x22><label>📅\x20Match\x20Date\x20&\x20Time\x20(min\x2020\x20min\x20baad)</label>',_0x38ccb8+='<input\x20type=\x22datetime-local\x22\x20id=\x22cmDateTime\x22\x20class=\x22f-input\x22\x20min=\x22'+_0x4e26f8+'\x22></div>',_0x38ccb8+='<button\x20onclick=\x22submitCreatorMatch()\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer\x22>🎮\x20Match\x20Banao</button>',_0x38ccb8+='</div>';if(window['openModal'])openModal('🎮\x20Naya\x20Match\x20Host\x20Karo',_0x38ccb8);},window['submitCreatorMatch']=function(){if(!_0x1e552d()||!window['_supa']){_0x39212a('Login\x20ya\x20network\x20error','err');return;}var _0xbe110f=((document['getElementById']('cmName')||{})['value']||'')['trim'](),_0x8e3d4e=(document['getElementById']('cmType')||{})['value']||'coins',_0x1a2390=Number((document['getElementById']('cmFee')||{})['value']||0x0),_0x817eac=Number((document['getElementById']('cmMaxPlayers')||{})['value']||0x19),_0x110cbd=(document['getElementById']('cmMode')||{})['value']||'solo',_0x59a162=Number((document['getElementById']('cmKillPts')||{})['value']||0x1),_0x52dff0=Number((document['getElementById']('cmPrize1')||{})['value']||0x0),_0x4752cd=Number((document['getElementById']('cmPrize2')||{})['value']||0x0),_0x2d919c=Number((document['getElementById']('cmPrize3')||{})['value']||0x0),_0xbe2fd0=(document['getElementById']('cmDateTime')||{})['value']||'';if(!_0xbe110f||_0xbe110f['length']<0x3){_0x39212a('Match\x20name\x20kam\x20se\x20kam\x203\x20characters\x20ka\x20ho','err');return;}if(!_0x1a2390||_0x1a2390<0x1||_0x1a2390>0x32){_0x39212a('Entry\x20fee\x201-50\x20ke\x20beech\x20ho','err');return;}if(!_0xbe2fd0){_0x39212a('Date/time\x20set\x20karo','err');return;}if(_0x52dff0<0x0||_0x4752cd<0x0||_0x2d919c<0x0){_0x39212a('Prize\x20amount\x20negative\x20nahi\x20ho\x20sakta','err');return;}if(_0x52dff0+_0x4752cd+_0x2d919c>_0x817eac*_0x1a2390){_0x39212a('Prize\x20pool\x20match\x20ke\x20max\x20collection\x20se\x20zyada\x20hai\x20—\x20kam\x20karo','err');return;}var _0xf65859=new Date(_0xbe2fd0)['toISOString']();window['_supa']['rpc']('creator_create_match',{'p_title':_0xbe110f,'p_mode':_0x110cbd,'p_entry_type':_0x8e3d4e,'p_entry_fee':_0x1a2390,'p_max_slots':_0x817eac,'p_per_kill_prize':_0x59a162,'p_scheduled_at':_0xf65859,'p_first_prize':_0x52dff0,'p_second_prize':_0x4752cd,'p_third_prize':_0x2d919c})['then'](function(_0x52ee18){if(_0x52ee18&&_0x52ee18['error']){console['error']('[submitCreatorMatch]\x20RPC\x20error:',_0x52ee18['error']);var _0x384231=/jwt|JWT|auth/i['test'](_0x52ee18['error']['message']||'')?'\x20(login\x20session\x20expired\x20ho\x20gaya\x20—\x20app\x20dobara\x20kholo)':'';_0x39212a('❌\x20'+(_0x52ee18['error']['message']||'Server\x20error')+_0x384231,'err');return;}var _0x54b859=_0x52ee18['data'];if(!_0x54b859||!_0x54b859['success']){console['warn']('[submitCreatorMatch]\x20RPC\x20returned\x20unsuccessful\x20result:',_0x54b859);var _0x596092={'not_a_creator':'Tum\x20approved\x20creator\x20nahi\x20ho','premium_required':'Match\x20host\x20karne\x20ke\x20liye\x20active\x20Premium\x20chahiye','creator_suspended':'Tumhari\x20hosting\x20suspend\x20hai','entry_fee_out_of_range':'Entry\x20fee\x201-'+(_0x54b859&&_0x54b859['max']||0x32)+'\x20ke\x20beech\x20honi\x20chahiye','invalid_slot_count':'Players\x202-'+(_0x54b859&&_0x54b859['max']||0x64)+'\x20ke\x20beech\x20ho','schedule_too_soon':'Match\x20kam\x20se\x20kam\x2020\x20min\x20baad\x20schedule\x20karo','invalid_title':'Match\x20name\x20sahi\x20se\x20likho','prize_exceeds_pool':'Total\x20prize\x20match\x20ke\x20max\x20collection\x20(₹/coins\x20'+(_0x54b859&&_0x54b859['max']||0x0)+')\x20se\x20zyada\x20hai','invalid_prize':'Prize\x20amount\x20sahi\x20se\x20bharo','too_many_open_matches':'Max\x20'+(_0x54b859&&_0x54b859['max']||0x3)+'\x20active\x20matches\x20allowed\x20—\x20pehle\x20koi\x20complete\x20karo'};_0x39212a(_0x596092[_0x54b859&&_0x54b859['error']]||'Match\x20create\x20nahi\x20ho\x20paya'+(_0x54b859&&_0x54b859['error']?'\x20('+_0x54b859['error']+')':''),'err');return;}_0x39212a('✅\x20Match\x20banaya\x20gaya!\x20Players\x20abhi\x20register\x20kar\x20sakte\x20hain.','ok');if(window['closeModal'])closeModal();if(window['renderHome'])renderHome();})['catch'](function(_0x274473){_0x39212a('Error:\x20'+_0x274473['message'],'err');});},window['showMyCreatorMatches']=function(){if(!_0x1e552d()||!window['_supa'])return;var _0x4afe2c='<div\x20id=\x22_myCmBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div>';if(window['openModal'])openModal('📋\x20Mere\x20Matches',_0x4afe2c);window['_supa']['from']('matches')['select']('id,title,status,entry_fee,entry_type,filled_slots,max_slots,scheduled_at,room_status')['eq']('creator_uid',_0x1e552d())['order']('created_at',{'ascending':![]})['limit'](0x14)['then'](function(_0x21d308){var _0x46c082=document['getElementById']('_myCmBody');if(!_0x46c082)return;var _0x56190a=_0x21d308['data']||[];if(!_0x56190a['length']){_0x46c082['innerHTML']='<div\x20style=\x22padding:10px;font-size:13px\x22>Koi\x20match\x20nahi\x20banaya\x20abhi\x20—\x20pehle\x20ek\x20banao!</div>';return;}var _0x2baaa6='<div\x20style=\x22display:grid;gap:10px;text-align:left\x22>';_0x56190a['forEach'](function(_0x2efc31){var _0x40f454=_0x2efc31['status']==='upcoming'?'#ffd700':_0x2efc31['status']==='live'?'#00ff9c':_0x2efc31['status']==='pending_review'?'#00d4ff':_0x2efc31['status']==='completed'?'#888':'#ff6b6b',_0x3ce27c=_0x2efc31['status']==='pending_review'?'ADMIN\x20REVIEW':(_0x2efc31['status']||'')['toUpperCase']();_0x2baaa6+='<div\x20style=\x22background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.07);border-radius:12px;padding:12px\x22>',_0x2baaa6+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px\x22>',_0x2baaa6+='<div><div\x20style=\x22font-size:13px;font-weight:700;color:#fff\x22>'+_0x1ef452(_0x2efc31['title']||'Untitled')+'</div>',_0x2baaa6+='<div\x20style=\x22font-size:11px;color:#888\x22>'+(_0x2efc31['entry_fee']||0x0)+'\x20'+(_0x2efc31['entry_type']==='coins'?'🪙':'💎')+'\x20·\x20'+(_0x2efc31['filled_slots']||0x0)+'/'+(_0x2efc31['max_slots']||0x0)+'\x20players</div></div>',_0x2baaa6+='<span\x20style=\x22font-size:10px;color:'+_0x40f454+';font-weight:700\x22>'+_0x3ce27c+'</span>',_0x2baaa6+='</div>';if(_0x2efc31['status']==='upcoming'&&(_0x2efc31['room_status']||'pending')==='pending')_0x2baaa6+='<button\x20onclick=\x22showCreatorRoomEntry(\x27'+_0x2efc31['id']+'\x27)\x22\x20style=\x22width:100%;padding:9px;border-radius:10px;background:rgba(0,212,255,.08);border:1px\x20solid\x20rgba(0,212,255,.2);color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer\x22>🔑\x20Room\x20ID\x20Enter\x20Karo</button>';else{if(_0x2efc31['status']==='live')_0x2baaa6+='<button\x20onclick=\x22showCreatorResultForm(\x27'+_0x2efc31['id']+'\x27)\x22\x20style=\x22width:100%;padding:9px;border-radius:10px;background:rgba(0,255,156,.08);border:1px\x20solid\x20rgba(0,255,156,.2);color:#00ff9c;font-size:12px;font-weight:700;cursor:pointer\x22>🏆\x20Result\x20Submit\x20Karo</button>';else _0x2efc31['status']==='pending_review'&&(_0x2baaa6+='<div\x20style=\x22font-size:11px;color:#00d4ff\x22>Admin\x20result\x20verify\x20kar\x20raha\x20hai\x20—\x20payout\x20jald\x20hoga</div>');}_0x2baaa6+='</div>';}),_0x2baaa6+='</div>',_0x46c082['innerHTML']=_0x2baaa6,window['_loadShowcase'](creatorUid);});},window['_loadShowcase']=function(_0x2e3977){var _0x50f379=document['getElementById']('_showcaseBox');if(!_0x50f379)return;var _0x58de70=!!(window['U']&&window['U']['uid']===_0x2e3977),_0x56d4e0='<div\x20style=\x22position:relative;border-radius:14px;padding:10px\x2012px;margin-bottom:10px;background:linear-gradient(160deg,rgba(123,47,247,.16),rgba(255,0,0,.07));border:1px\x20solid\x20rgba(185,100,255,.35)\x22>'+'<div\x20style=\x22font-size:12px;font-weight:900;letter-spacing:1.5px;background:linear-gradient(90deg,#ff4d4d,#ffd700,#b964ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent\x22>🎬\x20SHOWCASE</div>'+'<div\x20style=\x22font-size:9.5px;color:#8878a8;margin-top:2px\x22>Creator\x20ki\x20best\x20gameplay\x20—\x20tap\x20karke\x20YouTube\x20par\x20dekhein</div></div>';if(!window['_supa']){_0x50f379['innerHTML']=_0x56d4e0;return;}window['_supa']['from']('creator_showcase')['select']('*')['eq']('creator_uid',_0x2e3977)['order']('created_at',{'ascending':![]})['limit'](0x6)['then'](function(_0x2483d6){var _0x5cc374=_0x2483d6['data']||[],_0x3dd26e=_0x56d4e0;_0x5cc374['forEach'](function(_0x153bc9){_0x3dd26e+='<div\x20style=\x22position:relative;display:flex;gap:10px;align-items:center;background:linear-gradient(160deg,rgba(123,47,247,.10),rgba(0,0,0,.30));border:1.5px\x20solid\x20rgba(185,100,255,.30);border-radius:14px;padding:8px;margin-bottom:9px;cursor:pointer;box-shadow:0\x204px\x2014px\x20rgba(0,0,0,.35)\x22\x20onclick=\x22window.open(\x27'+String(_0x153bc9['video_url'])['replace'](/'/g,'\x5c\x27')+'\x27,\x27_blank\x27)\x22>'+'<div\x20style=\x22position:relative;width:96px;height:54px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#000;border:1px\x20solid\x20rgba(255,255,255,.12)\x22>'+'<img\x20src=\x22'+(_0x153bc9['thumb_url']||'')+'\x22\x20alt=\x22\x22\x20style=\x22width:100%;height:100%;object-fit:cover\x22\x20onerror=\x22this.style.visibility=\x27hidden\x27\x22>'+'<div\x20style=\x22position:absolute;inset:0;background:linear-gradient(180deg,transparent\x2040%,rgba(0,0,0,.65))\x22></div>'+'<div\x20style=\x22position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:17px;border-radius:5px;background:#ff0000;display:flex;align-items:center;justify-content:center;box-shadow:0\x200\x2010px\x20rgba(255,0,0,.6)\x22><div\x20style=\x22width:0;height:0;border-left:7px\x20solid\x20#fff;border-top:4px\x20solid\x20transparent;border-bottom:4px\x20solid\x20transparent;margin-left:1px\x22></div></div>'+'</div>'+'<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:12.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\x22>'+_0x2b472b(_0x153bc9['title']||'YouTube\x20video')+'</div>'+'<div\x20style=\x22font-size:9.5px;color:#ff6b6b;font-weight:700;margin-top:3px\x22>▶\x20YouTube\x20•\x20abhi\x20dekhein</div></div>'+'<div\x20style=\x22color:#8878a8;font-size:16px;font-weight:900\x22>›</div>'+(_0x58de70?'<button\x20onclick=\x22event.stopPropagation();window._delShowcase(\x27'+_0x153bc9['id']+'\x27,\x27'+_0x2e3977+'\x27)\x22\x20style=\x22position:absolute;top:5px;right:5px;background:rgba(0,0,0,.55);border:1px\x20solid\x20rgba(255,80,80,.4);color:#ff6b6b;border-radius:8px;padding:2px\x207px;font-size:10px;cursor:pointer\x22>🗑</button>':'')+'</div>';});if(!_0x5cc374['length'])_0x3dd26e+='<div\x20style=\x22font-size:11px;color:#7768a0;margin:2px\x202px\x2010px\x22>'+(_0x58de70?'Apni\x20best\x20gameplay\x20videos\x20yahan\x20lagao\x20—\x20followers\x20profile\x20se\x20seedha\x20dekhenge.':'Abhi\x20koi\x20video\x20nahi')+'</div>';if(_0x58de70)_0x3dd26e+='<button\x20onclick=\x22window._addShowcase(\x27'+_0x2e3977+'\x27)\x22\x20style=\x22width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,#ff0000,#b30000);border:none;color:#fff;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0\x204px\x2014px\x20rgba(255,0,0,.35);letter-spacing:.4px\x22>＋\x20Add\x20YouTube\x20video</button>';_0x50f379['innerHTML']=_0x3dd26e;},function(){_0x50f379['innerHTML']=_0x56d4e0;});},window['_addShowcase']=function(_0x40e922){var _0x4ac2ec=prompt('YouTube\x20video\x20link\x20paste\x20karo:');if(!_0x4ac2ec)return;_0x4ac2ec=String(_0x4ac2ec)['trim']();var _0x35feb7=_0x4ac2ec['match'](/(?:youtube\.com\/(?:watch\?v=|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);if(!_0x35feb7){if(window['toast'])_0x39212a('❌\x20Valid\x20YouTube\x20link\x20daalo','err');return;}var _0x1e3eff=_0x35feb7[0x1],_0x36d7b9=(prompt('Video\x20ka\x20title\x20(optional):')||'YouTube\x20video')['slice'](0x0,0x50);window['_supa']['from']('creator_showcase')['insert']({'creator_uid':_0x40e922,'video_url':'https://www.youtube.com/watch?v='+_0x1e3eff,'title':_0x36d7b9,'thumb_url':'https://i.ytimg.com/vi/'+_0x1e3eff+'/hqdefault.jpg'})['then'](function(_0x49af6b){if(_0x49af6b&&_0x49af6b['error']){if(window['toast'])_0x39212a('Save\x20nahi\x20hua:\x20'+(_0x49af6b['error']['message']||''),'err');return;}if(window['toast'])_0x39212a('✅\x20Showcase\x20me\x20add\x20ho\x20gayi');window['_loadShowcase'](_0x40e922);});},window['_delShowcase']=function(_0x5088f2,_0x1511f1){if(!confirm('Video\x20delete\x20karein?'))return;window['_supa']['from']('creator_showcase')['delete']()['eq']('id',_0x5088f2)['then'](function(){window['_loadShowcase'](_0x1511f1);});},window['showCreatorRoomEntry']=function(_0x5af00e){var _0x48dca5='<div\x20style=\x22padding:4px\x200\x22>';_0x48dca5+='<div\x20style=\x22font-size:12px;color:#888;margin-bottom:12px\x22>Free\x20Fire\x20mein\x20custom\x20room\x20banao\x20→\x20Room\x20ID\x20+\x20Password\x20yahan\x20daalo\x20→\x20Match\x20LIVE\x20ho\x20jayega,\x20players\x20ko\x20dikhega.</div>',_0x48dca5+='<div\x20class=\x22f-group\x22><label>🔑\x20Room\x20ID</label>',_0x48dca5+='<input\x20type=\x22text\x22\x20id=\x22crRoomId\x22\x20class=\x22f-input\x22\x20placeholder=\x22e.g.\x201234567\x22\x20inputmode=\x22numeric\x22></div>',_0x48dca5+='<div\x20class=\x22f-group\x22><label>🔒\x20Room\x20Password</label>',_0x48dca5+='<input\x20type=\x22text\x22\x20id=\x22crRoomPw\x22\x20class=\x22f-input\x22\x20placeholder=\x22e.g.\x201234\x22></div>',_0x48dca5+='<button\x20onclick=\x22submitCreatorRoomId(\x27'+_0x5af00e+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0066ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer\x22>📤\x20Room\x20ID\x20Submit\x20Karo</button>',_0x48dca5+='</div>';if(window['openModal'])openModal('🔑\x20Room\x20ID\x20Enter',_0x48dca5);},window['submitCreatorRoomId']=function(_0x575a65){var _0x560508=((document['getElementById']('crRoomId')||{})['value']||'')['trim'](),_0x41ce57=((document['getElementById']('crRoomPw')||{})['value']||'')['trim']();if(!_0x560508||_0x560508['length']<0x3){_0x39212a('Valid\x20Room\x20ID\x20daalo','err');return;}if(!window['_supa']){_0x39212a('Network\x20error','err');return;}window['_supa']['rpc']('creator_set_room',{'p_match_id':_0x575a65,'p_room_id':_0x560508,'p_room_password':_0x41ce57})['then'](function(_0x10f441){var _0x2ab22b=_0x10f441['data'];if(!_0x2ab22b||!_0x2ab22b['success']){var _0x273ecf={'not_your_match':'Ye\x20tumhara\x20match\x20nahi\x20hai','match_not_active':'Match\x20active\x20nahi\x20hai','invalid_room_id':'Room\x20ID\x20sahi\x20nahi\x20hai'};_0x39212a(_0x273ecf[_0x2ab22b&&_0x2ab22b['error']]||'Room\x20ID\x20save\x20nahi\x20hua','err');return;}_0x39212a('✅\x20Room\x20ID\x20set!\x20Match\x20ab\x20LIVE\x20hai.','ok');if(window['closeModal'])closeModal();})['catch'](function(_0x410368){_0x39212a('Error:\x20'+_0x410368['message'],'err');});},window['showCreatorResultForm']=function(_0x416b4a){if(!window['_supa'])return;var _0x5178ab='<div\x20id=\x22_crResultBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading\x20players...</div>';if(window['openModal'])openModal('🏆\x20Match\x20Result',_0x5178ab);function _0x45d1f3(_0x4ede4c){var _0x1b9a2a=document['getElementById']('_crResultBody');if(!_0x1b9a2a)return;if(!_0x4ede4c['length']){_0x1b9a2a['innerHTML']='<div\x20style=\x22padding:10px;font-size:13px\x22>Koi\x20player\x20nahi\x20mila</div>';return;}var _0x1eb06a='<div\x20style=\x22font-size:11px;color:#888;margin-bottom:12px;text-align:left\x22>Har\x20player\x20ke\x20kills\x20aur\x20placement\x20daalo.\x20Submit\x20karne\x20ke\x20baad\x20Admin\x20verify\x20karega\x20aur\x20prize\x20payout\x20karega.</div>';_0x1eb06a+='<div\x20style=\x22display:grid;gap:8px;text-align:left\x22>',_0x4ede4c['forEach'](function(_0x4ce6c5){_0x1eb06a+='<div\x20style=\x22display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px;border-radius:10px\x22>',_0x1eb06a+='<div\x20style=\x22flex:1;font-size:12px;font-weight:700\x22>'+_0x1ef452(_0x4ce6c5['user_ign']||_0x4ce6c5['ign_at_join']||'Player')+'</div>',_0x1eb06a+='<input\x20type=\x22number\x22\x20min=\x220\x22\x20placeholder=\x22Kills\x22\x20data-jr=\x22'+_0x4ce6c5['id']+'\x22\x20class=\x22_crKills\x22\x20style=\x22width:60px;padding:6px;border-radius:8px;border:1px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px\x22>',_0x1eb06a+='<input\x20type=\x22number\x22\x20min=\x221\x22\x20placeholder=\x22Rank\x22\x20data-jr=\x22'+_0x4ce6c5['id']+'\x22\x20class=\x22_crPlacement\x22\x20style=\x22width:60px;padding:6px;border-radius:8px;border:1px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px\x22>',_0x1eb06a+='</div>';}),_0x1eb06a+='</div>',_0x1eb06a+='<button\x20onclick=\x22submitCreatorResult(\x27'+_0x416b4a+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;margin-top:14px\x22>📤\x20Result\x20Submit\x20Karo</button>',_0x1b9a2a['innerHTML']=_0x1eb06a;}function _0x912061(){return window['_supa']['from']('join_requests')['select']('id,user_ign,ign_at_join,status')['eq']('match_id',_0x416b4a)['not']('status','in','(cancelled,refunded,rejected)')['then'](function(_0x2e1ea0){_0x45d1f3(_0x2e1ea0['data']||[]);});}window['_supa']['rpc']('creator_get_match_participants',{'p_match_id':_0x416b4a,'p_uid':window['U']&&window['U']['uid']||null})['then'](function(_0x4a30d5){var _0x2d2bf4=_0x4a30d5&&_0x4a30d5['data'];if(!_0x4a30d5['error']&&_0x2d2bf4&&_0x2d2bf4['ok']&&Array['isArray'](_0x2d2bf4['players'])){_0x45d1f3(_0x2d2bf4['players']);return;}console['warn']('[CreatorResult]\x20participants\x20RPC\x20nahi\x20chala,\x20legacy\x20select\x20fallback:',_0x4a30d5&&_0x4a30d5['error']&&_0x4a30d5['error']['message']||_0x2d2bf4&&_0x2d2bf4['error']),_0x912061();})['catch'](function(_0x36a4b8){console['warn']('[CreatorResult]\x20RPC\x20error,\x20legacy\x20select\x20fallback:',_0x36a4b8&&_0x36a4b8['message']),_0x912061();});},window['submitCreatorResult']=function(_0x31910b){var _0x31efd0=document['querySelectorAll']('._crKills'),_0x1805e8=[];_0x31efd0['forEach'](function(_0x10a828){var _0x3be9b4=_0x10a828['dataset']['jr'],_0x2d826c=document['querySelector']('._crPlacement[data-jr=\x22'+_0x3be9b4+'\x22]');_0x1805e8['push']({'join_request_id':_0x3be9b4,'kills':Number(_0x10a828['value']||0x0),'placement':Number(_0x2d826c&&_0x2d826c['value']||0x0)});});if(!window['_supa']){_0x39212a('Network\x20error','err');return;}window['_supa']['rpc']('creator_publish_result',{'p_match_id':_0x31910b,'p_results':_0x1805e8})['then'](function(_0x53ed81){var _0x1353bd=_0x53ed81['data'];if(!_0x1353bd||!_0x1353bd['success']){var _0x2d85ff={'not_your_match':'Ye\x20tumhara\x20match\x20nahi\x20hai','match_not_live':'Match\x20live\x20nahi\x20hai'};_0x39212a(_0x2d85ff[_0x1353bd&&_0x1353bd['error']]||'Result\x20submit\x20nahi\x20hua','err');return;}_0x39212a('✅\x20Result\x20submit\x20ho\x20gaya!\x20Admin\x20review\x20ke\x20baad\x20payout\x20hoga.','ok');if(window['closeModal'])closeModal();})['catch'](function(_0xae9697){_0x39212a('Error:\x20'+_0xae9697['message'],'err');});},window['rateCreatorMatch']=function(_0x3956c1,_0x34d648){var _0x325f2e='<div\x20style=\x22text-align:center;padding:10px\x200\x22>';_0x325f2e+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:14px\x22>Is\x20match\x20ka\x20experience\x20kaisa\x20raha?</div>',_0x325f2e+='<div\x20id=\x22_starRow\x22\x20style=\x22display:flex;justify-content:center;gap:8px;margin-bottom:16px;font-size:32px\x22>';for(var _0x400a07=0x1;_0x400a07<=0x5;_0x400a07++){_0x325f2e+='<span\x20data-star=\x22'+_0x400a07+'\x22\x20onclick=\x22window._selectStar('+_0x400a07+')\x22\x20style=\x22cursor:pointer;color:#333\x22>★</span>';}_0x325f2e+='</div>',_0x325f2e+='<textarea\x20id=\x22_ratingReason\x22\x20class=\x22f-input\x22\x20placeholder=\x22Koi\x20feedback?\x20(optional)\x22\x20style=\x22min-height:60px;margin-bottom:14px\x22></textarea>',_0x325f2e+='<button\x20onclick=\x22window._submitRating(\x27'+_0x3956c1+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-weight:800;cursor:pointer\x22>Submit\x20Rating</button>',_0x325f2e+='</div>',window['_selectedStars']=0x0;if(window['openModal'])openModal('⭐\x20Rate\x20This\x20Match',_0x325f2e);},window['_selectStar']=function(_0x15436a){window['_selectedStars']=_0x15436a,document['querySelectorAll']('#_starRow\x20span')['forEach'](function(_0x584f5e){_0x584f5e['style']['color']=Number(_0x584f5e['dataset']['star'])<=_0x15436a?'#ffd700':'#333';});},window['_submitRating']=function(_0x4eab01){if(!window['_selectedStars']){_0x39212a('Stars\x20select\x20karo','err');return;}var _0xba6b76=((document['getElementById']('_ratingReason')||{})['value']||'')['trim']();if(!window['_supa'])return;window['_supa']['rpc']('rate_creator_match',{'p_match_id':_0x4eab01,'p_stars':window['_selectedStars'],'p_reason':_0xba6b76})['then'](function(_0x8774fe){if(_0x8774fe['data']&&_0x8774fe['data']['success']){_0x39212a('✅\x20Rating\x20submit\x20ho\x20gayi!','ok');if(window['closeModal'])closeModal();}else _0x39212a(_0x8774fe['data']&&_0x8774fe['data']['error']||'Rating\x20submit\x20nahi\x20hui','err');});},window['showCreatorProfile']=function(_0xe03aef){if(!window['_supa'])return;var _0x3d320b='<div\x20id=\x22_credProfBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div>';if(window['openModal'])openModal('🎮\x20Creator\x20Profile',_0x3d320b);Promise['all']([window['_supa']['from']('users')['select']('ign,avatar_url,creator_rating,creator_rating_count,creator_code')['eq']('id',_0xe03aef)['single'](),window['_supa']['from']('creator_stats')['select']('total_matches')['eq']('user_id',_0xe03aef)['maybeSingle'](),_0x1e552d()?window['_supa']['from']('creator_follows')['select']('id')['eq']('creator_uid',_0xe03aef)['eq']('follower_uid',_0x1e552d())['maybeSingle']():Promise['resolve']({'data':null})])['then'](function(_0x5b011a){var _0x47fa8f=_0x5b011a[0x0]&&_0x5b011a[0x0]['data']||{},_0x190d22=_0x5b011a[0x1]&&_0x5b011a[0x1]['data']||{},_0x3a0fd6=!!(_0x5b011a[0x2]&&_0x5b011a[0x2]['data']),_0x46d6a3=document['getElementById']('_credProfBody');if(!_0x46d6a3)return;var _0x57454e='',_0x1b582c=Number(_0x47fa8f['creator_rating']||0x5);for(var _0xde70b1=0x1;_0xde70b1<=0x5;_0xde70b1++)_0x57454e+=_0xde70b1<=Math['round'](_0x1b582c)?'★':'☆';var _0x5e53ad=_0x47fa8f['avatar_url']?'<img\x20src=\x22'+_0x47fa8f['avatar_url']+'\x22\x20style=\x22width:100%;height:100%;object-fit:cover;border-radius:50%\x22>':(_0x47fa8f['ign']||'C')['charAt'](0x0)['toUpperCase'](),_0x195f8d='';_0x195f8d+='<div\x20style=\x22position:relative;border-radius:18px;overflow:hidden;border:1.5px\x20solid\x20rgba(185,100,255,.4);box-shadow:0\x206px\x2024px\x20rgba(0,0,0,.5),0\x200\x2024px\x20rgba(123,47,247,.25);margin-bottom:12px;background:radial-gradient(120%\x2070%\x20at\x2050%\x200%,rgba(123,47,247,.4),transparent\x2060%),linear-gradient(165deg,#1c0b33\x200%,#0d0518\x20100%)\x22>',_0x195f8d+='<div\x20style=\x22height:74px;background:radial-gradient(60%\x20100%\x20at\x2050%\x20100%,rgba(255,215,0,.28),transparent\x2070%),repeating-linear-gradient(115deg,rgba(255,255,255,.05)\x200\x202px,transparent\x202px\x2014px)\x22></div>',_0x195f8d+='<div\x20style=\x22text-align:center;padding:0\x2014px\x2016px;margin-top:-42px\x22>',_0x195f8d+='<div\x20style=\x22width:88px;height:88px;margin:0\x20auto;border-radius:50%;padding:3px;background:linear-gradient(135deg,#ffd700,#b44dff);box-shadow:0\x200\x2022px\x20rgba(255,215,0,.5)\x22><div\x20style=\x22width:100%;height:100%;border-radius:50%;background:#0b0b0f;color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;overflow:hidden\x22>'+_0x5e53ad+'</div></div>',_0x195f8d+='<div\x20style=\x22display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:3px\x2010px;border-radius:10px;background:rgba(123,47,247,.18);border:1px\x20solid\x20rgba(185,100,255,.45);color:#d5a6ff;font-size:9.5px;font-weight:900;letter-spacing:1.5px\x22>🎮\x20CREATOR</div>',_0x195f8d+='<div\x20style=\x22font-size:18px;font-weight:900;color:#fff;margin-top:4px;text-shadow:0\x202px\x208px\x20rgba(0,0,0,.7)\x22>'+_0x2b472b(_0x47fa8f['ign']||'Creator')+'</div>',_0x195f8d+='<div\x20style=\x22font-size:17px;color:#ffd700;margin:5px\x200\x202px;text-shadow:0\x200\x2012px\x20rgba(255,215,0,.6)\x22>'+_0x57454e+'\x20<span\x20style=\x22font-size:11px;color:#9a8bbd;text-shadow:none\x22>('+(_0x47fa8f['creator_rating_count']||0x0)+'\x20ratings)</span></div>',_0x195f8d+='<div\x20style=\x22display:flex;gap:8px;justify-content:center;margin-top:10px\x22>',_0x195f8d+='<div\x20style=\x22flex:1;max-width:150px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.1);border-radius:12px;padding:8px\x206px\x22><div\x20style=\x22font-size:16px;font-weight:900;color:#00ff9c\x22>'+(_0x190d22['total_matches']||0x0)+'</div><div\x20style=\x22font-size:9px;color:#8878a8;font-weight:700;margin-top:1px\x22>REFERRED\x20MATCHES</div></div>',_0x195f8d+='<div\x20style=\x22flex:1;max-width:150px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.1);border-radius:12px;padding:8px\x206px\x22><div\x20style=\x22font-size:16px;font-weight:900;color:#ffd700\x22>'+_0x1b582c['toFixed'](0x1)+'★</div><div\x20style=\x22font-size:9px;color:#8878a8;font-weight:700;margin-top:1px\x22>CREATOR\x20RATING</div></div>',_0x195f8d+='</div>',_0x195f8d+='<div\x20style=\x22display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:6px\x2012px;border-radius:12px;background:rgba(0,255,156,.07);border:1px\x20solid\x20rgba(0,255,156,.3)\x22><span\x20style=\x22font-size:11px;color:#9ff5d0;font-weight:700\x22>Code:\x20<strong\x20style=\x22color:#00ff9c\x22>'+_0x2b472b(_0x47fa8f['creator_code']||'—')+'</strong></span>'+(_0x47fa8f['creator_code']?'<button\x20onclick=\x22window.copyTxt&&copyTxt(\x27'+_0x2b472b(_0x47fa8f['creator_code'])+'\x27)\x22\x20style=\x22background:rgba(0,255,156,.15);border:none;color:#00ff9c;padding:2px\x208px;border-radius:6px;font-size:10px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button>':'')+'</div>',_0x195f8d+='</div></div>',_0x195f8d+='<div\x20id=\x22_showcaseBox\x22\x20style=\x22margin:12px\x200\x22></div>',_0x195f8d+='<button\x20id=\x22_followBtn\x22\x20onclick=\x22window._toggleFollowCreator(\x27'+_0xe03aef+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:14px;font-weight:900;font-size:13px;cursor:pointer;border:none;'+(_0x3a0fd6?'background:rgba(255,255,255,.08);color:#aaa;border:1px\x20solid\x20rgba(255,255,255,.15)':'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;box-shadow:0\x204px\x2016px\x20rgba(0,255,156,.35)')+'\x22>'+(_0x3a0fd6?'✓\x20Following\x20—\x20notifications\x20ON':'+\x20Follow\x20(naye\x20match\x20ka\x20notification\x20pao)')+'</button>',_0x195f8d+='<div\x20style=\x22font-size:10px;color:#666;text-align:center;margin-top:8px\x22>Sirf\x20followers\x20ko\x20naye\x20match\x20ka\x20notification\x20jaata\x20hai\x20—\x20sabko\x20nahi</div>',_0x46d6a3['innerHTML']=_0x195f8d;});},window['showCreatorRoomEntry']=function(_0x4daa2f){var _0x16d506='<div\x20style=\x22padding:4px\x200\x22>';_0x16d506+='<div\x20style=\x22font-size:12px;color:#888;margin-bottom:12px\x22>Free\x20Fire\x20mein\x20custom\x20room\x20banao\x20→\x20Room\x20ID\x20+\x20Password\x20yahan\x20daalo\x20→\x20Match\x20LIVE\x20ho\x20jayega,\x20players\x20ko\x20dikhega.</div>',_0x16d506+='<div\x20class=\x22f-group\x22><label>🔑\x20Room\x20ID</label>',_0x16d506+='<input\x20type=\x22text\x22\x20id=\x22crRoomId\x22\x20class=\x22f-input\x22\x20placeholder=\x22e.g.\x201234567\x22\x20inputmode=\x22numeric\x22></div>',_0x16d506+='<div\x20class=\x22f-group\x22><label>🔒\x20Room\x20Password</label>',_0x16d506+='<input\x20type=\x22text\x22\x20id=\x22crRoomPw\x22\x20class=\x22f-input\x22\x20placeholder=\x22e.g.\x201234\x22></div>',_0x16d506+='<button\x20onclick=\x22submitCreatorRoomId(\x27'+_0x4daa2f+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0066ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer\x22>📤\x20Room\x20ID\x20Submit\x20Karo</button>',_0x16d506+='</div>';if(window['openModal'])openModal('🔑\x20Room\x20ID\x20Enter',_0x16d506);},window['submitCreatorRoomId']=function(_0x346407){var _0x523766=((document['getElementById']('crRoomId')||{})['value']||'')['trim'](),_0x4a1129=((document['getElementById']('crRoomPw')||{})['value']||'')['trim']();if(!_0x523766||_0x523766['length']<0x3){_0x39212a('Valid\x20Room\x20ID\x20daalo','err');return;}if(!window['_supa']){_0x39212a('Network\x20error','err');return;}window['_supa']['rpc']('creator_set_room',{'p_match_id':_0x346407,'p_room_id':_0x523766,'p_room_password':_0x4a1129})['then'](function(_0x590f7c){var _0x5ebc78=_0x590f7c['data'];if(!_0x5ebc78||!_0x5ebc78['success']){var _0x2bd413={'not_your_match':'Ye\x20tumhara\x20match\x20nahi\x20hai','match_not_active':'Match\x20active\x20nahi\x20hai','invalid_room_id':'Room\x20ID\x20sahi\x20nahi\x20hai'};_0x39212a(_0x2bd413[_0x5ebc78&&_0x5ebc78['error']]||'Room\x20ID\x20save\x20nahi\x20hua','err');return;}_0x39212a('✅\x20Room\x20ID\x20set!\x20Match\x20ab\x20LIVE\x20hai.','ok');if(window['closeModal'])closeModal();})['catch'](function(_0xecf780){_0x39212a('Error:\x20'+_0xecf780['message'],'err');});},window['showCreatorResultForm']=function(_0x1fc5ff){if(!window['_supa'])return;var _0x51b774='<div\x20id=\x22_crResultBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading\x20players...</div>';if(window['openModal'])openModal('🏆\x20Match\x20Result',_0x51b774);function _0x484a5d(_0x81c2c9){var _0x4482f9=document['getElementById']('_crResultBody');if(!_0x4482f9)return;if(!_0x81c2c9['length']){_0x4482f9['innerHTML']='<div\x20style=\x22padding:10px;font-size:13px\x22>Koi\x20player\x20nahi\x20mila</div>';return;}var _0xe94818='<div\x20style=\x22font-size:11px;color:#888;margin-bottom:12px;text-align:left\x22>Har\x20player\x20ke\x20kills\x20aur\x20placement\x20daalo.\x20Submit\x20karne\x20ke\x20baad\x20Admin\x20verify\x20karega\x20aur\x20prize\x20payout\x20karega.</div>';_0xe94818+='<div\x20style=\x22display:grid;gap:8px;text-align:left\x22>',_0x81c2c9['forEach'](function(_0x1b8e44){_0xe94818+='<div\x20style=\x22display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px;border-radius:10px\x22>',_0xe94818+='<div\x20style=\x22flex:1;font-size:12px;font-weight:700\x22>'+_0x1ef452(_0x1b8e44['user_ign']||_0x1b8e44['ign_at_join']||'Player')+'</div>',_0xe94818+='<input\x20type=\x22number\x22\x20min=\x220\x22\x20placeholder=\x22Kills\x22\x20data-jr=\x22'+_0x1b8e44['id']+'\x22\x20class=\x22_crKills\x22\x20style=\x22width:60px;padding:6px;border-radius:8px;border:1px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px\x22>',_0xe94818+='<input\x20type=\x22number\x22\x20min=\x221\x22\x20placeholder=\x22Rank\x22\x20data-jr=\x22'+_0x1b8e44['id']+'\x22\x20class=\x22_crPlacement\x22\x20style=\x22width:60px;padding:6px;border-radius:8px;border:1px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px\x22>',_0xe94818+='</div>';}),_0xe94818+='</div>',_0xe94818+='<button\x20onclick=\x22submitCreatorResult(\x27'+_0x1fc5ff+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;margin-top:14px\x22>📤\x20Result\x20Submit\x20Karo</button>',_0x4482f9['innerHTML']=_0xe94818;}function _0x1d370(){return window['_supa']['from']('join_requests')['select']('id,user_ign,ign_at_join,status')['eq']('match_id',_0x1fc5ff)['not']('status','in','(cancelled,refunded,rejected)')['then'](function(_0x3f802f){_0x484a5d(_0x3f802f['data']||[]);});}window['_supa']['rpc']('creator_get_match_participants',{'p_match_id':_0x1fc5ff,'p_uid':window['U']&&window['U']['uid']||null})['then'](function(_0x1c5736){var _0x5934da=_0x1c5736&&_0x1c5736['data'];if(!_0x1c5736['error']&&_0x5934da&&_0x5934da['ok']&&Array['isArray'](_0x5934da['players'])){_0x484a5d(_0x5934da['players']);return;}console['warn']('[CreatorResult]\x20participants\x20RPC\x20nahi\x20chala,\x20legacy\x20select\x20fallback:',_0x1c5736&&_0x1c5736['error']&&_0x1c5736['error']['message']||_0x5934da&&_0x5934da['error']),_0x1d370();})['catch'](function(_0x129a44){console['warn']('[CreatorResult]\x20RPC\x20error,\x20legacy\x20select\x20fallback:',_0x129a44&&_0x129a44['message']),_0x1d370();});},window['submitCreatorResult']=function(_0x536555){var _0x160d78=document['querySelectorAll']('._crKills'),_0x33ee3e=[];_0x160d78['forEach'](function(_0x223682){var _0x4ffc80=_0x223682['dataset']['jr'],_0xbd231f=document['querySelector']('._crPlacement[data-jr=\x22'+_0x4ffc80+'\x22]');_0x33ee3e['push']({'join_request_id':_0x4ffc80,'kills':Number(_0x223682['value']||0x0),'placement':Number(_0xbd231f&&_0xbd231f['value']||0x0)});});if(!window['_supa']){_0x39212a('Network\x20error','err');return;}window['_supa']['rpc']('creator_publish_result',{'p_match_id':_0x536555,'p_results':_0x33ee3e})['then'](function(_0x2bd49d){var _0x569288=_0x2bd49d['data'];if(!_0x569288||!_0x569288['success']){var _0x4ff313={'not_your_match':'Ye\x20tumhara\x20match\x20nahi\x20hai','match_not_live':'Match\x20live\x20nahi\x20hai'};_0x39212a(_0x4ff313[_0x569288&&_0x569288['error']]||'Result\x20submit\x20nahi\x20hua','err');return;}_0x39212a('✅\x20Result\x20submit\x20ho\x20gaya!\x20Admin\x20review\x20ke\x20baad\x20payout\x20hoga.','ok');if(window['closeModal'])closeModal();})['catch'](function(_0x21975b){_0x39212a('Error:\x20'+_0x21975b['message'],'err');});},window['rateCreatorMatch']=function(_0x319ee3,_0x589a0b){var _0x238a98='<div\x20style=\x22text-align:center;padding:10px\x200\x22>';_0x238a98+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-bottom:14px\x22>Is\x20match\x20ka\x20experience\x20kaisa\x20raha?</div>',_0x238a98+='<div\x20id=\x22_starRow\x22\x20style=\x22display:flex;justify-content:center;gap:8px;margin-bottom:16px;font-size:32px\x22>';for(var _0x223d88=0x1;_0x223d88<=0x5;_0x223d88++){_0x238a98+='<span\x20data-star=\x22'+_0x223d88+'\x22\x20onclick=\x22window._selectStar('+_0x223d88+')\x22\x20style=\x22cursor:pointer;color:#333\x22>★</span>';}_0x238a98+='</div>',_0x238a98+='<textarea\x20id=\x22_ratingReason\x22\x20class=\x22f-input\x22\x20placeholder=\x22Koi\x20feedback?\x20(optional)\x22\x20style=\x22min-height:60px;margin-bottom:14px\x22></textarea>',_0x238a98+='<button\x20onclick=\x22window._submitRating(\x27'+_0x319ee3+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-weight:800;cursor:pointer\x22>Submit\x20Rating</button>',_0x238a98+='</div>',window['_selectedStars']=0x0;if(window['openModal'])openModal('⭐\x20Rate\x20This\x20Match',_0x238a98);},window['_selectStar']=function(_0x5430b8){window['_selectedStars']=_0x5430b8,document['querySelectorAll']('#_starRow\x20span')['forEach'](function(_0x45a6c8){_0x45a6c8['style']['color']=Number(_0x45a6c8['dataset']['star'])<=_0x5430b8?'#ffd700':'#333';});},window['_submitRating']=function(_0x142772){if(!window['_selectedStars']){_0x39212a('Stars\x20select\x20karo','err');return;}var _0x2655d4=((document['getElementById']('_ratingReason')||{})['value']||'')['trim']();if(!window['_supa'])return;window['_supa']['rpc']('rate_creator_match',{'p_match_id':_0x142772,'p_stars':window['_selectedStars'],'p_reason':_0x2655d4})['then'](function(_0x5a0778){if(_0x5a0778['data']&&_0x5a0778['data']['success']){_0x39212a('✅\x20Rating\x20submit\x20ho\x20gayi!','ok');if(window['closeModal'])closeModal();}else _0x39212a(_0x5a0778['data']&&_0x5a0778['data']['error']||'Rating\x20submit\x20nahi\x20hui','err');});},window['showCreatorProfile']=function(_0x5277ff){if(!window['_supa'])return;var _0x434d3d='<div\x20id=\x22_credProfBody\x22\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div>';if(window['openModal'])openModal('🎮\x20Creator\x20Profile',_0x434d3d);Promise['all']([window['_supa']['from']('users')['select']('ign,avatar_url,creator_rating,creator_rating_count,creator_code')['eq']('id',_0x5277ff)['single'](),window['_supa']['from']('creator_stats')['select']('total_matches')['eq']('user_id',_0x5277ff)['maybeSingle'](),_0x1e552d()?window['_supa']['from']('creator_follows')['select']('id')['eq']('creator_uid',_0x5277ff)['eq']('follower_uid',_0x1e552d())['maybeSingle']():Promise['resolve']({'data':null})])['then'](function(_0x4d15f2){var _0x3fff6c=_0x4d15f2[0x0]&&_0x4d15f2[0x0]['data']||{},_0x4971ec=_0x4d15f2[0x1]&&_0x4d15f2[0x1]['data']||{},_0x2a15a4=!!(_0x4d15f2[0x2]&&_0x4d15f2[0x2]['data']),_0x407fed=document['getElementById']('_credProfBody');if(!_0x407fed)return;var _0x15d46c='',_0x484d8d=Number(_0x3fff6c['creator_rating']||0x5);for(var _0x26f334=0x1;_0x26f334<=0x5;_0x26f334++)_0x15d46c+=_0x26f334<=Math['round'](_0x484d8d)?'★':'☆';var _0xbedf70='<div\x20style=\x22text-align:center;padding-bottom:14px\x22>';_0xbedf70+='<div\x20style=\x22width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#000;margin:0\x20auto\x2010px\x22>'+(_0x3fff6c['ign']||'C')['charAt'](0x0)['toUpperCase']()+'</div>',_0xbedf70+='<div\x20style=\x22font-size:16px;font-weight:800\x22>'+_0x2b472b(_0x3fff6c['ign']||'Creator')+'</div>',_0xbedf70+='<div\x20style=\x22font-size:16px;color:#ffd700;margin:4px\x200\x22>'+_0x15d46c+'\x20<span\x20style=\x22font-size:12px;color:#888\x22>('+(_0x3fff6c['creator_rating_count']||0x0)+'\x20ratings)</span></div>',_0xbedf70+='<div\x20style=\x22font-size:11px;color:#888\x22>'+(_0x4971ec['total_matches']||0x0)+'\x20referred\x20matches\x20played\x20·\x20Code:\x20'+(_0x3fff6c['creator_code']||'—')+'</div>',_0xbedf70+='</div>',_0xbedf70+='<button\x20id=\x22_followBtn\x22\x20onclick=\x22window._toggleFollowCreator(\x27'+_0x5277ff+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;border:none;'+(_0x2a15a4?'background:rgba(255,255,255,.08);color:#aaa':'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000')+'\x22>'+(_0x2a15a4?'✓\x20Following\x20—\x20notifications\x20ON':'+\x20Follow\x20(naye\x20match\x20ka\x20notification\x20pao)')+'</button>',_0xbedf70+='<div\x20style=\x22font-size:10px;color:#666;text-align:center;margin-top:8px\x22>Sirf\x20followers\x20ko\x20naye\x20match\x20ka\x20notification\x20jaata\x20hai\x20—\x20sabko\x20nahi</div>',_0x407fed['innerHTML']=_0xbedf70;});},window['_toggleFollowCreator']=function(_0x205f50){if(!_0x1e552d()||!window['_supa']){_0x39212a('Login\x20karo\x20pehle','err');return;}var _0x5b2f52=document['getElementById']('_followBtn'),_0x15c207=_0x5b2f52&&_0x5b2f52['textContent']['indexOf']('Following')!==-0x1,_0x47be9e=_0x15c207?window['_supa']['from']('creator_follows')['delete']()['eq']('creator_uid',_0x205f50)['eq']('follower_uid',_0x1e552d()):window['_supa']['from']('creator_follows')['insert']({'creator_uid':_0x205f50,'follower_uid':_0x1e552d()});_0x47be9e['then'](function(_0x25826d){if(_0x25826d['error']){_0x39212a('Error:\x20'+_0x25826d['error']['message'],'err');return;}_0x5b2f52&&(_0x15c207?(_0x5b2f52['textContent']='+\x20Follow\x20(naye\x20match\x20ka\x20notification\x20pao)',_0x5b2f52['style']['background']='linear-gradient(135deg,#00ff9c,#00cc7a)',_0x5b2f52['style']['color']='#000',_0x39212a('Unfollowed','inf')):(_0x5b2f52['textContent']='✓\x20Following\x20—\x20notifications\x20ON',_0x5b2f52['style']['background']='rgba(255,255,255,.08)',_0x5b2f52['style']['color']='#aaa',_0x39212a('✅\x20Following!\x20Naye\x20match\x20pe\x20notification\x20milega','ok')));});};function _0x2b472b(_0x2ad536){return String(_0x2ad536||'')['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;');}function _0x1ef452(_0x3d3ef6){return String(_0x3d3ef6||'')['replace'](/&/g,'&amp;')['replace'](/</g,'&lt;')['replace'](/>/g,'&gt;')['replace'](/"/g,'&quot;');}console['log']('creator-match-host.js\x20(secure\x20RPC\x20version)\x20loaded');}());
+/* ================================================================
+   CREATOR MATCH HOSTING — features/creator-match-host.js
+   Full rewrite (2026-08).
+
+   WHY THIS EXISTS: without this, a creator's only role was "bring
+   players", while Admin still had to create every match, set every
+   room, and judge every result — all the actual work, none of it
+   creator-side. That's backwards for a program meant to reduce
+   Admin's workload. This lets an approved creator run their own
+   small-stakes matches end-to-end.
+
+   SECURITY MODEL (important — read before modifying):
+   matches/join_requests RLS only allows admin writes — a creator's
+   browser has ZERO direct INSERT/UPDATE access to those tables, by
+   database policy, not just by this file's choices. Every action
+   here goes through a SECURITY DEFINER RPC (creator_create_match /
+   creator_set_room / creator_publish_result) that independently
+   re-verifies: caller is an approved creator, caller owns this exact
+   match, and hard limits (entry fee <= Rs 50, <=100 slots, <=3 open
+   matches at once). A creator can NEVER credit real-money prizes
+   directly - creator_publish_result only stages claimed kills/
+   placement and flips the match to 'pending_review'; an admin still
+   does the actual payout, because a host judging their own contest's
+   payout is a conflict of interest no amount of client code should
+   be trusted to self-police. A creator is also DB-blocked from
+   joining their own hosted match (self-play block, enforced in
+   validate_and_join_match).
+   ================================================================ */
+
+(function() {
+'use strict';
+
+function uid()  { return window.U && window.U.uid; }
+function ud()   { return window.UD || {}; }
+function toast(msg, type) { if (window.toast) window.toast(msg, type); }
+
+/* --- Creator Match Form --- */
+window.showCreatorMatchForm = function() {
+  if (!ud().isCreator && !ud().is_creator) { toast('Sirf approved creators match host kar sakte hain', 'err'); return; }
+
+  var h = '<div style="padding:4px 0">';
+  h += '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.2);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#00ff9c;line-height:1.6">ℹ️ Chhote-stakes matches — max ₹50 entry, 100 players, 3 active matches ek waqt mein. Result submit karne ke baad Admin final payout verify karega.</div>';
+
+  h += '<div class="f-group"><label>🏆 Match Name</label>';
+  h += '<input type="text" id="cmName" class="f-input" placeholder="e.g. BEAST_GAMER Solo Cup" maxlength="60"></div>';
+
+  h += '<div class="f-group"><label>🎮 Match Type</label>';
+  h += '<select id="cmType" class="f-input">';
+  h += '<option value="coins">🪙 Coin Match</option>';
+  /* ✅ D87 (owner): Green Diamond entry option removed — entry fee sirf ads/sky/coins */
+  h += '<option value="sky_diamond">💎 Sky Diamond Match</option>';
+  h += '</select></div>';
+
+  h += '<div class="f-group"><label>💰 Entry Fee (max 50)</label>';
+  h += '<input type="number" id="cmFee" class="f-input" value="10" min="1" max="50"></div>';
+
+  h += '<div class="f-group"><label>👥 Max Players</label>';
+  h += '<select id="cmMaxPlayers" class="f-input">';
+  [10, 25, 50, 100].forEach(function(n) {
+    h += '<option value="' + n + '"' + (n === 25 ? ' selected' : '') + '>' + n + ' Players</option>';
+  });
+  h += '</select></div>';
+
+  h += '<div class="f-group"><label>🎯 Mode</label>';
+  h += '<select id="cmMode" class="f-input">';
+  ['Solo','Duo','Squad'].forEach(function(m) { h += '<option value="' + m.toLowerCase() + '">' + m + '</option>'; });
+  h += '</select></div>';
+
+  h += '<div class="f-group"><label>💀 Per Kill Points</label>';
+  h += '<input type="number" id="cmKillPts" class="f-input" value="1" min="0" max="10"></div>';
+
+  /* ✅ BUG FIX (2026-08-24): "Admin panel me jo fields match banane ke
+     liye hain (1st/2nd/3rd prize) vo creator ke liye bhi ho" — added
+     the same 3 prize fields admin's own match form has. Capped
+     server-side (creator_create_match RPC) at max_slots × entry_fee so
+     a creator can never promise a payout their own match can't cover. */
+  h += '<div style="background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.15);border-radius:12px;padding:10px 12px;margin:4px 0 10px;font-size:10px;color:#ffd700">🏆 Prize pool tumhare match ke max collection (players × entry fee) se zyada nahi ho sakta</div>';
+  /* ✅ B2 (2026-10-06): "Sky Diamond prize me KABHI nahi diya jata" — creator ko
+     saaf batao ki 💎 Sky Diamond sirf ENTRY fee ka option hai; jeetne par prize
+     hamesha Green Diamond me milta hai (server bhi isi niyam par credit karta
+     hai: creator_create_match + publish_match_results). */
+  h += '<div style="font-size:10px;color:#00d4ff;margin:-4px 0 8px">ℹ️ 💎 Sky Diamond sirf <b>entry fee</b> ke liye hai — jeetne par prize hamesha <b>Green Diamond 💎</b> me milta hai.</div>';
+  h += '<div class="f-group"><label>' + (window.medalHtml?medalHtml(1,13):'') + ' 1st Prize</label>';
+  h += '<input type="number" id="cmPrize1" class="f-input" value="0" min="0"></div>';
+  h += '<div class="f-group"><label>' + (window.medalHtml?medalHtml(2,13):'') + ' 2nd Prize</label>';
+  h += '<input type="number" id="cmPrize2" class="f-input" value="0" min="0"></div>';
+  h += '<div class="f-group"><label>' + (window.medalHtml?medalHtml(3,13):'') + ' 3rd Prize</label>';
+  h += '<input type="number" id="cmPrize3" class="f-input" value="0" min="0"></div>';
+
+  var minDT = new Date(Date.now() + 30*60*1000).toISOString().slice(0,16);
+  h += '<div class="f-group"><label>📅 Match Date & Time (min 20 min baad)</label>';
+  h += '<input type="datetime-local" id="cmDateTime" class="f-input" min="' + minDT + '"></div>';
+
+  h += '<button onclick="submitCreatorMatch()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer">🎮 Match Banao</button>';
+  h += '</div>';
+
+  if (window.openModal) openModal('🎮 Naya Match Host Karo', h);
+};
+
+window.submitCreatorMatch = function() {
+  if (!uid() || !window._supa) { toast('Login ya network error', 'err'); return; }
+
+  var name       = ((document.getElementById('cmName')||{}).value||'').trim();
+  var type       = (document.getElementById('cmType')||{}).value || 'coins';
+  var fee        = Number((document.getElementById('cmFee')||{}).value || 0);
+  var maxPlayers = Number((document.getElementById('cmMaxPlayers')||{}).value || 25);
+  var mode       = (document.getElementById('cmMode')||{}).value || 'solo';
+  var killPts    = Number((document.getElementById('cmKillPts')||{}).value || 1);
+  var prize1     = Number((document.getElementById('cmPrize1')||{}).value || 0);
+  var prize2     = Number((document.getElementById('cmPrize2')||{}).value || 0);
+  var prize3     = Number((document.getElementById('cmPrize3')||{}).value || 0);
+  var dtVal      = (document.getElementById('cmDateTime')||{}).value || '';
+
+  if (!name || name.length < 3) { toast('Match name kam se kam 3 characters ka ho', 'err'); return; }
+  if (!fee || fee < 1 || fee > 50) { toast('Entry fee 1-50 ke beech ho', 'err'); return; }
+  if (!dtVal) { toast('Date/time set karo', 'err'); return; }
+  if (prize1 < 0 || prize2 < 0 || prize3 < 0) { toast('Prize amount negative nahi ho sakta', 'err'); return; }
+  if ((prize1 + prize2 + prize3) > (maxPlayers * fee)) { toast('Prize pool match ke max collection se zyada hai — kam karo', 'err'); return; }
+
+  var scheduledAt = new Date(dtVal).toISOString();
+
+  window._supa.rpc('creator_create_match', {
+    p_title: name, p_mode: mode, p_entry_type: type, p_entry_fee: fee,
+    p_max_slots: maxPlayers, p_per_kill_prize: killPts, p_scheduled_at: scheduledAt,
+    p_first_prize: prize1, p_second_prize: prize2, p_third_prize: prize3
+  }).then(function(r) {
+    /* ✅ BUG FIX (2026-08-25): "Match create nahi ho paya" appearing even
+       though the RPC itself is verified working correctly (tested live
+       via direct SQL simulation — succeeds every time with these exact
+       params). Root cause: this only ever read r.data and checked
+       d.success — it never checked r.error at all. Supabase JS v2's
+       .rpc() call RESOLVES (doesn't reject) even on a genuine PostgREST/
+       auth error; it fulfills with {data:null, error:{...}} in that
+       case. So any real server-side error (expired Firebase→Supabase
+       JWT bridge token, transient RLS hiccup, schema cache miss, etc.)
+       landed here with d = null, silently fell through to the generic
+       fallback message, and the actual error (r.error.message /
+       r.error.code) that would have explained exactly what went wrong
+       was thrown away instead of shown or logged. Now: check r.error
+       first and surface it distinctly, log full details either way so
+       the browser console tells the real story next time, and only
+       fall back to the generic message when the RPC truly ran but
+       returned a d.success=false with an error code we haven't mapped. */
+    if (r && r.error) {
+      console.error('[submitCreatorMatch] RPC error:', r.error);
+      var authHint = /jwt|JWT|auth/i.test(r.error.message || '') ? ' (login session expired ho gaya — app dobara kholo)' : '';
+      toast('❌ ' + (r.error.message || 'Server error') + authHint, 'err');
+      return;
+    }
+    var d = r.data;
+    if (!d || !d.success) {
+      console.warn('[submitCreatorMatch] RPC returned unsuccessful result:', d);
+      var errMap = {
+        not_a_creator: 'Tum approved creator nahi ho',
+        premium_required: 'Match host karne ke liye active Premium chahiye',
+        creator_suspended: 'Tumhari hosting suspend hai',
+        entry_fee_out_of_range: 'Entry fee 1-' + (d&&d.max||50) + ' ke beech honi chahiye',
+        invalid_slot_count: 'Players 2-' + (d&&d.max||100) + ' ke beech ho',
+        schedule_too_soon: 'Match kam se kam 20 min baad schedule karo',
+        invalid_title: 'Match name sahi se likho',
+        prize_exceeds_pool: 'Total prize match ke max collection (₹/coins ' + (d&&d.max||0) + ') se zyada hai',
+        invalid_prize: 'Prize amount sahi se bharo',
+        too_many_open_matches: 'Max ' + (d&&d.max||3) + ' active matches allowed — pehle koi complete karo'
+      };
+      toast(errMap[d && d.error] || ('Match create nahi ho paya' + (d && d.error ? (' (' + d.error + ')') : '')), 'err');
+      return;
+    }
+    toast('✅ Match banaya gaya! Players abhi register kar sakte hain.', 'ok');
+    if (window.closeModal) closeModal();
+    if (window.renderHome) renderHome();
+  }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+/* --- My Creator Matches List --- */
+window.showMyCreatorMatches = function() {
+  if (!uid() || !window._supa) return;
+
+  var h = '<div id="_myCmBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('📋 Mere Matches', h);
+
+  window._supa.from('matches')
+    .select('id,title,status,entry_fee,entry_type,filled_slots,max_slots,scheduled_at,room_status') /* ✅ R3-Phase2: room creds ab match_rooms me — sirf non-secret room_status */
+    .eq('creator_uid', uid())
+    .order('created_at', { ascending: false })
+    .limit(20)
+    .then(function(r) {
+      var body = document.getElementById('_myCmBody');
+      if (!body) return;
+      var matches = r.data || [];
+      if (!matches.length) { body.innerHTML = '<div style="padding:10px;font-size:13px">Koi match nahi banaya abhi — pehle ek banao!</div>'; return; }
+
+      var bh = '<div style="display:grid;gap:10px;text-align:left">';
+      matches.forEach(function(m) {
+        var statusColor = m.status === 'upcoming' ? '#ffd700' : m.status === 'live' ? '#00ff9c' : m.status === 'pending_review' ? '#00d4ff' : m.status === 'completed' ? '#888' : '#ff6b6b';
+        var statusLabel = m.status === 'pending_review' ? 'ADMIN REVIEW' : (m.status||'').toUpperCase();
+        bh += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px">';
+        bh += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">';
+        bh += '<div><div style="font-size:13px;font-weight:700;color:#fff">' + _esc(m.title||'Untitled') + '</div>';
+        bh += '<div style="font-size:11px;color:#888">' + (m.entry_fee||0) + ' ' + (m.entry_type==='coins'?'🪙':'💎') + ' · ' + (m.filled_slots||0) + '/' + (m.max_slots||0) + ' players</div></div>';
+        bh += '<span style="font-size:10px;color:' + statusColor + ';font-weight:700">' + statusLabel + '</span>';
+        bh += '</div>';
+        if (m.status === 'upcoming' && (m.room_status || 'pending') === 'pending') { /* ✅ R3-Phase2: set_room room_status='saved' karta hai */
+          bh += '<button onclick="showCreatorRoomEntry(\'' + m.id + '\')" style="width:100%;padding:9px;border-radius:10px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">🔑 Room ID Enter Karo</button>';
+        } else if (m.status === 'live') {
+          bh += '<button onclick="showCreatorResultForm(\'' + m.id + '\')" style="width:100%;padding:9px;border-radius:10px;background:rgba(0,255,156,.08);border:1px solid rgba(0,255,156,.2);color:#00ff9c;font-size:12px;font-weight:700;cursor:pointer">🏆 Result Submit Karo</button>';
+        } else if (m.status === 'pending_review') {
+          bh += '<div style="font-size:11px;color:#00d4ff">Admin result verify kar raha hai — payout jald hoga</div>';
+        }
+        bh += '</div>';
+      });
+      bh += '</div>';
+      body.innerHTML = bh;
+    window._loadShowcase(creatorUid);
+    });
+};
+
+/* ✅ D71: Showcase loaders/add/delete — no-reward policy ke saath */
+window._loadShowcase = function(uid) {
+  var box = document.getElementById('_showcaseBox'); if (!box) return;
+  var isOwn = !!(window.U && window.U.uid === uid);
+  var head = '<div style="position:relative;border-radius:14px;padding:10px 12px;margin-bottom:10px;background:linear-gradient(160deg,rgba(123,47,247,.16),rgba(255,0,0,.07));border:1px solid rgba(185,100,255,.35)">' +
+    '<div style="font-size:12px;font-weight:900;letter-spacing:1.5px;background:linear-gradient(90deg,#ff4d4d,#ffd700,#b964ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🎬 SHOWCASE</div>' +
+    '<div style="font-size:9.5px;color:#8878a8;margin-top:2px">Creator ki best gameplay — tap karke YouTube par dekhein</div></div>';
+  if (!window._supa) { box.innerHTML = head; return; }
+  window._supa.from('creator_showcase').select('*').eq('creator_uid', uid)
+    .order('created_at', { ascending: false }).limit(6)
+    .then(function(r) {
+      var rows = r.data || [];
+      var h = head;
+      rows.forEach(function(v) {
+        h += '<div style="position:relative;display:flex;gap:10px;align-items:center;background:linear-gradient(160deg,rgba(123,47,247,.10),rgba(0,0,0,.30));border:1.5px solid rgba(185,100,255,.30);border-radius:14px;padding:8px;margin-bottom:9px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35)" onclick="window.open(\'' + String(v.video_url).replace(/'/g, "\\'") + '\',\'_blank\')">' +
+          '<div style="position:relative;width:96px;height:54px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#000;border:1px solid rgba(255,255,255,.12)">' +
+            '<img src="' + (v.thumb_url || '') + '" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.style.visibility=\'hidden\'">' +
+            '<div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.65))"></div>' +
+            '<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:17px;border-radius:5px;background:#ff0000;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(255,0,0,.6)"><div style="width:0;height:0;border-left:7px solid #fff;border-top:4px solid transparent;border-bottom:4px solid transparent;margin-left:1px"></div></div>' +
+          '</div>' +
+          '<div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + _escCP(v.title || 'YouTube video') + '</div>' +
+          '<div style="font-size:9.5px;color:#ff6b6b;font-weight:700;margin-top:3px">▶ YouTube • abhi dekhein</div></div>' +
+          '<div style="color:#8878a8;font-size:16px;font-weight:900">›</div>' +
+          (isOwn ? '<button onclick="event.stopPropagation();window._delShowcase(\'' + v.id + '\',\'' + uid + '\')" style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,.55);border:1px solid rgba(255,80,80,.4);color:#ff6b6b;border-radius:8px;padding:2px 7px;font-size:10px;cursor:pointer">🗑</button>' : '') +
+          '</div>';
+      });
+      if (!rows.length) h += '<div style="font-size:11px;color:#7768a0;margin:2px 2px 10px">' + (isOwn ? 'Apni best gameplay videos yahan lagao — followers profile se seedha dekhenge.' : 'Abhi koi video nahi') + '</div>';
+      if (isOwn) h += '<button onclick="window._addShowcase(\'' + uid + '\')" style="width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,#ff0000,#b30000);border:none;color:#fff;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 4px 14px rgba(255,0,0,.35);letter-spacing:.4px">＋ Add YouTube video</button>';
+      box.innerHTML = h;
+    }, function() { box.innerHTML = head; });
+};
+window._addShowcase = function(uid) {
+  var url = prompt('YouTube video link paste karo:'); if (!url) return;
+  url = String(url).trim();
+  var m = url.match(/(?:youtube\.com\/(?:watch\?v=|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+  if (!m) { if (window.toast) toast('❌ Valid YouTube link daalo', 'err'); return; }
+  var id = m[1];
+  var title = (prompt('Video ka title (optional):') || 'YouTube video').slice(0, 80);
+  window._supa.from('creator_showcase').insert({ creator_uid: uid, video_url: 'https://www.youtube.com/watch?v=' + id, title: title, thumb_url: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg' })
+    .then(function(r) {
+      if (r && r.error) { if (window.toast) toast('Save nahi hua: ' + (r.error.message || ''), 'err'); return; }
+      if (window.toast) toast('✅ Showcase me add ho gayi');
+      window._loadShowcase(uid);
+    });
+};
+window._delShowcase = function(id, uid) {
+  if (!confirm('Video delete karein?')) return;
+  window._supa.from('creator_showcase').delete().eq('id', id)
+    .then(function() { window._loadShowcase(uid); });
+};
+
+/* --- Creator Room ID Entry --- */
+window.showCreatorRoomEntry = function(matchId) {
+  var h = '<div style="padding:4px 0">';
+  h += '<div style="font-size:12px;color:#888;margin-bottom:12px">Free Fire mein custom room banao → Room ID + Password yahan daalo → Match LIVE ho jayega, players ko dikhega.</div>';
+  h += '<div class="f-group"><label>🔑 Room ID</label>';
+  h += '<input type="text" id="crRoomId" class="f-input" placeholder="e.g. 1234567" inputmode="numeric"></div>';
+  h += '<div class="f-group"><label>🔒 Room Password</label>';
+  h += '<input type="text" id="crRoomPw" class="f-input" placeholder="e.g. 1234"></div>';
+  h += '<button onclick="submitCreatorRoomId(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0066ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">📤 Room ID Submit Karo</button>';
+  h += '</div>';
+  if (window.openModal) openModal('🔑 Room ID Enter', h);
+};
+
+window.submitCreatorRoomId = function(matchId) {
+  var roomId = ((document.getElementById('crRoomId')||{}).value||'').trim();
+  var roomPw = ((document.getElementById('crRoomPw')||{}).value||'').trim();
+  if (!roomId || roomId.length < 3) { toast('Valid Room ID daalo', 'err'); return; }
+  if (!window._supa) { toast('Network error', 'err'); return; }
+
+  window._supa.rpc('creator_set_room', { p_match_id: matchId, p_room_id: roomId, p_room_password: roomPw })
+    .then(function(r) {
+      var d = r.data;
+      if (!d || !d.success) {
+        var errMap = { not_your_match: 'Ye tumhara match nahi hai', match_not_active: 'Match active nahi hai', invalid_room_id: 'Room ID sahi nahi hai' };
+        toast(errMap[d && d.error] || 'Room ID save nahi hua', 'err');
+        return;
+      }
+      toast('✅ Room ID set! Match ab LIVE hai.', 'ok');
+      if (window.closeModal) closeModal();
+    }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+/* --- Creator Result Submission (stages for admin review only) --- */
+window.showCreatorResultForm = function(matchId) {
+  if (!window._supa) return;
+  var h = '<div id="_crResultBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading players...</div>';
+  if (window.openModal) openModal('🏆 Match Result', h);
+
+  /* ✅ MATCH-FLOW-E2E FIX (2026-10-30, run 40986675005 MF32): result form
+     hamesha "Koi player nahi mila" dikhata tha — client ke PostgREST calls me
+     auth.jwt()->>'sub' NULL jata hai (A11 pattern wahi claim_match_refund me
+     document hai), isliye join_requests RLS creator ko APNE match ki rows bhi
+     nahi dikhata. Ab data SECURITY DEFINER RPC creator_get_match_participants
+     se aata hai (server creator_uid/admin verify karta hai; p_uid fallback).
+     Purana select sirf fallback hai (admin/edge cases). */
+  function _crRender(players) {
+      var body = document.getElementById('_crResultBody');
+      if (!body) return;
+      if (!players.length) { body.innerHTML = '<div style="padding:10px;font-size:13px">Koi player nahi mila</div>'; return; }
+
+      var bh = '<div style="font-size:11px;color:#888;margin-bottom:12px;text-align:left">Har player ke kills aur placement daalo. Submit karne ke baad Admin verify karega aur prize payout karega.</div>';
+      bh += '<div style="display:grid;gap:8px;text-align:left">';
+      players.forEach(function(p) {
+        bh += '<div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px;border-radius:10px">';
+        bh += '<div style="flex:1;font-size:12px;font-weight:700">' + _esc(p.user_ign||p.ign_at_join||'Player') + '</div>';
+        bh += '<input type="number" min="0" placeholder="Kills" data-jr="' + p.id + '" class="_crKills" style="width:60px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px">';
+        bh += '<input type="number" min="1" placeholder="Rank" data-jr="' + p.id + '" class="_crPlacement" style="width:60px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px">';
+        bh += '</div>';
+      });
+      bh += '</div>';
+      bh += '<button onclick="submitCreatorResult(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;margin-top:14px">📤 Result Submit Karo</button>';
+      body.innerHTML = bh;
+  }
+  function _crLegacySelect() {
+    /* ✅ BUG E fix (2026-10-30): status filter IN-list ki jagah exclusion —
+       match live hone ke baad rows ke status flip hote hain, IN-list wala
+       purana filter creator ko participants hi nahi dikhata tha. */
+    return window._supa.from('join_requests').select('id,user_ign,ign_at_join,status').eq('match_id', matchId).not('status', 'in', '(cancelled,refunded,rejected)')
+      .then(function(r2) { _crRender(r2.data || []); });
+  }
+  window._supa.rpc('creator_get_match_participants', { p_match_id: matchId, p_uid: (window.U && window.U.uid) || null })
+    .then(function(r) {
+      var d = r && r.data;
+      if (!r.error && d && d.ok && Array.isArray(d.players)) { _crRender(d.players); return; }
+      console.warn('[CreatorResult] participants RPC nahi chala, legacy select fallback:', (r && r.error && r.error.message) || (d && d.error));
+      _crLegacySelect();
+    })
+    .catch(function(e) { console.warn('[CreatorResult] RPC error, legacy select fallback:', e && e.message); _crLegacySelect(); });
+};
+
+window.submitCreatorResult = function(matchId) {
+  var killInputs = document.querySelectorAll('._crKills');
+  var results = [];
+  killInputs.forEach(function(inp) {
+    var jrId = inp.dataset.jr;
+    var placementInp = document.querySelector('._crPlacement[data-jr="' + jrId + '"]');
+    results.push({
+      join_request_id: jrId,
+      kills: Number(inp.value || 0),
+      placement: Number((placementInp && placementInp.value) || 0)
+    });
+  });
+  if (!window._supa) { toast('Network error', 'err'); return; }
+
+  window._supa.rpc('creator_publish_result', { p_match_id: matchId, p_results: results })
+    .then(function(r) {
+      var d = r.data;
+      if (!d || !d.success) {
+        var errMap = { not_your_match: 'Ye tumhara match nahi hai', match_not_live: 'Match live nahi hai' };
+        toast(errMap[d && d.error] || 'Result submit nahi hua', 'err');
+        return;
+      }
+      toast('✅ Result submit ho gaya! Admin review ke baad payout hoga.', 'ok');
+      if (window.closeModal) closeModal();
+    }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+window.rateCreatorMatch = function(matchId, creatorUid) {
+  var h = '<div style="text-align:center;padding:10px 0">';
+  h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Is match ka experience kaisa raha?</div>';
+  h += '<div id="_starRow" style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;font-size:32px">';
+  for (var i = 1; i <= 5; i++) {
+    h += '<span data-star="' + i + '" onclick="window._selectStar(' + i + ')" style="cursor:pointer;color:#333">★</span>';
+  }
+  h += '</div>';
+  h += '<textarea id="_ratingReason" class="f-input" placeholder="Koi feedback? (optional)" style="min-height:60px;margin-bottom:14px"></textarea>';
+  h += '<button onclick="window._submitRating(\'' + matchId + '\')" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-weight:800;cursor:pointer">Submit Rating</button>';
+  h += '</div>';
+  window._selectedStars = 0;
+  if (window.openModal) openModal('⭐ Rate This Match', h);
+};
+window._selectStar = function(n) {
+  window._selectedStars = n;
+  document.querySelectorAll('#_starRow span').forEach(function(s) {
+    s.style.color = Number(s.dataset.star) <= n ? '#ffd700' : '#333';
+  });
+};
+window._submitRating = function(matchId) {
+  if (!window._selectedStars) { toast('Stars select karo', 'err'); return; }
+  var reason = ((document.getElementById('_ratingReason')||{}).value||'').trim();
+  if (!window._supa) return;
+  window._supa.rpc('rate_creator_match', { p_match_id: matchId, p_stars: window._selectedStars, p_reason: reason })
+    .then(function(r) {
+      if (r.data && r.data.success) { toast('✅ Rating submit ho gayi!', 'ok'); if (window.closeModal) closeModal(); }
+      else { toast((r.data && r.data.error) || 'Rating submit nahi hui', 'err'); }
+    });
+};
+
+/* ─── Public Creator Profile (follow + rating + their matches) ──── */
+window.showCreatorProfile = function(creatorUid) {
+  if (!window._supa) return;
+  var h = '<div id="_credProfBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('🎮 Creator Profile', h);
+
+  Promise.all([
+    window._supa.from('users').select('ign,avatar_url,creator_rating,creator_rating_count,creator_code').eq('id', creatorUid).single(),
+    window._supa.from('creator_stats').select('total_matches').eq('user_id', creatorUid).maybeSingle(),
+    uid() ? window._supa.from('creator_follows').select('id').eq('creator_uid', creatorUid).eq('follower_uid', uid()).maybeSingle() : Promise.resolve({data:null})
+  ]).then(function(results) {
+    var c = (results[0] && results[0].data) || {};
+    var stats = (results[1] && results[1].data) || {};
+    var isFollowing = !!(results[2] && results[2].data);
+    var body = document.getElementById('_credProfBody');
+    if (!body) return;
+
+    var stars = '';
+    var rating = Number(c.creator_rating || 5);
+    for (var i = 1; i <= 5; i++) stars += (i <= Math.round(rating) ? '★' : '☆');
+
+    /* ✅ D70 (2026-11-06): Creator Profile ka rich redesign — pehle bahut
+       simple tha (owner complaint). Ab: gradient banner + glow avatar ring
+       (asli avatar_url use hota hai), CREATOR chip, glowing stars, stats
+       chips, code-pill with copy, premium-feel follow button. */
+    var avHtml = c.avatar_url
+      ? '<img src="' + c.avatar_url + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      : (c.ign||'C').charAt(0).toUpperCase();
+    var bh = '';
+    bh += '<div style="position:relative;border-radius:18px;overflow:hidden;border:1.5px solid rgba(185,100,255,.4);box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 24px rgba(123,47,247,.25);margin-bottom:12px;background:radial-gradient(120% 70% at 50% 0%,rgba(123,47,247,.4),transparent 60%),linear-gradient(165deg,#1c0b33 0%,#0d0518 100%)">';
+    bh += '<div style="height:74px;background:radial-gradient(60% 100% at 50% 100%,rgba(255,215,0,.28),transparent 70%),repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 14px)"></div>';
+    bh += '<div style="text-align:center;padding:0 14px 16px;margin-top:-42px">';
+    bh += '<div style="width:88px;height:88px;margin:0 auto;border-radius:50%;padding:3px;background:linear-gradient(135deg,#ffd700,#b44dff);box-shadow:0 0 22px rgba(255,215,0,.5)"><div style="width:100%;height:100%;border-radius:50%;background:#0b0b0f;color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center;overflow:hidden">' + avHtml + '</div></div>';
+    bh += '<div style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:3px 10px;border-radius:10px;background:rgba(123,47,247,.18);border:1px solid rgba(185,100,255,.45);color:#d5a6ff;font-size:9.5px;font-weight:900;letter-spacing:1.5px">🎮 CREATOR</div>';
+    bh += '<div style="font-size:18px;font-weight:900;color:#fff;margin-top:4px;text-shadow:0 2px 8px rgba(0,0,0,.7)">' + _escCP(c.ign||'Creator') + '</div>';
+    bh += '<div style="font-size:17px;color:#ffd700;margin:5px 0 2px;text-shadow:0 0 12px rgba(255,215,0,.6)">' + stars + ' <span style="font-size:11px;color:#9a8bbd;text-shadow:none">(' + (c.creator_rating_count||0) + ' ratings)</span></div>';
+    bh += '<div style="display:flex;gap:8px;justify-content:center;margin-top:10px">';
+    bh += '<div style="flex:1;max-width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 6px"><div style="font-size:16px;font-weight:900;color:#00ff9c">' + (stats.total_matches||0) + '</div><div style="font-size:9px;color:#8878a8;font-weight:700;margin-top:1px">REFERRED MATCHES</div></div>';
+    bh += '<div style="flex:1;max-width:150px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 6px"><div style="font-size:16px;font-weight:900;color:#ffd700">' + rating.toFixed(1) + '★</div><div style="font-size:9px;color:#8878a8;font-weight:700;margin-top:1px">CREATOR RATING</div></div>';
+    bh += '</div>';
+    bh += '<div style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:6px 12px;border-radius:12px;background:rgba(0,255,156,.07);border:1px solid rgba(0,255,156,.3)"><span style="font-size:11px;color:#9ff5d0;font-weight:700">Code: <strong style="color:#00ff9c">' + _escCP(c.creator_code||'—') + '</strong></span>' + (c.creator_code ? '<button onclick="window.copyTxt&&copyTxt(\'' + _escCP(c.creator_code) + '\')" style="background:rgba(0,255,156,.15);border:none;color:#00ff9c;padding:2px 8px;border-radius:6px;font-size:10px;cursor:pointer"><i class="fas fa-copy"></i></button>' : '') + '</div>';
+    bh += '</div></div>';
+
+    /* ✅ D71 (2026-11-06) SHOWCASE — owner approved: "hn bana de showcase
+       system". Creator ki YouTube videos gallery — KOI reward nahi
+       (YouTube ToS-safe), sirf promotion. Table: creator_showcase. */
+    bh += '<div id="_showcaseBox" style="margin:12px 0"></div>';
+
+    bh += '<button id="_followBtn" onclick="window._toggleFollowCreator(\'' + creatorUid + '\')" style="width:100%;padding:13px;border-radius:14px;font-weight:900;font-size:13px;cursor:pointer;border:none;' +
+      (isFollowing ? 'background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.15)' : 'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;box-shadow:0 4px 16px rgba(0,255,156,.35)') + '">' +
+      (isFollowing ? '✓ Following — notifications ON' : '+ Follow (naye match ka notification pao)') + '</button>';
+    bh += '<div style="font-size:10px;color:#666;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
+
+    body.innerHTML = bh;
+    });
+};
+
+/* --- Creator Room ID Entry --- */
+window.showCreatorRoomEntry = function(matchId) {
+  var h = '<div style="padding:4px 0">';
+  h += '<div style="font-size:12px;color:#888;margin-bottom:12px">Free Fire mein custom room banao → Room ID + Password yahan daalo → Match LIVE ho jayega, players ko dikhega.</div>';
+  h += '<div class="f-group"><label>🔑 Room ID</label>';
+  h += '<input type="text" id="crRoomId" class="f-input" placeholder="e.g. 1234567" inputmode="numeric"></div>';
+  h += '<div class="f-group"><label>🔒 Room Password</label>';
+  h += '<input type="text" id="crRoomPw" class="f-input" placeholder="e.g. 1234"></div>';
+  h += '<button onclick="submitCreatorRoomId(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0066ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">📤 Room ID Submit Karo</button>';
+  h += '</div>';
+  if (window.openModal) openModal('🔑 Room ID Enter', h);
+};
+
+window.submitCreatorRoomId = function(matchId) {
+  var roomId = ((document.getElementById('crRoomId')||{}).value||'').trim();
+  var roomPw = ((document.getElementById('crRoomPw')||{}).value||'').trim();
+  if (!roomId || roomId.length < 3) { toast('Valid Room ID daalo', 'err'); return; }
+  if (!window._supa) { toast('Network error', 'err'); return; }
+
+  window._supa.rpc('creator_set_room', { p_match_id: matchId, p_room_id: roomId, p_room_password: roomPw })
+    .then(function(r) {
+      var d = r.data;
+      if (!d || !d.success) {
+        var errMap = { not_your_match: 'Ye tumhara match nahi hai', match_not_active: 'Match active nahi hai', invalid_room_id: 'Room ID sahi nahi hai' };
+        toast(errMap[d && d.error] || 'Room ID save nahi hua', 'err');
+        return;
+      }
+      toast('✅ Room ID set! Match ab LIVE hai.', 'ok');
+      if (window.closeModal) closeModal();
+    }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+/* --- Creator Result Submission (stages for admin review only) --- */
+window.showCreatorResultForm = function(matchId) {
+  if (!window._supa) return;
+  var h = '<div id="_crResultBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading players...</div>';
+  if (window.openModal) openModal('🏆 Match Result', h);
+
+  /* ✅ MATCH-FLOW-E2E FIX (2026-10-30, run 40986675005 MF32): result form
+     hamesha "Koi player nahi mila" dikhata tha — client ke PostgREST calls me
+     auth.jwt()->>'sub' NULL jata hai (A11 pattern wahi claim_match_refund me
+     document hai), isliye join_requests RLS creator ko APNE match ki rows bhi
+     nahi dikhata. Ab data SECURITY DEFINER RPC creator_get_match_participants
+     se aata hai (server creator_uid/admin verify karta hai; p_uid fallback).
+     Purana select sirf fallback hai (admin/edge cases). */
+  function _crRender(players) {
+      var body = document.getElementById('_crResultBody');
+      if (!body) return;
+      if (!players.length) { body.innerHTML = '<div style="padding:10px;font-size:13px">Koi player nahi mila</div>'; return; }
+
+      var bh = '<div style="font-size:11px;color:#888;margin-bottom:12px;text-align:left">Har player ke kills aur placement daalo. Submit karne ke baad Admin verify karega aur prize payout karega.</div>';
+      bh += '<div style="display:grid;gap:8px;text-align:left">';
+      players.forEach(function(p) {
+        bh += '<div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px;border-radius:10px">';
+        bh += '<div style="flex:1;font-size:12px;font-weight:700">' + _esc(p.user_ign||p.ign_at_join||'Player') + '</div>';
+        bh += '<input type="number" min="0" placeholder="Kills" data-jr="' + p.id + '" class="_crKills" style="width:60px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px">';
+        bh += '<input type="number" min="1" placeholder="Rank" data-jr="' + p.id + '" class="_crPlacement" style="width:60px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px">';
+        bh += '</div>';
+      });
+      bh += '</div>';
+      bh += '<button onclick="submitCreatorResult(\'' + matchId + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;margin-top:14px">📤 Result Submit Karo</button>';
+      body.innerHTML = bh;
+  }
+  function _crLegacySelect() {
+    /* ✅ BUG E fix (2026-10-30): status filter IN-list ki jagah exclusion —
+       match live hone ke baad rows ke status flip hote hain, IN-list wala
+       purana filter creator ko participants hi nahi dikhata tha. */
+    return window._supa.from('join_requests').select('id,user_ign,ign_at_join,status').eq('match_id', matchId).not('status', 'in', '(cancelled,refunded,rejected)')
+      .then(function(r2) { _crRender(r2.data || []); });
+  }
+  window._supa.rpc('creator_get_match_participants', { p_match_id: matchId, p_uid: (window.U && window.U.uid) || null })
+    .then(function(r) {
+      var d = r && r.data;
+      if (!r.error && d && d.ok && Array.isArray(d.players)) { _crRender(d.players); return; }
+      console.warn('[CreatorResult] participants RPC nahi chala, legacy select fallback:', (r && r.error && r.error.message) || (d && d.error));
+      _crLegacySelect();
+    })
+    .catch(function(e) { console.warn('[CreatorResult] RPC error, legacy select fallback:', e && e.message); _crLegacySelect(); });
+};
+
+window.submitCreatorResult = function(matchId) {
+  var killInputs = document.querySelectorAll('._crKills');
+  var results = [];
+  killInputs.forEach(function(inp) {
+    var jrId = inp.dataset.jr;
+    var placementInp = document.querySelector('._crPlacement[data-jr="' + jrId + '"]');
+    results.push({
+      join_request_id: jrId,
+      kills: Number(inp.value || 0),
+      placement: Number((placementInp && placementInp.value) || 0)
+    });
+  });
+  if (!window._supa) { toast('Network error', 'err'); return; }
+
+  window._supa.rpc('creator_publish_result', { p_match_id: matchId, p_results: results })
+    .then(function(r) {
+      var d = r.data;
+      if (!d || !d.success) {
+        var errMap = { not_your_match: 'Ye tumhara match nahi hai', match_not_live: 'Match live nahi hai' };
+        toast(errMap[d && d.error] || 'Result submit nahi hua', 'err');
+        return;
+      }
+      toast('✅ Result submit ho gaya! Admin review ke baad payout hoga.', 'ok');
+      if (window.closeModal) closeModal();
+    }).catch(function(e) { toast('Error: ' + e.message, 'err'); });
+};
+
+window.rateCreatorMatch = function(matchId, creatorUid) {
+  var h = '<div style="text-align:center;padding:10px 0">';
+  h += '<div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Is match ka experience kaisa raha?</div>';
+  h += '<div id="_starRow" style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;font-size:32px">';
+  for (var i = 1; i <= 5; i++) {
+    h += '<span data-star="' + i + '" onclick="window._selectStar(' + i + ')" style="cursor:pointer;color:#333">★</span>';
+  }
+  h += '</div>';
+  h += '<textarea id="_ratingReason" class="f-input" placeholder="Koi feedback? (optional)" style="min-height:60px;margin-bottom:14px"></textarea>';
+  h += '<button onclick="window._submitRating(\'' + matchId + '\')" style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-weight:800;cursor:pointer">Submit Rating</button>';
+  h += '</div>';
+  window._selectedStars = 0;
+  if (window.openModal) openModal('⭐ Rate This Match', h);
+};
+window._selectStar = function(n) {
+  window._selectedStars = n;
+  document.querySelectorAll('#_starRow span').forEach(function(s) {
+    s.style.color = Number(s.dataset.star) <= n ? '#ffd700' : '#333';
+  });
+};
+window._submitRating = function(matchId) {
+  if (!window._selectedStars) { toast('Stars select karo', 'err'); return; }
+  var reason = ((document.getElementById('_ratingReason')||{}).value||'').trim();
+  if (!window._supa) return;
+  window._supa.rpc('rate_creator_match', { p_match_id: matchId, p_stars: window._selectedStars, p_reason: reason })
+    .then(function(r) {
+      if (r.data && r.data.success) { toast('✅ Rating submit ho gayi!', 'ok'); if (window.closeModal) closeModal(); }
+      else { toast((r.data && r.data.error) || 'Rating submit nahi hui', 'err'); }
+    });
+};
+
+/* ─── Public Creator Profile (follow + rating + their matches) ──── */
+window.showCreatorProfile = function(creatorUid) {
+  if (!window._supa) return;
+  var h = '<div id="_credProfBody" style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+  if (window.openModal) openModal('🎮 Creator Profile', h);
+
+  Promise.all([
+    window._supa.from('users').select('ign,avatar_url,creator_rating,creator_rating_count,creator_code').eq('id', creatorUid).single(),
+    window._supa.from('creator_stats').select('total_matches').eq('user_id', creatorUid).maybeSingle(),
+    uid() ? window._supa.from('creator_follows').select('id').eq('creator_uid', creatorUid).eq('follower_uid', uid()).maybeSingle() : Promise.resolve({data:null})
+  ]).then(function(results) {
+    var c = (results[0] && results[0].data) || {};
+    var stats = (results[1] && results[1].data) || {};
+    var isFollowing = !!(results[2] && results[2].data);
+    var body = document.getElementById('_credProfBody');
+    if (!body) return;
+
+    var stars = '';
+    var rating = Number(c.creator_rating || 5);
+    for (var i = 1; i <= 5; i++) stars += (i <= Math.round(rating) ? '★' : '☆');
+
+    var bh = '<div style="text-align:center;padding-bottom:14px">';
+    bh += '<div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#00ff9c,#00d4ff);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#000;margin:0 auto 10px">' + (c.ign||'C').charAt(0).toUpperCase() + '</div>';
+    bh += '<div style="font-size:16px;font-weight:800">' + _escCP(c.ign||'Creator') + '</div>';
+    bh += '<div style="font-size:16px;color:#ffd700;margin:4px 0">' + stars + ' <span style="font-size:12px;color:#888">(' + (c.creator_rating_count||0) + ' ratings)</span></div>';
+    bh += '<div style="font-size:11px;color:#888">' + (stats.total_matches||0) + ' referred matches played · Code: ' + (c.creator_code||'—') + '</div>';
+    bh += '</div>';
+
+    bh += '<button id="_followBtn" onclick="window._toggleFollowCreator(\'' + creatorUid + '\')" style="width:100%;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;border:none;' +
+      (isFollowing ? 'background:rgba(255,255,255,.08);color:#aaa' : 'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000') + '">' +
+      (isFollowing ? '✓ Following — notifications ON' : '+ Follow (naye match ka notification pao)') + '</button>';
+    bh += '<div style="font-size:10px;color:#666;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
+
+    body.innerHTML = bh;
+  });
+};
+
+window._toggleFollowCreator = function(creatorUid) {
+  if (!uid() || !window._supa) { toast('Login karo pehle', 'err'); return; }
+  var btn = document.getElementById('_followBtn');
+  var isFollowing = btn && btn.textContent.indexOf('Following') !== -1;
+
+  var op = isFollowing
+    ? window._supa.from('creator_follows').delete().eq('creator_uid', creatorUid).eq('follower_uid', uid())
+    : window._supa.from('creator_follows').insert({ creator_uid: creatorUid, follower_uid: uid() });
+
+  op.then(function(r) {
+    if (r.error) { toast('Error: ' + r.error.message, 'err'); return; }
+    if (btn) {
+      if (isFollowing) {
+        btn.textContent = '+ Follow (naye match ka notification pao)';
+        btn.style.background = 'linear-gradient(135deg,#00ff9c,#00cc7a)'; btn.style.color = '#000';
+        toast('Unfollowed', 'inf');
+      } else {
+        btn.textContent = '✓ Following — notifications ON';
+        btn.style.background = 'rgba(255,255,255,.08)'; btn.style.color = '#aaa';
+        toast('✅ Following! Naye match pe notification milega', 'ok');
+      }
+    }
+  });
+};
+
+function _escCP(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function _esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+console.log('creator-match-host.js (secure RPC version) loaded');
+})();

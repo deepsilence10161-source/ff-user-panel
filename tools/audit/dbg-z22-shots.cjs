@@ -1,0 +1,24 @@
+const { chromium } = require('playwright');
+const fs = require('fs');
+const ACCT = JSON.parse(fs.readFileSync('/home/user/ff-user-panel/tools/tri-e2e/.state/d103.json','utf8'));
+(async () => {
+  const b = await chromium.launch({ args: ['--disable-dev-shm-usage','--mute-audio'] });
+  const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
+  await ctx.addInitScript(() => { try { localStorage.setItem('appLang','hi'); localStorage.setItem('tutorialSeen','1'); sessionStorage.setItem('vn_shown_this_launch','1'); } catch(e){} });
+  const p = await ctx.newPage();
+  await p.goto('https://deepsilence10161-source.github.io/ff-user-panel/index.html', { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await p.waitForFunction(() => window.auth && window.firebase, null, { timeout: 30000 });
+  await p.evaluate(([e,w]) => window.auth.signInWithEmailAndPassword(e,w), [ACCT.qa1.email, ACCT.qa1.password]);
+  await p.waitForFunction(() => window.U && window.curScr, null, { timeout: 30000 });
+  await p.waitForTimeout(3000);
+  const dismiss = async () => { try { const sg = p.locator('button:has-text("Samajh")'); if (await sg.count()) { await sg.first().click(); await p.waitForTimeout(900); } } catch (e) {} };
+  await dismiss();
+  const tick = await p.evaluate(() => (document.getElementById('tickerTxt')||{}).textContent || '');
+  await p.screenshot({ path: 'reports/ui-sweep/z22-home.png' });
+  await dismiss(); await p.evaluate(() => window.navTo('wallet')); await p.waitForTimeout(4500); await dismiss();
+  await p.screenshot({ path: 'reports/ui-sweep/z22-wallet.png' });
+  await dismiss(); await p.evaluate(() => window.navTo('profile')); await p.waitForTimeout(5000); await dismiss();
+  await p.screenshot({ path: 'reports/ui-sweep/z22-profile.png' });
+  console.log(JSON.stringify({ tick: tick.slice(0, 90) }));
+  await b.close();
+})();

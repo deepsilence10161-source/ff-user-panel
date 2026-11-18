@@ -1,1 +1,1642 @@
-(function(){'use strict';var _0x1daf21=(function(){var _0x49612a=!![];return function(_0x104830,_0x3c64b4){var _0x5ab88a=_0x49612a?function(){if(_0x3c64b4){var _0x2ead49=_0x3c64b4['apply'](_0x104830,arguments);return _0x3c64b4=null,_0x2ead49;}}:function(){};return _0x49612a=![],_0x5ab88a;};}());var _0x2f66ba=window['_SUPA_URL']||'https://hddhkculuyrfoevxmlwy.supabase.co',_0x1158ca=window['_SUPA_ANON_KEY']||'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';window['_SUPA_ANON_KEY']=_0x1158ca;var _0x81c899=0x0,_0x4c31e1=![],_0xe938d9=['https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js','https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'];function _0x3a6124(){if(_0x4c31e1||_0x81c899>=_0xe938d9['length'])return;_0x4c31e1=!![];var _0x3f2546=_0xe938d9[_0x81c899++];try{var _0xd6c30b=document['createElement']('script');_0xd6c30b['src']=_0x3f2546,_0xd6c30b['onload']=function(){_0x4c31e1=![],console['warn']('[DB]\x20Supabase\x20SDK\x20CDN\x20fallback\x20load:',_0x81c899,_0x3f2546);},_0xd6c30b['onerror']=function(){_0x4c31e1=![],_0x3a6124();},(document['head']||document['documentElement'])['appendChild'](_0xd6c30b);}catch(_0x2f926f){_0x4c31e1=![];}}var _0x123a16=0x0;function _0x25739e(){var _0x5c9c4e=_0x1daf21(this,function(){if(_0x5c9c4e['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x5c9c4e['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x5c9c4e)['search']('(((.+)+)+)+$');});_0x5c9c4e();if(window['supabase']&&window['supabase']['createClient'])window['_supa']=window['supabase']['createClient'](_0x2f66ba,_0x1158ca),console['log']('[DB]\x20Supabase\x20client\x20ready'),window['_supaReady']=!![],window['_supaReadyCbs']&&(window['_supaReadyCbs']['forEach'](function(_0x4e244b){try{_0x4e244b();}catch(_0x3e4952){}}),window['_supaReadyCbs']=[]);else{_0x123a16++;if(_0x123a16===0x19||_0x123a16===0x4b)_0x3a6124();setTimeout(_0x25739e,0xc8);}}_0x25739e();function _0x261338(_0x28ca58){if(window['_supaReady']){_0x28ca58();return;}window['_supaReadyCbs']=window['_supaReadyCbs']||[],window['_supaReadyCbs']['push'](_0x28ca58);}function _0xa0f8c5(){if(window['_supa']){var _0xe78cca=window['_supa']['auth']['session']?window['_supa']['auth']['session']():null;if(_0xe78cca&&_0xe78cca['user'])return _0xe78cca['user']['id'];}return window['U']?window['U']['uid']:null;}var _0x4c951d={};function _0x13a83b(_0x21b015,_0x3bdee4,_0x7722e0){if(_0x4c951d[_0x21b015])clearInterval(_0x4c951d[_0x21b015]);_0x3bdee4(),_0x4c951d[_0x21b015]=setInterval(_0x3bdee4,_0x7722e0||0x7530);}function _0x453118(_0xe28979){_0x4c951d[_0xe28979]&&(clearInterval(_0x4c951d[_0xe28979]),delete _0x4c951d[_0xe28979]);}function _0x3a51ab(_0x1cd7ec,_0xd24269){console['error']('[DB:'+_0x1cd7ec+']',_0xd24269);if(window['toast'])toast('Network\x20error\x20—\x20refresh\x20karo','err');return null;}function _0x566c74(_0x340482){if(!_0x340482)return'image_update_failed';var _0x153861=String(_0x340482['message']||'image_update_failed'),_0x1b942d=_0x340482['code']?'\x20['+_0x340482['code']+']':'';return(_0x153861+_0x1b942d)['slice'](0x0,0xb4);}window['DB']={'auth':{'syncFirebaseToken':async function(_0x1dabbc){try{var _0x4d3b71=await _0x1dabbc['getIdToken'](!![]);try{window['_cleanupChannels']&&(window['_cleanupChannels'](),console['log']('[DB]\x20Cleaned\x20up\x20old\x20Realtime\x20channels\x20before\x20token\x20refresh'));}catch(_0x3c0dda){console['warn']('[DB]\x20Channel\x20cleanup\x20warning\x20(non-fatal):',_0x3c0dda['message']);}return window['_supa']=window['supabase']['createClient'](_0x2f66ba,_0x1158ca,{'auth':{'persistSession':![],'autoRefreshToken':![],'detectSessionInUrl':![]},'global':{'headers':{'Authorization':'Bearer\x20'+_0x4d3b71}}}),window['_supaReady']=!![],window['_supaTokenUid']=_0x1dabbc['uid'],console['log']('[DB]\x20Supabase\x20←\x20Firebase\x20JWT\x20synced\x20✅\x20uid:',_0x1dabbc['uid']['substring'](0x0,0x8)+'...'),setTimeout(function(){try{window['_tokenRefreshHandler']=null;if(window['_setupTokenRefreshGuard'])window['_setupTokenRefreshGuard']();window['_bootChannelSetup']&&(window['_bootChannelSetup'](),console['log']('[DB]\x20Realtime\x20channels\x20re-subscribed\x20on\x20new\x20Supabase\x20client\x20✅'));}catch(_0x200999){console['warn']('[DB]\x20Channel\x20re-subscribe\x20warning:',_0x200999['message']);}},0x320),!![];}catch(_0x55b30d){return console['warn']('[DB]\x20Firebase\x20token\x20sync\x20failed\x20(non-fatal):',_0x55b30d['message']),![];}},'logout':async function(){var _0x1d71fe=window['fbAuth']?window['fbAuth']():window['auth'];try{if(_0x1d71fe)await _0x1d71fe['signOut']();}catch(_0x3953a5){}try{window['_supa']=window['supabase']['createClient'](_0x2f66ba,_0x1158ca),window['_supaTokenUid']=null;}catch(_0x37b9c0){}window['U']=null,window['UD']=null;},'getSession':async function(){var {data:_0x28d7fc}=await window['_supa']['auth']['getSession']();return _0x28d7fc?_0x28d7fc['session']:null;},'onAuthChange':function(_0x2563ff){window['_supa']['auth']['onAuthStateChange'](function(_0x2204de,_0x59458a){_0x2563ff(_0x2204de,_0x59458a);});}},'users':{'getMe':async function(){var _0x110f86=_0xa0f8c5();if(!_0x110f86)return null;var {data:_0xfbc4c0,error:_0x5a0745}=await window['_supa']['from']('users')['select']('id,ign,email,email_verified,avatar_url,banner_url,coins,sky_diamonds,green_diamonds,sponsored_winnings,rank_tier,rank_points,total_wins,total_kills,total_matches,city,is_creator,premium_level,premium_expires,is_vip,clan_id,referral_code,profile_status,is_banned,ban_reason,accepted_policy,created_at,streak_days,streak_milestones_claimed')['eq']('id',_0x110f86)['maybeSingle']();if(_0x5a0745)return _0x3a51ab('users.getMe',_0x5a0745),undefined;return _0xfbc4c0;},'create':async function(_0x3ce353,_0x214e79){var {data:_0x138f16,error:_0x4b8f4e}=await window['_supa']['from']('users')['upsert']({'id':_0x3ce353,..._0x214e79},{'onConflict':'id','ignoreDuplicates':!![]})['select']()['single']();if(_0x4b8f4e&&(_0x4b8f4e['code']==='PGRST116'||_0x4b8f4e['code']==='23505')){var _0x2e4c36=await window['_supa']['from']('users')['select']('*')['eq']('id',_0x3ce353)['maybeSingle']();if(_0x2e4c36['data'])return _0x2e4c36['data'];}if(_0x4b8f4e){var _0x55084e=await window['_supa']['from']('users')['select']('*')['eq']('id',_0x3ce353)['maybeSingle']();if(_0x55084e['data'])return _0x55084e['data'];if(_0x4b8f4e['code']==='23505'){var _0x1695ef={'ign':_0x214e79['ign'],'email':_0x214e79['email'],'avatar_url':_0x214e79['avatar_url']},_0x3766b8=await window['_supa']['from']('users')['insert']({'id':_0x3ce353,..._0x1695ef})['select']()['single']();if(!_0x3766b8['error'])return _0x3766b8['data'];var _0x38774f=await window['_supa']['from']('users')['select']('*')['eq']('id',_0x3ce353)['maybeSingle']();if(_0x38774f['data'])return _0x38774f['data'];return _0x3a51ab('users.create\x20(retry)',_0x3766b8['error']);}return _0x3a51ab('users.create',_0x4b8f4e);}return _0x138f16;},'update':async function(_0x1b5a4b){var _0x6c0cef=_0xa0f8c5();if(!_0x6c0cef)return{'ok':![],'error':'not_authenticated'};var {data:_0x437070,error:_0x392079}=await window['_supa']['from']('users')['update']({..._0x1b5a4b,'updated_at':new Date()['toISOString']()})['eq']('id',_0x6c0cef);if(_0x392079){if(_0x392079['code']==='23505'){if(_0x392079['message']&&_0x392079['message']['indexOf']('ign')>=0x0){if(window['toast'])window['toast']('⚠️\x20Yeh\x20IGN\x20already\x20kisi\x20aur\x20ne\x20liya\x20hai!\x20Dusra\x20try\x20karo.','err');}else{if(_0x392079['message']&&_0x392079['message']['indexOf']('phone')>=0x0){if(window['toast'])window['toast']('⚠️\x20Yeh\x20phone\x20number\x20already\x20registered\x20hai!','err');}else{if(window['toast'])window['toast']('⚠️\x20Duplicate\x20entry\x20—\x20koi\x20field\x20already\x20exist\x20karta\x20hai.','err');}}return{'ok':![],'error':'23505'};}return _0x3a51ab('users.update',_0x392079),{'ok':![],'error':_0x392079['message']};}return{'ok':!![],'data':_0x437070};},'updateImage':async function(_0x5acf1a,_0x159490){var _0x1cd3fa=_0xa0f8c5();if(!_0x1cd3fa)return{'ok':![],'error':'not_authenticated'};if(_0x5acf1a!=='avatar_url'&&_0x5acf1a!=='banner_url')return{'ok':![],'error':'invalid_image_field'};if(typeof _0x159490!=='string'||!/^https:\/\//i['test'](_0x159490))return{'ok':![],'error':'invalid_image_url'};var _0x282b5f={'updated_at':new Date()['toISOString']()};_0x282b5f[_0x5acf1a]=_0x159490;try{var _0x44fef9=await window['_supa']['from']('users')['update'](_0x282b5f)['eq']('id',_0x1cd3fa)['select']('id,'+_0x5acf1a)['maybeSingle']();if(_0x44fef9['error'])return console['error']('[DB:users.updateImage]',_0x44fef9['error']),{'ok':![],'error':_0x566c74(_0x44fef9['error'])};if(!_0x44fef9['data']||_0x44fef9['data']['id']!==_0x1cd3fa)return console['error']('[DB:users.updateImage]\x20No\x20user\x20row\x20was\x20updated\x20(possible\x20RLS\x20denial)'),{'ok':![],'error':'update_not_applied_rls'};if(_0x44fef9['data'][_0x5acf1a]!==_0x159490)return console['error']('[DB:users.updateImage]\x20DB\x20trigger\x20ne\x20'+_0x5acf1a+'\x20rewrite\x20kar\x20diya\x20—\x20sent:',String(_0x159490)['slice'](0x0,0x78),'|\x20stored:',String(_0x44fef9['data'][_0x5acf1a])['slice'](0x0,0xa0)),{'ok':![],'error':'db_trigger_rewrote_value'};return{'ok':!![],'data':_0x44fef9['data']};}catch(_0x41ae5d){return console['error']('[DB:users.updateImage]',_0x41ae5d),{'ok':![],'error':_0x41ae5d&&_0x41ae5d['message']||'image_update_failed'};}},'getById':async function(_0x2aca02){var {data:_0x41f772,error:_0x1c146d}=await window['_supa']['from']('user_public_profiles')['select']('id,ign,avatar_url,rank_tier,rank_points,total_wins,total_kills,total_matches,city,is_creator,clan_id')['eq']('id',_0x2aca02)['single']();if(_0x1c146d)return _0x3a51ab('users.getById',_0x1c146d);return _0x41f772;},'search':async function(_0x5317c2){var {data:_0x837047,error:_0xa2ce4f}=await window['_supa']['from']('users')['select']('*')['or']('ign.ilike.%'+_0x5317c2+'%,email.ilike.%'+_0x5317c2+'%')['limit'](0x14);if(_0xa2ce4f)return _0x3a51ab('users.search',_0xa2ce4f);return _0x837047||[];},'pollMe':function(_0x5b5990){_0x13a83b('myProfile',async function(){var _0xd0a60=await DB['users']['getMe']();if(_0xd0a60)_0x5b5990(_0xd0a60);},0x7530);},'stopPollMe':function(){_0x453118('myProfile');}},'matches':{'getUpcoming':async function(){var {data:_0x4e8b8c,error:_0xea26de}=await window['_supa']['from']('active_matches')['select']('id,title,name,mode,status,scheduled_at,entry_type,entry_fee,prize_pool,max_slots,filled_slots,map,is_featured,match_sub_type,banner_url')['order']('scheduled_at',{'ascending':!![]})['limit'](0x32);if(_0xea26de)return _0x3a51ab('matches.getUpcoming',_0xea26de);return _0x4e8b8c||[];},'getById':async function(_0x3bdb7f){var {data:_0x83c043,error:_0x525867}=await window['_supa']['from']('matches')['select']('*')['eq']('id',_0x3bdb7f)['single']();if(_0x525867)return _0x3a51ab('matches.getById',_0x525867);return _0x83c043;},'create':async function(_0x44fca4){var _0x58cafd=_0xa0f8c5(),{data:_0x42101c,error:_0x73ddf2}=await window['_supa']['from']('matches')['insert']({..._0x44fca4,'creator_uid':_0x58cafd})['select']()['single']();if(_0x73ddf2)return _0x3a51ab('matches.create',_0x73ddf2);return _0x42101c;},'update':async function(_0x50015c,_0x5a061d){var {data:_0x2cc110,error:_0x432050}=await window['_supa']['from']('matches')['update']({..._0x5a061d,'updated_at':new Date()['toISOString']()})['eq']('id',_0x50015c);if(_0x432050)return _0x3a51ab('matches.update',_0x432050);return _0x2cc110;},'releaseRoom':async function(_0x148a09,_0x255d2e,_0x55b6b7){return DB['matches']['update'](_0x148a09,{'room_id':_0x255d2e,'room_password':_0x55b6b7,'room_released_at':new Date()['toISOString']()});},'poll':function(_0x277603){_0x13a83b('matches',async function(){var _0x30a0f4=await DB['matches']['getUpcoming']();_0x277603(_0x30a0f4);},0x7530);},'stopPoll':function(){_0x453118('matches');}},'joinRequests':{'getMine':async function(){var _0x4d7e55=_0xa0f8c5(),{data:_0x4eed49,error:_0x1fe8f6}=await window['_supa']['from']('join_requests')['select']('*,\x20match:matches(title,scheduled_at,mode,status)')['eq']('user_id',_0x4d7e55)['order']('created_at',{'ascending':![]});if(_0x1fe8f6)return _0x3a51ab('joinRequests.getMine',_0x1fe8f6);return _0x4eed49||[];},'check':async function(_0x431e47){var _0x23c21f=_0xa0f8c5(),{data:_0x39cee9,error:_0x54f725}=await window['_supa']['from']('join_requests')['select']('*')['eq']('match_id',_0x431e47)['eq']('user_id',_0x23c21f)['maybeSingle']();if(_0x54f725)return _0x3a51ab('joinRequests.check',_0x54f725);return _0x39cee9;},'create':async function(_0x3f2e18,_0x2db747,_0x3b4c22,_0x18aac4){var _0x4be20f=_0xa0f8c5(),_0xd0c865=_0x2db747==='coin'?'coins':_0x2db747==='paid'||_0x2db747==='sky_diamond'||_0x2db747==='skyDiamond'?'sky_diamonds':'coins',{data:_0x1b0616,error:_0x206a70}=await window['_supa']['rpc']('validate_and_join_match',{'p_uid':_0x4be20f,'p_match_id':_0x3f2e18,'p_entry_fee':Number(_0x3b4c22)||0x0,'p_currency':_0xd0c865,'p_join_data':_0x18aac4||null});if(_0x206a70)return _0x3a51ab('joinRequests.create',_0x206a70);return _0x1b0616;},'confirmInRoom':async function(_0x1efc98){var {data:_0x126080,error:_0x7a330e}=await window['_supa']['rpc']('confirm_in_room',{'p_join_id':_0x1efc98});if(_0x7a330e)return _0x3a51ab('joinRequests.confirmInRoom',_0x7a330e);return _0x126080;},'getForMatch':async function(_0x19c3c3){var {data:_0x3c22ce,error:_0x4de4a1}=await window['_supa']['from']('join_requests')['select']('*,\x20user:users(ign,avatar_url,rank_tier,coins,sky_diamonds)')['eq']('match_id',_0x19c3c3)['order']('created_at',{'ascending':!![]});if(_0x4de4a1)return _0x3a51ab('joinRequests.getForMatch',_0x4de4a1);return _0x3c22ce||[];},'setStatus':async function(_0x175872,_0xf2be6c,_0x14c78c){return console['error']('[DB.joinRequests.setStatus]\x20RETIRED\x20—\x20join\x20approval/result\x20status\x20ab\x20authoritative\x20server\x20RPC\x20se\x20hi\x20update\x20hota\x20hai\x20(admin\x20panel:\x20publish_match_results\x20/\x20correct_match_result).'),_0x3a51ab('joinRequests.setStatus',{'message':'Join\x20status\x20ab\x20server\x20RPC\x20se\x20update\x20hota\x20hai'});},'setResult':async function(_0x133d8a,_0x36fffb,_0x344562,_0xb54de){return console['error']('[DB.joinRequests.setResult]\x20RETIRED\x20—\x20kills/placement/prize_earned\x20ab\x20sirf\x20publish_match_results\x20/\x20correct_match_result\x20RPC\x20se\x20likhe\x20jaate\x20hain.'),_0x3a51ab('joinRequests.setResult',{'message':'Match\x20results\x20ab\x20server\x20RPC\x20se\x20update\x20hote\x20hain'});}},'wallet':{'credit':async function(_0x2ed73f,_0x4be88a,_0xff6f20,_0x73302,_0x587423){return console['error']('[DB.wallet.credit]\x20REMOVED\x20(2026-09-08)\x20—\x20this\x20generic\x20mint\x20path\x20is\x20no\x20longer\x20available.\x20Use\x20a\x20dedicated\x20RPC\x20for\x20the\x20specific\x20reward\x20instead\x20(claim_watch_earn_reward,\x20apply_referral_code,\x20claim_battle_pass_tier,\x20redeem_voucher,\x20claim_ad_reward,\x20etc.)'),_0x3a51ab('wallet.credit',{'message':'DB.wallet.credit()\x20has\x20been\x20removed\x20for\x20security\x20reasons\x20—\x20use\x20a\x20dedicated\x20reward\x20RPC\x20instead'});},'debit':async function(_0x5a06f7,_0x13ace2,_0x6d8fce,_0x48d026,_0x56c4be){return console['error']('[DB.wallet.debit]\x20legacy\x20path\x20—\x20use\x20a\x20dedicated\x20server\x20RPC\x20(validate_and_join_match,\x20gift_match_entry,\x20contribute_to_squad_bank,\x20redeem_reward_item,\x20purchase_cosmetic)'),_0x3a51ab('wallet.debit',{'message':'DB.wallet.debit()\x20retired\x20—\x20server\x20RPC\x20is\x20the\x20only\x20debit\x20authority'});},'getHistory':async function(_0x88b058){var _0x366fec=_0xa0f8c5(),{data:_0x3d071e,error:_0x4019aa}=await window['_supa']['from']('wallet_transactions')['select']('*')['eq']('user_id',_0x366fec)['order']('created_at',{'ascending':![]})['limit'](_0x88b058||0x32);if(_0x4019aa)return _0x3a51ab('wallet.getHistory',_0x4019aa);return _0x3d071e||[];},'submitSdRequest':async function(_0x15fce2,_0x2a34ad,_0x2e2176,_0x520922){var _0x221380=_0xa0f8c5(),{data:_0xcfadca,error:_0x10072e}=await window['_supa']['from']('sd_requests')['insert']({'user_id':_0x221380,'amount_inr':_0x15fce2,'sd_amount':_0x2a34ad,'upi_ref':_0x2e2176,'screenshot_url':_0x520922})['select']()['single']();if(_0x10072e)return _0x3a51ab('wallet.submitSdRequest',_0x10072e);return _0xcfadca;},'getPendingSdRequests':async function(){var {data:_0x57b3c9,error:_0x378ef9}=await window['_supa']['from']('sd_requests')['select']('*,\x20user:users(ign,email,sky_diamonds)')['eq']('status','pending')['order']('created_at',{'ascending':!![]});if(_0x378ef9)return _0x3a51ab('wallet.getPendingSdRequests',_0x378ef9);return _0x57b3c9||[];},'approveSdRequest':async function(_0x578e6a,_0x4a149e,_0x12fd6b){return await window['_supa']['from']('sd_requests')['update']({'status':'approved','reviewed_by':_0xa0f8c5()})['eq']('id',_0x578e6a),DB['wallet']['credit'](_0x4a149e,'sky_diamonds',_0x12fd6b,'sd_purchase',_0x578e6a);},'rejectSdRequest':async function(_0x3519f1,_0x2304a5){var {data:_0xc453f2,error:_0x94f092}=await window['_supa']['from']('sd_requests')['update']({'status':'rejected','reviewed_by':_0xa0f8c5(),'review_note':_0x2304a5})['eq']('id',_0x3519f1);if(_0x94f092)return _0x3a51ab('wallet.rejectSdRequest',_0x94f092);return _0xc453f2;}},'notifications':{'getMine':async function(){var _0x3c419d=_0xa0f8c5(),{data:_0x26a309,error:_0x40c80f}=await window['_supa']['from']('notifications')['select']('*')['eq']('user_id',_0x3c419d)['order']('created_at',{'ascending':![]})['limit'](0x32);if(_0x40c80f)return _0x3a51ab('notifications.getMine',_0x40c80f);return _0x26a309||[];},'markRead':async function(_0x508238){var {error:_0x39be94}=await window['_supa']['from']('notifications')['update']({'is_read':!![]})['eq']('id',_0x508238)['eq']('user_id',_0xa0f8c5());if(_0x39be94)_0x3a51ab('notifications.markRead',_0x39be94);},'markAllRead':async function(){var {error:_0x3c6a93}=await window['_supa']['from']('notifications')['update']({'is_read':!![]})['eq']('user_id',_0xa0f8c5())['eq']('is_read',![]);if(_0x3c6a93)_0x3a51ab('notifications.markAllRead',_0x3c6a93);},'send':async function(_0x2745f6,_0x17a0f4,_0x1efdc2,_0x3d90e6,_0x47aca9){var {data:_0x100af9,error:_0x36a975}=await window['_supa']['from']('notifications')['insert']({'user_id':_0x2745f6,'type':_0x17a0f4,'title':_0x1efdc2,'body':_0x3d90e6,'ref_id':_0x47aca9||null});if(_0x36a975)return _0x3a51ab('notifications.send',_0x36a975);return _0x100af9;},'poll':function(_0x2a6f6f){_0x13a83b('notifs',async function(){var _0x585df8=await DB['notifications']['getMine']();_0x2a6f6f(_0x585df8);},0x7530);},'stopPoll':function(){_0x453118('notifs');}},'support':{'getMyTickets':async function(){var _0xf25594=_0xa0f8c5(),{data:_0x188393,error:_0x2887d1}=await window['_supa']['from']('support_tickets')['select']('*,\x20messages:support_messages(*)')['eq']('user_id',_0xf25594)['order']('created_at',{'ascending':![]});if(_0x2887d1)return _0x3a51ab('support.getMyTickets',_0x2887d1);return _0x188393||[];},'createTicket':async function(_0x3ea7f7){var _0x20d784=_0xa0f8c5(),{data:_0x173e6e,error:_0x335bca}=await window['_supa']['from']('support_tickets')['insert']({'user_id':_0x20d784,'subject':_0x3ea7f7})['select']()['single']();if(_0x335bca)return _0x3a51ab('support.createTicket',_0x335bca);return _0x173e6e;},'sendMessage':async function(_0x329805,_0x6cfeb1){var _0x4dbf5e=_0xa0f8c5(),{data:_0x2cd571,error:_0x3820c2}=await window['_supa']['from']('support_messages')['insert']({'ticket_id':_0x329805,'sender_id':_0x4dbf5e,'message':_0x6cfeb1});if(_0x3820c2)return _0x3a51ab('support.sendMessage',_0x3820c2);return _0x2cd571;},'adminReply':async function(_0x197696,_0x44b90e){var _0x2a2ac9=_0xa0f8c5(),{data:_0x375eeb,error:_0x52680c}=await window['_supa']['from']('support_messages')['insert']({'ticket_id':_0x197696,'sender_id':_0x2a2ac9,'message':_0x44b90e,'is_admin':!![]});if(_0x52680c)return _0x3a51ab('support.adminReply',_0x52680c);return await window['_supa']['from']('support_tickets')['update']({'status':'replied'})['eq']('id',_0x197696),_0x375eeb;}},'leaderboard':{'getGlobal':async function(_0xe2f421){var {data:_0xdf970d,error:_0x52d32d}=await window['_supa']['from']('leaderboard')['select']('*')['limit'](_0xe2f421||0x64);if(_0x52d32d)return _0x3a51ab('leaderboard.getGlobal',_0x52d32d);return _0xdf970d||[];},'getByCity':async function(_0x21d4c7,_0x4254e1){var {data:_0x2c0342,error:_0x2814cb}=await window['_supa']['from']('user_public_profiles')['select']('id,ign,avatar_url,rank_tier,rank_points,total_wins,city')['eq']('city',_0x21d4c7)['eq']('is_banned',![])['order']('rank_points',{'ascending':![]})['limit'](_0x4254e1||0x32);if(_0x2814cb)return _0x3a51ab('leaderboard.getByCity',_0x2814cb);return _0x2c0342||[];}},'config':{'load':async function(_0xc757de){typeof window['_fetchLiveConfigOnce']!=='function'&&(window['_fetchLiveConfigOnce']=function(_0x5a41ef){if(!window['_supa'])return Promise['resolve']({'data':null,'error':null});var _0x1692ef=Date['now']();if(!_0x5a41ef&&window['_liveCfgPromise']&&_0x1692ef-(window['_liveCfgPromiseTs']||0x0)<0x3a98)return window['_liveCfgPromise'];return window['_liveCfgPromiseTs']=_0x1692ef,window['_liveCfgPromise']=Promise['resolve'](window['_supa']['from']('app_settings')['select']('value')['eq']('key','live_config')['maybeSingle']())['then'](function(_0x295484){return _0x295484;}),window['_liveCfgPromise'];});var _0x21f02b=await window['_fetchLiveConfigOnce'](!!_0xc757de),_0xbf4b44=_0x21f02b&&_0x21f02b['data'],_0x1689d7=_0x21f02b&&_0x21f02b['error'];if(_0x1689d7){_0x3a51ab('config.load',_0x1689d7);return;}if(_0xbf4b44&&_0xbf4b44['value']){Object['assign'](window['CFG'],_0xbf4b44['value']);if(_0xbf4b44['value']['missions'])Object['assign'](window['CFG']['missions'],_0xbf4b44['value']['missions']);if(_0xbf4b44['value']['premium'])Object['assign'](window['CFG']['premium'],_0xbf4b44['value']['premium']);if(_0xbf4b44['value']['cosmetics'])Object['assign'](window['CFG']['cosmetics'],_0xbf4b44['value']['cosmetics']);if(_0xbf4b44['value']['streakMilestones'])Object['assign'](window['CFG']['streakMilestones'],_0xbf4b44['value']['streakMilestones']);window['_cfgLoaded']=!![],console['log']('[DB]\x20AppConfig\x20loaded\x20from\x20Supabase');}},'save':async function(_0x26c583){var _0x237b7f=_0xa0f8c5(),{data:_0x561ff4,error:_0x5cdc52}=await window['_supa']['from']('app_settings')['update']({'value':_0x26c583,'updated_by':_0x237b7f,'updated_at':new Date()['toISOString']()})['eq']('key','live_config');if(_0x5cdc52)return _0x3a51ab('config.save',_0x5cdc52);return _0x561ff4;},'poll':function(){var _0x1f1785=0x0;(function _0x3fe19c(){if(window['CFG']&&window['DB']&&window['DB']['config']&&window['DB']['config']['load']){_0x13a83b('appConfig',window['DB']['config']['load'],0x493e0);return;}_0x1f1785++;if(_0x1f1785>0x12c){console['warn']('[DB.config.poll]\x20window.CFG/DB\x20never\x20became\x20available\x20—\x20config\x20poll\x20not\x20started.');return;}setTimeout(_0x3fe19c,0xc8);}());}},'clans':{'getAll':async function(){var {data:_0x4e28d3,error:_0x110285}=await window['_supa']['from']('clans')['select']('*,\x20leader:users!leader_uid(ign,avatar_url)')['order']('total_wins',{'ascending':![]})['limit'](0x32);if(_0x110285)return _0x3a51ab('clans.getAll',_0x110285);return _0x4e28d3||[];},'getMyClan':async function(){var _0x1fa193=_0xa0f8c5(),{data:_0xbf02ca,error:_0x20f787}=await window['_supa']['from']('clan_members')['select']('clan:clans(*)')['eq']('user_id',_0x1fa193)['maybeSingle']();if(_0x20f787)return _0x3a51ab('clans.getMyClan',_0x20f787);return _0xbf02ca?_0xbf02ca['clan']:null;},'create':async function(_0x286794,_0x2e0a1a,_0x40b2ed){var _0x4adbea=_0xa0f8c5(),{data:_0x20f9e2,error:_0x3d8b46}=await window['_supa']['from']('clans')['insert']({'name':_0x286794,'tag':_0x2e0a1a,'description':_0x40b2ed,'leader_uid':_0x4adbea})['select']()['single']();if(_0x3d8b46)return _0x3a51ab('clans.create',_0x3d8b46);return await window['_supa']['from']('clan_members')['insert']({'clan_id':_0x20f9e2['id'],'user_id':_0x4adbea,'role':'leader'}),await DB['users']['update']({'clan_id':_0x20f9e2['id']}),_0x20f9e2;},'join':async function(_0x5b5900){var _0x3621f3=_0xa0f8c5(),{data:_0x38363a,error:_0x33ab27}=await window['_supa']['from']('clan_members')['insert']({'clan_id':_0x5b5900,'user_id':_0x3621f3,'role':'member'});if(_0x33ab27)return _0x3a51ab('clans.join',_0x33ab27);return await DB['users']['update']({'clan_id':_0x5b5900}),_0x38363a;},'leave':async function(_0x1f7cb5){var _0x284f83=_0xa0f8c5(),{error:_0x55e847}=await window['_supa']['from']('clan_members')['delete']()['eq']('clan_id',_0x1f7cb5)['eq']('user_id',_0x284f83);if(_0x55e847)return _0x3a51ab('clans.leave',_0x55e847);await DB['users']['update']({'clan_id':null});},'getMessages':async function(_0x68c90a,_0x39c5a8){var {data:_0x28bc64,error:_0x5ead20}=await window['_supa']['from']('clan_messages')['select']('*,\x20sender:users(ign,avatar_url)')['eq']('clan_id',_0x68c90a)['order']('created_at',{'ascending':![]})['limit'](_0x39c5a8||0x32);if(_0x5ead20)return _0x3a51ab('clans.getMessages',_0x5ead20);return(_0x28bc64||[])['reverse']();},'sendMessage':async function(_0x2fe212,_0x1c674a){var _0x58c5ad=_0xa0f8c5(),{data:_0x5dcd27,error:_0x12e7f6}=await window['_supa']['from']('clan_messages')['insert']({'clan_id':_0x2fe212,'sender_id':_0x58c5ad,'message':_0x1c674a});if(_0x12e7f6)return _0x3a51ab('clans.sendMessage',_0x12e7f6);return _0x5dcd27;}},'rank':{'getActiveSeason':async function(){var {data:_0x76a713,error:_0x4ad070}=await window['_supa']['from']('rank_seasons')['select']('*')['eq']('is_active',!![])['maybeSingle']();if(_0x4ad070)return _0x3a51ab('rank.getActiveSeason',_0x4ad070);return _0x76a713;},'getMyHistory':async function(){var _0x238504=_0xa0f8c5(),{data:_0x39b01a,error:_0x205a08}=await window['_supa']['from']('rank_history')['select']('*,\x20season:rank_seasons(name,season_num)')['eq']('user_id',_0x238504)['order']('created_at',{'ascending':![]});if(_0x205a08)return _0x3a51ab('rank.getMyHistory',_0x205a08);return _0x39b01a||[];},'addPoints':async function(_0x11fd93,_0x5515a2){return window['_supa']['rpc']('increment_rank_points',{'p_uid':_0x11fd93,'p_points':_0x5515a2});}},'missions':{'getToday':async function(){var _0x14bdb7=_0xa0f8c5(),_0x510bf3=new Date()['toISOString']()['split']('T')[0x0],{data:_0x2e2de6,error:_0x7c01ab}=await window['_supa']['from']('mission_progress')['select']('*')['eq']('user_id',_0x14bdb7)['gte']('period',_0x510bf3);if(_0x7c01ab)return _0x3a51ab('missions.getToday',_0x7c01ab);return _0x2e2de6||[];},'updateProgress':async function(_0x3374e9,_0x42b321,_0x187d2e,_0x531a4c){var {data:_0x21f3a3,error:_0x571e10}=await window['_supa']['rpc']('track_mission_progress',{'p_mission_key':_0x3374e9,'p_period':_0x42b321,'p_progress':_0x187d2e,'p_target':_0x531a4c});if(_0x571e10)return _0x3a51ab('missions.updateProgress',_0x571e10);return _0x21f3a3;},'claimReward':async function(_0x620b72,_0x311c96,_0x3f3938){var {data:_0x32f8e5,error:_0x31c146}=await window['_supa']['rpc']('claim_mission_reward',{'p_mission_key':_0x620b72,'p_period':_0x311c96,'p_coins':_0x3f3938});if(_0x31c146)return _0x3a51ab('missions.claimReward',_0x31c146);return _0x32f8e5;}},'checkin':{'doCheckIn':async function(){var _0x4f170a=window['_adminDailyBonusRewards']||[0x5,0x7,0xa,0xc,0xf,0x14,0x1e],_0x3e5279=window['_adminDay30Bonus']||0x64,{data:_0x185c46,error:_0x498822}=await window['_supa']['rpc']('process_daily_checkin',{'p_tier_rewards':_0x4f170a,'p_milestone_bonus':_0x3e5279,'p_milestone_days':0x1e});if(_0x498822)return _0x3a51ab('checkin.doCheckIn',_0x498822);if(_0x185c46&&_0x185c46['success']===![])return{'error':_0x185c46['error']};return{'success':!![],'coins':_0x185c46['total'],'streak':_0x185c46['streak']};}},'achievements':{'getMine':async function(){var _0x35529f=_0xa0f8c5(),{data:_0x696fbd,error:_0x1cd7df}=await window['_supa']['from']('user_achievements')['select']('*')['eq']('user_id',_0x35529f);if(_0x1cd7df)return _0x3a51ab('achievements.getMine',_0x1cd7df);return _0x696fbd||[];},'unlock':async function(_0x5c6d56,_0x5a92f8){var {data:_0x4a2342,error:_0xc8a468}=await window['_supa']['from']('user_achievements')['upsert']({'user_id':_0x5c6d56,'achievement_key':_0x5a92f8},{'onConflict':'user_id,achievement_key'});if(_0xc8a468)return _0x3a51ab('achievements.unlock',_0xc8a468);return _0x4a2342;}},'battlePass':{'getActive':async function(){var {data:_0x1dc630,error:_0x3a6242}=await window['_supa']['from']('battle_passes')['select']('*')['eq']('is_active',!![])['maybeSingle']();if(_0x3a6242)return _0x3a51ab('battlePass.getActive',_0x3a6242);return _0x1dc630;},'getMyProgress':async function(_0x25f35b){var _0x4dbdd4=_0xa0f8c5(),{data:_0x575246,error:_0x5db077}=await window['_supa']['from']('battle_pass_progress')['select']('*')['eq']('user_id',_0x4dbdd4)['eq']('season_key',_0x25f35b)['maybeSingle']();if(_0x5db077)return _0x3a51ab('battlePass.getMyProgress',_0x5db077);return _0x575246;},'addXP':async function(_0x2ea66e,_0x4ead9a){var _0x355461=_0xa0f8c5(),{data:_0x3250a9,error:_0x2ef38a}=await window['_supa']['from']('battle_pass_progress')['upsert']({'user_id':_0x355461,'season_key':_0x2ea66e,'current_xp':_0x4ead9a,'updated_at':new Date()['toISOString']()},{'onConflict':'user_id,season_key'});if(_0x2ef38a)return _0x3a51ab('battlePass.addXP',_0x2ef38a);return _0x3250a9;},'claimTier':async function(_0xa66679,_0x34cb9b,_0x2db493){var {data:_0x512287,error:_0x3e66fe}=await window['_supa']['rpc']('claim_battle_pass_tier',{'p_season':_0xa66679,'p_tier':_0x34cb9b,'p_track':_0x2db493||'free'});if(_0x3e66fe)return _0x3a51ab('battlePass.claimTier',_0x3e66fe);if(_0x512287&&_0x512287['success']===![])return _0x3a51ab('battlePass.claimTier',{'message':_0x512287['error']});return _0x512287;}},'watchEarn':{'logWatch':async function(_0x31a319,_0xe436a5,_0x321571){return console['error']('[DB.watchEarn.logWatch]\x20REMOVED\x20(2026-09-08)\x20—\x20use\x20claim_watch_earn_reward\x20RPC\x20instead\x20(see\x20features/watch-earn.js)'),_0x3a51ab('watchEarn.logWatch',{'message':'This\x20function\x20has\x20been\x20removed\x20for\x20security\x20reasons'});},'getTodayTotal':async function(){var _0x29391f=_0xa0f8c5(),_0x1ea2db=new Date()['toISOString']()['split']('T')[0x0],{data:_0x8bdcf0,error:_0x5ce1ce}=await window['_supa']['from']('watch_earn_log')['select']('coins_earned,\x20watched_mins')['eq']('user_id',_0x29391f)['eq']('log_date',_0x1ea2db);if(_0x5ce1ce)return _0x3a51ab('watchEarn.getTodayTotal',_0x5ce1ce);var _0x276470=_0x8bdcf0||[];return{'totalCoins':_0x276470['reduce'](function(_0x3f33a3,_0x42f0ed){return _0x3f33a3+_0x42f0ed['coins_earned'];},0x0),'totalMins':_0x276470['reduce'](function(_0x2ad906,_0x239881){return _0x2ad906+_0x239881['watched_mins'];},0x0)};}},'autoSquad':{'joinQueue':async function(_0x3747f1,_0x5f41b3){var {error:_0x34fde4,data:_0x1e4d9d}=await window['_supa']['rpc']('join_auto_squad_queue',{'p_match_id':_0x3747f1,'p_mode':_0x5f41b3});if(_0x34fde4)return _0x3a51ab('autoSquad.joinQueue',_0x34fde4);return _0x1e4d9d;},'leaveQueue':async function(_0x162295){var _0x2d6cd4=_0xa0f8c5(),{error:_0x3386f4}=await window['_supa']['from']('auto_squad_queue')['delete']()['eq']('match_id',_0x162295)['eq']('user_id',_0x2d6cd4);if(_0x3386f4)return _0x3a51ab('autoSquad.leaveQueue',_0x3386f4);},'getWaiting':async function(_0x2eefcf){var {data:_0x212000,error:_0x449657}=await window['_supa']['from']('auto_squad_queue')['select']('*,\x20user:users(ign,\x20avatar_url,\x20rank_tier)')['eq']('match_id',_0x2eefcf)['eq']('status','waiting')['order']('joined_at',{'ascending':!![]});if(_0x449657)return _0x3a51ab('autoSquad.getWaiting',_0x449657);return _0x212000||[];},'poll':function(_0x4736a7,_0x18e65a){_0x13a83b('autoSquad_'+_0x4736a7,async function(){var _0x30dc85=await DB['autoSquad']['getWaiting'](_0x4736a7);_0x18e65a(_0x30dc85);},0x3a98);},'stopPoll':function(_0x2bade3){_0x453118('autoSquad_'+_0x2bade3);}},'cosmetics':{'getMine':async function(){var _0x345ff7=_0xa0f8c5(),{data:_0x3694d8,error:_0x3f20b}=await window['_supa']['from']('user_cosmetics')['select']('*')['eq']('user_id',_0x345ff7);if(_0x3f20b)return _0x3a51ab('cosmetics.getMine',_0x3f20b);return _0x3694d8||[];},'purchase':async function(_0x4912b9,_0x3fac0d){var _0x544924=_0xa0f8c5(),{data:_0x4f1119}=await window['_supa']['from']('user_cosmetics')['select']('cosmetic_key')['eq']('user_id',_0x544924)['eq']('cosmetic_key',_0x4912b9)['maybeSingle']();if(_0x4f1119)return{'error':'Already\x20owned'};await DB['wallet']['debit'](_0x544924,'sky_diamonds',_0x3fac0d,'cosmetic_purchase',_0x4912b9);var {data:_0x387292,error:_0x5cd07d}=await window['_supa']['from']('user_cosmetics')['insert']({'user_id':_0x544924,'cosmetic_key':_0x4912b9});if(_0x5cd07d)return _0x3a51ab('cosmetics.purchase',_0x5cd07d);return{'success':!![]};},'equip':async function(_0x30e42e){var _0x43dd90=_0xa0f8c5(),_0x13065f=_0x30e42e['split']('_')[0x0];await window['_supa']['from']('user_cosmetics')['update']({'is_equipped':![]})['eq']('user_id',_0x43dd90)['like']('cosmetic_key',_0x13065f+'%');var {data:_0x345134,error:_0x1019bb}=await window['_supa']['from']('user_cosmetics')['update']({'is_equipped':!![]})['eq']('user_id',_0x43dd90)['eq']('cosmetic_key',_0x30e42e);if(_0x1019bb)return _0x3a51ab('cosmetics.equip',_0x1019bb);return _0x345134;}},'sponsored':{'getForMatch':async function(_0x182e90){var {data:_0xf5a31e,error:_0x35c5b5}=await window['_supa']['from']('sponsored_prizes')['select']('*,\x20claims:sponsored_prize_claims(*,\x20user:users(ign))')['eq']('match_id',_0x182e90)['maybeSingle']();if(_0x35c5b5)return _0x3a51ab('sponsored.getForMatch',_0x35c5b5);return _0xf5a31e;},'create':async function(_0x5a0ab8,_0x1a90a7,_0x5620ba,_0x172df6){var {data:_0x3e624e,error:_0xf0811e}=await window['_supa']['from']('sponsored_prizes')['insert']({'match_id':_0x5a0ab8,'sponsor_name':_0x1a90a7,'total_prize':_0x5620ba,'distribution':_0x172df6})['select']()['single']();if(_0xf0811e)return _0x3a51ab('sponsored.create',_0xf0811e);return _0x3e624e;},'distribute':async function(_0x445036,_0x1e3020){var _0x773f64=_0xa0f8c5(),_0x36e796=_0x1e3020['map'](function(_0x5793a0){return{'sponsored_id':_0x445036,'user_id':_0x5793a0['user_id'],'placement':_0x5793a0['placement'],'prize_detail':_0x5793a0['prize_detail']};});await window['_supa']['from']('sponsored_prize_claims')['insert'](_0x36e796);var {data:_0x16577a,error:_0x573608}=await window['_supa']['from']('sponsored_prizes')['update']({'is_distributed':!![],'distributed_at':new Date()['toISOString'](),'distributed_by':_0x773f64})['eq']('id',_0x445036);if(_0x573608)return _0x3a51ab('sponsored.distribute',_0x573608);return _0x16577a;}},'referrals':{'apply':async function(_0x8b875e){var {data:_0x399628,error:_0x56a73e}=await window['_supa']['rpc']('apply_referral_code',{'p_code':_0x8b875e['toUpperCase'](),'p_reward':0x0});if(_0x56a73e)return{'error':_0x56a73e['message']};if(_0x399628&&_0x399628['success']===![])return{'error':_0x399628['error']};return{'success':!![],'coins':_0x399628['reward']};},'getMyReferrals':async function(){var _0x658245=_0xa0f8c5(),{data:_0x56c9eb,error:_0x11c71}=await window['_supa']['from']('referrals')['select']('*,\x20referred:users!referred_id(ign,avatar_url,total_matches,created_at)')['eq']('referrer_id',_0x658245)['order']('created_at',{'ascending':![]});if(_0x11c71)return _0x3a51ab('referrals.getMyReferrals',_0x11c71);return _0x56c9eb||[];}},'admin':{'getStats':async function(){if(window['U']&&window['_supa'])try{var _0x334acb=await window['_supa']['from']('users')['select']('is_admin')['eq']('id',window['U']['uid'])['maybeSingle']();if(!_0x334acb['data']||!_0x334acb['data']['is_admin'])return console['warn']('[Admin]\x20getStats:\x20denied'),null;}catch(_0x5c879c){}var [_0xb479d4,_0x36cfda,_0x5c241a]=await Promise['all']([window['_supa']['from']('users')['select']('id')['limit'](0x2710),window['_supa']['from']('matches')['select']('id')['eq']('status','upcoming')['limit'](0x2710),window['_supa']['from']('sd_requests')['select']('id')['eq']('status','pending')['limit'](0x2710)]);return{'totalUsers':(_0xb479d4['data']||[])['length'],'upcomingMatches':(_0x36cfda['data']||[])['length'],'pendingSdRequests':(_0x5c241a['data']||[])['length']};},'log':async function(_0x56a73b,_0xae64c,_0x58a78d,_0x181dd7){var _0x5a8ee5=_0xa0f8c5();await window['_supa']['from']('admin_activity_log')['insert']({'admin_uid':_0x5a8ee5,'action_type':_0x56a73b,'target_ref':_0x58a78d,'note':_0xae64c||null,'details':_0x181dd7||null});},'getPendingJoinRequests':async function(){var {data:_0x334649,error:_0x22958c}=await window['_supa']['from']('join_requests')['select']('*,\x20user:users(ign,avatar_url,rank_tier),\x20match:matches(title,scheduled_at,mode,entry_type,entry_fee)')['eq']('status','pending')['order']('created_at',{'ascending':!![]});if(_0x22958c)return _0x3a51ab('admin.getPendingJoinRequests',_0x22958c);return _0x334649||[];},'getCreatorApplications':async function(){var {data:_0xb762dd,error:_0x444218}=await window['_supa']['from']('creator_applications')['select']('*,\x20user:users(ign,avatar_url,total_matches)')['order']('created_at',{'ascending':![]});if(_0x444218)return _0x3a51ab('admin.getCreatorApplications',_0x444218);return _0xb762dd||[];},'setCreatorStatus':async function(_0x3c834d,_0x2b5ed0,_0x1eb2ec){var {data:_0x455175,error:_0xa2cbeb}=await window['_supa']['from']('creator_applications')['update']({'status':_0x2b5ed0,'review_note':_0x1eb2ec,'reviewed_by':_0xa0f8c5()})['eq']('id',_0x3c834d);if(_0xa2cbeb)return _0x3a51ab('admin.setCreatorStatus',_0xa2cbeb);return _0x455175;}}};function _0x437bad(_0x100f5c){var _0x483d3e={'coins':'coins','sky_diamonds':'sky_diamonds','green_diamonds':'green_diamonds','blue_diamonds':'blue_diamonds'};return _0x483d3e[_0x100f5c]||'coins';}function _0x304dad(){var _0x346505=new Date();return _0x346505['setDate'](_0x346505['getDate']()-0x1),_0x346505['toISOString']()['split']('T')[0x0];}_0x261338(function(){if(window['CFG'])DB['config']['load']();DB['config']['poll']();}),console['log']('[DB]\x20Abstraction\x20layer\x20loaded.\x20Use\x20window.DB\x20for\x20all\x20queries.');}());
+/* ================================================================
+   BACKEND ABSTRACTION LAYER — core/db.js
+   MiniESports v1.0 | May 2026
+
+   YEH FILE KYU HAI:
+   — Supabase ka code sirf is ek file mein hai
+   — Kal Supabase se kisi aur backend pe jaana ho to
+     sirf is ek file ko rewrite karo
+   — Baaki KOI file nahi badle
+
+   ARCHITECTURE:
+   — window.DB = abstraction layer (sab screens yahi use karein)
+   — window._supa = raw Supabase client (emergency mein)
+   — Firebase RTDB = sirf realtime listeners (window.db)
+   — Firebase Analytics + Crashlytics = alag file
+
+   USAGE EXAMPLE (kisi bhi screen mein):
+     var matches = await DB.matches.getUpcoming();
+     var user    = await DB.users.getMe();
+     await DB.wallet.credit(uid, 'coins', 50, 'mission_reward');
+================================================================ */
+
+(function() {
+  'use strict';
+
+  /* ── 1. SUPABASE CLIENT ── */
+  /* Replace these with your actual Supabase project values */
+  var SUPA_URL = window._SUPA_URL || 'https://hddhkculuyrfoevxmlwy.supabase.co';
+  var SUPA_KEY = window._SUPA_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
+  /* D97 audit fix F1: offline-probe jaise raw fetch ko anon key chahiye — expose it */
+  window._SUPA_ANON_KEY = SUPA_KEY;
+
+  /* ── SDK FALLBACK LOADER (2026-10-12) ─────────────────────────────────
+     index.html ab SDK ko LOCAL vendor/supabase.min.js se load karta hai.
+     Agar wo file kisi wajah se na aaye (ya purane WebView me parse fail ho),
+     to yahan se CDN par try karte hain — warna _supa banta hi nahi rehta aur
+     poora app boot 15s ke hard ceiling par login screen par atak jata hai
+     (asli CI emulator me yahi hua tha: WebView 83 + CDN bundle = SyntaxError). */
+  var _sdkFallbackTried = 0, _sdkFallbackLoading = false;
+  var _SDK_FALLBACKS = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+    'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'
+  ];
+  function _loadSdkFallback() {
+    if (_sdkFallbackLoading || _sdkFallbackTried >= _SDK_FALLBACKS.length) return;
+    _sdkFallbackLoading = true;
+    var url = _SDK_FALLBACKS[_sdkFallbackTried++];
+    try {
+      var el = document.createElement('script');
+      el.src = url;
+      el.onload = function() {
+        _sdkFallbackLoading = false;
+        console.warn('[DB] Supabase SDK CDN fallback load:', _sdkFallbackTried, url);
+      };
+      el.onerror = function() {
+        _sdkFallbackLoading = false;
+        _loadSdkFallback();
+      };
+      (document.head || document.documentElement).appendChild(el);
+    } catch (e) { _sdkFallbackLoading = false; }
+  }
+
+  /* Wait for Supabase SDK to load */
+  var _initTries = 0;
+  function _initClient() {
+    if (window.supabase && window.supabase.createClient) {
+      window._supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      console.log('[DB] Supabase client ready');
+      window._supaReady = true;
+      if (window._supaReadyCbs) {
+        window._supaReadyCbs.forEach(function(fn) { try { fn(); } catch(e) {} });
+        window._supaReadyCbs = [];
+      }
+    } else {
+      _initTries++;
+      /* 5s (25 tries) ke baad CDN fallback, aur 15s par dobara (doosra CDN) */
+      if (_initTries === 25 || _initTries === 75) _loadSdkFallback();
+      setTimeout(_initClient, 200);
+    }
+  }
+  _initClient();
+
+  function onSupaReady(fn) {
+    if (window._supaReady) { fn(); return; }
+    window._supaReadyCbs = window._supaReadyCbs || [];
+    window._supaReadyCbs.push(fn);
+  }
+
+  /* ── 2. HELPER: current user id ── */
+  function _uid() {
+    /* Supabase Auth user */
+    if (window._supa) {
+      var session = window._supa.auth.session ? window._supa.auth.session() : null;
+      if (session && session.user) return session.user.id;
+    }
+    /* Fallback: window.U (set by auth.js) */
+    return window.U ? window.U.uid : null;
+  }
+
+  /* ── 3. POLLING HELPER (replaces Firebase realtime for non-critical data) ── */
+  var _polls = {};
+  function _poll(key, fn, intervalMs) {
+    if (_polls[key]) clearInterval(_polls[key]);
+    fn(); /* run immediately */
+    _polls[key] = setInterval(fn, intervalMs || 30000);
+  }
+  function _stopPoll(key) {
+    if (_polls[key]) { clearInterval(_polls[key]); delete _polls[key]; }
+  }
+
+  /* ── 4. ERROR HANDLER ── */
+  function _err(context, error) {
+    console.error('[DB:' + context + ']', error);
+    if (window.toast) toast('Network error — refresh karo', 'err');
+    return null;
+  }
+
+  /* Postgres/PostgREST error ko ek chhota, toast-worthy line me badlo.
+     Full error console me hi rehta hai; UI ko sirf woh hissa chahiye jo
+     culprit bataye — e.g. `insert or update on table "profile_requests"
+     violates foreign key constraint ... [23503]` se turant pata chal
+     jaata hai ki avatar_url UPDATE koi FK-dependent trigger tod raha hai.
+     (2026-09-16c: pehle sirf error.message jaata tha, code/details kabhi
+     nahi — message ke bina class ka error code bhi ab dikhta hai.) */
+  function _pgErrText(err) {
+    if (!err) return 'image_update_failed';
+    var msg = String(err.message || 'image_update_failed');
+    var code = err.code ? ' [' + err.code + ']' : '';
+    return (msg + code).slice(0, 180);
+  }
+
+  /* ================================================================
+     DB NAMESPACE — sab public methods yahan
+  ================================================================ */
+  window.DB = {
+
+    /* ────────────────────────────────────────
+       AUTH
+    ──────────────────────────────────────── */
+    auth: {
+
+      /* ─────────────────────────────────────────────────────────────
+         syncFirebaseToken — MAIN AUTH METHOD (called by auth.js)
+         
+         Firebase Third-Party Auth setup in Supabase:
+           Dashboard → Authentication → Third-Party Auth → Firebase ✅
+           Project ID: fft-app-1e283
+         
+         HOW IT WORKS:
+           1. Get fresh Firebase ID token (JWT signed by Firebase)
+           2. Recreate Supabase client with token as Authorization header
+           3. Supabase validates JWT via Firebase JWKS endpoint
+           4. auth.uid() in PostgreSQL = Firebase UID → RLS works ✅
+         
+         WHY NOT signInWithIdToken({ provider:'firebase' }) ?
+           That API is for OIDC OAuth flows (Google native sign-in).
+           For Third-Party Auth the correct method is Bearer header.
+      ───────────────────────────────────────────────────────────── */
+      syncFirebaseToken: async function(firebaseUser) {
+        try {
+          var token = await firebaseUser.getIdToken(/* forceRefresh */ true);
+
+          /* Bug C-3 Fix: Cleanup old Realtime channels BEFORE recreating _supa client.
+             Old channels are bound to the old _supa object. If we just replace _supa,
+             those channels become orphaned — they stop receiving updates after ~1 hour.
+             Fix: explicitly remove all channels first, then re-subscribe after new client. */
+          try {
+            if (window._cleanupChannels) {
+              window._cleanupChannels();
+              console.log('[DB] Cleaned up old Realtime channels before token refresh');
+            }
+          } catch(chErr) {
+            console.warn('[DB] Channel cleanup warning (non-fatal):', chErr.message);
+          }
+
+          /* Recreate Supabase client with Firebase token as Bearer */
+          window._supa = window.supabase.createClient(SUPA_URL, SUPA_KEY, {
+            auth: {
+              persistSession:     false,
+              autoRefreshToken:   false,
+              detectSessionInUrl: false
+            },
+            global: {
+              headers: { Authorization: 'Bearer ' + token }
+            }
+          });
+          window._supaReady = true;
+          /* Store token expiry for proactive refresh (Firebase tokens = 1hr) */
+          window._supaTokenUid = firebaseUser.uid;
+          console.log('[DB] Supabase ← Firebase JWT synced ✅ uid:', firebaseUser.uid.substring(0,8) + '...');
+
+          /* Bug C-3 Fix: Re-subscribe Realtime channels on new _supa client.
+             Also re-register the token refresh guard on the new client. */
+          setTimeout(function() {
+            try {
+              /* Re-register token refresh guard on new _supa */
+              /* Reset the handler so _setupTokenRefreshGuard re-registers on new _supa client */
+              window._tokenRefreshHandler = null;
+              if (window._setupTokenRefreshGuard) window._setupTokenRefreshGuard();
+              /* Re-run channel setup */
+              if (window._bootChannelSetup) {
+                window._bootChannelSetup();
+                console.log('[DB] Realtime channels re-subscribed on new Supabase client ✅');
+              }
+            } catch(reSubErr) {
+              console.warn('[DB] Channel re-subscribe warning:', reSubErr.message);
+            }
+          }, 800);
+
+          return true;
+        } catch(e) {
+          console.warn('[DB] Firebase token sync failed (non-fatal):', e.message);
+          /* App continues with anon Supabase client — limited functionality */
+          return false;
+        }
+      },
+
+      /* Logout — Firebase se sign out karo */
+      logout: async function() {
+        /* ✅ FIX (2026-09-15): the fallback `firebase.auth()` here was a bare
+           call (resolves "[DEFAULT]", which never exists — app is named
+           "mainApp"), so it threw app-compat/no-app and the surrounding
+           catch swallowed it, meaning the Firebase session was never
+           actually cleared on logout. Use the safe helper from
+           core/firebase.js. */
+        var firebaseAuth = window.fbAuth ? window.fbAuth() : window.auth;
+        try { if (firebaseAuth) await firebaseAuth.signOut(); } catch(e) {}
+        /* Reset Supabase client to anon */
+        try {
+          window._supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+          window._supaTokenUid = null;
+        } catch(e) {}
+        window.U = null; window.UD = null;
+      },
+
+      /* Get current session */
+      getSession: async function() {
+        var { data } = await window._supa.auth.getSession();
+        return data ? data.session : null;
+      },
+
+      /* Listen to auth changes */
+      onAuthChange: function(callback) {
+        window._supa.auth.onAuthStateChange(function(event, session) {
+          callback(event, session);
+        });
+      }
+    },
+
+    /* ────────────────────────────────────────
+       USERS
+    ──────────────────────────────────────── */
+    users: {
+      /* Get my own profile */
+      getMe: async function() {
+        var uid = _uid();
+        if (!uid) return null;
+        /* BUG FIX (2026-07): .single() THROWS when zero rows come back —
+           which is exactly what happens for a genuinely new user. That
+           error was being swallowed by _err() into the same `null` you'd
+           get from a plain NETWORK failure. So any transient network
+           hiccup on an EXISTING user's profile fetch looked identical to
+           "this is a brand new user" to the caller (_doSupaLoad in
+           boot.js) — which would then re-run DB.users.create() and
+           unconditionally re-show the withdrawal-policy / welcome popups
+           for a returning user. .maybeSingle() instead returns
+           {data:null, error:null} for a genuine "no such row", so we can
+           tell the two cases apart: null = genuinely new user (safe to
+           create), undefined = couldn't check right now (do NOT treat as
+           new). accepted_policy added to the select so the T&C/welcome
+           flow (js/legal-compliance.js) can read real acceptance state
+           instead of a Firebase-only field Supabase never populated. */
+        /* ✅ CRITICAL BUG FIX (2026-07): this select list included FOUR
+           columns that don't exist anywhere in the real users schema —
+           real_money, is_premium, battle_pass_tier, ban_status. Supabase/
+           PostgREST rejects the ENTIRE query if even one requested column
+           doesn't exist, so this has been erroring out on every single
+           call, for every user, this whole session (and probably long
+           before). That made getMe() ALWAYS return `undefined` (network/
+           db-error branch) — never a real profile, and never a confirmed
+           "null = new user" either — which is a big part of why the
+           account-creation flow could never reliably tell new vs.
+           existing users apart. Fixed: real_money doesn't correspond to
+           anything (this app has no real-money balance by design — see
+           halal three-currency architecture), battle_pass_tier isn't a
+           users column (it lives in battle_pass_progress.current_tier),
+           is_premium → premium_level (INT, not bool), ban_status →
+           is_banned + ban_reason. Verified nothing else in the codebase
+           reads .is_premium/.real_money/.battle_pass_tier/.ban_status
+           from this result, so no other file needed updating. */
+        /* ✅ BUG FIX (2026-08-22): added sponsored_winnings to this select
+           list — it was missing, so any code path relying on getMe()
+           (bugfixes.js reconnect handler, boot.js re-fetches) would never
+           see updates to the real-money sponsor-tournament prize balance
+           until the next full listeners.js _loadUser() (select('*')) poll.
+           Not the root cause of the ₹/Green-Diamond mixup bug itself, but
+           left stale here would have masked the fix under this exact
+           reconnect path. */
+        /* ✅ BUG R FIX (2026-10-01, deep E2E): email_verified select list me
+           hi nahi tha — aur _applyUser bhi usko UD par copy nahi karta tha.
+           Asar: wallet.js ka withdrawal gate `(UD.email_verified ||
+           U.emailVerified)` DB wala flag KABHI padh hi nahi paata tha; sirf
+           Firebase ka U.emailVerified (Google sign-in par true rehta hai,
+           email/password users par false) kaam karta tha. Yani admin/support
+           users.email_verified=true karke bhi kisi ko withdraw ke liye
+           unblock nahi kar sakte the — DB column bekaar tha. Ab map hota hai. */
+        var { data, error } = await window._supa
+          .from('users')
+          .select('id,ign,email,email_verified,avatar_url,banner_url,coins,sky_diamonds,green_diamonds,sponsored_winnings,rank_tier,rank_points,total_wins,total_kills,total_matches,city,is_creator,premium_level,premium_expires,is_vip,clan_id,referral_code,profile_status,is_banned,ban_reason,accepted_policy,created_at,streak_days,streak_milestones_claimed')
+          .eq('id', uid)
+          .maybeSingle();
+        if (error) { _err('users.getMe', error); return undefined; }
+        return data; /* null here = genuinely no profile row yet (new user) */
+      },
+
+      /* Create profile after signup */
+      create: async function(uid, profile) {
+        /* Bug C-2 Fix: Use upsert to prevent duplicate user race condition */
+        /* Two tabs logging in simultaneously both call create — upsert handles gracefully */
+        var { data, error } = await window._supa
+          .from('users')
+          .upsert({ id: uid, ...profile }, { onConflict: 'id', ignoreDuplicates: true })
+          .select()
+          .single();
+
+        /* ✅ BUG FIX (2026-08-24): "Profile abhi ready nahi hai" kept
+           showing for genuinely brand-new users. Root cause: with
+           ignoreDuplicates:true, when TWO create() calls race for the
+           same brand-new uid (boot.js's own fire-and-forget create() on
+           login, AND profile.js's _ensureUserRowExists() self-heal call
+           if the user opens "Profile Update" within ~1-2s of signing up)
+           — the loser of that race does a real INSERT that PostgREST
+           silently turns into a no-op (0 rows affected, because the
+           winner's row already landed), and .select().single() on ZERO
+           rows throws PGRST116 ("no rows returned"), NOT 23505. The old
+           code only had a fallback for error.code === '23505' — a
+           PGRST116 fell straight through to _err() and returned null,
+           even though the row genuinely exists and was created correctly
+           by the other concurrent call a few ms earlier. Treat PGRST116
+           the exact same way as 23505 here: it always means "someone
+           else already created this row" for an upsert-on-id call, so
+           just fetch and return the row that's actually there. */
+        if (error && (error.code === 'PGRST116' || error.code === '23505')) {
+          var raceRow = await window._supa.from('users').select('*').eq('id', uid).maybeSingle();
+          if (raceRow.data) return raceRow.data;
+        }
+
+        /* ✅ BUG FIX (2026-07): this used to skip the fallback entirely
+           whenever error.code === '23505' — but a 23505 here doesn't only
+           mean "id already exists" (the harmless, expected case from the
+           upsert's own onConflict:'id'). It can ALSO mean a DIFFERENT
+           unique column in `profile` collided (e.g. referral_code, which
+           boot.js derives from the first 8 chars of the Firebase UID —
+           rare but not impossible to collide with another user's code).
+           In that second case the row was NEVER actually created, this
+           function silently returned undefined, and — because boot.js
+           only ever calls create() ONCE per account (the very first time
+           getMe() sees no row) — that user's Supabase row stayed missing
+           PERMANENTLY. No amount of staying logged in fixes that; nothing
+           was ever retrying. This is what caused "profile_requests
+           violates foreign key constraint" even for long-logged-in users.
+           Fix: always check what's actually in the table now, on ANY
+           error — and if the row genuinely still isn't there, retry the
+           insert with ONLY the guaranteed-unique field (id), dropping
+           anything else that could have been the real collision. */
+        if (error) {
+          var existing = await window._supa.from('users').select('*').eq('id', uid).maybeSingle();
+          if (existing.data) return existing.data; // row exists — that's all we needed
+          if (error.code === '23505') {
+            // Row still doesn't exist, but SOMETHING unique collided (not
+            // the id itself). Strip any field that isn't guaranteed-safe
+            // and retry bare — this can never fail on a duplicate again.
+            var safeProfile = { ign: profile.ign, email: profile.email, avatar_url: profile.avatar_url };
+            var retry = await window._supa.from('users').insert({ id: uid, ...safeProfile }).select().single();
+            if (!retry.error) return retry.data;
+            var existing2 = await window._supa.from('users').select('*').eq('id', uid).maybeSingle();
+            if (existing2.data) return existing2.data;
+            return _err('users.create (retry)', retry.error);
+          }
+          return _err('users.create', error);
+        }
+        return data;
+      },
+
+      /* Update own profile */
+      update: async function(fields) {
+        var uid = _uid();
+        if (!uid) return { ok: false, error: 'not_authenticated' };
+        var { data, error } = await window._supa
+          .from('users')
+          .update({ ...fields, updated_at: new Date().toISOString() })
+          .eq('id', uid);
+        if (error) {
+          /* Bug #35/#63 Fix: Handle unique constraint violations gracefully */
+          if (error.code === '23505') {
+            if (error.message && error.message.indexOf('ign') >= 0) {
+              if (window.toast) window.toast('⚠️ Yeh IGN already kisi aur ne liya hai! Dusra try karo.', 'err');
+            } else if (error.message && error.message.indexOf('phone') >= 0) {
+              if (window.toast) window.toast('⚠️ Yeh phone number already registered hai!', 'err');
+            } else {
+              if (window.toast) window.toast('⚠️ Duplicate entry — koi field already exist karta hai.', 'err');
+            }
+            return { ok: false, error: '23505' };
+          }
+          _err('users.update', error);
+          return { ok: false, error: error.message };
+        }
+        /* ✅ BUG FIX (2026-08-23): this used to `return data`, but a plain
+           Supabase .update() with no .select() chained always returns
+           data:null on SUCCESS too (PostgREST default: no representation
+           returned) — so callers had no reliable way to tell "it worked"
+           apart from "it silently failed", both looked identical
+           (falsy). Now returns an explicit {ok:true/false} so a caller
+           like the profile photo/banner upload can correctly show
+           success only when the write actually happened. */
+        return { ok: true, data: data };
+      },
+
+      /* Profile/banner URL update with affected-row confirmation.
+         A plain PostgREST UPDATE can resolve with error:null even when RLS
+         affected zero rows; image upload must not toast success in that
+         case. Keep this narrow/whitelisted so no unrelated profile update
+         behaviour changes.
+
+         ✅ FIX (2026-09-16c) — "Photo save failed — dobara try karo" jabki
+         ImgBB upload SUCCESS aur banner save bhi SUCCESS. Banner aur photo
+         dono isi ek method se guzarte hain, bas `field` alag hai — to
+         avatar-only failure ka matlab hai Postgres khud avatar_url wali
+         UPDATE ko rok raha hai (trigger exception / trigger value-rewrite /
+         CHECK constraint / column change — RLS row-level hoti hai, woh
+         dono ko equally rokti). Purana code woh asli Postgres reason
+         console ke aage khaa jaata tha aur UI ko ek generic
+         'image_update_failed' deta tha — diagnose karna impossible.
+         Ab: (1) asli message + pg error code caller tak jaata hai (toast
+         tak — ek screenshot se culprit pakda jaayega), aur (2) "row
+         updated par stored value alag hai" (kaa'ida: koi BEFORE UPDATE
+         trigger ne avatar_url ko NULL/placeholder se overwrite kar diya)
+         ko RLS zero-row se ALAG identify kiya jaata hai, stored value ke
+         saath log karke. Diagnosis SQL: supabase/migrations/
+         20260916_diagnose_avatar_url_save.sql */
+      updateImage: async function(field, url) {
+        var uid = _uid();
+        if (!uid) return { ok: false, error: 'not_authenticated' };
+        if (field !== 'avatar_url' && field !== 'banner_url') {
+          return { ok: false, error: 'invalid_image_field' };
+        }
+        if (typeof url !== 'string' || !/^https:\/\//i.test(url)) {
+          return { ok: false, error: 'invalid_image_url' };
+        }
+        var patch = { updated_at: new Date().toISOString() };
+        patch[field] = url;
+        try {
+          var result = await window._supa
+            .from('users')
+            .update(patch)
+            .eq('id', uid)
+            .select('id,' + field)
+            .maybeSingle();
+          if (result.error) {
+            console.error('[DB:users.updateImage]', result.error);
+            return { ok: false, error: _pgErrText(result.error) };
+          }
+          if (!result.data || result.data.id !== uid) {
+            /* Zero rows affected — RLS denial ya row hi missing. Banner
+               bhi yahi method use karke pass ho raha hai to avatar ke liye
+               yeh branch practically impossible hai; phir bhi alag rakha
+               hai taki teeno failure classes ek-ek screenshot me pehchani
+               jaa sakein. */
+            console.error('[DB:users.updateImage] No user row was updated (possible RLS denial)');
+            return { ok: false, error: 'update_not_applied_rls' };
+          }
+          if (result.data[field] !== url) {
+            /* Row update HUI par stored value woh nahi jo bheji — yaani ek
+               DB trigger ne avatar_url ko rewrite/normalize/NULL kar diya.
+               Yeh avatar-only failures ka classic signature hai (banner pe
+               koi aisa trigger nahi). Stored value log karo: agar woh NULL
+               ya kisi internal placeholder pe badli hai to culprit trigger
+               section-2 SQL se turant milega. */
+            console.error('[DB:users.updateImage] DB trigger ne ' + field +
+              ' rewrite kar diya — sent:', String(url).slice(0, 120),
+              '| stored:', String(result.data[field]).slice(0, 160));
+            return { ok: false, error: 'db_trigger_rewrote_value' };
+          }
+          return { ok: true, data: result.data };
+        } catch (e) {
+          console.error('[DB:users.updateImage]', e);
+          return { ok: false, error: (e && e.message) || 'image_update_failed' };
+        }
+      },
+
+      /* Get any user by ID */
+      getById: async function(uid) {
+        var { data, error } = await window._supa
+          .from('user_public_profiles') /* BUG #38 FIX (2026-07-30) */
+          .select('id,ign,avatar_url,rank_tier,rank_points,total_wins,total_kills,total_matches,city,is_creator,clan_id')
+          .eq('id', uid)
+          .single();
+        if (error) return _err('users.getById', error);
+        return data;
+      },
+
+      /* Admin: search users */
+      search: async function(query) {
+        var { data, error } = await window._supa
+          .from('users')
+          .select('*')
+          .or('ign.ilike.%' + query + '%,email.ilike.%' + query + '%')
+          .limit(20);
+        if (error) return _err('users.search', error);
+        return data || [];
+      },
+
+      /* Admin: ban/unban */
+      /* users.setBan REMOVED (2026-09-26, dead-code cleanup): it called
+         set_user_ban_status, which is service_role-ONLY (anon/authenticated
+         always get 42501), and it had zero callers anywhere in either panel.
+         Admin banning lives in the Admin Panel, which reaches the same RPC
+         through the trusted admin-gateway path. Removing the dead call-site
+         (no behaviour change — the call could never succeed). */
+
+      /* Poll my profile every 30s (replaces Firebase listener) */
+      pollMe: function(callback) {
+        _poll('myProfile', async function() {
+          var d = await DB.users.getMe();
+          if (d) callback(d);
+        }, 30000);
+      },
+      stopPollMe: function() { _stopPoll('myProfile'); }
+    },
+
+    /* ────────────────────────────────────────
+       MATCHES
+    ──────────────────────────────────────── */
+    matches: {
+      /* Get all upcoming + live matches */
+      getUpcoming: async function() {
+        var { data, error } = await window._supa
+          .from('active_matches')   /* uses the view */
+          /* ✅ R3-HARDEN FIX (2026-09-23): pehle ka select non-existent columns
+             maangta tha (game/team_size/max_players/current_players/perspective/
+             match_type) → har call 42703 column does not exist = helper broken.
+             Ab view ke REAL columns se map kiya (mode, max_slots, filled_slots,
+             match_sub_type). Room creds view me hain hi nahi (P0 leak fix). */
+          .select('id,title,name,mode,status,scheduled_at,entry_type,entry_fee,prize_pool,max_slots,filled_slots,map,is_featured,match_sub_type,banner_url')
+          .order('scheduled_at', { ascending: true })
+          .limit(50);              /* max 50 — home screen mein itne kaafi hain */
+        if (error) return _err('matches.getUpcoming', error);
+        return data || [];
+      },
+
+      /* Get single match */
+      getById: async function(matchId) {
+        var { data, error } = await window._supa
+          .from('matches')
+          .select('*')
+          .eq('id', matchId)
+          .single();
+        if (error) return _err('matches.getById', error);
+        return data;
+      },
+
+      /* Admin: create match */
+      create: async function(matchData) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('matches')
+          .insert({ ...matchData, creator_uid: uid })
+          .select()
+          .single();
+        if (error) return _err('matches.create', error);
+        return data;
+      },
+
+      /* Admin: update match */
+      update: async function(matchId, fields) {
+        var { data, error } = await window._supa
+          .from('matches')
+          .update({ ...fields, updated_at: new Date().toISOString() })
+          .eq('id', matchId);
+        if (error) return _err('matches.update', error);
+        return data;
+      },
+
+      /* Admin: release room ID */
+      releaseRoom: async function(matchId, roomId, roomPassword) {
+        return DB.matches.update(matchId, {
+          room_id: roomId,
+          room_password: roomPassword,
+          room_released_at: new Date().toISOString()
+        });
+      },
+
+      /* Poll matches every 30s */
+      poll: function(callback) {
+        _poll('matches', async function() {
+          var d = await DB.matches.getUpcoming();
+          callback(d);
+        }, 30000);
+      },
+      stopPoll: function() { _stopPoll('matches'); }
+    },
+
+    /* ────────────────────────────────────────
+       JOIN REQUESTS
+    ──────────────────────────────────────── */
+    joinRequests: {
+      /* Get my join requests */
+      getMine: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('join_requests')
+          .select('*, match:matches(title,scheduled_at,mode,status)') /* ✅ R3-Phase2: room creds matches me nahi (match_rooms) */
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false });
+        if (error) return _err('joinRequests.getMine', error);
+        return data || [];
+      },
+
+      /* Check if user joined a specific match */
+      check: async function(matchId) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('join_requests')
+          .select('*')
+          .eq('match_id', matchId)
+          .eq('user_id', uid)
+          .maybeSingle();
+        if (error) return _err('joinRequests.check', error);
+        return data;
+      },
+
+      /* Submit join request — R8 (2026-09-26c): server-authoritative.
+         Client ab join_requests row khud INSERT nahi karta (fee/status/
+         entry_type sab server derive karta hai). Direct INSERT would now
+         hit the clamp + guard triggers anyway; forward to the ONE canonical
+         join engine (validate_and_join_match) instead. */
+      create: async function(matchId, entryType, entryFee, extraData) {
+        var uid = _uid();
+        var cur = entryType === 'coin' ? 'coins'
+                : (entryType === 'paid' || entryType === 'sky_diamond' || entryType === 'skyDiamond') ? 'sky_diamonds'
+                : 'coins';
+        var { data, error } = await window._supa.rpc('validate_and_join_match', {
+          p_uid: uid, p_match_id: matchId,
+          p_entry_fee: Number(entryFee) || 0,
+          p_currency: cur,
+          p_join_data: extraData || null
+        });
+        if (error) return _err('joinRequests.create', error);
+        return data;
+      },
+
+      /* ✅ B30 (2026-10-07): joinRequests.checkIn() hata diya — pre-match
+         check-in system poora nikal gaya (jo bhi caller tha wahi gaya).
+         Server RPC `check_in_match` DB me jaan-boojh kar chhoda hai: purane
+         installed APK ka button agar use bula le to error na aaye (aur naya
+         app ise kabhi nahi bulata). */
+
+      /* Confirm in room — R8 (2026-09-26c): confirm_in_room RPC
+         (attendance server-authoritative; clamp froze client in_room). */
+      confirmInRoom: async function(joinRequestId) {
+        var { data, error } = await window._supa.rpc('confirm_in_room', {
+          p_join_id: joinRequestId
+        });
+        if (error) return _err('joinRequests.confirmInRoom', error);
+        return data;
+      },
+
+      /* Admin: get all for a match */
+      getForMatch: async function(matchId) {
+        var { data, error } = await window._supa
+          .from('join_requests')
+          .select('*, user:users(ign,avatar_url,rank_tier,coins,sky_diamonds)')
+          .eq('match_id', matchId)
+          .order('created_at', { ascending: true });
+        if (error) return _err('joinRequests.getForMatch', error);
+        return data || [];
+      },
+
+      /* R8 (2026-09-26c): setStatus/setResult RETIRED — join_requests
+         status/kills/placement/prize_earned ab clamp-trigger se client-
+         frozen hain aur sirf server RPCs (publish_match_results,
+         correct_match_result, cancel_match_with_refunds) se update hote
+         hain. Ye user-panel client par admin-named helpers kabhi bhi
+         functional nahi the (user JWT admin nahi hota); ab loud no-op. */
+      setStatus: async function(id, status, note) {
+        console.error('[DB.joinRequests.setStatus] RETIRED — join approval/result status ab authoritative server RPC se hi update hota hai (admin panel: publish_match_results / correct_match_result).');
+        return _err('joinRequests.setStatus', { message: 'Join status ab server RPC se update hota hai' });
+      },
+
+      setResult: async function(id, kills, placement, prizeEarned) {
+        console.error('[DB.joinRequests.setResult] RETIRED — kills/placement/prize_earned ab sirf publish_match_results / correct_match_result RPC se likhe jaate hain.');
+        return _err('joinRequests.setResult', { message: 'Match results ab server RPC se update hote hain' });
+      }
+    },
+
+    /* ────────────────────────────────────────
+       WALLET
+    ──────────────────────────────────────── */
+    wallet: {
+      /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet RPC"
+         audit — this was a fully generic "credit any user, any
+         currency, any amount" function, globally reachable via
+         window.DB from any browser console. It called
+         increment_balance directly, which this session locked to
+         service_role-only specifically because of functions exactly
+         like this one. Every legitimate caller of DB.wallet.credit()
+         has been moved to its own dedicated, purpose-specific RPC
+         (claim_watch_earn_reward, claim_referral_reward/
+         apply_referral_code, claim_battle_pass_tier, redeem_voucher,
+         claim_ad_reward — each computes its own amount server-side
+         and enforces its own abuse checks). This function is kept as
+         a clear, loud failure rather than silently deleted, so any
+         remaining caller (or a future one someone adds without
+         reading this comment) fails obviously instead of quietly
+         doing nothing. */
+      credit: async function(uid, currency, amount, reason, refId) {
+        console.error('[DB.wallet.credit] REMOVED (2026-09-08) — this generic mint path is no longer available. Use a dedicated RPC for the specific reward instead (claim_watch_earn_reward, apply_referral_code, claim_battle_pass_tier, redeem_voucher, claim_ad_reward, etc.)');
+        return _err('wallet.credit', { message: 'DB.wallet.credit() has been removed for security reasons — use a dedicated reward RPC instead' });
+      },
+
+      /* Debit any currency — R6: ledger insert हटाया (fft_guard अब regular-user
+         ledger INSERT block करता है; कोई live caller नहीं)। Debit ke liye हर
+         flow ka अपना dedicated server RPC है। */
+      debit: async function(uid, currency, amount, reason, refId) {
+        console.error('[DB.wallet.debit] legacy path — use a dedicated server RPC (validate_and_join_match, gift_match_entry, contribute_to_squad_bank, redeem_reward_item, purchase_cosmetic)');
+        return _err('wallet.debit', { message: 'DB.wallet.debit() retired — server RPC is the only debit authority' });
+      },
+
+      /* Get my transactions */
+      getHistory: async function(limit) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('wallet_transactions')
+          .select('*')
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false })
+          .limit(limit || 50);
+        if (error) return _err('wallet.getHistory', error);
+        return data || [];
+      },
+
+      /* Submit SD purchase request */
+      submitSdRequest: async function(amountInr, sdAmount, upiRef, screenshotUrl) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('sd_requests')
+          .insert({
+            user_id: uid,
+            amount_inr: amountInr,
+            sd_amount: sdAmount,
+            upi_ref: upiRef,
+            screenshot_url: screenshotUrl
+          })
+          .select()
+          .single();
+        if (error) return _err('wallet.submitSdRequest', error);
+        return data;
+      },
+
+      /* Admin: get pending SD requests */
+      getPendingSdRequests: async function() {
+        var { data, error } = await window._supa
+          .from('sd_requests')
+          .select('*, user:users(ign,email,sky_diamonds)')
+          .eq('status', 'pending')
+          .order('created_at', { ascending: true });
+        if (error) return _err('wallet.getPendingSdRequests', error);
+        return data || [];
+      },
+
+      /* Admin: approve SD request */
+      /* ✅ SECURITY NOTE (2026-09-08): this User Panel function is
+         never called from any User Panel UI — only reachable via
+         window.DB from a browser console. Its .update() to
+         sd_requests is already correctly RLS-gated to real admins
+         only (sd_update_admin policy checks users.is_admin), so a
+         non-admin calling this already fails at that step. The
+         DB.wallet.credit() call below is now permanently disabled
+         (see that function's own comment) — this function is kept
+         only for admins who might call it directly from console;
+         the Admin Panel's own equivalent flow uses its own
+         already-secure RPC path and is unaffected. */
+      approveSdRequest: async function(requestId, userId, sdAmount) {
+        /* 1. Update request status */
+        await window._supa
+          .from('sd_requests')
+          .update({ status: 'approved', reviewed_by: _uid() })
+          .eq('id', requestId);
+        /* 2. Credit sky diamonds to user */
+        return DB.wallet.credit(userId, 'sky_diamonds', sdAmount, 'sd_purchase', requestId);
+      },
+
+      /* Admin: reject SD request */
+      rejectSdRequest: async function(requestId, note) {
+        var { data, error } = await window._supa
+          .from('sd_requests')
+          .update({ status: 'rejected', reviewed_by: _uid(), review_note: note })
+          .eq('id', requestId);
+        if (error) return _err('wallet.rejectSdRequest', error);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       NOTIFICATIONS
+    ──────────────────────────────────────── */
+    notifications: {
+      getMine: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('notifications')
+          .select('*')
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false })
+          .limit(50);
+        if (error) return _err('notifications.getMine', error);
+        return data || [];
+      },
+
+      markRead: async function(notifId) {
+        var { error } = await window._supa
+          .from('notifications')
+          .update({ is_read: true })
+          .eq('id', notifId)
+          .eq('user_id', _uid());
+        if (error) _err('notifications.markRead', error);
+      },
+
+      markAllRead: async function() {
+        var { error } = await window._supa
+          .from('notifications')
+          .update({ is_read: true })
+          .eq('user_id', _uid())
+          .eq('is_read', false);
+        if (error) _err('notifications.markAllRead', error);
+      },
+
+      /* Admin: send to user */
+      send: async function(userId, type, title, body, refId) {
+        var { data, error } = await window._supa
+          .from('notifications')
+          .insert({
+            user_id: userId, type: type,
+            title: title, body: body, ref_id: refId || null
+          });
+        if (error) return _err('notifications.send', error);
+        return data;
+      },
+
+      /* Poll every 30s */
+      poll: function(callback) {
+        _poll('notifs', async function() {
+          var d = await DB.notifications.getMine();
+          callback(d);
+        }, 30000);
+      },
+      stopPoll: function() { _stopPoll('notifs'); }
+    },
+
+    /* ────────────────────────────────────────
+       SUPPORT
+    ──────────────────────────────────────── */
+    support: {
+      getMyTickets: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('support_tickets')
+          .select('*, messages:support_messages(*)')
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false });
+        if (error) return _err('support.getMyTickets', error);
+        return data || [];
+      },
+
+      createTicket: async function(subject) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('support_tickets')
+          .insert({ user_id: uid, subject: subject })
+          .select()
+          .single();
+        if (error) return _err('support.createTicket', error);
+        return data;
+      },
+
+      sendMessage: async function(ticketId, message) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('support_messages')
+          .insert({ ticket_id: ticketId, sender_id: uid, message: message });
+        if (error) return _err('support.sendMessage', error);
+        return data;
+      },
+
+      /* Admin: reply */
+      adminReply: async function(ticketId, message) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('support_messages')
+          .insert({ ticket_id: ticketId, sender_id: uid, message: message, is_admin: true });
+        if (error) return _err('support.adminReply', error);
+        /* Update ticket status */
+        await window._supa.from('support_tickets').update({ status: 'replied' }).eq('id', ticketId);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       LEADERBOARD
+    ──────────────────────────────────────── */
+    leaderboard: {
+      /* Global leaderboard — UNLIMITED reads! */
+      getGlobal: async function(limit) {
+        var { data, error } = await window._supa
+          .from('leaderboard')
+          .select('*')
+          .limit(limit || 100);
+        if (error) return _err('leaderboard.getGlobal', error);
+        return data || [];
+      },
+
+      /* City leaderboard */
+      getByCity: async function(city, limit) {
+        var { data, error } = await window._supa
+          .from('user_public_profiles') /* BUG #38 FIX (2026-07-30) */
+          .select('id,ign,avatar_url,rank_tier,rank_points,total_wins,city')
+          .eq('city', city)
+          .eq('is_banned', false)
+          .order('rank_points', { ascending: false })
+          .limit(limit || 50);
+        if (error) return _err('leaderboard.getByCity', error);
+        return data || [];
+      }
+    },
+
+    /* ────────────────────────────────────────
+       APP CONFIG (replaces Firebase appSettings)
+    ──────────────────────────────────────── */
+    config: {
+      /* Load live config from Supabase */
+      load: async function(force) {
+        if (typeof window._fetchLiveConfigOnce !== 'function') {
+          window._fetchLiveConfigOnce = function(f) {
+            if (!window._supa) return Promise.resolve({ data: null, error: null });
+            var now = Date.now();
+            if (!f && window._liveCfgPromise && (now - (window._liveCfgPromiseTs || 0) < 15000)) {
+              return window._liveCfgPromise;
+            }
+            window._liveCfgPromiseTs = now;
+            /* Convert PostgrestFilterBuilder (lazy thenable) into a real shared Promise */
+            window._liveCfgPromise = Promise.resolve(
+              window._supa.from('app_settings').select('value').eq('key', 'live_config').maybeSingle()
+            ).then(function(r) { return r; });
+            return window._liveCfgPromise;
+          };
+        }
+        /* ✅ FIX (2026-09-30): .single() → .maybeSingle() — 0 rows par
+           PostgREST 406 deta hai (console ERROR noise); maybeSingle same
+           behaviour deta hai jab row maujood ho. */
+        var res = await window._fetchLiveConfigOnce(!!force);
+        var data = res && res.data;
+        var error = res && res.error;
+        if (error) { _err('config.load', error); return; }
+        if (data && data.value) {
+          /* Deep merge into window.CFG */
+          Object.assign(window.CFG, data.value);
+          if (data.value.missions)        Object.assign(window.CFG.missions, data.value.missions);
+          if (data.value.premium)         Object.assign(window.CFG.premium, data.value.premium);
+          if (data.value.cosmetics)       Object.assign(window.CFG.cosmetics, data.value.cosmetics);
+          if (data.value.streakMilestones) Object.assign(window.CFG.streakMilestones, data.value.streakMilestones);
+          window._cfgLoaded = true;
+          console.log('[DB] AppConfig loaded from Supabase');
+        }
+      },
+
+      /* Admin: save config */
+      save: async function(configObj) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('app_settings')
+          .update({ value: configObj, updated_by: uid, updated_at: new Date().toISOString() })
+          .eq('key', 'live_config');
+        if (error) return _err('config.save', error);
+        return data;
+      },
+
+      /* Poll config every 5 min */
+      /* ✅ FIX (live-testing — root cause of "Cannot convert undefined or
+         null to object" at Object.assign inside config.load()): _poll()
+         calls its fn() IMMEDIATELY on setup, before the first interval
+         tick. This poll() is called from onSupaReady's callback, which
+         fires as soon as the Supabase client is ready — independent of
+         whether features/app-config.js (which defines window.CFG and
+         its missions/premium/cosmetics sub-objects, loaded AFTER
+         core/db.js in index.html) has run yet. If the Supabase client
+         became ready first, config.load() ran with window.CFG still
+         undefined, and Object.assign(window.CFG.missions, ...) crashed
+         reading .missions off undefined. Wait for window.CFG to exist
+         before starting the poll (retry every 200ms, bounded so this
+         can't loop forever if app-config.js genuinely failed to load). */
+      poll: function() {
+        var _tries = 0;
+        (function _waitForCfg() {
+          /* ✅ BUG-HUNT R2 (D88): obfuscated build me scripts slow parse hote hain — window.CFG app-config.js se pehle aa sakta hai jab tak window.DB (db.js ka abstraction) assign na ho; purana code DB.config.load par TypeError deta tha. Ab dono ready hone ka wait. */
+          if (window.CFG && window.DB && window.DB.config && window.DB.config.load) { _poll('appConfig', window.DB.config.load, 300000); return; }
+          _tries++;
+          if (_tries > 300) { console.warn('[DB.config.poll] window.CFG/DB never became available — config poll not started.'); return; }
+          setTimeout(_waitForCfg, 200);
+        })();
+      }
+    },
+
+    /* ────────────────────────────────────────
+       CLANS
+    ──────────────────────────────────────── */
+    clans: {
+      getAll: async function() {
+        var { data, error } = await window._supa
+          .from('clans')
+          .select('*, leader:users!leader_uid(ign,avatar_url)')
+          .order('total_wins', { ascending: false })
+          .limit(50);
+        if (error) return _err('clans.getAll', error);
+        return data || [];
+      },
+
+      getMyClan: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('clan_members')
+          .select('clan:clans(*)')
+          .eq('user_id', uid)
+          .maybeSingle();
+        if (error) return _err('clans.getMyClan', error);
+        return data ? data.clan : null;
+      },
+
+      create: async function(name, tag, description) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('clans')
+          .insert({ name, tag, description, leader_uid: uid })
+          .select()
+          .single();
+        if (error) return _err('clans.create', error);
+        /* Add creator as leader member */
+        await window._supa.from('clan_members').insert({
+          clan_id: data.id, user_id: uid, role: 'leader'
+        });
+        await DB.users.update({ clan_id: data.id });
+        return data;
+      },
+
+      join: async function(clanId) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('clan_members')
+          .insert({ clan_id: clanId, user_id: uid, role: 'member' });
+        if (error) return _err('clans.join', error);
+        await DB.users.update({ clan_id: clanId });
+        return data;
+      },
+
+      leave: async function(clanId) {
+        var uid = _uid();
+        var { error } = await window._supa
+          .from('clan_members')
+          .delete()
+          .eq('clan_id', clanId)
+          .eq('user_id', uid);
+        if (error) return _err('clans.leave', error);
+        await DB.users.update({ clan_id: null });
+      },
+
+      getMessages: async function(clanId, limit) {
+        var { data, error } = await window._supa
+          .from('clan_messages')
+          .select('*, sender:users(ign,avatar_url)')
+          .eq('clan_id', clanId)
+          .order('created_at', { ascending: false })
+          .limit(limit || 50);
+        if (error) return _err('clans.getMessages', error);
+        return (data || []).reverse();
+      },
+
+      sendMessage: async function(clanId, message) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('clan_messages')
+          .insert({ clan_id: clanId, sender_id: uid, message });
+        if (error) return _err('clans.sendMessage', error);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       RANK & SEASON
+    ──────────────────────────────────────── */
+    rank: {
+      getActiveSeason: async function() {
+        var { data, error } = await window._supa
+          .from('rank_seasons')
+          .select('*')
+          .eq('is_active', true)
+          .maybeSingle();
+        if (error) return _err('rank.getActiveSeason', error);
+        return data;
+      },
+
+      getMyHistory: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('rank_history')
+          .select('*, season:rank_seasons(name,season_num)')
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false });
+        if (error) return _err('rank.getMyHistory', error);
+        return data || [];
+      },
+
+      addPoints: async function(uid, points) {
+        return window._supa.rpc('increment_rank_points', {
+          p_uid: uid, p_points: points
+        });
+      }
+    },
+
+    /* ────────────────────────────────────────
+       MISSIONS
+    ──────────────────────────────────────── */
+    missions: {
+      getToday: async function() {
+        var uid = _uid();
+        var today = new Date().toISOString().split('T')[0];
+        var { data, error } = await window._supa
+          .from('mission_progress')
+          .select('*')
+          .eq('user_id', uid)
+          .gte('period', today);
+        if (error) return _err('missions.getToday', error);
+        return data || [];
+      },
+
+      updateProgress: async function(missionKey, period, progress, target) {
+        /* BUG #31 FIX (2026-07): direct upsert now blocked by Category A's security lockdown
+           (mission_progress has no client write grant, pending this RPC). Also this RPC
+           correctly never lets progress go backwards (GREATEST against the existing value). */
+        var { data, error } = await window._supa.rpc('track_mission_progress', {
+          p_mission_key: missionKey, p_period: period, p_progress: progress, p_target: target
+        });
+        if (error) return _err('missions.updateProgress', error);
+        return data;
+      },
+
+      claimReward: async function(missionKey, period, coins) {
+        /* BUG #31 FIX (2026-07): old version marked reward_claimed=true and credited coins
+           as two separate, unguarded steps — never checked is_completed, and nothing stopped
+           reward_claimed being toggled back to false (directly, before Category A locked
+           this) to re-claim indefinitely. Now one atomic, server-validated RPC call. */
+        var { data, error } = await window._supa.rpc('claim_mission_reward', {
+          p_mission_key: missionKey, p_period: period, p_coins: coins
+        });
+        if (error) return _err('missions.claimReward', error);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       DAILY CHECK-IN
+    ──────────────────────────────────────── */
+    checkin: {
+      doCheckIn: async function() {
+        /* ✅ BUG FIX (2026-07-17): this function had NO live callers anywhere
+           in the app (confirmed via exhaustive search) — dead code. It's
+           fixed anyway rather than left broken, because it's a THIRD,
+           independent implementation of daily check-in logic alongside the
+           two in features-user.js/fixes-v7.js (which call the
+           process_daily_checkin RPC). This version instead wrote directly
+           to daily_checkins (which is RPC-only by grant — this insert would
+           have been rejected outright) and called DB.users.update with
+           last_checkin_date/streak_days (which the RPC also handles
+           atomically, avoiding a check-then-write race between two
+           check-ins landing at the same moment). Rather than duplicate and
+           re-fix the same logic a third time, this now just calls the one
+           real, tested RPC — so if this function is ever actually wired to
+           a button in the future, there's only one authoritative check-in
+           path in the whole codebase, not three drifting implementations. */
+        /* ✅ B26 (2026-10-07): values ab wahi globals se aati hain jo asli button
+           (features-user.js) aur admin ka Daily Bonus Editor (live_config.
+           dailyBonusRewards) use karte hain. Pehle yahan CFG.checkinTierRewards /
+           CFG.checkinStreakBonus7 likha tha — checkinTierRewards CFG me kabhi thi
+           hi nahi aur checkinStreakBonus7 server padhta hi nahi tha (dono dead). */
+        var tierRewards = window._adminDailyBonusRewards || [5, 7, 10, 12, 15, 20, 30];
+        var milestoneBonus = window._adminDay30Bonus || 100;
+        /* ✅ FIX (gehri audit, 2026-10-07): p_milestone_days pehle 7 tha, jabki asli
+           check-in path (features-user.js → window.doCheckIn) 30 bhejta hai — aur UI
+           ("har 30 din mein milestone bonus") bhi 30 kehta hai. Yahan 7 bhejne se agar
+           ye function kabhi wire ho jata to galat dinon par bonus deta. Ab dono ek hi
+           value (30) bhejte hain — duplicate logic ka aakhri mismatch bhi gaya. */
+        var { data, error } = await window._supa.rpc('process_daily_checkin', {
+          p_tier_rewards: tierRewards, p_milestone_bonus: milestoneBonus, p_milestone_days: 30
+        });
+        if (error) return _err('checkin.doCheckIn', error);
+        if (data && data.success === false) return { error: data.error };
+        return { success: true, coins: data.total, streak: data.streak };
+      }
+    },
+
+    /* ────────────────────────────────────────
+       ACHIEVEMENTS
+    ──────────────────────────────────────── */
+    achievements: {
+      getMine: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('user_achievements')
+          .select('*')
+          .eq('user_id', uid);
+        if (error) return _err('achievements.getMine', error);
+        return data || [];
+      },
+
+      unlock: async function(uid, key) {
+        var { data, error } = await window._supa
+          .from('user_achievements')
+          .upsert({ user_id: uid, achievement_key: key }, { onConflict: 'user_id,achievement_key' });
+        if (error) return _err('achievements.unlock', error);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       BATTLE PASS
+    ──────────────────────────────────────── */
+    battlePass: {
+      getActive: async function() {
+        var { data, error } = await window._supa
+          .from('battle_passes')
+          .select('*')
+          .eq('is_active', true)
+          .maybeSingle();
+        if (error) return _err('battlePass.getActive', error);
+        return data;
+      },
+
+      getMyProgress: async function(seasonId) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('battle_pass_progress')
+          .select('*')
+          .eq('user_id', uid)
+          .eq('season_key', seasonId)
+          .maybeSingle();
+        if (error) return _err('battlePass.getMyProgress', error);
+        return data;
+      },
+
+      addXP: async function(seasonId, xp) {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('battle_pass_progress')
+          .upsert({
+            user_id: uid,
+            season_key: seasonId,
+            current_xp: xp,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id,season_key' });
+        if (error) return _err('battlePass.addXP', error);
+        return data;
+      },
+
+      /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet
+         RPC" audit — replaced with claim_battle_pass_tier(seasonKey,
+         tier), a dedicated RPC that reads the reward amount and
+         premium-gating from the battle_passes table's own tiers
+         definition (never from the client), and enforces one-claim-
+         per-tier server-side. This whole feature is currently
+         unwired (no UI calls claimTier anywhere yet), so fixing it
+         properly now means it's safe by construction whenever it
+         does get wired up. */
+      claimTier: async function(seasonId, tier, track) {
+        /* ✅ R25 FIX (2026-09-21): RPC arg-match — live fn signature is
+           claim_battle_pass_tier(p_season, p_tier, p_track, p_gd_reward
+           DEFAULT 0); this wrapper used to send p_season_key (wrong name,
+           and p_track missing) so call RPC rejected with
+           'function claim_battle_pass_tier(text, integer) does not exist'
+           whenever wired. p_gd_reward is intentionally NOT sent — the RPC
+           ignores it and reads the authoritative freeGd/premGd amount from
+           the battle_passes.tiers jsonb (never from the client). */
+        var { data, error } = await window._supa.rpc('claim_battle_pass_tier', {
+          p_season: seasonId, p_tier: tier, p_track: track || 'free'
+        });
+        if (error) return _err('battlePass.claimTier', error);
+        if (data && data.success === false) return _err('battlePass.claimTier', { message: data.error });
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       WATCH & EARN
+    ──────────────────────────────────────── */
+    watchEarn: {
+      /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet
+         RPC" audit — this legacy path let the client supply
+         coinsEarned/watchedMins directly with zero server validation,
+         same vulnerability class fixed in features/watch-earn.js
+         (which now calls claim_watch_earn_reward() instead and never
+         used this function). Never called from anywhere in this
+         codebase — disabled rather than silently left reachable. */
+      logWatch: async function(matchId, coinsEarned, watchedMins) {
+        console.error('[DB.watchEarn.logWatch] REMOVED (2026-09-08) — use claim_watch_earn_reward RPC instead (see features/watch-earn.js)');
+        return _err('watchEarn.logWatch', { message: 'This function has been removed for security reasons' });
+      },
+
+      getTodayTotal: async function() {
+        var uid = _uid();
+        var today = new Date().toISOString().split('T')[0];
+        var { data, error } = await window._supa
+          .from('watch_earn_log')
+          .select('coins_earned, watched_mins')
+          .eq('user_id', uid)
+          .eq('log_date', today);
+        if (error) return _err('watchEarn.getTodayTotal', error);
+        var rows = data || [];
+        return {
+          totalCoins: rows.reduce(function(s, r) { return s + r.coins_earned; }, 0),
+          totalMins:  rows.reduce(function(s, r) { return s + r.watched_mins; }, 0)
+        };
+      }
+    },
+
+    /* ────────────────────────────────────────
+       AUTO SQUAD QUEUE
+    ──────────────────────────────────────── */
+    autoSquad: {
+      joinQueue: async function(matchId, mode) {
+        /* R7: direct upsert HATA — insert/update privileges revoked for
+           authenticated; queue writes solely via join_auto_squad_queue RPC
+           (server match/mode validate + matched-rejoin band). */
+        var { error, data } = await window._supa
+          .rpc('join_auto_squad_queue', { p_match_id: matchId, p_mode: mode });
+        if (error) return _err('autoSquad.joinQueue', error);
+        return data;
+      },
+
+      leaveQueue: async function(matchId) {
+        var uid = _uid();
+        var { error } = await window._supa
+          .from('auto_squad_queue')
+          .delete()
+          .eq('match_id', matchId)
+          .eq('user_id', uid);
+        if (error) return _err('autoSquad.leaveQueue', error);
+      },
+
+      getWaiting: async function(matchId) {
+        var { data, error } = await window._supa
+          .from('auto_squad_queue')
+          .select('*, user:users(ign, avatar_url, rank_tier)')
+          .eq('match_id', matchId)
+          .eq('status', 'waiting')
+          .order('joined_at', { ascending: true });
+        if (error) return _err('autoSquad.getWaiting', error);
+        return data || [];
+      },
+
+      /* Poll waiting queue every 15s */
+      poll: function(matchId, callback) {
+        _poll('autoSquad_' + matchId, async function() {
+          var d = await DB.autoSquad.getWaiting(matchId);
+          callback(d);
+        }, 15000);
+      },
+      stopPoll: function(matchId) { _stopPoll('autoSquad_' + matchId); }
+    },
+
+    /* ────────────────────────────────────────
+       COSMETICS
+    ──────────────────────────────────────── */
+    cosmetics: {
+      getMine: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('user_cosmetics')
+          .select('*')
+          .eq('user_id', uid);
+        if (error) return _err('cosmetics.getMine', error);
+        return data || [];
+      },
+
+      purchase: async function(cosmeticKey, priceSd) {
+        var uid = _uid();
+        /* Check already owned */
+        var { data: existing } = await window._supa
+          .from('user_cosmetics')
+          .select('cosmetic_key')
+          .eq('user_id', uid)
+          .eq('cosmetic_key', cosmeticKey)
+          .maybeSingle();
+        if (existing) return { error: 'Already owned' };
+        /* Debit sky diamonds */
+        await DB.wallet.debit(uid, 'sky_diamonds', priceSd, 'cosmetic_purchase', cosmeticKey);
+        /* Insert cosmetic */
+        var { data, error } = await window._supa
+          .from('user_cosmetics')
+          .insert({ user_id: uid, cosmetic_key: cosmeticKey });
+        if (error) return _err('cosmetics.purchase', error);
+        return { success: true };
+      },
+
+      equip: async function(cosmeticKey) {
+        var uid = _uid();
+        /* Unequip all same type first */
+        var prefix = cosmeticKey.split('_')[0]; /* 'frame', 'tag', etc. */
+        await window._supa
+          .from('user_cosmetics')
+          .update({ is_equipped: false })
+          .eq('user_id', uid)
+          .like('cosmetic_key', prefix + '%');
+        /* Equip selected */
+        var { data, error } = await window._supa
+          .from('user_cosmetics')
+          .update({ is_equipped: true })
+          .eq('user_id', uid)
+          .eq('cosmetic_key', cosmeticKey);
+        if (error) return _err('cosmetics.equip', error);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       SPONSORED PRIZES
+    ──────────────────────────────────────── */
+    sponsored: {
+      getForMatch: async function(matchId) {
+        var { data, error } = await window._supa
+          .from('sponsored_prizes')
+          .select('*, claims:sponsored_prize_claims(*, user:users(ign))')
+          .eq('match_id', matchId)
+          .maybeSingle();
+        if (error) return _err('sponsored.getForMatch', error);
+        return data;
+      },
+
+      /* Admin: create sponsored prize */
+      create: async function(matchId, sponsorName, totalPrize, distribution) {
+        var { data, error } = await window._supa
+          .from('sponsored_prizes')
+          .insert({
+            match_id: matchId,
+            sponsor_name: sponsorName,
+            total_prize: totalPrize,
+            distribution: distribution
+          })
+          .select()
+          .single();
+        if (error) return _err('sponsored.create', error);
+        return data;
+      },
+
+      /* Admin: distribute prizes */
+      distribute: async function(sponsoredId, winners) {
+        /* winners = [{user_id, placement, prize_detail}, ...] */
+        var uid = _uid();
+        var inserts = winners.map(function(w) {
+          return { sponsored_id: sponsoredId, user_id: w.user_id, placement: w.placement, prize_detail: w.prize_detail };
+        });
+        await window._supa.from('sponsored_prize_claims').insert(inserts);
+        var { data, error } = await window._supa
+          .from('sponsored_prizes')
+          .update({ is_distributed: true, distributed_at: new Date().toISOString(), distributed_by: uid })
+          .eq('id', sponsoredId);
+        if (error) return _err('sponsored.distribute', error);
+        return data;
+      }
+    },
+
+    /* ────────────────────────────────────────
+       REFERRALS
+    ──────────────────────────────────────── */
+    referrals: {
+      /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet
+         RPC" audit — this read joinCoins from window.CFG (a
+         client-cached config value, not re-verified server-side at
+         claim time) and credited it via the now-disabled generic
+         DB.wallet.credit(). Never called from anywhere in this
+         codebase (js/referral-system-fix.js's window.applyReferralCode
+         is the actual live referral-apply flow, via the already-secure
+         apply_referral_code RPC). Redirected to call that same RPC
+         directly, so if anything ever does call this function, it
+         gets the real, secure implementation instead of a second,
+         parallel insecure one. */
+      apply: async function(referralCode) {
+        var { data, error } = await window._supa.rpc('apply_referral_code', {
+          p_code: referralCode.toUpperCase(), p_reward: 0 /* ignored server-side, see apply_referral_code */
+        });
+        if (error) return { error: error.message };
+        if (data && data.success === false) return { error: data.error };
+        return { success: true, coins: data.reward };
+      },
+
+      getMyReferrals: async function() {
+        var uid = _uid();
+        var { data, error } = await window._supa
+          .from('referrals')
+          .select('*, referred:users!referred_id(ign,avatar_url,total_matches,created_at)')
+          .eq('referrer_id', uid)
+          .order('created_at', { ascending: false });
+        if (error) return _err('referrals.getMyReferrals', error);
+        return data || [];
+      }
+    },
+
+    /* ────────────────────────────────────────
+       ADMIN HELPERS
+    ──────────────────────────────────────── */
+    admin: {
+      /* Get dashboard stats */
+      getStats: async function() {
+        /* Bug #36 Fix: Admin role check before returning sensitive data */
+        if (window.U && window._supa) {
+          try {
+            var _ac = await window._supa.from('users').select('is_admin').eq('id', window.U.uid).maybeSingle();
+            if (!_ac.data || !_ac.data.is_admin) { console.warn('[Admin] getStats: denied'); return null; }
+          } catch(e) {}
+        }
+        /* ✅ FIX (BUG L-6): HEAD+count:exact requests are unreliable under
+           headless-Chromium test conditions (100% ERR_ABORTED in testing,
+           confirmed the equivalent SQL count works fine, so it's a
+           transport-layer quirk not a data bug). Switched to capped row
+           selects and .length — this is an admin-stats summary, not a hot
+           path, so the extra payload size is a non-issue. */
+        var [users, matches, pending] = await Promise.all([
+          window._supa.from('users').select('id').limit(10000),
+          window._supa.from('matches').select('id').eq('status', 'upcoming').limit(10000),
+          window._supa.from('sd_requests').select('id').eq('status', 'pending').limit(10000)
+        ]);
+        return {
+          totalUsers:     (users.data || []).length,
+          upcomingMatches: (matches.data || []).length,
+          pendingSdRequests: (pending.data || []).length
+        };
+      },
+
+      /* Log admin action */
+      log: async function(action, targetType, targetId, details) {
+        var uid = _uid();
+        await window._supa.from('admin_activity_log').insert({
+          admin_uid: uid, action_type: action, target_ref: targetId,
+          note: targetType || null, details: details || null
+        });
+      },
+
+      /* Get all pending join requests */
+      getPendingJoinRequests: async function() {
+        var { data, error } = await window._supa
+          .from('join_requests')
+          .select('*, user:users(ign,avatar_url,rank_tier), match:matches(title,scheduled_at,mode,entry_type,entry_fee)')
+          .eq('status', 'pending')
+          .order('created_at', { ascending: true });
+        if (error) return _err('admin.getPendingJoinRequests', error);
+        return data || [];
+      },
+
+      /* Creator program */
+      getCreatorApplications: async function() {
+        var { data, error } = await window._supa
+          .from('creator_applications')
+          .select('*, user:users(ign,avatar_url,total_matches)')
+          .order('created_at', { ascending: false });
+        if (error) return _err('admin.getCreatorApplications', error);
+        return data || [];
+      },
+
+      setCreatorStatus: async function(appId, status, note) {
+        var { data, error } = await window._supa
+          .from('creator_applications')
+          .update({ status: status, review_note: note, reviewed_by: _uid() })
+          .eq('id', appId);
+        if (error) return _err('admin.setCreatorStatus', error);
+        return data;
+      }
+    }
+  };
+
+  /* ── PRIVATE HELPERS ── */
+  function _currencyCol(currency) {
+    var map = {
+      'coins': 'coins',
+      'sky_diamonds': 'sky_diamonds',
+      'green_diamonds': 'green_diamonds',
+      'blue_diamonds': 'blue_diamonds'
+    };
+    return map[currency] || 'coins';
+  }
+
+  function _yesterday() {
+    var d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.toISOString().split('T')[0];
+  }
+
+  /* ── AUTO INIT: load config when ready ── */
+  onSupaReady(function() {
+    if (window.CFG) DB.config.load();
+    DB.config.poll();
+  });
+
+  console.log('[DB] Abstraction layer loaded. Use window.DB for all queries.');
+
+})();
+
+/* ================================================================
+   SQL FUNCTIONS NEEDED IN SUPABASE:
+   Run these in Supabase SQL Editor:
+
+   -- Increment balance (safe, no negative)
+   create or replace function increment_balance(p_uid uuid, p_col text, p_amount int)
+   returns void language plpgsql security definer as $$
+   begin
+     execute format('update public.users set %I = %I + $1 where id = $2', p_col, p_col)
+     using p_amount, p_uid;
+   end;
+   $$;
+
+   -- Decrement balance (safe, min 0)
+   create or replace function decrement_balance(p_uid uuid, p_col text, p_amount int)
+   returns void language plpgsql security definer as $$
+   begin
+     execute format('update public.users set %I = greatest(%I - $1, 0) where id = $2', p_col, p_col)
+     using p_amount, p_uid;
+   end;
+   $$;
+
+   -- Increment rank points
+   create or replace function increment_rank_points(p_uid uuid, p_points int)
+   returns void language plpgsql security definer as $$
+   begin
+     update public.users set rank_points = rank_points + p_points where id = p_uid;
+   end;
+   $$;
+================================================================ */

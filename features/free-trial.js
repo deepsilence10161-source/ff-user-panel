@@ -1,1 +1,419 @@
-(function(){'use strict';var _0x3c1986=(function(){var _0x39bd72=!![];return function(_0x29d7c3,_0x1c9b59){var _0xca38c1=_0x39bd72?function(){if(_0x1c9b59){var _0x279d1b=_0x1c9b59['apply'](_0x29d7c3,arguments);return _0x1c9b59=null,_0x279d1b;}}:function(){};return _0x39bd72=![],_0xca38c1;};}()),_0x329387=_0x3c1986(this,function(){if(_0x329387['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x329387['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x329387)['search']('(((.+)+)+)+$');});_0x329387();var _0xdb6663=0x3,_0x4a28e3='_mes_trial_';window['getTrialStatus']=function(){var _0x598f99=window['U']&&window['U']['uid'];if(!_0x598f99)return null;var _0x5af835=localStorage['getItem'](_0x4a28e3+_0x598f99);if(!_0x5af835)return null;try{return JSON['parse'](_0x5af835);}catch(_0x48efef){return null;}},window['isTrialActive']=function(){var _0x272660=window['getTrialStatus']();if(!_0x272660||!_0x272660['startedAt'])return![];var _0x573191=Date['now'](),_0x4f165f=_0x272660['startedAt']+_0xdb6663*0x18*0x3c*0x3c*0x3e8;return _0x573191<_0x4f165f;},window['isTrialExpired']=function(){var _0x2301ee=window['getTrialStatus']();if(!_0x2301ee||!_0x2301ee['startedAt'])return![];var _0x1aa389=Date['now'](),_0x1d984c=_0x2301ee['startedAt']+_0xdb6663*0x18*0x3c*0x3c*0x3e8;return _0x1aa389>=_0x1d984c;},window['isTrialUsed']=function(){var _0x473e44=window['getTrialStatus']();return!!(_0x473e44&&_0x473e44['startedAt']);},window['startFreeTrial']=function(){var _0x18a941=window['U']&&window['U']['uid'];if(!_0x18a941){if(window['toast'])toast('Pehle\x20login\x20karo!','err');return;}if(!window['_supa']||!window['_supaReady']){if(window['toast'])toast('Connection\x20error,\x20retry\x20karo.','err');return;}window['_supa']['rpc']('start_free_trial')['then'](function(_0x73695){if(_0x73695['error']||_0x73695['data']&&_0x73695['data']['success']===![]){var _0x2e0164=_0x73695['data']&&_0x73695['data']['error']||_0x73695['error']&&_0x73695['error']['message']||'Trial\x20start\x20failed';if(window['toast'])toast(_0x2e0164,'inf');return;}var _0x57f1d5={'startedAt':Date['now'](),'uid':_0x18a941,'plan':'silver_trial','reminderSent':![]};localStorage['setItem'](_0x4a28e3+_0x18a941,JSON['stringify'](_0x57f1d5));window['UD']&&(window['UD']['premium']=window['UD']['premium']||{},window['UD']['premium']['tier']=0x1,window['UD']['premium']['expiresAt']=Date['now']()+_0xdb6663*0x18*0x3c*0x3c*0x3e8);_0x2cf991();if(window['closeModal'])closeModal();setTimeout(function(){_0x375f06();},0x12c);})['catch'](function(_0x508c86){console['error']('[free-trial]\x20start\x20failed:',_0x508c86&&_0x508c86['message']);if(window['toast'])toast('Trial\x20start\x20failed,\x20retry\x20karo','err');});};function _0x2cf991(){if(!window['isTrialActive']())return;if(!document['getElementById']('_trialNoAdsStyle')){var _0x24697d=document['createElement']('style');_0x24697d['id']='_trialNoAdsStyle',_0x24697d['textContent']='.ad-banner,.ad-container,[id*=\x22ad-\x22],[class*=\x22adslot\x22]{display:none!important}',document['head']['appendChild'](_0x24697d);}console['log']('[Trial]\x20Silver\x20trial\x20perks\x20applied\x20✅');}function _0x3a55c4(){var _0x48f462=document['getElementById']('_trialNoAdsStyle');if(_0x48f462)_0x48f462['remove']();}function _0x375f06(){var _0x2c9ea9='<div\x20style=\x22text-align:center;padding:6px\x200\x2020px\x22>';_0x2c9ea9+='<div\x20style=\x22font-size:48px;margin-bottom:10px\x22>🎉</div>',_0x2c9ea9+='<div\x20style=\x22font-size:20px;font-weight:900;color:#e0e0e0;margin-bottom:6px\x22>Silver\x20Trial\x20Shuru!</div>',_0x2c9ea9+='<div\x20style=\x22font-size:13px;color:#888;margin-bottom:16px\x22>'+_0xdb6663+'\x20din\x20bilkul\x20free</div>',_0x2c9ea9+='<div\x20style=\x22background:rgba(224,224,224,.06);border:1px\x20solid\x20rgba(224,224,224,.15);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left\x22>',[(window['tierIconHtml']?tierIconHtml('Silver',0xe):'')+'\x20🚫\x20Koi\x20Ads\x20nahi\x20—\x20match\x20join\x20karte\x20waqt',(window['tierIconHtml']?tierIconHtml('Silver',0xe):'')+'\x20Silver\x20Badge\x20—\x20profile\x20par','🖼️\x20Photo\x20&\x20Banner\x20Change\x20—\x20apna\x20look\x20lagao']['forEach'](function(_0x1a2d3c){_0x2c9ea9+='<div\x20style=\x22font-size:12px;color:#ddd;padding:5px\x200;border-bottom:1px\x20solid\x20rgba(255,255,255,.05)\x22>'+_0x1a2d3c+'</div>';}),_0x2c9ea9+='</div>',_0x2c9ea9+='<div\x20style=\x22font-size:12px;color:#555;margin-bottom:14px\x22>Trial\x20ke\x20baad\x20sirf\x20₹49/month\x20mein\x20continue\x20kar\x20sakte\x20ho</div>',_0x2c9ea9+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>🎮\x20App\x20Use\x20Karo!</button>',_0x2c9ea9+='</div>';if(window['openModal'])openModal((window['tierIconHtml']?tierIconHtml('Silver',0x10):'')+'\x20Silver\x20Trial\x20Active!',_0x2c9ea9);}function _0x9b5aaa(){var _0x674962='<div\x20style=\x22text-align:center;padding:6px\x200\x2016px\x22>';_0x674962+='<div\x20style=\x22font-size:40px;margin-bottom:10px\x22>⏰</div>',_0x674962+='<div\x20style=\x22font-size:18px;font-weight:900;color:#ffd700;margin-bottom:6px\x22>Trial\x20Khatam\x20Ho\x20Gaya!</div>',_0x674962+='<div\x20style=\x22font-size:13px;color:#888;margin-bottom:16px\x22>Ads\x20wapas\x20aa\x20jayenge\x20—\x20continue\x20karo\x20sirf\x20₹49/month\x20mein</div>',_0x674962+='<div\x20style=\x22background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:13px;padding:12px;margin-bottom:14px\x22>',_0x674962+='<div\x20style=\x22font-size:24px;font-weight:900;color:#ffd700;margin-bottom:4px\x22>₹49\x20<span\x20style=\x22font-size:13px;color:#888\x22>/mahina</span></div>',_0x674962+='<div\x20style=\x22font-size:11px;color:#aaa\x22>Ad-free\x20+\x20Silver\x20Badge\x20+\x2050\x20Coins/month</div>',_0x674962+='</div>',_0x674962+='<button\x20onclick=\x22if(window.buyPremium)buyPremium(1,49)\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px\x22>💳\x20Silver\x20Kharido\x20—\x20₹49/month</button>',_0x674962+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#666;font-size:13px;cursor:pointer\x22>Baad\x20mein</button>',_0x674962+='</div>';if(window['openModal'])openModal('⏰\x20Trial\x20Khatam',_0x674962);}function _0x31b62c(){if(window['_trialInjected'])return;window['_trialInjected']=!![];var _0x329d71=window['showPremiumUpgrade'];window['_origShowPremium']=_0x329d71,window['showPremiumUpgrade']=function(){var _0x28b121=window['getUserPremiumTier']?window['getUserPremiumTier']():0x0,_0x2ab6d8=window['UD']&&window['UD']['premium']&&Number(window['UD']['premium']['tier'])||0x0;if(!_0x28b121&&!_0x2ab6d8&&!window['isTrialUsed']()){_0x612bc0(function(){if(_0x329d71)_0x329d71['apply'](this,arguments);});return;}if(_0x329d71)_0x329d71['apply'](this,arguments);};}function _0x612bc0(_0x5e66e1){var _0x43964f='<div\x20style=\x22text-align:center;padding:8px\x200\x2018px\x22>';_0x43964f+='<div\x20style=\x22font-size:42px;margin-bottom:8px\x22>🎁</div>',_0x43964f+='<div\x20style=\x22font-size:19px;font-weight:900;color:#e0e0e0;margin-bottom:6px\x22>FREE\x20Trial\x20Milega!</div>',_0x43964f+='<div\x20style=\x22font-size:13px;color:#888;margin-bottom:18px\x22>Silver\x20Premium\x20'+_0xdb6663+'\x20din\x20bilkul\x20free\x20try\x20karo</div>',_0x43964f+='<div\x20style=\x22background:rgba(224,224,224,.06);border:1px\x20solid\x20rgba(224,224,224,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left\x22>',['🚫\x20No\x20Ads',(window['tierIconHtml']?tierIconHtml('Silver',0xe):'')+'\x20Silver\x20Badge','🖼️\x20Photo\x20&\x20Banner\x20Change']['forEach'](function(_0x4148c5){_0x43964f+='<div\x20style=\x22display:flex;align-items:center;gap:8px;font-size:12px;color:#ddd;padding:5px\x200;border-bottom:1px\x20solid\x20rgba(255,255,255,.04)\x22>'+_0x4148c5+'</div>';}),_0x43964f+='</div>',_0x43964f+='<button\x20onclick=\x22window.startFreeTrial()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:10px\x22>🎁\x20'+_0xdb6663+'\x20Din\x20FREE\x20Try\x20Karo!</button>',_0x43964f+='<button\x20onclick=\x22if(window.closeModal)closeModal();setTimeout(function(){'+(_0x5e66e1?'window._origShowPremium&&window._origShowPremium()':'')+'},300)\x22\x20style=\x22width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#888;font-size:12px;cursor:pointer\x22>Seedha\x20khareedna\x20hai\x20→\x20Plans\x20dekho</button>',_0x43964f+='</div>';if(window['openModal'])openModal('🎁\x20Free\x20Trial',_0x43964f);}var _0x170117=0xc*0x3c*0x3c*0x3e8;window['getPremiumExpiryAt']=function(){try{var _0x368afd=window['UD']&&window['UD']['premium']&&window['UD']['premium']['expiresAt']||0x0;if(_0x368afd)return Number(_0x368afd);var _0x509404=window['getTrialStatus']&&window['getTrialStatus']();if(_0x509404&&_0x509404['startedAt'])return Number(_0x509404['startedAt'])+_0xdb6663*0x18*0x3c*0x3c*0x3e8;}catch(_0x3d2de2){}return 0x0;},window['getPremiumMsLeft']=function(){var _0x54596f=window['getPremiumExpiryAt']();if(!_0x54596f)return 0x0;var _0x236754=window['getUserPremiumTier']?Number(window['getUserPremiumTier']())||0x0:0x0;if(_0x236754<=0x0)return 0x0;return Math['max'](0x0,_0x54596f-Date['now']());};function _0x4d81d6(_0x28aed3){var _0x20349f=Math['floor'](_0x28aed3/0x3e8),_0x5a93c8=Math['floor'](_0x20349f/0xe10),_0x40a24b=Math['floor'](_0x20349f%0xe10/0x3c),_0x14125c=_0x20349f%0x3c;function _0x36315c(_0x6c2cc7){return(_0x6c2cc7<0xa?'0':'')+_0x6c2cc7;}return _0x36315c(_0x5a93c8)+':'+_0x36315c(_0x40a24b)+':'+_0x36315c(_0x14125c);}function _0x260e91(){var _0x485595=window['U']&&window['U']['uid']||'anon';return'_premBannerDismiss_'+_0x485595+'_'+(window['getPremiumExpiryAt']()||0x0);}window['_dismissPremiumExpiryBanner']=function(){try{localStorage['setItem'](_0x260e91(),'1');}catch(_0x49d964){}var _0x4b01f4=document['getElementById']('premExpiryBanner');if(_0x4b01f4)_0x4b01f4['remove']();};function _0x308849(){try{return localStorage['getItem'](_0x260e91())==='1';}catch(_0x561b34){return![];}}window['renderPremiumExpiryBanner']=function(){try{var _0x52d0a9=window['getPremiumMsLeft']();if(_0x52d0a9<=0x0||_0x52d0a9>_0x170117)return'';if(_0x308849())return'';var _0x47bac2=window['getUserPremiumTier']?Number(window['getUserPremiumTier']())||0x0:0x0,_0x98c4ed=_0x47bac2>=0x3?'Diamond':_0x47bac2===0x2?'Gold':'Silver';return'<div\x20id=\x22premExpiryBanner\x22\x20data-ms-left=\x22'+_0x52d0a9+'\x22\x20data-tier=\x22'+_0x47bac2+'\x22\x20'+'style=\x22position:fixed;left:0;right:0;top:0;z-index:9997;display:flex;align-items:center;gap:8px;'+'padding:8px\x2012px;background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,140,0,.12));'+'border-bottom:1px\x20solid\x20rgba(255,215,0,.35);backdrop-filter:blur(10px);font-size:12px;color:#ffd700\x22>'+'<span\x20style=\x22font-size:15px\x22>⏰</span>'+'<span\x20style=\x22font-weight:800\x22>'+_0x98c4ed+'\x20khatam\x20hone\x20me</span>'+'<span\x20id=\x22premExpiryCount\x22\x20style=\x22font-family:monospace;font-weight:900;font-size:13px;color:#fff\x22>'+_0x4d81d6(_0x52d0a9)+'</span>'+'<button\x20onclick=\x22if(window.showPremiumUpgrade)showPremiumUpgrade()\x22\x20style=\x22margin-left:auto;padding:6px\x2012px;border:none;'+'border-radius:9px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:11px;font-weight:900;cursor:pointer\x22>'+'₹49\x20me\x20continue</button>'+'<button\x20onclick=\x22window._dismissPremiumExpiryBanner&&window._dismissPremiumExpiryBanner()\x22\x20aria-label=\x22Countdown\x20row\x20hatao\x22\x20'+'style=\x22padding:4px\x208px;border:none;border-radius:8px;background:rgba(255,255,255,.08);color:#c9a227;font-size:12px;font-weight:900;cursor:pointer\x22>✕</button>'+'</div>';}catch(_0x4845d3){return'';}},window['updatePremiumExpiryBanner']=function(){try{var _0x459892=document['getElementById']('premExpiryBanner'),_0xb55716=window['renderPremiumExpiryBanner']();if(!_0xb55716){if(_0x459892)_0x459892['remove']();return![];}var _0x550d49=document['getElementById']('modalOv'),_0x16ee5b=!!(_0x550d49&&_0x550d49['classList']&&_0x550d49['classList']['contains']('show'));if(!_0x459892){if(_0x16ee5b)return!![];var _0x5c5bf0=document['createElement']('div');_0x5c5bf0['innerHTML']=_0xb55716,_0x459892=_0x5c5bf0['firstChild'];try{var _0x937997=document['getElementById']('header');_0x459892['style']['top']=(_0x937997&&_0x937997['offsetHeight']?Math['round'](_0x937997['getBoundingClientRect']()['height']):0x0)+'px';}catch(_0x502e0e){}document['body']['appendChild'](_0x459892);}else{_0x459892['style']['display']=_0x16ee5b?'none':'flex';var _0x4507d5=document['getElementById']('premExpiryCount'),_0x4c5f17=window['getPremiumMsLeft']();_0x459892['setAttribute']('data-ms-left',String(_0x4c5f17));if(_0x4507d5)_0x4507d5['textContent']=_0x4d81d6(_0x4c5f17);}return!![];}catch(_0x952e2f){return![];}};function _0x3bb97(){if(window['_premExpiryTicker'])return;var _0x18ebde=0x0;window['_premExpiryTicker']=setInterval(function(){_0x18ebde++;if(document['getElementById']('premExpiryBanner')){window['updatePremiumExpiryBanner']();return;}if(_0x18ebde%0xf===0x0)window['updatePremiumExpiryBanner']();if(_0x18ebde%0x3c===0x0)window['checkTrialState']();},0x3e8);}window['startPremiumExpiryTicker']=_0x3bb97,window['checkTrialState']=_0x502d50;function _0x502d50(){var _0x3e60be=window['U']&&window['U']['uid'];if(!_0x3e60be)return;var _0x50dcbe=window['getUserPremiumTier']?window['getUserPremiumTier']():0x0;if(_0x50dcbe>0x0){_0x3a55c4(),_0x3bb97(),window['updatePremiumExpiryBanner']();return;}window['updatePremiumExpiryBanner']();if(window['isTrialActive']()){_0x2cf991();var _0x4ea792=window['getTrialStatus']();if(_0x4ea792&&!_0x4ea792['reminderSent']){var _0x53f20b=window['getPremiumMsLeft']();if(_0x53f20b>0x0&&_0x53f20b<=_0x170117){_0x4ea792['reminderSent']=!![],localStorage['setItem'](_0x4a28e3+_0x3e60be,JSON['stringify'](_0x4ea792));if(window['toast'])toast('⏰\x20'+Math['max'](0x1,Math['round'](_0x53f20b/0x36ee80))+'\x20ghante\x20bache\x20—\x20₹49\x20mein\x20continue\x20karo!','inf');}}}else{if(window['isTrialExpired']()){_0x3a55c4();var _0x5d4388='_mes_trial_exp_shown_'+_0x3e60be;!localStorage['getItem'](_0x5d4388)&&(localStorage['setItem'](_0x5d4388,'1'),setTimeout(_0x9b5aaa,0x7d0));}}}var _0x367be9=null;function _0x421417(){if(window['_trialTierWrapped'])return;window['_trialTierWrapped']=!![],_0x367be9=window['getUserPremiumTier'],window['getUserPremiumTier']=function(){var _0x5a3030=_0x367be9?_0x367be9():0x0;if(_0x5a3030>0x0)return _0x5a3030;if(window['isTrialActive']())return 0x1;return 0x0;};}function _0x495993(){if(!window['U']||!window['getUserPremiumTier']){setTimeout(_0x495993,0x3e8);return;}_0x421417(),_0x31b62c(),_0x502d50(),_0x3bb97(),setInterval(_0x502d50,0x1e*0x3c*0x3e8),console['log']('[Mini\x20eSports]\x20Free\x20Trial\x20System\x20v1.0\x20✅');}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(_0x495993,0x9c4);}):setTimeout(_0x495993,0x9c4);}());
+/* ================================================================
+   FREE TRIAL SYSTEM — 3-Day Silver Premium Trial
+   - Pehli baar premium dekho → "FREE try karo" button dikhega
+   - Day end pe: Trial khatam hone par continue prompt
+   - Trial mein (Silver tier 1 ke perks): ads band, Silver badge,
+     profile photo/banner change
+   NOTE (2026-09-22): server start_free_trial() grants PREMIUM LEVEL 1
+   for 3 days (DB source of truth). Client copy ab usi se match karta
+   hai — "7 din" and "5 GD bonus" claims removed (kabhi credit nahi
+   hote the), "Green Name" removed (lobby chat chalu nahi hai).
+================================================================ */
+(function(){
+'use strict';
+
+var TRIAL_DAYS = 3; /* server start_free_trial() grants 3 days tier 1 */
+var TRIAL_KEY  = '_mes_trial_'; /* + uid */
+
+/* ── Trial Status ── */
+window.getTrialStatus = function() {
+  var uid = window.U && window.U.uid;
+  if (!uid) return null;
+  var raw = localStorage.getItem(TRIAL_KEY + uid);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch(e) { return null; }
+};
+
+window.isTrialActive = function() {
+  var t = window.getTrialStatus();
+  if (!t || !t.startedAt) return false;
+  var now = Date.now();
+  var endAt = t.startedAt + (TRIAL_DAYS * 24 * 60 * 60 * 1000);
+  return now < endAt;
+};
+
+window.isTrialExpired = function() {
+  var t = window.getTrialStatus();
+  if (!t || !t.startedAt) return false;
+  var now = Date.now();
+  var endAt = t.startedAt + (TRIAL_DAYS * 24 * 60 * 60 * 1000);
+  return now >= endAt;
+};
+
+window.isTrialUsed = function() {
+  var t = window.getTrialStatus();
+  return !!(t && t.startedAt);
+};
+
+/* ── Start Trial ── */
+window.startFreeTrial = function() {
+  var uid = window.U && window.U.uid;
+  if (!uid) { if(window.toast)toast('Pehle login karo!','err'); return; }
+  if (!window._supa || !window._supaReady) { if(window.toast)toast('Connection error, retry karo.','err'); return; }
+
+  /* BUG #34 FIX (2026-07): eligibility ("has this user ever used their trial") was ONLY
+     checked via localStorage — clearing storage or opening a new browser/incognito session
+     let the same account claim the trial repeatedly forever. start_free_trial() is now the
+     server-authoritative gate (checks a permanent users.trial_used flag, row-locked) — the
+     localStorage write below is now just a local cache for the UI perks, not the source of
+     truth for eligibility. */
+  window._supa.rpc('start_free_trial').then(function(r) {
+    if (r.error || (r.data && r.data.success === false)) {
+      var msg = (r.data && r.data.error) || (r.error && r.error.message) || 'Trial start failed';
+      if(window.toast) toast(msg, 'inf');
+      return;
+    }
+    var trialData = { startedAt: Date.now(), uid: uid, plan: 'silver_trial', reminderSent: false };
+    localStorage.setItem(TRIAL_KEY + uid, JSON.stringify(trialData));
+    if (window.UD) { window.UD.premium = window.UD.premium || {}; window.UD.premium.tier = 1; window.UD.premium.expiresAt = Date.now() + (TRIAL_DAYS*24*60*60*1000); }
+    _applyTrialPerks();
+    if (window.closeModal) closeModal();
+    setTimeout(function(){ _showTrialWelcome(); }, 300);
+  }).catch(function(e) {
+    console.error('[free-trial] start failed:', e && e.message);
+    if(window.toast) toast('Trial start failed, retry karo', 'err');
+  });
+};
+
+/* ── Apply Trial Perks (Silver-level) ── */
+function _applyTrialPerks() {
+  if (!window.isTrialActive()) return;
+  /* Hide banner ads */
+  if (!document.getElementById('_trialNoAdsStyle')) {
+    var s = document.createElement('style');
+    s.id = '_trialNoAdsStyle';
+    s.textContent = '.ad-banner,.ad-container,[id*="ad-"],[class*="adslot"]{display:none!important}';
+    document.head.appendChild(s);
+  }
+  console.log('[Trial] Silver trial perks applied ✅');
+}
+
+function _removeTrialPerks() {
+  var s = document.getElementById('_trialNoAdsStyle');
+  if (s) s.remove();
+}
+
+/* ── Trial Welcome Modal ── */
+function _showTrialWelcome() {
+  var h = '<div style="text-align:center;padding:6px 0 20px">';
+  h += '<div style="font-size:48px;margin-bottom:10px">🎉</div>';
+  h += '<div style="font-size:20px;font-weight:900;color:#e0e0e0;margin-bottom:6px">Silver Trial Shuru!</div>';
+  h += '<div style="font-size:13px;color:#888;margin-bottom:16px">' + TRIAL_DAYS + ' din bilkul free</div>';
+  h += '<div style="background:rgba(224,224,224,.06);border:1px solid rgba(224,224,224,.15);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
+  [(window.tierIconHtml?tierIconHtml('Silver',14):'')+' 🚫 Koi Ads nahi — match join karte waqt',(window.tierIconHtml?tierIconHtml('Silver',14):'')+' Silver Badge — profile par','🖼️ Photo & Banner Change — apna look lagao'].forEach(function(p){
+    h += '<div style="font-size:12px;color:#ddd;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)">' + p + '</div>';
+  });
+  h += '</div>';
+  h += '<div style="font-size:12px;color:#555;margin-bottom:14px">Trial ke baad sirf ₹49/month mein continue kar sakte ho</div>';
+  h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:14px;font-weight:900;cursor:pointer">🎮 App Use Karo!</button>';
+  h += '</div>';
+  if (window.openModal) openModal((window.tierIconHtml?tierIconHtml('Silver',16):'')+' Silver Trial Active!', h);
+}
+
+/* ── Trial Expiry Modal ── */
+function _showTrialExpiredModal() {
+  var h = '<div style="text-align:center;padding:6px 0 16px">';
+  h += '<div style="font-size:40px;margin-bottom:10px">⏰</div>';
+  h += '<div style="font-size:18px;font-weight:900;color:#ffd700;margin-bottom:6px">Trial Khatam Ho Gaya!</div>';
+  h += '<div style="font-size:13px;color:#888;margin-bottom:16px">Ads wapas aa jayenge — continue karo sirf ₹49/month mein</div>';
+  h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:13px;padding:12px;margin-bottom:14px">';
+  h += '<div style="font-size:24px;font-weight:900;color:#ffd700;margin-bottom:4px">₹49 <span style="font-size:13px;color:#888">/mahina</span></div>';
+  h += '<div style="font-size:11px;color:#aaa">Ad-free + Silver Badge + 50 Coins/month</div>';
+  h += '</div>';
+  h += '<button onclick="if(window.buyPremium)buyPremium(1,49)" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px">💳 Silver Kharido — ₹49/month</button>';
+  h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#666;font-size:13px;cursor:pointer">Baad mein</button>';
+  h += '</div>';
+  if (window.openModal) openModal('⏰ Trial Khatam', h);
+}
+
+/* ── Inject Free Trial button in Premium modal ── */
+function injectTrialButton() {
+  /* Wrap showPremiumUpgrade to inject trial option for non-trial users */
+  if (window._trialInjected) return;
+  window._trialInjected = true;
+
+  var _orig = window.showPremiumUpgrade;
+  /* ✅ BUG FIX (2026-08-22): "Seedha khareedna hai → Plans dekho" always
+     re-opened the Free Trial modal instead of the real plans list. Root
+     cause: _showTrialPrompt used to do
+       window._origShowPremium = window.showPremiumUpgrade;
+     INSIDE this wrapper, at the point where window.showPremiumUpgrade
+     had ALREADY been overwritten by this very wrapper two lines below —
+     so _origShowPremium was really just a reference to itself. Clicking
+     "Plans dekho" called the wrapper again, which re-ran the exact same
+     "trial not used yet → show trial prompt" check and looped back to
+     the same modal forever. The real original function was `_orig`,
+     captured correctly in this closure BEFORE the overwrite — exposing
+     that directly (once) instead of re-capturing a moving target inside
+     _showTrialPrompt fixes it. */
+  window._origShowPremium = _orig;
+  window.showPremiumUpgrade = function() {
+    /* If trial not used and not premium → show trial prompt first */
+    var tier = window.getUserPremiumTier ? window.getUserPremiumTier() : 0;
+    /* ✅ BUG FIX (2026-10-31, owner live report — Hunter7): expire ho chuka
+       premium (RAW level>0, expiry past) bhi "trial not used" branch me
+       ghus kar "FREE Trial Milega!" prompt dekhta tha — jabki uska
+       premium_level DB me 3 pada tha. Contradiction ke alawa ye DATA-LOSS
+       path tha: start_free_trial server par sirf trial_used dekhta hai →
+       trial lete hi expired Diamond row level=1 (Silver) ban jati.
+       Ab: trial prompt SIRF unke liye jinhone premium kabhi liya hi nahi
+       (raw tier 0); expired ex-premium seedha plans modal (Renew path). */
+    var rawTier = (window.UD && window.UD.premium && Number(window.UD.premium.tier)) || 0;
+    if (!tier && !rawTier && !window.isTrialUsed()) {
+      _showTrialPrompt(function() {
+        /* After trial prompt, also show full premium options */
+        if (_orig) _orig.apply(this, arguments);
+      });
+      return;
+    }
+    if (_orig) _orig.apply(this, arguments);
+  };
+}
+
+function _showTrialPrompt(onShowFull) {
+  var h = '<div style="text-align:center;padding:8px 0 18px">';
+  h += '<div style="font-size:42px;margin-bottom:8px">🎁</div>';
+  h += '<div style="font-size:19px;font-weight:900;color:#e0e0e0;margin-bottom:6px">FREE Trial Milega!</div>';
+  h += '<div style="font-size:13px;color:#888;margin-bottom:18px">Silver Premium ' + TRIAL_DAYS + ' din bilkul free try karo</div>';
+  h += '<div style="background:rgba(224,224,224,.06);border:1px solid rgba(224,224,224,.2);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left">';
+  ['🚫 No Ads', (window.tierIconHtml?tierIconHtml('Silver',14):'')+' Silver Badge', '🖼️ Photo & Banner Change'].forEach(function(p){
+    h += '<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#ddd;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)">' + p + '</div>';
+  });
+  h += '</div>';
+  h += '<button onclick="window.startFreeTrial()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#e0e0e0,#aaa);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:10px">🎁 ' + TRIAL_DAYS + ' Din FREE Try Karo!</button>';
+  h += '<button onclick="if(window.closeModal)closeModal();setTimeout(function(){' + (onShowFull ? 'window._origShowPremium&&window._origShowPremium()' : '') + '},300)" style="width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#888;font-size:12px;cursor:pointer">Seedha khareedna hai → Plans dekho</button>';
+  h += '</div>';
+  /* ✅ BUG FIX (2026-08-22): removed the re-assignment that used to sit
+     here (window._origShowPremium = window.showPremiumUpgrade) — by this
+     point showPremiumUpgrade was already the wrapper, not the original,
+     so this line was actively re-breaking the fix every time the modal
+     opened. window._origShowPremium is now set once, correctly, in
+     injectTrialButton() itself. */
+  if (window.openModal) openModal('🎁 Free Trial', h);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TRIAL/PREMIUM KE AAKHRI 12 GHANTE — live countdown + banner
+   ──────────────────────────────────────────────────────────────────
+   KYUN: trial 3 din ka hai; aakhri 12 ghante hi wo waqt hota hai jab
+   user sabse zyada convert karta hai — par app me sirf ek toast aata tha
+   (aur wo bhi din-level par). Ab: jab tak premium/trial expire hone me
+   12 ghante ya kam bachein, screen par ek banner rehta hai jo SECOND-BY-
+   SECOND countdown dikhata hai, saath "₹49 me continue karo" CTA.
+
+   Kahan se aata hai time? — pehle UD.premium.expiresAt (server ki
+   premium_expires, jo listeners.js set karta hai — ASLI source of
+   truth). Na mile to local trial record se (startedAt + TRIAL_DAYS).
+   Dono na hon → kuch nahi dikhata (jhoota countdown kabhi nahi).
+   ══════════════════════════════════════════════════════════════════ */
+var EXPIRY_WINDOW_MS = 12 * 60 * 60 * 1000;
+
+window.getPremiumExpiryAt = function() {
+  try {
+    var udExp = (window.UD && window.UD.premium && window.UD.premium.expiresAt) || 0;
+    if (udExp) return Number(udExp);
+    var t = window.getTrialStatus && window.getTrialStatus();
+    if (t && t.startedAt) return Number(t.startedAt) + (TRIAL_DAYS * 24 * 60 * 60 * 1000);
+  } catch (e) {}
+  return 0;
+};
+
+/* kitne ms bache hain (0 = khatam ya koi premium nahi) */
+window.getPremiumMsLeft = function() {
+  var exp = window.getPremiumExpiryAt();
+  if (!exp) return 0;
+  var tier = window.getUserPremiumTier ? Number(window.getUserPremiumTier()) || 0 : 0;
+  if (tier <= 0) return 0;
+  return Math.max(0, exp - Date.now());
+};
+
+function _fmtLeft(ms) {
+  var s = Math.floor(ms / 1000);
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  function p2(n) { return (n < 10 ? '0' : '') + n; }
+  return p2(h) + ':' + p2(m) + ':' + p2(sec);
+}
+
+/* ✅ D95 (2026-11-09, owner live report): "Premium khatm hone ka countdown
+   wali row hatti hi nahi" — row har screen par, har modal/sheet ke UPAR,
+   hamesha chipki rehti thi aur user ke paas use hatane ka koi raasta nahi
+   tha. Ab: (1) ✕ dismiss button — us concrete expiry ke liye permanently
+     hat jati hai (naya premium/nayi expiry = naya countdown dikhega);
+   (2) koi modal/sheet khuli ho to row chhup jati hai (backdrop ke upar
+     nahi tairti); (3) 0 par / renew par auto-hide pehle se tha. */
+function _premDismissKey() {
+  var uid = (window.U && window.U.uid) || 'anon';
+  return '_premBannerDismiss_' + uid + '_' + (window.getPremiumExpiryAt() || 0);
+}
+window._dismissPremiumExpiryBanner = function() {
+  try { localStorage.setItem(_premDismissKey(), '1'); } catch (e) {}
+  var el = document.getElementById('premExpiryBanner');
+  if (el) el.remove();
+};
+function _premDismissed() {
+  try { return localStorage.getItem(_premDismissKey()) === '1'; } catch (e) { return false; }
+}
+
+/* banner ka HTML — E2E ke liye id + data-ms-left (aur 0 par khaali) */
+window.renderPremiumExpiryBanner = function() {
+  try {
+    var left = window.getPremiumMsLeft();
+    if (left <= 0 || left > EXPIRY_WINDOW_MS) return '';
+    if (_premDismissed()) return '';
+    var tier = window.getUserPremiumTier ? Number(window.getUserPremiumTier()) || 0 : 0;
+    var tname = tier >= 3 ? 'Diamond' : (tier === 2 ? 'Gold' : 'Silver');
+    return '<div id="premExpiryBanner" data-ms-left="' + left + '" data-tier="' + tier + '" ' +
+      'style="position:fixed;left:0;right:0;top:0;z-index:9997;display:flex;align-items:center;gap:8px;' +
+      'padding:8px 12px;background:linear-gradient(135deg,rgba(255,215,0,.16),rgba(255,140,0,.12));' +
+      'border-bottom:1px solid rgba(255,215,0,.35);backdrop-filter:blur(10px);font-size:12px;color:#ffd700">' +
+      '<span style="font-size:15px">⏰</span>' +
+      '<span style="font-weight:800">' + tname + ' khatam hone me</span>' +
+      '<span id="premExpiryCount" style="font-family:monospace;font-weight:900;font-size:13px;color:#fff">' + _fmtLeft(left) + '</span>' +
+      '<button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade()" style="margin-left:auto;padding:6px 12px;border:none;' +
+      'border-radius:9px;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:11px;font-weight:900;cursor:pointer">' +
+      '₹49 me continue</button>' +
+      '<button onclick="window._dismissPremiumExpiryBanner&&window._dismissPremiumExpiryBanner()" aria-label="Countdown row hatao" ' +
+      'style="padding:4px 8px;border:none;border-radius:8px;background:rgba(255,255,255,.08);color:#c9a227;font-size:12px;font-weight:900;cursor:pointer">✕</button>' +
+      '</div>';
+  } catch (e) { return ''; }
+};
+
+/* banner lagao/hatao (aur har second countdown update) */
+window.updatePremiumExpiryBanner = function() {
+  try {
+    var el = document.getElementById('premExpiryBanner');
+    var html = window.renderPremiumExpiryBanner();
+    if (!html) {
+      if (el) el.remove();
+      /* window ke bahar nikal gaya par premium abhi bhi hai → agla din-level
+         check isko dobara laga dega */
+      return false;
+    }
+    /* ✅ D95: modal/sheet khuli ho to row chhupao (backdrop ke upar nahi) */
+    var mo = document.getElementById('modalOv');
+    var modalOpen = !!(mo && mo.classList && mo.classList.contains('show'));
+    if (!el) {
+      if (modalOpen) return true;   /* sheet ke upar mat lao; band hone par khud aa jayegi */
+      var wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      el = wrap.firstChild;
+      /* header ke NEECHE lagao (uske upar nahi) — warna header dhak jata */
+      try {
+        var hdr = document.getElementById('header');
+        el.style.top = ((hdr && hdr.offsetHeight) ? Math.round(hdr.getBoundingClientRect().height) : 0) + 'px';
+      } catch (e) {}
+      document.body.appendChild(el);
+    } else {
+      el.style.display = modalOpen ? 'none' : 'flex';
+      var cnt = document.getElementById('premExpiryCount');
+      var left = window.getPremiumMsLeft();
+      el.setAttribute('data-ms-left', String(left));
+      if (cnt) cnt.textContent = _fmtLeft(left);
+    }
+    return true;
+  } catch (e) { return false; }
+};
+
+/* har second tick — banner laga ho to use update karo; na ho to har 15
+   second me ek nazar (agar 12-ghante ki window me ab dakhil hue ho to
+   banner ≤15s me khud aa jaye, 30-min wale poll ka intezaar na karna pade).
+   ⚠️ Test hook: window.startPremiumExpiryTicker — vyavhaar wahi rehta hai. */
+function _startExpiryTicker() {
+  if (window._premExpiryTicker) return;
+  var n = 0;
+  window._premExpiryTicker = setInterval(function() {
+    n++;
+    /* banner laga ho to har second update (countdown chalta rahe) */
+    if (document.getElementById('premExpiryBanner')) { window.updatePremiumExpiryBanner(); return; }
+    /* na laga ho to har 15s ek nazar — agar ab 12-ghante ki window me dakhil
+       hue ho to banner ≤15s me khud aa jaye. */
+    if (n % 15 === 0) window.updatePremiumExpiryBanner();
+    /* har minute poora state check — admin ne premium_expires badla (realtime
+       → UD turant update hota hai) to banner bhi ~1 minute me aa/jaata hai,
+       warna 30-min wale poll ka intezaar karna padta. */
+    if (n % 60 === 0) window.checkTrialState();
+  }, 1000);
+}
+/* Test hooks (vyavhaar wahi): ticker + poora state check bahar se bhi call ho sake */
+window.startPremiumExpiryTicker = _startExpiryTicker;
+window.checkTrialState = checkTrialState;
+
+/* ── Periodic Check: apply/remove perks, show expiry modal ── */
+function checkTrialState() {
+  var uid = window.U && window.U.uid;
+  if (!uid) return;
+
+  /* Real premium ho (ya trial) → pehle banner ka hisaab */
+  var realTier = window.getUserPremiumTier ? window.getUserPremiumTier() : 0;
+  if (realTier > 0) {
+    _removeTrialPerks();
+    /* ✅ 2026-10-12: aakhri 12 ghante ka live countdown banner (trial ho ya
+       khareeda hua premium — dono par). Window ke bahar = banner hata do. */
+    _startExpiryTicker();
+    window.updatePremiumExpiryBanner();
+    return;
+  }
+  /* koi premium nahi → banner bhi nahi (jhoota countdown kabhi nahi) */
+  window.updatePremiumExpiryBanner();
+
+  if (window.isTrialActive()) {
+    _applyTrialPerks();
+
+    /* Final-day reminder — ab banner me live countdown dikhta hai; toast
+       sirf tab jab banner ki window (12h) shuru ho chuki ho aur pehli baar. */
+    var t = window.getTrialStatus();
+    if (t && !t.reminderSent) {
+      var _left = window.getPremiumMsLeft();
+      if (_left > 0 && _left <= EXPIRY_WINDOW_MS) {
+        t.reminderSent = true;
+        localStorage.setItem(TRIAL_KEY + uid, JSON.stringify(t));
+        if (window.toast) toast('⏰ ' + Math.max(1, Math.round(_left / 3600000)) + ' ghante bache — ₹49 mein continue karo!', 'inf');
+      }
+    }
+  } else if (window.isTrialExpired()) {
+    _removeTrialPerks();
+    /* Show expiry modal once */
+    var eKey = '_mes_trial_exp_shown_' + uid;
+    if (!localStorage.getItem(eKey)) {
+      localStorage.setItem(eKey, '1');
+      setTimeout(_showTrialExpiredModal, 2000);
+    }
+  }
+}
+
+/* ── Override getUserPremiumTier to include trial ── */
+var _origGetTier = null;
+function wrapGetTier() {
+  if (window._trialTierWrapped) return;
+  window._trialTierWrapped = true;
+  _origGetTier = window.getUserPremiumTier;
+  window.getUserPremiumTier = function() {
+    var real = _origGetTier ? _origGetTier() : 0;
+    if (real > 0) return real;
+    /* Trial counts as Silver (tier 1) */
+    if (window.isTrialActive()) return 1;
+    return 0;
+  };
+}
+
+/* ── Init ── */
+function initTrial() {
+  if (!window.U || !window.getUserPremiumTier) {
+    setTimeout(initTrial, 1000);
+    return;
+  }
+  wrapGetTier();
+  injectTrialButton();
+  checkTrialState();
+  _startExpiryTicker();
+  /* Check every 30 min (banner khud har second update hota hai) */
+  setInterval(checkTrialState, 30 * 60 * 1000);
+  console.log('[Mini eSports] Free Trial System v1.0 ✅');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(initTrial, 2500); });
+} else {
+  setTimeout(initTrial, 2500);
+}
+})();

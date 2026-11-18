@@ -1,0 +1,1 @@
+select public.admin_notify('Report #3 fixes live', 'Watch&Earn + Ad reward me session-binding (spoof-proof), 11 cron functions locked, 5 FK indexes, support_messages fix — sab live E2E verified. Timeout wali cheezein Supabase-internal nikli (realtime/telemetry), monitoring jari.', 'session_end') as notified;

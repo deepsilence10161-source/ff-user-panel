@@ -1,0 +1,20 @@
+  mem qa4/hi/home: heap=10.1MB nodes=1187
+clicks qa4/hi/home done, findings=0 dialogs=0
+  mem qa4/hi/rank: heap=10.1MB nodes=1123
+clicks qa4/hi/rank done, findings=0 dialogs=0
+  mem qa4/hi/matches: heap=10.1MB nodes=1085
+clicks qa4/hi/matches done, findings=0 dialogs=0
+  mem qa4/hi/wallet: heap=10.1MB nodes=1123
+clicks qa4/hi/wallet done, findings=0 dialogs=0
+  mem qa4/hi/profile: heap=10.1MB nodes=1123
+clicks qa4/hi/profile done, findings=0 dialogs=0
+  mem qa4/hi/notif: heap=undefinedMB nodes=undefined ERR=page.evaluate: Target page, context or browser has
+clicks qa4/hi/notif done, findings=21 dialogs=0
+node:internal/process/promises:391
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+browserContext.close: Target page, context or browser has been closed
+    at /home/user/ff-user-panel/async /home/user/ff-user-panel/tools/audit/d103-clicks.cjs:145:5
+
+Node.js v20.20.2

@@ -1,1 +1,513 @@
-function _isWebView(){if(window['Android']&&typeof window['Android']['isAndroidApp']==='function')try{return window['Android']['isAndroidApp']();}catch(_0x230dba){}if(window['isAndroidApp']===!![])return!![];var _0x30562a=navigator['userAgent']||'';return/; wv\)/['test'](_0x30562a);}function _loginLoading(_0x3a43b4){var _0x5abcdc=document['getElementById']('googleLoginBtn'),_0x3f1236=document['getElementById']('loginLoading'),_0xd56e59=document['getElementById']('loginErr');if(_0x5abcdc)_0x5abcdc['style']['display']=_0x3a43b4?'none':'flex';if(_0x3f1236)_0x3f1236['style']['display']=_0x3a43b4?'flex':'none';if(_0xd56e59&&_0x3a43b4)_0xd56e59['style']['display']='none';}function _loginError(_0x1899ff){var _0x19648a=document['getElementById']('googleLoginBtn'),_0x149209=document['getElementById']('loginLoading'),_0x23ca00=document['getElementById']('loginErr');_0x19648a&&(_0x19648a['style']['display']='flex',_0x19648a['disabled']=![]);if(_0x149209)_0x149209['style']['display']='none';_0x23ca00&&(_0x23ca00['textContent']=_0x1899ff,_0x23ca00['style']['display']='block');}window['doGoogleLogin']=function(){var _0x46d335=document['getElementById']('googleLoginBtn');_0x46d335&&(_0x46d335['disabled']=!![]);var _0x4fd1dc=0x0;function _0x26c2f7(){_0x4fd1dc++;var _0x39c2d0=window['auth'],_0x3a624b=window['gp'];if(!_0x39c2d0||!_0x3a624b){if(_0x4fd1dc<0x1e){setTimeout(_0x26c2f7,0xc8);return;}if(_0x46d335)_0x46d335['disabled']=![];_loginError('Firebase\x20load\x20nahi\x20hua\x20—\x20page\x20refresh\x20karo');return;}_loginLoading(!![]);if(_isWebView()){if(window['Android']&&typeof window['Android']['nativeGoogleSignIn']==='function'){window['Android']['nativeGoogleSignIn']();return;}window['_redirectAuthPending']=!![],_0x3a624b['setCustomParameters']({'prompt':'select_account'}),_0x39c2d0['signInWithRedirect'](_0x3a624b)['catch'](function(_0x3c249f){window['_redirectAuthPending']=![],_loginError(_friendlyErr(_0x3c249f));});}else _0x39c2d0['signInWithPopup'](_0x3a624b)['then'](function(){})['catch'](function(_0x2882df){_0x2882df['code']==='auth/popup-blocked'||_0x2882df['code']==='auth/operation-not-supported-in-this-environment'?_0x39c2d0['signInWithRedirect'](_0x3a624b)['catch'](function(_0x2bfd80){_loginError(_friendlyErr(_0x2bfd80));}):_loginError(_friendlyErr(_0x2882df));});}_0x26c2f7();},window['onNativeGoogleToken']=async function(_0xcc3cf7){try{var _0x569cb9=window['firebase']&&window['firebase']['auth']&&window['firebase']['auth']['GoogleAuthProvider'];if(!_0x569cb9)throw new Error('Firebase\x20auth\x20not\x20loaded');var _0x41d5c0=_0x569cb9['credential'](_0xcc3cf7);await window['auth']['signInWithCredential'](_0x41d5c0);}catch(_0x59fea1){console['error']('[Auth]\x20Native\x20sign-in\x20credential\x20error:',_0x59fea1),_loginLoading(![]),_loginError(_friendlyErr(_0x59fea1));}},window['onNativeGoogleError']=function(_0x243675){console['warn']('[Auth]\x20Native\x20Google\x20Sign-In\x20error:',_0x243675),_loginLoading(![]);var _0xa84d93='',_0x5c7067=_0x243675&&_0x243675['match'](/Code:(\d+)/);if(_0x5c7067)_0xa84d93=_0x5c7067[0x1];if(_0xa84d93==='12501'){var _0x2d0185=document['getElementById']('googleLoginBtn');_0x2d0185&&(_0x2d0185['style']['display']='flex',_0x2d0185['disabled']=![]);var _0x14421c=document['getElementById']('loginLoading');if(_0x14421c)_0x14421c['style']['display']='none';return;}if(_0xa84d93==='10'){_loginError('Setup\x20incomplete:\x20GitHub\x20Actions\x20logs\x20mein\x20SHA-1\x20copy\x20karo\x20→\x20Firebase\x20Console\x20mein\x20register\x20karo');return;}if(_0xa84d93==='7'){_loginError('No\x20internet\x20—\x20check\x20connection\x20aur\x20retry\x20karo');return;}_loginError('Google\x20sign-in\x20failed\x20—\x20dobara\x20try\x20karo');};function _showBrowserFallback(){var _0x24e4e2=document['getElementById']('loginErr'),_0x3b9403=window['location']['href']['split']('?')[0x0],_0x3e7a69='⚠️\x20Google\x20login\x20WebView\x20mein\x20restricted\x20hai.\x0a'+'Chrome\x20mein\x20kholkar\x20login\x20karo:';_0x24e4e2&&(_0x24e4e2['innerHTML']='<div\x20style=\x22font-size:13px;line-height:1.5\x22>'+'⚠️\x20Google\x20login\x20in-app\x20browser\x20mein\x20nahi\x20chalta.<br>'+'<a\x20href=\x22'+_0x3b9403+'\x22\x20target=\x22_blank\x22\x20'+'style=\x22color:#6366f1;font-weight:bold;text-decoration:underline\x22>'+'👉\x20Chrome\x20mein\x20kholkar\x20login\x20karo'+'</a><br>'+'<small\x20style=\x22opacity:0.7\x22>Login\x20ke\x20baad\x20wapas\x20app\x20mein\x20aao</small>'+'</div>',_0x24e4e2['style']['display']='block');var _0x3f4fac=document['getElementById']('googleLoginBtn');_0x3f4fac&&(_0x3f4fac['style']['display']='flex',_0x3f4fac['disabled']=![]);var _0x17a7bb=document['getElementById']('loginLoading');if(_0x17a7bb)_0x17a7bb['style']['display']='none';}function _friendlyErr(_0x307301){var _0x1c61ba=_0x307301&&_0x307301['code']||'';if(_0x1c61ba==='auth/popup-closed-by-user')return'Login\x20cancel\x20kar\x20diya\x20—\x20dobara\x20try\x20karo';if(_0x1c61ba==='auth/unauthorized-domain')return'⚠️\x20Domain\x20authorized\x20nahi\x20—\x20Firebase\x20Console\x20mein\x20add\x20karo';if(_0x1c61ba==='auth/network-request-failed')return'📡\x20Network\x20error\x20—\x20internet\x20check\x20karo';if(_0x1c61ba==='auth/too-many-requests')return'⏳\x20Too\x20many\x20attempts\x20—\x20thodi\x20der\x20baad\x20try\x20karo';return _0x307301['message']||'Login\x20failed\x20—\x20dobara\x20try\x20karo';}function _initFirebaseAuth(){var _0x5c53fe=(function(){var _0x2e82de=!![];return function(_0x449597,_0x57d0d3){var _0x23e267=_0x2e82de?function(){if(_0x57d0d3){var _0x2a4deb=_0x57d0d3['apply'](_0x449597,arguments);return _0x57d0d3=null,_0x2a4deb;}}:function(){};return _0x2e82de=![],_0x23e267;};}()),_0xd5715f=_0x5c53fe(this,function(){if(_0xd5715f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0xd5715f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0xd5715f)['search']('(((.+)+)+)+$');});_0xd5715f();var _0x5137d9=window['auth'];if(!_0x5137d9){setTimeout(_initFirebaseAuth,0x190);return;}typeof _0x5137d9['getRedirectResult']==='function'&&(window['_redirectAuthPending']=!![],_0x5137d9['getRedirectResult']()['then'](function(_0x2de3aa){window['_redirectAuthPending']=![];if(_0x2de3aa&&_0x2de3aa['user']){console['log']('[Auth]\x20Redirect\x20login\x20success');if(window['_hideSplash'])window['_hideSplash']();}else{}})['catch'](function(_0x475cff){window['_redirectAuthPending']=![],_0x475cff&&_0x475cff['code']&&_0x475cff['code']!=='auth/no-auth-event'&&(console['warn']('[Auth]\x20Redirect\x20result\x20error:',_0x475cff['code']),_loginError(_friendlyErr(_0x475cff)));})),_0x5137d9['onAuthStateChanged'](async function(_0xb042d4){if(_0xb042d4){console['log']('[Auth]\x20User\x20signed\x20in:',_0xb042d4['uid']),_loginLoading(![]);if(window['_hideSplash'])window['_hideSplash']();var _0x25b89a=document['getElementById']('loginScreen');if(_0x25b89a)_0x25b89a['style']['display']='none';await _handleSignIn(_0xb042d4);}else _loginLoading(![]),_resetLoginUI(),_showLoginScreen();}),typeof _0x5137d9['onIdTokenChanged']==='function'&&_0x5137d9['onIdTokenChanged'](async function(_0x198621){_0x198621&&window['U']&&(window['DB']&&window['DB']['auth']&&window['DB']['auth']['syncFirebaseToken']&&(await window['DB']['auth']['syncFirebaseToken'](_0x198621),console['log']('[Auth]\x20Firebase\x20token\x20refreshed\x20→\x20Supabase\x20re-synced\x20✅')));});}async function _waitForDBAuth(_0x103e2b){var _0x5bbaa2=0x0;while(!(window['DB']&&window['DB']['auth']&&window['DB']['auth']['syncFirebaseToken'])&&_0x5bbaa2<_0x103e2b){await new Promise(function(_0x496a60){setTimeout(_0x496a60,0x64);}),_0x5bbaa2+=0x64;}return!!(window['DB']&&window['DB']['auth']&&window['DB']['auth']['syncFirebaseToken']);}async function _syncTokenWithRetry(_0x1cd5f8){var _0x577ff1=await _waitForDBAuth(0xbb8);if(!_0x577ff1)return![];var _0x50694e=[0x0,0x3e8,0xbb8];for(var _0x42ae10=0x0;_0x42ae10<_0x50694e['length'];_0x42ae10++){if(_0x50694e[_0x42ae10])await new Promise(function(_0x182757){setTimeout(_0x182757,_0x50694e[_0x42ae10]);});try{var _0x36ccf4=await window['DB']['auth']['syncFirebaseToken'](_0x1cd5f8);if(_0x36ccf4)return!![];}catch(_0x7b3e8c){}}return![];}async function _handleSignIn(_0x4d2052){window['U']={'uid':_0x4d2052['uid'],'displayName':_0x4d2052['displayName']||_0x4d2052['email']||'Player','email':_0x4d2052['email']||'','photoURL':_0x4d2052['photoURL']||null};var _0xb1f357=await _syncTokenWithRetry(_0x4d2052);!_0xb1f357&&console['warn']('[Auth]\x20Firebase→Supabase\x20token\x20sync\x20did\x20not\x20succeed\x20after\x20retries\x20—\x20proceeding\x20anyway\x20with\x20cached/anon\x20client;\x20account\x20creation\x20may\x20need\x20a\x20manual\x20retry\x20later.');var _0x5ac7ab=document['getElementById']('loginScreen');if(_0x5ac7ab)_0x5ac7ab['style']['display']='none';try{window['Android']&&typeof window['Android']['onUserLoggedIn']==='function'&&window['Android']['onUserLoggedIn']();}catch(_0x30aba8){}window['generateAdvancedFingerprint']&&window['generateAdvancedFingerprint']()['then'](function(_0x53ebba){window['db']&&(window['db']['ref']('users/'+_0x4d2052['uid']+'/lastFP')['set'](_0x53ebba),window['db']['ref']('users/'+_0x4d2052['uid']+'/lastSeen')['set'](Date['now']())),window['_supa']&&window['_supa']['from']('users')['update']({'device_fp':_0x53ebba})['eq']('id',_0x4d2052['uid'])['then'](null,function(){});});if(window['_bindPushIdentity'])window['_bindPushIdentity'](_0x4d2052['uid']);else{if(window['_saveOneSignalId'])window['_saveOneSignalId'](_0x4d2052['uid']);}if(window['afterLogin'])window['afterLogin'](window['U']);}window['doLogout']=function(){try{window['_unreadNotifCount']=0x0;var _0x32e826=document['querySelector']('.notif-badge,#notifBadge');_0x32e826&&(_0x32e826['textContent']='',_0x32e826['style']['display']='none');if(window['OQ']&&window['OQ']['clearAll'])window['OQ']['clearAll']();}catch(_0x19efba){}try{if(window['auth'])window['auth']['signOut']();}catch(_0x2c59c9){}try{if(window['_supa'])window['_supa']['auth']['signOut']();}catch(_0x3111dd){}try{window['Android']&&typeof window['Android']['nativeGoogleSignOut']==='function'&&window['Android']['nativeGoogleSignOut']();}catch(_0x13170a){}try{if(window['_unbindPushIdentity'])window['_unbindPushIdentity']();}catch(_0x29ff7d){}try{window['Android']&&typeof window['Android']['osLogout']==='function'&&window['Android']['osLogout']();}catch(_0x21261e){}try{window['Android']&&typeof window['Android']['onUserLoggedOut']==='function'&&window['Android']['onUserLoggedOut']();}catch(_0x30a366){}window['U']=null,window['UD']=null,_resetLoginUI(),_showLoginScreen();};function _resetLoginUI(){try{var _0xeadba6=document['getElementById']('googleLoginBtn'),_0x2637a9=document['getElementById']('loginLoading'),_0x71f203=document['getElementById']('loginErr');_0xeadba6&&(_0xeadba6['disabled']=![],_0xeadba6['style']['display']='flex',_0xeadba6['style']['pointerEvents']='auto',_0xeadba6['style']['opacity']='1');if(_0x2637a9)_0x2637a9['style']['display']='none';_0x71f203&&(_0x71f203['textContent']='',_0x71f203['style']['display']='none');window['_redirectAuthPending']=![],window['_loginBusy']=![];if(window['_hideSplash'])window['_hideSplash']();}catch(_0x2d1c84){}}window['_resetLoginUI']=_resetLoginUI;function _showLoginScreen(){try{var _0x402634=document['getElementById']('loginScreen'),_0x56574f=document['getElementById']('mainContent'),_0x542e9f=document['getElementById']('header'),_0x9e374e=document['getElementById']('bottomNav');_0x402634&&(_0x402634['style']['display']='flex',_0x402634['style']['pointerEvents']='auto');if(_0x56574f)_0x56574f['style']['display']='none';if(_0x542e9f)_0x542e9f['style']['display']='none';if(_0x9e374e)_0x9e374e['style']['display']='none';window['curScr']='login';}catch(_0x5b5784){}}window['_showLoginScreen']=_showLoginScreen,window['_onAuthDeepLink']=function(_0x5cd4d3){window['_redirectAuthPending']=![],console['log']('[Auth]\x20Deep\x20link\x20received:',_0x5cd4d3),fbAuth&&typeof fbAuth['getRedirectResult']==='function'&&fbAuth['getRedirectResult']()['then'](function(_0x5bc29d){_0x5bc29d&&_0x5bc29d['user']?console['log']('[Auth]\x20Custom\x20Tab\x20login\x20success\x20via\x20deep\x20link'):(console['log']('[Auth]\x20No\x20redirect\x20result\x20—\x20waiting\x20for\x20onAuthStateChanged'),setTimeout(function(){!window['U']&&_loginLoading(![]);},0x1388));})['catch'](function(_0x583045){console['warn']('[Auth]\x20Deep\x20link\x20getRedirectResult\x20error:',_0x583045&&_0x583045['code']),_loginError(_friendlyErr(_0x583045));});};document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',_initFirebaseAuth):_initFirebaseAuth();
+/* ════════════════════════════════════════════════════════════════
+   AUTH v4 — GOOGLE VIA FIREBASE ONLY
+   Flow:
+   1. User clicks "Continue with Google"
+   2. Firebase handles Google OAuth (popup / redirect WebView)
+   3. Firebase ID token → Supabase client recreated with Bearer header
+      (Supabase Third-Party Auth — NOT signInWithIdToken)
+   4. Supabase RLS works — auth.uid() = Firebase UID ✅
+   5. Token auto-refresh: onIdTokenChanged re-syncs when Firebase
+      silently refreshes the token (every ~1 hour)
+   6. Device fingerprint stored for anti-cheat (not for auth)
+════════════════════════════════════════════════════════════════ */
+
+/* ── WebView detection ── */
+function _isWebView() {
+  /* Android bridge available hai to 100% WebView hai */
+  if (window.Android && typeof window.Android.isAndroidApp === 'function') {
+    try { return window.Android.isAndroidApp(); } catch(e) {}
+  }
+  if (window.isAndroidApp === true) return true;
+  var ua = navigator.userAgent || '';
+  /* "; wv)" is the definitive Android WebView marker */
+  return /; wv\)/.test(ua);
+}
+
+/* ── Show/hide loading state ── */
+function _loginLoading(on) {
+  var btn  = document.getElementById('googleLoginBtn');
+  var load = document.getElementById('loginLoading');
+  var err  = document.getElementById('loginErr');
+  if (btn)  btn.style.display  = on ? 'none' : 'flex';
+  if (load) load.style.display = on ? 'flex'  : 'none';
+  if (err && on) err.style.display = 'none';
+}
+
+function _loginError(msg) {
+  var btn  = document.getElementById('googleLoginBtn');
+  var load = document.getElementById('loginLoading');
+  var err  = document.getElementById('loginErr');
+  if (btn)  { btn.style.display = 'flex'; btn.disabled = false; }
+  if (load) load.style.display = 'none';
+  if (err)  { err.textContent = msg; err.style.display = 'block'; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MAIN GOOGLE LOGIN
+════════════════════════════════════════════════════════════════ */
+window.doGoogleLogin = function() {
+  var btn = document.getElementById('googleLoginBtn');
+  if (btn) { btn.disabled = true; }
+
+  /* ── Wait for Firebase Auth to be ready (max 6 seconds) ── */
+  var _attempts = 0;
+  function _tryLogin() {
+    _attempts++;
+    var fbAuth = window.auth;
+    var fbGp   = window.gp;
+
+    if (!fbAuth || !fbGp) {
+      if (_attempts < 30) {
+        /* Retry every 200ms — Firebase usually loads within 1-2s */
+        setTimeout(_tryLogin, 200);
+        return;
+      }
+      /* After 6s still not ready — show error */
+      if (btn) btn.disabled = false;
+      _loginError('Firebase load nahi hua — page refresh karo');
+      return;
+    }
+
+    _loginLoading(true);
+
+    if (_isWebView()) {
+      /* ── Native Android Google Sign-In ───────────────────────
+         Flow:
+         1. Android.nativeGoogleSignIn() call hota hai
+         2. Google ka OFFICIAL account picker khulta hai
+            (wahan pehle se saved Google accounts dikh'te hain ✅)
+         3. User apna account select karta hai
+         4. Android ko Google ID token milta hai
+         5. Android → window.onNativeGoogleToken(token) inject karta hai
+         6. WebView mein Firebase signInWithCredential(token) hota hai
+         7. onAuthStateChanged fires → normal login flow ✅
+         No redirect_uri issues. No 400 errors. ✅ */
+
+      if (window.Android && typeof window.Android.nativeGoogleSignIn === 'function') {
+        window.Android.nativeGoogleSignIn();
+        /* Token callback: window.onNativeGoogleToken() — neeche define hai */
+        return; /* wait for callback */
+      }
+
+      /* Fallback — agar native bridge nahi hai (purani app) */
+      window._redirectAuthPending = true;
+      fbGp.setCustomParameters({ prompt: 'select_account' });
+      fbAuth.signInWithRedirect(fbGp)
+        .catch(function(e) {
+          window._redirectAuthPending = false;
+          _loginError(_friendlyErr(e));
+        });
+
+    } else {
+      /* Browser — signInWithPopup */
+      fbAuth.signInWithPopup(fbGp)
+        .then(function() { /* onAuthStateChanged handles rest */ })
+        .catch(function(e) {
+          if (e.code === 'auth/popup-blocked' ||
+              e.code === 'auth/operation-not-supported-in-this-environment') {
+            /* Fallback to redirect */
+            fbAuth.signInWithRedirect(fbGp)
+              .catch(function(e2) { _loginError(_friendlyErr(e2)); });
+          } else {
+            _loginError(_friendlyErr(e));
+          }
+        });
+    }
+  } /* end _tryLogin */
+
+  _tryLogin();
+};
+
+/* ════════════════════════════════════════════════════════════════
+   NATIVE ANDROID GOOGLE SIGN-IN CALLBACKS
+   MainActivity.java → webView.evaluateJavascript() se aate hain
+════════════════════════════════════════════════════════════════ */
+
+/* Android ne Google ID token diya — Firebase mein sign in karo */
+window.onNativeGoogleToken = async function(googleIdToken) {
+  try {
+    var GoogleAuthProvider = window.firebase && window.firebase.auth &&
+                             window.firebase.auth.GoogleAuthProvider;
+    if (!GoogleAuthProvider) throw new Error('Firebase auth not loaded');
+    var credential = GoogleAuthProvider.credential(googleIdToken);
+    await window.auth.signInWithCredential(credential);
+    /* onAuthStateChanged fire hoga → _handleSignIn → login complete ✅ */
+  } catch(e) {
+    console.error('[Auth] Native sign-in credential error:', e);
+    _loginLoading(false);
+    _loginError(_friendlyErr(e));
+  }
+};
+
+/* Android ne error diya — proper handling with helpful messages */
+window.onNativeGoogleError = function(errMsg) {
+  console.warn('[Auth] Native Google Sign-In error:', errMsg);
+  _loginLoading(false);
+
+  var code = '';
+  var m = errMsg && errMsg.match(/Code:(\d+)/);
+  if (m) code = m[1];
+
+  if (code === '12501') {
+    /* User ne cancel kiya — silently reset */
+    var btn = document.getElementById('googleLoginBtn');
+    if (btn) { btn.style.display = 'flex'; btn.disabled = false; }
+    var load = document.getElementById('loginLoading');
+    if (load) load.style.display = 'none';
+    return;
+  }
+
+  if (code === '10') {
+    /* DEVELOPER_ERROR: SHA-1 Firebase mein register nahi hai
+       → GitHub Actions build logs mein "Print SHA-1" step dekho
+       → Firebase Console → Project Settings → Android App → Add Fingerprint */
+    _loginError('Setup incomplete: GitHub Actions logs mein SHA-1 copy karo → Firebase Console mein register karo');
+    return;
+  }
+
+  if (code === '7') {
+    _loginError('No internet — check connection aur retry karo');
+    return;
+  }
+
+  _loginError('Google sign-in failed — dobara try karo');
+};
+
+/* ── Browser fallback for WebView Google-auth block ── */
+function _showBrowserFallback() {
+  var err = document.getElementById('loginErr');
+  var appUrl = window.location.href.split('?')[0];
+  var msg = '⚠️ Google login WebView mein restricted hai.\n' +
+            'Chrome mein kholkar login karo:';
+  if (err) {
+    err.innerHTML =
+      '<div style="font-size:13px;line-height:1.5">' +
+        '⚠️ Google login in-app browser mein nahi chalta.<br>' +
+        '<a href="' + appUrl + '" target="_blank" ' +
+           'style="color:#6366f1;font-weight:bold;text-decoration:underline">' +
+          '👉 Chrome mein kholkar login karo' +
+        '</a><br>' +
+        '<small style="opacity:0.7">Login ke baad wapas app mein aao</small>' +
+      '</div>';
+    err.style.display = 'block';
+  }
+  var btn = document.getElementById('googleLoginBtn');
+  if (btn) { btn.style.display = 'flex'; btn.disabled = false; }
+  var load = document.getElementById('loginLoading');
+  if (load) load.style.display = 'none';
+}
+
+function _friendlyErr(e) {
+  var code = (e && e.code) || '';
+  if (code === 'auth/popup-closed-by-user')   return 'Login cancel kar diya — dobara try karo';
+  if (code === 'auth/unauthorized-domain')     return '⚠️ Domain authorized nahi — Firebase Console mein add karo';
+  if (code === 'auth/network-request-failed')  return '📡 Network error — internet check karo';
+  if (code === 'auth/too-many-requests')       return '⏳ Too many attempts — thodi der baad try karo';
+  return e.message || 'Login failed — dobara try karo';
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FIREBASE AUTH STATE — handles login + redirect result
+════════════════════════════════════════════════════════════════ */
+function _initFirebaseAuth() {
+  var fbAuth = window.auth;
+  if (!fbAuth) { setTimeout(_initFirebaseAuth, 400); return; }
+
+  /* Handle redirect result (WebView) */
+  if (typeof fbAuth.getRedirectResult === 'function') {
+    /* Agar redirect se wapas aaye hain → flag set karo taaki boot.js timer
+       loginScreen na dikhaye jab tak auth complete na ho */
+    window._redirectAuthPending = true;
+    fbAuth.getRedirectResult()
+      .then(function(result) {
+        window._redirectAuthPending = false;
+        if (result && result.user) {
+          console.log('[Auth] Redirect login success');
+          /* _hideSplash karo — ab loginScreen nahi chahiye */
+          if (window._hideSplash) window._hideSplash();
+        } else {
+          /* Redirect nahi tha — normal page load */
+        }
+      })
+      .catch(function(e) {
+        window._redirectAuthPending = false;
+        if (e && e.code && e.code !== 'auth/no-auth-event') {
+          console.warn('[Auth] Redirect result error:', e.code);
+          _loginError(_friendlyErr(e));
+        }
+      });
+  }
+
+  /* Auth state listener */
+  fbAuth.onAuthStateChanged(async function(user) {
+    if (user) {
+      console.log('[Auth] User signed in:', user.uid);
+      _loginLoading(false);
+      /* ── Splash turant hide karo — black screen prevent karo ── */
+      if (window._hideSplash) window._hideSplash();
+      var ls = document.getElementById('loginScreen');
+      if (ls) ls.style.display = 'none';
+      await _handleSignIn(user);
+    } else {
+      /* Signed out — show login.
+         ✅ BUG FIX (2026-10-06): yahan pehle sirf screen dikhti thi, par
+         button ka disabled/atka-hua state reset nahi hota tha — isliye
+         logout ke baad "Continue with Google" dead lagta tha. Ab poora
+         login UI reset hota hai. */
+      _loginLoading(false);
+      _resetLoginUI();
+      _showLoginScreen();
+    }
+  });
+
+  /* Token refresh listener — Firebase silently refreshes token every ~1hr.
+     Re-sync with Supabase so RLS keeps working without requiring re-login. */
+  if (typeof fbAuth.onIdTokenChanged === 'function') {
+    fbAuth.onIdTokenChanged(async function(user) {
+      if (user && window.U) {
+        /* Only sync if already logged in (not on initial login — handled above) */
+        if (window.DB && window.DB.auth && window.DB.auth.syncFirebaseToken) {
+          await window.DB.auth.syncFirebaseToken(user);
+          console.log('[Auth] Firebase token refreshed → Supabase re-synced ✅');
+        }
+      }
+    });
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   HANDLE SIGN IN — Firebase → Supabase JWT sync
+════════════════════════════════════════════════════════════════ */
+/* ✅ BUG FIX (2026-07): properly waits for window.DB.auth.syncFirebaseToken
+   to exist (in case script execution order is ever different than
+   expected) AND retries the actual sync a few times with backoff if it
+   fails — instead of silently giving up after one un-awaited attempt and
+   letting the rest of login proceed on an anonymous Supabase client. */
+async function _waitForDBAuth(maxWaitMs) {
+  var waited = 0;
+  while (!(window.DB && window.DB.auth && window.DB.auth.syncFirebaseToken) && waited < maxWaitMs) {
+    await new Promise(function(r) { setTimeout(r, 100); });
+    waited += 100;
+  }
+  return !!(window.DB && window.DB.auth && window.DB.auth.syncFirebaseToken);
+}
+async function _syncTokenWithRetry(user) {
+  var ready = await _waitForDBAuth(3000);
+  if (!ready) return false;
+  var delays = [0, 1000, 3000];
+  for (var i = 0; i < delays.length; i++) {
+    if (delays[i]) await new Promise(function(r) { setTimeout(r, delays[i]); });
+    try {
+      var ok = await window.DB.auth.syncFirebaseToken(user);
+      if (ok) return true;
+    } catch (e) { /* try again */ }
+  }
+  return false;
+}
+
+async function _handleSignIn(user) {
+  /* Set global user object */
+  window.U = {
+    uid:         user.uid,
+    displayName: user.displayName || user.email || 'Player',
+    email:       user.email       || '',
+    photoURL:    user.photoURL    || null
+  };
+
+  /* ── Sync Firebase JWT → Supabase (Third-Party Auth) ──
+     Supabase Third-Party Auth is enabled for Firebase project fft-app-1e283.
+     Correct method: recreate Supabase client with Firebase token as
+     Authorization Bearer header (NOT signInWithIdToken — that's for OAuth).
+     Supabase then validates the token via Firebase's JWKS endpoint.
+
+     ✅ BUG FIX (2026-07): this used to (a) fall back to an un-awaited
+     setTimeout if DB.auth.syncFirebaseToken wasn't defined yet — meaning
+     afterLogin() could run immediately against a still-ANONYMOUS Supabase
+     client, and (b) never check whether the sync actually succeeded, so
+     one transient failure (e.g. Firebase getIdToken() network hiccup)
+     silently left the whole session on an anonymous client. Since the
+     users-row INSERT requires auth.jwt()->>'sub' = id (RLS), running it
+     unauthenticated doesn't error loudly — it just gets silently
+     rejected by RLS, and the row never gets created, permanently, since
+     account-creation only runs once. Fix: always genuinely await the
+     sync, and retry a few times (with backoff) if it fails, before ever
+     proceeding to afterLogin(). */
+  var _synced = await _syncTokenWithRetry(user);
+  if (!_synced) {
+    console.warn('[Auth] Firebase→Supabase token sync did not succeed after retries — proceeding anyway with cached/anon client; account creation may need a manual retry later.');
+  }
+
+  /* Hide login, proceed to app */
+  var ls = document.getElementById('loginScreen');
+  if (ls) ls.style.display = 'none';
+
+  /* Signal Android: user logged in — interstitial ab dikhana safe hai */
+  try {
+    if (window.Android && typeof window.Android.onUserLoggedIn === 'function') {
+      window.Android.onUserLoggedIn();
+    }
+  } catch(e) {}
+
+  /* Save device fingerprint for anti-cheat */
+  if (window.generateAdvancedFingerprint) {
+    window.generateAdvancedFingerprint().then(function(fp) {
+      if (window.db) {
+        window.db.ref('users/' + user.uid + '/lastFP').set(fp);
+        window.db.ref('users/' + user.uid + '/lastSeen').set(Date.now());
+      }
+      if (window._supa) {
+        window._supa.from('users').update({ device_fp: fp })
+          .eq('id', user.uid).then(null, function(){});
+      }
+    });
+  }
+
+  /* FCM (2026-10-31): push identity bind — native bridge token-sync +
+     web getToken → push-token edge fn → user_push_tokens table */
+  if (window._bindPushIdentity) window._bindPushIdentity(user.uid);
+  else if (window._saveOneSignalId) window._saveOneSignalId(user.uid);
+  /* OneSignal TRANSITION RETIRED (2026-10-31, directive 16): osLogin bridge
+     call hata diya — naye APK me method hai hi nahi, purane APK yeh code load
+     nahi karte (assets bundled), aur server-side fallback bhi retire ho gaya
+     (push-send v4 = FCM only). Push identity = sirf _bindPushIdentity (upar). */
+
+  /* Boot app */
+  if (window.afterLogin) window.afterLogin(window.U);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   LOGOUT
+════════════════════════════════════════════════════════════════ */
+window.doLogout = function() {
+  /* Clear offline queue */
+  try {
+    window._unreadNotifCount = 0;
+    var badge = document.querySelector('.notif-badge,#notifBadge');
+    if (badge) { badge.textContent = ''; badge.style.display = 'none'; }
+    if (window.OQ && window.OQ.clearAll) window.OQ.clearAll();
+  } catch(e) {}
+
+  /* Sign out both Firebase and Supabase */
+  try { if (window.auth) window.auth.signOut(); } catch(e) {}
+  try { if (window._supa) window._supa.auth.signOut(); } catch(e) {}
+
+  /* Native Google Sign-Out — next login pe account picker phir se aaye */
+  try {
+    if (window.Android && typeof window.Android.nativeGoogleSignOut === 'function') {
+      window.Android.nativeGoogleSignOut();
+    }
+  } catch(e) {}
+
+  /* FCM (2026-10-31): is device ke tokens DB se unbind — अगले user को
+     पिछले user के pushes न मिलें */
+  try { if (window._unbindPushIdentity) window._unbindPushIdentity(); } catch(e) {}
+  /* TRANSITION: purane APK ka native OneSignal unbind (naye APK me no-op) */
+  try {
+    if (window.Android && typeof window.Android.osLogout === 'function') {
+      window.Android.osLogout();
+    }
+  } catch(e) {}
+
+  /* Signal Android: user logged out */
+  try {
+    if (window.Android && typeof window.Android.onUserLoggedOut === 'function') {
+      window.Android.onUserLoggedOut();
+    }
+  } catch(e) {}
+
+  window.U  = null;
+  window.UD = null;
+
+  /* ✅ BUG FIX (2026-10-06) — "logout ke baad login screen dead lagti hai,
+     Continue with Google kaam nahi karta, mobile ka back button bhi nahi
+     chalta; app dobara kholne par sab theek ho jata hai"
+
+     असली जड़ (live code-reading se siddh):
+       (a) doGoogleLogin() ne `btn.disabled = true` kiya tha aur usse reset
+           karne wala koi rasta logout par nahi tha → button permanently
+           disabled pada reh jata tha (isliye "kaam nahi karta").
+       (b) agar login attempt beech me chhoot gaya (back press / app pause),
+           _loginLoading(true) atka reh jata → button display:none + spinner
+           hamesha → screen "disabled si" lagti hai.
+       (c) purana error text + _redirectAuthPending flag bhi wahi rehta.
+       (d) login screen sirf Firebase ke async onAuthStateChanged se khulti
+           thi — network slow/pending ho to screen blank/dead lagti.
+     Ab logout par UI state poora reset hota hai aur login screen turant,
+     seedha kholi jaati hai (kisi network callback ka intezaar nahi). */
+  _resetLoginUI();
+  _showLoginScreen();
+};
+
+/* ── Login UI ko default (taza) state me laao ─────────────────────────
+   Kabhi kabhi login attempt beech me ruk jata hai — tab yeh function
+   button/spinner/error sab default par le aata hai. Logout aur
+   onAuthStateChanged(signed-out) dono isi ko call karte hain. */
+function _resetLoginUI() {
+  try {
+    var btn  = document.getElementById('googleLoginBtn');
+    var load = document.getElementById('loginLoading');
+    var err  = document.getElementById('loginErr');
+    if (btn)  { btn.disabled = false; btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.opacity = '1'; }
+    if (load) load.style.display = 'none';
+    if (err)  { err.textContent = ''; err.style.display = 'none'; }
+    window._redirectAuthPending = false;
+    window._loginBusy = false;
+    if (window._hideSplash) window._hideSplash();
+  } catch (e) {}
+}
+window._resetLoginUI = _resetLoginUI;
+
+/* ── Login screen kholo + app chrome chhupao (turant, sync) ───────── */
+function _showLoginScreen() {
+  try {
+    var ls = document.getElementById('loginScreen');
+    var mc = document.getElementById('mainContent');
+    var hd = document.getElementById('header');
+    var bn = document.getElementById('bottomNav');
+    if (ls) { ls.style.display = 'flex'; ls.style.pointerEvents = 'auto'; }
+    if (mc) mc.style.display = 'none';
+    if (hd) hd.style.display = 'none';
+    if (bn) bn.style.display = 'none';
+    window.curScr = 'login';   /* goBack() isi se samajhta hai ki login par hain */
+  } catch (e) {}
+}
+window._showLoginScreen = _showLoginScreen;
+
+/* ── Deep Link Auth Handler ─────────────────────────────────────────────
+   MainActivity.onNewIntent() yeh call karta hai jab Chrome Custom Tab se
+   miniesports://auth deep link ke through app wapas aata hai.
+   Tab band ho gayi — ab Firebase se getRedirectResult() lena hai. ──────── */
+window._onAuthDeepLink = function(deepLinkUrl) {
+  window._redirectAuthPending = false;
+  console.log('[Auth] Deep link received:', deepLinkUrl);
+
+  /* Firebase getRedirectResult() ab result dega kyunki Custom Tab mein
+     Firebase ne auth complete kar liya aur session set kar diya */
+  if (fbAuth && typeof fbAuth.getRedirectResult === 'function') {
+    fbAuth.getRedirectResult()
+      .then(function(result) {
+        if (result && result.user) {
+          console.log('[Auth] Custom Tab login success via deep link');
+          /* onAuthStateChanged bhi fire hoga — _handleSignIn double-guard hai */
+        } else {
+          /* Result nahi mila — onAuthStateChanged pe rely karo */
+          console.log('[Auth] No redirect result — waiting for onAuthStateChanged');
+          /* Agar 5s mein bhi kuch nahi hua to login screen dikhao */
+          setTimeout(function() {
+            if (!window.U) { _loginLoading(false); }
+          }, 5000);
+        }
+      })
+      .catch(function(e) {
+        console.warn('[Auth] Deep link getRedirectResult error:', e && e.code);
+        _loginError(_friendlyErr(e));
+      });
+  }
+};
+
+/* Start auth */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _initFirebaseAuth);
+} else {
+  _initFirebaseAuth();
+}

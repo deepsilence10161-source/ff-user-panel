@@ -1,1 +1,1085 @@
-var _0x4ebc72=(function(){var _0x539cd7=!![];return function(_0x17d4d0,_0x3996ab){var _0x529858=_0x539cd7?function(){if(_0x3996ab){var _0x23ab5e=_0x3996ab['apply'](_0x17d4d0,arguments);return _0x3996ab=null,_0x23ab5e;}}:function(){};return _0x539cd7=![],_0x529858;};}()),_0x48c672=_0x4ebc72(this,function(){if(_0x48c672['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x48c672['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x48c672)['search']('(((.+)+)+)+$');});_0x48c672();function showLootCrate(_0xfd3d3c){var _0x1fe37e=document['getElementById']('_lootOverlay');if(_0x1fe37e)_0x1fe37e['remove']();var _0x7e41e5=document['createElement']('div');_0x7e41e5['id']='_lootOverlay',_0x7e41e5['style']['cssText']='position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(4px)',_0x7e41e5['innerHTML']='<div\x20id=\x22_lootBox\x22\x20style=\x22text-align:center;animation:lootDrop\x20.6s\x20cubic-bezier(.175,.885,.32,1.275)\x22>'+'<div\x20style=\x22font-size:80px;margin-bottom:8px;filter:drop-shadow(0\x200\x2030px\x20#ffd700)\x22>📦</div>'+'<div\x20style=\x22font-size:16px;color:#ffd700;font-weight:800;margin-bottom:4px\x22>PRIZE\x20BOX\x20DROPPED!</div>'+'<div\x20id=\x22_lootOpen\x22\x20style=\x22font-size:48px;cursor:pointer;animation:spin\x20.3s\x20ease\x22\x20onclick=\x22this.parentElement.parentElement._burst()\x22>🎁</div>'+'<div\x20style=\x22font-size:13px;color:var(--txt2);margin-top:8px\x22>Tap\x20to\x20open!</div>'+'</div>';var _0x179811=document['createElement']('style');_0x179811['textContent']='@keyframes\x20lootDrop{from{transform:translateY(-200px)\x20scale(.3);opacity:0}to{transform:none;opacity:1}}@keyframes\x20spin{from{transform:rotate(-20deg)}to{transform:rotate(20deg)}}@keyframes\x20confettiFall{from{transform:translateY(-20px)\x20rotate(0);opacity:1}to{transform:translateY(100vh)\x20rotate(720deg);opacity:0}}',document['head']['appendChild'](_0x179811),_0x7e41e5['_burst']=function(){var _0x22a30=document['getElementById']('_lootBox');if(_0x22a30){var _0x2198a7=['💰','💵','🪙','💸','⭐','✨'];for(var _0x37ae2c=0x0;_0x37ae2c<0x14;_0x37ae2c++){var _0x593c26=document['createElement']('div');_0x593c26['textContent']=_0x2198a7[Math['floor'](Math['random']()*_0x2198a7['length'])],_0x593c26['style']['cssText']='position:fixed;font-size:24px;left:'+Math['random']()*0x64+'vw;top:30vh;animation:confettiFall\x20'+(0x1+Math['random']())+'s\x20ease\x20forwards;z-index:100000;animation-delay:'+Math['random']()*0.5+'s',document['body']['appendChild'](_0x593c26),setTimeout(function(_0x51a095){_0x51a095['remove']();},0x7d0,_0x593c26);}_0x22a30['innerHTML']='<div\x20style=\x22font-size:60px;margin-bottom:8px;filter:drop-shadow(0\x200\x2040px\x20#00ff6a)\x22>💰</div>'+'<div\x20style=\x22font-size:20px;color:#00ff6a;font-weight:900\x22>💎'+(_0xfd3d3c||'?')+'\x20WON!</div>'+'<div\x20style=\x22font-size:13px;color:var(--txt2);margin-top:6px\x22>Added\x20to\x20your\x20wallet!</div>'+'<button\x20onclick=\x22this.closest(\x27[style*=fixed]\x27).remove()\x22\x20style=\x22margin-top:16px;padding:10px\x2024px;background:var(--green);color:#000;border:none;border-radius:20px;font-weight:800;font-size:14px;cursor:pointer\x22>🎉\x20Awesome!</button>';if(navigator['vibrate'])navigator['vibrate']([0x64,0x32,0x64,0x32,0xc8]);}},document['body']['appendChild'](_0x7e41e5),setTimeout(function(){if(_0x7e41e5['parentNode'])_0x7e41e5['remove']();},0x1f40);}function watchAd(){if(window['AdManager'])window['AdManager']['showRewardedAd'](window['onAdReward'],function(){toast('Ad\x20load\x20nahi\x20hua,\x20dobara\x20try\x20karo.','err');},'watchAd');else window['Android']&&window['Android']['showRewardedAd']?window['Android']['showRewardedAd']():toast('Ads\x20available\x20only\x20in\x20APK\x20version','inf');}window['onAdReward']=function(){if(window['_adMatchPending']){onAdRewardForMatch(window['_adMatchPending']),window['_adMatchPending']=null;return;}window['_supa']&&window['U']&&window['_supa']['rpc']('claim_ad_reward')['then'](function(_0xac3a1d){var _0x455235=_0xac3a1d&&_0xac3a1d['data'];if(!_0x455235||!_0x455235['success']){if(_0x455235&&_0x455235['error'])toast(_0x455235['error'],'inf');return;}if(window['UD']){window['UD']['coins']=(window['UD']['coins']||0x0)+_0x455235['coinsEarned'];if(window['updateHdr'])window['updateHdr']();}if(window['toast'])window['toast']('+'+_0x455235['coinsEarned']+'\x20Coins\x20earned!\x20🪙','ok');},function(){toast('Reward\x20claim\x20failed','err');});},window['_adWatchCount']={},window['_adMatchPending']=null;function showAdJoinPopup(_0x221336){var _0x88cb53=MT[_0x221336];if(!_0x88cb53)return;var _0x47ba93=Number(_0x88cb53['adsRequired'])||0x2,_0x52bb65=window['_adWatchCount'][_0x221336]||0x0,_0xdc1fd5=_0x47ba93-_0x52bb65,_0x36abce='<div\x20style=\x22text-align:center;padding:8px\x200\x204px\x22>';_0x36abce+='<div\x20style=\x22font-size:36px;margin-bottom:6px\x22>📺</div>',_0x36abce+='<div\x20style=\x22font-size:17px;font-weight:800;color:var(--green);margin-bottom:4px\x22>FREE\x20Match\x20—\x20Ads\x20Dekho,\x20Match\x20Khelo!</div>',_0x36abce+='<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:16px\x22>Yeh\x20match\x20bilkul\x20free\x20hai.\x20Sirf\x20<b\x20style=\x22color:#fff\x22>'+_0x47ba93+'\x20short\x20ads</b>\x20dekhne\x20ke\x20baad\x20join\x20kar\x20sakte\x20ho.</div>',_0x36abce+='<div\x20style=\x22display:flex;justify-content:center;gap:10px;margin-bottom:18px\x22>';for(var _0x3f3060=0x0;_0x3f3060<_0x47ba93;_0x3f3060++){var _0x42ac02=_0x3f3060<_0x52bb65;_0x36abce+='<div\x20style=\x22width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;',_0x36abce+=_0x42ac02?'background:rgba(0,255,106,.2);border:2px\x20solid\x20#00ff6a;color:#00ff6a':'background:rgba(255,255,255,.06);border:2px\x20dashed\x20rgba(255,255,255,.2);color:#555',_0x36abce+='\x22>'+(_0x42ac02?'✓':_0x3f3060+0x1)+'</div>';}_0x36abce+='</div>',_0xdc1fd5>0x0?(_0x36abce+='<div\x20style=\x22font-size:12px;color:#aaa;margin-bottom:14px\x22>Abhi\x20<b\x20style=\x22color:#fff\x22>'+_0xdc1fd5+'\x20ad'+(_0xdc1fd5>0x1?'s':'')+'</b>\x20aur\x20dekhni\x20hai</div>',_0x36abce+='<button\x20onclick=\x22watchAdForMatch(\x27'+_0x221336+'\x27)\x22\x20style=\x22width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:800;font-size:15px;border:none;cursor:pointer;letter-spacing:.5px\x22>▶\x20Ad\x20Dekho\x20('+_0x52bb65+'/'+_0x47ba93+')</button>'):(_0x36abce+='<div\x20style=\x22font-size:13px;color:#00ff9c;font-weight:700;margin-bottom:14px\x22>✅\x20Sabhi\x20ads\x20dekh\x20li!\x20Ab\x20join\x20kar\x20sakte\x20ho.</div>',_0x36abce+='<button\x20onclick=\x22confirmAdMatchJoin(\x27'+_0x221336+'\x27)\x22\x20style=\x22width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:800;font-size:15px;border:none;cursor:pointer\x22>🎮\x20Match\x20Join\x20Karo!</button>'),_0x36abce+='</div>',showModal('🎯\x20'+(_0x88cb53['name']||'Match'),_0x36abce);}function watchAdForMatch(_0xb9d5aa){window['_adMatchPending']=_0xb9d5aa;if(window['AdManager']){window['AdManager']['showRewardedAd'](function(){onAdRewardForMatch(_0xb9d5aa);},function(){toast('Ad\x20load\x20nahi\x20hua,\x20dobara\x20try\x20karo.','err');},'adMatch_'+_0xb9d5aa);return;}if(window['Android']&&window['Android']['showRewardedAd']){window['Android']['showRewardedAd']();return;}var _0x4ea91b=document['createElement']('div');_0x4ea91b['style']['cssText']='position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff',_0x4ea91b['id']='adOverlay_'+_0xb9d5aa;var _0x542575=['🎮\x20Gaming\x20Pro','📱\x20App\x20Store','🛒\x20Shop\x20Now','🏆\x20Win\x20Big'],_0x1c8e53=_0x542575[Math['floor'](Math['random']()*_0x542575['length'])],_0x559834=0x5;_0x4ea91b['innerHTML']='<div\x20style=\x22font-size:10px;color:#555;position:absolute;top:14px;left:16px;letter-spacing:1px\x22>ADVERTISEMENT</div>'+'<div\x20style=\x22font-size:28px;font-weight:900;margin-bottom:12px\x22>'+_0x1c8e53+'</div>'+'<div\x20style=\x22font-size:13px;color:#888;margin-bottom:24px\x22>Reward\x20ke\x20liye\x20poori\x20ad\x20dekho</div>'+'<div\x20style=\x22width:80px;height:80px;border-radius:50%;background:rgba(0,255,106,.1);border:3px\x20solid\x20#00ff9c;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#00ff9c\x22\x20id=\x22adTimer\x22>'+_0x559834+'</div>'+'<div\x20style=\x22font-size:11px;color:#555;margin-top:12px\x22>Ad\x20band\x20nahi\x20kar\x20sakte</div>',document['body']['appendChild'](_0x4ea91b);var _0x2d3575=setInterval(function(){_0x559834--;var _0x71a05f=document['getElementById']('adTimer');if(_0x71a05f)_0x71a05f['textContent']=_0x559834;_0x559834<=0x0&&(clearInterval(_0x2d3575),_0x4ea91b['remove'](),onAdRewardForMatch(_0xb9d5aa));},0x3e8);}function onAdRewardForMatch(_0x460480){if(!_0x460480)_0x460480=window['_adMatchPending'];if(!_0x460480)return;if(!window['_adWatchCount'][_0x460480])window['_adWatchCount'][_0x460480]=0x0;window['_adWatchCount'][_0x460480]++;var _0x46f9b5=MT[_0x460480],_0x4f0a7d=Number(_0x46f9b5&&_0x46f9b5['adsRequired'])||0x2,_0x23c721=window['_adWatchCount'][_0x460480];toast('Ad\x20'+_0x23c721+'/'+_0x4f0a7d+'\x20complete!\x20🎉','ok'),setTimeout(function(){showAdJoinPopup(_0x460480);},0x190);}function confirmAdMatchJoin(_0x20e25a){closeModal();var _0x6638f2=MT[_0x20e25a];if(!_0x6638f2)return;var _0x5b52f4=(_0x6638f2['mode']||_0x6638f2['type']||'solo')['toLowerCase']();if(_0x5b52f4!=='solo'&&_0x5b52f4!=='duo'&&_0x5b52f4!=='squad')_0x5b52f4='solo';if(!window['_supa']||!window['U']){toast('Service\x20unavailable.\x20Try\x20again.','err');return;}window['_supa']['rpc']('validate_and_join_match',{'p_uid':window['U']['uid'],'p_match_id':_0x20e25a,'p_entry_fee':0x0,'p_currency':'coins','p_join_data':{'mode':_0x5b52f4,'ign':window['UD']&&window['UD']['ign']||''}})['then'](function(_0x52e544){if(_0x52e544&&_0x52e544['error']){toast('Join\x20failed:\x20'+(_0x52e544['error']['message']||''),'err');return;}if(_0x52e544&&_0x52e544['data']&&_0x52e544['data']['ok']===![]){toast('❌\x20'+(_0x52e544['data']['error']||'Join\x20failed'),'err');return;}window['_supa']&&window['_supa']['from']('join_requests')['update']({'ad_watched':!![]})['eq']('match_id',_0x20e25a)['eq']('user_id',window['U']['uid'])['then'](null,function(){});window['MT']&&window['MT'][_0x20e25a]&&(window['MT'][_0x20e25a]['joinedSlots']=(window['MT'][_0x20e25a]['joinedSlots']||0x0)+0x1,window['MT'][_0x20e25a]['filledSlots']=window['MT'][_0x20e25a]['joinedSlots']);if(!window['JR'])window['JR']={};var _0x154659='ad_'+_0x20e25a+'_'+Date['now']();window['JR'][_0x154659]={'matchId':_0x20e25a,'userId':window['U']['uid'],'status':'joined','entryType':'ad','createdAt':Date['now']()},window['_adWatchCount'][_0x20e25a]=0x0,toast('🎮\x20Match\x20Joined!\x20Room\x20ID\x20milne\x20par\x20notification\x20aayega.','ok');if(window['renderMM'])setTimeout(window['renderMM'],0x190);navTo('matches');})['catch'](function(_0xeea452){toast('Join\x20failed\x20—\x20retry\x20karo','err'),console['error']('[AdJoin]',_0xeea452);});}function calcRkScore(_0x33f341){var _0x4ccfb6=Number(_0x33f341['wins']||0x0),_0x24cf53=Number(_0x33f341['kills']||0x0),_0x2c8813=Number(_0x33f341['matches']||0x0),_0x320773=Number(_0x33f341['winStreak']||0x0);return _0x4ccfb6*0x28+_0x24cf53*0x2+_0x2c8813*0x1+_0x320773*0xa;}function calcRk(_0x5bdab1){var _0x458938=calcRkScore(_0x5bdab1);if(_0x458938>=0x1388)return{'badge':'Grandmaster','emoji':'🌟','color':'#ff4500','bg':'rgba(255,69,0,.15)','pts':_0x458938};if(_0x458938>=0xdac)return{'badge':'Heroic','emoji':'⚔️','color':'#ff1493','bg':'rgba(255,20,147,.12)','pts':_0x458938};if(_0x458938>=0x7d0)return{'badge':'Legend','emoji':'','color':'#b964ff','bg':'rgba(185,100,255,.15)','pts':_0x458938};if(_0x458938>=0x5dd)return{'badge':'Diamond','emoji':'','color':'#00d4ff','bg':'rgba(0,212,255,.15)','pts':_0x458938};if(_0x458938>=0x3e9)return{'badge':'Platinum','emoji':'','color':'#e0e0ff','bg':'rgba(180,180,180,.13)','pts':_0x458938};if(_0x458938>=0x259)return{'badge':'Gold','emoji':'','color':'#ffd700','bg':'rgba(255,215,0,.14)','pts':_0x458938};if(_0x458938>=0x12d)return{'badge':'Silver','emoji':'','color':'#c0c0c0','bg':'rgba(192,192,192,.13)','pts':_0x458938};return{'badge':'Bronze','emoji':'','color':'#cd7f32','bg':'rgba(205,127,50,.13)','pts':_0x458938};}function getPlayerBadges(_0xc1212f,_0x1681a2){var _0x7a9c28=[],_0x3b5456=_0xc1212f['wins']||0x0,_0x25488d=_0xc1212f['kills']||0x0,_0x4240d6=_0xc1212f['matches']||0x0,_0x3f058a=_0xc1212f['winStreak']||0x0,_0x14cc1b=calcRk(_0xc1212f);if(_0x4240d6>=0x1)_0x7a9c28['push']({'icon':'🎮','name':'First\x20Match','desc':'First\x20match\x20played','color':'#00ff6a','bg':'rgba(0,255,106,.12)','glow':'0\x200\x2012px\x20rgba(0,255,106,.5)','anim':''});if(_0x4240d6>=0xa)_0x7a9c28['push']({'icon':'⚔️','name':'Veteran','desc':'10+\x20matches','color':'#00d4ff','bg':'rgba(0,212,255,.12)','glow':'0\x200\x2012px\x20rgba(0,212,255,.5)','anim':''});if(_0x4240d6>=0x32)_0x7a9c28['push']({'icon':'🎯','name':'Sharpshooter','desc':'50+\x20matches\x20played','color':'#ff9f1c','bg':'rgba(255,159,28,.12)','glow':'0\x200\x2012px\x20rgba(255,159,28,.5)','anim':''});if(_0x3b5456>=0x1)_0x7a9c28['push']({'icon':'🏆','name':'Champion','desc':'First\x20win!','color':'#ffd700','bg':'rgba(255,215,0,.14)','glow':'0\x200\x2014px\x20rgba(255,215,0,.6)','anim':'badge-pulse'});if(_0x3b5456>=0x5)_0x7a9c28['push']({'icon':'👑','name':'Dominator','desc':'5+\x20wins','color':'#b964ff','bg':'rgba(185,100,255,.14)','glow':'0\x200\x2014px\x20rgba(185,100,255,.6)','anim':'badge-pulse'});if(_0x3b5456>=0x14)_0x7a9c28['push']({'icon':'⚡','name':'Unstoppable','desc':'20+\x20wins','color':'#ff4500','bg':'rgba(255,69,0,.14)','glow':'0\x200\x2014px\x20rgba(255,69,0,.6)','anim':'badge-glow'});if(_0x25488d>=0xa)_0x7a9c28['push']({'icon':'🔪','name':'Blade','desc':'10+\x20kills','color':'#ff6b6b','bg':'rgba(255,107,107,.12)','glow':'0\x200\x2010px\x20rgba(255,107,107,.4)','anim':''});if(_0x25488d>=0x32)_0x7a9c28['push']({'icon':'💀','name':'Kill\x20Machine','desc':'50+\x20kills','color':'#ff2e2e','bg':'rgba(255,46,46,.14)','glow':'0\x200\x2014px\x20rgba(255,46,46,.6)','anim':'badge-pulse'});if(_0x25488d>=0x64)_0x7a9c28['push']({'icon':'☠️','name':'Headhunter','desc':'100+\x20kills','color':'#ff0000','bg':'rgba(255,0,0,.15)','glow':'0\x200\x2016px\x20rgba(255,0,0,.7)','anim':'badge-glow'});if(_0x3f058a>=0x3)_0x7a9c28['push']({'icon':'🔥','name':'On\x20Fire','desc':'3+\x20win\x20streak','color':'#ff8c00','bg':'rgba(255,140,0,.14)','glow':'0\x200\x2014px\x20rgba(255,140,0,.6)','anim':'badge-fire'});if(_0x3f058a>=0x5)_0x7a9c28['push']({'icon':'🌋','name':'Volcano','desc':'5+\x20win\x20streak','color':'#ff4500','bg':'rgba(255,69,0,.15)','glow':'0\x200\x2016px\x20rgba(255,69,0,.7)','anim':'badge-fire'});if(_0x1681a2>=0xa)_0x7a9c28['push']({'icon':'💫','name':'Pro\x20Player','desc':'Level\x2010','color':'#00ff9c','bg':'rgba(0,255,156,.12)','glow':'0\x200\x2012px\x20rgba(0,255,156,.5)','anim':''});if(_0x1681a2>=0x14)_0x7a9c28['push']({'icon':'🌟','name':'Elite','desc':'Level\x2020','color':'#ffd700','bg':'rgba(255,215,0,.14)','glow':'0\x200\x2014px\x20rgba(255,215,0,.6)','anim':'badge-pulse'});if(_0xc1212f['_top1'])_0x7a9c28['push']({'icon':'👑','name':'#1\x20Champion','desc':'Season\x20#1','color':'#ffd700','bg':'rgba(255,215,0,.2)','glow':'0\x200\x2020px\x20rgba(255,215,0,.8)','anim':'badge-glow'});if(_0xc1212f['_top2'])_0x7a9c28['push']({'icon':window['medalHtml']?medalHtml(0x2,0x10):'','name':'#2\x20Runner','desc':'Season\x20#2','color':'#c0c0c0','bg':'rgba(192,192,192,.18)','glow':'0\x200\x2016px\x20rgba(200,200,200,.7)','anim':'badge-pulse'});if(_0xc1212f['_top3'])_0x7a9c28['push']({'icon':window['medalHtml']?medalHtml(0x3,0x10):'','name':'#3\x20Bronze','desc':'Season\x20#3','color':'#cd7f32','bg':'rgba(205,127,50,.18)','glow':'0\x200\x2014px\x20rgba(205,127,50,.6)','anim':''});return _0x7a9c28;}var _rankTab='kills',_rkCssDone=![],RK_CSS=['.rkArena{position:relative;border:2px\x20solid\x20rgba(232,197,101,.55);border-radius:18px;overflow:hidden;text-align:center;padding:12px\x208px\x208px;margin:0\x200\x2012px;background:radial-gradient(120%\x2055%\x20at\x2050%\x200%,rgba(126,46,200,.38),transparent\x2062%),radial-gradient(90%\x2040%\x20at\x2050%\x20100%,rgba(255,190,60,.10),transparent\x2065%),linear-gradient(180deg,#170a28\x200%,#241143\x2034%,#1c0c34\x2062%,#0a0416\x20100%);box-shadow:inset\x200\x200\x2060px\x20rgba(90,30,160,.35),0\x206px\x2024px\x20rgba(0,0,0,.6)}','.rkArena\x20*{box-sizing:border-box}','.rkBeams{position:absolute;inset:0;pointer-events:none;background:conic-gradient(from\x20180deg\x20at\x2050%\x20-12%,transparent\x2041%,rgba(255,214,110,.24)\x2044%,transparent\x2047%,rgba(190,120,255,.26)\x2050%,transparent\x2053%,rgba(255,214,110,.19)\x2056%,transparent\x2059%)}','.rkLampL,.rkLampR{position:absolute;top:6px;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0\x200\x2014px\x206px\x20rgba(255,240,200,.7)}','.rkLampL{left:12%}.rkLampR{right:12%}','.rkBannerL{position:absolute;top:34px;left:3%;width:44px;z-index:1}','.rkBannerR{position:absolute;top:34px;right:3%;width:44px;z-index:1}','.rkScript{position:absolute;top:30%;width:19%;z-index:1;font-family:\x22Segoe\x20Script\x22,\x22Brush\x20Script\x20MT\x22,\x22Lucida\x20Handwriting\x22,cursive;color:#d8b45a;font-size:10.5px;line-height:1.3;text-shadow:0\x200\x2012px\x20rgba(216,180,90,.55);font-weight:700}','.rkScriptL{left:2.5%;transform:rotate(-8deg)}','.rkScriptR{right:2.5%;transform:rotate(8deg)}','.rkTrophy{position:relative;z-index:2;margin:6px\x20auto\x200;width:132px;line-height:0}','.rkPlaque{position:relative;z-index:2;width:72%;max-width:330px;margin:2px\x20auto\x200;background:linear-gradient(180deg,#f4d788,#c9a24a);clip-path:polygon(4%\x200,96%\x200,100%\x2028%,100%\x2072%,96%\x20100%,4%\x20100%,0\x2072%,0\x2028%);padding:2px}','.rkPlaqueIn{background:linear-gradient(180deg,#2a1348,#150a26);clip-path:polygon(4%\x200,96%\x200,100%\x2028%,100%\x2072%,96%\x20100%,4%\x20100%,0\x2072%,0\x2028%);padding:8px\x206px\x207px}','.rkTitle{font-size:20px;font-weight:900;letter-spacing:1.5px;background:linear-gradient(180deg,#ffefad,#e8b13f\x2055%,#a86e1f);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0\x202px\x205px\x20rgba(0,0,0,.8));white-space:nowrap}','.rkSub{color:#efe8fb;font-size:9.5px;letter-spacing:2.5px;margin-top:3px;font-weight:600}','.rkCrowdGlow{position:absolute;bottom:28px;left:0;right:0;height:90px;z-index:0;background:radial-gradient(60%\x20100%\x20at\x2050%\x20100%,rgba(150,80,255,.28),transparent\x2070%)}','.rkCrowdSvg{position:absolute;left:0;right:0;bottom:46px;width:100%;height:34px;z-index:0;opacity:1}','.rkSmoke{position:absolute;bottom:34px;width:40%;height:70px;filter:blur(8px);background:radial-gradient(ellipse\x20at\x20center,rgba(200,160,255,.32),transparent\x2070%);z-index:0}','.rkSmokeL{left:-6%}.rkSmokeR{right:-6%}','.rkPod{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-top:18px;padding:0\x206px}','.rkCol{flex:1;max-width:112px;display:flex;flex-direction:column;align-items:center;min-width:0}','.rkCrownSvg{width:34px;margin-bottom:2px;filter:drop-shadow(0\x202px\x206px\x20rgba(255,80,80,.45))}','.rkRingWrap{position:relative;display:inline-block}','.rkRing{border-radius:50%;border:4px\x20solid\x20#ffd700;background:#0b0b0f;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:28px;width:84px;height:84px;box-shadow:0\x200\x2022px\x20rgba(255,215,0,.5),inset\x200\x200\x2010px\x20rgba(0,0,0,.8)}','.rkRing\x20img{width:100%;height:100%;object-fit:cover;border-radius:50%}','.rkCol.p2\x20.rkRing{width:56px;height:56px;border-color:#d9d9e3;box-shadow:0\x200\x2016px\x20rgba(217,217,227,.45);font-size:20px}','.rkCol.p3\x20.rkRing{width:56px;height:56px;border-color:#cd7f32;box-shadow:0\x200\x2016px\x20rgba(205,127,50,.5);font-size:20px}','.rkLau{position:absolute;top:2px;width:16px;height:56px}','.rkLau.L{left:-15px}.rkLau.R{right:-15px;transform:scaleX(-1)}','.rkMedalSvg{width:26px;margin-top:4px;filter:drop-shadow(0\x202px\x204px\x20rgba(0,0,0,.6))}','.rkName{margin-top:5px;font-size:12px;font-weight:800;color:#fff;max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0\x201px\x203px\x20#000}','.rkVal{font-size:11px;font-weight:800;margin-top:1px;text-shadow:0\x201px\x203px\x20#000}','.rkCol.p1\x20.rkVal{color:#ffd700}.rkCol.p2\x20.rkVal{color:#e8e8f2}.rkCol.p3\x20.rkVal{color:#f2e3d2}','.rkTier{margin-top:4px;font-size:9px;font-weight:800;color:#ffd700;background:rgba(64,38,6,.8);border:1px\x20solid\x20rgba(255,215,0,.55);border-radius:11px;padding:2px\x209px;display:inline-flex;gap:4px;align-items:center}','.rkPed{width:88%;position:relative;margin-top:9px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900}','.rkPed::before{content:\x22\x22;position:absolute;top:-7px;left:0;right:0;height:14px;border-radius:50%;background:inherit;filter:brightness(1.25)}','.rkCol.p1\x20.rkPed{height:100px;background:linear-gradient(90deg,#6b4d00,#ffd700\x2030%,#fff2b0\x2050%,#ffd700\x2070%,#6b4d00);font-size:32px;color:#fff8d0;text-shadow:0\x200\x2010px\x20rgba(255,200,0,.8)}','.rkCol.p2\x20.rkPed{height:62px;background:linear-gradient(90deg,#43434e,#c9c9d4\x2030%,#f2f2f8\x2050%,#c9c9d4\x2070%,#43434e);font-size:24px;color:#fff;text-shadow:0\x201px\x204px\x20rgba(0,0,0,.5)}','.rkCol.p3\x20.rkPed{height:54px;background:linear-gradient(90deg,#4a2a10,#cd7f32\x2030%,#f0b070\x2050%,#cd7f32\x2070%,#4a2a10);font-size:24px;color:#fff;text-shadow:0\x201px\x204px\x20rgba(0,0,0,.5)}','.rkPedW{display:flex;align-items:center;gap:1px}','.rkLauS{width:12px;height:38px;opacity:.9}','.rkLauS.R{transform:scaleX(-1)}','.rkFloorGlow{position:relative;z-index:1;height:20px;margin-top:-4px;background:radial-gradient(60%\x20100%\x20at\x2050%\x200%,rgba(255,215,0,.16),transparent\x2070%)}','.rkFoot{position:relative;z-index:2;margin-top:8px;line-height:1.2}','.rkFootCrown{width:16px;margin:0\x20auto\x202px;display:block}','.rkFootName{letter-spacing:5px;font-size:11px;color:#d8b45a;font-weight:700}','.rkFootTag{letter-spacing:3px;font-size:8px;color:#96703d;margin-top:3px;font-weight:600}','.rkEmpty{color:#b9a0e0;font-size:12px;padding:26px\x200\x2034px;font-weight:700}','.rkLau\x20svg,.rkLauS\x20svg{width:100%;height:100%;display:block}','.rkLauS{display:block}','.rkBannerL\x20svg,.rkBannerR\x20svg{width:100%;height:auto;display:block}']['join']('');function _rkCss(){if(_rkCssDone||document['getElementById']('rkArenaCss')){_rkCssDone=!![];return;}var _0x21122e=document['createElement']('style');_0x21122e['id']='rkArenaCss',_0x21122e['textContent']=RK_CSS,document['head']['appendChild'](_0x21122e),_rkCssDone=!![];}var RK_DEFS='<svg\x20width=\x220\x22\x20height=\x220\x22\x20style=\x22position:absolute\x22\x20aria-hidden=\x22true\x22><defs>'+'<linearGradient\x20id=\x22rkGld\x22\x20x1=\x220\x22\x20y1=\x220\x22\x20x2=\x220\x22\x20y2=\x221\x22><stop\x20offset=\x220\x22\x20stop-color=\x22#ffe9a3\x22/><stop\x20offset=\x22.5\x22\x20stop-color=\x22#ffd700\x22/><stop\x20offset=\x221\x22\x20stop-color=\x22#b8860b\x22/></linearGradient>'+'<linearGradient\x20id=\x22rkSil\x22\x20x1=\x220\x22\x20y1=\x220\x22\x20x2=\x220\x22\x20y2=\x221\x22><stop\x20offset=\x220\x22\x20stop-color=\x22#f2f2f8\x22/><stop\x20offset=\x22.55\x22\x20stop-color=\x22#9a9aa8\x22/><stop\x20offset=\x221\x22\x20stop-color=\x22#6e6e80\x22/></linearGradient>'+'<linearGradient\x20id=\x22rkBrz\x22\x20x1=\x220\x22\x20y1=\x220\x22\x20x2=\x220\x22\x20y2=\x221\x22><stop\x20offset=\x220\x22\x20stop-color=\x22#f0b070\x22/><stop\x20offset=\x22.55\x22\x20stop-color=\x22#cd7f32\x22/><stop\x20offset=\x221\x22\x20stop-color=\x22#8a4f1d\x22/></linearGradient>'+'<linearGradient\x20id=\x22rkBan\x22\x20x1=\x220\x22\x20y1=\x220\x22\x20x2=\x220\x22\x20y2=\x221\x22><stop\x20offset=\x220\x22\x20stop-color=\x22#45196e\x22/><stop\x20offset=\x221\x22\x20stop-color=\x22#2a0f4a\x22/></linearGradient>'+'</defs></svg>';function _rkLaurel(_0x2ea83e){var _0x50b2f3=[[0x6,0x32,-0x26],[0x4,0x28,-0x1e],[4.5,0x1e,-0x14],[6.5,0x14,-0xa],[0xa,0xb,0x0],[0xe,0x5,0xc]]['map'](function(_0x37759d){return'<ellipse\x20cx=\x22'+_0x37759d[0x0]+'\x22\x20cy=\x22'+_0x37759d[0x1]+'\x22\x20rx=\x224.6\x22\x20ry=\x222.2\x22\x20transform=\x22rotate('+_0x37759d[0x2]+'\x20'+_0x37759d[0x0]+'\x20'+_0x37759d[0x1]+')\x22\x20fill=\x22'+_0x2ea83e+'\x22/>';})['join']('');return'<svg\x20viewBox=\x220\x200\x2018\x2060\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22><path\x20d=\x22M14\x2058\x20Q3\x2040\x207\x2020\x20Q9\x209\x2015\x202\x22\x20fill=\x22none\x22\x20stroke=\x22'+_0x2ea83e+'\x22\x20stroke-width=\x222.2\x22/>'+_0x50b2f3+'</svg>';}function _rkCrownSvg(_0x10ec5c){return'<svg\x20class=\x22'+(_0x10ec5c||'')+'\x22\x20viewBox=\x220\x200\x2040\x2026\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22>'+'<path\x20d=\x22M3\x2021\x20L1\x207\x20L11\x2013\x20L20\x202\x20L29\x2013\x20L39\x207\x20L37\x2021\x20Z\x22\x20fill=\x22url(#rkGld)\x22\x20stroke=\x22#8a5a00\x22\x20stroke-width=\x221\x22/>'+'<circle\x20cx=\x221\x22\x20cy=\x227\x22\x20r=\x221.7\x22\x20fill=\x22#ffe9a3\x22/><circle\x20cx=\x2220\x22\x20cy=\x222\x22\x20r=\x221.7\x22\x20fill=\x22#ffe9a3\x22/><circle\x20cx=\x2239\x22\x20cy=\x227\x22\x20r=\x221.7\x22\x20fill=\x22#ffe9a3\x22/>'+'<circle\x20cx=\x2220\x22\x20cy=\x2213\x22\x20r=\x222.6\x22\x20fill=\x22#e23b3b\x22/><circle\x20cx=\x2210\x22\x20cy=\x2216\x22\x20r=\x221.6\x22\x20fill=\x22#7b2ff7\x22/><circle\x20cx=\x2230\x22\x20cy=\x2216\x22\x20r=\x221.6\x22\x20fill=\x22#7b2ff7\x22/>'+'<rect\x20x=\x223\x22\x20y=\x2219.5\x22\x20width=\x2234\x22\x20height=\x224\x22\x20rx=\x222\x22\x20fill=\x22url(#rkGld)\x22\x20stroke=\x22#8a5a00\x22\x20stroke-width=\x22.6\x22/></svg>';}function _rkMedalSvg(_0x556c93,_0x229218){var _0x33b952=_0x229218==='s'?'url(#rkSil)':'url(#rkBrz)',_0x57d115=_0x229218==='s'?'#2b2b33':'#4a2a10';return'<svg\x20class=\x22rkMedalSvg\x22\x20viewBox=\x220\x200\x2034\x2042\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22>'+'<polygon\x20points=\x2210,0\x2016,0\x2017,13\x2012,13\x22\x20fill=\x22#3f74e0\x22/><polygon\x20points=\x2224,0\x2018,0\x2017,13\x2022,13\x22\x20fill=\x22#2b57b0\x22/>'+'<circle\x20cx=\x2217\x22\x20cy=\x2226\x22\x20r=\x2211\x22\x20fill=\x22'+_0x33b952+'\x22\x20stroke=\x22rgba(0,0,0,.35)\x22\x20stroke-width=\x221\x22/>'+'<circle\x20cx=\x2217\x22\x20cy=\x2226\x22\x20r=\x227.6\x22\x20fill=\x22none\x22\x20stroke=\x22rgba(255,255,255,.4)\x22\x20stroke-width=\x221\x22/>'+'<text\x20x=\x2217\x22\x20y=\x2230\x22\x20text-anchor=\x22middle\x22\x20font-size=\x229\x22\x20font-weight=\x22900\x22\x20fill=\x22'+_0x57d115+'\x22\x20font-family=\x22Arial,sans-serif\x22>★</text></svg>';}function _rkTrophySvg(){var _0x4344b5=[[0xe,0x3a,-0x28],[0xa,0x30,-0x23],[0x9,0x26,-0x19],[0xb,0x1c,-0xf],[0x10,0x12,-0x5],[0x17,0xa,0xa]]['map'](function(_0x98373e){return'<ellipse\x20cx=\x22'+_0x98373e[0x0]+'\x22\x20cy=\x22'+_0x98373e[0x1]+'\x22\x20rx=\x225\x22\x20ry=\x222.4\x22\x20transform=\x22rotate('+_0x98373e[0x2]+'\x20'+_0x98373e[0x0]+'\x20'+_0x98373e[0x1]+')\x22\x20fill=\x22#d8b45a\x22/>';})['join']('');return'<svg\x20viewBox=\x220\x200\x20132\x2074\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20style=\x22width:100%\x22>'+'<g><path\x20d=\x22M20\x2066\x20Q6\x2044\x2018\x2020\x20Q22\x2012\x2030\x206\x22\x20fill=\x22none\x22\x20stroke=\x22#d8b45a\x22\x20stroke-width=\x222.5\x22/>'+_0x4344b5+'</g>'+'<g\x20transform=\x22translate(132,0)\x20scale(-1,1)\x22><path\x20d=\x22M20\x2066\x20Q6\x2044\x2018\x2020\x20Q22\x2012\x2030\x206\x22\x20fill=\x22none\x22\x20stroke=\x22#d8b45a\x22\x20stroke-width=\x222.5\x22/>'+_0x4344b5+'</g>'+'<path\x20d=\x22M48\x2022\x20q-12\x200\x20-10\x2012\x20q2\x2010\x2012\x2010\x22\x20fill=\x22none\x22\x20stroke=\x22url(#rkGld)\x22\x20stroke-width=\x223\x22/>'+'<path\x20d=\x22M84\x2022\x20q12\x200\x2010\x2012\x20q-2\x2010\x20-12\x2010\x22\x20fill=\x22none\x22\x20stroke=\x22url(#rkGld)\x22\x20stroke-width=\x223\x22/>'+'<path\x20d=\x22M48\x2016\x20h36\x20v12\x20q0\x2016\x20-18\x2018\x20q-18\x20-2\x20-18\x20-18\x20z\x22\x20fill=\x22url(#rkGld)\x22\x20stroke=\x22#8a5a00\x22\x20stroke-width=\x221\x22/>'+'<polygon\x20points=\x2266,20\x2071,26\x2066,32\x2061,26\x22\x20fill=\x22#8b2ff7\x22\x20stroke=\x22#e8c565\x22\x20stroke-width=\x221\x22/>'+'<rect\x20x=\x2262\x22\x20y=\x2246\x22\x20width=\x228\x22\x20height=\x228\x22\x20fill=\x22url(#rkGld)\x22/>'+'<rect\x20x=\x2254\x22\x20y=\x2254\x22\x20width=\x2224\x22\x20height=\x226\x22\x20rx=\x222\x22\x20fill=\x22url(#rkGld)\x22\x20stroke=\x22#8a5a00\x22\x20stroke-width=\x22.6\x22/>'+'<rect\x20x=\x2250\x22\x20y=\x2260\x22\x20width=\x2232\x22\x20height=\x226\x22\x20rx=\x222\x22\x20fill=\x22#b8860b\x22/>'+'</svg>';}function _rkBannerSvg(_0x534690){var _0x1d7eab=_0x534690==='L'?['PLAY','COMPETE','CLIMB','REPEAT']:['SMALL','GAMES','BIG','CHAMPIONS'],_0x3b0b43=_0x1d7eab['map'](function(_0x319e81,_0x5cf73f){return'<text\x20x=\x2226\x22\x20y=\x22'+(0x1e+_0x5cf73f*0x11)+'\x22\x20text-anchor=\x22middle\x22\x20font-size=\x227.5\x22\x20font-weight=\x22800\x22\x20letter-spacing=\x221\x22\x20fill=\x22#e8c565\x22\x20font-family=\x22Arial,sans-serif\x22>'+_0x319e81+'</text>';})['join']('');return'<svg\x20class=\x22rkBanner'+_0x534690+'\x22\x20viewBox=\x220\x200\x2052\x20168\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22>'+'<path\x20d=\x22M1\x201\x20h50\x20v138\x20l-25\x2027\x20l-25\x20-27\x20z\x22\x20fill=\x22url(#rkBan)\x22\x20stroke=\x22#c9a24a\x22\x20stroke-width=\x222\x22/>'+'<path\x20d=\x22M6\x206\x20h40\x20v130\x20l-20\x2021\x20l-20\x20-21\x20z\x22\x20fill=\x22none\x22\x20stroke=\x22rgba(232,197,101,.35)\x22\x20stroke-width=\x221\x22/>'+_0x3b0b43+'<path\x20d=\x22M18\x20122\x20l-2\x20-9\x20l7\x205\x20l3\x20-8\x20l3\x208\x20l7\x20-5\x20l-2\x209\x20z\x22\x20fill=\x22#e8c565\x22/>'+'</svg>';}function _rkCrowdSvg(){var _0x8fa41f='M0\x2034\x20L0\x2024';for(var _0x50fbc8=0x0;_0x50fbc8<0x168;_0x50fbc8+=0x18)_0x8fa41f+='\x20Q'+(_0x50fbc8+0xc)+'\x2010\x20'+(_0x50fbc8+0x18)+'\x2024';_0x8fa41f+='\x20L360\x2034\x20Z';var _0x1990b8=[[0x28,0x14,'#ffd700'],[0x76,0xf,'#fff'],[0xd0,0x15,'#ffd700'],[0x12a,0x11,'#fff'],[0x154,0x16,'#ffd700']]['map'](function(_0x30eeed){return'<circle\x20cx=\x22'+_0x30eeed[0x0]+'\x22\x20cy=\x22'+_0x30eeed[0x1]+'\x22\x20r=\x221.2\x22\x20fill=\x22'+_0x30eeed[0x2]+'\x22\x20opacity=\x22.55\x22/>';})['join']('');return'<svg\x20class=\x22rkCrowdSvg\x22\x20viewBox=\x220\x200\x20360\x2034\x22\x20preserveAspectRatio=\x22none\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22><path\x20d=\x22'+_0x8fa41f+'\x22\x20fill=\x22#140a26\x22/>'+_0x1990b8+'</svg>';}function _arenaCard(_0x2ff997,_0x4b0d0e){var _0x585d74='20261117f',_0x3d5325=(_0x2ff997||[])['slice'](0x0,0x3),_0x19edac=[{'n':0x2,'av':{'l':22.17,'t':40.51,'w':15.32},'nm':{'t':0x39,'f':3.5},'vl':{'t':60.5,'f':3.3},'pl':{'t':63.4}},{'n':0x1,'av':{'l':49.85,'t':34.52,'w':19.52},'nm':{'t':49.8,'f':3.7},'vl':{'t':53.4,'f':3.5},'pl':{'t':56.3}},{'n':0x3,'av':{'l':77.39,'t':42.48,'w':14.84},'nm':{'t':58.6,'f':3.4},'vl':{'t':62.1,'f':3.2},'pl':{'t':64.6}}],_0x30c6a4={0x1:'#141414',0x2:'#ff8c1a',0x3:'#58b368'},_0x2ef93b={0x1:'#ffd700',0x2:'#ffffff',0x3:'#ffd700'},_0x113de9='<div\x20style=\x22position:relative;border-radius:18px;overflow:hidden;margin-bottom:12px;container-type:inline-size;background:#0b0714\x20url(assets/rank/arena_bg.jpg?v='+_0x585d74+')\x20center/cover\x20no-repeat;aspect-ratio:1024/1536\x22>';if(!_0x3d5325['length'])_0x113de9+='<div\x20style=\x22position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#ffd700;font-size:4cqw;font-weight:900;text-shadow:0\x202px\x2010px\x20#000\x22>🏆\x20No\x20ranked\x20players\x20yet</div>';else for(var _0x50a1f5=0x0;_0x50a1f5<_0x19edac['length'];_0x50a1f5++){var _0x131afb=_0x19edac[_0x50a1f5],_0x1685ff=_0x3d5325[_0x131afb['n']-0x1];if(!_0x1685ff)continue;var _0x1c46c6=(_0x1685ff['ign']||_0x1685ff['displayName']||'')==='[deleted]',_0x5622e7=(_0x1685ff['ign']||_0x1685ff['displayName']||'?')['charAt'](0x0)['toUpperCase'](),_0x697c=_0x1c46c6?'👤':'<span\x20style=\x22position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:'+'inherit'+'\x22>'+_0x5622e7+'</span>'+(_0x1685ff['profileImage']?'<img\x20src=\x22'+_0x1685ff['profileImage']+'\x22\x20alt=\x22\x22\x20onerror=\x22this.style.display=\x27none\x27\x22\x20onload=\x22if(!this.naturalWidth)this.style.display=\x27none\x27\x22\x20style=\x22width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:1\x22>':''),_0x14b272=_rankVal(_0x1685ff,_0x4b0d0e),_0xef362e=_rankValStr(_0x14b272,_0x4b0d0e),_0x231b18=calcRk(_0x1685ff['stats']||{}),_0x9f3307='';try{if(window['premiumRibbonFor']&&Number(_0x1685ff['premiumLevel']||0x0)>0x0)_0x9f3307=window['premiumRibbonFor'](_0x1685ff['premiumLevel'],_0x1685ff['premiumExpires'],0xc);}catch(_0x1695b9){}var _0x338545=window['escHtml']?window['escHtml'](_0x1685ff['ign']||_0x1685ff['displayName']||'Player'):_0x1685ff['ign']||_0x1685ff['displayName']||'Player',_0x4d0c7a=_0x1685ff['_uid']&&!_0x1c46c6?'\x20onclick=\x22window.viewPublicProfile&&viewPublicProfile(\x27'+_0x1685ff['_uid']+'\x27)\x22':'';_0x113de9+='<div'+_0x4d0c7a+'\x20style=\x22position:absolute;left:'+_0x131afb['av']['l']+'%;top:'+_0x131afb['av']['t']+'%;width:'+_0x131afb['av']['w']+'cqw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:'+_0x30c6a4[_0x131afb['n']]+';display:flex;align-items:center;justify-content:center;font-size:'+_0x131afb['av']['w']/2.6+'cqw;font-weight:900;color:#fff;overflow:hidden'+(_0x4d0c7a?';cursor:pointer':'')+'\x22>'+_0x697c+'</div>',_0x113de9+='<div'+_0x4d0c7a+'\x20style=\x22position:absolute;left:'+_0x131afb['av']['l']+'%;top:'+_0x131afb['nm']['t']+'%;transform:translateX(-50%);max-width:26cqw;font-size:'+_0x131afb['nm']['f']+'cqw;font-weight:800;color:#fff;text-shadow:0\x202px\x206px\x20#000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center'+(_0x4d0c7a?';cursor:pointer':'')+'\x22>'+_0x338545+_0x9f3307+'</div>',_0x113de9+='<div\x20style=\x22position:absolute;left:'+_0x131afb['av']['l']+'%;top:'+_0x131afb['vl']['t']+'%;transform:translateX(-50%);font-size:'+_0x131afb['vl']['f']+'cqw;font-weight:800;color:'+_0x2ef93b[_0x131afb['n']]+';text-shadow:0\x202px\x206px\x20#000;white-space:nowrap\x22>'+_0xef362e+'</div>',_0x113de9+='<div\x20style=\x22position:absolute;left:'+_0x131afb['av']['l']+'%;top:'+_0x131afb['pl']['t']+'%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:1cqw;background:rgba(70,45,20,.72);border:1px\x20solid\x20rgba(200,150,60,.4);color:#d9a45c;font-size:2.7cqw;font-weight:800;padding:0.8cqw\x203cqw;border-radius:20px;white-space:nowrap\x22>'+(window['tierIconHtml']?tierIconHtml(_0x231b18['badge'],0xd):'')+'\x20'+_0x231b18['badge']+'</div>';}return _0x113de9+='</div>',_0x113de9;}function _rankChromeParts(){var _0x46adde=window['getCurrentSeason']?window['getCurrentSeason']():{'name':'Season','daysLeft':0x0,'label':''},_0x32cad7=[{'b':'Bronze','e':'','pts':'0'},{'b':'Silver','e':'','pts':'301'},{'b':'Gold','e':'','pts':'601'},{'b':'Platinum','e':'','pts':'1001'},{'b':'Diamond','e':'','pts':'1501'},{'b':'Legend','e':'','pts':'2000'},{'b':'Heroic','e':'⚔️','pts':'3500'},{'b':'Grandmaster','e':'🌟','pts':'5000'}],_0x4c4563='<div\x20class=\x22rank-formula-banner\x22\x20onclick=\x22window.showHowRankWorks&&showHowRankWorks()\x22>'+'<div\x20style=\x22font-size:12.5px;font-weight:800;color:#ffd700\x22>📊\x20Rank\x20=\x20Wins×40\x20+\x20Kills×2\x20+\x20Matches×1\x20<span\x20style=\x22color:#b8912a;font-weight:700;font-size:11px\x22>→\x20Tap\x20for\x20details</span></div>'+'</div>',_0x3f143a=_0x4c4563+'<div\x20style=\x22display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px\x22>'+['kills','wins','rankpoints']['map'](function(_0x4abe05){var _0x4584b3={'kills':'☠️\x20Kills','wins':'<img\x20src=\x22assets/img/icons/trophy.png\x22\x20alt=\x22\x22\x20style=\x22width:13px;height:13px;object-fit:contain;vertical-align:-2px\x22>\x20Wins','rankpoints':'<img\x20src=\x22assets/img/icons/diamond.png\x22\x20alt=\x22\x22\x20style=\x22width:13px;height:13px;object-fit:contain;vertical-align:-2px\x22>\x20Points'},_0x2a6183=_0x4abe05===_rankTab;return'<div\x20onclick=\x22renderRank(\x27'+_0x4abe05+'\x27)\x22\x20style=\x22flex:1;padding:9px\x206px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;transition:all\x20.2s;white-space:nowrap;text-align:center;'+(_0x2a6183?'background:#0d2f26;color:#35e08a;border:1.5px\x20solid\x20#1f8a5c;box-shadow:0\x200\x2010px\x20rgba(31,201,110,.25)':'background:#17171c;color:#8f8f98;border:1px\x20solid\x20#232329')+'\x22>'+_0x4584b3[_0x4abe05]+'</div>';})['join']('')+'</div>',_0x13ac55='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;'+'background:#141419;border:1px\x20solid\x20#232329;border-radius:14px;padding:13px\x2016px;margin-bottom:12px\x22>'+'<div\x20style=\x22font-size:13px;font-weight:900;color:#d24dff\x22>🏆\x20'+_0x46adde['name']+'</div>'+'<div\x20style=\x22font-size:11px;color:#8a8a92\x22><b\x20style=\x22color:#00d4ff;font-size:15px;font-weight:900\x22>'+_0x46adde['daysLeft']+'</b>\x20din\x20baaki</div>'+'</div>',_0x13d310='<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px\x22>'+[['⚔️','Clan\x20War','showClanWar','rgba(255,107,107,.1)','rgba(255,107,107,.3)','#ff6b6b'],['🏙️','City\x20Champ','showCityChampionship','rgba(255,170,0,.1)','rgba(255,170,0,.3)','#ffaa00'],['👨‍🏫','Mentor\x20Hub','showMentorHub','rgba(255,215,0,.1)','rgba(255,215,0,.3)','#ffd700']]['map'](function(_0x24c4a5){return'<button\x20onclick=\x22window.'+_0x24c4a5[0x2]+'&&window.'+_0x24c4a5[0x2]+'()\x22\x20style=\x22flex:1;min-width:96px;padding:10px\x208px;border-radius:12px;background:'+_0x24c4a5[0x3]+';border:1px\x20solid\x20'+_0x24c4a5[0x4]+';color:'+_0x24c4a5[0x5]+';font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap\x22>'+_0x24c4a5[0x0]+'\x20'+_0x24c4a5[0x1]+'</button>';})['join']('')+'</div>';return{'tabBar':_0x3f143a,'seasonTools':_0x13d310+_0x13ac55};}function renderRank(_0x2fba80){if(_0x2fba80)_rankTab=_0x2fba80;var _0x48e989=$('rankContent');if(!_0x48e989)return;var _0x4a5713=_rankChromeParts(),_0x53d769=_0x4a5713['tabBar'],_0x5180be=_0x4a5713['seasonTools'];_0x48e989['innerHTML']=_0x53d769+_0x5180be+_arenaCard([],_rankTab)+'<div\x20style=\x22text-align:center;padding:30px\x22><div\x20class=\x22sp-spinner\x22></div></div>';if(!window['_supa']){_renderRankList(_0x48e989,[],_rankTab,_0x53d769,_0x5180be,![]);return;}window['_supa']['from']('leaderboard')['select']('*')['limit'](0x12c)['then'](function(_0x256863){var _0x3fca11=(_0x256863['data']||[])['filter'](function(_0x291956){return!_isGhostRow(_0x291956);})['map'](function(_0x154da4){return{'_uid':_0x154da4['id'],'ign':_0x154da4['ign']||'Player','profileImage':_0x154da4['avatar_url']||'','rankPoints':_0x154da4['rank_points']||0x0,'winStreak':0x0,'stats':{'matches':_0x154da4['total_matches']||0x0,'wins':_0x154da4['total_wins']||0x0,'kills':_0x154da4['total_kills']||0x0},'premiumLevel':Number(_0x154da4['premium_level']||0x0),'premiumExpires':_0x154da4['premium_expires']?new Date(_0x154da4['premium_expires'])['getTime']():0x0};}),_0x5d44f0=_rankTab;_0x3fca11['sort'](function(_0x5111b7,_0x339596){var _0x21f089=_rankVal(_0x339596,_rankTab)-_rankVal(_0x5111b7,_rankTab);return _0x21f089?_0x21f089:_rankTiebreak(_0x5111b7,_0x339596);}),_renderRankList(_0x48e989,_0x3fca11,_0x5d44f0,_0x53d769,_0x5180be,![]);})['catch'](function(){_renderRankList(_0x48e989,[],_rankTab,_0x53d769,_0x5180be,![]);});}function _isGhostRow(_0x2b3e0d){var _0x373d84=(_0x2b3e0d['ign']||'')['toString']()['trim']();if(_0x373d84&&_0x373d84!=='[deleted]')return![];return!(Number(_0x2b3e0d['rank_points']||0x0)||Number(_0x2b3e0d['total_matches']||0x0)||Number(_0x2b3e0d['total_wins']||0x0)||Number(_0x2b3e0d['total_kills']||0x0));}function _rankTiebreak(_0x4dc4cd,_0x3e53df){var _0x412a1c=Number(_0x4dc4cd['wins']!=null?_0x4dc4cd['wins']:_0x4dc4cd['stats']&&_0x4dc4cd['stats']['wins']||0x0),_0x1976ad=Number(_0x3e53df['wins']!=null?_0x3e53df['wins']:_0x3e53df['stats']&&_0x3e53df['stats']['wins']||0x0);if(_0x1976ad-_0x412a1c)return _0x1976ad-_0x412a1c;var _0x36eef8=Number(_0x4dc4cd['kills']!=null?_0x4dc4cd['kills']:_0x4dc4cd['stats']&&_0x4dc4cd['stats']['kills']||0x0),_0x1faa39=Number(_0x3e53df['kills']!=null?_0x3e53df['kills']:_0x3e53df['stats']&&_0x3e53df['stats']['kills']||0x0);if(_0x1faa39-_0x36eef8)return _0x1faa39-_0x36eef8;return String(_0x4dc4cd['ign']||'')['localeCompare'](String(_0x3e53df['ign']||''));}function _rankVal(_0x16b017,_0x372964){var _0x94ef53=_0x16b017['stats']||{};if(_0x372964==='kills')return Number(_0x94ef53['kills']||0x0);if(_0x372964==='wins')return Number(_0x94ef53['wins']||0x0);if(_0x16b017['rankPoints']!=null&&_0x16b017['rankPoints']!=='')return Number(_0x16b017['rankPoints']||0x0);return Number(_0x94ef53['wins']||0x0)*0x28+Number(_0x94ef53['kills']||0x0)*0x2+Number(_0x94ef53['matches']||0x0)+Number(_0x94ef53['winStreak']||_0x16b017['winStreak']||0x0)*0xa;}function _rankValStr(_0x675a9a,_0x5df7c7){if(_0x5df7c7==='kills')return _0x675a9a+'\x20kills';if(_0x5df7c7==='wins')return _0x675a9a+'\x20wins';return'🏆\x20'+_0x675a9a+'\x20pts';}function _renderRankList(_0x357178,_0x18f593,_0x8ab84a,_0x246112,_0x4b0f19,_0x34fb39){var _0x1489aa=_0x246112+_0x4b0f19+_arenaCard(_0x18f593,_0x8ab84a);for(var _0x1c7599=0x3;_0x1c7599<_0x18f593['length'];_0x1c7599++){var _0x3922b2=_0x18f593[_0x1c7599],_0x72d072=calcRk(_0x3922b2['stats']||{}),_0xfe4d0=(_0x3922b2['ign']||_0x3922b2['displayName']||'')==='[deleted]',_0x1b70ce=(_0x3922b2['ign']||_0x3922b2['displayName']||'?')['charAt'](0x0)['toUpperCase'](),_0x4921a4=_0xfe4d0?'<i\x20class=\x22fas\x20fa-user\x22\x20style=\x22opacity:.4;font-size:16px;line-height:1\x22></i>':'<span\x20style=\x22grid-area:1/1;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff\x22>'+_0x1b70ce+'</span>'+(_0x3922b2['profileImage']?'<img\x20src=\x22'+_0x3922b2['profileImage']+'\x22\x20onerror=\x22this.style.display=\x27none\x27\x22\x20onload=\x22if(!this.naturalWidth)this.style.display=\x27none\x27\x22\x20style=\x22grid-area:1/1;position:relative;z-index:1\x22>':''),_0x45bdf5=_0x3922b2['stats']||{},_0x40d304;if(_0x8ab84a==='kills')_0x40d304=Number(_0x45bdf5['kills']||0x0);else{if(_0x8ab84a==='wins')_0x40d304=Number(_0x45bdf5['wins']||0x0);else{if(_0x3922b2['rankPoints']!=null&&_0x3922b2['rankPoints']!=='')_0x40d304=Number(_0x3922b2['rankPoints']||0x0);else{var _0x3b5259=Number(_0x45bdf5['wins']||0x0),_0x358828=Number(_0x45bdf5['kills']||0x0),_0x5c09be=Number(_0x45bdf5['matches']||0x0),_0x4a5d06=Number(_0x45bdf5['winStreak']||_0x3922b2['winStreak']||0x0);_0x40d304=_0x3b5259*0x28+_0x358828*0x2+_0x5c09be+_0x4a5d06*0xa;}}}var _0x4e4ca5=_0x8ab84a==='kills'?_0x40d304+'\x20kills':_0x8ab84a==='wins'?_0x40d304+'\x20wins':'🏆\x20'+_0x40d304+'\x20pts',_0x4aa5e5=window['U']&&_0x3922b2['_uid']===window['U']['uid'],_0x2d0147=_0x1c7599<0x7?['','🔱\x20Warlord','⚔️\x20Slayer','💫\x20Elite','🎯\x20Sniper','🔥\x20Blaze','🌟\x20Star','🎖️\x20Knight'][_0x1c7599+0x1]||'':'',_0x2ee07b=_0x3922b2['_uid']&&!_0xfe4d0?'\x20onclick=\x22window.viewPublicProfile&&viewPublicProfile(\x27'+_0x3922b2['_uid']+'\x27)\x22\x20style=\x22cursor:pointer':'';_0x1489aa+='<div\x20class=\x22rank-row\x22\x20data-uid=\x22'+(_0x3922b2['_uid']||'')+'\x22'+(_0x4aa5e5?'\x20style=\x22border:1px\x20solid\x20rgba(0,255,156,.3);background:rgba(0,255,156,.05);cursor:pointer':_0x2ee07b)+(_0x4aa5e5||_0x2ee07b?'\x22':'')+'>',_0x1489aa+='<div\x20class=\x22rank-num\x22\x20style=\x22color:'+(_0x1c7599===0x3?'#ffd700':_0x1c7599===0x4?'#c0c0c0':_0x1c7599===0x5?'#cd7f32':'var(--txt2)')+';font-weight:'+(_0x1c7599<0x6?'900':'700')+'\x22>#'+(_0x1c7599+0x1)+'</div>',_0x1489aa+='<div\x20class=\x22rank-ava\x22\x20style=\x22display:grid;place-items:center\x22>'+_0x4921a4+'</div>';var _0x21f741='';try{if(window['premiumRibbonFor']&&Number(_0x3922b2['premiumLevel']||0x0)>0x0)_0x21f741=premiumRibbonFor(_0x3922b2['premiumLevel'],_0x3922b2['premiumExpires'],0xf);else _0x4aa5e5&&window['premiumRibbonHtml']&&(_0x21f741=premiumRibbonHtml(0xf));}catch(_0x536fb7){}_0x1489aa+='<div\x20class=\x22rank-info\x22><div\x20class=\x22rn\x22><span\x20class=\x22rn-n\x22>'+(window['escHtml']?window['escHtml'](_0x3922b2['ign']||_0x3922b2['displayName']||'Player'):_0x3922b2['ign']||_0x3922b2['displayName']||'Player')+'</span>'+_0x21f741+(_0x4aa5e5?'\x20<span\x20style=\x22font-size:9px;color:var(--green)\x22>YOU</span>':'');if(_0x2d0147)_0x1489aa+='\x20<span\x20class=\x22rn-t\x22\x20style=\x22font-size:9px;padding:1px\x206px;border-radius:8px;background:rgba(255,215,0,.12);color:#ffd700;font-weight:800\x22>'+_0x2d0147+'</span>';_0x1489aa+='</div>';var _0x11f0b8=_0x3922b2['stats']||{},_0x318fc7=Number(_0x11f0b8['matches']||0x0),_0x1fbbd6=Number(_0x11f0b8['wins']||0x0),_0x29e686=Number(_0x11f0b8['kills']||0x0),_0x59e68d=_0x318fc7>0x0?Math['round'](_0x1fbbd6/_0x318fc7*0x64):0x0,_0x234ecf=_0x318fc7>0x0?(_0x29e686/_0x318fc7)['toFixed'](0x1):'0.0';_0x1489aa+='<div\x20class=\x22rs\x22>K:'+_0x29e686+'\x20·\x20W:'+_0x1fbbd6+'\x20·\x20<span\x20style=\x22color:#00ff9c\x22>WR:'+_0x59e68d+'%</span>\x20·\x20<span\x20style=\x22color:#ff9f1c\x22>K/M:'+_0x234ecf+'</span></div></div>',_0x1489aa+='<span\x20class=\x22rank-badge\x22\x20style=\x22background:'+_0x72d072['bg']+';color:'+_0x72d072['color']+';box-shadow:0\x200\x208px\x20'+_0x72d072['color']+'44;display:inline-flex;align-items:center;gap:4px\x22>'+(window['tierIconHtml']?tierIconHtml(_0x72d072['badge'],0x10):'')+'\x20'+_0x72d072['badge']+'</span>',_0x1489aa+='<div\x20class=\x22rank-earn\x22\x20style=\x22color:'+(_0x8ab84a==='kills'?'#ff6b6b':_0x8ab84a==='wins'?'#ffd700':'#00d4ff')+'\x22>'+_0x4e4ca5+'</div></div>';}if(!_0x18f593['length'])_0x1489aa+='<div\x20class=\x22empty-state\x22><i\x20class=\x22fas\x20fa-trophy\x22></i><p>No\x20ranked\x20players\x20yet</p></div>';_0x1489aa+='<div\x20style=\x22margin-top:12px\x22><button\x20onclick=\x22window.showReferralLeaderboard&&showReferralLeaderboard()\x22\x20'+'style=\x22width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(185,100,255,.1),rgba(121,40,202,.05));color:#b964ff;border:1px\x20solid\x20rgba(185,100,255,.2);font-weight:700;font-size:13px;cursor:pointer\x22>🎖️\x20Referral\x20Leaderboard</button></div>',_0x357178['innerHTML']=_0x1489aa,window['f22PlayerChat']!==undefined&&setTimeout(function(){if(window['injectLobbyChat'])window['injectLobbyChat']=window['injectLobbyChat'];var _0x316c74=document['getElementById']('lobbyChatWrap');if(!_0x316c74&&_0x357178){var _0x29fe50=document['createElement']('div');_0x29fe50['id']='lobbyChatWrap',_0x29fe50['style']['cssText']='margin-top:16px',_0x357178['appendChild'](_0x29fe50);}},0x64);}(function(){'use strict';function _0x57174d(_0x34af5e){_0x34af5e=Number(_0x34af5e);if(_0x34af5e>0x0)return window['medalHtml'](_0x34af5e,0x12);return'#?';}window['showResultPage']=function(_0xbcb4a5){var _0x129038=window['MT']&&window['MT'][_0xbcb4a5],_0x537968=window['db'],_0x3df0b7=window['U'],_0x30b798=window['UD'];if(!_0x537968||!_0x3df0b7)return;var _0x350948=document['getElementById']('_resultPage');if(_0x350948)_0x350948['remove']();var _0x5e9cd6=document['createElement']('div');_0x5e9cd6['id']='_resultPage',_0x5e9cd6['style']['cssText']=['position:fixed;inset:0;z-index:99970;','background:#050507;overflow-y:auto;','animation:resultPageIn\x20.3s\x20ease']['join'](''),_0x5e9cd6['innerHTML']='<div\x20style=\x22text-align:center;padding:80px\x2020px;color:#555;font-size:14px\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading\x20result...</div>';if(!document['getElementById']('_resultPageStyle')){var _0x476b5a=document['createElement']('style');_0x476b5a['id']='_resultPageStyle',_0x476b5a['textContent']='@keyframes\x20resultPageIn{from{transform:translateX(100%)}to{transform:translateX(0)}}',document['head']['appendChild'](_0x476b5a);}document['body']['appendChild'](_0x5e9cd6),history['pushState'](null,null,null),window['addEventListener']('popstate',function _0x147432(){window['removeEventListener']('popstate',_0x147432);var _0x4c862f=document['getElementById']('_resultPage');if(_0x4c862f)_0x4c862f['remove']();}),window['_supa']?window['_supa']['from']('join_requests')['select']('*')['eq']('match_id',_0xbcb4a5)['eq']('user_id',_0x3df0b7['uid'])['single']()['then'](function(_0x1e9284){_0x1e9284['data']&&_0x1e9284['data']['placement']?_0x3617fd(_0x5e9cd6,{'rank':_0x1e9284['data']['placement'],'kills':_0x1e9284['data']['kills']||0x0,'winnings':_0x1e9284['data']['prize_earned']||0x0,'userId':_0x3df0b7['uid'],'matchId':_0xbcb4a5},_0x129038,_0xbcb4a5):_0x5e9cd6['innerHTML']=_0x3ee95b();})['catch'](function(){_0x5e9cd6['innerHTML']=_0x3ee95b();}):_0x5e9cd6['innerHTML']=_0x3ee95b();},window['showResultDetail']=window['showResultPage'];function _0x3617fd(_0x4e55d5,_0x5e5988,_0x549308,_0x5727f2){var _0x192a49=window['UD']||{},_0x1ea103=Number(_0x5e5988['totalWinning'])||Number(_0x5e5988['winnings']||0x0)+Number(_0x5e5988['killPrize']||0x0),_0x3fef22=Number(_0x5e5988['rank'])||0x0,_0x212c25=Number(_0x5e5988['kills'])||0x0,_0x280c4b=_0x549308&&_0x549308['name']||_0x5e5988['matchName']||'Match',_0x206a5a=(_0x549308&&(_0x549308['mode']||_0x549308['type'])||_0x5e5988['mode']||'solo')['toLowerCase'](),_0x3831a9=_0x206a5a==='duo'||_0x206a5a==='squad',_0x252e1f=_0x3fef22===0x1,_0x4d6d9a=_0x192a49['ign']||_0x192a49['displayName']||'Player',_0xebc22a=_0x192a49['ffUid']||_0x192a49['uid']||'',_0x4dc5c3=_0x53afd7(_0x192a49['stats']||{}),_0x468b90=_0x3fef22===0x1?'#ffd700':_0x3fef22===0x2?'#c0c0c0':_0x3fef22===0x3?'#cd7f32':'#00d4ff',_0x56d321='';_0x56d321+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:14px\x2016px;background:rgba(255,255,255,.03);border-bottom:1px\x20solid\x20rgba(255,255,255,.06)\x22>',_0x56d321+='<button\x20onclick=\x22history.back()\x22\x20style=\x22background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center\x22><i\x20class=\x22fas\x20fa-arrow-left\x22></i></button>',_0x56d321+='<div\x20style=\x22flex:1;font-size:15px;font-weight:800;color:#fff\x22>Match\x20Result</div>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22margin:16px;border-radius:20px;overflow:hidden;position:relative\x22>',_0x56d321+='<div\x20style=\x22background:linear-gradient(180deg,#0d0d2e\x200%,#1a0a2e\x2050%,#0a1a1a\x20100%);padding:24px\x2020px\x2020px;position:relative\x22>',_0x56d321+='<div\x20style=\x22position:absolute;inset:0;background:radial-gradient(ellipse\x20at\x2050%\x200%,rgba(185,100,255,.2)\x200%,transparent\x2060%),radial-gradient(ellipse\x20at\x2050%\x20100%,rgba(0,212,255,.15)\x200%,transparent\x2060%);pointer-events:none\x22></div>',_0x56d321+='<div\x20style=\x22position:absolute;inset:0;border:2px\x20solid\x20rgba(185,100,255,.3);border-radius:20px;pointer-events:none\x22></div>',_0x56d321+='<div\x20style=\x22text-align:center;margin-bottom:14px;position:relative;z-index:1\x22>';var _0x5bcf49=_0x192a49['profileImage']||_0x192a49['photoURL']||'',_0x45b1f7=(_0x4d6d9a['charAt'](0x0)||'P')['toUpperCase']();_0x56d321+='<div\x20style=\x22position:relative;width:72px;height:72px;margin:0\x20auto\x22>',_0x56d321+='<div\x20style=\x22position:absolute;inset:0;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#b964ff);border:3px\x20solid\x20'+_0x468b90+';display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;box-shadow:0\x200\x2020px\x20'+_0x468b90+'55\x22>'+_0x45b1f7+'</div>';_0x5bcf49&&(_0x56d321+='<img\x20src=\x22'+_0x5bcf49+'\x22\x20onerror=\x22this.style.display=\x27none\x27\x22\x20onload=\x22if(!this.naturalWidth)this.style.display=\x27none\x27\x22\x20style=\x22position:relative;z-index:1;width:72px;height:72px;border-radius:50%;border:3px\x20solid\x20'+_0x468b90+';object-fit:cover;box-shadow:0\x200\x2020px\x20'+_0x468b90+'55\x22>');_0x56d321+='</div>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22text-align:center;margin-bottom:6px;position:relative;z-index:1\x22>',_0x56d321+='<div\x20style=\x22font-size:22px;font-weight:900;color:#fff\x22>'+_0x4d6d9a+'</div>',_0x56d321+='<div\x20style=\x22font-size:12px;color:#888;margin-top:2px\x22>FE\x20UID:\x20'+_0xebc22a+'</div>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22text-align:center;margin-bottom:16px;position:relative;z-index:1\x22>',_0x56d321+='<span\x20style=\x22display:inline-block;padding:4px\x2016px;border-radius:20px;background:rgba(255,255,255,.08);border:1px\x20solid\x20rgba(255,255,255,.15);font-size:12px;font-weight:700;color:#ffd700\x22>'+_0x4dc5c3+'</span>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:10px;margin-bottom:16px;position:relative;z-index:1\x22>',_0x56d321+='<div\x20style=\x22background:rgba(0,100,200,.25);border:1px\x20solid\x20rgba(0,150,255,.3);border-radius:12px;padding:12px\x208px;text-align:center\x22>',_0x56d321+='<div\x20style=\x22font-size:22px;font-weight:900;color:#fff\x22>'+(_0x192a49['stats']&&_0x192a49['stats']['matches']||0x0)+'</div>',_0x56d321+='<div\x20style=\x22font-size:10px;color:#888;margin-top:3px\x22>Matches</div>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22background:rgba(0,180,80,.2);border:1px\x20solid\x20rgba(0,220,100,.3);border-radius:12px;padding:12px\x208px;text-align:center\x22>',_0x56d321+='<div\x20style=\x22font-size:22px;font-weight:900;color:#00ff9c\x22>'+_0x3fef22+'</div>',_0x56d321+='<div\x20style=\x22font-size:10px;color:#888;margin-top:3px\x22>Rank</div>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22background:rgba(200,0,60,.2);border:1px\x20solid\x20rgba(255,60,60,.3);border-radius:12px;padding:12px\x208px;text-align:center\x22>',_0x56d321+='<div\x20style=\x22font-size:22px;font-weight:900;color:#ff6b6b\x22>'+_0x212c25+'</div>',_0x56d321+='<div\x20style=\x22font-size:10px;color:#888;margin-top:3px\x22>Kills</div>',_0x56d321+='</div>',_0x56d321+='</div>';var _0x281574=0x0;if(_0x192a49['stats']&&_0x192a49['stats']['matches']>0x0)_0x281574=Math['round'](_0x192a49['stats']['wins']/_0x192a49['stats']['matches']*0x64);_0x56d321+='<div\x20style=\x22text-align:center;font-size:13px;font-weight:700;color:#888;margin-bottom:8px;position:relative;z-index:1\x22>',_0x56d321+='Win\x20Rate:\x20<span\x20style=\x22color:'+(_0x281574>=0x1e?'#00ff9c':'#ffd700')+'\x22>'+_0x281574+'%</span>',_0x56d321+='</div>';_0x1ea103>0x0&&(_0x56d321+='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px\x20solid\x20rgba(0,255,156,.25);border-radius:14px;padding:12px;text-align:center;margin-bottom:12px;position:relative;z-index:1\x22>',_0x56d321+='<div\x20style=\x22font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px\x22>Prize\x20Won</div>',_0x56d321+='<div\x20style=\x22font-size:28px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent\x22>💎\x20'+_0x1ea103+'</div>',_0x56d321+='</div>');_0x56d321+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:12px;padding:10px\x2014px;position:relative;z-index:1;margin-bottom:4px\x22>',_0x56d321+='<div\x20style=\x22font-size:12px;color:#888;margin-bottom:4px\x22>'+_0x280c4b+'</div>',_0x56d321+='<div\x20style=\x22display:flex;gap:12px;flex-wrap:wrap\x22>',_0x56d321+='<span\x20style=\x22font-size:11px;color:#ccc\x22>🏆\x20Rank:\x20<b\x20style=\x22color:'+_0x468b90+'\x22>'+_0x57174d(_0x3fef22)+'</b></span>',_0x56d321+='<span\x20style=\x22font-size:11px;color:#ccc\x22>💀\x20Kills:\x20<b\x20style=\x22color:#ff6b6b\x22>'+_0x212c25+'</b></span>';if(_0x5e5988['killPrize']>0x0)_0x56d321+='<span\x20style=\x22font-size:11px;color:#ccc\x22>🔫\x20Kill\x20Prize:\x20<b\x20style=\x22color:#ffd700\x22>💎'+_0x5e5988['killPrize']+'</b></span>';_0x56d321+='</div>',_0x56d321+='</div>',_0x56d321+='</div>',_0x56d321+='</div>',_0x56d321+='<div\x20style=\x22padding:0\x2016px\x2016px;display:flex;flex-direction:column;gap:10px\x22>',_0x56d321+='<button\x20onclick=\x22window._shareResultCard&&window._shareResultCard(\x27'+_0x5727f2+'\x27)\x22\x20style=\x22width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px\x22><i\x20class=\x22fas\x20fa-share-alt\x22></i>\x20Share\x20Card</button>',_0x56d321+='</div>',_0x4e55d5['innerHTML']=_0x56d321;}window['_shareResultCard']=function(_0x4b1f44){var _0x151730=window['_lastResultData'],_0x2fa642=window['MT']&&window['MT'][_0x4b1f44],_0x564cdc=window['UD']||{};if(!_0x151730){if(window['toast'])window['toast']('Result\x20data\x20nahi\x20mila','err');return;}var _0x2e8a1b='🎮\x20Mini\x20eSports\x20—\x20Match\x20Result!\x0a\x0a'+'🏆\x20'+(_0x2fa642?_0x2fa642['name']:'Match')+'\x0a'+'📊\x20Rank:\x20'+_0x57174d(_0x151730['rank'])+'\x0a'+'💀\x20Kills:\x20'+(_0x151730['kills']||0x0)+'\x0a'+(_0x151730['totalWinning']>0x0?'💰\x20Won:\x20💎'+_0x151730['totalWinning']+'\x0a':'')+'\x0a🔥\x20Play\x20skill-based\x20tournaments\x20on\x20Mini\x20eSports\x20—\x20🪙\x20coins\x20+\x20💎\x20diamonds\x20jito!\x0a'+window['location']['origin'];if(navigator['share'])navigator['share']({'title':'My\x20Match\x20Result','text':_0x2e8a1b})['catch'](function(){if(window['copyTxt'])window['copyTxt'](_0x2e8a1b);if(window['toast'])window['toast']('Result\x20copied!','ok');});else{if(window['copyTxt'])window['copyTxt'](_0x2e8a1b);if(window['toast'])window['toast']('Result\x20copied!','ok');}};function _0x53afd7(_0xae58db){var _0x225f42=Number(_0xae58db['matches'])||0x0,_0x5d40f0=Number(_0xae58db['wins'])||0x0,_0x401bad=_0x225f42>0x0?_0x5d40f0/_0x225f42*0x64:0x0;if(_0x225f42>=0x64&&_0x401bad>=0x32)return'👑\x20Legend';if(_0x225f42>=0x32&&_0x401bad>=0x23)return(window['medalHtml']?medalHtml(0x1,0xe):'')+'\x20Gold';if(_0x225f42>=0x14&&_0x401bad>=0x14)return(window['medalHtml']?medalHtml(0x2,0xe):'')+'\x20Silver';if(_0x225f42>=0x5)return(window['medalHtml']?medalHtml(0x3,0xe):'')+'\x20Bronze';return'🎮\x20Rookie';}function _0x3ee95b(){return'<div\x20style=\x22text-align:center;padding:60px\x2020px\x22>'+'<div\x20style=\x22font-size:48px;margin-bottom:16px\x22>⏳</div>'+'<div\x20style=\x22font-size:16px;font-weight:700;color:#fff;margin-bottom:8px\x22>Result\x20abhi\x20publish\x20nahi\x20hua</div>'+'<div\x20style=\x22font-size:13px;color:#888\x22>Admin\x20result\x20publish\x20karne\x20ke\x20baad\x20yahan\x20dikhega</div>'+'<button\x20onclick=\x22history.back()\x22\x20style=\x22margin-top:20px;padding:12px\x2028px;border-radius:12px;background:rgba(0,255,156,.1);border:1px\x20solid\x20rgba(0,255,156,.2);color:#00ff9c;font-weight:700;cursor:pointer\x22>←\x20Wapas\x20Jao</button>'+'</div>';}console['log']('[Mini\x20eSports]\x20✅\x20Match\x20Result\x20Page\x20loaded\x20—\x20fullscreen,\x20no\x20modal');}()),(function(){'use strict';function _0x5ef85f(){var _0x163454=new Date(),_0x2cbd1b=_0x163454['getDay'](),_0x5858b3=new Date(_0x163454);return _0x5858b3['setDate'](_0x163454['getDate']()-(_0x2cbd1b+0x6)%0x7),_0x5858b3['getFullYear']()+'_W'+String(_0x5858b3['getMonth']()+0x1)['padStart'](0x2,'0')+String(_0x5858b3['getDate']())['padStart'](0x2,'0');}window['getWeekKey']=_0x5ef85f,window['loadSeasonLeaderboard']=function(_0x227f60){var _0x4e97b7=window['getCurrentSeason']?window['getCurrentSeason']():{};if(!window['_supa']){_0x227f60([],_0x4e97b7);return;}window['_supa']['from']('leaderboard')['select']('*')['limit'](0xc8)['then'](function(_0x2fe4d7){var _0x2cbb31=(_0x2fe4d7['data']||[])['filter'](function(_0x208be8){return!_isGhostRow(_0x208be8);})['map'](function(_0x5685d0){return{'_uid':_0x5685d0['id'],'ign':_0x5685d0['ign']||'Player','kills':_0x5685d0['total_kills']||0x0,'wins':_0x5685d0['total_wins']||0x0,'matches':_0x5685d0['total_matches']||0x0,'profileImage':_0x5685d0['avatar_url']||'','rankPoints':_0x5685d0['rank_points']||0x0,'stats':{'kills':_0x5685d0['total_kills']||0x0,'wins':_0x5685d0['total_wins']||0x0,'matches':_0x5685d0['total_matches']||0x0},'premiumLevel':Number(_0x5685d0['premium_level']||0x0),'premiumExpires':_0x5685d0['premium_expires']?new Date(_0x5685d0['premium_expires'])['getTime']():0x0};});_0x2cbb31['sort'](function(_0x4a20eb,_0x4c47d8){var _0x291534=_0x4c47d8['rankPoints']-_0x4a20eb['rankPoints'];return _0x291534?_0x291534:_rankTiebreak(_0x4a20eb,_0x4c47d8);}),_0x227f60(_0x2cbb31,_0x4e97b7);})['catch'](function(){_0x227f60([],_0x4e97b7);});},window['updateSeasonStats']=function(_0x541f44,_0x1d5e2e){if(!_0x541f44||!_0x1d5e2e)return;var _0x4e3037=_0x1d5e2e['wins']||0x0,_0x1c6ec9=_0x1d5e2e['kills']||0x0,_0x509352=_0x1d5e2e['matches']||0x0;if(window['_supa']){if(_0x4e3037>0x0)window['_supa']['rpc']('increment_balance',{'p_uid':_0x541f44,'p_col':'total_wins','p_amount':_0x4e3037})['then'](null,function(){});if(_0x1c6ec9>0x0)window['_supa']['rpc']('increment_balance',{'p_uid':_0x541f44,'p_col':'total_kills','p_amount':_0x1c6ec9})['then'](null,function(){});if(_0x509352>0x0)window['_supa']['rpc']('increment_balance',{'p_uid':_0x541f44,'p_col':'total_matches','p_amount':_0x509352})['then'](null,function(){});var _0x207bdd=window['calcRkScore']?window['calcRkScore'](_0x1d5e2e):0x0;if(_0x207bdd>0x0){var _0x1ccebd=window['UD']&&_0x541f44===(window['U']&&window['U']['uid'])?Number(window['UD']['rank_points']||window['UD']['rankPoints'])||0x0:0x0;window['_supa']['rpc']('increment_rank_points',{'p_uid':_0x541f44,'p_points':_0x207bdd})['then'](function(){window['checkMentorReward']&&_0x1ccebd>0x0&&window['checkMentorReward'](_0x1ccebd,_0x1ccebd+_0x207bdd),window['UD']&&_0x541f44===(window['U']&&window['U']['uid'])&&(window['UD']['rank_points']=_0x1ccebd+_0x207bdd,window['UD']['rankPoints']=_0x1ccebd+_0x207bdd);})['catch'](function(){});}(_0x4e3037>0x0||_0x1c6ec9>0x0)&&window['updateCityChampScore']&&window['updateCityChampScore'](_0x4e3037>0x0,_0x1c6ec9);if((_0x4e3037>0x0||_0x1c6ec9>0x0)&&window['updateClanWarScore']){var _0x5f1212=window['UD']&&window['UD']['clanId'];if(_0x5f1212)window['updateClanWarScore'](_0x4e3037>0x0,_0x1c6ec9);}_0x1d5e2e['duelId']&&_0x1d5e2e['duelResult']&&window['updateDuelRecord']&&window['updateDuelRecord'](_0x1d5e2e['duelId'],_0x1d5e2e['duelResult']);if(window['awardPassXP']&&_0x541f44){var _0x24e5fd=(_0x4e3037>0x0?0x32:0x0)+(_0x1c6ec9>0x0?_0x1c6ec9*0x2:0x0)+(_0x509352>0x0?0xa:0x0);if(_0x24e5fd>0x0)window['awardPassXP'](_0x541f44,_0x24e5fd);}}return;var _0x47f6f6=window['getCurrentSeason']?window['getCurrentSeason']():{},_0x691599=_0x5ef85f();if(!window['db'])return;var _0x1ee59d=window['db']['ref']('seasonStats/'+_0x47f6f6['monthKey']+'/'+_0x541f44);_0x1ee59d['once']('value',function(_0x5afa42){var _0x2e23e3=_0x5afa42['val']()||{},_0x1ed08e={'ign':_0x1d5e2e['ign']||_0x2e23e3['ign']||'','displayName':_0x1d5e2e['displayName']||_0x2e23e3['displayName']||'','profileImage':_0x1d5e2e['profileImage']||_0x2e23e3['profileImage']||'','stats':{'wins':(_0x2e23e3['stats']&&_0x2e23e3['stats']['wins']||0x0)+(_0x1d5e2e['wins']||0x0),'kills':(_0x2e23e3['stats']&&_0x2e23e3['stats']['kills']||0x0)+(_0x1d5e2e['kills']||0x0),'matches':(_0x2e23e3['stats']&&_0x2e23e3['stats']['matches']||0x0)+(_0x1d5e2e['matches']||0x0)}},_0x5bf50f=window['calcRkScore']?window['calcRkScore'](_0x1ed08e['stats']):0x0;_0x1ed08e['rankPoints']=_0x5bf50f,_0x1ee59d['set'](_0x1ed08e);});var _0x2757f9=window['db']?window['db']['ref']('weeklyStats/'+_0x691599+'/'+_0x541f44):{'transaction':function(){},'set':function(){}};_0x2757f9['once']('value',function(_0x3ba0c5){var _0x301eae=_0x3ba0c5['val']()||{};_0x2757f9['set']({'ign':_0x1d5e2e['ign']||_0x301eae['ign']||'','kills':(_0x301eae['kills']||0x0)+(_0x1d5e2e['kills']||0x0),'wins':(_0x301eae['wins']||0x0)+(_0x1d5e2e['wins']||0x0),'matches':(_0x301eae['matches']||0x0)+(_0x1d5e2e['matches']||0x0)});});},window['assignTop3Badges']=function(_0x391120){if(!window['db']||!_0x391120||_0x391120['length']<0x1)return;_0x391120['slice'](0x0,0x3)['forEach'](function(_0xf7c543,_0x535558){if(!_0xf7c543['_uid'])return;var _0x13878b=_0x535558===0x0?'_top1':_0x535558===0x1?'_top2':'_top3';if(window['_supa']&&_0xf7c543['_uid']){var _0xa9b863=_0x13878b==='wins'?'total_wins':_0x13878b==='kills'?'total_kills':'total_matches';window['_supa']['rpc']('increment_balance',{'p_uid':_0xf7c543['_uid'],'p_col':_0xa9b863,'p_amount':0x1})['then'](null,function(){});}});},window['RANK_FORMULA']='Wins×40\x20+\x20Kills×2\x20+\x20Matches×1\x20+\x20WinStreak×10',window['RANK_TIERS']=[{'name':'Bronze','min':0x0,'max':0x12c,'emoji':'','color':'#cd7f32','bg':'rgba(205,127,50,.13)'},{'name':'Silver','min':0x12d,'max':0x258,'emoji':'','color':'#c0c0c0','bg':'rgba(192,192,192,.13)'},{'name':'Gold','min':0x259,'max':0x3e8,'emoji':'','color':'#ffd700','bg':'rgba(255,215,0,.14)'},{'name':'Platinum','min':0x3e9,'max':0x5dc,'emoji':'','color':'#e0e0ff','bg':'rgba(180,180,255,.13)'},{'name':'Diamond','min':0x5dd,'max':0x7d0,'emoji':'','color':'#00d4ff','bg':'rgba(0,212,255,.15)'},{'name':'Legend','min':0x7d1,'max':0x270f,'emoji':'','color':'#b964ff','bg':'rgba(185,100,255,.15)'}],window['showHowRankWorks']=function(){var _0x378c47='';_0x378c47+='<div\x20style=\x22text-align:center;padding:6px\x200\x2014px\x22>',_0x378c47+='<div\x20style=\x22font-size:13px;font-weight:700;color:#ffd700;background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.2);border-radius:10px;padding:8px\x2012px;margin-bottom:14px\x22>',_0x378c47+='📊\x20'+window['RANK_FORMULA'],_0x378c47+='</div>',_0x378c47+='</div>',_0x378c47+='<div\x20style=\x22display:flex;flex-direction:column;gap:6px;margin-bottom:16px\x22>',window['RANK_TIERS']['forEach'](function(_0x3aa612){_0x378c47+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:10px\x2014px;border-radius:12px;background:'+_0x3aa612['bg']+';border:1px\x20solid\x20'+_0x3aa612['color']+'44\x22>',_0x378c47+='<div\x20style=\x22font-size:22px\x22>'+(window['tierIconHtml']?tierIconHtml(_0x3aa612['name'],0x16):_0x3aa612['emoji']||'')+'</div>',_0x378c47+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:800;color:'+_0x3aa612['color']+'\x22>'+_0x3aa612['name']+'</div>',_0x378c47+='<div\x20style=\x22font-size:11px;color:#666\x22>'+(_0x3aa612['min']===0x0?'0':_0x3aa612['min'])+'\x20–\x20'+(_0x3aa612['max']>=0x270f?'∞':_0x3aa612['max'])+'\x20points</div></div>',_0x378c47+='</div>';}),_0x378c47+='</div>',_0x378c47+='<div\x20style=\x22font-size:11px;color:#555;text-align:center;line-height:1.6\x22>🗓\x20Weekly\x20reset\x20every\x20Monday<br>📅\x20Season\x20reset\x20every\x201st\x20of\x20month<br>🏆\x20Top\x203\x20get\x20special\x20badges\x20·\x20Top\x2010\x20get\x20titles</div>';if(window['openModal'])openModal('🏆\x20How\x20Rank\x20Works',_0x378c47);},console['log']('[Mini\x20eSports]\x20✅\x20Rank\x20System\x20v2.0\x20loaded');}());
+/* ====== LOOT CRATE ANIMATION ====== */
+function showLootCrate(prize) {
+  /* Remove any existing loot overlay to prevent stacking */
+  var existing = document.getElementById('_lootOverlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = '_lootOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(4px)';
+  overlay.innerHTML = '<div id="_lootBox" style="text-align:center;animation:lootDrop .6s cubic-bezier(.175,.885,.32,1.275)">' +
+    '<div style="font-size:80px;margin-bottom:8px;filter:drop-shadow(0 0 30px #ffd700)">📦</div>' +
+    '<div style="font-size:16px;color:#ffd700;font-weight:800;margin-bottom:4px">PRIZE BOX DROPPED!</div>' +
+    '<div id="_lootOpen" style="font-size:48px;cursor:pointer;animation:spin .3s ease" onclick="this.parentElement.parentElement._burst()">🎁</div>' +
+    '<div style="font-size:13px;color:var(--txt2);margin-top:8px">Tap to open!</div>' +
+  '</div>';
+  // Add burst animation
+  var style = document.createElement('style');
+  style.textContent = '@keyframes lootDrop{from{transform:translateY(-200px) scale(.3);opacity:0}to{transform:none;opacity:1}}@keyframes spin{from{transform:rotate(-20deg)}to{transform:rotate(20deg)}}@keyframes confettiFall{from{transform:translateY(-20px) rotate(0);opacity:1}to{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+  document.head.appendChild(style);
+  overlay._burst = function() {
+    var box = document.getElementById('_lootBox');
+    if (box) {
+      // Burst with coins
+      var coins = ['💰','💵','🪙','💸','⭐','✨'];
+      for (var i = 0; i < 20; i++) {
+        var c = document.createElement('div');
+        c.textContent = coins[Math.floor(Math.random()*coins.length)];
+        c.style.cssText = 'position:fixed;font-size:24px;left:'+(Math.random()*100)+'vw;top:30vh;animation:confettiFall '+(1+Math.random())+'s ease forwards;z-index:100000;animation-delay:'+(Math.random()*.5)+'s';
+        document.body.appendChild(c);
+        setTimeout(function(el){el.remove();}, 2000, c);
+      }
+      box.innerHTML = '<div style="font-size:60px;margin-bottom:8px;filter:drop-shadow(0 0 40px #00ff6a)">💰</div>' +
+        '<div style="font-size:20px;color:#00ff6a;font-weight:900">💎' + (prize||'?') + ' WON!</div>' +
+        '<div style="font-size:13px;color:var(--txt2);margin-top:6px">Added to your wallet!</div>' +
+        '<button onclick="this.closest(\'[style*=fixed]\').remove()" style="margin-top:16px;padding:10px 24px;background:var(--green);color:#000;border:none;border-radius:20px;font-weight:800;font-size:14px;cursor:pointer">🎉 Awesome!</button>';
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
+    }
+  };
+  document.body.appendChild(overlay);
+  // Auto remove after 8s
+  setTimeout(function() { if (overlay.parentNode) overlay.remove(); }, 8000);
+}
+function watchAd() {
+  if (window.AdManager) {
+    window.AdManager.showRewardedAd(
+      window.onAdReward,
+      function() { toast('Ad load nahi hua, dobara try karo.', 'err'); },
+      'watchAd'
+    );
+  } else if (window.Android && window.Android.showRewardedAd) {
+    window.Android.showRewardedAd();
+  } else {
+    toast('Ads available only in APK version', 'inf');
+  }
+}
+window.onAdReward = function() {
+  /* Guard: if ad-match pending, route to match reward handler */
+  if (window._adMatchPending) {
+    onAdRewardForMatch(window._adMatchPending);
+    window._adMatchPending = null;
+    return;
+  }
+  /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet RPC"
+     audit — this was completely unlimited: window.onAdReward is
+     globally callable, adCoins was a client-read config value, and
+     there was NO daily-limit enforcement anywhere for this specific
+     flow (unlike watch-earn, which at least had a client-side daily
+     cap) — a user could call this directly from devtools as many
+     times as they wanted with zero ad ever shown. Replaced with
+     claim_ad_reward() — a dedicated RPC that computes the coin amount
+     from server config, rate-limits rapid repeat calls, and enforces
+     the real daily limit against actual logged rows. */
+  if (window._supa && window.U) {
+    window._supa.rpc('claim_ad_reward')
+      .then(function(res) {
+        var d = res && res.data;
+        if (!d || !d.success) {
+          if (d && d.error) toast(d.error, 'inf');
+          return;
+        }
+        if (window.UD) { window.UD.coins = (window.UD.coins || 0) + d.coinsEarned; if (window.updateHdr) window.updateHdr(); }
+        if (window.toast) window.toast('+' + d.coinsEarned + ' Coins earned! 🪙', 'ok');
+      }, function() { toast('Reward claim failed', 'err'); });
+  }
+};
+
+/* ====== AD-BASED MATCH JOIN SYSTEM ====== */
+// Track ad watches per match per session
+window._adWatchCount = {};
+window._adMatchPending = null;
+
+// Show ad-watch popup before joining an ad-match
+function showAdJoinPopup(matchId) {
+  var t = MT[matchId]; if (!t) return;
+  var adsRequired = Number(t.adsRequired) || 2;
+  var watched = window._adWatchCount[matchId] || 0;
+  var remaining = adsRequired - watched;
+
+  var h = '<div style="text-align:center;padding:8px 0 4px">';
+  h += '<div style="font-size:36px;margin-bottom:6px">📺</div>';
+  h += '<div style="font-size:17px;font-weight:800;color:var(--green);margin-bottom:4px">FREE Match — Ads Dekho, Match Khelo!</div>';
+  h += '<div style="font-size:12px;color:var(--txt2);margin-bottom:16px">Yeh match bilkul free hai. Sirf <b style="color:#fff">' + adsRequired + ' short ads</b> dekhne ke baad join kar sakte ho.</div>';
+
+  // Progress dots
+  h += '<div style="display:flex;justify-content:center;gap:10px;margin-bottom:18px">';
+  for (var i = 0; i < adsRequired; i++) {
+    var done = i < watched;
+    h += '<div style="width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;';
+    h += done ? 'background:rgba(0,255,106,.2);border:2px solid #00ff6a;color:#00ff6a' : 'background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.2);color:#555';
+    h += '">' + (done ? '✓' : (i + 1)) + '</div>';
+  }
+  h += '</div>';
+
+  if (remaining > 0) {
+    h += '<div style="font-size:12px;color:#aaa;margin-bottom:14px">Abhi <b style="color:#fff">' + remaining + ' ad' + (remaining > 1 ? 's' : '') + '</b> aur dekhni hai</div>';
+    h += '<button onclick="watchAdForMatch(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:800;font-size:15px;border:none;cursor:pointer;letter-spacing:.5px">▶ Ad Dekho (' + watched + '/' + adsRequired + ')</button>';
+  } else {
+    h += '<div style="font-size:13px;color:#00ff9c;font-weight:700;margin-bottom:14px">✅ Sabhi ads dekh li! Ab join kar sakte ho.</div>';
+    h += '<button onclick="confirmAdMatchJoin(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:800;font-size:15px;border:none;cursor:pointer">🎮 Match Join Karo!</button>';
+  }
+  h += '</div>';
+  showModal('🎯 ' + (t.name || 'Match'), h);
+}
+
+// Simulate/trigger ad watch for match
+function watchAdForMatch(matchId) {
+  window._adMatchPending = matchId;
+  // Use AdManager (handles real AdMob + web fallback)
+  if (window.AdManager) {
+    window.AdManager.showRewardedAd(
+      function() { onAdRewardForMatch(matchId); },
+      function() { toast('Ad load nahi hua, dobara try karo.', 'err'); },
+      'adMatch_' + matchId
+    );
+    return;
+  }
+  // Legacy Android bridge
+  if (window.Android && window.Android.showRewardedAd) {
+    window.Android.showRewardedAd();
+    return;
+  }
+  // Pure web fallback countdown
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff';
+  overlay.id = 'adOverlay_' + matchId;
+  var adBrands = ['🎮 Gaming Pro', '📱 App Store', '🛒 Shop Now', '🏆 Win Big'];
+  var brand = adBrands[Math.floor(Math.random() * adBrands.length)];
+  var sec = 5;
+  overlay.innerHTML = '<div style="font-size:10px;color:#555;position:absolute;top:14px;left:16px;letter-spacing:1px">ADVERTISEMENT</div>' +
+    '<div style="font-size:28px;font-weight:900;margin-bottom:12px">' + brand + '</div>' +
+    '<div style="font-size:13px;color:#888;margin-bottom:24px">Reward ke liye poori ad dekho</div>' +
+    '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,106,.1);border:3px solid #00ff9c;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:#00ff9c" id="adTimer">' + sec + '</div>' +
+    '<div style="font-size:11px;color:#555;margin-top:12px">Ad band nahi kar sakte</div>';
+  document.body.appendChild(overlay);
+  var iv = setInterval(function() {
+    sec--;
+    var el = document.getElementById('adTimer');
+    if (el) el.textContent = sec;
+    if (sec <= 0) { clearInterval(iv); overlay.remove(); onAdRewardForMatch(matchId); }
+  }, 1000);
+}
+
+// Called when ad is completed (real or simulated)
+function onAdRewardForMatch(matchId) {
+  if (!matchId) matchId = window._adMatchPending;
+  if (!matchId) return;
+  if (!window._adWatchCount[matchId]) window._adWatchCount[matchId] = 0;
+  window._adWatchCount[matchId]++;
+  var t = MT[matchId];
+  var adsRequired = Number(t && t.adsRequired) || 2;
+  var watched = window._adWatchCount[matchId];
+  toast('Ad ' + watched + '/' + adsRequired + ' complete! 🎉', 'ok');
+  // Reopen popup to show updated progress
+  setTimeout(function() { showAdJoinPopup(matchId); }, 400);
+}
+
+/* onAdReward is fully defined above (handles both ad-match and regular ad rewards) */
+/* window._adMatchPending set by watchAdForMatch() before triggering AdMob */
+
+/* ✅ FIX: Ad match join now goes through Supabase join_requests (was Firebase-only, broke My Matches + room reveal) */
+function confirmAdMatchJoin(matchId) {
+  closeModal();
+  var t = MT[matchId]; if (!t) return;
+  var tp = (t.mode || t.type || 'solo').toLowerCase();
+  if (tp !== 'solo' && tp !== 'duo' && tp !== 'squad') tp = 'solo';
+
+  if (!window._supa || !window.U) { toast('Service unavailable. Try again.', 'err'); return; }
+
+  /* ══ R6 FIX ══
+     Pehle yahan DIRECT join_requests INSERT hota tha — capacity/filled_slots
+     ka koi server check nahi (ad match oversubscribe ho sakta tha, slot
+     accounting bilkul skip). Ab FREE/AD join bhi single authority =
+     validate_and_join_match RPC (match lock + capacity + duplicate + slot
+     increment sab server-side atomic). RPC fail = join fail safely —
+     koi direct client join-row नहीं। */
+  window._supa.rpc('validate_and_join_match', {
+    p_uid:       window.U.uid,
+    p_match_id:  matchId,
+    p_entry_fee: 0,
+    p_currency:  'coins',
+    p_join_data: { mode: tp, ign: (window.UD && window.UD.ign) || '' }
+  }).then(function(r) {
+    if (r && r.error) { toast('Join failed: ' + (r.error.message || ''), 'err'); return; }
+    if (r && r.data && r.data.ok === false) { toast('❌ ' + (r.data.error || 'Join failed'), 'err'); return; }
+
+    /* ad-watched marker — own-row non-financial update (display/tracking only) */
+    if (window._supa) {
+      window._supa.from('join_requests').update({ ad_watched: true })
+        .eq('match_id', matchId).eq('user_id', window.U.uid).then(null, function() {});
+    }
+    /* Update local MT + JR cache */
+    if (window.MT && window.MT[matchId]) {
+      window.MT[matchId].joinedSlots = (window.MT[matchId].joinedSlots || 0) + 1;
+      window.MT[matchId].filledSlots = window.MT[matchId].joinedSlots;
+    }
+    if (!window.JR) window.JR = {};
+    var _jid = 'ad_' + matchId + '_' + Date.now();
+    window.JR[_jid] = { matchId: matchId, userId: window.U.uid, status: 'joined', entryType: 'ad', createdAt: Date.now() };
+    window._adWatchCount[matchId] = 0; /* reset ad count */
+    toast('🎮 Match Joined! Room ID milne par notification aayega.', 'ok');
+    if (window.renderMM) setTimeout(window.renderMM, 400);
+    navTo('matches');
+  }).catch(function(e) {
+    toast('Join failed — retry karo', 'err');
+    console.error('[AdJoin]', e);
+  });
+}
+
+/* ====== RANK ====== */
+function calcRkScore(stats) {
+  var wins=Number(stats.wins||0), kills=Number(stats.kills||0),
+      matches=Number(stats.matches||0), streak=Number(stats.winStreak||0);
+  return wins*40 + kills*2 + matches*1 + streak*10;
+}
+function calcRk(stats) {
+  var s = calcRkScore(stats);
+  if (s >= 5000) return { badge: 'Grandmaster', emoji: '🌟', color: '#ff4500', bg: 'rgba(255,69,0,.15)',     pts: s };
+  if (s >= 3500) return { badge: 'Heroic',      emoji: '⚔️',  color: '#ff1493', bg: 'rgba(255,20,147,.12)',  pts: s };
+  if (s >= 2000) return { badge: 'Legend',      emoji: '', color: '#b964ff', bg: 'rgba(185,100,255,.15)', pts: s };
+  if (s >= 1501) return { badge: 'Diamond',     emoji: '', color: '#00d4ff', bg: 'rgba(0,212,255,.15)',   pts: s };
+  if (s >= 1001) return { badge: 'Platinum',    emoji: '', color: '#e0e0ff', bg: 'rgba(180,180,180,.13)', pts: s };
+  if (s >= 601)  return { badge: 'Gold',        emoji: '', color: '#ffd700', bg: 'rgba(255,215,0,.14)',   pts: s }; /* D101: img via tierIconHtml */
+  if (s >= 301)  return { badge: 'Silver',      emoji: '', color: '#c0c0c0', bg: 'rgba(192,192,192,.13)', pts: s };
+  return           { badge: 'Bronze',       emoji: '', color: '#cd7f32', bg: 'rgba(205,127,50,.13)',  pts: s };
+}
+function getPlayerBadges(st, lv) {
+  var badges = [];
+  var w = st.wins||0, k = st.kills||0, m = st.matches||0, streak = st.winStreak||0;
+  var rk = calcRk(st);
+  // Each badge: icon, name, desc, color, bg, glow, anim
+  if (m >= 1)    badges.push({ icon:'🎮', name:'First Match',   desc:'First match played',    color:'#00ff6a', bg:'rgba(0,255,106,.12)',   glow:'0 0 12px rgba(0,255,106,.5)',   anim:'' });
+  if (m >= 10)   badges.push({ icon:'⚔️',  name:'Veteran',      desc:'10+ matches',           color:'#00d4ff', bg:'rgba(0,212,255,.12)',   glow:'0 0 12px rgba(0,212,255,.5)',   anim:'' });
+  if (m >= 50)   badges.push({ icon:'🎯', name:'Sharpshooter', desc:'50+ matches played',    color:'#ff9f1c', bg:'rgba(255,159,28,.12)',  glow:'0 0 12px rgba(255,159,28,.5)',  anim:'' });
+  if (w >= 1)    badges.push({ icon:'🏆', name:'Champion',     desc:'First win!',            color:'#ffd700', bg:'rgba(255,215,0,.14)',   glow:'0 0 14px rgba(255,215,0,.6)',   anim:'badge-pulse' });
+  if (w >= 5)    badges.push({ icon:'👑', name:'Dominator',    desc:'5+ wins',               color:'#b964ff', bg:'rgba(185,100,255,.14)', glow:'0 0 14px rgba(185,100,255,.6)', anim:'badge-pulse' });
+  if (w >= 20)   badges.push({ icon:'⚡', name:'Unstoppable',  desc:'20+ wins',              color:'#ff4500', bg:'rgba(255,69,0,.14)',    glow:'0 0 14px rgba(255,69,0,.6)',    anim:'badge-glow' });
+  if (k >= 10)   badges.push({ icon:'🔪', name:'Blade',        desc:'10+ kills',             color:'#ff6b6b', bg:'rgba(255,107,107,.12)', glow:'0 0 10px rgba(255,107,107,.4)', anim:'' });
+  if (k >= 50)   badges.push({ icon:'💀', name:'Kill Machine', desc:'50+ kills',             color:'#ff2e2e', bg:'rgba(255,46,46,.14)',   glow:'0 0 14px rgba(255,46,46,.6)',   anim:'badge-pulse' });
+  if (k >= 100)  badges.push({ icon:'☠️',  name:'Headhunter',  desc:'100+ kills',            color:'#ff0000', bg:'rgba(255,0,0,.15)',     glow:'0 0 16px rgba(255,0,0,.7)',     anim:'badge-glow' });
+  if (streak>=3) badges.push({ icon:'🔥', name:'On Fire',      desc:'3+ win streak',         color:'#ff8c00', bg:'rgba(255,140,0,.14)',   glow:'0 0 14px rgba(255,140,0,.6)',   anim:'badge-fire' });
+  if (streak>=5) badges.push({ icon:'🌋', name:'Volcano',      desc:'5+ win streak',         color:'#ff4500', bg:'rgba(255,69,0,.15)',    glow:'0 0 16px rgba(255,69,0,.7)',    anim:'badge-fire' });
+  if (lv >= 10)  badges.push({ icon:'💫', name:'Pro Player',   desc:'Level 10',              color:'#00ff9c', bg:'rgba(0,255,156,.12)',   glow:'0 0 12px rgba(0,255,156,.5)',   anim:'' });
+  if (lv >= 20)  badges.push({ icon:'🌟', name:'Elite',        desc:'Level 20',              color:'#ffd700', bg:'rgba(255,215,0,.14)',   glow:'0 0 14px rgba(255,215,0,.6)',   anim:'badge-pulse' });
+  // Top 3 special badges set by admin
+  if (st._top1)  badges.push({ icon:'👑', name:'#1 Champion',  desc:'Season #1',             color:'#ffd700', bg:'rgba(255,215,0,.2)',    glow:'0 0 20px rgba(255,215,0,.8)',   anim:'badge-glow' });
+  if (st._top2)  badges.push({ icon:(window.medalHtml?medalHtml(2,16):''), name:'#2 Runner',    desc:'Season #2',             color:'#c0c0c0', bg:'rgba(192,192,192,.18)', glow:'0 0 16px rgba(200,200,200,.7)', anim:'badge-pulse' });
+  if (st._top3)  badges.push({ icon:(window.medalHtml?medalHtml(3,16):''), name:'#3 Bronze',    desc:'Season #3',             color:'#cd7f32', bg:'rgba(205,127,50,.18)',  glow:'0 0 14px rgba(205,127,50,.6)',  anim:'' });
+  return badges;
+}
+var _rankTab = 'kills'; // kills | wins | rankpoints
+
+/* ====================================================================
+   D69 (2026-11-06): RANK ARENA — owner ke selected screenshot (portrait
+   "RANK LEADERBOARD / Top Competitors" mock) ka poori mehnat se banaya
+   inline replica. Sab CSS + SVG inline (koi external asset/file nahi)
+   taki APK offline-mode aur har preview me pixel-same dikhe.
+   Cheezein jo replica me hain: purple arena + light beams + ceiling
+   lamps, dono side hanging banners (PLAY/COMPETE/CLIMB/REPEAT &
+   SMALL/GAMES/BIG/CHAMPIONS), cursive script lines, gold trophy +
+   laurels, chamfered plaque, 2-1-3 podium (crown+wreath ring p1,
+   ribbon-medals p2/p3), metallic pedestals (p1 par laurel-wreath
+   number), crowd silhouettes + phone-lights, smoke, floor glow aur
+   MINI ESPORTS footer branding. Data asli rehta hai (ign, kills/wins/
+   pts, tier badge, avatar) — sirf shakal screenshot jaisi.
+   ==================================================================== */
+var _rkCssDone = false;
+var RK_CSS = [
+  '.rkArena{position:relative;border:2px solid rgba(232,197,101,.55);border-radius:18px;overflow:hidden;text-align:center;padding:12px 8px 8px;margin:0 0 12px;background:radial-gradient(120% 55% at 50% 0%,rgba(126,46,200,.38),transparent 62%),radial-gradient(90% 40% at 50% 100%,rgba(255,190,60,.10),transparent 65%),linear-gradient(180deg,#170a28 0%,#241143 34%,#1c0c34 62%,#0a0416 100%);box-shadow:inset 0 0 60px rgba(90,30,160,.35),0 6px 24px rgba(0,0,0,.6)}',
+  '.rkArena *{box-sizing:border-box}',
+  '.rkBeams{position:absolute;inset:0;pointer-events:none;background:conic-gradient(from 180deg at 50% -12%,transparent 41%,rgba(255,214,110,.24) 44%,transparent 47%,rgba(190,120,255,.26) 50%,transparent 53%,rgba(255,214,110,.19) 56%,transparent 59%)}',
+  '.rkLampL,.rkLampR{position:absolute;top:6px;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 14px 6px rgba(255,240,200,.7)}',
+  '.rkLampL{left:12%}.rkLampR{right:12%}',
+  '.rkBannerL{position:absolute;top:34px;left:3%;width:44px;z-index:1}',
+  '.rkBannerR{position:absolute;top:34px;right:3%;width:44px;z-index:1}',
+  '.rkScript{position:absolute;top:30%;width:19%;z-index:1;font-family:"Segoe Script","Brush Script MT","Lucida Handwriting",cursive;color:#d8b45a;font-size:10.5px;line-height:1.3;text-shadow:0 0 12px rgba(216,180,90,.55);font-weight:700}',
+  '.rkScriptL{left:2.5%;transform:rotate(-8deg)}',
+  '.rkScriptR{right:2.5%;transform:rotate(8deg)}',
+  '.rkTrophy{position:relative;z-index:2;margin:6px auto 0;width:132px;line-height:0}',
+  '.rkPlaque{position:relative;z-index:2;width:72%;max-width:330px;margin:2px auto 0;background:linear-gradient(180deg,#f4d788,#c9a24a);clip-path:polygon(4% 0,96% 0,100% 28%,100% 72%,96% 100%,4% 100%,0 72%,0 28%);padding:2px}',
+  '.rkPlaqueIn{background:linear-gradient(180deg,#2a1348,#150a26);clip-path:polygon(4% 0,96% 0,100% 28%,100% 72%,96% 100%,4% 100%,0 72%,0 28%);padding:8px 6px 7px}',
+  '.rkTitle{font-size:20px;font-weight:900;letter-spacing:1.5px;background:linear-gradient(180deg,#ffefad,#e8b13f 55%,#a86e1f);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 5px rgba(0,0,0,.8));white-space:nowrap}',
+  '.rkSub{color:#efe8fb;font-size:9.5px;letter-spacing:2.5px;margin-top:3px;font-weight:600}',
+  '.rkCrowdGlow{position:absolute;bottom:28px;left:0;right:0;height:90px;z-index:0;background:radial-gradient(60% 100% at 50% 100%,rgba(150,80,255,.28),transparent 70%)}',
+  '.rkCrowdSvg{position:absolute;left:0;right:0;bottom:46px;width:100%;height:34px;z-index:0;opacity:1}',
+  '.rkSmoke{position:absolute;bottom:34px;width:40%;height:70px;filter:blur(8px);background:radial-gradient(ellipse at center,rgba(200,160,255,.32),transparent 70%);z-index:0}',
+  '.rkSmokeL{left:-6%}.rkSmokeR{right:-6%}',
+  '.rkPod{position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;gap:8px;margin-top:18px;padding:0 6px}',
+  '.rkCol{flex:1;max-width:112px;display:flex;flex-direction:column;align-items:center;min-width:0}',
+  '.rkCrownSvg{width:34px;margin-bottom:2px;filter:drop-shadow(0 2px 6px rgba(255,80,80,.45))}',
+  '.rkRingWrap{position:relative;display:inline-block}',
+  '.rkRing{border-radius:50%;border:4px solid #ffd700;background:#0b0b0f;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:28px;width:84px;height:84px;box-shadow:0 0 22px rgba(255,215,0,.5),inset 0 0 10px rgba(0,0,0,.8)}',
+  '.rkRing img{width:100%;height:100%;object-fit:cover;border-radius:50%}',
+  '.rkCol.p2 .rkRing{width:56px;height:56px;border-color:#d9d9e3;box-shadow:0 0 16px rgba(217,217,227,.45);font-size:20px}',
+  '.rkCol.p3 .rkRing{width:56px;height:56px;border-color:#cd7f32;box-shadow:0 0 16px rgba(205,127,50,.5);font-size:20px}',
+  '.rkLau{position:absolute;top:2px;width:16px;height:56px}',
+  '.rkLau.L{left:-15px}.rkLau.R{right:-15px;transform:scaleX(-1)}',
+  '.rkMedalSvg{width:26px;margin-top:4px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}',
+  '.rkName{margin-top:5px;font-size:12px;font-weight:800;color:#fff;max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 3px #000}',
+  '.rkVal{font-size:11px;font-weight:800;margin-top:1px;text-shadow:0 1px 3px #000}',
+  '.rkCol.p1 .rkVal{color:#ffd700}.rkCol.p2 .rkVal{color:#e8e8f2}.rkCol.p3 .rkVal{color:#f2e3d2}',
+  '.rkTier{margin-top:4px;font-size:9px;font-weight:800;color:#ffd700;background:rgba(64,38,6,.8);border:1px solid rgba(255,215,0,.55);border-radius:11px;padding:2px 9px;display:inline-flex;gap:4px;align-items:center}',
+  '.rkPed{width:88%;position:relative;margin-top:9px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900}',
+  '.rkPed::before{content:"";position:absolute;top:-7px;left:0;right:0;height:14px;border-radius:50%;background:inherit;filter:brightness(1.25)}',
+  '.rkCol.p1 .rkPed{height:100px;background:linear-gradient(90deg,#6b4d00,#ffd700 30%,#fff2b0 50%,#ffd700 70%,#6b4d00);font-size:32px;color:#fff8d0;text-shadow:0 0 10px rgba(255,200,0,.8)}',
+  '.rkCol.p2 .rkPed{height:62px;background:linear-gradient(90deg,#43434e,#c9c9d4 30%,#f2f2f8 50%,#c9c9d4 70%,#43434e);font-size:24px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}',
+  '.rkCol.p3 .rkPed{height:54px;background:linear-gradient(90deg,#4a2a10,#cd7f32 30%,#f0b070 50%,#cd7f32 70%,#4a2a10);font-size:24px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5)}',
+  '.rkPedW{display:flex;align-items:center;gap:1px}',
+  '.rkLauS{width:12px;height:38px;opacity:.9}',
+  '.rkLauS.R{transform:scaleX(-1)}',
+  '.rkFloorGlow{position:relative;z-index:1;height:20px;margin-top:-4px;background:radial-gradient(60% 100% at 50% 0%,rgba(255,215,0,.16),transparent 70%)}',
+  '.rkFoot{position:relative;z-index:2;margin-top:8px;line-height:1.2}',
+  '.rkFootCrown{width:16px;margin:0 auto 2px;display:block}',
+  '.rkFootName{letter-spacing:5px;font-size:11px;color:#d8b45a;font-weight:700}',
+  '.rkFootTag{letter-spacing:3px;font-size:8px;color:#96703d;margin-top:3px;font-weight:600}',
+  '.rkEmpty{color:#b9a0e0;font-size:12px;padding:26px 0 34px;font-weight:700}',
+  '.rkLau svg,.rkLauS svg{width:100%;height:100%;display:block}',
+  '.rkLauS{display:block}',
+  '.rkBannerL svg,.rkBannerR svg{width:100%;height:auto;display:block}'
+].join('');
+function _rkCss() {
+  if (_rkCssDone || document.getElementById('rkArenaCss')) { _rkCssDone = true; return; }
+  var st = document.createElement('style');
+  st.id = 'rkArenaCss';
+  st.textContent = RK_CSS;
+  document.head.appendChild(st);
+  _rkCssDone = true;
+}
+var RK_DEFS = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>' +
+  '<linearGradient id="rkGld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset=".5" stop-color="#ffd700"/><stop offset="1" stop-color="#b8860b"/></linearGradient>' +
+  '<linearGradient id="rkSil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f2f8"/><stop offset=".55" stop-color="#9a9aa8"/><stop offset="1" stop-color="#6e6e80"/></linearGradient>' +
+  '<linearGradient id="rkBrz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0b070"/><stop offset=".55" stop-color="#cd7f32"/><stop offset="1" stop-color="#8a4f1d"/></linearGradient>' +
+  '<linearGradient id="rkBan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#45196e"/><stop offset="1" stop-color="#2a0f4a"/></linearGradient>' +
+  '</defs></svg>';
+function _rkLaurel(color) {
+  var leaves = [[6,50,-38],[4,40,-30],[4.5,30,-20],[6.5,20,-10],[10,11,0],[14,5,12]].map(function (l) {
+    return '<ellipse cx="' + l[0] + '" cy="' + l[1] + '" rx="4.6" ry="2.2" transform="rotate(' + l[2] + ' ' + l[0] + ' ' + l[1] + ')" fill="' + color + '"/>';
+  }).join('');
+  return '<svg viewBox="0 0 18 60" xmlns="http://www.w3.org/2000/svg"><path d="M14 58 Q3 40 7 20 Q9 9 15 2" fill="none" stroke="' + color + '" stroke-width="2.2"/>' + leaves + '</svg>';
+}
+function _rkCrownSvg(cls) {
+  return '<svg class="' + (cls || '') + '" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M3 21 L1 7 L11 13 L20 2 L29 13 L39 7 L37 21 Z" fill="url(#rkGld)" stroke="#8a5a00" stroke-width="1"/>' +
+    '<circle cx="1" cy="7" r="1.7" fill="#ffe9a3"/><circle cx="20" cy="2" r="1.7" fill="#ffe9a3"/><circle cx="39" cy="7" r="1.7" fill="#ffe9a3"/>' +
+    '<circle cx="20" cy="13" r="2.6" fill="#e23b3b"/><circle cx="10" cy="16" r="1.6" fill="#7b2ff7"/><circle cx="30" cy="16" r="1.6" fill="#7b2ff7"/>' +
+    '<rect x="3" y="19.5" width="34" height="4" rx="2" fill="url(#rkGld)" stroke="#8a5a00" stroke-width=".6"/></svg>';
+}
+function _rkMedalSvg(num, metal) {
+  var grad = metal === 's' ? 'url(#rkSil)' : 'url(#rkBrz)';
+  var ink = metal === 's' ? '#2b2b33' : '#4a2a10';
+  return '<svg class="rkMedalSvg" viewBox="0 0 34 42" xmlns="http://www.w3.org/2000/svg">' +
+    '<polygon points="10,0 16,0 17,13 12,13" fill="#3f74e0"/><polygon points="24,0 18,0 17,13 22,13" fill="#2b57b0"/>' +
+    '<circle cx="17" cy="26" r="11" fill="' + grad + '" stroke="rgba(0,0,0,.35)" stroke-width="1"/>' +
+    '<circle cx="17" cy="26" r="7.6" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1"/>' +
+    /* D103-UI fix (16-Nov, owner: "rank double baar dikh rahi hai"): medal disc
+       par number + pedestal par number = rank DOBLE. Ab disc par sirf star —
+       rank number sirf pedestal par (p1 crown+wreath waisa hi). */
+    '<text x="17" y="30" text-anchor="middle" font-size="9" font-weight="900" fill="' + ink + '" font-family="Arial,sans-serif">★</text></svg>';
+}
+function _rkTrophySvg() {
+  var leafL = [[14,58,-40],[10,48,-35],[9,38,-25],[11,28,-15],[16,18,-5],[23,10,10]].map(function (l) {
+    return '<ellipse cx="' + l[0] + '" cy="' + l[1] + '" rx="5" ry="2.4" transform="rotate(' + l[2] + ' ' + l[0] + ' ' + l[1] + ')" fill="#d8b45a"/>';
+  }).join('');
+  return '<svg viewBox="0 0 132 74" xmlns="http://www.w3.org/2000/svg" style="width:100%">' +
+    '<g><path d="M20 66 Q6 44 18 20 Q22 12 30 6" fill="none" stroke="#d8b45a" stroke-width="2.5"/>' + leafL + '</g>' +
+    '<g transform="translate(132,0) scale(-1,1)"><path d="M20 66 Q6 44 18 20 Q22 12 30 6" fill="none" stroke="#d8b45a" stroke-width="2.5"/>' + leafL + '</g>' +
+    '<path d="M48 22 q-12 0 -10 12 q2 10 12 10" fill="none" stroke="url(#rkGld)" stroke-width="3"/>' +
+    '<path d="M84 22 q12 0 10 12 q-2 10 -12 10" fill="none" stroke="url(#rkGld)" stroke-width="3"/>' +
+    '<path d="M48 16 h36 v12 q0 16 -18 18 q-18 -2 -18 -18 z" fill="url(#rkGld)" stroke="#8a5a00" stroke-width="1"/>' +
+    '<polygon points="66,20 71,26 66,32 61,26" fill="#8b2ff7" stroke="#e8c565" stroke-width="1"/>' +
+    '<rect x="62" y="46" width="8" height="8" fill="url(#rkGld)"/>' +
+    '<rect x="54" y="54" width="24" height="6" rx="2" fill="url(#rkGld)" stroke="#8a5a00" stroke-width=".6"/>' +
+    '<rect x="50" y="60" width="32" height="6" rx="2" fill="#b8860b"/>' +
+    '</svg>';
+}
+function _rkBannerSvg(side) {
+  var words = side === 'L' ? ['PLAY', 'COMPETE', 'CLIMB', 'REPEAT'] : ['SMALL', 'GAMES', 'BIG', 'CHAMPIONS'];
+  var txt = words.map(function (w, i) {
+    return '<text x="26" y="' + (30 + i * 17) + '" text-anchor="middle" font-size="7.5" font-weight="800" letter-spacing="1" fill="#e8c565" font-family="Arial,sans-serif">' + w + '</text>';
+  }).join('');
+  return '<svg class="rkBanner' + side + '" viewBox="0 0 52 168" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M1 1 h50 v138 l-25 27 l-25 -27 z" fill="url(#rkBan)" stroke="#c9a24a" stroke-width="2"/>' +
+    '<path d="M6 6 h40 v130 l-20 21 l-20 -21 z" fill="none" stroke="rgba(232,197,101,.35)" stroke-width="1"/>' +
+    txt +
+    '<path d="M18 122 l-2 -9 l7 5 l3 -8 l3 8 l7 -5 l-2 9 z" fill="#e8c565"/>' +
+    '</svg>';
+}
+function _rkCrowdSvg() {
+  var d = 'M0 34 L0 24';
+  for (var x = 0; x < 360; x += 24) d += ' Q' + (x + 12) + ' 10 ' + (x + 24) + ' 24';
+  d += ' L360 34 Z';
+  var dots = [[40,20,'#ffd700'],[118,15,'#fff'],[208,21,'#ffd700'],[298,17,'#fff'],[340,22,'#ffd700']].map(function (c) {
+    return '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="1.2" fill="' + c[2] + '" opacity=".55"/>';
+  }).join('');
+  return '<svg class="rkCrowdSvg" viewBox="0 0 360 34" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="' + d + '" fill="#140a26"/>' + dots + '</svg>';
+}
+function _arenaCard(users, sortKey) {
+  /* ✅ D72 (2026-11-07): owner — "new ui bana, screenshot ki EXACT ui":
+     arena ab owner ke mock (2a56d26a) ki patched art ke upar exact-slot
+     overlays se banti hai — trophy/plaque/banners/pedestal/walls sab
+     mock ki asli art; sirf avatars/names/kills/pills dynamic. */
+  var STAMP = '20261117f';
+  var top = (users || []).slice(0, 3);
+  /* ✅ D84 (owner: "top 2,3 ki profile icon perfectly fit nahi beth rahi"):
+     slots ab arena_bg.jpg ke BLACK SOCKETS ke pixel-measure se exact
+     (PIL blob-scan: p2 center 22.17/45.61 w15.62, p3 77.39/47.43 w15.14,
+     p1 49.85/41.08 w19.82) — circle art ke ring socket me poora baithta hai. */
+  var COLS = [
+    { n: 2, av: { l: 22.17, t: 40.51, w: 15.32 }, nm: { t: 57.0, f: 3.5 }, vl: { t: 60.5, f: 3.3 }, pl: { t: 63.4 } },
+    { n: 1, av: { l: 49.85, t: 34.52, w: 19.52 }, nm: { t: 49.8, f: 3.7 }, vl: { t: 53.4, f: 3.5 }, pl: { t: 56.3 } },
+    { n: 3, av: { l: 77.39, t: 42.48, w: 14.84 }, nm: { t: 58.6, f: 3.4 }, vl: { t: 62.1, f: 3.2 }, pl: { t: 64.6 } }
+  ];
+  var FILLS = {1:'#141414',2:'#ff8c1a',3:'#58b368'};
+  var VALC  = {1:'#ffd700',2:'#ffffff',3:'#ffd700'};
+  var h = '<div style="position:relative;border-radius:18px;overflow:hidden;margin-bottom:12px;container-type:inline-size;background:#0b0714 url(assets/rank/arena_bg.jpg?v=' + STAMP + ') center/cover no-repeat;aspect-ratio:1024/1536">';
+  if (!top.length) {
+    h += '<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#ffd700;font-size:4cqw;font-weight:900;text-shadow:0 2px 10px #000">🏆 No ranked players yet</div>';
+  } else {
+    for (var i = 0; i < COLS.length; i++) {
+      var c = COLS[i], u = top[c.n - 1];
+      if (!u) continue;
+      var isDel = (u.ign || u.displayName || '') === '[deleted]';
+      var _ini = (u.ign || u.displayName || '?').charAt(0).toUpperCase();
+      /* ✅ D103 FIX: corrupt/dead avatar URL (lh3 200-but-broken) par img
+         hide → baked initials art dikhe, blank circle nahi. */
+      var av = isDel ? '👤' : ('<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:' + 'inherit' + '">' + _ini + '</span>' + (u.profileImage ? '<img src="' + u.profileImage + '" alt="" onerror="this.style.display=\'none\'" onload="if(!this.naturalWidth)this.style.display=\'none\'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:1">' : ''));
+      var val = _rankVal(u, sortKey);
+      var valLabel = _rankValStr(val, sortKey);
+      var rk = calcRk(u.stats || {});
+      var _podRib = '';
+      try { if (window.premiumRibbonFor && Number(u.premiumLevel || 0) > 0) _podRib = window.premiumRibbonFor(u.premiumLevel, u.premiumExpires, 12); } catch (e) {}
+      var nm = window.escHtml ? window.escHtml(u.ign || u.displayName || 'Player') : (u.ign || u.displayName || 'Player');
+      /* ✅ D84 (owner: "rank me kisi aur user ki profile par directly tap
+         karke user ko dekh sake"): avatar + name tap → usi user ka
+         public profile card (PCARD2 replica) */
+      var _tap = (u._uid && !isDel) ? ' onclick="window.viewPublicProfile&&viewPublicProfile(\'' + u._uid + '\')"' : '';
+      h += '<div' + _tap + ' style="position:absolute;left:' + c.av.l + '%;top:' + c.av.t + '%;width:' + c.av.w + 'cqw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:' + FILLS[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:' + (c.av.w / 2.6) + 'cqw;font-weight:900;color:#fff;overflow:hidden' + (_tap ? ';cursor:pointer' : '') + '">' + av + '</div>';
+      h += '<div' + _tap + ' style="position:absolute;left:' + c.av.l + '%;top:' + c.nm.t + '%;transform:translateX(-50%);max-width:26cqw;font-size:' + c.nm.f + 'cqw;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center' + (_tap ? ';cursor:pointer' : '') + '">' + nm + _podRib + '</div>';
+      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.vl.t + '%;transform:translateX(-50%);font-size:' + c.vl.f + 'cqw;font-weight:800;color:' + VALC[c.n] + ';text-shadow:0 2px 6px #000;white-space:nowrap">' + valLabel + '</div>';
+      h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.pl.t + '%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:1cqw;background:rgba(70,45,20,.72);border:1px solid rgba(200,150,60,.4);color:#d9a45c;font-size:2.7cqw;font-weight:800;padding:0.8cqw 3cqw;border-radius:20px;white-space:nowrap">' + (window.tierIconHtml?tierIconHtml(rk.badge,13):'') + ' ' + rk.badge + '</div>';
+    }
+  }
+  h += '</div>';
+  return h;
+}
+
+/* ✅ D70: chrome (formula banner + tabs + season + tools) ek global parts
+   function me — fixes-v7.js ka cached renderer bhi yahi chrome + arena use
+   kare, taaki live par kabhi purana podium wapas na dikhe. */
+function _rankChromeParts() {
+  // Season info banner
+  var season = window.getCurrentSeason ? window.getCurrentSeason() : { name: 'Season', daysLeft: 0, label: '' };
+
+  /* How Rank Works + formula banner */
+  var _tiers = [
+    {b:'Bronze',e:'',pts:'0'},    {b:'Silver',e:'',pts:'301'},  {b:'Gold',e:'',pts:'601'},
+    {b:'Platinum',e:'',pts:'1001'},{b:'Diamond',e:'',pts:'1501'},{b:'Legend',e:'',pts:'2000'},
+    {b:'Heroic',e:'⚔️',pts:'3500'},  {b:'Grandmaster',e:'🌟',pts:'5000'}
+  ];
+  /* ✅ D71: purane app jaisa single-line formula card (medal strip hata) */
+  var rankHeader = '<div class="rank-formula-banner" onclick="window.showHowRankWorks&&showHowRankWorks()">' +
+    '<div style="font-size:12.5px;font-weight:800;color:#ffd700">📊 Rank = Wins×40 + Kills×2 + Matches×1 <span style="color:#b8912a;font-weight:700;font-size:11px">→ Tap for details</span></div>' +
+    '</div>';
+
+  var tabBar = rankHeader + '<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
+    ['kills','wins','rankpoints'].map(function(t) {
+      var labels = { kills: '☠️ Kills', wins: '<img src="assets/img/icons/trophy.png" alt="" style="width:13px;height:13px;object-fit:contain;vertical-align:-2px"> Wins', rankpoints: '<img src="assets/img/icons/diamond.png" alt="" style="width:13px;height:13px;object-fit:contain;vertical-align:-2px"> Points' };
+      var active = t === _rankTab;
+      return '<div onclick="renderRank(\'' + t + '\')" style="flex:1;padding:9px 6px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;text-align:center;' +
+        (active ? 'background:#0d2f26;color:#35e08a;border:1.5px solid #1f8a5c;box-shadow:0 0 10px rgba(31,201,110,.25)' :
+                  'background:#17171c;color:#8f8f98;border:1px solid #232329') +
+        '">' + labels[t] + '</div>';
+    }).join('') +
+    '</div>';
+
+  var seasonBanner = '<div style="display:flex;justify-content:space-between;align-items:center;' +
+    'background:#141419;border:1px solid #232329;border-radius:14px;padding:13px 16px;margin-bottom:12px">' +
+    '<div style="font-size:13px;font-weight:900;color:#d24dff">🏆 ' + season.name + '</div>' +
+    '<div style="font-size:11px;color:#8a8a92"><b style="color:#00d4ff;font-size:15px;font-weight:900">' + season.daysLeft + '</b> din baaki</div>' +
+    '</div>';
+
+  /* ✅ B28 (2026-10-07): Clan War / City Championship / Mentor Hub — teeno
+     screens (features/clan-war.js, city-championship.js, mentor.js) pehle
+     panel me KAHIN se khulte hi nahi the (koi button inhe call hi nahi
+     karta tha — users ke liye ye features pahunch se bahar the). Ab yahan
+     Rank tab par teen saaf tool buttons hain. Handlers wahi purane
+     (showClanWar / showCityChampionship / showMentorHub) — inka apna
+     UI/logic wahi rehta hai. */
+  var rankTools = '<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
+    [['⚔️','Clan War','showClanWar','rgba(255,107,107,.1)','rgba(255,107,107,.3)','#ff6b6b'],
+     ['🏙️','City Champ','showCityChampionship','rgba(255,170,0,.1)','rgba(255,170,0,.3)','#ffaa00'],
+     ['👨‍🏫','Mentor Hub','showMentorHub','rgba(255,215,0,.1)','rgba(255,215,0,.3)','#ffd700']].map(function(t){
+      return '<button onclick="window.' + t[2] + '&&window.' + t[2] + '()" style="flex:1;min-width:96px;padding:10px 8px;border-radius:12px;background:' + t[3] + ';border:1px solid ' + t[4] + ';color:' + t[5] + ';font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap">' + t[0] + ' ' + t[1] + '</button>';
+    }).join('') +
+    '</div>';
+
+  /* ✅ D71 purana order: formula → tabs → tools → season */
+  return { tabBar: tabBar, seasonTools: rankTools + seasonBanner };
+}
+
+function renderRank(tab) {
+  if (tab) _rankTab = tab;
+  var rc = $('rankContent'); if (!rc) return;
+  var _cp = _rankChromeParts();
+  var tabBar = _cp.tabBar;
+  var seasonBanner = _cp.seasonTools;
+  rc.innerHTML = tabBar + seasonBanner + _arenaCard([], _rankTab) + '<div style="text-align:center;padding:30px"><div class="sp-spinner"></div></div>';
+
+  if (!window._supa) { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); return; }
+  window._supa.from('leaderboard').select('*').limit(300)
+    .then(function(r) {
+      var users = (r.data || []).filter(function(u){ return !_isGhostRow(u); }).map(function(u) {
+        return { _uid: u.id, ign: u.ign||'Player', profileImage: u.avatar_url||'', rankPoints: u.rank_points||0, winStreak: 0, stats: { matches: u.total_matches||0, wins: u.total_wins||0, kills: u.total_kills||0 }, /* ✅ 2026-10-12: premium ribbon IGN ke aage — leaderboard row me public premium status aata hai (migration 20261012) */premiumLevel: Number(u.premium_level||0), premiumExpires: u.premium_expires ? new Date(u.premium_expires).getTime() : 0 };
+      });
+      var sortKey = _rankTab;
+      users.sort(function(a, b) {
+        /* ✅ BUG-HUNT R1: Points tab ka sort ab _rankVal se (server
+           rank_points column) — purana stats-formula sort grant-wale
+           players ko ghosts se tie kara kar order random kar deta tha. */
+        var d = _rankVal(b, _rankTab) - _rankVal(a, _rankTab);
+        return d ? d : _rankTiebreak(a, b);
+      });
+        _renderRankList(rc, users, sortKey, tabBar, seasonBanner, false);
+    }).catch(function() { _renderRankList(rc, [], _rankTab, tabBar, seasonBanner, false); });
+}
+
+/* ✅ BUG-HUNT R1 (07-Nov-2026): ghost rows — ign khaali + zero activity
+   (onboarding adhoora chhodne wale accounts) leaderboard/podium me "Player"
+   ban kar ghuste the. Public list me sirf asli identity wale players. */
+function _isGhostRow(u) {
+  var ign = (u.ign || '').toString().trim();
+  if (ign && ign !== '[deleted]') return false;
+  return !(Number(u.rank_points||0) || Number(u.total_matches||0) || Number(u.total_wins||0) || Number(u.total_kills||0));
+}
+function _rankTiebreak(a, b) {
+  var aw = Number(a.wins != null ? a.wins : (a.stats && a.stats.wins) || 0);
+  var bw = Number(b.wins != null ? b.wins : (b.stats && b.stats.wins) || 0);
+  if (bw - aw) return bw - aw;
+  var ak = Number(a.kills != null ? a.kills : (a.stats && a.stats.kills) || 0);
+  var bk = Number(b.kills != null ? b.kills : (b.stats && b.stats.kills) || 0);
+  if (bk - ak) return bk - ak;
+  return String(a.ign||'').localeCompare(String(b.ign||''));
+}
+function _rankVal(u, sortKey) {
+  var st = u.stats || {};
+  if (sortKey === 'kills') return Number(st.kills || 0);
+  if (sortKey === 'wins')  return Number(st.wins  || 0);
+  /* ✅ D86 (owner: "green diamond diye the fir bhi rank 1 par nahi"):
+     Points ab SERVER ka rank_points column hai — jisme match-placement
+     points (publish_match_results) AUR admin ke green-diamond grants
+     (admin_adjust_wallet mirror) dono judte hain. Purana client-computed
+     value sirf fallback hai (column na ho to). */
+  if (u.rankPoints != null && u.rankPoints !== '') return Number(u.rankPoints || 0);
+  return Number(st.wins||0)*40 + Number(st.kills||0)*2 + Number(st.matches||0) + Number(st.winStreak||u.winStreak||0)*10;
+}
+function _rankValStr(val, sortKey) {
+  if (sortKey === 'kills') return val + ' kills';
+  if (sortKey === 'wins')  return val + ' wins';
+  return '🏆 ' + val + ' pts';
+}
+function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
+  /* ✅ D69 (2026-11-06): podium ab RANK ARENA replica (_arenaCard) ke
+     andar aata hai — owner ke selected screenshot jaisi poori screen.
+     Purana .rank-podium block hataya; data/logic wahi purana. */
+  var h = tabBar + seasonBanner + _arenaCard(users, sortKey);
+  for (var j = 3; j < users.length; j++) {
+    var u = users[j];
+    var rk = calcRk(u.stats || {});
+    var _isDelR = (u.ign || u.displayName || '') === '[deleted]';
+    var _iniR = (u.ign || u.displayName || '?').charAt(0).toUpperCase();
+    /* ✅ D103 FIX: list-row avatar bhi onerror-safe (initials base par) */
+    var av = _isDelR ? '<i class="fas fa-user" style="opacity:.4;font-size:16px;line-height:1"></i>' : ('<span style="grid-area:1/1;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff">' + _iniR + '</span>' + (u.profileImage ? '<img src="' + u.profileImage + '" onerror="this.style.display=\'none\'" onload="if(!this.naturalWidth)this.style.display=\'none\'" style="grid-area:1/1;position:relative;z-index:1">' : ''));
+    var _stR = u.stats || {};
+    var val;
+    if (sortKey === 'kills') {
+      val = Number(_stR.kills || 0);
+    } else if (sortKey === 'wins') {
+      val = Number(_stR.wins || 0);
+    } else {
+      /* ✅ D86: row points bhi server rank_points column se (grant-visible) */
+      if (u.rankPoints != null && u.rankPoints !== '') {
+        val = Number(u.rankPoints || 0);
+      } else {
+        var _wR = Number(_stR.wins||0), _kR = Number(_stR.kills||0),
+            _mR = Number(_stR.matches||0), _skR = Number(_stR.winStreak||u.winStreak||0);
+        val = _wR*40 + _kR*2 + _mR + _skR*10;
+      }
+    }
+    var valStr = sortKey === 'kills' ? val + ' kills' : sortKey === 'wins' ? val + ' wins' : '🏆 ' + val + ' pts';
+    var isMe = window.U && (u._uid === window.U.uid);
+    var _top10title = j < 7 ? ['','🔱 Warlord','⚔️ Slayer','💫 Elite','🎯 Sniper','🔥 Blaze','🌟 Star','🎖️ Knight'][j+1] || '' : '';
+    /* ✅ 2026-10-12: row par data-uid — E2E (aur debugging) ke liye pakka hook,
+       waise hi jaise admin panel ki Joined Players table ki rows par hai. */
+    /* ✅ D84: leaderboard row tap → us user ka public profile card */
+    var _rowTap = (u._uid && !_isDelR) ? ' onclick="window.viewPublicProfile&&viewPublicProfile(\'' + u._uid + '\')" style="cursor:pointer' : '';
+    h += '<div class="rank-row" data-uid="' + (u._uid || '') + '"' + (isMe ? ' style="border:1px solid rgba(0,255,156,.3);background:rgba(0,255,156,.05);cursor:pointer' : _rowTap) + (isMe || _rowTap ? '"' : '') + '>';
+    h += '<div class="rank-num" style="color:' + (j===3?'#ffd700':j===4?'#c0c0c0':j===5?'#cd7f32':'var(--txt2)') + ';font-weight:' + (j<6?'900':'700') + '">#' + (j + 1) + '</div>';
+    h += '<div class="rank-ava" style="display:grid;place-items:center">' + av + '</div>';
+    /* ✅ 2026-10-12: premium ribbon — IGN ke aage (sab players ko dikhta hai;
+       expire ho chuka premium = koi ribbon nahi, "jhoota dava nahi"). */
+    var _premRibbon = '';
+    try {
+      if (window.premiumRibbonFor && Number(u.premiumLevel||0) > 0) {
+        _premRibbon = premiumRibbonFor(u.premiumLevel, u.premiumExpires, 15);
+      } else if (isMe && window.premiumRibbonHtml) {
+        _premRibbon = premiumRibbonHtml(15);   /* apni row: UD se live */
+      }
+    } catch (e) {}
+    h += '<div class="rank-info"><div class="rn"><span class="rn-n">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + '</span>' + _premRibbon + (isMe ? ' <span style="font-size:9px;color:var(--green)">YOU</span>' : '');
+    if (_top10title) h += ' <span class="rn-t" style="font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(255,215,0,.12);color:#ffd700;font-weight:800">' + _top10title + '</span>';
+    h += '</div>';
+    var _st = u.stats || {};
+    var _m = Number(_st.matches||0), _w = Number(_st.wins||0), _k = Number(_st.kills||0);
+    var _wr = _m > 0 ? Math.round((_w/_m)*100) : 0;
+    var _kd = _m > 0 ? (_k/_m).toFixed(1) : '0.0';
+    h += '<div class="rs">K:' + _k + ' · W:' + _w + ' · <span style="color:#00ff9c">WR:' + _wr + '%</span> · <span style="color:#ff9f1c">K/M:' + _kd + '</span></div></div>';
+    /* ✅ 2026-10-12: leaderboard row par asli rank badge IMAGE (jo kalayein
+       assets/img/ranks me padi thi) — colour-pill ke saath. rankBadgeImg
+       RP-based hai aur fail-safe (na mile to emoji waisa hi). */
+    h += '<span class="rank-badge" style="background:' + rk.bg + ';color:' + rk.color + ';box-shadow:0 0 8px ' + rk.color + '44;display:inline-flex;align-items:center;gap:4px">' +
+         /* D103-UI fix (16-Nov): rankBadgeImg + tierIconHtml DONO same badge
+            asset render karte the → har row me icon DOUBLE dikhta tha.
+            Ab sirf tierIconHtml (podium ke saath consistent). */
+         (window.tierIconHtml?tierIconHtml(rk.badge,16):'') + ' ' + rk.badge + '</span>';
+    h += '<div class="rank-earn" style="color:' + (sortKey==='kills'?'#ff6b6b':sortKey==='wins'?'#ffd700':'#00d4ff') + '">' + valStr + '</div></div>';
+  }
+  if (!users.length) h += '<div class="empty-state"><i class="fas fa-trophy"></i><p>No ranked players yet</p></div>';
+  /* ✅ D70: Referral Leaderboard button (fixes-v7 wale renderer se port —
+     feature kahin gayab na ho) */
+  h += '<div style="margin-top:12px"><button onclick="window.showReferralLeaderboard&&showReferralLeaderboard()" ' +
+       'style="width:100%;padding:11px;border-radius:12px;background:linear-gradient(135deg,rgba(185,100,255,.1),rgba(121,40,202,.05));color:#b964ff;border:1px solid rgba(185,100,255,.2);font-weight:700;font-size:13px;cursor:pointer">🎖️ Referral Leaderboard</button></div>';
+  rc.innerHTML = h;
+
+  // Inject chat below leaderboard
+  if (window.f22PlayerChat !== undefined) {
+    setTimeout(function() {
+      if (window.injectLobbyChat) window.injectLobbyChat = window.injectLobbyChat;
+      var lobbyChatWrap = document.getElementById('lobbyChatWrap');
+      if (!lobbyChatWrap && rc) {
+        var div = document.createElement('div');
+        div.id = 'lobbyChatWrap';
+        div.style.cssText = 'margin-top:16px';
+        rc.appendChild(div);
+      }
+    }, 100);
+  }
+}
+
+/* ====== PROFILE ====== */
+
+
+/* ====== MATCH RESULT DETAIL (from match-result-detail.js) ====== */
+/* ====================================================================
+   MATCH RESULT — FULL SCREEN PAGE  (screenshots jaisa)
+   - Modal nahi — dedicated fullscreen slide-in screen
+   - Screenshot 3 jaisa: Player card with rank, kills, winnings
+   - Share Card button
+   - Back button se wapas My Matches
+   ==================================================================== */
+(function () {
+  'use strict';
+
+  /* ── Helper: rank medal ── */
+  function rankMedal(r) {
+    r = Number(r);
+    /* ✅ D100-F1: real medal IMAGE assets — emoji nahi */
+    if (r > 0) return window.medalHtml(r, 18);
+    return '#?';
+  }
+
+  /* ── Show fullscreen result page ── */
+  window.showResultPage = function (matchId) {
+    var t = window.MT && window.MT[matchId];
+    var db = window.db; var U = window.U; var UD = window.UD;
+    if (!db || !U) return;
+
+    /* Remove existing */
+    var old = document.getElementById('_resultPage');
+    if (old) old.remove();
+
+    /* Create overlay */
+    var page = document.createElement('div');
+    page.id = '_resultPage';
+    page.style.cssText = [
+      'position:fixed;inset:0;z-index:99970;',
+      'background:#050507;overflow-y:auto;',
+      'animation:resultPageIn .3s ease'
+    ].join('');
+
+    page.innerHTML = '<div style="text-align:center;padding:80px 20px;color:#555;font-size:14px"><i class="fas fa-spinner fa-spin"></i> Loading result...</div>';
+
+    if (!document.getElementById('_resultPageStyle')) {
+      var st = document.createElement('style');
+      st.id = '_resultPageStyle';
+      st.textContent = '@keyframes resultPageIn{from{transform:translateX(100%)}to{transform:translateX(0)}}';
+      document.head.appendChild(st);
+    }
+
+    document.body.appendChild(page);
+    history.pushState(null, null, null);
+
+    /* Back button closes page */
+    window.addEventListener('popstate', function _popH() {
+      window.removeEventListener('popstate', _popH);
+      var p = document.getElementById('_resultPage');
+      if (p) p.remove();
+    });
+
+    /* Fetch result from Supabase */
+    if (window._supa) {
+      window._supa.from('join_requests').select('*').eq('match_id', matchId).eq('user_id', U.uid).single()
+        .then(function(resp) {
+          if (resp.data && resp.data.placement) {
+            renderResultPage(page, { rank: resp.data.placement, kills: resp.data.kills||0, winnings: resp.data.prize_earned||0, userId: U.uid, matchId: matchId }, t, matchId);
+          } else { page.innerHTML = _noResultHTML(); }
+        }).catch(function() { page.innerHTML = _noResultHTML(); });
+    } else { page.innerHTML = _noResultHTML(); }
+  };
+
+  /* Keep backward compat */
+  window.showResultDetail = window.showResultPage;
+
+  /* ── Render full page HTML ── */
+  function renderResultPage(page, r, t, matchId) {
+    var UD = window.UD || {};
+    var totalWin = Number(r.totalWinning) || (Number(r.winnings || 0) + Number(r.killPrize || 0));
+    var rank     = Number(r.rank) || 0;
+    var kills    = Number(r.kills) || 0;
+    var matchName = (t && t.name) || r.matchName || 'Match';
+    var mode      = ((t && (t.mode || t.type)) || r.mode || 'solo').toLowerCase();
+    var isTeam    = (mode === 'duo' || mode === 'squad');
+    var won       = rank === 1;
+    var playerName = UD.ign || UD.displayName || 'Player';
+    var ffUid      = UD.ffUid || UD.uid || '';
+    var tier       = _getTier(UD.stats || {});
+
+    /* Rank card colors */
+    var rankColor = rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : rank === 3 ? '#cd7f32' : '#00d4ff';
+
+    var h = '';
+
+    /* ── Top bar ── */
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:14px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06)">';
+    h += '<button onclick="history.back()" style="background:rgba(255,255,255,.07);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center"><i class="fas fa-arrow-left"></i></button>';
+    h += '<div style="flex:1;font-size:15px;font-weight:800;color:#fff">Match Result</div>';
+    h += '</div>';
+
+    /* ── Hero card — screenshot 3 jaisa ── */
+    h += '<div style="margin:16px;border-radius:20px;overflow:hidden;position:relative">';
+
+    /* Background image overlay */
+    h += '<div style="background:linear-gradient(180deg,#0d0d2e 0%,#1a0a2e 50%,#0a1a1a 100%);padding:24px 20px 20px;position:relative">';
+
+    /* Glow effects */
+    h += '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(185,100,255,.2) 0%,transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(0,212,255,.15) 0%,transparent 60%);pointer-events:none"></div>';
+
+    /* Border frame */
+    h += '<div style="position:absolute;inset:0;border:2px solid rgba(185,100,255,.3);border-radius:20px;pointer-events:none"></div>';
+
+    /* Avatar */
+    h += '<div style="text-align:center;margin-bottom:14px;position:relative;z-index:1">';
+    var avatarSrc = UD.profileImage || UD.photoURL || '';
+    var initLetter = (playerName.charAt(0) || 'P').toUpperCase();
+    /* ✅ D103 FIX: initials disc hamesha base par; photo upar, onerror par hide */
+    h += '<div style="position:relative;width:72px;height:72px;margin:0 auto">';
+    h += '<div style="position:absolute;inset:0;width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#b964ff);border:3px solid ' + rankColor + ';display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;box-shadow:0 0 20px ' + rankColor + '55">' + initLetter + '</div>';
+    if (avatarSrc) {
+      h += '<img src="' + avatarSrc + '" onerror="this.style.display=\'none\'" onload="if(!this.naturalWidth)this.style.display=\'none\'" style="position:relative;z-index:1;width:72px;height:72px;border-radius:50%;border:3px solid ' + rankColor + ';object-fit:cover;box-shadow:0 0 20px ' + rankColor + '55">';
+    }
+    h += '</div>';
+    h += '</div>';
+
+    /* Player name + title */
+    h += '<div style="text-align:center;margin-bottom:6px;position:relative;z-index:1">';
+    h += '<div style="font-size:22px;font-weight:900;color:#fff">' + playerName + '</div>';
+    h += '<div style="font-size:12px;color:#888;margin-top:2px">FE UID: ' + ffUid + '</div>';
+    h += '</div>';
+
+    /* Tier badge */
+    h += '<div style="text-align:center;margin-bottom:16px;position:relative;z-index:1">';
+    h += '<span style="display:inline-block;padding:4px 16px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-size:12px;font-weight:700;color:#ffd700">' + tier + '</span>';
+    h += '</div>';
+
+    /* Stats row */
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;position:relative;z-index:1">';
+    /* Matches */
+    h += '<div style="background:rgba(0,100,200,.25);border:1px solid rgba(0,150,255,.3);border-radius:12px;padding:12px 8px;text-align:center">';
+    h += '<div style="font-size:22px;font-weight:900;color:#fff">' + ((UD.stats && UD.stats.matches) || 0) + '</div>';
+    h += '<div style="font-size:10px;color:#888;margin-top:3px">Matches</div>';
+    h += '</div>';
+    /* Wins */
+    h += '<div style="background:rgba(0,180,80,.2);border:1px solid rgba(0,220,100,.3);border-radius:12px;padding:12px 8px;text-align:center">';
+    h += '<div style="font-size:22px;font-weight:900;color:#00ff9c">' + rank + '</div>';
+    h += '<div style="font-size:10px;color:#888;margin-top:3px">Rank</div>';
+    h += '</div>';
+    /* Kills */
+    h += '<div style="background:rgba(200,0,60,.2);border:1px solid rgba(255,60,60,.3);border-radius:12px;padding:12px 8px;text-align:center">';
+    h += '<div style="font-size:22px;font-weight:900;color:#ff6b6b">' + kills + '</div>';
+    h += '<div style="font-size:10px;color:#888;margin-top:3px">Kills</div>';
+    h += '</div>';
+    h += '</div>';
+
+    /* Win rate */
+    var wr = 0;
+    if (UD.stats && UD.stats.matches > 0) wr = Math.round((UD.stats.wins / UD.stats.matches) * 100);
+    h += '<div style="text-align:center;font-size:13px;font-weight:700;color:#888;margin-bottom:8px;position:relative;z-index:1">';
+    h += 'Win Rate: <span style="color:' + (wr >= 30 ? '#00ff9c' : '#ffd700') + '">' + wr + '%</span>';
+    h += '</div>';
+
+    /* Prize earned */
+    if (totalWin > 0) {
+      h += '<div style="background:linear-gradient(135deg,rgba(0,255,156,.12),rgba(0,212,255,.06));border:1px solid rgba(0,255,156,.25);border-radius:14px;padding:12px;text-align:center;margin-bottom:12px;position:relative;z-index:1">';
+      h += '<div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Prize Won</div>';
+      h += '<div style="font-size:28px;font-weight:900;background:linear-gradient(135deg,#00ff9c,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💎 ' + totalWin + '</div>';
+      h += '</div>';
+    }
+
+    /* Match info */
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:12px;padding:10px 14px;position:relative;z-index:1;margin-bottom:4px">';
+    h += '<div style="font-size:12px;color:#888;margin-bottom:4px">' + matchName + '</div>';
+    h += '<div style="display:flex;gap:12px;flex-wrap:wrap">';
+    h += '<span style="font-size:11px;color:#ccc">🏆 Rank: <b style="color:' + rankColor + '">' + rankMedal(rank) + '</b></span>';
+    h += '<span style="font-size:11px;color:#ccc">💀 Kills: <b style="color:#ff6b6b">' + kills + '</b></span>';
+    if (r.killPrize > 0) h += '<span style="font-size:11px;color:#ccc">🔫 Kill Prize: <b style="color:#ffd700">💎' + r.killPrize + '</b></span>';
+    h += '</div>';
+    h += '</div>';
+
+    h += '</div>'; /* bg */
+    h += '</div>'; /* card */
+
+    /* ── Share Card button ── */
+    h += '<div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:10px">';
+    h += '<button onclick="window._shareResultCard&&window._shareResultCard(\'' + matchId + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#00ff9c,#00d4ff);border:none;color:#000;font-weight:900;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fas fa-share-alt"></i> Share Card</button>';
+    h += '</div>';
+
+    page.innerHTML = h;
+  }
+
+  /* ── Share result card ── */
+  window._shareResultCard = function (matchId) {
+    var r = window._lastResultData;
+    var t = window.MT && window.MT[matchId];
+    var UD = window.UD || {};
+    if (!r) { if (window.toast) window.toast('Result data nahi mila', 'err'); return; }
+
+    var text = '🎮 Mini eSports — Match Result!\n\n' +
+      '🏆 ' + (t ? t.name : 'Match') + '\n' +
+      '📊 Rank: ' + rankMedal(r.rank) + '\n' +
+      '💀 Kills: ' + (r.kills || 0) + '\n' +
+      (r.totalWinning > 0 ? '💰 Won: 💎' + r.totalWinning + '\n' : '') +
+      '\n🔥 Play skill-based tournaments on Mini eSports — 🪙 coins + 💎 diamonds jito!\n' + window.location.origin;
+
+    if (navigator.share) {
+      navigator.share({ title: 'My Match Result', text: text }).catch(function () {
+        if (window.copyTxt) window.copyTxt(text);
+        if (window.toast) window.toast('Result copied!', 'ok');
+      });
+    } else {
+      if (window.copyTxt) window.copyTxt(text);
+      if (window.toast) window.toast('Result copied!', 'ok');
+    }
+  };
+
+  function _getTier(stats) {
+    var m  = Number(stats.matches) || 0;
+    var w  = Number(stats.wins)    || 0;
+    var wr = m > 0 ? (w / m) * 100 : 0;
+    if (m >= 100 && wr >= 50) return '👑 Legend';
+    if (m >= 50  && wr >= 35) return (window.medalHtml?medalHtml(1,14):'') + ' Gold';
+    if (m >= 20  && wr >= 20) return (window.medalHtml?medalHtml(2,14):'') + ' Silver';
+    if (m >= 5)               return (window.medalHtml?medalHtml(3,14):'') + ' Bronze';
+    return '🎮 Rookie';
+  }
+
+  function _noResultHTML() {
+    return '<div style="text-align:center;padding:60px 20px">' +
+      '<div style="font-size:48px;margin-bottom:16px">⏳</div>' +
+      '<div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px">Result abhi publish nahi hua</div>' +
+      '<div style="font-size:13px;color:#888">Admin result publish karne ke baad yahan dikhega</div>' +
+      '<button onclick="history.back()" style="margin-top:20px;padding:12px 28px;border-radius:12px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.2);color:#00ff9c;font-weight:700;cursor:pointer">← Wapas Jao</button>' +
+      '</div>';
+  }
+
+  console.log('[Mini eSports] ✅ Match Result Page loaded — fullscreen, no modal');
+})();
+
+
+/* ====== RANK SEASON SYSTEM (from rank-system.js) ====== */
+/* ================================================================
+   MINI eSPORTS — RANK SYSTEM v2.0
+   - Kills / Wins / Rank Points leaderboards
+   - Weekly reset (Monday)
+   - Season reset (monthly)
+   - Top 3 special badge
+   - Top 10 special title
+   ================================================================ */
+(function() {
+'use strict';
+
+
+
+/* ── Weekly leaderboard (Monday reset) ── */
+function getWeekKey() {
+  var now = new Date();
+  var day = now.getDay(); // 0=Sun, 1=Mon
+  var monday = new Date(now);
+  monday.setDate(now.getDate() - ((day + 6) % 7));
+  return monday.getFullYear() + '_W' + String(monday.getMonth()+1).padStart(2,'0') + String(monday.getDate()).padStart(2,'0');
+}
+window.getWeekKey = getWeekKey;
+
+/* ── Load season leaderboard from Firebase ── */
+window.loadSeasonLeaderboard = function(cb) {
+  var s = window.getCurrentSeason ? window.getCurrentSeason() : {};
+  if (!window._supa) { cb([], s); return; }
+  /* Load from Supabase leaderboard view */
+  window._supa.from('leaderboard').select('*').limit(200)
+    .then(function(r) {
+      var users = (r.data || []).filter(function(u){ return !_isGhostRow(u); }).map(function(u) {
+        return { _uid: u.id, ign: u.ign || 'Player', kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0, profileImage: u.avatar_url || '', rankPoints: u.rank_points || 0, stats: { kills: u.total_kills || 0, wins: u.total_wins || 0, matches: u.total_matches || 0 }, premiumLevel: Number(u.premium_level||0), premiumExpires: u.premium_expires ? new Date(u.premium_expires).getTime() : 0 };
+      });
+      users.sort(function(a,b) { var d = b.rankPoints - a.rankPoints; return d ? d : _rankTiebreak(a, b); }); /* BUG-HUNT R1: server points + deterministic tiebreak */
+      cb(users, s);
+    }).catch(function() { cb([], s); });
+};
+
+/* ── After match result: update season & weekly stats ── */
+window.updateSeasonStats = function(uid, statsUpdate) {
+  if (!uid || !statsUpdate) return;
+  var wins   = statsUpdate.wins    || 0;
+  var kills  = statsUpdate.kills   || 0;
+  var matches= statsUpdate.matches || 0;
+
+  /* Supabase stats update */
+  if (window._supa) {
+    if (wins    > 0) window._supa.rpc('increment_balance', { p_uid: uid, p_col: 'total_wins',    p_amount: wins    }).then(null, function(){});
+    if (kills   > 0) window._supa.rpc('increment_balance', { p_uid: uid, p_col: 'total_kills',   p_amount: kills   }).then(null, function(){});
+    if (matches > 0) window._supa.rpc('increment_balance', { p_uid: uid, p_col: 'total_matches', p_amount: matches }).then(null, function(){});
+
+    var pts = window.calcRkScore ? window.calcRkScore(statsUpdate) : 0;
+    if (pts > 0) {
+      /* Get old rank_points for mentor reward check (Bug #13) */
+      var oldRp = (window.UD && uid === (window.U && window.U.uid))
+                  ? (Number(window.UD.rank_points || window.UD.rankPoints) || 0)
+                  : 0;
+      window._supa.rpc('increment_rank_points', { p_uid: uid, p_points: pts })
+        .then(function() {
+          /* Bug #13 Fix: Call mentor reward when rank tier changes */
+          if (window.checkMentorReward && oldRp > 0) {
+            window.checkMentorReward(oldRp, oldRp + pts);
+          }
+          /* Update local UD cache */
+          if (window.UD && uid === (window.U && window.U.uid)) {
+            window.UD.rank_points = oldRp + pts;
+            window.UD.rankPoints  = oldRp + pts;
+          }
+        }).catch(function(){});
+    }
+
+    /* Bug #10 Fix: City Championship score update */
+    if ((wins > 0 || kills > 0) && window.updateCityChampScore) {
+      window.updateCityChampScore(wins > 0, kills);
+    }
+
+    /* Bug #11 Fix: Clan War score update */
+    if ((wins > 0 || kills > 0) && window.updateClanWarScore) {
+      /* Only update if user has a clan */
+      var userClanId = window.UD && window.UD.clanId;
+      if (userClanId) window.updateClanWarScore(wins > 0, kills);
+    }
+
+    /* Bug #12 Fix: Duel record — call if there is an accepted duel for this user */
+    /* Note: duelId must be passed in statsUpdate for duel tracking */
+    if (statsUpdate.duelId && statsUpdate.duelResult && window.updateDuelRecord) {
+      window.updateDuelRecord(statsUpdate.duelId, statsUpdate.duelResult);
+    }
+
+    /* Battle Pass XP on match/win */
+    if (window.awardPassXP && uid) {
+      var bpXP = (wins > 0 ? 50 : 0) + (kills > 0 ? kills * 2 : 0) + (matches > 0 ? 10 : 0);
+      if (bpXP > 0) window.awardPassXP(uid, bpXP);
+    }
+  }
+  return; /* Supabase handles all — legacy Firebase code below never reached */
+  var s = window.getCurrentSeason ? window.getCurrentSeason() : {};
+  var wk = getWeekKey();
+  /* Season stats */
+  if (!window.db) return; /* Skip if db not available */
+  var sRef = window.db.ref('seasonStats/' + s.monthKey + '/' + uid);
+  sRef.once('value', function(snap) {
+    var existing = snap.val() || {};
+    var merged = {
+      ign: statsUpdate.ign || existing.ign || '',
+      displayName: statsUpdate.displayName || existing.displayName || '',
+      profileImage: statsUpdate.profileImage || existing.profileImage || '',
+      stats: {
+        wins:    (existing.stats && existing.stats.wins    || 0) + (statsUpdate.wins    || 0),
+        kills:   (existing.stats && existing.stats.kills   || 0) + (statsUpdate.kills   || 0),
+        matches: (existing.stats && existing.stats.matches || 0) + (statsUpdate.matches || 0)
+      }
+    };
+    var pts = window.calcRkScore ? window.calcRkScore(merged.stats) : 0;
+    merged.rankPoints = pts;
+    sRef.set(merged);
+  });
+  /* Weekly stats */
+  var wRef = window.db ? window.db.ref('weeklyStats/' + wk + '/' + uid) : { transaction: function(){}, set: function(){} };
+  wRef.once('value', function(snap) {
+    var ew = snap.val() || {};
+    wRef.set({
+      ign: statsUpdate.ign || ew.ign || '',
+      kills:   (ew.kills   || 0) + (statsUpdate.kills   || 0),
+      wins:    (ew.wins    || 0) + (statsUpdate.wins    || 0),
+      matches: (ew.matches || 0) + (statsUpdate.matches || 0)
+    });
+  });
+};
+
+/* ── Auto-assign top3 badge on season end / leaderboard view ── */
+window.assignTop3Badges = function(users) {
+  if (!window.db || !users || users.length < 1) return;
+  users.slice(0, 3).forEach(function(u, i) {
+    if (!u._uid) return;
+    var key = i === 0 ? '_top1' : i === 1 ? '_top2' : '_top3';
+    /* Stats via Supabase */
+    if (window._supa && u._uid) { var _c = key==='wins'?'total_wins':key==='kills'?'total_kills':'total_matches'; window._supa.rpc('increment_balance',{p_uid:u._uid,p_col:_c,p_amount:1}).then(null, function(){}); }
+  });
+};
+
+/* ── Expose rank point formula for display ── */
+window.RANK_FORMULA = 'Wins×40 + Kills×2 + Matches×1 + WinStreak×10';
+
+/* ── Rank tier definitions ── */
+window.RANK_TIERS = [
+  { name: 'Bronze',   min: 0,    max: 300,  emoji: '', color: '#cd7f32', bg: 'rgba(205,127,50,.13)'  },
+  { name: 'Silver',   min: 301,  max: 600,  emoji: '', color: '#c0c0c0', bg: 'rgba(192,192,192,.13)' },
+  { name: 'Gold',     min: 601,  max: 1000, emoji: '', color: '#ffd700', bg: 'rgba(255,215,0,.14)'   },
+  { name: 'Platinum', min: 1001, max: 1500, emoji: '', color: '#e0e0ff', bg: 'rgba(180,180,255,.13)' },
+  { name: 'Diamond',  min: 1501, max: 2000, emoji: '', color: '#00d4ff', bg: 'rgba(0,212,255,.15)'   },
+  { name: 'Legend',   min: 2001, max: 9999, emoji: '', color: '#b964ff', bg: 'rgba(185,100,255,.15)' }
+];
+
+/* ── How Rank Works modal ── */
+window.showHowRankWorks = function() {
+  var h = '';
+  h += '<div style="text-align:center;padding:6px 0 14px">';
+  h += '<div style="font-size:13px;font-weight:700;color:#ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:8px 12px;margin-bottom:14px">';
+  h += '📊 ' + window.RANK_FORMULA;
+  h += '</div>';
+  h += '</div>';
+  /* Tier ladder */
+  h += '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">';
+  window.RANK_TIERS.forEach(function(t) {
+    h += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:' + t.bg + ';border:1px solid ' + t.color + '44">';
+    h += '<div style="font-size:22px">' + (window.tierIconHtml?tierIconHtml(t.name,22):(t.emoji||'')) + '</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:' + t.color + '">' + t.name + '</div>';
+    h += '<div style="font-size:11px;color:#666">' + (t.min === 0 ? '0' : t.min) + ' – ' + (t.max >= 9999 ? '∞' : t.max) + ' points</div></div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  h += '<div style="font-size:11px;color:#555;text-align:center;line-height:1.6">🗓 Weekly reset every Monday<br>📅 Season reset every 1st of month<br>🏆 Top 3 get special badges · Top 10 get titles</div>';
+  if (window.openModal) openModal('🏆 How Rank Works', h);
+};
+
+console.log('[Mini eSports] ✅ Rank System v2.0 loaded');
+})();

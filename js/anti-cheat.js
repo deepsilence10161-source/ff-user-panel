@@ -1,1 +1,214 @@
-(function(){'use strict';var _0x1341a4=(function(){var _0x11b432=!![];return function(_0x2b03df,_0x2d9d07){var _0x902878=_0x11b432?function(){if(_0x2d9d07){var _0x69393f=_0x2d9d07['apply'](_0x2b03df,arguments);return _0x2d9d07=null,_0x69393f;}}:function(){};return _0x11b432=![],_0x902878;};}());function _0x50f7d1(){try{var _0x1a5d0f=document['createElement']('canvas');_0x1a5d0f['width']=0xf0,_0x1a5d0f['height']=0x3c;var _0x187a09=_0x1a5d0f['getContext']('2d');_0x187a09['textBaseline']='top',_0x187a09['font']='14px\x20Arial',_0x187a09['fillStyle']='#f60',_0x187a09['fillRect'](0x7d,0x1,0x3e,0x14),_0x187a09['fillStyle']='#069',_0x187a09['fillText']('MiniESports\uD83C\uDFAE',0x2,0xf),_0x187a09['fillStyle']='rgba(102,204,0,0.7)',_0x187a09['fillText']('Fingerprint',0x4,0x11),_0x187a09['fillStyle']='#f90',_0x187a09['fillRect'](0xa,0x1e,0x64,0x5),_0x187a09['fillStyle']='#09f',_0x187a09['fillText'](navigator['language']||'en',0x5,0x26),_0x187a09['fillStyle']='rgba(255,0,128,0.5)',_0x187a09['fillText']((navigator['userAgent']||'')['substring'](0x0,0x18),0x5,0x30);var _0x3ead7a=_0x1a5d0f['toDataURL'](),_0x21d708=0x0,_0x30c096=_0x3ead7a['length'];while(_0x30c096--){_0x21d708=(_0x21d708<<0x5)-_0x21d708+_0x3ead7a['charCodeAt'](_0x30c096),_0x21d708|=0x0;}return'CV'+Math['abs'](_0x21d708)['toString'](0x24)['toUpperCase']()['padStart'](0xa,'0');}catch(_0x1e05cf){return'canvas_err';}}function _0x5d3e0b(){try{var _0x687043=document['createElement']('canvas'),_0x266199=_0x687043['getContext']('webgl')||_0x687043['getContext']('experimental-webgl');if(!_0x266199)return'no_webgl';var _0x56017e=_0x266199['getExtension']('WEBGL_debug_renderer_info');if(!_0x56017e)return'no_ext';var _0x15778f=_0x266199['getParameter'](_0x56017e['UNMASKED_VENDOR_WEBGL'])||'',_0x833269=_0x266199['getParameter'](_0x56017e['UNMASKED_RENDERER_WEBGL'])||'',_0x4c0da2=0x0,_0x4bcff7=(_0x833269||'')['toLowerCase'](),_0x15948f=(_0x15778f||'')['toLowerCase']();if(_0x4bcff7['indexOf']('swiftshader')!==-0x1||_0x4bcff7['indexOf']('llvmpipe')!==-0x1||_0x4bcff7['indexOf']('softpipe')!==-0x1)_0x4c0da2++;if(_0x15948f['indexOf']('google')!==-0x1&&_0x4bcff7['indexOf']('swiftshader')!==-0x1)_0x4c0da2++;if(navigator['webdriver'])_0x4c0da2+=0x2;if(navigator['plugins']&&navigator['plugins']['length']===0x0)_0x4c0da2++;return _0x4c0da2>=0x2&&(window['_isHeadlessBrowser']=!![]),(_0x15778f+'|'+_0x833269)['substring'](0x0,0x32);}catch(_0x58081d){return'webgl_err';}}function _0x27ba9b(_0xe984a3){try{var _0x807c3b=window['AudioContext']||window['webkitAudioContext'];if(!_0x807c3b){_0xe984a3('no_audio');return;}var _0x36017f=new _0x807c3b(),_0x5558dd=_0x36017f['createOscillator'](),_0xf4c8e3=_0x36017f['createAnalyser'](),_0x31ce00=_0x36017f['createGain']();_0x31ce00['gain']['value']=0x0,_0x5558dd['connect'](_0xf4c8e3),_0xf4c8e3['connect'](_0x31ce00),_0x31ce00['connect'](_0x36017f['destination']),_0x5558dd['start'](0x0),setTimeout(function(){var _0x5273e3=new Float32Array(_0xf4c8e3['frequencyBinCount']);_0xf4c8e3['getFloatFrequencyData'](_0x5273e3),_0x5558dd['stop'](0x0),_0x36017f['close']();var _0xff40ba=_0x5273e3['slice'](0x0,0xa)['reduce'](function(_0x2b2dd9,_0x4d7e27){return _0x2b2dd9+_0x4d7e27;},0x0);_0xe984a3(Math['abs'](_0xff40ba)['toFixed'](0x4));},0x64);}catch(_0x2a888e){_0xe984a3('audio_err');}}function _0x4ca507(){var _0x17dad0=_0x1341a4(this,function(){if(_0x17dad0['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x17dad0['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x17dad0)['search']('(((.+)+)+)+$');});_0x17dad0();var _0x119b5d=localStorage['getItem']('_minieSport_did'),_0x243bc8=_0x50f7d1(),_0x449c46=_0x5d3e0b();sessionStorage['setItem']('_mes_cfp',_0x243bc8),sessionStorage['setItem']('_mes_wfp',_0x449c46);var _0x147d75=_0x243bc8['replace'](/[^a-zA-Z0-9]/g,'')['substring'](0x0,0x8)+_0x449c46['replace'](/[^a-zA-Z0-9|]/g,'')['substring'](0x0,0x8)['replace']('|',''),_0x1072cc='D'+_0x147d75,_0x1b3525=null;try{_0x1b3525=JSON['parse'](localStorage['getItem']('_minieSport_did_meta')||'null');}catch(_0x18c76d){}var _0x34265e=!_0x1b3525||Date['now']()-(_0x1b3525['created']||0x0)>0x5a*0x18*0x3c*0x3c*0x3e8;if(!_0x119b5d||_0x119b5d['length']<0x8||_0x34265e)_0x119b5d=_0x1072cc+Math['random']()['toString'](0x24)['substr'](0x2,0x6),localStorage['setItem']('_minieSport_did',_0x119b5d),localStorage['setItem']('_minieSport_did_meta',JSON['stringify']({'created':Date['now'](),'version':0x2}));else!_0x119b5d['startsWith']('D')&&(_0x119b5d=_0x1072cc+_0x119b5d['substring'](0x0,0x6),localStorage['setItem']('_minieSport_did',_0x119b5d),localStorage['setItem']('_minieSport_did_meta',JSON['stringify']({'created':Date['now'](),'version':0x2})));if(window['_isHeadlessBrowser']&&window['U']&&window['U']['uid']&&!window['_headlessAlertSent'])try{window['_supa']&&window['_supaReady']&&(window['_headlessAlertSent']=!![],window['_supa']['from']('admin_activity_log')['insert']({'action_type':'headless_browser','note':'Headless\x20browser\x20detected\x20(deviceId:\x20'+_0x119b5d+',\x20UA:\x20'+navigator['userAgent']['substring'](0x0,0x50)+')','target_user_id':window['U']['uid'],'created_at':new Date()['toISOString']()})['then'](null,function(){}));}catch(_0x29b28d){}return _0x119b5d;}function _0x120e82(_0x526648,_0x517686){var _0x5d365a=![];function _0x269290(_0x1a1d1e,_0x1a39ac){if(_0x5d365a)return;_0x5d365a=!![],clearTimeout(_0x44d2a3),_0x517686(_0x1a1d1e,_0x1a39ac);}try{var _0x5661db=localStorage['getItem']('_djoin_'+_0x526648);if(_0x5661db){var _0x20e36d=JSON['parse'](_0x5661db);if(_0x20e36d&&_0x20e36d['uid']){_0x269290(!![],_0x20e36d);return;}}}catch(_0x25dfe6){}var _0x318e2a=window['_fbDb']||window['db'];if(!_0x318e2a){_0x269290(![],null);return;}var _0x44d2a3=setTimeout(function(){_0x269290(![],null);},0xc8),_0x35a1fb=_0x4ca507(),_0x1a1917=sessionStorage['getItem']('_mes_cfp')||_0x50f7d1(),_0x445da8=sessionStorage['getItem']('_mes_wfp')||_0x5d3e0b();_0x318e2a['ref']('deviceJoins/'+_0x35a1fb+'/'+_0x526648)['once']('value',function(_0x3a885d){if(_0x3a885d&&_0x3a885d['exists']()){_0x269290(!![],_0x3a885d['val']());return;}var _0x3d27b9='cfp_'+_0x1a1917['replace'](/[^a-zA-Z0-9]/g,'')['substring'](0x0,0x10);_0x318e2a['ref']('deviceJoins/'+_0x3d27b9+'/'+_0x526648)['once']('value',function(_0x1668d1){if(_0x1668d1&&_0x1668d1['exists']()){_0x269290(!![],_0x1668d1['val']());return;}var _0x45bc08='wfp_'+_0x445da8['replace'](/[^a-zA-Z0-9]/g,'')['substring'](0x0,0x10);_0x318e2a['ref']('deviceJoins/'+_0x45bc08+'/'+_0x526648)['once']('value',function(_0x5ea563){_0x269290(!!(_0x5ea563&&_0x5ea563['exists']()),_0x5ea563?_0x5ea563['val']():null);},function(){_0x269290(![],null);});},function(){_0x269290(![],null);});},function(){_0x269290(![],null);});}function _0x5a0211(_0x2297f0,_0x37304c){var _0x3b7e84=_0x4ca507(),_0x53d479=sessionStorage['getItem']('_mes_cfp')||_0x50f7d1(),_0x53c1b1=sessionStorage['getItem']('_mes_wfp')||_0x5d3e0b(),_0x3bb461=window['_fbDb']||window['db'],_0x4500d5=window['U'];if(!_0x4500d5)return;var _0x3f883b={'uid':_0x4500d5['uid'],'joinRequestId':_0x37304c,'joinedAt':Date['now'](),'userAgent':navigator['userAgent']['substring'](0x0,0x50),'isHeadless':!!window['_isHeadlessBrowser']};try{localStorage['setItem']('_djoin_'+_0x2297f0,JSON['stringify'](_0x3f883b));}catch(_0x4abd90){}if(!_0x3bb461)return;_0x3bb461['ref']('deviceJoins/'+_0x3b7e84+'/'+_0x2297f0)['set'](_0x3f883b,function(){});var _0x3b53f0='cfp_'+_0x53d479['replace'](/[^a-zA-Z0-9]/g,'')['substring'](0x0,0x10);_0x3bb461['ref']('deviceJoins/'+_0x3b53f0+'/'+_0x2297f0)['set'](_0x3f883b,function(){});var _0x701e6='wfp_'+_0x53c1b1['replace'](/[^a-zA-Z0-9]/g,'')['substring'](0x0,0x10);_0x3bb461['ref']('deviceJoins/'+_0x701e6+'/'+_0x2297f0)['set'](_0x3f883b,function(){}),_0x27ba9b(function(_0x55b333){if(_0x55b333)sessionStorage['setItem']('_mes_afp',_0x55b333);if(_0x55b333&&_0x55b333!=='no_audio'&&_0x55b333!=='audio_err'){var _0x12f086='AFP'+_0x55b333['replace'](/\./g,'')['replace'](/-/g,'')['substring'](0x0,0xc);sessionStorage['setItem']('_mes_afp_key',_0x12f086),_0x3bb461['ref']('deviceJoins/'+_0x12f086+'/'+_0x2297f0)['set'](_0x3f883b,function(){});}});}function _0x4802eb(_0x4c8402){var _0xe564da=_0x4ca507(),_0x5f1e57=window['_fbDb']||window['db'];if(!_0x5f1e57)return;_0x5f1e57['ref']('joinRequests/'+_0x4c8402+'/deviceMeta')['set']({'deviceId':_0xe564da,'canvasFP':(sessionStorage['getItem']('_mes_cfp')||'')['substring'](0x0,0x14),'webglFP':(sessionStorage['getItem']('_mes_wfp')||'')['substring'](0x0,0x14),'isHeadless':!!window['_isHeadlessBrowser'],'userAgent':navigator['userAgent']['substring'](0x0,0x50),'joinTime':Date['now'](),'timezone':Intl['DateTimeFormat']()['resolvedOptions']()['timeZone'],'screenRes':screen['width']+'x'+screen['height']});}window['getDeviceId']=_0x4ca507,window['checkDeviceJoin']=_0x120e82,window['saveDeviceJoin']=_0x5a0211,window['saveJoinMeta']=_0x4802eb,setTimeout(function(){_0x27ba9b(function(_0x25b30a){if(_0x25b30a)sessionStorage['setItem']('_mes_afp',_0x25b30a);});},0xbb8),console['log']('[AntiCheat]\x20v3.0\x20loaded\x20—\x20Canvas+WebGL+Audio\x20FP\x20|\x20Device:',_0x4ca507()['substring'](0x0,0xc)+'...');}());
+/* ================================================================
+   MINI ESPORTS — ANTI-CHEAT v3.0
+   Bug 5 Fix: WebGL renderer + AudioContext fingerprint added
+   Canvas alone doesn't catch headless browsers (Puppeteer)
+================================================================ */
+(function () {
+  'use strict';
+
+  /* ── 1. Canvas fingerprint (Issue #11 Fix: full dataURL hash, more entropy) ── */
+  function _canvasFP() {
+    try {
+      var c = document.createElement('canvas');
+      c.width = 240; c.height = 60;
+      var ctx = c.getContext('2d');
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#f60';  ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = '#069';  ctx.fillText('MiniESports\uD83C\uDFAE', 2, 15);
+      ctx.fillStyle = 'rgba(102,204,0,0.7)'; ctx.fillText('Fingerprint', 4, 17);
+      /* Issue #11 Fix: add more entropy layers */
+      ctx.fillStyle = '#f90';  ctx.fillRect(10, 30, 100, 5);
+      ctx.fillStyle = '#09f';  ctx.fillText(navigator.language || 'en', 5, 38);
+      ctx.fillStyle = 'rgba(255,0,128,0.5)';
+      ctx.fillText((navigator.userAgent || '').substring(0, 24), 5, 48);
+      /* Hash entire dataURL — not just last 40 chars (was insufficient) */
+      var data = c.toDataURL();
+      var h = 0, i = data.length;
+      while (i--) { h = ((h << 5) - h) + data.charCodeAt(i); h |= 0; }
+      return 'CV' + Math.abs(h).toString(36).toUpperCase().padStart(10, '0');
+    } catch(e) { return 'canvas_err'; }
+  }
+
+  /* ── 2. WebGL renderer fingerprint (Bug 5 Fix) ── */
+  function _webglFP() {
+    try {
+      var c = document.createElement('canvas');
+      var gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+      if (!gl) return 'no_webgl';
+      var ext = gl.getExtension('WEBGL_debug_renderer_info');
+      if (!ext) return 'no_ext';
+      var vendor   = gl.getParameter(ext.UNMASKED_VENDOR_WEBGL)   || '';
+      var renderer = gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) || '';
+      /* Detect headless browsers — they return generic renderer strings */
+      /* Bug #85 Fix: Multiple indicators required to reduce false positives */
+      var _hCount = 0;
+      var _rl = (renderer||'').toLowerCase(), _vl = (vendor||'').toLowerCase();
+      if (_rl.indexOf('swiftshader')!==-1||_rl.indexOf('llvmpipe')!==-1||_rl.indexOf('softpipe')!==-1) _hCount++;
+      if (_vl.indexOf('google')!==-1 && _rl.indexOf('swiftshader')!==-1) _hCount++;
+      if (navigator.webdriver) _hCount += 2;
+      if (navigator.plugins && navigator.plugins.length === 0) _hCount++;
+      if (_hCount >= 2) {
+        window._isHeadlessBrowser = true;
+      }
+      return (vendor + '|' + renderer).substring(0, 50);
+    } catch(e) { return 'webgl_err'; }
+  }
+
+  /* ── 3. AudioContext fingerprint (Bug 5 Fix) ── */
+  function _audioFP(cb) {
+    try {
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) { cb('no_audio'); return; }
+      var ctx = new AudioCtx();
+      var osc = ctx.createOscillator();
+      var analyser = ctx.createAnalyser();
+      var gain = ctx.createGain();
+      gain.gain.value = 0;
+      osc.connect(analyser); analyser.connect(gain); gain.connect(ctx.destination);
+      osc.start(0);
+      setTimeout(function () {
+        var buf = new Float32Array(analyser.frequencyBinCount);
+        analyser.getFloatFrequencyData(buf);
+        osc.stop(0); ctx.close();
+        var sum = buf.slice(0, 10).reduce(function (a, b) { return a + b; }, 0);
+        cb(Math.abs(sum).toFixed(4));
+      }, 100);
+    } catch(e) { cb('audio_err'); }
+  }
+
+  /* ── 4. Combined stable device ID ── */
+  function getDeviceId() {
+    var stored = localStorage.getItem('_minieSport_did');
+    var canvasFP = _canvasFP();
+    var webglFP  = _webglFP();
+    sessionStorage.setItem('_mes_cfp', canvasFP);
+    sessionStorage.setItem('_mes_wfp', webglFP);
+    /* Combined prefix using both canvas + webgl */
+    var combined = canvasFP.replace(/[^a-zA-Z0-9]/g,'').substring(0,8) +
+                   webglFP.replace(/[^a-zA-Z0-9|]/g,'').substring(0,8).replace('|','');
+    var stablePrefix = 'D' + combined;
+    /* Bug #29 Fix: Add 90-day expiry to device fingerprint
+       Prevents permanent ban bypass AND allows legitimate re-use after expiry */
+    var _didMeta = null;
+    try { _didMeta = JSON.parse(localStorage.getItem('_minieSport_did_meta') || 'null'); } catch(e) {}
+    var _didExpired = !_didMeta || (Date.now() - (_didMeta.created || 0)) > 90 * 24 * 60 * 60 * 1000;
+
+    if (!stored || stored.length < 8 || _didExpired) {
+      stored = stablePrefix + Math.random().toString(36).substr(2, 6);
+      localStorage.setItem('_minieSport_did', stored);
+      localStorage.setItem('_minieSport_did_meta', JSON.stringify({ created: Date.now(), version: 2 }));
+    } else if (!stored.startsWith('D')) {
+      stored = stablePrefix + stored.substring(0, 6);
+      localStorage.setItem('_minieSport_did', stored);
+      localStorage.setItem('_minieSport_did_meta', JSON.stringify({ created: Date.now(), version: 2 }));
+    }
+    /* Alert if headless detected */
+    /* R28e: adminAlerts ab Supabase admin_activity_log me (bridge route jaisa)
+       — raw Firebase pe adminAlerts rules nahi the, permission_denied pageerror banta tha */
+    if (window._isHeadlessBrowser && window.U && window.U.uid && !window._headlessAlertSent) {
+      try {
+        if (window._supa && window._supaReady) {
+          window._headlessAlertSent = true;
+          window._supa.from('admin_activity_log').insert({
+            action_type: 'headless_browser',
+            note: 'Headless browser detected (deviceId: ' + stored + ', UA: ' + navigator.userAgent.substring(0, 80) + ')',
+            target_user_id: window.U.uid,
+            created_at: new Date().toISOString()
+          }).then(null, function(){});
+        }
+      } catch(e) {}
+    }
+    return stored;
+  }
+
+  /* ── 5. Check device join in Firebase (with localStorage fast-path + 200ms timeout guard) ── */
+  function checkDeviceJoin(matchId, callback) {
+    var done = false;
+    function finish(joined, val) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      callback(joined, val);
+    }
+    try {
+      var localRaw = localStorage.getItem('_djoin_' + matchId);
+      if (localRaw) {
+        var localRec = JSON.parse(localRaw);
+        if (localRec && localRec.uid) { finish(true, localRec); return; }
+      }
+    } catch (e) {}
+    var fbDb = window._fbDb || window.db;
+    if (!fbDb) { finish(false, null); return; }
+    var timer = setTimeout(function () { finish(false, null); }, 200);
+    var did      = getDeviceId();
+    var canvasFP = sessionStorage.getItem('_mes_cfp') || _canvasFP();
+    var webglFP  = sessionStorage.getItem('_mes_wfp')  || _webglFP();
+    fbDb.ref('deviceJoins/' + did + '/' + matchId).once('value', function (s) {
+      if (s && s.exists()) { finish(true, s.val()); return; }
+      var cfpKey = 'cfp_' + canvasFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
+      fbDb.ref('deviceJoins/' + cfpKey + '/' + matchId).once('value', function (s2) {
+        if (s2 && s2.exists()) { finish(true, s2.val()); return; }
+        var wfpKey = 'wfp_' + webglFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
+        fbDb.ref('deviceJoins/' + wfpKey + '/' + matchId).once('value', function (s3) {
+          finish(!!(s3 && s3.exists()), s3 ? s3.val() : null);
+        }, function () { finish(false, null); });
+      }, function () { finish(false, null); });
+    }, function () { finish(false, null); });
+  }
+
+  /* ── 6. Save device join (all 3 keys for cross-detection) ── */
+  function saveDeviceJoin(matchId, joinRequestId) {
+    var did      = getDeviceId();
+    var canvasFP = sessionStorage.getItem('_mes_cfp') || _canvasFP();
+    var webglFP  = sessionStorage.getItem('_mes_wfp')  || _webglFP();
+    var fbDb     = window._fbDb || window.db;
+    var U = window.U; if (!U) return;
+    var record = { uid: U.uid, joinRequestId: joinRequestId, joinedAt: Date.now(),
+      userAgent: navigator.userAgent.substring(0, 80), isHeadless: !!window._isHeadlessBrowser };
+    try { localStorage.setItem('_djoin_' + matchId, JSON.stringify(record)); } catch (e) {}
+    if (!fbDb) return;
+    fbDb.ref('deviceJoins/' + did + '/' + matchId).set(record, function(){});
+    var cfpKey = 'cfp_' + canvasFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
+    fbDb.ref('deviceJoins/' + cfpKey + '/' + matchId).set(record, function(){});
+    var wfpKey = 'wfp_' + webglFP.replace(/[^a-zA-Z0-9]/g,'').substring(0, 16);
+    fbDb.ref('deviceJoins/' + wfpKey + '/' + matchId).set(record, function(){});
+    /* Issue #20 Fix: Store audio FP in sessionStorage so security-patches.js
+       can read it, and use consistent key format matching canvas/webgl pattern */
+    _audioFP(function (afp) {
+      if (afp) sessionStorage.setItem('_mes_afp', afp);
+      if (afp && afp !== 'no_audio' && afp !== 'audio_err') {
+        var afpKey = 'AFP' + afp.replace(/\./g,'').replace(/-/g,'').substring(0, 12);
+        sessionStorage.setItem('_mes_afp_key', afpKey);
+        fbDb.ref('deviceJoins/' + afpKey + '/' + matchId).set(record, function(){});
+      }
+    });
+  }
+
+  function saveJoinMeta(joinRequestId) {
+    var did = getDeviceId();
+    var fbDb = window._fbDb || window.db; if (!fbDb) return;
+    fbDb.ref('joinRequests/' + joinRequestId + '/deviceMeta').set({
+      deviceId: did, canvasFP: (sessionStorage.getItem('_mes_cfp')||'').substring(0,20),
+      webglFP: (sessionStorage.getItem('_mes_wfp')||'').substring(0,20),
+      isHeadless: !!window._isHeadlessBrowser,
+      userAgent: navigator.userAgent.substring(0, 80), joinTime: Date.now(),
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      screenRes: screen.width + 'x' + screen.height
+    });
+  }
+
+  window.getDeviceId     = getDeviceId;
+  window.checkDeviceJoin = checkDeviceJoin;
+  window.saveDeviceJoin  = saveDeviceJoin;
+  window.saveJoinMeta    = saveJoinMeta;
+
+  /* Compute audio FP in background and cache it */
+  setTimeout(function () {
+    _audioFP(function (afp) {
+      if (afp) sessionStorage.setItem('_mes_afp', afp);
+    });
+  }, 3000);
+
+  console.log('[AntiCheat] v3.0 loaded — Canvas+WebGL+Audio FP | Device:', getDeviceId().substring(0, 12) + '...');
+})();

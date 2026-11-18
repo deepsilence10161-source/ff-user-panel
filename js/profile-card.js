@@ -1,1 +1,76 @@
-(function(){var _0x24d3a3=(function(){var _0x5e0b0b=!![];return function(_0x443b76,_0x1e86b2){var _0x3c80d1=_0x5e0b0b?function(){if(_0x1e86b2){var _0x5898d2=_0x1e86b2['apply'](_0x443b76,arguments);return _0x1e86b2=null,_0x5898d2;}}:function(){};return _0x5e0b0b=![],_0x3c80d1;};}()),_0x367879=_0x24d3a3(this,function(){if(_0x367879['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x367879['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x367879)['search']('(((.+)+)+)+$');});_0x367879(),window['generateProfileCard']=function(){if(!UD||!U){toast('Login\x20required','err');return;}var _0x177f10=UD['stats']||{},_0x217423=Number(_0x177f10['matches']||0x0),_0x1f6aba=Number(_0x177f10['kills']||0x0),_0x27fb13=Number(_0x177f10['wins']||0x0),_0xc62ed6=calcRk(_0x177f10),_0x2904b2={'name':UD['ign']||UD['displayName']||'Player','uid':UD['ffUid']||UD['ff_uid']||'—','level':0x1,'xp':0x0,'xpNeed':0xa,'pts':Number(UD['rank_points']||0x0),'tier':String(_0xc62ed6['badge']||'Bronze'),'stats':[_0x217423,_0x1f6aba,_0x27fb13,_0x217423?(_0x1f6aba/_0x217423)['toFixed'](0x1):'0.0',(_0x217423?Math['round'](_0x27fb13/_0x217423*0x64):0x0)+'%'],'title':UD['title']||'','photo':UD['profileImage']||'','banner':UD['bannerImage']||''},_0x1f88ab=function(){window['PCARD2']['loadImgs'](_0x2904b2,function(_0x48fe49){var _0x5db9c7=0x3e8,_0x4d37e7=document['createElement']('canvas');_0x4d37e7['width']=_0x5db9c7,_0x4d37e7['height']=Math['round'](_0x5db9c7*window['PCARD2']['H']/window['PCARD2']['W']);var _0x2bbac6=_0x4d37e7['getContext']('2d');window['PCARD2']['draw'](_0x2bbac6,_0x2904b2,_0x5db9c7,_0x48fe49),_0x466809(_0x4d37e7);});};if(window['_supa']&&U['uid'])window['_supa']['from']('battle_pass_progress')['select']('current_xp,current_tier')['eq']('user_id',U['uid'])['maybeSingle']()['then'](function(_0x4461ac){var _0x58905e=_0x4461ac&&_0x4461ac['data']&&Number(_0x4461ac['data']['current_xp'])||0x0,_0x4699b0=(_0x4461ac&&_0x4461ac['data']&&Number(_0x4461ac['data']['current_tier'])||Math['floor'](_0x58905e/0x64))+0x1,_0x42ace5=0xa*_0x4699b0;_0x2904b2['level']=_0x4699b0,_0x2904b2['xp']=_0x58905e%_0x42ace5,_0x2904b2['xpNeed']=_0x42ace5,_0x1f88ab();})['catch'](_0x1f88ab);else _0x1f88ab();};function _0x466809(_0x42d15b){try{_0x42d15b['toBlob'](function(_0xe3f825){if(!_0xe3f825){_0x577d35(_0x42d15b);return;}if(navigator['share']&&navigator['canShare']){var _0x51fae1=new File([_0xe3f825],'mini-esports-profile.png',{'type':'image/png'});navigator['canShare']({'files':[_0x51fae1]})?navigator['share']({'title':'My\x20Mini\x20eSports\x20Profile','text':'🎮\x20Check\x20out\x20my\x20eSports\x20profile!','files':[_0x51fae1]})['catch'](function(){_0x577d35(_0x42d15b);}):_0x577d35(_0x42d15b);}else _0x577d35(_0x42d15b);},'image/png');}catch(_0x29a7b0){_0x577d35(_0x42d15b);}}function _0x577d35(_0xa015d9){var _0x7677be=document['createElement']('a');_0x7677be['download']='mini-esports-profile.png',_0x7677be['href']=_0xa015d9['toDataURL']('image/png'),_0x7677be['click'](),toast('Profile\x20card\x20downloaded!','ok');}console['log']('[Mini\x20eSports]\x20✅\x20Feature\x208:\x20Profile\x20Card\x20v2\x20(exact\x20replica)\x20loaded');}());
+/* ====== FEATURE 8: SHAREABLE PLAYER PROFILE CARD (v2 — D36 exact replica) ======
+   Ab share image bhi owner-approved design jaisi BANTI hai: PCARD2 core
+   base art + wahi coordinate table canvas par draw karta hai. */
+
+(function() {
+  window.generateProfileCard = function() {
+    if (!UD || !U) { toast('Login required', 'err'); return; }
+    var stats = UD.stats || {};
+    var m = Number(stats.matches || 0), k = Number(stats.kills || 0), w = Number(stats.wins || 0);
+    var rk = calcRk(stats);
+    var data = {
+      name: UD.ign || UD.displayName || 'Player',
+      uid: UD.ffUid || UD.ff_uid || '—',
+      level: 1, xp: 0, xpNeed: 10,
+      pts: Number(UD.rank_points || 0),
+      tier: String(rk.badge || 'Bronze'),
+      stats: [m, k, w, m ? (k / m).toFixed(1) : '0.0', (m ? Math.round(w / m * 100) : 0) + '%'],
+      title: UD.title || '', photo: UD.profileImage || '', banner: UD.bannerImage || ''
+    };
+    var go = function () {
+      window.PCARD2.loadImgs(data, function (imgs) {
+        var cw = 1000;
+        var canvas = document.createElement('canvas');
+        canvas.width = cw;
+        canvas.height = Math.round(cw * window.PCARD2.H / window.PCARD2.W);
+        var ctx = canvas.getContext('2d');
+        window.PCARD2.draw(ctx, data, cw, imgs);
+        shareCanvas(canvas);
+      });
+    };
+    /* battle-pass XP async bharo, phir draw */
+    if (window._supa && U.uid) {
+      window._supa.from('battle_pass_progress').select('current_xp,current_tier').eq('user_id', U.uid).maybeSingle().then(function (r) {
+        var cx = (r && r.data && Number(r.data.current_xp)) || 0;
+        var lv = ((r && r.data && Number(r.data.current_tier)) || Math.floor(cx / 100)) + 1;
+        var need = 10 * lv;
+        data.level = lv; data.xp = cx % need; data.xpNeed = need;
+        go();
+      }).catch(go);
+    } else go();
+  };
+
+  function shareCanvas(canvas) {
+    try {
+      canvas.toBlob(function(blob) {
+        if (!blob) { downloadCanvas(canvas); return; }
+        if (navigator.share && navigator.canShare) {
+          var file = new File([blob], 'mini-esports-profile.png', { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            navigator.share({
+              title: 'My Mini eSports Profile',
+              text: '🎮 Check out my eSports profile!',
+              files: [file]
+            }).catch(function() { downloadCanvas(canvas); });
+          } else {
+            downloadCanvas(canvas);
+          }
+        } else {
+          downloadCanvas(canvas);
+        }
+      }, 'image/png');
+    } catch (e) {
+      downloadCanvas(canvas);
+    }
+  }
+
+  function downloadCanvas(canvas) {
+    var link = document.createElement('a');
+    link.download = 'mini-esports-profile.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    toast('Profile card downloaded!', 'ok');
+  }
+
+  console.log('[Mini eSports] ✅ Feature 8: Profile Card v2 (exact replica) loaded');
+})();

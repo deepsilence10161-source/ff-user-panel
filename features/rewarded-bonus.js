@@ -1,1 +1,138 @@
-(function(){'use strict';var _0x50ff33=(function(){var _0x1049fc=!![];return function(_0x188443,_0x3d0052){var _0x2e9045=_0x1049fc?function(){if(_0x3d0052){var _0x11d09e=_0x3d0052['apply'](_0x188443,arguments);return _0x3d0052=null,_0x11d09e;}}:function(){};return _0x1049fc=![],_0x2e9045;};}()),_0x33ad7b=_0x50ff33(this,function(){if(_0x33ad7b['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x33ad7b['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x33ad7b)['search']('(((.+)+)+)+$');});_0x33ad7b();var _0xbb0a6f='_adWatched_',_0x225d33=0x5;function _0x7d04b0(){var _0x24f256=window['CFG']&&Number(window['CFG']['adDailyLimit']);return _0x24f256>0x0?_0x24f256:_0x225d33;}function _0x56b607(){var _0x5991e0=window['CFG']&&Number(window['CFG']['adCoinsPerWatch']);return _0x5991e0>0x0?_0x5991e0:0xa;}function _0x2e5c72(){return new Date()['toISOString']()['split']('T')[0x0];}function _0x1328d7(_0x4b9062){var _0x3ab40f=localStorage['getItem'](_0xbb0a6f+_0x2e5c72()+'_'+_0x4b9062);return parseInt(_0x3ab40f||'0');}function _0x408144(_0x547c59){var _0x1aae57=_0xbb0a6f+_0x2e5c72()+'_'+_0x547c59,_0x27341c=parseInt(localStorage['getItem'](_0x1aae57)||'0')+0x1;return localStorage['setItem'](_0x1aae57,_0x27341c),_0x27341c;}window['watchAdForXP']=function(){var _0x267eeb=window['U']&&window['U']['uid'];if(!_0x267eeb)return;if(_0x1328d7(_0x267eeb)>=_0x7d04b0()){if(window['toast'])toast('Aaj\x20ki\x20limit\x20ho\x20gayi!','inf');return;}if(!window['AdManager']){if(window['toast'])toast('Ad\x20load\x20nahi\x20hua','err');return;}if(window['closeModal'])closeModal();setTimeout(function(){window['AdManager']['showRewardedAd'](function(){_0x408144(_0x267eeb);if(window['awardBPXP'])window['awardBPXP']('ad_watched');if(window['toast'])toast('⚡\x20+5\x20Battle\x20Pass\x20XP\x20mile!','ok');},function(){if(window['toast'])toast('Ad\x20pura\x20dekho\x20reward\x20ke\x20liye!','inf');},'xp_bonus');},0x190);};var _0x5e9ec3=0x0;window['watchAdForMatchCredit']=function(){var _0xc6a922=window['U']&&window['U']['uid'];if(!_0xc6a922)return;var _0x3ebe98=window['getUserPremiumTier']?window['getUserPremiumTier']()>0x0:![];if(!_0x3ebe98){if(window['toast'])toast('Yeh\x20sirf\x20premium\x20users\x20ke\x20liye\x20hai!','inf');return;}if(_0x1328d7(_0xc6a922)>=_0x7d04b0()){if(window['toast'])toast('Aaj\x20ki\x20limit\x20ho\x20gayi!','inf');return;}if(!window['AdManager'])return;if(window['closeModal'])closeModal();setTimeout(function(){window['AdManager']['showRewardedAd'](function(){_0x408144(_0xc6a922),_0x5e9ec3++;if(window['awardBPXP'])window['awardBPXP']('ad_watched');if(_0x5e9ec3>=0x5){_0x5e9ec3=0x0,_0x3f6b29(_0xc6a922);if(window['toast'])toast('🎮\x20Ad-Match\x20Credit\x20mila!\x201\x20match\x20free\x20join\x20kar\x20sakte\x20ho.','ok');}else{if(window['toast'])toast('⚡\x20Ad\x20dekha!\x20'+(0x5-_0x5e9ec3)+'\x20aur\x20baaki\x20match\x20credit\x20ke\x20liye','ok');setTimeout(function(){window['watchAdForMatchCredit']();},0x3e8);}},function(){if(window['toast'])toast('Ad\x20pura\x20dekho!','inf');},'match_credit');},0x190);},window['getAdMatchCredits']=function(_0x258b82){return parseInt(localStorage['getItem']('_mes_match_credits_'+_0x258b82)||'0');};function _0x3f6b29(_0x29569a){var _0x19fbd6=window['getAdMatchCredits'](_0x29569a)+0x1;localStorage['setItem']('_mes_match_credits_'+_0x29569a,_0x19fbd6);}function _0x209a5a(){}function _0x579391(){var _0x4d20d3=document['getElementById']('_dailyMissionsBtn');if(_0x4d20d3)return;var _0x5b6ce8=document['getElementById']('scrWallet');if(_0x5b6ce8){var _0x4346fb=document['createElement']('div');_0x4346fb['id']='_dailyMissionsBtn',_0x4346fb['style']['cssText']='margin:12px\x200;padding:14px;background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer',_0x4346fb['innerHTML']='<div><div\x20style=\x22font-size:14px;font-weight:900;color:#00ff9c\x22>🎯\x20Daily\x20Missions</div><div\x20style=\x22font-size:11px;color:#888;margin-top:3px\x22>Roz\x20naye\x20tasks\x20poore\x20karo,\x20coins\x20kamao</div></div><div\x20style=\x22font-size:18px;color:#00ff9c\x22>→</div>',_0x4346fb['onclick']=function(){if(window['showMissionsPanel'])showMissionsPanel();};try{_0x5b6ce8['insertBefore'](_0x4346fb,_0x5b6ce8['firstChild']);}catch(_0x16e414){}}}function _0x11ca8d(){if(!window['U']){setTimeout(_0x11ca8d,0x5dc);return;}setTimeout(_0x579391,0xbb8),console['log']('[Mini\x20eSports]\x20Rewarded\x20Bonus\x20System\x20v1.0\x20✅');}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(_0x11ca8d,0x7d0);}):setTimeout(_0x11ca8d,0x7d0);}());
+/* ================================================================
+   REWARDED ADS BONUS SYSTEM
+   Premium users ke liye optional rewarded ads:
+   "5 ads dekho → 1 Ad-Match free join karo (credit)"
+   Non-premium: config ke mutabik coins bonus
+   Har user rewarded ads se benefit le sakta hai
+================================================================ */
+(function(){
+'use strict';
+
+/* One counter for every rewarded-ad entry point. The server/RPC remains the
+   authoritative cap; this is only the UX counter and must not be split. */
+var BONUS_KEY    = '_adWatched_';
+var MAX_ADS_DAY  = 5;
+function _dailyLimit() {
+  var n = window.CFG && Number(window.CFG.adDailyLimit);
+  return n > 0 ? n : MAX_ADS_DAY;
+}
+function _adReward() {
+  var n = window.CFG && Number(window.CFG.adCoinsPerWatch);
+  return n > 0 ? n : 10;
+}
+
+function _todayKey() { return new Date().toISOString().split('T')[0]; }
+
+function _getCount(uid) {
+  var raw = localStorage.getItem(BONUS_KEY + _todayKey() + '_' + uid);
+  return parseInt(raw || '0');
+}
+
+function _incCount(uid) {
+  var key = BONUS_KEY + _todayKey() + '_' + uid;
+  var val = parseInt(localStorage.getItem(key) || '0') + 1;
+  localStorage.setItem(key, val);
+  return val;
+}
+
+
+/* Coin rewards are implemented once in features/ads.js. Keeping a second
+   window.watchAdForCoins here used to overwrite it and pay a hardcoded reward. */
+
+/* ── Watch Ad for XP ── */
+window.watchAdForXP = function() {
+  var uid = window.U && window.U.uid;
+  if (!uid) return;
+  if (_getCount(uid) >= _dailyLimit()) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
+  if (!window.AdManager) { if(window.toast) toast('Ad load nahi hua','err'); return; }
+  if(window.closeModal) closeModal();
+  setTimeout(function() {
+    window.AdManager.showRewardedAd(function() {
+      _incCount(uid);
+      if(window.awardBPXP) window.awardBPXP('ad_watched');
+      if(window.toast) toast('⚡ +5 Battle Pass XP mile!','ok');
+    }, function() {
+      if(window.toast) toast('Ad pura dekho reward ke liye!','inf');
+    }, 'xp_bonus');
+  }, 400);
+};
+
+/* ── Watch Ads for Match Credit (premium only, 5 ads = 1 credit) ── */
+var _matchAdCount = 0;
+window.watchAdForMatchCredit = function() {
+  var uid = window.U && window.U.uid;
+  if (!uid) return;
+  var isPrem = window.getUserPremiumTier ? window.getUserPremiumTier() > 0 : false;
+  if (!isPrem) { if(window.toast) toast('Yeh sirf premium users ke liye hai!','inf'); return; }
+  if (_getCount(uid) >= _dailyLimit()) { if(window.toast) toast('Aaj ki limit ho gayi!','inf'); return; }
+  if (!window.AdManager) return;
+  if(window.closeModal) closeModal();
+  setTimeout(function() {
+    window.AdManager.showRewardedAd(function() {
+      _incCount(uid);
+      _matchAdCount++;
+      if(window.awardBPXP) window.awardBPXP('ad_watched');
+      if (_matchAdCount >= 5) {
+        _matchAdCount = 0;
+        _giveMatchCredit(uid);
+        if(window.toast) toast('🎮 Ad-Match Credit mila! 1 match free join kar sakte ho.','ok');
+      } else {
+        if(window.toast) toast('⚡ Ad dekha! ' + (5 - _matchAdCount) + ' aur baaki match credit ke liye','ok');
+        setTimeout(function(){ window.watchAdForMatchCredit(); }, 1000);
+      }
+    }, function() {
+      if(window.toast) toast('Ad pura dekho!','inf');
+    }, 'match_credit');
+  }, 400);
+};
+
+/* ── Get/Give Match Credits ── */
+window.getAdMatchCredits = function(uid) {
+  return parseInt(localStorage.getItem('_mes_match_credits_' + uid) || '0');
+};
+function _giveMatchCredit(uid) {
+  var c = window.getAdMatchCredits(uid) + 1;
+  localStorage.setItem('_mes_match_credits_' + uid, c);
+}
+
+/* ── Add "Earn with Ads" button to relevant screens ──
+   BUG FIX (2026-08): this "Ads Dekho — Bonus Pao" row used to sit at
+   the very top of the Wallet screen. Per redesign: Daily Missions
+   (previously a Profile-screen button) now takes this exact slot
+   instead, and the ad-earn entry point lives inside the Coin Shop
+   modal (see index.html #coinShopModal's "Watch Ad" row) and inside
+   Daily Missions itself — so the feature isn't lost, just consolidated
+   instead of having two separate "earn coins via ads" entry points. */
+function injectEarnButton() {
+  /* Intentionally now a no-op — see comment above. Daily Missions is
+     injected in this slot instead by injectDailyMissionsButton(). */
+}
+
+/* ── Add "Daily Missions" button to Wallet (2026-08, moved from Profile) ── */
+function injectDailyMissionsButton() {
+  var existing = document.getElementById('_dailyMissionsBtn');
+  if (existing) return;
+  var wallet = document.getElementById('scrWallet');
+  if (wallet) {
+    var btn = document.createElement('div');
+    btn.id = '_dailyMissionsBtn';
+    btn.style.cssText = 'margin:12px 0;padding:14px;background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.2);border-radius:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer';
+    btn.innerHTML = '<div><div style="font-size:14px;font-weight:900;color:#00ff9c">🎯 Daily Missions</div><div style="font-size:11px;color:#888;margin-top:3px">Roz naye tasks poore karo, coins kamao</div></div><div style="font-size:18px;color:#00ff9c">→</div>';
+    btn.onclick = function() { if (window.showMissionsPanel) showMissionsPanel(); };
+    try { wallet.insertBefore(btn, wallet.firstChild); } catch (e) {}
+  }
+}
+
+/* ── Init ── */
+function initRewardedBonus() {
+  if (!window.U) { setTimeout(initRewardedBonus, 1500); return; }
+  setTimeout(injectDailyMissionsButton, 3000);
+  console.log('[Mini eSports] Rewarded Bonus System v1.0 ✅');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(initRewardedBonus, 2000); });
+} else {
+  setTimeout(initRewardedBonus, 2000);
+}
+})();

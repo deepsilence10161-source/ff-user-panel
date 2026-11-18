@@ -1,1 +1,155 @@
-(function(){'use strict';var _0x16a896=(function(){var _0xc7e1b=!![];return function(_0x2af309,_0x5af282){var _0x32afc7=_0xc7e1b?function(){if(_0x5af282){var _0x3b569b=_0x5af282['apply'](_0x2af309,arguments);return _0x5af282=null,_0x3b569b;}}:function(){};return _0xc7e1b=![],_0x32afc7;};}()),_0x19e2d0=_0x16a896(this,function(){if(_0x19e2d0['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x19e2d0['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x19e2d0)['search']('(((.+)+)+)+$');});_0x19e2d0();var _0x307c2b=[{'name':'Mumbai','x':0x8a,'y':0x116,'state':'Maharashtra'},{'name':'Delhi','x':0xaf,'y':0x9b,'state':'Delhi'},{'name':'Bangalore','x':0xa0,'y':0x14a,'state':'Karnataka'},{'name':'Hyderabad','x':0xb2,'y':0x127,'state':'Telangana'},{'name':'Chennai','x':0xb9,'y':0x14f,'state':'Tamil\x20Nadu'},{'name':'Kolkata','x':0x102,'y':0xd7,'state':'West\x20Bengal'},{'name':'Pune','x':0x8f,'y':0x122,'state':'Maharashtra'},{'name':'Ahmedabad','x':0x80,'y':0xe1,'state':'Gujarat'},{'name':'Jaipur','x':0xa2,'y':0xbe,'state':'Rajasthan'},{'name':'Lucknow','x':0xd2,'y':0xb9,'state':'UP'},{'name':'Surat','x':0x82,'y':0xfa,'state':'Gujarat'},{'name':'Patna','x':0xeb,'y':0xc3,'state':'Bihar'},{'name':'Bhopal','x':0xb7,'y':0xf0,'state':'MP'},{'name':'Indore','x':0xa5,'y':0xf8,'state':'MP'},{'name':'Nagpur','x':0xc3,'y':0x109,'state':'Maharashtra'},{'name':'Visakhapatnam','x':0xdc,'y':0x11d,'state':'AP'},{'name':'Chandigarh','x':0xac,'y':0x8a,'state':'Punjab'},{'name':'Kochi','x':0xa0,'y':0x16d,'state':'Kerala'},{'name':'Guwahati','x':0x127,'y':0xb9,'state':'Assam'},{'name':'Bhubaneswar','x':0xf2,'y':0xfc,'state':'Odisha'}];window['showIndiaMap']=function(){openModal('🗺️\x20India\x20Conquest\x20Map','<div\x20id=\x22imContent\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading\x20map...</div></div>'),_0x41b610();};function _0x41b610(){var _0x4a888f=new Date()['toISOString']()['substring'](0x0,0x7);if(!window['_supa']){_0x73bd8({});return;}window['_supa']['from']('city_championship')['select']('city,score,player_count,wins')['eq']('month',_0x4a888f)['then'](function(_0x272b50){var _0x558219={};(_0x272b50['data']||[])['forEach'](function(_0xccaf53){_0x558219[_0xccaf53['city']]=_0xccaf53;}),_0x73bd8(_0x558219);})['catch'](function(){_0x73bd8({});});}function _0x73bd8(_0x259279){var _0x4a9304=document['getElementById']('imContent');if(!_0x4a9304)return;var _0x1e3804=window['UD']&&window['UD']['city']||'',_0x3a5273=Object['values'](_0x259279)['reduce'](function(_0x4759cf,_0xd6c9a1){return _0x4759cf+(_0xd6c9a1['playerCount']||0x0);},0x0),_0x9e5420=Math['max']['apply'](null,[0x1]['concat'](Object['values'](_0x259279)['map'](function(_0x47c1ef){return _0x47c1ef['score']||0x0;}))),_0x3e4843='';_0x3e4843+='<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px\x22>',[['🌍','Active\x20Cities',Object['keys'](_0x259279)['length']],['👥','Total\x20Players',_0x3a5273],['🏆','Leading\x20City',Object['entries'](_0x259279)['sort'](function(_0x2fe7b6,_0x438b0b){return(_0x438b0b[0x1]['score']||0x0)-(_0x2fe7b6[0x1]['score']||0x0);})[0x0]?.[0x0]||'—']]['forEach'](function(_0x496155){_0x3e4843+='<div\x20style=\x22flex:1;text-align:center;padding:10px\x206px;border-radius:12px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x3e4843+='<div\x20style=\x22font-size:16px\x22>'+_0x496155[0x0]+'</div>',_0x3e4843+='<div\x20style=\x22font-size:14px;font-weight:900;color:var(--green)\x22>'+_0x496155[0x2]+'</div>',_0x3e4843+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x496155[0x1]+'</div>',_0x3e4843+='</div>';}),_0x3e4843+='</div>',_0x3e4843+='<div\x20style=\x22position:relative;background:rgba(0,212,255,.03);border:1px\x20solid\x20rgba(0,212,255,.12);border-radius:16px;overflow:hidden;padding:8px\x22>',_0x3e4843+='<svg\x20viewBox=\x2260\x2090\x20320\x20320\x22\x20style=\x22width:100%;display:block\x22\x20xmlns=\x22http://www.w3.org/2000/svg\x22>',_0x3e4843+='<path\x20d=\x22M175,95\x20L195,92\x20L215,95\x20L235,100\x20L260,108\x20L278,118\x20L285,135\x20L290,155\x20L295,165\x20L300,175\x20L298,185\x20L295,195\x20L298,205\x20L295,218\x20L285,230\x20L275,240\x20L265,255\x20L260,270\x20L250,280\x20L245,295\x20L240,310\x20L235,320\x20L225,330\x20L215,340\x20L205,350\x20L195,358\x20L185,365\x20L175,370\x20L165,360\x20L158,350\x20L152,340\x20L148,330\x20L143,318\x20L140,305\x20L138,295\x20L135,280\x20L133,268\x20L130,255\x20L128,242\x20L126,228\x20L127,215\x20L128,200\x20L130,188\x20L132,175\x20L138,163\x20L143,150\x20L148,138\x20L155,128\x20L162,115\x20L170,102\x20Z\x22\x20fill=\x22rgba(0,212,255,.06)\x22\x20stroke=\x22rgba(0,212,255,.25)\x22\x20stroke-width=\x221.5\x22\x20stroke-linejoin=\x22round\x22/>',_0x3e4843+='<path\x20d=\x22M278,118\x20L285,115\x20L295,118\x20L305,125\x20L310,135\x20L308,145\x20L303,155\x20L295,165\x20L290,155\x20L285,135\x20Z\x22\x20fill=\x22rgba(0,212,255,.04)\x22\x20stroke=\x22rgba(0,212,255,.15)\x22\x20stroke-width=\x221\x22/>',_0x307c2b['forEach'](function(_0x463346){var _0x2b3fde=_0x259279[_0x463346['name']]||{},_0x3c30b1=_0x2b3fde['score']||0x0,_0x1f7b65=_0x2b3fde['playerCount']||0x0,_0x5b7b75=_0x3c30b1>0x0||_0x1f7b65>0x0,_0x57884f=_0x1e3804&&_0x463346['name']['toLowerCase']()===_0x1e3804['toLowerCase'](),_0x1a348b=_0x57884f?0x8:_0x5b7b75?Math['max'](0x4,Math['min'](0xa,0x4+Math['round'](_0x3c30b1/_0x9e5420*0x6))):0x3,_0x2bec41=_0x57884f?'#00ff9c':_0x5b7b75?_0x1f3834(_0x3c30b1,_0x9e5420):'rgba(255,255,255,.2)',_0x333ce8=_0x57884f||_0x5b7b75;_0x333ce8&&(_0x3e4843+='<circle\x20cx=\x22'+_0x463346['x']+'\x22\x20cy=\x22'+_0x463346['y']+'\x22\x20r=\x22'+(_0x1a348b+0x4)+'\x22\x20fill=\x22'+_0x2bec41+'\x22\x20opacity=\x22.12\x22/>'),_0x3e4843+='<circle\x20cx=\x22'+_0x463346['x']+'\x22\x20cy=\x22'+_0x463346['y']+'\x22\x20r=\x22'+_0x1a348b+'\x22\x20fill=\x22'+_0x2bec41+'\x22\x20stroke=\x22rgba(0,0,0,.3)\x22\x20stroke-width=\x221\x22\x20style=\x22cursor:pointer\x22\x20onclick=\x22window._imShowCityInfo(\x27'+_0x463346['name']+'\x27,'+_0x3c30b1+','+_0x1f7b65+')\x22/>',(_0x5b7b75||_0x57884f)&&(_0x3e4843+='<text\x20x=\x22'+_0x463346['x']+'\x22\x20y=\x22'+(_0x463346['y']-_0x1a348b-0x3)+'\x22\x20text-anchor=\x22middle\x22\x20font-size=\x227\x22\x20fill=\x22rgba(255,255,255,.8)\x22\x20font-weight=\x22700\x22>'+_0x463346['name']['substring'](0x0,0x6)+'</text>');}),_0x3e4843+='</svg>',_0x3e4843+='<div\x20style=\x22position:absolute;bottom:12px;left:12px;display:flex;flex-direction:column;gap:4px\x22>',_0x3e4843+='<div\x20style=\x22display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.6)\x22><div\x20style=\x22width:8px;height:8px;border-radius:50%;background:#00ff9c\x22></div>\x20Your\x20city</div>',_0x3e4843+='<div\x20style=\x22display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.6)\x22><div\x20style=\x22width:8px;height:8px;border-radius:50%;background:#ff6b00\x22></div>\x20Top\x20city</div>',_0x3e4843+='<div\x20style=\x22display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.6)\x22><div\x20style=\x22width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)\x22></div>\x20Inactive</div>',_0x3e4843+='</div></div>',_0x3e4843+='<div\x20id=\x22imCityCard\x22\x20style=\x22display:none;margin-top:10px;padding:12px\x2014px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border)\x22></div>';var _0x516953=Object['entries'](_0x259279)['sort'](function(_0x29af3b,_0x11afa9){return(_0x11afa9[0x1]['score']||0x0)-(_0x29af3b[0x1]['score']||0x0);})['slice'](0x0,0x5);_0x516953['length']&&(_0x3e4843+='<div\x20style=\x22margin-top:12px;font-size:13px;font-weight:800;color:var(--txt);margin-bottom:8px\x22>🏙️\x20Top\x20Cities\x20This\x20Month</div>',_0x3e4843+='<div\x20style=\x22display:flex;flex-direction:column;gap:6px\x22>',_0x516953['forEach'](function(_0x42ecd8,_0x5b72f2){var _0x17afd1=_0x1e3804&&_0x42ecd8[0x0]['toLowerCase']()===_0x1e3804['toLowerCase']();_0x3e4843+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:9px\x2012px;border-radius:10px;background:'+(_0x17afd1?'rgba(0,255,156,.06)':'rgba(255,255,255,.03)')+';border:1px\x20solid\x20'+(_0x17afd1?'rgba(0,255,156,.2)':'rgba(255,255,255,.06)')+'\x22>',_0x3e4843+='<span\x20style=\x22font-size:14px\x22>'+(window['medalHtml']?medalHtml(_0x5b72f2+0x1,0xe):'#'+(_0x5b72f2+0x1))+'</span>',_0x3e4843+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:12px;font-weight:700;color:var(--txt)\x22>'+_0x42ecd8[0x0]+'</div>',_0x3e4843+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>👥\x20'+(_0x42ecd8[0x1]['playerCount']||0x0)+'\x20players</div></div>',_0x3e4843+='<span\x20style=\x22font-size:13px;font-weight:900;color:'+(_0x17afd1?'var(--green)':'var(--txt)')+'\x22>'+(_0x42ecd8[0x1]['score']||0x0)+'\x20pts</span>',_0x3e4843+='</div>';}),_0x3e4843+='</div>'),_0x4a9304['innerHTML']=_0x3e4843;}window['_imShowCityInfo']=function(_0x3a0f20,_0x11e2aa,_0x13a4e1){var _0xcadae6=document['getElementById']('imCityCard');if(!_0xcadae6)return;var _0x172814=window['UD']&&window['UD']['city']&&window['UD']['city']['toLowerCase']()===_0x3a0f20['toLowerCase']();_0xcadae6['style']['display']='block',_0xcadae6['innerHTML']='<div\x20style=\x22display:flex;align-items:center;gap:12px\x22>'+'<div\x20style=\x22font-size:28px\x22>🏙️</div>'+'<div\x20style=\x22flex:1\x22>'+'<div\x20style=\x22font-size:14px;font-weight:800;color:var(--txt)\x22>'+_0x3a0f20+(_0x172814?'\x20<span\x20style=\x22font-size:10px;color:var(--green)\x22>(Your\x20City)</span>':'')+'</div>'+'<div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:2px\x22>👥\x20'+_0x13a4e1+'\x20players\x20·\x20🏆\x20'+_0x11e2aa+'\x20points</div>'+'</div>'+'<button\x20onclick=\x22document.getElementById(\x27imCityCard\x27).style.display=\x27none\x27\x22\x20style=\x22background:transparent;border:none;color:var(--txt2);font-size:16px;cursor:pointer\x22>×</button>'+'</div>';};function _0x1f3834(_0x373c2d,_0x4fb964){if(_0x4fb964<=0x0)return'rgba(255,255,255,.3)';var _0x95b21a=_0x373c2d/_0x4fb964;if(_0x95b21a>0.7)return'#ff6b00';if(_0x95b21a>0.4)return'#ffd700';if(_0x95b21a>0.1)return'#00d4ff';return'#6b9eff';}var _0x34d59c=0x0,_0x2f52b8=setInterval(function(){_0x34d59c++;if(_0x34d59c>0x3c){clearInterval(_0x2f52b8);return;}var _0x4c8853=document['querySelector']('.special-pills');if(!_0x4c8853||_0x4c8853['querySelector']('#_imPill'))return;clearInterval(_0x2f52b8);var _0x52f08e=document['createElement']('div');_0x52f08e['id']='_imPill',_0x52f08e['className']='special-pill',_0x52f08e['style']['cssText']='background:rgba(0,212,255,.08);border:1px\x20solid\x20rgba(0,212,255,.2);color:#00d4ff',_0x52f08e['innerHTML']='<i\x20class=\x22fas\x20fa-map\x22\x20style=\x22font-size:11px\x22></i>\x20India\x20Map',_0x52f08e['onclick']=function(){if(window['showIndiaMap'])showIndiaMap();},_0x4c8853['appendChild'](_0x52f08e);},0x190);}());
+/* ================================================================
+   MINI eSPORTS — INDIA CONQUEST MAP v1.0
+   SVG India map showing active cities & players
+   Firebase: cityChampionship/{month}/cities
+================================================================ */
+(function(){
+'use strict';
+
+/* Top Indian cities with approx SVG coordinates on a simplified India map */
+var CITIES=[
+  {name:'Mumbai',      x:138, y:278, state:'Maharashtra'},
+  {name:'Delhi',       x:175, y:155, state:'Delhi'},
+  {name:'Bangalore',   x:160, y:330, state:'Karnataka'},
+  {name:'Hyderabad',   x:178, y:295, state:'Telangana'},
+  {name:'Chennai',     x:185, y:335, state:'Tamil Nadu'},
+  {name:'Kolkata',     x:258, y:215, state:'West Bengal'},
+  {name:'Pune',        x:143, y:290, state:'Maharashtra'},
+  {name:'Ahmedabad',   x:128, y:225, state:'Gujarat'},
+  {name:'Jaipur',      x:162, y:190, state:'Rajasthan'},
+  {name:'Lucknow',     x:210, y:185, state:'UP'},
+  {name:'Surat',       x:130, y:250, state:'Gujarat'},
+  {name:'Patna',       x:235, y:195, state:'Bihar'},
+  {name:'Bhopal',      x:183, y:240, state:'MP'},
+  {name:'Indore',      x:165, y:248, state:'MP'},
+  {name:'Nagpur',      x:195, y:265, state:'Maharashtra'},
+  {name:'Visakhapatnam',x:220,y:285, state:'AP'},
+  {name:'Chandigarh',  x:172, y:138, state:'Punjab'},
+  {name:'Kochi',       x:160, y:365, state:'Kerala'},
+  {name:'Guwahati',    x:295, y:185, state:'Assam'},
+  {name:'Bhubaneswar', x:242, y:252, state:'Odisha'},
+];
+
+window.showIndiaMap = function(){
+  openModal('🗺️ India Conquest Map','<div id="imContent"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading map...</div></div>');
+  _loadMapData();
+};
+
+function _loadMapData(){
+  var month=new Date().toISOString().substring(0,7);
+  if(!window._supa){ _renderMap({}); return; }
+  window._supa.from('city_championship').select('city,score,player_count,wins').eq('month',month)
+  .then(function(r){
+    var cityData={};
+    (r.data||[]).forEach(function(c){ cityData[c.city]=c; });
+    _renderMap(cityData);
+  }).catch(function(){ _renderMap({}); });
+}
+
+function _renderMap(cityData){
+  var c=document.getElementById('imContent'); if(!c) return;
+  var myCity=(window.UD&&window.UD.city)||'';
+  var totalPlayers=Object.values(cityData).reduce(function(a,b){ return a+(b.playerCount||0); },0);
+  var maxScore=Math.max.apply(null,[1].concat(Object.values(cityData).map(function(d){ return d.score||0; })));
+  var h='';
+  /* Stats bar */
+  h+='<div style="display:flex;gap:8px;margin-bottom:12px">';
+  [['🌍','Active Cities',Object.keys(cityData).length],['👥','Total Players',totalPlayers],['🏆','Leading City',Object.entries(cityData).sort(function(a,b){ return (b[1].score||0)-(a[1].score||0); })[0]?.[0]||'—']].forEach(function(s){
+    h+='<div style="flex:1;text-align:center;padding:10px 6px;border-radius:12px;background:var(--card);border:1px solid var(--border)">';
+    h+='<div style="font-size:16px">'+s[0]+'</div>';
+    h+='<div style="font-size:14px;font-weight:900;color:var(--green)">'+s[2]+'</div>';
+    h+='<div style="font-size:10px;color:var(--txt2)">'+s[1]+'</div>';
+    h+='</div>';
+  });
+  h+='</div>';
+  /* SVG Map */
+  h+='<div style="position:relative;background:rgba(0,212,255,.03);border:1px solid rgba(0,212,255,.12);border-radius:16px;overflow:hidden;padding:8px">';
+  h+='<svg viewBox="60 90 320 320" style="width:100%;display:block" xmlns="http://www.w3.org/2000/svg">';
+  /* India outline path — simplified */
+  h+='<path d="M175,95 L195,92 L215,95 L235,100 L260,108 L278,118 L285,135 L290,155 L295,165 L300,175 L298,185 L295,195 L298,205 L295,218 L285,230 L275,240 L265,255 L260,270 L250,280 L245,295 L240,310 L235,320 L225,330 L215,340 L205,350 L195,358 L185,365 L175,370 L165,360 L158,350 L152,340 L148,330 L143,318 L140,305 L138,295 L135,280 L133,268 L130,255 L128,242 L126,228 L127,215 L128,200 L130,188 L132,175 L138,163 L143,150 L148,138 L155,128 L162,115 L170,102 Z" fill="rgba(0,212,255,.06)" stroke="rgba(0,212,255,.25)" stroke-width="1.5" stroke-linejoin="round"/>';
+  /* Northeast states */
+  h+='<path d="M278,118 L285,115 L295,118 L305,125 L310,135 L308,145 L303,155 L295,165 L290,155 L285,135 Z" fill="rgba(0,212,255,.04)" stroke="rgba(0,212,255,.15)" stroke-width="1"/>';
+  /* City dots */
+  CITIES.forEach(function(city){
+    var data=cityData[city.name]||{};
+    var score=data.score||0;
+    var players=data.playerCount||0;
+    var isActive=score>0||players>0;
+    var isMe=myCity&&city.name.toLowerCase()===myCity.toLowerCase();
+    var r=isMe?8:isActive?Math.max(4,Math.min(10,4+Math.round(score/maxScore*6))):3;
+    var color=isMe?'#00ff9c':isActive?_scoreColor(score,maxScore):'rgba(255,255,255,.2)';
+    var pulse=isMe||isActive;
+    if(pulse){
+      h+='<circle cx="'+city.x+'" cy="'+city.y+'" r="'+(r+4)+'" fill="'+color+'" opacity=".12"/>';
+    }
+    h+='<circle cx="'+city.x+'" cy="'+city.y+'" r="'+r+'" fill="'+color+'" stroke="rgba(0,0,0,.3)" stroke-width="1" style="cursor:pointer" onclick="window._imShowCityInfo(\''+city.name+'\','+score+','+players+')"/>';
+    if(isActive||isMe){
+      h+='<text x="'+city.x+'" y="'+(city.y-r-3)+'" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.8)" font-weight="700">'+city.name.substring(0,6)+'</text>';
+    }
+  });
+  h+='</svg>';
+  /* Legend */
+  h+='<div style="position:absolute;bottom:12px;left:12px;display:flex;flex-direction:column;gap:4px">';
+  h+='<div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.6)"><div style="width:8px;height:8px;border-radius:50%;background:#00ff9c"></div> Your city</div>';
+  h+='<div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.6)"><div style="width:8px;height:8px;border-radius:50%;background:#ff6b00"></div> Top city</div>';
+  h+='<div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,.6)"><div style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)"></div> Inactive</div>';
+  h+='</div></div>';
+  /* Selected city card */
+  h+='<div id="imCityCard" style="display:none;margin-top:10px;padding:12px 14px;border-radius:13px;background:var(--card);border:1px solid var(--border)"></div>';
+  /* Top 5 cities */
+  var ranked=Object.entries(cityData).sort(function(a,b){ return (b[1].score||0)-(a[1].score||0); }).slice(0,5);
+  if(ranked.length){
+    h+='<div style="margin-top:12px;font-size:13px;font-weight:800;color:var(--txt);margin-bottom:8px">🏙️ Top Cities This Month</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:6px">';
+    ranked.forEach(function(e,i){
+      var isMe=myCity&&e[0].toLowerCase()===myCity.toLowerCase();
+      h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:'+(isMe?'rgba(0,255,156,.06)':'rgba(255,255,255,.03)')+';border:1px solid '+(isMe?'rgba(0,255,156,.2)':'rgba(255,255,255,.06)')+'">';
+      h+='<span style="font-size:14px">'+(window.medalHtml?medalHtml(i+1,14):'#'+(i+1))+'</span>';
+      h+='<div style="flex:1"><div style="font-size:12px;font-weight:700;color:var(--txt)">'+e[0]+'</div>';
+      h+='<div style="font-size:10px;color:var(--txt2)">👥 '+(e[1].playerCount||0)+' players</div></div>';
+      h+='<span style="font-size:13px;font-weight:900;color:'+(isMe?'var(--green)':'var(--txt)')+'">'+( e[1].score||0)+' pts</span>';
+      h+='</div>';
+    });
+    h+='</div>';
+  }
+  c.innerHTML=h;
+}
+
+window._imShowCityInfo=function(name,score,players){
+  var card=document.getElementById('imCityCard'); if(!card) return;
+  var isMe=window.UD&&window.UD.city&&window.UD.city.toLowerCase()===name.toLowerCase();
+  card.style.display='block';
+  card.innerHTML='<div style="display:flex;align-items:center;gap:12px">'
+    +'<div style="font-size:28px">🏙️</div>'
+    +'<div style="flex:1">'
+    +'<div style="font-size:14px;font-weight:800;color:var(--txt)">'+name+(isMe?' <span style="font-size:10px;color:var(--green)">(Your City)</span>':'')+'</div>'
+    +'<div style="font-size:12px;color:var(--txt2);margin-top:2px">👥 '+players+' players · 🏆 '+score+' points</div>'
+    +'</div>'
+    +'<button onclick="document.getElementById(\'imCityCard\').style.display=\'none\'" style="background:transparent;border:none;color:var(--txt2);font-size:16px;cursor:pointer">×</button>'
+    +'</div>';
+};
+
+function _scoreColor(score,max){
+  if(max<=0) return 'rgba(255,255,255,.3)';
+  var pct=score/max;
+  if(pct>0.7) return '#ff6b00';
+  if(pct>0.4) return '#ffd700';
+  if(pct>0.1) return '#00d4ff';
+  return '#6b9eff';
+}
+
+/* ── Pill ── */
+var _imi=0,_imt=setInterval(function(){
+  _imi++; if(_imi>60){ clearInterval(_imt); return; }
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_imPill')) return;
+  clearInterval(_imt);
+  var pill=document.createElement('div');
+  pill.id='_imPill'; pill.className='special-pill';
+  pill.style.cssText='background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:#00d4ff';
+  pill.innerHTML='<i class="fas fa-map" style="font-size:11px"></i> India Map';
+  pill.onclick=function(){ if(window.showIndiaMap) showIndiaMap(); };
+  row.appendChild(pill);
+},400);
+
+})();

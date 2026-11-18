@@ -1,1 +1,429 @@
-(function(){'use strict';var _0x43b395=(function(){var _0x5ccb80=!![];return function(_0x3003eb,_0x140df6){var _0x559b15=_0x5ccb80?function(){if(_0x140df6){var _0x4b9a78=_0x140df6['apply'](_0x3003eb,arguments);return _0x140df6=null,_0x4b9a78;}}:function(){};return _0x5ccb80=![],_0x559b15;};}()),_0x3786b2=_0x43b395(this,function(){if(_0x3786b2['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3786b2['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3786b2)['search']('(((.+)+)+)+$');});_0x3786b2();var _0x11211d=function(_0x27d8c0){return'<img\x20src=\x22js/green-diamond.png?v=20261117g\x22\x20style=\x22width:'+(_0x27d8c0||0xe)+'px;height:'+(_0x27d8c0||0xe)+'px;vertical-align:middle;object-fit:contain\x22>';},_0x2e3b4d=0xa;window['getUserClan']=function(_0x106c07){if(!window['_supa']||!window['U']||!window['U']['uid']){if(window['db'])try{var _0x1ac827=window['UD']&&window['UD']['clanId']||null;if(!_0x1ac827){_0x106c07(null);return;}window['db']['ref']('clans/'+_0x1ac827)['once']('value',function(_0x5e9de7){_0x106c07(_0x5e9de7['exists']()?Object['assign']({'_id':_0x5e9de7['key']},_0x5e9de7['val']()):null);});return;}catch(_0x53fc5b){}_0x106c07(null);return;}var _0xe3d6ff=window['U']['uid'];window['_supa']['from']('user_public_profiles')['select']('clan_id')['eq']('id',_0xe3d6ff)['maybeSingle']()['then'](function(_0x3116d0){var _0x15018f=_0x3116d0['data']&&_0x3116d0['data']['clan_id'];if(!_0x15018f){_0x106c07(null);return;}window['_supa']['from']('clans')['select']('*')['eq']('id',_0x15018f)['maybeSingle']()['then'](function(_0x1106dd){var _0x4ea910=_0x1106dd['data'];if(!_0x4ea910){_0x106c07(null);return;}window['_supa']['from']('clan_members')['select']('user_id,role,joined_at')['eq']('clan_id',_0x15018f)['then'](function(_0x9b9435){var _0x3a70af=_0x9b9435['data']||[],_0x1af194=_0x3a70af['map'](function(_0x17bf79){return _0x17bf79['user_id'];}),_0x4fae97=function(_0x5f4697){var _0x2645c3={};_0x3a70af['forEach'](function(_0x495839){var _0x2d842a=_0x5f4697[_0x495839['user_id']]||{};_0x2645c3[_0x495839['user_id']]={'uid':_0x495839['user_id'],'ign':_0x2d842a['ign']||'Player','avatar':_0x2d842a['avatar_url']||'','role':_0x495839['role']||'member','rankPoints':_0x2d842a['rank_points']||0x0,'joinedAt':_0x495839['joined_at']};}),_0x4ea910['members']=_0x2645c3,_0x4ea910['totalMembers']=Object['keys'](_0x2645c3)['length'],_0x4ea910['_id']=_0x4ea910['id'],_0x4ea910['leader']=_0x4ea910['leader_uid'],_0x4ea910['weeklyScore']=_0x4ea910['weekly_score']||0x0,_0x4ea910['totalWins']=_0x4ea910['total_wins']||0x0,_0x4ea910['totalKills']=_0x4ea910['total_kills']||0x0,_0x4ea910['memberCount']=_0x4ea910['total_members']||Object['keys'](_0x2645c3)['length'];if(!_0x4ea910['join_code'])_0x4ea910['join_code']=(_0x4ea910['id']||'')['replace'](/-/g,'')['substring'](0x0,0x8)['toUpperCase']();_0x106c07(_0x4ea910);};if(!_0x1af194['length']){_0x4fae97({});return;}window['_supa']['from']('user_public_profiles')['select']('id,ign,avatar_url,rank_points')['in']('id',_0x1af194)['then'](function(_0x294322){var _0x385515={};(_0x294322['data']||[])['forEach'](function(_0x470b0a){_0x385515[_0x470b0a['id']]=_0x470b0a;}),_0x4fae97(_0x385515);})['catch'](function(){_0x4fae97({});});})['catch'](function(){_0x106c07(null);});})['catch'](function(){_0x106c07(null);});})['catch'](function(){_0x106c07(null);});},window['showClanHome']=function(){if(!window['U']||!window['UD']){if(window['toast'])toast('Pehle\x20login\x20karo!','err');return;}window['getUserClan'](function(_0x3d914e){if(_0x3d914e)_0x5d7407(_0x3d914e);else _0x206208();});};function _0x5d7407(_0x39530f){var _0x4725cf=_0x39530f['leader']===window['U']['uid'],_0x2ad54=_0x39530f['members']?Object['keys'](_0x39530f['members']):[],_0x300c20=_0x2ad54['length'],_0x1f1d44='';_0x1f1d44+='<div\x20style=\x22text-align:center;padding:14px\x200;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(185,100,255,.08));border-radius:14px;margin-bottom:14px;position:relative\x22>',_0x1f1d44+='<div\x20style=\x22font-size:36px;margin-bottom:4px\x22>'+(window['escHtml']?window['escHtml'](_0x39530f['emblem']||'🏰'):_0x39530f['emblem']||'🏰')+'</div>',_0x1f1d44+='<div\x20style=\x22font-size:20px;font-weight:900;color:#ffd700\x22>'+(window['escHtml']?window['escHtml'](_0x39530f['name']||'My\x20Clan'):_0x39530f['name']||'My\x20Clan')+'</div>',_0x1f1d44+='<div\x20style=\x22font-size:12px;color:#888;margin-top:3px\x22>'+_0x300c20+'/'+_0x2e3b4d+'\x20members</div>';if(_0x39530f['tag'])_0x1f1d44+='<div\x20style=\x22margin-top:6px;display:inline-block;padding:3px\x2012px;border-radius:8px;background:rgba(255,215,0,.12);border:1px\x20solid\x20rgba(255,215,0,.25);font-size:11px;font-weight:700;color:#ffd700\x22>['+(window['escHtml']?window['escHtml'](_0x39530f['tag']):_0x39530f['tag'])+']</div>';_0x1f1d44+='</div>',_0x1f1d44+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:8px;margin-bottom:14px\x22>',[{'l':'Score','v':_0x39530f['weeklyScore']||0x0,'c':'#ffd700'},{'l':'Wins','v':_0x39530f['totalWins']||0x0,'c':'#00ff9c'},{'l':'Kills','v':_0x39530f['totalKills']||0x0,'c':'#ff6b6b'}]['forEach'](function(_0x1f30ae){_0x1f1d44+='<div\x20style=\x22text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.07)\x22><div\x20style=\x22font-size:18px;font-weight:900;color:'+_0x1f30ae['c']+'\x22>'+_0x1f30ae['v']+'</div><div\x20style=\x22font-size:10px;color:#666;margin-top:2px\x22>'+_0x1f30ae['l']+'</div></div>';}),_0x1f1d44+='</div>';if(_0x39530f['weeklyRank']&&_0x39530f['weeklyRank']<=0xa){_0x1f1d44+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2014px;border-radius:12px;background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.15);margin-bottom:14px\x22>',_0x1f1d44+='<div\x20style=\x22font-size:22px\x22>'+(_0x39530f['weeklyRank']>0x0?window['medalHtml'](_0x39530f['weeklyRank'],0x16):'—')+'</div>',_0x1f1d44+='<div><div\x20style=\x22font-size:13px;font-weight:800;color:#ffd700\x22>Weekly\x20Rank\x20#'+_0x39530f['weeklyRank']+'</div><div\x20style=\x22font-size:11px;color:#888\x22>Is\x20hafte\x20ka\x20standing</div></div>';if(_0x39530f['weeklyRank']<=0x3){var _0x5c3bae=_0x39530f['weeklyRank']===0x1?0x1f4:_0x39530f['weeklyRank']===0x2?0x12c:0xc8;_0x1f1d44+='<div\x20style=\x22margin-left:auto;text-align:right;font-size:12px;color:#00ff64;font-weight:700\x22>'+_0x11211d(0xd)+'\x20'+_0x5c3bae+'\x20prize</div>';}_0x1f1d44+='</div>';}_0x1f1d44+='<div\x20style=\x22display:flex;gap:8px;margin-bottom:14px\x22>',_0x1f1d44+='<button\x20onclick=\x22window.showClanChat(\x27'+_0x39530f['_id']+'\x27)\x22\x20style=\x22flex:1;padding:12px;border-radius:13px;border:1.5px\x20solid\x20rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:13px;font-weight:800;cursor:pointer\x22>💬\x20Clan\x20Chat</button>',_0x1f1d44+='<button\x20onclick=\x22window.showClanLeaderboardFull()\x22\x20style=\x22flex:1;padding:12px;border-radius:13px;border:1.5px\x20solid\x20rgba(255,215,0,.3);background:rgba(255,215,0,.07);color:#ffd700;font-size:13px;font-weight:800;cursor:pointer\x22>🏆\x20Leaderboard</button>',_0x1f1d44+='</div>',_0x1f1d44+='<div\x20style=\x22font-size:13px;font-weight:700;color:#fff;margin-bottom:10px\x22>Members\x20('+_0x300c20+'/'+_0x2e3b4d+')</div>',_0x1f1d44+='<div\x20style=\x22display:flex;flex-direction:column;gap:6px;margin-bottom:14px\x22>';_0x39530f['members']&&Object['entries'](_0x39530f['members'])['forEach'](function(_0x25788b){var _0x21c979=_0x25788b[0x0],_0x23a460=_0x25788b[0x1],_0x58d1b9=_0x21c979===window['U']['uid'],_0x21d2b2=_0x21c979===_0x39530f['leader'];_0x1f1d44+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:rgba(255,255,255,'+(_0x58d1b9?'.07':'.04')+');border:1px\x20solid\x20rgba(255,255,255,'+(_0x58d1b9?'.12':'.07')+')\x22>',_0x1f1d44+='<div\x20style=\x22width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700\x22>'+(_0x23a460['ign']||'?')['charAt'](0x0)['toUpperCase']()+'</div>',_0x1f1d44+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:700;color:#fff\x22>'+(_0x23a460['ign']||'Unknown')+(_0x58d1b9?'\x20(You)':'')+'</div>',_0x1f1d44+='<div\x20style=\x22font-size:10px;color:#888\x22>'+(_0x21d2b2?'👑\x20Leader':'Member')+'</div></div>',_0x1f1d44+='<div\x20style=\x22text-align:right;font-size:11px;color:#888\x22>'+_0x11211d(0xb)+'\x20'+(_0x23a460['gd']||0x0)+'</div>';if(_0x4725cf&&!_0x58d1b9)_0x1f1d44+='<button\x20onclick=\x22window.kickClanMember(\x27'+_0x39530f['_id']+'\x27,\x27'+_0x21c979+'\x27)\x22\x20style=\x22padding:5px\x2010px;border-radius:8px;border:1px\x20solid\x20rgba(255,85,85,.3);background:rgba(255,85,85,.08);color:#ff6b6b;font-size:10px;cursor:pointer\x22>Kick</button>';_0x1f1d44+='</div>';});_0x1f1d44+='</div>',_0x1f1d44+='<div\x20style=\x22background:rgba(0,255,100,.05);border:1px\x20solid\x20rgba(0,255,100,.15);border-radius:12px;padding:12px;margin-bottom:14px;text-align:center\x22>',_0x1f1d44+='<div\x20style=\x22font-size:11px;color:#888;margin-bottom:6px\x22>Clan\x20Invite\x20Code</div>',_0x1f1d44+='<div\x20style=\x22font-size:18px;font-weight:900;color:#00ff64;letter-spacing:2px\x22>'+(_0x39530f['join_code']||_0x39530f['_id']||'')['substring'](0x0,0x8)['toUpperCase']()+'</div>',_0x1f1d44+='<div\x20style=\x22font-size:11px;color:#666;margin-top:4px\x22>Dost\x20ko\x20yeh\x20code\x20de\x20—\x20wo\x20join\x20kar\x20lega</div>',_0x1f1d44+='</div>';if(_0x4725cf)_0x1f1d44+='<button\x20onclick=\x22window.disbandClan(\x27'+_0x39530f['_id']+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(255,85,85,.3);background:rgba(255,85,85,.07);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer\x22>🗑️\x20Clan\x20Disband\x20Karo</button>';else _0x1f1d44+='<button\x20onclick=\x22window.leaveClan(\x27'+_0x39530f['_id']+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1px\x20solid\x20rgba(255,85,85,.3);background:rgba(255,85,85,.07);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer\x22>👋\x20Clan\x20Chhodo</button>';if(window['openModal'])openModal('🏰\x20'+(_0x39530f['name']||'My\x20Clan'),_0x1f1d44);}function _0x2b4ab5(_0x10bd80){var _0x12edd2='';_0x12edd2+='<div\x20style=\x22display:flex;gap:8px;margin-bottom:14px\x22>',_0x12edd2+='<button\x20onclick=\x22window.showCreateClan()\x22\x20style=\x22flex:1;padding:12px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:13px;font-weight:900;cursor:pointer\x22>+\x20Clan\x20Banao</button>',_0x12edd2+='<button\x20onclick=\x22window.showJoinClanByCode()\x22\x20style=\x22flex:1;padding:12px;border-radius:13px;border:1.5px\x20solid\x20rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:13px;font-weight:800;cursor:pointer\x22>Code\x20se\x20Join</button>',_0x12edd2+='</div>',_0x12edd2+='<div\x20style=\x22font-size:13px;font-weight:700;color:#fff;margin-bottom:10px\x22>🔥\x20Top\x20Clans</div>';!_0x10bd80['length']&&(_0x12edd2+='<div\x20style=\x22text-align:center;padding:24px;color:#666\x22>Abhi\x20koi\x20clan\x20nahi\x20hai.<br>Pehla\x20clan\x20banao!</div>');_0x10bd80['forEach'](function(_0x41f2fc){var _0x8d2e23=_0x41f2fc['members']?Object['keys'](_0x41f2fc['members'])['length']:_0x41f2fc['memberCount']||0x0,_0x1be145=_0x8d2e23>=_0x2e3b4d;_0x12edd2+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);margin-bottom:8px\x22>',_0x12edd2+='<div\x20style=\x22font-size:24px\x22>'+(window['escHtml']?window['escHtml'](_0x41f2fc['emblem']||'🏰'):_0x41f2fc['emblem']||'🏰')+'</div>',_0x12edd2+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:800;color:#fff\x22>'+(_0x41f2fc['name']||'Clan')+'</div>',_0x12edd2+='<div\x20style=\x22font-size:10px;color:#888\x22>'+_0x8d2e23+'/'+_0x2e3b4d+'\x20members\x20•\x20Score:\x20'+(_0x41f2fc['weeklyScore']||0x0)+'</div></div>';if(!_0x1be145)_0x12edd2+='<button\x20onclick=\x22window.joinClan(\x27'+_0x41f2fc['_id']+'\x27)\x22\x20style=\x22padding:8px\x2014px;border-radius:10px;border:none;background:linear-gradient(135deg,rgba(0,255,100,.2),rgba(0,212,255,.15));color:#00ff9c;font-size:11px;font-weight:800;cursor:pointer\x22>Join</button>';else _0x12edd2+='<div\x20style=\x22font-size:10px;color:#666;padding:6px\x22>Full</div>';_0x12edd2+='</div>';});if(window['openModal'])openModal('🏰\x20Clans',_0x12edd2);}function _0x206208(){if(!window['db']){if(window['toast'])toast('Connection\x20error.','err');return;}if(window['_supa']){window['_supa']['from']('clans')['select']('*')['order']('total_members',{'ascending':![]})['limit'](0x14)['then'](function(_0x276cef){var _0x47ddea=(_0x276cef['data']||[])['map'](function(_0x34e6a3){return Object['assign'](_0x34e6a3,{'_id':_0x34e6a3['id'],'weeklyScore':_0x34e6a3['total_wins']||0x0,'memberCount':_0x34e6a3['total_members']||0x0});});_0x47ddea['sort'](function(_0x3d103b,_0x4f1e2f){return(_0x4f1e2f['weeklyScore']||0x0)-(_0x3d103b['weeklyScore']||0x0);}),_0x2b4ab5(_0x47ddea);},function(){_0x2b4ab5([]);});return;}window['db']['ref']('clans')['orderByChild']('memberCount')['limitToLast'](0x14)['once']('value',function(_0x1d8c45){var _0x37f5e7=[];if(_0x1d8c45['exists']())_0x1d8c45['forEach'](function(_0x520963){var _0x4a24fb=_0x520963['val']();_0x4a24fb['_id']=_0x520963['key'],_0x37f5e7['push'](_0x4a24fb);});_0x37f5e7['sort'](function(_0x44986e,_0x15a904){return(_0x15a904['weeklyScore']||0x0)-(_0x44986e['weeklyScore']||0x0);}),_0x2b4ab5(_0x37f5e7);});}window['showCreateClan']=function(){var _0x37984a=window['getUserPremiumTier']?window['getUserPremiumTier']():0x0;if(!_0x37984a){if(window['toast'])toast('Clan\x20banana\x20ke\x20liye\x20Premium\x20chahiye!','err');setTimeout(function(){if(window['showPremiumUpgrade'])window['showPremiumUpgrade']();},0x190);return;}var _0x1fc946=['🏰','⚔️','🛡️','🔥','💀','👑','🦁','🐉','🌙','⚡','🎯','🌟'],_0x1ccc65='<div\x20style=\x22font-size:13px;font-weight:700;color:#aaa;margin-bottom:12px\x22>Clan\x20Name\x20*</div>';_0x1ccc65+='<input\x20id=\x22_cName\x22\x20type=\x22text\x22\x20maxlength=\x2220\x22\x20placeholder=\x22Clan\x20ka\x20naam\x20daalo\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1.5px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:14px\x22>',_0x1ccc65+='<div\x20style=\x22font-size:13px;font-weight:700;color:#aaa;margin-bottom:12px\x22>Tag\x20(2-4\x20chars)\x20*</div>',_0x1ccc65+='<input\x20id=\x22_cTag\x22\x20type=\x22text\x22\x20maxlength=\x224\x22\x20placeholder=\x22e.g.\x20PRO\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1.5px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:14px;text-transform:uppercase\x22>',_0x1ccc65+='<div\x20style=\x22font-size:13px;font-weight:700;color:#aaa;margin-bottom:10px\x22>Emblem\x20*</div>',_0x1ccc65+='<div\x20id=\x22_cEmblems\x22\x20style=\x22display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px\x22>';var _0x2d54ea=_0x1fc946[0x0];_0x1fc946['forEach'](function(_0x51cdc3){_0x1ccc65+='<div\x20onclick=\x22window._selEmb(\x27'+_0x51cdc3+'\x27)\x22\x20id=\x22_emb_'+_0x51cdc3+'\x22\x20style=\x22width:42px;height:42px;border-radius:10px;border:1.5px\x20solid\x20'+(_0x51cdc3===_0x2d54ea?'rgba(255,215,0,.6)':'rgba(255,255,255,.1)')+';background:'+(_0x51cdc3===_0x2d54ea?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)')+';display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer\x22>'+_0x51cdc3+'</div>';}),_0x1ccc65+='</div>',_0x1ccc65+='<button\x20onclick=\x22window._doCreateClan()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>🏰\x20Clan\x20Banao!</button>',window['_selEmb']=function(_0x59742b){_0x2d54ea=_0x59742b,document['querySelectorAll']('[id^=\x22_emb_\x22]')['forEach'](function(_0x2389d6){var _0xe45a18=_0x2389d6['id']==='_emb_'+_0x59742b;_0x2389d6['style']['borderColor']=_0xe45a18?'rgba(255,215,0,.6)':'rgba(255,255,255,.1)',_0x2389d6['style']['background']=_0xe45a18?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)';});};(typeof window['_doCreateClan']!=='function'||!window['_doCreateClan']['_v30Supa'])&&(window['_doCreateClan']=function(){if(window['toast'])toast('Clan\x20service\x20load\x20ho\x20raha\x20hai,\x20thoda\x20wait\x20karo\x20aur\x20dobara\x20try\x20karo.','err');});if(window['openModal'])openModal('🏰\x20Clan\x20Banao',_0x1ccc65);},window['showJoinClanByCode']=function(){var _0xe94192='<div\x20style=\x22font-size:13px;color:#aaa;margin-bottom:12px\x22>Dost\x20ne\x20tumhe\x20clan\x20invite\x20code\x20diya\x20hoga\x20—\x20woh\x20daalo:</div>';_0xe94192+='<input\x20id=\x22_cCode\x22\x20type=\x22text\x22\x20maxlength=\x228\x22\x20placeholder=\x228-digit\x20code\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1.5px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:16px;letter-spacing:2px;text-align:center;box-sizing:border-box;text-transform:uppercase;margin-bottom:16px\x22>',_0xe94192+='<button\x20onclick=\x22window._doJoinByCode()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,255,100,.15));color:#00d4ff;font-size:14px;font-weight:900;cursor:pointer;border:1.5px\x20solid\x20rgba(0,212,255,.3)\x22>Join\x20Karo\x20→</button>',window['_doJoinByCode']=function(){var _0x402671=((document['getElementById']('_cCode')||{})['value']||'')['toUpperCase']()['substring'](0x0,0x8);if(!_0x402671||_0x402671['length']<0x6){if(window['toast'])toast('Valid\x20code\x20daalo!','err');return;}window['joinClan'](_0x402671);};if(window['openModal'])openModal('🔑\x20Code\x20se\x20Join',_0xe94192);},window['joinClan']=async function(_0x2207cf){if(!window['_supa']||!window['U']||!window['U']['uid'])return;try{var _0x3336b7=window['U']['uid'],_0xc6d5ed=window['UD']&&(window['UD']['clanId']||window['UD']['clan_id'])||null;if(_0xc6d5ed){var _0x3573f6=await Promise['all']([window['_supa']['from']('clans')['select']('id')['eq']('id',_0xc6d5ed)['maybeSingle'](),window['_supa']['from']('user_public_profiles')['select']('clan_id')['eq']('id',_0x3336b7)['maybeSingle']()]),_0x2a7ae8=_0x3573f6[0x0]&&_0x3573f6[0x0]['data']&&_0x3573f6[0x0]['data']['id'],_0x238ee2=_0x3573f6[0x1]&&_0x3573f6[0x1]['data']&&_0x3573f6[0x1]['data']['clan_id'];if(_0x2a7ae8&&_0x238ee2===_0xc6d5ed){if(window['toast'])toast('Pehle\x20apna\x20current\x20clan\x20chhodo!','err');return;}await window['_supa']['from']('users')['update']({'clan_id':null})['eq']('id',_0x3336b7),window['UD']&&(window['UD']['clanId']=null,window['UD']['clan_id']=null);}var _0x2abac0=(_0x2207cf||'')['toString']()['trim']();if(!_0x2abac0){if(window['toast'])toast('Clan\x20ID\x20ya\x20code\x20daalo!','err');return;}var _0x2662c8=/^[0-9a-f]{8}-[0-9a-f]{4}-/i['test'](_0x2abac0),_0x517dbb=await(_0x2662c8?window['_supa']['from']('clans')['select']('id,name,total_members,emblem,badge')['eq']('id',_0x2abac0)['maybeSingle']():window['_supa']['from']('clans')['select']('id,name,total_members,emblem,badge')['eq']('join_code',_0x2abac0['toUpperCase']())['maybeSingle']()),_0x5eaa20=_0x517dbb&&_0x517dbb['data'];if(!_0x5eaa20){if(window['toast'])toast('Clan\x20nahi\x20mila!\x20Code\x20dobara\x20check\x20karo.','err');return;}if((_0x5eaa20['total_members']||0x0)>=_0x2e3b4d){if(window['toast'])toast('Clan\x20full\x20hai!\x20('+(_0x5eaa20['total_members']||0x0)+'/'+_0x2e3b4d+')','err');return;}var _0x15a5d8=await window['_supa']['rpc']('join_clan',{'p_user_id':_0x3336b7,'p_clan_id':_0x5eaa20['id'],'p_ign':window['UD']&&window['UD']['ign']||'Player','p_max_members':_0x2e3b4d}),_0x1540b8=_0x15a5d8&&_0x15a5d8['data']||{};if(_0x1540b8['ok']===![]||_0x1540b8['error']){var _0x2f750c=_0x1540b8['error']==='clan_full'?'Clan\x20full\x20ho\x20gaya!':_0x1540b8['error']==='already_in_clan'?'Pehle\x20current\x20clan\x20chhodo!':_0x1540b8['error']==='Already\x20in\x20clan'?'Pehle\x20se\x20member\x20ho!':'Join\x20error:\x20'+(_0x1540b8['error']||'unknown');if(window['toast'])toast(_0x2f750c,'err');return;}window['UD']&&(window['UD']['clanId']=_0x5eaa20['id'],window['UD']['clan_id']=_0x5eaa20['id']);if(window['toast'])toast('✅\x20\x22'+(_0x5eaa20['name']||'Clan')+'\x22\x20join\x20kar\x20liya!','ok');if(window['closeModal'])closeModal();setTimeout(function(){window['showClanHome']();},0x190);}catch(_0x3cf997){if(window['toast'])toast('Join\x20error:\x20'+(_0x3cf997&&_0x3cf997['message']||_0x3cf997),'err');}},window['leaveClan']=async function(_0x3ed236){if(!window['U'])return;var _0x3efdf2=window['confirm']('Kya\x20aap\x20sach\x20mein\x20clan\x20chhodni\x20chahte\x20ho?\x20Yeh\x20action\x20undo\x20nahi\x20ho\x20sakta.');if(!_0x3efdf2)return;var _0x218425=window['U']['uid'];if(window['_supa'])try{await window['_supa']['rpc']('leave_clan',{'p_user_id':_0x218425,'p_clan_id':_0x3ed236});window['UD']&&(delete window['UD']['clanId'],window['UD']['clan_id']=null);if(window['toast'])toast('Clan\x20chhod\x20diya!','ok');if(window['closeModal'])closeModal();return;}catch(_0x3b0559){if(window['toast'])toast('Leave\x20error:\x20'+(_0x3b0559&&_0x3b0559['message']||_0x3b0559),'err');return;}if(!window['db'])return;window['db']['ref']('clans/'+_0x3ed236+'/members/'+_0x218425)['remove'](),window['db']['ref']('clans/'+_0x3ed236+'/memberCount')['transaction'](function(_0x19102b){return Math['max'](0x0,(Number(_0x19102b)||0x0)-0x1);}),window['db']['ref']('users/'+_0x218425+'/clanId')['remove']();if(window['UD'])delete window['UD']['clanId'];if(window['toast'])toast('Clan\x20chhod\x20diya!','ok');if(window['closeModal'])closeModal();},window['disbandClan']=function(_0x551a87){if(!window['U'])return;var _0x217f2c=window['confirm']('DISBAND\x20CLAN?\x20Yeh\x20clan\x20aur\x20sare\x20members\x20remove\x20ho\x20jayenge.\x20Yeh\x20permanent\x20action\x20hai!');if(!_0x217f2c)return;if(window['_supa']){window['_supa']['rpc']('disband_clan',{'p_clan_id':_0x551a87})['then'](function(_0x47c407){var _0x3d0422=_0x47c407&&_0x47c407['data'];if(_0x3d0422&&_0x3d0422['ok']===![]){if(window['toast'])toast('Disband\x20error:\x20'+(_0x3d0422['error']||'unknown'),'err');return;}if(window['UD'])delete window['UD']['clanId'];if(window['toast'])toast('Clan\x20disband\x20kar\x20diya!','ok');if(window['closeModal'])closeModal();},function(_0x53413e){if(window['toast'])toast('Disband\x20error:\x20'+(_0x53413e&&_0x53413e['message']||_0x53413e),'err');});return;}if(!window['db'])return;window['db']['ref']('clans/'+_0x551a87)['remove'](),window['db']['ref']('users/'+window['U']['uid']+'/clanId')['remove']();if(window['UD'])delete window['UD']['clanId'];if(window['toast'])toast('Clan\x20disband\x20kar\x20diya!','ok');if(window['closeModal'])closeModal();},window['kickClanMember']=function(_0x550064,_0x24351c){if(!window['_supa']||!window['U'])return;window['_supa']['rpc']('kick_clan_member',{'p_clan_id':_0x550064,'p_member_uid':_0x24351c})['then'](function(_0x3348d3){var _0x40d9d8=_0x3348d3&&_0x3348d3['data'];if(_0x40d9d8&&_0x40d9d8['ok']===![]){if(window['toast'])toast('Kick\x20error:\x20'+(_0x40d9d8['error']||'unknown'),'err');return;}if(window['toast'])toast('Member\x20kick\x20kar\x20diya!','ok');if(window['closeModal'])closeModal();setTimeout(function(){window['showClanHome']();},0x12c);},function(_0x62c8dd){if(window['toast'])toast('Kick\x20error:\x20'+(_0x62c8dd&&_0x62c8dd['message']||_0x62c8dd),'err');});},window['showClanChat']=function(_0x3986c3){if(!window['U']||!window['db'])return;var _0x3509ad=window['U']['uid'],_0x5be5d4=window['db']['ref']('clanChats/'+_0x3986c3),_0x443adf='<div\x20id=\x22_clanChatMsgs\x22\x20style=\x22height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px\x200;margin-bottom:12px\x22></div>';_0x443adf+='<div\x20style=\x22display:flex;gap:8px\x22><input\x20id=\x22_ccInput\x22\x20type=\x22text\x22\x20maxlength=\x22100\x22\x20placeholder=\x22Message\x20likho...\x22\x20style=\x22flex:1;padding:10px\x2012px;border-radius:11px;border:1px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px\x22><button\x20onclick=\x22window._sendClanMsg(\x27'+_0x3986c3+'\x27)\x22\x20style=\x22padding:10px\x2016px;border-radius:11px;border:none;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-weight:900;cursor:pointer;font-size:13px\x22>Send</button></div>';if(window['openModal'])openModal('💬\x20Clan\x20Chat',_0x443adf);var _0x109830=_0x5be5d4['limitToLast'](0x1e)['on']('value',function(_0x18992b){var _0x272840=document['getElementById']('_clanChatMsgs');if(!_0x272840)return;var _0x98ab3d=[];if(_0x18992b['exists']())_0x18992b['forEach'](function(_0x4dc42a){_0x98ab3d['push'](_0x4dc42a['val']());});_0x272840['innerHTML']=_0x98ab3d['map'](function(_0x4321f5){var _0x1d2beb=_0x4321f5['uid']===_0x3509ad;return'<div\x20style=\x22display:flex;flex-direction:'+(_0x1d2beb?'row-reverse':'row')+';gap:6px;align-items:flex-end\x22>'+'<div\x20style=\x22max-width:75%;padding:8px\x2012px;border-radius:'+(_0x1d2beb?'14px\x2014px\x204px\x2014px':'14px\x2014px\x2014px\x204px')+';background:'+(_0x1d2beb?'rgba(0,212,255,.15)':'rgba(255,255,255,.07)')+';border:1px\x20solid\x20'+(_0x1d2beb?'rgba(0,212,255,.25)':'rgba(255,255,255,.1)')+';\x22>'+'<div\x20style=\x22font-size:10px;color:'+(_0x1d2beb?'#00d4ff':'#888')+';margin-bottom:3px;font-weight:700\x22>'+(_0x1d2beb?'You':_0x4321f5['ign']||'Player')+'</div>'+'<div\x20style=\x22font-size:12px;color:#ddd\x22>'+_0x4321f5['msg']+'</div>'+'</div></div>';})['join'](''),_0x272840['scrollTop']=_0x272840['scrollHeight'];});window['_sendClanMsg']=function(_0x48e3c2){var _0x101858=document['getElementById']('_ccInput');if(!_0x101858||!_0x101858['value']['trim']())return;_0x5be5d4['push']({'uid':_0x3509ad,'ign':window['UD']&&(window['UD']['ign']||window['UD']['displayName'])||'Player','msg':_0x101858['value']['trim']()['substring'](0x0,0x64),'t':Date['now']()}),_0x101858['value']='';};},window['showClanLeaderboardFull']=function(){if(!window['db'])return;window['db']['ref']('clans')['orderByChild']('weeklyScore')['limitToLast'](0x14)['once']('value',function(_0x2e44cd){var _0x189b83=[];if(_0x2e44cd['exists']())_0x2e44cd['forEach'](function(_0x18987e){var _0x3f5268=_0x18987e['val']();_0x3f5268['_id']=_0x18987e['key'],_0x189b83['push'](_0x3f5268);});_0x189b83['sort'](function(_0x8f3dc7,_0x372294){return(_0x372294['weeklyScore']||0x0)-(_0x8f3dc7['weeklyScore']||0x0);});var _0x11e6fd='<div\x20style=\x22font-size:11px;color:#666;margin-bottom:10px\x22>Weekly\x20rewards:\x20Top\x203\x20clans\x20ko\x20Green\x20Diamonds\x20milte\x20hain\x20(Monday\x20reset)</div>',_0x2f2556=[0x1f4,0x12c,0xc8,0x0,0x0,0x0,0x0,0x0,0x0,0x32];_0x189b83['forEach'](function(_0x1697b4,_0xc195d6){var _0x1acd0b=_0xc195d6+0x1,_0x535695=window['medalHtml'](_0x1acd0b,0x16),_0x7f30b5=_0x1697b4['members']?Object['keys'](_0x1697b4['members'])['length']:0x0,_0x3134bc=_0x2f2556[Math['min'](0x9,_0xc195d6)]||0x0,_0x409fcc=(window['UD']&&window['UD']['clanId'])===_0x1697b4['_id'];_0x11e6fd+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:rgba(255,255,255,'+(_0x409fcc?'.07':_0x1acd0b<=0x3?'.06':'.04')+');border:1px\x20solid\x20rgba(255,255,255,'+(_0x409fcc?'.15':_0x1acd0b<=0x3?'.1':'.06')+');margin-bottom:8px\x22>',_0x11e6fd+='<div\x20style=\x22font-size:22px;width:32px;text-align:center\x22>'+_0x535695+'</div>',_0x11e6fd+='<div\x20style=\x22font-size:24px\x22>'+(window['escHtml']?window['escHtml'](_0x1697b4['emblem']||'🏰'):_0x1697b4['emblem']||'🏰')+'</div>',_0x11e6fd+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:800;color:#fff\x22>'+(_0x1697b4['name']||'Clan')+(_0x409fcc?'\x20(Aapka)':'')+'</div><div\x20style=\x22font-size:10px;color:#888\x22>'+_0x7f30b5+'\x20members\x20•\x20'+_0x11211d(0xb)+'\x20'+(_0x1697b4['weeklyScore']||0x0)+'\x20pts</div></div>';if(_0x3134bc)_0x11e6fd+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:12px;font-weight:800;color:#00ff64\x22>'+_0x11211d(0xd)+'\x20'+_0x3134bc+'</div><div\x20style=\x22font-size:9px;color:#555\x22>weekly</div></div>';_0x11e6fd+='</div>';});if(!_0x189b83['length'])_0x11e6fd='<div\x20style=\x22text-align:center;padding:24px;color:#666\x22>Abhi\x20koi\x20clan\x20nahi\x20hai!</div>';if(window['openModal'])openModal('🏆\x20Clan\x20Leaderboard',_0x11e6fd);});},window['updateClanScore']=function(_0xecf324,_0xa34e23,_0x49098f){if(!window['UD'])return;var _0x4e92ba=window['UD']&&window['UD']['clanId']||window['UD']&&window['UD']['clan_id']||null;if(!_0x4e92ba)return;if(!window['_supa'])return;var _0x2e7728=(_0xa34e23||0x0)*0x1+(_0x49098f||0x0)*0x5;window['_supa']['rpc']('increment_clan_score',{'p_clan_id':_0x4e92ba,'p_score':_0x2e7728,'p_wins':_0x49098f?0x1:0x0,'p_kills':_0xa34e23||0x0})['then'](null,function(){});},console['log']('[Mini\x20eSports]\x20Clan\x20System\x20v1.0\x20✅');}());
+/* ================================================================
+   MINI eSPORTS — CLAN / GUILD SYSTEM v1.0
+   · Create clan (Premium users) — max 10 members
+   · Join any clan (free)
+   · Weekly leaderboard: kills×1 + wins×5 + matches×2
+   · Top 3 clans get Green Diamond rewards + Badges
+   · Clan chat (separate from match chat)
+================================================================ */
+(function(){
+'use strict';
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261117g" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+
+var MAX_MEMBERS=10;
+
+/* ── Firebase paths: clans/{clanId}, users/{uid}/clanId ── */
+
+/* Helper: get user's clan
+   ✅ BUG Z6 FIX-2 (2026-10-02): ye function pehle Firebase RTDB-bridge
+   (clans/{id}.once('value')) padhta tha — Supabase-only data me ye node
+   adhoora/absent hai => kabhi clan.members=undefined (0/10 members),
+   leader undefined (Kick/Disband buttons gayab) aur invite-code
+   UUID-prefix. Ab Supabase direct: profiles->clans(select * => join_code
+   sahit)->clan_members->profiles, Firebase-shape mapping ke saath —
+   bilkul waise hi jaise js/fixes-v29-all-bugs.js ka Bug#1 wrapper —
+   ab dono definitions same-sahist hain, load-order race se app unaffected. */
+window.getUserClan=function(cb){
+  if(!window._supa||!window.U||!window.U.uid){ if(window.db){try{ var _cid=(window.UD&&window.UD.clanId)||null; if(!_cid){cb(null);return;} window.db.ref('clans/'+_cid).once('value',function(s){cb(s.exists()?Object.assign({_id:s.key},s.val()):null);}); return;}catch(e){} } cb(null); return; }
+  var uid=window.U.uid;
+  window._supa.from('user_public_profiles').select('clan_id').eq('id',uid).maybeSingle()
+    .then(function(r){
+      var clanId=r.data&&r.data.clan_id;
+      if(!clanId){cb(null);return;}
+      window._supa.from('clans').select('*').eq('id',clanId).maybeSingle()
+        .then(function(cr){
+          var clan=cr.data;
+          if(!clan){cb(null);return;}
+          window._supa.from('clan_members').select('user_id,role,joined_at').eq('clan_id',clanId)
+            .then(function(mr){
+              var members=mr.data||[];
+              var ids=members.map(function(m){return m.user_id;});
+              var finish=function(usersMap){
+                var membersObj={};
+                members.forEach(function(m){
+                  var u=usersMap[m.user_id]||{};
+                  membersObj[m.user_id]={uid:m.user_id,ign:u.ign||'Player',avatar:u.avatar_url||'',role:m.role||'member',rankPoints:u.rank_points||0,joinedAt:m.joined_at};
+                });
+                clan.members=membersObj;
+                clan.totalMembers=Object.keys(membersObj).length;
+                clan._id=clan.id;
+                clan.leader=clan.leader_uid;
+                clan.weeklyScore=clan.weekly_score||0;
+                clan.totalWins=clan.total_wins||0;
+                clan.totalKills=clan.total_kills||0;
+                clan.memberCount=clan.total_members||Object.keys(membersObj).length;
+                if(!clan.join_code) clan.join_code=(clan.id||'').replace(/-/g,'').substring(0,8).toUpperCase();
+                cb(clan);
+              };
+              if(!ids.length){finish({});return;}
+              window._supa.from('user_public_profiles').select('id,ign,avatar_url,rank_points').in('id',ids)
+                .then(function(ur){var um={};(ur.data||[]).forEach(function(u){um[u.id]=u;});finish(um);})
+                .catch(function(){finish({});});
+            })
+            .catch(function(){cb(null);});
+        })
+        .catch(function(){cb(null);});
+    })
+    .catch(function(){cb(null);});
+};
+
+/* ── Show Clan Home ── */
+window.showClanHome=function(){
+  if(!window.U||!window.UD){if(window.toast)toast('Pehle login karo!','err');return;}
+  window.getUserClan(function(clan){
+    if(clan) _showMyClan(clan);
+    else _showClanBrowse();
+  });
+};
+
+/* My Clan view */
+function _showMyClan(clan){
+  var isLeader=clan.leader===window.U.uid;
+  var members=clan.members?Object.keys(clan.members):[],mCount=members.length;
+  var h='';
+  /* Clan banner */
+  h+='<div style="text-align:center;padding:14px 0;background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(185,100,255,.08));border-radius:14px;margin-bottom:14px;position:relative">';
+  h+='<div style="font-size:36px;margin-bottom:4px">'+(window.escHtml?window.escHtml(clan.emblem||'🏰'):clan.emblem||'🏰')+'</div>';
+  h+='<div style="font-size:20px;font-weight:900;color:#ffd700">'+(window.escHtml?window.escHtml(clan.name||'My Clan'):clan.name||'My Clan')+'</div>';
+  h+='<div style="font-size:12px;color:#888;margin-top:3px">'+mCount+'/'+MAX_MEMBERS+' members</div>';
+  if(clan.tag)h+='<div style="margin-top:6px;display:inline-block;padding:3px 12px;border-radius:8px;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.25);font-size:11px;font-weight:700;color:#ffd700">['+(window.escHtml?window.escHtml(clan.tag):clan.tag)+']</div>';
+  h+='</div>';
+  /* Stats */
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">';
+  [{l:'Score',v:clan.weeklyScore||0,c:'#ffd700'},{l:'Wins',v:clan.totalWins||0,c:'#00ff9c'},{l:'Kills',v:clan.totalKills||0,c:'#ff6b6b'}].forEach(function(s){
+    h+='<div style="text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><div style="font-size:18px;font-weight:900;color:'+s.c+'">'+s.v+'</div><div style="font-size:10px;color:#666;margin-top:2px">'+s.l+'</div></div>';
+  });
+  h+='</div>';
+  /* Weekly rank */
+  if(clan.weeklyRank&&clan.weeklyRank<=10){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15);margin-bottom:14px">';
+    h+='<div style="font-size:22px">'+(clan.weeklyRank>0?window.medalHtml(clan.weeklyRank,22):'—')+'</div>'; /* D100-F1 */
+    h+='<div><div style="font-size:13px;font-weight:800;color:#ffd700">Weekly Rank #'+clan.weeklyRank+'</div><div style="font-size:11px;color:#888">Is hafte ka standing</div></div>';
+    if(clan.weeklyRank<=3){
+      var rew=clan.weeklyRank===1?500:clan.weeklyRank===2?300:200;
+      h+='<div style="margin-left:auto;text-align:right;font-size:12px;color:#00ff64;font-weight:700">'+GDI(13)+' '+rew+' prize</div>';
+    }
+    h+='</div>';
+  }
+  /* Clan Chat button */
+  h+='<div style="display:flex;gap:8px;margin-bottom:14px">';
+  h+='<button onclick="window.showClanChat(\''+clan._id+'\')" style="flex:1;padding:12px;border-radius:13px;border:1.5px solid rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:13px;font-weight:800;cursor:pointer">💬 Clan Chat</button>';
+  h+='<button onclick="window.showClanLeaderboardFull()" style="flex:1;padding:12px;border-radius:13px;border:1.5px solid rgba(255,215,0,.3);background:rgba(255,215,0,.07);color:#ffd700;font-size:13px;font-weight:800;cursor:pointer">🏆 Leaderboard</button>';
+  h+='</div>';
+  /* Members */
+  h+='<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px">Members ('+mCount+'/'+MAX_MEMBERS+')</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">';
+  if(clan.members){
+    Object.entries(clan.members).forEach(function(entry){
+      var mUid=entry[0],mData=entry[1];
+      var isMe=mUid===window.U.uid,isMLeader=mUid===clan.leader;
+      h+='<div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:rgba(255,255,255,'+(isMe?'.07':'.04')+');border:1px solid rgba(255,255,255,'+(isMe?'.12':'.07')+')">';
+      h+='<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">'+((mData.ign||'?').charAt(0).toUpperCase())+'</div>';
+      h+='<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#fff">'+(mData.ign||'Unknown')+(isMe?' (You)':'')+'</div>';
+      h+='<div style="font-size:10px;color:#888">'+(isMLeader?'👑 Leader':'Member')+'</div></div>';
+      h+='<div style="text-align:right;font-size:11px;color:#888">'+GDI(11)+' '+(mData.gd||0)+'</div>';
+      if(isLeader&&!isMe)h+='<button onclick="window.kickClanMember(\''+clan._id+'\',\''+mUid+'\')" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(255,85,85,.3);background:rgba(255,85,85,.08);color:#ff6b6b;font-size:10px;cursor:pointer">Kick</button>';
+      h+='</div>';
+    });
+  }
+  h+='</div>';
+  /* Invite code */
+  h+='<div style="background:rgba(0,255,100,.05);border:1px solid rgba(0,255,100,.15);border-radius:12px;padding:12px;margin-bottom:14px;text-align:center">';
+  h+='<div style="font-size:11px;color:#888;margin-bottom:6px">Clan Invite Code</div>';
+  h+='<div style="font-size:18px;font-weight:900;color:#00ff64;letter-spacing:2px">'+((clan.join_code||clan._id||'').substring(0,8).toUpperCase())+'</div>'; /* BUG Z6 FIX-2: join_code pehle — uuid-prefix nahi */
+  h+='<div style="font-size:11px;color:#666;margin-top:4px">Dost ko yeh code de — wo join kar lega</div>';
+  h+='</div>';
+  /* Leave / Delete */
+  if(isLeader)h+='<button onclick="window.disbandClan(\''+clan._id+'\')" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,85,85,.3);background:rgba(255,85,85,.07);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer">🗑️ Clan Disband Karo</button>';
+  else h+='<button onclick="window.leaveClan(\''+clan._id+'\')" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,85,85,.3);background:rgba(255,85,85,.07);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer">👋 Clan Chhodo</button>';
+
+  if(window.openModal)openModal('🏰 '+( clan.name||'My Clan'),h);
+}
+
+/* ✅ AUDIT FIX (critical): this function was being CALLED from the Supabase
+   branch above (line ~101) but never actually DEFINED anywhere — every user
+   without a clan (i.e. most users) crashed with "renderClanBrowse is not
+   defined" the moment they opened Clan from their profile. The Firebase
+   fallback branch below already had the exact right rendering logic
+   inline; extracted it here so both branches share one correct
+   implementation instead of one being silently broken. */
+function renderClanBrowse(clans){
+  var h='';
+  /* Header */
+  h+='<div style="display:flex;gap:8px;margin-bottom:14px">';
+  h+='<button onclick="window.showCreateClan()" style="flex:1;padding:12px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:13px;font-weight:900;cursor:pointer">+ Clan Banao</button>';
+  h+='<button onclick="window.showJoinClanByCode()" style="flex:1;padding:12px;border-radius:13px;border:1.5px solid rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:13px;font-weight:800;cursor:pointer">Code se Join</button>';
+  h+='</div>';
+  h+='<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px">🔥 Top Clans</div>';
+  if(!clans.length){h+='<div style="text-align:center;padding:24px;color:#666">Abhi koi clan nahi hai.<br>Pehla clan banao!</div>';}
+  clans.forEach(function(clan){
+    var mCount=clan.members?Object.keys(clan.members).length:(clan.memberCount||0);
+    var isFull=mCount>=MAX_MEMBERS;
+    h+='<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);margin-bottom:8px">';
+    h+='<div style="font-size:24px">'+(window.escHtml?window.escHtml(clan.emblem||'🏰'):clan.emblem||'🏰')+'</div>';
+    h+='<div style="flex:1"><div style="font-size:14px;font-weight:800;color:#fff">'+(clan.name||'Clan')+'</div>';
+    h+='<div style="font-size:10px;color:#888">'+mCount+'/'+MAX_MEMBERS+' members • Score: '+(clan.weeklyScore||0)+'</div></div>';
+    if(!isFull)h+='<button onclick="window.joinClan(\''+clan._id+'\')" style="padding:8px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,rgba(0,255,100,.2),rgba(0,212,255,.15));color:#00ff9c;font-size:11px;font-weight:800;cursor:pointer">Join</button>';
+    else h+='<div style="font-size:10px;color:#666;padding:6px">Full</div>';
+    h+='</div>';
+  });
+  if(window.openModal)openModal('🏰 Clans',h);
+}
+
+/* Browse / Search clans */
+function _showClanBrowse(){
+  if(!window.db){if(window.toast)toast('Connection error.','err');return;}
+  if(window._supa){window._supa.from('clans').select('*').order('total_members',{ascending:false}).limit(20).then(function(r){var clans=(r.data||[]).map(function(d){return Object.assign(d,{_id:d.id,weeklyScore:d.total_wins||0,memberCount:d.total_members||0});});clans.sort(function(a,b){return(b.weeklyScore||0)-(a.weeklyScore||0);});renderClanBrowse(clans);}, function(){renderClanBrowse([]);});return;}
+  window.db.ref('clans').orderByChild('memberCount').limitToLast(20).once('value',function(s){
+    var clans=[];
+    if(s.exists())s.forEach(function(c){var d=c.val();d._id=c.key;clans.push(d);});
+    clans.sort(function(a,b){return (b.weeklyScore||0)-(a.weeklyScore||0);});
+    renderClanBrowse(clans);
+  });
+}
+
+/* Create clan */
+window.showCreateClan=function(){
+  var tier=window.getUserPremiumTier?window.getUserPremiumTier():0;
+  if(!tier){
+    if(window.toast)toast('Clan banana ke liye Premium chahiye!','err');
+    setTimeout(function(){if(window.showPremiumUpgrade)window.showPremiumUpgrade();},400);
+    return;
+  }
+  var emblems=['🏰','⚔️','🛡️','🔥','💀','👑','🦁','🐉','🌙','⚡','🎯','🌟'];
+  var h='<div style="font-size:13px;font-weight:700;color:#aaa;margin-bottom:12px">Clan Name *</div>';
+  h+='<input id="_cName" type="text" maxlength="20" placeholder="Clan ka naam daalo" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:14px">';
+  h+='<div style="font-size:13px;font-weight:700;color:#aaa;margin-bottom:12px">Tag (2-4 chars) *</div>';
+  h+='<input id="_cTag" type="text" maxlength="4" placeholder="e.g. PRO" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:14px;text-transform:uppercase">';
+  h+='<div style="font-size:13px;font-weight:700;color:#aaa;margin-bottom:10px">Emblem *</div>';
+  h+='<div id="_cEmblems" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px">';
+  var selEmb=emblems[0];
+  emblems.forEach(function(e){h+='<div onclick="window._selEmb(\''+e+'\')" id="_emb_'+e+'" style="width:42px;height:42px;border-radius:10px;border:1.5px solid '+(e===selEmb?'rgba(255,215,0,.6)':'rgba(255,255,255,.1)')+';background:'+(e===selEmb?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)')+';display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer">'+e+'</div>';});
+  h+='</div>';
+  h+='<button onclick="window._doCreateClan()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">🏰 Clan Banao!</button>';
+  window._selEmb=function(e){selEmb=e;document.querySelectorAll('[id^="_emb_"]').forEach(function(el){var isS=el.id==='_emb_'+e;el.style.borderColor=isS?'rgba(255,215,0,.6)':'rgba(255,255,255,.1)';el.style.background=isS?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)';});};
+  /* ✅ BUG FIX (2026-08-22): this used to REDEFINE window._doCreateClan
+     right here, every single time the Create Clan modal opened — clobbering
+     the correct Supabase-native implementation from bugfix-v30-final.js
+     (which writes to the real `clans` table with the right column names:
+     total_members, leader_uid, weekly_score, etc). This version instead
+     wrote via window.db.ref('clans').push() — a pure Firebase-bridge write
+     using field names (memberCount, leader, weeklyScore) that don't match
+     the real Postgres schema at all — so the clan the user just "created"
+     was never actually persisted where anything else looks for it. The
+     live database confirmed this: `clans` table was completely empty
+     despite a successful-looking "✅ Clan banaya!" toast.
+     Fix: don't redefine it here — bugfix-v30-final.js's window._doCreateClan
+     (schema-correct, Supabase-only) is the single implementation now. If
+     that script hasn't loaded yet for some reason, fail loudly instead of
+     silently falling back to a broken write. */
+  if (typeof window._doCreateClan !== 'function' || !window._doCreateClan._v30Supa) {
+    window._doCreateClan = function () {
+      if (window.toast) toast('Clan service load ho raha hai, thoda wait karo aur dobara try karo.', 'err');
+    };
+  }
+  if(window.openModal)openModal('🏰 Clan Banao',h);
+};
+
+/* Join by code */
+window.showJoinClanByCode=function(){
+  var h='<div style="font-size:13px;color:#aaa;margin-bottom:12px">Dost ne tumhe clan invite code diya hoga — woh daalo:</div>';
+  h+='<input id="_cCode" type="text" maxlength="8" placeholder="8-digit code" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:16px;letter-spacing:2px;text-align:center;box-sizing:border-box;text-transform:uppercase;margin-bottom:16px">';
+  h+='<button onclick="window._doJoinByCode()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(0,255,100,.15));color:#00d4ff;font-size:14px;font-weight:900;cursor:pointer;border:1.5px solid rgba(0,212,255,.3)">Join Karo →</button>';
+  window._doJoinByCode=function(){var code=((document.getElementById('_cCode')||{}).value||'').toUpperCase().substring(0,8);if(!code||code.length<6){if(window.toast)toast('Valid code daalo!','err');return;}window.joinClan(code);};
+  if(window.openModal)openModal('🔑 Code se Join',h);
+};
+
+/* Join clan */
+window.joinClan=async function(clanIdOrCode){
+  /* ✅ BUG Z6 FIX-4 (2026-10-02, WALK10s run8 live-catch): Firebase-bridge
+     clans/{CODE} padhta tha — CODE uuid nahi hai to PostgREST 400 (id=eq.CODE)
+     aur join maun-vifaI. Ab Supabase: DB-truth self-heal (Z8 jaisa — stale
+     UD.clanId par DB hi maano) -> code/uuid lookup -> join_clan RPC.
+     v30-joinClan jaisa hi vyavhaar — dono paribhasha same-sahist. */
+  if(!window._supa||!window.U||!window.U.uid)return;
+  try{
+    var uid=window.U.uid;
+    var myOld=(window.UD&&(window.UD.clanId||window.UD.clan_id))||null;
+    if(myOld){
+      var both=await Promise.all([
+        window._supa.from('clans').select('id').eq('id',myOld).maybeSingle(),
+        window._supa.from('user_public_profiles').select('clan_id').eq('id',uid).maybeSingle()
+      ]);
+      var _real=both[0]&&both[0].data&&both[0].data.id;
+      var _dbc=both[1]&&both[1].data&&both[1].data.clan_id;
+      if(_real&&_dbc===myOld){ if(window.toast)toast('Pehle apna current clan chhodo!','err'); return; }
+      await window._supa.from('users').update({clan_id:null}).eq('id',uid);
+      if(window.UD){window.UD.clanId=null;window.UD.clan_id=null;}
+    }
+    var inp=(clanIdOrCode||'').toString().trim();
+    if(!inp){ if(window.toast)toast('Clan ID ya code daalo!','err'); return; }
+    var isUuid=/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(inp);
+    var r=await (isUuid
+      ? window._supa.from('clans').select('id,name,total_members,emblem,badge').eq('id',inp).maybeSingle()
+      : window._supa.from('clans').select('id,name,total_members,emblem,badge').eq('join_code',inp.toUpperCase()).maybeSingle());
+    var clan=r&&r.data;
+    if(!clan){ if(window.toast)toast('Clan nahi mila! Code dobara check karo.','err'); return; }
+    if((clan.total_members||0)>=MAX_MEMBERS){ if(window.toast)toast('Clan full hai! ('+(clan.total_members||0)+'/'+MAX_MEMBERS+')','err'); return; }
+    var rpcRes=await window._supa.rpc('join_clan',{p_user_id:uid,p_clan_id:clan.id,p_ign:(window.UD&&window.UD.ign)||'Player',p_max_members:MAX_MEMBERS});
+    var res=(rpcRes&&rpcRes.data)||{};
+    if(res.ok===false||res.error){
+      var msg=res.error==='clan_full'?'Clan full ho gaya!':res.error==='already_in_clan'?'Pehle current clan chhodo!':res.error==='Already in clan'?'Pehle se member ho!':'Join error: '+(res.error||'unknown');
+      if(window.toast)toast(msg,'err'); return;
+    }
+    if(window.UD){window.UD.clanId=clan.id;window.UD.clan_id=clan.id;}
+    if(window.toast)toast('✅ "'+(clan.name||'Clan')+'" join kar liya!','ok');
+    if(window.closeModal)closeModal();
+    setTimeout(function(){window.showClanHome();},400);
+  }catch(e){ if(window.toast)toast('Join error: '+((e&&e.message)||e),'err'); }
+};
+
+/* Leave clan */
+window.leaveClan=async function(clanId){
+  if(!window.U)return;
+  /* Bug 74 Fix: Confirmation before leaving — prevents accidental data loss */
+  var confirmed = window.confirm('Kya aap sach mein clan chhodni chahte ho? Yeh action undo nahi ho sakta.');
+  if(!confirmed) return;
+  /* ✅ BUG Z6 FIX-4: Supabase RPC-first (leave_clan) — response ke baad hi
+     toast; bridge sirf RPC-na-mile par. */
+  var uid=window.U.uid;
+  if(window._supa){
+    try{
+      await window._supa.rpc('leave_clan',{p_user_id:uid,p_clan_id:clanId});
+      if(window.UD){delete window.UD.clanId; window.UD.clan_id=null;}
+      if(window.toast)toast('Clan chhod diya!','ok');
+      if(window.closeModal)closeModal();
+      return;
+    }catch(e){ if(window.toast)toast('Leave error: '+((e&&e.message)||e),'err'); return; }
+  }
+  if(!window.db)return;
+  window.db.ref('clans/'+clanId+'/members/'+uid).remove();
+  window.db.ref('clans/'+clanId+'/memberCount').transaction(function(v){return Math.max(0,(Number(v)||0)-1);});
+  window.db.ref('users/'+uid+'/clanId').remove();
+  if(window.UD)delete window.UD.clanId;
+  if(window.toast)toast('Clan chhod diya!','ok');
+  if(window.closeModal)closeModal();
+};
+
+/* Disband clan */
+window.disbandClan=function(clanId){
+  if(!window.U)return;
+  /* Bug 74 Fix: Double confirmation for disband — this removes all members */
+  var confirmed = window.confirm('DISBAND CLAN? Yeh clan aur sare members remove ho jayenge. Yeh permanent action hai!');
+  if(!confirmed) return;
+  /* ✅ BUG Z6 FIX-3 (2026-10-02): Firebase-bridge remove ki jagah Supabase
+     RPC-first (disband_clan, leader-verified, atomic: users.clan_id clear +
+     members + war-challenges + clan) — response ke baad hi toast; RPC na
+     mile to legacy chain. */
+  if(window._supa){
+    window._supa.rpc('disband_clan',{p_clan_id:clanId})
+      .then(function(d){
+        var r=d&&d.data;
+        if(r&&r.ok===false){ if(window.toast)toast('Disband error: '+(r.error||'unknown'),'err'); return; }
+        if(window.UD)delete window.UD.clanId;
+        if(window.toast)toast('Clan disband kar diya!','ok');
+        if(window.closeModal)closeModal();
+      },function(e){ if(window.toast)toast('Disband error: '+((e&&e.message)||e),'err'); });
+    return;
+  }
+  if(!window.db)return;
+  window.db.ref('clans/'+clanId).remove();
+  window.db.ref('users/'+window.U.uid+'/clanId').remove();
+  if(window.UD)delete window.UD.clanId;
+  if(window.toast)toast('Clan disband kar diya!','ok');
+  if(window.closeModal)closeModal();
+};
+
+/* Kick member */
+window.kickClanMember=function(clanId,memberUid){
+  /* ✅ BUG Z6 FIX-3 (2026-10-02): pehle Firebase-bridge remove + VERIFY-KE-BINA
+     success-toast — Supabase-only data me member-row DB me bachi re jaati thi
+     (WALK10s run5 live-catch: toast 'Member kick kar diya!' par members=2).
+     Ab Supabase RPC-first (kick_clan_member, leader-verified server-side),
+     response ke baad hi toast+refresh; RPC na mile to legacy chain. */
+  if(!window._supa||!window.U)return;
+  window._supa.rpc('kick_clan_member',{p_clan_id:clanId,p_member_uid:memberUid})
+    .then(function(d){
+      var r=d&&d.data;
+      if(r&&r.ok===false){ if(window.toast)toast('Kick error: '+(r.error||'unknown'),'err'); return; }
+      if(window.toast)toast('Member kick kar diya!','ok');
+      if(window.closeModal)closeModal();
+      setTimeout(function(){window.showClanHome();},300);
+    },function(e){ if(window.toast)toast('Kick error: '+((e&&e.message)||e),'err'); });
+};
+
+/* Clan Chat */
+window.showClanChat=function(clanId){
+  if(!window.U||!window.db)return;
+  var uid=window.U.uid,chatRef=window.db.ref('clanChats/'+clanId);
+  var h='<div id="_clanChatMsgs" style="height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0;margin-bottom:12px"></div>';
+  h+='<div style="display:flex;gap:8px"><input id="_ccInput" type="text" maxlength="100" placeholder="Message likho..." style="flex:1;padding:10px 12px;border-radius:11px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px"><button onclick="window._sendClanMsg(\''+clanId+'\')" style="padding:10px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-weight:900;cursor:pointer;font-size:13px">Send</button></div>';
+  if(window.openModal)openModal('💬 Clan Chat',h);
+  /* Load messages */
+  var _li=chatRef.limitToLast(30).on('value',function(s){
+    var el=document.getElementById('_clanChatMsgs');if(!el)return;
+    var msgs=[]; if(s.exists())s.forEach(function(c){msgs.push(c.val());});
+    el.innerHTML=msgs.map(function(m){
+      var isMe=m.uid===uid;
+      return '<div style="display:flex;flex-direction:'+(isMe?'row-reverse':'row')+';gap:6px;align-items:flex-end">'
+        +'<div style="max-width:75%;padding:8px 12px;border-radius:'+(isMe?'14px 14px 4px 14px':'14px 14px 14px 4px')+';background:'+(isMe?'rgba(0,212,255,.15)':'rgba(255,255,255,.07)')+';border:1px solid '+(isMe?'rgba(0,212,255,.25)':'rgba(255,255,255,.1)')+';">'
+        +'<div style="font-size:10px;color:'+(isMe?'#00d4ff':'#888')+';margin-bottom:3px;font-weight:700">'+(isMe?'You':m.ign||'Player')+'</div>'
+        +'<div style="font-size:12px;color:#ddd">'+m.msg+'</div>'
+        +'</div></div>';
+    }).join('');
+    el.scrollTop=el.scrollHeight;
+  });
+  window._sendClanMsg=function(cid){
+    var inp=document.getElementById('_ccInput');if(!inp||!inp.value.trim())return;
+    chatRef.push({uid:uid,ign:(window.UD&&(window.UD.ign||window.UD.displayName))||'Player',msg:inp.value.trim().substring(0,100),t:Date.now()});
+    inp.value='';
+  };
+};
+
+/* Full Clan Leaderboard */
+window.showClanLeaderboardFull=function(){
+  if(!window.db)return;
+  window.db.ref('clans').orderByChild('weeklyScore').limitToLast(20).once('value',function(s){
+    var clans=[];if(s.exists())s.forEach(function(c){var d=c.val();d._id=c.key;clans.push(d);});
+    clans.sort(function(a,b){return (b.weeklyScore||0)-(a.weeklyScore||0);});
+    var h='<div style="font-size:11px;color:#666;margin-bottom:10px">Weekly rewards: Top 3 clans ko Green Diamonds milte hain (Monday reset)</div>';
+    var rewards=[500,300,200,0,0,0,0,0,0,50];
+    clans.forEach(function(clan,idx){
+      var rank=idx+1;
+      var medal=window.medalHtml(rank,22); /* D100-F1 */
+      var mCount=clan.members?Object.keys(clan.members).length:0;
+      var rew=rewards[Math.min(9,idx)]||0;
+      var myC=(window.UD&&window.UD.clanId)===clan._id;
+      h+='<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:rgba(255,255,255,'+(myC?'.07':rank<=3?'.06':'.04')+');border:1px solid rgba(255,255,255,'+(myC?'.15':rank<=3?'.1':'.06')+');margin-bottom:8px">';
+      h+='<div style="font-size:22px;width:32px;text-align:center">'+medal+'</div>';
+      h+='<div style="font-size:24px">'+(window.escHtml?window.escHtml(clan.emblem||'🏰'):clan.emblem||'🏰')+'</div>';
+      h+='<div style="flex:1"><div style="font-size:14px;font-weight:800;color:#fff">'+(clan.name||'Clan')+(myC?' (Aapka)':'')+'</div><div style="font-size:10px;color:#888">'+mCount+' members • '+GDI(11)+' '+(clan.weeklyScore||0)+' pts</div></div>';
+      if(rew)h+='<div style="text-align:right"><div style="font-size:12px;font-weight:800;color:#00ff64">'+GDI(13)+' '+rew+'</div><div style="font-size:9px;color:#555">weekly</div></div>';
+      h+='</div>';
+    });
+    if(!clans.length)h='<div style="text-align:center;padding:24px;color:#666">Abhi koi clan nahi hai!</div>';
+    if(window.openModal)openModal('🏆 Clan Leaderboard',h);
+  });
+};
+
+/* Update clan score on match result — R8 (2026-09-26c): Firebase economy
+   writes REMOVED. Supabase authoritative; increment_clan_score RPC server-
+   side hi caller membership verify karta hai (no client-computed economy
+   write). This shallow variant is kept signature-compatible but delegates
+   to the RPC (bugfix-v30-final.js loads a fuller version after us anyway). */
+window.updateClanScore=function(uid,kills,wins){
+  if(!window.UD)return;
+  var clanId=(window.UD&&window.UD.clanId)||(window.UD&&window.UD.clan_id)||null;
+  if(!clanId)return;
+  if(!window._supa)return;
+  var score=(kills||0)*1+(wins||0)*5;
+  window._supa.rpc('increment_clan_score',{
+    p_clan_id:clanId,
+    p_score:score,
+    p_wins:wins?1:0,
+    p_kills:kills||0
+  }).then(null, function(){ /* R8: no client write fallback — silent drop on RPC failure (BUG Z5 FIX: thenable-safe — .catch is build me nahi hota) */ });
+};
+
+console.log('[Mini eSports] Clan System v1.0 ✅');
+})();

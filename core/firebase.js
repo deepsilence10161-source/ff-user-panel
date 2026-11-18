@@ -1,1 +1,333 @@
-var _fireApp=firebase['initializeApp']({'apiKey':'AIzaSyA-v9AYigDrg96D_fos0vOW3wU2GY2UYec','authDomain':'fft-app-1e283.firebaseapp.com','databaseURL':'https://fft-app-1e283-default-rtdb.firebaseio.com','projectId':'fft-app-1e283','storageBucket':'fft-app-1e283.firebasestorage.app','messagingSenderId':'247829466483','appId':'1:247829466483:web:6961488f1d3c4e3fff4906','measurementId':'G-5TNKW1TVB1'},'mainApp'),db=_fireApp['database'](),_analytics=null;try{firebase['analytics']&&(_analytics=firebase['analytics'](_fireApp),console['log']('[Firebase]\x20Analytics\x20ready'));}catch(_0x19b158){console['warn']('[Firebase]\x20Analytics\x20init\x20failed:',_0x19b158['message']);}window['logEvent']=function(_0x4ca6e4,_0x10e3eb){try{if(_analytics)_analytics['logEvent'](_0x4ca6e4,_0x10e3eb||{});}catch(_0x53a303){}},window['analytics']={'login':function(_0x25fdb4){logEvent('login',{'method':_0x25fdb4});},'signup':function(_0x1c1f5a){logEvent('sign_up',{'method':_0x1c1f5a});},'joinMatch':function(_0x3bf839,_0x4f6a92,_0x418135){logEvent('join_match',{'match_id':_0x3bf839,'entry_fee':_0x4f6a92,'entry_type':_0x418135});},'matchResult':function(_0x580176,_0x3432bd,_0x4bfc9a){logEvent('match_result',{'match_id':_0x580176,'kills':_0x3432bd,'placement':_0x4bfc9a});},'sdPurchase':function(_0x573fcd){logEvent('sd_purchase',{'amount':_0x573fcd});},'coinEarned':function(_0x2f8159,_0x3ae62b){logEvent('coin_earned',{'reason':_0x2f8159,'amount':_0x3ae62b});},'screenView':function(_0x36aade){logEvent('screen_view',{'screen_name':_0x36aade});},'adWatched':function(){logEvent('ad_watched');},'checkin':function(_0x194d64){logEvent('daily_checkin',{'streak':_0x194d64});},'missionDone':function(_0x27a416){logEvent('mission_complete',{'mission':_0x27a416});},'clanJoined':function(){logEvent('clan_joined');},'battlePass':function(_0x5535b5){logEvent('battle_pass_tier',{'tier':_0x5535b5});},'premiumBought':function(_0x1127a1){logEvent('premium_purchased',{'tier':_0x1127a1});}};var auth=null,gp=null;try{firebase['auth']&&(auth=_fireApp['auth'](),gp=new firebase['auth']['GoogleAuthProvider'](),gp['setCustomParameters']({'prompt':'select_account'}),auth['setPersistence'](firebase['auth']['Auth']['Persistence']['LOCAL'])['catch'](function(){}));}catch(_0xfe7cd4){console['warn']('[Firebase]\x20Auth\x20init:',_0xfe7cd4['message']);}window['fbAuth']=function(){if(auth)return auth;if(!window['firebase']||typeof firebase['auth']!=='function')return null;if(!_fireApp)return null;try{return firebase['auth'](_fireApp);}catch(_0x11f11f){return console['warn']('[Firebase]\x20fbAuth()\x20could\x20not\x20resolve\x20Auth:',_0x11f11f['message']),null;}};var U=null,UD=null,MT={},JR={},NOTIFS=[],PAY={},WH=[],REFS=[],TXNS=[],prevMTKeys={},SP_T={},_READ_KEYS={};(function(){var _0x371e2c=(function(){var _0x4aa3ff=!![];return function(_0x1f6b25,_0x591cf1){var _0x145cb6=_0x4aa3ff?function(){if(_0x591cf1){var _0x31e667=_0x591cf1['apply'](_0x1f6b25,arguments);return _0x591cf1=null,_0x31e667;}}:function(){};return _0x4aa3ff=![],_0x145cb6;};}()),_0x3b6d95=_0x371e2c(this,function(){if(_0x3b6d95['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3b6d95['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3b6d95)['search']('(((.+)+)+)+$');});_0x3b6d95();try{var _0x4b3976=localStorage['getItem']('_mes_read_keys');if(_0x4b3976)Object['assign'](_READ_KEYS,JSON['parse'](_0x4b3976));}catch(_0x203a72){}}());function _saveReadKeys(){try{localStorage['setItem']('_mes_read_keys',JSON['stringify'](_READ_KEYS));}catch(_0x183d01){}}var curScr='home',prevScr='home',hSF='upcoming',hCF='all',mmSF='upcoming',spType='weekly',cdInt=null,partnerCache={},wfStep=0x0,wfAmt=0x0,wfScreenshot='';console['log']('[Firebase]\x20Analytics\x20+\x20Auth\x20ready\x20|\x20Data\x20→\x20Supabase'),window['messaging']=null,window['VAPID_KEY']='BCgrRXslxWdhOpeDLCrjUSqXHCZ3vCjWg7tzPj3zIQyhUYJYfVsdlsmzKKS4YGP_ME0wcgp9A1vdyycm9GVYhiE',window['PUSH_FN_URL']=(window['SUPABASE_URL']||'https://hddhkculuyrfoevxmlwy.supabase.co')+'/functions/v1/push-token',window['_PUSH_ANON_KEY']=window['_SUPA_ANON_KEY']||'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po',window['_pushTokenCall']=function(_0x28cec6,_0x1075ad,_0x3e1128,_0x300ca1){try{var _0x148e9c=window['auth']&&window['auth']['currentUser'];if(!_0x148e9c||!_0x148e9c['getIdToken']){if(_0x300ca1)_0x300ca1(![]);return;}_0x148e9c['getIdToken']()['then'](function(_0x1bc315){fetch(window['PUSH_FN_URL'],{'method':'POST','headers':{'Content-Type':'application/json','apikey':window['_PUSH_ANON_KEY'],'Authorization':'Bearer\x20'+_0x1bc315},'body':JSON['stringify']({'action':_0x28cec6,'platform':_0x1075ad,'token':_0x3e1128})})['then'](function(_0x257245){return _0x257245['text']()['then'](function(_0x38f7e6){var _0x414cab={};try{_0x414cab=JSON['parse'](_0x38f7e6);}catch(_0xc05484){}try{window['_pushTokenLast']={'status':_0x257245['status'],'body':_0x38f7e6['slice'](0x0,0xc8)},console['log']('[FCM-token-sync]',_0x28cec6,_0x1075ad,'HTTP',_0x257245['status'],_0x38f7e6['slice'](0x0,0xa0));}catch(_0x1c2551){}try{_0x28cec6==='set'&&_0x414cab&&_0x414cab['ok']&&window['U']&&window['U']['uid']&&window['_supa']&&window['_supa']['from']('users')['update']({'fcm_token':_0x1075ad,'fcm_updated_at':new Date()['toISOString']()})['eq']('id',window['U']['uid'])['then'](function(){},function(){});}catch(_0x87adc4){}if(_0x300ca1)_0x300ca1(!!(_0x414cab&&_0x414cab['ok']));});})['catch'](function(_0x12a5be){try{window['_pushTokenLast']={'fetchErr':String(_0x12a5be&&_0x12a5be['message']||_0x12a5be)},console['warn']('[FCM-token-sync]\x20fetch\x20FAIL:',String(_0x12a5be&&_0x12a5be['message']||_0x12a5be));}catch(_0xce4871){}if(_0x300ca1)_0x300ca1(![]);});})['catch'](function(_0x34dfda){try{window['_pushTokenLast']={'idTokenErr':String(_0x34dfda&&_0x34dfda['message']||_0x34dfda)},console['warn']('[FCM-token-sync]\x20getIdToken\x20FAIL:',String(_0x34dfda&&_0x34dfda['message']||_0x34dfda));}catch(_0x46b0e5){}if(_0x300ca1)_0x300ca1(![]);});}catch(_0x477403){if(_0x300ca1)_0x300ca1(![]);}},window['_onNativeFcmToken']=function(_0x135960){try{_0x135960&&_0x135960['length']>0x14&&(window['_fcmTokenAndroid']=_0x135960,window['_pushTokenCall']('set','android',_0x135960));}catch(_0x406daf){}},window['_onNativePush']=function(_0xedff7,_0x38447f,_0x3f419c){try{window['_lastPushPayload']={'data':{'title':_0xedff7||'','body':_0x38447f||'','url':_0x3f419c||''}};}catch(_0x4fd006){}try{if(window['toast']&&_0xedff7)window['toast']('🔔\x20'+_0xedff7+(_0x38447f?':\x20'+_0x38447f:''),'inf');}catch(_0x32b089){}},window['_onPushTap']=function(_0xb1a793){try{if(_0xb1a793&&/^https?:\/\//['test'](_0xb1a793))window['location']['href']=_0xb1a793;}catch(_0x259497){}},window['_bindPushIdentity']=function(_0x1fd0af){if(!_0x1fd0af)return;window['_pushUid']=_0x1fd0af;try{window['Android']&&typeof window['Android']['fcmSyncToken']==='function'&&window['Android']['fcmSyncToken']('_onNativeFcmToken');}catch(_0x843904){}try{if(window['_getFCMToken'])window['_getFCMToken']();}catch(_0x5d76e2){}try{!localStorage['getItem']('_mes_oss_sw_cleaned')&&navigator['serviceWorker']&&navigator['serviceWorker']['getRegistrations']&&(navigator['serviceWorker']['getRegistrations']()['then'](function(_0x1a1c52){_0x1a1c52['forEach'](function(_0x44f26c){var _0x362927=_0x44f26c['active']&&_0x44f26c['active']['scriptURL']||'';if(_0x362927['indexOf']('OneSignal')!==-0x1)try{_0x44f26c['unregister']();}catch(_0x2d4e03){}});})['catch'](function(){}),localStorage['setItem']('_mes_oss_sw_cleaned','1'));}catch(_0x116d2d){}},window['_unbindPushIdentity']=function(){try{if(window['_fcmTokenAndroid'])window['_pushTokenCall']('delete','android',window['_fcmTokenAndroid']);}catch(_0x57b866){}try{if(window['_fcmToken'])window['_pushTokenCall']('delete','web',window['_fcmToken']);}catch(_0x565111){}};try{firebase['messaging']&&'serviceWorker'in navigator&&(window['messaging']=_fireApp['messaging'](),window['_fcmStage']='init',console['log']('[Firebase]\x20FCM\x20Messaging\x20ready\x20(OneSignal-migration\x202026-10-31)'),window['_getFCMToken']=function(){if(!window['messaging']){window['_fcmStage']='no-messaging';return;}if(typeof Notification!=='undefined'&&Notification['permission']==='denied'){window['_fcmStage']='perm-denied',console['log']('[FCM]\x20Notification\x20permission\x20denied\x20—\x20skipping\x20getToken');return;}if(typeof Notification!=='undefined'&&Notification['permission']==='default'){window['_fcmStage']='perm-request',Notification['requestPermission']()['then'](function(_0x15242a){if(_0x15242a==='granted')window['_getFCMToken']();else console['log']('[FCM]\x20Permission\x20not\x20granted\x20by\x20user');});return;}window['_fcmStage']='sw-wait',navigator['serviceWorker']['ready']['then'](function(_0x31445c){return window['_fcmStage']='get-token',window['messaging']['getToken']({'vapidKey':window['VAPID_KEY'],'serviceWorkerRegistration':_0x31445c});})['then'](function(_0x39bb94){if(_0x39bb94){window['_fcmStage']='done',console['log']('[FCM]\x20Token\x20obtained:\x20…'+_0x39bb94['slice'](-0x6)),window['_fcmToken']=_0x39bb94,window['_pushTokenCall']('set','web',_0x39bb94);if(window['U']&&window['_supa'])try{window['_supa']['from']('users')['update']({'fcm_token':_0x39bb94,'fcm_updated_at':new Date()['toISOString']()})['eq']('id',window['U']['uid'])['then'](null,function(){});}catch(_0x4d8d80){}}else window['_fcmStage']='empty-token';})['catch'](function(_0x38020e){window['_fcmStage']='error';try{window['_fcmError']=((_0x38020e&&_0x38020e['code']?_0x38020e['code']+':\x20':'')+(_0x38020e&&_0x38020e['message']||String(_0x38020e)))['slice'](0x0,0x12c);}catch(_0xb02589){}console['warn']('[FCM]\x20Token\x20error\x20(normal\x20if\x20notifications\x20denied):',_0x38020e&&(_0x38020e['code']||_0x38020e['message'])||_0x38020e);});},window['messaging']['onMessage'](function(_0xc61bf2){console['log']('[FCM]\x20Foreground\x20message:',_0xc61bf2);try{window['_lastPushPayload']=_0xc61bf2;}catch(_0x3ffbde){}if(window['toast']&&_0xc61bf2&&(_0xc61bf2['notification']||_0xc61bf2['data'])){var _0x106aa2=_0xc61bf2['notification']&&_0xc61bf2['notification']['title']||_0xc61bf2['data']&&_0xc61bf2['data']['title']||'Notification',_0x3232f0=_0xc61bf2['notification']&&_0xc61bf2['notification']['body']||_0xc61bf2['data']&&_0xc61bf2['data']['body']||'';window['toast']('🔔\x20'+_0x106aa2+(_0x3232f0?':\x20'+_0x3232f0:''),'inf');}}));}catch(_0x29b861){console['warn']('[Firebase]\x20FCM\x20init\x20failed\x20(expected\x20in\x20some\x20browsers):',_0x29b861['message']);try{window['_fcmStage']='init-fail',window['_fcmError']=('init-fail:\x20'+(_0x29b861&&_0x29b861['message']||_0x29b861))['slice'](0x0,0x12c);}catch(_0x435633){}}
+/* ================================================================
+   FIREBASE — core/firebase.js | MiniESports v3.0
+   
+   Firebase RTDB = REMOVED (Supabase Realtime pe migrate ho gaya)
+   
+   Firebase sirf yeh karta hai:
+   ✅ Analytics — user behavior track
+   ✅ Crashlytics — crash reports
+   ✅ Auth — Google login fallback (Supabase primary hai)
+   ✅ support/ chat — RTDB ka sirf yahi ek use bacha
+================================================================ */
+
+/* ── Firebase App Init ── */
+var _fireApp = firebase.initializeApp({
+  apiKey:            "AIzaSyA-v9AYigDrg96D_fos0vOW3wU2GY2UYec",
+  authDomain:        "fft-app-1e283.firebaseapp.com",
+  databaseURL:       "https://fft-app-1e283-default-rtdb.firebaseio.com",
+  projectId:         "fft-app-1e283",
+  storageBucket:     "fft-app-1e283.firebasestorage.app",
+  messagingSenderId: "247829466483",
+  appId:             "1:247829466483:web:6961488f1d3c4e3fff4906",
+  /* ✅ FIX (2026-09-30): yeh placeholder chhoot gaya tha, isliye Firebase
+     Analytics har load par error deta tha —
+     "@firebase/analytics: The measurement ID in the local Firebase config
+      (G-XXXXXXXXXX) does not match the measurement ID fetched from the server"
+     aur saara analytics data silently drop ho raha tha (live verified: failed
+     beacon request mein asli measurement id G-5TNKW1TVB1 dikh raha tha).
+     Ab wahi asli measurement id set hai. */
+  measurementId:     "G-5TNKW1TVB1"
+}, "mainApp");
+
+/* ── Firebase RTDB — SIRF support/ chat ke liye ── */
+var db = _fireApp.database();
+
+/* ── Firebase Analytics ── */
+var _analytics = null;
+try {
+  if (firebase.analytics) {
+    _analytics = firebase.analytics(_fireApp);
+    console.log("[Firebase] Analytics ready");
+  }
+} catch(e) { console.warn("[Firebase] Analytics init failed:", e.message); }
+
+/* ── Analytics helper ── */
+window.logEvent = function(eventName, params) {
+  try { if (_analytics) _analytics.logEvent(eventName, params || {}); } catch(e) {}
+};
+window.analytics = {
+  login:         function(method)        { logEvent("login",          { method: method }); },
+  signup:        function(method)        { logEvent("sign_up",        { method: method }); },
+  joinMatch:     function(mid, fee, type){ logEvent("join_match",     { match_id: mid, entry_fee: fee, entry_type: type }); },
+  matchResult:   function(mid, k, pl)   { logEvent("match_result",   { match_id: mid, kills: k, placement: pl }); },
+  sdPurchase:    function(amount)        { logEvent("sd_purchase",    { amount: amount }); },
+  coinEarned:    function(reason, amt)   { logEvent("coin_earned",    { reason: reason, amount: amt }); },
+  screenView:    function(screen)        { logEvent("screen_view",    { screen_name: screen }); },
+  adWatched:     function()              { logEvent("ad_watched"); },
+  checkin:       function(streak)        { logEvent("daily_checkin",  { streak: streak }); },
+  missionDone:   function(key)           { logEvent("mission_complete",{ mission: key }); },
+  clanJoined:    function()              { logEvent("clan_joined"); },
+  battlePass:    function(tier)          { logEvent("battle_pass_tier",{ tier: tier }); },
+  premiumBought: function(tier)          { logEvent("premium_purchased",{ tier: tier }); }
+};
+
+/* ── Firebase Auth — fallback (Supabase is primary) ── */
+var auth = null, gp = null;
+try {
+  if (firebase.auth) {
+    auth = _fireApp.auth();
+    gp = new firebase.auth.GoogleAuthProvider();
+    gp.setCustomParameters({ prompt: "select_account" });
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(){});
+  }
+} catch(e) { console.warn("[Firebase] Auth init:", e.message); }
+
+/* ── window.fbAuth() — ALWAYS use this instead of bare firebase.auth() ──
+   ✅ FIX (2026-09-15, CRITICAL) — "No Firebase App '[DEFAULT]' has been
+   created - call Firebase App.initializeApp() (app-compat/no-app)".
+
+   The only app this codebase ever creates is the NAMED one above
+   ("mainApp"). Nothing anywhere calls firebase.initializeApp() without a
+   name, so an app called "[DEFAULT]" has never existed. But a bare
+   firebase.auth() call resolves by app NAME and defaults to "[DEFAULT]" —
+   so every single one of them threw the error above, immediately and
+   every time (verified against firebase-app-compat 9.23.0, the exact
+   version index.html loads).
+
+   Most call sites wrapped it in try/catch, so the failure was invisible
+   and just quietly disabled the feature:
+     • core/imgbb.js line 39   → swallowed → cb(null) → "Login required
+       to upload" on every screenshot/profile/banner upload
+     • js/paytm-checkout.js    → swallowed → cb(null) → no Paytm token
+     • core/db.js logout       → swallowed → Firebase session never cleared
+   But core/imgbb.js line 73 called firebase.auth() a SECOND time while
+   building its error message — OUTSIDE any try/catch — so there the throw
+   escaped the whole upload path, propagated up into quick-deposit.js's
+   _onDupCheckResult, and surfaced as the red
+   "❌ DEBUG ERROR (dupcheck)" toast that aborted every Sky Diamond
+   purchase submission right after the screenshot + UTR were filled in
+   correctly. (That toast's try/catch was added 2026-09-14 as temporary
+   instrumentation to find exactly this — it did its job.)
+
+   This helper returns Auth from the real app. Prefer the already-built
+   `auth` global; otherwise resolve explicitly against _fireApp, so
+   "[DEFAULT]" is never consulted. Never call bare firebase.auth() in
+   this codebase. */
+window.fbAuth = function() {
+  if (auth) return auth;                                   /* _fireApp.auth() */
+  if (!window.firebase || typeof firebase.auth !== 'function') return null;
+  /* No _fireApp means no app was created at all — return null rather than
+     falling back to a bare firebase.auth(), which would just re-throw. */
+  if (!_fireApp) return null;
+  try {
+    return firebase.auth(_fireApp);
+  } catch (e) {
+    console.warn("[Firebase] fbAuth() could not resolve Auth:", e.message);
+    return null;
+  }
+};
+
+/* ── Global State Variables (unchanged for screen compatibility) ── */
+var U = null, UD = null, MT = {}, JR = {}, NOTIFS = [], PAY = {}, WH = [], REFS = [], TXNS = [], prevMTKeys = {};
+/* ✅ BUG FIX (2026-08-24): "Sponsored match admin panel me ban gaya aur
+   show bhi hua, lekin user panel me show hi nahi ho raha" — root cause
+   wasn't a query/RLS bug at all (both were already correct — GRANTs and
+   an open `st_select_all` policy on sponsored_tournaments confirmed live
+   on the DB). The User Panel simply never had ANY code that read from
+   sponsored_tournaments — admin's "Sponsored" feature was built and
+   wired end-to-end on the Admin Panel side only, with no matching User
+   Panel screen ever built to show it. New global SP_T mirrors MT's
+   pattern for this table (see _bootSponsored in listeners.js). */
+var SP_T = {};
+var _READ_KEYS = {};
+(function() {
+  try { var saved = localStorage.getItem("_mes_read_keys"); if (saved) Object.assign(_READ_KEYS, JSON.parse(saved)); } catch(e) {}
+})();
+function _saveReadKeys() {
+  try { localStorage.setItem("_mes_read_keys", JSON.stringify(_READ_KEYS)); } catch(e) {}
+}
+var curScr = "home", prevScr = "home", hSF = "upcoming", hCF = "all", mmSF = "upcoming";
+var spType = "weekly", cdInt = null, partnerCache = {};
+var wfStep = 0, wfAmt = 0, wfScreenshot = "";
+
+/* NOTE: db = Firebase RTDB — ONLY used for support/ chat now
+   All other data → Supabase via window.DB or window._supa */
+console.log("[Firebase] Analytics + Auth ready | Data → Supabase");
+
+/* ════ Firebase Cloud Messaging (FCM) — AB EK-MATRA PUSH PATH ════
+   OneSignal → FCM migration (2026-10-31): OneSignal ka free mobile-push
+   1,000 MAU par cap ho gaya tha (1-Oct-2026 se LIVE). FCM direct =
+   $0 + unlimited (research: reports/push-tools-comparison-2026-10-31.html).
+   Token flow:
+     login → _bindPushIdentity(uid)
+       • APK WebView: Android.fcmSyncToken bridge → _onNativeFcmToken(token)
+       • Browser:     messaging.getToken({vapidKey, serviceWorkerRegistration})
+     → push-token edge fn (Firebase idToken RS256 verified) → user_push_tokens
+   Background display: sw.js (FCM block). Foreground: onMessage → toast. */
+window.messaging = null;
+/* Web Push certificate (VAPID public key) — Firebase Console → Project
+   Settings → Cloud Messaging → Web Push certificates se 2026-10-31 ko
+   copy kiya gaya (owner ne generate kiya). Purani key (BCxMf_…) project
+   me registered hi nahi thi — fcmregistrations 401 de raha tha
+   (API-level H1–H9 matrix se confirm; run fcm3 ki PUSH02 fail isi se). */
+window.VAPID_KEY = 'BCgrRXslxWdhOpeDLCrjUSqXHCZ3vCjWg7tzPj3zIQyhUYJYfVsdlsmzKKS4YGP_ME0wcgp9A1vdyycm9GVYhiE';
+window.PUSH_FN_URL = (window.SUPABASE_URL || 'https://hddhkculuyrfoevxmlwy.supabase.co') + '/functions/v1/push-token';
+window._PUSH_ANON_KEY = window._SUPA_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkZGhrY3VsdXlyZm9ldnhtbHd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0NTQ1MTgsImV4cCI6MjA5NDAzMDUxOH0.2hhDGez1fVFjS5ljSU3tSOEJuusLmQpERjcrh45T7po';
+
+/* push-token edge fn call — Authorization: Firebase idToken (server par RS256 verify) */
+window._pushTokenCall = function(action, platform, token, cb) {
+  try {
+    var auth = window.auth && window.auth.currentUser;
+    if (!auth || !auth.getIdToken) { if (cb) cb(false); return; }
+    auth.getIdToken().then(function(idTok) {
+      fetch(window.PUSH_FN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': window._PUSH_ANON_KEY,
+          'Authorization': 'Bearer ' + idTok
+        },
+        body: JSON.stringify({ action: action, platform: platform, token: token })
+      }).then(function(r) {
+        /* fcm4-run instrumentation: response status+body console par —
+           push-e2e driver console capture se exact fail-reason dikhta hai */
+        return r.text().then(function(txt) {
+          var j = {}; try { j = JSON.parse(txt); } catch (e) { }
+          try {
+            window._pushTokenLast = { status: r.status, body: txt.slice(0, 200) };
+            console.log('[FCM-token-sync]', action, platform, 'HTTP', r.status, txt.slice(0, 160));
+          } catch (e2) { }
+          /* ✅ D102 (owner: admin Users tab me "app installed" column): push-token
+             server me upsert ho gaya → apni users row par mirror: fcm_token me
+             PLATFORM flag ('android'/'web') + fcm_updated_at. user_push_tokens
+             table admin-read nahi hota (table GRANT edge-fn-only), isliye ye
+             mirror — users table admin read kar sakta hai. Asli token yahan
+             NAHI likhte (security). */
+          try {
+            if (action === 'set' && j && j.ok && window.U && window.U.uid && window._supa) {
+              window._supa.from('users').update({ fcm_token: platform, fcm_updated_at: new Date().toISOString() })
+                .eq('id', window.U.uid).then(function () {}, function () {});
+            }
+          } catch (e3) { }
+          if (cb) cb(!!(j && j.ok));
+        });
+      }).catch(function(err) {
+        try {
+          window._pushTokenLast = { fetchErr: String((err && err.message) || err) };
+          console.warn('[FCM-token-sync] fetch FAIL:', String((err && err.message) || err));
+        } catch (e2) { }
+        if (cb) cb(false);
+      });
+    }).catch(function(err) {
+      try {
+        window._pushTokenLast = { idTokenErr: String((err && err.message) || err) };
+        console.warn('[FCM-token-sync] getIdToken FAIL:', String((err && err.message) || err));
+      } catch (e2) { }
+      if (cb) cb(false);
+    });
+  } catch (e) { if (cb) cb(false); }
+};
+
+/* Native (APK) se token aaye → DB me upsert (bridge callback) */
+window._onNativeFcmToken = function(token) {
+  try {
+    if (token && token.length > 20) {
+      window._fcmTokenAndroid = token;
+      window._pushTokenCall('set', 'android', token);
+    }
+  } catch (e) { }
+};
+
+/* Native foreground push → in-app toast (system-tray me notification service bhi dikhata hai) */
+window._onNativePush = function(title, body, url) {
+  try { window._lastPushPayload = { data: { title: title || '', body: body || '', url: url || '' } }; } catch (e) { }
+  try { if (window.toast && title) window.toast('🔔 ' + title + (body ? ': ' + body : ''), 'inf'); } catch (e) { }
+};
+
+/* Notification tap → app khulti hai (native PendingIntent); url mile to wahi page */
+window._onPushTap = function(url) {
+  try { if (url && /^https?:\/\//.test(url)) window.location.href = url; } catch (e) { }
+};
+
+/* LOGIN bind: native bridge + web getToken + OneSignal SW cleanup (ek-baar) */
+window._bindPushIdentity = function(uid) {
+  if (!uid) return;
+  window._pushUid = uid;
+  try {
+    if (window.Android && typeof window.Android.fcmSyncToken === 'function') {
+      window.Android.fcmSyncToken('_onNativeFcmToken');
+    }
+  } catch (e) { }
+  try { if (window._getFCMToken) window._getFCMToken(); } catch (e) { }
+  try {
+    if (!localStorage.getItem('_mes_oss_sw_cleaned') && navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+      navigator.serviceWorker.getRegistrations().then(function(regs) {
+        regs.forEach(function(r) {
+          var u = (r.active && r.active.scriptURL) || '';
+          if (u.indexOf('OneSignal') !== -1) { try { r.unregister(); } catch (e) { } }
+        });
+      }).catch(function() { });
+      localStorage.setItem('_mes_oss_sw_cleaned', '1');
+    }
+  } catch (e) { }
+};
+
+/* LOGOUT unbind: is device ke tokens DB se delete — अगले user को पिछले के pushes न मिलें */
+window._unbindPushIdentity = function() {
+  try { if (window._fcmTokenAndroid) window._pushTokenCall('delete', 'android', window._fcmTokenAndroid); } catch (e) { }
+  try { if (window._fcmToken) window._pushTokenCall('delete', 'web', window._fcmToken); } catch (e) { }
+};
+
+try {
+  if (firebase.messaging && 'serviceWorker' in navigator) {
+    window.messaging = _fireApp.messaging();
+    window._fcmStage = 'init';
+    console.log("[Firebase] FCM Messaging ready (OneSignal-migration 2026-10-31)");
+    /* WEB token: permission granted par getToken → push-token fn → user_push_tokens */
+    window._getFCMToken = function() {
+      if (!window.messaging) { window._fcmStage = 'no-messaging'; return; }
+      if (typeof Notification !== 'undefined' && Notification.permission === 'denied') {
+        window._fcmStage = 'perm-denied';
+        console.log('[FCM] Notification permission denied — skipping getToken');
+        return;
+      }
+      if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+        window._fcmStage = 'perm-request';
+        Notification.requestPermission().then(function(perm) {
+          if (perm === 'granted') window._getFCMToken();
+          else console.log('[FCM] Permission not granted by user');
+        });
+        return;
+      }
+      window._fcmStage = 'sw-wait';
+      navigator.serviceWorker.ready.then(function(reg) {
+        window._fcmStage = 'get-token';
+        return window.messaging.getToken({ vapidKey: window.VAPID_KEY, serviceWorkerRegistration: reg });
+      }).then(function(token) {
+        if (token) {
+          window._fcmStage = 'done';
+          console.log('[FCM] Token obtained: …' + token.slice(-6));
+          window._fcmToken = token;
+          window._pushTokenCall('set', 'web', token);
+          /* Backward-compat: purana users.fcm_token column bhi bhara jata rahega */
+          if (window.U && window._supa) {
+            try {
+              window._supa.from('users').update({ fcm_token: token, fcm_updated_at: new Date().toISOString() })
+                .eq('id', window.U.uid).then(null, function(){});
+            } catch (e) { }
+          }
+        } else { window._fcmStage = 'empty-token'; }
+      }).catch(function(err) {
+        /* Notification permission denied/blocked — expected in many cases */
+        window._fcmStage = 'error';
+        try {
+          window._fcmError = (((err && err.code) ? err.code + ': ' : '') + ((err && err.message) || String(err))).slice(0, 300);
+        } catch (e2) { }
+        console.warn('[FCM] Token error (normal if notifications denied):', (err && (err.code || err.message)) || err);
+      });
+    };
+    /* Foreground message → in-app toast + E2E hook (_lastPushPayload) */
+    window.messaging.onMessage(function(payload) {
+      console.log('[FCM] Foreground message:', payload);
+      try { window._lastPushPayload = payload; } catch (e) { }
+      if (window.toast && payload && (payload.notification || payload.data)) {
+        var t = (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || 'Notification';
+        var b = (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || '';
+        window.toast('🔔 ' + t + (b ? ': ' + b : ''), 'inf');
+      }
+    });
+  }
+} catch(e) {
+  console.warn("[Firebase] FCM init failed (expected in some browsers):", e.message);
+  try { window._fcmStage = 'init-fail'; window._fcmError = ('init-fail: ' + (e && e.message || e)).slice(0, 300); } catch (e2) { }
+}

@@ -1,1 +1,411 @@
-var _0x1ef8a1=(function(){var _0x1f2515=!![];return function(_0x2fc664,_0x2b6450){var _0xe7fb21=_0x1f2515?function(){if(_0x2b6450){var _0x2efe1b=_0x2b6450['apply'](_0x2fc664,arguments);return _0x2b6450=null,_0x2efe1b;}}:function(){};return _0x1f2515=![],_0xe7fb21;};}()),_0x302410=_0x1ef8a1(this,function(){if(_0x302410['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x302410['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x302410)['search']('(((.+)+)+)+$');});_0x302410();function _hideSplash(){var _0x5b8729=$('splash');_0x5b8729&&(_0x5b8729['style']['opacity']='0',_0x5b8729['style']['transition']='opacity\x200.25s',setTimeout(function(){if(_0x5b8729)_0x5b8729['style']['display']='none';},0xfa));}var _splashMsgTimers=[setTimeout(function(){if(window['_bootCalled'])return;var _0x2edd92=document['querySelector']('#splash\x20.sp-sub');if(_0x2edd92)_0x2edd92['textContent']='Thoda\x20time\x20lag\x20raha\x20hai,\x20ruko...';},0xfa0),setTimeout(function(){if(window['_bootCalled'])return;var _0x281975=document['querySelector']('#splash\x20.sp-sub');if(_0x281975)_0x281975['textContent']='Almost\x20there...';},0x1f40)];setTimeout(function(){if(!window['U']&&!window['_redirectAuthPending']){_hideSplash();var _0x27cb40=$('loginScreen');if(_0x27cb40)_0x27cb40['style']['display']='flex';}},0xfa0),setTimeout(function(){if(window['_bootCalled'])return;var _0x3d6b02=![];try{_0x3d6b02=!!(window['U']||window['auth']&&window['auth']['currentUser']);}catch(_0x190dd6){}if(_0x3d6b02){window['_bootCalled']=!![],console['log']('[Boot]\x2015s\x20ceiling\x20hit\x20—\x20user\x20signed\x20in\x20hai,\x20login\x20screen\x20skip\x20(boot\x20mark\x20done)');return;}console['warn']('[Boot]\x2015s\x20hard\x20ceiling\x20hit\x20—\x20boot()\x20never\x20completed,\x20forcing\x20login\x20screen\x20as\x20a\x20safe\x20fallback'),_hideSplash();var _0x5569e3=$('loginScreen');if(_0x5569e3)_0x5569e3['style']['display']='flex';},0x3a98);function _earlyBoot(_0x5c34b1){if(window['_bootCalled'])return;!window['UD']&&(window['UD']={'uid':_0x5c34b1['uid'],'ign':'','accountName':_0x5c34b1['displayName']||_0x5c34b1['email']||'Player','email':_0x5c34b1['email']||'','profileImage':_0x5c34b1['photoURL']||'','coins':0x0,'skyDiamonds':0x0,'greenDiamonds':0x0,'realMoney':{'deposited':0x0,'winnings':0x0,'bonus':0x0},'stats':{'matches':0x0,'wins':0x0,'kills':0x0,'earnings':0x0},'profileStatus':'not_requested','rankTier':'bronze','rankPoints':0x0}),boot();}function _assignReferralCode(_0x3075a6,_0x425010){_0x425010=_0x425010||0x0;if(_0x425010>=0x3||!window['_supa'])return;var _0xcc95ea=_0x425010===0x0?_0x3075a6['substring'](0x0,0x8)['toUpperCase']():(_0x3075a6['substring'](0x0,0x4)+Math['random']()['toString'](0x24)['substring'](0x2,0x6))['toUpperCase']();window['_supa']['from']('users')['update']({'referral_code':_0xcc95ea})['eq']('id',_0x3075a6)['then'](function(_0x24022c){if(_0x24022c&&_0x24022c['error']&&_0x24022c['error']['code']==='23505')_assignReferralCode(_0x3075a6,_0x425010+0x1);})['catch'](function(){});}function _retryGetMe(_0x1f6aae,_0x1ecfe6){var _0x39d426=[0x7d0,0x1388,0x2710];if(_0x1ecfe6>=_0x39d426['length']||!window['DB']||!window['DB']['users'])return;setTimeout(function(){DB['users']['getMe']()['then'](function(_0xa6fc81){if(_0xa6fc81===undefined){_retryGetMe(_0x1f6aae,_0x1ecfe6+0x1);return;}if(_0xa6fc81===null){DB['users']['create'](_0x1f6aae['uid'],{'ign':null,'email':_0x1f6aae['email']||'','avatar_url':_0x1f6aae['photoURL']||null})['then'](function(){_assignReferralCode(_0x1f6aae['uid']);});return;}if(window['_applyUser'])window['_applyUser'](_0xa6fc81);else window['UD']=_0xa6fc81;_syncToFirebase(_0x1f6aae,_0xa6fc81);if(window['updateHdr'])try{updateHdr();}catch(_0x134920){}if(window['renderHome'])try{renderHome();}catch(_0x58a916){}})['catch'](function(){});},_0x39d426[_0x1ecfe6]);}function afterLogin(_0x5a421e){_earlyBoot(_0x5a421e);var _0xac645b=![],_0x12e0a3=setTimeout(function(){!_0xac645b&&(console['warn']('[Boot]\x20Data\x20load\x20timeout\x20(10s)\x20—\x20using\x20minimal\x20UD'),_0xac645b=!![],_0xa1e761());},0x2710);function _0xa1e761(){try{if(window['updateHdr'])updateHdr();}catch(_0x4f7aee){}try{if(window['renderHome'])renderHome();}catch(_0x3c2c66){}}function _0x21a014(){if(!window['DB']||!window['_supaReady'])return![];return DB['users']['getMe']()['then'](function(_0x5e73a6){clearTimeout(_0x12e0a3);if(_0xac645b)return;_0xac645b=!![];if(_0x5e73a6&&_0x5e73a6['is_deleted']){if(window['openModal']){window['openModal']('👋\x20Welcome\x20back!','<div\x20style=\x22text-align:center;padding:6px\x200\x22>'+'<div\x20style=\x22font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:16px\x22>Aapka\x20account\x20pehle\x20delete\x20ho\x20chuka\x20tha,\x20par\x20aap\x20phir\x20login\x20kar\x20gaye\x20hain.\x20Account\x20wapas\x20restore\x20karein?\x20Aapka\x20purana\x20data\x20wapas\x20mil\x20jayega.</div>'+'<button\x20id=\x22_restoreAcctBtn\x22\x20style=\x22width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer\x22>✅\x20Haan,\x20account\x20restore\x20karo</button>'+'<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:none;color:#aaa;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px\x22>Abhi\x20nahi</button></div>');var _0xcf694e=document['getElementById']('_restoreAcctBtn');if(_0xcf694e)_0xcf694e['onclick']=function(){_0xcf694e['disabled']=!![],window['_supa']['rpc']('user_restore_account',{'p_uid':_0x5a421e['uid']})['then'](function(){location['reload']();});};}return;}window['_showOnboardingOnce']=window['_showOnboardingOnce']||function(_0x428c95){try{if(localStorage['getItem']('ffOnbV1'))return;var _0x437322=document['getElementById']('modalOv');if(_0x437322&&_0x437322['classList']['contains']('show')){if((_0x428c95||0x0)<0x6)setTimeout(function(){window['_showOnboardingOnce']((_0x428c95||0x0)+0x1);},0x9c4);return;}if(!window['openModal'])return;localStorage['setItem']('ffOnbV1','1');var _0xde63df='<div\x20style=\x22text-align:left;padding:4px\x200;font-size:13.5px;line-height:1.65;color:var(--txt2,#bbb)\x22>';_0xde63df+='<div\x20style=\x22margin-bottom:12px\x22><b\x20style=\x22color:var(--txt,#fff)\x22>1️⃣\x20Profile\x20me\x20apna\x20Free\x20Fire\x20IGN\x20set\x20karo</b><br>Wahi\x20naam\x20match\x20room\x20me\x20use\x20hoga\x20—\x20sahi\x20IGN\x20zaroori\x20hai.</div>',_0xde63df+='<div\x20style=\x22margin-bottom:12px\x22><b\x20style=\x22color:var(--txt,#fff)\x22>2️⃣\x20Match\x20join\x20karo</b><br>Entry\x20fee\x20wallet\x20se\x20kategi;\x20jeetne\x20par\x20prize\x20turant\x20wallet\x20me\x20aayega.\x20🏆</div>',_0xde63df+='<div\x20style=\x22margin-bottom:12px\x22><b\x20style=\x22color:var(--txt,#fff)\x22>3️⃣\x20Room\x20time\x20se\x2015\x20minute\x20pehle\x20notification\x20aayega</b><br>Room\x20ID\x20+\x20password\x20push\x20notification\x20me\x20milega\x20—\x20tab\x20tak\x20ready\x20rehna.\x20🔔</div>',_0xde63df+='<div\x20style=\x22font-size:12px;color:#888\x22>Koi\x20bhi\x20problem\x20ho\x20→\x20Support\x20tab\x20me\x20likho,\x20team\x20jawab\x20degi.\x20🙏</div></div>',_0xde63df+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-top:12px\x22>Samajh\x20gaya,\x20khelte\x20hain!\x20🚀</button>',window['openModal']('🎮\x20Mini\x20eSports\x20me\x20swagat\x20hai!',_0xde63df);}catch(_0x26b390){}};if(_0x5e73a6)setTimeout(function(){window['_showOnboardingOnce'](0x0);},0x5dc);if(_0x5e73a6===null)window['_userRowCreatePromise']=DB['users']['create'](_0x5a421e['uid'],{'ign':null,'email':_0x5a421e['email']||'','avatar_url':_0x5a421e['photoURL']||null}),window['_userRowCreatePromise']['then'](function(){_assignReferralCode(_0x5a421e['uid']),DB['users']['getMe']()['then'](function(_0x30048f){if(_0x30048f&&window['_applyUser'])window['_applyUser'](_0x30048f);else window['UD']=_0x30048f||window['UD'];_0xa1e761(),setTimeout(function(){if(window['_showOnboardingOnce'])window['_showOnboardingOnce'](0x0);},0x1770),setTimeout(function(){var _0x10af1d=window['U']&&localStorage['getItem']('_mes_policy_'+window['U']['uid'])==='1';if(!_0x10af1d&&window['showWithdrawalPolicy'])window['showWithdrawalPolicy'](null);},0x9c4);});})['catch'](function(){_0xa1e761();});else{if(_0x5e73a6===undefined)_0xa1e761(),_retryGetMe(_0x5a421e,0x0);else{if(window['_applyUser'])window['_applyUser'](_0x5e73a6);else window['UD']=_0x5e73a6;_0x2bee91(_0x5a421e,_0x5e73a6),_0xa1e761();}}})['catch'](function(_0x637ace){console['warn']('[afterLogin]\x20Supabase\x20failed,\x20Firebase\x20fallback:',_0x637ace&&_0x637ace['message']),_0x49c3db();}),!![];}function _0x2bee91(_0x3dd6ed,_0x41d61d){try{if(window['analytics'])analytics['login']('supabase');}catch(_0xddaee9){}}function _0x49c3db(){clearTimeout(_0x12e0a3);if(_0xac645b)return;_0xac645b=!![],_0xa1e761(),setTimeout(function(){if(!window['DB']||!window['_supaReady'])return;var _0x54ac9b=_0x5a421e['uid']['substring'](0x0,0x8)['toUpperCase']();DB['users']['create'](_0x5a421e['uid'],{'ign':null,'email':_0x5a421e['email']||'','avatar_url':_0x5a421e['photoURL']||null,'referral_code':_0x54ac9b})['then'](function(){DB['users']['getMe']()['then'](function(_0x4b0bde){if(_0x4b0bde){if(window['_applyUser'])window['_applyUser'](_0x4b0bde);else window['UD']=_0x4b0bde;_0xa1e761();try{if(window['mesInit'])mesInit();}catch(_0x3772fd){}setTimeout(function(){try{if(window['_getFCMToken'])window['_getFCMToken']();}catch(_0x2b1ad4){}},0x7d0);}})['catch'](function(){});})['catch'](function(){DB['users']['getMe']()['then'](function(_0x5c548a){if(_0x5c548a){if(window['_applyUser'])window['_applyUser'](_0x5c548a);else window['UD']=_0x5c548a;_0xa1e761();}})['catch'](function(){});});},0x5dc);}!_0x21a014()&&setTimeout(function(){if(!_0x21a014())_0x49c3db();},0x3e8);}
+/* ─────────────────────────────────────────────────────
+   BOOT — auth.js (Google login) handles auth state.
+   boot.js only manages splash + timing.
+   v32-FIX: UI immediately show karo — black screen nahi
+
+   ✅ BUG FIX (2026-09-16): "App pehli baar open karne par blank/black
+   screen aata hai, refresh karne par hi theek hoti hai" — root cause
+   traced through the full boot chain:
+     1. _handleSignIn (core/auth.js) sets window.U synchronously, then
+        AWAITS _syncTokenWithRetry(user) — a Firebase→Supabase JWT
+        exchange that can legitimately take several seconds on a slow/
+        cold connection (up to ~7s across its own internal retries)
+        before afterLogin() is ever called.
+     2. Meanwhile, THIS file's original code below had a hardcoded
+        `setTimeout(..., 4000)` that only checked `!window.U` to decide
+        "user is logged out, show the login screen" — but window.U is
+        set at the very start of step 1, so that part was actually
+        fine... the real problem was that this same timer was the ONLY
+        thing driving _hideSplash(), and it only ever fired that when
+        the condition was FALSE it did nothing at all — leaving the
+        splash's fade-out entirely undriven by anything until boot()
+        (core/listeners.js) finally ran, whenever the token sync
+        finished. On a slow network the person would stare at the
+        splash for several seconds seemingly frozen (loading text +
+        spinner is easy to miss/mistake for "stuck" on a real device),
+        and if the person left/returned/backgrounded the app in that
+        gap, some Android/WebView environments can suspend timers and
+        never complete the promise chain — leaving the splash up
+        forever until a manual refresh restarted the whole flow fresh.
+     3. Fixed by making the splash's own messaging honestly reflect
+        elapsed time (reassuring the person it's still working, not
+        stuck) instead of silently doing nothing, AND by adding a hard
+        ceiling that forces the app into its normal "show login screen"
+        recovery path if boot() genuinely never completes — so the
+        absolute worst case is now "shown the login screen a bit late",
+        never "permanently blank". Every existing function/guard in
+        this file (_hideSplash, _earlyBoot, _bootCalled, the 10s
+        _dataTimer inside afterLogin, etc.) is unchanged and still
+        runs exactly as before — this only adds visible progress
+        feedback and a genuine final fallback around them.
+───────────────────────────────────────────────────── */
+
+function _hideSplash() {
+  var sp = $('splash');
+  if (sp) {
+    sp.style.opacity = '0';
+    sp.style.transition = 'opacity 0.25s';
+    setTimeout(function() { if (sp) sp.style.display = 'none'; }, 250);
+  }
+}
+
+/* ✅ BUG FIX (2026-09-16): honest progress messaging while boot() is
+   still working, so a slow cold-start network never LOOKS identical to
+   a frozen one. Purely cosmetic — doesn't change any timing/logic
+   below, just updates the splash's existing .sp-sub text a couple of
+   times while the person waits. */
+var _splashMsgTimers = [
+  setTimeout(function() {
+    if (window._bootCalled) return;
+    var sub = document.querySelector('#splash .sp-sub');
+    if (sub) sub.textContent = 'Thoda time lag raha hai, ruko...';
+  }, 4000),
+  setTimeout(function() {
+    if (window._bootCalled) return;
+    var sub = document.querySelector('#splash .sp-sub');
+    if (sub) sub.textContent = 'Almost there...';
+  }, 8000)
+];
+
+/* Login screen: 4s ke baad show karo ONLY agar logged out hai.
+   ✅ BUG FIX (2026-09-16): this used to be the ONLY thing that ever
+   touched the splash — if the person WAS logged in but the token
+   sync (see file header) was still in flight at the 4s mark, this
+   branch correctly did nothing, but nothing else was watching for
+   boot() to finish either, so the splash could sit there
+   indefinitely with no further action taken if boot() itself ever
+   silently failed to fire. Now paired with the hard-ceiling fallback
+   below, which guarantees SOME screen becomes visible either way. */
+setTimeout(function() {
+  if (!window.U && !window._redirectAuthPending) {
+    _hideSplash();
+    var ls = $('loginScreen');
+    if (ls) ls.style.display = 'flex';
+  }
+}, 4000);
+
+/* ✅ BUG FIX (2026-09-16): hard ceiling — if, for any reason (a
+   suspended timer in the background, a promise that never settles,
+   an unexpected error swallowed somewhere in the token-sync chain),
+   boot() still hasn't run by 15 seconds, force the login screen open
+   rather than leaving the person on an indefinite splash. This never
+   fires in the normal case (boot() almost always completes in well
+   under a second once the token sync resolves) — it's a genuine last
+   resort, not a replacement for the real fix above, so it's set
+   generously long to never interrupt a real (if unusually slow) boot
+   in progress. Re-attempting login from a visible login screen is
+   always safe and always recoverable; an indefinite blank screen is
+   not. */
+setTimeout(function() {
+  if (window._bootCalled) return; /* already booted normally — no-op */
+  /* ✅ FIX (2026-10-12, CI emulator me live pakda gaya): agar user PEHLE SE
+     sign-in hai to login screen dikhana bug hai. Slow device par boot 15s se
+     zyada le sakti hai, aur tab yeh ceiling login screen ko app ke upar
+     wapas le aati thi — login ho chuka hota tha, par user ko lagta tha ki
+     login nahi hua (aur E2E ka "login screen hatna" step 90s par fail).
+     Signed-in hone par hum boot ko booted mark karke chhod dete hain. */
+  var _signedIn = false;
+  try { _signedIn = !!(window.U || (window.auth && window.auth.currentUser)); } catch(e) {}
+  if (_signedIn) {
+    window._bootCalled = true;
+    console.log('[Boot] 15s ceiling hit — user signed in hai, login screen skip (boot mark done)');
+    return;
+  }
+  console.warn('[Boot] 15s hard ceiling hit — boot() never completed, forcing login screen as a safe fallback');
+  _hideSplash();
+  var ls = $('loginScreen');
+  if (ls) ls.style.display = 'flex';
+}, 15000);
+
+/* ── EARLY BOOT: UI immediately show karo with minimal UD ──
+   Problem: pehle Supabase load hone ka wait karta tha → black screen
+   Fix: skeleton UD set karo, UI show karo, phir data background mein
+   load karo aur UI refresh karo silently. */
+function _earlyBoot(user) {
+  if (window._bootCalled) return; /* already booted */
+  /* Minimal UD — profile data aane se pehle ka placeholder */
+  if (!window.UD) {
+    window.UD = {
+      uid:          user.uid,
+      /* ✅ BUG FIX (2026-08-25): ign was seeded from the Google account's
+         displayName/email at signup — so a brand-new user's Free Fire
+         IGN field showed their Google name ("Abc Pqr") pre-filled as if
+         it were already their real, verified in-game name. ign is FF-
+         specific identity data; it must start empty and only ever be
+         set by what the user actually types into the FF IGN field.
+         Google's name is kept separately as accountName for
+         avatar-letter/greeting purposes only, never as ign. */
+      ign:          '',
+      accountName:  user.displayName || user.email || 'Player',
+      email:        user.email       || '',
+      profileImage: user.photoURL    || '',
+      coins:        0,
+      skyDiamonds:  0,
+      greenDiamonds:0,
+      realMoney:    { deposited: 0, winnings: 0, bonus: 0 },
+      stats:        { matches: 0, wins: 0, kills: 0, earnings: 0 },
+      profileStatus: 'not_requested',
+      rankTier:     'bronze',
+      rankPoints:   0
+    };
+  }
+  boot(); /* Show header + bottomNav + mainContent immediately */
+}
+
+/* ✅ BUG FIX (2026-07): referral_code assignment split out from account
+   creation (see afterLogin below) so a collision here can NEVER block a
+   new user's core row from being created. Retries with a different
+   random code a few times on collision, then just gives up quietly —
+   the user still has a full working account either way; referral_code
+   can be backfilled later if it ever ends up null. */
+function _assignReferralCode(uid, attempt) {
+  attempt = attempt || 0;
+  if (attempt >= 3 || !window._supa) return;
+  var rc = attempt === 0
+    ? uid.substring(0, 8).toUpperCase()
+    : (uid.substring(0, 4) + Math.random().toString(36).substring(2, 6)).toUpperCase();
+  window._supa.from('users').update({ referral_code: rc }).eq('id', uid)
+    .then(function(r) {
+      if (r && r.error && r.error.code === '23505') _assignReferralCode(uid, attempt + 1);
+    })
+    .catch(function() { /* best-effort — not critical enough to retry on network errors */ });
+}
+
+/* ✅ BUG FIX (2026-07): closes the retry gap above — retries getMe() a
+   few times with backoff (2s, 5s, 10s) after a network/DB error. If it
+   turns out to genuinely be a brand new user (null) or comes back fine
+   (a real profile), handle it then; if every retry fails, give up
+   quietly — the user keeps using the app on cached UD and the next
+   action with a self-heal check (e.g. profile submission) can still
+   recover it. */
+function _retryGetMe(user, attempt) {
+  var delays = [2000, 5000, 10000];
+  if (attempt >= delays.length || !window.DB || !window.DB.users) return;
+  setTimeout(function() {
+    DB.users.getMe().then(function(p) {
+      if (p === undefined) { _retryGetMe(user, attempt + 1); return; }
+      if (p === null) {
+        /* ✅ BUG FIX (2026-08-25): don't seed ign from Google displayName —
+           see the matching fix + full explanation in _earlyBoot above.
+           The users.ign column must start NULL/empty for a real new user;
+           it only gets a real value once they submit the FF IGN field. */
+        DB.users.create(user.uid, {
+          ign: null,
+          email: user.email || '',
+          avatar_url: user.photoURL || null
+        }).then(function() { _assignReferralCode(user.uid); });
+        return;
+      }
+      /* ✅ BUG FIX (2026-08-24): "Green Diamond (aur baaki har snake_case
+         field) header me 0 dikhta hai" — was a raw `window.UD = p`
+         here with p being the raw Supabase row (green_diamonds,
+         sky_diamonds, ...). Every screen reads the camelCase fields
+         (greenDiamonds, skyDiamonds) that only _applyUser's snake→camel
+         mapping produces — route through it instead of overwriting UD
+         with unmapped raw data. */
+      if (window._applyUser) window._applyUser(p); else window.UD = p;
+      _syncToFirebase(user, p);
+      if (window.updateHdr) try { updateHdr(); } catch(e) {}
+      if (window.renderHome) try { renderHome(); } catch(e) {}
+    }).catch(function() {});
+  }, delays[attempt]);
+}
+
+function afterLogin(user) {
+  /* ── STEP 1: UI turant dikhao ── */
+  _earlyBoot(user);
+
+  /* ── STEP 2: Real data background mein load karo ── */
+  var _dataLoaded = false;
+  var _dataTimer = setTimeout(function() {
+    if (!_dataLoaded) {
+      console.warn('[Boot] Data load timeout (10s) — using minimal UD');
+      _dataLoaded = true;
+      _refreshUI();
+    }
+  }, 10000);
+
+  function _refreshUI() {
+    /* Data aa gaya — silently refresh UI */
+    try { if (window.updateHdr)  updateHdr();  } catch(e) {}
+    try { if (window.renderHome) renderHome(); } catch(e) {}
+  }
+
+  function _doSupaLoad() {
+    if (!window.DB || !window._supaReady) return false;
+    DB.users.getMe().then(function(profile) {
+      clearTimeout(_dataTimer);
+      if (_dataLoaded) return;
+      _dataLoaded = true;
+
+      /* SOFT-DELETED GHOST FIX (2026-11-03, owner report): account delete
+         (is_deleted=true) ke baad bhi Firebase auth login allow karta tha →
+         user app me adhoora ghoomta, admin panel me dikhta hi nahi (filter
+         .eq is_deleted false). Ab: welcome-back restore sheet, ek tap →
+         user_restore_account RPC → reload. Restore tak aage ka load ruka. */
+      if (profile && profile.is_deleted) {
+        if (window.openModal) {
+          window.openModal('👋 Welcome back!',
+            '<div style="text-align:center;padding:6px 0">' +
+            '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:16px">Aapka account pehle delete ho chuka tha, par aap phir login kar gaye hain. Account wapas restore karein? Aapka purana data wapas mil jayega.</div>' +
+            '<button id="_restoreAcctBtn" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer">✅ Haan, account restore karo</button>' +
+            '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:none;color:#aaa;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px">Abhi nahi</button></div>');
+          var _rb = document.getElementById('_restoreAcctBtn');
+          if (_rb) _rb.onclick = function () {
+            _rb.disabled = true;
+            window._supa.rpc('user_restore_account', { p_uid: user.uid }).then(function () { location.reload(); });
+          };
+        }
+        return;
+      }
+
+      /* ✅ ONBOARDING CARD (2026-11-03, owner-approved): naye/purane user ko
+         ek baar 3-step "kya karna hai" guide — Tariq-jaisa confusion dobara
+         na ho. Kabhi kisi khule modal (withdrawal policy etc.) ke upar nahi
+         kudta: #modalOv.show dikha to 2.5s baad retry (max 6). */
+      window._showOnboardingOnce = window._showOnboardingOnce || function (tries) {
+        try {
+          if (localStorage.getItem('ffOnbV1')) return;
+          var ov = document.getElementById('modalOv');
+          if (ov && ov.classList.contains('show')) {
+            if ((tries || 0) < 6) setTimeout(function () { window._showOnboardingOnce((tries || 0) + 1); }, 2500);
+            return;
+          }
+          if (!window.openModal) return;
+          localStorage.setItem('ffOnbV1', '1');
+          var _h = '<div style="text-align:left;padding:4px 0;font-size:13.5px;line-height:1.65;color:var(--txt2,#bbb)">';
+          _h += '<div style="margin-bottom:12px"><b style="color:var(--txt,#fff)">1️⃣ Profile me apna Free Fire IGN set karo</b><br>Wahi naam match room me use hoga — sahi IGN zaroori hai.</div>';
+          _h += '<div style="margin-bottom:12px"><b style="color:var(--txt,#fff)">2️⃣ Match join karo</b><br>Entry fee wallet se kategi; jeetne par prize turant wallet me aayega. 🏆</div>';
+          _h += '<div style="margin-bottom:12px"><b style="color:var(--txt,#fff)">3️⃣ Room time se 15 minute pehle notification aayega</b><br>Room ID + password push notification me milega — tab tak ready rehna. 🔔</div>';
+          _h += '<div style="font-size:12px;color:#888">Koi bhi problem ho → Support tab me likho, team jawab degi. 🙏</div></div>';
+          _h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#0066ff,#00d4ff);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-top:12px">Samajh gaya, khelte hain! 🚀</button>';
+          window.openModal('🎮 Mini eSports me swagat hai!', _h);
+        } catch (e) {}
+      };
+      if (profile) setTimeout(function () { window._showOnboardingOnce(0); }, 1500);
+
+      if (profile === null) {
+        /* getMe() returns null ONLY when there's genuinely no profile row
+           yet (see core/db.js) — safe to treat as a brand new user. */
+        /* ✅ BUG FIX (2026-07): referral_code used to be generated
+           deterministically (first 8 chars of the Firebase UID) and sent
+           in THIS critical insert. If it ever collided with another
+           user's code (rare, but the whole point of a bug report is the
+           rare case), the row creation failed — permanently, since this
+           only runs once per account. Moved referral_code assignment to
+           a separate, non-blocking follow-up call with its own retry, so
+           the core account row can never fail to be created because of it. */
+        /* ✅ BUG FIX (2026-08-24): expose this create() call as an
+           awaitable promise on window so profile.js's own self-heal
+           (_ensureUserRowExists, used by the "Submit for Verification"
+           button) can just await THIS instead of firing a second,
+           racing create() call for the same brand-new uid — removes the
+           root cause of the PGRST116 race entirely rather than just
+           handling its symptom. */
+        /* ✅ BUG FIX (2026-08-25): don't seed ign from Google displayName —
+           see _earlyBoot for full explanation. */
+        window._userRowCreatePromise = DB.users.create(user.uid, {
+          ign:          null,
+          email:        user.email       || '',
+          avatar_url:   user.photoURL    || null
+        });
+        window._userRowCreatePromise.then(function() {
+          _assignReferralCode(user.uid); // best-effort, retries on collision, never blocks
+          DB.users.getMe().then(function(p) {
+            /* ✅ BUG FIX (2026-08-24): same snake_case-vs-camelCase bug
+               as elsewhere — route through _applyUser's mapping. */
+            if (p && window._applyUser) window._applyUser(p); else window.UD = p || window.UD;
+            _refreshUI();
+            /* ✅ ONBOARDING (new user): policy modal (2.5s) ke BAAD try karo —
+               helper khud wait-and-retry karta hai agar modal khula ho. */
+            setTimeout(function () { if (window._showOnboardingOnce) window._showOnboardingOnce(0); }, 6000);
+            setTimeout(function() {
+              /* BUG FIX (2026-07): getMe() used to return null for BOTH
+                 "genuinely new user" and "network error on an existing
+                 user" — so any transient fetch failure for a RETURNING
+                 user made the app think they were new and re-show this
+                 popup, over and over. getMe() now only returns null for a
+                 real new user, so this branch itself is reliable again.
+                 Keeping the localStorage check here too as a second,
+                 harmless safety net in case this ever runs more than
+                 once for the same person. */
+              var alreadyAccepted = window.U && localStorage.getItem('_mes_policy_' + window.U.uid) === '1';
+              if (!alreadyAccepted && window.showWithdrawalPolicy) window.showWithdrawalPolicy(null);
+            }, 2500);
+          });
+        }).catch(function() {
+          _refreshUI(); /* Existing UD se hi kaam chalo */
+        });
+      } else if (profile === undefined) {
+        /* getMe() returns undefined when the fetch itself failed (network/
+           DB error) — NOT the same as "no profile exists". Render with
+           whatever window.UD already has for now, but actually retry a
+           few times with backoff instead of just hoping something else
+           triggers a re-check later (nothing did — this was the gap that
+           let a user's Supabase row stay unconfirmed for an entire
+           session if only the very first check hit a network hiccup). */
+        _refreshUI();
+        _retryGetMe(user, 0);
+      } else {
+        /* ✅ BUG FIX (2026-08-24): same snake_case-vs-camelCase bug. */
+        if (window._applyUser) window._applyUser(profile); else window.UD = profile;
+        _syncToFirebase(user, profile);
+        _refreshUI(); /* Real data se UI update */
+      }
+    }).catch(function(err) {
+      console.warn('[afterLogin] Supabase failed, Firebase fallback:', err && err.message);
+      _doFirebaseLoad();
+    });
+    return true;
+  }
+
+  function _syncToFirebase(user, supaProfile) {
+    try { if (window.analytics) analytics.login('supabase'); } catch(e) {}
+  }
+
+  function _doFirebaseLoad() {
+    clearTimeout(_dataTimer);
+    if (_dataLoaded) return;
+    _dataLoaded = true;
+    /* UD already set by _earlyBoot — just refresh after a moment */
+    _refreshUI();
+
+    /* Background: Supabase mein user ensure karo */
+    setTimeout(function() {
+      if (!window.DB || !window._supaReady) return;
+      var rc = user.uid.substring(0, 8).toUpperCase();
+      /* ✅ BUG FIX (2026-08-25): don't seed ign from Google displayName —
+         see _earlyBoot for full explanation. */
+      DB.users.create(user.uid, {
+        ign:          null,
+        email:        user.email       || '',
+        avatar_url:   user.photoURL    || null,
+        referral_code: rc
+      }).then(function() {
+        DB.users.getMe().then(function(p) {
+          if (p) {
+            /* ✅ BUG FIX (2026-08-24): same snake_case-vs-camelCase bug. */
+            if (window._applyUser) window._applyUser(p); else window.UD = p;
+            _refreshUI();
+            try { if (window.mesInit) mesInit(); } catch(e) {}
+            setTimeout(function() {
+              try { if (window._getFCMToken) window._getFCMToken(); } catch(e) {}
+            }, 2000);
+          }
+        }).catch(function() {});
+      }).catch(function() {
+        DB.users.getMe().then(function(p) {
+          if (p) { if (window._applyUser) window._applyUser(p); else window.UD = p; _refreshUI(); }
+        }).catch(function() {});
+      });
+    }, 1500);
+  }
+
+  /* Supabase try karo */
+  if (!_doSupaLoad()) {
+    /* Supabase abhi ready nahi — 1s baad retry */
+    setTimeout(function() {
+      if (!_doSupaLoad()) _doFirebaseLoad();
+    }, 1000);
+  }
+}

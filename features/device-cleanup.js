@@ -1,1 +1,239 @@
-(function(){'use strict';var _0x12399d=(function(){var _0x21adb6=!![];return function(_0xb0dad0,_0x16c2ea){var _0x4e7fb7=_0x21adb6?function(){if(_0x16c2ea){var _0x42dbfd=_0x16c2ea['apply'](_0xb0dad0,arguments);return _0x16c2ea=null,_0x42dbfd;}}:function(){};return _0x21adb6=![],_0x4e7fb7;};}()),_0x4c5b09=_0x12399d(this,function(){if(_0x4c5b09['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x4c5b09['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x4c5b09)['search']('(((.+)+)+)+$');});_0x4c5b09();try{console['warn']('[cleanup-gate]\x20script\x20loaded\x20v20261029f');}catch(_0x4ed9be){}var _0x5ef9fc='app_settings',_0x44508a='apk_cleanup',_0x3502de='_deviceCleanupDoneFor';function _0x13f070(_0x18125e,_0x3aa180,_0x504f92,_0x181330){try{if(!_0x18125e||typeof _0x18125e!=='object')return{'action':'skip','reason':'no-policy','definitive':![]};if(_0x18125e['enabled']!==!![])return{'action':'skip','reason':'disabled','definitive':!![]};if(_0x18125e['exemptAll']===!![])return{'action':'skip','reason':'exempt-all','definitive':!![]};var _0x35c222=_0x18125e['exemptUids']||[];if(_0x3aa180&&_0x35c222['indexOf'](_0x3aa180)!==-0x1)return{'action':'skip','reason':'exempt-uid','definitive':!![]};var _0x4796c7=_0x18125e['exemptDeviceFps']||[];if(_0x504f92&&_0x4796c7['indexOf'](_0x504f92)!==-0x1)return{'action':'skip','reason':'exempt-device','definitive':!![]};var _0x179b44=_0x18125e['exemptRegisteredBefore'];if(_0x179b44){if(!_0x181330)return{'action':'skip','reason':'created-at-unknown','definitive':![]};var _0x542c11=String(_0x181330)['substring'](0x0,0xa),_0xf50ca7=String(_0x179b44)['substring'](0x0,0xa);if(_0x542c11&&_0xf50ca7&&_0x542c11<_0xf50ca7)return{'action':'skip','reason':'exempt-legacy-user','definitive':!![]};}if(!_0x3aa180&&!_0x504f92)return{'action':'skip','reason':'identity-unknown','definitive':![]};return{'action':'cleanup','reason':'server-policy-allowed','definitive':!![]};}catch(_0x2f2d6a){return{'action':'skip','reason':'error','definitive':![]};}}function _0x5880ac(_0x56f906,_0x16ba42,_0x223fd2,_0x5945db){return _0x13f070(_0x56f906,_0x16ba42,_0x223fd2,_0x5945db)['action']!=='cleanup';}window['_deviceCleanupDecide']=_0x13f070,window['_deviceCleanupIsExempt']=_0x5880ac;function _0x115dae(_0x3d2703,_0x2c5e5a,_0x34177d,_0x5cfb55){if(!(window['Android']&&typeof window['Android']['runPostUpdateCleanup']==='function')){try{console['warn']('[cleanup-gate]\x20bridge\x20method\x20runPostUpdateCleanup\x20ABSENT\x20—\x20native\x20call\x20nahi\x20ho\x20saka');}catch(_0x5dbdb5){}return 0x0;}try{var _0x22ae50=JSON['stringify'](_0x3d2703||{}),_0x123958=window['Android']['runPostUpdateCleanup'](_0x22ae50,_0x2c5e5a||'',_0x34177d||'',_0x5cfb55||'')||0x0;try{console['warn']('[cleanup-gate]\x20native\x20runPostUpdateCleanup\x20returned\x20'+_0x123958);}catch(_0xf52004){}return _0x123958;}catch(_0xa9b692){try{console['warn']('[cleanup-gate]\x20native\x20call\x20EXC:\x20'+_0xa9b692);}catch(_0x3c2349){}return 0x0;}}function _0x6c4623(_0x4fc846){try{if(!window['_supa']||!_0x4fc846)return Promise['resolve']('');return Promise['resolve'](window['_supa']['from']('users')['select']('created_at')['eq']('id',_0x4fc846)['maybeSingle']())['then'](function(_0x15aee2){return _0x15aee2&&_0x15aee2['data']&&_0x15aee2['data']['created_at']?String(_0x15aee2['data']['created_at']):'';})['catch'](function(){return'';});}catch(_0x446677){return Promise['resolve']('');}}function _0x283a12(){try{if(window['UD']&&window['UD']['deviceFp'])return Promise['resolve'](String(window['UD']['deviceFp']));if(window['UD']&&window['UD']['device_fp'])return Promise['resolve'](String(window['UD']['device_fp']));if(window['generateAdvancedFingerprint']&&typeof window['generateAdvancedFingerprint']==='function')return Promise['resolve'](window['generateAdvancedFingerprint']())['then'](function(_0x5dcb8d){return String(_0x5dcb8d||'');})['catch'](function(){return'';});}catch(_0x2e599f){}return Promise['resolve']('');}function _0x2c8bc9(){try{if(!(window['Android']&&window['Android']['isAndroidApp']&&window['Android']['isAndroidApp']())){try{console['warn']('[cleanup-gate]\x20skip:\x20android\x20bridge\x20nahi');}catch(_0x57e85e){}return;}if(!window['_supa']){try{console['warn']('[cleanup-gate]\x20skip:\x20_supa\x20nahi');}catch(_0x1dcc80){}return;}var _0x1f3b83=window['U']&&window['U']['uid']?String(window['U']['uid']):'';if(!_0x1f3b83){try{console['warn']('[cleanup-gate]\x20skip:\x20uid\x20nahi\x20(logged-out)');}catch(_0x59b6c0){}return;}var _0x37c835='';try{_0x37c835=window['Android']['getAppVersion']()||'';}catch(_0xd2dacf){}var _0x2624b0=_0x37c835+':'+_0x1f3b83;try{console['warn']('[cleanup-gate]\x20start\x20uid='+String(_0x1f3b83)['slice'](0x0,0x8)+'\x20installed='+_0x37c835);}catch(_0x29032b){}try{if(localStorage['getItem'](_0x3502de)===_0x2624b0){try{console['warn']('[cleanup-gate]\x20DONE_FLAG\x20match\x20—\x20skip\x20('+_0x2624b0+')');}catch(_0x143d82){}return;}}catch(_0x418867){}Promise['all']([Promise['resolve'](window['_supa']['from']('app_settings')['select']('value')['eq']('key',_0x44508a)['maybeSingle']())['then'](function(_0x29b891){return _0x29b891&&_0x29b891['data']&&_0x29b891['data']['value']?_0x29b891['data']['value']:null;})['catch'](function(){return null;}),_0x6c4623(_0x1f3b83),_0x283a12()])['then'](function(_0x52f2d2){var _0x4e2021=_0x52f2d2[0x0],_0x52084a=_0x52f2d2[0x1]||'',_0x526100=_0x52f2d2[0x2]||'';try{console['warn']('[cleanup-gate]\x20pol='+(_0x4e2021?'ok':'NULL')+'\x20createdAt='+(_0x52084a||'none')+'\x20fp='+(_0x526100||'none'));}catch(_0x26d3f3){}if(!_0x4e2021)return;var _0x393257=_0x13f070(_0x4e2021,_0x1f3b83,_0x526100,_0x52084a);try{console['warn']('[cleanup-gate]\x20verdict='+_0x393257['reason']+'\x20definitive='+!!_0x393257['definitive']);}catch(_0x37ec56){}if(_0x393257['definitive'])try{localStorage['setItem'](_0x3502de,_0x2624b0);}catch(_0x228516){}_0x115dae(_0x4e2021,_0x1f3b83,_0x526100,_0x52084a);})['catch'](function(_0x16fc2a){try{console['warn']('[cleanup-gate]\x20promise\x20fail:\x20'+(_0x16fc2a&&_0x16fc2a['message']?_0x16fc2a['message']:_0x16fc2a));}catch(_0x3abc29){}});}catch(_0x39a511){try{console['warn']('[cleanup-gate]\x20_runGate\x20EXC:\x20'+(_0x39a511&&_0x39a511['message']?_0x39a511['message']:_0x39a511));}catch(_0xabdf48){}}}window['_runDeviceCleanupGate']=_0x2c8bc9;var _0x3b845c=0x0;function _0x40f0c8(){_0x3b845c++;if(_0x3b845c===0x1)try{console['warn']('[cleanup-gate]\x20poll\x20tick\x201\x20—\x20U='+!!window['U']+'\x20supa='+!!window['_supa']+'\x20bridge='+!!(window['Android']&&window['Android']['isAndroidApp']));}catch(_0x15df9e){}if(window['U']&&window['_supa']){_0x2c8bc9();try{var _0x2874e5=window['Android']&&window['Android']['getAppVersion']?window['Android']['getAppVersion']()||'':'';if(localStorage['getItem'](_0x3502de)===_0x2874e5+':'+String(window['U']['uid']))return;}catch(_0x5cb559){}}if(_0x3b845c===0xa)try{console['warn']('[cleanup-gate]\x2040s\x20se\x20faisla\x20pending');}catch(_0x2680e8){}if(_0x3b845c<0x28)setTimeout(_0x40f0c8,0xfa0);else try{console['warn']('[cleanup-gate]\x20poll\x20timeout\x20—\x20gate\x20chala\x20hi\x20nahi');}catch(_0x4604e3){}}if(typeof setTimeout==='function'){setTimeout(_0x40f0c8,0xbb8);try{console['warn']('[cleanup-gate]\x20autostart\x20scheduled\x20v20261029f');}catch(_0x47f212){}}}());
+/* ================================================================
+   DEVICE CLEANUP GATE — features/device-cleanup.js | MiniESports
+   SAFE-CLEANER v5 (2026-10-09, owner-incident ke baad poora redesign)
+   ================================================================
+
+   MAKSAD: new APK install/update ke baad app ki PURANI code-files
+   (old update-APKs, WebView code cache) saf ho jayein — sirf app bache
+   device par. Teen lohe ke niyam:
+
+   R1. FAISLA SIRF SERVER SIDE (Supabase app_settings.key='apk_cleanup'):
+       policy ke bina / offline / galat JSON = koi safai nahi (fail-safe).
+   R2. OWNER PROTECTION: exemptUids / exemptDeviceFps /
+       exemptRegisteredBefore me jo user/device hai — us par EK file bhi
+       delete nahi hoti (native ko bhi yehi decision bheja jata hai aur
+       native use dobara validate karta hai).
+   R3. ZERO PERMISSION PROMPT: user se file-access ki koi maang nahi —
+       na picker, na dialog. Cleanup sirf app-private storage chhuta hai.
+
+   FAIL-SAFE MATRIX (har "pata nahi" = skip, kabhi cleanup nahi):
+     policy nahi/galat          → skip (retry next launch)
+     enabled !== true           → skip (done)
+     uid/fp exempt              → skip (done)
+     cutoff set + createdAt ?   → skip (retry next launch)
+     cutoff set + created<cutoff→ skip (done)
+     uid & fp dono unknown      → skip (retry)
+     tabhi CLEANUP jab sab PROVEN allowed
+
+   Decision logic PURE functions me hai (window._deviceCleanupIsExempt /
+   window._deviceCleanupDecide) — smoke tests inhe seedha test karte hain.
+   Native execution: window.Android.runPostUpdateCleanup(...) (SafeCleaner).
+   ================================================================ */
+(function () {
+  'use strict';
+
+  /* ✅ OPS TELEMETRY (2026-10-29): unconditional load-marker — emulator E2E
+     me prove karna tha ki WebView ye file execute kar bhi raha hai ya nahi
+     (gate silent fail kar raha tha). Koi secret nahi. */
+  try { console.warn('[cleanup-gate] script loaded v20261029f'); } catch (e) {}
+
+  var POLICY_TABLE = 'app_settings';
+  var POLICY_KEY = 'apk_cleanup';
+  var DONE_FLAG = '_deviceCleanupDoneFor';
+
+  /* ── PURE: final faisla — {action:'skip'|'cleanup', reason, definitive} ──
+     definitive=false ka matlab: faisla abhi poora nahi hua (fail-safe
+     skip), DONE_FLAG NAHI lagega — agle launch par dobara koshish. */
+  function _decide(pol, uid, deviceFp, userCreatedAt) {
+    try {
+      if (!pol || typeof pol !== 'object') {
+        return { action: 'skip', reason: 'no-policy', definitive: false };
+      }
+      if (pol.enabled !== true) {
+        return { action: 'skip', reason: 'disabled', definitive: true };
+      }
+      if (pol.exemptAll === true) {
+        return { action: 'skip', reason: 'exempt-all', definitive: true };
+      }
+
+      var uids = pol.exemptUids || [];
+      if (uid && uids.indexOf(uid) !== -1) {
+        return { action: 'skip', reason: 'exempt-uid', definitive: true };
+      }
+
+      var fps = pol.exemptDeviceFps || [];
+      if (deviceFp && fps.indexOf(deviceFp) !== -1) {
+        return { action: 'skip', reason: 'exempt-device', definitive: true };
+      }
+
+      var cut = pol.exemptRegisteredBefore;
+      if (cut) {
+        if (!userCreatedAt) {
+          /* created_at hi nahi mila — prove nahi kar sakte ki user naya hai
+             → fail-safe skip, retry agle launch par. */
+          return { action: 'skip', reason: 'created-at-unknown', definitive: false };
+        }
+        var created = String(userCreatedAt).substring(0, 10);
+        var cutoff = String(cut).substring(0, 10);
+        if (created && cutoff && created < cutoff) {
+          return { action: 'skip', reason: 'exempt-legacy-user', definitive: true };
+        }
+      }
+
+      if (!uid && !deviceFp) {
+        return { action: 'skip', reason: 'identity-unknown', definitive: false };
+      }
+
+      return { action: 'cleanup', reason: 'server-policy-allowed', definitive: true };
+    } catch (e) {
+      return { action: 'skip', reason: 'error', definitive: false };
+    }
+  }
+
+  /* ── PURE: kya yeh user/device exempt hai? (fail-safe = haan) ── */
+  function _isExempt(pol, uid, deviceFp, userCreatedAt) {
+    return _decide(pol, uid, deviceFp, userCreatedAt).action !== 'cleanup';
+  }
+
+  window._deviceCleanupDecide = _decide;
+  window._deviceCleanupIsExempt = _isExempt;
+
+  /* ── Native bridge par faisle ko bhejo (native dobara validate karta hai) ── */
+  function _applyDecision(pol, uid, deviceFp, userCreatedAt) {
+    if (!(window.Android && typeof window.Android.runPostUpdateCleanup === 'function')) {
+      try { console.warn('[cleanup-gate] bridge method runPostUpdateCleanup ABSENT — native call nahi ho saka'); } catch (e) {}
+      return 0; // browser/dev preview — kuch nahi karna
+    }
+    try {
+      var json = JSON.stringify(pol || {});
+      var n = window.Android.runPostUpdateCleanup(json, uid || '', deviceFp || '', userCreatedAt || '') || 0;
+      try { console.warn('[cleanup-gate] native runPostUpdateCleanup returned ' + n); } catch (e) {}
+      return n;
+    } catch (e) {
+      try { console.warn('[cleanup-gate] native call EXC: ' + e); } catch (e2) {}
+      return 0;
+    }
+  }
+
+  /* ── Users-table se created_at + device_fp (exemptRegisteredBefore proof) ── */
+  function _fetchCreatedAt(uid) {
+    try {
+      if (!window._supa || !uid) return Promise.resolve('');
+      return Promise.resolve(
+        window._supa.from('users').select('created_at').eq('id', uid).maybeSingle()
+      ).then(function (r) {
+        return (r && r.data && r.data.created_at) ? String(r.data.created_at) : '';
+      }).catch(function () { return ''; });
+    } catch (e) {
+      return Promise.resolve('');
+    }
+  }
+
+  /* ── device_fp: DFP_ fingerprint (js/device-identity.js ka generator) ── */
+  function _fetchDeviceFp() {
+    try {
+      if (window.UD && window.UD.deviceFp) return Promise.resolve(String(window.UD.deviceFp));
+      if (window.UD && window.UD.device_fp) return Promise.resolve(String(window.UD.device_fp));
+      if (window.generateAdvancedFingerprint && typeof window.generateAdvancedFingerprint === 'function') {
+        return Promise.resolve(window.generateAdvancedFingerprint())
+          .then(function (fp) { return String(fp || ''); })
+          .catch(function () { return ''; });
+      }
+    } catch (e) {}
+    return Promise.resolve('');
+  }
+
+  /* ── MAIN GATE — ek baar per (version + user), tabhi jab faisla definitive ── */
+  function _runGate() {
+    try {
+      if (!(window.Android && window.Android.isAndroidApp && window.Android.isAndroidApp())) {
+        try { console.warn('[cleanup-gate] skip: android bridge nahi'); } catch (e) {}
+        return;
+      }
+      if (!window._supa) {
+        try { console.warn('[cleanup-gate] skip: _supa nahi'); } catch (e) {}
+        return;
+      }
+      var uid = (window.U && window.U.uid) ? String(window.U.uid) : '';
+      if (!uid) {
+        try { console.warn('[cleanup-gate] skip: uid nahi (logged-out)'); } catch (e) {}
+        return; // login hone do
+      }
+
+      var installed = '';
+      try { installed = window.Android.getAppVersion() || ''; } catch (e) {}
+      var doneKey = installed + ':' + uid;
+      /* ✅ OPS TELEMETRY (2026-10-29): gate pehle poori tarah silent tha —
+         emulator E2E me prove hua ki silent fail-safe ko debug karna
+         impossible hai. Ye console lines logcat (chromium CONSOLE) me
+         dikhti hain aur batati hain gate kahan ruka. Koi secret nahi chhapta. */
+      try { console.warn('[cleanup-gate] start uid=' + String(uid).slice(0, 8) + ' installed=' + installed); } catch (e) {}
+      try {
+        if (localStorage.getItem(DONE_FLAG) === doneKey) {
+          try { console.warn('[cleanup-gate] DONE_FLAG match — skip (' + doneKey + ')'); } catch (e) {}
+          return;
+        }
+      } catch (e) {}
+
+      Promise.all([
+        Promise.resolve(window._supa.from('app_settings').select('value').eq('key', POLICY_KEY).maybeSingle())
+          .then(function (r) { return (r && r.data && r.data.value) ? r.data.value : null; })
+          .catch(function () { return null; }),
+        _fetchCreatedAt(uid),
+        _fetchDeviceFp()
+      ]).then(function (res) {
+        var pol = res[0];
+        var createdAt = res[1] || '';
+        var deviceFp = res[2] || '';
+        try {
+          console.warn('[cleanup-gate] pol=' + (pol ? 'ok' : 'NULL') +
+            ' createdAt=' + (createdAt || 'none') + ' fp=' + (deviceFp || 'none'));
+        } catch (e) {}
+        if (!pol) return; // fail-safe: policy nahi mila — retry agle launch par
+
+        var verdict = _decide(pol, uid, deviceFp, createdAt);
+        try { console.warn('[cleanup-gate] verdict=' + verdict.reason + ' definitive=' + !!verdict.definitive); } catch (e) {}
+        if (verdict.definitive) {
+          try { localStorage.setItem(DONE_FLAG, doneKey); } catch (e) {}
+        }
+        /* Native ko hamesha bhejo — native policy ko DOBARA validate karke
+           khud faisla leta hai (exempt par wahan bhi 0 deletion). */
+        _applyDecision(pol, uid, deviceFp, createdAt);
+      }).catch(function (err) {
+        /* Fail-safe: kuch bhi fail = koi cleanup nahi. Retry agle launch par. */
+        try { console.warn('[cleanup-gate] promise fail: ' + (err && err.message ? err.message : err)); } catch (e) {}
+      });
+    } catch (e) {
+      /* fail-safe: kuch delete nahi — lekin telemetry zaroori hai (v20261029e:
+         pehle yeh catch silent tha → gate ka sync throw invisible tha). */
+      try { console.warn('[cleanup-gate] _runGate EXC: ' + (e && e.message ? e.message : e)); } catch (e2) {}
+    }
+  }
+
+  window._runDeviceCleanupGate = _runGate;
+
+  /* ── Auto-start: login + config ready hone par chalao ── */
+  var _tries = 0;
+  function _poll() {
+    _tries++;
+    if (_tries === 1) {
+      try { console.warn('[cleanup-gate] poll tick 1 — U=' + !!window.U + ' supa=' + !!window._supa + ' bridge=' + !!(window.Android && window.Android.isAndroidApp)); } catch (e) {}
+    }
+    if (window.U && window._supa) {
+      _runGate();
+      /* faisla definitive ho chuka (DONE_FLAG laga) to polling band;
+         warna retry jaari (pol null / offline cases ke liye ~2.5 min). */
+      try {
+        var inst = (window.Android && window.Android.getAppVersion) ? (window.Android.getAppVersion() || '') : '';
+        if (localStorage.getItem(DONE_FLAG) === inst + ':' + String(window.U.uid)) return;
+      } catch (e) {}
+    }
+    if (_tries === 10) { try { console.warn('[cleanup-gate] 40s se faisla pending'); } catch (e) {} }
+    if (_tries < 40) setTimeout(_poll, 4000); // max ~2.5 min wait
+    else { try { console.warn('[cleanup-gate] poll timeout — gate chala hi nahi'); } catch (e) {} }
+  }
+  if (typeof setTimeout === 'function') {
+    setTimeout(_poll, 3000);
+    try { console.warn('[cleanup-gate] autostart scheduled v20261029f'); } catch (e) {}
+  }
+})();

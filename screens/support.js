@@ -1,1 +1,264 @@
-var _0x5def50=(function(){var _0x527390=!![];return function(_0x283c42,_0x5bbba0){var _0x299d0c=_0x527390?function(){if(_0x5bbba0){var _0x1ce08a=_0x5bbba0['apply'](_0x283c42,arguments);return _0x5bbba0=null,_0x1ce08a;}}:function(){};return _0x527390=![],_0x299d0c;};}()),_0x4b8811=_0x5def50(this,function(){if(_0x4b8811['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x4b8811['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x4b8811)['search']('(((.+)+)+)+$');});_0x4b8811(),window['openSupport']=function(){window['showSupportWithBadge']?showSupportWithBadge():startChat();};var _chatListenerActive=![],_chatOnlineListenerActive=![],FB_REST_BASE='https://fft-app-1e283-default-rtdb.firebaseio.com';function _fbIdToken(_0x1346d0){try{var _0x2a8c03=firebase['app']('mainApp')['auth']();if(_0x2a8c03['currentUser']){_0x2a8c03['currentUser']['getIdToken']()['then'](function(_0x49b906){_0x1346d0(_0x49b906||null);},function(){_0x1346d0(null);});return;}}catch(_0xfea21f){}_0x1346d0(null);}function _restMessages(_0x524b17,_0xfc0eb9,_0x96954){_fbIdToken(function(_0x5423af){var _0x3c504b=FB_REST_BASE+'/support/'+_0x524b17+'/messages.json?orderBy=%22$key%22&limitToLast='+_0xfc0eb9;if(_0x5423af)_0x3c504b+='&auth='+encodeURIComponent(_0x5423af);fetch(_0x3c504b,{'method':'GET'})['then'](function(_0x584503){if(!_0x584503['ok']){_0x96954(null);return;}return _0x584503['json']()['then'](function(_0x1a8764){var _0x1086f4=[];if(_0x1a8764)Object['keys'](_0x1a8764)['forEach'](function(_0x399a61){var _0x516e53=_0x1a8764[_0x399a61];_0x516e53&&typeof _0x516e53==='object'&&(_0x516e53['_key']=_0x399a61,_0x1086f4['push'](_0x516e53));});_0x1086f4['sort'](function(_0x56abe3,_0x483158){return(Number(_0x56abe3['createdAt'])||0x0)-(Number(_0x483158['createdAt'])||0x0);}),_0x96954(_0x1086f4);});})['catch'](function(){_0x96954(null);});});}function _restPutMsg(_0x38e3de,_0x14ba69,_0x10c433,_0x4c0d1a){_fbIdToken(function(_0x4e9086){var _0xb65b0d=FB_REST_BASE+'/support/'+_0x38e3de+'/messages/'+_0x14ba69+'.json';if(_0x4e9086)_0xb65b0d+='?auth='+encodeURIComponent(_0x4e9086);fetch(_0xb65b0d,{'method':'PUT','headers':{'Content-Type':'application/json'},'body':JSON['stringify'](_0x10c433)})['then'](function(_0x19d1c6){_0x4c0d1a&&_0x4c0d1a(_0x19d1c6['ok']);})['catch'](function(){_0x4c0d1a&&_0x4c0d1a(![]);});});}function _restPatchInfo(_0x544dd3,_0x36470){_fbIdToken(function(_0x2ebabc){var _0x17aad6=FB_REST_BASE+'/support/'+_0x544dd3+'/info.json';if(_0x2ebabc)_0x17aad6+='?auth='+encodeURIComponent(_0x2ebabc);fetch(_0x17aad6,{'method':'PATCH','headers':{'Content-Type':'application/json'},'body':JSON['stringify'](_0x36470)})['catch'](function(){});});}function startChat(){if(!U)return;_injectChatStyles();var _0x5b10cb={'userId':U['uid'],'uid':U['uid'],'userName':UD?UD['ign']||UD['displayName']||'':'','displayName':UD?UD['displayName']||'':'','userEmail':UD?UD['email']||'':'','userIGN':UD?UD['ign']||'':'','userFFUID':UD?UD['ffUid']||'':'','profileImage':UD?UD['profileImage']||'':''};db['ref']('support/'+U['uid']+'/info')['update'](_0x5b10cb),_restPatchInfo(U['uid'],_0x5b10cb),!_chatOnlineListenerActive&&(_chatOnlineListenerActive=!![],db['ref']('appSettings/supportOnline')['on']('value',function(_0x5b46a1){_setChatSt(!!_0x5b46a1['val']());})),!_chatListenerActive?(_chatListenerActive=!![],db['ref']('support/'+U['uid']+'/messages')['orderByChild']('createdAt')['limitToLast'](0x32)['on']('value',function(_0x33e9b1){renderChatMsgs(_0x33e9b1);})):db['ref']('support/'+U['uid']+'/messages')['orderByChild']('createdAt')['limitToLast'](window['_supportMsgLimit']||0x32)['once']('value',function(_0x1c1a7d){renderChatMsgs(_0x1c1a7d);}),_restRefresh(),!window['_chatRestPoll']&&(window['_chatRestPoll']=setInterval(function(){if(window['curScr']==='chat'||(document['getElementById']('scrChat')||{})['classList']&&document['getElementById']('scrChat')['classList']['contains']('active'))_restRefresh();},0x4e20));}function _restRefresh(){if(!window['U'])return;_restMessages(U['uid'],window['_supportMsgLimit']||0x32,function(_0x1462c7){if(_0x1462c7===null)return;if(!_0x1462c7['length']&&_lastRenderCount>0x0)return;renderChatList(_0x1462c7);});try{if(window['_supportPresence']){var _0xc6bffe=window['_supportPresence']();if(_0xc6bffe===!![]||_0xc6bffe===![])_setChatSt(_0xc6bffe);}}catch(_0x258c85){}}function _setChatSt(_0xa9710){var _0x26e4db=$('chatSt');if(!_0x26e4db)return;_0xa9710?(_0x26e4db['textContent']='Online',_0x26e4db['style']['color']='#00ff9c'):(_0x26e4db['textContent']='Away\x20—\x20reply\x20jald\x20milega',_0x26e4db['style']['color']='#8b93a0');}window['_loadMoreSupportMsgs']=function(){window['_supportMsgLimit']=(window['_supportMsgLimit']||0x32)+0x32,_restMessages(U['uid'],window['_supportMsgLimit'],function(_0x1253a6){if(_0x1253a6===null){db['ref']('support/'+U['uid']+'/messages')['orderByChild']('createdAt')['limitToLast'](window['_supportMsgLimit'])['once']('value',function(_0x42b0b7){renderChatMsgs(_0x42b0b7);});return;}renderChatList(_0x1253a6);});};var _lastRenderCount=0x0,_lastRenderSig='';function renderChatMsgs(_0x21ed24){var _0x1d1fee=[];if(_0x21ed24['exists']())_0x21ed24['forEach'](function(_0x3e32dd){_0x1d1fee['push'](_0x3e32dd['val']());});_0x1d1fee['sort'](function(_0x4a2d3f,_0x3819b5){return(Number(_0x4a2d3f['createdAt'])||0x0)-(Number(_0x3819b5['createdAt'])||0x0);}),renderChatList(_0x1d1fee);}function renderChatList(_0x157676){var _0x12ef32=$('chatMsgs');if(!_0x12ef32)return;var _0x304e83=_0x157676['map'](function(_0x2fb38b){return(_0x2fb38b['_key']||'')+':'+(_0x2fb38b['createdAt']||0x0)+':'+(_0x2fb38b['text']||_0x2fb38b['message']||'')['length'];})['join']('|');if(_0x304e83===_lastRenderSig)return;_lastRenderSig=_0x304e83,_lastRenderCount=_0x157676['length'];var _0x5bb9fe=_0x157676['length']>=0x32?'<div\x20style=\x22text-align:center;padding:6px\x200\x2010px\x22><button\x20onclick=\x22window._loadMoreSupportMsgs&&_loadMoreSupportMsgs()\x22\x20style=\x22background:rgba(255,255,255,.06);border:1px\x20solid\x20rgba(255,255,255,.12);color:#aab3c0;padding:7px\x2018px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer\x22>⬆\x20Purane\x20messages\x20dekho</button></div>':'';if(!_0x157676['length']){_0x12ef32['innerHTML']='<div\x20style=\x22text-align:center;padding:50px\x2020px;color:#8b93a0\x22><div\x20style=\x22width:64px;height:64px;margin:0\x20auto\x2012px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(140deg,rgba(0,212,255,.14),rgba(0,255,156,.1));border:1px\x20solid\x20rgba(0,212,255,.25)\x22>💬</div><p\x20style=\x22font-size:13px;font-weight:700;color:#cdd3dc\x22>Koi\x20message\x20nahi</p><p\x20style=\x22font-size:11px;margin-top:3px\x22>Support\x20team\x20ko\x20pehla\x20message\x20bhejo\x20—\x20say\x20hi!</p></div>';return;}var _0x5f0b1b=_0x5bb9fe,_0x90ed14='';_0x157676['forEach'](function(_0x13655f){var _0x3d0813=_0x13655f['senderId']==='admin'||_0x13655f['senderRole']==='admin',_0x48604d=new Date(_0x13655f['createdAt']||_0x13655f['timestamp']||Date['now']()),_0x42a48d=_0x48604d['toLocaleDateString']('en-IN',{'day':'numeric','month':'short'}),_0x406dbd=_0x48604d['toLocaleTimeString']([],{'hour':'2-digit','minute':'2-digit'});_0x42a48d!==_0x90ed14&&(_0x90ed14=_0x42a48d,_0x5f0b1b+='<div\x20style=\x22text-align:center;margin:12px\x200\x208px\x22><span\x20style=\x22font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.05);padding:4px\x2014px;border-radius:20px;border:1px\x20solid\x20rgba(255,255,255,.09)\x22>'+_0x42a48d+'</span></div>');var _0x440c0d=window['escHtml']?window['escHtml'](_0x13655f['text']||_0x13655f['message']||''):String(_0x13655f['text']||_0x13655f['message']||'');_0x3d0813?_0x5f0b1b+='<div\x20style=\x22display:flex;justify-content:flex-start;margin:3px\x200\x209px\x22>'+'<div\x20style=\x22max-width:80%;background:linear-gradient(150deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px\x20solid\x20rgba(255,255,255,.1);border-radius:6px\x2018px\x2018px\x2018px;padding:10px\x2014px;font-size:13px;line-height:1.5;box-shadow:0\x202px\x2010px\x20rgba(0,0,0,.25)\x22>'+'<div\x20style=\x22font-size:10px;color:#00d4ff;margin-bottom:4px;font-weight:800;display:flex;align-items:center;gap:5px\x22><span\x20style=\x22width:16px;height:16px;border-radius:50%;background:rgba(0,212,255,.15);border:1px\x20solid\x20rgba(0,212,255,.4);display:inline-flex;align-items:center;justify-content:center;font-size:9px\x22>🛡️</span>\x20Admin</div>'+'<div\x20style=\x22color:var(--txt);word-break:break-word\x22>'+_0x440c0d+'</div>'+'<div\x20style=\x22font-size:10px;color:#79808c;margin-top:5px;text-align:right\x22>'+_0x406dbd+'</div>'+'</div></div>':_0x5f0b1b+='<div\x20style=\x22display:flex;justify-content:flex-end;margin:3px\x200\x209px\x22>'+'<div\x20style=\x22max-width:80%;background:linear-gradient(150deg,rgba(0,255,156,.16),rgba(0,255,156,.07));border:1px\x20solid\x20rgba(0,255,156,.25);border-radius:18px\x206px\x2018px\x2018px;padding:10px\x2014px;font-size:13px;line-height:1.5;box-shadow:0\x202px\x2010px\x20rgba(0,0,0,.25)\x22>'+'<div\x20style=\x22color:var(--txt);word-break:break-word\x22>'+_0x440c0d+'</div>'+'<div\x20style=\x22font-size:10px;color:#79808c;margin-top:5px;text-align:right\x22>'+_0x406dbd+'\x20<span\x20style=\x22color:#00ff9c\x22>✓✓</span></div>'+'</div></div>';}),_0x12ef32['innerHTML']=_0x5f0b1b,_0x12ef32['scrollTop']=_0x12ef32['scrollHeight'];}function sendChat(){var _0xc195d0=$('chatIn');if(!_0xc195d0)return;var _0x4026bc=_0xc195d0['value']['trim']();if(!_0x4026bc)return;_0xc195d0['value']='';var _0x1a8ccf={'senderId':U['uid'],'senderUid':U['uid'],'senderName':UD?UD['ign']||UD['displayName']||'':'','senderDisplayName':UD?UD['displayName']||'':'','senderEmail':UD?UD['email']||'':'','senderRole':'user','text':_0x4026bc,'createdAt':Date['now']()},_0x3a8f58=db['ref']('support/'+U['uid']+'/messages')['push']()['key'];_restPutMsg(U['uid'],_0x3a8f58,_0x1a8ccf,function(_0x4fbbdd){!_0x4fbbdd&&db['ref']('support/'+U['uid']+'/messages/'+_0x3a8f58)['set'](_0x1a8ccf),_restRefresh();});var _0xd5286d={'lastMessage':_0x4026bc,'lastMessageTime':Date['now'](),'unreadByAdmin':!![]};db['ref']('support/'+U['uid']+'/info')['update'](_0xd5286d),_restPatchInfo(U['uid'],_0xd5286d);}function _injectChatStyles(){if(document['getElementById']('chatUiV2'))return;var _0x47ccc9=document['createElement']('style');_0x47ccc9['id']='chatUiV2',_0x47ccc9['textContent']='#scrChat\x20.chat-header{background:linear-gradient(120deg,rgba(0,255,156,.10),rgba(0,212,255,.07));border-bottom:1px\x20solid\x20rgba(0,255,156,.18);backdrop-filter:blur(10px)}'+'#scrChat\x20.ch-ava{background:linear-gradient(140deg,rgba(0,255,156,.25),rgba(0,212,255,.18));border:1px\x20solid\x20rgba(0,255,156,.4);box-shadow:0\x200\x2014px\x20rgba(0,255,156,.25);color:#00ff9c}'+'#scrChat\x20.ch-name{font-weight:900;letter-spacing:.2px}'+'#scrChat\x20.chat-messages{background:radial-gradient(340px\x20200px\x20at\x2050%\x200%,rgba(0,212,255,.05),transparent\x2070%),transparent;padding:14px\x2012px}'+'#scrChat\x20.chat-input-wrap{background:linear-gradient(180deg,rgba(10,14,20,.6),rgba(10,14,20,.95));border-top:1px\x20solid\x20rgba(255,255,255,.08);backdrop-filter:blur(10px)}'+'#scrChat\x20.chat-input-wrap\x20input{border-radius:22px!important;background:rgba(255,255,255,.06)!important;border:1px\x20solid\x20rgba(255,255,255,.12)!important;padding:11px\x2016px!important;font-size:13px}'+'#scrChat\x20.chat-send-btn{border-radius:50%!important;width:42px;height:42px;background:linear-gradient(140deg,#00ff9c,#00d4ff)!important;color:#041018!important;box-shadow:0\x200\x2016px\x20rgba(0,255,156,.35)}',document['head']['appendChild'](_0x47ccc9);}
+/* ── Show Support with Admin Response Badge ── */
+window.openSupport = function() {
+  if (window.showSupportWithBadge) {
+    showSupportWithBadge();
+  } else {
+    startChat();
+  }
+};
+
+/* ====== CHAT (STANDARDIZED - support/ path only) ====== */
+/* BUG FIX #4: Use ONLY support/{uid} path for consistency with Admin panel */
+var _chatListenerActive = false;
+var _chatOnlineListenerActive = false;
+
+/* ✅ D95 (2026-11-09, owner live report): "Support chat me purane messages
+   show nahi hote" — root cause: chat history SIRF Firebase websocket
+   listener se aati thi, aur D94 me prove ho chuka tha ke ye WS unreliable
+   networks par atak jati hai (tab history kabhi load hi nahi hoti).
+   Ab DOUBLE channel: (1) Firebase REST fetch (HTTPS — WS se azad) turant
+   + har 20s, (2) WS listener live updates ke liye. Dono ek hi render
+   funnel me aate hain, isliye koi duplicate nahi. */
+var FB_REST_BASE = 'https://fft-app-1e283-default-rtdb.firebaseio.com';
+
+function _fbIdToken(cb) {
+  try {
+    var auth = firebase.app('mainApp').auth();
+    if (auth.currentUser) { auth.currentUser.getIdToken().then(function(t) { cb(t || null); }, function() { cb(null); }); return; }
+  } catch (e) {}
+  cb(null);
+}
+
+/* REST se messages padho — orderBy="$key" hamesha indexed hota hai
+   (custom index ki zaroorat nahi), push-keys chronological hoti hain;
+   client par createdAt se dobara sort kar lete hain. */
+function _restMessages(uid, limit, cb) {
+  _fbIdToken(function(tok) {
+    var url = FB_REST_BASE + '/support/' + uid + '/messages.json?orderBy=%22$key%22&limitToLast=' + limit;
+    if (tok) url += '&auth=' + encodeURIComponent(tok);
+    fetch(url, { method: 'GET' }).then(function(r) {
+      if (!r.ok) { cb(null); return; }
+      return r.json().then(function(obj) {
+        var arr = [];
+        if (obj) Object.keys(obj).forEach(function(k) { var m = obj[k]; if (m && typeof m === 'object') { m._key = k; arr.push(m); } });
+        arr.sort(function(a, b) { return (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0); });
+        cb(arr);
+      });
+    }).catch(function() { cb(null); });
+  });
+}
+
+/* REST se message likho — server-authoritative (admin ka WS listener ye
+   turant dekhta hai). WS atka ho to bhi message chala jata hai. */
+function _restPutMsg(uid, key, data, cb) {
+  _fbIdToken(function(tok) {
+    var url = FB_REST_BASE + '/support/' + uid + '/messages/' + key + '.json';
+    if (tok) url += '?auth=' + encodeURIComponent(tok);
+    fetch(url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      .then(function(r) { cb && cb(r.ok); })
+      .catch(function() { cb && cb(false); });
+  });
+}
+
+function _restPatchInfo(uid, patch) {
+  _fbIdToken(function(tok) {
+    var url = FB_REST_BASE + '/support/' + uid + '/info.json';
+    if (tok) url += '?auth=' + encodeURIComponent(tok);
+    fetch(url, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(patch) }).catch(function() {});
+  });
+}
+
+function startChat() {
+  if (!U) return;
+  _injectChatStyles();
+  /* Sync user identity (WS + REST dono) */
+  var userInfo = {
+    userId: U.uid, uid: U.uid,
+    userName: UD ? (UD.ign || UD.displayName || '') : '',
+    displayName: UD ? (UD.displayName || '') : '',
+    userEmail: UD ? (UD.email || '') : '',
+    userIGN: UD ? (UD.ign || '') : '',
+    userFFUID: UD ? (UD.ffUid || '') : '',
+    profileImage: UD ? (UD.profileImage || '') : ''
+  };
+  db.ref('support/' + U.uid + '/info').update(userInfo);
+  _restPatchInfo(U.uid, userInfo);
+
+  /* FIX: Only attach listeners ONCE — prevent double messages */
+  if (!_chatOnlineListenerActive) {
+    _chatOnlineListenerActive = true;
+    db.ref('appSettings/supportOnline').on('value', function(s) {
+      _setChatSt(!!s.val());
+    });
+  }
+  if (!_chatListenerActive) {
+    _chatListenerActive = true;
+    /* ✅ Bug 16 Fix: limitToLast(50) — no more full history load */
+    db.ref('support/' + U.uid + '/messages')
+      .orderByChild('createdAt')
+      .limitToLast(50)
+      .on('value', function(s) { renderChatMsgs(s); });
+  } else {
+    db.ref('support/' + U.uid + '/messages')
+      .orderByChild('createdAt')
+      .limitToLast(window._supportMsgLimit || 50)
+      .once('value', function(s) { renderChatMsgs(s); });
+  }
+  /* ✅ D95: REST channel — turant history (purane messages!) + 20s poll */
+  _restRefresh();
+  if (!window._chatRestPoll) {
+    window._chatRestPoll = setInterval(function() {
+      if (window.curScr === 'chat' || (document.getElementById('scrChat') || {}).classList && document.getElementById('scrChat').classList.contains('active')) _restRefresh();
+    }, 20000);
+  }
+}
+
+function _restRefresh() {
+  if (!window.U) return;
+  _restMessages(U.uid, window._supportMsgLimit || 50, function(arr) {
+    if (arr === null) return;           /* REST fail (rules/network) → WS bharosa */
+    if (!arr.length && _lastRenderCount > 0) return; /* khali REST purane render ko na mitaye */
+    renderChatList(arr);
+  });
+  /* presence pill/chatSt ko REST presence se bhi taza karo */
+  try {
+    if (window._supportPresence) {
+      var p = window._supportPresence();
+      if (p === true || p === false) _setChatSt(p);
+    }
+  } catch (e) {}
+}
+
+function _setChatSt(online) {
+  var el = $('chatSt');
+  if (!el) return;
+  if (online) { el.textContent = 'Online'; el.style.color = '#00ff9c'; }
+  else { el.textContent = 'Away — reply jald milega'; el.style.color = '#8b93a0'; }
+}
+
+/* ── Load More support messages ── */
+window._loadMoreSupportMsgs = function() {
+  window._supportMsgLimit = (window._supportMsgLimit || 50) + 50;
+  /* ✅ D95: REST primary (WS atka ho to bhi history mile) */
+  _restMessages(U.uid, window._supportMsgLimit, function(arr) {
+    if (arr === null) {
+      db.ref('support/' + U.uid + '/messages')
+        .orderByChild('createdAt').limitToLast(window._supportMsgLimit)
+        .once('value', function(s) { renderChatMsgs(s); });
+      return;
+    }
+    renderChatList(arr);
+  });
+};
+
+var _lastRenderCount = 0;
+var _lastRenderSig = '';
+
+function renderChatMsgs(s) {
+  var msgs = []; if (s.exists()) s.forEach(function(c) { msgs.push(c.val()); });
+  msgs.sort(function(a, b) { return (Number(a.createdAt) || 0) - (Number(b.createdAt) || 0); });
+  renderChatList(msgs);
+}
+
+/* ✅ D95: stylish chat bubbles — date pills, admin shield header,
+   green gradient own bubbles, read ticks */
+function renderChatList(msgs) {
+  var cm = $('chatMsgs'); if (!cm) return;
+  var sig = msgs.map(function(m) { return (m._key || '') + ':' + (m.createdAt || 0) + ':' + (m.text || m.message || '').length; }).join('|');
+  if (sig === _lastRenderSig) return;   /* same data → re-render skip (no flicker) */
+  _lastRenderSig = sig; _lastRenderCount = msgs.length;
+  /* ✅ Bug 16 Fix: Load More button for 50+ messages */
+  var loadMoreHtml = (msgs.length >= 50)
+    ? '<div style="text-align:center;padding:6px 0 10px"><button onclick="window._loadMoreSupportMsgs&&_loadMoreSupportMsgs()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#aab3c0;padding:7px 18px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer">⬆ Purane messages dekho</button></div>'
+    : '';
+  if (!msgs.length) {
+    cm.innerHTML = '<div style="text-align:center;padding:50px 20px;color:#8b93a0"><div style="width:64px;height:64px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;background:linear-gradient(140deg,rgba(0,212,255,.14),rgba(0,255,156,.1));border:1px solid rgba(0,212,255,.25)">💬</div><p style="font-size:13px;font-weight:700;color:#cdd3dc">Koi message nahi</p><p style="font-size:11px;margin-top:3px">Support team ko pehla message bhejo — say hi!</p></div>';
+    return;
+  }
+  var h = loadMoreHtml, ld = '';
+  msgs.forEach(function(m) {
+    var isAdmin = m.senderId === 'admin' || m.senderRole === 'admin';
+    var ts = new Date(m.createdAt || m.timestamp || Date.now());
+    var ds = ts.toLocaleDateString('en-IN', {day:'numeric',month:'short'});
+    var tm = ts.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    if (ds !== ld) {
+      ld = ds;
+      h += '<div style="text-align:center;margin:12px 0 8px"><span style="font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.05);padding:4px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.09)">' + ds + '</span></div>';
+    }
+    /* ✅ D99-F1: support-chat bubble me message text RAW innerHTML me jata tha —
+       admin reply ya koi bhi stored message HTML/script inject kar sakta tha.
+       (xss-pass me stray=2 nodes isi sink ke mile the: #chatMsgs ke andar
+       img[onerror] + svg[onload] zinda DOM nodes.) Ab escHtml. */
+    var txt = (window.escHtml ? window.escHtml(m.text || m.message || '') : String(m.text || m.message || ''));
+    if (isAdmin) {
+      h += '<div style="display:flex;justify-content:flex-start;margin:3px 0 9px">' +
+           '<div style="max-width:80%;background:linear-gradient(150deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.1);border-radius:6px 18px 18px 18px;padding:10px 14px;font-size:13px;line-height:1.5;box-shadow:0 2px 10px rgba(0,0,0,.25)">' +
+           '<div style="font-size:10px;color:#00d4ff;margin-bottom:4px;font-weight:800;display:flex;align-items:center;gap:5px"><span style="width:16px;height:16px;border-radius:50%;background:rgba(0,212,255,.15);border:1px solid rgba(0,212,255,.4);display:inline-flex;align-items:center;justify-content:center;font-size:9px">🛡️</span> Admin</div>' +
+           '<div style="color:var(--txt);word-break:break-word">' + txt + '</div>' +
+           '<div style="font-size:10px;color:#79808c;margin-top:5px;text-align:right">' + tm + '</div>' +
+           '</div></div>';
+    } else {
+      h += '<div style="display:flex;justify-content:flex-end;margin:3px 0 9px">' +
+           '<div style="max-width:80%;background:linear-gradient(150deg,rgba(0,255,156,.16),rgba(0,255,156,.07));border:1px solid rgba(0,255,156,.25);border-radius:18px 6px 18px 18px;padding:10px 14px;font-size:13px;line-height:1.5;box-shadow:0 2px 10px rgba(0,0,0,.25)">' +
+           '<div style="color:var(--txt);word-break:break-word">' + txt + '</div>' +
+           '<div style="font-size:10px;color:#79808c;margin-top:5px;text-align:right">' + tm + ' <span style="color:#00ff9c">✓✓</span></div>' +
+           '</div></div>';
+    }
+  });
+  cm.innerHTML = h;
+  cm.scrollTop = cm.scrollHeight;
+}
+
+function sendChat() {
+  var inp = $('chatIn'); if (!inp) return;
+  var msg = inp.value.trim(); if (!msg) return; inp.value = '';
+
+  var msgData = {
+    senderId: U.uid,
+    senderUid: U.uid,
+    senderName: UD ? (UD.ign || UD.displayName || '') : '',
+    senderDisplayName: UD ? (UD.displayName || '') : '',
+    senderEmail: UD ? (UD.email || '') : '',
+    senderRole: 'user',
+    text: msg,
+    createdAt: Date.now()
+  };
+
+  /* BUG FIX #4: Save ONLY to support/ path — Admin's primary path */
+  var id = db.ref('support/' + U.uid + '/messages').push().key;
+  /* ✅ D95: REST PUT primary — WS atka ho to bhi message server tak;
+     fail ho to purana WS set fallback. */
+  _restPutMsg(U.uid, id, msgData, function(ok) {
+    if (!ok) {
+      db.ref('support/' + U.uid + '/messages/' + id).set(msgData);
+    }
+    _restRefresh();
+  });
+
+  /* Update chat info for admin panel to show latest message */
+  var infoUpdate = {
+    lastMessage: msg,
+    lastMessageTime: Date.now(),
+    unreadByAdmin: true
+  };
+  db.ref('support/' + U.uid + '/info').update(infoUpdate);
+  _restPatchInfo(U.uid, infoUpdate);
+}
+
+/* ✅ D95: chat screen ka stylish look — header glass + gradient send */
+function _injectChatStyles() {
+  if (document.getElementById('chatUiV2')) return;
+  var s = document.createElement('style');
+  s.id = 'chatUiV2';
+  s.textContent =
+    '#scrChat .chat-header{background:linear-gradient(120deg,rgba(0,255,156,.10),rgba(0,212,255,.07));border-bottom:1px solid rgba(0,255,156,.18);backdrop-filter:blur(10px)}' +
+    '#scrChat .ch-ava{background:linear-gradient(140deg,rgba(0,255,156,.25),rgba(0,212,255,.18));border:1px solid rgba(0,255,156,.4);box-shadow:0 0 14px rgba(0,255,156,.25);color:#00ff9c}' +
+    '#scrChat .ch-name{font-weight:900;letter-spacing:.2px}' +
+    '#scrChat .chat-messages{background:radial-gradient(340px 200px at 50% 0%,rgba(0,212,255,.05),transparent 70%),transparent;padding:14px 12px}' +
+    '#scrChat .chat-input-wrap{background:linear-gradient(180deg,rgba(10,14,20,.6),rgba(10,14,20,.95));border-top:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px)}' +
+    '#scrChat .chat-input-wrap input{border-radius:22px!important;background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.12)!important;padding:11px 16px!important;font-size:13px}' +
+    '#scrChat .chat-send-btn{border-radius:50%!important;width:42px;height:42px;background:linear-gradient(140deg,#00ff9c,#00d4ff)!important;color:#041018!important;box-shadow:0 0 16px rgba(0,255,156,.35)}';
+  document.head.appendChild(s);
+}
+
+/* ====== NOTIFICATIONS ====== */

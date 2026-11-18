@@ -1,0 +1,32 @@
+SECTIONS(30): dashboard, profileVerification, profileUpdates, users, tournaments, joinedPlayers, results, match-history, sponsoredTournaments, skyDiamondRequests, premiumRequests, creatorApplications, seasonPass, support, notifications, settings, systemSettings, creatorProgram, growthAnalytics, quicktools, disputes, creatorMatchReview, analytics, lookup, activity, bracketAdmin, clanWarAdmin, cityChampAdmin, mentorAdmin, cleanBadgeAdmin
+SEC dashboard rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=1082 faDead=0
+SEC profileVerification rows=1 imgs=1 broken=0 leaks=0 secVis=true txt=201 faDead=0
+SEC users rows=21 imgs=1 broken=0 leaks=0 secVis=true txt=2594 faDead=0
+SEC tournaments rows=4 imgs=1 broken=0 leaks=0 secVis=true txt=635 faDead=0
+SEC joinedPlayers rows=1 imgs=1 broken=0 leaks=0 secVis=true txt=232 faDead=0
+SEC results rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=120 faDead=0
+SEC match-history rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=107 faDead=0
+SEC sponsoredTournaments rows=1 imgs=1 broken=0 leaks=0 secVis=true txt=430 faDead=0
+SEC skyDiamondRequests rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=206 faDead=0
+SEC premiumRequests rows=1 imgs=2 broken=0 leaks=0 secVis=true txt=396 faDead=0
+SEC creatorApplications rows=2 imgs=1 broken=0 leaks=0 secVis=true txt=346 faDead=0
+SEC seasonPass rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=238 faDead=0
+SEC support rows=0 imgs=13 broken=0 leaks=0 secVis=true txt=1250 faDead=0
+SEC notifications rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=299 faDead=0
+SEC settings rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=1690 faDead=0
+SEC systemSettings rows=21 imgs=1 broken=0 leaks=0 secVis=true txt=3777 faDead=0
+SEC creatorProgram rows=2 imgs=1 broken=0 leaks=0 secVis=true txt=554 faDead=0
+SEC growthAnalytics rows=9 imgs=1 broken=0 leaks=0 secVis=true txt=509 faDead=0
+SEC quicktools rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=1073 faDead=0
+SEC disputes rows=1 imgs=1 broken=0 leaks=0 secVis=true txt=111 faDead=0
+SEC creatorMatchReview rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=460 faDead=0
+SEC analytics rows=4 imgs=5 broken=0 leaks=0 secVis=true txt=446 faDead=0
+SEC lookup rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=107 faDead=0
+SEC activity rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=4701 faDead=0
+SEC bracketAdmin rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=93 faDead=0
+SEC clanWarAdmin rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=457 faDead=0
+SEC cityChampAdmin rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=273 faDead=0
+SEC mentorAdmin rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=258 faDead=0
+SEC cleanBadgeAdmin rows=0 imgs=1 broken=0 leaks=0 secVis=true txt=349 faDead=0
+CLICKED SECTIONS: 30 | button clicks: 90 | modals opened: 29
+ADMIN DEEP FINDINGS: 0

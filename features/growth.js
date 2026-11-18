@@ -1,1 +1,1067 @@
-(function(){'use strict';var _0x40551b=(function(){var _0x4e82a4=!![];return function(_0x44abea,_0x49b679){var _0x15ccc2=_0x4e82a4?function(){if(_0x49b679){var _0x3d0235=_0x49b679['apply'](_0x44abea,arguments);return _0x49b679=null,_0x3d0235;}}:function(){};return _0x4e82a4=![],_0x15ccc2;};}()),_0x1d6c9f=_0x40551b(this,function(){if(_0x1d6c9f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x1d6c9f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x1d6c9f)['search']('(((.+)+)+)+$');});_0x1d6c9f();window['showCityLeaderboard']=function(){var _0x527c72=window['UD']&&window['UD']['city']||'',_0x59c84d='<div\x20style=\x22margin-bottom:14px\x22>';_0x59c84d+='<div\x20style=\x22display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px\x22\x20id=\x22cityTabBar\x22>',['My\x20City','All\x20India']['forEach'](function(_0x537517,_0x1c7d70){_0x59c84d+='<button\x20onclick=\x22switchCityTab('+_0x1c7d70+')\x22\x20id=\x22cityTab'+_0x1c7d70+'\x22\x20style=\x22padding:7px\x2014px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;transition:all\x20.2s;background:'+(_0x1c7d70===0x0?'var(--green)':'rgba(255,255,255,.08)')+';color:'+(_0x1c7d70===0x0?'#000':'var(--txt)')+'\x22>'+_0x537517+'</button>';}),_0x59c84d+='</div>',_0x59c84d+='<div\x20id=\x22cityLeaderContent\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div></div>',_0x59c84d+='</div>';if(window['openModal'])openModal('🏆\x20Leaderboard',_0x59c84d);_0x482f03(0x0,_0x527c72);},window['switchCityTab']=function(_0x5a760c){[0x0,0x1]['forEach'](function(_0x17ca2d){var _0x576b05=$('cityTab'+_0x17ca2d);_0x576b05&&(_0x576b05['style']['background']=_0x17ca2d===_0x5a760c?'var(--green)':'rgba(255,255,255,.08)',_0x576b05['style']['color']=_0x17ca2d===_0x5a760c?'#000':'var(--txt)');});var _0x68bb57=_0x5a760c===0x0?window['UD']&&window['UD']['city']||'':'';_0x482f03(_0x5a760c,_0x68bb57);};function _0x482f03(_0x189ee7,_0x444fbb){var _0x2bc9ed=$('cityLeaderContent');if(!_0x2bc9ed)return;if(!window['db']||!window['U']){_0x2bc9ed['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:#ff6b6b\x22>Login\x20required</div>';return;}_0x2bc9ed['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Loading...</div>';if(window['_supa']&&window['U']){var _0x1f38d4=window['UD']&&window['UD']['city']?window['UD']['city']:null;if(_0x189ee7===0x0&&!_0x1f38d4){_0x2bc9ed['innerHTML']='<div\x20style=\x22text-align:center;padding:26px\x2018px\x22><div\x20style=\x22font-size:34px;margin-bottom:8px\x22>📍</div>'+'<div\x20style=\x22font-size:14px;font-weight:800;margin-bottom:6px\x22>Apna\x20city\x20set\x20karo</div>'+'<div\x20style=\x22font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:14px\x22>City\x20leaderboard\x20sirf\x20<strong\x20style=\x22color:var(--txt)\x22>aapke\x20city\x20ke\x20players</strong>\x20dikhata\x20hai.<br>Location\x20allow\x20karo\x20—\x20city\x20apne\x20aap\x20set\x20ho\x20jayega.</div>'+'<button\x20onclick=\x22window._doAutoSetLocation&&_doAutoSetLocation()\x22\x20id=\x22_locSetBtn\x22\x20style=\x22padding:12px\x2026px;border-radius:14px;border:none;background:linear-gradient(135deg,#ffaa00,#ff8c00);color:#000;font-weight:900;font-size:13px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-location-crosshairs\x22></i>\x20Location\x20Allow\x20Karo</button></div>';return;}var _0x4d80e3=_0x189ee7===0x0&&_0x1f38d4?window['_supa']['from']('user_public_profiles')['select']('id,ign,rank_points,city,avatar_url')['eq']('city',_0x1f38d4)['order']('rank_points',{'ascending':![]})['limit'](0x32):window['_supa']['from']('leaderboard')['select']('*')['order']('rank_points',{'ascending':![]})['limit'](0x32);_0x4d80e3['then'](function(_0xcdb361){var _0x490db8=_0xcdb361&&_0xcdb361['data']?_0xcdb361['data']:[],_0x5900f0=_0x490db8['map'](function(_0x5b2d1a){return{'uid':_0x5b2d1a['id'],'ign':_0x5b2d1a['ign']||'Player','rp':Number(_0x5b2d1a['rank_points']||0x0),'city':_0x5b2d1a['city']||'','avatarBg':_0x5b2d1a['avatar_bg_color']||'#1a1a2e','wins':Number(_0x5b2d1a['total_wins']||0x0)};});_0x5900f0['sort'](function(_0x4456ef,_0x1ab586){return _0x1ab586['rp']-_0x4456ef['rp'];}),_0x4cc391(_0x2bc9ed,_0x5900f0,_0x189ee7,_0x444fbb);var _0x12b279=window['U']&&_0x5900f0['some'](function(_0x53415b){return _0x53415b['uid']===window['U']['uid'];});if(!_0x12b279&&window['UD']){var _0x4a30e2=Number(window['UD']['rankPoints']||window['UD']['rank_points']||0x0),_0x597f0d=window['_supa']['from']('user_public_profiles')['select']('id',{'count':'exact','head':!![]})['gt']('rank_points',_0x4a30e2);if(_0x1f38d4&&_0x189ee7===0x0)_0x597f0d=_0x597f0d['eq']('city',_0x1f38d4);_0x597f0d['then'](function(_0x157b5b){var _0x5d4d32=typeof _0x157b5b['count']==='number'?_0x157b5b['count']:_0x5900f0['length'],_0x420341=_0x5d4d32+0x1,_0x56d8c4=document['getElementById']('cityLeaderContent');if(!_0x56d8c4)return;var _0x55bbd5=_0x56d8c4['querySelector']('[data-rank-note]');if(_0x55bbd5)_0x55bbd5['remove']();var _0x46d6eb=document['createElement']('div');_0x46d6eb['setAttribute']('data-rank-note','1'),_0x46d6eb['style']['cssText']='text-align:center;padding:10px;margin-top:6px;border-radius:10px;background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.2);font-size:12px;color:var(--green);font-weight:700',_0x46d6eb['textContent']=_0x5d4d32===0x0?'Aapki\x20rank\x20top\x2050\x20mein\x20nahi\x20hai,\x20lekin\x20'+(_0x4a30e2===0x0?'abhi\x20tak\x20sabki\x20rank\x20barabar\x20hai\x20(0\x20pts)\x20—\x20pehla\x20match\x20jeetkar\x20#1\x20pakko\x20banao!':'#'+_0x420341+'\x20ho\x20tum\x20('+_0x4a30e2+'\x20pts)'):'Aapki\x20rank:\x20#'+_0x420341+'\x20('+_0x4a30e2+'\x20pts)',_0x56d8c4['appendChild'](_0x46d6eb);},function(){});}},function(_0x6fee4){_0x2bc9ed['innerHTML']='<div\x20style=\x22text-align:center;padding:24px;color:#ff6b6b\x22>Leaderboard\x20load\x20nahi\x20ho\x20paya.\x20Dobara\x20try\x20karo.</div>';});return;}var _0xa0e925=window['db']?window['db']['ref']('users')['orderByChild']('rankPoints')['limitToLast'](0x32):null;if(!_0xa0e925)return;_0xa0e925['once']('value',function(_0x158234){var _0x58ab41=[];_0x158234['forEach'](function(_0x218600){var _0x274df6=_0x218600['val']();if(!_0x274df6['ign'])return;if(_0x189ee7===0x0&&_0x444fbb&&(_0x274df6['city']||'')['toLowerCase']()!==_0x444fbb['toLowerCase']())return;_0x58ab41['push']({'uid':_0x218600['key'],'ign':_0x274df6['ign'],'rp':Number(_0x274df6['rankPoints']||0x0),'city':_0x274df6['city']||'','avatarBg':_0x274df6['avatarBg']||'#1a1a2e','wins':Number(_0x274df6['stats']&&_0x274df6['stats']['wins']||0x0)});}),_0x58ab41['sort'](function(_0x23a384,_0xfa04c1){return _0xfa04c1['rp']-_0x23a384['rp'];}),_0x4cc391(_0x2bc9ed,_0x58ab41,_0x189ee7,_0x444fbb);});}function _0x4cc391(_0x389e07,_0x3aa9fe,_0x30f895,_0x34685d){if(!_0x3aa9fe['length']){_0x389e07['innerHTML']='<div\x20style=\x22text-align:center;padding:24px\x22><div\x20style=\x22font-size:32px;margin-bottom:8px\x22>🏙️</div><div\x20style=\x22color:var(--txt2);font-size:13px\x22>'+(_0x30f895===0x0&&_0x34685d?'Abhi\x20'+_0x34685d+'\x20mein\x20koi\x20player\x20nahi\x20—\x20pehle\x20ban\x20jao!':'Koi\x20data\x20nahi')+'</div></div>';return;}var _0x4d025f='';_0x30f895===0x0&&_0x34685d&&(_0x4d025f+='<div\x20style=\x22text-align:center;margin-bottom:10px;font-size:12px;font-weight:700;color:#ffd700\x22>🏙️\x20'+_0x34685d+'\x20Leaderboard</div>');var _0x58d5b6=_0x3aa9fe['slice'](0x0,0x14),_0x2d33c5=-0x1;for(var _0x55fdda=0x0;_0x55fdda<_0x3aa9fe['length'];_0x55fdda++){if(window['U']&&_0x3aa9fe[_0x55fdda]['uid']===window['U']['uid']){_0x2d33c5=_0x55fdda;break;}}var _0x305970=_0x2d33c5>-0x1&&_0x2d33c5<0x14;_0x58d5b6['forEach'](function(_0x4811ec,_0x559517){var _0x3e0f89=window['U']&&_0x4811ec['uid']===window['U']['uid'],_0x2b6838=_0x559517+0x1,_0x2a11ab=window['medalHtml'](_0x2b6838,_0x2b6838<=0x3?0x14:0xd);_0x4d025f+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;border-radius:12px;margin-bottom:6px;background:'+(_0x3e0f89?'rgba(0,255,156,.08)':'rgba(255,255,255,.03)')+';border:1px\x20solid\x20'+(_0x3e0f89?'rgba(0,255,156,.25)':'rgba(255,255,255,.06)')+'\x22>',_0x4d025f+='<div\x20style=\x22width:28px;text-align:center;font-size:'+(_0x2b6838<=0x3?'18':'13')+'px;font-weight:800;color:'+(_0x2b6838===0x1?'#ffd700':_0x2b6838===0x2?'#c0c0c0':_0x2b6838===0x3?'#cd7f32':'#666')+'\x22>'+_0x2a11ab+'</div>',_0x4d025f+='<div\x20style=\x22width:34px;height:34px;border-radius:50%;background:'+_0x4811ec['avatarBg']+';display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0\x22>'+(_0x4811ec['ign'][0x0]||'?')['toUpperCase']()+'</div>',_0x4d025f+='<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:13px;font-weight:700;color:'+(_0x3e0f89?'var(--green)':'var(--txt)')+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap\x22>'+_0x4811ec['ign']+(_0x3e0f89?'\x20(You)':'')+'</div>',_0x4d025f+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:1px\x22>'+(_0x4811ec['city']||'Unknown')+'\x20•\x20'+_0x4811ec['wins']+'\x20wins</div></div>',_0x4d025f+='<div\x20style=\x22text-align:right;flex-shrink:0\x22><div\x20style=\x22font-size:14px;font-weight:900;color:#00d4ff\x22>'+_0x4811ec['rp']+'</div><div\x20style=\x22font-size:9px;color:var(--txt2)\x22>RP</div></div>',_0x4d025f+='</div>';});if(!_0x305970){if(_0x2d33c5>-0x1){var _0x262232=_0x3aa9fe[_0x2d33c5],_0x260530=_0x2d33c5+0x1;_0x4d025f+='<div\x20style=\x22text-align:center;padding:6px\x200;font-size:10px;color:var(--txt2)\x22>•\x20•\x20•</div>',_0x4d025f+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;border-radius:12px;margin-bottom:6px;background:rgba(0,255,156,.08);border:1.5px\x20solid\x20rgba(0,255,156,.35)\x22>',_0x4d025f+='<div\x20style=\x22width:28px;text-align:center;font-size:13px;font-weight:800;color:#00ff9c\x22>#'+_0x260530+'</div>',_0x4d025f+='<div\x20style=\x22width:34px;height:34px;border-radius:50%;background:'+_0x262232['avatarBg']+';display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0\x22>'+(_0x262232['ign'][0x0]||'?')['toUpperCase']()+'</div>',_0x4d025f+='<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:13px;font-weight:700;color:var(--green);overflow:hidden;text-overflow:ellipsis;white-space:nowrap\x22>'+_0x262232['ign']+'\x20(You)</div>',_0x4d025f+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:1px\x22>'+(_0x262232['city']||'Unknown')+'\x20•\x20'+_0x262232['wins']+'\x20wins</div></div>',_0x4d025f+='<div\x20style=\x22text-align:right;flex-shrink:0\x22><div\x20style=\x22font-size:14px;font-weight:900;color:#00d4ff\x22>'+_0x262232['rp']+'</div><div\x20style=\x22font-size:9px;color:var(--txt2)\x22>RP</div></div>',_0x4d025f+='</div>';}}_0x389e07['innerHTML']=_0x4d025f;}window['doShareResult']=function(_0x20d415){var _0x1ef75b=decodeURIComponent(_0x20d415);window['openWhatsApp'](_0x1ef75b);if(window['closeModal'])window['closeModal']();},window['doShareResultGeneric']=function(_0xee79fa){var _0x61a219=decodeURIComponent(_0xee79fa);if(navigator['share'])navigator['share']({'title':'Mini\x20eSports\x20Result','text':_0x61a219})['catch'](function(){});else{if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x61a219);toast('Message\x20copy\x20ho\x20gaya\x20—\x20paste\x20karke\x20share\x20karo!','ok');}if(window['closeModal'])window['closeModal']();},window['showMissionsPanel']=function(){if(!window['UD']||!window['U']){toast('Login\x20karo\x20pehle','err');return;}window['db']['ref']('users/'+window['U']['uid']+'/missionProgress')['once']('value',function(_0x39f739){var _0x153758=_0x39f739['val']()||{};window['_missionsProgCache']=_0x153758,_0x4c26b2(_0x153758);});};function _0x4c26b2(_0x4e0df9){var _0x30a0ba=new Date()['toDateString'](),_0x425415=_0x276959(),_0x411593=[{'id':'daily_match','label':'🎮\x201\x20Match\x20Khelo','desc':'Aaj\x201\x20match\x20join\x20karo','reward':window['CFG']&&(window['CFG']&&window['CFG']['missions'])?(window['CFG']&&window['CFG']['missions'])['daily_match']:0xa,'check':_0x4e0df9['lastMatchDate']===_0x30a0ba},{'id':'daily_kills3','label':'💀\x203\x20Kills\x20Karo','desc':'Aaj\x203\x20kills\x20lo','reward':window['CFG']&&(window['CFG']&&window['CFG']['missions'])?(window['CFG']&&window['CFG']['missions'])['daily_kills3']:0x5,'check':Number(_0x4e0df9['todayKills']||0x0)>=0x3}],_0xdc2620=[{'id':'week_5matches','label':'🎯\x205\x20Matches\x20Khelo','desc':'Is\x20hafte\x205\x20matches','reward':window['CFG']&&(window['CFG']&&window['CFG']['missions'])?(window['CFG']&&window['CFG']['missions'])['week_5matches']:0x32,'check':Number(_0x4e0df9['wMatches_'+_0x425415]||0x0)>=0x5,'progress':Number(_0x4e0df9['wMatches_'+_0x425415]||0x0),'max':0x5},{'id':'week_top3','label':'🏆\x20Top\x203\x20Finish','desc':'Kisi\x20match\x20mein\x20top\x203','reward':window['CFG']&&(window['CFG']&&window['CFG']['missions'])?(window['CFG']&&window['CFG']['missions'])['week_top3']:0x1e,'check':_0x4e0df9['wTop3_'+_0x425415]===!![]}],_0x2e1bbf='<div>';_0x2e1bbf+='<div\x20style=\x22position:relative;border-radius:16px;padding:12px\x2014px;margin-bottom:14px;background:linear-gradient(135deg,rgba(255,215,0,.14),rgba(210,77,255,.12)\x2055%,rgba(0,212,255,.10));border:1.5px\x20solid\x20rgba(255,215,0,.35);box-shadow:0\x200\x2018px\x20rgba(255,215,0,.15),\x20inset\x200\x200\x2024px\x20rgba(210,77,255,.08);display:flex;align-items:center;gap:10px\x22>'+'<div\x20style=\x22width:40px;height:40px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0\x200\x2014px\x20rgba(255,180,0,.55)\x22>🎯</div>'+'<div><div\x20style=\x22font-size:15px;font-weight:900;color:#ffd700;text-shadow:0\x200\x2010px\x20rgba(255,215,0,.45)\x22>Missions\x20Arena</div>'+'<div\x20style=\x22font-size:10.5px;color:#c9a4ff;margin-top:1px\x22>Khelo\x20•\x20missions\x20poore\x20karo\x20•\x20coins\x20kamao</div></div></div>',_0x2e1bbf+='<div\x20style=\x22font-size:13px;font-weight:900;color:#ffd700;margin-bottom:10px;display:flex;align-items:center;gap:7px;text-shadow:0\x200\x208px\x20rgba(255,215,0,.4)\x22><span\x20style=\x22width:24px;height:24px;border-radius:8px;background:rgba(255,215,0,.14);border:1px\x20solid\x20rgba(255,215,0,.4);display:flex;align-items:center;justify-content:center;font-size:12px\x22>☀️</span>\x20Daily\x20Missions\x20<span\x20style=\x22flex:1;height:1px;background:linear-gradient(90deg,rgba(255,215,0,.5),transparent)\x22></span></div>',_0x411593['forEach'](function(_0x3f7866){var _0x4a6f99=_0x4e0df9['claimed_'+_0x3f7866['id']+'_'+_0x30a0ba]===!![],_0xc83d67=_0x3f7866['check'];_0x2e1bbf+=_0x4f1adf(_0x3f7866,_0xc83d67,_0x4a6f99,_0x30a0ba,'daily');}),_0x2e1bbf+='<div\x20style=\x22font-size:13px;font-weight:900;color:#00d4ff;margin:16px\x200\x2010px;display:flex;align-items:center;gap:7px;text-shadow:0\x200\x208px\x20rgba(0,212,255,.4)\x22><span\x20style=\x22width:24px;height:24px;border-radius:8px;background:rgba(0,212,255,.12);border:1px\x20solid\x20rgba(0,212,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px\x22>📅</span>\x20Weekly\x20Missions\x20<span\x20style=\x22flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,255,.5),transparent)\x22></span></div>',_0xdc2620['forEach'](function(_0x2d9fdb){var _0xf0390=_0x4e0df9['claimed_'+_0x2d9fdb['id']+'_w'+_0x425415]===!![],_0x328f18=_0x2d9fdb['check'];_0x2e1bbf+=_0x4f1adf(_0x2d9fdb,_0x328f18,_0xf0390,_0x425415,'weekly');}),_0x2e1bbf+='</div>';if(window['openModal'])openModal('🎯\x20Missions',_0x2e1bbf);}function _0x4f1adf(_0x329438,_0x38de88,_0x596e61,_0x36bc8a,_0x3b9d08){var _0x11647b='';if(_0x596e61)_0x11647b='<span\x20style=\x22font-size:10.5px;color:#00ff9c;font-weight:800;background:rgba(0,255,156,.10);border:1px\x20solid\x20rgba(0,255,156,.4);padding:5px\x209px;border-radius:10px\x22>✅\x20Claimed</span>';else _0x38de88?_0x11647b='<button\x20onclick=\x22claimMission(\x27'+_0x329438['id']+'\x27,'+_0x329438['reward']+',\x27'+_0x36bc8a+'\x27,\x27'+_0x3b9d08+'\x27)\x22\x20style=\x22padding:7px\x2012px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0\x200\x2012px\x20rgba(0,255,156,.5);animation:badge-pulse\x201.6s\x20infinite\x22>Claim\x20+'+_0x329438['reward']+'🪙</button>':_0x11647b='<span\x20style=\x22font-size:11px;font-weight:900;color:#ffd700;background:rgba(255,215,0,.10);border:1px\x20solid\x20rgba(255,215,0,.35);padding:5px\x209px;border-radius:10px;box-shadow:0\x200\x208px\x20rgba(255,215,0,.18)\x22>+'+_0x329438['reward']+'🪙</span>';var _0x4e0e42='';if(_0x329438['progress']!==undefined){var _0x45e1f9=Math['min'](0x64,Math['round'](_0x329438['progress']/_0x329438['max']*0x64));_0x4e0e42='<div\x20style=\x22margin-top:7px;background:rgba(255,255,255,.08);border-radius:5px;height:6px;overflow:hidden\x22><div\x20style=\x22width:'+_0x45e1f9+'%;height:6px;border-radius:5px;background:linear-gradient(90deg,#00d4ff,#0066ff,#d24dff);box-shadow:0\x200\x208px\x20rgba(0,212,255,.7);transition:width\x20.5s\x22></div></div>',_0x4e0e42+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:3px;font-weight:700\x22>'+_0x329438['progress']+'\x20/\x20'+_0x329438['max']+'</div>';}var _0x89bf8a=_0x3b9d08==='daily'?{'c':'#ffd700','g':'rgba(255,215,0,'}:{'c':'#00d4ff','g':'rgba(0,212,255,'},_0x1b663d=_0x596e61?'linear-gradient(135deg,rgba(0,255,156,.10),rgba(0,255,156,.03))':_0x38de88?'linear-gradient(135deg,'+_0x89bf8a['g']+'.16),'+_0x89bf8a['g']+'.05)\x2060%,rgba(0,255,156,.08))':'linear-gradient(135deg,'+_0x89bf8a['g']+'.10),rgba(20,20,28,.85)\x2060%,'+_0x89bf8a['g']+'.04))',_0x5a3a82=_0x596e61?'1.5px\x20solid\x20rgba(0,255,156,.45)':_0x38de88?'1.5px\x20solid\x20rgba(0,255,156,.65)':'1.5px\x20solid\x20'+_0x89bf8a['g']+'.30)',_0x5bdcc0=_0x38de88&&!_0x596e61?'box-shadow:0\x200\x2014px\x20rgba(0,255,156,.25),\x20inset\x200\x200\x2018px\x20'+_0x89bf8a['g']+'.06);':'box-shadow:inset\x200\x200\x2018px\x20'+_0x89bf8a['g']+'.05);',_0x153f55=(_0x329438['label']['match'](/^[^\s]+/)||['🎯'])[0x0],_0x592859=_0x329438['label']['replace'](/^[^\s]+\s*/,'');return'<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:11px\x2012px;border-radius:14px;margin-bottom:9px;background:'+_0x1b663d+';border:'+_0x5a3a82+';'+_0x5bdcc0+'\x22>'+'<div\x20style=\x22width:38px;height:38px;flex-shrink:0;border-radius:11px;background:rgba(0,0,0,.45);border:1px\x20solid\x20'+_0x89bf8a['g']+'.35);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0\x200\x2010px\x20'+_0x89bf8a['g']+'.25),\x20inset\x200\x200\x208px\x20'+_0x89bf8a['g']+'.15)\x22>'+_0x153f55+'</div>'+'<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:13px;font-weight:800;color:#fff;text-shadow:0\x201px\x204px\x20rgba(0,0,0,.6)\x22>'+_0x592859+'</div>'+'<div\x20style=\x22font-size:10.5px;color:var(--txt2);margin-top:2px\x22>'+_0x329438['desc']+'</div>'+_0x4e0e42+'</div>'+'<div\x20style=\x22flex-shrink:0\x22>'+_0x11647b+'</div></div>';}window['claimMission']=function(_0x3a45b8,_0x109d9f,_0x239660,_0x4a0911){if(!window['U'])return;var _0x1caa1d='claimed_'+_0x3a45b8+'_'+(_0x4a0911==='weekly'?'w':'')+_0x239660,_0xdc304e=_0x4a0911==='weekly'?'w'+_0x239660:new Date()['toISOString']()['split']('T')[0x0],_0x1e3a38=window['_missionsProgCache']||{};if(_0x1e3a38[_0x1caa1d]){toast('Pehle\x20se\x20claim\x20ho\x20chuka\x20hai','inf');return;}_0x1e3a38[_0x1caa1d]=!![],window['_missionsProgCache']=_0x1e3a38;if(window['UD']){window['UD']['coins']=(window['UD']['coins']||0x0)+_0x109d9f;if(window['updateHdr'])updateHdr();}toast('+'+_0x109d9f+'\x20🪙\x20Coins\x20mile!\x20Mission\x20complete!\x20🎉','ok');if(window['updateHdr'])window['updateHdr']();if(window['UD']&&window['U'])_0x4c26b2(_0x1e3a38);window['_supa']&&window['_supa']['rpc']('track_mission_progress',{'p_mission_key':_0x3a45b8,'p_period':_0xdc304e,'p_progress':0x1,'p_target':0x1})['then'](function(){return window['_supa']['rpc']('claim_mission_reward',{'p_mission_key':_0x3a45b8,'p_period':_0xdc304e,'p_coins':_0x109d9f});})['then'](function(_0x430743){if(_0x430743&&(_0x430743['error']||_0x430743['data']&&_0x430743['data']['success']===![])){var _0xa58fad=_0x430743['data']&&_0x430743['data']['error']||_0x430743['error']&&_0x430743['error']['message']||'unknown';if(_0xa58fad!=='Already\x20claimed')console['error']('[Missions]\x20claim_mission_reward\x20failed:',_0xa58fad);}})['catch'](function(_0x43398c){console['error']('[Missions]\x20claim\x20RPC\x20error:',_0x43398c&&_0x43398c['message']);});};function _0x276959(){var _0x605818=new Date(),_0xc5852d=new Date(_0x605818['getFullYear'](),0x0,0x1);return Math['ceil'](((_0x605818-_0xc5852d)/0x5265c00+_0xc5852d['getDay']()+0x1)/0x7);}var _0x31b845=window['joinMatch'];_0x31b845&&(window['joinMatch']=function(){var _0x172b29=_0x31b845['apply'](this,arguments);if(window['db']&&window['U']){var _0x2dc4c7=new Date()['toDateString'](),_0x29bb41=_0x276959();window['db']['ref']('users/'+window['U']['uid']+'/missionProgress')['update']({'lastMatchDate':_0x2dc4c7,['wMatches_'+_0x29bb41]:Number(((window['UD']||{})['missionProgress']||{})['wMatches_'+_0x29bb41]||0x0)+0x1});}return _0x172b29;});window['showReferEarn']=function(){if(!window['UD']||!window['U']){toast('Login\x20karo\x20pehle','err');return;}var _0x4331da=window['UD']['referralCode']||window['U']['uid']['substring'](0x0,0x8)['toUpperCase'](),_0x26e6ff=Number(window['UD']['referralCount']||0x0),_0x5856f3=Number(window['UD']['referralCoinsEarned']||0x0),_0x2b29af='';_0x2b29af+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:10px;margin-bottom:16px\x22>',_0x2b29af+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:12px;padding:12px;text-align:center\x22><div\x20style=\x22font-size:22px;font-weight:900;color:#00ff9c\x22>'+_0x26e6ff+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Friends\x20Joined</div></div>',_0x2b29af+='<div\x20style=\x22background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.15);border-radius:12px;padding:12px;text-align:center\x22><div\x20style=\x22font-size:22px;font-weight:900;color:#ffd700\x22>'+_0x5856f3+'🪙</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Total\x20Earned</div></div>',_0x2b29af+='</div>',_0x2b29af+='<div\x20style=\x22background:rgba(0,0,0,.3);border-radius:14px;padding:14px;margin-bottom:16px\x22>',_0x2b29af+='<div\x20style=\x22font-size:12px;font-weight:800;color:#fff;margin-bottom:10px\x22>🎁\x20Reward\x20Steps</div>';var _0x131a51=window['CFG']&&window['CFG']['referralJoinCoins']||0x32,_0x50cb97=window['CFG']&&window['CFG']['referralSDBonusDiamonds']||0xa,_0x254c7b=window['CFG']&&window['CFG']['referralMatchCoins']||0x1e,_0x2104db=window['CFG']&&window['CFG']['referralMatchThreshold']||0x5,_0x580f5b=[{'icon':'1️⃣','label':'Dost\x20join\x20kare','you':'+'+_0x131a51+'🪙','them':'+'+_0x131a51+'🪙','done':_0x26e6ff>=0x1},{'icon':'2️⃣','label':'Dost\x20pehla\x20Sky\x20Diamond\x20kharido','you':'+'+_0x50cb97+'💎','them':'—','done':![]},{'icon':'3️⃣','label':'Dost\x20'+_0x2104db+'\x20matches\x20khele','you':'+'+_0x254c7b+'🪙','them':'—','done':![]}];_0x580f5b['forEach'](function(_0x1c8dca){_0x2b29af+='<div\x20style=\x22display:flex;align-items:center;gap:10px;margin-bottom:8px;opacity:'+(_0x1c8dca['done']?'1':'.7')+'\x22>',_0x2b29af+='<span\x20style=\x22font-size:16px\x22>'+_0x1c8dca['icon']+'</span>',_0x2b29af+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:12px;font-weight:600\x22>'+_0x1c8dca['label']+'</div></div>',_0x2b29af+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:11px;color:#00ff9c;font-weight:700\x22>Tum:\x20'+_0x1c8dca['you']+'</div>';if(_0x1c8dca['them']!=='—')_0x2b29af+='<div\x20style=\x22font-size:11px;color:#ffd700;font-weight:700\x22>Dost:\x20'+_0x1c8dca['them']+'</div>';_0x2b29af+='</div>';if(_0x1c8dca['done'])_0x2b29af+='<span\x20style=\x22color:#00ff9c;font-size:14px\x22>✅</span>';_0x2b29af+='</div>';}),_0x2b29af+='</div>',_0x2b29af+='<div\x20style=\x22background:rgba(255,255,255,.04);border:1.5px\x20dashed\x20rgba(0,255,156,.3);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px\x22>',_0x2b29af+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:6px\x22>Tumhara\x20Referral\x20Code</div>',_0x2b29af+='<div\x20style=\x22font-size:28px;font-weight:900;color:#00ff9c;letter-spacing:3px\x22>'+_0x4331da+'</div>',_0x2b29af+='</div>';var _0x2e122b='🎮\x20Mini\x20eSports\x20pe\x20Free\x20Fire\x20&\x20BGMI\x20tournaments!\x0a🪙\x20FREE\x20coins\x20+\x20No\x20real\x20money\x20gambling\x0a\x0aMere\x20code\x20se\x20join\x20karo:\x20'+_0x4331da+'\x0a👉\x20https://deepsilence10161-source.github.io/ff-user-panel/';_0x2b29af+='<button\x20onclick=\x22doShareReferral(\x27'+encodeURIComponent(_0x2e122b)+'\x27)\x22\x20style=\x22width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px\x22><i\x20class=\x22fab\x20fa-whatsapp\x22></i>\x20WhatsApp\x20pe\x20Share\x20Karo</button>',_0x2b29af+='<button\x20onclick=\x22copyReferCode(\x27'+_0x4331da+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px\x20solid\x20rgba(255,255,255,.1);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i>\x20Code\x20Copy\x20Karo</button>';if(window['openModal'])openModal('🤝\x20Refer\x20&\x20Earn',_0x2b29af);},window['doShareReferral']=function(_0x692158){var _0x304532=decodeURIComponent(_0x692158);window['openWhatsApp'](_0x304532);},window['copyReferCode']=function(_0x107d55){if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x107d55);toast('Code\x20copy\x20ho\x20gaya!\x20🎉','ok');};function _0x20de84(){var _0x146f88={'frame_neon':'Neon\x20glow\x20border','frame_fire':'Jalti\x20Fire\x20border','frame_galaxy':'Galaxy\x20purple\x20glow','frame_gold':'Gold\x20champion\x20border','frame_glow':'Royal\x20Glow\x20—\x20gold-purple\x20avatar\x20frame','frame_ring_bronze':'Rank\x20Ring\x20—\x20Bronze\x20(avatar\x20medal)','frame_ring_silver':'Rank\x20Ring\x20—\x20Silver\x20(avatar\x20medal)','frame_ring_gold':'Rank\x20Ring\x20—\x20Gold\x20(avatar\x20medal)','frame_ring_platinum':'Rank\x20Ring\x20—\x20Platinum\x20(avatar\x20medal)','frame_ring_diamond':'Rank\x20Ring\x20—\x20Diamond\x20(avatar\x20medal)','frame_ring_legend':'Rank\x20Ring\x20—\x20Legend\x20(avatar\x20medal)','frame_ring_prem_silver':'Premium\x20Ring\x20—\x20Silver\x20(avatar\x20medal)','frame_ring_prem_gold':'Premium\x20Ring\x20—\x20Gold\x20(avatar\x20medal)','frame_ring_prem_diamond':'Premium\x20Ring\x20—\x20Diamond\x20(avatar\x20medal)','tag_beast':'⚡\x20BEAST\x20MODE\x20tag','tag_pro':'🎯\x20PRO\x20PLAYER\x20tag','tag_king':'👑\x20KING\x20tag','vip_slot':'⭐\x20VIP\x20badge\x20apne\x20profile\x20par'},_0x15e539;return window['CFG']&&window['CFG']['cosmetics']?_0x15e539=Object['keys'](window['CFG']&&window['CFG']['cosmetics'])['map'](function(_0x44abb9){var _0x20abad=(window['CFG']&&window['CFG']['cosmetics'])[_0x44abb9];return{'id':_0x44abb9,'name':_0x20abad['name'],'price':_0x20abad['price'],'icon':_0x20abad['icon'],'desc':_0x146f88[_0x44abb9]||_0x20abad['desc']||'','type':_0x44abb9['indexOf']('frame')===0x0?'frame':_0x44abb9['indexOf']('tag')===0x0?'tag':'vip'};}):_0x15e539=[{'id':'frame_neon','name':'Neon\x20Frame','price':0x32,'icon':'🟢','desc':_0x146f88['frame_neon'],'type':'frame'},{'id':'frame_fire','name':'Fire\x20Frame','price':0x4b,'icon':'🔥','desc':_0x146f88['frame_fire'],'type':'frame'},{'id':'frame_galaxy','name':'Galaxy\x20Frame','price':0x64,'icon':'🌌','desc':_0x146f88['frame_galaxy'],'type':'frame'},{'id':'frame_gold','name':'Gold\x20Champion','price':0x96,'icon':'🏆','desc':_0x146f88['frame_gold'],'type':'frame'},{'id':'tag_beast','name':'⚡\x20BEAST\x20MODE','price':0x1e,'icon':'⚡','desc':_0x146f88['tag_beast'],'type':'tag'},{'id':'tag_pro','name':'🎯\x20PRO\x20PLAYER','price':0x1e,'icon':'🎯','desc':_0x146f88['tag_pro'],'type':'tag'},{'id':'tag_king','name':'👑\x20KING','price':0x32,'icon':'👑','desc':_0x146f88['tag_king'],'type':'tag'},{'id':'vip_slot','name':'VIP\x20Slot\x20Pass','price':0xc8,'icon':'⭐','desc':_0x146f88['vip_slot'],'type':'vip'}],!_0x15e539['some'](function(_0x8527e8){return _0x8527e8['id']==='frame_glow';})&&_0x15e539['push']({'id':'frame_glow','name':'Royal\x20Glow\x20Frame','price':0x78,'icon':'✨','desc':_0x146f88['frame_glow'],'type':'frame','img':'assets/img/frames/glow.png'}),_0x214611['forEach'](function(_0x3a3051){!_0x15e539['some'](function(_0xf41cf2){return _0xf41cf2['id']===_0x3a3051['id'];})?_0x15e539['push']({'id':_0x3a3051['id'],'name':_0x3a3051['name'],'price':_0x3a3051['price'],'icon':_0x3a3051['icon'],'desc':_0x146f88[_0x3a3051['id']]||'Avatar\x20ring','type':'frame','img':_0x3a3051['img']}):_0x15e539['forEach'](function(_0x37a925){if(_0x37a925['id']===_0x3a3051['id']){_0x37a925['img']=_0x3a3051['img'];if(!_0x37a925['desc'])_0x37a925['desc']=_0x146f88[_0x3a3051['id']]||'Avatar\x20ring';}});}),_0x15e539['concat'](_0x3833d9());}var _0x237fc9=null,_0x44c86d={'tag_bp_prem_25':{'img':'assets/img/titles/veteran.png'},'emoji_bp_prem_35':{'img':'assets/img/titles/champion.png'},'tag_bp_prem_40':{'img':'assets/img/titles/immortal.png'},'tag_bp_free_45':{'img':'assets/img/titles/death-bringer.png'},'tag_bp_prem_50':{'img':'assets/img/titles/reaper.png'}};function _0x3833d9(){if(_0x237fc9)return _0x237fc9;var _0xb36994=[];function _0x3a97b9(_0x118649){if(!_0x118649||!_0x118649['key'])return;var _0x260aec=_0x118649['type']==='theme'?'frame':_0x118649['type']==='badge'||_0x118649['type']==='title'?'tag':_0x118649['type']==='emoji'?'emoji':'tag',_0x4a04e3=_0x44c86d[_0x118649['key']];_0xb36994['push']({'id':_0x118649['key'],'name':_0x118649['name']||_0x118649['key'],'icon':_0x118649['icon']||'🎫','price':0x0,'desc':'Battle\x20Pass\x20Season\x20reward','type':_0x260aec,'source':'bp','img':_0x118649['img']||_0x4a04e3&&_0x4a04e3['img']||''});}try{window['_bpSeasonTiers']&&window['_bpSeasonTiers']['length']&&window['_bpSeasonTiers']['forEach'](function(_0x331705){_0x3a97b9(_0x331705['freeCos']),_0x3a97b9(_0x331705['premCos']);});}catch(_0x55decd){}return!_0xb36994['length']&&(_0xb36994=[{'id':'tag_bp_prem_1','name':'🎖️\x20Starter\x20Badge','icon':'🎖️','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp'},{'id':'tag_bp_prem_5','name':'🌟\x20Chosen\x20One','icon':'🌟','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp'},{'id':'emoji_bp_prem_8','name':'🔥\x20Fire\x20Pack','icon':'🔥','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'emoji','source':'bp'},{'id':'frame_bp_prem_13','name':'🔵\x20Blue\x20Flame\x20Border','icon':'🔵','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'frame','source':'bp'},{'id':'tag_bp_prem_15','name':'Silver\x20Fighter','icon':'','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp'},{'id':'emoji_bp_prem_18','name':'⚡\x20Lightning\x20Pack','icon':'⚡','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'emoji','source':'bp'},{'id':'frame_bp_prem_23','name':'🟣\x20Purple\x20Haze\x20Border','icon':'🟣','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'frame','source':'bp'},{'id':'tag_bp_prem_25','name':'🎖️\x20Veteran','icon':'🎖️','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp','img':'assets/img/titles/veteran.png'},{'id':'emoji_bp_prem_28','name':'👑\x20Crown\x20Pack','icon':'👑','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'emoji','source':'bp'},{'id':'frame_bp_prem_33','name':'🟡\x20Golden\x20Frame','icon':'🟡','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'frame','source':'bp'},{'id':'emoji_bp_prem_35','name':'👑\x20Champion','icon':'👑','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp','img':'assets/img/titles/champion.png'},{'id':'frame_bp_prem_38','name':'🌊\x20Ocean\x20Wave\x20Border','icon':'🌊','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'frame','source':'bp'},{'id':'tag_bp_prem_40','name':'⚡\x20Immortal','icon':'⚡','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp','img':'assets/img/titles/immortal.png'},{'id':'emoji_bp_prem_43','name':'🔴\x20Fire\x20God\x20Pack','icon':'🔴','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'emoji','source':'bp'},{'id':'frame_bp_prem_48','name':'🌌\x20Galaxy\x20Border','icon':'🌌','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'frame','source':'bp'},{'id':'tag_bp_prem_50','name':'☠️\x20Reaper\x20(Season\x20Legend)','icon':'☠️','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp','img':'assets/img/titles/reaper.png'},{'id':'tag_bp_free_5','name':'Bronze\x20Warrior','icon':'','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp'},{'id':'tag_bp_free_15','name':'🎖️\x20Participant','icon':'🎖️','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp'},{'id':'tag_bp_free_30','name':'💪\x20Grinder','icon':'💪','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp'},{'id':'tag_bp_free_45','name':'💀\x20Death\x20Bringer','icon':'💀','price':0x0,'desc':'Battle\x20Pass\x20reward','type':'tag','source':'bp','img':'assets/img/titles/death-bringer.png'}]),_0x237fc9=_0xb36994,window['_supa']&&!window['_bpSeasonTiersLoaded']&&(window['_bpSeasonTiersLoaded']=!![],window['_supa']['from']('battle_passes')['select']('tiers')['eq']('is_active',!![])['order']('start_date',{'ascending':![]})['limit'](0x1)['then'](function(_0x5a68d4){_0x5a68d4&&_0x5a68d4['data']&&_0x5a68d4['data'][0x0]&&_0x5a68d4['data'][0x0]['tiers']&&(window['_bpSeasonTiers']=_0x5a68d4['data'][0x0]['tiers'],_0x237fc9=null);},function(){})),_0xb36994;}window['showCosmeticsStore']=function(){if(!window['UD']||!window['U']){toast('Login\x20karo\x20pehle','err');return;}var _0x933d8b=Number(window['UD']['skyDiamonds']||0x0),_0x57f519=window['UD']['cosmetics']||{},_0x4daeca='<div\x20style=\x22background:rgba(0,212,255,.06);border:1px\x20solid\x20rgba(0,212,255,.2);border-radius:12px;padding:10px\x2014px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between\x22>';_0x4daeca+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Your\x20Balance</div>',_0x4daeca+='<div\x20style=\x22font-size:18px;font-weight:900;color:#00d4ff\x22>💎\x20'+_0x933d8b+'\x20Sky\x20Diamonds</div>',_0x4daeca+='</div>',_0x4daeca+='<div\x20style=\x22display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap\x22>',['All','Frames','Tags','VIP','Season']['forEach'](function(_0x164d10,_0x34ed9a){_0x4daeca+='<button\x20onclick=\x22filterCosmetics(\x27'+_0x164d10['toLowerCase']()+'\x27)\x22\x20id=\x22cosTab_'+_0x164d10['toLowerCase']()+'\x22\x20style=\x22padding:5px\x2012px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:'+(_0x34ed9a===0x0?'#00d4ff':'rgba(255,255,255,.08)')+';color:'+(_0x34ed9a===0x0?'#000':'var(--txt)')+'\x22>'+_0x164d10+'</button>';}),_0x4daeca+='</div>',_0x4daeca+='<div\x20id=\x22cosmeticsList\x22>',_0x4daeca+=_0x284399('all',_0x57f519,_0x933d8b),_0x4daeca+='</div>';if(window['openModal'])openModal('💎\x20Cosmetics\x20Store',_0x4daeca);if(window['_loadExtras'])window['_loadExtras']();},window['filterCosmetics']=function(_0x26a1b1){['all','frames','tags','vip','season']['forEach'](function(_0x5b3aab){var _0x2dc223=document['getElementById']('cosTab_'+_0x5b3aab);_0x2dc223&&(_0x2dc223['style']['background']=_0x5b3aab===_0x26a1b1?'#00d4ff':'rgba(255,255,255,.08)',_0x2dc223['style']['color']=_0x5b3aab===_0x26a1b1?'#000':'var(--txt)');});var _0x23c543=document['getElementById']('cosmeticsList');if(_0x23c543)_0x23c543['innerHTML']=_0x284399(_0x26a1b1,window['UD']&&window['UD']['cosmetics']||{},Number(window['UD']&&window['UD']['skyDiamonds']||0x0));};function _0x4dc05c(_0x5a02c4){try{var _0x3679f0=_0x5a02c4&&_0x5a02c4['icon']||'🎫';if(!_0x5a02c4||!_0x5a02c4['img'])return _0x3679f0;return'<img\x20src=\x22'+_0x5a02c4['img']+'?v=20261117g\x22\x20alt=\x22\x22\x20loading=\x22lazy\x22\x20'+'style=\x22max-width:48px;max-height:32px;object-fit:contain\x22\x20'+'onerror=\x22this.style.display=\x27none\x27;this.parentNode.textContent=\x27'+_0x3679f0['replace'](/'/g,'')+'\x27\x22>';}catch(_0x2ff5fd){return _0x5a02c4&&_0x5a02c4['icon']||'🎫';}}function _0x284399(_0x5cf869,_0x558e43,_0x527cc1){var _0x3917f7=_0x20de84()['filter'](function(_0x23d96f){if(_0x5cf869==='all')return!![];if(_0x5cf869==='frames')return _0x23d96f['type']==='frame'&&_0x23d96f['source']!=='bp';if(_0x5cf869==='tags')return _0x23d96f['type']==='tag'&&_0x23d96f['source']!=='bp';if(_0x5cf869==='vip')return _0x23d96f['type']==='vip'&&_0x23d96f['source']!=='bp';if(_0x5cf869==='season')return _0x23d96f['source']==='bp';return _0x23d96f['type']===_0x5cf869;}),_0x587201='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px\x22>';return _0x3917f7['forEach'](function(_0x2db797){var _0x143a88=!!_0x558e43[_0x2db797['id']],_0x3cfb54=_0x527cc1>=_0x2db797['price'];_0x587201+='<div\x20style=\x22background:rgba(255,255,255,.03);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:14px;padding:12px;text-align:center\x22>',_0x587201+='<div\x20style=\x22font-size:28px;margin-bottom:6px;min-height:32px;display:flex;align-items:center;justify-content:center\x22>'+_0x4dc05c(_0x2db797)+'</div>',_0x587201+='<div\x20style=\x22font-size:12px;font-weight:800;margin-bottom:3px\x22>'+_0x2db797['name']+'</div>',_0x587201+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-bottom:8px\x22>'+_0x2db797['desc']+'</div>';if(_0x143a88){var _0xf771b0=!!(_0x558e43[_0x2db797['id']]&&_0x558e43[_0x2db797['id']]['is_equipped']);_0x587201+='<div\x20style=\x22display:flex;flex-direction:column;gap:5px\x22>',_0x587201+='<span\x20style=\x22font-size:11px;color:#00ff9c;font-weight:700;padding:4px\x2010px;border-radius:20px;background:rgba(0,255,156,.1)\x22>✅\x20Owned'+(_0xf771b0?'\x20·\x20Active':'')+'</span>',_0x587201+='<button\x20onclick=\x22window.toggleCosmeticEquip(\x27'+_0x2db797['id']+'\x27,this)\x22\x20style=\x22width:100%;padding:7px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;background:'+(_0xf771b0?'rgba(255,255,255,.08)':'linear-gradient(135deg,#00ff9c,#00cc7a)')+';border:1px\x20solid\x20'+(_0xf771b0?'rgba(255,255,255,.2)':'rgba(0,255,156,.4)')+';color:'+(_0xf771b0?'#ccc':'#000')+'\x22>'+(_0xf771b0?'Remove':'Apply')+'</button>',_0x587201+='</div>';}else _0x2db797['source']==='bp'?_0x587201+='<button\x20onclick=\x22if(window.showBattlePass)showBattlePass();\x22\x20style=\x22width:100%;padding:7px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;background:rgba(185,100,255,.1);border:1px\x20solid\x20rgba(185,100,255,.3);color:#b964ff\x22>🎫\x20Season\x20Pass\x20reward</button>':_0x587201+='<button\x20onclick=\x22buyCosmetic(\x27'+_0x2db797['id']+'\x27,'+_0x2db797['price']+',\x27'+encodeURIComponent(_0x2db797['name'])+'\x27,this)\x22\x20style=\x22width:100%;padding:7px;border-radius:10px;background:'+(_0x3cfb54?'linear-gradient(135deg,#0066ff,#00d4ff)':'rgba(255,255,255,.05)')+';border:1px\x20solid\x20rgba(0,212,255,'+(_0x3cfb54?'.4':'.1')+');color:'+(_0x3cfb54?'#fff':'#555')+';font-size:11px;font-weight:800;cursor:'+(_0x3cfb54?'pointer':'default')+'\x22>💎\x20'+_0x2db797['price']+'</button>';_0x587201+='</div>';}),_0x587201+='</div>',_0x587201;}window['buyCosmetic']=function(_0xd797ac,_0xb4a63b,_0x23a4d8,_0x5f59a3){var _0x355bb5=decodeURIComponent(_0x23a4d8);if(!window['_supa']||!window['U']||!window['UD'])return;var _0x38292c=Number(window['UD']['skyDiamonds']||0x0);if(_0x38292c<_0xb4a63b){toast('Sky\x20Diamonds\x20kam\x20hain!\x20Wallet\x20se\x20kharido\x20💎','err');return;}if(!confirm(_0x355bb5+'\x20kharidna\x20chahte\x20ho?\x20💎'+_0xb4a63b+'\x20Sky\x20Diamonds\x20lagenge.'))return;var _0x1042f0=_0x5f59a3;_0x1042f0&&(_0x1042f0['disabled']=!![],_0x1042f0['textContent']='...'),window['_supa']['rpc']('purchase_cosmetic',{'p_cosmetic_key':_0xd797ac,'p_price':_0xb4a63b,'p_display_name':_0x355bb5})['then'](function(_0x5c328e){var _0xb9bbba=_0x5c328e&&_0x5c328e['data'];if(_0x5c328e['error']||!_0xb9bbba||!_0xb9bbba['ok']){var _0xe11d9a=_0xb9bbba&&_0xb9bbba['error']||_0x5c328e['error']&&_0x5c328e['error']['message']||'unknown',_0x40c322=_0xe11d9a==='insufficient_balance'?'Sky\x20Diamonds\x20kam\x20hain!':'Purchase\x20fail\x20ho\x20gaya,\x20dobara\x20try\x20karo';toast('❌\x20'+_0x40c322,'err');_0x1042f0&&(_0x1042f0['disabled']=![],_0x1042f0['textContent']='💎\x20'+_0xb4a63b);return;}if(!window['UD']['cosmetics'])window['UD']['cosmetics']={};window['UD']['cosmetics'][_0xd797ac]={'ownedAt':Date['now'](),'name':_0x355bb5};if(typeof _0xb9bbba['new_balance']==='number')window['UD']['skyDiamonds']=_0xb9bbba['new_balance'];toast('🎉\x20'+_0x355bb5+'\x20unlock\x20ho\x20gaya!','ok');if(window['updateHdr'])window['updateHdr']();if(window['_loadExtras'])window['_loadExtras']();setTimeout(window['showCosmeticsStore'],0x12c);},function(_0x846e0e){toast('❌\x20Network\x20error,\x20dobara\x20try\x20karo','err'),_0x1042f0&&(_0x1042f0['disabled']=![],_0x1042f0['textContent']='💎\x20'+_0xb4a63b);});};var _0x143001={'frame_neon':'#00ff9c','frame_fire':'#ff6b2b','frame_galaxy':'#b964ff','frame_gold':'#ffd700','frame_glow':'#e0b0ff','frame_bp_prem_13':'#4287f5','frame_bp_prem_23':'#9b59f0','frame_bp_prem_33':'#f0c040','frame_bp_prem_38':'#2ec8ff','frame_bp_prem_48':'#b964ff','frame_ring_bronze':'#cd7f32','frame_ring_silver':'#c9d4e4','frame_ring_gold':'#ffd700','frame_ring_platinum':'#7fe3ff','frame_ring_diamond':'#00d4ff','frame_ring_legend':'#ff6b2b','frame_ring_prem_silver':'#e0e0e0','frame_ring_prem_gold':'#ffb800','frame_ring_prem_diamond':'#57d9ff'},_0x214611=[{'id':'frame_ring_bronze','name':'Bronze\x20Ring','icon':'','price':0x3c,'img':'assets/img/ranks/bronze.png'},{'id':'frame_ring_silver','name':'Silver\x20Ring','icon':'','price':0x50,'img':'assets/img/ranks/silver.png'},{'id':'frame_ring_gold','name':'Gold\x20Ring','icon':'','price':0x64,'img':'assets/img/ranks/gold.png'},{'id':'frame_ring_platinum','name':'Platinum\x20Ring','icon':'💠','price':0x82,'img':'assets/img/ranks/platinum.png'},{'id':'frame_ring_diamond','name':'Diamond\x20Ring','icon':'💎','price':0xa0,'img':'assets/img/ranks/diamond.png'},{'id':'frame_ring_legend','name':'Legend\x20Ring','icon':'👑','price':0xc8,'img':'assets/img/ranks/legend.png'},{'id':'frame_ring_prem_silver','name':'Premium\x20Silver\x20Ring','icon':'⚪','price':0x78,'img':'assets/img/premium/silver.png'},{'id':'frame_ring_prem_gold','name':'Premium\x20Gold\x20Ring','icon':'🟡','price':0xb4,'img':'assets/img/premium/gold.png'},{'id':'frame_ring_prem_diamond','name':'Premium\x20Diamond\x20Ring','icon':'🔷','price':0xfa,'img':'assets/img/premium/diamond.png'}];window['__COS_RINGS']=_0x214611,window['__COS_CATALOG']=function(){try{return _0x20de84();}catch(_0x253b6b){return[];}},window['getEquippedCosmetic']=function(_0x26ebfb){var _0x8f8e56=window['UD']&&window['UD']['cosmetics']||{},_0x2d2722=null;return Object['keys'](_0x8f8e56)['forEach'](function(_0x1c1591){var _0x250102=_0x8f8e56[_0x1c1591]||{};if(_0x250102['is_equipped']&&_0x1c1591['split']('_')[0x0]===_0x26ebfb)_0x2d2722={'id':_0x1c1591,'name':_0x250102['name']||_0x58e457(_0x1c1591)||_0x1c1591,'row':_0x250102};}),_0x2d2722;};function _0x58e457(_0x2a2b1){try{var _0x2b6842=_0x20de84();for(var _0x2a724a=0x0;_0x2a724a<_0x2b6842['length'];_0x2a724a++){if(_0x2b6842[_0x2a724a]['id']===_0x2a2b1)return _0x2b6842[_0x2a724a]['name'];}}catch(_0x3372f5){}return null;}window['getEquippedFrameColor']=function(){var _0x25dc03=window['getEquippedCosmetic']('frame');if(!_0x25dc03)return null;return _0x143001[_0x25dc03['id']]||'#00ff9c';},window['getEquippedFrameArt']=function(){var _0x40774a=window['getEquippedCosmetic']('frame');if(!_0x40774a)return null;var _0x4f4a33='',_0x484576=_0x40774a['name'];try{var _0x47b131=_0x20de84();for(var _0x2f0b49=0x0;_0x2f0b49<_0x47b131['length'];_0x2f0b49++){if(_0x47b131[_0x2f0b49]['id']===_0x40774a['id']){_0x4f4a33=_0x47b131[_0x2f0b49]['img']||'',_0x484576=_0x47b131[_0x2f0b49]['name']||_0x484576;break;}}}catch(_0x5b2b61){}return{'id':_0x40774a['id'],'name':_0x484576,'img':_0x4f4a33,'color':_0x143001[_0x40774a['id']]||'#00ff9c'};},window['getEquippedTagText']=function(){var _0x279d3a=window['getEquippedCosmetic']('tag');if(!_0x279d3a)return null;var _0x556a51=window['cleanLabel']?window['cleanLabel'](_0x279d3a['name']):_0x279d3a['name'];return _0x556a51||_0x279d3a['name'];},window['toggleCosmeticEquip']=function(_0x30182f,_0x34b88e){if(!window['U']||!window['UD']||!window['_supa']){if(window['toast'])toast('Login\x20karo\x20pehle','err');return;}var _0x2f2e17=window['UD']['cosmetics']||{},_0x32b9cc=_0x2f2e17[_0x30182f]||{},_0x44a8a1=!!_0x32b9cc['is_equipped'];_0x34b88e&&(_0x34b88e['disabled']=!![],_0x34b88e['textContent']='...');var _0x48520f=function(){if(!window['UD']['cosmetics'])window['UD']['cosmetics']={};_0x44a8a1?Object['keys'](window['UD']['cosmetics'])['forEach'](function(_0x7c6857){window['UD']['cosmetics'][_0x7c6857]&&window['UD']['cosmetics'][_0x7c6857]['is_equipped']&&_0x7c6857['split']('_')[0x0]===_0x30182f['split']('_')[0x0]&&(window['UD']['cosmetics'][_0x7c6857]['is_equipped']=![]);}):Object['keys'](window['UD']['cosmetics'])['forEach'](function(_0x141fe4){window['UD']['cosmetics'][_0x141fe4]&&_0x141fe4['split']('_')[0x0]===_0x30182f['split']('_')[0x0]&&(window['UD']['cosmetics'][_0x141fe4]['is_equipped']=_0x141fe4===_0x30182f);});if(window['updateHdr'])window['updateHdr']();window['showCosmeticsStore']();if(window['renderProfile'])setTimeout(function(){try{renderProfile();}catch(_0xf97c31){}},0x96);};_0x44a8a1?window['_supa']['from']('user_cosmetics')['update']({'is_equipped':![]})['eq']('user_id',window['U']['uid'])['like']('cosmetic_key',_0x30182f['split']('_')[0x0]+'%')['then'](_0x48520f,function(_0x3327df){if(window['toast'])toast('❌\x20Remove\x20nahi\x20hua,\x20dobara\x20try\x20karo','err');if(_0x34b88e)_0x34b88e['disabled']=![];}):window['_supa']['from']('user_cosmetics')['update']({'is_equipped':![]})['eq']('user_id',window['U']['uid'])['like']('cosmetic_key',_0x30182f['split']('_')[0x0]+'%')['then'](function(){return window['_supa']['from']('user_cosmetics')['update']({'is_equipped':!![]})['eq']('user_id',window['U']['uid'])['eq']('cosmetic_key',_0x30182f);})['then'](_0x48520f,function(_0x5ac183){if(window['toast'])toast('❌\x20Apply\x20nahi\x20hua,\x20dobara\x20try\x20karo','err');if(_0x34b88e)_0x34b88e['disabled']=![];});},window['checkClanWarBanner']=function(){var _0x583853=new Date()['getDay'](),_0x10bfab=document['getElementById']('clanWarBanner');if(!_0x10bfab)return;if(_0x583853===0x0)_0x10bfab['style']['display']='flex';else{var _0xbe5333=(0x7-_0x583853)%0x7,_0x33ebbb=document['getElementById']('clanWarBannerLabel');if(_0x33ebbb)_0x33ebbb['textContent']=_0xbe5333+'\x20din\x20baad\x20—\x20Sunday\x20Clan\x20War!';_0x10bfab['style']['display']='flex';}},window['injectGrowthButtons']=function(){var _0x2cf002=document['getElementById']('growthQuickBar');if(_0x2cf002)_0x2cf002['remove']();};function _0x1c4d53(){if(!window['db']||!window['U']){setTimeout(_0x1c4d53,0x3e8);return;}window['checkClanWarBanner']&&window['checkClanWarBanner'](),window['injectGrowthButtons']&&window['injectGrowthButtons'](),console['log']('✅\x20growth-features.js\x20loaded');}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(_0x1c4d53,0x7d0);}):setTimeout(_0x1c4d53,0x7d0);window['_growthInitFn']=_0x1c4d53,window['initGrowth']=_0x1c4d53,window['sendClanWarChallenge']=function(_0x21b1bd,_0x448d5c,_0x4cd2fd,_0x21e64b,_0x515da9){if(window['_sendWarChallenge'])return window['_sendWarChallenge'](_0x21b1bd,_0x448d5c,_0x4cd2fd,_0x21e64b,_0x515da9);if(window['toast'])toast('Clan\x20war\x20service\x20abhi\x20ready\x20nahi\x20—\x20retry\x20karo','err');};try{window['__COSHOP']={'version':'20261012c','bpList':function(){return _0x3833d9();},'iconHtml':function(_0x4cff5c){return _0x4dc05c(_0x4cff5c);}};}catch(_0x424d98){}}());
+/* ================================================================
+   GROWTH FEATURES — growth-features.js
+   Mini eSports User Panel v11
+   
+   1. City Leaderboard
+   2. Share Card (Viral Loop)
+   3. Daily + Weekly Missions
+   4. Enhanced Refer & Earn
+   5. Lifetime Achievements v3
+   6. Sky Diamond Cosmetics Store
+   7. Clan War Sunday Banner
+   ================================================================ */
+
+(function() {
+'use strict';
+
+/* ── HELPERS ── */
+/* $ function removed — using utils.js version */
+
+/* ================================================================
+   1. CITY LEADERBOARD
+   ================================================================ */
+window.showCityLeaderboard = function() {
+  var userCity = (window.UD && window.UD.city) || '';
+  var h = '<div style="margin-bottom:14px">';
+  h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px" id="cityTabBar">';
+  ['My City', 'All India'].forEach(function(tab, i) {
+    h += '<button onclick="switchCityTab(' + i + ')" id="cityTab' + i + '" style="padding:7px 14px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;background:' + (i===0?'var(--green)':'rgba(255,255,255,.08)') + ';color:' + (i===0?'#000':'var(--txt)') + '">' + tab + '</button>';
+  });
+  h += '</div>';
+  h += '<div id="cityLeaderContent"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>';
+  h += '</div>';
+  if (window.openModal) openModal('🏆 Leaderboard', h);
+  loadCityLeader(0, userCity);
+};
+
+window.switchCityTab = function(idx) {
+  [0,1].forEach(function(i) {
+    var b = $('cityTab' + i);
+    if (b) { b.style.background = i===idx?'var(--green)':'rgba(255,255,255,.08)'; b.style.color = i===idx?'#000':'var(--txt)'; }
+  });
+  var city = idx === 0 ? ((window.UD && window.UD.city)||'') : '';
+  loadCityLeader(idx, city);
+};
+
+function loadCityLeader(tab, city) {
+  var cont = $('cityLeaderContent');
+  if (!cont) return;
+  if (!window.db || !window.U) { cont.innerHTML = '<div style="text-align:center;padding:20px;color:#ff6b6b">Login required</div>'; return; }
+
+  cont.innerHTML = '<div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+
+  /* City leaderboard from Supabase */
+  if (window._supa && window.U) {
+    var userCity = window.UD && window.UD.city ? window.UD.city : null;
+    /* ✅ D100-F6 (owner: "Kashmir + Haryana ke users ek sath, Unknown cities"):
+       purana BUG#38 fallback city na hone par SARE users "My City" tab me
+       kheech leta tha. Ab: My City = SIRF apni city; city set nahi hai to
+       gated empty-state + Location CTA (city auto-set hote hi board reload). */
+    if (tab === 0 && !userCity) {
+      cont.innerHTML = '<div style="text-align:center;padding:26px 18px"><div style="font-size:34px;margin-bottom:8px">📍</div>'
+        + '<div style="font-size:14px;font-weight:800;margin-bottom:6px">Apna city set karo</div>'
+        + '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:14px">City leaderboard sirf <strong style="color:var(--txt)">aapke city ke players</strong> dikhata hai.<br>Location allow karo — city apne aap set ho jayega.</div>'
+        + '<button onclick="window._doAutoSetLocation&&_doAutoSetLocation()" id="_locSetBtn" style="padding:12px 26px;border-radius:14px;border:none;background:linear-gradient(135deg,#ffaa00,#ff8c00);color:#000;font-weight:900;font-size:13px;cursor:pointer"><i class="fas fa-location-crosshairs"></i> Location Allow Karo</button></div>';
+      return;
+    }
+    var q = (tab === 0 && userCity)
+      ? window._supa.from('user_public_profiles').select('id,ign,rank_points,city,avatar_url').eq('city', userCity).order('rank_points', { ascending: false }).limit(50)
+      : window._supa.from('leaderboard').select('*').order('rank_points', { ascending: false }).limit(50);
+    q.then(function(r) {
+      /* BUG FIX (2026-08-21): window.renderCityLeaderboard was called here
+         but never defined anywhere in the codebase — the only similarly
+         named function is _renderCityLeaderboardModal in modal.js, which
+         is unrelated. So this branch always silently did nothing and the
+         "Loading..." spinner never went away. Reuse the real working
+         render logic below (players array + medal/rank HTML) instead of
+         a function that doesn't exist. */
+      var rows = r && r.data ? r.data : [];
+      var players = rows.map(function(d) {
+        return {
+          uid: d.id,
+          ign: d.ign || 'Player',
+          rp: Number(d.rank_points || 0),
+          city: d.city || '',
+          avatarBg: d.avatar_bg_color || '#1a1a2e',
+          wins: Number(d.total_wins || 0)
+        };
+      });
+      players.sort(function(a, b) { return b.rp - a.rp; });
+      renderLeaderList(cont, players, tab, city);
+
+      /* ✅ BUG FIX (2026-08-24): "Aapki rank top 50 se bahar hai" AND
+         "Aapki rank: #1" showed together, contradicting each other.
+         Root cause was TWO separate, uncoordinated pieces of code both
+         trying to render a "your rank" fallback:
+           1. renderLeaderList()'s own fallback (when user not in top 20)
+           2. this block appending a SECOND, separate note underneath
+         On top of that, the count query here used .gt('rank_points',
+         myRp) — with every player currently tied at 0 points, "how many
+         have MORE than 0" is always 0, so it always reported rank #1
+         for every single tied player, ties not counted at all.
+         Fix: single source of truth. Compute the real tie-aware rank
+         here (players who rank strictly above me by score, or by
+         earlier position when tied) via .gte() + a tiebreak count, and
+         only render ONE note — removing the redundant, contradicting
+         fallback from renderLeaderList entirely (see below). */
+      var meInFetched = window.U && players.some(function(p) { return p.uid === window.U.uid; });
+      if (!meInFetched && window.UD) {
+        var myRp = Number(window.UD.rankPoints || window.UD.rank_points || 0);
+        /* Players strictly above me by rank_points */
+        var aboveQ = window._supa.from('user_public_profiles').select('id', { count: 'exact', head: true }).gt('rank_points', myRp);
+        if (userCity && tab === 0) aboveQ = aboveQ.eq('city', userCity);
+        aboveQ.then(function(cr) {
+          var above = (typeof cr.count === 'number' ? cr.count : players.length);
+          var myRank = above + 1;
+          var el = document.getElementById('cityLeaderContent');
+          if (!el) return;
+          var existing = el.querySelector('[data-rank-note]');
+          if (existing) existing.remove();
+          var note = document.createElement('div');
+          note.setAttribute('data-rank-note', '1');
+          note.style.cssText = 'text-align:center;padding:10px;margin-top:6px;border-radius:10px;background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.2);font-size:12px;color:var(--green);font-weight:700';
+          note.textContent = above === 0
+            ? ('Aapki rank top 50 mein nahi hai, lekin ' + (myRp === 0 ? 'abhi tak sabki rank barabar hai (0 pts) — pehla match jeetkar #1 pakko banao!' : ('#' + myRank + ' ho tum (' + myRp + ' pts)')))
+            : ('Aapki rank: #' + myRank + ' (' + myRp + ' pts)');
+          el.appendChild(note);
+        }, function() { /* silent — nothing appended on failure, no misleading fallback shown */ });
+      }
+    }, function(err) {
+      cont.innerHTML = '<div style="text-align:center;padding:24px;color:#ff6b6b">Leaderboard load nahi ho paya. Dobara try karo.</div>';
+    });
+    return;
+  }
+  var query = window.db ? window.db.ref('users').orderByChild('rankPoints').limitToLast(50) : null;
+  if (!query) return;
+
+  query.once('value', function(snap) {
+    var players = [];
+    snap.forEach(function(c) {
+      var d = c.val();
+      if (!d.ign) return;
+      if (tab === 0 && city && (d.city||'').toLowerCase() !== city.toLowerCase()) return;
+      players.push({ uid: c.key, ign: d.ign, rp: Number(d.rankPoints||0), city: d.city||'', avatarBg: d.avatarBg||'#1a1a2e', wins: Number((d.stats&&d.stats.wins)||0) });
+    });
+    players.sort(function(a,b) { return b.rp - a.rp; });
+    renderLeaderList(cont, players, tab, city);
+  });
+}
+
+/* BUG FIX (2026-08-21): extracted the actual leaderboard-row rendering
+   into a shared function so both the Supabase path and the legacy
+   Firebase path use the same real, working renderer — instead of the
+   Supabase path calling a function (window.renderCityLeaderboard) that
+   never existed. */
+function renderLeaderList(cont, players, tab, city) {
+    if (!players.length) {
+      cont.innerHTML = '<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">🏙️</div><div style="color:var(--txt2);font-size:13px">' + (tab===0 && city ? 'Abhi ' + city + ' mein koi player nahi — pehle ban jao!' : 'Koi data nahi') + '</div></div>';
+      return;
+    }
+
+    var html = '';
+    if (tab === 0 && city) {
+      html += '<div style="text-align:center;margin-bottom:10px;font-size:12px;font-weight:700;color:#ffd700">🏙️ ' + city + ' Leaderboard</div>';
+    }
+    var top20 = players.slice(0, 20);
+    /* ✅ BUG FIX (2026-08-23): "My City aur All India leaderboard me user
+       khud ko dhoondh hi nahi paata ki wo konsi rank par hai". Root
+       cause: this only ever rendered players.slice(0, 20) — anyone
+       ranked below #20 (which, with 0 points/0 wins as a new player,
+       is basically everyone at launch) never appeared anywhere in the
+       list, with no fallback of any kind telling them their own rank.
+       Fix: if the current user isn't in the visible top 20, find their
+       real position in the full fetched list (already sorted) and pin
+       a separate "You" row at the bottom, same as most leaderboard UIs
+       — so the user can always see where they stand even if it's not
+       in the top 20. */
+    var meIdx = -1;
+    for (var pi = 0; pi < players.length; pi++) {
+      if (window.U && players[pi].uid === window.U.uid) { meIdx = pi; break; }
+    }
+    var meInTop20 = meIdx > -1 && meIdx < 20;
+
+    top20.forEach(function(p, i) {
+      var isMe = window.U && p.uid === window.U.uid;
+      var rank = i + 1;
+      var medal = window.medalHtml(rank, rank <= 3 ? 20 : 13); /* ✅ D100-F1: real medal img */
+      html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:' + (isMe?'rgba(0,255,156,.08)':'rgba(255,255,255,.03)') + ';border:1px solid ' + (isMe?'rgba(0,255,156,.25)':'rgba(255,255,255,.06)') + '">';
+      html += '<div style="width:28px;text-align:center;font-size:' + (rank<=3?'18':'13') + 'px;font-weight:800;color:' + (rank===1?'#ffd700':rank===2?'#c0c0c0':rank===3?'#cd7f32':'#666') + '">' + medal + '</div>';
+      html += '<div style="width:34px;height:34px;border-radius:50%;background:' + p.avatarBg + ';display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">' + (p.ign[0]||'?').toUpperCase() + '</div>';
+      html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:' + (isMe?'var(--green)':'var(--txt)') + ';overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + p.ign + (isMe?' (You)':'') + '</div>';
+      html += '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (p.city||'Unknown') + ' • ' + p.wins + ' wins</div></div>';
+      html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:900;color:#00d4ff">' + p.rp + '</div><div style="font-size:9px;color:var(--txt2)">RP</div></div>';
+      html += '</div>';
+    });
+
+    if (!meInTop20) {
+      if (meIdx > -1) {
+        var me = players[meIdx];
+        var myRank = meIdx + 1;
+        html += '<div style="text-align:center;padding:6px 0;font-size:10px;color:var(--txt2)">• • •</div>';
+        html += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;background:rgba(0,255,156,.08);border:1.5px solid rgba(0,255,156,.35)">';
+        html += '<div style="width:28px;text-align:center;font-size:13px;font-weight:800;color:#00ff9c">#' + myRank + '</div>';
+        html += '<div style="width:34px;height:34px;border-radius:50%;background:' + me.avatarBg + ';display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">' + (me.ign[0]||'?').toUpperCase() + '</div>';
+        html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;color:var(--green);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + me.ign + ' (You)</div>';
+        html += '<div style="font-size:10px;color:var(--txt2);margin-top:1px">' + (me.city||'Unknown') + ' • ' + me.wins + ' wins</div></div>';
+        html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:900;color:#00d4ff">' + me.rp + '</div><div style="font-size:9px;color:var(--txt2)">RP</div></div>';
+        html += '</div>';
+      }
+      /* ✅ BUG FIX (2026-08-24): removed the old "Aapki rank top 50 se
+         bahar hai" static fallback that used to render here — it had no
+         way of knowing the real rank and directly contradicted the
+         single accurate rank note now appended by loadCityLeader's own
+         count query (see above). One source of truth, one note. */
+    }
+
+    cont.innerHTML = html;
+}
+
+/* ================================================================
+   2. SHARE CARD — VIRAL LOOP
+   ================================================================ */
+
+window.doShareResult = function(encodedMsg) {
+  var msg = decodeURIComponent(encodedMsg);
+  window.openWhatsApp(msg);
+  if (window.closeModal) window.closeModal();
+};
+
+window.doShareResultGeneric = function(encodedMsg) {
+  var msg = decodeURIComponent(encodedMsg);
+  if (navigator.share) {
+    navigator.share({ title: 'Mini eSports Result', text: msg }).catch(function(){});
+  } else {
+    if (navigator.clipboard) navigator.clipboard.writeText(msg);
+    toast('Message copy ho gaya — paste karke share karo!', 'ok');
+  }
+  if (window.closeModal) window.closeModal();
+};
+/* ✅ REMOVED (2026-08-22): giveShareCoins() — per explicit instruction,
+   the coin-for-sharing-a-result feature is fully removed. It used to
+   pay window.CFG.shareCoins (default 20) coins once per day for sharing
+   and also silently double-booked as "Weekly Mission: Result Share
+   Karo" progress. See fa-app-settings.js (admin config field removed)
+   and screens/matches.js (My Matches share button removed earlier) for
+   the rest of this cleanup. */
+
+/* ================================================================
+   3. DAILY + WEEKLY MISSIONS
+   ================================================================ */
+window.showMissionsPanel = function() {
+  if (!window.UD || !window.U) { toast('Login karo pehle', 'err'); return; }
+
+  window.db.ref('users/' + window.U.uid + '/missionProgress').once('value', function(snap) {
+    var prog = snap.val() || {};
+    /* ✅ FIX (2026-08-19, CRITICAL): cache the fetched prog object so
+       claimMission() can update it and re-render LOCALLY afterwards,
+       instead of re-fetching from the DB — see the race-condition
+       explanation on _renderMissionsPanelFromProg() below for why this
+       was causing the panel to reopen itself repeatedly with duplicate
+       "Pehle se claim ho chuka hai" toasts. */
+    window._missionsProgCache = prog;
+    _renderMissionsPanelFromProg(prog);
+
+    /* ✅ BUG FIX (2026-09-16): "Daily check in coins, daily login, check
+       in — teeno ek hi kaam ke liye alag-alag coins de rahe the, sirf
+       ek hona chahiye" — this used to auto-claim a 'daily_login' mission
+       reward here, completely free, just for opening this panel — on
+       top of the real Daily Check-In button reward (dailyBonusRewards →
+       process_daily_checkin RPC) AND a THIRD 'daily_checkin' mission
+       reward that separately paid out again once the user checked in.
+       Same real-world action ("I opened the app / checked in today"),
+       three separate configurable coin amounts, stacking automatically.
+       The auto-claim call is removed — see _renderMissionsPanelFromProg
+       below for the matching removal of both mission cards from the
+       Daily Missions list. process_daily_checkin (Daily Check-In button)
+       is now the single source of "logged in today" coins. */
+  });
+};
+
+function _renderMissionsPanelFromProg(prog) {
+  var today = new Date().toDateString();
+  var weekNum = getWeekNum();
+
+  /* ✅ BUG FIX (2026-09-16): removed 'daily_login' and 'daily_checkin'
+     from this list — both paid coins for the exact same real-world
+     action as the Daily Check-In button (process_daily_checkin RPC, jiske
+     rewards admin ke "Daily Bonus Editor" → live_config.dailyBonusRewards
+     se aate hain — B26), so a user
+     could collect three separate rewards for logging in/checking in
+     once. Daily Check-In (the button, elsewhere in the app) is now the
+     single place that pays for that. daily_match and daily_kills3 stay
+     — they're genuinely separate actions (playing a match, getting
+     kills), not duplicates of check-in. */
+  var DAILY = [
+    { id: 'daily_match',   label: '🎮 1 Match Khelo',   desc: 'Aaj 1 match join karo',   reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_match:10),  check: (prog.lastMatchDate === today) },
+    { id: 'daily_kills3',  label: '💀 3 Kills Karo',    desc: 'Aaj 3 kills lo',          reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).daily_kills3:5),   check: (Number(prog.todayKills||0) >= 3) },
+  ];
+
+  var WEEKLY = [
+    { id: 'week_5matches', label: '🎯 5 Matches Khelo', desc: 'Is hafte 5 matches',      reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).week_5matches:50),  check: (Number(prog['wMatches_'+weekNum]||0) >= 5), progress: Number(prog['wMatches_'+weekNum]||0), max: 5 },
+    { id: 'week_top3',     label: '🏆 Top 3 Finish',   desc: 'Kisi match mein top 3',   reward: (window.CFG&&(window.CFG && window.CFG.missions)?(window.CFG && window.CFG.missions).week_top3:30),  check: (prog['wTop3_'+weekNum] === true) },
+    /* ✅ REMOVED (2026-08-22): "week_share" (Result Share Karo, +20 coins)
+       — its only progress source, giveShareCoins(), was removed per
+       explicit instruction that sharing should not pay coins. Leaving
+       this card in place would have shown a permanently-unclaimable
+       mission. */
+  ];
+
+  /* ✅ D84 (owner: "mission screen bhi attractive bana stylish"): neon
+     redesign — gradient header plate, glowing section titles, mission
+     cards me icon-tile + neon border + reward chip + glow progress. */
+  var h = '<div>';
+  h += '<div style="position:relative;border-radius:16px;padding:12px 14px;margin-bottom:14px;background:linear-gradient(135deg,rgba(255,215,0,.14),rgba(210,77,255,.12) 55%,rgba(0,212,255,.10));border:1.5px solid rgba(255,215,0,.35);box-shadow:0 0 18px rgba(255,215,0,.15), inset 0 0 24px rgba(210,77,255,.08);display:flex;align-items:center;gap:10px">' +
+       '<div style="width:40px;height:40px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,#ffd700,#ff8c00);display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 0 14px rgba(255,180,0,.55)">🎯</div>' +
+       '<div><div style="font-size:15px;font-weight:900;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.45)">Missions Arena</div>' +
+       '<div style="font-size:10.5px;color:#c9a4ff;margin-top:1px">Khelo • missions poore karo • coins kamao</div></div></div>';
+
+  h += '<div style="font-size:13px;font-weight:900;color:#ffd700;margin-bottom:10px;display:flex;align-items:center;gap:7px;text-shadow:0 0 8px rgba(255,215,0,.4)"><span style="width:24px;height:24px;border-radius:8px;background:rgba(255,215,0,.14);border:1px solid rgba(255,215,0,.4);display:flex;align-items:center;justify-content:center;font-size:12px">☀️</span> Daily Missions <span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(255,215,0,.5),transparent)"></span></div>';
+  DAILY.forEach(function(m) {
+    var claimed = prog['claimed_' + m.id + '_' + today] === true;
+    var done = m.check;
+    h += renderMissionCard(m, done, claimed, today, 'daily');
+  });
+
+  h += '<div style="font-size:13px;font-weight:900;color:#00d4ff;margin:16px 0 10px;display:flex;align-items:center;gap:7px;text-shadow:0 0 8px rgba(0,212,255,.4)"><span style="width:24px;height:24px;border-radius:8px;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px">📅</span> Weekly Missions <span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,255,.5),transparent)"></span></div>';
+  WEEKLY.forEach(function(m) {
+    var claimed = prog['claimed_' + m.id + '_w' + weekNum] === true;
+    var done = m.check;
+    h += renderMissionCard(m, done, claimed, weekNum, 'weekly');
+  });
+
+  h += '</div>';
+  if (window.openModal) openModal('🎯 Missions', h);
+}
+
+function renderMissionCard(m, done, claimed, period, type) {
+  var btnHtml = '';
+  if (claimed) {
+    btnHtml = '<span style="font-size:10.5px;color:#00ff9c;font-weight:800;background:rgba(0,255,156,.10);border:1px solid rgba(0,255,156,.4);padding:5px 9px;border-radius:10px">✅ Claimed</span>';
+  } else if (done) {
+    btnHtml = '<button onclick="claimMission(\'' + m.id + '\',' + m.reward + ',\'' + period + '\',\'' + type + '\')" style="padding:7px 12px;border-radius:11px;background:linear-gradient(135deg,#00ff9c,#00cc7a);border:none;color:#000;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0 0 12px rgba(0,255,156,.5);animation:badge-pulse 1.6s infinite">Claim +' + m.reward + '🪙</button>';
+  } else {
+    btnHtml = '<span style="font-size:11px;font-weight:900;color:#ffd700;background:rgba(255,215,0,.10);border:1px solid rgba(255,215,0,.35);padding:5px 9px;border-radius:10px;box-shadow:0 0 8px rgba(255,215,0,.18)">+' + m.reward + '🪙</span>';
+  }
+
+  var progressBar = '';
+  if (m.progress !== undefined) {
+    var pct = Math.min(100, Math.round((m.progress / m.max) * 100));
+    progressBar = '<div style="margin-top:7px;background:rgba(255,255,255,.08);border-radius:5px;height:6px;overflow:hidden"><div style="width:' + pct + '%;height:6px;border-radius:5px;background:linear-gradient(90deg,#00d4ff,#0066ff,#d24dff);box-shadow:0 0 8px rgba(0,212,255,.7);transition:width .5s"></div></div>';
+    progressBar += '<div style="font-size:10px;color:var(--txt2);margin-top:3px;font-weight:700">' + m.progress + ' / ' + m.max + '</div>';
+  }
+
+  /* ✅ D84 neon mission card: type ke hisaab se gold/cyan theme, done par
+     green glow border, claimed par soft green tint */
+  var acc = type === 'daily' ? { c: '#ffd700', g: 'rgba(255,215,0,' } : { c: '#00d4ff', g: 'rgba(0,212,255,' };
+  var cardBg = claimed ? 'linear-gradient(135deg,rgba(0,255,156,.10),rgba(0,255,156,.03))'
+              : done ? 'linear-gradient(135deg,' + acc.g + '.16),' + acc.g + '.05) 60%,rgba(0,255,156,.08))'
+              : 'linear-gradient(135deg,' + acc.g + '.10),rgba(20,20,28,.85) 60%,' + acc.g + '.04))';
+  var cardBd = claimed ? '1.5px solid rgba(0,255,156,.45)'
+              : done ? '1.5px solid rgba(0,255,156,.65)'
+              : '1.5px solid ' + acc.g + '.30)';
+  var cardGlow = done && !claimed ? 'box-shadow:0 0 14px rgba(0,255,156,.25), inset 0 0 18px ' + acc.g + '.06);' : 'box-shadow:inset 0 0 18px ' + acc.g + '.05);';
+  var icon = (m.label.match(/^[^\s]+/) || ['🎯'])[0];
+  var titleTxt = m.label.replace(/^[^\s]+\s*/, '');
+  return '<div style="display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;margin-bottom:9px;background:' + cardBg + ';border:' + cardBd + ';' + cardGlow + '">' +
+    '<div style="width:38px;height:38px;flex-shrink:0;border-radius:11px;background:rgba(0,0,0,.45);border:1px solid ' + acc.g + '.35);display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 10px ' + acc.g + '.25), inset 0 0 8px ' + acc.g + '.15)">' + icon + '</div>' +
+    '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)">' + titleTxt + '</div>' +
+    '<div style="font-size:10.5px;color:var(--txt2);margin-top:2px">' + m.desc + '</div>' + progressBar + '</div>' +
+    '<div style="flex-shrink:0">' + btnHtml + '</div></div>';
+}
+
+/* ✅ FIX (2026-08-20, CRITICAL — 2nd pass): calls the real Supabase RPCs
+   directly instead of going through the Firebase-style bridge's generic
+   missionProgress write path. That bridge path (see core/db-bridge.js)
+   calls claim_mission_reward with p_coins:0 — but that RPC rejects any
+   p_coins <= 0 ("Invalid coin amount"), so every claim would fail
+   outright. It also requires is_completed=true on the mission_progress
+   row before it'll let a claim through, but nothing ever calls
+   track_mission_progress for daily_login to mark it complete, so it
+   would always additionally fail with "Mission abhi complete nahi
+   hui". Calling both RPCs directly here, in the right order, with the
+   real coin amount, avoids both problems and keeps the DB as the
+   actual source of truth (so the claim persists correctly across
+   reloads, unlike a purely local-cache-only fix). period is
+   normalized to YYYY-MM-DD for daily missions to match the format
+   every other mission_progress writer uses. */
+window.claimMission = function(missionId, coins, period, type) {
+  if (!window.U) return;
+  var claimKey = 'claimed_' + missionId + '_' + (type === 'weekly' ? 'w' : '') + period;
+  var rpcPeriod = (type === 'weekly') ? ('w' + period) : new Date().toISOString().split('T')[0];
+
+  var cache = window._missionsProgCache || {};
+  if (cache[claimKey]) {
+    toast('Pehle se claim ho chuka hai', 'inf');
+    return;
+  }
+  cache[claimKey] = true; /* optimistic local update — UI responds instantly */
+  window._missionsProgCache = cache;
+
+  /* ✅ IMPORTANT: do NOT also credit coins via window.db.ref('.../coins')
+     here — claim_mission_reward (called below) already credits coins
+     server-side itself (UPDATE users SET coins = coins + p_coins) AND
+     logs the wallet_transactions entry. The Firebase-bridge's own
+     'coins' field handler routes through increment_balance RPC when
+     called — calling both would double-credit the user. UD.coins is
+     updated locally below purely for instant UI feedback; the RPC call
+     further down is the single real source of truth for the backend
+     balance. */
+  if (window.UD) { window.UD.coins = (window.UD.coins||0) + coins; if (window.updateHdr) updateHdr(); }
+  toast('+' + coins + ' 🪙 Coins mile! Mission complete! 🎉', 'ok');
+  if (window.updateHdr) window.updateHdr();
+  if (window.UD && window.U) _renderMissionsPanelFromProg(cache);
+
+  if (window._supa) {
+    /* Mark complete first (idempotent, GREATEST()-guarded — safe to call
+       even if already marked), THEN claim — claim_mission_reward checks
+       is_completed and reward_claimed itself, so this is safe even under
+       a genuine race with another tab/device (worst case: "Already
+       claimed" comes back, which we just ignore since our local/Firebase
+       coin credit already happened optimistically above). */
+    window._supa.rpc('track_mission_progress', { p_mission_key: missionId, p_period: rpcPeriod, p_progress: 1, p_target: 1 })
+      .then(function() {
+        return window._supa.rpc('claim_mission_reward', { p_mission_key: missionId, p_period: rpcPeriod, p_coins: coins });
+      })
+      .then(function(r) {
+        if (r && (r.error || (r.data && r.data.success === false))) {
+          var err = (r.data && r.data.error) || (r.error && r.error.message) || 'unknown';
+          if (err !== 'Already claimed') console.error('[Missions] claim_mission_reward failed:', err);
+        }
+      })
+      .catch(function(e) { console.error('[Missions] claim RPC error:', e && e.message); });
+  }
+};
+
+function getWeekNum() {
+  var d = new Date();
+  var onejan = new Date(d.getFullYear(), 0, 1);
+  return Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+}
+
+// Track match joined for daily mission
+var _origJoinMatch = window.joinMatch;
+if (_origJoinMatch) {
+  window.joinMatch = function() {
+    var r = _origJoinMatch.apply(this, arguments);
+    if (window.db && window.U) {
+      var today = new Date().toDateString();
+      var wn = getWeekNum();
+      window.db.ref('users/' + window.U.uid + '/missionProgress').update({
+        lastMatchDate: today,
+        ['wMatches_' + wn]: (Number(((window.UD||{}).missionProgress||{})['wMatches_'+wn]||0) + 1)
+      });
+    }
+    return r;
+  };
+}
+
+/* ================================================================
+   4. ENHANCED REFER & EARN
+   ================================================================ */
+window.showReferEarn = function() {
+  if (!window.UD || !window.U) { toast('Login karo pehle', 'err'); return; }
+  var code = window.UD.referralCode || window.U.uid.substring(0,8).toUpperCase();
+  var count = Number(window.UD.referralCount || 0);
+  var earned = Number(window.UD.referralCoinsEarned || 0);
+
+  var h = '';
+  // Stats
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">';
+  h += '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:12px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:#00ff9c">' + count + '</div><div style="font-size:10px;color:var(--txt2)">Friends Joined</div></div>';
+  h += '<div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.15);border-radius:12px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:900;color:#ffd700">' + earned + '🪙</div><div style="font-size:10px;color:var(--txt2)">Total Earned</div></div>';
+  h += '</div>';
+
+  // Reward steps
+  h += '<div style="background:rgba(0,0,0,.3);border-radius:14px;padding:14px;margin-bottom:16px">';
+  h += '<div style="font-size:12px;font-weight:800;color:#fff;margin-bottom:10px">🎁 Reward Steps</div>';
+  /* ✅ B20 (2026-10-07): pehle teeno values (50/10/30 aur "5 matches")
+     yahan HARDCODED thi — admin Settings me value badalne par bhi ye
+     screen purani dikhati thi. Ab sab seedha CFG se (admin ka ek hi
+     sach): join coins dono ko, SD bonus sirf dost ki PEHLI SD purchase
+     par (DB: resolve_sd_request), match coins threshold poore hone par
+     (DB: trg_ref_match_bonus). */
+  var _rJoin  = (window.CFG && window.CFG.referralJoinCoins) || 50;
+  var _rSd    = (window.CFG && window.CFG.referralSDBonusDiamonds) || 10;
+  var _rMatch = (window.CFG && window.CFG.referralMatchCoins) || 30;
+  var _rMThr  = (window.CFG && window.CFG.referralMatchThreshold) || 5;
+  var steps = [
+    { icon: '1️⃣', label: 'Dost join kare', you: '+' + _rJoin + '🪙', them: '+' + _rJoin + '🪙', done: count >= 1 },
+    { icon: '2️⃣', label: 'Dost pehla Sky Diamond kharido', you: '+' + _rSd + '💎', them: '—', done: false },
+    { icon: '3️⃣', label: 'Dost ' + _rMThr + ' matches khele', you: '+' + _rMatch + '🪙', them: '—', done: false },
+  ];
+  steps.forEach(function(s) {
+    h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;opacity:' + (s.done?'1':'.7') + '">';
+    h += '<span style="font-size:16px">' + s.icon + '</span>';
+    h += '<div style="flex:1"><div style="font-size:12px;font-weight:600">' + s.label + '</div></div>';
+    h += '<div style="text-align:right"><div style="font-size:11px;color:#00ff9c;font-weight:700">Tum: ' + s.you + '</div>';
+    if (s.them !== '—') h += '<div style="font-size:11px;color:#ffd700;font-weight:700">Dost: ' + s.them + '</div>';
+    h += '</div>';
+    if (s.done) h += '<span style="color:#00ff9c;font-size:14px">✅</span>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  // Referral code
+  h += '<div style="background:rgba(255,255,255,.04);border:1.5px dashed rgba(0,255,156,.3);border-radius:14px;padding:14px;text-align:center;margin-bottom:14px">';
+  h += '<div style="font-size:11px;color:var(--txt2);margin-bottom:6px">Tumhara Referral Code</div>';
+  h += '<div style="font-size:28px;font-weight:900;color:#00ff9c;letter-spacing:3px">' + code + '</div>';
+  h += '</div>';
+
+  var shareMsg = '🎮 Mini eSports pe Free Fire & BGMI tournaments!\n🪙 FREE coins + No real money gambling\n\nMere code se join karo: ' + code + '\n👉 https://deepsilence10161-source.github.io/ff-user-panel/';
+  h += '<button onclick="doShareReferral(\'' + encodeURIComponent(shareMsg) + '\')" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#25d366,#128c7e);border:none;color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fab fa-whatsapp"></i> WhatsApp pe Share Karo</button>';
+  h += '<button onclick="copyReferCode(\'' + code + '\')" style="width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--txt);font-size:13px;font-weight:700;cursor:pointer"><i class="fas fa-copy"></i> Code Copy Karo</button>';
+
+  if (window.openModal) openModal('🤝 Refer & Earn', h);
+};
+
+window.doShareReferral = function(encodedMsg) {
+  var msg = decodeURIComponent(encodedMsg);
+  window.openWhatsApp(msg);
+};
+
+window.copyReferCode = function(code) {
+  if (navigator.clipboard) navigator.clipboard.writeText(code);
+  toast('Code copy ho gaya! 🎉', 'ok');
+};
+
+/* ================================================================
+   5. SKY DIAMOND COSMETICS STORE
+   ================================================================ */
+function _getCosmetics() {
+  /* R28g (2026-09-22): har item ki desc ek hi static map se — pehle desc
+     field exist hi nahi karta tha, isliye store ke har card par "undefined"
+     print hota tha (live-proven). CFG.cosmetics (backend) me bhi desc nahi
+     bheja jata, isliye desc yahan client-side feature-copy hi hai.
+     R29F (2026-09-22): + Battle Pass collectibles (badge/title/theme/emoji)
+     — server claim_battle_pass_tier RPC inhe claim par grant karta hai;
+     yahan catalog me daalke store/profile unhe dikhata + equip karata hai. */
+  var DESC = {
+    frame_neon:   'Neon glow border',
+    frame_fire:   'Jalti Fire border',
+    frame_galaxy: 'Galaxy purple glow',
+    frame_gold:   'Gold champion border',
+    frame_glow:   'Royal Glow — gold-purple avatar frame',
+    /* 2026-10-13 (master plan 3.5): 9 AVATAR RINGS — rank + premium kala se.
+       Avatar ke kone par medal (asli art) + tier ka glow ring. */
+    frame_ring_bronze:       'Rank Ring — Bronze (avatar medal)',
+    frame_ring_silver:       'Rank Ring — Silver (avatar medal)',
+    frame_ring_gold:         'Rank Ring — Gold (avatar medal)',
+    frame_ring_platinum:     'Rank Ring — Platinum (avatar medal)',
+    frame_ring_diamond:      'Rank Ring — Diamond (avatar medal)',
+    frame_ring_legend:       'Rank Ring — Legend (avatar medal)',
+    frame_ring_prem_silver:  'Premium Ring — Silver (avatar medal)',
+    frame_ring_prem_gold:    'Premium Ring — Gold (avatar medal)',
+    frame_ring_prem_diamond: 'Premium Ring — Diamond (avatar medal)',
+    tag_beast:    '⚡ BEAST MODE tag',
+    tag_pro:      '🎯 PRO PLAYER tag',
+    tag_king:     '👑 KING tag',
+    vip_slot:     '⭐ VIP badge apne profile par'
+  };
+  var base;
+  if (window.CFG && window.CFG.cosmetics) {
+    base = Object.keys((window.CFG && window.CFG.cosmetics)).map(function(id) {
+      var c = (window.CFG && window.CFG.cosmetics)[id];
+      return { id: id, name: c.name, price: c.price, icon: c.icon,
+        desc: DESC[id] || c.desc || '',
+        type: id.indexOf('frame') === 0 ? 'frame' : id.indexOf('tag') === 0 ? 'tag' : 'vip' };
+    });
+  } else {
+    base = [
+      { id:'frame_neon',   name:'Neon Frame',     price:50,  icon:'🟢', desc:DESC.frame_neon,   type:'frame' },
+      { id:'frame_fire',   name:'Fire Frame',      price:75,  icon:'🔥', desc:DESC.frame_fire,   type:'frame' },
+      { id:'frame_galaxy', name:'Galaxy Frame',    price:100, icon:'🌌', desc:DESC.frame_galaxy, type:'frame' },
+      { id:'frame_gold',   name:'Gold Champion',   price:150, icon:'🏆', desc:DESC.frame_gold,   type:'frame' },
+      { id:'tag_beast',    name:'⚡ BEAST MODE',   price:30,  icon:'⚡', desc:DESC.tag_beast,    type:'tag'   },
+      { id:'tag_pro',      name:'🎯 PRO PLAYER',   price:30,  icon:'🎯', desc:DESC.tag_pro,      type:'tag'   },
+      { id:'tag_king',     name:'👑 KING',         price:50,  icon:'👑', desc:DESC.tag_king,     type:'tag'   },
+      { id:'vip_slot',     name:'VIP Slot Pass',   price:200, icon:'⭐', desc:DESC.vip_slot,     type:'vip'   }
+    ];
+  }
+  if (!base.some(function(x){ return x.id === 'frame_glow'; })) {
+    base.push({ id:'frame_glow', name:'Royal Glow Frame', price:120, icon:'✨', desc:DESC.frame_glow, type:'frame', img:'assets/img/frames/glow.png' });
+  }
+  /* 2026-10-13 (master plan 3.5): 9 avatar-ring cosmetics.
+     ⚠️ SSOT: naam/price server se aate hain (app_settings.live_config.cosmetics
+     — purchase_cosmetic RPC wahi price lagata hai), par art/map client me hai,
+     aur agar server config me item na ho to bhi ye store me dikhein
+     (fail-safe; warna user ko "kharidne" par unknown_cosmetic milta — jaise
+     frame_glow ke saath hota tha). Prices server se 100% match. */
+  _COS_RINGS.forEach(function (r) {
+    if (!base.some(function (x) { return x.id === r.id; })) {
+      base.push({ id: r.id, name: r.name, price: r.price, icon: r.icon, desc: DESC[r.id] || 'Avatar ring', type: 'frame', img: r.img });
+    } else {
+      /* server se aaya item — art add karo (server me img nahi hota) */
+      base.forEach(function (b) { if (b.id === r.id) { b.img = r.img; if (!b.desc) b.desc = DESC[r.id] || 'Avatar ring'; } });
+    }
+  });
+  return base.concat(_getBpCosmetics());
+}
+
+/* R29F (2026-09-22): Battle Pass collectibles catalog. Single source =
+   server battle_passes.tiers (anon-readable); static fallback = live
+   2026_09 season data (same values). */
+var _bpCosCache = null;
+/* R30a (2026-10-12b): yojna-2.6 ki 5 season-title kalaayein (t25/35/40/45/50).
+   Single source = DB battle_passes.tiers (premCos/freeCos.img) — ye map
+   sirf uske liye hai jab DB row me img na ho (purana/stale cache).
+   Tier grid ke TIERS_DATA (features/battle-pass.js) se 100% same art. */
+var _BP_COS_ART = {
+  tag_bp_prem_25:   { img: 'assets/img/titles/veteran.png' },
+  emoji_bp_prem_35: { img: 'assets/img/titles/champion.png' },
+  tag_bp_prem_40:   { img: 'assets/img/titles/immortal.png' },
+  tag_bp_free_45:   { img: 'assets/img/titles/death-bringer.png' },
+  tag_bp_prem_50:   { img: 'assets/img/titles/reaper.png' }
+};
+function _getBpCosmetics() {
+  if (_bpCosCache) return _bpCosCache;
+  var map = [];
+  function pushC(c) {
+    if (!c || !c.key) return;
+    var typ = c.type === 'theme' ? 'frame' : (c.type === 'badge' || c.type === 'title') ? 'tag' : (c.type === 'emoji' ? 'emoji' : 'tag');
+    var art = _BP_COS_ART[c.key];
+    map.push({ id: c.key, name: c.name || c.key, icon: c.icon || '🎫', price: 0,
+      desc: 'Battle Pass Season reward', type: typ, source: 'bp',
+      img: c.img || (art && art.img) || '' });
+  }
+  try {
+    if (window._bpSeasonTiers && window._bpSeasonTiers.length) {
+      window._bpSeasonTiers.forEach(function(t){ pushC(t.freeCos); pushC(t.premCos); });
+    }
+  } catch(e){}
+  if (!map.length) {
+    map = [
+      { id:'tag_bp_prem_1',    name:'🎖️ Starter Badge',      icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_prem_5',    name:'🌟 Chosen One',         icon:'🌟', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'emoji_bp_prem_8',  name:'🔥 Fire Pack',          icon:'🔥', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_13', name:'🔵 Blue Flame Border',  icon:'🔵', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_15',   name:'Silver Fighter',     icon:'', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'emoji_bp_prem_18', name:'⚡ Lightning Pack',     icon:'⚡', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_23', name:'🟣 Purple Haze Border', icon:'🟣', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_25',   name:'🎖️ Veteran',           icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/veteran.png' },
+      { id:'emoji_bp_prem_28', name:'👑 Crown Pack',         icon:'👑', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_33', name:'🟡 Golden Frame',       icon:'🟡', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'emoji_bp_prem_35', name:'👑 Champion',           icon:'👑', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/champion.png' },
+      { id:'frame_bp_prem_38', name:'🌊 Ocean Wave Border',  icon:'🌊', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_40',   name:'⚡ Immortal',           icon:'⚡', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/immortal.png' },
+      { id:'emoji_bp_prem_43', name:'🔴 Fire God Pack',      icon:'🔴', price:0, desc:'Battle Pass reward', type:'emoji', source:'bp' },
+      { id:'frame_bp_prem_48', name:'🌌 Galaxy Border',      icon:'🌌', price:0, desc:'Battle Pass reward', type:'frame', source:'bp' },
+      { id:'tag_bp_prem_50',   name:'☠️ Reaper (Season Legend)', icon:'☠️', price:0, desc:'Battle Pass reward', type:'tag', source:'bp', img:'assets/img/titles/reaper.png' },
+      { id:'tag_bp_free_5',    name:'Bronze Warrior',     icon:'', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_15',   name:'🎖️ Participant',       icon:'🎖️', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_30',   name:'💪 Grinder',            icon:'💪', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp' },
+      { id:'tag_bp_free_45',   name:'💀 Death Bringer',      icon:'💀', price:0, desc:'Battle Pass reward', type:'tag',   source:'bp', img:'assets/img/titles/death-bringer.png' }
+    ];
+  }
+  _bpCosCache = map;
+  /* best-effort live sync — DB hi single source hai */
+  if (window._supa && !window._bpSeasonTiersLoaded) {
+    window._bpSeasonTiersLoaded = true;
+    window._supa.from('battle_passes').select('tiers').eq('is_active', true)
+      .order('start_date', { ascending: false }).limit(1)
+      .then(function(r) {
+        if (r && r.data && r.data[0] && r.data[0].tiers) {
+          window._bpSeasonTiers = r.data[0].tiers;
+          _bpCosCache = null;
+        }
+      }, function(){});
+  }
+  return map;
+}
+
+window.showCosmeticsStore = function() {
+  if (!window.UD || !window.U) { toast('Login karo pehle', 'err'); return; }
+  var mySD = Number(window.UD.skyDiamonds || 0);
+  var owned = (window.UD.cosmetics || {});
+
+  var h = '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">';
+  h += '<div style="font-size:12px;color:var(--txt2)">Your Balance</div>';
+  h += '<div style="font-size:18px;font-weight:900;color:#00d4ff">💎 ' + mySD + ' Sky Diamonds</div>';
+  h += '</div>';
+
+  // Tabs
+  h += '<div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">';
+  ['All','Frames','Tags','VIP','Season'].forEach(function(tab, i) {
+    h += '<button onclick="filterCosmetics(\'' + tab.toLowerCase() + '\')" id="cosTab_' + tab.toLowerCase() + '" style="padding:5px 12px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:' + (i===0?'#00d4ff':'rgba(255,255,255,.08)') + ';color:' + (i===0?'#000':'var(--txt)') + '">' + tab + '</button>';
+  });
+  h += '</div>';
+
+  h += '<div id="cosmeticsList">';
+  h += renderCosmeticCards('all', owned, mySD);
+  h += '</div>';
+
+  if (window.openModal) openModal('💎 Cosmetics Store', h);
+
+  /* ✅ BUG FIX (2026-08-25): "Buy karke unlock hota hai, refresh karte
+     hi wapas locked ho jata hai — jabki DB me purchase saved hai".
+     Root cause: this modal always rendered from whatever window.UD.
+     cosmetics happened to already contain the instant it opened — it
+     never actually fetched fresh ownership data. On a real device,
+     _loadExtras()'s background SELECT from user_cosmetics can still be
+     in flight when the store is opened shortly after a page load/
+     reload, so UD.cosmetics was still {} (empty) at that exact moment
+     — every genuinely-owned item showed as buyable. The purchase and
+     the DB write were never actually broken; the store just never
+     waited for or re-checked the real data before rendering. Force a
+     fresh fetch every time the store opens and re-render once it
+     lands, so this can never show a false "locked" state again. */
+  if (window._loadExtras) window._loadExtras();
+};
+
+window.filterCosmetics = function(filter) {
+  ['all','frames','tags','vip','season'].forEach(function(t) {
+    var b = document.getElementById('cosTab_' + t);
+    if (b) { b.style.background = t===filter?'#00d4ff':'rgba(255,255,255,.08)'; b.style.color = t===filter?'#000':'var(--txt)'; }
+  });
+  var list = document.getElementById('cosmeticsList');
+  if (list) list.innerHTML = renderCosmeticCards(filter, (window.UD&&window.UD.cosmetics)||{}, Number((window.UD&&window.UD.skyDiamonds)||0));
+};
+
+/* R30a (2026-10-12b): cosmetic card ka icon — img ho to asli kala
+   (frame_glow + BP season titles), warna purana emoji. Fail-safe: koi
+   bhi error aaye to emoji hi dikhega. */
+function _cosIconHtml(c) {
+  try {
+    var ic = (c && c.icon) || '🎫';
+    if (!c || !c.img) return ic;
+    return '<img src="' + c.img + '?v=20261117g" alt="" loading="lazy" ' +
+      'style="max-width:48px;max-height:32px;object-fit:contain" ' +
+      'onerror="this.style.display=\'none\';this.parentNode.textContent=\'' + ic.replace(/'/g, '') + '\'">';
+  } catch (e) { return (c && c.icon) || '🎫'; }
+}
+function renderCosmeticCards(filter, owned, mySD) {
+  var items = _getCosmetics().filter(function(c) {
+    if (filter === 'all') return true;
+    if (filter === 'frames') return c.type === 'frame' && c.source !== 'bp';
+    if (filter === 'tags') return c.type === 'tag' && c.source !== 'bp';
+    if (filter === 'vip') return c.type === 'vip' && c.source !== 'bp';
+    if (filter === 'season') return c.source === 'bp';
+    return c.type === filter;
+  });
+
+  var h = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  items.forEach(function(c) {
+    var isOwned = !!owned[c.id];
+    var canBuy = mySD >= c.price;
+    /* R28 (2026-09-22): khareeda hua item ab LAGAYA BHI JA SAKTA hai —
+       "Owned" sirf mark tha, ab Apply/Remove (equip) real hai. */
+    h += '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;text-align:center">';
+    h += '<div style="font-size:28px;margin-bottom:6px;min-height:32px;display:flex;align-items:center;justify-content:center">' + _cosIconHtml(c) + '</div>';
+    h += '<div style="font-size:12px;font-weight:800;margin-bottom:3px">' + c.name + '</div>';
+    h += '<div style="font-size:10px;color:var(--txt2);margin-bottom:8px">' + c.desc + '</div>';
+    if (isOwned) {
+      var isEq = !!(owned[c.id] && owned[c.id].is_equipped);
+      h += '<div style="display:flex;flex-direction:column;gap:5px">';
+      h += '<span style="font-size:11px;color:#00ff9c;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(0,255,156,.1)">✅ Owned' + (isEq ? ' · Active' : '') + '</span>';
+      h += '<button onclick="window.toggleCosmeticEquip(\'' + c.id + '\',this)" style="width:100%;padding:7px;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;background:' + (isEq ? 'rgba(255,255,255,.08)' : 'linear-gradient(135deg,#00ff9c,#00cc7a)') + ';border:1px solid ' + (isEq ? 'rgba(255,255,255,.2)' : 'rgba(0,255,156,.4)') + ';color:' + (isEq ? '#ccc' : '#000') + '">' + (isEq ? 'Remove' : 'Apply') + '</button>';
+      h += '</div>';
+    } else if (c.source === 'bp') {
+      /* R29F: Battle Pass collectible — sky diamonds se nahi khareedte;
+         Season Pass claim karke milta hai (claim_battle_pass_tier). */
+      h += '<button onclick="if(window.showBattlePass)showBattlePass();" style="width:100%;padding:7px;border-radius:10px;font-size:10px;font-weight:800;cursor:pointer;background:rgba(185,100,255,.1);border:1px solid rgba(185,100,255,.3);color:#b964ff">🎫 Season Pass reward</button>';
+    } else {
+      h += '<button onclick="buyCosmetic(\'' + c.id + '\',' + c.price + ',\'' + encodeURIComponent(c.name) + '\',this)" style="width:100%;padding:7px;border-radius:10px;background:' + (canBuy?'linear-gradient(135deg,#0066ff,#00d4ff)':'rgba(255,255,255,.05)') + ';border:1px solid rgba(0,212,255,' + (canBuy?'.4':'.1') + ');color:' + (canBuy?'#fff':'#555') + ';font-size:11px;font-weight:800;cursor:' + (canBuy?'pointer':'default') + '">💎 ' + c.price + '</button>';
+    }
+    h += '</div>';
+  });
+  h += '</div>';
+  return h;
+}
+
+window.buyCosmetic = function(id, price, encodedName, btnEl) {
+  var name = decodeURIComponent(encodedName);
+  if (!window._supa || !window.U || !window.UD) return;
+  var mySD = Number(window.UD.skyDiamonds || 0);
+  if (mySD < price) { toast('Sky Diamonds kam hain! Wallet se kharido 💎', 'err'); return; }
+
+  if (!confirm(name + ' kharidna chahte ho? 💎' + price + ' Sky Diamonds lagenge.')) return;
+
+  /* ✅ BUG FIX (2026-08-23): "unlock ho gaya message aa jata hai lekin
+     unlock nahi hota, na diamond kat te hain". Root cause: this used to
+     fire window.db.ref(...).transaction() (balance deduction) and
+     .set() (cosmetic unlock) as two independent, un-awaited writes, then
+     showed the success toast immediately regardless of what either call
+     actually did — so any transient failure (network blip, RLS edge
+     case, race with a concurrent balance read elsewhere) was completely
+     invisible; the user always saw "unlock ho gaya!" whether or not
+     anything really happened. Replaced with a single atomic, server-
+     verified RPC (purchase_cosmetic) — the toast and UI update now only
+     fire on its confirmed, checked result. */
+  var btn = btnEl;
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+  window._supa.rpc('purchase_cosmetic', {
+    p_cosmetic_key: id, p_price: price, p_display_name: name
+  }).then(function(r) {
+    var res = r && r.data;
+    if (r.error || !res || !res.ok) {
+      var errCode = (res && res.error) || (r.error && r.error.message) || 'unknown';
+      var msg = errCode === 'insufficient_balance' ? 'Sky Diamonds kam hain!'
+              : 'Purchase fail ho gaya, dobara try karo';
+      toast('❌ ' + msg, 'err');
+      if (btn) { btn.disabled = false; btn.textContent = '💎 ' + price; }
+      return;
+    }
+    /* Update local cache so the store re-render shows "Owned" immediately */
+    if (!window.UD.cosmetics) window.UD.cosmetics = {};
+    window.UD.cosmetics[id] = { ownedAt: Date.now(), name: name };
+    if (typeof res.new_balance === 'number') window.UD.skyDiamonds = res.new_balance;
+    toast('🎉 ' + name + ' unlock ho gaya!', 'ok');
+    if (window.updateHdr) window.updateHdr();
+    /* ✅ BUG FIX (2026-08-24): re-sync window._supaCosmetics from DB right
+       away so the optimistic local update above doesn't silently drift
+       out of sync with the source of truth _loadExtras reads from on
+       every future _applyUser — without this, the very next realtime
+       user update or 30s poll would overwrite UD.cosmetics with the
+       (stale, pre-purchase) window._supaCosmetics cache and the item
+       would flip back to "Buy" until the 2s extras timer happened to
+       re-fire. */
+    if (window._loadExtras) window._loadExtras();
+    setTimeout(window.showCosmeticsStore, 300);
+  }, function(e) {
+    toast('❌ Network error, dobara try karo', 'err');
+    if (btn) { btn.disabled = false; btn.textContent = '💎 ' + price; }
+  });
+};
+
+/* R28 (2026-09-22): equipped-cosmetic पढ़ने का एक ही source — profile,
+   player-card, rank sab yahin se frame/tag lete hain. */
+var _COS_FRAME_COLORS = {
+  frame_neon:   '#00ff9c',
+  frame_fire:   '#ff6b2b',
+  frame_galaxy: '#b964ff',
+  frame_gold:   '#ffd700',
+  frame_glow:   '#e0b0ff',
+  /* R29F: Battle Pass theme-frame colors (equip → profile avatar ring) */
+  frame_bp_prem_13: '#4287f5', /* Blue Flame */
+  frame_bp_prem_23: '#9b59f0', /* Purple Haze */
+  frame_bp_prem_33: '#f0c040', /* Golden */
+  frame_bp_prem_38: '#2ec8ff', /* Ocean Wave */
+  frame_bp_prem_48: '#b964ff', /* Galaxy */
+  /* 2026-10-13 (master plan 3.5): 9 avatar rings */
+  frame_ring_bronze:       '#cd7f32',
+  frame_ring_silver:       '#c9d4e4',
+  frame_ring_gold:         '#ffd700',
+  frame_ring_platinum:     '#7fe3ff',
+  frame_ring_diamond:      '#00d4ff',
+  frame_ring_legend:       '#ff6b2b',
+  frame_ring_prem_silver:  '#e0e0e0',
+  frame_ring_prem_gold:    '#ffb800',
+  frame_ring_prem_diamond: '#57d9ff'
+};
+/* ── 9 avatar rings (rank + premium art) — price server se match ── */
+var _COS_RINGS = [
+  { id:'frame_ring_bronze',       name:'Bronze Ring',          icon:'', price:60,  img:'assets/img/ranks/bronze.png' },
+  { id:'frame_ring_silver',       name:'Silver Ring',          icon:'', price:80,  img:'assets/img/ranks/silver.png' },
+  { id:'frame_ring_gold',         name:'Gold Ring',            icon:'', price:100, img:'assets/img/ranks/gold.png' },
+  { id:'frame_ring_platinum',     name:'Platinum Ring',        icon:'💠', price:130, img:'assets/img/ranks/platinum.png' },
+  { id:'frame_ring_diamond',      name:'Diamond Ring',         icon:'💎', price:160, img:'assets/img/ranks/diamond.png' },
+  { id:'frame_ring_legend',       name:'Legend Ring',          icon:'👑', price:200, img:'assets/img/ranks/legend.png' },
+  { id:'frame_ring_prem_silver',  name:'Premium Silver Ring',  icon:'⚪', price:120, img:'assets/img/premium/silver.png' },
+  { id:'frame_ring_prem_gold',    name:'Premium Gold Ring',    icon:'🟡', price:180, img:'assets/img/premium/gold.png' },
+  { id:'frame_ring_prem_diamond', name:'Premium Diamond Ring', icon:'🔷', price:250, img:'assets/img/premium/diamond.png' }
+];
+window.__COS_RINGS = _COS_RINGS;   /* test hook (read-only) */
+/* test hook: poora cosmetics catalog (store wahi function use karta hai) */
+window.__COS_CATALOG = function () { try { return _getCosmetics(); } catch (e) { return []; } };
+window.getEquippedCosmetic = function(typ) {
+  var owned = (window.UD && window.UD.cosmetics) || {};
+  var hit = null;
+  /* R28h: user_cosmetics DB row mein 'name' column nahi hai — raw
+     cosmetic_key ("tag_beast") profile par chip ban ke dikh raha tha
+     (live-proven). Ab display-name catalog (_getCosmetics) se resolve
+     hota hai, warna "⚡ BEAST MODE" ki jagah "tag_beast" dikh raha tha. */
+  Object.keys(owned).forEach(function(k) {
+    var c = owned[k] || {};
+    if (c.is_equipped && k.split('_')[0] === typ) hit = { id: k, name: c.name || _cosmeticName(k) || k, row: c };
+  });
+  return hit;
+};
+/* catalog se display-name nikaalo (key se) */
+function _cosmeticName(key) {
+  try {
+    var items = _getCosmetics();
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === key) return items[i].name;
+    }
+  } catch(e) {}
+  return null;
+}
+window.getEquippedFrameColor = function() {
+  var f = window.getEquippedCosmetic('frame');
+  if (!f) return null;
+  return _COS_FRAME_COLORS[f.id] || '#00ff9c';
+};
+/* 2026-10-13: equipped frame ka ART (medal) — profile avatar ke kone par
+   dikhta hai. Catalog se img leta hai (BP frames ke paas bhi img hota hai). */
+window.getEquippedFrameArt = function() {
+  var f = window.getEquippedCosmetic('frame');
+  if (!f) return null;
+  var img = '', name = f.name;
+  try {
+    var items = _getCosmetics();
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === f.id) { img = items[i].img || ''; name = items[i].name || name; break; }
+    }
+  } catch (e) {}
+  return { id: f.id, name: name, img: img, color: _COS_FRAME_COLORS[f.id] || '#00ff9c' };
+};
+window.getEquippedTagText = function() {
+  var t = window.getEquippedCosmetic('tag');
+  /* ✅ D100-F3: title SAAF text — catalog ke ✨⚡🎯 decor yahan strip,
+     isliye profile chip + player-card2 art dono par clean naam dikhta hai */
+  if (!t) return null;
+  var clean = window.cleanLabel ? window.cleanLabel(t.name) : t.name;
+  return clean || t.name;
+};
+
+/* R28 (2026-09-22): Equip/अन-Equip — existing user_cosmetics.is_equipped
+   (core/db.js DB.cosmetics.equip) ko UI se joda. Same-type items ek
+   saath sirf ek active: frame lagane se doosra frame off. */
+window.toggleCosmeticEquip = function(id, btnEl) {
+  if (!window.U || !window.UD || !window._supa) { if (window.toast) toast('Login karo pehle', 'err'); return; }
+  var owned = (window.UD.cosmetics || {});
+  var cur = owned[id] || {};
+  var nowEq = !!cur.is_equipped;
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = '...'; }
+
+  var fn = function() {
+    if (!window.UD.cosmetics) window.UD.cosmetics = {};
+    if (nowEq) {
+      /* Remove: sirf is item ko off */
+      Object.keys(window.UD.cosmetics).forEach(function(k) {
+        if (window.UD.cosmetics[k] && window.UD.cosmetics[k].is_equipped && k.split('_')[0] === id.split('_')[0]) {
+          window.UD.cosmetics[k].is_equipped = false;
+        }
+      });
+    } else {
+      /* Apply: same-type off, is item on */
+      Object.keys(window.UD.cosmetics).forEach(function(k) {
+        if (window.UD.cosmetics[k] && k.split('_')[0] === id.split('_')[0]) {
+          window.UD.cosmetics[k].is_equipped = (k === id);
+        }
+      });
+    }
+    if (window.updateHdr) window.updateHdr();
+    window.showCosmeticsStore();
+    /* ✅ D70: profile card turant refresh — equipped tag/title plate par
+       turant dikhe (pehle card stale rehta tha, BEAST MODE apply ke baad
+       bhi purana PRO PLAYER art dikhta tha) */
+    if (window.renderProfile) setTimeout(function () { try { renderProfile(); } catch (e) {} }, 150);
+  };
+
+  if (nowEq) {
+    /* unequip */
+    window._supa.from('user_cosmetics')
+      .update({ is_equipped: false })
+      .eq('user_id', window.U.uid)
+      .like('cosmetic_key', id.split('_')[0] + '%')
+      .then(fn, function(e) { if (window.toast) toast('❌ Remove nahi hua, dobara try karo', 'err'); if (btnEl) btnEl.disabled = false; });
+  } else {
+    /* unequip same-type, then equip selected */
+    window._supa.from('user_cosmetics')
+      .update({ is_equipped: false })
+      .eq('user_id', window.U.uid)
+      .like('cosmetic_key', id.split('_')[0] + '%')
+      .then(function() {
+        return window._supa.from('user_cosmetics')
+          .update({ is_equipped: true })
+          .eq('user_id', window.U.uid)
+          .eq('cosmetic_key', id);
+      })
+      .then(fn, function(e) { if (window.toast) toast('❌ Apply nahi hua, dobara try karo', 'err'); if (btnEl) btnEl.disabled = false; });
+  }
+};
+
+/* ================================================================
+   6. CLAN WAR SUNDAY BANNER
+   ================================================================ */
+window.checkClanWarBanner = function() {
+  var day = new Date().getDay(); // 0 = Sunday
+  var banner = document.getElementById('clanWarBanner');
+  if (!banner) return;
+  if (day === 0) {
+    banner.style.display = 'flex';
+  } else {
+    var daysLeft = (7 - day) % 7;
+    var bannerLabel = document.getElementById('clanWarBannerLabel');
+    if (bannerLabel) bannerLabel.textContent = daysLeft + ' din baad — Sunday Clan War!';
+    banner.style.display = 'flex';
+  }
+};
+
+/* ================================================================
+   7. HOME QUICK-ACCESS — inject buttons into home screen
+   ================================================================ */
+window.injectGrowthButtons = function() {
+  /* ✅ REMOVED (2026-07): this used to inject a "City #1 / Missions /
+     Cosmetics / Refer & Earn" quick-access bar at the top of the Home
+     tab. All four of those already have buttons on the Profile tab
+     (My Clan, Daily Missions, Cosmetics Store, City Leaderboard,
+     Refer & Earn in screens/profile.js), so this was pure duplicate
+     clutter on Home. Left as a no-op (instead of deleting the function
+     outright) since initGrowth() below still calls it — removing the
+     function entirely would throw if some other code path calls it too.
+     If a stale bar is still in the DOM from an older cached version of
+     this file, clean it up on the next run. */
+  var stale = document.getElementById('growthQuickBar');
+  if (stale) stale.remove();
+};
+
+/* ================================================================
+   8. MISSION COMPLETE NOTIFICATION — after match result
+   ================================================================ */
+
+/* ================================================================
+   INIT
+   ================================================================ */
+function initGrowth() {
+  if (!window.db || !window.U) {
+    setTimeout(initGrowth, 1000);
+    return;
+  }
+  window.checkClanWarBanner && window.checkClanWarBanner();
+  window.injectGrowthButtons && window.injectGrowthButtons();
+  console.log('✅ growth-features.js loaded');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() { setTimeout(initGrowth, 2000); });
+} else {
+  setTimeout(initGrowth, 2000);
+}
+
+window._growthInitFn   = initGrowth;
+window.initGrowth      = initGrowth; /* ✅ inside IIFE scope */
+
+/* ═══════════════════════════════════════════════════════════════
+   ✅ R25 (2026-09-21): sendClanWarChallenge — NAAM-normalization
+   ═══════════════════════════════════════════════════════════════
+   js/bugfixes-v29-final.js ka FIX M-9 guard "window.sendClanWarChallenge"
+   ke hone ka intzaar karta hai (expires_at auto-patch के liye), lekin
+   features/clan-war.js ne hamesha challenge ko window._sendWarChallenge
+   naam se bheja tha — sendClanWarChallenge kabhi define hi nahi hua.
+   Isliye M-9 ka clan_war_challenges.insert-expiry patch kabhi attach
+   nahi hota tha (expiry patch sirf isi naam par latakta hai). Yahan
+   sirf ALIAS diya ja raha hai — koi duplicate data-layer nahi banti,
+   sirf wahi core _sendWarChallenge call hota hai. */
+window.sendClanWarChallenge = function(fromId, toId, toName, fromName, btn) {
+  if (window._sendWarChallenge) {
+    return window._sendWarChallenge(fromId, toId, toName, fromName, btn);
+  }
+  /* fallback: agar core module kisi wajah se late ho (defensive only) */
+  if (window.toast) toast('Clan war service abhi ready nahi — retry karo', 'err');
+};
+
+/* ── Test hook (2026-10-12b) — E2E ke liye READ-ONLY ──
+   Cosmetics store ke card ka icon HTML (_cosIconHtml) aur BP catalog
+   (_getBpCosmetics) bahar dete hain — emulator me asli store render
+   (5 season-title kalaayein + frame_glow art) LIVE verify hota hai. */
+try {
+  window.__COSHOP = {
+    version: '20261012c',
+    bpList: function () { return _getBpCosmetics(); },
+    iconHtml: function (c) { return _cosIconHtml(c); }
+  };
+} catch (e) {}
+
+})();

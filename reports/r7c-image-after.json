@@ -1,0 +1,443 @@
+[
+ {
+  "p": "assets/green-diamond.png",
+  "alpha": true,
+  "opaque_black": 0.015,
+  "transparent": 0.551,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/comeback-king.png",
+  "alpha": true,
+  "opaque_black": 0.015,
+  "transparent": 0.551,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/elite-fighter.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.663,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/eternal-champion.png",
+  "alpha": true,
+  "opaque_black": 0.004,
+  "transparent": 0.899,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/god-of-war.png",
+  "alpha": true,
+  "opaque_black": 0.005,
+  "transparent": 0.581,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/grinder.png",
+  "alpha": true,
+  "opaque_black": 0.003,
+  "transparent": 0.615,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/hunter.png",
+  "alpha": true,
+  "opaque_black": 0.005,
+  "transparent": 0.607,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/kill-machine.png",
+  "alpha": true,
+  "opaque_black": 0.002,
+  "transparent": 0.578,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/king-of-arena.png",
+  "alpha": true,
+  "opaque_black": 0.012,
+  "transparent": 0.595,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/legend-born.png",
+  "alpha": true,
+  "opaque_black": 0.04,
+  "transparent": 0.491,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/legend-winner.png",
+  "alpha": true,
+  "opaque_black": 0.013,
+  "transparent": 0.55,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/mvp.png",
+  "alpha": true,
+  "opaque_black": 0.01,
+  "transparent": 0.524,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/one-man-army.png",
+  "alpha": true,
+  "opaque_black": 0.069,
+  "transparent": 0.502,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/podium-master.png",
+  "alpha": true,
+  "opaque_black": 0.027,
+  "transparent": 0.577,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/predator.png",
+  "alpha": true,
+  "opaque_black": 0.002,
+  "transparent": 0.611,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/rank-climber.png",
+  "alpha": true,
+  "opaque_black": 0.006,
+  "transparent": 0.55,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/rising-star.png",
+  "alpha": true,
+  "opaque_black": 0.05,
+  "transparent": 0.537,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/royal-legend.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.895,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/survivor.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.629,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/the-conqueror.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.901,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/top-10.png",
+  "alpha": true,
+  "opaque_black": 0.009,
+  "transparent": 0.562,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/top-5.png",
+  "alpha": true,
+  "opaque_black": 0.034,
+  "transparent": 0.54,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/week-warrior.png",
+  "alpha": true,
+  "opaque_black": 0.045,
+  "transparent": 0.543,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/badges/win-streak.png",
+  "alpha": true,
+  "opaque_black": 0.042,
+  "transparent": 0.545,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/frames/glow.png",
+  "alpha": true,
+  "opaque_black": 0.023,
+  "transparent": 0.585,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/icons/coin.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.486,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/icons/crown.png",
+  "alpha": true,
+  "opaque_black": 0.034,
+  "transparent": 0.617,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/icons/diamond.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.391,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/icons/fire.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.61,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/icons/trophy.png",
+  "alpha": true,
+  "opaque_black": 0.009,
+  "transparent": 0.708,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/icons/xp.png",
+  "alpha": true,
+  "opaque_black": 0.006,
+  "transparent": 0.406,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/premium/diamond.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.814,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/premium/gold.png",
+  "alpha": true,
+  "opaque_black": 0.003,
+  "transparent": 0.82,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/premium/ribbon.png",
+  "alpha": true,
+  "opaque_black": 0.039,
+  "transparent": 0.537,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/premium/silver.png",
+  "alpha": true,
+  "opaque_black": 0.005,
+  "transparent": 0.818,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/ranks/bronze.png",
+  "alpha": true,
+  "opaque_black": 0.008,
+  "transparent": 0.642,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/ranks/diamond.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.553,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/ranks/gold.png",
+  "alpha": true,
+  "opaque_black": 0.006,
+  "transparent": 0.618,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/ranks/legend.png",
+  "alpha": true,
+  "opaque_black": 0.025,
+  "transparent": 0.482,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/ranks/platinum.png",
+  "alpha": true,
+  "opaque_black": 0.006,
+  "transparent": 0.552,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/ranks/silver.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.594,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/special/clan-war-champion.png",
+  "alpha": true,
+  "opaque_black": 0.002,
+  "transparent": 0.829,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/special/season-champion.png",
+  "alpha": true,
+  "opaque_black": 0.005,
+  "transparent": 0.789,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/special/top3-champion.png",
+  "alpha": true,
+  "opaque_black": 0.003,
+  "transparent": 0.788,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/apex.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.924,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/arena-king.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.919,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/champion.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.873,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/cosmic.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.879,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/death-bringer.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.932,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/destroyer.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.913,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/immortal.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.905,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/infinity.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.884,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/lone-wolf.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.902,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/mythic.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.884,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/phoenix.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.897,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/reaper.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.923,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/shadow-hunter.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.916,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/supreme.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.89,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/titan.png",
+  "alpha": true,
+  "opaque_black": 0.0,
+  "transparent": 0.837,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/unstoppable.png",
+  "alpha": true,
+  "opaque_black": 0.002,
+  "transparent": 0.639,
+  "corner": 0
+ },
+ {
+  "p": "assets/img/titles/veteran.png",
+  "alpha": true,
+  "opaque_black": 0.001,
+  "transparent": 0.901,
+  "corner": 0
+ },
+ {
+  "p": "assets/profile/card_frame.png",
+  "alpha": true,
+  "opaque_black": 0.115,
+  "transparent": 0.625,
+  "corner": 0
+ },
+ {
+  "p": "assets/green-diamond.png",
+  "alpha": true,
+  "opaque_black": 0.015,
+  "transparent": 0.551,
+  "corner": 0
+ }
+]

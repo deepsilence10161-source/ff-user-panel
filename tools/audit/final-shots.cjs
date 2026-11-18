@@ -1,0 +1,16 @@
+const { chromium } = require('playwright'); const fs=require('fs');
+const cred=JSON.parse(fs.readFileSync(process.env.CRED||'tools/tri-e2e/.state/d98a.json','utf8'));
+const OUT=process.env.OUT||'reports/audit-d97/shots-d98b';
+fs.mkdirSync(OUT,{recursive:true});
+(async()=>{const b=await chromium.launch();const p=await (await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2})).newPage();
+await p.goto(process.env.VBASE||'http://127.0.0.1:8090',{waitUntil:'domcontentloaded'});
+await p.waitForFunction(()=>window.auth&&window.firebase,null,{timeout:20000});
+await p.evaluate(([e,w])=>window.auth.signInWithEmailAndPassword(e,w),[cred.player.email,cred.player.password]);
+await p.waitForFunction(()=>window.UD&&window.UD.ign,null,{timeout:25000});
+await p.evaluate(()=>{try{localStorage.setItem('ffOnbV1','1');}catch(e){}});
+await p.waitForTimeout(2500);
+await p.screenshot({path:OUT+'/final-home-ticker.png'});
+await p.evaluate(()=>window.navTo('wallet')); await p.waitForTimeout(900);
+await p.screenshot({path:OUT+'/final-wallet-gd.png'});
+console.log('shots done');
+await b.close();})();

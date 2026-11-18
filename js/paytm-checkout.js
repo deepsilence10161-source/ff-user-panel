@@ -1,1 +1,298 @@
-(function(){'use strict';var _0x452c4e=(function(){var _0x1bf810=!![];return function(_0x5e3f1b,_0x34b536){var _0x27c00d=_0x1bf810?function(){if(_0x34b536){var _0x4bc511=_0x34b536['apply'](_0x5e3f1b,arguments);return _0x34b536=null,_0x4bc511;}}:function(){};return _0x1bf810=![],_0x27c00d;};}()),_0x2aeb78=_0x452c4e(this,function(){if(_0x2aeb78['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x2aeb78['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x2aeb78)['search']('(((.+)+)+)+$');});_0x2aeb78();var _0x48ce7c='https://hddhkculuyrfoevxmlwy.supabase.co/functions/v1',_0xf6876f='https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/',_0x4ba51b='https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/';function _0x76f681(_0x5b721d){try{var _0x4f8195=window['fbAuth']?window['fbAuth']():null;_0x4f8195&&_0x4f8195['currentUser']?_0x4f8195['currentUser']['getIdToken'](!![])['then'](_0x5b721d)['catch'](function(){_0x5b721d(null);}):_0x5b721d(null);}catch(_0x5087f0){_0x5b721d(null);}}function _0x1c2900(_0x5c31a7,_0x3742a5){if(document['querySelector']('script[src=\x22'+_0x5c31a7+'\x22]')){_0x3742a5();return;}var _0x5a4673=document['createElement']('script');_0x5a4673['src']=_0x5c31a7,_0x5a4673['crossOrigin']='anonymous',_0x5a4673['onload']=_0x3742a5,_0x5a4673['onerror']=function(){_0x3742a5(new Error('SDK\x20load\x20failed'));},document['head']['appendChild'](_0x5a4673);}window['_paytmMaxTxn']=function(){var _0x29e110=window['CFG']&&window['CFG']['paytmMaxTxn']!=null?Number(window['CFG']['paytmMaxTxn']):0x7d0;return isFinite(_0x29e110)&&_0x29e110>0x0?_0x29e110:0x7d0;},window['_paytmCapMessage']=function(_0x375077){var _0x1208af=window['_paytmMaxTxn']();return'⚠️\x20₹'+_0x1208af+'\x20se\x20upar\x20ka\x20online\x20payment\x20allow\x20nahi\x20(₹'+_0x375077+')\x20—\x20isse\x20upar\x20ke\x20liye\x20UPI/QR\x20se\x20manual\x20payment\x20karo';},window['_paytmAmountAllowed']=function(_0x4e52fc){var _0x19d69c=Number(_0x4e52fc)||0x0;return _0x19d69c>0x0&&_0x19d69c<=window['_paytmMaxTxn']();},window['startPaytmPayment']=function(_0x1100a2,_0x9e3732){var _0x134b7e=_0x9e3732&&typeof _0x9e3732['onStatus']==='function'?_0x9e3732['onStatus']:function(){},_0x23438f=_0x9e3732&&_0x9e3732['purpose']?String(_0x9e3732['purpose']):'',_0x3d677b=_0x9e3732&&_0x9e3732['meta']&&typeof _0x9e3732['meta']==='object'?_0x9e3732['meta']:{};if(!window['_paytmAmountAllowed'](_0x1100a2)){var _0x30bee0=Number(_0x1100a2)>window['_paytmMaxTxn']()?window['_paytmCapMessage'](_0x1100a2):'⚠️\x20Payment\x20amount\x20theek\x20nahi\x20hai';_0x134b7e('error',_0x30bee0);if(window['toast'])try{toast(_0x30bee0,'err');}catch(_0x1ca4b7){}return;}_0x134b7e('loading'),_0x76f681(function(_0x206c35){if(!_0x206c35){_0x134b7e('error','Login\x20required');return;}fetch(_0x48ce7c+'/paytm-create-order',{'method':'POST','headers':{'Content-Type':'application/json','Authorization':'Bearer\x20'+_0x206c35},'body':JSON['stringify']({'amount':_0x1100a2,'purpose':_0x23438f,'meta':_0x3d677b})})['then'](function(_0x571eb9){return _0x571eb9['json']();})['then'](async function(_0x1f229e){if(!_0x1f229e||!_0x1f229e['txnToken']){_0x134b7e('error',_0x1f229e&&_0x1f229e['error']?_0x1f229e['error']:'Order\x20create\x20nahi\x20ho\x20saka');return;}if(_0x23438f&&_0x1f229e['orderId']&&window['_supa'])try{await window['_supa']['rpc']('tag_paytm_order_purpose',{'p_order_id':_0x1f229e['orderId'],'p_purpose':_0x23438f,'p_meta':_0x3d677b});}catch(_0x4bb466){}_0x3c0a13(_0x1f229e,_0x134b7e);})['catch'](function(_0x4ae384){_0x134b7e('error',_0x4ae384['message']||'Network\x20error');});});},window['renderPaytmInstantBlock']=function(_0x4cd72f,_0x386b5e,_0x3ff769,_0x22245b){if(!(window['CFG']&&window['CFG']['paytmEnabled']&&window['startPaytmPayment']))return'';if(!window['_paytmAmountAllowed'](_0x4cd72f)){var _0x41a314=window['_paytmMaxTxn']();return'<div\x20style=\x22margin-bottom:14px\x22>'+'<div\x20style=\x22padding:11px\x2012px;border-radius:12px;background:rgba(255,170,0,.10);'+'border:1px\x20solid\x20rgba(255,170,0,.28);color:#ffcc66;font-size:12px;line-height:1.6\x22>'+'⚠️\x20Online\x20(Paytm)\x20payment\x20sirf\x20₹'+_0x41a314+'\x20tak\x20—\x20ye\x20₹'+_0x4cd72f+'\x20hai.<br>'+'Neeche\x20wale\x20<b>UPI\x20/\x20QR\x20manual\x20payment</b>\x20se\x20bhejo\x20(screenshot\x20+\x20UTR).'+'</div></div>';}var _0x5adf3a=_0x3ff769||'_ptmInstBtn',_0x458485=_0x22245b||'_ptmInstStatus';return'<div\x20style=\x22margin-bottom:14px\x22>'+'<button\x20type=\x22button\x22\x20id=\x22'+_0x5adf3a+'\x22\x20onclick=\x22'+_0x386b5e+'\x22\x20'+'style=\x22width:100%;padding:13px;border-radius:12px;border:none;cursor:pointer;'+'background:linear-gradient(135deg,#00baf2,#0082c8);color:#fff;font-weight:900;font-size:14px;'+'display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0\x204px\x2016px\x20rgba(0,186,242,.35)\x22>'+'⚡\x20Pay\x20₹'+_0x4cd72f+'\x20Instantly\x20via\x20Paytm\x20(UPI)</button>'+'<div\x20id=\x22'+_0x458485+'\x22\x20style=\x22display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-size:12px\x22></div>'+'<div\x20style=\x22display:flex;align-items:center;gap:8px;margin:12px\x200\x204px\x22>'+'<div\x20style=\x22flex:1;height:1px;background:rgba(255,255,255,.08)\x22></div>'+'<span\x20style=\x22font-size:10px;color:#888;font-weight:700\x22>YA\x20MANUAL\x20SCREENSHOT\x20SE</span>'+'<div\x20style=\x22flex:1;height:1px;background:rgba(255,255,255,.08)\x22></div></div>'+'</div>';},window['paytmInstantPurchase']=function(_0x208024,_0x13786e,_0x5c95ed,_0x326061,_0x161222,_0x1941c0){var _0x876be=document['getElementById'](_0x326061||'_ptmInstBtn'),_0x19214a=document['getElementById'](_0x161222||'_ptmInstStatus');function _0x22967f(_0x46a5d5,_0x51b22b,_0x9353a0){if(!_0x19214a)return;_0x19214a['style']['display']='block',_0x19214a['style']['background']=_0x46a5d5,_0x19214a['style']['color']=_0x51b22b,_0x19214a['innerHTML']=_0x9353a0;}if(!window['_paytmAmountAllowed'](_0x208024)){var _0x26cf1c=window['_paytmCapMessage'](_0x208024);_0x22967f('rgba(255,170,0,.12)','#ffcc66',_0x26cf1c);_0x876be&&(_0x876be['disabled']=!![],_0x876be['style']['opacity']='0.6');return;}window['startPaytmPayment'](_0x208024,{'purpose':_0x13786e,'meta':_0x5c95ed||{},'onStatus':function(_0x4ba67a,_0xd4f9b8){if(_0x4ba67a==='loading')_0x876be&&(_0x876be['disabled']=!![],_0x876be['textContent']='⏳\x20Connecting\x20to\x20Paytm...'),_0x22967f('rgba(0,186,242,.1)','#00baf2','⏳\x20Creating\x20Paytm\x20order...');else{if(_0x4ba67a==='processing'){if(_0x876be)_0x876be['textContent']='⏳\x20Payment\x20window\x20open...';_0x22967f('rgba(255,170,0,.1)','#ffaa00','📱\x20Paytm\x20pe\x20UPI\x20payment\x20complete\x20karo...');}else{if(_0x4ba67a==='approved'){_0x22967f('rgba(0,255,156,.12)','#00ff9c','✅\x20Payment\x20Confirmed!\x20Instant\x20activation\x20complete.');if(window['_loadUser'])window['_loadUser']();if(typeof _0x1941c0==='function')_0x1941c0();setTimeout(function(){if(window['closeModal'])closeModal();},0x5dc);}else{if(_0x4ba67a==='rejected')_0x876be&&(_0x876be['disabled']=![],_0x876be['textContent']='⚡\x20Pay\x20₹'+_0x208024+'\x20Instantly\x20via\x20Paytm\x20(UPI)'),_0x22967f('rgba(255,68,68,.12)','#ff4444','❌\x20Payment\x20failed\x20ya\x20cancel\x20ho\x20gaya.\x20Dobara\x20try\x20karo.');else{if(_0x4ba67a==='timeout')_0x876be&&(_0x876be['disabled']=![],_0x876be['textContent']='⚡\x20Pay\x20₹'+_0x208024+'\x20Instantly\x20via\x20Paytm\x20(UPI)'),_0x22967f('rgba(255,170,0,.1)','#ffaa00','⏰\x20Confirmation\x20mein\x20time\x20lag\x20raha\x20hai\x20—\x20thodi\x20der\x20mein\x20auto-update\x20hoga.');else _0x4ba67a==='error'&&(_0x876be&&(_0x876be['disabled']=![],_0x876be['textContent']='⚡\x20Pay\x20₹'+_0x208024+'\x20Instantly\x20via\x20Paytm\x20(UPI)'),_0x22967f('rgba(255,68,68,.12)','#ff4444','⚠️\x20'+(_0xd4f9b8||'Error\x20—\x20manual\x20screenshot\x20method\x20use\x20karo')));}}}}}});};function _0x3c0a13(_0x1fc62f,_0x879a37){var _0x223cf9=_0x1fc62f['isProd']?_0x4ba51b:_0xf6876f,_0x60dee=_0x223cf9+_0x1fc62f['mid']+'.js?version=V3';_0x1c2900(_0x60dee,function(_0x56bfd1){if(_0x56bfd1){_0x879a37('error','Paytm\x20SDK\x20load\x20nahi\x20hua\x20—\x20internet\x20check\x20karo');return;}if(!window['Paytm']||!window['Paytm']['CheckoutJS']){_0x879a37('error','Paytm\x20SDK\x20unavailable');return;}_0x879a37('processing');var _0x438735=null,_0x2bc9d5=![];function _0x3af47f(_0x19d982,_0x2e7a76){if(_0x2bc9d5)return;_0x2bc9d5=!![];if(_0x438735)clearInterval(_0x438735);_0x879a37(_0x19d982,_0x2e7a76);}function _0x1740d2(_0x48a8e8){var _0x30b03b=0x0;_0x438735=setInterval(function(){_0x30b03b++;if(_0x30b03b>0x24){_0x3af47f('timeout');return;}if(!window['_supa']||!window['_supaReady'])return;window['_supa']['from']('sd_requests')['select']('status')['eq']('id',_0x48a8e8)['single']()['then'](function(_0x571f3f){if(!_0x571f3f['data'])return;if(_0x571f3f['data']['status']==='approved')_0x3af47f('approved');if(_0x571f3f['data']['status']==='rejected')_0x3af47f('rejected');})['catch'](function(){});},0x1388);}window['Paytm']['CheckoutJS']['init']({'tokenType':'TXN_TOKEN','data':{'orderId':_0x1fc62f['orderId'],'token':_0x1fc62f['txnToken'],'tokenType':'TXN_TOKEN','amount':String(_0x1fc62f['amount'])},'merchant':{'mid':_0x1fc62f['mid'],'name':'MiniESports','logo':'','redirect':![]},'website':_0x1fc62f['website'],'flow':'DEFAULT','handler':{'notifyMerchant':function(_0x59f454){if(_0x59f454==='APP_CLOSED'||_0x59f454==='SESSION_EXPIRED'){}}}})['then'](function(){window['Paytm']['CheckoutJS']['invoke'](),_0x1740d2(_0x1fc62f['orderId']);})['catch'](function(_0x3a4fa6){_0x879a37('error',_0x3a4fa6&&_0x3a4fa6['message']||'Checkout\x20open\x20nahi\x20hua');});});}}());
+/* ================================================================
+   js/paytm-checkout.js  —  MiniESports v32.6
+   ----------------------------------------------------------------
+   Yeh file window.startPaytmPayment() expose karti hai jo
+   wallet.js mein wfPaytmPay() call karta hai.
+
+   FLOW:
+     1. Firebase token lo
+     2. Supabase Edge Function (paytm-create-order) ko call karo
+        → orderId + txnToken milega
+     3. Paytm JS SDK (dynamically load) → popup checkout open karo
+        (UPI-only, sirf wahi dikhega jo backend ne enable kiya)
+     4. Paytm redirect URL = paytm-callback Edge Function
+        Jo wahan se confirm hota hai wo realtime listener se UD
+        automatically update karta hai — yahan manually kuch karne
+        ki zaroorat nahi
+
+   YEH FILE KISI BHAI SECRET NAHI RAKHTI — sirf Supabase URL
+   use karti hai jo already db.js mein public hai.
+================================================================ */
+(function () {
+  'use strict';
+
+  var EDGE_BASE = 'https://hddhkculuyrfoevxmlwy.supabase.co/functions/v1';
+  var PAYTM_SDK_STAGING = 'https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/';
+  var PAYTM_SDK_PROD    = 'https://securegw.paytm.in/merchantpgpui/checkoutjs/merchants/';
+
+  /* ── helpers ── */
+  function _getToken(cb) {
+    try {
+      /* ✅ FIX (2026-09-15): bare firebase.auth() resolves the "[DEFAULT]"
+         app, which this codebase never creates (core/firebase.js names its
+         app "mainApp") — it threw app-compat/no-app every time, the catch
+         below swallowed it, and Paytm checkout could never get a token.
+         window.fbAuth() resolves Auth from the real app. */
+      var _a = window.fbAuth ? window.fbAuth() : null;
+      if (_a && _a.currentUser) {
+        _a.currentUser.getIdToken(true).then(cb).catch(function () { cb(null); });
+      } else {
+        cb(null);
+      }
+    } catch (e) { cb(null); }
+  }
+
+  function _loadScript(src, onDone) {
+    if (document.querySelector('script[src="' + src + '"]')) { onDone(); return; }
+    var s = document.createElement('script');
+    s.src = src;
+    s.crossOrigin = 'anonymous';
+    s.onload  = onDone;
+    s.onerror = function () { onDone(new Error('SDK load failed')); };
+    document.head.appendChild(s);
+  }
+
+  /* ✅ B23 (2026-10-06) — ₹2000 KI SEEMA (user ka niyam):
+     "Paytm ON ho to har transaction par ₹2000 ki seema (₹2000 se upar online
+      payment par shopkeeper charge lagta hai)".
+     Isliye online (Paytm) payment ₹paytmMaxTxn se upar KABHI shuru nahi hoti:
+     na order banega, na paisa katega, na "atka hua" (stuck) payment banega.
+     Seema Settings se badli ja sakti hai (CFG.paytmMaxTxn, default 2000).
+     Agar user isse zyada dena chahta hai to usi modal me manual UPI/QR wala
+     rasta maujood rehta hai (wahan koi seema nahi — wo direct bank/UPI hai). */
+  window._paytmMaxTxn = function () {
+    var v = (window.CFG && window.CFG.paytmMaxTxn != null) ? Number(window.CFG.paytmMaxTxn) : 2000;
+    return (isFinite(v) && v > 0) ? v : 2000;
+  };
+  window._paytmCapMessage = function (amount) {
+    var max = window._paytmMaxTxn();
+    return '⚠️ ₹' + max + ' se upar ka online payment allow nahi (₹' + amount +
+           ') — isse upar ke liye UPI/QR se manual payment karo';
+  };
+  window._paytmAmountAllowed = function (amount) {
+    var a = Number(amount) || 0;
+    return a > 0 && a <= window._paytmMaxTxn();
+  };
+
+  /* ── main export ── */
+  /*
+     startPaytmPayment(amount, { onStatus })
+     onStatus(status, detail):
+       'loading'    — Edge Function call chal raha hai
+       'processing' — payment open hai, confirm ka wait
+       'approved'   — credit ho gaya (realtime listener bhi update karega)
+       'rejected'   — failed/cancelled
+       'timeout'    — 3 min mein confirm nahi aaya (check wallet history)
+       'error'      — setup ya network error (detail mein message)
+  */
+  window.startPaytmPayment = function (amount, opts) {
+    var cb = (opts && typeof opts.onStatus === 'function') ? opts.onStatus : function () {};
+    var purpose = (opts && opts.purpose) ? String(opts.purpose) : '';
+    var meta    = (opts && opts.meta && typeof opts.meta === 'object') ? opts.meta : {};
+
+    /* ✅ B23: SEEMA KA GATE — sabse pehle yahin. Yahi ek jagah hai jahan se
+       poore app ka Paytm payment guzarta hai (wallet top-up, quick deposit,
+       premium, bundle, season pass, FF UID change) — isliye ek hi jagah
+       lagane se koi rasta chhoota nahi, aur galti se ₹2000+ ka order
+       ban hi nahi sakta (payment atakne ka sawaal hi nahi). */
+    if (!window._paytmAmountAllowed(amount)) {
+      var _capMsg = (Number(amount) > window._paytmMaxTxn())
+        ? window._paytmCapMessage(amount)
+        : '⚠️ Payment amount theek nahi hai';
+      cb('error', _capMsg);
+      if (window.toast) { try { toast(_capMsg, 'err'); } catch (e) {} }
+      return;
+    }
+
+    cb('loading');
+
+    _getToken(function (token) {
+      if (!token) { cb('error', 'Login required'); return; }
+
+      fetch(EDGE_BASE + '/paytm-create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ amount: amount, purpose: purpose, meta: meta })
+      })
+        .then(function (r) { return r.json(); })
+        .then(async function (d) {
+          if (!d || !d.txnToken) {
+            cb('error', d && d.error ? d.error : 'Order create nahi ho saka');
+            return;
+          }
+          if (purpose && d.orderId && window._supa) {
+            try {
+              await window._supa.rpc('tag_paytm_order_purpose', {
+                p_order_id: d.orderId,
+                p_purpose: purpose,
+                p_meta: meta
+              });
+            } catch (_e) {}
+          }
+          _openCheckout(d, cb);
+        })
+        .catch(function (e) { cb('error', e.message || 'Network error'); });
+    });
+  };
+
+  /* ── Shared Instant Paytm Purchase Helper for Premium / Season Pass / Bundles / UID Change ── */
+  window.renderPaytmInstantBlock = function (amount, onclickJs, btnId, statusId) {
+    if (!(window.CFG && window.CFG.paytmEnabled && window.startPaytmPayment)) return '';
+
+    /* ✅ B23: seema se upar wale amount par Paytm ka button dikhate hi nahi —
+       warna user dabata, error aata, aur confusion hoti. Uski jagah saaf
+       batate hain ki itne paise ke liye UPI/QR (manual) use karo — wo rasta
+       isi block ke thik neeche maujood hota hai ("YA MANUAL SCREENSHOT SE"). */
+    if (!window._paytmAmountAllowed(amount)) {
+      var _maxNow = window._paytmMaxTxn();
+      return '<div style="margin-bottom:14px">' +
+        '<div style="padding:11px 12px;border-radius:12px;background:rgba(255,170,0,.10);' +
+        'border:1px solid rgba(255,170,0,.28);color:#ffcc66;font-size:12px;line-height:1.6">' +
+        '⚠️ Online (Paytm) payment sirf ₹' + _maxNow + ' tak — ye ₹' + amount + ' hai.<br>' +
+        'Neeche wale <b>UPI / QR manual payment</b> se bhejo (screenshot + UTR).' +
+        '</div></div>';
+    }
+    var bId = btnId || '_ptmInstBtn';
+    var sId = statusId || '_ptmInstStatus';
+    return '<div style="margin-bottom:14px">' +
+      '<button type="button" id="' + bId + '" onclick="' + onclickJs + '" ' +
+      'style="width:100%;padding:13px;border-radius:12px;border:none;cursor:pointer;' +
+      'background:linear-gradient(135deg,#00baf2,#0082c8);color:#fff;font-weight:900;font-size:14px;' +
+      'display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(0,186,242,.35)">' +
+      '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)</button>' +
+      '<div id="' + sId + '" style="display:none;margin-top:8px;padding:10px;border-radius:10px;text-align:center;font-size:12px"></div>' +
+      '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 4px">' +
+      '<div style="flex:1;height:1px;background:rgba(255,255,255,.08)"></div>' +
+      '<span style="font-size:10px;color:#888;font-weight:700">YA MANUAL SCREENSHOT SE</span>' +
+      '<div style="flex:1;height:1px;background:rgba(255,255,255,.08)"></div></div>' +
+      '</div>';
+  };
+
+  window.paytmInstantPurchase = function (amount, purpose, meta, btnId, statusId, onApproved) {
+    var btn = document.getElementById(btnId || '_ptmInstBtn');
+    var st  = document.getElementById(statusId || '_ptmInstStatus');
+    function setSt(bg, col, msg) {
+      if (!st) return;
+      st.style.display = 'block';
+      st.style.background = bg;
+      st.style.color = col;
+      st.innerHTML = msg;
+    }
+    /* ✅ B23: seema ka check pehle — order banane ki koshish hi nahi hoti
+       (aur button bhi band kar dete hain taki user dobara na dabaye). */
+    if (!window._paytmAmountAllowed(amount)) {
+      var _cap = window._paytmCapMessage(amount);
+      setSt('rgba(255,170,0,.12)', '#ffcc66', _cap);
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
+      return;
+    }
+    window.startPaytmPayment(amount, {
+      purpose: purpose,
+      meta: meta || {},
+      onStatus: function (status, detail) {
+        if (status === 'loading') {
+          if (btn) { btn.disabled = true; btn.textContent = '⏳ Connecting to Paytm...'; }
+          setSt('rgba(0,186,242,.1)', '#00baf2', '⏳ Creating Paytm order...');
+        } else if (status === 'processing') {
+          if (btn) btn.textContent = '⏳ Payment window open...';
+          setSt('rgba(255,170,0,.1)', '#ffaa00', '📱 Paytm pe UPI payment complete karo...');
+        } else if (status === 'approved') {
+          setSt('rgba(0,255,156,.12)', '#00ff9c', '✅ Payment Confirmed! Instant activation complete.');
+          if (window._loadUser) window._loadUser();
+          if (typeof onApproved === 'function') onApproved();
+          setTimeout(function () { if (window.closeModal) closeModal(); }, 1500);
+        } else if (status === 'rejected') {
+          if (btn) { btn.disabled = false; btn.textContent = '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)'; }
+          setSt('rgba(255,68,68,.12)', '#ff4444', '❌ Payment failed ya cancel ho gaya. Dobara try karo.');
+        } else if (status === 'timeout') {
+          if (btn) { btn.disabled = false; btn.textContent = '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)'; }
+          setSt('rgba(255,170,0,.1)', '#ffaa00', '⏰ Confirmation mein time lag raha hai — thodi der mein auto-update hoga.');
+        } else if (status === 'error') {
+          if (btn) { btn.disabled = false; btn.textContent = '⚡ Pay ₹' + amount + ' Instantly via Paytm (UPI)'; }
+          setSt('rgba(255,68,68,.12)', '#ff4444', '⚠️ ' + (detail || 'Error — manual screenshot method use karo'));
+        }
+      }
+    });
+  };
+
+  /* ── Paytm JS SDK checkout ── */
+  function _openCheckout(order, cb) {
+    var sdkBase = order.isProd ? PAYTM_SDK_PROD : PAYTM_SDK_STAGING;
+    var sdkUrl  = sdkBase + order.mid + '.js?version=V3';
+
+    _loadScript(sdkUrl, function (err) {
+      if (err) { cb('error', 'Paytm SDK load nahi hua — internet check karo'); return; }
+
+      if (!window.Paytm || !window.Paytm.CheckoutJS) {
+        cb('error', 'Paytm SDK unavailable'); return;
+      }
+
+      cb('processing');
+      var _pollTimer = null;
+      var _resolved  = false;
+
+      function _resolve(status, detail) {
+        if (_resolved) return;
+        _resolved = true;
+        if (_pollTimer) clearInterval(_pollTimer);
+        cb(status, detail);
+      }
+
+      /* Poll Supabase sd_requests row for status change.
+         Paytm ke callbacks WebView mein aate hain aur Edge Function
+         wahan se Supabase update karta hai — yeh poll usi change ko
+         detect karta hai. */
+      function _startPoll(orderId) {
+        var attempts = 0;
+        _pollTimer = setInterval(function () {
+          attempts++;
+          if (attempts > 36) { _resolve('timeout'); return; } // 3 min
+          if (!window._supa || !window._supaReady) return;
+          window._supa.from('sd_requests')
+            .select('status')
+            .eq('id', orderId)
+            .single()
+            .then(function (r) {
+              if (!r.data) return;
+              if (r.data.status === 'approved')  _resolve('approved');
+              if (r.data.status === 'rejected')  _resolve('rejected');
+            })
+            .catch(function () {}); // poll fail to ignore
+        }, 5000); // har 5 second
+      }
+
+      window.Paytm.CheckoutJS.init({
+        tokenType: 'TXN_TOKEN',
+        data: {
+          orderId:   order.orderId,
+          token:     order.txnToken,
+          tokenType: 'TXN_TOKEN',
+          amount:    String(order.amount)
+        },
+        merchant: {
+          mid:      order.mid,
+          name:     'MiniESports',
+          logo:     '',
+          redirect: false      // popup mode (WebView safe)
+        },
+        website: order.website,
+        flow:    'DEFAULT',
+        handler: {
+          notifyMerchant: function (eventName) {
+            /* 'APP_CLOSED' ya 'SESSION_EXPIRED' */
+            if (eventName === 'APP_CLOSED' || eventName === 'SESSION_EXPIRED') {
+              /* Jaldi resolve mat karo — user ne close kiya ho sakta
+                 hai payment ke baad. Poll decide karega. */
+            }
+          }
+        }
+      }).then(function () {
+        window.Paytm.CheckoutJS.invoke();
+        _startPoll(order.orderId);
+      }).catch(function (e) {
+        cb('error', (e && e.message) || 'Checkout open nahi hua');
+      });
+    });
+  }
+
+})();
