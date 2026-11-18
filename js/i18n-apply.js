@@ -100,6 +100,11 @@
     'Comeback King': 'कमबैक किंग', 'Leaderboard par Top-3 (asli position)': 'लीडरबोर्ड पर टॉप-3 (असली पोजीशन)', 'Crown': 'क्राउन', 'UI icon — Legend/king': 'UI आइकॉन — लेजेंड/किंग',
     'UI icon — Winner': 'UI आइकॉन — विनर', 'Currency icon': 'करेंसी आइकॉन', 'Fire': 'फायर',
     'Trophy': 'ट्रॉफी', 'On Fire / emoji-pack icon': 'ऑन फायर / इमोजी-पैक आइकॉन',
+    /* D103-UI z46: arg-modals empty-states */
+    '💬 Clan Chat': '💬 क्लैन चैट', '💬 Match Chat': '💬 मैच चैट', '⚠️ Report Dispute': '⚠️ विवाद रिपोर्ट करें', 'Issue Type': 'समस्या का प्रकार',
+    'Your Actual Rank': 'आपकी असली रैंक', 'Screenshot (optional)': 'स्क्रीनशॉट (वैकल्पिक)', 'Compare': 'तुलना करें', '⚔️ Player Compare': '⚔️ प्लेयर तुलना',
+    '⚔️ Compare with Player': '⚔️ प्लेयर से तुलना', '⭐ Match Feedback': '⭐ मैच फीडबैक', 'Match kaisa tha?': 'मैच कैसा था?', 'Feedback se platform improve hoga': 'फीडबैक से प्लेटफ़ॉर्म बेहतर होगा',
+    'Submit': 'सबमिट करें',
     /* D103-UI z45: refer/creator-dashboard residue */
     'Friends Joined': 'दोस्त जॉइन हुए', 'Friends Referred': 'दोस्त रेफर्ड', 'Coins Earned': 'सिक्के कमाए', 'Pending': 'पेंडिंग',
     'Total Joined': 'कुल जॉइंड', 'COPY CODE': 'कोड कॉपी करें', 'COPY LINK': 'लिंक कॉपी करें', 'WHATSAPP SHARE': 'व्हाट्सएप शेयर',
@@ -403,7 +408,8 @@
     '15+ बार Top-3': '15+ बार टॉप-3',
     'Abhi koi commission nahi — kit se code share karo!': 'अभी कोई कमीशन नहीं — किट से कोड शेयर करो!',
     'Sirf followers ko naye match ka notification jaata hai — sabko nahi': 'सिर्फ फॉलोअर्स को नए मैच की नोटिफिकेशन जाती है — सबको नहीं',
-    'Abhi koi live match nahi — jab match live ho tab yahan dikhega': 'अभी कोई लाइव मैच नहीं — जब मैच लाइव हो तब यहाँ दिखेगा' };
+    'Abhi koi live match nahi — jab match live ho tab yahan dikhega': 'अभी कोई लाइव मैच नहीं — जब मैच लाइव हो तब यहाँ दिखेगा',
+    'Galat result ke against complaint submit karo': 'गलत रिज़ल्ट के खिलाफ शिकायत सबमिट करो' };
   var LONG_EN = { 'ऐप में कोई कमी है? बताओ — इनाम मिलेगा!': 'App mein koi kami hai? Batao — reward milega!',
     'संडे और मंथली स्पेशल्स — बड़े इनामों के लिए खेलो!': 'Sunday & monthly specials — bade rewards ke liye khelo!',
     'एडमिन अप्रूव करेगा — UPI पर सीधा ट्रांसफर होगा।': 'Admin approve karega — UPI pe direct transfer hoga.',
@@ -464,7 +470,8 @@
     '15+ बार Top-3': '15+ times Top-3',
     'अभी कोई कमीशन नहीं — किट से कोड शेयर करो!': 'Abhi koi commission nahi — kit se code share karo!',
     'सिर्फ फॉलोअर्स को नए मैच की नोटिफिकेशन जाती है — सबको नहीं': 'Sirf followers ko naye match ka notification jaata hai — sabko nahi',
-    'अभी कोई लाइव मैच नहीं — जब मैच लाइव हो तब यहाँ दिखेगा': 'Abhi koi live match nahi — jab match live ho tab yahan dikhega' };
+    'अभी कोई लाइव मैच नहीं — जब मैच लाइव हो तब यहाँ दिखेगा': 'Abhi koi live match nahi — jab match live ho tab yahan dikhega',
+    'गलत रिज़ल्ट के खिलाफ शिकायत सबमिट करो': 'Galat result ke against complaint submit karo' };
   /* D103-UI polish-11: attribute-level i18n (title/aria-label/placeholder) */
   var ATTR_HI = {
     'Search Matches': 'मैच खोजें', 'Notifications': 'सूचनाएं', 'Help & Support': 'सहायता और सपोर्ट',
