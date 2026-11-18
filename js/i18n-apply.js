@@ -372,7 +372,10 @@
     'Wahi naam match room me use hoga — sahi IGN zaroori hai.': 'वही नाम मैच रूम में यूज़ होगा — सही IGN ज़रूरी है।',
     'Entry fee wallet se kategi; jeetne par prize turant wallet me aayega. 🏆': 'एंट्री फीस वॉलेट से कटेगी; जीतने पर प्राइज़ तुरंत वॉलेट में आएगा। 🏆',
     '3️⃣ Room time se 15 minute pehle notification aayega': '3️⃣ रूम टाइम से 15 मिनट पहले नोटिफिकेशन आएगा',
-    'Room ID + password push notification me milega — tab tak ready rehna. 🔔': 'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔' };
+    'Room ID + password push notification me milega — tab tak ready rehna. 🔔': 'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔',
+    '50+ बार Top-10': '50+ बार टॉप-10',
+    '25+ बार Top-5': '25+ बार टॉप-5',
+    '15+ बार Top-3': '15+ बार टॉप-3' };
   var LONG_EN = { 'ऐप में कोई कमी है? बताओ — इनाम मिलेगा!': 'App mein koi kami hai? Batao — reward milega!',
     'संडे और मंथली स्पेशल्स — बड़े इनामों के लिए खेलो!': 'Sunday & monthly specials — bade rewards ke liye khelo!',
     'एडमिन अप्रूव करेगा — UPI पर सीधा ट्रांसफर होगा।': 'Admin approve karega — UPI pe direct transfer hoga.',
@@ -427,7 +430,10 @@
     'वही नाम मैच रूम में यूज़ होगा — सही IGN ज़रूरी है।': 'Wahi naam match room me use hoga — sahi IGN zaroori hai.',
     'एंट्री फीस वॉलेट से कटेगी; जीतने पर प्राइज़ तुरंत वॉलेट में आएगा। 🏆': 'Entry fee wallet se kategi; jeetne par prize turant wallet me aayega. 🏆',
     '3️⃣ रूम टाइम से 15 मिनट पहले नोटिफिकेशन आएगा': '3️⃣ Room time se 15 minute pehle notification aayega',
-    'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔': 'Room ID + password push notification me milega — tab tak ready rehna. 🔔' };
+    'रूम ID + पासवर्ड पुश नोटिफिकेशन में मिलेगा — तब तक रेडी रहना। 🔔': 'Room ID + password push notification me milega — tab tak ready rehna. 🔔',
+    '50+ बार Top-10': '50+ times Top-10',
+    '25+ बार Top-5': '25+ times Top-5',
+    '15+ बार Top-3': '15+ times Top-3' };
   /* D103-UI polish-11: attribute-level i18n (title/aria-label/placeholder) */
   var ATTR_HI = {
     'Search Matches': 'मैच खोजें', 'Notifications': 'सूचनाएं', 'Help & Support': 'सहायता और सपोर्ट',
