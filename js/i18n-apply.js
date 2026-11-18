@@ -81,7 +81,7 @@
     'Submit for Verification': 'वेरिफिकेशन के लिए सबमिट करें', 'Profile Verification': 'प्रोफ़ाइल वेरिफिकेशन', '⚙️ Settings': '⚙️ सेटिंग्स', 'Edit Profile': 'प्रोफ़ाइल एडिट करें',
     'Change Banner Photo': 'बैनर फोटो बदलें', 'Rules & Fair Play': 'नियम और फेयर प्ले', 'My Tickets & Replies': 'मेरे टिकट और जवाब', 'Legal & Compliance': 'कानूनी और अनुपालन',
     'Change Profile Photo': 'प्रोफ़ाइल फोटो बदलें', 'Payment Screenshot *': 'पेमेंट स्क्रीनशॉट *', 'Screenshot tap karke upload karo': 'स्क्रीनशॉट टैप करके अपलोड करो', 'Submit Payment & Request': 'पेमेंट सबमिट और रिक्वेस्ट करें',
-    'Entry fee non-refundable hai (cancelled match ke siwa).': 'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।', 'Kill count dispute ke liye screenshot upload karo.': 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।', '🎫 My Tickets': '🎫 मेरे टिकट', 'Tumhare submitted tickets & admin replies': 'तुम्हारे सबमिटेड टिकट और एडमिन जवाब',
+    '🎫 My Tickets': '🎫 मेरे टिकट', 'Tumhare submitted tickets & admin replies': 'तुम्हारे सबमिटेड टिकट और एडमिन जवाब',
     '+ New Ticket': '+ नया टिकट', 'Koi ticket submit nahi hua': 'कोई टिकट सबमिट नहीं हुआ', 'Koi dikkat ho to "+ New Ticket" dabayein': 'कोई दिक्कत हो तो "+ नया टिकट" दबाएं', '💡 My Suggestions': '💡 मेरे सुझाव',
     '✍️ Naya Suggestion': '✍️ नया सुझाव', 'Submit Suggestion': 'सुझाव सबमिट करें', '📋 Meri Previous Suggestions': '📋 मेरे पिछले सुझाव', '📈 Performance Dashboard': '📈 परफॉर्मेंस डैशबोर्ड',
     '✅ UNLOCKED': '✅ अनलॉक्ड', 'Premium Gold': 'प्रीमियम गोल्ड', 'Premium Ribbon': 'प्रीमियम रिबन', 'Arena King': 'एरीना किंग',
@@ -92,6 +92,13 @@
     'God of War': 'गॉड ऑफ वॉर', 'Elite Fighter': 'एलीट फाइटर', 'King of Arena': 'किंग ऑफ एरीना', '10+ comeback wins': '10+ कमबैक विंस',
     '7+ consecutive wins': '7+ लगातार विंस', '5+ consecutive wins': '5+ लगातार विंस', 'Legend tier + 50 wins': 'लेजेंड टियर + 50 विंस', '5+ comeback wins': '5+ कमबैक विंस',
     'Clan War winner badge': 'क्लैन वॉर विनर बैज',
+    /* D103-UI z39: asset-gallery batch-3 + quick-rules LONG move */
+    '50+ podium finishes (Top-3)': '50+ पोडियम फिनिश (टॉप-3)', 'Royal Legend': 'रॉयल लेजेंड', 'The Conqueror': 'द कॉन्करर', 'Top 10': 'टॉप 10',
+    'Top 5': 'टॉप 5', 'Podium Master': 'पोडियम मास्टर', 'One Man Army': 'वन मैन आर्मी', 'Win Streak': 'विन स्ट्रीक',
+    'Week Warrior': 'वीक वॉरियर', '7-day login streak': '7-दिन लॉगिन स्ट्रीक', 'Grinder': 'ग्राइंडर', 'Survivor': 'सर्वाइवर',
+    'Rising Star': 'राइजिंग स्टार', 'Legend Born': 'लेजेंड बॉर्न', 'Rank Climber': 'रैंक क्लाइम्बर', 'Legend Winner': 'लेजेंड विनर',
+    'Comeback King': 'कमबैक किंग', 'Leaderboard par Top-3 (asli position)': 'लीडरबोर्ड पर टॉप-3 (असली पोजीशन)', 'Crown': 'क्राउन', 'UI icon — Legend/king': 'UI आइकॉन — लेजेंड/किंग',
+    'UI icon — Winner': 'UI आइकॉन — विनर', 'Currency icon': 'करेंसी आइकॉन', 'Fire': 'फायर',
     '⬛ Default Dark': '⬛ डिफ़ॉल्ट डार्क', '🔵 Blue': '🔵 नीला', '🟣 Purple': '🟣 पर्पल', '🟢 Green': '🟢 हरा',
     '🔴 Red': '🔴 लाल', '🟠 Orange': '🟠 नारंगी', '⚫ Black': '⚫ काला', '🌌 Galaxy': '🌌 गैलेक्सी',
     '🌊 Ocean': '🌊 ओशन', '🔥 Fire': '🔥 फायर', '💎 Diamond': '💎 डायमंड', '🌸 Pink': '🌸 पिंक',
@@ -358,7 +365,8 @@
     'Withdrawal ke liye email verification zaruri hai. Apni email check karo aur verification link click karo.': 'निकासी के लिए ईमेल सत्यापन ज़रूरी है। अपनी ईमेल जांचें और सत्यापन लिंक पर क्लिक करें।' ,
     '✅ Coins kharidne ki zaroorat nahi — neeche se free earn karo!': '✅ सिक्के खरीदने की ज़रूरत नहीं — नीचे मुफ़्त कमाओ!' ,
     'Verified profile से match rewards, leaderboard trust और team-features smooth चलते हैं। Admin approval के बाद UID lock हो जाता है — safe।': 'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.',
-    'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.': 'वेरिफाइड प्रोफ़ाइल से मैच रिवॉर्ड्स, लीडरबोर्ड ट्रस्ट और टीम-फीचर्स स्मूद चलते हैं। एडमिन अप्रूवल के बाद UID लॉक हो जाता है — सुरक्षित।' };
+    'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.': 'वेरिफाइड प्रोफ़ाइल से मैच रिवॉर्ड्स, लीडरबोर्ड ट्रस्ट और टीम-फीचर्स स्मूद चलते हैं। एडमिन अप्रूवल के बाद UID लॉक हो जाता है — सुरक्षित।',
+    'Entry fee non-refundable hai (cancelled match ke siwa).': 'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।', 'Kill count dispute ke liye screenshot upload karo.': 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।' };
   var LONG_EN = { 'ऐप में कोई कमी है? बताओ — इनाम मिलेगा!': 'App mein koi kami hai? Batao — reward milega!',
     'संडे और मंथली स्पेशल्स — बड़े इनामों के लिए खेलो!': 'Sunday & monthly specials — bade rewards ke liye khelo!',
     'एडमिन अप्रूव करेगा — UPI पर सीधा ट्रांसफर होगा।': 'Admin approve karega — UPI pe direct transfer hoga.',
@@ -408,7 +416,8 @@
     'निकासी के लिए ईमेल सत्यापन ज़रूरी है। अपनी ईमेल जांचें और सत्यापन लिंक पर क्लिक करें।': 'Withdrawal ke liye email verification zaruri hai. Apni email check karo aur verification link click karo.' ,
     '✅ सिक्के खरीदने की ज़रूरत नहीं — नीचे मुफ़्त कमाओ!': '✅ Coins kharidne ki zaroorat nahi — neeche se free earn karo!' ,
     'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.': 'Verified profile से match rewards, leaderboard trust और team-features smooth चलते हैं। Admin approval के बाद UID lock हो जाता है — safe।',
-    'वेरिफाइड प्रोफ़ाइल से मैच रिवॉर्ड्स, लीडरबोर्ड ट्रस्ट और टीम-फीचर्स स्मूद चलते हैं। एडमिन अप्रूवल के बाद UID लॉक हो जाता है — सुरक्षित।': 'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.' };
+    'वेरिफाइड प्रोफ़ाइल से मैच रिवॉर्ड्स, लीडरबोर्ड ट्रस्ट और टीम-फीचर्स स्मूद चलते हैं। एडमिन अप्रूवल के बाद UID लॉक हो जाता है — सुरक्षित।': 'Verified profile se match rewards, leaderboard trust aur team-features smooth chalte hain. Admin approval ke baad UID lock ho jata hai — safe.',
+    'एंट्री फीस नॉन-रिफंडेबल है (कैंसिल मैच के सिवा)।': 'Entry fee non-refundable hai (cancelled match ke siwa).', 'किल काउंट विवाद के लिए स्क्रीनशॉट अपलोड करो।': 'Kill count dispute ke liye screenshot upload karo.' };
   /* D103-UI polish-11: attribute-level i18n (title/aria-label/placeholder) */
   var ATTR_HI = {
     'Search Matches': 'मैच खोजें', 'Notifications': 'सूचनाएं', 'Help & Support': 'सहायता और सपोर्ट',
