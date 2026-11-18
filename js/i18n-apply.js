@@ -74,6 +74,10 @@
     /* D103-UI polish-7 (17-Nov): profile leaves (dbg-profile-nodes se) */
     'Gold': 'गोल्ड', 'Gold+': 'गोल्ड+', 'Silver': 'सिल्वर', 'Diamond': 'डायमंड',
     'Copied! ✅': 'कॉपी हो गया! ✅', 'Copy failed': 'कॉपी विफल',
+    /* D103-UI z36: avatar-bg picker labels (fixes-v9 BG_COLORS) */
+    '⬛ Default Dark': '⬛ डिफ़ॉल्ट डार्क', '🔵 Blue': '🔵 नीला', '🟣 Purple': '🟣 पर्पल', '🟢 Green': '🟢 हरा',
+    '🔴 Red': '🔴 लाल', '🟠 Orange': '🟠 नारंगी', '⚫ Black': '⚫ काला', '🌌 Galaxy': '🌌 गैलेक्सी',
+    '🌊 Ocean': '🌊 ओशन', '🔥 Fire': '🔥 फायर', '💎 Diamond': '💎 डायमंड', '🌸 Pink': '🌸 पिंक',
     '🔱 Warlord': '🔱 वारलॉर्ड', '⚔️ Slayer': '⚔️ स्लेयर', '💫 Elite': '💫 एलीट', '🎯 Sniper': '🎯 स्नाइपर',
     '🔥 Blaze': '🔥 ब्लेज़', '🌟 Star': '🌟 स्टार', '🎖️ Knight': '🎖️ नाइट',
     '💎 Sky': '💎 स्काई', '📉 Out': '📉 आउट', '📈 In': '📈 इन', '🪙 Coin': '🪙 कॉइन',
