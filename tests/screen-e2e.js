@@ -478,7 +478,7 @@ console.log('\n── SCREEN 14: 3.9 client push (badge unlock + near-unlock, jh
     removeItem: (k) => { delete store[k]; },
   };
   const inserts = [];
-  ctx._supa = { from: (t) => ({ insert: (row) => { inserts.push(Object.assign({ _t: t }, row)); return { then: (ok) => Promise.resolve({ data: [row], error: null }).then(ok) }; } }) };
+  ctx._supa = { from: (t) => { const chain = {}; chain.insert = (row) => { inserts.push(Object.assign({ _t: t }, row)); return { then: (ok) => Promise.resolve({ data: [row], error: null }).then(ok) }; }; chain.select = () => chain; chain.eq = () => chain; chain.limit = () => chain; chain.then = (ok) => Promise.resolve({ data: [], error: null }).then(ok); return chain; } };
   ctx.U = { uid: 'u-push-1' };
   ctx.UD = {};
 

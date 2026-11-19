@@ -134,25 +134,58 @@ jobs:
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 30
 
-      - name: Publish Latest APK to GitHub Releases (Direct Download URL)
+      - name: Verify APK signature (apksigner verify)
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk MiniEsports.apk
+          APKSIGNER="$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | tail -1)"
+          echo "apksigner binary: $APKSIGNER"
+          "$APKSIGNER" verify --print-certs MiniEsports.apk
+
+      - name: versionCode regress gate (monotonic vs last release tag)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           CNT="$(git rev-list --count HEAD)"
-          TAG="v1.0.${CNT}"
+          OFF="$(cat VERSION_OFFSET 2>/dev/null || echo 0)"
+          VC=$((CNT + OFF))
+          PREV="$(gh release list --limit 1 --json tagName -q '.[0].tagName' 2>/dev/null | sed 's/v1\.0\.//' || true)"
+          echo "versionCode regress check: prev=${PREV:-0} new=$VC"
+          if [ -n "$PREV" ] && [ "$VC" -le "$PREV" ]; then echo "::error::versionCode regress! $VC <= $PREV"; exit 1; fi
+          echo "VC=$VC" >> "$GITHUB_ENV"
+
+      - name: Publish Latest APK to GitHub Releases (Direct Download URL)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VC="${{ env.VC }}"
+          TAG="v1.0.${VC}"
           cp android/app/build/outputs/apk/release/app-release.apk MiniEsports.apk
           # ✅ PLAY-PROTECT TRUST (2026-10-31, owner order: "safe ho fully"):
           # har release ke notes me APK ka SHA-256 checksum auto-publish —
           # user/owner authenticity verify kar sakte hain (free, automatic,
           # koi manual kaam nahi, koi secret involve nahi).
           SHA256="$(sha256sum MiniEsports.apk | cut -d' ' -f1)"
+          echo "$SHA256  MiniEsports.apk" > MiniEsports.apk.sha256
           echo "• APK SHA-256: $SHA256"
           NOTES="$(printf 'Auto-published signed release APK (%s) for Force Update & direct download.\n\n**SHA-256:** `%s`' "$TAG" "$SHA256")"
-          gh release create "$TAG" MiniEsports.apk \
+          gh release create "$TAG" MiniEsports.apk MiniEsports.apk.sha256 \
             --title "Mini eSports $TAG (Official APK)" \
             --notes "$NOTES" \
             --latest || \
-          gh release upload "$TAG" MiniEsports.apk --clobber
+          gh release upload "$TAG" MiniEsports.apk MiniEsports.apk.sha256 --clobber
+
+      - name: live_config auto-bump (appLatestVersion, PostgREST service_role)
+        env:
+          SUPABASE_SERVICE_ROLE: ${{ secrets.SUPABASE_SERVICE_ROLE }}
+        run: |
+          REF="hddhkculuyrfoevxmlwy"
+          VC="${{ env.VC }}"
+          curl -sS -X POST "https://$REF.supabase.co/rest/v1/live_config?on_conflict=key" \
+            -H "apikey: $SUPABASE_SERVICE_ROLE" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: resolution=merge-duplicates" \
+            -d "{\"key\":\"appLatestVersion\",\"value\":\"v1.0.$VC\"}" || echo "live_config bump skipped (secret missing?)"
 
       # ── 🔒 R29E P0-FIX (2026-09-22): Keystore artifact upload REMOVED — ye
       #    signing key ko publically downloadable artifact bana deta tha
