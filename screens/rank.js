@@ -454,7 +454,10 @@ function _arenaCard(users, sortKey) {
          public profile card (PCARD2 replica) */
       var _tap = (u._uid && !isDel) ? ' onclick="window.viewPublicProfile&&viewPublicProfile(\'' + u._uid + '\')"' : '';
       h += '<div' + _tap + ' style="position:absolute;left:' + c.av.l + '%;top:' + c.av.t + '%;width:' + c.av.w + 'cqw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:' + FILLS[c.n] + ';display:flex;align-items:center;justify-content:center;font-size:' + (c.av.w / 2.6) + 'cqw;font-weight:900;color:#fff;overflow:hidden' + (_tap ? ';cursor:pointer' : '') + '">' + av + '</div>';
-      h += '<div' + _tap + ' style="position:absolute;left:' + c.av.l + '%;top:' + c.nm.t + '%;transform:translateX(-50%);max-width:26cqw;font-size:' + c.nm.f + 'cqw;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center' + (_tap ? ';cursor:pointer' : '') + '">' + nm + _podRib + '</div>';
+      /* ✅ FIX (2026-11-19, e2e 106/111): D69 ke arena-replica me .pod-name
+         hook kho gaya tha (purana .rank-podium hatne ke saath) — screen-e2e
+         podium ribbon checks andhe ho gaye the. Hook wapas (zero visual). */
+      h += '<div' + _tap + ' class="pod-name" data-uid="' + String(u._uid || '').replace(/"/g, '&quot;') + '" style="position:absolute;left:' + c.av.l + '%;top:' + c.nm.t + '%;transform:translateX(-50%);max-width:26cqw;font-size:' + c.nm.f + 'cqw;font-weight:800;color:#fff;text-shadow:0 2px 6px #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center' + (_tap ? ';cursor:pointer' : '') + '">' + nm + _podRib + '</div>';
       h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.vl.t + '%;transform:translateX(-50%);font-size:' + c.vl.f + 'cqw;font-weight:800;color:' + VALC[c.n] + ';text-shadow:0 2px 6px #000;white-space:nowrap">' + valLabel + '</div>';
       h += '<div style="position:absolute;left:' + c.av.l + '%;top:' + c.pl.t + '%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:1cqw;background:rgba(70,45,20,.72);border:1px solid rgba(200,150,60,.4);color:#d9a45c;font-size:2.7cqw;font-weight:800;padding:0.8cqw 3cqw;border-radius:20px;white-space:nowrap">' + (window.tierIconHtml?tierIconHtml(rk.badge,13):'') + ' ' + rk.badge + '</div>';
     }

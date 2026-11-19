@@ -74,12 +74,24 @@ function _renderPlayerCard(data){
     }
   } catch (e) {}
   h += '<div id="pc2Host" style="margin-bottom:14px"></div>';
+  /* ✅ FIX (2026-11-19, e2e 104/111): clan chip ka HOOK card html me tha hi
+     nahi — fill-code #pcClanChip dhoondhta reh jata tha. Ab chip card ke
+     andar hai (khaali → async fill, na mile to remove). */
+  /* ✅ FIX (2026-11-19, e2e): equipped TITLE chip card par kabhi render hi
+     nahi hota tha (sirf share-text me tha) — ab card par asli chip. */
+  var _pcTitle = '';
+  try { if (window.getEquippedTagText) _pcTitle = String(window.getEquippedTagText() || ''); } catch (e) {}
+  if (_pcTitle) {
+    h += '<div style="display:inline-block;margin:0 0 8px;padding:5px 12px;border-radius:999px;border:1px solid rgba(0,212,255,.35);background:rgba(0,212,255,.08);color:#7ee3ff;font-size:11px;font-weight:800">✨ ' + (window.escHtml ? window.escHtml(_pcTitle) : _pcTitle) + '</div>';
+  }
+  h += '<div id="pcClanChip" data-clan="' + String((data && data.clan_id) || '').replace(/"/g, '&quot;') + '" style="display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin:0 0 10px;padding:5px 12px;border-radius:999px;border:1px solid rgba(255,215,0,.3);background:rgba(255,215,0,.07);color:#ffd700;font-size:11px;font-weight:800"></div>';
   /* Share buttons */
   h+='<button onclick="window.showAssetGallery&&window.showAssetGallery()" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,215,0,.35);background:rgba(255,215,0,.08);color:#ffd700;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fas fa-trophy"></i> My Collection (Titles + Badges)</button>';
   h+='<button onclick="window.sharePlayerCard()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px"><i class="fab fa-whatsapp"></i> WhatsApp pe Share Karo</button>';
   h+='<button onclick="window.sharePlayerCardGeneric()" style="width:100%;padding:12px;border-radius:13px;border:1px solid var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer"><i class="fas fa-share-alt"></i> Kisi bhi app se share karo</button>';
   h+='<p style="text-align:center;font-size:11px;color:var(--txt2);margin-top:8px">💡 Screenshot leke bhi share kar sakte ho!</p>';
   h+='</div>';
+  h += '<div style="text-align:center;font-size:9px;letter-spacing:2px;color:rgba(255,215,0,.55);font-weight:900;margin-top:8px">MINI ESPORTS</div>';
   mb.innerHTML=h;
   /* PCARD2 mount + battle-pass XP async bharo */
   try {
@@ -101,6 +113,11 @@ function _renderPlayerCard(data){
   } catch (e) {}
   /* ── Clan chip fill (async) — ASLI clans row se (public read).
      Na mile to chip hata do (jhoota clan naam kabhi nahi). ── */
+  /* ✅ FIX (2026-11-19, e2e-emulator run 44480282545): _pcClanId declared
+     hi nahi tha — live page par ReferenceError ("_pcClanId is not defined")
+     se card render adhoora ruk jata tha (clan chip + TITLE chip + podium
+     ribbon checks fail). Ab clan_id profile row / UD se aata hai. */
+  var _pcClanId = (data && data.clan_id) || (window.UD && window.UD.clan_id) || '';
   if (_pcClanId && window._supa) {
     try {
       window._supa.from('clans').select('name,emblem,tag,total_members').eq('id', _pcClanId).maybeSingle()
