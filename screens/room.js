@@ -158,7 +158,7 @@ function _doShowRP(t) {
   }
   var gameMode = (t.mode || t.type || 'solo').toLowerCase();
 
-  var h = '<div class="room-popup-overlay" onclick="if(event.target===this)this.remove()"><div class="room-popup">';
+  var h = '<div class="room-popup-overlay" onclick="if(event.target===this)window.fadeRemove(this)"><div class="room-popup">';
   h += '<div class="rp-icon">🔑</div>';
   h += '<div class="rp-title">Room Details Released!</div>';
   h += '<div class="rp-match">' + (t.name || 'Match') + '</div>';
@@ -194,7 +194,7 @@ function _doShowRP(t) {
       h += '<button class="btn-inroom" onclick="confirmInRoom(\'' + jKey + '\',this)"><i class="fas fa-gamepad"></i> I\'m In Room ✅</button>';
     }
   }
-  h += '<button class="rp-close" onclick="this.closest(\'.room-popup-overlay\').remove()">Got it!</button></div></div>';
+  h += '<button class="rp-close" onclick="window.fadeRemove(this.closest(\'.room-popup-overlay\'))">Got it!</button></div></div>';
   $('rpContainer').innerHTML = h;
 }
 

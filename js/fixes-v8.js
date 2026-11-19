@@ -380,3 +380,18 @@
 
   console.log('[Mini eSports] ✅ fixes-v8.js loaded — all guards active');
 })();
+
+/* D103 UI z48: Esc = topmost modal band; fadeRemove helper (room-popup etc.) */
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  var ovs = [].slice.call(document.querySelectorAll('.modal-overlay.show'));
+  if (!ovs.length) return;
+  var ov = ovs[ovs.length - 1];
+  var x = ov.querySelector('.m-close');
+  if (x) { x.click(); } else { ov.classList.remove('show'); }
+});
+window.fadeRemove = function (el) {
+  if (!el || !el.classList) return;
+  el.classList.add('fading-out');
+  setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 200);
+};
