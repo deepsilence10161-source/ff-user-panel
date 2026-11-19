@@ -59,7 +59,7 @@ html{scrollbar-width:none;overscroll-behavior:none}
 .hdr-right{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow:hidden;max-width:calc(100vw - 120px)}
 .hdr-bell{position:relative;flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--card);border-radius:10px;font-size:16px;color:var(--txt2);cursor:pointer}
 .hdr-bell .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite;display:none}
-.hdr-chip{display:flex;align-items:center;gap:3px;padding:5px 8px;border-radius:10px;font-size:12px;font-weight:700;flex-shrink:0}
+.hdr-chip{display:flex;align-items:center;gap:3px;padding:8px 8px;border-radius:10px;font-size:12px;font-weight:700;flex-shrink:0}
 .chip-coin{background:rgba(255,215,0,.1);color:var(--yellow)}
 .chip-money{background:rgba(0,255,106,.1);color:var(--green)}
 .ticker-wrap{overflow:hidden;padding:4px 16px 8px;position:relative}
@@ -1236,7 +1236,7 @@ input[type="checkbox"]{accent-color:var(--green);width:19px;height:19px;flex-shr
   .rk-t{display:none}
   #_rkHdrPill{padding:3px 7px}
   .hdr-right{gap:3px;max-width:calc(100vw - 108px)}
-  .hdr-chip{padding:4px 5px;font-size:11px}
+  .hdr-chip{padding:7px 5px;font-size:11px}
   .hdr-bell{width:32px;height:32px}
 }
 
@@ -1248,7 +1248,7 @@ body.vn-chip-on #_rkHdrPill{display:none !important}
   .hdr-name{display:none !important}
   .hdr-right{max-width:calc(100vw - 60px);gap:2px}
   .hdr-bell{width:28px;height:28px}
-  .hdr-chip{font-size:10px;padding:3px 4px;gap:2px}
+  .hdr-chip{font-size:10px;padding:6px 4px;gap:2px}
 }
 
 /* D103 UI z42: micro hit-targets ka invisible tap-area expand (visuals unchanged) */
