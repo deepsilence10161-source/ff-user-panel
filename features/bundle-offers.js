@@ -75,7 +75,7 @@ window.showBundleOffers = function() {
       h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
       h += '<div><div style="font-size:15px;font-weight:900;color:' + b.color + '">' + b.icon + ' ' + b.label + '</div>';
       h += '<div style="font-size:10px;color:#888;margin-top:2px">1 mahina combo</div></div>';
-      h += '<div style="text-align:right"><div style="font-size:10px;color:#666;text-decoration:line-through">₹' + b.originalPrice + '</div>';
+      h += '<div style="text-align:right"><div style="font-size:10px;color:#8a8a92;text-decoration:line-through">₹' + b.originalPrice + '</div>';
       h += '<div style="font-size:24px;font-weight:900;color:' + b.color + '">₹' + b.price + '</div>';
       h += '<div style="font-size:10px;color:#00ff9c;font-weight:700">Save ₹' + b.save + '!</div></div></div>';
       h += '<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">';
@@ -113,7 +113,7 @@ function _showBundlePayment(b) {
   var h = '<div style="text-align:center;padding:6px 0 14px">';
   h += '<div style="font-size:32px;margin-bottom:6px">' + b.icon + '</div>';
   h += '<div style="font-size:16px;font-weight:900;color:' + b.color + '">' + b.label + '</div>';
-  h += '<div style="font-size:28px;font-weight:900;color:#fff;margin:8px 0">₹' + b.price + ' <span style="font-size:12px;color:#666;text-decoration:line-through">₹' + b.originalPrice + '</span></div>';
+  h += '<div style="font-size:28px;font-weight:900;color:#fff;margin:8px 0">₹' + b.price + ' <span style="font-size:12px;color:#8a8a92;text-decoration:line-through">₹' + b.originalPrice + '</span></div>';
   h += '<div style="font-size:12px;color:#00ff9c;font-weight:700">Save ₹' + b.save + '! 🎉</div></div>';
   var _bTier = (b.id === 'gold_bp') ? 2 : 1;
   if (window.renderPaytmInstantBlock) {
@@ -130,7 +130,7 @@ function _showBundlePayment(b) {
     h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';
   });
   h += '</div>';
-  h += '<div id="_bndlSsArea" onclick="document.getElementById(\'_bndlSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div><input type="file" id="_bndlSsIn" accept="image/*" style="display:none" onchange="window._bndlHandleSs(this)"></div>';
+  h += '<div id="_bndlSsArea" onclick="document.getElementById(\'_bndlSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div><input type="file" id="_bndlSsIn" accept="image/*" style="display:none" onchange="window._bndlHandleSs(this)"></div>';
   h += '<img id="_bndlSsPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
   /* ✅ B16 (2026-10-06): UTR / UPI reference field (bina iske payment match karna mumkin nahi tha) */
   h += '<label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
@@ -207,7 +207,7 @@ window.buyAnnualPlan = function(tier, price) {
       h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';
     });
     h += '</div>';
-    h += '<div id="_annSsArea" onclick="document.getElementById(\'_annSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div><input type="file" id="_annSsIn" accept="image/*" style="display:none" onchange="window._annHandleSs(this)"></div>';
+    h += '<div id="_annSsArea" onclick="document.getElementById(\'_annSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div><input type="file" id="_annSsIn" accept="image/*" style="display:none" onchange="window._annHandleSs(this)"></div>';
     h += '<img id="_annSsPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
     /* ✅ B16 (2026-10-06): Annual plan me bhi UTR/UPI reference zaroori */
     h += '<label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';

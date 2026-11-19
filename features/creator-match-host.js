@@ -454,7 +454,7 @@ window.showCreatorProfile = function(creatorUid) {
     bh += '<button id="_followBtn" onclick="window._toggleFollowCreator(\'' + creatorUid + '\')" style="width:100%;padding:13px;border-radius:14px;font-weight:900;font-size:13px;cursor:pointer;border:none;' +
       (isFollowing ? 'background:rgba(255,255,255,.08);color:#aaa;border:1px solid rgba(255,255,255,.15)' : 'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;box-shadow:0 4px 16px rgba(0,255,156,.35)') + '">' +
       (isFollowing ? '✓ Following — notifications ON' : '+ Follow (naye match ka notification pao)') + '</button>';
-    bh += '<div style="font-size:10px;color:#666;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
+    bh += '<div style="font-size:10px;color:#8a8a92;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
 
     body.innerHTML = bh;
     });
@@ -629,7 +629,7 @@ window.showCreatorProfile = function(creatorUid) {
     bh += '<button id="_followBtn" onclick="window._toggleFollowCreator(\'' + creatorUid + '\')" style="width:100%;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;border:none;' +
       (isFollowing ? 'background:rgba(255,255,255,.08);color:#aaa' : 'background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000') + '">' +
       (isFollowing ? '✓ Following — notifications ON' : '+ Follow (naye match ka notification pao)') + '</button>';
-    bh += '<div style="font-size:10px;color:#666;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
+    bh += '<div style="font-size:10px;color:#8a8a92;text-align:center;margin-top:8px">Sirf followers ko naye match ka notification jaata hai — sabko nahi</div>';
 
     body.innerHTML = bh;
   });

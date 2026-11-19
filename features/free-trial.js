@@ -121,7 +121,7 @@ function _showTrialExpiredModal() {
   h += '<div style="font-size:11px;color:#aaa">Ad-free + Silver Badge + 50 Coins/month</div>';
   h += '</div>';
   h += '<button onclick="if(window.buyPremium)buyPremium(1,49)" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px">💳 Silver Kharido — ₹49/month</button>';
-  h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#666;font-size:13px;cursor:pointer">Baad mein</button>';
+  h += '<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#8a8a92;font-size:13px;cursor:pointer">Baad mein</button>';
   h += '</div>';
   if (window.openModal) openModal('⏰ Trial Khatam', h);
 }

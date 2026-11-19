@@ -1073,7 +1073,7 @@ window.showHowRankWorks = function() {
     h += '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:' + t.bg + ';border:1px solid ' + t.color + '44">';
     h += '<div style="font-size:22px">' + (window.tierIconHtml?tierIconHtml(t.name,22):(t.emoji||'')) + '</div>';
     h += '<div style="flex:1"><div style="font-size:13px;font-weight:800;color:' + t.color + '">' + t.name + '</div>';
-    h += '<div style="font-size:11px;color:#666">' + (t.min === 0 ? '0' : t.min) + ' – ' + (t.max >= 9999 ? '∞' : t.max) + ' points</div></div>';
+    h += '<div style="font-size:11px;color:#8a8a92">' + (t.min === 0 ? '0' : t.min) + ' – ' + (t.max >= 9999 ? '∞' : t.max) + ' points</div></div>';
     h += '</div>';
   });
   h += '</div>';

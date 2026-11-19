@@ -180,7 +180,7 @@
             '<button onclick="window._copyRefCode&&window._copyRefCode()" style="padding:9px 14px;border-radius:10px;background:rgba(0,255,156,.15);border:1px solid rgba(0,255,156,.3);color:#00ff9c;font-weight:800;font-size:13px;cursor:pointer"><i class="fas fa-copy"></i></button>',
           '</div>',
           '<button onclick="document.getElementById(\'_refCodePopup\').remove()" ',
-            'style="width:100%;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#666;font-weight:700;font-size:14px;cursor:pointer">',
+            'style="width:100%;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:#8a8a92;font-weight:700;font-size:14px;cursor:pointer">',
             'Skip — Code nahi hai',
           '</button>',
         '</div>',

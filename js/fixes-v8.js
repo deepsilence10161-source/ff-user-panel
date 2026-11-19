@@ -171,7 +171,7 @@
         try { origRank.call(this, safeTab); } catch (e) {
           console.error('[v8] renderRank error:', e);
           var rc = document.getElementById('rankContent');
-          if (rc) rc.innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:48px;opacity:.2">🏆</div><p style="color:#666;margin-top:12px">Leaderboard load ho raha hai...</p><button onclick="renderRank()" style="margin-top:12px;padding:10px 20px;border-radius:10px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:700;cursor:pointer">↺ Retry</button></div>';
+          if (rc) rc.innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:48px;opacity:.2">🏆</div><p style="color:#8a8a92;margin-top:12px">Leaderboard load ho raha hai...</p><button onclick="renderRank()" style="margin-top:12px;padding:10px 20px;border-radius:10px;background:rgba(0,255,156,.12);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-weight:700;cursor:pointer">↺ Retry</button></div>';
         }
       };
     }

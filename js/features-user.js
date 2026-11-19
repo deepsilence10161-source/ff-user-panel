@@ -353,7 +353,7 @@ window.applyDynamicWallpaper = function() {
     if (missing.length > 0) {
       h += '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">';
       missing.forEach(function(m) {
-        h += '<span style="font-size:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:2px 7px;color:#666">+ ' + m + '</span>';
+        h += '<span style="font-size:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:2px 7px;color:#8a8a92">+ ' + m + '</span>';
       });
       h += '</div>';
     }

@@ -83,7 +83,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
       var active = t === window._rankTab;
       h += '<div onclick="window.renderRank(\'' + t + '\')" style="flex:1;padding:9px 6px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;white-space:nowrap;transition:all .2s;' +
         (active ? 'background:linear-gradient(135deg,rgba(0,255,156,.18),rgba(0,212,255,.1));color:#00ff9c;border:1.5px solid rgba(0,255,156,.35)'
-                : 'background:rgba(255,255,255,.04);color:#666;border:1px solid rgba(255,255,255,.07)') + '">' + labels[t] + '</div>';
+                : 'background:rgba(255,255,255,.04);color:#8a8a92;border:1px solid rgba(255,255,255,.07)') + '">' + labels[t] + '</div>';
     });
     h += '</div>';
     return h;
@@ -120,7 +120,7 @@ waitFor(function () { return window.db && window.calcRk && !window._v7RankInstal
     return buildRankTools() +
       '<div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(185,100,255,.07),rgba(0,212,255,.04));border:1px solid rgba(185,100,255,.15);border-radius:12px;padding:8px 14px;margin-bottom:10px">' +
       '<div style="font-size:11px;font-weight:800;color:#b964ff">🏆 ' + (season.name || 'Season') + '</div>' +
-      '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#666;font-weight:600"> din baaki</span></div>' +
+      '<div style="font-size:11px;font-weight:800;color:#00d4ff">' + (season.daysLeft || 0) + '<span style="font-size:9px;color:#8a8a92;font-weight:600"> din baaki</span></div>' +
       '</div>';
   }
 

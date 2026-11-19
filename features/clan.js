@@ -91,7 +91,7 @@ function _showMyClan(clan){
   /* Stats */
   h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">';
   [{l:'Score',v:clan.weeklyScore||0,c:'#ffd700'},{l:'Wins',v:clan.totalWins||0,c:'#00ff9c'},{l:'Kills',v:clan.totalKills||0,c:'#ff6b6b'}].forEach(function(s){
-    h+='<div style="text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><div style="font-size:18px;font-weight:900;color:'+s.c+'">'+s.v+'</div><div style="font-size:10px;color:#666;margin-top:2px">'+s.l+'</div></div>';
+    h+='<div style="text-align:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><div style="font-size:18px;font-weight:900;color:'+s.c+'">'+s.v+'</div><div style="font-size:10px;color:#8a8a92;margin-top:2px">'+s.l+'</div></div>';
   });
   h+='</div>';
   /* Weekly rank */
@@ -131,7 +131,7 @@ function _showMyClan(clan){
   h+='<div style="background:rgba(0,255,100,.05);border:1px solid rgba(0,255,100,.15);border-radius:12px;padding:12px;margin-bottom:14px;text-align:center">';
   h+='<div style="font-size:11px;color:#888;margin-bottom:6px">Clan Invite Code</div>';
   h+='<div style="font-size:18px;font-weight:900;color:#00ff64;letter-spacing:2px">'+((clan.join_code||clan._id||'').substring(0,8).toUpperCase())+'</div>'; /* BUG Z6 FIX-2: join_code pehle — uuid-prefix nahi */
-  h+='<div style="font-size:11px;color:#666;margin-top:4px">Dost ko yeh code de — wo join kar lega</div>';
+  h+='<div style="font-size:11px;color:#8a8a92;margin-top:4px">Dost ko yeh code de — wo join kar lega</div>';
   h+='</div>';
   /* Leave / Delete */
   if(isLeader)h+='<button onclick="window.disbandClan(\''+clan._id+'\')" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,85,85,.3);background:rgba(255,85,85,.07);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer">🗑️ Clan Disband Karo</button>';
@@ -155,7 +155,7 @@ function renderClanBrowse(clans){
   h+='<button onclick="window.showJoinClanByCode()" style="flex:1;padding:12px;border-radius:13px;border:1.5px solid rgba(0,212,255,.3);background:rgba(0,212,255,.07);color:#00d4ff;font-size:13px;font-weight:800;cursor:pointer">Code se Join</button>';
   h+='</div>';
   h+='<div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:10px">🔥 Top Clans</div>';
-  if(!clans.length){h+='<div style="text-align:center;padding:24px;color:#666">Abhi koi clan nahi hai.<br>Pehla clan banao!</div>';}
+  if(!clans.length){h+='<div style="text-align:center;padding:24px;color:#8a8a92">Abhi koi clan nahi hai.<br>Pehla clan banao!</div>';}
   clans.forEach(function(clan){
     var mCount=clan.members?Object.keys(clan.members).length:(clan.memberCount||0);
     var isFull=mCount>=MAX_MEMBERS;
@@ -164,7 +164,7 @@ function renderClanBrowse(clans){
     h+='<div style="flex:1"><div style="font-size:14px;font-weight:800;color:#fff">'+(clan.name||'Clan')+'</div>';
     h+='<div style="font-size:10px;color:#888">'+mCount+'/'+MAX_MEMBERS+' members • Score: '+(clan.weeklyScore||0)+'</div></div>';
     if(!isFull)h+='<button onclick="window.joinClan(\''+clan._id+'\')" style="padding:8px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,rgba(0,255,100,.2),rgba(0,212,255,.15));color:#00ff9c;font-size:11px;font-weight:800;cursor:pointer">Join</button>';
-    else h+='<div style="font-size:10px;color:#666;padding:6px">Full</div>';
+    else h+='<div style="font-size:10px;color:#8a8a92;padding:6px">Full</div>';
     h+='</div>';
   });
   if(window.openModal)openModal('🏰 Clans',h);
@@ -386,7 +386,7 @@ window.showClanLeaderboardFull=function(){
   window.db.ref('clans').orderByChild('weeklyScore').limitToLast(20).once('value',function(s){
     var clans=[];if(s.exists())s.forEach(function(c){var d=c.val();d._id=c.key;clans.push(d);});
     clans.sort(function(a,b){return (b.weeklyScore||0)-(a.weeklyScore||0);});
-    var h='<div style="font-size:11px;color:#666;margin-bottom:10px">Weekly rewards: Top 3 clans ko Green Diamonds milte hain (Monday reset)</div>';
+    var h='<div style="font-size:11px;color:#8a8a92;margin-bottom:10px">Weekly rewards: Top 3 clans ko Green Diamonds milte hain (Monday reset)</div>';
     var rewards=[500,300,200,0,0,0,0,0,0,50];
     clans.forEach(function(clan,idx){
       var rank=idx+1;
@@ -401,7 +401,7 @@ window.showClanLeaderboardFull=function(){
       if(rew)h+='<div style="text-align:right"><div style="font-size:12px;font-weight:800;color:#00ff64">'+GDI(13)+' '+rew+'</div><div style="font-size:9px;color:#555">weekly</div></div>';
       h+='</div>';
     });
-    if(!clans.length)h='<div style="text-align:center;padding:24px;color:#666">Abhi koi clan nahi hai!</div>';
+    if(!clans.length)h='<div style="text-align:center;padding:24px;color:#8a8a92">Abhi koi clan nahi hai!</div>';
     if(window.openModal)openModal('🏆 Clan Leaderboard',h);
   });
 };

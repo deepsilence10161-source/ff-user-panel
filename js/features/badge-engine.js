@@ -195,7 +195,7 @@
            '<div style="height:100%;width:' + nr.pct + '%;background:linear-gradient(90deg,#ffd700,#b964ff);border-radius:3px"></div></div>';
       h += '</div>';
       h += '<div style="text-align:right;flex-shrink:0">' +
-           '<div style="font-size:13px;font-weight:900;color:#00ff9c">' + nr.have + '<span style="color:#666;font-weight:700">/' + nr.need + '</span></div>' +
+           '<div style="font-size:13px;font-weight:900;color:#00ff9c">' + nr.have + '<span style="color:#8a8a92;font-weight:700">/' + nr.need + '</span></div>' +
            '<div style="font-size:9px;color:#888;font-weight:700">' + nr.pct + '% · ' + (nr.need - nr.have) + ' door</div>' +
            '</div>';
       h += '</div>';

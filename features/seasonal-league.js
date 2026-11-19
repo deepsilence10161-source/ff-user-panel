@@ -121,7 +121,7 @@ window.showSeasonInfo = function() {
       { l: 'Points', v: rk.pts },
       { l: 'Wins', v: st.wins || 0 },
     ].forEach(function(i) {
-      h += '<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center"><div style="font-size:15px;font-weight:900;color:#fff">' + i.v + '</div><div style="font-size:10px;color:#666">' + i.l + '</div></div>';
+      h += '<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center"><div style="font-size:15px;font-weight:900;color:#fff">' + i.v + '</div><div style="font-size:10px;color:#8a8a92">' + i.l + '</div></div>';
     });
     h += '</div></div>';
   }

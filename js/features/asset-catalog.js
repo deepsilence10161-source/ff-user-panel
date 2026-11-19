@@ -236,7 +236,7 @@
     var st = window._assetStats();
     function section(title, items, kindLabel) {
       var h = '<div style="margin:14px 0 8px;font-size:13px;font-weight:800;color:#ffd700">' + title +
-        ' <span style="font-size:10px;color:#666">(' + items.length + ')</span></div>';
+        ' <span style="font-size:10px;color:#8a8a92">(' + items.length + ')</span></div>';
       h += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:10px">';
       items.forEach(function (it) {
         var un = it.need ? window._assetUnlocked(it, st) : true;

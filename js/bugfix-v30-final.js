@@ -544,10 +544,10 @@
           var myClanId = (window.UD && (window.UD.clanId || window.UD.clan_id)) || '';
           var rewards  = [500, 300, 200, 0, 0, 0, 0, 0, 0, 50];
 
-          var h = '<div style="font-size:11px;color:#666;margin-bottom:10px">Weekly rewards: Top 3 clans ko Green Diamonds (Monday reset)</div>';
+          var h = '<div style="font-size:11px;color:#8a8a92;margin-bottom:10px">Weekly rewards: Top 3 clans ko Green Diamonds (Monday reset)</div>';
 
           if (!clans.length) {
-            h += '<div style="text-align:center;padding:24px;color:#666">Abhi koi clan nahi hai!</div>';
+            h += '<div style="text-align:center;padding:24px;color:#8a8a92">Abhi koi clan nahi hai!</div>';
           } else {
             clans.forEach(function(clan, idx) {
               var rank  = idx + 1;

@@ -118,7 +118,7 @@ window._buyDiamondPkg = function(diamonds, price) {
       h += '<div style="display:inline-block;background:#fff;border-radius:14px;padding:10px;box-shadow:0 4px 18px rgba(0,0,0,.4)">';
       h += '<img src="' + _qrSafe + '" alt="UPI QR" style="display:block;width:190px;height:190px;object-fit:contain">';
       h += '</div>';
-      h += '<div style="font-size:10px;color:#666;margin-top:6px">Kisi bhi UPI app se scan karo</div>';
+      h += '<div style="font-size:10px;color:#8a8a92;margin-top:6px">Kisi bhi UPI app se scan karo</div>';
       h += '</div>';
     }
     /* UPI ID + copy + open-app row */
@@ -129,7 +129,7 @@ window._buyDiamondPkg = function(diamonds, price) {
     h += '</div>';
     h += '<div style="margin-top:6px">Payee: <b style="color:#fff">' + _payee + '</b></div>';
     h += '<div>Amount: <b style="color:#00ff9c">₹' + price + '</b></div>';
-    h += '<div>Note: <b style="color:#fff">' + _mpEsc(_note) + '</b> <span style="color:#666;font-size:10px">(payment note mein yeh likhna zaroori hai)</span></div>';
+    h += '<div>Note: <b style="color:#fff">' + _mpEsc(_note) + '</b> <span style="color:#8a8a92;font-size:10px">(payment note mein yeh likhna zaroori hai)</span></div>';
     h += '</div>';
     /* Open in UPI app — Android intent (wrapped WebView mein top-level nav) */
     h += '<button onclick="(function(){try{window.location.href=\'' + _upiLink + '\'}catch(e){}})()" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#00baf2,#0066ff);color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:10px"><i class="fas fa-mobile-alt"></i> UPI App Se Pay Karo (₹' + price + ')</button>';
@@ -172,7 +172,7 @@ window._buyDiamondPkg = function(diamonds, price) {
   h += '<div class="f-group"><label>Payment Screenshot *</label>';
   h += '<div id="_diaDepArea" onclick="document.getElementById(\'_diaDepIn\').click()" style="border:2px dashed rgba(0,212,255,.25);border-radius:12px;padding:18px;text-align:center;cursor:pointer">';
   h += '<i class="fas fa-camera" style="font-size:26px;color:#00d4ff55;display:block;margin-bottom:6px"></i>';
-  h += '<div style="font-size:12px;color:#666">Screenshot tap karke upload karo</div>';
+  h += '<div style="font-size:12px;color:#8a8a92">Screenshot tap karke upload karo</div>';
   h += '<input type="file" id="_diaDepIn" accept="image/*" style="display:none" onchange="window._diaDepSs(this)"></div>';
   h += '<img id="_diaDepPreview" style="display:none;width:100%;border-radius:10px;margin-top:8px"></div>';
   /* ✅ FIX (2026-08-17, CRITICAL): the form never collected a UTR/UPI
@@ -182,7 +182,7 @@ window._buyDiamondPkg = function(diamonds, price) {
      screenshot was uploaded. */
   h += '<div class="f-group" style="margin-top:10px"><label>UTR / UPI Reference Number *</label>';
   h += '<input type="text" id="_diaDepUtr" placeholder="e.g. 123456789012" style="width:100%;padding:11px;border-radius:10px;border:1px solid rgba(0,212,255,.25);background:rgba(0,0,0,.3);color:#fff;font-size:13px;box-sizing:border-box">';
-  h += '<div style="font-size:10px;color:#666;margin-top:4px">Payment app ke transaction/UTR number screenshot ke saath match karo</div></div>';
+  h += '<div style="font-size:10px;color:#8a8a92;margin-top:4px">Payment app ke transaction/UTR number screenshot ke saath match karo</div></div>';
   /* ✅ FIX (2026-09-15c, SPEED): button now has an id so the submit flow
      can disable it and show live stage labels the instant it is tapped.
      Previously the button gave ZERO feedback for the whole (slow) upload

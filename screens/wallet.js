@@ -108,7 +108,7 @@ function renderWallet() {
       var isActive = activeFilter === f;
       var activeStyle = isActive
         ? 'background:' + (colors[f] || 'linear-gradient(135deg,rgba(0,212,255,.25),rgba(0,212,255,.1))') + ';color:' + (f==='credit'?'#00ff9c':f==='debit'?'#ff6b6b':'#00d4ff') + ';border:1.5px solid ' + (f==='credit'?'rgba(0,255,156,.4)':f==='debit'?'rgba(255,107,107,.4)':'rgba(0,212,255,.4)') + ';'
-        : 'background:rgba(255,255,255,.04);color:#666;border:1px solid rgba(255,255,255,.07);';
+        : 'background:rgba(255,255,255,.04);color:#8a8a92;border:1px solid rgba(255,255,255,.07);';
       return '<button onclick="setWFilter(\'' + f + '\')" style="flex:0 0 auto;padding:10px 12px;border-radius:10px;' + activeStyle + 'font-size:11px;font-weight:800;cursor:pointer">' + labels[f] + '</button>';
     }).join('') + '</div>';
   var h = filterHtml + statsHtml;

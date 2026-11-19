@@ -301,6 +301,7 @@ if (window.closeModal) {
     var toastWrap = document.getElementById('toast-wrap');
     if (!toastWrap) return;
     var hdr = document.getElementById('hdr') ||
+              document.getElementById('header') ||
               document.querySelector('.header') ||
               document.querySelector('[class*="header"]');
     if (hdr) {

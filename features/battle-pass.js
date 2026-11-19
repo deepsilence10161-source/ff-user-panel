@@ -220,7 +220,7 @@ window.showBattlePass=function(){
     h+='</div>';
     h+='<div style="margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px"><span style="color:#888">Tier '+curTier+' / 50</span><span style="color:#ffd700">'+totalXP+' XP</span></div>';
     h+='<div style="height:6px;background:rgba(255,255,255,.08);border-radius:3px"><div style="height:100%;width:'+xpPct+'%;background:linear-gradient(90deg,#b964ff,#ffd700);border-radius:3px;transition:width .5s"></div></div>';
-    h+='<div style="font-size:10px;color:#666;margin-top:4px">Agla tier ke liye '+xpForNext+' XP chahiye</div>';
+    h+='<div style="font-size:10px;color:#8a8a92;margin-top:4px">Agla tier ke liye '+xpForNext+' XP chahiye</div>';
     h+='</div></div>';
 
     /* Tier grid */
@@ -332,7 +332,7 @@ window.buySeasonPass=function(){
     h+='<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:12px">';
     ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹'+PASS_PRICE()+' bhejo','Screenshot lo','Neeche upload karo — 1-2 ghante mein activate hoga'].forEach(function(s,i){h+='<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(185,100,255,.12);border:1px solid rgba(185,100,255,.3);color:#b964ff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">'+(i+1)+'</div>'+s+'</div>';});
     h+='</div>';
-    h+='<div id="_spSsArea" onclick="document.getElementById(\'_spSsIn\').click()" style="border:2px dashed rgba(185,100,255,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(185,100,255,.03);margin-bottom:12px"><i class="fas fa-camera" style="font-size:24px;color:#b964ff55;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div><input type="file" id="_spSsIn" accept="image/*" style="display:none" onchange="window._spHandleSs(this)"></div>';
+    h+='<div id="_spSsArea" onclick="document.getElementById(\'_spSsIn\').click()" style="border:2px dashed rgba(185,100,255,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(185,100,255,.03);margin-bottom:12px"><i class="fas fa-camera" style="font-size:24px;color:#b964ff55;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div><input type="file" id="_spSsIn" accept="image/*" style="display:none" onchange="window._spHandleSs(this)"></div>';
     h+='<img id="_spPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
     h+='<button onclick="window._submitSP()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#b964ff,#6b2fcc);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(185,100,255,.35)">🎫 Season Pass Request Submit Karo</button>';
     if(window.openModal) openModal('🎫 Buy Season Pass',h);

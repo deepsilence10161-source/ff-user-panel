@@ -41,7 +41,7 @@
       '[id^="timer-"].mt-soon{color:#ff003c;font-weight:900;animation:pulse .5s infinite}' +
       '[id^="timer-"].mt-warn{color:#ffaa00}' +
       '[id^="timer-"].mt-calm{color:#00d4ff}' +
-      '[id^="timer-"].mt-dead{color:#666;animation:none;font-weight:400}';
+      '[id^="timer-"].mt-dead{color:#8a8a92;animation:none;font-weight:400}';
     (document.head || document.documentElement).appendChild(s);
   })();
 

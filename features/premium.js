@@ -70,7 +70,7 @@ window.showWithdrawalPolicy=function(onAccept){
   h+='<div id="_policyCheck" onclick="window._togP()" style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;border:1.5px solid rgba(255,215,0,.25);background:rgba(255,215,0,.05);cursor:pointer;margin-bottom:14px">';
   h+='<div id="_pBox" style="width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,215,0,.5);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s"></div>';
   h+='<div style="font-size:12px;color:#ddd;line-height:1.5">Maine yeh policy <strong style="color:#ffd700">samjh li</strong> — mujhe pata hai koi withdrawal nahi hoga.</div></div>';
-  h+='<button id="_pBtn" onclick="window._confP()" disabled style="width:100%;padding:14px;border-radius:13px;border:none;background:rgba(255,255,255,.08);color:#666;font-size:14px;font-weight:900;cursor:not-allowed;transition:all .3s">Aage Badho →</button>';
+  h+='<button id="_pBtn" onclick="window._confP()" disabled style="width:100%;padding:14px;border-radius:13px;border:none;background:rgba(255,255,255,.08);color:#8a8a92;font-size:14px;font-weight:900;cursor:not-allowed;transition:all .3s">Aage Badho →</button>';
   var _acc=false;
   window._togP=function(){_acc=!_acc;var b=document.getElementById('_pBox'),btn=document.getElementById('_pBtn'),row=document.getElementById('_policyCheck');if(b){b.innerHTML=_acc?'<span style="color:#ffd700;font-size:13px">✓</span>':'';b.style.background=_acc?'rgba(255,215,0,.2)':'transparent';}if(row)row.style.borderColor=_acc?'rgba(255,215,0,.6)':'rgba(255,215,0,.25)';if(btn){btn.disabled=!_acc;btn.style.background=_acc?'linear-gradient(135deg,#ffd700,#ff8c00)':'rgba(255,255,255,.08)';btn.style.color=_acc?'#000':'#666';btn.style.cursor=_acc?'pointer':'not-allowed';}};
   window._confP=function(){if(!_acc)return;if(window.U)localStorage.setItem('_mes_policy_'+window.U.uid,'1');if(window.closeModal)closeModal();setTimeout(function(){if(onAccept)onAccept();},250);};
@@ -130,7 +130,7 @@ function _renderPremModal(){
        hai — yaani extend. Ab Active tile par bhi Renew button. */
     if(isA)h+='<button onclick="window.buyPremium('+t.tier+','+t.price+')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#ff8c00);color:'+(t.tier===1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer;margin-top:6px">🔁 Renew +30 Din — ₹'+t.price+'</button>';
     else h+='<div style="font-size:10px;color:#888;margin-top:2px">Monthly subscription</div>';
-    h+='</div></div><div style="text-align:right"><div style="font-size:26px;font-weight:900;color:'+t.color+'">₹'+t.price+'</div><div style="font-size:10px;color:#666">/mahina</div></div></div>';
+    h+='</div></div><div style="text-align:right"><div style="font-size:26px;font-weight:900;color:'+t.color+'">₹'+t.price+'</div><div style="font-size:10px;color:#8a8a92">/mahina</div></div></div>';
     /* Perks */
     h+='<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">';
     t.perks.forEach(function(p){h+='<div style="display:flex;align-items:flex-start;gap:9px"><div style="width:22px;height:22px;border-radius:7px;background:'+t.color+'15;border:1px solid '+t.color+'40;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px">'+(p.i==='GD'?GDI(12):p.i)+'</div><div style="font-size:12px;color:#ddd;line-height:1.55;margin-top:3px">'+p.t+'</div></div>';});
@@ -197,7 +197,7 @@ window.buyPremium=function(tier,price){
   /* Screenshot upload */
   h+='<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px">Payment Screenshot *</div>';
   h+='<div id="_premSsArea" onclick="document.getElementById(\'_premSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:20px;text-align:center;cursor:pointer;background:rgba(255,215,0,.03)">';
-  h+='<i class="fas fa-camera" style="font-size:28px;color:#ffd70055;display:block;margin-bottom:8px"></i><div style="font-size:12px;color:#666">Screenshot upload karo</div>';
+  h+='<i class="fas fa-camera" style="font-size:28px;color:#ffd70055;display:block;margin-bottom:8px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div>';
   h+='<input type="file" id="_premSsIn" accept="image/*" style="display:none" onchange="window._premHandleSs(this)"></div>';
   h+='<img id="_premSsPreview" style="display:none;width:100%;border-radius:10px;margin-top:8px;max-height:180px;object-fit:cover"></div>';
   /* ✅ B16 (2026-10-06): UTR / UPI reference field — pehle SIRF screenshot tha,
@@ -205,7 +205,7 @@ window.buyPremium=function(tier,price){
      Ab wahi pattern jo Sky Diamond buy flow (js/quick-deposit.js) me hai. */
   h+='<div style="margin-bottom:12px"><label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
   h+='<input type="text" id="_premUtr" inputmode="text" autocomplete="off" placeholder="jaise 432198765432" style="width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box">';
-  h+='<div style="font-size:10px;color:#666;margin-top:4px">Payment app ke transaction/UTR number — screenshot ke saath match hona chahiye</div></div>';
+  h+='<div style="font-size:10px;color:#8a8a92;margin-top:4px">Payment app ke transaction/UTR number — screenshot ke saath match hona chahiye</div></div>';
   h+='<div style="padding:10px 12px;border-radius:11px;background:rgba(255,85,85,.07);border:1px solid rgba(255,85,85,.15);font-size:11px;color:#ff9999;margin-bottom:12px">⚠️ Premium fees non-refundable hain. Coins/Diamonds withdraw nahi hote.</div>';
   h+='<button onclick="window._submitPremium('+tier+','+price+')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,'+t.color+',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(255,215,0,.35)">💳 Payment Request Submit Karo</button>';
   if(window.openModal)openModal('💳 Buy Premium '+t.label,h);

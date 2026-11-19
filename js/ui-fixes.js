@@ -311,9 +311,9 @@ function patchRivalCard() {
         h += '<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin-bottom:14px">';
         stats.forEach(function(cs) {
           var myWin = cs.me >= cs.them;
-          h += '<div style="text-align:right"><div style="font-size:16px;font-weight:900;color:' + (myWin?'#00ff9c':'#fff') + '">' + cs.me + '</div><div style="font-size:10px;color:#666">You</div></div>';
-          h += '<div style="text-align:center;font-size:10px;color:#666;align-self:center;padding-top:6px">' + cs.label + '</div>';
-          h += '<div style="text-align:left"><div style="font-size:16px;font-weight:900;color:' + (!myWin?'#ff4444':'#fff') + '">' + cs.them + '</div><div style="font-size:10px;color:#666">Rival</div></div>';
+          h += '<div style="text-align:right"><div style="font-size:16px;font-weight:900;color:' + (myWin?'#00ff9c':'#fff') + '">' + cs.me + '</div><div style="font-size:10px;color:#8a8a92">You</div></div>';
+          h += '<div style="text-align:center;font-size:10px;color:#8a8a92;align-self:center;padding-top:6px">' + cs.label + '</div>';
+          h += '<div style="text-align:left"><div style="font-size:16px;font-weight:900;color:' + (!myWin?'#ff4444':'#fff') + '">' + cs.them + '</div><div style="font-size:10px;color:#8a8a92">Rival</div></div>';
         });
         h += '</div>';
         h += '<button onclick="window.db.ref(\'users/\'+window.U.uid+\'/rival\').remove();if(window.closeModal)closeModal();if(window.toast)toast(\'Rival removed\',\'ok\')" style="width:100%;padding:10px;border-radius:10px;background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.2);color:#ff4444;font-weight:700;cursor:pointer;margin-bottom:8px">Remove Rival</button>';
@@ -352,7 +352,7 @@ function patchRivalCard() {
     var res = document.getElementById('_rivalResults');
     if (!res) return;
     if (!results.length) {
-      res.innerHTML = '<div style="text-align:center;padding:16px;color:#666;font-size:13px">No player found with this IGN</div>';
+      res.innerHTML = '<div style="text-align:center;padding:16px;color:#8a8a92;font-size:13px">No player found with this IGN</div>';
       return;
     }
     var h = '';
@@ -362,7 +362,7 @@ function patchRivalCard() {
       h += '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:8px">';
       h += '<div style="width:40px;height:40px;border-radius:50%;background:rgba(255,68,68,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#ff4444">' + (d.ign||d.displayName||'?').charAt(0).toUpperCase() + '</div>';
       h += '<div style="flex:1"><div style="font-size:14px;font-weight:700">' + (d.ign||d.displayName||'Player') + '</div>';
-      h += '<div style="font-size:11px;color:#666">M:' + (st.matches||0) + ' · K:' + (st.kills||0) + ' · W:' + (st.wins||0) + '</div></div>';
+      h += '<div style="font-size:11px;color:#8a8a92">M:' + (st.matches||0) + ' · K:' + (st.kills||0) + ' · W:' + (st.wins||0) + '</div></div>';
       h += '<button onclick="window._setRivalById(\'' + r.uid + '\',\'' + (d.ign||d.displayName||'Player') + '\')" style="padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#ff4444,#cc0000);border:none;color:#fff;font-weight:800;font-size:12px;cursor:pointer">Set Rival</button>';
       h += '</div>';
     });
@@ -491,7 +491,7 @@ window.showAchievements = function() {
     if (unlk) {
       h += '<div style="font-size:10px;color:#00ff9c;margin-top:2px;font-weight:700">Level ' + curLv + ' ✅</div>';
       if (nextLv) {
-        h += '<div style="font-size:9px;color:#666;margin-top:3px">Next: ' + nextLv.desc + '</div>';
+        h += '<div style="font-size:9px;color:#8a8a92;margin-top:3px">Next: ' + nextLv.desc + '</div>';
       } else {
         h += '<div style="font-size:9px;color:#ffd700;margin-top:3px">Max Level!</div>';
       }

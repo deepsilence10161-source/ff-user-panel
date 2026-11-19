@@ -262,7 +262,7 @@ function renderProfile() {
       h += '<div style="position:relative;padding:10px 12px;border-radius:14px;background:' + b.bg + ';border:1.5px solid ' + b.color + '55;box-shadow:' + b.glow + ';display:flex;align-items:center;gap:10px;overflow:hidden;' + animCss + '">';
       h += '<div style="font-size:26px;flex-shrink:0;filter:drop-shadow(0 0 6px ' + b.color + '88)">' + b.icon + '</div>';
       h += '<div><div style="font-size:12px;font-weight:800;color:' + b.color + '">' + b.name + '</div>';
-      h += '<div style="font-size:10px;color:#666;margin-top:1px">' + b.desc + '</div></div>';
+      h += '<div style="font-size:10px;color:#8a8a92;margin-top:1px">' + b.desc + '</div></div>';
       h += '<div style="position:absolute;bottom:-8px;right:-8px;width:36px;height:36px;border-radius:50%;background:' + b.color + '15;filter:blur(8px)"></div>';
       h += '</div>';
     });
@@ -695,7 +695,7 @@ window.showChangeFfUid = function() {
     h += '<div class="f-group"><label>Payment Screenshot *</label>';
     h += '<div id="_cfArea" onclick="document.getElementById(\'_cfIn\').click()" style="border:2px dashed rgba(185,100,255,.3);border-radius:12px;padding:18px;text-align:center;cursor:pointer">';
     h += '<i class="fas fa-camera" style="font-size:26px;color:#b964ff55;display:block;margin-bottom:6px"></i>';
-    h += '<div style="font-size:12px;color:#666">Screenshot tap karke upload karo</div>';
+    h += '<div style="font-size:12px;color:#8a8a92">Screenshot tap karke upload karo</div>';
     h += '<input type="file" id="_cfIn" accept="image/*" style="display:none" onchange="window._cfSs(this)"></div>';
     h += '<img id="_cfPreview" style="display:none;width:100%;border-radius:10px;margin-top:8px"></div>';
     h += '<div class="f-group" style="margin-top:10px"><label>UTR / UPI Reference Number *</label>';
@@ -1298,7 +1298,7 @@ window.showMySuggestions = function() {
     /* Past submissions */
     h += '<div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:8px">📋 Meri Previous Suggestions</div>';
     if (!past.length) {
-      h += '<div style="text-align:center;padding:20px;color:#666;font-size:12px">Abhi tak koi suggestion nahi diya.<br>Upar box mein likho!</div>';
+      h += '<div style="text-align:center;padding:20px;color:#8a8a92;font-size:12px">Abhi tak koi suggestion nahi diya.<br>Upar box mein likho!</div>';
     } else {
       var statusStyle = {
         pending:     { col: '#888',   label: '⏳ Pending' },

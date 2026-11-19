@@ -311,7 +311,7 @@
           var rows = r.data || [];
           var h = '<div style="padding:16px">';
           if (!rows.length) {
-            h += '<div style="text-align:center;color:#666;padding:30px 20px;font-size:13px"><i class="fas fa-coins" style="font-size:28px;opacity:.35;display:block;margin:0 auto 10px"></i>No coin transactions yet</div>';
+            h += '<div style="text-align:center;color:#8a8a92;padding:30px 20px;font-size:13px"><i class="fas fa-coins" style="font-size:28px;opacity:.35;display:block;margin:0 auto 10px"></i>No coin transactions yet</div>';
           } else {
             rows.forEach(function(t) {
               var credit = t.txn_type === 'credit';
@@ -607,7 +607,7 @@
         _msgs.forEach(function(m) {
           var isMe = m.sender_id === uid;
           h += '<div style="margin-bottom:6px;text-align:' + (isMe?'right':'left') + '">' +
-            '<span style="font-size:10px;color:#666">' + (m.sender_ign||'Player') + '</span><br>' +
+            '<span style="font-size:10px;color:#8a8a92">' + (m.sender_ign||'Player') + '</span><br>' +
             '<span style="display:inline-block;padding:4px 10px;border-radius:10px;font-size:12px;max-width:80%;word-break:break-word;background:' +
             (isMe?'rgba(0,255,156,.18)':'rgba(255,255,255,.07)') + ';color:' +
             (isMe?'#00ff9c':'#ccc') + '">' + (m.message||'').replace(/</g,'&lt;') + '</span></div>';

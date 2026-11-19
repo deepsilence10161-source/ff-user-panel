@@ -520,7 +520,7 @@ window.showCreatorEarnings = function() {
         var statusColor = c.status === 'eligible' || c.status === 'paid' ? '#00ff9c' : '#ffd700';
         var statusLabel = c.status === 'hold' ? 'Hold (7 din)' : c.status === 'eligible' ? 'Eligible' : c.status === 'paid' ? 'Paid' : c.status;
         bh += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)">';
-        bh += '<div><div style="font-size:12px;font-weight:700">Match Commission</div><div style="font-size:10px;color:#666">' + new Date(c.created_at).toLocaleDateString('en-IN') + '</div></div>';
+        bh += '<div><div style="font-size:12px;font-weight:700">Match Commission</div><div style="font-size:10px;color:#8a8a92">' + new Date(c.created_at).toLocaleDateString('en-IN') + '</div></div>';
         bh += '<div style="text-align:right"><div style="font-size:14px;font-weight:800;color:#00d4ff">+' + c.amount + ' 💎</div><div style="font-size:10px;color:' + statusColor + '">' + statusLabel + '</div></div>';
         bh += '</div>';
       });
