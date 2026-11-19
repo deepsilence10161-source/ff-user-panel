@@ -619,7 +619,16 @@ def main():
             # click ke baad ka toast text host log me aata hai — RPC ka asli
             # error code (insufficient_balance / RLS / lock) dikhta hai.
             user.on("console", lambda m: print("USER-CONSOLE: " + m.text[:220])
-                    if any(k in m.text for k in ("purchase", "rpc", "RPC", "supa", "error", "Error", "FAIL")) else None)
+                    if any(k in m.text for k in ("purchase", "rpc", "RPC", "supa", "error", "Error", "FAIL", "AppDialog", "replay", "dialog")) else None)
+            # RPC-call hook: purchase_cosmetic pahuncha ya nahi, pakka saboot
+            try:
+                user.evaluate("""() => { if (window._supa && !window.__rpcHooked) { window.__rpcHooked = 1; window.__rpcLog = [];
+                    const o = window._supa.rpc.bind(window._supa);
+                    window._supa.rpc = function (n, a) { window.__rpcLog.push(n + '@' + Date.now());
+                      return o(n, a).then(r => { window.__rpcLog.push(n + '=> ' + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data)).slice(0, 140)); return r; },
+                        e => { window.__rpcLog.push(n + '!! ' + String(e && (e.message || e)).slice(0, 120)); throw e; }); }; } }""")
+            except Exception as _he:
+                print("H6d rpc-hook fail: " + str(_he)[:90])
             user.on("pageerror", lambda e: print("USER-PAGEERROR: " + str(e)[:220]))
             dlg_txt = ""
             try:
@@ -636,6 +645,11 @@ def main():
                 print("H6d post-click toast: " + str(_tt)[:160])
             except Exception as _te:
                 print("H6d toast read fail: " + str(_te)[:90])
+            try:
+                _st = user.evaluate("() => ({ dlg: window.__appDialogState ? window.__appDialogState() : null, ov: !!(document.getElementById('_appDlgOv')||{}).classList && document.getElementById('_appDlgOv').classList.contains('show'), msg: (document.getElementById('_appDlgMsg')||{}).textContent || '', rpc: window.__rpcLog || [] })")
+                print("H6d post-OK state: " + json.dumps(_st, ensure_ascii=False)[:400])
+            except Exception as _se:
+                print("H6d state read fail: " + str(_se)[:90])
 
             # 4) DB se verify: user_cosmetics row + balance kata
             def _bought():
