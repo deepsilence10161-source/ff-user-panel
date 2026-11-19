@@ -421,3 +421,23 @@ window.fadeRemove = function (el) {
   }, 200);
   setTimeout(function () { clearInterval(t); }, 15000);
 })();
+
+/* D103 UI z56: chat-container height fit — stateBanner jaisi siblings ke saath
+   bhi input row AD-banner/nav ke upar rahe (calc me sibling count nahi hota tha) */
+(function () {
+  function fitChat() {
+    var mc = document.getElementById('mainContent');
+    var cc = document.querySelector('.chat-container');
+    if (!mc || !cc) return;
+    if (!cc.offsetParent) return; /* chat screen hidden */
+    var sb = document.getElementById('stateBanner');
+    var sbH = (sb && sb.offsetParent) ? sb.offsetHeight : 0;
+    var ob = document.getElementById('offlineBanner');
+    var obH = (ob && ob.offsetParent) ? ob.offsetHeight : 0;
+    var cs = getComputedStyle(mc);
+    var avail = mc.clientHeight - parseFloat(cs.paddingTop || 0) - parseFloat(cs.paddingBottom || 0) - sbH - obH;
+    if (avail > 200) cc.style.height = Math.floor(avail) + 'px';
+  }
+  setInterval(fitChat, 1500);
+  window.addEventListener('resize', fitChat);
+})();
