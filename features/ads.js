@@ -228,7 +228,7 @@ window.AdManager = {
     try { var _bn=document.getElementById('bottomNav'); if(_bn){ var _h=Math.round(_bn.getBoundingClientRect().height); if(_h>40) _navH=_h; } } catch(e) {}
     bn.style.cssText = 'position:fixed;bottom:' + _navH + 'px;left:0;right:0;height:50px;background:rgba(0,0,0,.9);border-top:1px solid rgba(255,255,255,.06);z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;pointer-events:none';
     try { document.body.style.setProperty('--wb-pad', (_navH + 50 + 10) + 'px'); } catch(e) {}
-    bn.innerHTML = '<span style="font-size:10px;color:#777">AD</span><span style="font-size:12px;color:#9a9aa2">Mini eSports — Tournament Platform</span><span style="font-size:10px;color:#777">AD</span>;
+    bn.innerHTML = '<span style="font-size:10px;color:#777">AD</span><span style="font-size:12px;color:#9a9aa2">Mini eSports — Tournament Platform</span><span style="font-size:10px;color:#777">AD</span>';
     document.body.appendChild(bn);
     /* ✅ FIX (2026-09-30): banner dikhne par body par class — layout (styles.css)
        tab chat input aur neeche wale buttons ko banner ke upar utha deta hai.

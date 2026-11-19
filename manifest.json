@@ -5,8 +5,8 @@
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#f59e0b",
-  "background_color": "#0a0a0a",
+  "theme_color": "#050507",
+  "background_color": "#050507",
   "lang": "en-IN",
   "scope": "./",
   "icons": [
@@ -68,21 +68,35 @@
       "label": "Home Screen — upcoming matches"
     }
   ],
-  "categories": ["games", "sports", "entertainment"],
+  "categories": [
+    "games",
+    "sports",
+    "entertainment"
+  ],
   "shortcuts": [
     {
       "name": "Join Match",
       "short_name": "Join",
       "description": "Browse and join upcoming matches",
       "url": "./?screen=home",
-      "icons": [{ "src": "icons/icon-96x96.png?v=20261117g", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "icons/icon-96x96.png?v=20261117g",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "My Wallet",
       "short_name": "Wallet",
       "description": "Check balance and transactions",
       "url": "./?screen=wallet",
-      "icons": [{ "src": "icons/icon-96x96.png?v=20261117g", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "icons/icon-96x96.png?v=20261117g",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "related_applications": [],
