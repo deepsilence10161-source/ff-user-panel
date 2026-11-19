@@ -1250,3 +1250,12 @@ body.vn-chip-on #_rkHdrPill{display:none !important}
   .hdr-bell{width:28px;height:28px}
   .hdr-chip{font-size:10px;padding:3px 4px;gap:2px}
 }
+
+/* D103 UI z42: micro hit-targets ka invisible tap-area expand (visuals unchanged) */
+.mc-info-btn{position:relative}
+.mc-info-btn::after{content:'';position:absolute;inset:-6px}
+button[data-pc2btn]::after{content:'';position:absolute;inset:-8px}
+span[onclick*="equipBadge"]{position:relative}
+span[onclick*="equipBadge"]::after{content:'';position:absolute;inset:-7px}
+div[onclick*="showAssetGallery"]{position:relative}
+div[onclick*="showAssetGallery"]::after{content:'';position:absolute;inset:-9px -6px}
