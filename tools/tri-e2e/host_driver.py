@@ -603,6 +603,13 @@ def main():
             # 60s poll "DB row + balance debit timeout" deta tha.
             # Ab bilkul asli user jaisa: #_appDlgOk ("Haan, karo") dabao.
             user.on("dialog", lambda d: d.accept())   # safety (agar kahin native bacha ho)
+            # ✅ FIX (2026-11-19): H6d do baar "timeout — last=None" par fail
+            # hua bina kisi telemetry ke. Ab user page ka console/pageerror +
+            # click ke baad ka toast text host log me aata hai — RPC ka asli
+            # error code (insufficient_balance / RLS / lock) dikhta hai.
+            user.on("console", lambda m: print("USER-CONSOLE: " + m.text[:220])
+                    if any(k in m.text for k in ("purchase", "rpc", "RPC", "supa", "error", "Error", "FAIL")) else None)
+            user.on("pageerror", lambda e: print("USER-PAGEERROR: " + str(e)[:220]))
             dlg_txt = ""
             try:
                 user.wait_for_selector("#_appDlgOv.show", timeout=15000)
@@ -613,6 +620,11 @@ def main():
             if RING["key"] not in dlg_txt and "kharidna" not in dlg_txt:
                 raise RuntimeError("confirm dialog ka text galat: " + dlg_txt[:120])
             time.sleep(3)
+            try:
+                _tt = user.evaluate("() => { var t = document.querySelector('.toast, #toast, .toast-wrap, [class*=toast]'); if (t && t.innerText) return t.innerText.replace(/\\n/g, ' | '); var m = document.body.innerText.match(/(❌|🎉)[^\\n]{0,90}/); return m ? m[0] : ''; }")
+                print("H6d post-click toast: " + str(_tt)[:160])
+            except Exception as _te:
+                print("H6d toast read fail: " + str(_te)[:90])
 
             # 4) DB se verify: user_cosmetics row + balance kata
             def _bought():
@@ -625,7 +637,11 @@ def main():
                     {"uid": ST["player"]["uid"], "key": RING["key"]})
                 return r if (r["rows"] == 1 and r["sd"] == sd_before - RING["price"]) else None
 
-            bought = poll(_bought, timeout=120, every=4, what="ring purchase (DB row + balance debit)")
+            bought = None
+            try:
+                bought = poll(_bought, timeout=120, every=4, what="ring purchase (DB row + balance debit)")
+            except RuntimeError as _pe:
+                print("H6d first poll fail: " + str(_pe)[:140])
             if not bought:
                 # ✅ FIX (2026-11-19, run 44496849814 flake): RPC kabhi-kabhi 60s
                 # me DB tak nahi pahunchta (emulator+Pages latency). Ek baar
