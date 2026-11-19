@@ -1,4 +1,11 @@
 /* ====== UPDATE HEADER ====== */
+/* D103 UI z45: 6-digit values par header chips clip na hon — compact format */
+function fmtCompact(n) {
+  n = Number(n) || 0;
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1e5) return Math.round(n / 1e3) + 'K';
+  return String(n);
+}
 function updateHdr() {
   if (!UD) return;
   var coins = Number(UD.coins) || 0;
@@ -9,8 +16,9 @@ function updateHdr() {
   var money = Math.max(Number(UD.skyDiamonds) || 0, 0);
   var hc = $('hdrCoins'), hm = $('hdrMoney');
   if (hc) {
-    var oldC = Number(hc.textContent) || 0;
-    hc.textContent = coins;
+    var oldC = Number(hc.getAttribute('data-raw')) || 0;
+    hc.textContent = fmtCompact(coins);
+    hc.setAttribute('data-raw', coins);
     if (coins !== oldC && oldC > 0) {
       hc.parentElement.style.animation = 'none';
       hc.parentElement.offsetHeight;
@@ -18,8 +26,9 @@ function updateHdr() {
     }
   }
   if (hm) {
-    var oldM = Number(hm.textContent) || 0;
-    hm.textContent = parseFloat(money.toFixed(2));
+    var oldM = Number(hm.getAttribute('data-raw')) || 0;
+    hm.textContent = fmtCompact(parseFloat(money.toFixed(2)));
+    hm.setAttribute('data-raw', money);
     if (money !== oldM && oldM > 0) {
       hm.parentElement.style.animation = 'none';
       hm.parentElement.offsetHeight;
@@ -30,7 +39,7 @@ function updateHdr() {
   var hgd = $('hdrGD');
   if (hgd) {
     var gd = Math.max(Number(UD.greenDiamonds) || 0, 0);
-    hgd.textContent = gd;
+    hgd.textContent = fmtCompact(gd);
   }
 }
 
