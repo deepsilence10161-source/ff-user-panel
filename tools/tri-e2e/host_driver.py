@@ -625,7 +625,21 @@ def main():
                     {"uid": ST["player"]["uid"], "key": RING["key"]})
                 return r if (r["rows"] == 1 and r["sd"] == sd_before - RING["price"]) else None
 
-            bought = poll(_bought, timeout=60, every=4, what="ring purchase (DB row + balance debit)")
+            bought = poll(_bought, timeout=120, every=4, what="ring purchase (DB row + balance debit)")
+            if not bought:
+                # ✅ FIX (2026-11-19, run 44496849814 flake): RPC kabhi-kabhi 60s
+                # me DB tak nahi pahunchta (emulator+Pages latency). Ek baar
+                # asli UI se dobara try (dialog replay = app ka apna route),
+                # phir dobara poll — jhootha pass nahi, DB sach hi gate hai.
+                try:
+                    b2 = user.query_selector("button[onclick*=\"buyCosmetic('frame_ring_gold'\"]")
+                    if b2:
+                        b2.click()
+                        user.wait_for_selector("#_appDlgOv.show", timeout=10000)
+                        user.click("#_appDlgOk", timeout=6000)
+                        bought = poll(_bought, timeout=120, every=4, what="ring purchase retry (DB row + balance debit)")
+                except Exception as e:
+                    print("H6d retry path: " + str(e)[:140])
             shot(user, "h6d-ring-bought.png")
 
             # 5) equip → profile par medal — 2026-10-14: dono taraf ASLI UI.
@@ -652,7 +666,7 @@ def main():
                       .eq('cosmetic_key', o.key).maybeSingle();
                     return (data && data.is_equipped === true) ? 'ok' : null; }""",
                     {"uid": ST["player"]["uid"], "key": RING["key"]})
-            poll(_equipped, timeout=60, every=4, what="ring ka is_equipped=true (DB)")
+            poll(_equipped, timeout=120, every=4, what="ring ka is_equipped=true (DB)")
 
             #    (c) modal band → ASLI profile tab tap. ⚠️ Pehle yahan
             #        showScreen('profile') bulaya ja raha tha — aisa koi
