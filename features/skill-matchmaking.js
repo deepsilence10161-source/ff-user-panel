@@ -129,12 +129,12 @@ var _rkHdrI=0,_rkHdrT=setInterval(function(){
   if(existing) return;
   var pill=document.createElement('div');
   pill.id='_rkHdrPill';
-  pill.style.cssText='display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:'+colors[tier]+'11;border:1px solid '+colors[tier]+'33;font-size:11px;font-weight:800;color:'+colors[tier]+';cursor:pointer;margin-left:6px';
+  pill.style.cssText='display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:'+colors[tier]+'22;border:1px solid '+colors[tier]+'55;font-size:11px;font-weight:800;color:'+colors[tier]+';cursor:pointer;position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:3;backdrop-filter:blur(4px)';
   pill.innerHTML=(window.tierIconHtml?tierIconHtml(tier,12):'')+' <span class="rk-t">'+tier+'</span>';
   pill.title='Your Rank Tier — '+rp+' RP';
   pill.onclick=function(){ window._rankFilter=tier; _syncRankSelect(); if(window.renderHome) renderHome(); toast('Showing '+tier+' matches only','ok'); };
-  var hdr=document.querySelector('.header-right,.hdr-right,header .right');
-  if(hdr) hdr.appendChild(pill);
+  var host=document.querySelector('.ticker-wrap')||document.querySelector('.header-right,.hdr-right,header .right');
+  if(host) host.appendChild(pill);
 },600);
 
 })();
