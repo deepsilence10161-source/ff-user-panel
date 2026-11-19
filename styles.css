@@ -1235,7 +1235,7 @@ input[type="checkbox"]{accent-color:var(--green);width:19px;height:19px;flex-shr
 @media (max-width:430px){
   .rk-t{display:none}
   #_rkHdrPill{padding:3px 7px}
-  .hdr-right{gap:4px;max-width:calc(100vw - 108px)}
+  .hdr-right{gap:3px;max-width:calc(100vw - 108px)}
   .hdr-chip{padding:4px 5px;font-size:11px}
   .hdr-bell{width:32px;height:32px}
 }
