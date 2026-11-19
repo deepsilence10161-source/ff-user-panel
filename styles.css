@@ -378,7 +378,7 @@ body.vn-chip-on .ticker-wrap{padding-right:min(48%,344px) !important} /* D98 F3:
 .modal-box{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:85vh;display:flex;flex-direction:column;animation:mUp .3s ease;padding:0 0 env(safe-area-inset-bottom);overscroll-behavior:contain}
 .modal-drag{width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:10px auto}
 .modal-hdr{padding:0 20px 14px;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:space-between}
-.modal-hdr .m-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--card);color:var(--txt2);cursor:pointer;font-size:14px}
+.modal-hdr .m-close{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--card);color:var(--txt2);cursor:pointer;font-size:15px}
 /* ✅ BUG FIX (2026-08-22): "swipe up/down inside the modal instantly
    refreshes the page instead of scrolling its content" — the modal
    itself scrolled correctly (overflow-y:auto + flex:1 were already
