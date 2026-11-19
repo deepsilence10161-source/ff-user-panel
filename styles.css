@@ -55,7 +55,7 @@ html{scrollbar-width:none;overscroll-behavior:none}
 .hdr-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 6px}
 .hdr-left{display:flex;align-items:center;gap:8px}
 .hdr-fire{color:var(--red);font-size:22px;filter:drop-shadow(0 0 6px rgba(255,46,46,.6))}
-.hdr-name{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr-name{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hdr-right{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow:hidden;max-width:calc(100vw - 120px)}
 .hdr-bell{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--card);border-radius:10px;font-size:16px;color:var(--txt2);cursor:pointer}
 .hdr-bell .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite;display:none}
@@ -463,7 +463,7 @@ textarea.f-input{resize:none;min-height:80px}
 /* ===== MY MATCHES ===== */
 .mm-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px}
 .mm-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.mm-name{font-size:15px;font-weight:700;flex:1}
+.mm-name{font-size:15px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mm-status{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:600}
 .mm-status.ms-a{background:rgba(0,255,106,.1);color:var(--green)}
 .mm-status.ms-r{background:rgba(255,46,46,.1);color:var(--red)}
@@ -575,7 +575,7 @@ textarea.f-input{resize:none;min-height:80px}
 .lb-rank-num{font-size:15px;font-weight:900;color:var(--txt2);width:24px;text-align:center}
 .lb-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--card2),var(--border));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;overflow:hidden}
 .lb-ava img{width:100%;height:100%;object-fit:cover}
-.lb-name{font-size:13px;font-weight:700;flex:1}
+.lb-name{font-size:13px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lb-stat{font-size:12px;color:var(--txt2)}
 .lb-earn{font-size:14px;font-weight:800;color:var(--green)}
 
