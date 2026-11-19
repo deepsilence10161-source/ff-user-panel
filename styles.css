@@ -1242,3 +1242,11 @@ input[type="checkbox"]{accent-color:var(--green);width:19px;height:19px;flex-shr
 
 /* D103 UI z36: vn-chip active ho to tier-pill hide (dono ticker-right par seat hote hain) */
 body.vn-chip-on #_rkHdrPill{display:none !important}
+
+/* D103 UI z39: <=360px — wordmark hide, header compact taaki chips pure dikhen */
+@media (max-width:360px){
+  .hdr-name{display:none !important}
+  .hdr-right{max-width:calc(100vw - 60px);gap:2px}
+  .hdr-bell{width:28px;height:28px}
+  .hdr-chip{font-size:10px;padding:3px 4px;gap:2px}
+}
