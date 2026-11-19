@@ -1241,4 +1241,4 @@ input[type="checkbox"]{accent-color:var(--green);width:19px;height:19px;flex-shr
 }
 
 /* D103 UI z36: vn-chip active ho to tier-pill hide (dono ticker-right par seat hote hain) */
-body.vn-chip-on #_rkHdrPill{display:none}
+body.vn-chip-on #_rkHdrPill{display:none !important}
