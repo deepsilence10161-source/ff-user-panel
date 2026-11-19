@@ -314,6 +314,17 @@ if (window.closeModal) {
   } else {
     setTimeout(_adjustToastPosition, 200);
   }
+  /* D103 UI z53: header login ke baad height badalta hai (display:none→86px) —
+     toast offset live re-adjust karo */
+  setInterval(function () {
+    var tw = document.getElementById('toast-wrap');
+    var h2 = document.getElementById('header');
+    if (!tw || !h2) return;
+    var hh = h2.offsetHeight || 56;
+    var want = (hh + 8) + 'px';
+    if (tw.style.top !== want) tw.style.top = want;
+  }, 1500);
+  window.addEventListener('resize', _adjustToastPosition);
   /* Re-adjust on resize (orientation change etc.) */
   window.addEventListener('resize', _adjustToastPosition);
   console.log('[Fix v10] Bug 15: Toast position dynamically adjusted to header height');
