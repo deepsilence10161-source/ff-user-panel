@@ -2240,7 +2240,7 @@ window.applyDynamicWallpaper = function() {
       if (lbl) {
         lbl.innerHTML = claimed
           ? 'Checked In Today ✓'
-          : 'Daily<br>Check-In<br><span style="font-size:3.6cqw">(' + _amtLabel.replace('+🪙', '+  ') + ')</span>';
+          : 'Daily<br>Check-In<br><span style="font-size:5cqw">(' + _amtLabel.replace('+🪙', '+  ') + ')</span>';
       } else {
         btn.innerHTML = claimed
           ? '<i class="fas fa-check-circle"></i> Checked In Today'

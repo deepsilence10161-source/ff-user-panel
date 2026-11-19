@@ -57,7 +57,7 @@ html{scrollbar-width:none;overscroll-behavior:none}
 .hdr-fire{color:var(--red);font-size:22px;filter:drop-shadow(0 0 6px rgba(255,46,46,.6))}
 .hdr-name{font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hdr-right{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow:hidden;max-width:calc(100vw - 120px)}
-.hdr-bell{position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--card);border-radius:10px;font-size:16px;color:var(--txt2);cursor:pointer}
+.hdr-bell{position:relative;flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--card);border-radius:10px;font-size:16px;color:var(--txt2);cursor:pointer}
 .hdr-bell .dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite;display:none}
 .hdr-chip{display:flex;align-items:center;gap:3px;padding:5px 8px;border-radius:10px;font-size:12px;font-weight:700;flex-shrink:0}
 .chip-coin{background:rgba(255,215,0,.1);color:var(--yellow)}
