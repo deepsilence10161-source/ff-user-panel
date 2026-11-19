@@ -1230,3 +1230,11 @@ body.has-web-banner .chat-container {
    dark-neon theme ke bilkul bahar dikhta tha. accent-color se tick +
    box app-green ho jaata hai, size bhi touch-friendly. */
 input[type="checkbox"]{accent-color:var(--green);width:19px;height:19px;flex-shrink:0;cursor:pointer} /* mes-checkbox-theme */
+
+/* D103 UI z31: narrow-screen header fit — rank pill icon-only, chips compact */
+@media (max-width:430px){
+  .rk-t{display:none}
+  #_rkHdrPill{padding:3px 7px;margin-left:2px}
+  .hdr-right{gap:4px}
+  .hdr-chip{padding:4px 6px}
+}
