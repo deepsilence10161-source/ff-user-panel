@@ -407,7 +407,7 @@ window.fadeRemove = function (el) {
     window.showCoinShop = function () {
       var r = oOpen.apply(this, arguments);
       el.style.opacity = '0';
-      requestAnimationFrame(function () { requestAnimationFrame(function () { el.style.opacity = '1'; }); });
+      setTimeout(function () { el.style.opacity = '1'; }, 50);
       return r;
     };
     window.closeCoinShop = function () {
