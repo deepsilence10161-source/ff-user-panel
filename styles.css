@@ -1265,3 +1265,10 @@ div[onclick*="showAssetGallery"]::after{content:'';position:absolute;inset:-9px 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+/* D103 UI z47: hdr-right adaptive compaction for 5-6 digit balances */
+.hdr-right.tight{gap:3px}
+.hdr-right.tight .hdr-chip{padding:10px 4px !important;font-size:10px !important;gap:2px}
+.hdr-right.tight2 .hdr-chip{padding:10px 3px !important;font-size:9px !important;gap:1px}
+.hdr-right.tight2{gap:2px}
+.hdr-right.tight2 .hdr-bell{width:28px;height:28px}

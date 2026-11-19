@@ -41,6 +41,13 @@ function updateHdr() {
     var gd = Math.max(Number(UD.greenDiamonds) || 0, 0);
     hgd.textContent = fmtCompact(gd);
   }
+  /* D103 UI z47: adaptive tight mode — bade numbers par chips clip na hon */
+  var hr = document.querySelector('.hdr-right');
+  if (hr) {
+    hr.classList.remove('tight');
+    if (hr.scrollWidth > hr.clientWidth + 1) hr.classList.add('tight');
+    if (hr.scrollWidth > hr.clientWidth + 1) hr.classList.add('tight2');
+  }
 }
 
 /* ====== BELL ====== */
