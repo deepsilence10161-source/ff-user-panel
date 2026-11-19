@@ -626,7 +626,7 @@ function _renderRankList(rc, users, sortKey, tabBar, seasonBanner, isSeason) {
       }
     } catch (e) {}
     h += '<div class="rank-info"><div class="rn"><span class="rn-n">' + (window.escHtml?window.escHtml(u.ign||u.displayName||'Player'):(u.ign||u.displayName||'Player')) + '</span>' + _premRibbon + (isMe ? ' <span style="font-size:9px;color:var(--green)">YOU</span>' : '');
-    if (_top10title) h += ' <span class="rn-t" style="font-size:9px;padding:1px 6px;border-radius:8px;background:rgba(255,215,0,.12);color:#ffd700;font-weight:800">' + _top10title + '</span>';
+    if (_top10title) h += ' <span class="rn-t" style="font-size:10px;padding:1px 6px;border-radius:8px;background:rgba(255,215,0,.12);color:#ffd700;font-weight:800">' + _top10title + '</span>';
     h += '</div>';
     var _st = u.stats || {};
     var _m = Number(_st.matches||0), _w = Number(_st.wins||0), _k = Number(_st.kills||0);

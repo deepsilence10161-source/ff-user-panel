@@ -153,7 +153,7 @@ body.vn-chip-on .ticker-wrap{padding-right:min(48%,344px) !important} /* D98 F3:
 .mc-prize-2{background:rgba(0,212,255,.08);border:2px solid rgba(0,212,255,.45);box-shadow:0 0 18px rgba(0,212,255,.16)}
 .mc-prize-3{background:rgba(255,140,0,.08);border:2px solid rgba(255,140,0,.45);box-shadow:0 0 18px rgba(255,140,0,.16)}
 .mc-prize-icon{font-size:16px;line-height:1;margin-bottom:2px}
-.mc-prize-rank{font-size:8px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;opacity:.7;margin-bottom:1px}
+.mc-prize-rank{font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;opacity:.7;margin-bottom:1px}
 .mc-prize-amt{font-size:17px;font-weight:900;line-height:1.1}
 .mc-prize-1 .mc-prize-rank,.mc-prize-1 .mc-prize-amt{color:#ffd700}
 .mc-prize-2 .mc-prize-rank{color:#c0e0ff}.mc-prize-2 .mc-prize-amt{color:#e0f0ff}
@@ -163,7 +163,7 @@ body.vn-chip-on .ticker-wrap{padding-right:min(48%,344px) !important} /* D98 F3:
 .mc-mid{display:grid;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
 .mc-cell{padding:9px 10px;text-align:center;position:relative}
 .mc-cell:not(:last-child){border-right:1px solid rgba(255,255,255,.06)}
-.mc-cell label{font-size:9px;color:var(--txt2);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+.mc-cell label{font-size:10px;color:var(--txt2);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.7px;font-weight:700}
 .mc-cell span{font-size:15px;font-weight:800;display:block}
 .mc-cell .fee-coin{color:var(--yellow)}
 .mc-cell .fee-money{color:#00e5ff;text-shadow:0 0 8px rgba(0,229,255,.3)}
