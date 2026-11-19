@@ -395,3 +395,29 @@ window.fadeRemove = function (el) {
   el.classList.add('fading-out');
   setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 200);
 };
+
+/* D103 UI z49: coinShopModal (inline-style overlay) ko bhi open/close fade mila */
+(function () {
+  function patch() {
+    if (window._v8CoinAnim) return; window._v8CoinAnim = 1;
+    var el = document.getElementById('coinShopModal'); if (!el) return;
+    el.style.transition = 'opacity .2s ease';
+    var oOpen = window.showCoinShop, oClose = window.closeCoinShop;
+    if (typeof oOpen !== 'function' || typeof oClose !== 'function') return;
+    window.showCoinShop = function () {
+      var r = oOpen.apply(this, arguments);
+      el.style.opacity = '0';
+      requestAnimationFrame(function () { requestAnimationFrame(function () { el.style.opacity = '1'; }); });
+      return r;
+    };
+    window.closeCoinShop = function () {
+      if (!el || el.style.display === 'none') return oClose.apply(this, arguments);
+      el.style.opacity = '0';
+      setTimeout(function () { el.style.opacity = ''; oClose.apply(this, arguments); }, 200);
+    };
+  }
+  var t = setInterval(function () {
+    if (typeof window.showCoinShop === 'function' && typeof window.closeCoinShop === 'function') { clearInterval(t); patch(); }
+  }, 200);
+  setTimeout(function () { clearInterval(t); }, 15000);
+})();
