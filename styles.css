@@ -1278,3 +1278,7 @@ div[onclick*="showAssetGallery"]::after{content:'';position:absolute;inset:-9px 
 /* D103 UI z48: tap-highlight kill + fade-out helper class */
 *{-webkit-tap-highlight-color:transparent}
 .fading-out{opacity:0 !important;transition:opacity .18s ease !important;pointer-events:none !important}
+
+/* D103 UI z57: hdr-bell (32px @<=430) ka invisible tap-area 42px+ */
+.hdr-bell{position:relative}
+.hdr-bell::after{content:'';position:absolute;inset:-5px}
