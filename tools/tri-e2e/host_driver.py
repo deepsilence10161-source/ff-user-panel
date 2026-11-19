@@ -490,10 +490,21 @@ def main():
                 if b["has"] and b["ms"] and b["ms"] <= 12 * 3600 * 1000:
                     return b
                 # UI ko apna state check karne ka mauka (asli function)
-                user.evaluate("() => { if (window.checkTrialState) window.checkTrialState(); }")
+                user.evaluate("() => { if (window.checkTrialState) window.checkTrialState(); if (window.updatePremiumExpiryBanner) window.updatePremiumExpiryBanner(); }")
                 return None
 
-            b1 = poll(_due, timeout=120, every=4, what="6h bache par countdown banner")
+            # ✅ FIX (2026-11-19, run 44508014679 flake): banner 120s me nahi
+            # aaya to ek reload + dobara poll (SW/realtime latency), aur har
+            # koshish me banner-render nudge. Telemetry: state dump fail par.
+            b1 = None
+            for _att in (1, 2):
+                try:
+                    b1 = poll(_due, timeout=150, every=4, what="6h bache par countdown banner (att %d)" % _att)
+                    break
+                except RuntimeError as _be:
+                    print("H6c att%d fail: %s | state=%s" % (_att, str(_be)[:110], str(banner_state())[:220]))
+                    if _att == 1:
+                        reload_user()
             BANNER["pos"] = b1
             VALUES["premium_banner"] = "app-banner"
             VALUES["premium_expires_ms"] = str(b1["ms"])
