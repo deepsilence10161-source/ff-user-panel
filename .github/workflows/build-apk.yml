@@ -560,7 +560,7 @@ jobs:
             FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
             echo "   koshish $i: focus = ${FOCUS:-'-'}"
             case "$FOCUS" in
-              *permissioncontroller*)
+              *permission*)
                 adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
                 adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
                 if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="window+dump"; else FOUND="window"; fi
@@ -599,11 +599,11 @@ jobs:
             sleep 3
             adbt shell am start -n "$PKG/.MainActivity" >/dev/null 2>&1 || true
             sleep 14
-            for i in $(seq 1 8); do
+            for i in $(seq 1 14); do
               FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
               echo "   retry koshish $i: focus = ${FOCUS:-'-'}"
               case "$FOCUS" in
-                *permissioncontroller*)
+                *permission*)
                   adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
                   adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
                   if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="retry+dump"; else FOUND="retry"; fi
@@ -619,6 +619,16 @@ jobs:
 
           adbt exec-out screencap -p > notif-permission-screen.png
           ls -lh notif-permission-screen.png
+
+          # ✅ FIX (2026-11-19, run 44478461363): dialog ASLI me screen par tha
+          # (screenshot proof) par focus-string kabhi match nahi hua — naye
+          # emulator images me permission dialog ka package badla hai. Ab akhir
+          # me ek direct dump koshish: dump me "Allow" mila = dialog confirmed.
+          if [ -z "$FOUND" ]; then
+            adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+            adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+            if [ -s notif-ui-dump.xml ] && grep -qi "allow" notif-ui-dump.xml; then FOUND="late-dump"; fi
+          fi
 
           if [ -z "$FOUND" ]; then
             echo "--- asli kaaran: launch ke baad granted flags + logcat ---"
@@ -653,7 +663,15 @@ jobs:
               adbt shell input tap "$CX" "$CY"
               sleep 4
             else
-              echo "⚠️ Allow ka bounds nahi mila (dialog to mila hai)"
+              # ✅ FIX (2026-11-19): Android 14+ Material3 dialog VERTICAL stacked
+              # hota hai (Allow upar full-width, Don't allow neeche) — purani
+              # "Don't allow ke daayein" heuristic galat button dabati thi.
+              SIZE=$(adb shell wm size 2>/dev/null | sed 's/.*: //' | tr -d '\r')
+              SW=${SIZE%x*}; SH=${SIZE#*x}
+              CX=$(( SW / 2 )); CY=$(( SH * 52 / 100 ))
+              echo "   (stacked-dialog fallback: Allow row center tap $CX,$CY of ${SW}x${SH})"
+              adbt shell input tap "$CX" "$CY"
+              sleep 4
             fi
           else
             X1=$(echo "$BOUNDS" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\1/')
@@ -671,6 +689,23 @@ jobs:
           echo "=== Tap ke baad permission ki stithi ==="
           adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | head -5
           GRANT=$(adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
+          if [ -z "$GRANT" ]; then
+            echo "↻ granted nahi — ek aur dump+Allow tap koshish (flake-safe)"
+            adbt shell uiautomator dump /sdcard/notif_dump.xml >/dev/null 2>&1 || true
+            adbt pull /sdcard/notif_dump.xml notif-ui-dump.xml >/dev/null 2>&1 || true
+            B2=$(grep -o 'text="[^"]*"[^>]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' notif-ui-dump.xml \
+              | grep -i 'allow' | grep -iv "don't" | head -1 \
+              | grep -o '\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]' | head -1)
+            if [ -n "$B2" ]; then
+              X1=$(echo "$B2" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\1/')
+              Y1=$(echo "$B2" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\2/')
+              X2=$(echo "$B2" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\3/')
+              Y2=$(echo "$B2" | sed 's/\[\([0-9]*\),\([0-9]*\)\]\[\([0-9]*\),\([0-9]*\)\]/\4/')
+              adbt shell input tap "$(( (X1+X2)/2 ))" "$(( (Y1+Y2)/2 ))"
+              sleep 4
+              GRANT=$(adbt shell dumpsys package "$PKG" | grep -A3 "android.permission.POST_NOTIFICATIONS" | grep -o "granted=true" | head -1)
+            fi
+          fi
           if [ -n "$GRANT" ]; then echo "✅ POST_NOTIFICATIONS ab GRANTED hai (Allow ne kaam kiya)";
           else echo "❌ granted=true nahi dikha — screenshot (notif-after-allow.png) dekho"; exit 1; fi
           adbt exec-out screencap -p > notif-after-allow.png
@@ -796,7 +831,7 @@ jobs:
             FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
             echo "   koshish $i: focus = ${FOCUS:-'-'}"
             case "$FOCUS" in
-              *permissioncontroller*)
+              *permission*)
                 adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
                 adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
                 if [ -s loc-ui-dump.xml ] && grep -qiE "while using|allow|only this time" loc-ui-dump.xml; then FOUND="window+dump"; else FOUND="window"; fi
@@ -845,7 +880,7 @@ jobs:
               FOCUS=$(adb shell dumpsys window 2>/dev/null | grep -m1 'mCurrentFocus' | sed 's/.*mCurrentFocus=//')
               echo "   retry koshish $i: focus = ${FOCUS:-'-'}"
               case "$FOCUS" in
-                *permissioncontroller*)
+                *permission*)
                   adbt shell uiautomator dump /sdcard/loc_dump.xml >/dev/null 2>&1 || true
                   adbt pull /sdcard/loc_dump.xml loc-ui-dump.xml >/dev/null 2>&1 || true
                   if [ -s loc-ui-dump.xml ] && grep -qiE "while using|allow|only this time" loc-ui-dump.xml; then FOUND="retry+dump"; else FOUND="retry"; fi
