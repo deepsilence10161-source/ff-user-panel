@@ -1259,3 +1259,9 @@ span[onclick*="equipBadge"]{position:relative}
 span[onclick*="equipBadge"]::after{content:'';position:absolute;inset:-7px}
 div[onclick*="showAssetGallery"]{position:relative}
 div[onclick*="showAssetGallery"]::after{content:'';position:absolute;inset:-9px -6px}
+
+/* D103 UI z43: keyboard focus rings + reduced-motion respect */
+.hdr-bell:focus-visible,.hdr-chip:focus-visible,.nav-item:focus-visible,button:focus-visible,[role="button"]:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:10px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
