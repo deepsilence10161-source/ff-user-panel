@@ -167,10 +167,13 @@
         return poll(function () { try { return W() && W().auth ? W() : null; } catch (e) { return null; } },
           1000, 120000, 'app ka firebase auth load');
       }).then(function (w) {
-        w.eval('window.__triSignIn=null; window.auth.signInWithEmailAndPassword(' +
-               JSON.stringify(EMAIL) + ',' + JSON.stringify(PASS) + ')' +
-               '.then(function(){window.__triSignIn="ok";})' +
-               '.catch(function(e){window.__triSignIn="err:"+((e&&e.code)||(e&&e.message)||"unknown");});');
+        /* ✅ FIX (2026-11-19): app CSP me 'unsafe-eval' nahi hai (security
+           hardening) — iframe me eval CSP-block hota tha. Same-origin iframe
+           hai: direct property calls = wahi kaam, bina eval. */
+        w.__triSignIn = null;
+        w.auth.signInWithEmailAndPassword(EMAIL, PASS)
+          .then(function(){ w.__triSignIn = 'ok'; })
+          .catch(function(e){ w.__triSignIn = 'err:' + ((e && e.code) || (e && e.message) || 'unknown'); });
         return poll(function () { return W().__triSignIn; }, 1000, 90000, 'firebase sign-in')
           .then(function (st) {
             if (st !== 'ok') fail('sign-in', st);
@@ -193,7 +196,7 @@
            gate khul jaye to asli UI wale raaste se (mesStateOk) clear karo,
            warna baaki saare modals uske peeche block ho jaate hain. */
         try {
-          w.eval("if (window.UD && !window.UD.state && typeof window.mesStateOk === 'function') { window.mesStateOk('Haryana'); }");
+          try { if (w.UD && !w.UD.state && typeof w.mesStateOk === 'function') { w.mesStateOk('Haryana'); } } catch (e) {}
         } catch (e) {}
         /* ⚠️ Supabase client ko Firebase token milna ASYNC hai (db.js
            syncFirebaseToken). Us se pehle koi bhi write RLS se reject hoti hai
@@ -215,7 +218,7 @@
     /* ── 3/N : APK → Admin (support ticket) ── */
     ['3/19 APK → Admin: support ticket submit', function () {
       var w = W();
-      w.eval("if (window.showSupportForm) showSupportForm();");
+      try { if (w.showSupportForm) w.showSupportForm(); } catch (e) {}
       return poll(function () { return w.document.getElementById('supMsg'); }, 800, 40000, 'support form')
         .then(function () {
           w.document.getElementById('supType').value = 'other';
@@ -226,7 +229,7 @@
           var tries = 0;
           function _one() {
             tries++;
-            w.eval('window.submitSupportTicket()');
+            try { w.submitSupportTicket(); } catch (e) {}
             return poll(function () {
               return w._supa.from('support_tickets').select('id,message')
                 .eq('user_id', w.U.uid).like('message', '%' + MARK + '%')
@@ -256,8 +259,8 @@
              (container badal jaye to bhi pakda jaye). */
           return poll(function () {
             var w2 = W();
-            if (w2.closeModal) w2.eval("if (window.closeModal) closeModal();");
-            w2.eval("if (window.showMyTickets) showMyTickets();");
+            if (w2.closeModal) { try { w2.closeModal(); } catch (e) {} }
+            try { if (w2.showMyTickets) w2.showMyTickets(); } catch (e) {}
             return new Promise(function (res) {
               setTimeout(function () {
                 var body = (w2.document.body && w2.document.body.innerText) || '';
@@ -279,7 +282,7 @@
         .then(function (u) {
           VALUES.coins = String(u.coins);
           VALUES.sky_diamonds = String(u.sky_diamonds);
-          w.eval("if (window.navTo) navTo('wallet');");
+          try { if (w.navTo) w.navTo('wallet'); } catch (e) {}
           return poll(function () {
             var w2 = W(), ui = w2.document.getElementById('wCoins');
             var fromUD = w2.UD && String(w2.UD.coins);
@@ -315,10 +318,10 @@
         .then(function (title) {
           VALUES.match_title = title;
           function _nudge() {
-            w.eval("try{ if (window.navTo) navTo('home'); }catch(e){}" +
-                   "try{ if (window.renderHome) renderHome(); }catch(e){}" +
-                   "try{ if (window._loadMatches) _loadMatches(); }catch(e){}" +
-                   "try{ if (window.refreshMatches) refreshMatches(); }catch(e){}");
+            try { if (w.navTo) w.navTo('home'); } catch (e) {}
+            try { if (w.renderHome) w.renderHome(); } catch (e) {}
+            try { if (w._loadMatches) w._loadMatches(); } catch (e) {}
+            try { if (w.refreshMatches) w.refreshMatches(); } catch (e) {}
           }
           function _seen() {
             var w2 = W();
@@ -343,7 +346,7 @@
               }).then(function () {
                 return poll(function () {
                   var w2 = W();
-                  try { if (w2._loadMatches) w2.eval('_loadMatches()'); } catch (e) {}
+                  try { if (w2._loadMatches) w2._loadMatches(); } catch (e) {}
                   return _seen();
                 }, 3000, 150000, 'match app me render (reload ke baad)');
               });
@@ -362,7 +365,7 @@
       }, 4000, 420000, 'admin notification (host driver se)')
         .then(function (n) {
           VALUES.notif_title = n.title;
-          w.eval("if (window._loadNotifs) _loadNotifs(); if (window.renderNotifications) renderNotifications();");
+          try { if (w._loadNotifs) w._loadNotifs(); if (w.renderNotifications) w.renderNotifications(); } catch (e) {}
           return poll(function () {
             var w2 = W();
             var arr = w2.NOTIFS || [];
@@ -384,7 +387,7 @@
       }, 4000, 420000, 'admin KYC approve (host driver se)')
         .then(function (st) {
           VALUES.kyc_status = st;
-          w.eval("if (window.closeModal) closeModal(); if (window.mesShowKYC) mesShowKYC();");
+          try { if (w.closeModal) w.closeModal(); if (w.mesShowKYC) w.mesShowKYC(); } catch (e) {}
           return poll(function () {
             var body = W().document.body.innerText || '';
             return (body.indexOf('KYC Verified') >= 0 || body.indexOf('verify ho chuki') >= 0) ? true : null;
@@ -414,16 +417,17 @@
     var w = W();
     var JOIN_ATTEMPTS = 6, ATTEMPT_MS = 30000;
     function _mtReady(id) {
-      try { if (w.eval) w.eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+      try { if (w._loadMatches) w._loadMatches(); } catch (e) {}
       try { return (w.MT && w.MT[id]) ? true : null; } catch (e) { return null; }
     }
     function _fireRpc(id) {
       try {
-        W().eval('(function(){ var p = window._supa.rpc("validate_and_join_match", {p_uid: window.U.uid, p_match_id: ' + JSON.stringify(id) +
-          ', p_entry_fee: 0, p_currency: "coins", p_join_data: {mode: "solo", ign: (window.UD && window.UD.ign) || ""}});' +
-          'var done = false; p.then(function(r){ done = true; console.log("TRI-JOIN-RPC: " + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); },' +
-          'function(e){ done = true; console.log("TRI-JOIN-RPC-ERR: " + String(e && (e.message || e)).slice(0,160)); });' +
-          'setTimeout(function(){ if (!done) console.log("TRI-JOIN-RPC: PENDING(12s)"); }, 12000); })();');
+        var ww = W();
+        var p = ww._supa.rpc('validate_and_join_match', {p_uid: ww.U.uid, p_match_id: id, p_entry_fee: 0, p_currency: 'coins', p_join_data: {mode: 'solo', ign: (ww.UD && ww.UD.ign) || ''}});
+        var done = false;
+        p.then(function(r){ done = true; console.log('TRI-JOIN-RPC: ' + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data))); },
+          function(e){ done = true; console.log('TRI-JOIN-RPC-ERR: ' + String(e && (e.message || e)).slice(0,160)); });
+        setTimeout(function(){ if (!done) console.log('TRI-JOIN-RPC: PENDING(12s)'); }, 12000);
         return true;
       } catch (e) { console.log('TRI-JOIN-A: rpc eval fail ' + String(e).slice(0, 90)); return false; }
     }
@@ -538,22 +542,23 @@
          bahar, seedha PostgREST) — dono cheezein iframe ke apne realm me. ── */
       function _installIframeHooks() {
         try {
-          W().eval('(function(){ function L(m){ try { console.log("TRI-IN-IFRAME: " + m); } catch(e){} }' +
-            ' window.__triL = L; L("hooks installed");' +
-            ' window.__triFetchJoin = function(mid){' +
-            '   L("raw fetch join START");' +
-            '   window.auth.currentUser.getIdToken().then(function(jwt){' +
-            '     L("token mila");' +
-            '     return window.fetch("https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/rpc/validate_and_join_match", {' +
-            '       method:"POST", headers:{"Content-Type":"application/json", apikey: "' + SUPA_ANON + '", Authorization: "Bearer " + jwt},' +
-            '       body: JSON.stringify({p_uid: window.U.uid, p_match_id: mid, p_entry_fee: 0, p_currency: "coins",' +
-            '         p_join_data: {mode:"solo", ign: (window.UD && window.UD.ign) || ""}}) });' +
-            '   }).then(function(r){ L("fetch response http " + r.status); return r.text(); })' +
-            '     .then(function(t){ L("body: " + String(t).slice(0, 170)); })' +
-            '     .catch(function(e){ L("ERR " + String(e && (e.message || e)).slice(0, 150)); });' +
-            ' };' +
-            ' setTimeout(function(){ L("12s timer chala (realm zinda hai)"); }, 12000);' +
-            '})();');
+          var wh = W();
+          wh.__triL = function (m) { try { console.log('TRI-IN-IFRAME: ' + m); } catch (e) {} };
+          wh.__triL('hooks installed');
+          wh.__triFetchJoin = function (mid) {
+            var L = wh.__triL;
+            L('raw fetch join START');
+            wh.auth.currentUser.getIdToken().then(function (jwt) {
+              L('token mila');
+              return wh.fetch('https://hddhkculuyrfoevxmlwy.supabase.co/rest/v1/rpc/validate_and_join_match', {
+                method: 'POST', headers: {'Content-Type': 'application/json', apikey: SUPA_ANON, Authorization: 'Bearer ' + jwt},
+                body: JSON.stringify({p_uid: wh.U.uid, p_match_id: mid, p_entry_fee: 0, p_currency: 'coins',
+                  p_join_data: {mode: 'solo', ign: (wh.UD && wh.UD.ign) || ''}}) });
+            }).then(function (r) { L('fetch response http ' + r.status); return r.text(); })
+              .then(function (t) { L('body: ' + String(t).slice(0, 170)); })
+              .catch(function (e) { L('ERR ' + String(e && (e.message || e)).slice(0, 150)); });
+          };
+          setTimeout(function(){ wh.__triL('12s timer chala (realm zinda hai)'); }, 12000);
           console.log('TRI-IN-IFRAME: hooks install kiye');
         } catch (e) { console.log('TRI-IN-IFRAME: hooks fail ' + String(e).slice(0, 120)); }
       }
@@ -588,16 +593,16 @@
           /* ek koshish: mode 'ui' = asli buttons, 'rpc' = wahi server RPC */
           function _attempt(mode) {
             if (mode === 'ui') {
-              try { W().eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();"); } catch (e) {}
+              try { if (W().navTo) W().navTo('matches'); if (W()._loadMatches) W()._loadMatches(); } catch (e) {}
               return sleep(1200).then(function () {
-                try { W().eval("if (window.cJoin) cJoin(" + JSON.stringify(m.id) + ");"); } catch (e) {}
+                try { if (W().cJoin) W().cJoin(m.id); } catch (e) {}
                 return sleep(1200).then(function () {
                   var clicked = false;
                   try {
                     var b = W().document.getElementById('confirmJoinBtn');
                     if (b) { b.click(); clicked = true; }
                   } catch (e) {}
-                  if (!clicked) { try { W().eval('(function(){ try { window.__triL && window.__triL("doJoin CALL se pehle"); } catch(e){}; if (window.doJoin) doJoin(' + JSON.stringify(m.id) + '); try { window.__triL && window.__triL("doJoin CALL ke baad (return aa gaya)"); } catch(e){} })();'); } catch (e) { console.log('TRI-JOIN-A: doJoin eval fail ' + String(e).slice(0,90)); } }
+                  if (!clicked) { try { var wj = W(); if (wj.__triL) wj.__triL('doJoin CALL se pehle'); if (wj.doJoin) wj.doJoin(m.id); if (wj.__triL) wj.__triL('doJoin CALL ke baad (return aa gaya)'); } catch (e) { console.log('TRI-JOIN-A: doJoin call fail ' + String(e).slice(0,90)); } }
                   return sleep(1200).then(function () {
                     try {
                       var ov = W().document.getElementById('_appDlgOv');
@@ -613,7 +618,7 @@
               });
             }
             _fireRpc(m.id);
-            try { W().eval('window.__triFetchJoin && window.__triFetchJoin(' + JSON.stringify(m.id) + ')'); } catch (e) {}
+            try { if (W().__triFetchJoin) W().__triFetchJoin(m.id); } catch (e) {}
             _parentRawJoin(m.id);
             console.log('TRI-JOIN-A: server RPC (validate_and_join_match) bheja + iframe raw fetch + parent raw fetch');
             return Promise.resolve('validate_and_join_match RPC (wahi server path)');
@@ -676,7 +681,7 @@
     }, 4000, 420000, 'doosra player (P2, host driver se) — match slots')
       .then(function (rooms) {
         VALUES.joined_players = String(rooms);
-        w.eval("if (window._loadMatches) _loadMatches(); if (window.renderHome) renderHome();");
+        try { if (w._loadMatches) w._loadMatches(); if (w.renderHome) w.renderHome(); } catch (e) {}
         return poll(function () {
           var w2 = W();
           var fs = null;
@@ -721,15 +726,15 @@
     function _ribbonInMatches() {
       var w = W();
       try {
-        W().eval("if (window.navTo) navTo('matches'); if (window.renderMyMatches) renderMyMatches();");
+        try { if (W().navTo) W().navTo('matches'); if (W().renderMyMatches) W().renderMyMatches(); } catch (e) {}
       } catch (e) {}
       return _scan().then(function (hit) {
         if (hit) return hit;
         /* My Matches me block na ho (ffUid khali) — profile plate par try karo */
-        try { W().eval("if (window.closeModal) closeModal(); if (window.navTo) navTo('profile');"); } catch (e) {}
+        try { if (W().closeModal) W().closeModal(); if (W().navTo) W().navTo('profile'); } catch (e) {}
         return _scan().then(function (hit2) {
           if (hit2) return hit2;
-          try { W().eval("if (window.openProfile) openProfile();"); } catch (e) {}
+          try { if (W().openProfile) W().openProfile(); } catch (e) {}
           return _scan();
         });
       });
@@ -762,7 +767,7 @@
       try {
         var w = W();
         /* app ka apna state check (asli app me init par + har minute chalta hai) */
-        w.eval("if (window.checkTrialState) window.checkTrialState(); if (window.updatePremiumExpiryBanner) window.updatePremiumExpiryBanner();");
+        try { if (w.checkTrialState) w.checkTrialState(); if (w.updatePremiumExpiryBanner) w.updatePremiumExpiryBanner(); } catch (e) {}
         var el = w.document.getElementById('premExpiryBanner');
         var cnt = w.document.getElementById('premExpiryCount');
         var ud = 0;
@@ -821,7 +826,7 @@
     }
     function _hit() {
       var w = W();
-      try { w.eval("if (window.navTo) navTo('profile'); if (window.renderProfile) renderProfile();"); } catch (e) {}
+      try { if (w.navTo) w.navTo('profile'); if (w.renderProfile) w.renderProfile(); } catch (e) {}
       return new Promise(function (res) { setTimeout(function () { res(_state()); }, 1800); });
     }
     return _hit().then(function (b) {
@@ -840,7 +845,7 @@
       if (!b.owned) fail('ring_owned', 'UD.cosmetics me ring nahi (owned nahi hua)');
       /* store tile bhi asli art dikhata hai? */
       try {
-        W().eval("if (window.showCosmeticsStore) showCosmeticsStore();");
+        try { if (W().showCosmeticsStore) W().showCosmeticsStore(); } catch (e) {}
       } catch (e) {}
       return new Promise(function (res) { setTimeout(function () { res(_state()); }, 2500); });
     }).then(function (b2) {
@@ -866,7 +871,7 @@
     function _openRoom() {
       try {
         var w = W();
-        w.eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();");
+        try { if (w.navTo) w.navTo('matches'); if (w._loadMatches) w._loadMatches(); } catch (e) {}
       } catch (e) {}
       return new Promise(function (res) { setTimeout(res, 2500); }).then(function () {
         /* ✅ 2026-10-16 diag: pehle run me is step ka koi log nahi tha, is liye
@@ -880,13 +885,13 @@
             if (!rid) return null;
             return W()._supa.rpc('get_room_credentials', { p_match_id: rid }).then(function (res) {
               console.log('TRI-ROOM: rpc=' + JSON.stringify(res && res.data).slice(0, 180));
-              try { W().eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+              try { if (W()._loadMatches) W()._loadMatches(); } catch (e) {}
               return new Promise(function (r2) { setTimeout(r2, 2000); }).then(function () {
                 var inMt = false;
                 try { inMt = !!(W().MT && W().MT[rid]); } catch (e) {}
                 console.log('TRI-ROOM: inMT=' + inMt + ' mtKeys=' + (function () {
                   try { return Object.keys(W().MT || {}).length; } catch (e) { return 'na'; } })());
-                try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
+                try { if (W()._showRoomViaRpc) W()._showRoomViaRpc(rid); } catch (e) {}
                 return new Promise(function (r3) { setTimeout(r3, 2500); });
               });
             });
@@ -901,10 +906,10 @@
           W()._supa.from('matches').select('id').ilike('title', MARK + '%— Room').limit(1)
             .then(function (r) {
               var rid = (r && r.data && r.data[0]) ? r.data[0].id : (VALUES.match_id || '');
-              try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + rid + "');"); } catch (e) {}
+              try { if (W()._showRoomViaRpc) W()._showRoomViaRpc(rid); } catch (e) {}
             });
         } catch (e) {
-          try { W().eval("if (window._showRoomViaRpc) _showRoomViaRpc('" + (VALUES.match_id || '') + "');"); } catch (e) {}
+          try { if (W()._showRoomViaRpc) W()._showRoomViaRpc(VALUES.match_id || ''); } catch (e) {}
         }
         return new Promise(function (res) { setTimeout(res, 2500); });
       }).then(function () { return _scan(); });
@@ -945,9 +950,9 @@
         return (hit && hit.filled >= 2) ? hit : null;
       } catch (e) { return null; }
     }
-    try { W().eval("if (window.navTo) navTo('matches'); if (window._loadMatches) _loadMatches();"); } catch (e) {}
+    try { if (W().navTo) W().navTo('matches'); if (W()._loadMatches) W()._loadMatches(); } catch (e) {}
     return poll(function () {
-      try { W().eval("if (window._loadMatches) _loadMatches();"); } catch (e) {}
+      try { if (W()._loadMatches) W()._loadMatches(); } catch (e) {}
       return _check();
     }, 6000, 240000, 'APK par duo match me 2 players').then(function (hit) {
       VALUES.duo_title = duoTitle;
@@ -973,9 +978,9 @@
         };
       } catch (e) { return null; }
     }
-    try { W().eval("if (window.navTo) navTo('home'); if (window.renderHome) renderHome();"); } catch (e) {}
+    try { if (W().navTo) W().navTo('home'); if (W().renderHome) W().renderHome(); } catch (e) {}
     return poll(function () {
-      try { W().eval("if (window.renderHome) renderHome();"); } catch (e) {}
+      try { if (W().renderHome) W().renderHome(); } catch (e) {}
       var s = _strip();
       return (s && s.streak >= 1) ? s : null;
     }, 6000, 240000, 'APK home par streak strip (streak >= 1)').then(function (s) {
@@ -1004,7 +1009,7 @@
         };
       } catch (e) { return null; }
     }
-    try { W().eval("if (window.navTo) navTo('home'); if (window.renderHome) renderHome();"); } catch (e) {}
+    try { if (W().navTo) W().navTo('home'); if (W().renderHome) W().renderHome(); } catch (e) {}
     /* (2026-10-16) Pehle yahan seedha banner ka intezaar tha. Host ka H15 jab
        der se chalta hai (ya us run me fail ho jata hai) to APK 420s bekaar
        intezaar karta tha aur wajah bhi nahi pata chalti thi. Ab do kadam:
@@ -1027,7 +1032,7 @@
     return poll(function () { return _row(); }, 6000, 420000, 'DB me champion row (host H15 se)').then(function (row) {
       VALUES.champion_row_ign = String(row.ign || '');
       return poll(function () {
-        try { W().eval("if (window.renderHome) renderHome(); if (window.refreshSeasonChampion) refreshSeasonChampion();"); } catch (e) {}
+        try { if (W().renderHome) W().renderHome(); if (W().refreshSeasonChampion) W().refreshSeasonChampion(); } catch (e) {}
         return _champ();
       }, 6000, 180000, 'APK home par champion banner (apna, row ke baad)');
     }).then(function (b) {
