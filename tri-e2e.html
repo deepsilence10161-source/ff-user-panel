@@ -1375,7 +1375,15 @@
         row.click();
         return poll(function () {
           var title = w.document.getElementById('modalT'), body = w.document.getElementById('modalB');
-          return title && text(title).indexOf(p2Ign) >= 0 && body && /Matches/.test(text(body)) && /Wins/.test(text(body)) ? true : null;
+          if (!title || !body) return null;
+          if (text(title).indexOf(p2Ign) < 0) return null;
+          /* ✅ FIX (2026-11-20): D83 se public profile card PCARD2 canvas hai
+             (#pubPc2Host) — 'Matches'/'Wins' TEXT body me hota hi nahi, isliye
+             purana regex 30s timeout tha. Ab canvas host YA text-stats dono
+             me se koi ek proof kaafi. */
+          var hasCanvas = !!(body.querySelector && body.querySelector('#pubPc2Host'));
+          var hasTextStats = /Matches/.test(text(body)) && /Wins/.test(text(body));
+          return (hasCanvas || hasTextStats) ? true : null;
         }, 700, 30000, 'public player profile modal');
       }).then(function () {
         seen.push('search');
@@ -1384,28 +1392,32 @@
         clickHeader('Help and Support');
         return poll(function () {
           var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
-          return t && text(t).indexOf('Help & Support') >= 0 && b && /Support Chat/.test(text(b)) && /Submit Support Ticket/.test(text(b)) ? b : null;
+          /* ✅ FIX (2026-11-20): D83 se Help hub me 'Submit Support Ticket'
+             button hai hi nahi — tiles hain: Match Dispute / Support Chat /
+             Support Tickets (showMyTickets) / Feedback. Purane needles isliye
+             15-20s timeout the. Ab asli D83 hub flow + language-agnostic
+             onclick selectors (i18n sweep text kabhi bhi Hindi kar sakta). */
+          return t && text(t).indexOf('Help & Support') >= 0 && b && /Support Chat/.test(text(b)) && b.querySelector('[onclick*="showMyTickets"]') ? b : null;
         }, 400, 20000, 'Help & Support modal');
       }).then(function (body) {
-        var tickets = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('My Tickets & Replies') >= 0; })[0];
-        must(!!tickets, 'My Tickets & Replies entry missing');
+        var tickets = body.querySelector('[onclick*="showMyTickets"]');
+        must(!!tickets, 'Support Tickets hub entry missing');
         tickets.click();
         return poll(function () {
           var t = w.document.getElementById('modalT'), b = w.document.getElementById('modalB');
-          return t && text(t).indexOf('My Tickets') >= 0 && b && text(b).indexOf(MARK) >= 0 ? text(b) : null;
+          var titleOk = t && (text(t).indexOf('My Tickets') >= 0 || text(t).indexOf('मेरे टिकट') >= 0);
+          return titleOk && b && text(b).indexOf(MARK) >= 0 ? text(b) : null;
         }, 700, 30000, 'My Tickets and admin reply');
       }).then(function (ticketsText) {
-        must(ticketsText.indexOf('Admin Reply') >= 0 || ticketsText.indexOf('replied') >= 0 || ticketsText.indexOf('Replied') >= 0, 'ticket exists but admin reply is not visible');
+        must(ticketsText.indexOf('Admin Reply') >= 0 || ticketsText.indexOf('replied') >= 0 || ticketsText.indexOf('Replied') >= 0 || ticketsText.indexOf('एडमिन जवाब') >= 0, 'ticket exists but admin reply is not visible');
         seen.push('support-tickets');
         console.log('TRI-USER-ROUTE: support tickets — ' + ticketsText.slice(0, 90));
-        closeModal();
-        clickHeader('Help and Support');
         return poll(function () {
           var b = w.document.getElementById('modalB');
-          return b && /Submit Support Ticket/.test(text(b)) ? b : null;
-        }, 400, 15000, 'Help modal before support form');
+          return b && b.querySelector('[onclick*="showSupportForm"]') ? b : null;
+        }, 400, 15000, 'My Tickets list me + New Ticket button');
       }).then(function (body) {
-        var submit = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Submit Support Ticket') >= 0; })[0];
+        var submit = body.querySelector('[onclick*="showSupportForm"]');
         must(!!submit, 'Support Ticket entry missing');
         submit.click();
         return poll(function () { return w.document.getElementById('supMsg') && w.document.getElementById('supType') ? true : null; }, 400, 15000, 'Support Ticket form');
@@ -1418,12 +1430,12 @@
           return b && /Support Chat/.test(text(b)) ? b : null;
         }, 400, 15000, 'Help modal before Chat');
       }).then(function (body) {
-        var chat = Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Support Chat') >= 0; })[0];
+        var chat = body.querySelector('[onclick*="navTo"]') || Array.prototype.slice.call(body.querySelectorAll('button')).filter(function (b) { return text(b).indexOf('Support Chat') >= 0; })[0];
         must(!!chat, 'Support Chat entry missing');
         chat.click();
         return poll(function () {
           var msgs = w.document.getElementById('chatMsgs'), inp = w.document.getElementById('chatIn');
-          return visibleScreen('scrChat') && msgs && inp && text(msgs) ? { messages: text(msgs).slice(0, 90) } : null;
+          return visibleScreen('scrChat') && msgs && inp ? { messages: text(msgs).slice(0, 90) } : null;
         }, 700, 30000, 'Support Chat screen and message area');
       }).then(function (chatState) {
         seen.push('support', 'chat');
