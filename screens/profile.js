@@ -329,7 +329,8 @@ function renderProfile() {
          ke baad asli catalog img avatar ke kone me (kuch equipped nahi →
          koi img nahi = jhootha medal kabhi nahi). */
       try {
-        var _ringArt = window.getEquippedFrameArt ? window.getEquippedFrameArt() : null;
+        var _ringObj = window.getEquippedFrameArt ? window.getEquippedFrameArt() : null;
+        var _ringArt = (_ringObj && _ringObj.img) ? _ringObj.img : null;
         var _oldRing = _pc2Host.querySelector('img.pf2-ring-art');
         if (_oldRing) _oldRing.remove();
         if (_ringArt) {

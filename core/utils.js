@@ -12,7 +12,7 @@ window.medalHtml = function(n, size) {
   if (n < 1) return '<span style="font-weight:800;color:var(--txt2,#8b9bb4)">—</span>';
   var f = n === 1 ? 'gold' : n === 2 ? 'silver' : n === 3 ? 'bronze' : '';
   if (!f) return '<span style="font-weight:800;color:var(--txt2,#8b9bb4)">#' + n + '</span>';
-  return '<img src="assets/img/ranks/' + f + '.png?v=20261120a" alt="#' + n + '" width="' + s + '" height="' + s + '" style="object-fit:contain;vertical-align:middle" onerror="this.outerHTML=\'#' + n + '\'">';
+  return '<img src="assets/img/ranks/' + f + '.png?v=20261120b" alt="#' + n + '" width="' + s + '" height="' + s + '" style="object-fit:contain;vertical-align:middle" onerror="this.outerHTML=\'#' + n + '\'">';
 };
 window.cleanLabel = function(s) {
   s = String(s == null ? '' : s);
@@ -39,12 +39,12 @@ window.tierIconHtml = function(t, size) {
         : t.indexOf('legend') === 0 ? 'legend' : '';
   if (!f) return '';
   var s = Number(size) || 16;
-  return '<img src="assets/img/ranks/' + f + '.png?v=20261120a" alt="' + f + '" width="' + s + '" height="' + s + '" style="object-fit:contain;vertical-align:middle" onerror="this.style.display=\'none\'">';
+  return '<img src="assets/img/ranks/' + f + '.png?v=20261120b" alt="' + f + '" width="' + s + '" height="' + s + '" style="object-fit:contain;vertical-align:middle" onerror="this.style.display=\'none\'">';
 };
 window.premTierIcon = function(l) {
   l = Number(l) || 0;
   var f = l >= 3 ? 'diamond' : l === 2 ? 'gold' : l === 1 ? 'silver' : 'ribbon';
-  return 'assets/img/premium/' + f + '.png?v=20261120a';
+  return 'assets/img/premium/' + f + '.png?v=20261120b';
 };
 
 /* ================================================================
