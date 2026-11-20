@@ -1262,7 +1262,10 @@
         var kills = Array.prototype.slice.call(w.document.querySelectorAll('#rankContent [onclick*="renderRank"]')).filter(function (x) { return text(x).toLowerCase().indexOf('kills') >= 0; })[0];
         must(!!kills, 'Rank Kills tab missing');
         kills.click(); must(w._rankTab === 'kills', 'Rank Kills tab did not reset');
-        return clickNav('wallet', 'scrWallet', '#walletMain', 'Sky Diamond Balance');
+        /* ✅ FIX (2026-11-20): 'Sky Diamond Balance' needle D72 wallet
+           redesign (07-Nov) ke baad UI me hai hi nahi — 30s timeout pakka.
+           Content gate agla must() hai (wTotal/wCoins/greenDiaCount IDs). */
+        return clickNav('wallet', 'scrWallet', '#walletMain', null);
       }).then(function () {
         must(!!w.document.getElementById('wTotal') && !!w.document.getElementById('wCoins') && !!w.document.getElementById('greenDiaCount'), 'Wallet balances are incomplete');
         /* Balance/history are read only here; Buy, Check-In and Withdraw are deliberately untouched. */

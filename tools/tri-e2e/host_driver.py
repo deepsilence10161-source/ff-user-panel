@@ -1765,10 +1765,6 @@ def main():
                               premium_ribbon: (document.querySelector('.prem-ribbon') ? 'leaderboard-row' : ''),
                               premium_banner: (document.getElementById('premExpiryBanner') ? 'app-banner' : ''),
                               room_id: (String(document.body.innerText||'').indexOf(ROOMID) !== -1) ? ROOMID : '',
-                              streak_days: (function () { try {
-                                  const el = document.getElementById('loginStreakStrip');
-                                  return el ? String(el.getAttribute('data-streak') || '') : '';
-                                } catch (e) { return ''; } })(),
                               duo_players: (function () { try {
                                   const t = Object.values(window.MT || {}).filter(x => (x.name || x.title || '').indexOf('— Duo') !== -1)[0];
                                   return t ? String(t.filledSlots || t.joinedSlots || '') : '';
@@ -1777,7 +1773,17 @@ def main():
                               ring_medal: (document.querySelector('img.pf2-ring-art') ? 'profile-medal' : ''),
                               ign: (window.UD && window.UD.ign) || '' }; }""",
                 ROOM.get("id", ""))
-            VALUES.update({k2: v2 for k2, v2 in v.items() if v2 is not None})
+            # ✅ FIX (2026-11-20, run 44702698308 cross-surface mismatch):
+            # H12 ka DOM dump khaali '' values bhi lauta sakta hai (jaise
+            # premium_ribbon jab leaderboard screen par na ho) — wo pehle
+            # H11d/H14 ke REAL values ko overwrite kar deta tha. Ab: agar
+            # existing value non-empty hai aur nayi '' hai to skip.
+            for k2, v2 in v.items():
+                if v2 is None:
+                    continue
+                if v2 == '' and str(VALUES.get(k2, '') or '') != '':
+                    continue
+                VALUES[k2] = v2
             shot(user, "h12-final-values.png")
             return json.dumps({k3: str(x)[:26] for k3, x in VALUES.items()}, ensure_ascii=False)
 
