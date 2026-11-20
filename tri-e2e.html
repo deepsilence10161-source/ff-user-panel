@@ -1192,7 +1192,12 @@
         ['[onclick*="showCosmeticsStore"]', 'Cosmetics Store', 'Cosmetics Store'],
         ['[onclick*="showPollsList"]', 'Polls', 'Polls'],
         ['[onclick*="showReferEarn"]', 'Refer & Earn', 'Refer & Earn'],
-        ['[onclick*="showCreatorDashboard"]', 'Creator Program', 'Creator Program'],
+        /* ✅ FIX (2026-11-20): creator-dashboard-v2.js (index.html me baad
+           me load hota hai) showCreatorDashboard ko override karta hai aur
+           modal title 'Creator Studio' kholta hai — purana needle 'Creator
+           Program' 20s timeout tha. Local audit (dbg-prof-audit) se verify:
+           14/14 me sirf yahi ek mismatch tha. */
+        ['[onclick*="showCreatorDashboard"]', 'Creator Program', 'Creator Studio'],
         ['[onclick*="showAchievementsV3"]', 'Achievements', 'Achievements'],
         ['[onclick*="showMatchHistory"]', 'Match History', 'Match History'],
         ['[onclick*="showPerformanceTracker"]', 'Performance Stats', 'Performance Stats'],
