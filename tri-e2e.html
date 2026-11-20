@@ -1215,7 +1215,11 @@
          tha → 'Sunday/Monthly Special toggles missing' jaise flake. Tour ke
          dauran language ENGLISH lock — saare text deterministic (app ka EN
          mode bhi owner-tested surface hai). */
-      try { w.localStorage.setItem('appLang', 'en'); w._lang = 'en'; } catch (e) {}
+      try {
+        w.localStorage.setItem('appLang', 'en'); w._lang = 'en';
+        if (w.setLanguage) { try { w.setLanguage('en'); } catch (e2) {} }
+      } catch (e) {}
+      console.log('TRI-TOUR-LANG: _lang=' + String(w._lang) + ' ls=' + String(w.localStorage.getItem('appLang')) + ' docLang=' + String(w.document.documentElement.getAttribute('lang')));
       must(!!w.U && !!w.U.uid && !!w.UD && !!w._supa, 'app authenticated session not ready');
       must(w.document.getElementById('loginScreen') && w.getComputedStyle(w.document.getElementById('loginScreen')).display === 'none', 'login screen is still visible');
       return clickNav('home', 'scrHome', '#homeList', MARK).then(function () {
@@ -1289,9 +1293,16 @@
         closeModal();
         return clickNav('profile', 'scrProfile', '#profileContent', w.UD.ign);
       }).then(function () {
+        /* ✅ FIX (2026-11-20): settings gear ab PCARD2 canvas ki hit-region
+           hai (js/profile-card2-core.js region 1136,80 → showProfileSettings) —
+           DOM me [onclick] wala gear exist hi nahi karta, isliye purana
+           selector 'Profile settings control missing' fail tha. App ka asli
+           entry function wahi hai jo canvas hit deta hai — fallback ke saath
+           click, phir sheet ke asli options assert. */
         var gear = w.document.querySelector('#profileContent [onclick*="showProfileSettings"]');
-        must(!!gear, 'Profile settings control missing');
-        gear.click();
+        if (gear) gear.click();
+        else must(!!w.showProfileSettings, 'Profile settings control missing (na DOM gear, na showProfileSettings)');
+        if (!gear) w.showProfileSettings();
         var sheet = w.document.getElementById('profSettingsSheet');
         must(!!sheet && text(sheet).indexOf('Legal & Compliance') >= 0 && text(sheet).indexOf('My Tickets & Replies') >= 0, 'Profile settings sheet did not render expected options');
         var closer = sheet.querySelector('[onclick*="closeProfileSettings"]');
