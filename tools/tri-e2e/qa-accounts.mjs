@@ -100,6 +100,10 @@ function cleanupSql(runid) {
   return [
     /* 1. runid wale match/business rows */
     `delete from join_requests where match_id in (select id from matches where title like '${tag}') or user_id in (select id from users where ign like '${ign}')`,
+    /* ✅ 2026-11-20 (H13 fix ke baad zaroori): duo invite ab team_invitations
+       row banata hai — matches/users delete se pehle isko saaf karo, warna
+       FK/orphan residue. */
+    `delete from team_invitations where match_id in (select id from matches where title like '${tag}') or captain_uid in (select id from users where ign like '${ign}') or member_uid in (select id from users where ign like '${ign}')`,
     `delete from notifications where title like '${tag}' or body like '${tag}' or user_id in (select id from users where ign like '${ign}')`,
     `delete from sd_requests where upi_ref = '${utr}' or user_id in (select id from users where ign like '${ign}') or notes like '${tag}'`,
     `delete from support_tickets where subject like '${tag}' or message like '${tag}' or user_id in (select id from users where ign like '${ign}')`,
@@ -142,7 +146,8 @@ const RESIDUE_SQL = (runid) => {
     (select count(*) from sd_requests where upi_ref='${utr}') as sd_requests,
     (select count(*) from support_tickets where subject like '${tag}') as support_tickets,
     (select count(*) from notifications where title like '${tag}') as notifications,
-    (select count(*) from matches where title like '${tag}') as matches`;
+    (select count(*) from matches where title like '${tag}') as matches,
+    (select count(*) from team_invitations where match_id in (select id from matches where title like '${tag}') or captain_uid in (select id from users where ign like '${ign}') or member_uid in (select id from users where ign like '${ign}')) as team_invitations`;
 };
 
 /* ── CREATE ────────────────────────────────────────────────────────────── */
