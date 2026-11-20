@@ -1396,14 +1396,28 @@ def main():
                 except Exception:
                     return None
 
+            try:
+                user.evaluate("""() => { if (window._supa && !window.__rpcHooked) { window.__rpcHooked = 1; window.__rpcLog = [];
+                    const o = window._supa.rpc.bind(window._supa);
+                    window._supa.rpc = function (n, a) { window.__rpcLog.push(n + '@' + Date.now());
+                      return o(n, a).then(r => { window.__rpcLog.push(n + '=> ' + JSON.stringify((r && r.error && (r.error.message || r.error.code)) || (r && r.data)).slice(0, 140)); return r; },
+                        e => { window.__rpcLog.push(n + '!! ' + String(e && (e.message || e)).slice(0, 120)); throw e; }); }; } }""")
+            except Exception as _he:
+                print("H13 rpc-hook fail: " + str(_he)[:90])
             poll(_partner_ok, timeout=90, every=4, what="partner FF UID verify (partnerCache[1])")
             user.evaluate("(id) => { if (window.doJoin) doJoin(id); }", DUO["id"])
             # app ka apna confirm (#_appDlgOv) aaye to asli 'Haan, karo'
-            try:
-                user.wait_for_selector("#_appDlgOv.show", timeout=6000)
-                user.click("#_appDlgOk", timeout=6000)
-            except Exception:
-                pass
+            # ✅ FIX (2026-11-20, run 44686619428 flake): 6s me dialog nahi
+            # aaya to confirm shim false de kar doJoin chup-chaap ruk jata
+            # tha → invite kabhi nahi banta tha. Ab 15s + retry path.
+            def _confirm_if_shown(wait_ms):
+                try:
+                    user.wait_for_selector("#_appDlgOv.show", timeout=wait_ms)
+                    user.click("#_appDlgOk", timeout=6000)
+                    return True
+                except Exception:
+                    return False
+            _confirm_if_shown(15000)
 
             # 3) DB me invitation (captain ke invite ka server-proof)
             def _invite():
@@ -1412,7 +1426,23 @@ def main():
                          .select('id,member_uid,status,captain_uid').eq('match_id', id).limit(5);
                          return (data||[])[0] || null; }""", DUO["id"])
 
-            inv = poll(_invite, timeout=120, every=5, what="team_invitations row (captain ka invite)")
+            inv = None
+            try:
+                inv = poll(_invite, timeout=120, every=5, what="team_invitations row (captain ka invite)")
+            except RuntimeError as _ie:
+                print("H13 first invite poll fail: " + str(_ie)[:140])
+                try:
+                    _rl = user.evaluate("() => window.__rpcLog || []")
+                    print("H13 user rpcLog: " + json.dumps(_rl)[:400])
+                except Exception as _re:
+                    print("H13 rpcLog read fail: " + str(_re)[:80])
+                # retry: doJoin dobara + dialog confirm + dobara poll
+                try:
+                    user.evaluate("(id) => { if (window.doJoin) doJoin(id); }", DUO["id"])
+                    _confirm_if_shown(15000)
+                    inv = poll(_invite, timeout=120, every=5, what="team_invitations row (retry)")
+                except RuntimeError as _ie2:
+                    raise RuntimeError("team_invitations row (captain ka invite) timeout (retry ke baad bhi) — " + str(_ie2)[:120])
             DUO["invite"] = inv
             shot(user, "h13-duo-invite-sent.png")
 
