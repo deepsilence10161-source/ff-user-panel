@@ -323,6 +323,25 @@ function renderProfile() {
          Banner upload settings sheet ki row se hamesha available hai. */
       /* D79: actions core me hardcoded hain; own flag sirf pencil ke liye */
       window.PCARD2.mount(_pc2Host, window._pc2ProfData, null, { own: true });
+      /* ✅ FIX (2026-11-19, TRI H6d): equipped ring/frame ka medal art live
+         UI me kahin render hi nahi hota tha (getEquippedFrameArt sirf tests
+         use karte the) — profile par pf2-ring-art hook tha hi nahi. Ab mount
+         ke baad asli catalog img avatar ke kone me (kuch equipped nahi →
+         koi img nahi = jhootha medal kabhi nahi). */
+      try {
+        var _ringArt = window.getEquippedFrameArt ? window.getEquippedFrameArt() : null;
+        var _oldRing = _pc2Host.querySelector('img.pf2-ring-art');
+        if (_oldRing) _oldRing.remove();
+        if (_ringArt) {
+          if (getComputedStyle(_pc2Host).position === 'static') _pc2Host.style.position = 'relative';
+          var _ri = document.createElement('img');
+          _ri.className = 'pf2-ring-art';
+          _ri.src = _ringArt;
+          _ri.alt = '';
+          _ri.style.cssText = 'position:absolute;left:57%;top:27%;width:14%;aspect-ratio:1;object-fit:contain;z-index:3;filter:drop-shadow(0 2px 6px rgba(0,0,0,.65));pointer-events:none';
+          _pc2Host.appendChild(_ri);
+        }
+      } catch (e) {}
     }
   } catch (e) {}
 }
