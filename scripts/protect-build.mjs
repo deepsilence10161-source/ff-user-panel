@@ -30,6 +30,11 @@ const OUT = path.join(ROOT, 'build');
 const EXCLUDE_TOP = new Set(['.git', '.github', 'node_modules', 'build', 'tests', 'scripts', 'supabase', 'android', 'tools', 'reports']); /* vendor raw copy hota hai (third-party) */
 const EXCLUDE_EXT = new Set(['.md']);
 const OBF_DIRS = new Set(['js', 'screens', 'features', 'core']);
+/* ✅ FIX (2026-11-20): screens/join.js obfuscation se exempt — obfuscator
+   iske top-level helpers (_normET/_gdLegacy) ki definitions gira deta tha
+   (live ReferenceError → duo invite fail). Repo public hai, obfuscation
+   sirf cosmetic; correctness > cosmetics. */
+const OBF_SKIP_FILES = new Set(['screens/join.js']);
 
 function walk(src, dest, rel) {
   fs.mkdirSync(dest, { recursive: true });
@@ -43,7 +48,7 @@ function walk(src, dest, rel) {
     const ext = path.extname(ent.name).toLowerCase();
     if (EXCLUDE_EXT.has(ext)) continue;
     const s = path.join(src, ent.name), d = path.join(dest, ent.name);
-    const isAppJs = ext === '.js' && (OBF_DIRS.has(r.split('/')[0]) || (rel === '' && ent.name === 'sw.js'));
+    const isAppJs = ext === '.js' && !OBF_SKIP_FILES.has(r) && (OBF_DIRS.has(r.split('/')[0]) || (rel === '' && ent.name === 'sw.js'));
     if (isAppJs) {
       const code = fs.readFileSync(s, 'utf8');
       let _o = {

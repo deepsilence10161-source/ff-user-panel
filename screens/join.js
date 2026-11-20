@@ -68,6 +68,14 @@ function cJoin(id) {
    fee kabhi nahi kat-ti. Prize currency GD reh sakti hai (wo alag cheez). */
 function _gdLegacy(x){ x=(x||'').toString().toLowerCase().trim(); return x==='green'||x==='green_diamond'||x==='greendiamond'||x==='gd'; }
 function _normET(x){ return _gdLegacy(x) ? 'free' : (x||'').toString().toLowerCase().trim(); }
+/* ✅ FIX (2026-11-20, LIVE BUG): javascript-obfuscator join.js ke top-level
+   helpers (_gdLegacy/_normET) ki DEFINITIONS gira deta tha par call-sites
+   chhod deta tha → live Pages par duo/paid join par ReferenceError
+   (_normET is not defined) aur team_invitations kabhi nahi banti thi
+   (TRI H13 2× fail, local repro se proof). Window alias = obfuscated build
+   me bhi bare references global se resolve hon. */
+window._gdLegacy = _gdLegacy;
+window._normET = _normET;
   if ((t.entryType || '') === 'ad') { showAdJoinPopup(id); return; }
 
   var tp = (t.mode || t.type || 'solo').toString().toLowerCase().trim();
@@ -112,7 +120,7 @@ function _normET(x){ return _gdLegacy(x) ? 'free' : (x||'').toString().toLowerCa
   var prizeLabel = isFree ? (_joinPrizeLabel(t, _spRow) || '🆓 Free entry — small coin reward')
     : isAd   ? '📺 Watch ads to join'
     : isCoin ? (_joinPrizeLabel(t, _spRow) || '🪙 Coins — Top 3 jeetenge')
-    : isSkyDia ? '<img src="js/green-diamond.png?v=20261120c" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
+    : isSkyDia ? '<img src="js/green-diamond.png?v=20261120b" style="width:13px;height:13px;vertical-align:middle;object-fit:contain"> Green Diamond — Top 3 jeetenge'
     : '🪙 Coins';
   var feeLabel = isCoin ? '🪙 ' + fee + ' Coins' : isSkyDia ? '💎 ' + fee + ' Sky Diamonds' : 'FREE';
   var balLabel = isCoin ? '🪙 ' + bal + ' Coins' : isSkyDia ? '💎 ' + bal + ' Sky Diamonds' : '';
