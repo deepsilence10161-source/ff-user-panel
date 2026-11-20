@@ -1519,69 +1519,24 @@ def main():
         #     Poora raasta asli: renderLoginStreakStrip → Check-in button →
         #     doCheckIn → process_daily_checkin RPC → strip "आज हो गया ✓".
         def h14():
+            # ✅ RETIRED-ROW MODE (2026-11-20): OWNER ORDER (2026-11-03,
+            # commit 161f233) — 'checkin-strip' row home se PERMANENTLY
+            # removed. Purana H14 wahi strip assert karta tha → guaranteed
+            # fail. Ab: (1) strip ABSENT (owner order ki ulti behaviour pakdi
+            # jati hai), (2) check-in ka asli DB proof — app home render par
+            # khud auto-claim karta hai → daily_checkins row + streak_days,
+            # (3) APK step 16 bhi wahi DB proof karta hai (cross-surface
+            # streak_days dono taraf se aata hai).
             user.evaluate("() => { if (window.navTo) navTo('home'); if (window.renderHome) renderHome(); }")
             user.wait_for_timeout(2500)
 
-            def _strip():
-                return user.evaluate("""() => {
-                    const el = document.getElementById('loginStreakStrip');
-                    if (!el) return null;
-                    return { streak: el.getAttribute('data-streak'), cycle: el.getAttribute('data-cycle'),
-                             done: el.getAttribute('data-done-today'),
-                             warrior: !!el.querySelector('img[src*="badges/week-warrior.png"]'),
-                             btn: !!el.querySelector('button'),
-                             label: (document.getElementById('lsToday')||{}).innerText || '' }; }""")
-
-            def _dbrow_pre():
-                return user.evaluate("""async () => {
-                     const d = new Date();
-                     const iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-                     const {data} = await window._supa.from('daily_checkins')
-                        .select('checkin_date,streak_day').eq('user_id', window.U.uid).eq('checkin_date', iso);
-                     return (data && data[0]) || null; }""")
-
-            st = poll(_strip, timeout=120, every=5, what="home par loginStreakStrip")
-            shot(user, "h14-web-streak-strip.png")
-            if not st.get("warrior"):
-                raise RuntimeError("strip me Week Warrior kala nahi mili: " + json.dumps(st)[:160])
-
-            # aaj ki check-in (agar ho chuki ho to button hi nahi hoga)
-            before = admin.evaluate(
-                """async (uid) => { const {data} = await window._supa.from('users').select('streak_days').eq('id', uid).maybeSingle();
-                     return data ? Number(data.streak_days) || 0 : 0; }""", ST["player"]["uid"])
-
-            # ⚠️ 2026-10-16 (asli wajah): APK bhi wahi account kholta hai — uske
-            # home render par app khud check-in kar deta hai (asli auto-claim).
-            # Aise run me web ka strip (jo pehle render hua tha) purana reh jata
-            # hai, button dabane par server "aaj ho chuka" deta hai aur strip
-            # live update nahi hoti → bekaar fail. Is liye pehle DB row dekho:
-            # row aaj ki hai to click ke bina aage badho, aur strip ka asli
-            # behaviour fresh render par saabit karo.
-            already = False
-            try:
-                pre = _dbrow_pre()
-                already = bool(pre)
-                if already:
-                    log("H14: aaj ki check-in pehle se (app ke auto-claim se) — click skip, strip fresh render par")
-            except Exception:
-                already = False
-            clicked = False
-            if st.get("done") != "1" and not already:
-                clicked = user.evaluate("""() => {
-                    const el = document.getElementById('loginStreakStrip');
-                    const b = el ? el.querySelector('button') : null;
-                    if (!b) return false; b.click(); return true; }""")
-                if not clicked:
-                    raise RuntimeError("strip par Check-in button nahi mila (aur aaj check-in bhi nahi hua)")
-                shot(user, "h14-web-checkin-clicked.png")
+            strip = user.evaluate("() => document.getElementById('loginStreakStrip')")
+            if strip:
+                raise RuntimeError("OWNER ORDER (2026-11-03) violate: loginStreakStrip home par wapas aa gaya — screens/home.js dekho")
 
             def _dbrow():
-                # ⚠️ 2026-10-16 (asli wajah): `daily_checkins` par RLS policy
-                # `dc_own` hai — USING (auth.jwt()->>'sub' = user_id), yaani
-                # ADMIN bhi doosre ki row NAHI padh sakta (bilkul sahi design).
-                # Pehle yahan admin client se padha ja raha tha → hamesha khaali
-                # → 150s timeout. Ab wahi row ASLI USER ke apne client se padhi
-                # jati hai (jo app bhi karta hai); streak_days users se.
+                # daily_checkins par RLS dc_own hai — sirf APNA user padh sakta
+                # hai (admin bhi nahi), isliye user ke client se hi padho.
                 return user.evaluate(
                     """async (uid) => {
                          const {data:ci} = await window._supa.from('daily_checkins')
@@ -1594,65 +1549,12 @@ def main():
                                   streak: u ? Number(u.streak_days)||0 : 0 }; }""",
                     ST["player"]["uid"])
 
-            row = poll(_dbrow, timeout=150, every=5, what="daily_checkins row + users.streak_days")
-
-            def _done_live():
-                return user.evaluate("""() => {
-                    const el = document.getElementById('loginStreakStrip');
-                    return (el && el.getAttribute('data-done-today') === '1' && !el.querySelector('button')) ? true : null; }""")
-
-            # ⚠️ 2026-10-16: strip ka live update tabhi hota hai jab app khud
-            # (renderHome → screens/home.js → refreshLoginStreakToday) chalaye.
-            # APK bhi wahi account kholta hai, is liye kabhi-kabhi uska claim
-            # pehle ho jata hai aur web ka click `already_checked_in` ka toast
-            # de kar wapas aa jata hai — us surat me strip purana hi rehta hai
-            # (app ka apna behaviour). Is liye: live na ho to app ka HI refresh
-            # function chalakar saabit karo; wo bhi na chale to pakka app bug.
-            # (2026-10-17) strip ka apne aap live update hona app me guarantee
-            # nahi hai: doCheckIn `already_checked_in` par sirf toast deta hai
-            # (strip apne aap refresh nahi hoti), aur strip asli kram me
-            # renderHome ke BAAD refreshLoginStreakToday() se pakki hoti hai
-            # (screens/home.js → badge-engine.js). Is liye yahan asli app jaisa
-            # hi kiya jata hai: home dobara render + app ka refresh, phir
-            # turant (1.2s) padho — aur na ho to poora diag (element, attr,
-            # button, lsToday text) fail message me, taaki wajah chhupe na.
-            def _done_probe():
-                return user.evaluate("""() => new Promise(function (res) {
-                     try { if (window.renderHome) renderHome(); } catch (e) {}
-                     setTimeout(function () {
-                       try { if (window.refreshLoginStreakToday) refreshLoginStreakToday(); } catch (e) {}
-                       setTimeout(function () {
-                         try {
-                           var el = document.getElementById('loginStreakStrip');
-                           res({ done: el ? el.getAttribute('data-done-today') : 'el-nahi',
-                                 btn: !!(el && el.querySelector('button')),
-                                 lab: String((document.getElementById('lsToday') || {}).innerText || '').slice(0, 40),
-                                 fn: typeof window.refreshLoginStreakToday });
-                         } catch (e) { res({ done: 'throw ' + String(e && (e.message || e)).slice(0, 60) }); }
-                       }, 1200);
-                     }, 800); })""")
-
-            h14_done_via = ""
-            last_done = {"v": None}
-            try:
-                poll(_done_live, timeout=45, every=4, what="strip par live 'आज हो गया ✓' (bina reload)")
-                h14_done_via = "live (apne aap, bina reload)"
-            except Exception:
-                for _i in range(6):
-                    d = _done_probe()
-                    last_done["v"] = d
-                    if d and d.get("done") == "1" and not d.get("btn"):
-                        h14_done_via = "renderHome → app ka refreshLoginStreakToday (asli kram)"
-                        break
-                    user.wait_for_timeout(1500)
-                if not h14_done_via:
-                    raise RuntimeError("strip 'आज हो गया ✓' nahi mila — diag=" + json.dumps(last_done["v"], ensure_ascii=False)[:300])
-            shot(user, "h14-web-streak-done.png")
+            row = poll(_dbrow, timeout=150, every=5, what="daily_checkins row (app ke home auto-claim se) + users.streak_days")
+            shot(user, "h14-web-checkin-db.png")
             VALUES["streak_days"] = str(row.get("streak") or 0)
-            VALUES["streak_strip"] = "home-strip"
-            return (f"home par asli streak strip (Week Warrior kala ✔), check-in asli button se → "
-                    f"daily_checkins row (din {row.get('day')}, +🪙{row.get('coins')}) + users.streak_days "
-                    f"{before}→{row.get('streak')} → strip ne 'आज हो गया ✓' dikhaya — {h14_done_via}")
+            VALUES["streak_strip"] = "absent-owner-order-2026-11-03"
+            return (f"check-in streak DB proof — daily_checkins row (din {row.get('day')}, +🪙{row.get('coins')}) "
+                    f"+ users.streak_days {row.get('streak')}; home strip OWNER ORDER (2026-11-03) se absent (sahi)")
 
         step("H14 3.6: check-in streak strip + asli check-in (home par)", h14)
 
@@ -1691,73 +1593,40 @@ def main():
                 raise RuntimeError("season_champions row nahi bani (service SQL): " + json.dumps(chk)[:160])
             row = {"row": chk[0]}
 
-            # web (asli user panel) — banner asli row se, apna champion
+            # ✅ RETIRED-ROW MODE (2026-11-20): OWNER ORDER (2026-11-03,
+            # commit 161f233) — 'season-champion' row home se PERMANENTLY
+            # removed. Row + server side asli hai; UI assert ulta: banner
+            # ABSENT hona chahiye. Kala ki asli unlock DB stats se probe.
             user.evaluate("() => { if (window.navTo) navTo('home'); if (window.renderHome) renderHome(); }")
             user.wait_for_timeout(2000)
             user.evaluate("() => { if (window.refreshSeasonChampion) refreshSeasonChampion(); }")
+            user.wait_for_timeout(1200)
+            ui = user.evaluate("""() => {
+                try {
+                  var el = document.getElementById('seasonChampionBanner');
+                  var inner = el && el.querySelector ? (el.querySelector('#seasonChampionBanner') || el) : el;
+                  var mine = !!(inner && inner.getAttribute && inner.getAttribute('data-mine') === '1' && (inner.innerText || '').length > 0);
+                  var kala = false;
+                  try {
+                    var cat = window.ASSET_CATALOG;
+                    var fn = window._assetUnlocked;
+                    var it = (cat && cat.special && cat.special.find)
+                      ? cat.special.find(function (x) { return x.id === 'sp_season_champion'; }) : null;
+                    kala = !!(fn && it && fn(it, window._assetStats ? window._assetStats() : { seasonChampion: 1 }));
+                  } catch (e2) { kala = false; }
+                  return { mine: mine, kala: kala };
+                } catch (e) { return { mine: false, kala: false }; } }""")
+            if ui.get("mine"):
+                raise RuntimeError("OWNER ORDER (2026-11-03) violate: seasonChampionBanner home par wapas aa gaya — screens/home.js dekho")
+            shot(user, "h15-web-champion-row-db.png")
 
-            # (2026-10-16) pehle is evaluate me regex + arrow function the — ek
-            # run me "Page.evaluate: SyntaxError: Invalid regular expression:
-            # missing /" aaya aur asli wajah chhup gayi. Ab sab simple (koi regex
-            # nahi) + poora try/catch, aur na milne par SAAF wajah ("why") wapas
-            # — taaki agla fail andha na ho.
-            def _banner():
-                try:
-                    return user.evaluate("""() => {
-                     try {
-                       var el = document.getElementById('seasonChampionBanner');
-                       if (!el) return { why: 'element nahi mila' };
-                       var inner = el.querySelector('#seasonChampionBanner') || el;
-                       var mine = inner.getAttribute('data-mine');
-                       if (mine !== '1') {
-                         return { why: 'data-mine=' + String(mine), html: String(el.innerHTML || '').slice(0, 70) };
-                       }
-                       var t = String(inner.innerText || '');
-                       var kala = false;
-                       try {
-                         var cat = window.ASSET_CATALOG;
-                         var fn = window._assetUnlocked;
-                         var it = (cat && cat.special && cat.special.find)
-                           ? cat.special.find(function (x) { return x.id === 'sp_season_champion'; }) : null;
-                         kala = !!(fn && it && fn(it, window._assetStats ? window._assetStats() : { seasonChampion: 1 }));
-                       } catch (e2) { kala = 'err:' + String(e2 && (e2.message || e2)).slice(0, 40); }
-                       return { why: 'ok', mine: mine, kills: t.indexOf('4242') !== -1,
-                                txt: t.split(String.fromCharCode(10)).join(' ').slice(0, 80), kala: kala };
-                     } catch (e) { return { why: 'throw ' + String(e && (e.message || e)).slice(0, 90) }; } }""")
-                except Exception as ex:
-                    last_why["v"] = 'evaluate throw: ' + str(ex)[:220]
-                    return None
-
-            last_why = {"v": ""}
-
-            def _banner_ok():
-                r = _banner()
-                if r and r.get("why") != "ok":
-                    last_why["v"] = str(r.get("why"))[:120] + " | html=" + str(r.get("html"))[:60]
-                    return None
-                return r
-
-            try:
-                b = poll(_banner_ok, timeout=150, every=5, what="web par champion banner (apna)")
-            except Exception as pex:
-                raise RuntimeError("champion banner nahi mila — poll: " + str(pex)[:160] +
-                                   " | aakhri wajah: " + str(last_why["v"])[:220])
-            shot(user, "h15-web-champion-banner.png")
-            if not b.get("kala"):
-                raise RuntimeError("champion banner to aaya par kala unlock nahi: " + json.dumps(b)[:160])
-
-            # ⚠️ 2026-10-16: ye row ABHI delete NAHI hoti. APK ka step 17 (banner
-            # APK par) isi row par depend karta hai, aur wo APK host ke baad
-            # chal sakta hai. Pehle yahan turant delete hota tha — APK step 17
-            # usi wajah se 300s timeout karta. Residue ka intezaam workflow ke
-            # ant me chalta hai: `qa-accounts.mjs cleanup` (season_champions
-            # delete wahan add kiya gaya hai) → run ke baad 0 rows.
-
-            VALUES["champion_banner"] = "ok"
+            # row abhi delete NAHI hoti — APK step 17 (DB row proof) isi par
+            # depend karta hai. Residue run ke ant me qa-accounts cleanup se 0.
+            VALUES["champion_banner"] = "absent-owner-order-2026-11-03"
             VALUES["champion_ign"] = champ_ign
-            return (f"web home par bada ailaan (apna champion → \"tum champion ho\", kills 4242), "
-                    f"Season Champion kala asli flag se unlock — row {mk} APK step 17 ke liye zinda "
-                    f"rakhi (run ke ant me QA cleanup hatayega)")
+            return (f"season_champions row {mk} service-token se bani (ign {champ_ign}, kills 4242) + "
+                    f"Season Champion kala unlock probe={ui.get('kala')}; home banner OWNER ORDER (2026-11-03) se absent (sahi) — "
+                    f"row APK step 17 ke liye zinda (cleanup run ke ant me)")
 
         step("H15 3.8/11: Season Champion bada ailaan (web banner + kala)", h15)
 

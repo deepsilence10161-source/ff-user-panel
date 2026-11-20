@@ -963,59 +963,38 @@
 
   /* ── 16/16 : 3.6 check-in streak — web par (captain account) asli check-in hui,
      ab APK par wahi streak strip (asli users.streak_days se) dikhna chahiye. ── */
-  STEPS.push(['16/19 Check-in streak strip (APK par wahi streak)', function () {
-    function _strip() {
-      try {
-        var w = W();
-        var d = w.document;
-        var el = d.getElementById('loginStreakStrip');
-        if (!el) return null;
-        return {
-          streak: Number(el.getAttribute('data-streak') || 0),
-          cycle: el.getAttribute('data-cycle'),
-          warrior: !!(el.querySelector ? el.querySelector('img[src*="week-warrior.png"]') : null),
-          txt: (el.innerText || '').replace(/\n/g, ' ').slice(0, 60)
-        };
-      } catch (e) { return null; }
-    }
+  /* ── 16/19 : 3.6 check-in streak — ✅ RETIRED (2026-11-20): OWNER ORDER
+     (2026-11-03, commit 161f233) se 'checkin-strip' row home se PERMANENTLY
+     removed hai. Ab assert: strip ABSENT hai + check-in ka DB side (app ka
+     home-render auto-claim → daily_checkins row + users.streak_days) zinda. ── */
+  STEPS.push(['16/19 Check-in streak (DB proof; home strip retired)', function () {
     try { if (W().navTo) W().navTo('home'); if (W().renderHome) W().renderHome(); } catch (e) {}
     return poll(function () {
       try { if (W().renderHome) W().renderHome(); } catch (e) {}
-      var s = _strip();
-      return (s && s.streak >= 1) ? s : null;
-    }, 6000, 240000, 'APK home par streak strip (streak >= 1)').then(function (s) {
-      if (!s.warrior) fail('streak_warrior', 'APK strip me Week Warrior kala nahi mili');
+      var w = W(), d = w.document;
+      if (d.getElementById('loginStreakStrip')) fail('streak_strip_retired', 'OWNER ORDER (2026-11-03): checkin-strip home se permanently removed — wapas aa gaya');
+      if (!w._supa || !w.U || !w.U.uid) return null;
+      return w._supa.from('daily_checkins').select('checkin_date,streak_day,coins_earned')
+        .eq('user_id', w.U.uid).order('created_at', { ascending: false }).limit(1)
+        .then(function (r) {
+          var row = (r && r.data && r.data[0]) || null;
+          if (!row) return null;
+          return w._supa.from('users').select('streak_days').eq('id', w.U.uid).maybeSingle()
+            .then(function (u) { return { row: row, streak: (u && u.data) ? Number(u.data.streak_days) || 0 : 0 }; });
+        }, function () { return null; });
+    }, 6000, 240000, 'daily_checkins row (app ke auto-claim se) + strip absent').then(function (s) {
       VALUES.streak_days = String(s.streak);
-      VALUES.streak_strip = 'home-strip';
-      return 'APK home par check-in streak strip — ' + s.streak + '/7 din (Week Warrior kala ✔) · ' + s.txt;
+      VALUES.streak_strip = 'absent-owner-order-2026-11-03';
+      return 'check-in streak DB proof — daily_checkins din ' + s.row.streak_day + ' (+' + s.row.coins_earned + ' coins), users.streak_days ' + s.streak + '; home strip owner-order se absent (sahi)';
     });
   }]);
 
-  /* ── 17/17 : 3.8/11 Season Champion ka bada ailaan — host driver ne asli
-     season_champions row daali hogi (P1 ka), APK home par wahi 3-din wala
-     banner + asli kala dikhni chahiye (client dono surfaces par ek jaisa). ── */
-  STEPS.push(['17/19 Season Champion bada ailaan (APK par)', function () {
-    function _champ() {
-      try {
-        var w = W(), el = w.document.getElementById('seasonChampionBanner');
-        var inner = el && el.querySelector ? (el.querySelector('#seasonChampionBanner') || el) : el;
-        if (!inner || inner.getAttribute('data-mine') !== '1') return null;
-        var t = (inner.innerText || '');
-        return {
-          mine: inner.getAttribute('data-mine'),
-          txt: t.replace(/\n/g, ' ').slice(0, 70),
-          kala: !!(w.ASSET_CATALOG && w._assetUnlocked && w._assetStats &&
-                   w._assetUnlocked(w.ASSET_CATALOG.special.find(function (x) { return x.id === 'sp_season_champion'; }), w._assetStats()))
-        };
-      } catch (e) { return null; }
-    }
+  /* ── 17/19 : 3.8/11 Season Champion — ✅ RETIRED (2026-11-20): OWNER ORDER
+     (2026-11-03, commit 161f233) se 'season-champion' row home se PERMANENTLY
+     removed. Host H15 asli season_champions row banata hai — ab assert: row
+     DB me ok + banner UI ABSENT. ── */
+  STEPS.push(['17/19 Season Champion (DB row proof; banner retired)', function () {
     try { if (W().navTo) W().navTo('home'); if (W().renderHome) W().renderHome(); } catch (e) {}
-    /* (2026-10-16) Pehle yahan seedha banner ka intezaar tha. Host ka H15 jab
-       der se chalta hai (ya us run me fail ho jata hai) to APK 420s bekaar
-       intezaar karta tha aur wajah bhi nahi pata chalti thi. Ab do kadam:
-       (1) DB me asli champion row aane ka intezaar (khud APK ka client —
-           season_champions par sabko read ki ijazat hai), (2) uske BAAD banner
-           ka — taaki fail hone par wajah saaf ho. */
     function _row() {
       return W()._supa.from('season_champions')
         .select('month_key,user_id,ign,kills,banner_until')
@@ -1031,14 +1010,16 @@
     }
     return poll(function () { return _row(); }, 6000, 420000, 'DB me champion row (host H15 se)').then(function (row) {
       VALUES.champion_row_ign = String(row.ign || '');
-      return poll(function () {
-        try { if (W().renderHome) W().renderHome(); if (W().refreshSeasonChampion) W().refreshSeasonChampion(); } catch (e) {}
-        return _champ();
-      }, 6000, 180000, 'APK home par champion banner (apna, row ke baad)');
-    }).then(function (b) {
-      if (!b.kala) fail('champion_kala', 'APK par Season Champion kala unlock nahi hui');
-      VALUES.champion_banner = 'ok';
-      return 'APK home par bada ailaan — "' + b.txt + '" (Season Champion kala ✔)';
+      try { if (W().renderHome) W().renderHome(); if (W().refreshSeasonChampion) W().refreshSeasonChampion(); } catch (e) {}
+      var w = W(), el = w.document.getElementById('seasonChampionBanner');
+      var hasMine = false;
+      try {
+        var inner = el && el.querySelector ? (el.querySelector('#seasonChampionBanner') || el) : el;
+        hasMine = !!(inner && inner.getAttribute && inner.getAttribute('data-mine') === '1' && (inner.innerText || '').length > 0);
+      } catch (e) { hasMine = false; }
+      if (hasMine) fail('champion_banner_retired', 'OWNER ORDER (2026-11-03): season-champion row home se permanently removed — banner wapas aa gaya');
+      VALUES.champion_banner = 'absent-owner-order-2026-11-03';
+      return 'Season Champion DB proof — row ' + row.month_key + ' (' + row.ign + ', kills ' + row.kills + ') live; home banner owner-order se absent (sahi)';
     });
   }]);
 
@@ -1147,6 +1128,30 @@
       opt.click();
       return text(d.querySelector('.dd-current'));
     }
+    /* ✅ FIX (2026-11-20, APK tour flake 'Upcoming filter did not reset'):
+       js/i18n-apply.js ka Hindi sweep .dd-current label ko async rewrite
+       karta hai ('⏱️ Upcoming' → '⏱️ आगामी'). Slow WebView par sweep
+       read se pehle land kar jata tha → must() fail. Ab label English YA
+       Hindi dono me accept hota hai. */
+    var DD_I18N = {
+      'upcoming': ['upcoming', 'आगामी'],
+      'live': ['live', 'लाइव'],
+      'completed': ['completed', 'पूर्ण', 'संपन्न'],
+      'cancelled': ['cancelled', 'रद्द'],
+      'bronze': ['bronze', 'ब्रॉन्ज़'],
+      'silver': ['silver', 'सिल्वर'],
+      'gold': ['gold', 'गोल्ड'],
+      'platinum': ['platinum', 'प्लैटिनम'],
+      'diamond': ['diamond', 'डायमंड'],
+      'legend': ['legend', 'लेजेंड'],
+      'all ranks': ['all ranks', 'सभी रैंक']
+    };
+    function ddLabelOk(label, contains) {
+      var l = String(label || '').toLowerCase();
+      var acc = DD_I18N[contains.toLowerCase()] || [contains.toLowerCase()];
+      for (var i = 0; i < acc.length; i++) { if (l.indexOf(acc[i].toLowerCase()) >= 0) return true; }
+      return false;
+    }
     function clickHeader(label) {
       var b = w.document.querySelector('#header [aria-label="' + label + '"]');
       must(!!b, 'header action missing: ' + label);
@@ -1213,14 +1218,14 @@
           p.click();
           must(p.classList.contains('active'), 'home category did not activate: ' + cat);
         });
-        must(chooseDropdown('homeStatusDd', 'live').toLowerCase().indexOf('live') >= 0, 'Home Live filter did not apply');
-        must(chooseDropdown('homeStatusDd', 'upcoming').toLowerCase().indexOf('upcoming') >= 0, 'Home Upcoming filter did not reset');
-        must(chooseDropdown('homeRankDd', 'bronze').toLowerCase().indexOf('bronze') >= 0, 'Home Bronze filter did not apply');
-        must(chooseDropdown('homeRankDd', 'all ranks').toLowerCase().indexOf('all ranks') >= 0, 'Home rank filter did not reset');
+        must(ddLabelOk(chooseDropdown('homeStatusDd', 'live'), 'live'), 'Home Live filter did not apply');
+        must(ddLabelOk(chooseDropdown('homeStatusDd', 'upcoming'), 'upcoming'), 'Home Upcoming filter did not reset');
+        must(ddLabelOk(chooseDropdown('homeRankDd', 'bronze'), 'bronze'), 'Home Bronze filter did not apply');
+        must(ddLabelOk(chooseDropdown('homeRankDd', 'all ranks'), 'all ranks'), 'Home rank filter did not reset');
         return clickNav('matches', 'scrMatches', '#mmList', MARK);
       }).then(function () {
-        must(chooseDropdown('mmStatusDd', 'completed').toLowerCase().indexOf('completed') >= 0, 'My Matches Completed filter did not apply');
-        must(chooseDropdown('mmStatusDd', 'upcoming').toLowerCase().indexOf('upcoming') >= 0, 'My Matches Upcoming filter did not reset');
+        must(ddLabelOk(chooseDropdown('mmStatusDd', 'completed'), 'completed'), 'My Matches Completed filter did not apply');
+        must(ddLabelOk(chooseDropdown('mmStatusDd', 'upcoming'), 'upcoming'), 'My Matches Upcoming filter did not reset');
         var banner = w.document.getElementById('specialBanner');
         must(!!banner, 'Special Tournaments entry missing from Matches');
         banner.click();
