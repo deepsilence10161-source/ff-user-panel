@@ -1208,6 +1208,14 @@
       });
     }
     function runTour() {
+      /* ✅ FIX (2026-11-20, i18n race): appLang default 'hi' hai aur
+         js/i18n-apply.js ka sweep English labels ko async Hindi me rewrite
+         karta hai ('Monthly Special' → 'मंथली स्पेशल', 'Upcoming' → 'आगामी').
+         Slow WebView par sweep tour ke text-matches se pehle land kar jata
+         tha → 'Sunday/Monthly Special toggles missing' jaise flake. Tour ke
+         dauran language ENGLISH lock — saare text deterministic (app ka EN
+         mode bhi owner-tested surface hai). */
+      try { w.localStorage.setItem('appLang', 'en'); w._lang = 'en'; } catch (e) {}
       must(!!w.U && !!w.U.uid && !!w.UD && !!w._supa, 'app authenticated session not ready');
       must(w.document.getElementById('loginScreen') && w.getComputedStyle(w.document.getElementById('loginScreen')).display === 'none', 'login screen is still visible');
       return clickNav('home', 'scrHome', '#homeList', MARK).then(function () {

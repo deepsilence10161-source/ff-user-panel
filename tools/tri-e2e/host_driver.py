@@ -1549,11 +1549,22 @@ def main():
                                   streak: u ? Number(u.streak_days)||0 : 0 }; }""",
                     ST["player"]["uid"])
 
-            row = poll(_dbrow, timeout=150, every=5, what="daily_checkins row (app ke home auto-claim se) + users.streak_days")
+            # ⚠️ FIX (2026-11-20, run 44702698308): home render par app AUTO
+            # claim NAHI karta — check-in user action hai. Strip retire hone se
+            # click surface gaya, isliye ab app ka asli window.doCheckIn()
+            # (js/features-user.js → process_daily_checkin RPC) call hota hai.
+            try:
+                pre = _dbrow()
+            except Exception:
+                pre = None
+            if not pre:
+                user.evaluate("() => { if (window.doCheckIn) window.doCheckIn(); }")
+            row = poll(_dbrow, timeout=150, every=5, what="daily_checkins row (asli doCheckIn → process_daily_checkin) + users.streak_days")
             shot(user, "h14-web-checkin-db.png")
             VALUES["streak_days"] = str(row.get("streak") or 0)
             VALUES["streak_strip"] = "absent-owner-order-2026-11-03"
-            return (f"check-in streak DB proof — daily_checkins row (din {row.get('day')}, +🪙{row.get('coins')}) "
+            return (f"check-in streak DB proof — daily_checkins row (din {row.get('day')}, +🪙{row.get('coins')}, "
+                    f"{'pehle se checked-in' if pre else 'asli doCheckIn() click se'}) "
                     f"+ users.streak_days {row.get('streak')}; home strip OWNER ORDER (2026-11-03) se absent (sahi)")
 
         step("H14 3.6: check-in streak strip + asli check-in (home par)", h14)
