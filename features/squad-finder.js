@@ -1,1 +1,151 @@
-(function(){'use strict';var _0x43e9ce=(function(){var _0x291149=!![];return function(_0x3eae0f,_0x2a7e93){var _0xdc7ffd=_0x291149?function(){if(_0x2a7e93){var _0x4441d2=_0x2a7e93['apply'](_0x3eae0f,arguments);return _0x2a7e93=null,_0x4441d2;}}:function(){};return _0x291149=![],_0xdc7ffd;};}()),_0x5532d2=_0x43e9ce(this,function(){if(_0x5532d2['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x5532d2['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x5532d2)['search']('(((.+)+)+)+$');});_0x5532d2();function _0x206001(){return window['_supa'];}function _0x3a4143(){return window['U']&&window['U']['uid'];}function _0x52f039(){return window['UD']||{};}function _0x205a92(_0x3211df,_0x5ac66c){if(window['toast'])toast(_0x3211df,_0x5ac66c);}function _0x578c93(_0x1b6601){var _0x77831c=window['getRankTier']?window['getRankTier'](_0x1b6601):null;return _0x77831c?_0x77831c['name']:'Bronze';}function _0x5a1945(_0x118c29){var _0x32f0aa=window['getRankTier']?window['getRankTier'](_0x118c29):{'name':'Bronze','emoji':'','color':'#cd7f32','bg':'rgba(205,127,50,.12)'};return{'e':window['tierIconHtml']?tierIconHtml(_0x32f0aa['name']||_0x32f0aa['badge'],0x10):_0x32f0aa['emoji']||'','c':_0x32f0aa['color'],'bg':_0x32f0aa['bg'],'b':_0x32f0aa['name']||_0x32f0aa['badge']||'Bronze'};}function _0x4f280c(_0x514b95){var _0x1de905=Date['now']()-new Date(_0x514b95)['getTime'](),_0x33a3dd=Math['floor'](_0x1de905/0xea60);if(_0x33a3dd<0x1)return'Just\x20now';if(_0x33a3dd<0x3c)return _0x33a3dd+'m\x20ago';return Math['floor'](_0x33a3dd/0x3c)+'h\x20ago';}window['showSquadFinder']=function(){if(!_0x3a4143()||!_0x52f039()['ign']){_0x205a92('Pehle\x20login\x20karo!','err');return;}var _0x5f34c0='<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px\x22>';_0x5f34c0+='<button\x20id=\x22sfTabBrowse\x22\x20onclick=\x22sfTab(0)\x22\x20style=\x22flex:1;padding:10px;border-radius:12px;border:none;background:var(--green);color:#000;font-size:13px;font-weight:800;cursor:pointer\x22>🔍\x20Players\x20Dhundho</button>',_0x5f34c0+='<button\x20id=\x22sfTabPost\x22\x20onclick=\x22sfTab(1)\x22\x20style=\x22flex:1;padding:10px;border-radius:12px;border:1.5px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer\x22>📢\x20LFS\x20Post\x20Karo</button>',_0x5f34c0+='</div><div\x20id=\x22sfContent\x22></div>',openModal('🎮\x20Squad\x20Finder',_0x5f34c0),sfTab(0x0);},window['sfTab']=function(_0x1f803d){['sfTabBrowse','sfTabPost']['forEach'](function(_0x4288d9,_0xc036cb){var _0x198f7e=document['getElementById'](_0x4288d9);if(!_0x198f7e)return;_0x198f7e['style']['background']=_0xc036cb===_0x1f803d?'var(--green)':'transparent',_0x198f7e['style']['color']=_0xc036cb===_0x1f803d?'#000':'var(--txt)',_0x198f7e['style']['border']=_0xc036cb===_0x1f803d?'none':'1.5px\x20solid\x20var(--border)';});var _0x300602=document['getElementById']('sfContent');if(!_0x300602)return;_0x1f803d===0x0?_0xffbb04(_0x300602):_0x159275(_0x300602);};var _0x4d2e05='all',_0x24bbfa='all';function _0xffbb04(_0x7e1b3c){var _0x3074c2='<div\x20style=\x22margin-bottom:10px\x22>';_0x3074c2+='<div\x20style=\x22font-size:11px;color:var(--txt2);font-weight:700;margin-bottom:6px\x22>Mode</div><div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap\x22>',['all','Solo','Duo','Squad']['forEach'](function(_0x28ee6a){var _0xe42e51=_0x4d2e05===_0x28ee6a;_0x3074c2+='<button\x20onclick=\x22_sfMode=\x27'+_0x28ee6a+'\x27;_sfRefreshBrowse()\x22\x20style=\x22padding:5px\x2012px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:'+(_0xe42e51?'var(--green)':'rgba(255,255,255,.08)')+';color:'+(_0xe42e51?'#000':'var(--txt)')+'\x22>'+(_0x28ee6a==='all'?'All':_0x28ee6a)+'</button>';}),_0x3074c2+='</div><div\x20style=\x22font-size:11px;color:var(--txt2);font-weight:700;margin:8px\x200\x206px\x22>Rank</div><div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap\x22>',[{'v':'all','l':'All'},{'v':'Bronze','l':'Bronze'},{'v':'Silver','l':'Silver'},{'v':'Gold','l':'Gold'},{'v':'Diamond','l':'Diamond'}]['forEach'](function(_0x40849c){var _0x4ef50e=_0x24bbfa===_0x40849c['v'];_0x3074c2+='<button\x20onclick=\x22_sfRank=\x27'+_0x40849c['v']+'\x27;_sfRefreshBrowse()\x22\x20style=\x22padding:5px\x2011px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:'+(_0x4ef50e?'var(--primary)':'rgba(255,255,255,.08)')+';color:'+(_0x4ef50e?'#000':'var(--txt)')+'\x22>'+(window['tierIconHtml']&&_0x40849c['v']!=='all'?tierIconHtml(_0x40849c['v'],0xb)+'\x20':'')+_0x40849c['l']+'</button>';}),_0x3074c2+='</div></div><div\x20id=\x22sfPlayerList\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>',_0x7e1b3c['innerHTML']=_0x3074c2,_sfRefreshBrowse();}window['_sfRefreshBrowse']=function(){var _0x29107a=document['getElementById']('sfPlayerList');if(!_0x29107a)return;if(!_0x206001()){_0x29107a['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:#ff6b6b\x22>Service\x20unavailable</div>';return;}_0x29107a['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';var _0x5b1a5f=_0x206001()['from']('squad_finder')['select']('*')['eq']('is_active',!![])['gt']('expires_at',new Date()['toISOString']())['order']('created_at',{'ascending':![]})['limit'](0x32);if(_0x4d2e05!=='all')_0x5b1a5f=_0x5b1a5f['eq']('mode',_0x4d2e05);if(_0x24bbfa!=='all')_0x5b1a5f=_0x5b1a5f['eq']('rank_tier',_0x24bbfa);_0x5b1a5f['then'](function(_0xae70d2){var _0x163e57=(_0xae70d2['data']||[])['filter'](function(_0x149614){return _0x149614['uid']!==_0x3a4143();});if(!_0x163e57['length']){_0x29107a['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:30px;opacity:.3\x22>🎮</div><p\x20style=\x22font-size:13px\x22>Koi\x20player\x20nahi\x20mila<br><small>Filters\x20change\x20karo\x20ya\x20khud\x20post\x20karo</small></p></div>';return;}var _0x2db57='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x163e57['forEach'](function(_0x21d457){var _0x4dffbc=_0x5a1945(_0x21d457['rank_pts']||0x0);_0x2db57+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:12px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x2db57+='<div\x20style=\x22width:44px;height:44px;border-radius:50%;background:'+_0x4dffbc['bg']+';border:2px\x20solid\x20'+_0x4dffbc['c']+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0\x22>'+_0x4dffbc['e']+'</div>',_0x2db57+='<div\x20style=\x22flex:1;min-width:0\x22><div\x20style=\x22font-size:14px;font-weight:800\x22>'+(_0x21d457['ign']||'Player')+'</div>',_0x2db57+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+(_0x21d457['rank_tier']||'Bronze')+'\x20·\x20'+(_0x21d457['mode']||'Any')+(_0x21d457['role']?'\x20·\x20'+_0x21d457['role']:'')+'</div>';if(_0x21d457['note'])_0x2db57+='<div\x20style=\x22font-size:11px;color:var(--txt2);font-style:italic\x22>\x22'+_0x21d457['note']['substring'](0x0,0x32)+'\x22</div>';_0x2db57+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x4f280c(_0x21d457['created_at'])+'</div></div>',_0x2db57+='<button\x20onclick=\x22window.sfSendRequest(\x27'+_0x21d457['user_id']+'\x27,\x27'+(_0x21d457['ign']||'Player')['replace'](/'/g,'\x5c\x27')+'\x27,this)\x22\x20style=\x22padding:8px\x2012px;border-radius:10px;border:1.5px\x20solid\x20rgba(0,255,156,.4);background:rgba(0,255,156,.08);color:var(--green);font-size:11px;font-weight:800;cursor:pointer;flex-shrink:0\x22>Invite</button>',_0x2db57+='</div>';}),_0x2db57+='</div>',_0x29107a['innerHTML']=_0x2db57;})['catch'](function(){_0x29107a['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:#ff6b6b\x22>Error\x20loading\x20players</div>';});};function _0x159275(_0x29871a){var _0x11a32e=_0x52f039(),_0x562a3c=_0x11a32e['rank_points']||0x0,_0x210da6=_0x5a1945(_0x562a3c),_0xda13f6=['Solo','Duo','Squad'],_0x1a685c=['Fragger','Support','IGL','Entry','Sniper'],_0x2238c2=['Hindi','English','Hinglish','Tamil','Telugu'],_0xe9c4c2='<div>';_0xe9c4c2+='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Game\x20Mode</div><div\x20style=\x22display:flex;gap:8px\x22>',_0xda13f6['forEach'](function(_0x1c26c5){_0xe9c4c2+='<button\x20onclick=\x22_sfSelMode(this,\x27'+_0x1c26c5+'\x27)\x22\x20class=\x22_sfModeBtn\x22\x20style=\x22flex:1;padding:9px;border-radius:11px;border:1.5px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer\x22>'+_0x1c26c5+'</button>';}),_0xe9c4c2+='</div></div>',_0xe9c4c2+='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Role</div><div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap\x22>',_0x1a685c['forEach'](function(_0x5bc8da){_0xe9c4c2+='<button\x20onclick=\x22_sfSelRole(this,\x27'+_0x5bc8da+'\x27)\x22\x20class=\x22_sfRoleBtn\x22\x20style=\x22padding:6px\x2012px;border-radius:20px;border:1.5px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:11px;font-weight:700;cursor:pointer\x22>'+_0x5bc8da+'</button>';}),_0xe9c4c2+='</div></div>',_0xe9c4c2+='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Language</div><div\x20style=\x22display:flex;gap:6px;flex-wrap:wrap\x22>',_0x2238c2['forEach'](function(_0x3ac1e6){_0xe9c4c2+='<button\x20onclick=\x22_sfSelLang(this,\x27'+_0x3ac1e6+'\x27)\x22\x20class=\x22_sfLangBtn\x22\x20style=\x22padding:6px\x2012px;border-radius:20px;border:1.5px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:11px;font-weight:700;cursor:pointer\x22>'+_0x3ac1e6+'</button>';}),_0xe9c4c2+='</div></div>',_0xe9c4c2+='<div\x20style=\x22margin-bottom:14px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Short\x20Note\x20(optional)</div><input\x20id=\x22sfNoteInput\x22\x20type=\x22text\x22\x20maxlength=\x2260\x22\x20placeholder=\x22e.g.\x20No\x20mic,\x20serious\x20only...\x22\x20style=\x22width:100%;padding:11px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box\x22></div>',_0xe9c4c2+='<div\x20style=\x22display:flex;align-items:center;gap:8px;padding:10px\x2014px;border-radius:12px;background:'+_0x210da6['bg']+';border:1px\x20solid\x20'+_0x210da6['c']+'44;margin-bottom:14px\x22><span\x20style=\x22font-size:18px\x22>'+_0x210da6['e']+'</span><span\x20style=\x22font-size:13px;font-weight:800;color:'+_0x210da6['c']+'\x22>'+_0x210da6['b']+'</span><span\x20style=\x22margin-left:auto;font-size:10px;color:var(--txt2)\x22>Auto-added</span></div>',_0xe9c4c2+='<button\x20onclick=\x22window.sfSubmitPost()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--green),#00d4ff);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>📢\x20Post\x20LFS</button>',_0xe9c4c2+='<p\x20style=\x22font-size:11px;color:var(--txt2);text-align:center;margin-top:8px\x22>Post\x203\x20ghante\x20tak\x20live\x20rahega</p></div>',_0x29871a['innerHTML']=_0xe9c4c2;}window['_sfSelMode']=function(_0x1cdc34,_0xa55146){document['querySelectorAll']('._sfModeBtn')['forEach'](function(_0x41e087){_0x41e087['style']['background']='transparent',_0x41e087['style']['color']='var(--txt)',_0x41e087['dataset']['sel']='';}),_0x1cdc34['style']['background']='var(--green)',_0x1cdc34['style']['color']='#000',_0x1cdc34['dataset']['sel']=_0xa55146;},window['_sfSelRole']=function(_0x401df5,_0x3685f8){document['querySelectorAll']('._sfRoleBtn')['forEach'](function(_0xa9f353){_0xa9f353['style']['background']='transparent',_0xa9f353['style']['color']='var(--txt)',_0xa9f353['style']['borderColor']='var(--border)',_0xa9f353['dataset']['sel']='';}),_0x401df5['style']['background']='rgba(0,212,255,.15)',_0x401df5['style']['color']='#00d4ff',_0x401df5['style']['borderColor']='#00d4ff',_0x401df5['dataset']['sel']=_0x3685f8;},window['_sfSelLang']=function(_0xc8dd0f,_0x2395ef){document['querySelectorAll']('._sfLangBtn')['forEach'](function(_0x4ef5f2){_0x4ef5f2['style']['background']='transparent',_0x4ef5f2['style']['color']='var(--txt)',_0x4ef5f2['style']['borderColor']='var(--border)',_0x4ef5f2['dataset']['sel']='';}),_0xc8dd0f['style']['background']='rgba(185,100,255,.15)',_0xc8dd0f['style']['color']='#b964ff',_0xc8dd0f['style']['borderColor']='#b964ff',_0xc8dd0f['dataset']['sel']=_0x2395ef;},window['sfSubmitPost']=function(){if(!_0x206001()||!_0x3a4143()||!_0x52f039()['ign']){_0x205a92('Login\x20karo','err');return;}var _0x577da1=document['querySelector']('._sfModeBtn[data-sel]:not([data-sel=\x22\x22])'),_0x372a28=document['querySelector']('._sfRoleBtn[data-sel]:not([data-sel=\x22\x22])'),_0x162f05=document['querySelector']('._sfLangBtn[data-sel]:not([data-sel=\x22\x22])'),_0x22adca=(document['getElementById']('sfNoteInput')||{})['value']||'';_0x206001()['rpc']('post_squad_finder_listing',{'p_mode':_0x577da1?_0x577da1['dataset']['sel']:'Any','p_playstyle':null,'p_note':_0x22adca['trim'](),'p_role':_0x372a28?_0x372a28['dataset']['sel']:'','p_lang':_0x162f05?_0x162f05['dataset']['sel']:''})['then'](function(_0x37b153){if(_0x37b153&&_0x37b153['error']){_0x205a92('Error:\x20'+_0x37b153['error']['message'],'err');return;}if(_0x37b153&&_0x37b153['data']&&_0x37b153['data']['ok']===![]){_0x205a92(_0x37b153['data']['error']||'Error','err');return;}_0x205a92('✅\x20LFS\x20Post\x20ho\x20gayi!','ok');if(window['closeModal'])closeModal();})['catch'](function(_0x46ad53){_0x205a92('Error:\x20'+(_0x46ad53['message']||'Try\x20again'),'err');});},window['sfSendRequest']=function(_0x66ba42,_0x41fffb,_0x2e9414){if(!_0x206001()||!_0x3a4143()){_0x205a92('Login\x20karo','err');return;}_0x2e9414&&(_0x2e9414['disabled']=!![],_0x2e9414['textContent']='Sending...');var _0x157481=_0x52f039()['ign']||_0x52f039()['displayName']||'Player';_0x206001()['from']('notifications')['insert']({'user_id':_0x66ba42,'type':'squad_request','title':'🎮\x20Squad\x20Request!','body':_0x157481+'\x20ne\x20tumhe\x20squad\x20mein\x20invite\x20kiya!','ref_id':_0x3a4143(),'is_read':![]})['then'](function(){_0x205a92('✅\x20Request\x20bhej\x20di\x20'+_0x41fffb+'\x20ko!','ok'),_0x2e9414&&(_0x2e9414['textContent']='✅\x20Sent');})['catch'](function(){_0x2e9414&&(_0x2e9414['disabled']=![],_0x2e9414['textContent']='Invite'),_0x205a92('Error','err');});};var _0x5f5dcd=0x0,_0x2c12a3=setInterval(function(){_0x5f5dcd++;if(_0x5f5dcd>0x3c){clearInterval(_0x2c12a3);return;}var _0x23713c=document['querySelector']('.special-pills');if(!_0x23713c||_0x23713c['querySelector']('#_sfPill')){if(_0x23713c)clearInterval(_0x2c12a3);return;}clearInterval(_0x2c12a3);var _0x107aa6=document['createElement']('div');_0x107aa6['id']='_sfPill',_0x107aa6['className']='special-pill',_0x107aa6['style']['cssText']='background:rgba(0,212,255,.08);border:1px\x20solid\x20rgba(0,212,255,.2);color:#00d4ff',_0x107aa6['innerHTML']='<i\x20class=\x22fas\x20fa-users\x22\x20style=\x22font-size:12px\x22></i>\x20Squad\x20Finder',_0x107aa6['onclick']=function(){if(window['showSquadFinder'])showSquadFinder();},_0x23713c['appendChild'](_0x107aa6);},0x190);}());
+/* ================================================================
+   SQUAD FINDER v2.0 — 100% Supabase
+   Table: squad_finder (uid, ign, rank_pts, rank_tier, mode, role, lang, note, active, expires_at)
+================================================================ */
+(function(){ 'use strict';
+
+function _supa(){ return window._supa; }
+function _uid(){ return window.U && window.U.uid; }
+function _ud(){ return window.UD || {}; }
+function _toast(m,t){ if(window.toast) toast(m,t); }
+/* BUG #27 FIX (2026-07): same fix as mentor.js/friends.js — derives from the canonical
+   rank system instead of its own separate simplified 4-tier logic. */
+function _tier(p){ var t=(window.getRankTier?window.getRankTier(p):null); return t?t.name:'Bronze'; }
+function _rankInfo(p){ var t=(window.getRankTier?window.getRankTier(p):{name:'Bronze',emoji:'',color:'#cd7f32',bg:'rgba(205,127,50,.12)'}); return {e:(window.tierIconHtml?tierIconHtml(t.name||t.badge,16):(t.emoji||'')),c:t.color,bg:t.bg,b:t.name||t.badge||'Bronze'}; } /* D101: tier img */
+function _ago(ts){ var d=Date.now()-new Date(ts).getTime(),m=Math.floor(d/60000); if(m<1)return'Just now'; if(m<60)return m+'m ago'; return Math.floor(m/60)+'h ago'; }
+
+window.showSquadFinder=function(){
+  if(!_uid()||!_ud().ign){ _toast('Pehle login karo!','err'); return; }
+  var h='<div style="display:flex;gap:8px;margin-bottom:12px">';
+  h+='<button id="sfTabBrowse" onclick="sfTab(0)" style="flex:1;padding:10px;border-radius:12px;border:none;background:var(--green);color:#000;font-size:13px;font-weight:800;cursor:pointer">🔍 Players Dhundho</button>';
+  h+='<button id="sfTabPost" onclick="sfTab(1)" style="flex:1;padding:10px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--txt);font-size:13px;font-weight:700;cursor:pointer">📢 LFS Post Karo</button>';
+  h+='</div><div id="sfContent"></div>';
+  openModal('🎮 Squad Finder',h);
+  sfTab(0);
+};
+
+window.sfTab=function(idx){
+  ['sfTabBrowse','sfTabPost'].forEach(function(id,i){
+    var b=document.getElementById(id); if(!b)return;
+    b.style.background=i===idx?'var(--green)':'transparent';
+    b.style.color=i===idx?'#000':'var(--txt)';
+    b.style.border=i===idx?'none':'1.5px solid var(--border)';
+  });
+  var c=document.getElementById('sfContent'); if(!c)return;
+  idx===0?_sfBrowse(c):_sfPostForm(c);
+};
+
+var _sfMode='all',_sfRank='all';
+function _sfBrowse(c){
+  var h='<div style="margin-bottom:10px">';
+  h+='<div style="font-size:11px;color:var(--txt2);font-weight:700;margin-bottom:6px">Mode</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
+  ['all','Solo','Duo','Squad'].forEach(function(m){ var a=_sfMode===m; h+='<button onclick="_sfMode=\''+m+'\';_sfRefreshBrowse()" style="padding:5px 12px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:'+(a?'var(--green)':'rgba(255,255,255,.08)')+';color:'+(a?'#000':'var(--txt)')+'">'+( m==='all'?'All':m)+'</button>'; });
+  h+='</div><div style="font-size:11px;color:var(--txt2);font-weight:700;margin:8px 0 6px">Rank</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
+  [{v:'all',l:'All'},{v:'Bronze',l:'Bronze'},{v:'Silver',l:'Silver'},{v:'Gold',l:'Gold'},{v:'Diamond',l:'Diamond'}].forEach(function(r){ var a=_sfRank===r.v; h+='<button onclick="_sfRank=\''+r.v+'\';_sfRefreshBrowse()" style="padding:5px 11px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer;background:'+(a?'var(--primary)':'rgba(255,255,255,.08)')+';color:'+(a?'#000':'var(--txt)')+'">'+((window.tierIconHtml&&r.v!=='all')?tierIconHtml(r.v,11)+' ':'')+r.l+'</button>'; });
+  h+='</div></div><div id="sfPlayerList"><div style="text-align:center;padding:20px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>';
+  c.innerHTML=h; _sfRefreshBrowse();
+}
+
+window._sfRefreshBrowse=function(){
+  var pl=document.getElementById('sfPlayerList'); if(!pl)return;
+  if(!_supa()){ pl.innerHTML='<div style="text-align:center;padding:20px;color:#ff6b6b">Service unavailable</div>'; return; }
+  pl.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  var q=_supa().from('squad_finder').select('*').eq('is_active',true).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(50);
+  if(_sfMode!=='all') q=q.eq('mode',_sfMode);
+  if(_sfRank!=='all') q=q.eq('rank_tier',_sfRank);
+  q.then(function(r){
+    var list=(r.data||[]).filter(function(d){ return d.uid!==_uid(); });
+    if(!list.length){ pl.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:30px;opacity:.3">🎮</div><p style="font-size:13px">Koi player nahi mila<br><small>Filters change karo ya khud post karo</small></p></div>'; return; }
+    var h='<div style="display:flex;flex-direction:column;gap:8px">';
+    list.forEach(function(d){
+      var ri=_rankInfo(d.rank_pts||0);
+      h+='<div style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:13px;background:var(--card);border:1px solid var(--border)">';
+      h+='<div style="width:44px;height:44px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+ri.e+'</div>';
+      h+='<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800">'+(d.ign||'Player')+'</div>';
+      h+='<div style="font-size:11px;color:var(--txt2)">'+(d.rank_tier||'Bronze')+' · '+(d.mode||'Any')+(d.role?' · '+d.role:'')+'</div>';
+      if(d.note)h+='<div style="font-size:11px;color:var(--txt2);font-style:italic">"'+d.note.substring(0,50)+'"</div>';
+      h+='<div style="font-size:10px;color:var(--txt2)">'+_ago(d.created_at)+'</div></div>';
+      h+='<button onclick="window.sfSendRequest(\''+d.user_id+'\',\''+(d.ign||'Player').replace(/'/g,"\\'")+'\',this)" style="padding:8px 12px;border-radius:10px;border:1.5px solid rgba(0,255,156,.4);background:rgba(0,255,156,.08);color:var(--green);font-size:11px;font-weight:800;cursor:pointer;flex-shrink:0">Invite</button>';
+      h+='</div>';
+    });
+    h+='</div>'; pl.innerHTML=h;
+  }).catch(function(){ pl.innerHTML='<div style="text-align:center;padding:20px;color:#ff6b6b">Error loading players</div>'; });
+};
+
+function _sfPostForm(c){
+  var ud=_ud(),rp=ud.rank_points||0,ri=_rankInfo(rp);
+  var MODES=['Solo','Duo','Squad'],ROLES=['Fragger','Support','IGL','Entry','Sniper'],LANGS=['Hindi','English','Hinglish','Tamil','Telugu'];
+  var h='<div>';
+  h+='<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Game Mode</div><div style="display:flex;gap:8px">';
+  MODES.forEach(function(m){ h+='<button onclick="_sfSelMode(this,\''+m+'\')" class="_sfModeBtn" style="flex:1;padding:9px;border-radius:11px;border:1.5px solid var(--border);background:transparent;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer">'+m+'</button>'; });
+  h+='</div></div>';
+  h+='<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Role</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
+  ROLES.forEach(function(r){ h+='<button onclick="_sfSelRole(this,\''+r+'\')" class="_sfRoleBtn" style="padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--txt);font-size:11px;font-weight:700;cursor:pointer">'+r+'</button>'; });
+  h+='</div></div>';
+  h+='<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Language</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
+  LANGS.forEach(function(l){ h+='<button onclick="_sfSelLang(this,\''+l+'\')" class="_sfLangBtn" style="padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--txt);font-size:11px;font-weight:700;cursor:pointer">'+l+'</button>'; });
+  h+='</div></div>';
+  h+='<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Short Note (optional)</div><input id="sfNoteInput" type="text" maxlength="60" placeholder="e.g. No mic, serious only..." style="width:100%;padding:11px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box"></div>';
+  h+='<div style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:'+ri.bg+';border:1px solid '+ri.c+'44;margin-bottom:14px"><span style="font-size:18px">'+ri.e+'</span><span style="font-size:13px;font-weight:800;color:'+ri.c+'">'+ri.b+'</span><span style="margin-left:auto;font-size:10px;color:var(--txt2)">Auto-added</span></div>';
+  h+='<button onclick="window.sfSubmitPost()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--green),#00d4ff);color:#000;font-size:14px;font-weight:900;cursor:pointer">📢 Post LFS</button>';
+  h+='<p style="font-size:11px;color:var(--txt2);text-align:center;margin-top:8px">Post 3 ghante tak live rahega</p></div>';
+  c.innerHTML=h;
+}
+
+window._sfSelMode=function(btn,val){ document.querySelectorAll('._sfModeBtn').forEach(function(b){b.style.background='transparent';b.style.color='var(--txt)';b.dataset.sel='';});btn.style.background='var(--green)';btn.style.color='#000';btn.dataset.sel=val; };
+window._sfSelRole=function(btn,val){ document.querySelectorAll('._sfRoleBtn').forEach(function(b){b.style.background='transparent';b.style.color='var(--txt)';b.style.borderColor='var(--border)';b.dataset.sel='';});btn.style.background='rgba(0,212,255,.15)';btn.style.color='#00d4ff';btn.style.borderColor='#00d4ff';btn.dataset.sel=val; };
+window._sfSelLang=function(btn,val){ document.querySelectorAll('._sfLangBtn').forEach(function(b){b.style.background='transparent';b.style.color='var(--txt)';b.style.borderColor='var(--border)';b.dataset.sel='';});btn.style.background='rgba(185,100,255,.15)';btn.style.color='#b964ff';btn.style.borderColor='#b964ff';btn.dataset.sel=val; };
+
+window.sfSubmitPost=function(){
+  if(!_supa()||!_uid()||!_ud().ign){ _toast('Login karo','err'); return; }
+  var modeSel=document.querySelector('._sfModeBtn[data-sel]:not([data-sel=""])');
+  var roleSel=document.querySelector('._sfRoleBtn[data-sel]:not([data-sel=""])');
+  var langSel=document.querySelector('._sfLangBtn[data-sel]:not([data-sel=""])');
+  var note=(document.getElementById('sfNoteInput')||{}).value||'';
+  /* ✅ BUG FIX (2026-07-17): was a direct upsert() sending client-held
+     rank_pts/rank_tier — an earlier audit pass had deliberately kept these
+     two columns OUT of the client grant ("must be server-derived, never
+     self-declared") specifically to stop a player posting a fake/inflated
+     rank, but this call site was never updated to respect that, so it
+     would have needed the grant reopened (defeating the point) to work at
+     all. post_squad_finder_listing reads the caller's real rank straight
+     from `users` server-side and ignores whatever rank data (if any) the
+     client sends — ign/role/lang/note are still plain client input since
+     there's no integrity reason to distrust those. */
+  _supa().rpc('post_squad_finder_listing',{
+    p_mode:modeSel?modeSel.dataset.sel:'Any',
+    p_playstyle:null,
+    p_note:note.trim(),
+    p_role:roleSel?roleSel.dataset.sel:'',
+    p_lang:langSel?langSel.dataset.sel:''
+  })
+  .then(function(res){
+    if(res&&res.error){ _toast('Error: '+res.error.message,'err'); return; }
+    if(res&&res.data&&res.data.ok===false){ _toast(res.data.error||'Error','err'); return; }
+    _toast('✅ LFS Post ho gayi!','ok'); if(window.closeModal)closeModal();
+  })
+  .catch(function(e){ _toast('Error: '+(e.message||'Try again'),'err'); });
+};
+
+window.sfSendRequest=function(toUid,toIgn,btn){
+  if(!_supa()||!_uid()){ _toast('Login karo','err'); return; }
+  if(btn){ btn.disabled=true; btn.textContent='Sending...'; }
+  var myIgn=_ud().ign||_ud().displayName||'Player';
+  _supa().from('notifications').insert({ user_id:toUid,type:'squad_request',title:'🎮 Squad Request!',body:myIgn+' ne tumhe squad mein invite kiya!',ref_id:_uid(),is_read:false })
+  .then(function(){ _toast('✅ Request bhej di '+toIgn+' ko!','ok'); if(btn){btn.textContent='✅ Sent';} })
+  .catch(function(){ if(btn){btn.disabled=false;btn.textContent='Invite';} _toast('Error','err'); });
+};
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>60){clearInterval(_t);return;}
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_sfPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_sfPill';p.className='special-pill';
+  p.style.cssText='background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);color:#00d4ff';
+  p.innerHTML='<i class="fas fa-users" style="font-size:12px"></i> Squad Finder';
+  p.onclick=function(){if(window.showSquadFinder)showSquadFinder();};
+  row.appendChild(p);
+},400);
+})();

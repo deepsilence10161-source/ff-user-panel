@@ -1,1 +1,417 @@
-(function(){'use strict';var _0x2a45cb=(function(){var _0x31cec5=!![];return function(_0x5e2a1d,_0x11bdf1){var _0x578510=_0x31cec5?function(){if(_0x11bdf1){var _0x30beee=_0x11bdf1['apply'](_0x5e2a1d,arguments);return _0x11bdf1=null,_0x30beee;}}:function(){};return _0x31cec5=![],_0x578510;};}());var _0x108a17=function(_0x368427){var _0x4ade0b=_0x2a45cb(this,function(){if(_0x4ade0b['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x4ade0b['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x4ade0b)['search']('(((.+)+)+)+$');});return _0x4ade0b(),'<img\x20src=\x22js/green-diamond.png?v=20261124a\x22\x20style=\x22width:'+(_0x368427||0xe)+'px;height:'+(_0x368427||0xe)+'px;vertical-align:middle;object-fit:contain\x22>';};function _0x31fb17(){return window['CFG']&&window['CFG']['battlePassPrice']||0x31;}var _0x26cfdc=[{'t':0x1,'free':{'type':'gd','v':0x5,'label':'5\x20'+_0x108a17(0xd)},'prem':{'type':'badge','v':'🎖️\x20Starter\x20Badge','label':'Starter\x20Badge'}},{'t':0x2,'free':{'type':'gd','v':0x5},'prem':{'type':'gd','v':0xa,'label':'10\x20'+_0x108a17(0xd)}},{'t':0x3,'free':{'type':'gd','v':0x5},'prem':{'type':'gd','v':0xa}},{'t':0x4,'free':{'type':'gd','v':0x5},'prem':{'type':'gd','v':0xa}},{'t':0x5,'free':{'type':'badge','v':'Bronze\x20Warrior','label':'Bronze\x20Warrior\x20Badge','img':'assets/img/ranks/bronze.png'},'prem':{'type':'badge','v':'🌟\x20Chosen\x20One','label':'Chosen\x20One\x20Badge'}},{'t':0x6,'free':{'type':'gd','v':0x8},'prem':{'type':'gd','v':0xf}},{'t':0x7,'free':{'type':'gd','v':0x8},'prem':{'type':'gd','v':0xf}},{'t':0x8,'free':{'type':'gd','v':0x8},'prem':{'type':'emoji','v':'🔥\x20Fire\x20Pack','label':'Fire\x20Emoji\x20Pack','img':'assets/img/icons/fire.png'}},{'t':0x9,'free':{'type':'gd','v':0x8},'prem':{'type':'gd','v':0xf}},{'t':0xa,'free':{'type':'gd','v':0xa,'label':'10\x20'+_0x108a17(0xd)},'prem':{'type':'gd','v':0x14,'label':'20\x20'+_0x108a17(0xd)}},{'t':0xb,'free':{'type':'gd','v':0x8},'prem':{'type':'gd','v':0xf}},{'t':0xc,'free':{'type':'gd','v':0x8},'prem':{'type':'gd','v':0xf}},{'t':0xd,'free':{'type':'gd','v':0x8},'prem':{'type':'theme','v':'🔵\x20Blue\x20Flame\x20Border','label':'Blue\x20Flame\x20Border'}},{'t':0xe,'free':{'type':'gd','v':0x8},'prem':{'type':'gd','v':0xf}},{'t':0xf,'free':{'type':'badge','v':'🎖️\x20Participant','label':'Participant\x20Badge'},'prem':{'type':'badge','v':'Silver\x20Fighter','label':'Silver\x20Fighter\x20Badge','img':'assets/img/ranks/silver.png'}},{'t':0x10,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x14}},{'t':0x11,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x14}},{'t':0x12,'free':{'type':'gd','v':0xa},'prem':{'type':'emoji','v':'⚡\x20Lightning\x20Pack','label':'Lightning\x20Emoji\x20Pack'}},{'t':0x13,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x14}},{'t':0x14,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x19,'label':'25\x20'+_0x108a17(0xd)}},{'t':0x15,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x14}},{'t':0x16,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x14}},{'t':0x17,'free':{'type':'gd','v':0xa},'prem':{'type':'theme','v':'🟣\x20Purple\x20Haze\x20Border','label':'Purple\x20Haze\x20Border'}},{'t':0x18,'free':{'type':'gd','v':0xa},'prem':{'type':'gd','v':0x14}},{'t':0x19,'free':{'type':'gd','v':0xf,'label':'15\x20'+_0x108a17(0xd)},'prem':{'type':'title','v':'🎖️\x20Veteran','label':'Veteran\x20Title','img':'assets/img/titles/veteran.png'}},{'t':0x1a,'free':{'type':'gd','v':0xc},'prem':{'type':'gd','v':0x19}},{'t':0x1b,'free':{'type':'gd','v':0xc},'prem':{'type':'gd','v':0x19}},{'t':0x1c,'free':{'type':'gd','v':0xc},'prem':{'type':'emoji','v':'👑\x20Crown\x20Pack','label':'Crown\x20Emoji\x20Pack','img':'assets/img/icons/crown.png'}},{'t':0x1d,'free':{'type':'gd','v':0xc},'prem':{'type':'gd','v':0x19}},{'t':0x1e,'free':{'type':'badge','v':'💪\x20Grinder','label':'Grinder\x20Badge','img':'assets/img/badges/grinder.png'},'prem':{'type':'gd','v':0x1e,'label':'30\x20'+_0x108a17(0xd)}},{'t':0x1f,'free':{'type':'gd','v':0xc},'prem':{'type':'gd','v':0x19}},{'t':0x20,'free':{'type':'gd','v':0xc},'prem':{'type':'gd','v':0x19}},{'t':0x21,'free':{'type':'gd','v':0xc},'prem':{'type':'theme','v':'🟡\x20Golden\x20Frame','label':'Golden\x20Frame\x20Theme'}},{'t':0x22,'free':{'type':'gd','v':0xc},'prem':{'type':'gd','v':0x19}},{'t':0x23,'free':{'type':'gd','v':0xf},'prem':{'type':'title','v':'👑\x20Champion','label':'Champion\x20Title','img':'assets/img/titles/champion.png'}},{'t':0x24,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x1e}},{'t':0x25,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x1e}},{'t':0x26,'free':{'type':'gd','v':0xf},'prem':{'type':'theme','v':'🌊\x20Ocean\x20Wave\x20Border','label':'Ocean\x20Wave\x20Border'}},{'t':0x27,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x1e}},{'t':0x28,'free':{'type':'gd','v':0x14,'label':'20\x20'+_0x108a17(0xd)},'prem':{'type':'title','v':'⚡\x20Immortal','label':'Immortal\x20Title','img':'assets/img/titles/immortal.png'}},{'t':0x29,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x23}},{'t':0x2a,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x23}},{'t':0x2b,'free':{'type':'gd','v':0xf},'prem':{'type':'emoji','v':'🔴\x20Fire\x20God\x20Pack','label':'Fire\x20God\x20Emoji\x20Pack','img':'assets/img/icons/fire.png'}},{'t':0x2c,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x23}},{'t':0x2d,'free':{'type':'title','v':'💀\x20Death\x20Bringer','label':'Death\x20Bringer\x20Title','img':'assets/img/titles/death-bringer.png'},'prem':{'type':'gd','v':0x28,'label':'40\x20'+_0x108a17(0xd)}},{'t':0x2e,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x23}},{'t':0x2f,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x23}},{'t':0x30,'free':{'type':'gd','v':0xf},'prem':{'type':'theme','v':'🌌\x20Galaxy\x20Border','label':'Galaxy\x20Animated\x20Border'}},{'t':0x31,'free':{'type':'gd','v':0xf},'prem':{'type':'gd','v':0x23}},{'t':0x32,'free':{'type':'gd','v':0x14},'prem':{'type':'title','v':'☠️\x20Reaper','label':'Reaper\x20Title\x20—\x20Season\x20Legend','img':'assets/img/titles/reaper.png'}}];function _0x6f3fa3(){var _0x564e67=window['serverNow']&&typeof window['serverNow']==='function'?window['serverNow']():Date['now'](),_0x5f5307=new Date(_0x564e67);return _0x5f5307['getFullYear']()+'_'+String(_0x5f5307['getMonth']()+0x1)['padStart'](0x2,'0');}window['getSeasonId']=_0x6f3fa3;function _0x1e6d03(_0x291b4d,_0x20d9e4){if(!window['_supa']||!_0x291b4d){_0x20d9e4(null);return;}var _0x1bc0b3=_0x6f3fa3();window['_supa']['from']('battle_pass_progress')['select']('*')['eq']('user_id',_0x291b4d)['eq']('season_key',_0x1bc0b3)['maybeSingle']()['then'](function(_0x23228c){if(_0x23228c['data']){_0x20d9e4(_0x23228c['data']);return;}window['_supa']['from']('battle_pass_progress')['insert']({'user_id':_0x291b4d,'season_key':_0x1bc0b3,'current_xp':0x0,'current_tier':0x0,'has_premium':![],'claimed_free':{},'claimed_prem':{}})['select']('*')['single']()['then'](function(_0x3dae47){_0x20d9e4(_0x3dae47['data']||{'user_id':_0x291b4d,'season_key':_0x1bc0b3,'current_xp':0x0,'current_tier':0x0,'has_premium':![],'claimed_free':{},'claimed_prem':{}});},function(_0xe4d69c){console['warn']('[BattlePass]\x20Insert\x20failed:',_0xe4d69c['message']),_0x20d9e4({'user_id':_0x291b4d,'season_key':_0x1bc0b3,'current_xp':0x0,'current_tier':0x0,'has_premium':![],'claimed_free':{},'claimed_prem':{}});});},function(_0x30745a){console['warn']('[BattlePass]\x20Fetch\x20failed:',_0x30745a['message']),_0x20d9e4({'user_id':_0x291b4d,'season_key':_0x1bc0b3,'current_xp':0x0,'current_tier':0x0,'has_premium':![],'claimed_free':{},'claimed_prem':{}});});}var _0x4ad4c2={},_0xf86ca3={};window['awardPassXP']=function(_0x5b4da1,_0x106106){if(!window['_supa']||!_0x5b4da1||!_0x106106||_0x106106<=0x0)return;_0x4ad4c2[_0x5b4da1]=(_0x4ad4c2[_0x5b4da1]||0x0)+_0x106106,clearTimeout(_0xf86ca3[_0x5b4da1]),_0xf86ca3[_0x5b4da1]=setTimeout(function(){var _0x326c93=_0x4ad4c2[_0x5b4da1]||0x0;_0x4ad4c2[_0x5b4da1]=0x0;if(_0x326c93<=0x0)return;var _0x1d5670=_0x6f3fa3();window['_supa']['rpc']('award_battle_pass_xp',{'p_uid':_0x5b4da1,'p_season':_0x1d5670,'p_xp':_0x326c93})['then'](function(_0x35081d){if(_0x35081d&&_0x35081d['data']&&_0x35081d['data']['success']===![]){console['warn']('[BattlePass]\x20XP\x20award\x20rejected:',_0x35081d['data']['error']);return;}console['log']('[BattlePass]\x20XP\x20awarded\x20via\x20RPC:',_0x326c93);},function(){if(window['_bpUpdateInProgress']&&window['_bpUpdateInProgress'][_0x5b4da1])return;if(!window['_bpUpdateInProgress'])window['_bpUpdateInProgress']={};window['_bpUpdateInProgress'][_0x5b4da1]=!![],_0x1e6d03(_0x5b4da1,function(_0x36b80b){window['_bpUpdateInProgress'][_0x5b4da1]=![];if(!_0x36b80b)return;var _0x31bd92=(_0x36b80b['current_xp']||0x0)+_0x326c93,_0x1a99e2=Math['min'](0x32,Math['floor'](_0x31bd92/0x64)),_0x5465ff={'current_xp':_0x31bd92,'updated_at':new Date()['toISOString']()};if(_0x1a99e2>(_0x36b80b['current_tier']||0x0))_0x5465ff['current_tier']=_0x1a99e2;window['_supa']['from']('battle_pass_progress')['update'](_0x5465ff)['eq']('user_id',_0x5b4da1)['eq']('season_key',_0x1d5670)['then'](null,function(_0x31c2f4){console['warn']('[BattlePass]\x20XP\x20update\x20failed:',_0x31c2f4['message']);});});});},0x1f4);};function _0x1c16d6(_0x33ef42,_0x2c0025){try{var _0x205db0=_0x33ef42&&_0x33ef42['img']?'<img\x20src=\x22'+_0x33ef42['img']+'?v=20261124a\x22\x20alt=\x22\x22\x20loading=\x22lazy\x22\x20style=\x22width:'+(_0x2c0025||0x12)+'px;height:'+(_0x2c0025||0x12)+'px;object-fit:contain;vertical-align:middle;margin-right:5px\x22\x20onerror=\x22this.style.display=\x27none\x27\x22>':'',_0x5c3f2f=_0x33ef42['label']||(_0x33ef42['type']==='gd'?_0x108a17(0xb)+'\x20'+_0x33ef42['v']:_0x33ef42['v']||'');return _0x205db0+_0x5c3f2f;}catch(_0x4dc2c8){return _0x33ef42&&(_0x33ef42['label']||_0x33ef42['v'])||'';}}window['showBattlePass']=function(){if(!window['U']||!window['UD']){if(window['toast'])toast('Pehle\x20login\x20karo!','err');return;}if(!window['_supa']){if(window['toast'])toast('Connection\x20error,\x20retry\x20karo.','err');return;}var _0x176c93=window['U']['uid'],_0x315a67=window['serverNow']&&typeof window['serverNow']==='function'?new Date(window['serverNow']()):new Date(),_0x2fc126=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][_0x315a67['getMonth']()],_0x595bf8=new Date(_0x315a67['getFullYear'](),_0x315a67['getMonth']()+0x1,0x0)['getDate']()-_0x315a67['getDate']();_0x1e6d03(_0x176c93,function(_0x2547d5){var _0x198d7b=_0x2547d5['current_tier']||0x0,_0xaec8ed=_0x2547d5['has_premium']||![],_0x3ca6f7=_0x2547d5['claimed_free']||{},_0x3479f3=_0x2547d5['claimed_prem']||{},_0x40c5c3=_0x2547d5['current_xp']||0x0,_0x26c1d0=(_0x198d7b+0x1)*0x64-_0x40c5c3,_0x3e6bbf=Math['min'](0x64,_0x40c5c3%0x64),_0xdb64e9='';_0xdb64e9+='<div\x20style=\x22position:relative;overflow:hidden;border-radius:16px;padding:16px;margin-bottom:14px;background:linear-gradient(135deg,#0d0820,#1a0d3e)\x22>',_0xdb64e9+='<div\x20style=\x22position:absolute;inset:0;background:radial-gradient(ellipse\x20at\x2030%\x2050%,rgba(185,100,255,.2),transparent\x2060%),radial-gradient(ellipse\x20at\x2070%\x2050%,rgba(255,215,0,.1),transparent\x2060%);pointer-events:none\x22></div>',_0xdb64e9+='<div\x20style=\x22position:relative\x22>',_0xdb64e9+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between;margin-bottom:10px\x22>',_0xdb64e9+='<div><div\x20style=\x22font-size:16px;font-weight:900;color:#fff\x22>Season\x20Pass</div>',_0xdb64e9+='<div\x20style=\x22font-size:11px;color:#888\x22>'+_0x2fc126+'\x20Season\x20•\x20'+_0x595bf8+'\x20din\x20baaki</div></div>';!_0xaec8ed?_0xdb64e9+='<button\x20onclick=\x22window.buySeasonPass()\x22\x20style=\x22padding:8px\x2016px;border-radius:12px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:12px;font-weight:900;cursor:pointer\x22>₹'+_0x31fb17()+'\x20Unlock\x20👑</button>':_0xdb64e9+='<div\x20style=\x22padding:6px\x2012px;border-radius:10px;background:rgba(185,100,255,.2);border:1px\x20solid\x20rgba(185,100,255,.4);font-size:11px;font-weight:800;color:#b964ff\x22>👑\x20Premium\x20Active</div>';_0xdb64e9+='</div>',_0xdb64e9+='<div\x20style=\x22margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px\x22><span\x20style=\x22color:#888\x22>Tier\x20'+_0x198d7b+'\x20/\x2050</span><span\x20style=\x22color:#ffd700\x22>'+_0x40c5c3+'\x20XP</span></div>',_0xdb64e9+='<div\x20style=\x22height:6px;background:rgba(255,255,255,.08);border-radius:3px\x22><div\x20style=\x22height:100%;width:'+_0x3e6bbf+'%;background:linear-gradient(90deg,#b964ff,#ffd700);border-radius:3px;transition:width\x20.5s\x22></div></div>',_0xdb64e9+='<div\x20style=\x22font-size:10px;color:#8a8a92;margin-top:4px\x22>Agla\x20tier\x20ke\x20liye\x20'+_0x26c1d0+'\x20XP\x20chahiye</div>',_0xdb64e9+='</div></div>',_0xdb64e9+='<div\x20style=\x22display:flex;flex-direction:column;gap:0\x22>';var _0x19f40c=Math['max'](0x1,_0x198d7b-0x2),_0x47e2a3=Math['min'](0x32,_0x19f40c+0xc);_0x26cfdc['slice'](_0x19f40c-0x1,_0x47e2a3)['forEach'](function(_0x143353){var _0xa3b0a=_0x198d7b>=_0x143353['t'];_0xdb64e9+='<div\x20style=\x22display:grid;grid-template-columns:32px\x201fr\x201fr;gap:8px;align-items:center;padding:8px\x200;border-bottom:1px\x20solid\x20rgba(255,255,255,.05);opacity:'+(_0xa3b0a?'1':'.45')+'\x22>',_0xdb64e9+='<div\x20style=\x22width:28px;height:28px;border-radius:8px;background:'+(_0xa3b0a?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)')+';border:1px\x20solid\x20'+(_0xa3b0a?'rgba(255,215,0,.4)':'rgba(255,255,255,.1)')+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:'+(_0xa3b0a?'#ffd700':'#666')+'\x22>'+_0x143353['t']+'</div>';var _0xd109cb=_0x3ca6f7[String(_0x143353['t'])];_0xdb64e9+='<div\x20style=\x22background:'+(_0xaec8ed?'rgba(255,255,255,.04)':'rgba(255,255,255,.02)')+';border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:10px;padding:7px\x209px\x22>',_0xdb64e9+='<div\x20style=\x22font-size:9px;color:#555;margin-bottom:3px;font-weight:700\x22>FREE</div>';var _0x70201c=_0x1c16d6(_0x143353['free'],0x11);_0xdb64e9+='<div\x20style=\x22font-size:11px;color:'+(_0xaec8ed&&_0xa3b0a?'#ddd':'#555')+';display:flex;align-items:center;gap:4px\x22>'+_0x70201c+'</div>';if(_0xa3b0a&&!_0xd109cb)_0xdb64e9+='<button\x20onclick=\x22window.claimPassReward(\x27'+_0x143353['t']+'\x27,\x27free\x27)\x22\x20style=\x22margin-top:5px;font-size:9px;padding:3px\x208px;border-radius:6px;border:none;background:rgba(0,255,100,.15);color:#00ff64;cursor:pointer;font-weight:700\x22>CLAIM</button>';else{if(_0xaec8ed&&_0xd109cb)_0xdb64e9+='<div\x20style=\x22margin-top:4px;font-size:9px;color:#00ff64;font-weight:700\x22>✓\x20Claimed</div>';else{if(!_0xaec8ed)_0xdb64e9+='<div\x20style=\x22margin-top:4px;font-size:9px;color:#444\x22>🔒\x20Season\x20Pass\x20chahiye</div>';}}_0xdb64e9+='</div>';var _0x16ece7=_0x3479f3[String(_0x143353['t'])];_0xdb64e9+='<div\x20style=\x22background:'+(_0xaec8ed?'rgba(185,100,255,.07)':'rgba(255,255,255,.03)')+';border:1px\x20solid\x20'+(_0xaec8ed?'rgba(185,100,255,.2)':'rgba(255,255,255,.06)')+';border-radius:10px;padding:7px\x209px\x22>',_0xdb64e9+='<div\x20style=\x22font-size:9px;color:'+(_0xaec8ed?'#b964ff55':'#444')+';margin-bottom:3px;font-weight:700\x22>PREMIUM</div>';var _0x2e7dff=_0x1c16d6(_0x143353['prem'],0x11);_0xdb64e9+='<div\x20style=\x22font-size:11px;color:'+(_0xaec8ed&&_0xa3b0a?'#ddd':'#555')+';display:flex;align-items:center;gap:4px\x22>'+_0x2e7dff+'</div>';if(_0xaec8ed&&_0xa3b0a&&!_0x16ece7)_0xdb64e9+='<button\x20onclick=\x22window.claimPassReward(\x27'+_0x143353['t']+'\x27,\x27prem\x27)\x22\x20style=\x22margin-top:5px;font-size:9px;padding:3px\x208px;border-radius:6px;border:none;background:rgba(185,100,255,.2);color:#b964ff;cursor:pointer;font-weight:700\x22>CLAIM</button>';else{if(_0xaec8ed&&_0x16ece7)_0xdb64e9+='<div\x20style=\x22margin-top:4px;font-size:9px;color:#b964ff;font-weight:700\x22>✓\x20Claimed</div>';else{if(!_0xaec8ed)_0xdb64e9+='<div\x20style=\x22margin-top:4px;font-size:9px;color:#444\x22>🔒\x20Premium</div>';}}_0xdb64e9+='</div>',_0xdb64e9+='</div>';}),_0xdb64e9+='</div>';if(_0x47e2a3<0x32)_0xdb64e9+='<div\x20style=\x22text-align:center;font-size:11px;color:#555;padding:10px\x200\x22>Aur\x20'+(0x32-_0x47e2a3)+'\x20tiers\x20hain\x20•\x20Match\x20khelo\x20→\x20XP\x20kamao</div>';_0xdb64e9+='<div\x20style=\x22text-align:center;font-size:11px;color:#444;padding:8px\x200\x22>Har\x20mahine\x20naya\x20Season\x20Pass\x20aata\x20hai!</div>';if(window['openModal'])openModal('🎫\x20Season\x20Pass\x20—\x20'+_0x2fc126,_0xdb64e9);});};var _0x472738={};window['claimPassReward']=function(_0x4667b1,_0x5e19fc){if(!window['U']||!window['_supa'])return;var _0x1e5b7f=window['U']['uid'],_0x223d6f=_0x6f3fa3(),_0x2d46e9=_0x26cfdc[_0x4667b1-0x1];if(!_0x2d46e9)return;var _0x2acbee=_0x5e19fc==='free'?_0x2d46e9['free']:_0x2d46e9['prem'],_0x124e6e=_0x1e5b7f+'_'+_0x4667b1+'_'+_0x5e19fc;if(_0x472738[_0x124e6e]){if(window['toast'])toast('Claim\x20processing...','inf');return;}_0x472738[_0x124e6e]=!![];var _0x2e5b52=(_0x2acbee['type']==='gd'?_0x2acbee['v']:0x0)+(_0x2acbee['extraGD']||0x0);window['_supa']['rpc']('claim_battle_pass_tier',{'p_season':_0x223d6f,'p_tier':_0x4667b1,'p_track':_0x5e19fc,'p_gd_reward':_0x2e5b52})['then'](function(_0x5865e7){_0x472738[_0x124e6e]=![];if(_0x5865e7['error']||_0x5865e7['data']&&_0x5865e7['data']['success']===![]){var _0x3d2ac1=_0x5865e7['data']&&_0x5865e7['data']['error']||_0x5865e7['error']&&_0x5865e7['error']['message']||'Claim\x20failed,\x20retry\x20karo.';if(window['toast'])toast(_0x3d2ac1,'err');return;}var _0x4c6357=_0x2acbee['label']||_0x2acbee['v']||'Reward';if(window['toast'])toast('✅\x20'+_0x4c6357+'\x20claimed!','ok');if(_0x5865e7['data']&&_0x5865e7['data']['cosmetic']&&window['_loadExtras'])window['_loadExtras']();setTimeout(function(){window['showBattlePass']();},0x190);},function(_0x3af680){_0x472738[_0x124e6e]=![];if(window['toast'])toast('Claim\x20failed,\x20retry\x20karo.','err');console['error']('[BattlePass]\x20Claim\x20error:',_0x3af680['message']);});},window['buySeasonPass']=function(){window['checkPolicyThenRun'](function(){var _0x1ab820='';_0x1ab820+='<div\x20style=\x22text-align:center;padding:8px\x200\x2016px\x22><div\x20style=\x22font-size:38px;margin-bottom:6px\x22>🎫</div>',_0x1ab820+='<div\x20style=\x22font-size:18px;font-weight:900;color:#b964ff\x22>Season\x20Pass</div>',_0x1ab820+='<div\x20style=\x22font-size:28px;font-weight:900;color:#fff;margin:6px\x200\x22>₹'+_0x31fb17()+'<span\x20style=\x22font-size:13px;color:#888\x22>/mahina</span></div></div>',_0x1ab820+='<div\x20style=\x22background:rgba(185,100,255,.07);border:1px\x20solid\x20rgba(185,100,255,.2);border-radius:13px;padding:12px;margin-bottom:14px\x22>',_0x1ab820+='<div\x20style=\x22font-size:11px;font-weight:700;color:#b964ff;margin-bottom:8px\x22>PREMIUM\x20TRACK\x20UNLOCKS:</div>',['50\x20Tiers\x20ke\x20exclusive\x20rewards\x20(Badges,\x20Titles,\x20Themes,\x20Emojis)','Free\x20track\x20se\x20zyada\x20Green\x20Diamonds','Har\x20mahine\x20naye\x20exclusive\x20items','Season\x20Legend\x20Title\x20(Tier\x2050\x20pe)']['forEach'](function(_0x5138a8){_0x1ab820+='<div\x20style=\x22display:flex;align-items:center;gap:7px;font-size:11.5px;color:#ccc;margin-bottom:5px\x22><span\x20style=\x22color:#b964ff\x22>✓</span>'+_0x5138a8+'</div>';}),_0x1ab820+='</div>';window['renderPaytmInstantBlock']&&(_0x1ab820+=window['renderPaytmInstantBlock'](_0x31fb17(),'window.paytmInstantPurchase('+_0x31fb17()+',\x27paytm_season_pass\x27,{season:\x27current\x27},\x27_spPtmBtn\x27,\x27_spPtmSt\x27,function(){if(window.toast)toast(\x27🎫\x20Season\x20Pass\x20Activated!\x27,\x27ok\x27);})','_spPtmBtn','_spPtmSt'));_0x1ab820+='<div\x20style=\x22background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:12px\x22>',['UPI:\x20<strong\x20style=\x22color:#ffd700\x22>miniesports@upi</strong>\x20par\x20₹'+_0x31fb17()+'\x20bhejo','Screenshot\x20lo','Neeche\x20upload\x20karo\x20—\x201-2\x20ghante\x20mein\x20activate\x20hoga']['forEach'](function(_0x268ef6,_0xf264eb){_0x1ab820+='<div\x20style=\x22display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc\x22><div\x20style=\x22min-width:22px;height:22px;border-radius:50%;background:rgba(185,100,255,.12);border:1px\x20solid\x20rgba(185,100,255,.3);color:#b964ff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center\x22>'+(_0xf264eb+0x1)+'</div>'+_0x268ef6+'</div>';}),_0x1ab820+='</div>',_0x1ab820+='<div\x20id=\x22_spSsArea\x22\x20onclick=\x22document.getElementById(\x27_spSsIn\x27).click()\x22\x20style=\x22border:2px\x20dashed\x20rgba(185,100,255,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(185,100,255,.03);margin-bottom:12px\x22><i\x20class=\x22fas\x20fa-camera\x22\x20style=\x22font-size:24px;color:#b964ff55;display:block;margin-bottom:6px\x22></i><div\x20style=\x22font-size:12px;color:#8a8a92\x22>Screenshot\x20upload\x20karo</div><input\x20type=\x22file\x22\x20id=\x22_spSsIn\x22\x20accept=\x22image/*\x22\x20style=\x22display:none\x22\x20onchange=\x22window._spHandleSs(this)\x22></div>',_0x1ab820+='<img\x20id=\x22_spPreview\x22\x20style=\x22display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover\x22>',_0x1ab820+='<button\x20onclick=\x22window._submitSP()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#b964ff,#6b2fcc);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0\x204px\x2018px\x20rgba(185,100,255,.35)\x22>🎫\x20Season\x20Pass\x20Request\x20Submit\x20Karo</button>';if(window['openModal'])openModal('🎫\x20Buy\x20Season\x20Pass',_0x1ab820);var _0x5af660='',_0x1ad2a0=null;window['_spHandleSs']=function(_0x18e6d3){if(!_0x18e6d3['files']||!_0x18e6d3['files'][0x0])return;if(window['uploadToImgBB'])window['uploadToImgBB'](_0x18e6d3,'season_pass_'+Date['now'](),function(_0x476d57,_0x48e782){if(_0x476d57){var _0x4dca82=new FileReader();_0x4dca82['onload']=function(_0x287755){_0x5af660=_0x287755['target']['result'],window['_ffGuardShot'](_0x5af660,function(_0x2216f6){_0x1ad2a0=_0x2216f6,_0x4cc8a0(_0x5af660);},function(){_0x5af660='',_0x1ad2a0=null;try{_0x18e6d3['value']='';}catch(_0x409260){}});},_0x4dca82['readAsDataURL'](_0x18e6d3['files'][0x0]);return;}_0x5af660=_0x48e782,_0x4cc8a0(_0x48e782);});else{var _0x447815=new FileReader();_0x447815['onload']=function(_0x202d8e){_0x5af660=_0x202d8e['target']['result'],_0x4cc8a0(_0x5af660);},_0x447815['readAsDataURL'](_0x18e6d3['files'][0x0]);}};function _0x4cc8a0(_0x199b0c){var _0x56eade=document['getElementById']('_spPreview'),_0x47a400=document['getElementById']('_spSsArea');_0x56eade&&(_0x56eade['src']=_0x199b0c,_0x56eade['style']['display']='block');if(_0x47a400)_0x47a400['innerHTML']='<i\x20class=\x22fas\x20fa-check-circle\x22\x20style=\x22color:#00ff9c;font-size:20px;display:block;margin-bottom:4px\x22></i><div\x20style=\x22font-size:11px;color:#00ff9c\x22>Ready\x20✅</div>';}window['_submitSP']=function(){if(!_0x5af660){if(window['toast'])toast('Screenshot\x20upload\x20karo!','err');return;}if(!window['U']||!window['_supa']){if(window['toast'])toast('Login\x20karo\x20pehle','err');return;}var _0x281969=window['U']['uid'],_0x2a0fa8=window['UD']&&(window['UD']['ign']||window['UD']['displayName'])||'';window['_supa']['from']('season_pass_requests')['insert']({'user_id':_0x281969,'ign':_0x2a0fa8,'season_key':_0x6f3fa3(),'price':_0x31fb17(),'payment_screenshot':_0x5af660,'img_hash':_0x1ad2a0,'status':'pending'})['then'](function(){window['_supa']['from']('notifications')['insert']({'user_id':_0x281969,'type':'premium','title':'🎫\x20Season\x20Pass\x20Request\x20Received!','body':'₹'+_0x31fb17()+'\x20Season\x20Pass\x20request\x20mila!\x201-2\x20ghante\x20mein\x20activate\x20hoga.','is_read':![]})['then'](null,function(){});if(window['toast'])toast('✅\x20Request\x20submit!\x201-2\x20ghante\x20mein\x20active.','ok');if(window['closeModal'])closeModal();},function(_0x31ca21){console['error']('[BattlePass]\x20Submit\x20error:',_0x31ca21['message']);if(window['toast'])toast('Submit\x20failed,\x20retry\x20karo.','err');});};});},console['log']('[Mini\x20eSports]\x20✅\x20Battle\x20Pass\x20v1.1\x20loaded\x20(Bug\x2065\x20Fixed:\x20RTDB\x20→\x20Supabase)');try{window['__BP']={'version':'20261012c','tiers':function(){return _0x26cfdc;},'label':function(_0x4652ac,_0x206253){return _0x1c16d6(_0x4652ac,_0x206253);}},console['log']('[Mini\x20eSports]\x20✅\x20__BP\x20test-hook\x20ready\x20('+_0x26cfdc['length']+'\x20tiers)');}catch(_0x522a14){}}());
+/* ================================================================
+   MINI eSPORTS — BATTLE PASS / SEASON PASS v1.1
+   BUG 65 FIX: Fully migrated from Firebase RTDB → Supabase.
+   RTDB had no battle_pass path filled → entire feature was empty.
+
+   Free Track: Green Diamonds + Common Badges
+   Premium Track ₹49/month: Exclusive Badges + Titles + Themes +
+                             Animated Emojis + More Green Diamonds
+   50 Tiers per Season — New season every month
+================================================================ */
+(function(){
+'use strict';
+var GDI=function(s){return '<img src="js/green-diamond.png?v=20261124a" style="width:'+(s||14)+'px;height:'+(s||14)+'px;vertical-align:middle;object-fit:contain">';};
+
+/* ✅ CUSTOMIZABLE (2026-09-09), per Junaid's request: "har chiz jo
+   customize ki ja sakti hai, admin panel se customize ho". Was a
+   hardcoded constant; now a getter reading window.CFG.battlePassPrice
+   (app_settings.live_config.battlePassPrice) fresh on each call, so
+   an admin can change it without a code deploy. Needs a new "Battle
+   Pass" card added to the App Settings screen — see admin/js/
+   fa-app-settings.js. */
+function PASS_PRICE(){ return (window.CFG && window.CFG.battlePassPrice) || 49; }
+
+/* 50 tiers — free and premium rewards */
+var TIERS_DATA=[
+  {t:1, free:{type:'gd',v:5,label:'5 '+GDI(13)}, prem:{type:'badge',v:'🎖️ Starter Badge',label:'Starter Badge'}},
+  {t:2, free:{type:'gd',v:5}, prem:{type:'gd',v:10,label:'10 '+GDI(13)}},
+  {t:3, free:{type:'gd',v:5}, prem:{type:'gd',v:10}},
+  {t:4, free:{type:'gd',v:5}, prem:{type:'gd',v:10}},
+  {t:5, free:{type:'badge',v:'Bronze Warrior',label:'Bronze Warrior Badge',img:'assets/img/ranks/bronze.png'}, prem:{type:'badge',v:'🌟 Chosen One',label:'Chosen One Badge'}},
+  {t:6, free:{type:'gd',v:8}, prem:{type:'gd',v:15}},
+  {t:7, free:{type:'gd',v:8}, prem:{type:'gd',v:15}},
+  {t:8, free:{type:'gd',v:8}, prem:{type:'emoji',v:'🔥 Fire Pack',label:'Fire Emoji Pack',img:'assets/img/icons/fire.png'}},
+  {t:9, free:{type:'gd',v:8}, prem:{type:'gd',v:15}},
+  {t:10,free:{type:'gd',v:10,label:'10 '+GDI(13)},prem:{type:'gd',v:20,label:'20 '+GDI(13)}},
+  {t:11,free:{type:'gd',v:8},prem:{type:'gd',v:15}},
+  {t:12,free:{type:'gd',v:8},prem:{type:'gd',v:15}},
+  {t:13,free:{type:'gd',v:8},prem:{type:'theme',v:'🔵 Blue Flame Border',label:'Blue Flame Border'}},
+  {t:14,free:{type:'gd',v:8},prem:{type:'gd',v:15}},
+  {t:15,free:{type:'badge',v:'🎖️ Participant',label:'Participant Badge'},prem:{type:'badge',v:'Silver Fighter',label:'Silver Fighter Badge',img:'assets/img/ranks/silver.png'}},
+  {t:16,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
+  {t:17,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
+  {t:18,free:{type:'gd',v:10},prem:{type:'emoji',v:'⚡ Lightning Pack',label:'Lightning Emoji Pack'}},
+  {t:19,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
+  {t:20,free:{type:'gd',v:10},prem:{type:'gd',v:25,label:'25 '+GDI(13)}},
+  {t:21,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
+  {t:22,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
+  {t:23,free:{type:'gd',v:10},prem:{type:'theme',v:'🟣 Purple Haze Border',label:'Purple Haze Border'}},
+  {t:24,free:{type:'gd',v:10},prem:{type:'gd',v:20}},
+  {t:25,free:{type:'gd',v:15,label:'15 '+GDI(13)},prem:{type:'title',v:'🎖️ Veteran',label:'Veteran Title',img:'assets/img/titles/veteran.png'}},
+  {t:26,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
+  {t:27,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
+  {t:28,free:{type:'gd',v:12},prem:{type:'emoji',v:'👑 Crown Pack',label:'Crown Emoji Pack',img:'assets/img/icons/crown.png'}},
+  {t:29,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
+  {t:30,free:{type:'badge',v:'💪 Grinder',label:'Grinder Badge',img:'assets/img/badges/grinder.png'},prem:{type:'gd',v:30,label:'30 '+GDI(13)}},
+  {t:31,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
+  {t:32,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
+  {t:33,free:{type:'gd',v:12},prem:{type:'theme',v:'🟡 Golden Frame',label:'Golden Frame Theme'}},
+  {t:34,free:{type:'gd',v:12},prem:{type:'gd',v:25}},
+  {t:35,free:{type:'gd',v:15},prem:{type:'title',v:'👑 Champion',label:'Champion Title',img:'assets/img/titles/champion.png'}},
+  {t:36,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
+  {t:37,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
+  {t:38,free:{type:'gd',v:15},prem:{type:'theme',v:'🌊 Ocean Wave Border',label:'Ocean Wave Border'}},
+  {t:39,free:{type:'gd',v:15},prem:{type:'gd',v:30}},
+  {t:40,free:{type:'gd',v:20,label:'20 '+GDI(13)},prem:{type:'title',v:'⚡ Immortal',label:'Immortal Title',img:'assets/img/titles/immortal.png'}},
+  {t:41,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
+  {t:42,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
+  {t:43,free:{type:'gd',v:15},prem:{type:'emoji',v:'🔴 Fire God Pack',label:'Fire God Emoji Pack',img:'assets/img/icons/fire.png'}},
+  {t:44,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
+  {t:45,free:{type:'title',v:'💀 Death Bringer',label:'Death Bringer Title',img:'assets/img/titles/death-bringer.png'},prem:{type:'gd',v:40,label:'40 '+GDI(13)}},
+  {t:46,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
+  {t:47,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
+  {t:48,free:{type:'gd',v:15},prem:{type:'theme',v:'🌌 Galaxy Border',label:'Galaxy Animated Border'}},
+  {t:49,free:{type:'gd',v:15},prem:{type:'gd',v:35}},
+  {t:50,free:{type:'gd',v:20},prem:{type:'title',v:'☠️ Reaper',label:'Reaper Title — Season Legend',img:'assets/img/titles/reaper.png'}}
+];
+
+/* Get current season ID as text '2026_06'
+   Bug 32 Fix: uses server time, not client clock */
+function getSeasonId(){
+  var now=(window.serverNow&&typeof window.serverNow==='function')?window.serverNow():Date.now();
+  var d=new Date(now);
+  return d.getFullYear()+'_'+String(d.getMonth()+1).padStart(2,'0');
+}
+window.getSeasonId=getSeasonId;
+
+/* ── Helper: get or create progress row from Supabase (Bug 65 Fix) ── */
+function _getBPProgress(uid, cb) {
+  if (!window._supa || !uid) { cb(null); return; }
+  var sid = getSeasonId();
+  window._supa.from('battle_pass_progress')
+    .select('*')
+    .eq('user_id', uid)
+    .eq('season_key', sid)
+    .maybeSingle()
+    .then(function(r) {
+      if (r.data) { cb(r.data); return; }
+      /* Row doesn't exist yet — create it */
+      window._supa.from('battle_pass_progress').insert({
+        user_id: uid,
+        season_key: sid,
+        current_xp: 0,
+        current_tier: 0,
+        has_premium: false,
+        claimed_free: {},
+        claimed_prem: {}
+      }).select('*').single().then(function(r2) {
+        cb(r2.data || {user_id:uid,season_key:sid,current_xp:0,current_tier:0,has_premium:false,claimed_free:{},claimed_prem:{}});
+      }, function(e) {
+        console.warn('[BattlePass] Insert failed:', e.message);
+        cb({user_id:uid,season_key:sid,current_xp:0,current_tier:0,has_premium:false,claimed_free:{},claimed_prem:{}});
+      });
+    }, function(e) {
+      console.warn('[BattlePass] Fetch failed:', e.message);
+      cb({user_id:uid,season_key:sid,current_xp:0,current_tier:0,has_premium:false,claimed_free:{},claimed_prem:{}});
+    });
+}
+
+
+/* ── Award XP → tier up (called from match result) ── */
+/* Bug #15 Fix: XP update queue — prevents race condition from concurrent updates */
+var _bpXPQueue = {}, _bpXPTimers = {};
+window.awardPassXP=function(uid,xp){
+  if(!window._supa||!uid||!xp||xp<=0)return;
+  /* Accumulate XP in queue, flush after 500ms debounce */
+  _bpXPQueue[uid] = (_bpXPQueue[uid]||0) + xp;
+  clearTimeout(_bpXPTimers[uid]);
+  _bpXPTimers[uid] = setTimeout(function() {
+    var totalXP = _bpXPQueue[uid] || 0;
+    _bpXPQueue[uid] = 0;
+    if (totalXP <= 0) return;
+    var sid = getSeasonId();
+    /* Try RPC first (atomic — no race condition) */
+    window._supa.rpc('award_battle_pass_xp', { p_uid: uid, p_season: sid, p_xp: totalXP })
+      .then(function(r) {
+        /* ✅ BUG FIX (2026-07-22): award_battle_pass_xp's canonical version
+           (resolved from a live duplicate-overload cleanup — see
+           DEVELOPER_GUIDE.md 31.2 point 5 and 31.6) returns
+           {success:false, error} for validation failures, not {ok:false}.
+           Checking r.data.ok here would always read undefined now (never
+           matching === false), meaning a rejected call would silently
+           fall through to the success-log branch below with no XP
+           actually awarded — same bug class as the one this comment
+           previously fixed, reintroduced by the RPC's own signature
+           changing out from under this caller. */
+        if (r && r.data && r.data.success === false) {
+          console.warn('[BattlePass] XP award rejected:', r.data.error);
+          return;
+        }
+        console.log('[BattlePass] XP awarded via RPC:', totalXP);
+      }, function() {
+        /* RPC not available — use careful read-modify-write with retry guard */
+        if (window._bpUpdateInProgress && window._bpUpdateInProgress[uid]) return;
+        if (!window._bpUpdateInProgress) window._bpUpdateInProgress = {};
+        window._bpUpdateInProgress[uid] = true;
+        _getBPProgress(uid, function(d) {
+          window._bpUpdateInProgress[uid] = false;
+          if (!d) return;
+          var newXP = (d.current_xp || 0) + totalXP;
+          var newTier = Math.min(50, Math.floor(newXP / 100));
+          var update = { current_xp: newXP, updated_at: new Date().toISOString() };
+          if (newTier > (d.current_tier || 0)) update.current_tier = newTier;
+          window._supa.from('battle_pass_progress')
+            .update(update)
+            .eq('user_id', uid).eq('season_key', sid)
+            .then(null, function(e){ console.warn('[BattlePass] XP update failed:', e.message); });
+        });
+      });
+  }, 500);
+};
+
+/* ── Reward label with REAL ART (2026-10-12, user-attraction) ──
+   2026-10-12b: t25/35/40/45/50 par yojna-2.6 ki 5 asli kalaayein lagi
+   (Veteran/Champion/Immortal/Death Bringer/Reaper) — DB battle_passes.tiers
+   ke premCos/freeCos bhi 100% inhi naam/type/img se sync hain, aur
+   features/growth.js ka _BP_COS_ART map bhi yahi 5 arts store me dikhata hai.
+   Ye SIRF DISPLAY hai: server (claim_battle_pass_tier RPC) jo grant karta
+   hai wo bilkul nahi badla — bas tier grid me wahi inaam ab asli image
+   ke saath dikhta hai jahaan art ka matlab 100% match karta hai
+   (Bronze Warrior→bronze rank kala, Grinder→grinder badge kala, etc.).
+   img na ho to purana emoji-text jaisa hi chalta hai. */
+function _bpRewardLabel(r, sz) {
+  try {
+    var img = (r && r.img) ? '<img src="' + r.img + '?v=20261124a" alt="" loading="lazy" style="width:' + (sz||18) + 'px;height:' + (sz||18) + 'px;object-fit:contain;vertical-align:middle;margin-right:5px" onerror="this.style.display=\'none\'">' : '';
+    var lbl = r.label || (r.type === 'gd' ? GDI(11) + ' ' + r.v : (r.v || ''));
+    return img + lbl;
+  } catch (e) { return (r && (r.label || r.v)) || ''; }
+}
+
+/* ── Show Battle Pass UI ── */
+window.showBattlePass=function(){
+  if(!window.U||!window.UD){if(window.toast)toast('Pehle login karo!','err');return;}
+  if(!window._supa){if(window.toast)toast('Connection error, retry karo.','err');return;}
+  var uid=window.U.uid;
+  var now=(window.serverNow&&typeof window.serverNow==='function')?new Date(window.serverNow()):new Date();
+  var monthName=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()];
+  var daysLeft=new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate();
+
+  _getBPProgress(uid, function(pData) {
+    var curTier  = pData.current_tier  || 0;
+    var hasPrem  = pData.has_premium   || false;
+    var claimedF = pData.claimed_free  || {};
+    var claimedP = pData.claimed_prem  || {};
+    var totalXP  = pData.current_xp    || 0;
+    var xpForNext = ((curTier+1)*100) - totalXP;
+    var xpPct = Math.min(100, totalXP % 100);
+
+    var h='';
+    h+='<div style="position:relative;overflow:hidden;border-radius:16px;padding:16px;margin-bottom:14px;background:linear-gradient(135deg,#0d0820,#1a0d3e)">';
+    h+='<div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(185,100,255,.2),transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(255,215,0,.1),transparent 60%);pointer-events:none"></div>';
+    h+='<div style="position:relative">';
+    h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+    h+='<div><div style="font-size:16px;font-weight:900;color:#fff">Season Pass</div>';
+    h+='<div style="font-size:11px;color:#888">'+monthName+' Season • '+daysLeft+' din baaki</div></div>';
+    if(!hasPrem){
+      h+='<button onclick="window.buySeasonPass()" style="padding:8px 16px;border-radius:12px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:12px;font-weight:900;cursor:pointer">₹'+PASS_PRICE()+' Unlock 👑</button>';
+    } else {
+      h+='<div style="padding:6px 12px;border-radius:10px;background:rgba(185,100,255,.2);border:1px solid rgba(185,100,255,.4);font-size:11px;font-weight:800;color:#b964ff">👑 Premium Active</div>';
+    }
+    h+='</div>';
+    h+='<div style="margin-bottom:6px;display:flex;justify-content:space-between;font-size:11px"><span style="color:#888">Tier '+curTier+' / 50</span><span style="color:#ffd700">'+totalXP+' XP</span></div>';
+    h+='<div style="height:6px;background:rgba(255,255,255,.08);border-radius:3px"><div style="height:100%;width:'+xpPct+'%;background:linear-gradient(90deg,#b964ff,#ffd700);border-radius:3px;transition:width .5s"></div></div>';
+    h+='<div style="font-size:10px;color:#8a8a92;margin-top:4px">Agla tier ke liye '+xpForNext+' XP chahiye</div>';
+    h+='</div></div>';
+
+    /* Tier grid */
+    h+='<div style="display:flex;flex-direction:column;gap:0">';
+    var showFrom=Math.max(1,curTier-2),showTo=Math.min(50,showFrom+12);
+    TIERS_DATA.slice(showFrom-1,showTo).forEach(function(td){
+      var unlocked=curTier>=td.t;
+      h+='<div style="display:grid;grid-template-columns:32px 1fr 1fr;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:'+(unlocked?'1':'.45')+'\">';
+      h+='<div style="width:28px;height:28px;border-radius:8px;background:'+(unlocked?'rgba(255,215,0,.15)':'rgba(255,255,255,.05)')+';border:1px solid '+(unlocked?'rgba(255,215,0,.4)':'rgba(255,255,255,.1)')+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:'+(unlocked?'#ffd700':'#666')+'">'+td.t+'</div>';
+      /* Free track
+         ✅ BUG FIX (2026-08-22): per explicit instruction, ALL tier
+         rewards — including the "FREE" column — should only unlock once
+         the Season Pass itself is purchased. Previously the FREE column
+         was gated only by `unlocked` (tier reached via XP), completely
+         independent of hasPrem, so a player could claim free-track
+         rewards like 5 GD at Tier 1 without ever buying the pass. Now
+         both tracks require hasPrem AND the tier being reached. */
+      var fc=claimedF[String(td.t)];
+      h+='<div style="background:'+(hasPrem?'rgba(255,255,255,.04)':'rgba(255,255,255,.02)')+';border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 9px">';
+      h+='<div style="font-size:9px;color:#555;margin-bottom:3px;font-weight:700">FREE</div>';
+      var fLabel=_bpRewardLabel(td.free, 17);
+      h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+fLabel+'</div>';
+      /* ✅ R3 fix (2026-09-20d): free-track claim sirf unlocked maangta hai — hasPrem sirf prem-track ke liye (RPC bhi free-track par premium nahi maangta) */
+      if(unlocked&&!fc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'free\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radius:6px;border:none;background:rgba(0,255,100,.15);color:#00ff64;cursor:pointer;font-weight:700">CLAIM</button>';
+      else if(hasPrem&&fc)       h+='<div style="margin-top:4px;font-size:9px;color:#00ff64;font-weight:700">✓ Claimed</div>';
+      else if(!hasPrem)          h+='<div style="margin-top:4px;font-size:9px;color:#444">🔒 Season Pass chahiye</div>';
+      h+='</div>';
+      /* Premium track */
+      var pc=claimedP[String(td.t)];
+      h+='<div style="background:'+(hasPrem?'rgba(185,100,255,.07)':'rgba(255,255,255,.03)')+';border:1px solid '+(hasPrem?'rgba(185,100,255,.2)':'rgba(255,255,255,.06)')+';border-radius:10px;padding:7px 9px">';
+      h+='<div style="font-size:9px;color:'+(hasPrem?'#b964ff55':'#444')+';margin-bottom:3px;font-weight:700">PREMIUM</div>';
+      var pLabel=_bpRewardLabel(td.prem, 17);
+      h+='<div style="font-size:11px;color:'+(hasPrem&&unlocked?'#ddd':'#555')+';display:flex;align-items:center;gap:4px">'+pLabel+'</div>';
+      if(hasPrem&&unlocked&&!pc) h+='<button onclick="window.claimPassReward(\''+td.t+'\',\'prem\')" style="margin-top:5px;font-size:9px;padding:3px 8px;border-radius:6px;border:none;background:rgba(185,100,255,.2);color:#b964ff;cursor:pointer;font-weight:700">CLAIM</button>';
+      else if(hasPrem&&pc)       h+='<div style="margin-top:4px;font-size:9px;color:#b964ff;font-weight:700">✓ Claimed</div>';
+      else if(!hasPrem)          h+='<div style="margin-top:4px;font-size:9px;color:#444">🔒 Premium</div>';
+      h+='</div>';
+      h+='</div>';
+    });
+    h+='</div>';
+    if(showTo<50) h+='<div style="text-align:center;font-size:11px;color:#555;padding:10px 0">Aur '+(50-showTo)+' tiers hain • Match khelo → XP kamao</div>';
+    h+='<div style="text-align:center;font-size:11px;color:#444;padding:8px 0">Har mahine naya Season Pass aata hai!</div>';
+
+    if(window.openModal) openModal('🎫 Season Pass — '+monthName, h);
+  });
+};
+
+/* ── Claim reward (BUG #31/#44 FIX 2026-07: single atomic RPC, closes the TOCTOU gap
+   between the read and the write that the previous "in-progress" memory flag only
+   partially guarded against — e.g. two browser tabs) ── */
+var _bpClaimInProgress = {};
+window.claimPassReward=function(tierNum,track){
+  if(!window.U||!window._supa)return;
+  var uid=window.U.uid, sid=getSeasonId();
+  var td=TIERS_DATA[tierNum-1]; if(!td)return;
+  var reward=track==='free'?td.free:td.prem;
+  var claimKey = uid+'_'+tierNum+'_'+track;
+  if (_bpClaimInProgress[claimKey]) { if(window.toast)toast('Claim processing...','inf'); return; }
+  _bpClaimInProgress[claimKey] = true;
+  var gdAmt = (reward.type==='gd' ? reward.v : 0) + (reward.extraGD || 0);
+  window._supa.rpc('claim_battle_pass_tier', { p_season: sid, p_tier: tierNum, p_track: track, p_gd_reward: gdAmt })
+    .then(function(r) {
+      _bpClaimInProgress[claimKey] = false;
+      if (r.error || (r.data && r.data.success === false)) {
+        var msg = (r.data && r.data.error) || (r.error && r.error.message) || 'Claim failed, retry karo.';
+        if (window.toast) toast(msg, 'err');
+        return;
+      }
+      /* ✅ BUG FIX (2026-07-17): claim_battle_pass_tier RPC already credits
+         green_diamonds AND inserts the wallet_transactions ledger row
+         atomically, server-side — this client-side block used to insert a
+         SECOND wallet_transactions row for the same claim (a duplicate
+         ledger entry, same class of bug as the earlier-fixed BUG #26/#35
+         double-credit issues) and manually bump window.UD.greenDiamonds
+         on top of the server-side credit. Removed the duplicate write;
+         UD.green_diamonds gets refreshed from the server on next sync
+         instead of being locally guessed at here.
+         (Note: window.UD.greenDiamonds — camelCase — was also never the
+         real field name; the actual column/field is green_diamonds.) */
+      var lbl=reward.label||reward.v||'Reward';
+      if(window.toast)toast('✅ '+lbl+' claimed!','ok');
+      /* R29F: cosmetic collectible (badge/theme/emoji/title) bhi grant
+         hota hai — UD.cosmetics ko re-sync karo taaki Cosmetics Store
+         turant ise "Owned" dikhaye (equip ke liye). */
+      if (r.data && r.data.cosmetic && window._loadExtras) window._loadExtras();
+      setTimeout(function(){ window.showBattlePass(); }, 400);
+    }, function(e){ _bpClaimInProgress[claimKey]=false; if(window.toast)toast('Claim failed, retry karo.','err'); console.error('[BattlePass] Claim error:',e.message); });
+};
+
+/* ── Buy Season Pass (Bug 65 Fix: _submitSP now writes to Supabase) ── */
+window.buySeasonPass=function(){
+  window.checkPolicyThenRun(function(){
+    var h='';
+    h+='<div style="text-align:center;padding:8px 0 16px"><div style="font-size:38px;margin-bottom:6px">🎫</div>';
+    h+='<div style="font-size:18px;font-weight:900;color:#b964ff">Season Pass</div>';
+    h+='<div style="font-size:28px;font-weight:900;color:#fff;margin:6px 0">₹'+PASS_PRICE()+'<span style="font-size:13px;color:#888">/mahina</span></div></div>';
+    h+='<div style="background:rgba(185,100,255,.07);border:1px solid rgba(185,100,255,.2);border-radius:13px;padding:12px;margin-bottom:14px">';
+    h+='<div style="font-size:11px;font-weight:700;color:#b964ff;margin-bottom:8px">PREMIUM TRACK UNLOCKS:</div>';
+    ['50 Tiers ke exclusive rewards (Badges, Titles, Themes, Emojis)','Free track se zyada Green Diamonds','Har mahine naye exclusive items','Season Legend Title (Tier 50 pe)'].forEach(function(t){h+='<div style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:#ccc;margin-bottom:5px"><span style="color:#b964ff">✓</span>'+t+'</div>';});
+    h+='</div>';
+    if (window.renderPaytmInstantBlock) {
+      h += window.renderPaytmInstantBlock(
+        PASS_PRICE(),
+        'window.paytmInstantPurchase(' + PASS_PRICE() + ',\'paytm_season_pass\',{season:\'current\'},\'_spPtmBtn\',\'_spPtmSt\',function(){if(window.toast)toast(\'🎫 Season Pass Activated!\',\'ok\');})',
+        '_spPtmBtn',
+        '_spPtmSt'
+      );
+    }
+    h+='<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:12px">';
+    ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹'+PASS_PRICE()+' bhejo','Screenshot lo','Neeche upload karo — 1-2 ghante mein activate hoga'].forEach(function(s,i){h+='<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(185,100,255,.12);border:1px solid rgba(185,100,255,.3);color:#b964ff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">'+(i+1)+'</div>'+s+'</div>';});
+    h+='</div>';
+    h+='<div id="_spSsArea" onclick="document.getElementById(\'_spSsIn\').click()" style="border:2px dashed rgba(185,100,255,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(185,100,255,.03);margin-bottom:12px"><i class="fas fa-camera" style="font-size:24px;color:#b964ff55;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div><input type="file" id="_spSsIn" accept="image/*" style="display:none" onchange="window._spHandleSs(this)"></div>';
+    h+='<img id="_spPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
+    h+='<button onclick="window._submitSP()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#b964ff,#6b2fcc);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 18px rgba(185,100,255,.35)">🎫 Season Pass Request Submit Karo</button>';
+    if(window.openModal) openModal('🎫 Buy Season Pass',h);
+
+    var _ss=''; var _ssHash=null;
+    window._spHandleSs=function(inp){
+      if(!inp.files||!inp.files[0])return;
+      /* Bug 65 Fix: Use ImgBB for screenshot instead of storing base64 in RTDB */
+      if (window.uploadToImgBB) {
+        window.uploadToImgBB(inp, 'season_pass_'+Date.now(), function(err, url) {
+          if (err) {
+            /* Fallback: base64 preview only (no storage) */
+            var r=new FileReader();
+            r.onload=function(e){ _ss=e.target.result; window._ffGuardShot(_ss,function(_h){_ssHash=_h;_spShowPreview(_ss);},function(){_ss='';_ssHash=null;try{inp.value='';}catch(e2){}}); };
+            r.readAsDataURL(inp.files[0]);
+            return;
+          }
+          _ss = url;
+          _spShowPreview(url);
+        });
+      } else {
+        var r=new FileReader();
+        r.onload=function(e){_ss=e.target.result;_spShowPreview(_ss);};
+        r.readAsDataURL(inp.files[0]);
+      }
+    };
+
+    function _spShowPreview(src) {
+      var prev=document.getElementById('_spPreview'),area=document.getElementById('_spSsArea');
+      if(prev){prev.src=src;prev.style.display='block';}
+      if(area)area.innerHTML='<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>';
+    }
+
+    /* Bug 65 Fix: Submit to Supabase season_pass_requests instead of RTDB */
+    window._submitSP=function(){
+      if(!_ss){if(window.toast)toast('Screenshot upload karo!','err');return;}
+      if(!window.U||!window._supa){if(window.toast)toast('Login karo pehle','err');return;}
+      var uid=window.U.uid;
+      var ign=(window.UD&&(window.UD.ign||window.UD.displayName))||'';
+      window._supa.from('season_pass_requests').insert({
+        user_id: uid,
+        ign: ign,
+        season_key: getSeasonId(),
+        price: PASS_PRICE(),
+        payment_screenshot: _ss,
+        img_hash: _ssHash,
+        status: 'pending'
+      }).then(function(){
+        /* Notify via Supabase notifications table */
+        window._supa.from('notifications').insert({
+          user_id: uid,
+          type: 'premium',
+          title: '🎫 Season Pass Request Received!',
+          body: '₹'+PASS_PRICE()+' Season Pass request mila! 1-2 ghante mein activate hoga.',
+          is_read: false
+        }).then(null, function(){});
+        if(window.toast)toast('✅ Request submit! 1-2 ghante mein active.','ok');
+        if(window.closeModal)closeModal();
+      }, function(e){
+        console.error('[BattlePass] Submit error:',e.message);
+        if(window.toast)toast('Submit failed, retry karo.','err');
+      });
+    };
+  });
+};
+
+console.log('[Mini eSports] ✅ Battle Pass v1.1 loaded (Bug 65 Fixed: RTDB → Supabase)');
+
+/* ── Test hook (2026-10-12b) — E2E/screen-e2e.html ke liye READ-ONLY ──
+   badge-engine.js ke __BADGE_ENGINE.selftest() wala hi pattern: tier data
+   aur reward-label function bahar dete hain, taaki emulator me asli grid
+   ka output (5 season-title kalaayein) LIVE verify ho sake. Koi app
+   behaviour nahi badalta — sirf padhne ke liye expose. */
+try {
+  window.__BP = {
+    version: '20261012c',
+    tiers: function () { return TIERS_DATA; },
+    label: function (r, sz) { return _bpRewardLabel(r, sz); }
+  };
+  console.log('[Mini eSports] ✅ __BP test-hook ready (' + TIERS_DATA.length + ' tiers)');
+} catch (e) {}
+})();

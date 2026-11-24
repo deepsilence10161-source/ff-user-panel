@@ -1,1 +1,425 @@
-(function(){'use strict';var _0x1b5cd7=(function(){var _0x2914bb=!![];return function(_0x26000c,_0x3a08a8){var _0x33cccb=_0x2914bb?function(){if(_0x3a08a8){var _0x4ab2f4=_0x3a08a8['apply'](_0x26000c,arguments);return _0x3a08a8=null,_0x4ab2f4;}}:function(){};return _0x2914bb=![],_0x33cccb;};}());var _0x52175f={'appId':'ca-app-pub-1032532795123223~9674995485','rewarded':'ca-app-pub-1032532795123223/5092857849','interstitial':'ca-app-pub-1032532795123223/7817221971','banner':'ca-app-pub-1032532795123223/9718498564'};window['ADMOB_IDS']=_0x52175f;var _0x34f874={'tier':0x0,'exp':0x0,'checked':0x0};function _0x5881b3(){var _0xc52f51=Date['now']();if(_0xc52f51-_0x34f874['checked']<0x1388)return _0x34f874['tier']>0x0&&(_0x34f874['exp']===0x0||_0x34f874['exp']>_0xc52f51);var _0x5e8785=window['UD'];if(!_0x5e8785)return _0x34f874={'tier':0x0,'exp':0x0,'checked':_0xc52f51},![];if(_0x5e8785['isPremium']===!![])return _0x34f874={'tier':0x1,'exp':0x0,'checked':_0xc52f51},!![];var _0x47c9e4=Number(_0x5e8785['premium_level']||_0x5e8785['premiumLevel']||_0x5e8785['premium']&&_0x5e8785['premium']['tier']||0x0),_0x46ab1e=_0x5e8785['premium']&&_0x5e8785['premium']['expiresAt']?Number(_0x5e8785['premium']['expiresAt']):0x0;return _0x34f874={'tier':_0x47c9e4,'exp':_0x46ab1e,'checked':_0xc52f51},_0x47c9e4>0x0&&(_0x46ab1e===0x0||_0x46ab1e>_0xc52f51);}function _0x17d0f0(){return!!(window['Android']&&typeof window['Android']['showRewardedAd']==='function');}function _0x44a815(){return _0x17d0f0();}window['AdManager']={'showRewardedAd':function(_0x46c4db,_0x1b6da1,_0x444373){if(_0x5881b3()){if(_0x46c4db)_0x46c4db();return;}try{if(window['_supa'])window['_supa']['rpc']('ad_watch_start',{});}catch(_0x323d4d){}if(_0x17d0f0()){window['_adOnReward']=_0x46c4db,window['_adOnFail']=_0x1b6da1,window['_adContext']=_0x444373||null;try{typeof window['Android']['showRewardedAd']==='function'?window['Android']['showRewardedAd'](_0x52175f['rewarded']):window['Android']['showRewardedAd']();}catch(_0x38efb0){console['warn']('[AdManager]\x20Android.showRewardedAd\x20failed:',_0x38efb0),this['_webFallback'](_0x46c4db,_0x1b6da1,'rewarded');}return;}this['_webFallback'](_0x46c4db,_0x1b6da1,'rewarded');},'showInterstitial':function(_0x228e02){if(_0x5881b3()){if(_0x228e02)_0x228e02();return;}if(_0x17d0f0()){window['_intOnDone']=_0x228e02;try{if(typeof window['Android']['showInterstitialAd']==='function')window['Android']['showInterstitialAd'](_0x52175f['interstitial']);else typeof window['Android']['showInterstitial']==='function'&&window['Android']['showInterstitial'](_0x52175f['interstitial']);}catch(_0x6d0e2){console['warn']('[AdManager]\x20Interstitial\x20failed:',_0x6d0e2);if(_0x228e02)_0x228e02();}return;}if(_0x228e02)_0x228e02();},'showBanner':function(){if(_0x5881b3()){this['hideBanner']();return;}if(_0x17d0f0()){try{if(typeof window['Android']['showBannerAd']==='function')window['Android']['showBannerAd'](_0x52175f['banner']);else typeof window['Android']['showBanner']==='function'&&window['Android']['showBanner'](_0x52175f['banner']);}catch(_0x252d40){console['warn']('[AdManager]\x20Banner\x20failed:',_0x252d40);}return;}this['_showWebBanner']();},'hideBanner':function(){if(_0x17d0f0())try{if(typeof window['Android']['hideBannerAd']==='function')window['Android']['hideBannerAd']();else{if(typeof window['Android']['hideBanner']==='function')window['Android']['hideBanner']();}}catch(_0x35547d){}var _0x475034=document['getElementById']('_webBanner');if(_0x475034)_0x475034['remove']();try{document['body']['classList']['remove']('has-web-banner');}catch(_0x12c928){}},'showForAdMatch':function(_0x545f6a,_0x4ee322,_0x169676){var _0x58bfe2=0x0,_0x25965c=this;function _0x430240(){if(_0x58bfe2>=_0x4ee322){sessionStorage['setItem']('_adDone_'+_0x545f6a,Date['now']());if(_0x169676)_0x169676(!![]);return;}_0x25965c['showRewardedAd'](function(){_0x58bfe2++,_0x430240();},function(){if(_0x169676)_0x169676(![]);},'adMatch_'+_0x545f6a);}_0x430240();},'_webFallback':function(_0x9d2de6,_0x1c7345,_0x5a532b){var _0x24145e=0x5,_0x3b31d8=[{'icon':'🎮','name':'Gaming\x20Pro\x20App','sub':'Level\x20up\x20your\x20game!'},{'icon':'📱','name':'App\x20Store\x20Pick','sub':'Top\x20rated\x20this\x20week'},{'icon':'🏆','name':'Tournament\x20Master','sub':'Play.\x20Win.\x20Repeat.'},{'icon':'🛡️','name':'VPN\x20Shield','sub':'Stay\x20secure\x20online'}],_0x2148b0=_0x3b31d8[Math['floor'](Math['random']()*_0x3b31d8['length'])],_0x4701bd=document['createElement']('div');_0x4701bd['id']='_adOverlay',_0x4701bd['style']['cssText']='position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:inherit',_0x4701bd['innerHTML']='<div\x20style=\x22position:absolute;top:14px;left:16px;font-size:10px;color:#555;letter-spacing:1px\x22>ADVERTISEMENT</div>'+'<div\x20style=\x22position:absolute;top:10px;right:16px;padding:4px\x2010px;border-radius:6px;background:rgba(255,255,255,.08);font-size:10px;color:#888\x22\x20id=\x22_adSkipBtn\x22>Skip\x20in\x20<span\x20id=\x22_adSkipSec\x22>'+_0x24145e+'</span>s</div>'+'<div\x20style=\x22text-align:center;padding:0\x2032px\x22>'+'<div\x20style=\x22font-size:64px;margin-bottom:12px\x22>'+_0x2148b0['icon']+'</div>'+'<div\x20style=\x22font-size:22px;font-weight:900;margin-bottom:6px\x22>'+_0x2148b0['name']+'</div>'+'<div\x20style=\x22font-size:13px;color:#888;margin-bottom:24px\x22>'+_0x2148b0['sub']+'</div>'+'<div\x20style=\x22width:80px;height:80px;border-radius:50%;background:rgba(0,255,106,.08);border:3px\x20solid\x20#00ff9c;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#00ff9c;margin:0\x20auto\x22\x20id=\x22_adCountRing\x22>'+_0x24145e+'</div>'+'<div\x20style=\x22font-size:11px;color:#444;margin-top:12px\x22>Ad\x20band\x20nahi\x20kar\x20sakte\x20—\x20reward\x20ke\x20liye\x20dekho</div>'+'</div>',document['body']['appendChild'](_0x4701bd);var _0x117504=setInterval(function(){_0x24145e--;var _0x5d9061=document['getElementById']('_adCountRing'),_0x487371=document['getElementById']('_adSkipSec');if(_0x5d9061)_0x5d9061['textContent']=_0x24145e;if(_0x487371)_0x487371['textContent']=_0x24145e>0x0?_0x24145e:'✓';if(_0x24145e<=0x0){clearInterval(_0x117504),_0x4701bd['remove']();if(_0x9d2de6)_0x9d2de6();}},0x3e8);},'_showWebBanner':function(){if(document['getElementById']('_webBanner'))return;var _0x4bf30b=document['createElement']('div');_0x4bf30b['id']='_webBanner';var _0x5977c4=0x4b;try{var _0x2d6378=document['getElementById']('bottomNav');if(_0x2d6378){var _0x1c2631=Math['round'](_0x2d6378['getBoundingClientRect']()['height']);if(_0x1c2631>0x28)_0x5977c4=_0x1c2631;}}catch(_0x5a3ead){}_0x4bf30b['style']['cssText']='position:fixed;bottom:'+_0x5977c4+'px;left:0;right:0;height:50px;background:rgba(0,0,0,.9);border-top:1px\x20solid\x20rgba(255,255,255,.06);z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;pointer-events:none';try{document['body']['style']['setProperty']('--wb-pad',_0x5977c4+0x32+0xa+'px');}catch(_0x7fcc88){}_0x4bf30b['innerHTML']='<span\x20style=\x22font-size:10px;color:#777\x22>AD</span><span\x20style=\x22font-size:12px;color:#9a9aa2\x22>Mini\x20eSports\x20—\x20Tournament\x20Platform</span><span\x20style=\x22font-size:10px;color:#777\x22>AD</span>',document['body']['appendChild'](_0x4bf30b);try{document['body']['classList']['add']('has-web-banner');}catch(_0x2e0fa5){}}},window['onAdRewarded']=function(_0x9cd695){console['log']('[AdManager]\x20onAdRewarded\x20called,\x20unit:',_0x9cd695);if(window['_adOnReward']){var _0x64e982=window['_adOnReward'];window['_adOnReward']=null,_0x64e982();}},window['onAdFailed']=function(_0x13fc4a){console['warn']('[AdManager]\x20Ad\x20failed:',_0x13fc4a);if(window['_adOnFail']){var _0x6a3eb6=window['_adOnFail'];window['_adOnFail']=null,_0x6a3eb6(_0x13fc4a);}},window['onInterstitialDismissed']=function(){console['log']('[AdManager]\x20Interstitial\x20dismissed');if(window['_intOnDone']){var _0x3eac9a=window['_intOnDone'];window['_intOnDone']=null,_0x3eac9a();}},window['showMatchEndAd']=function(_0x4d6de3){if(_0x5881b3()){if(_0x4d6de3)_0x4d6de3();return;}window['AdManager']['showInterstitial'](_0x4d6de3);},window['watchAdForCoins']=function(){if(!window['U']||!window['db'])return;if(!navigator['onLine']){if(window['toast'])toast('📡\x20Internet\x20nahi\x20hai.\x20Online\x20hone\x20ke\x20baad\x20ads\x20dekh\x20sakte\x20ho.','err');return;}var _0x49e7c5=window['CFG']&&Number(window['CFG']['adDailyLimit'])||0x5,_0x3a1ba4=new Date()['toISOString']()['split']('T')[0x0],_0x1c3404='_adWatched_'+_0x3a1ba4+'_'+window['U']['uid'],_0x4d5cfc=parseInt(localStorage['getItem'](_0x1c3404)||'0');if(_0x4d5cfc>=_0x49e7c5){if(window['toast'])toast('Aaj\x20ke\x20saare\x20'+_0x49e7c5+'\x20ads\x20dekh\x20chuke\x20ho.\x20Kal\x20wapas\x20aao!\x20🌙','err');return;}window['AdManager']['showRewardedAd'](function(){var _0x2e8062=window['CFG']&&Number(window['CFG']['adCoinsPerWatch'])||0xa,_0x1e3039=window['_supa']&&window['U']?window['_supa']['rpc']('claim_ad_reward',{}):Promise['reject'](new Error('Reward\x20service\x20unavailable'));_0x1e3039['then'](function(_0xafeb15){if(_0xafeb15&&(_0xafeb15['error']||_0xafeb15['data']&&_0xafeb15['data']['success']===![])){if(window['toast'])toast('Coins\x20credit\x20nahi\x20ho\x20paye,\x20dobara\x20try\x20karo','err');return;}try{localStorage['setItem'](_0x1c3404,String(_0x4d5cfc+0x1));}catch(_0x3573ab){}if(window['UD'])window['UD']['coins']=(window['UD']['coins']||0x0)+_0x2e8062;if(window['updateHdr'])window['updateHdr']();if(window['analytics'])window['analytics']['adWatched']();var _0xcbc23=_0x49e7c5-(_0x4d5cfc+0x1);if(window['toast'])toast('+'+_0x2e8062+'\x20Coins\x20mila!\x20🪙'+(_0xcbc23>0x0?'\x20('+_0xcbc23+'\x20ads\x20baaki\x20aaj)':'\x20(Aaj\x20ka\x20limit\x20complete!\x20🎉)'),'ok');},function(){if(window['toast'])toast('Coins\x20credit\x20nahi\x20ho\x20paye,\x20dobara\x20try\x20karo','err');});},function(){if(window['toast'])toast('Ad\x20load\x20nahi\x20hua,\x20dobara\x20try\x20karo.','err');},'watchForCoins');},window['onAdReward']=window['onAdRewarded'],function _0x4a3315(){var _0x20934f=_0x1b5cd7(this,function(){if(_0x20934f['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x20934f['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x20934f)['search']('(((.+)+)+)+$');});_0x20934f();function _0xf1bd91(){if(!window['UD']){setTimeout(_0xf1bd91,0x320);return;}if(_0x5881b3())return;window['AdManager']['showBanner']();}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(_0xf1bd91,0x5dc);}):setTimeout(_0xf1bd91,0x5dc);}();var _0x1f45af=0x0;window['recheckAds']=function(){var _0x2ee5d2=Date['now']();if(_0x2ee5d2-_0x1f45af<0x2710)return;_0x1f45af=_0x2ee5d2;if(_0x5881b3()){window['AdManager']['hideBanner']();var _0x4e7a2c=document['getElementById']('_adOverlay');if(_0x4e7a2c)_0x4e7a2c['remove']();var _0x3e499d=document['getElementById']('_webBanner');if(_0x3e499d)_0x3e499d['remove']();try{document['body']['classList']['remove']('has-web-banner');}catch(_0xd55890){}}},function _0x3412e6(){console['log']('[AdMob]\x20IDs\x20loaded:\x0a'+'\x20\x20App:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x52175f['appId']+'\x0a'+'\x20\x20Rewarded:\x20\x20\x20\x20\x20'+_0x52175f['rewarded']+'\x20(MatchJoinReward)\x0a'+'\x20\x20Interstitial:\x20'+_0x52175f['interstitial']+'\x20(MatchEndInterstitial)\x0a'+'\x20\x20Banner:\x20\x20\x20\x20\x20\x20\x20'+_0x52175f['banner']+'\x20(AppBanner)\x0a'+'\x20\x20Android\x20SDK:\x20\x20'+(_0x17d0f0()?'✅\x20Connected':'⚠️\x20Not\x20connected\x20(web\x20mode)'));}(),console['log']('[Mini\x20eSports]\x20Ad\x20Manager\x20v3.0\x20✅');}()),window['showAdEarn']=function(){if(window['watchAdForCoins']){watchAdForCoins();return;}if(window['openModal'])openModal('📺\x20Watch\x20&\x20Earn','<div\x20style=\x22text-align:center;padding:20px\x22>'+'<div\x20style=\x22font-size:40px;margin-bottom:12px\x22>📺</div>'+'<p\x20style=\x22font-size:14px;color:var(--txt2)\x22>Ad\x20dekho\x20aur\x20+'+(window['CFG']&&Number(window['CFG']['adCoinsPerWatch'])||0xa)+'\x20Coins\x20pao!</p>'+'<button\x20onclick=\x22closeModal();if(window.watchAdForCoins)watchAdForCoins();\x22\x20'+'style=\x22margin-top:14px;padding:12px\x2028px;border-radius:12px;border:none;'+'background:var(--primary);color:#000;font-weight:800;font-size:14px;cursor:pointer\x22>▶\x20Watch\x20Ad</button>'+'</div>');};
+/* ================================================================
+   MINI eSPORTS — AD MANAGER v3.0
+   Real AdMob IDs integrated + Android WebView bridge
+   ================================================================
+   App ID:       ca-app-pub-1032532795123223~9674995485
+   Rewarded:     ca-app-pub-1032532795123223/5092857849  (MatchJoinReward)
+   Interstitial: ca-app-pub-1032532795123223/7817221971  (MatchEndInterstitial)
+   Banner:       ca-app-pub-1032532795123223/9718498564  (AppBanner)
+   ================================================================
+   Rules (as per your model):
+   · Rewarded ads ONLY — user khud dekhna chahta ho
+   · Banner + Interstitial: sirf non-premium users ko
+   · Premium users ko koi bhi ad nahi dikhega
+   · Ad dekhne par: Coins milenge (Ad Match flow)
+================================================================ */
+(function(){
+'use strict';
+
+/* ── Real AdMob IDs ── */
+var ADMOB = {
+  appId:           'ca-app-pub-1032532795123223~9674995485',
+  rewarded:        'ca-app-pub-1032532795123223/5092857849',   // MatchJoinReward
+  interstitial:    'ca-app-pub-1032532795123223/7817221971',   // MatchEndInterstitial
+  banner:          'ca-app-pub-1032532795123223/9718498564',   // AppBanner
+};
+window.ADMOB_IDS = ADMOB;
+
+/* Bug 26 Fix: Cache TTL reduced from 30s → 5s.
+   30s cache meant a newly-subscribed premium user still saw ads for up to 30 seconds.
+   5s is fast enough to avoid excess reads while giving near-instant ad removal. */
+var _premCache = { tier: 0, exp: 0, checked: 0 };
+
+
+function _adIsPremium() {
+  var now = Date.now();
+  if (now - _premCache.checked < 5000) { /* Bug 26 Fix: 30000 → 5000 */
+    /* Serve from cache */
+    return _premCache.tier > 0 && (_premCache.exp === 0 || _premCache.exp > now);
+  }
+  /* Refresh cache from UD */
+  var ud = window.UD;
+  if (!ud) { _premCache = { tier: 0, exp: 0, checked: now }; return false; }
+  if (ud.isPremium === true) { _premCache = { tier: 1, exp: 0, checked: now }; return true; }
+  var tier = Number(ud.premium_level || ud.premiumLevel || (ud.premium && ud.premium.tier) || 0);
+  var exp  = (ud.premium && ud.premium.expiresAt) ? Number(ud.premium.expiresAt) : 0;
+  _premCache = { tier: tier, exp: exp, checked: now };
+  return tier > 0 && (exp === 0 || exp > now);
+}
+
+/* ── Helper: is Android WebView? ── */
+function isAndroid(){
+  return !!(window.Android && typeof window.Android.showRewardedAd === 'function');
+}
+
+/* ── Helper: is AdMob SDK loaded? (for native Android) ── */
+function hasAdMobSDK(){
+  return isAndroid();
+}
+
+/* ================================================================
+   REWARDED AD — MatchJoinReward
+   ca-app-pub-1032532795123223/5092857849
+   Used in: Ad Match join flow, Watch Ad for Coins
+================================================================ */
+window.AdManager = {
+
+  /* Show rewarded ad — waits for Android bridge or simulates in web */
+  showRewardedAd: function(onReward, onFail, context) {
+    // Premium users never see ads
+    if (_adIsPremium()) { if (onReward) onReward(); return; }
+    /* D34 (report#3): server-side ad session start — claim_ad_reward
+       isi session ke bina coins nahi deta. */
+    try { if (window._supa) window._supa.rpc('ad_watch_start', {}); } catch (e) {}
+
+    if (isAndroid()) {
+      /* ── Android WebView bridge ──
+         Android side must implement:
+         - Android.showRewardedAd(adUnitId)
+         - calls window.onAdRewarded() on success
+         - calls window.onAdFailed(reason) on failure
+      */
+      window._adOnReward = onReward;
+      window._adOnFail   = onFail;
+      window._adContext  = context || null;
+      try {
+        // Pass actual AdMob unit ID to Android
+        if (typeof window.Android.showRewardedAd === 'function') {
+          window.Android.showRewardedAd(ADMOB.rewarded);
+        } else {
+          window.Android.showRewardedAd(); // legacy bridge
+        }
+      } catch(e) {
+        console.warn('[AdManager] Android.showRewardedAd failed:', e);
+        this._webFallback(onReward, onFail, 'rewarded');
+      }
+      return;
+    }
+
+    // Web/PWA fallback — simulate 5s ad countdown
+    this._webFallback(onReward, onFail, 'rewarded');
+  },
+
+  /* Show interstitial at match end — non-premium only */
+  showInterstitial: function(onDone) {
+    if (_adIsPremium()) { if (onDone) onDone(); return; }
+
+    if (isAndroid()) {
+      window._intOnDone = onDone;
+      try {
+        if (typeof window.Android.showInterstitialAd === 'function') {
+          window.Android.showInterstitialAd(ADMOB.interstitial);
+        } else if (typeof window.Android.showInterstitial === 'function') {
+          window.Android.showInterstitial(ADMOB.interstitial);
+        }
+      } catch(e) {
+        console.warn('[AdManager] Interstitial failed:', e);
+        if (onDone) onDone();
+      }
+      return;
+    }
+    // Web: skip silently (don't simulate interstitial in web)
+    if (onDone) onDone();
+  },
+
+  /* Show banner — loads at bottom of screen for non-premium */
+  showBanner: function() {
+    if (_adIsPremium()) { this.hideBanner(); return; }
+
+    if (isAndroid()) {
+      try {
+        if (typeof window.Android.showBannerAd === 'function') {
+          window.Android.showBannerAd(ADMOB.banner);
+        } else if (typeof window.Android.showBanner === 'function') {
+          window.Android.showBanner(ADMOB.banner);
+        }
+      } catch(e) {
+        console.warn('[AdManager] Banner failed:', e);
+      }
+      return;
+    }
+    // Web: show simple placeholder banner
+    this._showWebBanner();
+  },
+
+  hideBanner: function() {
+    if (isAndroid()) {
+      try {
+        if (typeof window.Android.hideBannerAd === 'function') window.Android.hideBannerAd();
+        else if (typeof window.Android.hideBanner === 'function') window.Android.hideBanner();
+      } catch(e) {}
+    }
+    var wb = document.getElementById('_webBanner');
+    if (wb) wb.remove();
+    try { document.body.classList.remove('has-web-banner'); } catch(e) {}
+  },
+
+  /* Ad Match: show N rewarded ads before join */
+  showForAdMatch: function(matchId, adsRequired, onComplete) {
+    var count = 0;
+    var self  = this;
+    function showNext() {
+      if (count >= adsRequired) {
+        sessionStorage.setItem('_adDone_' + matchId, Date.now());
+        if (onComplete) onComplete(true);
+        return;
+      }
+      self.showRewardedAd(
+        function() { count++; showNext(); },
+        function() { if (onComplete) onComplete(false); },
+        'adMatch_' + matchId
+      );
+    }
+    showNext();
+  },
+
+  /* ── Web fallback: realistic ad simulation ── */
+  _webFallback: function(onReward, onFail, type) {
+    var sec = 5;
+    var adBrands = [
+      { icon: '🎮', name: 'Gaming Pro App',    sub: 'Level up your game!' },
+      { icon: '📱', name: 'App Store Pick',     sub: 'Top rated this week' },
+      { icon: '🏆', name: 'Tournament Master', sub: 'Play. Win. Repeat.' },
+      { icon: '🛡️', name: 'VPN Shield',        sub: 'Stay secure online' },
+    ];
+    var brand = adBrands[Math.floor(Math.random() * adBrands.length)];
+    var ov = document.createElement('div');
+    ov.id = '_adOverlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-family:inherit';
+
+    ov.innerHTML =
+      '<div style="position:absolute;top:14px;left:16px;font-size:10px;color:#555;letter-spacing:1px">ADVERTISEMENT</div>' +
+      '<div style="position:absolute;top:10px;right:16px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.08);font-size:10px;color:#888" id="_adSkipBtn">Skip in <span id="_adSkipSec">' + sec + '</span>s</div>' +
+      '<div style="text-align:center;padding:0 32px">' +
+        '<div style="font-size:64px;margin-bottom:12px">' + brand.icon + '</div>' +
+        '<div style="font-size:22px;font-weight:900;margin-bottom:6px">' + brand.name + '</div>' +
+        '<div style="font-size:13px;color:#888;margin-bottom:24px">' + brand.sub + '</div>' +
+        '<div style="width:80px;height:80px;border-radius:50%;background:rgba(0,255,106,.08);border:3px solid #00ff9c;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#00ff9c;margin:0 auto" id="_adCountRing">' + sec + '</div>' +
+        '<div style="font-size:11px;color:#444;margin-top:12px">Ad band nahi kar sakte — reward ke liye dekho</div>' +
+      '</div>';
+
+    document.body.appendChild(ov);
+
+    var iv = setInterval(function() {
+      sec--;
+      var ring = document.getElementById('_adCountRing');
+      var skipSec = document.getElementById('_adSkipSec');
+      if (ring) ring.textContent = sec;
+      if (skipSec) skipSec.textContent = sec > 0 ? sec : '✓';
+      if (sec <= 0) {
+        clearInterval(iv);
+        ov.remove();
+        if (onReward) onReward();
+      }
+    }, 1000);
+  },
+
+  /* Web banner placeholder (non-Android) */
+  _showWebBanner: function() {
+    if (document.getElementById('_webBanner')) return;
+    var bn = document.createElement('div');
+    bn.id = '_webBanner';
+    /* ✅ FIX (2026-09-30): pehle bottom:56px tha, lekin bottom-nav asli mein 75px
+       ooncha hai (padding-bottom:env(safe-area-inset-bottom) ke saath) — isliye
+       banner 19px neeche ko nav ke PEECHE dhas jaata tha aur squashed dikhta tha.
+       Ab nav ki asli height naap kar banner uske theek upar baithta hai, aur
+       --wb-pad variable se page content ko banner ke upar utha diya jaata hai. */
+    var _navH = 75;
+    try { var _bn=document.getElementById('bottomNav'); if(_bn){ var _h=Math.round(_bn.getBoundingClientRect().height); if(_h>40) _navH=_h; } } catch(e) {}
+    bn.style.cssText = 'position:fixed;bottom:' + _navH + 'px;left:0;right:0;height:50px;background:rgba(0,0,0,.9);border-top:1px solid rgba(255,255,255,.06);z-index:900;display:flex;align-items:center;justify-content:center;gap:10px;pointer-events:none';
+    try { document.body.style.setProperty('--wb-pad', (_navH + 50 + 10) + 'px'); } catch(e) {}
+    bn.innerHTML = '<span style="font-size:10px;color:#777">AD</span><span style="font-size:12px;color:#9a9aa2">Mini eSports — Tournament Platform</span><span style="font-size:10px;color:#777">AD</span>';
+    document.body.appendChild(bn);
+    /* ✅ FIX (2026-09-30): banner dikhne par body par class — layout (styles.css)
+       tab chat input aur neeche wale buttons ko banner ke upar utha deta hai.
+       Banner khud pointer-events:none hai, isliye koi tap nahi kha sakta. */
+    try { document.body.classList.add('has-web-banner'); } catch(e) {}
+  }
+};
+
+/* ================================================================
+   ANDROID → JS CALLBACKS
+   Android native code calls these after ad events
+================================================================ */
+
+/* Rewarded ad completed → give reward */
+window.onAdRewarded = function(adUnitId) {
+  console.log('[AdManager] onAdRewarded called, unit:', adUnitId);
+  if (window._adOnReward) {
+    var cb = window._adOnReward;
+    window._adOnReward = null;
+    cb();
+  }
+};
+
+/* Rewarded ad failed */
+window.onAdFailed = function(reason) {
+  console.warn('[AdManager] Ad failed:', reason);
+  if (window._adOnFail) {
+    var cb = window._adOnFail;
+    window._adOnFail = null;
+    cb(reason);
+  }
+};
+
+/* Interstitial dismissed */
+window.onInterstitialDismissed = function() {
+  console.log('[AdManager] Interstitial dismissed');
+  if (window._intOnDone) {
+    var cb = window._intOnDone;
+    window._intOnDone = null;
+    cb();
+  }
+};
+
+
+/* ================================================================
+   MATCH-END INTERSTITIAL
+   Show after result is viewed — non-premium only
+================================================================ */
+window.showMatchEndAd = function(onDone) {
+  if (_adIsPremium()) { if (onDone) onDone(); return; }
+  window.AdManager.showInterstitial(onDone);
+};
+
+/* ================================================================
+   WATCH AD FOR COINS (Home → Wallet section)
+   User taps "Watch Ad → Get Coins"
+================================================================ */
+window.watchAdForCoins = function() {
+  if (!window.U || !window.db) return;
+  /* Cross-cutting #3 Fix: Ads require live network connection to the ad server.
+     Show a clear message instead of silently failing when offline. */
+  if (!navigator.onLine) {
+    if (window.toast) toast('📡 Internet nahi hai. Online hone ke baad ads dekh sakte ho.', 'err');
+    return;
+  }
+
+  /* Daily limit check — adDailyLimit from CFG (default 5) */
+  var dailyLimit = (window.CFG && Number(window.CFG.adDailyLimit)) || 5;
+  var todayKey   = new Date().toISOString().split('T')[0];
+  var _adStorKey = '_adWatched_' + todayKey + '_' + window.U.uid;
+  var watchedToday = parseInt(localStorage.getItem(_adStorKey) || '0');
+  if (watchedToday >= dailyLimit) {
+    if (window.toast) toast('Aaj ke saare ' + dailyLimit + ' ads dekh chuke ho. Kal wapas aao! 🌙', 'err');
+    return;
+  }
+
+  window.AdManager.showRewardedAd(
+    function() {
+      /* Reward: use CFG value (default 10) */
+      var coinReward = (window.CFG && Number(window.CFG.adCoinsPerWatch)) || 10;
+      /* ✅ FIX (2026-08-20): this used to call claim_ad_reward, the SAME
+         RPC hardened this session for the separate "Bonus Ads" feature
+         (features/rewarded-bonus.js) — that RPC now hardcodes 50
+         coins/5-per-day server-side ON PURPOSE, ignoring whatever
+         amount/cap the client passes in. Calling it from here would
+         have silently given every Coin Shop "Watch Ad" click 50 coins
+         instead of the admin-configured amount (10 by default) —
+         recreating the exact "10 vs 50" bug this session already fixed
+         once, just via a different code path. Coin Shop now calls its
+         own dedicated claim_coinshop_ad_reward RPC instead, which
+         reads the real admin-configured amount/cap from live_config
+         server-side (so Settings → Ad Reward Settings still works) and
+         independently enforces its own daily cap against
+         wallet_transactions rows tagged 'coinshop_ad_watch_reward' —
+         completely separate bucket from the Bonus Ads feature's cap, as
+         they always were two distinct features. */
+      var credit = window._supa && window.U
+        ? window._supa.rpc('claim_ad_reward', {})
+        : Promise.reject(new Error('Reward service unavailable'));
+      credit.then(function(r) {
+        if (r && (r.error || (r.data && r.data.success === false))) {
+          if (window.toast) toast('Coins credit nahi ho paye, dobara try karo', 'err');
+          return;
+        }
+        try { localStorage.setItem(_adStorKey, String(watchedToday + 1)); } catch(e) {}
+        if (window.UD) window.UD.coins = (window.UD.coins || 0) + coinReward;
+        if (window.updateHdr) window.updateHdr();
+        if (window.analytics) window.analytics.adWatched();
+        var remaining = dailyLimit - (watchedToday + 1);
+        if (window.toast) toast('+' + coinReward + ' Coins mila! 🪙' + (remaining > 0 ? ' (' + remaining + ' ads baaki aaj)' : ' (Aaj ka limit complete! 🎉)'), 'ok');
+      }, function() {
+        if (window.toast) toast('Coins credit nahi ho paye, dobara try karo', 'err');
+      });
+    },
+    function() {
+      if (window.toast) toast('Ad load nahi hua, dobara try karo.', 'err');
+    },
+    'watchForCoins'
+  );
+};
+
+/* Legacy bridge compat */
+window.onAdReward = window.onAdRewarded;
+
+/* ================================================================
+   BANNER AUTO-SHOW
+   Show banner on home screen for non-premium users
+   Hide when navigating to premium-gated screens
+================================================================ */
+(function initBanner(){
+  function tryShow(){
+    if(!window.UD) { setTimeout(tryShow, 800); return; }
+    if(_adIsPremium()) return;  // premium = no banner
+    window.AdManager.showBanner();
+  }
+  if(document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(tryShow, 1500); });
+  } else {
+    setTimeout(tryShow, 1500);
+  }
+})();
+
+/* ================================================================
+   PREMIUM CHECK — hide all ads if user upgrades mid-session
+================================================================ */
+var _lastPremCheck = 0;
+window.recheckAds = function(){
+  var now = Date.now();
+  if(now - _lastPremCheck < 10000) return;
+  _lastPremCheck = now;
+  if(_adIsPremium()){
+    window.AdManager.hideBanner();
+    // Remove any lingering ad overlays
+    var ov = document.getElementById('_adOverlay');
+    if(ov) ov.remove();
+    var wb = document.getElementById('_webBanner');
+    if(wb) wb.remove();
+    try { document.body.classList.remove('has-web-banner'); } catch(e) {}
+  }
+};
+
+/* ================================================================
+   ADMOB HEALTH CHECK — verify IDs are correct on load
+================================================================ */
+(function healthCheck(){
+  console.log(
+    '[AdMob] IDs loaded:\n' +
+    '  App:          ' + ADMOB.appId + '\n' +
+    '  Rewarded:     ' + ADMOB.rewarded + ' (MatchJoinReward)\n' +
+    '  Interstitial: ' + ADMOB.interstitial + ' (MatchEndInterstitial)\n' +
+    '  Banner:       ' + ADMOB.banner + ' (AppBanner)\n' +
+    '  Android SDK:  ' + (isAndroid() ? '✅ Connected' : '⚠️ Not connected (web mode)')
+  );
+})();
+
+console.log('[Mini eSports] Ad Manager v3.0 ✅');
+})();
+
+/* ── showAdEarn: called from coin shop — opens watch-earn panel ── */
+window.showAdEarn = function() {
+  /* Watch & Earn: watch ads to earn coins */
+  if (window.watchAdForCoins) {
+    watchAdForCoins();
+    return;
+  }
+  if (window.openModal) openModal('📺 Watch & Earn',
+    '<div style="text-align:center;padding:20px">' +
+    '<div style="font-size:40px;margin-bottom:12px">📺</div>' +
+    '<p style="font-size:14px;color:var(--txt2)">Ad dekho aur +' + ((window.CFG && Number(window.CFG.adCoinsPerWatch)) || 10) + ' Coins pao!</p>' +
+    '<button onclick="closeModal();if(window.watchAdForCoins)watchAdForCoins();" ' +
+    'style="margin-top:14px;padding:12px 28px;border-radius:12px;border:none;' +
+    'background:var(--primary);color:#000;font-weight:800;font-size:14px;cursor:pointer">▶ Watch Ad</button>' +
+    '</div>');
+};

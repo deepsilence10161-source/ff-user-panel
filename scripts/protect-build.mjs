@@ -34,7 +34,21 @@ const OBF_DIRS = new Set(['js', 'screens', 'features', 'core']);
    iske top-level helpers (_normET/_gdLegacy) ki definitions gira deta tha
    (live ReferenceError → duo invite fail). Repo public hai, obfuscation
    sirf cosmetic; correctness > cosmetics. */
-const OBF_SKIP_FILES = new Set(['screens/join.js']);
+const OBF_SKIP_FILES = new Set([
+  'screens/join.js',
+  /* ✅ FIX (2026-11-24): sw.js obfuscation se exempt.
+     Wajah: public repo (ff-user-panel) me sw.js shuru se READABLE source-identical
+     ship hota aaya hai (v34 header, ASSET_VER/CACHE_VER lines version-sync se bump
+     hoti hain), jabki protect-build use obfuscate karke 13147B → 8147B kar deta tha
+     — yani har release par build output aur jo actually ship hota hai alag the
+     (parity drift), aur release ke waqt sw.js ko haath se source se replace karna
+     padta tha. Local proof (2026-11-24): obfuscated SW install/activate/control
+     karta hai aur purani caches wipe karta hai, par production me wo prove nahi hua;
+     readable SW v1.0.735 tak ka poora CI ladder (Build APK / E2E / Pages / Health /
+     TRI 25-25) green rakha hai. SW sirf cache logic hai (koi business logic nahi),
+     isliye correctness + parity > cosmetic obfuscation. */
+  'sw.js',
+]);
 
 function walk(src, dest, rel) {
   fs.mkdirSync(dest, { recursive: true });

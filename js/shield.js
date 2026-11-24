@@ -1,1 +1,99 @@
-(function(){'use strict';var _0x81bc0c=(function(){var _0xb767=!![];return function(_0x556871,_0x333059){var _0x5e725a=_0xb767?function(){if(_0x333059){var _0x266048=_0x333059['apply'](_0x556871,arguments);return _0x333059=null,_0x266048;}}:function(){};return _0xb767=![],_0x5e725a;};}());var _0x5cc1f9=['deepsilence10161-source.github.io','localhost','127.0.0.1','capacitor','ionic'];function _0x1ee284(){var _0x3058bb=_0x81bc0c(this,function(){if(_0x3058bb['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3058bb['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3058bb)['search']('(((.+)+)+)+$');});_0x3058bb();try{var _0x8e2e15=(location['hostname']||'')['toLowerCase'](),_0x1c29fa=(location['protocol']||'')['toLowerCase']();if(_0x1c29fa==='file:')return'ok';for(var _0x1f4b2d=0x0;_0x1f4b2d<_0x5cc1f9['length'];_0x1f4b2d++){if(_0x8e2e15===_0x5cc1f9[_0x1f4b2d])return'ok';if(_0x8e2e15['indexOf']('.'+_0x5cc1f9[_0x1f4b2d])>-0x1)return'ok';}if(_0x1c29fa['indexOf']('capacitor')===0x0)return'ok';return'bad:'+_0x8e2e15;}catch(_0x2f9d50){return'ok';}}var _0x28207b='<div\x20style=\x22min-height:100vh;display:flex;align-items:center;justify-content:center;'+'background:#07070c;color:#fff;font-family:system-ui,Segoe\x20UI,sans-serif;text-align:center;padding:24px\x22>'+'<div\x20style=\x22max-width:420px\x22><div\x20style=\x22font-size:44px\x22>🔒</div>'+'<h1\x20style=\x22font-size:20px;margin:14px\x200\x206px;color:#ff5470\x22>Unauthorized\x20Copy\x20Detected</h1>'+'<p\x20style=\x22font-size:13px;line-height:1.7;color:#c9c9d6\x22>Ye\x20application\x20<b>Mini\x20eSports</b>\x20ki\x20proprietary\x20property\x20hai\x20'+'(©\x202026\x20Mini\x20eSports,\x20India).\x20Is\x20host\x20par\x20chalana\x20<b>Copyright\x20Act\x201957\x20u/s\x2063</b>\x20aur\x20<b>IT\x20Act\x202000\x20u/s\x2066</b>\x20ka\x20'+'ullanghan\x20hai.\x20Asli\x20app\x20sirf\x20official\x20source\x20se\x20install\x20karein.</p>'+'<p\x20style=\x22font-size:12px;color:#8b8ba0;margin-top:10px\x22>Host:\x20'+(location['hostname']||'?')+'</p></div></div>';function _0x3bc5e7(){try{document['title']='🔒\x20Unauthorized\x20Copy';if(document['body'])document['body']['innerHTML']=_0x28207b;else document['documentElement']['innerHTML']='<body\x20style=\x22margin:0\x22>'+_0x28207b+'</body>';}catch(_0x51eeb6){}}var _0x2c6a4e=_0x1ee284();_0x2c6a4e!=='ok'&&(window['__MINI_LOCKED']=!![],document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',_0x3bc5e7):_0x3bc5e7(),setInterval(_0x3bc5e7,0x320));function _0x805188(_0xc782bc){return _0xc782bc&&(_0xc782bc['tagName']==='INPUT'||_0xc782bc['tagName']==='TEXTAREA'||_0xc782bc['isContentEditable']);}document['addEventListener']('contextmenu',function(_0x1c3371){if(_0x805188(_0x1c3371['target']))return;_0x1c3371['preventDefault']();},{'passive':![]}),document['addEventListener']('keydown',function(_0x32db19){if(_0x805188(_0x32db19['target']))return;var _0x20edea=_0x32db19['key']||'';if(_0x20edea==='F12'){_0x32db19['preventDefault']();return;}if(_0x32db19['ctrlKey']&&(_0x20edea==='u'||_0x20edea==='U'||_0x20edea==='s'||_0x20edea==='S'||_0x20edea==='p'||_0x20edea==='P')){_0x32db19['preventDefault']();return;}if(_0x32db19['ctrlKey']&&_0x32db19['shiftKey']&&(_0x20edea==='I'||_0x20edea==='i'||_0x20edea==='J'||_0x20edea==='j'||_0x20edea==='C'||_0x20edea==='c')){_0x32db19['preventDefault']();return;}if(_0x32db19['ctrlKey']&&(_0x20edea==='a'||_0x20edea==='A')&&!_0x805188(_0x32db19['target'])){_0x32db19['preventDefault']();return;}}),document['addEventListener']('dragstart',function(_0x607e9a){if(!_0x805188(_0x607e9a['target']))_0x607e9a['preventDefault']();}),document['addEventListener']('selectstart',function(_0x23e78b){if(!_0x805188(_0x23e78b['target']))_0x23e78b['preventDefault']();}),setInterval(function(){try{Function('debugger')();}catch(_0x5685d7){}},0x640),setTimeout(function(){try{console['log']('%c⛔\x20RUK\x20JAIYE!','font-size:34px;color:#ff5470;font-weight:900'),console['log']('%cYe\x20browser\x20console\x20Mini\x20eSports\x20app\x20ka\x20proprietary\x20code\x20debug\x20karne\x20ke\x20liye\x20protected\x20area\x20hai.\x0a'+'Yahan\x20paste\x20karne\x20ko\x20kaha\x20jaye\x20to\x20wo\x20SCAM\x20hai\x20(self-XSS).\x0a'+'Code/content\x20ki\x20anadhikrit\x20copy:\x20Copyright\x20Act\x201957\x20u/s\x2063\x20+\x20IT\x20Act\x202000\x20u/s\x2066\x20—\x203\x20saal\x20tak\x20ki\x20saza\x20+\x20jurmana.\x0a'+'©\x202026\x20Mini\x20eSports.\x20All\x20rights\x20reserved.','font-size:13px;color:#c9c9d6');}catch(_0x3848c1){}},0x258);}());
+/* ================================================================
+   MINI eSPORTS — js/shield.js  (D88, 07-Nov-2026)
+   Owner: "koi mere app ya web ka code ki ek line tak na chura sake"
+   ----------------------------------------------------------------
+   1. ORIGIN LOCK — ye code sirf Mini eSports ke official origins par
+      chalta hai. Copy karke doosre domain/hosts par lagaya gaya to
+      app turant lock-screen me badal jata hai (aur interval se wapas
+      bhi nahi la sakte).
+   2. ANTI-DEVTOOLS DETERRENT — right-click / F12 / Ctrl+U/S/P /
+      view-source shortcuts block; debugger-trap sirf devtools khulne
+      par pause karta hai (normal user par zero asar).
+   3. CONSOLE LEGAL WARNING — IT Act 2000 u/s 66 + Copyright Act 1957
+      u/s 63 ka notice.
+   4. SELECT/DRAG OFF — UI text copy-select nahi hoti (inputs exempt).
+   Note: client-side code ko 100% hidden karna technically impossible
+   hai (browser ko chalane ke liye code chahiye) — isliye asli source
+   ab PRIVATE repo me hai aur public par sirf obfuscated build jaata
+   hai (scripts/protect-build.mjs). Ye shield copied/rehosted copies
+   ko todta hai + chori ko legally/technically mehnga karta hai.
+   ================================================================ */
+(function () {
+  'use strict';
+
+  /* ---------- 1. ORIGIN LOCK ---------- */
+  var ALLOWED_HOSTS = [
+    'deepsilence10161-source.github.io',   // official web (GitHub Pages)
+    'localhost', '127.0.0.1',              // dev / QA harness
+    'capacitor', 'ionic'                   // APK WebView schemes (capacitor://, https://localhost)
+  ];
+  function _hostKind() {
+    try {
+      var h = (location.hostname || '').toLowerCase();
+      var p = (location.protocol || '').toLowerCase();
+      if (p === 'file:') return 'ok';                 // APK local assets (if any)
+      for (var i = 0; i < ALLOWED_HOSTS.length; i++) {
+        if (h === ALLOWED_HOSTS[i]) return 'ok';
+        if (h.indexOf('.' + ALLOWED_HOSTS[i]) > -1) return 'ok';  // subdomains
+      }
+      if (p.indexOf('capacitor') === 0) return 'ok';
+      return 'bad:' + h;
+    } catch (e) { return 'ok'; }
+  }
+  var _lockMsg =
+    '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;' +
+    'background:#07070c;color:#fff;font-family:system-ui,Segoe UI,sans-serif;text-align:center;padding:24px">' +
+    '<div style="max-width:420px"><div style="font-size:44px">🔒</div>' +
+    '<h1 style="font-size:20px;margin:14px 0 6px;color:#ff5470">Unauthorized Copy Detected</h1>' +
+    '<p style="font-size:13px;line-height:1.7;color:#c9c9d6">Ye application <b>Mini eSports</b> ki proprietary property hai ' +
+    '(© 2026 Mini eSports, India). Is host par chalana <b>Copyright Act 1957 u/s 63</b> aur <b>IT Act 2000 u/s 66</b> ka ' +
+    'ullanghan hai. Asli app sirf official source se install karein.</p>' +
+    '<p style="font-size:12px;color:#8b8ba0;margin-top:10px">Host: ' + (location.hostname || '?') + '</p></div></div>';
+  function _applyLock() {
+    try {
+      document.title = '🔒 Unauthorized Copy';
+      if (document.body) document.body.innerHTML = _lockMsg;
+      else document.documentElement.innerHTML = '<body style="margin:0">' + _lockMsg + '</body>';
+    } catch (e) {}
+  }
+  var _kind = _hostKind();
+  if (_kind !== 'ok') {
+    window.__MINI_LOCKED = true;
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _applyLock);
+    } else { _applyLock(); }
+    setInterval(_applyLock, 800);   // DOM wapas lane ki koshish na kam aaye
+  }
+
+  /* ---------- 2. ANTI-DEVTOOLS DETERRENT ---------- */
+  function _isField(el) {
+    return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+  }
+  document.addEventListener('contextmenu', function (e) {
+    if (_isField(e.target)) return;
+    e.preventDefault();
+  }, { passive: false });
+  document.addEventListener('keydown', function (e) {
+    if (_isField(e.target)) return;
+    var k = e.key || '';
+    if (k === 'F12') { e.preventDefault(); return; }
+    if (e.ctrlKey && (k === 'u' || k === 'U' || k === 's' || k === 'S' || k === 'p' || k === 'P')) { e.preventDefault(); return; }
+    if (e.ctrlKey && e.shiftKey && (k === 'I' || k === 'i' || k === 'J' || k === 'j' || k === 'C' || k === 'c')) { e.preventDefault(); return; }
+    if (e.ctrlKey && (k === 'a' || k === 'A') && !_isField(e.target)) { e.preventDefault(); return; }
+  });
+  document.addEventListener('dragstart', function (e) { if (!_isField(e.target)) e.preventDefault(); });
+  document.addEventListener('selectstart', function (e) { if (!_isField(e.target)) e.preventDefault(); });
+  /* debugger-trap: sirf devtools khula ho to pause; normal user ko feel nahi hota */
+  setInterval(function () { try { Function('debugger')(); } catch (e) {} }, 1600);
+
+  /* ---------- 3. CONSOLE LEGAL WARNING ---------- */
+  setTimeout(function () {
+    try {
+      console.log('%c⛔ RUK JAIYE!', 'font-size:34px;color:#ff5470;font-weight:900');
+      console.log('%cYe browser console Mini eSports app ka proprietary code debug karne ke liye protected area hai.\n' +
+        'Yahan paste karne ko kaha jaye to wo SCAM hai (self-XSS).\n' +
+        'Code/content ki anadhikrit copy: Copyright Act 1957 u/s 63 + IT Act 2000 u/s 66 — 3 saal tak ki saza + jurmana.\n' +
+        '© 2026 Mini eSports. All rights reserved.', 'font-size:13px;color:#c9c9d6');
+    } catch (e) {}
+  }, 600);
+})();

@@ -1,1 +1,1281 @@
-(function(){'use strict';var _0x598015=(function(){var _0x3d6873=!![];return function(_0x3eae13,_0x5ff178){var _0x2b2a47=_0x3d6873?function(){if(_0x5ff178){var _0x9456a6=_0x5ff178['apply'](_0x3eae13,arguments);return _0x5ff178=null,_0x9456a6;}}:function(){};return _0x3d6873=![],_0x2b2a47;};}());function _0x415068(){var _0x334b55=_0x598015(this,function(){if(_0x334b55['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x334b55['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x334b55)['search']('(((.+)+)+)+$');});_0x334b55();if(!window['db']||!window['_supa']){setTimeout(_0x415068,0x12c);return;}_0x4aa76b();}function _0x242b63(){if(window['U'])return window['U']['uid'];if(window['_supa']){var _0x21dbe0=window['_supa']['auth']['session']?window['_supa']['auth']['session']():null;return _0x21dbe0&&_0x21dbe0['user']?_0x21dbe0['user']['id']:null;}return null;}function _0x751647(_0xa898b9){if(!_0xa898b9)return![];var _0x17e72c=_0xa898b9['split']('/')[0x0],_0x32033a=['.info','support','supportTyping','appSettings','admins','presence'];return _0x32033a['indexOf'](_0x17e72c)!==-0x1;}function _0x1b0229(_0x38f3ae,_0xb9053a,_0x3e1bea){if(!window['DB']||!window['_supa'])return Promise['resolve']();var _0x4ae01f=_0x242b63(),_0xd89145=_0x38f3ae['split']('/')['filter'](Boolean),_0x4131f0=_0xd89145[0x0];if((_0x4131f0==='tdsRecords'||_0x4131f0==='tdsHeld')&&window['_fbDb']){if(_0x3e1bea)return window['_fbDb']['ref'](_0x38f3ae)['update'](_0xb9053a);return window['_fbDb']['ref'](_0x38f3ae)['set'](_0xb9053a);}if(_0x4131f0==='users'&&_0xd89145[0x1]){var _0x49ec71=_0xd89145[0x1],_0x3cdfda=_0xd89145[0x2];if(!_0x3cdfda)return window['_supa']['from']('users')['upsert']({'id':_0x49ec71,..._0xb9053a});if(_0x3cdfda==='coins'){var _0x176f8e=typeof _0xb9053a==='number'?_0xb9053a:parseInt(_0xb9053a)||0x0;if(_0x176f8e<0x0)return window['_supa']['rpc']('decrement_balance',{'p_uid':_0x49ec71,'p_col':'coins','p_amount':-_0x176f8e});return console['error']('[Bridge]\x20users/coins\x20generic\x20CREDIT\x20path\x20blocked\x20(delta:',_0x176f8e,')\x20—\x20write\x20a\x20dedicated\x20RPC\x20for\x20this\x20specific\x20reward/reason\x20instead\x20of\x20crediting\x20through\x20this\x20generic\x20path.'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20generic\x20coin\x20credit\x20disabled\x20—\x20dedicated\x20server\x20RPC\x20use\x20karo'));}if(_0x3cdfda==='realMoney'){var _0x2f9cc5=_0xd89145[0x3];if(_0x2f9cc5==='deposited'||_0x2f9cc5==='winnings')return console['error']('[Bridge]\x20users/realMoney/'+_0x2f9cc5+'\x20generic\x20CREDIT\x20path\x20blocked\x20—\x20write\x20a\x20dedicated\x20RPC\x20for\x20this\x20specific\x20reward/reason\x20instead.'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20generic\x20realMoney/'+_0x2f9cc5+'\x20credit\x20disabled\x20—\x20dedicated\x20server\x20RPC\x20use\x20karo'));}if(_0x3cdfda==='greenDiamonds'){var _0x3fbadb=typeof _0xb9053a==='number'?_0xb9053a:parseInt(_0xb9053a)||0x0;if(_0x3fbadb<0x0)return window['_supa']['rpc']('decrement_balance',{'p_uid':_0x49ec71,'p_col':'green_diamonds','p_amount':-_0x3fbadb});return console['error']('[Bridge]\x20users/greenDiamonds\x20generic\x20CREDIT\x20path\x20blocked\x20(delta:',_0x3fbadb,')\x20—\x20write\x20a\x20dedicated\x20RPC\x20instead.'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20generic\x20greenDiamonds\x20credit\x20disabled\x20—\x20dedicated\x20server\x20RPC\x20use\x20karo'));}if(_0x3cdfda==='skyDiamonds'){var _0x3ce70e=typeof _0xb9053a==='number'?_0xb9053a:parseInt(_0xb9053a)||0x0;if(_0x3ce70e<0x0)return window['_supa']['rpc']('decrement_balance',{'p_uid':_0x49ec71,'p_col':'sky_diamonds','p_amount':-_0x3ce70e});return console['error']('[Bridge]\x20users/skyDiamonds\x20generic\x20CREDIT\x20path\x20blocked\x20(delta:',_0x3ce70e,')\x20—\x20write\x20a\x20dedicated\x20RPC\x20instead.'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20generic\x20skyDiamonds\x20credit\x20disabled\x20—\x20dedicated\x20server\x20RPC\x20use\x20karo'));}if(_0x3cdfda==='stats'){var _0xc3da96=_0xd89145[0x3],_0x547d43={};if(_0xc3da96==='matches')_0x547d43['total_matches']=parseInt(_0xb9053a)||0x0;if(_0xc3da96==='wins')_0x547d43['total_wins']=parseInt(_0xb9053a)||0x0;if(_0xc3da96==='kills')_0x547d43['total_kills']=parseInt(_0xb9053a)||0x0;if(Object['keys'](_0x547d43)['length'])return window['_supa']['from']('users')['update'](_0x547d43)['eq']('id',_0x49ec71);}if(_0x3cdfda==='notifications'){if(typeof _0xb9053a==='object'&&_0xb9053a!==null)return window['_supa']['from']('notifications')['insert']({'user_id':_0x49ec71,'type':_0xb9053a['type']||'system','title':_0xb9053a['title']||'','body':_0xb9053a['message']||_0xb9053a['body']||'','ref_id':_0xb9053a['matchId']||null});}if(_0x3cdfda==='clanId')return window['_supa']['from']('users')['update']({'clan_id':_0xb9053a||null})['eq']('id',_0x49ec71);if(_0x3cdfda==='premium'&&typeof _0xb9053a==='object'&&_0xb9053a!==null)return console['error']('[Bridge]\x20Blocked\x20attempted\x20client-side\x20premium_level/premium_expires\x20write\x20for',_0x49ec71,'—\x20this\x20bridge\x20cannot\x20grant\x20premium.\x20Use\x20approve_premium\x20(admin)\x20or\x20start_free_trial\x20RPCs\x20instead.'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20premium_level/premium_expires\x20client-writable\x20nahi\x20—\x20approve_premium/start_free_trial\x20RPC\x20use\x20karo'));if(_0x3cdfda==='premium_level'||_0x3cdfda==='premiumLevel')return console['error']('[Bridge]\x20Blocked\x20attempted\x20client-side\x20premium_level\x20write\x20for',_0x49ec71,'—\x20use\x20approve_premium\x20(admin)\x20or\x20start_free_trial\x20RPCs\x20instead.'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20premium_level\x20client-writable\x20nahi\x20—\x20admin-checked\x20RPC\x20use\x20karo'));if(_0x3cdfda==='missionProgress'&&_0xd89145[0x3]!=null){var _0x2cda94=new Date()['toISOString']()['split']('T')[0x0],_0x2c8405=_0xd89145[0x3],_0x3ddb18=/^claimed_(.+?)_(.+)$/['exec'](_0x2c8405);if(_0x3ddb18)return window['_supa']['rpc']('claim_mission_reward',{'p_mission_key':_0x3ddb18[0x1],'p_period':_0x3ddb18[0x2],'p_coins':0x0});return window['_supa']['rpc']('track_mission_progress',{'p_mission_key':_0x2c8405,'p_period':_0x2cda94,'p_progress':Number(_0xb9053a)||0x0,'p_target':0x1});}if(_0x3cdfda==='missionProgress'&&typeof _0xb9053a==='object'){var _0x16c2a3=new Date()['toISOString']()['split']('T')[0x0],_0x5b70fe=Object['keys'](_0xb9053a)['map'](function(_0x156a98){return window['_supa']['rpc']('track_mission_progress',{'p_mission_key':_0x156a98,'p_period':_0x16c2a3,'p_progress':_0xb9053a[_0x156a98]||0x0,'p_target':0x1});});return Promise['all'](_0x5b70fe)['then'](function(_0x239eff){var _0x1b44d8=_0x239eff['find'](function(_0x4fc5af){return _0x4fc5af&&(_0x4fc5af['error']||_0x4fc5af['data']&&_0x4fc5af['data']['success']===![]);});if(_0x1b44d8){var _0x50513a=_0x1b44d8['data']&&_0x1b44d8['data']['error']||_0x1b44d8['error']&&_0x1b44d8['error']['message'];return console['error']('[Bridge]\x20missionProgress\x20sync\x20failed\x20for\x20one\x20or\x20more\x20keys:',_0x50513a),{'error':{'message':_0x50513a}};}return{'error':null};});}if(_0x3cdfda==='cosmetics'&&_0xd89145[0x3])return window['_supa']['from']('user_cosmetics')['upsert']({'user_id':_0x49ec71,'cosmetic_key':_0xd89145[0x3],'purchased_at':new Date()['toISOString']()},{'onConflict':'user_id,cosmetic_key'});if(_0x3cdfda==='profileImage')return window['_supa']['from']('users')['update']({'avatar_url':_0xb9053a})['eq']('id',_0x49ec71);var _0x40094e={'duoTeam':'duo_team','squadTeam':'squad_team','partnerUid':'partner_uid','squadUids':'squad_uids'};if(_0x3cdfda==='duoTeam'||_0x3cdfda==='squadTeam'||_0x3cdfda==='partnerUid'||_0x3cdfda==='squadUids'){var _0x525a0d={};return _0x525a0d[_0x40094e[_0x3cdfda]]=_0xb9053a,window['_supa']['from']('users')['update'](_0x525a0d)['eq']('id',_0x49ec71);}if(_0x3cdfda==='coinHistory'&&typeof _0xb9053a==='object')return console['warn']('[Bridge]\x20users/coinHistory\x20client\x20LEADER\x20WRITE\x20blocked\x20—\x20server\x20RPC\x20is\x20the\x20only\x20ledger\x20authority'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20ledger\x20sirf\x20server\x20likhta\x20hai'));if(_0x3cdfda==='transactions'&&typeof _0xb9053a==='object')return console['warn']('[Bridge]\x20users/transactions\x20client\x20LEADER\x20WRITE\x20blocked\x20—\x20server\x20RPC\x20is\x20the\x20only\x20ledger\x20authority'),window['__bridgeBlocked']=(window['__bridgeBlocked']||0x0)+0x1,Promise['reject'](new Error('BLOCKED:\x20ledger\x20sirf\x20server\x20likhta\x20hai'));if(_0x3cdfda==='avatarBgColor')return window['_supa']['from']('users')['update']({'avatar_bg_color':_0xb9053a||null})['eq']('id',_0x49ec71)['then'](null,function(){});if(_0x3cdfda==='bio')return window['_supa']['from']('users')['update']({'bio':_0xb9053a||null})['eq']('id',_0x49ec71)['then'](null,function(){});if(_0x3cdfda==='isLive')return window['_supa']['from']('users')['update']({'is_live':Boolean(_0xb9053a)})['eq']('id',_0x49ec71)['then'](null,function(){});if(_0x3cdfda==='streamLink')return window['_supa']['from']('users')['update']({'stream_link':_0xb9053a||null})['eq']('id',_0x49ec71)['then'](null,function(){});if(_0x3cdfda==='rival')return window['_supa']['from']('users')['update']({'rival_uid':_0xb9053a||null})['eq']('id',_0x49ec71)['then'](null,function(){});if(_0x3cdfda==='selfExcluded'||_0x3cdfda==='selfExcludedTill'){if(window['_fbDb'])window['_fbDb']['ref'](_0x38f3ae)['set'](_0xb9053a);return Promise['resolve']();}if(_0x3cdfda==='watchEarnings'&&_0xd89145[0x3]&&typeof _0xb9053a==='object')return window['_supa']['from']('watch_earn_log')['upsert']({'user_id':_0x49ec71,'log_date':new Date()['toISOString']()['split']('T')[0x0],'coins_earned':_0xb9053a['totalCoins']||0x0,'watched_mins':_0xb9053a['totalMins']||0x0},{'onConflict':'user_id,log_date'})['then'](null,function(){});return Promise['resolve']();}if(_0x4131f0==='joinRequests'&&_0xd89145[0x1]){var _0x50ced8=_0xd89145[0x1],_0x5a80a6=_0xd89145[0x2];if(_0x5a80a6==='refunded')return Promise['resolve']();if(_0x5a80a6==='inRoom')return Promise['resolve']();if(!_0x5a80a6&&typeof _0xb9053a==='object')return window['_supa']['from']('join_requests')['update']({'ign_at_join':_0xb9053a['userName']||_0xb9053a['userIGN']||''})['eq']('match_id',_0xb9053a['matchId'])['eq']('user_id',_0xb9053a['userId'])['then'](function(_0x4d94b1){return _0x4d94b1;});if(!_0x5a80a6&&_0x3e1bea)return Promise['resolve']();}if(_0x4131f0==='walletRequests'&&_0xd89145[0x1]&&typeof _0xb9053a==='object')return window['_supa']['from']('sd_requests')['upsert']({'id':_0xd89145[0x1],'user_id':_0xb9053a['uid']||_0x242b63(),'amount_inr':_0xb9053a['amount']||0x0,'sd_amount':_0xb9053a['sdAmount']||_0xb9053a['amount']||0x0,'upi_ref':_0xb9053a['upiId']||_0xb9053a['utr']||null,'status':_0xb9053a['status']||'pending','created_at':new Date()['toISOString']()},{'onConflict':'id'});if(_0x4131f0==='referrals'&&_0xd89145[0x1]&&typeof _0xb9053a==='object')return window['_supa']['from']('referrals')['upsert']({'id':_0xd89145[0x1],'referrer_id':_0xb9053a['referrerId'],'referred_id':_0xb9053a['referredUid']||_0xb9053a['referredId'],'join_bonus_paid':!![]},{'onConflict':'referred_id'});if(_0x4131f0==='clans'){if(_0xd89145[0x1]&&!_0xd89145[0x2]&&typeof _0xb9053a==='object')return window['_supa']['from']('clans')['upsert']({'id':_0xd89145[0x1],'name':_0xb9053a['name']||'','tag':_0xb9053a['tag']||(_0xb9053a['name']||'')['substr'](0x0,0x3)['toUpperCase'](),'description':_0xb9053a['description']||null,'leader_uid':_0xb9053a['leaderId']||_0x242b63(),'total_members':_0xb9053a['memberCount']||0x1},{'onConflict':'id'});if(_0xd89145[0x1]&&_0xd89145[0x2]==='members'&&_0xd89145[0x3]){if(_0xb9053a===null)return window['_supa']['from']('clan_members')['delete']()['eq']('clan_id',_0xd89145[0x1])['eq']('user_id',_0xd89145[0x3]);return window['_supa']['from']('clan_members')['upsert']({'clan_id':_0xd89145[0x1],'user_id':_0xd89145[0x3],'role':_0xb9053a['role']||'member'},{'onConflict':'clan_id,user_id'});}}if(_0x4131f0==='clanChats'&&_0xd89145[0x1]&&typeof _0xb9053a==='object')return window['_supa']['from']('clan_messages')['insert']({'clan_id':_0xd89145[0x1],'sender_id':_0x242b63()||_0xb9053a['senderId'],'sender_ign':_0xb9053a['ign']||_0xb9053a['senderIgn']||window['UD']&&window['UD']['ign']||'','message':_0xb9053a['text']||_0xb9053a['message']||''})['then'](null,function(_0x2bea33){console['warn']('[Bridge]\x20clan_messages\x20insert\x20error:',_0x2bea33['message']);});if(_0x4131f0==='creatorStats'&&_0xd89145[0x1]){var _0x423cb0=_0xd89145[0x1],_0x55aaef=_0xd89145[0x2],_0x547d43={'user_id':_0x423cb0};if(!_0x55aaef&&typeof _0xb9053a==='object'&&_0xb9053a!==null){if(_0xb9053a['totalEarnings']!==undefined)_0x547d43['total_earnings']=Number(_0xb9053a['totalEarnings'])||0x0;if(_0xb9053a['referralCount']!==undefined)_0x547d43['referral_count']=Number(_0xb9053a['referralCount'])||0x0;if(_0xb9053a['activeReferrals']!==undefined)_0x547d43['active_referrals']=Number(_0xb9053a['activeReferrals'])||0x0;if(_0xb9053a['creatorCode'])_0x547d43['creator_code']=_0xb9053a['creatorCode'];if(_0xb9053a['status'])_0x547d43['status']=_0xb9053a['status'];if(_0xb9053a['commission'])_0x547d43['commission_rate']=Number(_0xb9053a['commission'])||0x0;}else{if(_0x55aaef==='totalEarnings'||_0x55aaef==='total_earnings')_0x547d43['total_earnings']=Number(_0xb9053a)||0x0;else{if(_0x55aaef==='referralCount'||_0x55aaef==='referral_count')_0x547d43['referral_count']=Number(_0xb9053a)||0x0;else{if(_0x55aaef==='activeReferrals'||_0x55aaef==='active_referrals')_0x547d43['active_referrals']=Number(_0xb9053a)||0x0;else{if(_0x55aaef==='creatorCode'||_0x55aaef==='creator_code')_0x547d43['creator_code']=_0xb9053a||'';else _0x55aaef==='status'?_0x547d43['status']=_0xb9053a||'pending':_0x547d43['creator_code']=_0x423cb0;}}}}return window['_supa']['from']('creator_applications')['upsert'](_0x547d43,{'onConflict':'user_id'})['then'](null,function(){});}if(_0x4131f0==='matches'&&_0xd89145[0x1]&&_0xd89145[0x2]==='joinedSlots')return Promise['resolve']();if(_0x4131f0==='matches'&&_0xd89145[0x2]==='spectators'){if(window['_fbDb'])return window['_fbDb']['ref'](_0x38f3ae)['set'](_0xb9053a);}if(_0x4131f0==='matchResults'&&_0xd89145[0x1]&&typeof _0xb9053a==='object'&&_0xb9053a!==null)return window['_supa']['from']('match_results')['upsert']({'match_id':_0xd89145[0x1],'user_id':_0xd89145[0x2]||_0xb9053a['userId']||_0x242b63(),'placement':_0xb9053a['placement']||_0xb9053a['rank']||null,'kills':_0xb9053a['kills']||0x0,'prize':_0xb9053a['prize']||_0xb9053a['prizeAmount']||0x0,'created_at':new Date()['toISOString']()},{'onConflict':'match_id,user_id'});if(_0x4131f0==='matchFeedback'||_0x4131f0==='profileViews'||_0x4131f0==='killProofs'||_0x4131f0==='partnerRatings')return Promise['resolve']();if(_0x4131f0==='premiumRequests'&&_0xd89145[0x1]&&typeof _0xb9053a==='object')return window['_supa']['from']('premium_requests')['upsert']({'id':_0xd89145[0x1],'user_id':_0xb9053a['uid']||_0x242b63(),'user_name':_0xb9053a['userName']||'','tier':_0xb9053a['tier']||0x1,'price':_0xb9053a['price']||0x31,'screenshot_url':_0xb9053a['screenshotBase64']||_0xb9053a['screenshotUrl']||null,'status':_0xb9053a['status']||'pending','created_at':new Date()['toISOString']()},{'onConflict':'id'})['then'](null,function(_0x3d325b){return console['warn']('[Bridge]\x20premium_requests\x20table\x20missing,\x20using\x20fallback:',_0x3d325b['message']),window['_supa']['from']('notifications')['insert']({'user_id':_0xb9053a['uid']||_0x242b63(),'type':'premium_request','title':'💳\x20Premium\x20Request\x20#'+_0xd89145[0x1],'body':'Tier\x20'+(_0xb9053a['tier']||0x1)+'\x20(₹'+(_0xb9053a['price']||0x31)+')\x20—\x20Screenshot:\x20'+(_0xb9053a['screenshotBase64']?'Attached':'None'),'is_read':![]})['then'](null,function(){});});if(_0x4131f0==='creatorCodes'&&_0xd89145[0x1]&&typeof _0xb9053a==='object')return window['_supa']['from']('creator_applications')['update']({'creator_code':_0xd89145[0x1]})['eq']('user_id',_0xb9053a['uid']||_0x242b63())['then'](null,function(){});if(_0x4131f0==='liveStreams'&&_0xd89145[0x1]){if(_0xb9053a===null)return window['_supa']['from']('live_streams')['delete']()['eq']('id',_0xd89145[0x1])['then'](null,function(){});if(typeof _0xb9053a==='object')return window['_supa']['from']('live_streams')['upsert']({'id':_0xd89145[0x1],'match_id':_0xb9053a['matchId']||null,'user_id':_0xb9053a['uid']||_0x242b63(),'stream_url':_0xb9053a['streamLink']||_0xb9053a['youtubeLink']||'','title':_0xb9053a['title']||'','is_live':_0xb9053a['isLive']!==![],'viewer_count':_0xb9053a['viewerCount']||0x0,'updated_at':new Date()['toISOString']()},{'onConflict':'id'})['then'](null,function(_0x570b17){console['warn']('[Bridge]\x20live_streams\x20table\x20missing:',_0x570b17['message']);});}if(_0x4131f0==='adminAlerts'&&typeof _0xb9053a==='object')return window['_supa']['from']('admin_activity_log')['insert']({'action_type':_0xb9053a['type']||'anti_cheat_alert','note':_0xb9053a['message']||_0xb9053a['reason']||JSON['stringify'](_0xb9053a)['substring'](0x0,0x1f4),'target_user_id':_0xb9053a['uid']||_0x242b63()||null,'created_at':new Date()['toISOString']()})['then'](null,function(){});if(_0x4131f0==='disputes'&&typeof _0xb9053a==='object'&&_0xb9053a!==null){var _0x3a0223=_0xb9053a['matchId']||null,_0x54e947=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;return window['_supa']['from']('disputes')['insert']({'match_id':_0x3a0223&&_0x54e947['test'](_0x3a0223)?_0x3a0223:null,'user_id':_0xb9053a['uid']||_0x242b63(),'type':_0xb9053a['type']||'other','message':_0xb9053a['description']||_0xb9053a['message']||'','status':_0xb9053a['status']||'open'})['then'](null,function(_0x1927cd){console['warn']('[Bridge]\x20disputes\x20write:',_0x1927cd&&_0x1927cd['message']);});}if(_0x4131f0==='kycRequests'&&typeof _0xb9053a==='object'&&_0xb9053a!==null)return window['_supa']['from']('kyc_requests')['insert']({'user_id':_0xb9053a['uid']||_0xd89145[0x1]||_0x242b63(),'document_type':'pan_aadhaar','document_url':JSON['stringify']({'ign':_0xb9053a['ign']||'','pan':_0xb9053a['pan']||'','aadhaarLast4':_0xb9053a['aadhaarLast4']||'','name':_0xb9053a['name']||''}),'status':_0xb9053a['status']||'pending'})['then'](null,function(_0x286e0f){console['warn']('[Bridge]\x20kyc_requests\x20write:',_0x286e0f&&_0x286e0f['message']);});if(_0x4131f0==='matchChat'&&_0xd89145[0x1]&&_0xb9053a&&typeof _0xb9053a==='object'&&_0xb9053a['text'])return window['_supa']['from']('match_chat')['insert']({'match_id':_0xd89145[0x1],'user_id':_0xb9053a['uid']||_0x242b63(),'name':_0xb9053a['name']||'Player','text':String(_0xb9053a['text'])['slice'](0x0,0x1f4)})['then'](null,function(_0x4e8cf5){console['warn']('[Bridge]\x20matchChat\x20write:',_0x4e8cf5&&_0x4e8cf5['message']);});if(_0x4131f0==='polls'){if(_0xd89145[0x1]&&_0xd89145[0x2]==='votes'&&_0xd89145[0x3]){var _0x5f1dd9=_0xd89145[0x1],_0x44fcbf=_0xd89145[0x3],_0x4a9c06=_0xb9053a&&_0xb9053a['optionIdx']!==undefined?Number(_0xb9053a['optionIdx']):Number(_0xb9053a||0x0);return window['_supa']['from']('poll_votes')['upsert']({'poll_id':_0x5f1dd9,'user_id':_0x44fcbf||_0x242b63(),'option_idx':_0x4a9c06},{'onConflict':'poll_id,user_id'})['then'](null,function(){});}return Promise['resolve']();}return Promise['resolve']();}function _0x449c0b(_0x1f59c3){try{var _0x9b1f68=window['_bridgeListeners']||{};Object['keys'](_0x9b1f68)['forEach'](function(_0x4f7f1e){(_0x1f59c3===_0x4f7f1e||_0x1f59c3['indexOf'](_0x4f7f1e+'/')===0x0)&&_0x3e5671(_0x4f7f1e,function(_0x55f06c){((window['_bridgeListeners']||{})[_0x4f7f1e]||[])['forEach'](function(_0x34bed4){try{_0x34bed4(_0x55f06c);}catch(_0x4bca9d){}});});});}catch(_0x3422a7){}}function _0x3e5671(_0x1db5af,_0x18f208,_0x480ecc){_0x480ecc=_0x480ecc||{};if(!window['DB']||!window['_supa']){_0x18f208(null);return;}var _0x5565b2=_0x1db5af['split']('/')['filter'](Boolean),_0x1a80dc=_0x5565b2[0x0];if((_0x1a80dc==='tdsRecords'||_0x1a80dc==='tdsHeld')&&window['_fbDb']){window['_fbDb']['ref'](_0x1db5af)['once']('value',_0x18f208);return;}if(_0x1a80dc==='users'&&_0x5565b2[0x1]&&!_0x5565b2[0x2]){var _0x246a6d=_0x5565b2[0x1]===_0x242b63()?'users':'user_public_profiles';window['_supa']['from'](_0x246a6d)['select']('*')['eq']('id',_0x5565b2[0x1])['single']()['then'](function(_0x23dac5){_0x18f208(_0x323e5b(_0x23dac5['data'],_0x5565b2[0x1]));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='coins'){if(_0x5565b2[0x1]!==_0x242b63()){_0x18f208(_0x323e5b(0x0));return;}window['_supa']['from']('users')['select']('coins')['eq']('id',_0x5565b2[0x1])['single']()['then'](function(_0x2c26b8){_0x18f208(_0x323e5b(_0x2c26b8['data']?_0x2c26b8['data']['coins']:0x0));},function(){_0x18f208(_0x323e5b(0x0));});return;}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='kyc'){window['_supa']['from']('kyc_requests')['select']('*')['eq']('user_id',_0x5565b2[0x1])['order']('created_at',{'ascending':![]})['limit'](0x1)['maybeSingle']()['then'](function(_0x4805b9){var _0x3798a1=_0x4805b9&&_0x4805b9['data'];if(!_0x3798a1){_0x18f208(_0x323e5b(null));return;}var _0x319efe={};try{if(_0x3798a1['document_url']&&_0x3798a1['document_url'][0x0]==='{')_0x319efe=JSON['parse'](_0x3798a1['document_url']);}catch(_0x1673df){}_0x18f208(_0x323e5b({'status':_0x3798a1['status']==='approved'?'verified':_0x3798a1['status']||'pending','pan':_0x319efe['pan']||'','aadhaarLast4':_0x319efe['aadhaarLast4']||'','name':_0x319efe['name']||'','submittedAt':_0x3798a1['created_at']?new Date(_0x3798a1['created_at'])['getTime']():0x0}));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='sponsoredWinnings'){window['_supa']['from']('sponsored_prize_claims')['select']('prize_detail')['eq']('user_id',_0x5565b2[0x1])['then'](function(_0x3cfe42){var _0x422446=0x0;(_0x3cfe42['data']||[])['forEach'](function(_0x543ea){var _0x153b75=_0x543ea['prize_detail']||'',_0x74e04c=_0x153b75['match'](/[\d]+/);if(_0x74e04c)_0x422446+=parseInt(_0x74e04c[0x0])||0x0;}),_0x18f208(_0x323e5b(_0x422446));},function(){_0x18f208(_0x323e5b(0x0));});return;}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='watchEarnings'){var _0xd6cec3=_0x5565b2[0x3]||new Date()['toISOString']()['split']('T')[0x0];window['_supa']['from']('watch_earn_log')['select']('coins_earned,\x20watched_mins')['eq']('user_id',_0x5565b2[0x1])['eq']('log_date',_0xd6cec3)['then'](function(_0x215363){var _0x64bd48=_0x215363['data']||[],_0x2bab28=_0x64bd48['reduce'](function(_0x3658c0,_0x595ec3){return _0x3658c0+(_0x595ec3['coins_earned']||0x0);},0x0);_0x18f208(_0x323e5b(_0x2bab28));},function(){_0x18f208(_0x323e5b(0x0));});return;}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='missionProgress'){var _0x463e75=new Date()['toISOString']()['split']('T')[0x0];window['_supa']['from']('mission_progress')['select']('*')['eq']('user_id',_0x5565b2[0x1])['gte']('period',_0x463e75)['then'](function(_0xaed589){var _0x22c176={};(_0xaed589['data']||[])['forEach'](function(_0x43bf97){_0x22c176[_0x43bf97['mission_key']]=_0x43bf97['progress'];if(_0x43bf97['reward_claimed'])_0x22c176['claimed_'+_0x43bf97['mission_key']+'_'+_0x43bf97['period']]=!![];});var _0x1c742e=_0x5565b2[0x3]||null;_0x18f208(_0x323e5b(_0x1c742e?_0x22c176[_0x1c742e]!=null?_0x22c176[_0x1c742e]:null:_0x22c176));},function(){_0x18f208(_0x323e5b(_0x5565b2[0x3]?null:{}));});return;}if(_0x1a80dc==='joinRequests'&&_0x5565b2[0x1]){window['_supa']['from']('join_requests')['select']('*')['eq']('id',_0x5565b2[0x1])['single']()['then'](function(_0x22ad62){_0x18f208(_0x323e5b(_0x22ad62['data'],_0x5565b2[0x1]));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='referrals'){window['_supa']['from']('referrals')['select']('*')['eq']('referrer_id',_0x242b63())['then'](function(_0x11e633){var _0x247d84=_0x4b73d9(_0x11e633['data']||[]);_0x18f208(_0x247d84);},function(){_0x18f208(_0x4b73d9([]));});return;}if(_0x1a80dc==='clans'&&_0x5565b2[0x1]&&!_0x5565b2[0x2]){window['_supa']['from']('clans')['select']('*')['eq']('id',_0x5565b2[0x1])['single']()['then'](function(_0x5c6e94){_0x18f208(_0x323e5b(_0x5c6e94['data'],_0x5565b2[0x1]));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='clans'&&!_0x5565b2[0x1]){window['_supa']['from']('clans')['select']('*')['order']('total_wins',{'ascending':![]})['limit'](0x14)['then'](function(_0x2ac025){_0x18f208(_0x4b73d9(_0x2ac025['data']||[]));},function(){_0x18f208(_0x4b73d9([]));});return;}if(_0x1a80dc==='battlePass'&&_0x5565b2[0x1]&&_0x5565b2[0x2]){window['_supa']['from']('battle_pass_progress')['select']('*')['eq']('user_id',_0x5565b2[0x2])['eq']('season_key',_0x5565b2[0x1])['maybeSingle']()['then'](function(_0x2016d0){_0x18f208(_0x323e5b(_0x2016d0['data'],_0x5565b2[0x2]));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='users'&&!_0x5565b2[0x1]){var _0xcb2c9b=_0x480ecc['limit']||0x64;window['_supa']['from']('user_public_profiles')['select']('id,ign,avatar_url,rank_points,rank_tier,total_wins,total_kills,total_matches,city,ff_uid')['order']('rank_points',{'ascending':![]})['limit'](_0xcb2c9b)['then'](function(_0x487b18){_0x18f208(_0x4b73d9(_0x487b18['data']||[],'id'));},function(){_0x18f208(_0x4b73d9([]));});return;}if(_0x1a80dc==='matches'&&_0x5565b2[0x1]&&_0x5565b2[0x2]==='joinedPlayers'){window['_supa']['from']('join_requests')['select']('user_id,ign_at_join,status')['eq']('match_id',_0x5565b2[0x1])['not']('status','in','(cancelled,refunded,rejected,no_show)')['then'](function(_0x4f892f){var _0x42cfc7={};(_0x4f892f['data']||[])['forEach'](function(_0x1fddca){_0x42cfc7[_0x1fddca['user_id']]={'ign':_0x1fddca['ign_at_join'],'status':_0x1fddca['status']};}),_0x18f208(_0x323e5b(_0x42cfc7));},function(){_0x18f208(_0x323e5b({}));});return;}if(_0x1a80dc==='matches'&&_0x5565b2[0x2]==='spectators'){if(window['_fbDb']){window['_fbDb']['ref'](_0x1db5af)['once']('value',_0x18f208);return;}}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='watchEarnings'&&_0x5565b2[0x3]){window['_supa']['from']('watch_earn_log')['select']('coins_earned')['eq']('user_id',_0x5565b2[0x1])['eq']('log_date',_0x5565b2[0x3])['then'](function(_0x1b437d){var _0xf383b2=(_0x1b437d['data']||[])['reduce'](function(_0x4f0dd8,_0x3e688b){return _0x4f0dd8+(_0x3e688b['coins_earned']||0x0);},0x0);_0x18f208(_0x323e5b(_0xf383b2||0x0));},function(){_0x18f208(_0x323e5b(0x0));});return;}if(_0x1a80dc==='matchResults'&&_0x5565b2[0x1]){window['_supa']['from']('match_results')['select']('*')['eq']('match_id',_0x5565b2[0x1])['then'](function(_0x33d46c){var _0x2e80d4={};(_0x33d46c['data']||[])['forEach'](function(_0x3f5227){_0x2e80d4[_0x3f5227['user_id']]=_0x3f5227;}),_0x18f208(_0x323e5b(Object['keys'](_0x2e80d4)['length']?_0x2e80d4:null));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='results'){window['_supa']['from']('match_results')['select']('*,matches(name,matchTime)')['order']('created_at',{'ascending':![]})['limit'](0xa)['then'](function(_0x447795){_0x18f208(_0x4b73d9(_0x447795['data']||[]));},function(){_0x18f208(_0x4b73d9([]));});return;}if(_0x1a80dc==='users'&&_0x5565b2[0x2]==='coinHistory'){window['_supa']['from']('wallet_transactions')['select']('amount,txn_type,reason,created_at')['eq']('user_id',_0x5565b2[0x1])['eq']('currency','coins')['order']('created_at',{'ascending':![]})['limit'](0x14)['then'](function(_0x442754){var _0x508429={};(_0x442754['data']||[])['forEach'](function(_0x587cd4,_0x3c1a0a){_0x508429['txn_'+_0x3c1a0a]={'amount':_0x587cd4['txn_type']==='credit'?_0x587cd4['amount']||0x0:-(_0x587cd4['amount']||0x0),'reason':_0x587cd4['reason']||'','timestamp':new Date(_0x587cd4['created_at'])['getTime']()};}),_0x18f208(_0x323e5b(Object['keys'](_0x508429)['length']?_0x508429:null));},function(){_0x18f208(_0x323e5b(null));});return;}if(_0x1a80dc==='liveStreams'){_0x5565b2[0x1]?window['_supa']['from']('live_streams')['select']('*')['eq']('id',_0x5565b2[0x1])['maybeSingle']()['then'](function(_0x1fd141){_0x18f208(_0x323e5b(_0x1fd141['data'],_0x5565b2[0x1]));},function(){_0x18f208(_0x323e5b(null));}):window['_supa']['from']('live_streams')['select']('*')['eq']('is_live',!![])['limit'](0x14)['then'](function(_0x24fd46){_0x18f208(_0x4b73d9(_0x24fd46['data']||[]));},function(){_0x18f208(_0x4b73d9([]));});return;}if(_0x1a80dc==='matchFeedback'){_0x18f208(_0x323e5b(null));return;}if(_0x1a80dc==='profileViews'){_0x18f208(_0x323e5b(null));return;}if(_0x1a80dc==='matchChat'&&_0x5565b2[0x1]){var _0x12e9de=_0x480ecc['limit']||0x14;window['_supa']['from']('match_chat')['select']('user_id,name,text,created_at')['eq']('match_id',_0x5565b2[0x1])['order']('created_at',{'ascending':![]})['limit'](_0x12e9de)['then'](function(_0xd3ba5b){var _0x53f4dc=(_0xd3ba5b['data']||[])['slice']()['reverse']()['map'](function(_0x1782df){return{'uid':_0x1782df['user_id'],'name':_0x1782df['name'],'text':_0x1782df['text'],'ts':_0x1782df['created_at']?new Date(_0x1782df['created_at'])['getTime']():0x0};});_0x18f208(_0x4b73d9(_0x53f4dc));},function(){_0x18f208(_0x4b73d9([]));});return;}if(_0x1a80dc==='supportRequests'){var _0x5625d7=_0x242b63();if(!_0x5625d7){_0x18f208(_0x4b73d9([]));return;}window['_supa']['from']('support_tickets')['select']('*')['eq']('user_id',_0x5625d7)['order']('created_at',{'ascending':![]})['limit'](_0x480ecc['limit']||0x32)['then'](function(_0x23cad3){var _0x44dab8=(_0x23cad3['data']||[])['map'](function(_0x7b3f48){return{'id':_0x7b3f48['id'],'userId':_0x7b3f48['user_id'],'userName':_0x7b3f48['user_ign']||'','type':_0x7b3f48['subject']||'general','subject':_0x7b3f48['subject']||'general','message':_0x7b3f48['message']||'','status':_0x7b3f48['status']||'open','adminReply':_0x7b3f48['admin_reply']||'','createdAt':_0x7b3f48['created_at']?new Date(_0x7b3f48['created_at'])['getTime']():0x0,'repliedAt':_0x7b3f48['replied_at']?new Date(_0x7b3f48['replied_at'])['getTime']():0x0};});_0x18f208(_0x4b73d9(_0x44dab8,'id'));},function(){_0x18f208(_0x4b73d9([]));});return;}_0x18f208(_0x323e5b(null));}function _0x323e5b(_0x3f97e4,_0x689702){return{'val':function(){return _0x3f97e4;},'exists':function(){return _0x3f97e4!==null&&_0x3f97e4!==undefined;},'key':_0x689702||null,'forEach':function(_0x2812ca){_0x3f97e4&&typeof _0x3f97e4==='object'&&Object['keys'](_0x3f97e4)['forEach'](function(_0x311705){_0x2812ca(_0x323e5b(_0x3f97e4[_0x311705],_0x311705));});}};}function _0x4b73d9(_0x4dd900,_0x3c0585){var _0x1e047a={};return _0x4dd900['forEach'](function(_0x2f2949){var _0x2608ea=_0x2f2949[_0x3c0585||'id']||_0x2f2949['key']||Math['random']()['toString'](0x24)['substr'](0x2);_0x1e047a[_0x2608ea]=_0x2f2949;}),{'val':function(){return _0x1e047a;},'exists':function(){return _0x4dd900['length']>0x0;},'key':null,'forEach':function(_0x855c60){_0x4dd900['forEach'](function(_0x36885f){var _0x4cd7e6=_0x36885f[_0x3c0585||'id']||_0x36885f['key'];_0x855c60(_0x323e5b(_0x36885f,_0x4cd7e6));});}};}var _0x1182b2=[/^users\/[^/]+\/coins$/,/^users\/[^/]+\/realMoney\/(deposited|winnings)$/,/^users\/[^/]+\/greenDiamonds$/,/^users\/[^/]+\/skyDiamonds$/];function _0x1725d8(_0x16920f){return _0x1182b2['some'](function(_0x5d61a6){return _0x5d61a6['test'](_0x16920f);});}function _0x20847a(_0x2e29bd,_0x9f7743,_0x3d6d95){_0x3e5671(_0x2e29bd,function(_0x59dcf7){var _0x4eeb03=_0x59dcf7?_0x59dcf7['val']():null,_0xcb762=_0x9f7743(_0x4eeb03);if(_0xcb762===undefined){if(_0x3d6d95)_0x3d6d95(null,![],_0x59dcf7);return;}var _0xfa64d5=_0xcb762;_0x1725d8(_0x2e29bd)&&(_0xfa64d5=(Number(_0xcb762)||0x0)-(Number(_0x4eeb03)||0x0)),_0x1b0229(_0x2e29bd,_0xfa64d5,![])['then'](function(){var _0x3ead61=_0x323e5b(_0xcb762);if(_0x3d6d95)_0x3d6d95(null,!![],_0x3ead61);},function(_0x41232a){_0x5eb0aa(_0x2e29bd,_0xcb762,_0x41232a);if(_0x3d6d95)_0x3d6d95(_0x41232a,![],_0x59dcf7);});});}function _0x5eb0aa(_0x2ddf7a,_0x3c8564,_0x3e1799){var _0x19b57b=_0x3e1799&&_0x3e1799['message']||'Unknown\x20error',_0x67b6d2=_0x19b57b['indexOf']('Could\x20not\x20find\x20the\x20function')!==-0x1||_0x19b57b['indexOf']('function')!==-0x1||_0x19b57b['indexOf']('404')!==-0x1;if(_0x67b6d2){console['error']('[Bridge]\x20❌\x20Supabase\x20RPC\x20missing!\x20Run\x20SUPABASE_SQL_SETUP.sql\x20in\x20Supabase\x20Dashboard.\x20Path:',_0x2ddf7a);if(!window['_rpcWarnShown']){window['_rpcWarnShown']=!![];if(window['toast'])window['toast']('⚠️\x20Balance\x20update\x20mein\x20error\x20—\x20Admin\x20se\x20contact\x20karo','err');}}else console['error']('[Bridge]\x20Supabase\x20write\x20error\x20for\x20path:',_0x2ddf7a,'—',_0x19b57b);}function _0x4aa76b(){var _0x4b7b4b=window['db'],_0x243c18={'ref':function(_0x5d8c62){if(_0x5d8c62===undefined||_0x5d8c62===null)return{'_path':undefined,'update':function(_0x45f0c4,_0x282c00){var _0x58e570={},_0xe5e9d7=![],_0x59807a=[];Object['keys'](_0x45f0c4||{})['forEach'](function(_0x6a2525){_0x751647(_0x6a2525)?(_0x58e570[_0x6a2525]=_0x45f0c4[_0x6a2525],_0xe5e9d7=!![]):_0x59807a['push'](_0x1b0229(_0x6a2525,_0x45f0c4[_0x6a2525],!![]));});if(_0xe5e9d7)_0x59807a['push'](_0x4b7b4b['ref']()['update'](_0x58e570));Promise['all'](_0x59807a)['then'](function(){if(_0x282c00)_0x282c00(null);},function(_0x2e6eb6){if(_0x282c00)_0x282c00(_0x2e6eb6);});},'set':function(_0x35ae02,_0x3b14f1){if(_0x3b14f1)_0x3b14f1(new Error('Root\x20.set()\x20not\x20supported\x20—\x20use\x20.update()\x20with\x20full\x20paths\x20as\x20keys'));}};if(_0x751647(_0x5d8c62))return _0x4b7b4b['ref'](_0x5d8c62);return{'_path':_0x5d8c62,'once':function(_0x1e4a3b,_0x244a85,_0x54f509){var _0x5326f7=this,_0x5d93aa={};if(_0x5326f7['_limit'])_0x5d93aa['limit']=_0x5326f7['_limit'];var _0x2497f7,_0x460c2a=new Promise(function(_0x528ab3){_0x2497f7=_0x528ab3;});return _0x3e5671(_0x5d8c62,function(_0x68872e){if(_0x244a85)try{_0x244a85(_0x68872e);}catch(_0x1c9528){}try{_0x2497f7(_0x68872e);}catch(_0x560ba6){}},_0x5d93aa),{'then':function(_0x5913b6,_0x2214f3){return _0x460c2a['then'](_0x5913b6,_0x2214f3);},'catch':function(_0x44be34){return _0x460c2a['catch'](_0x44be34);}};},'on':function(_0x53e187,_0x10912c,_0xd2bd45){var _0x20400d=this,_0x1a2ed3={};if(_0x20400d['_limit'])_0x1a2ed3['limit']=_0x20400d['_limit'];if(!window['_bridgeListeners'])window['_bridgeListeners']={};_0x10912c&&(window['_bridgeListeners'][_0x5d8c62]=window['_bridgeListeners'][_0x5d8c62]||[])['push'](_0x10912c);_0x3e5671(_0x5d8c62,function(_0x41f917){if(_0x10912c)_0x10912c(_0x41f917);},_0x1a2ed3);var _0x4bbd9e='_bridge_'+_0x5d8c62['replace'](/[^a-z0-9]/gi,'_');if(!window['_bridgePolls'])window['_bridgePolls']={};if(!window['_bridgePolls'][_0x4bbd9e]){var _0x273d5e=/(^|\/)(clanChats|chats|chat|messages|support)(\/|$)/i['test'](_0x5d8c62);window['_bridgePolls'][_0x4bbd9e]=setInterval(function(){_0x3e5671(_0x5d8c62,function(_0x3b061e){if(_0x10912c)_0x10912c(_0x3b061e);});},_0x273d5e?0x1770:0x7530);}return this;},'off':function(){if(window['_bridgeListeners'])delete window['_bridgeListeners'][_0x5d8c62];var _0x34975a='_bridge_'+_0x5d8c62['replace'](/[^a-z0-9]/gi,'_');window['_bridgePolls']&&window['_bridgePolls'][_0x34975a]&&(clearInterval(window['_bridgePolls'][_0x34975a]),window['_bridgePolls'][_0x34975a]=null,delete window['_bridgePolls'][_0x34975a]);},'set':function(_0x2e3630,_0xbee2b8){return _0x1b0229(_0x5d8c62,_0x2e3630,![])['then'](function(){_0x449c0b(_0x5d8c62);if(_0xbee2b8)_0xbee2b8(null);},function(_0xba3984){if(_0xbee2b8)_0xbee2b8(_0xba3984);});},'update':function(_0x3a8666,_0xb37b40){return _0x1b0229(_0x5d8c62,_0x3a8666,!![])['then'](function(){_0x449c0b(_0x5d8c62);if(_0xb37b40)_0xb37b40(null);},function(_0x23fe8d){if(_0xb37b40)_0xb37b40(_0x23fe8d);});},'remove':function(_0x3f5ba5){return _0x1b0229(_0x5d8c62,null,![])['then'](function(){_0x449c0b(_0x5d8c62);if(_0x3f5ba5)_0x3f5ba5(null);},function(_0x16e99f){if(_0x3f5ba5)_0x3f5ba5(_0x16e99f);});},'transaction':function(_0x1531f2,_0x4a4dad,_0x541e3c){return _0x20847a(_0x5d8c62,_0x1531f2,_0x4a4dad),{'then':function(_0x50a2fd){return this;},'catch':function(_0xf18925){return this;}};},'push':function(_0x26234c,_0xae89f2){var _0x578d9d='sb_'+Date['now']()['toString'](0x24)+'_'+Math['random']()['toString'](0x24)['substr'](0x2,0x5),_0x254264=_0x5d8c62+'/'+_0x578d9d,_0x1b4a4c=_0x243c18['ref'](_0x254264);return _0x1b4a4c['key']=_0x578d9d,_0x26234c!==undefined&&_0x1b4a4c['set'](_0x26234c,_0xae89f2),_0x1b4a4c;},'orderByChild':function(_0xa9bf84){return this['_orderBy']=_0xa9bf84,this;},'orderByKey':function(){return this;},'orderByValue':function(){return this;},'limitToFirst':function(_0x47af20){return this['_limit']=_0x47af20,this;},'limitToLast':function(_0x126538){return this['_limit']=_0x126538,this;},'startAt':function(_0x30953e){return this['_startAt']=_0x30953e,this;},'endAt':function(_0x80049){return this['_endAt']=_0x80049,this;},'equalTo':function(_0x2a201b){return this['_equalTo']=_0x2a201b,this;},'key':_0x5d8c62['split']('/')['pop']()};}};window['_fbDb']=_0x4b7b4b,window['db']=_0x243c18,window['db']['ref']=_0x243c18['ref'],console['log']('[Bridge]\x20Firebase→Supabase\x20bridge\x20installed.\x20Realtime\x20paths\x20use\x20Firebase\x20RTDB,\x20data\x20paths\x20use\x20Supabase.');}_0x415068();}());
+/* ================================================================
+   FIREBASE → SUPABASE BRIDGE LAYER — core/db-bridge.js
+   MiniESports v3.0 | May 2026
+
+   STATUS: Migration complete — Supabase is PRIMARY backend
+   
+   YEH BRIDGE:
+   - Features mein kuch db.ref() calls abhi bhi hain (clan.js, auto-squad.js etc)
+   - Woh sab Supabase pe route hote hain via this bridge
+   - Firebase RTDB = SIRF support/ chat path
+   - Baaki sab Supabase
+================================================================ */
+
+(function() {
+  'use strict';
+
+  /* Wait for both Firebase and Supabase to be ready */
+  function _waitAndInit() {
+    if (!window.db || !window._supa) {
+      setTimeout(_waitAndInit, 300);
+      return;
+    }
+    _installBridge();
+  }
+
+  function _uid() {
+    if (window.U) return window.U.uid;
+    if (window._supa) {
+      var s = window._supa.auth.session ? window._supa.auth.session() : null;
+      return s && s.user ? s.user.id : null;
+    }
+    return null;
+  }
+
+  /* ── PATH ROUTER: decide Firebase vs Supabase ── */
+  function _isFirebasePath(path) {
+    /* Defense-in-depth: ref() now handles the undefined/null root-path case
+       before calling this, but guard here too in case of any other caller. */
+    if (!path) return false;
+    /* Migration v3.0: These stay on Firebase RTDB */
+    var root = path.split('/')[0];
+    var rtRoots = [
+      '.info',             /* Firebase RTDB special path (serverTimeOffset etc) — Bug C-1 Fix */
+      'support',           /* Support chat messages */
+      'supportTyping',     /* Support typing indicators */
+      /* supportRequests MOVED TO SUPABASE support_tickets — My-Tickets & Admin Support Sync */
+      'appSettings',       /* Admin live config + adminResponseStats */
+      'admins',            /* Admin user list */
+      'presence',          /* Online presence */
+      /* liveStreams MOVED TO SUPABASE — Bug #4 Fix */
+      /* announcements REMOVED — unused in User Panel; Admin Panel already
+         routes this to Supabase's scheduled_broadcasts table, so this stub
+         was dead code that also disagreed with the other panel's routing. */
+    ];
+    return rtRoots.indexOf(root) !== -1;
+  }
+
+  /* ── SUPABASE WRITE ROUTER ── */
+  function _supaWrite(path, value, isUpdate) {
+    if (!window.DB || !window._supa) return Promise.resolve();
+
+    var uid = _uid();
+    var parts = path.split('/').filter(Boolean);
+    var root = parts[0];
+
+    /* BUG #36 FIX (2026-07): tdsRecords/tdsHeld had no case anywhere in this dispatch,
+       so every write to them fell through to the generic default (a silent no-op that
+       reports fake success) — TDS compliance records were never actually saved anywhere,
+       even though the corresponding balance deduction (users/{uid}/tds/tdsDeducted,
+       which IS mapped) did happen. These are genuinely Firebase-only paths (matching the
+       admin bridge's FIREBASE_ONLY allowlist and this session's firebase-rules.json fix
+       for BUG #25) — route directly there instead of attempting a Supabase write. */
+    if ((root === 'tdsRecords' || root === 'tdsHeld') && window._fbDb) {
+      if (isUpdate) return window._fbDb.ref(path).update(value);
+      return window._fbDb.ref(path).set(value);
+    }
+
+    /* ✅ B24 (2026-10-07): videoWatched arm HATA diya — "creator video watch"
+       feature hi maujood nahi tha (na koi video feed, na video dekhne wali
+       screen, na koi is path ko likhne/parhne wala code). Jo feature nahi hai,
+       uske liye bridge arm rakhna sirf zimmedari ka bhram tha. */
+    /* users/{uid}/... */
+    if (root === 'users' && parts[1]) {
+      var targetUid = parts[1];
+      var field = parts[2];
+
+      if (!field) {
+        /* Full user update */
+        return window._supa.from('users').upsert({ id: targetUid, ...value });
+      }
+
+      /* users/{uid}/coins */
+      if (field === 'coins') {
+        /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet
+           RPC" audit — this generic path routed EVERY caller (credits
+           AND debits, for any reason) through increment_balance with
+           a client-computed delta. That's exactly the generic-mint
+           risk the audit flagged, and it's why increment_balance is
+           now locked to service_role-only. Split by sign instead:
+           - Negative delta (a genuine deduction, e.g. gifting a
+             match entry to a friend) is safe to keep working here —
+             route to decrement_balance, which can only ever remove
+             value the user actually has, never mint any. This also
+             fixes a real PRE-EXISTING bug: increment_balance itself
+             always rejected negative amounts outright, so every
+             negative-delta call through this path was already
+             silently failing before this session touched anything —
+             confirmed live against the database.
+           - Positive delta (a credit) is the actual mint risk and is
+             now refused here. Every legitimate credit reason already
+             has, or should have, its own dedicated RPC (see
+             claim_watch_earn_reward, claim_ad_reward,
+             apply_referral_code, claim_match_refund, redeem_voucher,
+             claim_battle_pass_tier) — a caller reaching this generic
+             path for a credit is either dead/legacy code or something
+             that needs a proper dedicated RPC written for it, not a
+             silent path back into a generic mint function. */
+        var coinsDelta = typeof value === 'number' ? value : parseInt(value) || 0;
+        if (coinsDelta < 0) {
+          return window._supa.rpc('decrement_balance', { p_uid: targetUid, p_col: 'coins', p_amount: -coinsDelta });
+        }
+        console.error('[Bridge] users/coins generic CREDIT path blocked (delta:', coinsDelta, ') — write a dedicated RPC for this specific reward/reason instead of crediting through this generic path.');
+        /* ✅ D99: blocked path par REJECT — caller .then() ko success na maane */
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: generic coin credit disabled — dedicated server RPC use karo'));
+      }
+      /* users/{uid}/realMoney/deposited|winnings|bonus */
+      if (field === 'realMoney') {
+        var subField = parts[3];
+        /* ✅ SECURITY FIX (2026-09-08): same fix as 'coins' above — this
+           path only ever handled credits (Math.max(0,...) floored any
+           negative value to 0), so there's no legitimate deduction
+           case to preserve here; the whole path is now blocked. Any
+           real deposit/winnings credit must go through its own
+           dedicated, purpose-specific RPC. */
+        if (subField === 'deposited' || subField === 'winnings') {
+          console.error('[Bridge] users/realMoney/' + subField + ' generic CREDIT path blocked — write a dedicated RPC for this specific reward/reason instead.');
+          /* ✅ D99: REJECT (silent fake-success band) */
+          window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+          return Promise.reject(new Error('BLOCKED: generic realMoney/' + subField + ' credit disabled — dedicated server RPC use karo'));
+        }
+      }
+      /* users/{uid}/greenDiamonds */
+      if (field === 'greenDiamonds') {
+        var gdAmt = typeof value === 'number' ? value : parseInt(value) || 0;
+        if (gdAmt < 0) {
+          return window._supa.rpc('decrement_balance', { p_uid: targetUid, p_col: 'green_diamonds', p_amount: -gdAmt });
+        }
+        console.error('[Bridge] users/greenDiamonds generic CREDIT path blocked (delta:', gdAmt, ') — write a dedicated RPC instead.');
+        /* ✅ D99: REJECT (silent fake-success band) */
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: generic greenDiamonds credit disabled — dedicated server RPC use karo'));
+      }
+      /* users/{uid}/skyDiamonds */
+      if (field === 'skyDiamonds') {
+        var sdAmt = typeof value === 'number' ? value : parseInt(value) || 0;
+        if (sdAmt < 0) {
+          return window._supa.rpc('decrement_balance', { p_uid: targetUid, p_col: 'sky_diamonds', p_amount: -sdAmt });
+        }
+        console.error('[Bridge] users/skyDiamonds generic CREDIT path blocked (delta:', sdAmt, ') — write a dedicated RPC instead.');
+        /* ✅ D99: REJECT (silent fake-success band) */
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: generic skyDiamonds credit disabled — dedicated server RPC use karo'));
+      }
+      /* users/{uid}/stats/matches|wins|kills */
+      if (field === 'stats') {
+        var statField = parts[3];
+        var updateObj = {};
+        if (statField === 'matches') updateObj.total_matches = parseInt(value) || 0;
+        if (statField === 'wins')    updateObj.total_wins    = parseInt(value) || 0;
+        if (statField === 'kills')   updateObj.total_kills   = parseInt(value) || 0;
+        if (Object.keys(updateObj).length) {
+          return window._supa.from('users').update(updateObj).eq('id', targetUid);
+        }
+      }
+      /* users/{uid}/notifications */
+      if (field === 'notifications') {
+        if (typeof value === 'object' && value !== null) {
+          return window._supa.from('notifications').insert({
+            user_id: targetUid,
+            type: value.type || 'system',
+            title: value.title || '',
+            body: value.message || value.body || '',
+            ref_id: value.matchId || null
+          });
+        }
+      }
+      /* users/{uid}/clanId */
+      if (field === 'clanId') {
+        return window._supa.from('users').update({ clan_id: value || null }).eq('id', targetUid);
+      }
+      /* Issue #6 Fix: users/{uid}/premium — sync subscription tier to Supabase */
+      if (field === 'premium' && typeof value === 'object' && value !== null) {
+        /* ✅ SECURITY FIX (2026-07-17, CRITICAL): premium_level/premium_expires
+           are payment-gated columns — only the admin-checked approve_premium
+           RPC (or start_free_trial, for the one-time trial) should ever set
+           them. This bridge function has NO identity check of its own (it's
+           a generic Firebase-path-to-Supabase translator relying entirely on
+           RLS/grants for protection), and until this fix, these two columns
+           WERE still directly grantable — meaning any client could call
+           db.ref('users/'+myOwnUid+'/premium').set({tier:3}) and grant
+           themselves free Diamond-tier premium, since row-level RLS
+           (users_update_own) permits a user to update their own row and
+           nothing at the column level was stopping this specific write.
+           Now explicitly refused here rather than left to fail silently
+           against the database with no explanation. Real premium grants
+           must go through admin_inline.js's approvePremiumReq (which calls
+           approve_premium) or free-trial.js (which calls start_free_trial). */
+        console.error('[Bridge] Blocked attempted client-side premium_level/premium_expires write for', targetUid, '— this bridge cannot grant premium. Use approve_premium (admin) or start_free_trial RPCs instead.');
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: premium_level/premium_expires client-writable nahi — approve_premium/start_free_trial RPC use karo'));
+      }
+      if (field === 'premium_level' || field === 'premiumLevel') {
+        /* Same fix as the 'premium' object case immediately above. */
+        console.error('[Bridge] Blocked attempted client-side premium_level write for', targetUid, '— use approve_premium (admin) or start_free_trial RPCs instead.');
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: premium_level client-writable nahi — admin-checked RPC use karo'));
+      }
+      /* users/{uid}/missionProgress/{key} = scalar. In particular, a
+         claimed_* key is a claim operation, not ordinary progress.
+         ✅ NOTE (2026-08-20): this branch is currently unreachable via
+         growth.js (the only caller of this write pattern) — it was
+         changed to call track_mission_progress + claim_mission_reward
+         directly with the real coin amount, since this generic bridge
+         path has no way to know the reward amount for an arbitrary
+         mission (Firebase's .set(true) carries no coin value) and
+         claim_mission_reward rejects p_coins<=0 anyway. Left here as a
+         defensive fallback in case some other/future caller uses this
+         exact Firebase-style write path — it will correctly no-op the
+         reward (0 coins) rather than crediting an arbitrary amount, but
+         will currently always fail with "Invalid coin amount" since
+         p_coins must be >0. If a future caller needs this path to
+         actually work, thread the real coin amount through instead of
+         hardcoding 0. */
+      if (field === 'missionProgress' && parts[3] != null) {
+        var _today = new Date().toISOString().split('T')[0];
+        var _key = parts[3];
+        var _claim = /^claimed_(.+?)_(.+)$/.exec(_key);
+        if (_claim) {
+          return window._supa.rpc('claim_mission_reward', {
+            p_mission_key: _claim[1], p_period: _claim[2], p_coins: 0
+          });
+        }
+        return window._supa.rpc('track_mission_progress', {
+          p_mission_key: _key, p_period: _today, p_progress: Number(value) || 0, p_target: 1
+        });
+      }
+      /* users/{uid}/missionProgress */
+      if (field === 'missionProgress' && typeof value === 'object') {
+        /* ✅ BUG FIX (2026-07-20): was a direct upsert() — bypassed
+           track_mission_progress's GREATEST()-based no-regression guard
+           entirely (a client could set progress to any value, including
+           backwards), AND would have failed outright on any row that
+           already existed anyway, since mission_progress has no UPDATE
+           grant at all (RPC-only by design — see the table's grant
+           comment in COMPLETE_SCHEMA.sql). Routed through the actual RPC,
+           one call per mission key changed. target is hardcoded to 1 here
+           since that was this bridge path's own prior behavior — if
+           per-mission targets are ever needed, this needs the real target
+           value threaded through from the caller instead. */
+        var today = new Date().toISOString().split('T')[0];
+        var promises = Object.keys(value).map(function(k) {
+          return window._supa.rpc('track_mission_progress', {
+            p_mission_key: k, p_period: today, p_progress: value[k] || 0, p_target: 1
+          });
+        });
+        return Promise.all(promises).then(function(results) {
+          var firstErr = results.find(function(r) { return r && (r.error || (r.data && r.data.success === false)); });
+          if (firstErr) {
+            var msg = (firstErr.data && firstErr.data.error) || (firstErr.error && firstErr.error.message);
+            console.error('[Bridge] missionProgress sync failed for one or more keys:', msg);
+            return { error: { message: msg } };
+          }
+          return { error: null };
+        });
+      }
+      /* users/{uid}/cosmetics/{cosmeticId} */
+      if (field === 'cosmetics' && parts[3]) {
+        return window._supa.from('user_cosmetics').upsert({
+          user_id: targetUid, cosmetic_key: parts[3], purchased_at: new Date().toISOString()
+        }, { onConflict: 'user_id,cosmetic_key' });
+      }
+      /* users/{uid}/profileImage or bannerImage */
+      if (field === 'profileImage') {
+        return window._supa.from('users').update({ avatar_url: value }).eq('id', targetUid);
+      }
+      /* users/{uid}/duoTeam | squadTeam | partnerUid */
+      /* ✅ BUG FIX (2026-08-23, CRITICAL): "Add Teammate karne par UID/IGN
+         not found dikhta tha aur khud ko add karne ka fake error bhi
+         aata tha, jabki wo real doosra user tha". Root cause found here:
+         this mapped duoTeam/squadTeam/partnerUid/squadUids straight to
+         SAME-NAME camelCase columns via `updateData[field] = value`, but
+         the real users table columns are snake_case (duo_team,
+         squad_team, partner_uid) — and squad_uids didn't exist under
+         ANY name until this session's migration. Every single "Add
+         Teammate" write was failing outright with an undefined-column
+         Postgres error, silently, on both the current user's row AND
+         the partner's row it tries to sync to — so the feature looked
+         completely non-functional even when the lookup correctly found
+         a real other user (that lookup bug is fixed separately in
+         screens/profile.js tmLookup). */
+      var _fieldMap = { duoTeam: 'duo_team', squadTeam: 'squad_team', partnerUid: 'partner_uid', squadUids: 'squad_uids' };
+      if (field === 'duoTeam' || field === 'squadTeam' || field === 'partnerUid' || field === 'squadUids') {
+        var updateData = {};
+        updateData[_fieldMap[field]] = value;
+        return window._supa.from('users').update(updateData).eq('id', targetUid);
+      }
+      /* coinHistory write → R6: BLOCKED — सिर्फ server RPC ही ledger बनाता है.
+         (fft_guard अब regular-user ledger INSERT नहीं मानता; यह path legacy
+         client-side ledger write tries नहीं करता। कोई working caller नहीं —
+         history sirf dedicated RPCs से लिखी जाती है।) */
+      if (field === 'coinHistory' && typeof value === 'object') {
+        console.warn('[Bridge] users/coinHistory client LEADER WRITE blocked — server RPC is the only ledger authority');
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: ledger sirf server likhta hai'));
+      }
+      /* transactions write → same as above (server-authoritative ledger only) */
+      if (field === 'transactions' && typeof value === 'object') {
+        console.warn('[Bridge] users/transactions client LEADER WRITE blocked — server RPC is the only ledger authority');
+        window.__bridgeBlocked = (window.__bridgeBlocked || 0) + 1;
+        return Promise.reject(new Error('BLOCKED: ledger sirf server likhta hai'));
+      }
+      /* Bug #8 Fix: User preferences that were being lost */
+      if (field === 'avatarBgColor') {
+        return window._supa.from('users').update({ avatar_bg_color: value || null }).eq('id', targetUid).then(null, function(){});
+      }
+      if (field === 'bio') {
+        return window._supa.from('users').update({ bio: value || null }).eq('id', targetUid).then(null, function(){});
+      }
+      if (field === 'isLive') {
+        return window._supa.from('users').update({ is_live: Boolean(value) }).eq('id', targetUid).then(null, function(){});
+      }
+      if (field === 'streamLink') {
+        return window._supa.from('users').update({ stream_link: value || null }).eq('id', targetUid).then(null, function(){});
+      }
+      if (field === 'rival') {
+        return window._supa.from('users').update({ rival_uid: value || null }).eq('id', targetUid).then(null, function(){});
+      }
+      if (field === 'selfExcluded' || field === 'selfExcludedTill') {
+        /* selfExcluded INTENTIONALLY stays on Firebase (security-patches.js reads from there) */
+        if (window._fbDb) window._fbDb.ref(path).set(value);
+        return Promise.resolve();
+      }
+      /* Bug #5 Fix: watchEarnings write → watch_earn_log */
+      if (field === 'watchEarnings' && parts[3] && typeof value === 'object') {
+        return window._supa.from('watch_earn_log').upsert({
+          user_id: targetUid,
+          log_date: new Date().toISOString().split('T')[0],
+          coins_earned: value.totalCoins || 0,
+          watched_mins: value.totalMins || 0
+        }, { onConflict: 'user_id,log_date' }).then(null, function(){});
+      }
+      /* Generic user update — silently succeed (no-op for unmapped fields) */
+      return Promise.resolve();
+    }
+
+    /* joinRequests/{jid} */
+    if (root === 'joinRequests' && parts[1]) {
+      var jid = parts[1];
+      var subF = parts[2];
+      /* ══ R8 FINAL (2026-09-26c): join_requests authoritative columns ab
+         SERVER-RPC-only hain — status/checked_in/checkin_at/kills/placement/
+         prize_earned claamp trigger se client se FREEZE kiye gaye hain.
+         - refund  → claim_match_refund / claim_no_show_refund RPC (live)
+         - checkin → check_in_match RPC (R8)
+         - results → publish_match_results / correct_match_result RPC
+         Bridge ab koi financial/attendance join_requests write NAHI karta;
+         sirf display-only ign_at_join mirror-update rehta hai. */
+      if (subF === 'refunded') {
+        /* R8: legacy status write retired — refund only via claim_match_refund RPC. */
+        return Promise.resolve();
+      }
+      if (subF === 'inRoom') {
+        /* R8: legacy attendance write retired — in_room sirf check-in/confirm
+           RPC path se; bridge ab in_room/checkin_at nahi likhta. */
+        return Promise.resolve();
+      }
+      if (!subF && typeof value === 'object') {
+        /* R5 + R8 FINANCIAL-AUTHORITY LEAK FIX: client mirror sirf display
+           (ign_at_join) update karta hai — never fee/status/attendance. */
+        return window._supa.from('join_requests').update({
+          ign_at_join: value.userName || value.userIGN || ''
+        }).eq('match_id', value.matchId).eq('user_id', value.userId).then(function(r) {
+          return r;
+        });
+      }
+      if (!subF && isUpdate) {
+        /* R8: legacy isUpdate (status/kills/placement/in_room/checked_in)
+           retired — clamp trigger already freezes these for clients; all
+           authoritative writes route through server RPCs. */
+        return Promise.resolve();
+      }
+    }
+    /* walletRequests/{id} */
+    if (root === 'walletRequests' && parts[1] && typeof value === 'object') {
+      return window._supa.from('sd_requests').upsert({
+        id: parts[1],
+        user_id: value.uid || _uid(),
+        amount_inr: value.amount || 0,
+        sd_amount: value.sdAmount || value.amount || 0,
+        upi_ref: value.upiId || value.utr || null,
+        status: value.status || 'pending',
+        created_at: new Date().toISOString()
+      }, { onConflict: 'id' });
+    }
+
+    /* referrals/{id} */
+    if (root === 'referrals' && parts[1] && typeof value === 'object') {
+      return window._supa.from('referrals').upsert({
+        id: parts[1],
+        referrer_id: value.referrerId,
+        referred_id: value.referredUid || value.referredId,
+        join_bonus_paid: true
+      }, { onConflict: 'referred_id' });
+    }
+
+    /* clans/ */
+    if (root === 'clans') {
+      if (parts[1] && !parts[2] && typeof value === 'object') {
+        /* Create/update clan */
+        return window._supa.from('clans').upsert({
+          id: parts[1], name: value.name || '', tag: value.tag || (value.name||'').substr(0,3).toUpperCase(),
+          description: value.description || null, leader_uid: value.leaderId || _uid(),
+          total_members: value.memberCount || 1
+        }, { onConflict: 'id' });
+      }
+      if (parts[1] && parts[2] === 'members' && parts[3]) {
+        if (value === null) {
+          return window._supa.from('clan_members').delete().eq('clan_id', parts[1]).eq('user_id', parts[3]);
+        }
+        return window._supa.from('clan_members').upsert({
+          clan_id: parts[1], user_id: parts[3], role: value.role || 'member'
+        }, { onConflict: 'clan_id,user_id' });
+      }
+    }
+
+    /* clanChats/{clanId} */
+    if (root === 'clanChats' && parts[1] && typeof value === 'object') {
+      /* Bug C-4 supplement: also save sender_ign for display */
+      return window._supa.from('clan_messages').insert({
+        clan_id: parts[1],
+        sender_id: _uid() || value.senderId,
+        sender_ign: value.ign || value.senderIgn || (window.UD && window.UD.ign) || '',
+        message: value.text || value.message || ''
+      }).then(null, function(e){ console.warn('[Bridge] clan_messages insert error:', e.message); });
+    }
+
+    /* creatorStats/{uid}/... */
+    /* Bug M-4 Fix: Write actual stats, not just creator_code */
+    if (root === 'creatorStats' && parts[1]) {
+      var creatorUid = parts[1];
+      var statKey = parts[2]; /* e.g. 'totalEarnings', 'referralCount' */
+      var updateObj = { user_id: creatorUid };
+
+      if (!statKey && typeof value === 'object' && value !== null) {
+        /* Full stats object */
+        if (value.totalEarnings  !== undefined) updateObj.total_earnings   = Number(value.totalEarnings)  || 0;
+        if (value.referralCount  !== undefined) updateObj.referral_count   = Number(value.referralCount)  || 0;
+        if (value.activeReferrals!== undefined) updateObj.active_referrals = Number(value.activeReferrals)|| 0;
+        if (value.creatorCode)   updateObj.creator_code   = value.creatorCode;
+        if (value.status)        updateObj.status         = value.status;
+        if (value.commission)    updateObj.commission_rate= Number(value.commission) || 0;
+      } else if (statKey === 'totalEarnings'  || statKey === 'total_earnings')  {
+        updateObj.total_earnings   = Number(value) || 0;
+      } else if (statKey === 'referralCount'  || statKey === 'referral_count')  {
+        updateObj.referral_count   = Number(value) || 0;
+      } else if (statKey === 'activeReferrals'|| statKey === 'active_referrals'){
+        updateObj.active_referrals = Number(value) || 0;
+      } else if (statKey === 'creatorCode'    || statKey === 'creator_code')    {
+        updateObj.creator_code     = value || '';
+      } else if (statKey === 'status') {
+        updateObj.status           = value || 'pending';
+      } else {
+        /* Unknown subkey — still save as generic upsert */
+        updateObj.creator_code = creatorUid; /* fallback */
+      }
+
+      return window._supa.from('creator_applications')
+        .upsert(updateObj, { onConflict: 'user_id' })
+        .then(null, function(){});
+    }
+
+    /* ✅ B30 (2026-10-07): matches/<id>/checkIns/… ka bridge path hata diya —
+       pre-match check-in ka poora system user panel se nikal gaya. Koi is
+       path par likh hi nahi raha tha (checkin-system.js hi akela likhne wala
+       tha, wo bhi kill-switch ke baad no-op). DB ka column (checked_in) waise
+       hi pada hai — purane APK agar rpc check_in_match bulayein to error na
+       aaye; naya app ise padhta/likhta nahi. */
+    /* matches/mid/joinedSlots → Supabase matches.filled_slots */
+    if (root === 'matches' && parts[1] && parts[2] === 'joinedSlots') {
+      /* R8 cleanup (2026-09-26): the increment_match_filled_slots call was
+         removed — that RPC is service_role-ONLY, so this legacy
+         `matches/<id>/joinedSlots` write path could never succeed (it was
+         swallowed by .then(null, ...)). Join slots are authoritative on the
+         server: validate_and_join_match increments filled_slots inside the join
+         transaction. This legacy path is now an explicit no-op instead of a
+         call that always fails. */
+      return Promise.resolve();
+    }
+    /* matches/mid/spectators/uid → Firebase RTDB (realtime spectator count) */
+    if (root === 'matches' && parts[2] === 'spectators') {
+      if (window._fbDb) return window._fbDb.ref(path).set(value);
+    }
+    /* matchResults/{matchId}/{uid} → Supabase match_results */
+    if (root === 'matchResults' && parts[1] && typeof value === 'object' && value !== null) {
+      return window._supa.from('match_results').upsert({
+        match_id: parts[1],
+        user_id: parts[2] || value.userId || _uid(),
+        placement: value.placement || value.rank || null,
+        kills: value.kills || 0,
+        prize: value.prize || value.prizeAmount || 0,
+        created_at: new Date().toISOString()
+      }, { onConflict: 'match_id,user_id' });
+    }
+    /* matchFeedback, profileViews, killProofs → soft analytics, silently succeed */
+    /* (B15, 2026-10-07: matchInterest arm hata diya — interest ab user panel se
+       seedha server RPC `toggle_match_interest` par jata hai, RTDB se nahi.) */
+    if (root === 'matchFeedback' ||
+        root === 'profileViews' || root === 'killProofs' ||
+        root === 'partnerRatings') {
+      return Promise.resolve();
+    }
+
+    /* Bug #2 Fix: premiumRequests → premium_requests table */
+    if (root === 'premiumRequests' && parts[1] && typeof value === 'object') {
+      return window._supa.from('premium_requests').upsert({
+        id: parts[1],
+        user_id: value.uid || _uid(),
+        user_name: value.userName || '',
+        tier: value.tier || 1,
+        price: value.price || 49,
+        screenshot_url: value.screenshotBase64 || value.screenshotUrl || null,
+        status: value.status || 'pending',
+        created_at: new Date().toISOString()
+      }, { onConflict: 'id' }).then(null, function(e) {
+        /* Fallback: table may not exist yet — store in notifications table as admin alert */
+        console.warn('[Bridge] premium_requests table missing, using fallback:', e.message);
+        return window._supa.from('notifications').insert({
+          user_id: value.uid || _uid(), type: 'premium_request',
+          title: '💳 Premium Request #' + parts[1],
+          body: 'Tier ' + (value.tier||1) + ' (₹' + (value.price||49) + ') — Screenshot: ' + (value.screenshotBase64?'Attached':'None'),
+          is_read: false
+        }).then(null, function(){});
+      });
+    }
+
+    /* Bug #3 Fix: creatorCodes/{code} → creator_applications */
+    if (root === 'creatorCodes' && parts[1] && typeof value === 'object') {
+      return window._supa.from('creator_applications')
+        .update({ creator_code: parts[1] })
+        .eq('user_id', value.uid || _uid())
+        .then(null, function(){});
+    }
+
+    /* Bug #4 Fix: liveStreams → Supabase live_streams table */
+    if (root === 'liveStreams' && parts[1]) {
+      if (value === null) {
+        return window._supa.from('live_streams').delete().eq('id', parts[1]).then(null, function(){});
+      }
+      if (typeof value === 'object') {
+        return window._supa.from('live_streams').upsert({
+          id: parts[1],
+          match_id: value.matchId || null,
+          user_id: value.uid || _uid(),
+          stream_url: value.streamLink || value.youtubeLink || '',
+          title: value.title || '',
+          is_live: value.isLive !== false,
+          viewer_count: value.viewerCount || 0,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id' }).then(null, function(e) {
+          /* Fallback: store in app_settings as JSONB if live_streams table missing */
+          console.warn('[Bridge] live_streams table missing:', e.message);
+        });
+      }
+    }
+
+    /* Bug #6 Fix: adminAlerts → admin_activity_log */
+    if (root === 'adminAlerts' && typeof value === 'object') {
+      return window._supa.from('admin_activity_log').insert({
+        action_type: value.type || 'anti_cheat_alert',
+        note: value.message || value.reason || JSON.stringify(value).substring(0, 500),
+        target_user_id: value.uid || _uid() || null,
+        created_at: new Date().toISOString()
+      }).then(null, function(){});
+    }
+
+    /* disputes/{id} → public.disputes */
+    if (root === 'disputes' && typeof value === 'object' && value !== null) {
+      var _dMatchId = value.matchId || null;
+      var _uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      return window._supa.from('disputes').insert({
+        match_id: (_dMatchId && _uuidRe.test(_dMatchId)) ? _dMatchId : null,
+        user_id: value.uid || _uid(),
+        type: value.type || 'other',
+        message: value.description || value.message || '',
+        status: value.status || 'open'
+      }).then(null, function(e){ console.warn('[Bridge] disputes write:', e && e.message); });
+    }
+
+    /* kycRequests/{uid} → public.kyc_requests */
+    if (root === 'kycRequests' && typeof value === 'object' && value !== null) {
+      return window._supa.from('kyc_requests').insert({
+        user_id: value.uid || parts[1] || _uid(),
+        document_type: 'pan_aadhaar',
+        document_url: JSON.stringify({
+          ign: value.ign || '',
+          pan: value.pan || '',
+          aadhaarLast4: value.aadhaarLast4 || '',
+          name: value.name || ''
+        }),
+        status: value.status || 'pending'
+      }).then(null, function(e){ console.warn('[Bridge] kyc_requests write:', e && e.message); });
+    }
+
+    /* ✅ Bug X Fix (2026-10-01): matchChat → Supabase match_chat.
+       Pehle koi case nahi tha — default fire-and-forget par gir kar messages
+       SILENTLY vanish ho jaate the (live-proven WALK10o: sender ko tak apna
+       message nahi dikhta tha). RLS chat_insert_own auth.uid() = user_id force
+       karta hai — koi doosre ke naam se message nahi daal sakta. */
+    if (root === 'matchChat' && parts[1] && value && typeof value === 'object' && value.text) {
+      return window._supa.from('match_chat').insert({
+        match_id: parts[1],
+        user_id: value.uid || _uid(),
+        name: value.name || 'Player',
+        text: String(value.text).slice(0, 500)
+      }).then(null, function(e) { console.warn('[Bridge] matchChat write:', e && e.message); });
+    }
+
+    /* Bug #20 Fix: polls → in-session only, write to Supabase polls table if it exists */
+    if (root === 'polls') {
+      /* Bug #20 Fix: Write poll votes to Supabase poll_votes table */
+      if (parts[1] && parts[2] === 'votes' && parts[3]) {
+        var pPollId = parts[1];
+        var pVoterUid = parts[3];
+        var pOptIdx = (value && value.optionIdx !== undefined) ? Number(value.optionIdx) : Number(value||0);
+        return window._supa.from('poll_votes').upsert({
+          poll_id: pPollId, user_id: pVoterUid||_uid(), option_idx: pOptIdx
+        }, { onConflict: 'poll_id,user_id' }).then(null, function(){});
+      }
+      return Promise.resolve();
+    }
+
+    /* Default: fire-and-forget, return resolved */
+    return Promise.resolve();
+  }
+
+  /* ── SUPABASE READ ROUTER ── */
+  /* Bug 21 Fix: Added opts parameter to support limitToFirst/Last from bridge ref queries */
+  /* ✅ D100-F4 (owner: "clan chat live nahi hai — perfectly fix karo"):
+     LIVE LISTENER REGISTRY + WRITE-NOTIFY. Purana system: .on() = ek initial
+     read + 30s polling ⇒ apna bheja message 30 second baad dikhta tha aur
+     doosre ka bhi. Ab:
+     (a) har .on() listener registry me bhi chadh jaata hai,
+     (b) chat-jaisa path (clanChats/chats/messages/support) → poll 6s,
+     (c) apni hi write (set/update/remove/push) ke ACK ke turant baad
+         _bridgeNotify() us path (aur uske ancestor listeners) ko fresh
+         read karke FORAN fire karta hai — sender ko apna message instant,
+         baaki members ko ≤6s me. */
+  function _bridgeNotify(writtenPath) {
+    try {
+      var L = window._bridgeListeners || {};
+      Object.keys(L).forEach(function (lp) {
+        if (writtenPath === lp || writtenPath.indexOf(lp + '/') === 0) {
+          _supaRead(lp, function (snap) {
+            ((window._bridgeListeners || {})[lp] || []).forEach(function (cb) {
+              try { cb(snap); } catch (e) {}
+            });
+          });
+        }
+      });
+    } catch (e) {}
+  }
+
+  function _supaRead(path, callback, opts) {
+    opts = opts || {};
+    if (!window.DB || !window._supa) { callback(null); return; }
+    var parts = path.split('/').filter(Boolean);
+    var root = parts[0];
+
+    /* ✅ B24: videoWatched yahan se hata (feature gaya) — tdsRecords/tdsHeld
+       waise hi real Firebase se padhe jaate hain (wo asli paths hain). */
+    if ((root === 'tdsRecords' || root === 'tdsHeld') && window._fbDb) {
+      window._fbDb.ref(path).once('value', callback);
+      return;
+    }
+
+    /* users/{uid} */
+    /* BUG #38 FIX (2026-07-30): base 'users' table is now own-row-only (RLS). Own uid
+       still reads the full row from the base table; any other uid is routed to the
+       user_public_profiles view (safe columns only — no email/phone/coins/etc for
+       someone else's row). */
+    if (root === 'users' && parts[1] && !parts[2]) {
+      var _tbl = (parts[1] === _uid()) ? 'users' : 'user_public_profiles';
+      window._supa.from(_tbl).select('*').eq('id', parts[1]).single()
+        .then(function(r) { callback(_fakeSnap(r.data, parts[1])); }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* users/{uid}/coins */
+    /* BUG #38 FIX (2026-07-30): coins is a private balance column, not part of
+       user_public_profiles. Only the owner can read their own coins; any other uid
+       returns 0 directly (no legitimate feature needs another user's wallet balance). */
+    if (root === 'users' && parts[2] === 'coins') {
+      if (parts[1] !== _uid()) { callback(_fakeSnap(0)); return; }
+      window._supa.from('users').select('coins').eq('id', parts[1]).single()
+        .then(function(r) { callback(_fakeSnap(r.data ? r.data.coins : 0)); }, function() { callback(_fakeSnap(0)); });
+      return;
+    }
+
+    /* users/{uid}/kyc — read latest kyc_requests row for this user */
+    if (root === 'users' && parts[2] === 'kyc') {
+      window._supa.from('kyc_requests').select('*').eq('user_id', parts[1])
+        .order('created_at', { ascending: false }).limit(1).maybeSingle()
+        .then(function(r) {
+          var row = r && r.data;
+          if (!row) { callback(_fakeSnap(null)); return; }
+          var meta = {};
+          try { if (row.document_url && row.document_url[0] === '{') meta = JSON.parse(row.document_url); } catch(e) {}
+          callback(_fakeSnap({
+            status: row.status === 'approved' ? 'verified' : (row.status || 'pending'),
+            pan: meta.pan || '',
+            aadhaarLast4: meta.aadhaarLast4 || '',
+            name: meta.name || '',
+            submittedAt: row.created_at ? new Date(row.created_at).getTime() : 0
+          }));
+        }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* users/{uid}/sponsoredWinnings */
+    if (root === 'users' && parts[2] === 'sponsoredWinnings') {
+      /* Read from Supabase sponsored_prize_claims */
+      window._supa.from('sponsored_prize_claims').select('prize_detail')
+        .eq('user_id', parts[1])
+        .then(function(r) {
+          /* Sum up numeric prizes only */
+          var total = 0;
+          (r.data || []).forEach(function(row) {
+            var pd = row.prize_detail || '';
+            var match = pd.match(/[\d]+/);
+            if (match) total += parseInt(match[0]) || 0;
+          });
+          callback(_fakeSnap(total));
+        }, function() { callback(_fakeSnap(0)); });
+      return;
+    }
+
+    /* users/{uid}/watchEarnings/{date} */
+    if (root === 'users' && parts[2] === 'watchEarnings') {
+      var today = parts[3] || new Date().toISOString().split('T')[0];
+      window._supa.from('watch_earn_log').select('coins_earned, watched_mins')
+        .eq('user_id', parts[1]).eq('log_date', today)
+        .then(function(r) {
+          var rows = r.data || [];
+          var total = rows.reduce(function(s, x) { return s + (x.coins_earned || 0); }, 0);
+          callback(_fakeSnap(total));
+        }, function() { callback(_fakeSnap(0)); });
+      return;
+    }
+
+    /* users/{uid}/missionProgress */
+    if (root === 'users' && parts[2] === 'missionProgress') {
+      var today2 = new Date().toISOString().split('T')[0];
+      window._supa.from('mission_progress').select('*')
+        .eq('user_id', parts[1]).gte('period', today2)
+        .then(function(r) {
+          var obj = {};
+          (r.data || []).forEach(function(m) {
+            obj[m.mission_key] = m.progress;
+            /* ✅ FIX (2026-08-20): mission_progress's real column is
+               `reward_claimed`, not `claimed` — reading the wrong (always
+               undefined/falsy) column name meant this branch never
+               actually reported a mission as claimed, no matter what was
+               in the DB. That silently defeated the whole point of
+               persisting the claim server-side: growth.js would see
+               "not claimed" forever and keep trying to auto-claim
+               daily_login on every panel open. */
+            if (m.reward_claimed) obj['claimed_' + m.mission_key + '_' + m.period] = true;
+          });
+          var subKey = parts[3] || null;
+          callback(_fakeSnap(subKey ? (obj[subKey] != null ? obj[subKey] : null) : obj));
+        }, function() { callback(_fakeSnap(parts[3] ? null : {})); });
+      return;
+    }
+
+    /* joinRequests (user's) */
+    if (root === 'joinRequests' && parts[1]) {
+      window._supa.from('join_requests').select('*').eq('id', parts[1]).single()
+        .then(function(r) { callback(_fakeSnap(r.data, parts[1])); }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* referrals */
+    if (root === 'referrals') {
+      window._supa.from('referrals').select('*').eq('referrer_id', _uid())
+        .then(function(r) {
+          var snap = _fakeSnapList(r.data || []);
+          callback(snap);
+        }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* clans/{id} */
+    if (root === 'clans' && parts[1] && !parts[2]) {
+      window._supa.from('clans').select('*').eq('id', parts[1]).single()
+        .then(function(r) { callback(_fakeSnap(r.data, parts[1])); }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* clans (list) */
+    if (root === 'clans' && !parts[1]) {
+      window._supa.from('clans').select('*').order('total_wins', { ascending: false }).limit(20)
+        .then(function(r) { callback(_fakeSnapList(r.data || [])); }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* battlePass/{sid}/{uid} */
+    if (root === 'battlePass' && parts[1] && parts[2]) {
+      window._supa.from('battle_pass_progress')
+        .select('*').eq('user_id', parts[2]).eq('season_key', parts[1]).maybeSingle()
+        .then(function(r) { callback(_fakeSnap(r.data, parts[2])); }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* users (list queries — leaderboard, search) */
+    /* Bug 21 Fix: limitToFirst/Last now honored via opts.limit */
+    if (root === 'users' && !parts[1]) {
+      var _lim = opts.limit || 100; /* default 100 not 200 for leaderboard performance */
+      window._supa.from('user_public_profiles').select('id,ign,avatar_url,rank_points,rank_tier,total_wins,total_kills,total_matches,city,ff_uid')
+        .order('rank_points', { ascending: false })
+        .limit(_lim)
+        .then(function(r) {
+          callback(_fakeSnapList(r.data || [], 'id'));
+        }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* ✅ B30 (2026-10-07): checkIns padhne ka bridge path bhi hata diya
+       (dekho upar wala note) — iska koi padhne wala nahi bacha tha. */
+    /* matches/mid/joinedPlayers → Supabase join_requests */
+    if (root === 'matches' && parts[1] && parts[2] === 'joinedPlayers') {
+      /* ✅ R29B FIX (2026-09-22): paid join ab server-authoritative
+         status='joined' likhta hai (auto-approve); purana .in('status',
+         ['approved','pending']) filter R29B ke baad stale ho gaya tha —
+         usme sirf legacy rows aati thin aur saare naye joins (status
+         'joined') invisible ho jaate. Ab admin-panel jaisa hi correct
+         logic: sirf genuinely-not-joined terminal statuses exclude karo. */
+      window._supa.from('join_requests')
+        .select('user_id,ign_at_join,status')
+        .eq('match_id', parts[1])
+        .not('status', 'in', '(cancelled,refunded,rejected,no_show)')
+        .then(function(r) {
+          var obj = {};
+          (r.data || []).forEach(function(jr) { obj[jr.user_id] = { ign: jr.ign_at_join, status: jr.status }; });
+          callback(_fakeSnap(obj));
+        }, function() { callback(_fakeSnap({})); });
+      return;
+    }
+    /* matches/mid/spectators → Firebase RTDB (live data) */
+    if (root === 'matches' && parts[2] === 'spectators') {
+      if (window._fbDb) { window._fbDb.ref(path).once('value', callback); return; }
+    }
+    /* watchEarnings/date → Supabase watch_earn_log */
+    if (root === 'users' && parts[2] === 'watchEarnings' && parts[3]) {
+      window._supa.from('watch_earn_log').select('coins_earned').eq('user_id', parts[1]).eq('log_date', parts[3])
+        .then(function(r) {
+          var total = (r.data || []).reduce(function(s, x) { return s + (x.coins_earned || 0); }, 0);
+          callback(_fakeSnap(total || 0));
+        }, function() { callback(_fakeSnap(0)); });
+      return;
+    }
+    /* matchResults/{matchId} → Supabase match_results */
+    if (root === 'matchResults' && parts[1]) {
+      window._supa.from('match_results').select('*').eq('match_id', parts[1])
+        .then(function(r) {
+          var obj = {};
+          (r.data || []).forEach(function(row) { obj[row.user_id] = row; });
+          callback(_fakeSnap(Object.keys(obj).length ? obj : null));
+        }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* results (recent results list) → Supabase match_results */
+    if (root === 'results') {
+      window._supa.from('match_results').select('*,matches(name,matchTime)').order('created_at', { ascending: false }).limit(10)
+        .then(function(r) { callback(_fakeSnapList(r.data || [])); }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* Bug #28 Fix: users/{uid}/coinHistory → wallet_transactions */
+    if (root === 'users' && parts[2] === 'coinHistory') {
+      window._supa.from('wallet_transactions').select('amount,txn_type,reason,created_at')
+        .eq('user_id', parts[1]).eq('currency', 'coins')
+        .order('created_at', { ascending: false }).limit(20)
+        .then(function(r) {
+          var obj = {};
+          (r.data || []).forEach(function(t, i) {
+            obj['txn_' + i] = {
+              amount: t.txn_type === 'credit' ? (t.amount||0) : -(t.amount||0),
+              reason: t.reason || '', timestamp: new Date(t.created_at).getTime()
+            };
+          });
+          callback(_fakeSnap(Object.keys(obj).length ? obj : null));
+        }, function() { callback(_fakeSnap(null)); });
+      return;
+    }
+
+    /* Bug #4 Fix: liveStreams → Supabase live_streams */
+    if (root === 'liveStreams') {
+      if (parts[1]) {
+        window._supa.from('live_streams').select('*').eq('id', parts[1]).maybeSingle()
+          .then(function(r) { callback(_fakeSnap(r.data, parts[1])); }, function() { callback(_fakeSnap(null)); });
+      } else {
+        window._supa.from('live_streams').select('*').eq('is_live', true).limit(20)
+          .then(function(r) { callback(_fakeSnapList(r.data || [])); }, function() { callback(_fakeSnapList([])); });
+      }
+      return;
+    }
+
+    /* matchFeedback — soft analytics, can silently no-op on read */
+    if (root === 'matchFeedback') { callback(_fakeSnap(null)); return; }
+
+    /* profileViews — soft analytics */
+    if (root === 'profileViews') { callback(_fakeSnap(null)); return; }
+
+    /* ✅ Bug X Fix (2026-10-01): matchChat → Supabase match_chat.
+       limitToLast semantics: desc limit n, phir reverse = oldest→newest.
+       Pehle default empty snap milta tha — chat hamesha khaali dikhti thi. */
+    if (root === 'matchChat' && parts[1]) {
+      var _limChat = opts.limit || 20;
+      window._supa.from('match_chat').select('user_id,name,text,created_at')
+        .eq('match_id', parts[1])
+        .order('created_at', { ascending: false })
+        .limit(_limChat)
+        .then(function(r) {
+          var rows = (r.data || []).slice().reverse().map(function(x) {
+            return { uid: x.user_id, name: x.name, text: x.text,
+                     ts: x.created_at ? new Date(x.created_at).getTime() : 0 };
+          });
+          callback(_fakeSnapList(rows));
+        }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* ✅ Support Tickets (supportRequests) → Supabase support_tickets */
+    if (root === 'supportRequests') {
+      var _supUid = _uid();
+      if (!_supUid) { callback(_fakeSnapList([])); return; }
+      window._supa.from('support_tickets').select('*')
+        .eq('user_id', _supUid)
+        .order('created_at', { ascending: false })
+        .limit(opts.limit || 50)
+        .then(function(r) {
+          var rows = (r.data || []).map(function(x) {
+            return {
+              id: x.id,
+              userId: x.user_id,
+              userName: x.user_ign || '',
+              type: x.subject || 'general',
+              subject: x.subject || 'general',
+              message: x.message || '',
+              status: x.status || 'open',
+              adminReply: x.admin_reply || '',
+              createdAt: x.created_at ? new Date(x.created_at).getTime() : 0,
+              repliedAt: x.replied_at ? new Date(x.replied_at).getTime() : 0
+            };
+          });
+          callback(_fakeSnapList(rows, 'id'));
+        }, function() { callback(_fakeSnapList([])); });
+      return;
+    }
+
+    /* Default: return empty snap */
+    callback(_fakeSnap(null));
+  }
+
+  /* ── FAKE SNAP HELPERS (mimic Firebase DataSnapshot) ── */
+  function _fakeSnap(data, key) {
+    return {
+      val: function() { return data; },
+      exists: function() { return data !== null && data !== undefined; },
+      key: key || null,
+      forEach: function(cb) {
+        if (data && typeof data === 'object') {
+          Object.keys(data).forEach(function(k) { cb(_fakeSnap(data[k], k)); });
+        }
+      }
+    };
+  }
+  function _fakeSnapList(arr, idField) {
+    var obj = {};
+    arr.forEach(function(item) {
+      var key = item[idField || 'id'] || item.key || Math.random().toString(36).substr(2);
+      obj[key] = item;
+    });
+    return {
+      val: function() { return obj; },
+      exists: function() { return arr.length > 0; },
+      key: null,
+      forEach: function(cb) {
+        arr.forEach(function(item) {
+          var k = item[idField || 'id'] || item.key;
+          cb(_fakeSnap(item, k));
+        });
+      }
+    };
+  }
+
+  /* ── TRANSACTION HANDLER ── */
+  /* BUG FIX (2026-07-31, CRITICAL — financial): _supaWrite has special-case handling for
+     a handful of fields (coins, realMoney/deposited, realMoney/winnings, greenDiamonds,
+     skyDiamonds) where it treats the incoming `value` as a DELTA and routes it through
+     increment_balance — this is correct for the legacy .set()/.update() callers this was
+     designed for (they always passed a delta directly, e.g. db.ref('users/uid/coins')
+     .set(50) meaning "add 50"). But .transaction() callers follow real Firebase semantics:
+     the updateFn receives the CURRENT value and returns the intended NEW ABSOLUTE total
+     (e.g. (v||0)+20 to add 20). This function was handing that absolute total straight to
+     _supaWrite, which then treated the WHOLE absolute total as an additional delta to add
+     on top of the (unchanged, since nothing has written yet) current balance — e.g. current
+     coins=600, transaction computes newVal=620 (600+20), _supaWrite then calls
+     increment_balance(+620), landing on 600+620=1220 instead of the intended 620. The
+     larger the existing balance, the larger the erroneous jump — this matches exactly the
+     "600 → 1220-ish" pattern Junaid reported live. Fixed: for exactly this same set of
+     delta-treated fields, compute and pass the DELTA (newVal - current) instead of the
+     absolute newVal, so increment_balance receives the correct amount. Every other field
+     (stats/matches, tds/*, avgRating, profileViewCount, clan counters, etc.) is untouched —
+     _supaWrite already treats those as absolute-set, which is what a transaction expects. */
+  var _DELTA_FIELD_PATTERNS = [
+    /^users\/[^/]+\/coins$/,
+    /^users\/[^/]+\/realMoney\/(deposited|winnings)$/,
+    /^users\/[^/]+\/greenDiamonds$/,
+    /^users\/[^/]+\/skyDiamonds$/
+  ];
+  function _isDeltaTreatedField(path) {
+    return _DELTA_FIELD_PATTERNS.some(function(re) { return re.test(path); });
+  }
+
+  function _supaTransaction(path, updateFn, cb) {
+    /* Read current value, apply updateFn, write back */
+    _supaRead(path, function(snap) {
+      var current = snap ? snap.val() : null;
+      var newVal = updateFn(current);
+      if (newVal === undefined) { if (cb) cb(null, false, snap); return; }
+      var writeVal = newVal;
+      if (_isDeltaTreatedField(path)) {
+        writeVal = (Number(newVal) || 0) - (Number(current) || 0);
+      }
+      _supaWrite(path, writeVal, false).then(function() {
+        var newSnap = _fakeSnap(newVal);
+        if (cb) cb(null, true, newSnap);
+      }, function(err) {
+        /* RPC/write failed — show toast + attempt Firebase RTDB fallback */
+        _handleRpcError(path, newVal, err);
+        if (cb) cb(err, false, snap);
+      });
+    });
+  }
+
+  /* ── RPC ERROR HANDLER — silent failure ko visible banana ── */
+  function _handleRpcError(path, value, err) {
+    var msg = (err && err.message) || 'Unknown error';
+    var isRpcMissing = msg.indexOf('Could not find the function') !== -1 ||
+                       msg.indexOf('function') !== -1 ||
+                       msg.indexOf('404') !== -1;
+
+    if (isRpcMissing) {
+      /* RPC function missing in Supabase — show admin warning */
+      console.error('[Bridge] ❌ Supabase RPC missing! Run SUPABASE_SQL_SETUP.sql in Supabase Dashboard. Path:', path);
+      /* Show toast only once per session */
+      if (!window._rpcWarnShown) {
+        window._rpcWarnShown = true;
+        if (window.toast) window.toast('⚠️ Balance update mein error — Admin se contact karo', 'err');
+      }
+    } else {
+      console.error('[Bridge] Supabase write error for path:', path, '—', msg);
+    }
+
+    /* ⛔ R7 FOLLOW-UP (2026-09-24c): Firebase RTDB financial fallback REMOVED.
+       Supabase is the ONLY authoritative financial ledger. Previously, if a
+       Supabase write/RPC failed, this handler silently mirrored the value into
+       Firebase RTDB (users/{uid}/coins, joinRequests, walletRequests) — a
+       second, non-authoritative balance write that could desync the wallet and
+       let a later Firebase-first flow (or the admin panel) read a balance that
+       never actually landed in Postgres. That fallback is gone entirely.
+       On Supabase failure we now ONLY surface the error (console + one-time
+       toast). Genuinely Firebase-only mirror paths (tdsRecords, tdsHeld,
+       selfExcluded, matches/spectator listeners) are NOT routed through
+       this handler — they are dispatched directly inside _supaWrite and are
+       unaffected. (B24: videoWatched isliye hata ki wo feature hi nahi tha.) */
+  }
+
+  /* ── INSTALL BRIDGE ── */
+  function _installBridge() {
+    var _originalDb = window.db;
+
+    /* Override db.ref() */
+    var _bridgeDb = {
+      ref: function(path) {
+        /* ✅ AUDIT FIX (critical): db.ref() with NO path argument is used in
+           3 places (clan.js, spectator.js, fixes-v7.js) for Firebase-style
+           atomic multi-path updates: db.ref().update({'clans/x/y': a,
+           'users/uid/clanId': b, ...}). Two problems existed here:
+           1. _isFirebasePath(path) crashed immediately on undefined path
+              ("Cannot read properties of undefined (reading 'split')").
+           2. Even if that crash were avoided by routing root-level calls to
+              real Firebase, every single key actually used in these 3
+              callers (clans/*, users/*, liveStreams/*, polls/*) has
+              already been migrated to Supabase — routing the whole object
+              to Firebase would make joinClan/spectator-toggle/pollVote
+              silently "succeed" (toast shows OK) while writing to a dead
+              Firebase location nothing reads from anymore. That's worse
+              than a visible crash.
+           Fix: split the multi-path object key-by-key, route each key
+           through the exact same per-path logic every other single-path
+           call already uses (_isFirebasePath + _supaWrite), batch the
+           Firebase-bound subset into one real multi-path Firebase update
+           (preserving atomicity for whichever keys are genuinely
+           Firebase-only), and fire the Supabase-bound ones individually. */
+        if (path === undefined || path === null) {
+          return {
+            _path: undefined,
+            update: function(value, cb) {
+              var fbUpdates = {}, hasFb = false, ops = [];
+              Object.keys(value || {}).forEach(function(key) {
+                if (_isFirebasePath(key)) {
+                  fbUpdates[key] = value[key];
+                  hasFb = true;
+                } else {
+                  ops.push(_supaWrite(key, value[key], true));
+                }
+              });
+              if (hasFb) ops.push(_originalDb.ref().update(fbUpdates));
+              Promise.all(ops)
+                .then(function() { if (cb) cb(null); }, function(err) { if (cb) cb(err); });
+            },
+            set: function(value, cb) {
+              if (cb) cb(new Error('Root .set() not supported — use .update() with full paths as keys'));
+            }
+          };
+        }
+        /* Route to Firebase RTDB for realtime paths */
+        if (_isFirebasePath(path)) {
+          return _originalDb.ref(path);
+        }
+
+        /* Return Supabase-backed ref object */
+        return {
+          _path: path,
+
+          /* READ ONCE */
+          /* Bug 21 Fix: Pass _limit from limitToFirst/limitToLast calls */
+          once: function(event, successCb, errorCb) {
+            var self = this;
+            var opts = {};
+            if (self._limit) opts.limit = self._limit;
+            /* ✅ B18 (2026-10-07, live E2E me pageerror): Firebase compat me
+               `once('value', cb)` call karne par bhi ek PROMISE milta hai,
+               is liye purana code `db.ref(...).once('value').then(...)` likhta
+               tha (js/referral-system-fix.js bhi). Yahan sirf `{catch: fn}`
+               return hota tha ⇒ ".then is not a function" pageerror.
+               Ab thenable dono tarah kaam karta hai (callback + promise). */
+            var _resolve;
+            var _p = new Promise(function (res) { _resolve = res; });
+            _supaRead(path, function(snap) {
+              if (successCb) { try { successCb(snap); } catch (e) {} }
+              try { _resolve(snap); } catch (e) {}
+            }, opts);
+            return {
+              then:  function (fn, errFn) { return _p.then(fn, errFn); },
+              catch: function (fn) { return _p.catch(fn); }
+            };
+          },
+
+          /* REALTIME (polling fallback) — ✅ D100-F4: chat paths 6s + registry */
+          on: function(event, successCb, errorCb) {
+            /* Bug 21 Fix: Pass _limit from ref to initial read */
+            var self = this;
+            var opts = {};
+            if (self._limit) opts.limit = self._limit;
+            if (!window._bridgeListeners) window._bridgeListeners = {};
+            if (successCb) {
+              (window._bridgeListeners[path] = window._bridgeListeners[path] || []).push(successCb);
+            }
+            /* Initial load */
+            _supaRead(path, function(snap) {
+              if (successCb) successCb(snap);
+            }, opts);
+            /* ✅ D100-F4: chat-ish paths poll 6s (clan chat live lage),
+               baaki sab pehle jaise 30s */
+            var pollKey = '_bridge_' + path.replace(/[^a-z0-9]/gi, '_');
+            if (!window._bridgePolls) window._bridgePolls = {};
+            if (!window._bridgePolls[pollKey]) {
+              var _isChat = /(^|\/)(clanChats|chats|chat|messages|support)(\/|$)/i.test(path);
+              window._bridgePolls[pollKey] = setInterval(function() {
+                _supaRead(path, function(snap) {
+                  if (successCb) successCb(snap);
+                });
+              }, _isChat ? 6000 : 30000);
+            }
+            return this;
+          },
+
+          /* STOP LISTENER — Bug M-11 Fix: properly clear interval AND delete key */
+          off: function() {
+            if (window._bridgeListeners) delete window._bridgeListeners[path]; /* D100-F4 */
+            var pollKey = '_bridge_' + path.replace(/[^a-z0-9]/gi, '_');
+            if (window._bridgePolls && window._bridgePolls[pollKey]) {
+              clearInterval(window._bridgePolls[pollKey]);
+              window._bridgePolls[pollKey] = null;
+              delete window._bridgePolls[pollKey];
+            }
+          },
+
+          /* WRITE */
+          set: function(value, cb) {
+            return _supaWrite(path, value, false)
+              .then(function() { _bridgeNotify(path); if (cb) cb(null); }, function(err) { if (cb) cb(err); });
+          },
+
+          /* UPDATE (merge) */
+          update: function(value, cb) {
+            return _supaWrite(path, value, true)
+              .then(function() { _bridgeNotify(path); if (cb) cb(null); }, function(err) { if (cb) cb(err); });
+          },
+
+          /* DELETE */
+          remove: function(cb) {
+            return _supaWrite(path, null, false)
+              .then(function() { _bridgeNotify(path); if (cb) cb(null); }, function(err) { if (cb) cb(err); });
+          },
+
+          /* TRANSACTION */
+          transaction: function(updateFn, cb, applyLocally) {
+            _supaTransaction(path, updateFn, cb);
+            return { then: function(fn) { return this; }, catch: function(fn) { return this; } };
+          },
+
+          /* PUSH (generate key + write child) */
+          push: function(value, cb) {
+            var newKey = 'sb_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 5);
+            var childPath = path + '/' + newKey;
+            var refObj = _bridgeDb.ref(childPath);
+            refObj.key = newKey;
+            if (value !== undefined) {
+              refObj.set(value, cb);
+            }
+            return refObj;
+          },
+
+          /* QUERY METHODS (return same ref for chaining) */
+          orderByChild: function(c) { this._orderBy = c; return this; },
+          orderByKey:   function()  { return this; },
+          orderByValue: function()  { return this; },
+          limitToFirst: function(n) { this._limit = n; return this; },
+          limitToLast:  function(n) { this._limit = n; return this; },
+          startAt:      function(v) { this._startAt = v; return this; },
+          endAt:        function(v) { this._endAt = v; return this; },
+          equalTo:      function(v) { this._equalTo = v; return this; },
+
+          /* KEY property */
+          key: path.split('/').pop()
+        };
+      }
+    };
+
+    /* Install bridge — keep original accessible as window._fbDb */
+    window._fbDb = _originalDb;
+    window.db = _bridgeDb;
+    /* Also override window.db.ref for features using window.db */
+    window.db.ref = _bridgeDb.ref;
+
+    console.log('[Bridge] Firebase→Supabase bridge installed. Realtime paths use Firebase RTDB, data paths use Supabase.');
+  }
+
+  /* Start initialization */
+  _waitAndInit();
+
+  /* Issue #35 Fix: Firebase uses epoch ms (Number), Supabase expects ISO 8601.
+     Always pass timestamps through this before inserting into Supabase. */
+
+})();

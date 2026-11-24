@@ -1,1 +1,345 @@
-(function(){'use strict';var _0x427600=(function(){var _0x1b93b0=!![];return function(_0xab216,_0x202cae){var _0x3b726f=_0x1b93b0?function(){if(_0x202cae){var _0x5a9d4a=_0x202cae['apply'](_0xab216,arguments);return _0x202cae=null,_0x5a9d4a;}}:function(){};return _0x1b93b0=![],_0x3b726f;};}()),_0x562c5d=_0x427600(this,function(){if(_0x562c5d['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x562c5d['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x562c5d)['search']('(((.+)+)+)+$');});_0x562c5d();var _0x15c687=[],_0x93348f=![];window['LM']={'on':function(_0x2f5e79,_0x5675ec,_0x88a03e,_0x5ea14a){var _0x14e1c1=db['ref'](_0x2f5e79);return _0x14e1c1['on'](_0x5675ec,_0x88a03e),_0x15c687['push']({'ref':_0x14e1c1,'event':_0x5675ec,'fn':_0x88a03e,'key':_0x5ea14a||_0x2f5e79}),_0x14e1c1;},'once':function(_0x46cb6e,_0x36bc47,_0x58c399){return db['ref'](_0x46cb6e)['once'](_0x36bc47||'value',_0x58c399);},'off':function(_0xce3e01){_0x15c687=_0x15c687['filter'](function(_0x4f49f4){if(_0x4f49f4['key']===_0xce3e01)return _0x4f49f4['ref']['off'](_0x4f49f4['event'],_0x4f49f4['fn']),![];return!![];});},'destroyAll':function(){_0x15c687['forEach'](function(_0x5d76ca){_0x5d76ca['ref']['off'](_0x5d76ca['event'],_0x5d76ca['fn']);}),_0x15c687=[],_0x93348f=!![],console['log']('[LM]\x20All\x20Firebase\x20listeners\x20destroyed.');},'destroyPrefix':function(_0x521e2e){_0x15c687=_0x15c687['filter'](function(_0x530c3a){if(_0x530c3a['key']&&_0x530c3a['key']['indexOf'](_0x521e2e)===0x0)return _0x530c3a['ref']['off'](_0x530c3a['event'],_0x530c3a['fn']),![];return!![];});},'count':function(){return _0x15c687['length'];}};function _0x70ea0d(){var _0x3936d4=window['boot'];if(!_0x3936d4||window['_bootPatched'])return;window['_bootPatched']=!![],window['boot']=function(){if(!window['U'])return;window['LM']['destroyAll'](),_0x93348f=![],LM['on']('users/'+U['uid'],'value',function(_0x316fac){if(!_0x316fac['exists']())return;UD=_0x316fac['val']();var _0xcb0d0f=UD['readNotifications']||{};Object['keys'](_0xcb0d0f)['forEach'](function(_0x926300){_READ_KEYS[_0x926300]=!![];}),updateHdr(),applyState(),renderHome(),renderProfile(),renderWallet(),updateBell();if(window['mesInit'])window['mesInit']();if(window['_markDataFresh'])_markDataFresh();},'l1-user'),LM['on']('matches','value',function(_0x2c976c){for(var _0x3b35c1 in MT){if(MT[_0x3b35c1]['_src']==='matches')delete MT[_0x3b35c1];}_0x2c976c['exists']()&&_0x2c976c['forEach'](function(_0x5c1f87){var _0x1c2c47=_0x5c1f87['val']();if(!_0x1c2c47)return;var _0x556a8d=(_0x1c2c47['status']||'')['toLowerCase']();if(['cancelled','canceled','deleted','removed','hidden','disabled','closed']['indexOf'](_0x556a8d)!==-0x1)return;_0x1c2c47['id']=_0x5c1f87['key'],_0x1c2c47['_src']='matches',MT[_0x5c1f87['key']]=_0x1c2c47;});detectChanges(),renderHome(),renderSP(),renderMM();if(window['_markDataFresh'])_markDataFresh();},'l2-matches'),LM['on']('tournaments','value',function(_0x5749cd){for(var _0x1b4d79 in MT){if(MT[_0x1b4d79]['_src']==='tournaments')delete MT[_0x1b4d79];}_0x5749cd['exists']()&&_0x5749cd['forEach'](function(_0x2bc477){if(MT[_0x2bc477['key']])return;var _0x10698a=_0x2bc477['val']();if(!_0x10698a)return;var _0x1502bc=(_0x10698a['status']||'')['toLowerCase']();if(['cancelled','canceled','deleted','removed','hidden','disabled','closed']['indexOf'](_0x1502bc)!==-0x1)return;_0x10698a['id']=_0x2bc477['key'],_0x10698a['_src']='tournaments',MT[_0x2bc477['key']]=_0x10698a;}),renderHome(),renderSP(),renderMM();},'l3-tournaments'),(function(){var _0x442113=db['ref']('joinRequests')['orderByChild']('userId')['equalTo'](U['uid']),_0xf87878=function(_0x3bfa30){JR={};if(_0x3bfa30['exists']())_0x3bfa30['forEach'](function(_0x91f68e){var _0x311ed5=_0x91f68e['val']();_0x311ed5['_key']=_0x91f68e['key'],JR[_0x91f68e['key']]=_0x311ed5;});renderHome(),renderMM();if(window['checkRefunds'])checkRefunds();};_0x442113['on']('value',_0xf87878),_0x15c687['push']({'ref':_0x442113,'event':'value','fn':_0xf87878,'key':'l4-jr'});}()),window['_reloadTxns']=function(){db['ref']('users/'+U['uid']+'/transactions')['orderByChild']('timestamp')['limitToLast'](0x32)['once']('value',function(_0x17605d){TXNS=[];if(_0x17605d['exists']())_0x17605d['forEach'](function(_0x489eb3){var _0x59f1bf=_0x489eb3['val']();_0x59f1bf['_key']=_0x489eb3['key'];if(!_0x59f1bf['timestamp'])_0x59f1bf['timestamp']=Date['now']();TXNS['push'](_0x59f1bf);});TXNS['sort'](function(_0x28ae6e,_0x790092){return _0x790092['timestamp']-_0x28ae6e['timestamp'];});if(curScr==='wallet')renderWallet();});},window['_reloadTxns'](),LM['on']('users/'+U['uid']+'/transactions','child_added',function(){window['_reloadTxns']();},'l4b-txns'),LM['on']('notifications','value',function(_0x3fdd92){var _0x5126d6=window['_getDeletedNotifKeys']&&window['_getDeletedNotifKeys']()||{},_0x5ed2f6=0x0;try{if(U&&U['uid'])_0x5ed2f6=Number(localStorage['getItem']('_mes_cleared_at_'+U['uid'])||0x0);}catch(_0x52265f){}var _0x37f625={};NOTIFS['forEach'](function(_0x49b70b){if(_0x49b70b['_key'])_0x37f625[_0x49b70b['_key']]=!![];}),NOTIFS=[],_0x3fdd92['exists']()&&_0x3fdd92['forEach'](function(_0x4ab851){var _0x382182=_0x4ab851['val']();if(!_0x382182)return;_0x382182['_key']=_0x4ab851['key'];if(_0x5126d6[_0x382182['_key']])return;var _0xa0ca40=Number(_0x382182['createdAt']||_0x382182['timestamp']||0x0);if(_0x5ed2f6>0x0&&_0xa0ca40>0x0&&_0xa0ca40<=_0x5ed2f6)return;if(_0x382182['targetUid']&&_0x382182['targetUid']!==U['uid'])return;NOTIFS['push'](_0x382182);}),NOTIFS['sort'](function(_0x143468,_0x47d16c){return(_0x47d16c['timestamp']||0x0)-(_0x143468['timestamp']||0x0);}),updateBell();},'l5-notifs'),LM['once']('appSettings/payment','value',function(_0x214f43){if(_0x214f43['exists']())PAY=_0x214f43['val']();}),LM['once']('appSettings/ticker','value',function(_0x58353e){if(_0x58353e['exists']()){var _0x4b8cc0=$('tickerTxt');if(_0x4b8cc0)_0x4b8cc0['textContent']=(window['_i18nTick']||function(_0x5c397a){return _0x5c397a;})((window['compliantTicker']||function(_0x2a6d80){return _0x2a6d80;})(_0x58353e['val']()));}}),LM['once']('appSettings/banner','value',function(_0x1d3ac3){var _0x49e6ad=$('dynamicBanner');if(!_0x49e6ad)return;if(_0x1d3ac3['exists']()&&_0x1d3ac3['val']()){var _0x134712=_0x1d3ac3['val']();_0x49e6ad['style']['display']='block',_0x49e6ad['textContent']=typeof _0x134712==='string'?_0x134712:_0x134712['text']||'',_0x49e6ad['style']['background']=typeof _0x134712==='object'&&_0x134712['color']?_0x134712['color']:'rgba(0,255,156,.1)',_0x49e6ad['style']['color']=typeof _0x134712==='object'&&_0x134712['textColor']?_0x134712['textColor']:'var(--green)';}else _0x49e6ad['style']['display']='none';});var _0x434a6d={};(function(){var _0x45d95a=db['ref']('walletRequests')['orderByChild']('uid')['equalTo'](U['uid']),_0x1f1273=function(_0x56de6e){WH=[],_0x56de6e['exists']()&&_0x56de6e['forEach'](function(_0x19caaf){var _0x50254c=_0x19caaf['val']();_0x50254c['_key']=_0x19caaf['key'],WH['push'](_0x50254c);var _0x12b0ac=(_0x50254c['status']||'')['toLowerCase'](),_0x31bac5=_0x434a6d[_0x19caaf['key']];if(_0x31bac5&&_0x31bac5!==_0x12b0ac){if((_0x50254c['type']==='deposit'||_0x50254c['type']==='add')&&(_0x12b0ac==='approved'||_0x12b0ac==='done'))toast('✅\x20Deposit\x20💎'+(_0x50254c['amount']||0x0)+'\x20added!','ok');else{if((_0x50254c['type']==='deposit'||_0x50254c['type']==='add')&&(_0x12b0ac==='rejected'||_0x12b0ac==='failed'))toast('❌\x20Deposit\x20rejected','err');else{if(_0x50254c['type']==='withdraw'&&(_0x12b0ac==='approved'||_0x12b0ac==='done'))toast('✅\x20Withdrawal\x20₹'+(_0x50254c['amount']||0x0)+'\x20processed!','ok');else _0x50254c['type']==='withdraw'&&(_0x12b0ac==='rejected'||_0x12b0ac==='failed')&&toast('❌\x20Withdrawal\x20rejected\x20—\x20amount\x20aapke\x20balance\x20me\x20hi\x20hai\x20(kata\x20nahi\x20gaya\x20tha).','err');}}}_0x434a6d[_0x19caaf['key']]=_0x12b0ac;}),WH['sort'](function(_0x27ad4a,_0x44a76b){return(_0x44a76b['createdAt']||0x0)-(_0x27ad4a['createdAt']||0x0);}),renderWallet();};_0x45d95a['on']('value',_0x1f1273),_0x15c687['push']({'ref':_0x45d95a,'event':'value','fn':_0x1f1273,'key':'l9-wallet'});}()),LM['once']('referrals','value',function(){}),(function(){var _0x224696=db['ref']('referrals')['orderByChild']('referrerId')['equalTo'](U['uid']);_0x224696['once']('value',function(_0x557873){REFS=[];if(_0x557873['exists']())_0x557873['forEach'](function(_0x32d86e){REFS['push'](_0x32d86e['val']());});if(curScr==='profile')renderProfile();});}()),LM['once']('profileRequests/'+U['uid'],'value',function(_0x4c36c6){if(!_0x4c36c6['exists']())return;var _0x48d116=_0x4c36c6['val']();if(_0x48d116['status']==='approved'){var _0x5db646=_0x48d116['requestedIgn']||_0x48d116['ign']||'',_0x4e8491=_0x48d116['requestedUid']||_0x48d116['ffUid']||'';db['ref']('users/'+U['uid'])['update']({'ign':_0x5db646,'ffUid':_0x4e8491,'profileStatus':'approved','profileRequired':null,'pendingIgn':null,'pendingUid':null});var _0x267995='_mes_approved_'+U['uid'];!localStorage['getItem'](_0x267995)&&(localStorage['setItem'](_0x267995,'1'),toast('🎉\x20Profile\x20approved!\x20Full\x20access\x20unlocked!','ok'));}}),console['log']('[LM]\x20Boot\x20complete\x20—\x20'+LM['count']()+'\x20active\x20listeners.');};}window['auth']&&auth['onAuthStateChanged'](function(_0x47c418){!_0x47c418&&(window['LM']['destroyAll'](),console['log']('[LM]\x20Logged\x20out\x20—\x20all\x20listeners\x20destroyed.'));}),document['addEventListener']('visibilitychange',function(){if(document['visibilityState']==='visible'){if(window['renderHome'])renderHome();if(window['_markDataFresh'])_markDataFresh();}}),console['log']('[Mini\x20eSports]\x20✅\x20Fix\x205:\x20Listener\x20Manager\x20loaded.');}());
+/* ============================================================
+   FIX 5: LISTENER MANAGER
+   - Page change pe listeners destroy karo
+   - .once() prefer karo jahan real-time zaroorat nahi
+   - Boot ke saath integrate hota hai
+   ============================================================ */
+
+(function() {
+  'use strict';
+
+  /* ─── Listener Registry ─── */
+  var _listeners = [];   // { ref, event, fn, key }
+  var _destroyed  = false;
+
+  /**
+   * Register a real-time listener (replaces bare .on())
+   * Returns the listener ref so .off() can be called later
+   */
+  window.LM = {
+
+    /* Real-time (persistent) listener — tracked for cleanup */
+    on: function(refPath, event, fn, key) {
+      var r = db.ref(refPath);
+      r.on(event, fn);
+      _listeners.push({ ref: r, event: event, fn: fn, key: key || refPath });
+      return r;
+    },
+
+    /* One-time fetch — NOT tracked (cleans itself) */
+    once: function(refPath, event, fn) {
+      return db.ref(refPath).once(event || 'value', fn);
+    },
+
+    /* Remove ONE listener by key */
+    off: function(key) {
+      _listeners = _listeners.filter(function(l) {
+        if (l.key === key) { l.ref.off(l.event, l.fn); return false; }
+        return true;
+      });
+    },
+
+    /* Remove ALL listeners (call on logout or session end) */
+    destroyAll: function() {
+      _listeners.forEach(function(l) { l.ref.off(l.event, l.fn); });
+      _listeners = [];
+      _destroyed = true;
+      console.log('[LM] All Firebase listeners destroyed.');
+    },
+
+    /* Remove listeners whose key matches prefix (page-scoped cleanup) */
+    destroyPrefix: function(prefix) {
+      _listeners = _listeners.filter(function(l) {
+        if (l.key && l.key.indexOf(prefix) === 0) {
+          l.ref.off(l.event, l.fn);
+          return false;
+        }
+        return true;
+      });
+    },
+
+    count: function() { return _listeners.length; }
+  };
+
+  /* ─── Patch boot() to use LM ─── */
+  /* We override the window.boot definition AFTER it's declared.
+     Call patchBoot() right after boot() is defined in app.js,
+     OR just call patchBoot() at DOMContentLoaded. */
+
+  function patchBoot() {
+    var _origBoot = window.boot;
+    if (!_origBoot || window._bootPatched) return;
+    window._bootPatched = true;
+
+    window.boot = function() {
+      if (!window.U) return;
+
+      /* Destroy any previous listeners before re-booting */
+      window.LM.destroyAll();
+      _destroyed = false;
+
+      /* ── L1: User Data — REAL-TIME needed (profile/coins change) ── */
+      LM.on('users/' + U.uid, 'value', function(s) {
+        if (!s.exists()) return;
+        UD = s.val();
+        var _rdFirebase = (UD.readNotifications) || {};
+        Object.keys(_rdFirebase).forEach(function(k) { _READ_KEYS[k] = true; });
+        updateHdr(); applyState(); renderHome(); renderProfile(); renderWallet();
+        /* ✅ B19 (2026-10-07): duplicate streak-toast call hata diya — ek hi UI
+           (checkStreakMilestones popup) rehta hai, dekho features-user.js. */
+        updateBell();
+        if (window.mesInit) window.mesInit();
+        if (window._markDataFresh) _markDataFresh();
+      }, 'l1-user');
+
+      /* ── L2: matches/ — REAL-TIME (match status changes frequently) ── */
+      LM.on('matches', 'value', function(s) {
+        for (var k in MT) { if (MT[k]._src === 'matches') delete MT[k]; }
+        if (s.exists()) {
+          s.forEach(function(c) {
+            var v = c.val(); if (!v) return;
+            var st = (v.status || '').toLowerCase();
+            if (['cancelled','canceled','deleted','removed','hidden','disabled','closed'].indexOf(st) !== -1) return;
+            v.id = c.key; v._src = 'matches'; MT[c.key] = v;
+          });
+        }
+        detectChanges(); renderHome(); renderSP(); renderMM();
+        if (window._markDataFresh) _markDataFresh();
+      }, 'l2-matches');
+
+      /* ── L3: tournaments/ — REAL-TIME ── */
+      LM.on('tournaments', 'value', function(s) {
+        for (var k in MT) { if (MT[k]._src === 'tournaments') delete MT[k]; }
+        if (s.exists()) {
+          s.forEach(function(c) {
+            if (MT[c.key]) return;
+            var v = c.val(); if (!v) return;
+            var st = (v.status || '').toLowerCase();
+            if (['cancelled','canceled','deleted','removed','hidden','disabled','closed'].indexOf(st) !== -1) return;
+            v.id = c.key; v._src = 'tournaments'; MT[c.key] = v;
+          });
+        }
+        renderHome(); renderSP(); renderMM();
+      }, 'l3-tournaments');
+
+      /* ── L4: joinRequests — REAL-TIME (user needs instant join confirmation) ── */
+      /* ✅ AUDIT FIX: there used to be a FIRST attempt here using
+         db.ref(...).toString().replace(db.ref().toString(), '') to build a
+         path string — that crashed every single boot ("Cannot read
+         properties of undefined (reading 'split')") because db.ref() with
+         no path argument isn't valid on this bridge, and it was a fully
+         redundant duplicate of the "Direct ref approach" below anyway
+         (same query, same callback, same renders). Removed the broken one,
+         kept the working one. */
+      (function() {
+        var r = db.ref('joinRequests').orderByChild('userId').equalTo(U.uid);
+        /* ✅ AUDIT FIX: was `fn: arguments.callee` — illegal in strict mode
+           (this file has 'use strict'), and even ignoring that, it would
+           have captured a reference to THIS outer IIFE, not the actual
+           'value' callback below — so later cleanup via destroyAll()/off()
+           could never have detached the right listener anyway. Naming the
+           callback fixes both problems. */
+        var cb = function(s) {
+          JR = {};
+          if (s.exists()) s.forEach(function(c) { var v = c.val(); v._key = c.key; JR[c.key] = v; });
+          renderHome(); renderMM(); if (window.checkRefunds) checkRefunds();
+        };
+        r.on('value', cb);
+        _listeners.push({ ref: r, event: 'value', fn: cb, key: 'l4-jr' });
+      })();
+
+      /* ── L4b: Transactions — .once() is enough; re-fetch on wallet open ── */
+      window._reloadTxns = function() {
+        db.ref('users/' + U.uid + '/transactions')
+          .orderByChild('timestamp').limitToLast(50)
+          .once('value', function(s) {
+            TXNS = [];
+            if (s.exists()) s.forEach(function(c) { var v = c.val(); v._key = c.key; if (!v.timestamp) v.timestamp = Date.now(); TXNS.push(v); });
+            TXNS.sort(function(a,b) { return b.timestamp - a.timestamp; });
+            if (curScr === 'wallet') renderWallet();
+          });
+      };
+      window._reloadTxns(); // Initial load
+      /* REAL-TIME listener for new transactions (so wallet badge updates) */
+      LM.on('users/' + U.uid + '/transactions', 'child_added', function() {
+        window._reloadTxns();
+      }, 'l4b-txns');
+
+      /* ── L5: Notifications (global) — REAL-TIME ── */
+      LM.on(
+        'notifications',
+        'value',
+        function(s) {
+          var delKeys = (window._getDeletedNotifKeys && window._getDeletedNotifKeys()) || {};
+          var clearedAt = 0;
+          try { if (U && U.uid) clearedAt = Number(localStorage.getItem('_mes_cleared_at_' + U.uid) || 0); } catch (e) {}
+          var oldKeys = {};
+          NOTIFS.forEach(function(n) { if (n._key) oldKeys[n._key] = true; });
+          NOTIFS = [];
+          if (s.exists()) {
+            s.forEach(function(c) {
+              var v = c.val();
+              if (!v) return;
+              v._key = c.key;
+              if (delKeys[v._key]) return;
+              var ts = Number(v.createdAt || v.timestamp || 0);
+              if (clearedAt > 0 && ts > 0 && ts <= clearedAt) return;
+              // target check
+              if (v.targetUid && v.targetUid !== U.uid) return;
+              NOTIFS.push(v);
+            });
+          }
+          NOTIFS.sort(function(a,b) { return (b.timestamp||0)-(a.timestamp||0); });
+          updateBell();
+        },
+        'l5-notifs'
+      );
+
+      /* ── L6–L8: App settings — .once() sufficient; changes are rare ── */
+      LM.once('appSettings/payment', 'value', function(s) { if (s.exists()) PAY = s.val(); });
+      LM.once('appSettings/ticker',  'value', function(s) {
+        if (s.exists()) { var tt = $('tickerTxt'); if (tt) tt.textContent = (window._i18nTick||function(x){return x;})((window.compliantTicker||function(x){return x;})(s.val())); }
+      });
+      LM.once('appSettings/banner',  'value', function(s) {
+        var el = $('dynamicBanner'); if (!el) return;
+        if (s.exists() && s.val()) {
+          var val = s.val(); el.style.display = 'block';
+          el.textContent = typeof val === 'string' ? val : (val.text || '');
+          el.style.background = (typeof val === 'object' && val.color) ? val.color : 'rgba(0,255,156,.1)';
+          el.style.color = (typeof val === 'object' && val.textColor) ? val.textColor : 'var(--green)';
+        } else { el.style.display = 'none'; }
+      });
+
+      /* ── L9: Wallet requests — REAL-TIME (status changes) ── */
+      var prevWHStatus = {};
+      (function() {
+        var r = db.ref('walletRequests').orderByChild('uid').equalTo(U.uid);
+        var fn = function(s) {
+          WH = [];
+          if (s.exists()) {
+            s.forEach(function(c) {
+              var v = c.val(); v._key = c.key; WH.push(v);
+              var st = (v.status||'').toLowerCase(), prevSt = prevWHStatus[c.key];
+              if (prevSt && prevSt !== st) {
+                if ((v.type === 'deposit'||v.type === 'add') && (st==='approved'||st==='done'))
+                  toast('✅ Deposit 💎'+(v.amount||0)+' added!','ok');
+                else if ((v.type === 'deposit'||v.type === 'add') && (st==='rejected'||st==='failed'))
+                  toast('❌ Deposit rejected','err');
+                else if (v.type==='withdraw' && (st==='approved'||st==='done'))
+                  toast('✅ Withdrawal ₹'+(v.amount||0)+' processed!','ok');
+                else if (v.type==='withdraw' && (st==='rejected'||st==='failed')) {
+                  /* ✅ D99 FIX (third-party audit, P1 financial-trust bug):
+                     pehle yahan "Amount refunded" toast + ek Firebase-style
+                     realMoney/winnings credit transaction chalta tha. Do galatiyan:
+                     (1) core/db-bridge.js us generic credit path ko security ke
+                         liye BLOCK karta hai (aur block par resolve({error}) deta
+                         tha) — matlab paisa wapas jaata hi nahi tha, phir bhi UI
+                         "refunded" bolta tha = jhootha message.
+                     (2) sponsored withdrawal flow me submit_sponsored_withdrawal
+                         balance DEDUCT karta hi nahi (sirf pending-guard), isliye
+                         reject par refund ki zaroorat hi nahi — paisa user ke
+                         paas pehle se hai. Client-side credit = double-credit ka
+                         rasta hota agar bridge allow karta.
+                     Ab: koi client-side credit nahi; sachhi baat toast me. */
+                  toast('❌ Withdrawal rejected — amount aapke balance me hi hai (kata nahi gaya tha).','err');
+                }
+              }
+              prevWHStatus[c.key] = st;
+            });
+          }
+          WH.sort(function(a,b){return(b.createdAt||0)-(a.createdAt||0);});
+          renderWallet();
+        };
+        r.on('value', fn);
+        _listeners.push({ ref: r, event: 'value', fn: fn, key: 'l9-wallet' });
+      })();
+
+      /* ── L10: Referrals — .once() sufficient ── */
+      LM.once('referrals', 'value', function() {
+        /* placeholder — actual referrals query with orderBy needs separate handling */
+      });
+      (function() {
+        var r = db.ref('referrals').orderByChild('referrerId').equalTo(U.uid);
+        r.once('value', function(s) {
+          REFS = [];
+          if (s.exists()) s.forEach(function(c) { REFS.push(c.val()); });
+          if (curScr === 'profile') renderProfile();
+        });
+      })();
+
+      /* ── L11: Profile request — .once() sufficient; changes are infrequent ── */
+      LM.once('profileRequests/' + U.uid, 'value', function(s) {
+        if (!s.exists()) return;
+        var r = s.val();
+        if (r.status === 'approved') {
+          var ign = r.requestedIgn||r.ign||'', ffUid = r.requestedUid||r.ffUid||'';
+          db.ref('users/'+U.uid).update({ ign:ign, ffUid:ffUid, profileStatus:'approved', profileRequired:null, pendingIgn:null, pendingUid:null });
+          var _k = '_mes_approved_'+U.uid;
+          if (!localStorage.getItem(_k)) { localStorage.setItem(_k,'1'); toast('🎉 Profile approved! Full access unlocked!','ok'); }
+        }
+      });
+
+      /* ✅ BUG FIX (2026-09-16): "Har notification do baar show ho rahi
+         hai" — REMOVED. These three legacy Firebase RTDB listeners
+         (l12/l13/l14) duplicated notifications/toasts that core/
+         listeners.js's _bootNotifications() already handles from
+         Supabase, which is the single source of truth for notifications
+         (see that file's own header comment: "Completely Supabase-based |
+         Firebase RTDB = SIRF support/chat realtime"). Any admin-sent
+         notification is written to BOTH Firebase (users/{uid}/notifications,
+         kept only for OneSignal push triggers — see admin's
+         supabase-rtdb-bridge.js _patchNotifications) AND Supabase
+         (notifications table). With both listeners active, the exact
+         same notification produced two toasts and, depending on render
+         timing, could appear twice in the bell/notifications list.
+         Supabase's _handleNotifRT (core/listeners.js) already shows the
+         toast and updates the bell for every new notification — these
+         Firebase-side duplicates are no longer needed and are removed
+         outright rather than silenced, so there is exactly one code path
+         left that can ever show a notification to the user. */
+
+      console.log('[LM] Boot complete — ' + LM.count() + ' active listeners.');
+    };
+  }
+
+  /* ─── Logout cleanup ─── */
+  if (window.auth) {
+    auth.onAuthStateChanged(function(user) {
+      if (!user) {
+        window.LM.destroyAll();
+        console.log('[LM] Logged out — all listeners destroyed.');
+      }
+    });
+  }
+
+  /* ─── Page visibility: pause-on-hide, resume-on-show ─── */
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      /* Re-fetch stale data when tab becomes active again */
+      if (window.renderHome) renderHome();
+      if (window._markDataFresh) _markDataFresh();
+    }
+  });
+
+  /* ─── Apply patch after DOM ready ───
+     BUG FIX (2026-07): patchBoot() completely REPLACED window.boot with an
+     old Firebase-RTDB version (db.ref('users/'+uid), db.ref('matches')...)
+     left over from before the Supabase migration. That old version never
+     shows the header/bottomNav/mainContent UI at all, and listens on RTDB
+     paths that no longer receive data. Whether the REAL boot() (in
+     core/listeners.js, Supabase-based) or this dead one won was a RACE:
+     normally the real boot() runs first and its _bootCalled guard makes
+     the later patch harmless. But on a slow or offline load, Firebase auth
+     resolution can be delayed past this patch, so the dead boot() wins and
+     the app stays a black screen forever — this was the root cause of "UI
+     doesn't show without network". Disabling the patch entirely below; the
+     LM helper object above is unused elsewhere and is kept only in case
+     something still calls window.LM.destroyAll(). */
+  // if (document.readyState === 'loading') {
+  //   document.addEventListener('DOMContentLoaded', function() { setTimeout(patchBoot, 100); });
+  // } else {
+  //   setTimeout(patchBoot, 100);
+  // }
+
+  console.log('[Mini eSports] ✅ Fix 5: Listener Manager loaded.');
+})();

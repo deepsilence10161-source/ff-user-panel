@@ -1,1 +1,300 @@
-(function(){'use strict';var _0xa0abc3=(function(){var _0x16f1a2=!![];return function(_0x1799e8,_0x56eefa){var _0x3f8136=_0x16f1a2?function(){if(_0x56eefa){var _0x4ef3c9=_0x56eefa['apply'](_0x1799e8,arguments);return _0x56eefa=null,_0x4ef3c9;}}:function(){};return _0x16f1a2=![],_0x3f8136;};}()),_0x4eb4f7=_0xa0abc3(this,function(){if(_0x4eb4f7['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x4eb4f7['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x4eb4f7)['search']('(((.+)+)+)+$');});_0x4eb4f7();var _0x3ede19=[{'id':'silver_bp','label':'Silver\x20+\x20Battle\x20Pass','icon':'🎫','price':0x4f,'originalPrice':0x62,'save':0x13,'color':'#e0e0e0','includes':['Premium\x20Silver\x20(1\x20mahina)','Season\x20Battle\x20Pass','No\x20Ads']},{'id':'gold_bp','label':'Gold\x20+\x20Battle\x20Pass','icon':'🎫','price':0x81,'originalPrice':0x94,'save':0x13,'color':'#ffd700','best':!![],'includes':['Premium\x20Gold\x20(1\x20mahina)','Season\x20Battle\x20Pass','No\x20Ads']}],_0xdf15cc=[{'tier':0x1,'label':'Silver\x20Annual','icon':window['tierIconHtml']?tierIconHtml('Silver',0x12):'','price':0x18f,'monthly':0x21,'save':0xbd,'originalYearly':0x24c,'color':'#e0e0e0'},{'tier':0x2,'label':'Gold\x20Annual','icon':window['tierIconHtml']?tierIconHtml('Gold',0x12):'','price':0x31f,'monthly':0x43,'save':0x185,'originalYearly':0x4a4,'color':'#ffd700','best':!![]}];window['showBundleOffers']=function(){window['checkPolicyThenRun'](function(){var _0x404d7d='';_0x404d7d+='<div\x20style=\x22text-align:center;padding:4px\x200\x2014px\x22>',_0x404d7d+='<div\x20style=\x22font-size:28px;margin-bottom:6px\x22>🔥</div>',_0x404d7d+='<div\x20style=\x22font-size:17px;font-weight:900;color:#fff\x22>Best\x20Value\x20Bundles</div>',_0x404d7d+='<div\x20style=\x22font-size:11px;color:#888;margin-top:3px\x22>Premium\x20+\x20Battle\x20Pass\x20saath\x20mein\x20→\x20extra\x20save!</div>',_0x404d7d+='</div>',_0x3ede19['forEach'](function(_0x2a5cf1){_0x404d7d+='<div\x20style=\x22position:relative;margin-bottom:14px\x22>';if(_0x2a5cf1['best'])_0x404d7d+='<div\x20style=\x22position:absolute;top:-9px;left:50%;transform:translateX(-50%);z-index:2;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:9px;font-weight:900;padding:3px\x2016px;border-radius:20px;white-space:nowrap\x22>⭐\x20BEST\x20VALUE</div>';_0x404d7d+='<div\x20style=\x22background:rgba('+(_0x2a5cf1['best']?'255,215,0':'255,255,255')+',.05);border:1.5px\x20solid\x20rgba('+(_0x2a5cf1['best']?'255,215,0':'255,255,255')+',.2);border-radius:16px;padding:'+(_0x2a5cf1['best']?'20px\x2016px\x2016px':'16px')+'\x22>',_0x404d7d+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between;margin-bottom:10px\x22>',_0x404d7d+='<div><div\x20style=\x22font-size:15px;font-weight:900;color:'+_0x2a5cf1['color']+'\x22>'+_0x2a5cf1['icon']+'\x20'+_0x2a5cf1['label']+'</div>',_0x404d7d+='<div\x20style=\x22font-size:10px;color:#888;margin-top:2px\x22>1\x20mahina\x20combo</div></div>',_0x404d7d+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:10px;color:#8a8a92;text-decoration:line-through\x22>₹'+_0x2a5cf1['originalPrice']+'</div>',_0x404d7d+='<div\x20style=\x22font-size:24px;font-weight:900;color:'+_0x2a5cf1['color']+'\x22>₹'+_0x2a5cf1['price']+'</div>',_0x404d7d+='<div\x20style=\x22font-size:10px;color:#00ff9c;font-weight:700\x22>Save\x20₹'+_0x2a5cf1['save']+'!</div></div></div>',_0x404d7d+='<div\x20style=\x22display:flex;flex-direction:column;gap:5px;margin-bottom:12px\x22>',_0x2a5cf1['includes']['forEach'](function(_0x20cb4c){_0x404d7d+='<div\x20style=\x22font-size:11px;color:#ccc;display:flex;align-items:center;gap:6px\x22><span\x20style=\x22color:'+_0x2a5cf1['color']+'\x22>✓</span>'+_0x20cb4c+'</div>';}),_0x404d7d+='</div>',_0x404d7d+='<button\x20onclick=\x22window.buyBundle(\x27'+_0x2a5cf1['id']+'\x27)\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,'+_0x2a5cf1['color']+',#333);color:'+(_0x2a5cf1['tier']===0x1?'#000':'#fff')+';font-size:13px;font-weight:900;cursor:pointer\x22>Bundle\x20Kharido\x20—\x20₹'+_0x2a5cf1['price']+'\x20→</button>',_0x404d7d+='</div></div>';}),_0x404d7d+='<div\x20style=\x22text-align:center;margin:14px\x200\x208px\x22><div\x20style=\x22font-size:11px;color:#555;font-weight:700;letter-spacing:.5px\x22>ANNUAL\x20PLANS\x20(SAVE\x20MORE)</div></div>',_0xdf15cc['forEach'](function(_0x43968d){_0x404d7d+='<div\x20style=\x22background:rgba('+(_0x43968d['best']?'255,215,0':'255,255,255')+',.04);border:1px\x20solid\x20rgba('+(_0x43968d['best']?'255,215,0':'255,255,255')+',.15);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between\x22>',_0x404d7d+='<div><div\x20style=\x22font-size:14px;font-weight:900;color:'+_0x43968d['color']+'\x22>'+_0x43968d['icon']+'\x20'+_0x43968d['label']+'</div>',_0x404d7d+='<div\x20style=\x22font-size:10px;color:#888;margin-top:2px\x22>₹'+_0x43968d['monthly']+'/month\x20•\x20Save\x20₹'+_0x43968d['save']+'</div>',_0x404d7d+='<div\x20style=\x22font-size:10px;color:#00ff9c;margin-top:1px\x22>vs\x20₹'+_0x43968d['originalYearly']+'\x20monthly</div></div>',_0x404d7d+='<button\x20onclick=\x22window.buyAnnualPlan('+_0x43968d['tier']+','+_0x43968d['price']+')\x22\x20style=\x22padding:10px\x2016px;border-radius:11px;border:none;background:linear-gradient(135deg,'+_0x43968d['color']+',#333);color:'+(_0x43968d['tier']===0x1?'#000':'#fff')+';font-size:12px;font-weight:900;cursor:pointer\x22>₹'+_0x43968d['price']+'/yr</button>',_0x404d7d+='</div>';});if(window['openModal'])openModal('🔥\x20Bundle\x20Offers',_0x404d7d);});},window['buyBundle']=function(_0x957c6e){var _0x5b9f77=_0x3ede19['filter'](function(_0x3b5522){return _0x3b5522['id']===_0x957c6e;})[0x0];if(!_0x5b9f77)return;_0x394855(_0x5b9f77);};function _0x394855(_0x2c914b){var _0x173646='<div\x20style=\x22text-align:center;padding:6px\x200\x2014px\x22>';_0x173646+='<div\x20style=\x22font-size:32px;margin-bottom:6px\x22>'+_0x2c914b['icon']+'</div>',_0x173646+='<div\x20style=\x22font-size:16px;font-weight:900;color:'+_0x2c914b['color']+'\x22>'+_0x2c914b['label']+'</div>',_0x173646+='<div\x20style=\x22font-size:28px;font-weight:900;color:#fff;margin:8px\x200\x22>₹'+_0x2c914b['price']+'\x20<span\x20style=\x22font-size:12px;color:#8a8a92;text-decoration:line-through\x22>₹'+_0x2c914b['originalPrice']+'</span></div>',_0x173646+='<div\x20style=\x22font-size:12px;color:#00ff9c;font-weight:700\x22>Save\x20₹'+_0x2c914b['save']+'!\x20🎉</div></div>';var _0x3ff520=_0x2c914b['id']==='gold_bp'?0x2:0x1;window['renderPaytmInstantBlock']&&(_0x173646+=window['renderPaytmInstantBlock'](_0x2c914b['price'],'window.paytmInstantPurchase('+_0x2c914b['price']+',\x27paytm_bundle\x27,{bundle_id:\x27'+_0x2c914b['id']+'\x27,tier:'+_0x3ff520+',label:\x27'+_0x2c914b['label']+'\x27},\x27_bndlPtmBtn\x27,\x27_bndlPtmSt\x27,function(){if(window.toast)toast(\x27🎉\x20'+_0x2c914b['label']+'\x20Activated!\x27,\x27ok\x27);})','_bndlPtmBtn','_bndlPtmSt'));_0x173646+='<div\x20style=\x22background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px\x22>',['UPI:\x20<strong\x20style=\x22color:#ffd700\x22>miniesports@upi</strong>\x20par\x20₹'+_0x2c914b['price']+'\x20bhejo','Screenshot\x20lo,\x20aur\x20UTR/Transaction\x20number\x20note\x20karo','Dono\x20neeche\x20daalo\x20—\x201-2\x20ghante\x20mein\x20activate\x20honge']['forEach'](function(_0x55a5e6,_0x416823){_0x173646+='<div\x20style=\x22display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc\x22><div\x20style=\x22min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px\x20solid\x20rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center\x22>'+(_0x416823+0x1)+'</div>'+_0x55a5e6+'</div>';}),_0x173646+='</div>',_0x173646+='<div\x20id=\x22_bndlSsArea\x22\x20onclick=\x22document.getElementById(\x27_bndlSsIn\x27).click()\x22\x20style=\x22border:2px\x20dashed\x20rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px\x22><i\x20class=\x22fas\x20fa-camera\x22\x20style=\x22font-size:22px;color:#ffd70055;display:block;margin-bottom:6px\x22></i><div\x20style=\x22font-size:12px;color:#8a8a92\x22>Screenshot\x20upload\x20karo</div><input\x20type=\x22file\x22\x20id=\x22_bndlSsIn\x22\x20accept=\x22image/*\x22\x20style=\x22display:none\x22\x20onchange=\x22window._bndlHandleSs(this)\x22></div>',_0x173646+='<img\x20id=\x22_bndlSsPreview\x22\x20style=\x22display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover\x22>',_0x173646+='<label\x20style=\x22font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px\x22>UTR\x20/\x20UPI\x20Reference\x20Number\x20*</label>',_0x173646+='<input\x20type=\x22text\x22\x20id=\x22_bndlUtr\x22\x20autocomplete=\x22off\x22\x20placeholder=\x22jaise\x20432198765432\x22\x20style=\x22width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:12px\x22>',_0x173646+='<button\x20onclick=\x22window._submitBundle(\x27'+_0x2c914b['id']+'\x27,'+_0x2c914b['price']+')\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,'+_0x2c914b['color']+',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>💳\x20Bundle\x20Request\x20Submit</button>';if(window['openModal'])openModal('💳\x20'+_0x2c914b['label'],_0x173646);var _0x2f1ff0='',_0x22834b=null;window['_bndlHandleSs']=function(_0x217dbc){if(!_0x217dbc['files']||!_0x217dbc['files'][0x0])return;var _0x563140=new FileReader();_0x563140['onload']=function(_0x9ac9d1){_0x2f1ff0=_0x9ac9d1['target']['result'],window['_ffGuardShot'](_0x2f1ff0,function(_0x9b3227){_0x22834b=_0x9b3227;var _0x3b80eb=document['getElementById']('_bndlSsPreview'),_0xb5d9c9=document['getElementById']('_bndlSsArea');_0x3b80eb&&(_0x3b80eb['src']=_0x2f1ff0,_0x3b80eb['style']['display']='block');if(_0xb5d9c9)_0xb5d9c9['innerHTML']='<i\x20class=\x22fas\x20fa-check-circle\x22\x20style=\x22color:#00ff9c;font-size:20px;display:block;margin-bottom:4px\x22></i><div\x20style=\x22font-size:11px;color:#00ff9c\x22>Ready\x20✅</div>';},function(){_0x2f1ff0='',_0x22834b=null;try{_0x217dbc['value']='';}catch(_0xc2f9c){}});},_0x563140['readAsDataURL'](_0x217dbc['files'][0x0]);},window['_submitBundle']=function(_0x4964e6,_0x54b85a){if(!_0x2f1ff0){if(window['toast'])toast('Screenshot\x20upload\x20karo!','err');return;}var _0x5dec4e=document['getElementById']('_bndlUtr'),_0x5072cc=_0x5dec4e?_0x5dec4e['value']['trim']():'';if(!_0x5072cc){if(window['toast'])toast('UTR\x20/\x20UPI\x20reference\x20number\x20daalo!','err');return;}if(_0x5072cc['length']<0x6){if(window['toast'])toast('UTR\x20number\x20poora\x20daalo\x20(kam\x20se\x20kam\x206\x20characters)','err');return;}if(!window['U']||!window['_supa'])return;window['_supa']['from']('premium_requests')['insert']({'user_id':window['U']['uid'],'user_name':window['UD']&&window['UD']['ign']||'','tier':_0x4964e6==='gold_bp'?0x2:0x1,'price':_0x54b85a,'screenshot_url':_0x2f1ff0,'img_hash':_0x22834b,'utr':_0x5072cc,'status':'pending','plan_type':'bundle','bundle_id':_0x4964e6})['then'](function(){if(window['toast'])toast('✅\x20Bundle\x20request\x20submit!\x201-2\x20ghante\x20mein\x20active.','ok');if(window['closeModal'])closeModal();})['catch'](function(){if(window['toast'])toast('Submit\x20failed,\x20retry\x20karo','err');});};}window['buyAnnualPlan']=function(_0x46667a,_0x32b7ec){var _0x189a1f=_0xdf15cc['filter'](function(_0x321ef1){return _0x321ef1['tier']===_0x46667a;})[0x0];if(!_0x189a1f)return;window['checkPolicyThenRun'](function(){var _0x4fad08='<div\x20style=\x22text-align:center;padding:6px\x200\x2014px\x22>';_0x4fad08+='<div\x20style=\x22font-size:32px\x22>'+_0x189a1f['icon']+'</div>',_0x4fad08+='<div\x20style=\x22font-size:16px;font-weight:900;color:'+_0x189a1f['color']+';margin-top:6px\x22>'+_0x189a1f['label']+'</div>',_0x4fad08+='<div\x20style=\x22font-size:28px;font-weight:900;color:#fff;margin:8px\x200\x22>₹'+_0x32b7ec+'<span\x20style=\x22font-size:12px;color:#888\x22>/year</span></div>',_0x4fad08+='<div\x20style=\x22font-size:12px;color:#00ff9c;font-weight:700\x22>Save\x20₹'+_0x189a1f['save']+'\x20vs\x20monthly!\x20🎉</div></div>';window['renderPaytmInstantBlock']&&(_0x4fad08+=window['renderPaytmInstantBlock'](_0x32b7ec,'window.paytmInstantPurchase('+_0x32b7ec+',\x27paytm_annual\x27,{tier:'+_0x46667a+',label:\x27'+_0x189a1f['label']+'\x27},\x27_annPtmBtn\x27,\x27_annPtmSt\x27,function(){if(window.toast)toast(\x27🎉\x20'+_0x189a1f['label']+'\x20Activated!\x27,\x27ok\x27);})','_annPtmBtn','_annPtmSt'));_0x4fad08+='<div\x20style=\x22background:rgba(255,255,255,.04);border:1px\x20solid\x20rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px\x22>',['UPI:\x20<strong\x20style=\x22color:#ffd700\x22>miniesports@upi</strong>\x20par\x20₹'+_0x32b7ec+'\x20bhejo','Screenshot\x20lo','24\x20ghante\x20mein\x2012-month\x20activate\x20hoga']['forEach'](function(_0x30d10a,_0x413633){_0x4fad08+='<div\x20style=\x22display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc\x22><div\x20style=\x22min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px\x20solid\x20rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center\x22>'+(_0x413633+0x1)+'</div>'+_0x30d10a+'</div>';}),_0x4fad08+='</div>',_0x4fad08+='<div\x20id=\x22_annSsArea\x22\x20onclick=\x22document.getElementById(\x27_annSsIn\x27).click()\x22\x20style=\x22border:2px\x20dashed\x20rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px\x22><i\x20class=\x22fas\x20fa-camera\x22\x20style=\x22font-size:22px;color:#ffd70055;display:block;margin-bottom:6px\x22></i><div\x20style=\x22font-size:12px;color:#8a8a92\x22>Screenshot\x20upload\x20karo</div><input\x20type=\x22file\x22\x20id=\x22_annSsIn\x22\x20accept=\x22image/*\x22\x20style=\x22display:none\x22\x20onchange=\x22window._annHandleSs(this)\x22></div>',_0x4fad08+='<img\x20id=\x22_annSsPreview\x22\x20style=\x22display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover\x22>',_0x4fad08+='<label\x20style=\x22font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px\x22>UTR\x20/\x20UPI\x20Reference\x20Number\x20*</label>',_0x4fad08+='<input\x20type=\x22text\x22\x20id=\x22_annUtr\x22\x20autocomplete=\x22off\x22\x20placeholder=\x22jaise\x20432198765432\x22\x20style=\x22width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:12px\x22>',_0x4fad08+='<button\x20onclick=\x22window._submitAnnual('+_0x46667a+','+_0x32b7ec+')\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,'+_0x189a1f['color']+',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>💳\x20Annual\x20Plan\x20Request\x20Submit</button>';if(window['openModal'])openModal('💳\x20'+_0x189a1f['label'],_0x4fad08);var _0x3efc23='',_0x4eae4d=null;window['_annHandleSs']=function(_0x31d012){if(!_0x31d012['files']||!_0x31d012['files'][0x0])return;var _0x10a903=new FileReader();_0x10a903['onload']=function(_0x183097){_0x3efc23=_0x183097['target']['result'],window['_ffGuardShot'](_0x3efc23,function(_0xeb2e20){_0x4eae4d=_0xeb2e20;var _0x3802d9=document['getElementById']('_annSsPreview'),_0x29e8a3=document['getElementById']('_annSsArea');_0x3802d9&&(_0x3802d9['src']=_0x3efc23,_0x3802d9['style']['display']='block');if(_0x29e8a3)_0x29e8a3['innerHTML']='<i\x20class=\x22fas\x20fa-check-circle\x22\x20style=\x22color:#00ff9c;font-size:20px;display:block;margin-bottom:4px\x22></i><div\x20style=\x22font-size:11px;color:#00ff9c\x22>Ready\x20✅</div>';},function(){_0x3efc23='',_0x4eae4d=null;try{_0x31d012['value']='';}catch(_0x2414f6){}});},_0x10a903['readAsDataURL'](_0x31d012['files'][0x0]);},window['_submitAnnual']=function(_0x9c58cb,_0x16f663){if(!_0x3efc23){if(window['toast'])toast('Screenshot\x20upload\x20karo!','err');return;}if(!window['U']||!window['_supa'])return;var _0x5310f0=document['getElementById']('_annUtr'),_0x173bb8=_0x5310f0?_0x5310f0['value']['trim']():'';if(!_0x173bb8){if(window['toast'])toast('UTR\x20/\x20UPI\x20reference\x20number\x20daalo!','err');return;}if(_0x173bb8['length']<0x6){if(window['toast'])toast('UTR\x20number\x20poora\x20daalo\x20(kam\x20se\x20kam\x206\x20characters)','err');return;}window['_supa']['from']('premium_requests')['insert']({'user_id':window['U']['uid'],'user_name':window['UD']&&window['UD']['ign']||'','tier':_0x9c58cb,'price':_0x16f663,'screenshot_url':_0x3efc23,'img_hash':_0x4eae4d,'utr':_0x173bb8,'status':'pending','plan_type':'annual'})['then'](function(){if(window['toast'])toast('✅\x20Annual\x20plan\x20request\x20submit!\x2024\x20ghante\x20mein\x20active.','ok');if(window['closeModal'])closeModal();},function(){if(window['toast'])toast('Submit\x20failed,\x20retry\x20karo','err');});};});};function _0x5efbc2(){var _0x111033=window['UD'];if(!_0x111033||!_0x111033['premium']||!_0x111033['premium']['active'])return;var _0x4ba609=_0x111033['premium']['expiresAt'];if(!_0x4ba609)return;var _0x2164e5=Date['now'](),_0x55af58=_0x4ba609-_0x2164e5,_0x104572=Math['ceil'](_0x55af58/(0x18*0x3c*0x3c*0x3e8)),_0x13a807=window['U']&&window['U']['uid'];if(!_0x13a807)return;var _0x3550ca='_mes_prem_rem_'+_0x13a807+'_'+Math['floor'](_0x4ba609/0x5265c00);if(_0x104572<=0x3&&_0x104572>0x0)!localStorage['getItem'](_0x3550ca+'_3')&&(localStorage['setItem'](_0x3550ca+'_3','1'),setTimeout(function(){if(window['toast'])toast('⏰\x20Premium\x20'+_0x104572+'\x20din\x20mein\x20expire!\x20Renew\x20karo.','inf');setTimeout(function(){_0x646a8a(_0x104572);},0xbb8);},0x1388));else _0x104572<=0x0&&(!localStorage['getItem'](_0x3550ca+'_exp')&&(localStorage['setItem'](_0x3550ca+'_exp','1'),setTimeout(function(){_0x646a8a(0x0);},0xbb8)));}function _0x646a8a(_0x502905){var _0x2623c6=window['getUserPremiumTier']?window['getUserPremiumTier']():0x1,_0x504ab8=[0x0,0x31,0x63,0xc7],_0x55d318=['','Silver','Gold','Diamond'],_0x1af68a=_0x504ab8[_0x2623c6]||0x31,_0x380fe1=_0x55d318[_0x2623c6]||'Silver',_0x8aa80f='<div\x20style=\x22text-align:center;padding:6px\x200\x2014px\x22>';_0x8aa80f+='<div\x20style=\x22font-size:38px;margin-bottom:8px\x22>'+(_0x502905<=0x0?'😢':'⏰')+'</div>',_0x8aa80f+='<div\x20style=\x22font-size:17px;font-weight:900;color:#ffd700;margin-bottom:6px\x22>'+(_0x502905<=0x0?'Premium\x20Expire\x20Ho\x20Gaya!':_0x380fe1+'\x20Premium\x20'+_0x502905+'\x20Din\x20Mein\x20Expire\x20Hoga')+'</div>',_0x8aa80f+='<div\x20style=\x22font-size:12px;color:#888;margin-bottom:16px\x22>'+(_0x502905<=0x0?'Ads\x20wapas\x20aa\x20jayenge\x20—\x20renew\x20karo!':'Renew\x20karo\x20taaki\x20benefits\x20jaari\x20rahen')+'</div>',_0x8aa80f+='<button\x20onclick=\x22if(window.buyPremium)buyPremium('+_0x2623c6+','+_0x1af68a+');if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px\x22>🔄\x20Renew\x20'+_0x380fe1+'\x20—\x20₹'+_0x1af68a+'/month</button>',_0x8aa80f+='<button\x20onclick=\x22if(window.showBundleOffers)showBundleOffers();if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#888;font-size:12px;cursor:pointer\x22>Bundle\x20offers\x20dekho\x20(save\x20more)</button>',_0x8aa80f+='</div>';if(window['openModal'])openModal('⏰\x20Premium\x20Renewal',_0x8aa80f);}function _0x33acb3(){if(!window['U']||!window['UD']){setTimeout(_0x33acb3,0x5dc);return;}_0x5efbc2(),setInterval(_0x5efbc2,0x3c*0x3c*0x3e8);var _0x36d65e=window['showPremiumUpgrade'];console['log']('[Mini\x20eSports]\x20Bundle\x20Offers\x20+\x20Annual\x20Plans\x20v1.0\x20✅');}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',function(){setTimeout(_0x33acb3,0xbb8);}):setTimeout(_0x33acb3,0xbb8);}());
+/* ================================================================
+   BUNDLE OFFERS + ANNUAL PLANS + EXPIRY REMINDERS
+   - Silver + Battle Pass = ₹79 (save ₹19)
+   - Gold + Battle Pass   = ₹129 (save ₹19)
+   - Annual Silver  = ₹399/year  (₹33/month, save ₹189)
+   - Annual Gold    = ₹799/year  (₹67/month, save ₹389)
+   - Expiry reminders: 3 days, 1 day before
+================================================================ */
+(function(){
+'use strict';
+
+/* ── Bundle Offers ── */
+var BUNDLES = [
+  {
+    id: 'silver_bp',
+    label: 'Silver + Battle Pass',
+    icon: '🎫',
+    price: 79,
+    originalPrice: 98, /* 49 + 49 */
+    save: 19,
+    color: '#e0e0e0',
+    includes: ['Premium Silver (1 mahina)', 'Season Battle Pass', 'No Ads']
+  },
+  {
+    id: 'gold_bp',
+    label: 'Gold + Battle Pass',
+    icon: '🎫',
+    price: 129,
+    originalPrice: 148, /* 99 + 49 */
+    save: 19,
+    color: '#ffd700',
+    best: true,
+    includes: ['Premium Gold (1 mahina)', 'Season Battle Pass', 'No Ads']
+  }
+];
+
+var ANNUAL_PLANS = [
+  {
+    tier: 1,
+    label: 'Silver Annual',
+    icon: (window.tierIconHtml?tierIconHtml('Silver',18):''),
+    price: 399,
+    monthly: 33,
+    save: 189,
+    originalYearly: 588, /* 49 × 12 */
+    color: '#e0e0e0'
+  },
+  {
+    tier: 2,
+    label: 'Gold Annual',
+    icon: (window.tierIconHtml?tierIconHtml('Gold',18):''),
+    price: 799,
+    monthly: 67,
+    save: 389,
+    originalYearly: 1188, /* 99 × 12 */
+    color: '#ffd700',
+    best: true
+  }
+];
+
+/* ── Show Bundle Offers Modal ── */
+window.showBundleOffers = function() {
+  window.checkPolicyThenRun(function() {
+    var h = '';
+    h += '<div style="text-align:center;padding:4px 0 14px">';
+    h += '<div style="font-size:28px;margin-bottom:6px">🔥</div>';
+    h += '<div style="font-size:17px;font-weight:900;color:#fff">Best Value Bundles</div>';
+    h += '<div style="font-size:11px;color:#888;margin-top:3px">Premium + Battle Pass saath mein → extra save!</div>';
+    h += '</div>';
+
+    BUNDLES.forEach(function(b) {
+      h += '<div style="position:relative;margin-bottom:14px">';
+      if (b.best) h += '<div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);z-index:2;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:9px;font-weight:900;padding:3px 16px;border-radius:20px;white-space:nowrap">⭐ BEST VALUE</div>';
+      h += '<div style="background:rgba(' + (b.best?'255,215,0':'255,255,255') + ',.05);border:1.5px solid rgba(' + (b.best?'255,215,0':'255,255,255') + ',.2);border-radius:16px;padding:' + (b.best?'20px 16px 16px':'16px') + '">';
+      h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+      h += '<div><div style="font-size:15px;font-weight:900;color:' + b.color + '">' + b.icon + ' ' + b.label + '</div>';
+      h += '<div style="font-size:10px;color:#888;margin-top:2px">1 mahina combo</div></div>';
+      h += '<div style="text-align:right"><div style="font-size:10px;color:#8a8a92;text-decoration:line-through">₹' + b.originalPrice + '</div>';
+      h += '<div style="font-size:24px;font-weight:900;color:' + b.color + '">₹' + b.price + '</div>';
+      h += '<div style="font-size:10px;color:#00ff9c;font-weight:700">Save ₹' + b.save + '!</div></div></div>';
+      h += '<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">';
+      b.includes.forEach(function(i) {
+        h += '<div style="font-size:11px;color:#ccc;display:flex;align-items:center;gap:6px"><span style="color:' + b.color + '">✓</span>' + i + '</div>';
+      });
+      h += '</div>';
+      h += '<button onclick="window.buyBundle(\'' + b.id + '\')" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,' + b.color + ',#333);color:' + (b.tier===1?'#000':'#fff') + ';font-size:13px;font-weight:900;cursor:pointer">Bundle Kharido — ₹' + b.price + ' →</button>';
+      h += '</div></div>';
+    });
+
+    h += '<div style="text-align:center;margin:14px 0 8px"><div style="font-size:11px;color:#555;font-weight:700;letter-spacing:.5px">ANNUAL PLANS (SAVE MORE)</div></div>';
+
+    ANNUAL_PLANS.forEach(function(p) {
+      h += '<div style="background:rgba(' + (p.best?'255,215,0':'255,255,255') + ',.04);border:1px solid rgba(' + (p.best?'255,215,0':'255,255,255') + ',.15);border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between">';
+      h += '<div><div style="font-size:14px;font-weight:900;color:' + p.color + '">' + p.icon + ' ' + p.label + '</div>';
+      h += '<div style="font-size:10px;color:#888;margin-top:2px">₹' + p.monthly + '/month • Save ₹' + p.save + '</div>';
+      h += '<div style="font-size:10px;color:#00ff9c;margin-top:1px">vs ₹' + p.originalYearly + ' monthly</div></div>';
+      h += '<button onclick="window.buyAnnualPlan(' + p.tier + ',' + p.price + ')" style="padding:10px 16px;border-radius:11px;border:none;background:linear-gradient(135deg,' + p.color + ',#333);color:' + (p.tier===1?'#000':'#fff') + ';font-size:12px;font-weight:900;cursor:pointer">₹' + p.price + '/yr</button>';
+      h += '</div>';
+    });
+
+    if (window.openModal) openModal('🔥 Bundle Offers', h);
+  });
+};
+
+/* ── Buy Bundle ── */
+window.buyBundle = function(bundleId) {
+  var b = BUNDLES.filter(function(x){ return x.id === bundleId; })[0];
+  if (!b) return;
+  _showBundlePayment(b);
+};
+
+function _showBundlePayment(b) {
+  var h = '<div style="text-align:center;padding:6px 0 14px">';
+  h += '<div style="font-size:32px;margin-bottom:6px">' + b.icon + '</div>';
+  h += '<div style="font-size:16px;font-weight:900;color:' + b.color + '">' + b.label + '</div>';
+  h += '<div style="font-size:28px;font-weight:900;color:#fff;margin:8px 0">₹' + b.price + ' <span style="font-size:12px;color:#8a8a92;text-decoration:line-through">₹' + b.originalPrice + '</span></div>';
+  h += '<div style="font-size:12px;color:#00ff9c;font-weight:700">Save ₹' + b.save + '! 🎉</div></div>';
+  var _bTier = (b.id === 'gold_bp') ? 2 : 1;
+  if (window.renderPaytmInstantBlock) {
+    h += window.renderPaytmInstantBlock(
+      b.price,
+      'window.paytmInstantPurchase(' + b.price + ',\'paytm_bundle\',{bundle_id:\'' + b.id + '\',tier:' + _bTier + ',label:\'' + b.label + '\'},\'_bndlPtmBtn\',\'_bndlPtmSt\',function(){if(window.toast)toast(\'🎉 ' + b.label + ' Activated!\',\'ok\');})',
+      '_bndlPtmBtn',
+      '_bndlPtmSt'
+    );
+  }
+  h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px">';
+  /* ✅ B16 (2026-10-06): UTR ab zaroori — Sky Diamond/premium wala hi pattern. */
+  ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹' + b.price + ' bhejo', 'Screenshot lo, aur UTR/Transaction number note karo', 'Dono neeche daalo — 1-2 ghante mein activate honge'].forEach(function(s,i){
+    h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';
+  });
+  h += '</div>';
+  h += '<div id="_bndlSsArea" onclick="document.getElementById(\'_bndlSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div><input type="file" id="_bndlSsIn" accept="image/*" style="display:none" onchange="window._bndlHandleSs(this)"></div>';
+  h += '<img id="_bndlSsPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
+  /* ✅ B16 (2026-10-06): UTR / UPI reference field (bina iske payment match karna mumkin nahi tha) */
+  h += '<label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
+  h += '<input type="text" id="_bndlUtr" autocomplete="off" placeholder="jaise 432198765432" style="width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:12px">';
+  h += '<button onclick="window._submitBundle(\'' + b.id + '\',' + b.price + ')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,' + b.color + ',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">💳 Bundle Request Submit</button>';
+  if (window.openModal) openModal('💳 ' + b.label, h);
+
+  var _ss = ''; var _ssHash = null;
+  window._bndlHandleSs = function(inp) {
+    if (!inp.files || !inp.files[0]) return;
+    var r = new FileReader();
+    r.onload = function(e) {
+      _ss = e.target.result;
+      window._ffGuardShot(_ss, function(_h){ _ssHash = _h; var prev = document.getElementById('_bndlSsPreview'), area = document.getElementById('_bndlSsArea');
+      if (prev) { prev.src = _ss; prev.style.display = 'block'; }
+      if (area) area.innerHTML = '<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>'; }, function(){ _ss=''; _ssHash=null; try{inp.value='';}catch(e){} });
+    };
+    r.readAsDataURL(inp.files[0]);
+  };
+
+  window._submitBundle = function(bundleId, price) {
+    if (!_ss) { if(window.toast)toast('Screenshot upload karo!','err'); return; }
+    /* ✅ B16 (2026-10-06): UTR/UPI reference zaroori */
+    var _bUtrInp = document.getElementById('_bndlUtr');
+    var _bUtr = _bUtrInp ? _bUtrInp.value.trim() : '';
+    if (!_bUtr) { if(window.toast)toast('UTR / UPI reference number daalo!','err'); return; }
+    if (_bUtr.length < 6) { if(window.toast)toast('UTR number poora daalo (kam se kam 6 characters)','err'); return; }
+    if (!window.U || !window._supa) return;
+    /* ✅ Audit Fix: 'bundle_requests' table never existed — every submission
+       failed silently AFTER the user had already sent real UPI money.
+       Routed through the existing premium_requests queue instead (same
+       table admin already reviews for Silver/Gold/Annual), tagged so the
+       admin can tell it's a bundle and grant the Battle Pass part too. */
+    window._supa.from('premium_requests').insert({
+      user_id: window.U.uid,
+      user_name: (window.UD && window.UD.ign) || '',
+      tier: (bundleId === 'gold_bp') ? 2 : 1,
+      price: price,
+      screenshot_url: _ss,
+      img_hash: _ssHash,
+      utr: _bUtr,          /* ✅ B16 */
+      status: 'pending',
+      plan_type: 'bundle',
+      bundle_id: bundleId
+    }).then(function() {
+      if(window.toast)toast('✅ Bundle request submit! 1-2 ghante mein active.','ok');
+      if(window.closeModal) closeModal();
+    }).catch(function() {
+      if(window.toast)toast('Submit failed, retry karo','err');
+    });
+  };
+}
+
+/* ── Buy Annual Plan ── */
+window.buyAnnualPlan = function(tier, price) {
+  var p = ANNUAL_PLANS.filter(function(x){ return x.tier === tier; })[0];
+  if (!p) return;
+  window.checkPolicyThenRun(function() {
+    var h = '<div style="text-align:center;padding:6px 0 14px">';
+    h += '<div style="font-size:32px">' + p.icon + '</div>';
+    h += '<div style="font-size:16px;font-weight:900;color:' + p.color + ';margin-top:6px">' + p.label + '</div>';
+    h += '<div style="font-size:28px;font-weight:900;color:#fff;margin:8px 0">₹' + price + '<span style="font-size:12px;color:#888">/year</span></div>';
+    h += '<div style="font-size:12px;color:#00ff9c;font-weight:700">Save ₹' + p.save + ' vs monthly! 🎉</div></div>';
+    if (window.renderPaytmInstantBlock) {
+      h += window.renderPaytmInstantBlock(
+        price,
+        'window.paytmInstantPurchase(' + price + ',\'paytm_annual\',{tier:' + tier + ',label:\'' + p.label + '\'},\'_annPtmBtn\',\'_annPtmSt\',function(){if(window.toast)toast(\'🎉 ' + p.label + ' Activated!\',\'ok\');})',
+        '_annPtmBtn',
+        '_annPtmSt'
+      );
+    }
+    h += '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:13px;margin-bottom:14px">';
+    ['UPI: <strong style="color:#ffd700">miniesports@upi</strong> par ₹' + price + ' bhejo', 'Screenshot lo', '24 ghante mein 12-month activate hoga'].forEach(function(s,i){
+      h += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;color:#ccc"><div style="min-width:22px;height:22px;border-radius:50%;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center">' + (i+1) + '</div>' + s + '</div>';
+    });
+    h += '</div>';
+    h += '<div id="_annSsArea" onclick="document.getElementById(\'_annSsIn\').click()" style="border:2px dashed rgba(255,215,0,.2);border-radius:13px;padding:18px;text-align:center;cursor:pointer;background:rgba(255,215,0,.02);margin-bottom:12px"><i class="fas fa-camera" style="font-size:22px;color:#ffd70055;display:block;margin-bottom:6px"></i><div style="font-size:12px;color:#8a8a92">Screenshot upload karo</div><input type="file" id="_annSsIn" accept="image/*" style="display:none" onchange="window._annHandleSs(this)"></div>';
+    h += '<img id="_annSsPreview" style="display:none;width:100%;border-radius:10px;margin-bottom:12px;max-height:160px;object-fit:cover">';
+    /* ✅ B16 (2026-10-06): Annual plan me bhi UTR/UPI reference zaroori */
+    h += '<label style="font-size:12px;font-weight:700;color:#aaa;display:block;margin-bottom:8px">UTR / UPI Reference Number *</label>';
+    h += '<input type="text" id="_annUtr" autocomplete="off" placeholder="jaise 432198765432" style="width:100%;padding:12px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,215,0,.25);color:#fff;font-size:14px;box-sizing:border-box;margin-bottom:12px">';
+    h += '<button onclick="window._submitAnnual(' + tier + ',' + price + ')" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,' + p.color + ',#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer">💳 Annual Plan Request Submit</button>';
+    if (window.openModal) openModal('💳 ' + p.label, h);
+
+    var _ss = ''; var _ssHash = null;
+    window._annHandleSs = function(inp) {
+      if (!inp.files || !inp.files[0]) return;
+      var r = new FileReader(); r.onload = function(e) { _ss = e.target.result; window._ffGuardShot(_ss, function(_h){ _ssHash = _h; var prev = document.getElementById('_annSsPreview'), area = document.getElementById('_annSsArea'); if(prev){prev.src=_ss;prev.style.display='block';} if(area)area.innerHTML='<i class="fas fa-check-circle" style="color:#00ff9c;font-size:20px;display:block;margin-bottom:4px"></i><div style="font-size:11px;color:#00ff9c">Ready ✅</div>'; }, function(){ _ss=''; _ssHash=null; try{inp.value='';}catch(e){} }); }; r.readAsDataURL(inp.files[0]);
+    };
+    window._submitAnnual = function(tier, price) {
+      if (!_ss) { if(window.toast)toast('Screenshot upload karo!','err'); return; }
+      if (!window.U || !window._supa) return;
+      /* ✅ B16 (2026-10-06): UTR/UPI reference zaroori (premium/bundle jaisa hi) */
+      var _aUtrInp = document.getElementById('_annUtr');
+      var _aUtr = _aUtrInp ? _aUtrInp.value.trim() : '';
+      if (!_aUtr) { if(window.toast)toast('UTR / UPI reference number daalo!','err'); return; }
+      if (_aUtr.length < 6) { if(window.toast)toast('UTR number poora daalo (kam se kam 6 characters)','err'); return; }
+      window._supa.from('premium_requests').insert({ user_id: window.U.uid, user_name: (window.UD&&window.UD.ign)||'', tier: tier, price: price, screenshot_url: _ss, img_hash: _ssHash, utr: _aUtr, status: 'pending', plan_type: 'annual' }).then(function(){ if(window.toast)toast('✅ Annual plan request submit! 24 ghante mein active.','ok'); if(window.closeModal)closeModal(); }, function(){ if(window.toast)toast('Submit failed, retry karo','err'); });
+    };
+  });
+};
+
+/* ── Expiry Reminders ── */
+function checkExpiryReminders() {
+  var ud = window.UD;
+  if (!ud || !ud.premium || !ud.premium.active) return;
+  var expiresAt = ud.premium.expiresAt;
+  if (!expiresAt) return;
+  var now = Date.now();
+  var msLeft = expiresAt - now;
+  var daysLeft = Math.ceil(msLeft / (24 * 60 * 60 * 1000));
+  var uid = window.U && window.U.uid;
+  if (!uid) return;
+
+  var remKey = '_mes_prem_rem_' + uid + '_' + Math.floor(expiresAt / 86400000);
+
+  if (daysLeft <= 3 && daysLeft > 0) {
+    if (!localStorage.getItem(remKey + '_3')) {
+      localStorage.setItem(remKey + '_3', '1');
+      setTimeout(function() {
+        if (window.toast) toast('⏰ Premium ' + daysLeft + ' din mein expire! Renew karo.', 'inf');
+        setTimeout(function() { _showRenewalModal(daysLeft); }, 3000);
+      }, 5000);
+    }
+  } else if (daysLeft <= 0) {
+    if (!localStorage.getItem(remKey + '_exp')) {
+      localStorage.setItem(remKey + '_exp', '1');
+      setTimeout(function() { _showRenewalModal(0); }, 3000);
+    }
+  }
+}
+
+function _showRenewalModal(daysLeft) {
+  var tier = window.getUserPremiumTier ? window.getUserPremiumTier() : 1;
+  var prices = [0, 49, 99, 199];
+  var names  = ['', 'Silver', 'Gold', 'Diamond'];
+  var price  = prices[tier] || 49;
+  var name   = names[tier]  || 'Silver';
+  var h = '<div style="text-align:center;padding:6px 0 14px">';
+  h += '<div style="font-size:38px;margin-bottom:8px">' + (daysLeft <= 0 ? '😢' : '⏰') + '</div>';
+  h += '<div style="font-size:17px;font-weight:900;color:#ffd700;margin-bottom:6px">' + (daysLeft <= 0 ? 'Premium Expire Ho Gaya!' : name + ' Premium ' + daysLeft + ' Din Mein Expire Hoga') + '</div>';
+  h += '<div style="font-size:12px;color:#888;margin-bottom:16px">' + (daysLeft <= 0 ? 'Ads wapas aa jayenge — renew karo!' : 'Renew karo taaki benefits jaari rahen') + '</div>';
+  h += '<button onclick="if(window.buyPremium)buyPremium(' + tier + ',' + price + ');if(window.closeModal)closeModal()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:14px;font-weight:900;cursor:pointer;margin-bottom:8px">🔄 Renew ' + name + ' — ₹' + price + '/month</button>';
+  h += '<button onclick="if(window.showBundleOffers)showBundleOffers();if(window.closeModal)closeModal()" style="width:100%;padding:11px;border-radius:13px;border:none;background:rgba(255,255,255,.06);color:#888;font-size:12px;cursor:pointer">Bundle offers dekho (save more)</button>';
+  h += '</div>';
+  if (window.openModal) openModal('⏰ Premium Renewal', h);
+}
+
+/* ── Init ── */
+function initBundles() {
+  if (!window.U || !window.UD) { setTimeout(initBundles, 1500); return; }
+  checkExpiryReminders();
+  /* Check every hour */
+  setInterval(checkExpiryReminders, 60 * 60 * 1000);
+
+  /* Inject "Bundle Offers" button in Premium modal footer */
+  var _origRender = window.showPremiumUpgrade;
+  console.log('[Mini eSports] Bundle Offers + Annual Plans v1.0 ✅');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(initBundles, 3000); });
+} else {
+  setTimeout(initBundles, 3000);
+}
+
+})();

@@ -1,1 +1,247 @@
-window['_respondTeamInvite']=function(_0x33c835,_0x5e3a9e){if(!window['U']||!window['U']['uid']||!window['_supa']){if(window['toast'])toast('Login\x20karo\x20pehle','err');return;}window['_supa']['from']('team_invitations')['select']('id')['eq']('match_id',_0x33c835)['eq']('member_uid',window['U']['uid'])['eq']('status','pending')['maybeSingle']()['then'](function(_0x5e0945){if(_0x5e0945&&_0x5e0945['error']){if(window['toast'])toast('Invitation\x20load\x20nahi\x20hui','err');return;}if(!_0x5e0945['data']){if(window['toast'])toast('Pending\x20invitation\x20nahi\x20mili','inf');return;}return window['_supa']['rpc']('respond_team_invite',{'p_invite_id':_0x5e0945['data']['id'],'p_accept':_0x5e3a9e});})['then'](function(_0x504c0d){if(!_0x504c0d)return;var _0x59340f=_0x504c0d&&_0x504c0d['data'];if(_0x504c0d&&_0x504c0d['error']||_0x59340f&&_0x59340f['ok']===![]){if(window['toast'])toast('Error:\x20'+(_0x59340f&&_0x59340f['error']||'response\x20failed'),'err');return;}if(window['toast'])toast(_0x5e3a9e?'✅\x20Team\x20invite\x20accept\x20ho\x20gayi!\x20Captain\x20ab\x20join\x20kar\x20sakta\x20hai.':'Invite\x20decline\x20ho\x20gayi.','ok');if(window['renderNotifs'])renderNotifs();})['catch'](function(_0x569923){if(window['toast'])toast('Response\x20failed','err');});};function toggleAchievements(){var _0x48628c=document['getElementById']('achContent'),_0x2e5256=document['getElementById']('achChevron');if(!_0x48628c)return;var _0x286b32=_0x48628c['style']['display']!=='none';_0x48628c['style']['display']=_0x286b32?'none':'block';if(_0x2e5256)_0x2e5256['style']['transform']=_0x286b32?'':'rotate(180deg)';}function renderNotifs(){var _0x1a439e=$('notifList');if(!_0x1a439e)return;try{var _0x399fdf=(NOTIFS||[])['slice']()['sort'](function(_0x1d1abd,_0x247842){return(Number(_0x247842['createdAt'])||0x0)-(Number(_0x1d1abd['createdAt'])||0x0);}),_0xdb89d=[];_0x399fdf['forEach'](function(_0x3b394f){var _0x185198=String(_0x3b394f['type']||'')+'|'+String(_0x3b394f['title']||'')+'|'+String(_0x3b394f['message']||_0x3b394f['body']||'');_0x185198=_0x185198['replace'](/\s+/g,'\x20')['trim']()['slice'](0x0,0xc8);var _0x5b1dc8=Number(_0x3b394f['createdAt'])||0x0,_0x5c901c=![];if(_0x185198)for(var _0x268eb9=0x0;_0x268eb9<_0xdb89d['length'];_0x268eb9++){var _0x45c95e=_0xdb89d[_0x268eb9];if(_0x45c95e['_fp']===_0x185198&&Math['abs'](_0x5b1dc8-(Number(_0x45c95e['createdAt'])||0x0))<=0xbb8){_0x5c901c=!![];break;}}!_0x5c901c&&(_0x3b394f['_fp']=_0x185198,_0xdb89d['push'](_0x3b394f));}),NOTIFS=_0xdb89d;}catch(_0x511513){}if(!NOTIFS['length']){_0x1a439e['innerHTML']='<div\x20class=\x22empty-state\x22><i\x20class=\x22fas\x20fa-bell\x22></i><p>No\x20notifications</p></div>';if(window['updateBell'])updateBell();return;}if(U&&UD){var _0x4fdae5={};NOTIFS['forEach'](function(_0x5f3b29){if(!_0x5f3b29['_key'])return;_0x5f3b29['_localRead']=!![],_READ_KEYS[_0x5f3b29['_key']]=!![],_0x4fdae5[_0x5f3b29['_key']]=!![];});if(!UD['readNotifications'])UD['readNotifications']={};Object['assign'](UD['readNotifications'],_0x4fdae5);if(Object['keys'](_0x4fdae5)['length']){Object['keys'](_0x4fdae5)['forEach'](function(_0x306eb0){if(window['markNotifRead'])markNotifRead(_0x306eb0);});try{var _0x696dd9=JSON['parse'](localStorage['getItem']('_mes_read_'+U['uid'])||'{}');Object['assign'](_0x696dd9,_0x4fdae5),localStorage['setItem']('_mes_read_'+U['uid'],JSON['stringify'](_0x696dd9));}catch(_0x196db2){}}setTimeout(updateBell,0x64);}var _0x540c0b=UD&&UD['readNotifications']||{},_0x40587a='',_0x5dce81=['back_online','online','profile_approved','profile_update_approved','system'],_0x14cca4=NOTIFS['filter'](function(_0x58a5f6){return _0x5dce81['indexOf'](_0x58a5f6['type'])===-0x1;});_0x40587a+='<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;margin-bottom:12px\x22>',_0x40587a+='<span\x20style=\x22display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;color:#8b93a0;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.1);padding:5px\x2012px;border-radius:20px\x22><i\x20class=\x22fas\x20fa-bell\x22\x20style=\x22color:#ffd700;font-size:10px\x22></i>\x20'+_0x14cca4['length']+'\x20notifications</span>',_0x40587a+='<button\x20onclick=\x22clearAllNotifs()\x22\x20style=\x22background:linear-gradient(120deg,rgba(255,80,80,.16),rgba(255,80,80,.08));border:1px\x20solid\x20rgba(255,80,80,.3);color:#ff6b6b;font-size:11px;font-weight:800;padding:6px\x2014px;border-radius:20px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-trash\x22></i>\x20Clear\x20All</button>',_0x40587a+='</div>',!_0x14cca4['length']&&(_0x40587a+='<div\x20style=\x22text-align:center;padding:44px\x2016px;color:#8b93a0\x22><div\x20style=\x22width:64px;height:64px;margin:0\x20auto\x2012px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(140deg,rgba(255,215,0,.12),rgba(255,140,0,.08));border:1px\x20solid\x20rgba(255,215,0,.22)\x22><i\x20class=\x22fas\x20fa-bell\x22\x20style=\x22color:#ffd700\x22></i></div><p\x20style=\x22font-size:13px;font-weight:700;color:#cdd3dc\x22>Koi\x20notification\x20nahi</p><p\x20style=\x22font-size:11px;margin-top:3px\x22>Naye\x20matches,\x20results\x20aur\x20rewards\x20yahan\x20dikhenge</p></div>'),_0x14cca4['forEach'](function(_0x3fdd4f){var _0x4d4141=![],_0x4c3575='#ffd700';if(_0x3fdd4f['type']==='room_released'||_0x3fdd4f['type']==='wallet_approved'||_0x3fdd4f['type']==='withdraw_done'||_0x3fdd4f['type']==='match_completed'||_0x3fdd4f['type']==='result')_0x4c3575='#00ff9c';else{if(_0x3fdd4f['type']==='new_match'||_0x3fdd4f['type']==='match_starting')_0x4c3575='#00d4ff';else{if(_0x3fdd4f['type']==='chat_reply'||_0x3fdd4f['type']==='team_invite')_0x4c3575='#b964ff';else{if(_0x3fdd4f['type']==='wallet_rejected'||_0x3fdd4f['type']==='withdraw_rejected')_0x4c3575='#ff5555';}}}var _0x5a016b=_0x4c3575==='#00ff9c'?'0,255,156':_0x4c3575==='#00d4ff'?'0,212,255':_0x4c3575==='#b964ff'?'185,100,255':_0x4c3575==='#ff5555'?'255,85,85':'255,215,0';_0x40587a+='<div\x20class=\x22notif-card'+(_0x4d4141?'\x20unread':'')+'\x22\x20onclick=\x22openNotif(\x27'+_0x3fdd4f['_key']+'\x27)\x22\x20style=\x22position:relative;display:flex;gap:11px;align-items:flex-start;padding:12px\x2040px\x2012px\x2012px;margin-bottom:9px;border-radius:16px;cursor:pointer;'+'background:linear-gradient(120deg,rgba('+_0x5a016b+',.09),rgba(255,255,255,.025)\x2055%);border:1px\x20solid\x20rgba('+_0x5a016b+',.22)\x22>'+'<span\x20style=\x22position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0\x203px\x203px\x200;background:linear-gradient(180deg,'+_0x4c3575+',rgba('+_0x5a016b+',.25))\x22></span>',_0x40587a+='<div\x20style=\x22width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;background:rgba('+_0x5a016b+',.14);border:1px\x20solid\x20rgba('+_0x5a016b+',.35);box-shadow:0\x200\x2012px\x20rgba('+_0x5a016b+',.18);color:'+_0x4c3575+'\x22><i\x20class=\x22fas\x20'+(_0x3fdd4f['faIcon']||'fa-bell')+'\x22></i></div>',_0x40587a+='<div\x20style=\x22flex:1;min-width:0\x22>',_0x40587a+='<div\x20style=\x22font-size:13px;font-weight:800;color:var(--txt);line-height:1.3;padding-right:4px\x22>'+(window['escHtml']?window['escHtml'](_0x3fdd4f['title']||'Notification'):_0x3fdd4f['title']||'Notification')+'</div>',_0x40587a+='<div\x20style=\x22font-size:12px;color:#aab3c0;margin-top:3px;line-height:1.45;word-break:break-word\x22>'+(window['escHtml']?window['escHtml'](_0x3fdd4f['message']||''):_0x3fdd4f['message']||'')+'</div>',_0x40587a+='<div\x20style=\x22display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap\x22>',_0x40587a+='<span\x20style=\x22font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.09);padding:2px\x209px;border-radius:8px\x22><i\x20class=\x22far\x20fa-clock\x22\x20style=\x22font-size:9px\x22></i>\x20'+timeAgo(_0x3fdd4f['createdAt'])+'</span>';if(_0x3fdd4f['matchName'])_0x40587a+='<span\x20style=\x22font-size:10px;font-weight:700;padding:2px\x209px;border-radius:8px;background:rgba(185,100,255,.1);border:1px\x20solid\x20rgba(185,100,255,.28);color:#c99aff\x22>'+(window['escHtml']?window['escHtml'](_0x3fdd4f['matchName']):_0x3fdd4f['matchName'])+'</span>';_0x40587a+='</div>',_0x3fdd4f['type']==='team_invite'&&_0x3fdd4f['matchId']&&(_0x40587a+='<div\x20style=\x22display:flex;gap:8px;margin-top:9px\x22><button\x20onclick=\x22event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\x27'+_0x3fdd4f['matchId']+'\x27,\x20true)\x22\x20style=\x22flex:1;padding:8px\x2010px;border-radius:11px;border:1px\x20solid\x20rgba(0,255,156,.35);background:rgba(0,255,156,.14);color:#00ff9c;font-size:11px;font-weight:800;cursor:pointer\x22>✓\x20Accept</button>'+'<button\x20onclick=\x22event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\x27'+_0x3fdd4f['matchId']+'\x27,\x20false)\x22\x20style=\x22flex:1;padding:8px\x2010px;border-radius:11px;border:1px\x20solid\x20rgba(255,80,80,.35);background:rgba(255,80,80,.12);color:#ff6b6b;font-size:11px;font-weight:800;cursor:pointer\x22>✗\x20Decline</button></div>'),_0x40587a+='</div>',_0x40587a+='<button\x20onclick=\x22event.stopPropagation();deleteNotif(\x27'+_0x3fdd4f['_key']+'\x27,\x27'+(_0x3fdd4f['_srcUser']?'user':'global')+'\x27)\x22\x20aria-label=\x22Notification\x20hatao\x22\x20style=\x22position:absolute;top:10px;right:10px;background:rgba(255,80,80,.1);border:1px\x20solid\x20rgba(255,80,80,.22);color:#ff6b6b;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0\x22><i\x20class=\x22fas\x20fa-times\x22></i></button>',_0x40587a+='</div>';}),_0x1a439e['innerHTML']=_0x40587a;}function deleteNotif(_0x2b2329,_0x1a59d1){if(_0x2b2329){var _0x325697={};_0x325697[_0x2b2329]=!![];if(window['_saveDeletedNotifKeys'])window['_saveDeletedNotifKeys'](_0x325697);}NOTIFS=NOTIFS['filter'](function(_0x899949){return _0x899949['_key']!==_0x2b2329;}),_READ_KEYS[_0x2b2329]=!![],U&&window['_supa']&&window['_supa']['from']('notifications')['delete']()['eq']('id',_0x2b2329)['eq']('user_id',U['uid'])['then'](null,function(){}),updateBell(),renderNotifs();}function openNotif(_0x3f9976){if(window['markNotifRead'])markNotifRead(_0x3f9976);_READ_KEYS[_0x3f9976]=!![],NOTIFS['forEach'](function(_0x905522){if(_0x905522['_key']===_0x3f9976)_0x905522['_localRead']=!![];});if(!UD['readNotifications'])UD['readNotifications']={};UD['readNotifications'][_0x3f9976]=!![];try{var _0x2857ef=JSON['parse'](localStorage['getItem']('_mes_read_'+U['uid'])||'{}');_0x2857ef[_0x3f9976]=!![],localStorage['setItem']('_mes_read_'+U['uid'],JSON['stringify'](_0x2857ef));}catch(_0x41580e){}updateBell();var _0x1972cc=null;NOTIFS['forEach'](function(_0x14f6cd){if(_0x14f6cd['_key']===_0x3f9976)_0x1972cc=_0x14f6cd;});if(!_0x1972cc)return;var _0x5a182d='<div\x20style=\x22text-align:center;font-size:36px;margin-bottom:12px\x22><i\x20class=\x22fas\x20'+(_0x1972cc['faIcon']||'fa-bell')+'\x22></i></div>';_0x5a182d+='<div\x20style=\x22font-size:16px;font-weight:700;text-align:center;margin-bottom:4px\x22>'+(window['escHtml']?window['escHtml'](_0x1972cc['title']||'Notification'):_0x1972cc['title']||'Notification')+'</div>',_0x5a182d+='<div\x20style=\x22font-size:13px;color:var(--txt2);text-align:center;margin-bottom:14px\x22>'+timeAgo(_0x1972cc['createdAt'])+'</div>',_0x5a182d+='<div\x20style=\x22font-size:14px;line-height:1.6;color:var(--txt)\x22>'+(window['escHtml']?window['escHtml'](_0x1972cc['message']||''):_0x1972cc['message']||'')+'</div>';if(_0x1972cc['matchId']&&_0x1972cc['type']==='room_released'){var _0x16a56d=MT[_0x1972cc['matchId']];_0x16a56d&&_0x16a56d['roomStatus']==='released'&&hasJ(_0x1972cc['matchId'])&&(_0x16a56d['roomId']&&_0x16a56d['roomPassword']?(_0x5a182d+='<div\x20class=\x22room-box\x20rb-green\x22\x20style=\x22margin-top:14px\x22><div\x20style=\x22font-size:11px;color:var(--txt2);text-transform:uppercase;margin-bottom:4px\x22>Room\x20ID</div><div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span\x20style=\x22font-size:20px;font-weight:900\x22>'+_0x16a56d['roomId']+'</span><button\x20onclick=\x22copyTxt(String(t.roomId||\x27\x27))\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px\x2010px;border-radius:8px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div>',_0x5a182d+='<div\x20style=\x22font-size:11px;color:var(--txt2);text-transform:uppercase;margin-top:8px;margin-bottom:4px\x22>Password</div><div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span\x20style=\x22font-size:20px;font-weight:900\x22>'+_0x16a56d['roomPassword']+'</span><button\x20onclick=\x22copyTxt(String(t.roomPassword||\x27\x27))\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px\x2010px;border-radius:8px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div></div>'):_0x5a182d+='<button\x20onclick=\x22_showRoomViaRpc(\x27'+_0x1972cc['matchId']+'\x27,\x20this)\x22\x20style=\x22width:100%;margin-top:14px;background:rgba(0,255,106,.12);border:1px\x20solid\x20rgba(0,255,106,.35);color:var(--green);padding:10px;border-radius:10px;font-weight:800;cursor:pointer\x22><i\x20class=\x22fas\x20fa-key\x22></i>\x20🔑\x20Room\x20Details\x20dekho</button>');}openModal('Notification',_0x5a182d);}function showCoinShop(){var _0x127ff3=document['getElementById']('coinShopModal');if(_0x127ff3){_0x127ff3['style']['display']='flex';try{history['pushState'](null,null,null);}catch(_0x304e08){}}}function closeCoinShop(){var _0x29222d=document['getElementById']('coinShopModal');if(_0x29222d)_0x29222d['style']['display']='none';}(function(){var _0xce751f=(function(){var _0x21ca44=!![];return function(_0x2c5c83,_0x45f01b){var _0x57a272=_0x21ca44?function(){if(_0x45f01b){var _0xf86a61=_0x45f01b['apply'](_0x2c5c83,arguments);return _0x45f01b=null,_0xf86a61;}}:function(){};return _0x21ca44=![],_0x57a272;};}()),_0x178c44=_0xce751f(this,function(){if(_0x178c44['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x178c44['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x178c44)['search']('(((.+)+)+)+$');});_0x178c44();function _0x5e2c21(){var _0x114a17=document['getElementById']('coinShopModal');if(!_0x114a17){setTimeout(_0x5e2c21,0x3e8);return;}if(_0x114a17['_overlayClickBound'])return;_0x114a17['_overlayClickBound']=!![],_0x114a17['addEventListener']('click',function(_0x2955d3){if(_0x2955d3['target']===_0x114a17)closeCoinShop();});}document['readyState']==='loading'?document['addEventListener']('DOMContentLoaded',_0x5e2c21):setTimeout(_0x5e2c21,0x1f4);}());function buyCoinPkg(_0x3efc41,_0xbc27f0,_0x235ce9){showCoinShop(),toast('🪙\x20Coins\x20=\x20FREE:\x20Watch\x20Ad,\x20Daily\x20Check-In,\x20Referral\x20se\x20kamao\x20|\x20💎\x20Sky\x20Diamonds\x20=\x20Real\x20money\x20se\x20kharido\x20(Wallet\x20>\x20Buy)','ok');}window['doJoin']=window['doJoin']||doJoin,window['submitWithdrawal']=window['submitWithdrawal']||submitWd,window['submitCoinRequest']=window['submitCoinRequest']||buyCoinPkg,window['sendChatMessage']=window['sendChatMessage']||sendChat,window['submitResult']=window['submitResult']||function(_0x34c243,_0x2a5fe3){_0x2a5fe3&&_0x2a5fe3['screenshotUrl']&&(wfScreenshot=_0x2a5fe3['screenshotUrl']);};
+/* ====== NOTIFICATIONS ====== */
+/* ══ R6 TEAM AUTHORIZATION ══
+   _respondTeamInvite(matchId, accept) — invited member apni pending
+   team_invitation accept/decline karta hai (server-authoritative consent).
+   sirf member_uid == auth.uid() wali row respond hoti hai — koi bhi
+   किसी और की invitation change nahi kar sakta (server double-checks). */
+window._respondTeamInvite = function (matchId, accept) {
+  if (!window.U || !window.U.uid || !window._supa) { if (window.toast) toast('Login karo pehle', 'err'); return; }
+  window._supa.from('team_invitations')
+    .select('id').eq('match_id', matchId).eq('member_uid', window.U.uid).eq('status', 'pending')
+    .maybeSingle()
+    .then(function (r) {
+      if (r && r.error) { if (window.toast) toast('Invitation load nahi hui', 'err'); return; }
+      if (!r.data) { if (window.toast) toast('Pending invitation nahi mili', 'inf'); return; }
+      return window._supa.rpc('respond_team_invite', { p_invite_id: r.data.id, p_accept: accept });
+    })
+    .then(function (rr) {
+      if (!rr) return;
+      var d = rr && rr.data;
+      if ((rr && rr.error) || (d && d.ok === false)) {
+        if (window.toast) toast('Error: ' + ((d && d.error) || 'response failed'), 'err');
+        return;
+      }
+      if (window.toast) toast(accept ? '✅ Team invite accept ho gayi! Captain ab join kar sakta hai.' : 'Invite decline ho gayi.', 'ok');
+      if (window.renderNotifs) renderNotifs();
+    })
+    .catch(function (e) { if (window.toast) toast('Response failed', 'err'); });
+};
+
+function toggleAchievements() {  var ac = document.getElementById('achContent');
+  var ch = document.getElementById('achChevron');
+  if (!ac) return;
+  var isOpen = ac.style.display !== 'none';
+  ac.style.display = isOpen ? 'none' : 'block';
+  if (ch) ch.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+function renderNotifs() {
+  var nl = $('notifList'); if (!nl) return;
+  /* ✅ R28k (2026-09-22): DB me same notification double-INSERTED rehta
+     hai (admin-side dual-write — same body+ref_id ~300-400ms apart; live
+     proven Supabase rows me: "🏆 Match Result!"/"💬 Support Reply" sab
+     pairs me). User-panel display dedup karta hai. SAFETY: sirf
+     NEAR-duplicates collapse hote hain — same type+title+body AND
+     createdAt 3s ke andar (asli double-write signature ~300-400ms).
+     Alag matches ke same-text legit notifs (alg time par) safe rehte
+     hain. Data delete nahi hota — sirf display. Backend dual-write
+     alag issue hai (admin repo fix). */
+  try {
+    var _sorted = (NOTIFS || []).slice().sort(function(a, b) {
+      return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0);
+    });
+    var _kept = [];
+    _sorted.forEach(function(n) {
+      var fp = String(n.type || '') + '|' + String(n.title || '') + '|' + String(n.message || n.body || '');
+      fp = fp.replace(/\s+/g, ' ').trim().slice(0, 200);
+      var ts = Number(n.createdAt) || 0;
+      var dup = false;
+      if (fp) {
+        for (var i = 0; i < _kept.length; i++) {
+          var k = _kept[i];
+          if (k._fp === fp && Math.abs(ts - (Number(k.createdAt) || 0)) <= 3000) { dup = true; break; }
+        }
+      }
+      if (!dup) { n._fp = fp; _kept.push(n); }
+    });
+    NOTIFS = _kept;
+  } catch (e) { /* dedup best-effort — render as-is if anything throws */ }
+  if (!NOTIFS.length) { nl.innerHTML = '<div class="empty-state"><i class="fas fa-bell"></i><p>No notifications</p></div>'; if (window.updateBell) updateBell(); return; }
+  // Mark ALL as read when panel opens
+  if (U && UD) {
+    var toMark = {};
+    NOTIFS.forEach(function(n) {
+      if (!n._key) return;
+      n._localRead = true;
+      _READ_KEYS[n._key] = true;
+      toMark[n._key] = true;
+    });
+    if (!UD.readNotifications) UD.readNotifications = {};
+    Object.assign(UD.readNotifications, toMark);
+    if (Object.keys(toMark).length) {
+      /* Supabase handles read status via markNotifRead */
+      Object.keys(toMark).forEach(function(k) { if (window.markNotifRead) markNotifRead(k); });
+      // localStorage cache
+      try {
+        var _lsAll = JSON.parse(localStorage.getItem('_mes_read_' + U.uid) || '{}');
+        Object.assign(_lsAll, toMark);
+        localStorage.setItem('_mes_read_' + U.uid, JSON.stringify(_lsAll));
+      } catch(e) {}
+    }
+    setTimeout(updateBell, 100);
+  }
+  var rd = (UD && UD.readNotifications) || {}, h = '';
+  /* ✅ D95 (2026-11-09, owner live report): notification UI stylish redesign —
+     gradient glass cards, type-colored glow icon tiles, time/match chips. */
+  // Filter out system-type notifications that shouldn't be shown in list
+  var HIDDEN_TYPES = ['back_online', 'online', 'profile_approved', 'profile_update_approved', 'system'];
+  var visibleNotifs = NOTIFS.filter(function(n) { return HIDDEN_TYPES.indexOf(n.type) === -1; });
+  // Header row: count + Clear All
+  h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
+  h += '<span style="display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;color:#8b93a0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:5px 12px;border-radius:20px"><i class="fas fa-bell" style="color:#ffd700;font-size:10px"></i> ' + visibleNotifs.length + ' notifications</span>';
+  h += '<button onclick="clearAllNotifs()" style="background:linear-gradient(120deg,rgba(255,80,80,.16),rgba(255,80,80,.08));border:1px solid rgba(255,80,80,.3);color:#ff6b6b;font-size:11px;font-weight:800;padding:6px 14px;border-radius:20px;cursor:pointer"><i class="fas fa-trash"></i> Clear All</button>';
+  h += '</div>';
+  if (!visibleNotifs.length) {
+    h += '<div style="text-align:center;padding:44px 16px;color:#8b93a0"><div style="width:64px;height:64px;margin:0 auto 12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(140deg,rgba(255,215,0,.12),rgba(255,140,0,.08));border:1px solid rgba(255,215,0,.22)"><i class="fas fa-bell" style="color:#ffd700"></i></div><p style="font-size:13px;font-weight:700;color:#cdd3dc">Koi notification nahi</p><p style="font-size:11px;margin-top:3px">Naye matches, results aur rewards yahan dikhenge</p></div>';
+  }
+  visibleNotifs.forEach(function(n) {
+    var unread = false; // All shown as read since we just marked them
+    /* type → accent color */
+    var col = '#ffd700';
+    if (n.type === 'room_released' || n.type === 'wallet_approved' || n.type === 'withdraw_done' || n.type === 'match_completed' || n.type === 'result') col = '#00ff9c';
+    else if (n.type === 'new_match' || n.type === 'match_starting') col = '#00d4ff';
+    else if (n.type === 'chat_reply' || n.type === 'team_invite') col = '#b964ff';
+    else if (n.type === 'wallet_rejected' || n.type === 'withdraw_rejected') col = '#ff5555';
+    var colRgb = col === '#00ff9c' ? '0,255,156' : col === '#00d4ff' ? '0,212,255' : col === '#b964ff' ? '185,100,255' : col === '#ff5555' ? '255,85,85' : '255,215,0';
+    h += '<div class="notif-card' + (unread ? ' unread' : '') + '" onclick="openNotif(\'' + n._key + '\')" style="position:relative;display:flex;gap:11px;align-items:flex-start;padding:12px 40px 12px 12px;margin-bottom:9px;border-radius:16px;cursor:pointer;' +
+         'background:linear-gradient(120deg,rgba(' + colRgb + ',.09),rgba(255,255,255,.025) 55%);border:1px solid rgba(' + colRgb + ',.22)">' +
+         '<span style="position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,' + col + ',rgba(' + colRgb + ',.25))"></span>';
+    h += '<div style="width:38px;height:38px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;background:rgba(' + colRgb + ',.14);border:1px solid rgba(' + colRgb + ',.35);box-shadow:0 0 12px rgba(' + colRgb + ',.18);color:' + col + '"><i class="fas ' + (n.faIcon || 'fa-bell') + '"></i></div>';
+    h += '<div style="flex:1;min-width:0">';
+    h += '<div style="font-size:13px;font-weight:800;color:var(--txt);line-height:1.3;padding-right:4px">' + (window.escHtml?window.escHtml(n.title||'Notification'):(n.title||'Notification')) + '</div>';
+    h += '<div style="font-size:12px;color:#aab3c0;margin-top:3px;line-height:1.45;word-break:break-word">' + (window.escHtml?window.escHtml(n.message||''):(n.message||'')) + '</div>';
+    h += '<div style="display:flex;align-items:center;gap:6px;margin-top:7px;flex-wrap:wrap">';
+    h += '<span style="font-size:10px;font-weight:700;color:#8b93a0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:2px 9px;border-radius:8px"><i class="far fa-clock" style="font-size:9px"></i> ' + timeAgo(n.createdAt) + '</span>';
+    if (n.matchName) h += '<span style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:8px;background:rgba(185,100,255,.1);border:1px solid rgba(185,100,255,.28);color:#c99aff">' + (window.escHtml?window.escHtml(n.matchName):n.matchName) + '</span>';
+    h += '</div>';
+    /* ══ R6 TEAM AUTHORIZATION ══
+       team_invite notification पर member Accept/Decline करता है (voice consent).
+       Accept = server respond_team_invite (member JWT) → captain ka join ab
+       authorize hota hai. Client-side कोई wallet/slot write नहीं — सिर्फ़ consent इंटेंट। */
+    if (n.type === 'team_invite' && n.matchId) {
+      h += '<div style="display:flex;gap:8px;margin-top:9px"><button onclick="event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\'' + n.matchId + '\', true)" style="flex:1;padding:8px 10px;border-radius:11px;border:1px solid rgba(0,255,156,.35);background:rgba(0,255,156,.14);color:#00ff9c;font-size:11px;font-weight:800;cursor:pointer">✓ Accept</button>'
+        + '<button onclick="event.stopPropagation();window._respondTeamInvite&&_respondTeamInvite(\'' + n.matchId + '\', false)" style="flex:1;padding:8px 10px;border-radius:11px;border:1px solid rgba(255,80,80,.35);background:rgba(255,80,80,.12);color:#ff6b6b;font-size:11px;font-weight:800;cursor:pointer">✗ Decline</button></div>';
+    }
+    h += '</div>';
+    // Delete button right side
+    h += '<button onclick="event.stopPropagation();deleteNotif(\'' + n._key + '\',\'' + (n._srcUser ? 'user' : 'global') + '\')" aria-label="Notification hatao" style="position:absolute;top:10px;right:10px;background:rgba(255,80,80,.1);border:1px solid rgba(255,80,80,.22);color:#ff6b6b;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-times"></i></button>';
+    h += '</div>';
+  });
+  nl.innerHTML = h;
+}
+function deleteNotif(key, src) {
+  // Persist deleted key so poll/realtime never resurrects it
+  if (key) {
+    var d = {}; d[key] = true;
+    if (window._saveDeletedNotifKeys) window._saveDeletedNotifKeys(d);
+  }
+  // Remove from local NOTIFS
+  NOTIFS = NOTIFS.filter(function(n) { return n._key !== key; });
+  _READ_KEYS[key] = true;
+  if (U && window._supa) { window._supa.from('notifications').delete().eq('id', key).eq('user_id', U.uid).then(null, function(){}); }
+  updateBell();
+  renderNotifs();
+}
+/* ✅ DEDUP (P2 refactor): clearAllNotifs yahan duplicate tha — asli LIVE version
+   core/listeners.js mein hai (window.clearAllNotifs = clearAllNotifs, line ~830),
+   jo Supabase bulk-mark-read + toast deta hai aur is file ke baad load hota hai,
+   isliye yah bare copy hamesha shadow ho jaati thi (never ran). Button onclick
+   "clearAllNotifs()" bhi global resolve karta hai → listeners.js version hi chalta hai. */
+function openNotif(key) {
+  if (window.markNotifRead) markNotifRead(key);
+  // Mark locally and in persistent set
+  _READ_KEYS[key] = true;
+  NOTIFS.forEach(function(n) { if (n._key === key) n._localRead = true; });
+  if (!UD.readNotifications) UD.readNotifications = {};
+  UD.readNotifications[key] = true;
+  // ✅ FIX: localStorage mein bhi save karo taaki badge baar baar na aaye
+  try {
+    var _lsRead = JSON.parse(localStorage.getItem('_mes_read_' + U.uid) || '{}');
+    _lsRead[key] = true;
+    localStorage.setItem('_mes_read_' + U.uid, JSON.stringify(_lsRead));
+  } catch(e) {}
+  updateBell();
+  var n = null; NOTIFS.forEach(function(x) { if (x._key === key) n = x; }); if (!n) return;
+  var h = '<div style="text-align:center;font-size:36px;margin-bottom:12px"><i class="fas ' + (n.faIcon || 'fa-bell') + '"></i></div>';
+  h += '<div style="font-size:16px;font-weight:700;text-align:center;margin-bottom:4px">' + (window.escHtml?window.escHtml(n.title||'Notification'):(n.title||'Notification')) + '</div>';
+  h += '<div style="font-size:13px;color:var(--txt2);text-align:center;margin-bottom:14px">' + timeAgo(n.createdAt) + '</div>';
+  h += '<div style="font-size:14px;line-height:1.6;color:var(--txt)">' + (window.escHtml?window.escHtml(n.message||''):(n.message||'')) + '</div>';
+  if (n.matchId && n.type === 'room_released') {
+    var t = MT[n.matchId];
+    /* ✅ R3 (2026-09-20): creds MT me nahi hote (room-leak fix) —
+       released + joined par RPC-fetch button, warna cached creds box. */
+    if (t && t.roomStatus === 'released' && hasJ(n.matchId)) {
+      if (t.roomId && t.roomPassword) {
+        h += '<div class="room-box rb-green" style="margin-top:14px"><div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-bottom:4px">Room ID</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:20px;font-weight:900">' + t.roomId + '</span><button onclick="copyTxt(String(t.roomId||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div>';
+        h += '<div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-top:8px;margin-bottom:4px">Password</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:20px;font-weight:900">' + t.roomPassword + '</span><button onclick="copyTxt(String(t.roomPassword||\'\'))" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:6px 10px;border-radius:8px;cursor:pointer"><i class="fas fa-copy"></i></button></div></div>';
+      } else {
+        h += '<button onclick="_showRoomViaRpc(\'' + n.matchId + '\', this)" style="width:100%;margin-top:14px;background:rgba(0,255,106,.12);border:1px solid rgba(0,255,106,.35);color:var(--green);padding:10px;border-radius:10px;font-weight:800;cursor:pointer"><i class="fas fa-key"></i> 🔑 Room Details dekho</button>';
+      }
+    }
+  }
+  openModal('Notification', h);
+}
+/* ========================================
+   COIN SHOP — Manual UPI flow
+   ======================================== */
+function showCoinShop() {
+  var modal = document.getElementById('coinShopModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    try { history.pushState(null, null, null); } catch(e) {}
+  }
+}
+function closeCoinShop() {
+  var modal = document.getElementById('coinShopModal');
+  if (modal) modal.style.display = 'none';
+}
+
+/* Bug #33 Fix: Close coin shop on overlay click */
+(function() {
+  function _addCoinShopOverlayClose() {
+    var modal = document.getElementById('coinShopModal');
+    if (!modal) { setTimeout(_addCoinShopOverlayClose, 1000); return; }
+    if (modal._overlayClickBound) return;
+    modal._overlayClickBound = true;
+    modal.addEventListener('click', function(e) {
+      /* Only close if clicking the backdrop (not inner content) */
+      if (e.target === modal) closeCoinShop();
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _addCoinShopOverlayClose);
+  } else {
+    setTimeout(_addCoinShopOverlayClose, 500);
+  }
+})();
+function buyCoinPkg(price, coins, pkg) {
+  // Coins are FREE — no UPI purchase. Redirect to earn methods.
+  showCoinShop();
+  /* ✅ Bug 18 Fix: Clearly differentiate Coins (free) vs Sky Diamonds (paid) */
+  toast('🪙 Coins = FREE: Watch Ad, Daily Check-In, Referral se kamao | 💎 Sky Diamonds = Real money se kharido (Wallet > Buy)', 'ok');
+}
+
+/* ====== ANTI-SPAM HOOK ALIASES ======
+   Anti-spam features hook into these window.* names.
+   Mapping them to actual app functions.
+*/
+window.doJoin = window.doJoin || doJoin;
+window.submitWithdrawal = window.submitWithdrawal || submitWd;
+window.submitCoinRequest = window.submitCoinRequest || buyCoinPkg;
+window.sendChatMessage = window.sendChatMessage || sendChat;
+window.submitResult = window.submitResult || function(matchId, data) {
+  // Called when result screenshot is submitted
+  if (data && data.screenshotUrl) {
+    wfScreenshot = data.screenshotUrl;
+  }
+};

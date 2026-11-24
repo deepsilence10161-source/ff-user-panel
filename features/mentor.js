@@ -1,1 +1,233 @@
-(function(){'use strict';var _0x52eeca=(function(){var _0x1c837f=!![];return function(_0x41883a,_0x522b91){var _0x5dff4e=_0x1c837f?function(){if(_0x522b91){var _0x2a636f=_0x522b91['apply'](_0x41883a,arguments);return _0x522b91=null,_0x2a636f;}}:function(){};return _0x1c837f=![],_0x5dff4e;};}()),_0x399d82=_0x52eeca(this,function(){if(_0x399d82['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x399d82['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x399d82)['search']('(((.+)+)+)+$');});_0x399d82();function _0x2c1be0(){return window['_supa'];}function _0x5e1fbb(){return window['U']&&window['U']['uid'];}function _0x55bd8d(){return window['UD']||{};}function _0x2d76f4(_0x17317a){var _0x15e17e=window['getRankTier']?window['getRankTier'](_0x17317a):{'name':'Bronze','emoji':'','color':'#cd7f32','bg':'rgba(205,127,50,.12)'};return{'b':_0x15e17e['name'],'e':window['tierIconHtml']?tierIconHtml(_0x15e17e['name'],0xc):_0x15e17e['emoji']||'','c':_0x15e17e['color'],'bg':_0x15e17e['bg']};}function _0xa908a2(_0x33e815){if(!window['RANK_TIERS'])return 0x1;var _0x536b65=window['getRankTier'](_0x33e815);return window['RANK_TIERS']['indexOf'](_0x536b65)+0x1;}var _0x428a80=0x2,_0x486e2e=0x258;function _0x4a9f78(_0x420cd1){_0x420cd1=_0x420cd1||_0x55bd8d();var _0x5ac4bc=Number(_0x420cd1['premium_level']||_0x420cd1['premiumLevel']||_0x420cd1['premium']&&_0x420cd1['premium']['tier']||0x0);return _0x5ac4bc>=_0x428a80&&Number(_0x420cd1['rank_points']||0x0)>=_0x486e2e;}window['showMentorHub']=function(){if(!_0x5e1fbb()){if(window['toast'])toast('Login\x20karo','err');return;}var _0x4b65fb='<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px\x22>';_0x4b65fb+='<button\x20id=\x22mtTab0\x22\x20onclick=\x22mtTab(0)\x22\x20style=\x22flex:1;padding:9px;border-radius:11px;border:none;background:var(--primary);color:#000;font-size:12px;font-weight:800;cursor:pointer\x22>🔍\x20Find\x20Mentor</button>',_0x4b65fb+='<button\x20id=\x22mtTab1\x22\x20onclick=\x22mtTab(1)\x22\x20style=\x22flex:1;padding:9px;border-radius:11px;border:1px\x20solid\x20var(--border);background:transparent;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer\x22>📚\x20My\x20Sessions</button>';if(_0x4a9f78())_0x4b65fb+='<button\x20id=\x22mtTab2\x22\x20onclick=\x22mtTab(2)\x22\x20style=\x22flex:1;padding:9px;border-radius:11px;border:1px\x20solid\x20rgba(255,215,0,.3);background:rgba(255,215,0,.06);color:#ffd700;font-size:12px;font-weight:700;cursor:pointer\x22>👨‍🏫\x20Be\x20Mentor</button>';_0x4b65fb+='</div><div\x20id=\x22mtContent\x22></div>',openModal('📚\x20Mentor\x20Hub',_0x4b65fb),mtTab(0x0);},window['mtTab']=function(_0x3c1082){[0x0,0x1,0x2]['forEach'](function(_0x5c33c7){var _0x425c21=document['getElementById']('mtTab'+_0x5c33c7);if(!_0x425c21)return;_0x425c21['style']['background']=_0x5c33c7===_0x3c1082?'var(--primary)':'transparent',_0x425c21['style']['color']=_0x5c33c7===_0x3c1082?'#000':'var(--txt)',_0x425c21['style']['border']=_0x5c33c7===_0x3c1082?'none':'1px\x20solid\x20'+(_0x5c33c7===0x2?'rgba(255,215,0,.3)':'var(--border)');});var _0x1a4f3e=document['getElementById']('mtContent');if(!_0x1a4f3e)return;if(_0x3c1082===0x0)_0x48a345(_0x1a4f3e);else{if(_0x3c1082===0x1)_0x24d3fd(_0x1a4f3e);else _0x4428fa(_0x1a4f3e);}};function _0x48a345(_0x1c88f1){_0x1c88f1['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x2c1be0()){_0x1c88f1['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}_0x2c1be0()['from']('mentor_profiles')['select']('*')['eq']('is_available',!![])['order']('rank_pts',{'ascending':![]})['limit'](0x14)['then'](function(_0x474f72){var _0x2c83b3=(_0x474f72['data']||[])['filter'](function(_0x4a01a9){return _0x4a01a9['user_id']!==_0x5e1fbb();});if(!_0x2c83b3['length']){_0x1c88f1['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>👨‍🏫</div><p>Koi\x20mentor\x20available\x20nahi\x20abhi</p></div>';return;}var _0x1d47da='<div\x20style=\x22margin-bottom:10px;padding:10px\x2012px;border-radius:11px;background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2);font-size:11px;color:#ffd700\x22>💡\x20Rank\x20badhne\x20par\x20mentor\x20ko\x20Green\x20Diamonds\x20milte\x20hain!</div>';_0x1d47da+='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>',_0x2c83b3['forEach'](function(_0x1c6536){var _0x2a15f9=_0x2d76f4(_0x1c6536['rank_pts']||0x0);_0x1d47da+='<div\x20style=\x22padding:14px;border-radius:14px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x1d47da+='<div\x20style=\x22display:flex;align-items:center;gap:12px;margin-bottom:10px\x22>',_0x1d47da+='<div\x20style=\x22width:48px;height:48px;border-radius:50%;background:'+_0x2a15f9['bg']+';border:2px\x20solid\x20'+_0x2a15f9['c']+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0\x22>'+_0x2a15f9['e']+'</div>',_0x1d47da+='<div\x20style=\x22flex:1\x22><div\x20style=\x22display:flex;align-items:center;gap:6px\x22><span\x20style=\x22font-size:14px;font-weight:800\x22>'+(window['escHtml']?window['escHtml'](_0x1c6536['ign']||'Mentor'):_0x1c6536['ign']||'Mentor')+'</span><span\x20style=\x22font-size:10px;padding:2px\x207px;border-radius:20px;background:rgba(255,215,0,.12);border:1px\x20solid\x20rgba(255,215,0,.3);color:#ffd700;font-weight:700\x22>👨‍🏫\x20MENTOR</span></div>',_0x1d47da+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+_0x2a15f9['e']+'\x20'+_0x2a15f9['b']+'</div>';if(_0x1c6536['speciality'])_0x1d47da+='<div\x20style=\x22font-size:11px;color:#00d4ff\x22>🎯\x20'+_0x1c6536['speciality']+'</div></div></div>';if(_0x1c6536['bio'])_0x1d47da+='<div\x20style=\x22font-size:12px;color:var(--txt2);font-style:italic;margin-bottom:10px\x22>\x22'+(window['escHtml']?window['escHtml'](_0x1c6536['bio']['substring'](0x0,0x50)):_0x1c6536['bio']['substring'](0x0,0x50))+'\x22</div>';_0x1d47da+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between\x22>',_0x1d47da+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>Sessions:\x20<strong\x20style=\x22color:var(--txt)\x22>'+(_0x1c6536['total_sessions']||0x0)+'</strong></div>',_0x1d47da+='<button\x20onclick=\x22window.requestMentorSession(\x27'+_0x1c6536['uid']+'\x27,\x27'+(window['escAttrJs']?window['escAttrJs'](_0x1c6536['ign']||'Mentor'):_0x1c6536['ign']||'Mentor')+'\x27)\x22\x20style=\x22padding:8px\x2014px;border-radius:10px;border:1.5px\x20solid\x20rgba(255,215,0,.4);background:rgba(255,215,0,.08);color:#ffd700;font-size:12px;font-weight:800;cursor:pointer\x22>Request</button>',_0x1d47da+='</div></div>';}),_0x1d47da+='</div>',_0x1c88f1['innerHTML']=_0x1d47da;})['catch'](function(){_0x1c88f1['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error\x20loading\x20mentors</div>';});}function _0x24d3fd(_0x4b4e6d){_0x4b4e6d['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x2c1be0()||!_0x5e1fbb()){_0x4b4e6d['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Login\x20required</p>';return;}_0x2c1be0()['from']('mentor_requests')['select']('*')['eq']('student_uid',_0x5e1fbb())['order']('created_at',{'ascending':![]})['limit'](0xa)['then'](function(_0x44df4d){var _0x580d47=_0x44df4d['data']||[];if(!_0x580d47['length']){_0x4b4e6d['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>📚</div><p>Koi\x20session\x20nahi\x20abhi</p></div>';return;}var _0x4c6302={'pending':'#ffd700','accepted':'var(--green)','completed':'#00d4ff','declined':'#ff6b6b'},_0x141794='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x580d47['forEach'](function(_0x1c7177){var _0x301c66=_0x4c6302[_0x1c7177['status']||'pending']||'var(--txt2)';_0x141794+='<div\x20style=\x22padding:12px\x2014px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x141794+='<div\x20style=\x22display:flex;justify-content:space-between;margin-bottom:5px\x22><div\x20style=\x22font-size:13px;font-weight:800\x22>👨‍🏫\x20'+(window['escHtml']?window['escHtml'](_0x1c7177['mentor_ign']||'Mentor'):_0x1c7177['mentor_ign']||'Mentor')+'</div><span\x20style=\x22font-size:11px;font-weight:700;color:'+_0x301c66+'\x22>'+(_0x1c7177['status']||'pending')['toUpperCase']()+'</span></div>';if(_0x1c7177['message'])_0x141794+='<div\x20style=\x22font-size:12px;color:var(--txt2)\x22>'+_0x1c7177['message']+'</div>';_0x141794+='<div\x20style=\x22font-size:10px;color:var(--txt2);margin-top:4px\x22>'+new Date(_0x1c7177['created_at']||Date['now']())['toLocaleDateString']('en-IN')+'</div></div>';}),_0x141794+='</div>',_0x4b4e6d['innerHTML']=_0x141794;})['catch'](function(){_0x4b4e6d['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error</div>';});}function _0x4428fa(_0x1ceb45){if(!_0x4a9f78()){_0x1ceb45['innerHTML']='<div\x20style=\x22text-align:center;padding:20px\x22><div\x20style=\x22font-size:36px;margin-bottom:10px\x22>🔒</div><div\x20style=\x22font-size:15px;font-weight:800;color:var(--txt)\x22>Mentor\x20banne\x20ke\x20liye</div><div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.7\x22>✅\x20Gold\x20rank\x20(600+\x20RP)<br>✅\x20Premium\x20Gold\x20(₹99)\x20ya\x20Diamond\x20(₹199)</div><button\x20onclick=\x22if(window.showPremiumUpgrade)showPremiumUpgrade()\x22\x20style=\x22margin-top:14px;padding:12px\x2024px;border-radius:12px;border:none;background:var(--primary);color:#000;font-size:13px;font-weight:800;cursor:pointer\x22>Premium\x20Upgrade\x20Karo</button></div>';return;}_0x1ceb45['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x2c1be0()||!_0x5e1fbb()){_0x1ceb45['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Login\x20required</p>';return;}_0x2c1be0()['from']('mentor_profiles')['select']('*')['eq']('user_id',_0x5e1fbb())['single']()['then'](function(_0x3582ca){if(!_0x3582ca['data']||!_0x3582ca['data']['is_available'])_0x28c57d(_0x1ceb45);else _0xdb11e0(_0x1ceb45,_0x3582ca['data']);})['catch'](function(){_0x28c57d(_0x1ceb45);});}function _0x28c57d(_0x1e1777){var _0x2402e6='<div\x20style=\x22text-align:center;padding:14px\x200\x2020px\x22><div\x20style=\x22font-size:42px;margin-bottom:8px\x22>👨‍🏫</div><div\x20style=\x22font-size:16px;font-weight:900\x22>Mentor\x20bano!</div><div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:4px;line-height:1.6\x22>Students\x20guide\x20karo\x20aur\x20Green\x20Diamonds\x20kamao.</div></div>';_0x2402e6+='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Speciality</div><input\x20id=\x22mtSpecIn\x22\x20type=\x22text\x22\x20placeholder=\x22e.g.\x20Sniper,\x20Rush,\x20IGL...\x22\x20maxlength=\x2240\x22\x20style=\x22width:100%;padding:11px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box\x22></div>',_0x2402e6+='<div\x20style=\x22margin-bottom:14px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Bio</div><textarea\x20id=\x22mtBioIn\x22\x20maxlength=\x22120\x22\x20placeholder=\x22Apne\x20baare\x20mein\x20batao...\x22\x20style=\x22width:100%;padding:11px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box;resize:none;height:70px\x22></textarea></div>',_0x2402e6+='<button\x20onclick=\x22window.registerAsMentor()\x22\x20style=\x22width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff9f1c);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>👨‍🏫\x20Mentor\x20Register\x20Karo</button>',_0x1e1777['innerHTML']=_0x2402e6;}function _0xdb11e0(_0x261a2e,_0x2d9c0e){var _0x22523b='<div\x20style=\x22background:rgba(255,215,0,.06);border:1.5px\x20solid\x20rgba(255,215,0,.2);border-radius:16px;padding:16px;margin-bottom:14px\x22>';_0x22523b+='<div\x20style=\x22display:flex;align-items:center;gap:10px;margin-bottom:10px\x22><div\x20style=\x22font-size:28px\x22>👨‍🏫</div><div><div\x20style=\x22font-size:15px;font-weight:900;color:#ffd700\x22>Active\x20Mentor</div></div>',_0x22523b+='<button\x20onclick=\x22window.deactivateMentor()\x22\x20style=\x22margin-left:auto;padding:6px\x2010px;border-radius:8px;border:1px\x20solid\x20rgba(255,107,107,.3);background:transparent;color:#ff6b6b;font-size:10px;cursor:pointer\x22>Pause</button></div>',_0x22523b+='<div\x20style=\x22display:flex;gap:16px\x22>',[['📚',_0x2d9c0e['total_sessions']||0x0,'Sessions'],['👥',_0x2d9c0e['total_students']||0x0,'Students'],['📈',_0x2d9c0e['successful_students']||0x0,'Ranked\x20Up'],['💎',_0x2d9c0e['gd_earned']||0x0,'GD']]['forEach'](function(_0x1991ef){_0x22523b+='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:18px;font-weight:900;color:#ffd700\x22>'+_0x1991ef[0x1]+'</div><div\x20style=\x22font-size:9px;color:var(--txt2)\x22>'+_0x1991ef[0x2]+'</div></div>';}),_0x22523b+='</div></div>',_0x22523b+='<div\x20style=\x22font-size:13px;font-weight:800;margin-bottom:8px\x22>📬\x20Student\x20Requests</div><div\x20id=\x22mtStudentReqs\x22><div\x20style=\x22text-align:center;padding:12px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div></div>',_0x261a2e['innerHTML']=_0x22523b,_0x2c1be0()['from']('mentor_requests')['select']('*')['eq']('mentor_uid',_0x5e1fbb())['eq']('status','pending')['order']('created_at',{'ascending':![]})['limit'](0xa)['then'](function(_0x3f10ce){var _0x415920=_0x3f10ce['data']||[],_0x49591c=document['getElementById']('mtStudentReqs');if(!_0x49591c)return;if(!_0x415920['length']){_0x49591c['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2);font-size:12px\x22>Koi\x20request\x20nahi</div>';return;}var _0x310c5e='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x415920['forEach'](function(_0x392487){_0x310c5e+='<div\x20style=\x22padding:12px\x2014px;border-radius:13px;background:rgba(255,215,0,.05);border:1px\x20solid\x20rgba(255,215,0,.2)\x22>',_0x310c5e+='<div\x20style=\x22display:flex;align-items:center;justify-content:space-between;margin-bottom:6px\x22><div><div\x20style=\x22font-size:13px;font-weight:800\x22>📚\x20'+(_0x392487['student_ign']||'Student')+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+(_0x392487['student_rank_badge']||'Bronze')+'</div></div>',_0x310c5e+='<div\x20style=\x22display:flex;gap:6px\x22><button\x20onclick=\x22window.acceptMentorReq('+_0x392487['id']+')\x22\x20style=\x22padding:7px\x2011px;border-radius:9px;border:none;background:var(--green);color:#000;font-size:11px;font-weight:800;cursor:pointer\x22>Accept</button>',_0x310c5e+='<button\x20onclick=\x22window.declineMentorReq('+_0x392487['id']+')\x22\x20style=\x22padding:7px\x2011px;border-radius:9px;border:1px\x20solid\x20var(--border);background:transparent;color:var(--txt2);font-size:11px;cursor:pointer\x22>Decline</button></div></div>';if(_0x392487['message'])_0x310c5e+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+_0x392487['message']+'</div>';_0x310c5e+='</div>';}),_0x310c5e+='</div>',_0x49591c['innerHTML']=_0x310c5e;})['catch'](function(){var _0x1181d5=document['getElementById']('mtStudentReqs');if(_0x1181d5)_0x1181d5['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center;font-size:12px\x22>Error</div>';});}window['registerAsMentor']=function(){if(!_0x2c1be0()||!_0x5e1fbb()||!_0x55bd8d()['ign']){if(window['toast'])toast('Login\x20karo','err');return;}if(!_0x4a9f78()){if(window['toast'])toast('Premium\x20Gold\x20+\x20Gold\x20Rank\x20required','err');return;}var _0x402559=(document['getElementById']('mtSpecIn')||{})['value']||'',_0x112a1e=(document['getElementById']('mtBioIn')||{})['value']||'',_0x41a067=_0x55bd8d(),_0x369f55=_0x2d76f4(_0x41a067['rank_points']||0x0);_0x2c1be0()['from']('mentor_profiles')['upsert']({'user_id':_0x5e1fbb(),'ign':_0x41a067['ign']||_0x41a067['displayName']||'Player','rank_pts':_0x41a067['rank_points']||0x0,'rank_tier':_0x369f55['b'],'avatar_url':_0x41a067['avatar_url']||'','speciality':_0x402559['trim'](),'bio':_0x112a1e['trim'](),'is_available':!![],'total_sessions':0x0,'total_students':0x0,'successful_students':0x0,'gd_earned':0x0},{'onConflict':'user_id'})['then'](function(){if(window['toast'])toast('🎉\x20Mentor\x20register\x20ho\x20gaye!','ok');if(window['logActivity'])logActivity('rank_up','👨‍🏫\x20Mentor\x20ban\x20gaye!');if(window['closeModal'])closeModal();})['catch'](function(_0xa63499){if(window['toast'])toast('Error:\x20'+(_0xa63499['message']||'Try\x20again'),'err');});},window['requestMentorSession']=function(_0x4b03f9,_0x204381){var _0x2a4444=_0x55bd8d(),_0x46d738=_0x2d76f4(_0x2a4444['rank_points']||0x0),_0x3335e9='<div\x20style=\x22text-align:center;margin-bottom:14px\x22><div\x20style=\x22font-size:36px;margin-bottom:6px\x22>📚</div><div\x20style=\x22font-size:16px;font-weight:800\x22>'+_0x204381+'\x20se\x20guidance\x20lo</div></div>';_0x3335e9+='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px\x22>Message\x20(optional)</div><textarea\x20id=\x22mtMsgIn\x22\x20maxlength=\x22100\x22\x20placeholder=\x22Kya\x20seekhna\x20chahte\x20ho?\x22\x20style=\x22width:100%;padding:11px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box;resize:none;height:70px\x22></textarea></div>',_0x3335e9+='<div\x20style=\x22padding:10px\x2014px;border-radius:11px;background:rgba(255,215,0,.06);border:1px\x20solid\x20rgba(255,215,0,.2);margin-bottom:14px;font-size:12px;color:var(--txt2)\x22>✅\x20Rank\x20badhne\x20par\x20mentor\x20ko\x20Green\x20Diamonds\x20milenge.</div>',_0x3335e9+='<button\x20onclick=\x22window._submitMentorRequest(\x27'+_0x4b03f9+'\x27,\x27'+_0x204381['replace'](/'/g,'\x5c\x27')+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff9f1c);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>📚\x20Request\x20Bhejo</button>';var _0x27fb82=document['getElementById']('modalB');if(_0x27fb82)_0x27fb82['innerHTML']=_0x3335e9;},window['_submitMentorRequest']=function(_0x2eb05c,_0x8510df){if(!_0x2c1be0()||!_0x5e1fbb()||!_0x55bd8d()){if(window['toast'])toast('Login\x20karo','err');return;}var _0x4f0c46=(document['getElementById']('mtMsgIn')||{})['value']||'',_0x5e9f7c=_0x55bd8d(),_0x5a89e8=_0x2d76f4(_0x5e9f7c['rank_points']||0x0);_0x2c1be0()['from']('mentor_requests')['insert']({'mentor_uid':_0x2eb05c,'mentor_ign':_0x8510df,'student_uid':_0x5e1fbb(),'student_ign':_0x5e9f7c['ign']||_0x5e9f7c['displayName']||'Player','student_rank_pts':_0x5e9f7c['rank_points']||0x0,'student_rank_badge':_0x5a89e8['b'],'message':_0x4f0c46['trim'](),'status':'pending'})['then'](function(){_0x2c1be0()['from']('notifications')['insert']({'user_id':_0x2eb05c,'type':'mentor_request','title':'📚\x20New\x20Student\x20Request!','body':(_0x5e9f7c['ign']||'Player')+'\x20('+_0x5a89e8['b']+')\x20ne\x20mentor\x20session\x20request\x20bheja!','ref_id':_0x5e1fbb(),'is_read':![]})['then'](null,function(){});if(window['toast'])toast('✅\x20Request\x20bhej\x20di!','ok');if(window['closeModal'])closeModal();})['catch'](function(_0x400072){if(window['toast'])toast('Error:\x20'+(_0x400072['message']||'Try\x20again'),'err');});},window['acceptMentorReq']=function(_0x45c808){if(!_0x2c1be0()||!_0x5e1fbb())return;_0x2c1be0()['from']('mentor_requests')['select']('student_uid,student_ign')['eq']('id',_0x45c808)['single']()['then'](function(_0x11e861){var _0x2e86eb=_0x11e861['data'];if(!_0x2e86eb)return;_0x2c1be0()['from']('mentor_requests')['update']({'status':'accepted'})['eq']('id',_0x45c808)['then'](function(){_0x2c1be0()['from']('notifications')['insert']({'user_id':_0x2e86eb['student_uid'],'type':'mentor_accepted','title':'🎉\x20Mentor\x20Accepted!','body':(_0x55bd8d()['ign']||'Mentor')+'\x20ne\x20tumhari\x20request\x20accept\x20kar\x20li!','ref_id':_0x5e1fbb(),'is_read':![]})['then'](null,function(){}),_0x2c1be0()['from']('mentor_profiles')['select']('total_students')['eq']('user_id',_0x5e1fbb())['single']()['then'](function(_0xd81ba9){if(_0xd81ba9['data'])_0x2c1be0()['from']('mentor_profiles')['update']({'total_students':(_0xd81ba9['data']['total_students']||0x0)+0x1})['eq']('user_id',_0x5e1fbb())['catch'](function(){});})['catch'](function(){});if(window['toast'])toast('✅\x20Request\x20accept!','ok');var _0x24850f=document['getElementById']('mtStudentReqs');if(_0x24850f)_0x24850f['innerHTML']='<div\x20style=\x22text-align:center;padding:8px;color:var(--green);font-size:12px\x22>✅\x20Accepted</div>';});})['catch'](function(){if(window['toast'])toast('Error','err');});},window['declineMentorReq']=function(_0x1265aa){if(!_0x2c1be0())return;_0x2c1be0()['from']('mentor_requests')['update']({'status':'declined'})['eq']('id',_0x1265aa)['then'](function(){if(window['toast'])toast('Declined','ok');})['catch'](function(){});},window['deactivateMentor']=function(){if(!_0x2c1be0()||!_0x5e1fbb())return;_0x2c1be0()['from']('mentor_profiles')['update']({'is_available':![]})['eq']('user_id',_0x5e1fbb())['then'](function(){if(window['toast'])toast('Mentor\x20profile\x20paused','ok');if(window['closeModal'])closeModal();})['catch'](function(){});},window['checkMentorReward']=function(_0x4ef29d,_0xd1b5a8){if(!_0x2c1be0()||!_0x5e1fbb())return;var _0x478eb0=_0xa908a2(_0x4ef29d),_0x586304=_0xa908a2(_0xd1b5a8);if(_0x586304<=_0x478eb0)return;_0x2c1be0()['from']('mentor_requests')['select']('mentor_uid,mentor_ign')['eq']('student_uid',_0x5e1fbb())['eq']('status','accepted')['limit'](0x1)['single']()['then'](function(_0x567a5a){if(!_0x567a5a['data'])return;var _0x29dad4=_0x567a5a['data']['mentor_uid'],_0x16e287=_0x567a5a['data']['mentor_ign'],_0x15baae=0x14*(_0x586304-_0x478eb0);_0x2c1be0()['rpc']('award_mentor_reward',{'p_student_uid':_0x5e1fbb(),'p_mentor_uid':_0x29dad4,'p_gd_amount':_0x15baae})['then'](function(_0x4e3ec6){if(_0x4e3ec6['error']||_0x4e3ec6['data']&&_0x4e3ec6['data']['success']===![]){console['error']('[Mentor]\x20award_mentor_reward\x20failed:',_0x4e3ec6['data']&&_0x4e3ec6['data']['error']||_0x4e3ec6['error']&&_0x4e3ec6['error']['message']);return;}_0x2c1be0()['from']('notifications')['insert']({'user_id':_0x29dad4,'type':'mentor_reward','title':'💎\x20Mentor\x20Reward!','body':'Tumhare\x20student\x20'+(_0x55bd8d()['ign']||'Player')+'\x20ka\x20rank\x20badh\x20gaya!\x20Tumhe\x20'+_0x15baae+'\x20Green\x20Diamonds\x20mile!','ref_id':_0x5e1fbb(),'is_read':![]})['then'](function(_0x62ca84){if(_0x62ca84&&_0x62ca84['error'])console['warn']('[Mentor]\x20reward\x20notification\x20insert\x20failed:',_0x62ca84['error']['message']);});});})['catch'](function(){});};var _0x12aff1=0x0,_0x1f0658=setInterval(function(){_0x12aff1++;if(_0x12aff1>0x50){clearInterval(_0x1f0658);return;}if(!window['UD'])return;var _0x14b080=document['querySelector']('.special-pills');if(!_0x14b080||_0x14b080['querySelector']('#_mtPill')){if(_0x14b080)clearInterval(_0x1f0658);return;}clearInterval(_0x1f0658);var _0x56f968=document['createElement']('div');_0x56f968['id']='_mtPill',_0x56f968['className']='special-pill',_0x56f968['style']['cssText']='background:rgba(255,215,0,.08);border:1px\x20solid\x20rgba(255,215,0,.2);color:#ffd700',_0x56f968['innerHTML']='<i\x20class=\x22fas\x20fa-graduation-cap\x22\x20style=\x22font-size:11px\x22></i>\x20Mentor',_0x56f968['onclick']=function(){if(window['showMentorHub'])showMentorHub();},_0x14b080['appendChild'](_0x56f968);},0x258);}());
+/* ================================================================
+   MENTOR SYSTEM v2.0 — 100% Supabase | Premium2+ only
+   Tables: mentor_profiles(uid,ign,rank_pts,rank_tier,speciality,bio,active,total_sessions,total_students,successful_students,gd_earned)
+           mentor_requests(id,mentor_id,mentor_ign,student_id,student_ign,student_rank_pts,student_rank_badge,message,status)
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+function _ud(){ return window.UD||{}; }
+/* BUG #27 FIX (2026-07): was its own separate simplified 4-tier system with wrong
+   thresholds (Bronze/Silver/Gold/Diamond only) — now derives from the same canonical
+   window.RANK_TIERS/getRankTier used everywhere else, so this screen shows the same
+   rank as every other screen for the same player. */
+function _ri(p){ var t=(window.getRankTier?window.getRankTier(p):{name:'Bronze',emoji:'',color:'#cd7f32',bg:'rgba(205,127,50,.12)'}); return {b:t.name,e:(window.tierIconHtml?tierIconHtml(t.name,12):(t.emoji||'')),c:t.color,bg:t.bg}; } /* D101: tier img */
+function _tier(p){ if(!window.RANK_TIERS)return 1; var t=window.getRankTier(p); return window.RANK_TIERS.indexOf(t)+1; }
+
+var MIN_PREMIUM=2, MIN_RANK=600;
+function _canMentor(ud){ ud=ud||_ud();var lv=Number(ud.premium_level||ud.premiumLevel||(ud.premium&&ud.premium.tier)||0);return lv>=MIN_PREMIUM&&Number(ud.rank_points||0)>=MIN_RANK; }
+
+window.showMentorHub=function(){
+  if(!_uid()){if(window.toast)toast('Login karo','err');return;}
+  var h='<div style="display:flex;gap:8px;margin-bottom:12px">';
+  h+='<button id="mtTab0" onclick="mtTab(0)" style="flex:1;padding:9px;border-radius:11px;border:none;background:var(--primary);color:#000;font-size:12px;font-weight:800;cursor:pointer">🔍 Find Mentor</button>';
+  h+='<button id="mtTab1" onclick="mtTab(1)" style="flex:1;padding:9px;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer">📚 My Sessions</button>';
+  if(_canMentor())h+='<button id="mtTab2" onclick="mtTab(2)" style="flex:1;padding:9px;border-radius:11px;border:1px solid rgba(255,215,0,.3);background:rgba(255,215,0,.06);color:#ffd700;font-size:12px;font-weight:700;cursor:pointer">👨‍🏫 Be Mentor</button>';
+  h+='</div><div id="mtContent"></div>';
+  openModal('📚 Mentor Hub',h); mtTab(0);
+};
+
+window.mtTab=function(idx){
+  [0,1,2].forEach(function(i){var b=document.getElementById('mtTab'+i);if(!b)return;b.style.background=i===idx?'var(--primary)':'transparent';b.style.color=i===idx?'#000':'var(--txt)';b.style.border=i===idx?'none':'1px solid '+(i===2?'rgba(255,215,0,.3)':'var(--border)');});
+  var c=document.getElementById('mtContent');if(!c)return;
+  if(idx===0)_mtFind(c); else if(idx===1)_mtMySessions(c); else _mtDashboard(c);
+};
+
+function _mtFind(c){
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  _s().from('mentor_profiles').select('*').eq('is_available',true).order('rank_pts',{ascending:false}).limit(20)
+  .then(function(r){
+    var list=(r.data||[]).filter(function(m){return m.user_id!==_uid();});
+    if(!list.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">👨‍🏫</div><p>Koi mentor available nahi abhi</p></div>';return;}
+    var h='<div style="margin-bottom:10px;padding:10px 12px;border-radius:11px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);font-size:11px;color:#ffd700">💡 Rank badhne par mentor ko Green Diamonds milte hain!</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:8px">';
+    list.forEach(function(m){
+      var ri=_ri(m.rank_pts||0);
+      h+='<div style="padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--border)">';
+      h+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
+      h+='<div style="width:48px;height:48px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">'+ri.e+'</div>';
+      h+='<div style="flex:1"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:14px;font-weight:800">'+(window.escHtml?window.escHtml(m.ign||'Mentor'):m.ign||'Mentor')+'</span><span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);color:#ffd700;font-weight:700">👨‍🏫 MENTOR</span></div>';
+      h+='<div style="font-size:11px;color:var(--txt2)">'+ri.e+' '+ri.b+'</div>';
+      if(m.speciality)h+='<div style="font-size:11px;color:#00d4ff">🎯 '+m.speciality+'</div></div></div>';
+      if(m.bio)h+='<div style="font-size:12px;color:var(--txt2);font-style:italic;margin-bottom:10px">"'+(window.escHtml?window.escHtml(m.bio.substring(0,80)):m.bio.substring(0,80))+'"</div>';
+      h+='<div style="display:flex;align-items:center;justify-content:space-between">';
+      h+='<div style="font-size:11px;color:var(--txt2)">Sessions: <strong style="color:var(--txt)">'+(m.total_sessions||0)+'</strong></div>';
+      h+='<button onclick="window.requestMentorSession(\''+m.uid+'\',\''+(window.escAttrJs?window.escAttrJs(m.ign||'Mentor'):m.ign||'Mentor')+'\')" style="padding:8px 14px;border-radius:10px;border:1.5px solid rgba(255,215,0,.4);background:rgba(255,215,0,.08);color:#ffd700;font-size:12px;font-weight:800;cursor:pointer">Request</button>';
+      h+='</div></div>';
+    });
+    h+='</div>';c.innerHTML=h;
+  }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error loading mentors</div>';});
+}
+
+function _mtMySessions(c){
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()||!_uid()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Login required</p>';return;}
+  _s().from('mentor_requests').select('*').eq('student_uid',_uid()).order('created_at',{ascending:false}).limit(10)
+  .then(function(r){
+    var reqs=r.data||[];
+    if(!reqs.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">📚</div><p>Koi session nahi abhi</p></div>';return;}
+    var statusColors={pending:'#ffd700',accepted:'var(--green)',completed:'#00d4ff',declined:'#ff6b6b'};
+    var h='<div style="display:flex;flex-direction:column;gap:8px">';
+    reqs.forEach(function(r){
+      var sc=statusColors[r.status||'pending']||'var(--txt2)';
+      h+='<div style="padding:12px 14px;border-radius:13px;background:var(--card);border:1px solid var(--border)">';
+      h+='<div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-size:13px;font-weight:800">👨‍🏫 '+(window.escHtml?window.escHtml(r.mentor_ign||'Mentor'):r.mentor_ign||'Mentor')+'</div><span style="font-size:11px;font-weight:700;color:'+sc+'">'+(r.status||'pending').toUpperCase()+'</span></div>';
+      if(r.message)h+='<div style="font-size:12px;color:var(--txt2)">'+r.message+'</div>';
+      h+='<div style="font-size:10px;color:var(--txt2);margin-top:4px">'+new Date(r.created_at||Date.now()).toLocaleDateString('en-IN')+'</div></div>';
+    });
+    h+='</div>';c.innerHTML=h;
+  }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error</div>';});
+}
+
+function _mtDashboard(c){
+  if(!_canMentor()){
+    c.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:36px;margin-bottom:10px">🔒</div><div style="font-size:15px;font-weight:800;color:var(--txt)">Mentor banne ke liye</div><div style="font-size:12px;color:var(--txt2);margin-top:6px;line-height:1.7">✅ Gold rank (600+ RP)<br>✅ Premium Gold (₹99) ya Diamond (₹199)</div><button onclick="if(window.showPremiumUpgrade)showPremiumUpgrade()" style="margin-top:14px;padding:12px 24px;border-radius:12px;border:none;background:var(--primary);color:#000;font-size:13px;font-weight:800;cursor:pointer">Premium Upgrade Karo</button></div>';
+    return;
+  }
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()||!_uid()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Login required</p>';return;}
+  _s().from('mentor_profiles').select('*').eq('user_id',_uid()).single()
+  .then(function(r){
+    if(!r.data||!r.data.is_available)_renderBecomeMentor(c);
+    else _renderMentorStats(c,r.data);
+  }).catch(function(){ _renderBecomeMentor(c); });
+}
+
+function _renderBecomeMentor(c){
+  var h='<div style="text-align:center;padding:14px 0 20px"><div style="font-size:42px;margin-bottom:8px">👨‍🏫</div><div style="font-size:16px;font-weight:900">Mentor bano!</div><div style="font-size:12px;color:var(--txt2);margin-top:4px;line-height:1.6">Students guide karo aur Green Diamonds kamao.</div></div>';
+  h+='<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Speciality</div><input id="mtSpecIn" type="text" placeholder="e.g. Sniper, Rush, IGL..." maxlength="40" style="width:100%;padding:11px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box"></div>';
+  h+='<div style="margin-bottom:14px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Bio</div><textarea id="mtBioIn" maxlength="120" placeholder="Apne baare mein batao..." style="width:100%;padding:11px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box;resize:none;height:70px"></textarea></div>';
+  h+='<button onclick="window.registerAsMentor()" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff9f1c);color:#000;font-size:14px;font-weight:900;cursor:pointer">👨‍🏫 Mentor Register Karo</button>';
+  c.innerHTML=h;
+}
+
+function _renderMentorStats(c,m){
+  var h='<div style="background:rgba(255,215,0,.06);border:1.5px solid rgba(255,215,0,.2);border-radius:16px;padding:16px;margin-bottom:14px">';
+  h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="font-size:28px">👨‍🏫</div><div><div style="font-size:15px;font-weight:900;color:#ffd700">Active Mentor</div></div>';
+  h+='<button onclick="window.deactivateMentor()" style="margin-left:auto;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,107,107,.3);background:transparent;color:#ff6b6b;font-size:10px;cursor:pointer">Pause</button></div>';
+  h+='<div style="display:flex;gap:16px">';
+  [['📚',m.total_sessions||0,'Sessions'],['👥',m.total_students||0,'Students'],['📈',m.successful_students||0,'Ranked Up'],['💎',m.gd_earned||0,'GD']].forEach(function(s){
+    h+='<div style="text-align:center"><div style="font-size:18px;font-weight:900;color:#ffd700">'+s[1]+'</div><div style="font-size:9px;color:var(--txt2)">'+s[2]+'</div></div>';
+  });
+  h+='</div></div>';
+  // Load pending student requests
+  h+='<div style="font-size:13px;font-weight:800;margin-bottom:8px">📬 Student Requests</div><div id="mtStudentReqs"><div style="text-align:center;padding:12px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div></div>';
+  c.innerHTML=h;
+  _s().from('mentor_requests').select('*').eq('mentor_uid',_uid()).eq('status','pending').order('created_at',{ascending:false}).limit(10)
+  .then(function(r){
+    var reqs=r.data||[];var rr=document.getElementById('mtStudentReqs');if(!rr)return;
+    if(!reqs.length){rr.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2);font-size:12px">Koi request nahi</div>';return;}
+    var h='<div style="display:flex;flex-direction:column;gap:8px">';
+    reqs.forEach(function(req){
+      h+='<div style="padding:12px 14px;border-radius:13px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.2)">';
+      h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div><div style="font-size:13px;font-weight:800">📚 '+(req.student_ign||'Student')+'</div><div style="font-size:11px;color:var(--txt2)">'+( req.student_rank_badge||'Bronze')+'</div></div>';
+      h+='<div style="display:flex;gap:6px"><button onclick="window.acceptMentorReq('+req.id+')" style="padding:7px 11px;border-radius:9px;border:none;background:var(--green);color:#000;font-size:11px;font-weight:800;cursor:pointer">Accept</button>';
+      h+='<button onclick="window.declineMentorReq('+req.id+')" style="padding:7px 11px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--txt2);font-size:11px;cursor:pointer">Decline</button></div></div>';
+      if(req.message)h+='<div style="font-size:11px;color:var(--txt2)">'+req.message+'</div>';
+      h+='</div>';
+    });
+    h+='</div>';rr.innerHTML=h;
+  }).catch(function(){var rr=document.getElementById('mtStudentReqs');if(rr)rr.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:12px">Error</div>';});
+}
+
+window.registerAsMentor=function(){
+  if(!_s()||!_uid()||!_ud().ign){if(window.toast)toast('Login karo','err');return;}
+  if(!_canMentor()){if(window.toast)toast('Premium Gold + Gold Rank required','err');return;}
+  var spec=(document.getElementById('mtSpecIn')||{}).value||'';
+  var bio=(document.getElementById('mtBioIn')||{}).value||'';
+  var ud=_ud();var ri=_ri(ud.rank_points||0);
+  _s().from('mentor_profiles').upsert({user_id:_uid(),ign:ud.ign||ud.displayName||'Player',rank_pts:ud.rank_points||0,rank_tier:ri.b,avatar_url:ud.avatar_url||'',speciality:spec.trim(),bio:bio.trim(),is_available:true,total_sessions:0,total_students:0,successful_students:0,gd_earned:0},{onConflict:'user_id'})
+  .then(function(){if(window.toast)toast('🎉 Mentor register ho gaye!','ok');if(window.logActivity)logActivity('rank_up','👨‍🏫 Mentor ban gaye!');if(window.closeModal)closeModal();})
+  .catch(function(e){if(window.toast)toast('Error: '+(e.message||'Try again'),'err');});
+};
+
+window.requestMentorSession=function(mentorUid,mentorIgn){
+  var ud=_ud();var ri=_ri(ud.rank_points||0);
+  var h='<div style="text-align:center;margin-bottom:14px"><div style="font-size:36px;margin-bottom:6px">📚</div><div style="font-size:16px;font-weight:800">'+mentorIgn+' se guidance lo</div></div>';
+  h+='<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--txt2);font-weight:700;margin-bottom:7px">Message (optional)</div><textarea id="mtMsgIn" maxlength="100" placeholder="Kya seekhna chahte ho?" style="width:100%;padding:11px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box;resize:none;height:70px"></textarea></div>';
+  h+='<div style="padding:10px 14px;border-radius:11px;background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);margin-bottom:14px;font-size:12px;color:var(--txt2)">✅ Rank badhne par mentor ko Green Diamonds milenge.</div>';
+  h+='<button onclick="window._submitMentorRequest(\''+mentorUid+'\',\''+mentorIgn.replace(/'/g,"\\'")+'\')" style="width:100%;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffd700,#ff9f1c);color:#000;font-size:14px;font-weight:900;cursor:pointer">📚 Request Bhejo</button>';
+  var mb=document.getElementById('modalB');if(mb)mb.innerHTML=h;
+};
+
+window._submitMentorRequest=function(mentorUid,mentorIgn){
+  if(!_s()||!_uid()||!_ud()){if(window.toast)toast('Login karo','err');return;}
+  var msg=(document.getElementById('mtMsgIn')||{}).value||'';
+  var ud=_ud();var ri=_ri(ud.rank_points||0);
+  _s().from('mentor_requests').insert({mentor_uid:mentorUid,mentor_ign:mentorIgn,student_uid:_uid(),student_ign:ud.ign||ud.displayName||'Player',student_rank_pts:ud.rank_points||0,student_rank_badge:ri.b,message:msg.trim(),status:'pending'})
+  .then(function(){
+    _s().from('notifications').insert({user_id:mentorUid,type:'mentor_request',title:'📚 New Student Request!',body:(ud.ign||'Player')+' ('+ri.b+') ne mentor session request bheja!',ref_id:_uid(),is_read:false}).then(null, function(){});
+    if(window.toast)toast('✅ Request bhej di!','ok');if(window.closeModal)closeModal();
+  }).catch(function(e){if(window.toast)toast('Error: '+(e.message||'Try again'),'err');});
+};
+
+window.acceptMentorReq=function(reqId){
+  if(!_s()||!_uid())return;
+  _s().from('mentor_requests').select('student_uid,student_ign').eq('id',reqId).single()
+  .then(function(r){
+    var req=r.data;if(!req)return;
+    _s().from('mentor_requests').update({status:'accepted'}).eq('id',reqId).then(function(){
+      _s().from('notifications').insert({user_id:req.student_uid,type:'mentor_accepted',title:'🎉 Mentor Accepted!',body:(_ud().ign||'Mentor')+' ne tumhari request accept kar li!',ref_id:_uid(),is_read:false}).then(null, function(){});
+      _s().from('mentor_profiles').select('total_students').eq('user_id',_uid()).single().then(function(m){
+        if(m.data)_s().from('mentor_profiles').update({total_students:(m.data.total_students||0)+1}).eq('user_id',_uid()).catch(function(){});
+      }).catch(function(){});
+      if(window.toast)toast('✅ Request accept!','ok');
+      var rr=document.getElementById('mtStudentReqs');if(rr)rr.innerHTML='<div style="text-align:center;padding:8px;color:var(--green);font-size:12px">✅ Accepted</div>';
+    });
+  }).catch(function(){if(window.toast)toast('Error','err');});
+};
+window.declineMentorReq=function(reqId){
+  if(!_s())return;
+  _s().from('mentor_requests').update({status:'declined'}).eq('id',reqId).then(function(){if(window.toast)toast('Declined','ok');}).catch(function(){});
+};
+window.deactivateMentor=function(){
+  if(!_s()||!_uid())return;
+  _s().from('mentor_profiles').update({is_available:false}).eq('user_id',_uid()).then(function(){if(window.toast)toast('Mentor profile paused','ok');if(window.closeModal)closeModal();}).catch(function(){});
+};
+
+window.checkMentorReward=function(oldRp,newRp){
+  if(!_s()||!_uid())return;
+  var oldT=_tier(oldRp),newT=_tier(newRp);if(newT<=oldT)return;
+  _s().from('mentor_requests').select('mentor_uid,mentor_ign').eq('student_uid',_uid()).eq('status','accepted').limit(1).single()
+  .then(function(r){
+    if(!r.data)return;
+    var mid=r.data.mentor_uid,mign=r.data.mentor_ign;
+    var gd=20*(newT-oldT);
+    /* ✅ BUG FIX (2026-07-17): was a direct read-then-write on
+       users.green_diamonds (no longer directly client-writable at all,
+       post grant-lockdown) AND a direct update on mentor_profiles for a
+       DIFFERENT user than the caller — mentor_profiles' own RLS policy
+       (mnp_own: caller must equal user_id) already blocks a student from
+       updating their mentor's profile, so this write has likely never
+       actually succeeded even before the grant fix, just silently via
+       its own .catch(). award_mentor_reward does both atomically,
+       server-side, after verifying an active accepted mentorship exists
+       between exactly this student and mentor. */
+    _s().rpc('award_mentor_reward', { p_student_uid: _uid(), p_mentor_uid: mid, p_gd_amount: gd })
+      .then(function(res) {
+        if (res.error || (res.data && res.data.success === false)) {
+          console.error('[Mentor] award_mentor_reward failed:', (res.data && res.data.error) || (res.error && res.error.message));
+          return;
+        }
+        _s().from('notifications').insert({user_id:mid,type:'mentor_reward',title:'💎 Mentor Reward!',body:'Tumhare student '+(_ud().ign||'Player')+' ka rank badh gaya! Tumhe '+gd+' Green Diamonds mile!',ref_id:_uid(),is_read:false}).then(function(nres){
+          if(nres&&nres.error)console.warn('[Mentor] reward notification insert failed:',nres.error.message);
+        });
+      });
+  }).catch(function(){});
+};
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>80){clearInterval(_t);return;}
+  if(!window.UD)return;
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_mtPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_mtPill';p.className='special-pill';
+  p.style.cssText='background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);color:#ffd700';
+  p.innerHTML='<i class="fas fa-graduation-cap" style="font-size:11px"></i> Mentor';
+  p.onclick=function(){if(window.showMentorHub)showMentorHub();};
+  row.appendChild(p);
+},600);
+})();

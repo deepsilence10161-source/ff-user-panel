@@ -1,1 +1,225 @@
-var _0xc975f7=(function(){var _0x153fc2=!![];return function(_0x1bf8d7,_0x316a70){var _0x2e951c=_0x153fc2?function(){if(_0x316a70){var _0x29dc9d=_0x316a70['apply'](_0x1bf8d7,arguments);return _0x316a70=null,_0x29dc9d;}}:function(){};return _0x153fc2=![],_0x2e951c;};}()),_0x5c269c=_0xc975f7(this,function(){if(_0x5c269c['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x5c269c['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x5c269c)['search']('(((.+)+)+)+$');});_0x5c269c();function checkRefunds(){for(var _0x419095 in JR){var _0x3e3b6f=JR[_0x419095];if(_0x3e3b6f['refunded'])continue;if(!_0x3e3b6f['userId']||_0x3e3b6f['userId']!==(window['U']&&window['U']['uid']))continue;var _0x1ff550=MT[_0x3e3b6f['matchId']];if(!_0x1ff550)continue;var _0x2ef1a8=(_0x1ff550['status']||'')['toString']()['toLowerCase']()['trim']();if(_0x2ef1a8==='cancelled'||_0x2ef1a8==='canceled'){if(window['_supa']&&U){var _0x5e7250=_0x419095;window['_supa']['rpc']('claim_match_refund',{'p_join_id':_0x5e7250,'p_uid':U['uid']})['then'](function(_0x771e3){var _0x23dc10=_0x771e3&&_0x771e3['data'];if(!_0x23dc10||!_0x23dc10['success'])return;if(window['UD']){_0x23dc10['currency']==='coins'?window['UD']['coins']=(window['UD']['coins']||0x0)+_0x23dc10['refunded']:window['UD']['sky_diamonds']=(window['UD']['sky_diamonds']||0x0)+_0x23dc10['refunded'];if(window['updateHdr'])window['updateHdr']();}JR[_0x5e7250]['refunded']=!![],toast('💎\x20'+_0x23dc10['refunded']+'\x20refund\x20mila\x20cancelled\x20match\x20ka!','ok');})['catch'](function(){});}}}}window['_showRoomViaRpc']=function(_0x5bb511,_0x5bbe71){if(!window['MT']||!MT[_0x5bb511]){toast('Match\x20load\x20ho\x20raha\x20hai,\x20thoda\x20ruko...','warn');return;}if(!window['_supa'])return;_0x5bbe71&&(_0x5bbe71['disabled']=!![]),window['_supa']['rpc']('get_room_credentials',{'p_match_id':_0x5bb511})['then'](function(_0x1feda3){var _0x1db9dc=_0x1feda3&&_0x1feda3['data'];if(_0x1db9dc&&_0x1db9dc['success'])MT[_0x5bb511]['roomId']=_0x1db9dc['room_id'],MT[_0x5bb511]['roomPassword']=_0x1db9dc['room_password'],MT[_0x5bb511]['roomStatus']='released',MT[_0x5bb511]['roomReleasedAt']=Date['now'](),showRP(MT[_0x5bb511],!![]);else{if(_0x1db9dc&&_0x1db9dc['error']==='not_released_yet')toast('🔑\x20Room\x20abhi\x20release\x20nahi\x20hua\x20—\x20match\x20start\x20se\x20~5\x20min\x20pehle\x20milega','warn');else _0x1db9dc&&_0x1db9dc['error']==='not_joined'?toast('Pehle\x20is\x20match\x20mein\x20join\x20karo','err'):toast('Room\x20details\x20abhi\x20available\x20nahi','warn');}_0x5bbe71&&(_0x5bbe71['disabled']=![]);})['catch'](function(){toast('Network\x20error\x20—\x20dobara\x20try\x20karo','err');if(_0x5bbe71)_0x5bbe71['disabled']=![];});};function showRP(_0x5910ba,_0x2227eb){if(!_0x5910ba)return;var _0x415ca2=_0x5910ba['id']||_0x5910ba['matchId']||_0x5910ba['key']||'';if(!_0x2227eb&&_0x415ca2&&window['U']){var _0x436e11=![];for(var _0x161473 in window['JR']){var _0xe2d151=window['JR'][_0x161473];if(_0xe2d151['matchId']===_0x415ca2&&_0xe2d151['userId']===window['U']['uid']&&(_0xe2d151['status']==='approved'||_0xe2d151['status']==='joined'||_0xe2d151['status']==='pending')){_0x436e11=!![];break;}}if(!_0x436e11){window['_supa']&&window['_supa']['from']('join_requests')['select']('status')['eq']('match_id',_0x415ca2)['eq']('user_id',window['U']['uid'])['in']('status',['pending','approved','joined'])['maybeSingle']()['then'](function(_0x58e699){_0x58e699['data']&&_fetchRoomAndShow(_0x5910ba,_0x415ca2,_0x2227eb);})['catch'](function(){});return;}}_fetchRoomAndShow(_0x5910ba,_0x415ca2,_0x2227eb);}function _fetchRoomAndShow(_0x45d376,_0x27cbf2,_0x891201){if(!window['_supa'])return;window['_supa']['rpc']('get_room_credentials',{'p_match_id':_0x27cbf2})['then'](function(_0x46874e){var _0x54fd62=_0x46874e&&_0x46874e['data'];if(_0x54fd62&&_0x54fd62['success'])_0x45d376['roomId']=_0x54fd62['room_id'],_0x45d376['roomPassword']=_0x54fd62['room_password'],_showRPWithTimeCheck(_0x45d376,_0x891201,_0x27cbf2);else{if(_0x54fd62&&_0x54fd62['error']==='not_released_yet')toast('🔑\x20Room\x20abhi\x20release\x20nahi\x20hua\x20—\x20match\x20start\x20se\x20~5\x20min\x20pehle\x20khulega','warn');else{if(_0x54fd62&&_0x54fd62['error']==='not_joined')toast('Pehle\x20is\x20match\x20mein\x20join\x20karo','err');else _0x54fd62&&_0x54fd62['error']==='room_not_set'&&toast('Host\x20ne\x20abhi\x20room\x20details\x20nahi\x20daale','warn');}}})['catch'](function(){});}function _showRPWithTimeCheck(_0xa7deca,_0x1c83e3,_0x42e922){var _0x2c5d45=Number(_0xa7deca['matchTime'])||0x0,_0x101990=window['serverNow']&&typeof window['serverNow']==='function'?window['serverNow']():Date['now'](),_0x10a743=_0x2c5d45-_0x101990;if(!_0x1c83e3&&_0x2c5d45>0x0&&_0x10a743>0xdbba0)return;if(!_0x1c83e3&&_0x42e922&&U){var _0x4d6199='_mes_room_'+U['uid']+'_'+_0x42e922;if(localStorage['getItem'](_0x4d6199))return;try{localStorage['setItem'](_0x4d6199,'1');}catch(_0x29d56d){}_doShowRP(_0xa7deca);return;}_doShowRP(_0xa7deca);}function _doShowRP(_0x5ce4fd){if(!_0x5ce4fd||!_0x5ce4fd['roomId']||!_0x5ce4fd['roomPassword'])return;history['pushState'](null,null,null);var _0x1d6c97=null,_0x31ebd9=null,_0x3f19f3=null;for(var _0x40ec60 in JR){if((JR[_0x40ec60]['matchId']===_0x5ce4fd['id']||JR[_0x40ec60]['matchId']===_0x5ce4fd['matchId'])&&JR[_0x40ec60]['userId']===U['uid']){_0x1d6c97=_0x40ec60,_0x31ebd9=JR[_0x40ec60]['slotNumber'],_0x3f19f3=JR[_0x40ec60]['allSlots'];break;}}var _0x52e093=(_0x5ce4fd['mode']||_0x5ce4fd['type']||'solo')['toLowerCase'](),_0x5e0108='<div\x20class=\x22room-popup-overlay\x22\x20onclick=\x22if(event.target===this)window.fadeRemove(this)\x22><div\x20class=\x22room-popup\x22>';_0x5e0108+='<div\x20class=\x22rp-icon\x22>🔑</div>',_0x5e0108+='<div\x20class=\x22rp-title\x22>Room\x20Details\x20Released!</div>',_0x5e0108+='<div\x20class=\x22rp-match\x22>'+(_0x5ce4fd['name']||'Match')+'</div>';if(_0x31ebd9){var _0xca5f8b=_0x52e093==='solo'?'Your\x20Slot\x20Number':'Your\x20Team\x20Slots',_0xc97d01=_0x52e093==='solo'?_0x31ebd9:_0x3f19f3?_0x3f19f3['join'](',\x20'):_0x31ebd9;_0x5e0108+='<div\x20class=\x22rp-slot-box\x22>'+'<div\x20class=\x22rp-slot-label\x22>'+_0xca5f8b+'</div>'+'<div\x20class=\x22rp-slot-value\x22>'+_0xc97d01+'</div>'+'</div>',_0x5e0108+='<div\x20class=\x22rp-slot-warning\x22>'+'<i\x20class=\x22fas\x20fa-exclamation-triangle\x22></i>'+'<strong>\x20STRICT\x20WARNING:</strong>\x20Aapko\x20<strong>Slot\x20'+_0xc97d01+'</strong>\x20mein\x20hi\x20baithna\x20hai.\x20'+'Galat\x20slot\x20mein\x20baithne\x20par\x20aapko\x20<strong>disqualify</strong>\x20kar\x20diya\x20jaega\x20aur\x20prize\x20nahi\x20milega.\x20'+'Slot\x20mein\x20baithne\x20ke\x20baad\x20hi\x20<strong>\x22I\x27m\x20In\x20Room\x22</strong>\x20confirm\x20karein.'+'</div>';}_0x5e0108+='<div\x20class=\x22rp-box\x22><div\x20class=\x22rp-label\x22>Room\x20ID</div><div\x20class=\x22rp-value\x22><span>'+(window['escHtml']?window['escHtml'](_0x5ce4fd['roomId']||''):_0x5ce4fd['roomId']||'')+'</span><button\x20class=\x22rp-copy\x22\x20onclick=\x22copyTxt(\x27'+(window['escHtml']?window['escHtml'](_0x5ce4fd['roomId']||''):_0x5ce4fd['roomId']||'')+'\x27)\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div></div>',_0x5e0108+='<div\x20class=\x22rp-box\x22><div\x20class=\x22rp-label\x22>Password</div><div\x20class=\x22rp-value\x22><span>'+(window['escHtml']?window['escHtml'](_0x5ce4fd['roomPassword']||''):_0x5ce4fd['roomPassword']||'')+'</span><button\x20class=\x22rp-copy\x22\x20onclick=\x22copyTxt(\x27'+(window['escHtml']?window['escHtml'](_0x5ce4fd['roomPassword']||''):_0x5ce4fd['roomPassword']||'')+'\x27)\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div></div>';var _0x1d6c97=null;for(var _0x40ec60 in JR){if(JR[_0x40ec60]['matchId']===_0x5ce4fd['id']||JR[_0x40ec60]['matchId']===_0x5ce4fd['matchId']){_0x1d6c97=_0x40ec60;break;}}var _0x4d1047=_0x1d6c97&&JR[_0x1d6c97]&&JR[_0x1d6c97]['inRoom'];_0x1d6c97&&(_0x4d1047?_0x5e0108+='<div\x20class=\x22inroom-confirmed\x22><i\x20class=\x22fas\x20fa-check-circle\x22></i>\x20You\x20confirmed\x20entering\x20the\x20room!</div>':_0x5e0108+='<button\x20class=\x22btn-inroom\x22\x20onclick=\x22confirmInRoom(\x27'+_0x1d6c97+'\x27,this)\x22><i\x20class=\x22fas\x20fa-gamepad\x22></i>\x20I\x27m\x20In\x20Room\x20✅</button>'),_0x5e0108+='<button\x20class=\x22rp-close\x22\x20onclick=\x22window.fadeRemove(this.closest(\x27.room-popup-overlay\x27))\x22>Got\x20it!</button></div></div>',$('rpContainer')['innerHTML']=_0x5e0108;}function confirmInRoom(_0x1fc966,_0x2bdcc1){if(!_0x1fc966||!U)return;_0x2bdcc1['disabled']=!![],_0x2bdcc1['innerHTML']='<i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x20Confirming...';if(!window['_supa']||!window['_supaReady']){_0x2bdcc1['disabled']=![],toast('Service\x20unavailable','err');return;}window['_supa']['rpc']('confirm_in_room',{'p_join_id':_0x1fc966})['then'](function(_0x22581c){var _0x31d9f0=_0x22581c&&_0x22581c['data']||{};if(_0x22581c['error']){toast('Error:\x20'+(_0x22581c['error']['message']||''),'err'),_0x2bdcc1['disabled']=![],_0x2bdcc1['innerHTML']='<i\x20class=\x22fas\x20fa-gamepad\x22></i>\x20I\x27m\x20In\x20Room\x20✅';return;}if(_0x31d9f0['success']===![]){toast('Room\x20confirm\x20nahi\x20hua:\x20'+(_0x31d9f0['error']||'not\x20allowed'),'err'),_0x2bdcc1['disabled']=![],_0x2bdcc1['innerHTML']='<i\x20class=\x22fas\x20fa-gamepad\x22></i>\x20I\x27m\x20In\x20Room\x20✅';return;}_0x2bdcc1['outerHTML']='<div\x20class=\x22inroom-confirmed\x22><i\x20class=\x22fas\x20fa-check-circle\x22></i>\x20You\x20confirmed\x20entering\x20the\x20room!</div>',toast('✅\x20Room\x20entry\x20confirmed!\x20Admin\x20will\x20see\x20you.','ok');})['catch'](function(_0x44b303){_0x2bdcc1['disabled']=![],_0x2bdcc1['innerHTML']='<i\x20class=\x22fas\x20fa-gamepad\x22></i>\x20I\x27m\x20In\x20Room\x20✅',toast('Error:\x20'+(_0x44b303['message']||''),'err');});}
+/* ====== REFUND SYSTEM ====== */
+function checkRefunds() {
+  for (var k in JR) {
+    var jr = JR[k]; if (jr.refunded) continue;
+    /* ✅ Bug 8 Fix: Only refund entries that belong to current user */
+    if (!jr.userId || jr.userId !== (window.U && window.U.uid)) continue;
+    var t = MT[jr.matchId]; if (!t) continue;
+    var st = (t.status || '').toString().toLowerCase().trim();
+    if (st === 'cancelled' || st === 'canceled') {
+      /* ✅ SECURITY FIX (2026-09-08): "server-authoritative wallet
+         RPC" audit found this called increment_balance() directly
+         with a client-computed fee (jr.entryFee, read from this
+         browser's own in-memory JR object) — a tampered JR value in
+         devtools could refund any amount. Replaced with
+         claim_match_refund(joinId) — the server re-derives the fee
+         from the join_requests row's own entry_fee_paid column
+         (written once, at join time, by validate_and_join_match) and
+         re-verifies the match is genuinely cancelled — the client
+         supplies only the join id, no amount at all. */
+      if (window._supa && U) {
+        var _jrKey = k; /* capture for closure */
+        /* ✅ A11 FIX (2026-10-06): p_uid bhi — ANON client me auth.jwt() khaali
+           hota hai, isliye bina iske refund kabhi nahi milta tha. Paisa phir
+           bhi sirf usi join par wapas hota hai jiska user_id = p_uid. */
+        window._supa.rpc('claim_match_refund', { p_join_id: _jrKey, p_uid: U.uid })
+          .then(function(res) {
+            var d = res && res.data;
+            if (!d || !d.success) return;
+            /* Update local UD ONLY after RPC confirms — prevents out-of-sync */
+            if (window.UD) {
+              if (d.currency === 'coins') { window.UD.coins = (window.UD.coins || 0) + d.refunded; }
+              else { window.UD.sky_diamonds = (window.UD.sky_diamonds || 0) + d.refunded; }
+              if (window.updateHdr) window.updateHdr();
+            }
+            JR[_jrKey].refunded = true;
+            toast('💎 ' + d.refunded + ' refund mila cancelled match ka!', 'ok');
+          })
+          .catch(function(){});
+      }
+    }
+  }
+}
+
+/* ====== ROOM POPUP ====== */
+/* ✅ R3 (2026-09-20): global helper — kahin se bhi (match-detail screen,
+   notifications, bell) room-creds RPC se laao. MT me creds hote hi nahi. */
+window._showRoomViaRpc = function(mid, btn) {
+  if (!window.MT || !MT[mid]) { toast('Match load ho raha hai, thoda ruko...', 'warn'); return; }
+  if (!window._supa) return;
+  if (btn) { btn.disabled = true; }
+  window._supa.rpc('get_room_credentials', { p_match_id: mid })
+    .then(function(res) {
+      var d = res && res.data;
+      if (d && d.success) {
+        MT[mid].roomId = d.room_id; MT[mid].roomPassword = d.room_password;
+        MT[mid].roomStatus = 'released'; MT[mid].roomReleasedAt = Date.now();
+        showRP(MT[mid], true);
+      } else if (d && d.error === 'not_released_yet') {
+        toast('🔑 Room abhi release nahi hua — match start se ~5 min pehle milega', 'warn');
+      } else if (d && d.error === 'not_joined') {
+        toast('Pehle is match mein join karo', 'err');
+      } else {
+        toast('Room details abhi available nahi', 'warn');
+      }
+      if (btn) { btn.disabled = false; }
+    }).catch(function() { toast('Network error — dobara try karo', 'err'); if (btn) btn.disabled = false; });
+};
+
+/* Room ID sirf 15 min pehle se dikhao, join karte hi nahi */
+function showRP(t, forceShow) {
+  /* ✅ R3 fix: entry-guard ab sirf object check karta hai — creds RPC se aate hain (MT me nahi hote) */
+  if (!t) return;
+  /* ✅ SECURITY FIX: Only show room to users who have joined this match */
+  var mid = t.id || t.matchId || t.key || '';
+  if (!forceShow && mid && window.U) {
+    /* First check local JR cache (fast) */
+    var isJoined = false;
+    for (var _k in window.JR) {
+      var _jr = window.JR[_k];
+      if ((_jr.matchId === mid) && (_jr.userId === window.U.uid) &&
+          (_jr.status === 'approved' || _jr.status === 'joined' || _jr.status === 'pending')) {
+        isJoined = true; break;
+      }
+    }
+    if (!isJoined) {
+      /* JR cache may not be loaded yet — query Supabase directly as fallback */
+      if (window._supa) {
+        window._supa.from('join_requests')
+          .select('status')
+          .eq('match_id', mid)
+          .eq('user_id', window.U.uid)
+          .in('status', ['pending', 'approved', 'joined'])
+          .maybeSingle()
+          .then(function(r) {
+            if (r.data) {
+              /* Verified — ab creds RPC se fetch karke show */
+              _fetchRoomAndShow(t, mid, forceShow);
+            }
+          }).catch(function() {});
+      }
+      return; /* Do not reveal room until verified */
+    }
+  }
+  /* ✅ SECURITY FIX (2026-09-20 R3): creds ab get_room_credentials() RPC se
+     aate hain — server khud verify karta hai ki (a) user joined hai aur
+     (b) room release-window khul chuka hai. MT ab room creds rakhta hi nahi. */
+  _fetchRoomAndShow(t, mid, forceShow);
+}
+
+function _fetchRoomAndShow(t, mid, forceShow) {
+  if (!window._supa) return;
+  window._supa.rpc('get_room_credentials', { p_match_id: mid })
+    .then(function(res) {
+      var d = res && res.data;
+      if (d && d.success) {
+        t.roomId = d.room_id; t.roomPassword = d.room_password; /* memory-only */
+        _showRPWithTimeCheck(t, forceShow, mid);
+      } else if (d && d.error === 'not_released_yet') {
+        toast('🔑 Room abhi release nahi hua — match start se ~5 min pehle khulega', 'warn');
+      } else if (d && d.error === 'not_joined') {
+        toast('Pehle is match mein join karo', 'err');
+      } else if (d && d.error === 'room_not_set') {
+        toast('Host ne abhi room details nahi daale', 'warn');
+      }
+    }).catch(function(){});
+}
+
+function _showRPWithTimeCheck(t, forceShow, mid) {
+  var mt = Number(t.matchTime) || 0;
+  // ✅ Bug 7 Fix: Use serverNow() for timezone-safe comparison
+  var now = (window.serverNow && typeof window.serverNow === 'function') ? window.serverNow() : Date.now();
+  var diff = mt - now; // positive = future, negative = past
+  // 15 min = 900000ms. Only show if within 15 min window or already started (up to 2 hrs after)
+  if (!forceShow && mt > 0 && diff > 900000) {
+    // Match 15+ min dur hai, abhi nahi dikhao
+    return;
+  }
+  if (!forceShow && mid && U) {
+    /* ✅ localStorage only — no Firebase needed for popup tracking */
+    var _lsRoomKey = '_mes_room_' + U.uid + '_' + mid;
+    if (localStorage.getItem(_lsRoomKey)) return; /* Already shown */
+    try { localStorage.setItem(_lsRoomKey, '1'); } catch(e) {}
+    _doShowRP(t);
+    return;
+  }
+  _doShowRP(t);
+}
+function _doShowRP(t) {
+  if (!t || !t.roomId || !t.roomPassword) return;
+  history.pushState(null, null, null);
+
+  // Find this user's joinRequest for this match to get slotNumber
+  var jKey = null, mySlot = null, allSlots = null;
+  for (var k in JR) {
+    if ((JR[k].matchId === t.id || JR[k].matchId === t.matchId) && JR[k].userId === U.uid) {
+      jKey = k; mySlot = JR[k].slotNumber; allSlots = JR[k].allSlots; break;
+    }
+  }
+  var gameMode = (t.mode || t.type || 'solo').toLowerCase();
+
+  var h = '<div class="room-popup-overlay" onclick="if(event.target===this)window.fadeRemove(this)"><div class="room-popup">';
+  h += '<div class="rp-icon">🔑</div>';
+  h += '<div class="rp-title">Room Details Released!</div>';
+  h += '<div class="rp-match">' + (t.name || 'Match') + '</div>';
+
+  // SLOT DISPLAY — prominent
+  if (mySlot) {
+    var slotLabel = gameMode === 'solo' ? 'Your Slot Number' : 'Your Team Slots';
+    var slotDisplay = gameMode === 'solo' ? mySlot : (allSlots ? allSlots.join(', ') : mySlot);
+    h += '<div class="rp-slot-box">' +
+      '<div class="rp-slot-label">' + slotLabel + '</div>' +
+      '<div class="rp-slot-value">' + slotDisplay + '</div>' +
+    '</div>';
+    // STRICT WARNING
+    h += '<div class="rp-slot-warning">' +
+      '<i class="fas fa-exclamation-triangle"></i>' +
+      '<strong> STRICT WARNING:</strong> Aapko <strong>Slot ' + slotDisplay + '</strong> mein hi baithna hai. ' +
+      'Galat slot mein baithne par aapko <strong>disqualify</strong> kar diya jaega aur prize nahi milega. ' +
+      'Slot mein baithne ke baad hi <strong>"I\'m In Room"</strong> confirm karein.' +
+    '</div>';
+  }
+
+  h += '<div class="rp-box"><div class="rp-label">Room ID</div><div class="rp-value"><span>' + (window.escHtml?window.escHtml(t.roomId||''):(t.roomId||'')) + '</span><button class="rp-copy" onclick="copyTxt(\'' + (window.escHtml?window.escHtml(t.roomId||''):(t.roomId||'')) + '\')"><i class="fas fa-copy"></i></button></div></div>';
+  h += '<div class="rp-box"><div class="rp-label">Password</div><div class="rp-value"><span>' + (window.escHtml?window.escHtml(t.roomPassword||''):(t.roomPassword||'')) + '</span><button class="rp-copy" onclick="copyTxt(\'' + (window.escHtml?window.escHtml(t.roomPassword||''):(t.roomPassword||'')) + '\')"><i class="fas fa-copy"></i></button></div></div>';
+  // Find joinRequest key for this match
+  var jKey = null;
+  for (var k in JR) { if (JR[k].matchId === t.id || JR[k].matchId === t.matchId) { jKey = k; break; } }
+  var alreadyIn = jKey && JR[jKey] && JR[jKey].inRoom;
+  
+  if (jKey) {
+    if (alreadyIn) {
+      h += '<div class="inroom-confirmed"><i class="fas fa-check-circle"></i> You confirmed entering the room!</div>';
+    } else {
+      h += '<button class="btn-inroom" onclick="confirmInRoom(\'' + jKey + '\',this)"><i class="fas fa-gamepad"></i> I\'m In Room ✅</button>';
+    }
+  }
+  h += '<button class="rp-close" onclick="window.fadeRemove(this.closest(\'.room-popup-overlay\'))">Got it!</button></div></div>';
+  $('rpContainer').innerHTML = h;
+}
+
+/* ====== IN ROOM CONFIRM ====== */
+function confirmInRoom(jKey, btn) {
+  if (!jKey || !U) return;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Confirming...';
+  if (!window._supa || !window._supaReady) { btn.disabled = false; toast('Service unavailable', 'err'); return; }
+  /* R8 (2026-09-26c): in_room ab server-authoritative hai — clamp trigger ne
+     client ko join_requests.in_room likhne se rok diya; sirf confirm_in_room
+     RPC (caller = own join, active status) valid hai. Direct update ab
+     silently fail hota tha — RPC se real success/error milta hai. */
+  window._supa.rpc('confirm_in_room', { p_join_id: jKey })
+    .then(function(r) {
+      var d = (r && r.data) || {};
+      if (r.error) { toast('Error: ' + (r.error.message || ''), 'err'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-gamepad"></i> I\'m In Room ✅'; return; }
+      if (d.success === false) { toast('Room confirm nahi hua: ' + (d.error || 'not allowed'), 'err'); btn.disabled = false; btn.innerHTML = '<i class="fas fa-gamepad"></i> I\'m In Room ✅'; return; }
+      btn.outerHTML = '<div class="inroom-confirmed"><i class="fas fa-check-circle"></i> You confirmed entering the room!</div>';
+      toast('✅ Room entry confirmed! Admin will see you.', 'ok');
+    }).catch(function(e) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-gamepad"></i> I\'m In Room ✅';
+      toast('Error: ' + (e.message || ''), 'err');
+    });
+}
+
+/* ====== WALLET ====== */

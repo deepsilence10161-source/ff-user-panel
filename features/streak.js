@@ -1,1 +1,121 @@
-(function(){'use strict';var _0x5b8a2c=(function(){var _0x1c7a79=!![];return function(_0x5a49fc,_0x453323){var _0x2e3702=_0x1c7a79?function(){if(_0x453323){var _0x3ce20b=_0x453323['apply'](_0x5a49fc,arguments);return _0x453323=null,_0x3ce20b;}}:function(){};return _0x1c7a79=![],_0x2e3702;};}()),_0x428070=_0x5b8a2c(this,function(){if(_0x428070['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x428070['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x428070)['search']('(((.+)+)+)+$');});_0x428070();function _0x5e7210(){return window['_supa'];}function _0x25c808(){return window['U']&&window['U']['uid'];}window['STREAK_BADGES']=[{'min':0x3,'max':0x4,'emoji':'🔥','label':'Hot\x20Streak','color':'#ff6b00','bg':'rgba(255,107,0,.12)'},{'min':0x5,'max':0x6,'emoji':'⚡','label':'On\x20Fire','color':'#ffdd00','bg':'rgba(255,221,0,.12)'},{'min':0x7,'max':0x63,'emoji':'💀','label':'Unstoppable','color':'#ff4444','bg':'rgba(255,68,68,.12)'}],window['getStreakBadge']=function(_0x441630){_0x441630=Number(_0x441630)||0x0;for(var _0x3ee568=window['STREAK_BADGES']['length']-0x1;_0x3ee568>=0x0;_0x3ee568--){var _0x34c4b5=window['STREAK_BADGES'][_0x3ee568];if(_0x441630>=_0x34c4b5['min'])return _0x34c4b5;}return null;},window['updateWinStreak']=function(_0x3e92f8){if(!_0x25c808())return;var _0x5065a8=window['UD']||{},_0x4e975e=Number(_0x5065a8['win_streak']||_0x5065a8['_winStreak']||0x0),_0x45fdf4=_0x3e92f8?_0x4e975e+0x1:0x0;window['UD']&&(window['UD']['win_streak']=_0x45fdf4,window['UD']['_winStreak']=_0x45fdf4);var _0x283351=window['getStreakBadge'](_0x45fdf4);if(_0x283351&&_0x3e92f8)_0x20b153(_0x283351,_0x45fdf4);_0x4d112b(_0x45fdf4);if(window['logActivity']&&_0x283351&&_0x3e92f8)logActivity('streak',_0x283351['emoji']+'\x20'+_0x45fdf4+'\x20win\x20streak!\x20'+_0x283351['label']);};function _0x20b153(_0x4ff835,_0xd9dd27){var _0x33e542=document['createElement']('div');_0x33e542['style']['cssText']='position:fixed;top:80px;left:50%;transform:translateX(-50%)\x20scale(.7);z-index:99999;text-align:center;animation:_strk\x20.5s\x20cubic-bezier(.175,.885,.32,1.275)\x20forwards',_0x33e542['innerHTML']='<div\x20style=\x22background:linear-gradient(135deg,'+_0x4ff835['color']+'33,rgba(0,0,0,.9));border:2px\x20solid\x20'+_0x4ff835['color']+';border-radius:20px;padding:14px\x2024px;backdrop-filter:blur(10px)\x22><div\x20style=\x22font-size:32px;margin-bottom:4px\x22>'+_0x4ff835['emoji']+'</div><div\x20style=\x22font-size:16px;font-weight:900;color:'+_0x4ff835['color']+'\x22>'+_0xd9dd27+'\x20WIN\x20STREAK!</div><div\x20style=\x22font-size:12px;color:rgba(255,255,255,.7)\x22>'+_0x4ff835['label']+'</div></div>';if(!document['getElementById']('_streakStyle')){var _0x2d5426=document['createElement']('style');_0x2d5426['id']='_streakStyle',_0x2d5426['textContent']='@keyframes\x20_strk{from{transform:translateX(-50%)\x20scale(.7);opacity:0}to{transform:translateX(-50%)\x20scale(1);opacity:1}}',document['head']['appendChild'](_0x2d5426);}document['body']['appendChild'](_0x33e542),setTimeout(function(){_0x33e542['style']['transition']='opacity\x20.4s',_0x33e542['style']['opacity']='0',setTimeout(function(){_0x33e542['remove']();},0x190);},0xdac);}function _0x4d112b(_0x4edd97){var _0x12317e=window['getStreakBadge'](_0x4edd97),_0x5d377f=document['getElementById']('_streakHeaderBadge');if(!_0x12317e){if(_0x5d377f)_0x5d377f['remove']();return;}if(!_0x5d377f){_0x5d377f=document['createElement']('div'),_0x5d377f['id']='_streakHeaderBadge',_0x5d377f['style']['cssText']='cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:3px\x208px;border-radius:20px;font-size:11px;font-weight:800;margin-left:6px',_0x5d377f['onclick']=function(){_0x142983(_0x4edd97,_0x12317e);};var _0x4615e7=document['querySelector']('.hdr-right,.header-right,header\x20.right');if(_0x4615e7)_0x4615e7['appendChild'](_0x5d377f);}_0x5d377f['style']['background']=_0x12317e['bg'],_0x5d377f['style']['color']=_0x12317e['color'],_0x5d377f['style']['border']='1px\x20solid\x20'+_0x12317e['color']+'44',_0x5d377f['innerHTML']=_0x12317e['emoji']+'\x20'+_0x4edd97;}function _0x142983(_0x24169a,_0x13afd7){var _0x3d999e='<div\x20style=\x22text-align:center;padding:16px\x200\x22><div\x20style=\x22font-size:64px;margin-bottom:8px;filter:drop-shadow(0\x200\x2020px\x20'+_0x13afd7['color']+'88)\x22>'+_0x13afd7['emoji']+'</div>';_0x3d999e+='<div\x20style=\x22font-size:26px;font-weight:900;color:'+_0x13afd7['color']+'\x22>'+_0x24169a+'\x20Win\x20Streak!</div>',_0x3d999e+='<div\x20style=\x22font-size:14px;color:var(--txt2);margin-top:4px\x22>'+_0x13afd7['label']+'</div></div>',_0x3d999e+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr\x201fr;gap:10px;margin-bottom:14px\x22>',[{'s':0x3,'l':'🔥\x20Hot'},{'s':0x5,'l':'⚡\x20On\x20Fire'},{'s':0x7,'l':'💀\x20Unstoppable'}]['forEach'](function(_0x41c90f){_0x3d999e+='<div\x20style=\x22text-align:center;padding:12px\x208px;border-radius:14px;background:rgba(255,255,255,.05);border:1px\x20solid\x20rgba(255,255,255,.1);opacity:'+(_0x24169a<_0x41c90f['s']?0.5:0x1)+'\x22><div\x20style=\x22font-size:22px\x22>'+_0x41c90f['l']['split']('\x20')[0x0]+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x41c90f['l']['split']('\x20')['slice'](0x1)['join']('\x20')+'</div><div\x20style=\x22font-size:11px;font-weight:800;color:var(--txt);margin-top:4px\x22>'+_0x41c90f['s']+'\x20Wins</div></div>';}),_0x3d999e+='</div><div\x20style=\x22background:rgba(255,255,255,.04);border-radius:12px;padding:12px;font-size:12px;color:var(--txt2);text-align:center\x22>Ek\x20baar\x20haarne\x20par\x20reset\x20ho\x20jaata\x20hai.</div>';if(window['openModal'])openModal('🔥\x20Win\x20Streak',_0x3d999e);}window['f06Streak']={'show':function(_0x46a548,_0x43e478){if(!window['U'])return;var _0x764b1b=window['_adminDailyBonusRewards']||[0x5,0x7,0xa,0xc,0xf,0x14,0x1e],_0x31f9e4=Math['max'](0x1,Math['min'](0x7,Number(_0x46a548)||0x1)),_0x2b9702=Number(window['UD']&&window['UD']['streak_days']||window['UD']['loginStreak'])||0x0,_0x2119ad='<div\x20style=\x22text-align:center;padding:14px\x200\x204px\x22>';_0x2119ad+='<div\x20style=\x22font-size:52px;margin-bottom:8px\x22>🔥</div>',_0x2119ad+='<div\x20style=\x22font-size:22px;font-weight:900\x22>'+_0x2b9702+'-Day\x20Streak!</div>',_0x2119ad+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-top:5px\x22>Aaj\x20ka\x20check-in\x20bonus:\x20<b\x20style=\x22color:var(--green)\x22>+🪙\x20'+(Number(_0x43e478)||0x0)['toLocaleString']('en-IN')+'\x20Coins</b></div>',_0x2119ad+='</div>',_0x2119ad+='<div\x20style=\x22display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:16px\x200\x22>';for(var _0x75ee9=0x0;_0x75ee9<0x7;_0x75ee9++){var _0x53f225=_0x764b1b[_0x75ee9]||0x0,_0x252301=_0x75ee9+0x1===_0x31f9e4,_0x97b1c5=_0x75ee9+0x1<_0x31f9e4;_0x2119ad+='<div\x20style=\x22text-align:center;padding:9px\x202px;border-radius:10px;background:'+(_0x252301?'rgba(255,140,0,.22)':_0x97b1c5?'rgba(0,255,100,.12)':'rgba(255,255,255,.05)')+';border:1px\x20solid\x20'+(_0x252301?'rgba(255,140,0,.5)':_0x97b1c5?'rgba(0,255,100,.3)':'rgba(255,255,255,.08)')+'\x22>',_0x2119ad+='<div\x20style=\x22font-size:9px;color:var(--txt2)\x22>D'+(_0x75ee9+0x1)+'</div>',_0x2119ad+='<div\x20style=\x22font-size:12px;font-weight:800;color:'+(_0x252301?'#ff8c00':_0x97b1c5?'#00ff64':'var(--txt2)')+'\x22>'+(_0x97b1c5?'✓':'+'+_0x53f225)+'</div>',_0x2119ad+='</div>';}_0x2119ad+='</div>',_0x2119ad+='<div\x20style=\x22background:rgba(255,255,255,.04);border-radius:11px;padding:10px;font-size:11px;color:var(--txt2);text-align:center\x22>Roz\x20check-in\x20karo\x20—\x20D7\x20par\x20+30\x20Coins\x20aur\x20har\x2030\x20din\x20mein\x20milestone\x20bonus!</div>',_0x2119ad+='<div\x20style=\x22text-align:center;margin-top:12px\x22><button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22padding:11px\x2034px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffaa00,#ff8c00);color:#000;font-weight:900;font-size:13px;cursor:pointer\x22>Chalo!\x20🔥</button></div>';if(window['openModal'])openModal('📅\x20Check-in\x20Streak',_0x2119ad);},'check':function(){}};var _0x99beb1=0x0,_0x450cce=setInterval(function(){_0x99beb1++;if(_0x99beb1>0x50){clearInterval(_0x450cce);return;}if(!_0x5e7210()||!window['U'])return;clearInterval(_0x450cce);var _0x426069=Number(window['UD']&&(window['UD']['win_streak']||window['UD']['_winStreak'])||0x0);if(_0x426069>0x0)_0x4d112b(_0x426069);},0x1f4);}());
+/* ================================================================
+   HOT STREAK BADGE v2.0 — 100% Supabase (users table)
+   Uses users.win_streak column
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+
+window.STREAK_BADGES=[
+  {min:3,max:4,emoji:'🔥',label:'Hot Streak',color:'#ff6b00',bg:'rgba(255,107,0,.12)'},
+  {min:5,max:6,emoji:'⚡',label:'On Fire',color:'#ffdd00',bg:'rgba(255,221,0,.12)'},
+  {min:7,max:99,emoji:'💀',label:'Unstoppable',color:'#ff4444',bg:'rgba(255,68,68,.12)'}
+];
+
+window.getStreakBadge=function(streak){
+  streak=Number(streak)||0;
+  for(var i=window.STREAK_BADGES.length-1;i>=0;i--){ var b=window.STREAK_BADGES[i];if(streak>=b.min)return b; }
+  return null;
+};
+
+window.updateWinStreak=function(isWin){
+  /* R8 (2026-09-26c): users.win_streak ka AUTHORITATIVE writer server hai —
+     publish_match_results hi winner+1 / loser=0 set karta hai (single txn,
+     result verify ke saath). Client-side direct update ek self-report vector
+     tha (user apni streak khud bada sakta tha → season ranking score me
+     win_streak*10 feed hota hai) + server ke saath race karta tha. Ab yahan
+     sirf LOCAL UI feedback hota hai — koi Supabase write NAHI. */
+  if(!_uid())return;
+  var ud=window.UD||{};
+  var cur=Number(ud.win_streak||ud._winStreak||0);
+  var newStreak=isWin?cur+1:0;
+  if(window.UD){ window.UD.win_streak=newStreak; window.UD._winStreak=newStreak; }
+  var badge=window.getStreakBadge(newStreak);
+  if(badge&&isWin)_showStreakToast(badge,newStreak);
+  _injectStreakBadge(newStreak);
+  if(window.logActivity&&badge&&isWin)logActivity('streak',badge.emoji+' '+newStreak+' win streak! '+badge.label);
+};
+
+function _showStreakToast(badge,streak){
+  var d=document.createElement('div');
+  d.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%) scale(.7);z-index:99999;text-align:center;animation:_strk .5s cubic-bezier(.175,.885,.32,1.275) forwards';
+  d.innerHTML='<div style="background:linear-gradient(135deg,'+badge.color+'33,rgba(0,0,0,.9));border:2px solid '+badge.color+';border-radius:20px;padding:14px 24px;backdrop-filter:blur(10px)"><div style="font-size:32px;margin-bottom:4px">'+badge.emoji+'</div><div style="font-size:16px;font-weight:900;color:'+badge.color+'">'+streak+' WIN STREAK!</div><div style="font-size:12px;color:rgba(255,255,255,.7)">'+badge.label+'</div></div>';
+  if(!document.getElementById('_streakStyle')){var s=document.createElement('style');s.id='_streakStyle';s.textContent='@keyframes _strk{from{transform:translateX(-50%) scale(.7);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}';document.head.appendChild(s);}
+  document.body.appendChild(d);
+  setTimeout(function(){d.style.transition='opacity .4s';d.style.opacity='0';setTimeout(function(){d.remove();},400);},3500);
+}
+
+function _injectStreakBadge(streak){
+  var badge=window.getStreakBadge(streak);
+  var existing=document.getElementById('_streakHeaderBadge');
+  if(!badge){if(existing)existing.remove();return;}
+  if(!existing){
+    existing=document.createElement('div');existing.id='_streakHeaderBadge';
+    existing.style.cssText='cursor:pointer;display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:800;margin-left:6px';
+    existing.onclick=function(){_showStreakModal(streak,badge);};
+    var hdr=document.querySelector('.hdr-right,.header-right,header .right');
+    if(hdr)hdr.appendChild(existing);
+  }
+  existing.style.background=badge.bg;existing.style.color=badge.color;existing.style.border='1px solid '+badge.color+'44';
+  existing.innerHTML=badge.emoji+' '+streak;
+}
+
+function _showStreakModal(streak,badge){
+  var h='<div style="text-align:center;padding:16px 0"><div style="font-size:64px;margin-bottom:8px;filter:drop-shadow(0 0 20px '+badge.color+'88)">'+badge.emoji+'</div>';
+  h+='<div style="font-size:26px;font-weight:900;color:'+badge.color+'">'+streak+' Win Streak!</div>';
+  h+='<div style="font-size:14px;color:var(--txt2);margin-top:4px">'+badge.label+'</div></div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">';
+  [{s:3,l:'🔥 Hot'},{s:5,l:'⚡ On Fire'},{s:7,l:'💀 Unstoppable'}].forEach(function(t){
+    h+='<div style="text-align:center;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);opacity:'+(streak<t.s?.5:1)+'"><div style="font-size:22px">'+t.l.split(' ')[0]+'</div><div style="font-size:10px;color:var(--txt2)">'+t.l.split(' ').slice(1).join(' ')+'</div><div style="font-size:11px;font-weight:800;color:var(--txt);margin-top:4px">'+t.s+' Wins</div></div>';
+  });
+  h+='</div><div style="background:rgba(255,255,255,.04);border-radius:12px;padding:12px;font-size:12px;color:var(--txt2);text-align:center">Ek baar haarne par reset ho jaata hai.</div>';
+  if(window.openModal)openModal('🔥 Win Streak',h);
+}
+
+// ── F06 Streak hook (R25 restore 2026-09-21) ──────────────────────────
+//   fixes-v7.js + features-user.js isko call karte hain:
+//     window.f06Streak.show(cycleStreak, reward)   — check-in ke baad
+//     window.f06Streak.check = window._checkStreakFixed
+//   (daily check-in streak tier 1..7 ka popup). Ye object pehle kabhi
+//   define nahi hua tha — callers guard `if(window.f06Streak)` se safe
+//   the, isliye koi error nahi aata tha, but streak celebration popup
+//   bhi kabhi nahi dikhta tha. Ab wapas joda gaya.
+window.f06Streak = {
+  show: function(tierIdx, reward) {
+    if (!window.U) return;
+    var tiers = window._adminDailyBonusRewards || [5, 7, 10, 12, 15, 20, 30];
+    var idx = Math.max(1, Math.min(7, Number(tierIdx) || 1));
+    var streak = Number((window.UD && window.UD.streak_days) || window.UD.loginStreak) || 0;
+    var h = '<div style="text-align:center;padding:14px 0 4px">';
+    h += '<div style="font-size:52px;margin-bottom:8px">🔥</div>';
+    h += '<div style="font-size:22px;font-weight:900">' + streak + '-Day Streak!</div>';
+    h += '<div style="font-size:13px;color:var(--txt2);margin-top:5px">Aaj ka check-in bonus: <b style="color:var(--green)">+🪙 ' + (Number(reward) || 0).toLocaleString('en-IN') + ' Coins</b></div>';
+    h += '</div>';
+    h += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:16px 0">';
+    for (var i = 0; i < 7; i++) {
+      var v = tiers[i] || 0;
+      var hit = (i + 1) === idx;
+      var past = (i + 1) < idx;
+      h += '<div style="text-align:center;padding:9px 2px;border-radius:10px;background:' + (hit ? 'rgba(255,140,0,.22)' : (past ? 'rgba(0,255,100,.12)' : 'rgba(255,255,255,.05)')) + ';border:1px solid ' + (hit ? 'rgba(255,140,0,.5)' : (past ? 'rgba(0,255,100,.3)' : 'rgba(255,255,255,.08)')) + '">';
+      h += '<div style="font-size:9px;color:var(--txt2)">D' + (i + 1) + '</div>';
+      h += '<div style="font-size:12px;font-weight:800;color:' + (hit ? '#ff8c00' : (past ? '#00ff64' : 'var(--txt2)')) + '">' + (past ? '✓' : '+' + v) + '</div>';
+      h += '</div>';
+    }
+    h += '</div>';
+    h += '<div style="background:rgba(255,255,255,.04);border-radius:11px;padding:10px;font-size:11px;color:var(--txt2);text-align:center">Roz check-in karo — D7 par +30 Coins aur har 30 din mein milestone bonus!</div>';
+    h += '<div style="text-align:center;margin-top:12px"><button onclick="if(window.closeModal)closeModal()" style="padding:11px 34px;border-radius:13px;border:none;background:linear-gradient(135deg,#ffaa00,#ff8c00);color:#000;font-weight:900;font-size:13px;cursor:pointer">Chalo! 🔥</button></div>';
+    if (window.openModal) openModal('📅 Check-in Streak', h);
+  },
+  /* check: fixes-v7.js इसे window._checkStreakFixed से overwrite कर देता है */
+  check: function(){}
+};
+
+// Load on login
+var _si=0,_st=setInterval(function(){
+  _si++;if(_si>80){clearInterval(_st);return;}
+  if(!_s()||!window.U)return;
+  clearInterval(_st);
+  var streak=Number((window.UD&&(window.UD.win_streak||window.UD._winStreak))||0);
+  if(streak>0)_injectStreakBadge(streak);
+},500);
+})();

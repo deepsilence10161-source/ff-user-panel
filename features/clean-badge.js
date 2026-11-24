@@ -1,1 +1,22 @@
-(function(){'use strict';var _0x4a2dd5=(function(){var _0xbc9efa=!![];return function(_0x160676,_0x31c4db){var _0x5918f1=_0xbc9efa?function(){if(_0x31c4db){var _0x4459f4=_0x31c4db['apply'](_0x160676,arguments);return _0x31c4db=null,_0x4459f4;}}:function(){};return _0xbc9efa=![],_0x5918f1;};}()),_0x250d00=_0x4a2dd5(this,function(){if(_0x250d00['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x250d00['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x250d00)['search']('(((.+)+)+)+$');});_0x250d00();function _0x11cf45(){return window['_supa'];}function _0x3b6f21(){return window['U']&&window['U']['uid'];}var _0x16a8c3=0x1e;function _0x37c6fc(){var _0x3191a3='<div\x20style=\x22text-align:center;padding:16px\x200\x22><div\x20style=\x22font-size:64px;margin-bottom:10px\x22>✅</div>';_0x3191a3+='<div\x20style=\x22font-size:22px;font-weight:900;color:var(--green)\x22>Clean\x20Player\x20Badge!</div>',_0x3191a3+='<div\x20style=\x22font-size:13px;color:var(--txt2);margin-top:6px;line-height:1.6\x22>Tumne\x20'+_0x16a8c3+'\x20matches\x20bina\x20kisi\x20report\x20ke\x20complete\x20kiye!</div></div>',_0x3191a3+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:14px;padding:14px;margin-bottom:14px\x22><div\x20style=\x22display:flex;align-items:center;gap:10px\x22><div\x20style=\x22font-size:28px\x22>✅</div><div><div\x20style=\x22font-size:14px;font-weight:800;color:var(--green)\x22>Verified\x20Clean\x20Player</div><div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Fair\x20play\x20·\x20No\x20rage\x20quit\x20·\x20No\x20reports</div></div></div></div>',_0x3191a3+='<button\x20onclick=\x22if(window.closeModal)closeModal()\x22\x20style=\x22width:100%;padding:13px;border-radius:13px;border:none;background:var(--green);color:#000;font-size:14px;font-weight:900;cursor:pointer\x22>🎉\x20Awesome!</button>';if(window['openModal'])openModal('🎉\x20Badge\x20Earned!',_0x3191a3);if(window['logActivity'])logActivity('win','✅\x20Clean\x20Player\x20Badge\x20earn\x20kiya!');}}());
+/* ================================================================
+   CLEAN PLAYER BADGE v2.0 — 100% Supabase (users table)
+   Uses users.clean_matches, users.has_clean_badge columns
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+var THRESHOLD=30;
+
+
+function _showBadgeAwarded(){
+  var h='<div style="text-align:center;padding:16px 0"><div style="font-size:64px;margin-bottom:10px">✅</div>';
+  h+='<div style="font-size:22px;font-weight:900;color:var(--green)">Clean Player Badge!</div>';
+  h+='<div style="font-size:13px;color:var(--txt2);margin-top:6px;line-height:1.6">Tumne '+THRESHOLD+' matches bina kisi report ke complete kiye!</div></div>';
+  h+='<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.2);border-radius:14px;padding:14px;margin-bottom:14px"><div style="display:flex;align-items:center;gap:10px"><div style="font-size:28px">✅</div><div><div style="font-size:14px;font-weight:800;color:var(--green)">Verified Clean Player</div><div style="font-size:12px;color:var(--txt2)">Fair play · No rage quit · No reports</div></div></div></div>';
+  h+='<button onclick="if(window.closeModal)closeModal()" style="width:100%;padding:13px;border-radius:13px;border:none;background:var(--green);color:#000;font-size:14px;font-weight:900;cursor:pointer">🎉 Awesome!</button>';
+  if(window.openModal)openModal('🎉 Badge Earned!',h);
+  if(window.logActivity)logActivity('win','✅ Clean Player Badge earn kiya!');
+}
+
+
+})();

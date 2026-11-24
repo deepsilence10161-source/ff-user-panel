@@ -1,1 +1,74 @@
-(function(){var _0x1cbd88=(function(){var _0x39937b=!![];return function(_0x419802,_0x94714c){var _0x2db417=_0x39937b?function(){if(_0x94714c){var _0x10c2bf=_0x94714c['apply'](_0x419802,arguments);return _0x94714c=null,_0x10c2bf;}}:function(){};return _0x39937b=![],_0x2db417;};}()),_0x58f921=_0x1cbd88(this,function(){if(_0x58f921['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x58f921['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x58f921)['search']('(((.+)+)+)+$');});_0x58f921();var _0x452cc9=null;function _0x396060(){if(_0x452cc9)clearInterval(_0x452cc9);_0x452cc9=setInterval(function(){for(var _0x57d8c0 in MT){var _0x843d90=MT[_0x57d8c0];if(!_0x843d90||!hasJ(_0x57d8c0))continue;var _0x45c620=document['getElementById']('room-cd-'+_0x57d8c0);if(!_0x45c620)continue;var _0x2f93d7=Number(_0x843d90['matchTime']);if(!_0x2f93d7)continue;var _0x24390c=_0x2f93d7-Date['now'](),_0x1cc38e=_0x2f93d7-0x15f90,_0x5c13c1=_0x1cc38e-Date['now']();if(_0x843d90['roomStatus']==='released'&&_0x843d90['roomId']&&_0x843d90['roomPassword']){if(_0x5c13c1<=0x0||_0x24390c<=0x0){var _0x522ef1=(_0x843d90['roomId']||'')['replace'](/'/g,'&#x27;'),_0x819831=(_0x843d90['roomPassword']||'')['replace'](/'/g,'&#x27;'),_0x230218='<button\x20data-copy-val=\x22'+_0x522ef1+'\x22\x20class=\x22_roomCopyBtn\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px\x208px;border-radius:6px;font-size:11px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i>\x20Copy</button>',_0xcfadf='<button\x20data-copy-val=\x22'+_0x819831+'\x22\x20class=\x22_roomCopyBtn\x22\x20style=\x22background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px\x208px;border-radius:6px;font-size:11px;cursor:pointer\x22><i\x20class=\x22fas\x20fa-copy\x22></i>\x20Copy</button>';_0x45c620['innerHTML']='<div\x20style=\x22background:rgba(0,255,106,.08);border:1px\x20solid\x20rgba(0,255,106,.2);border-radius:10px;padding:10px;margin-top:6px\x22>'+'<div\x20style=\x22font-size:11px;color:var(--txt2);text-transform:uppercase;margin-bottom:4px\x22>🔑\x20Room\x20ID</div>'+'<div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span\x20style=\x22font-size:18px;font-weight:900;color:var(--green)\x22>'+(_0x843d90['roomId']||'')+'</span>'+_0x230218+'</div>'+'<div\x20style=\x22font-size:11px;color:var(--txt2);text-transform:uppercase;margin-top:6px;margin-bottom:4px\x22>🔒\x20Password</div>'+'<div\x20style=\x22display:flex;justify-content:space-between;align-items:center\x22><span\x20style=\x22font-size:18px;font-weight:900;color:var(--green)\x22>'+(_0x843d90['roomPassword']||'')+'</span>'+_0xcfadf+'</div></div>',setTimeout(function(){_0x45c620['querySelectorAll']('._roomCopyBtn')['forEach'](function(_0x5b8668){_0x5b8668['onclick']=function(){var _0x4767a2=_0x5b8668['getAttribute']('data-copy-val')||'';if(window['copyTxt'])copyTxt(_0x4767a2);else{if(navigator['clipboard'])navigator['clipboard']['writeText'](_0x4767a2)['catch'](function(){});else{var _0x2495a3=document['createElement']('textarea');_0x2495a3['value']=_0x4767a2,document['body']['appendChild'](_0x2495a3),_0x2495a3['select'](),document['execCommand']('copy'),document['body']['removeChild'](_0x2495a3);}}};});},0x32);}else{var _0x554865=Math['floor'](_0x5c13c1/0xea60),_0x3a1443=Math['floor'](_0x5c13c1%0xea60/0x3e8);_0x45c620['innerHTML']='<div\x20style=\x22background:rgba(0,212,255,.08);border:1px\x20solid\x20rgba(0,212,255,.2);border-radius:10px;padding:10px;margin-top:6px;text-align:center\x22>'+'<div\x20style=\x22font-size:11px;color:var(--blue);margin-bottom:4px\x22><i\x20class=\x22fas\x20fa-clock\x22></i>\x20Room\x20reveals\x20in</div>'+'<div\x20style=\x22font-size:20px;font-weight:900;color:var(--blue)\x22>'+_0x554865+':'+String(_0x3a1443)['padStart'](0x2,'0')+'</div></div>';}}else _0x45c620['innerHTML']='<div\x20style=\x22font-size:11px;color:var(--txt2);padding:6px\x200\x22><i\x20class=\x22fas\x20fa-clock\x22></i>\x20Room\x20details\x20will\x20be\x20shared\x20soon</div>';}},0x3e8);}window['updateRoomCountdowns']=_0x396060;var _0x1e5d3f=window['renderMM'];_0x1e5d3f&&(window['renderMM']=function(){_0x1e5d3f(),setTimeout(_0x396060,0x64);}),console['log']('[Mini\x20eSports]\x20✅\x20Feature\x202:\x20Room\x20Reveal\x20loaded');}());
+/* ====== FEATURE 2: SMART ROOM ID REVEAL WITH COUNTDOWN ====== */
+/* Shows countdown to room reveal, then animated popup with copy */
+
+(function() {
+  var _roomInterval = null;
+
+  function updateRoomCountdowns() {
+    if (_roomInterval) clearInterval(_roomInterval);
+    _roomInterval = setInterval(function() {
+      for (var mid in MT) {
+        var t = MT[mid];
+        if (!t || !hasJ(mid)) continue;
+        var el = document.getElementById('room-cd-' + mid);
+        if (!el) continue;
+
+        var mt = Number(t.matchTime);
+        if (!mt) continue;
+        var diff = mt - Date.now();
+        var revealTime = mt - 90000; // 90 seconds before match
+        var revealDiff = revealTime - Date.now();
+
+        if (t.roomStatus === 'released' && t.roomId && t.roomPassword) {
+          // Room is released — show it
+          if (revealDiff <= 0 || diff <= 0) {
+            /* Bug M-5 Fix: Use data-copy attributes instead of inline onclick
+             to safely handle room IDs/passwords with single quotes or special chars */
+          var safeRoomId  = (t.roomId || '').replace(/'/g, "&#x27;");
+          var safeRoomPw  = (t.roomPassword || '').replace(/'/g, "&#x27;");
+          var copyIdBtn   = '<button data-copy-val="' + safeRoomId + '" class="_roomCopyBtn" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i> Copy</button>';
+          var copyPwBtn   = '<button data-copy-val="' + safeRoomPw + '" class="_roomCopyBtn" style="background:rgba(0,255,106,.15);border:none;color:var(--green);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer"><i class="fas fa-copy"></i> Copy</button>';
+          el.innerHTML = '<div style="background:rgba(0,255,106,.08);border:1px solid rgba(0,255,106,.2);border-radius:10px;padding:10px;margin-top:6px">' +
+              '<div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-bottom:4px">🔑 Room ID</div>' +
+              '<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px;font-weight:900;color:var(--green)">' + (t.roomId||'') + '</span>' + copyIdBtn + '</div>' +
+              '<div style="font-size:11px;color:var(--txt2);text-transform:uppercase;margin-top:6px;margin-bottom:4px">🔒 Password</div>' +
+              '<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:18px;font-weight:900;color:var(--green)">' + (t.roomPassword||'') + '</span>' + copyPwBtn + '</div></div>';
+          /* Attach safe copy handlers */
+          setTimeout(function() {
+            el.querySelectorAll('._roomCopyBtn').forEach(function(btn) {
+              btn.onclick = function() {
+                var txt = btn.getAttribute('data-copy-val') || '';
+                if (window.copyTxt) copyTxt(txt);
+                else if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+                else { var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+              };
+            });
+          }, 50);
+          } else {
+            // Show countdown to reveal
+            var mins = Math.floor(revealDiff / 60000);
+            var secs = Math.floor((revealDiff % 60000) / 1000);
+            el.innerHTML = '<div style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:10px;padding:10px;margin-top:6px;text-align:center">' +
+              '<div style="font-size:11px;color:var(--blue);margin-bottom:4px"><i class="fas fa-clock"></i> Room reveals in</div>' +
+              '<div style="font-size:20px;font-weight:900;color:var(--blue)">' + mins + ':' + String(secs).padStart(2, '0') + '</div></div>';
+          }
+        } else {
+          el.innerHTML = '<div style="font-size:11px;color:var(--txt2);padding:6px 0"><i class="fas fa-clock"></i> Room details will be shared soon</div>';
+        }
+      }
+    }, 1000);
+  }
+
+  window.updateRoomCountdowns = updateRoomCountdowns;
+
+  // Auto-start when My Matches renders
+  var _origRenderMM = window.renderMM;
+  if (_origRenderMM) {
+    window.renderMM = function() {
+      _origRenderMM();
+      setTimeout(updateRoomCountdowns, 100);
+    };
+  }
+
+  console.log('[Mini eSports] ✅ Feature 2: Room Reveal loaded');
+})();

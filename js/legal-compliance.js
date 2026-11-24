@@ -1,1 +1,583 @@
-(function(){'use strict';var _0x5d0356=(function(){var _0x10239a=!![];return function(_0x4201cb,_0x5eb113){var _0x2210bd=_0x10239a?function(){if(_0x5eb113){var _0x3f115f=_0x5eb113['apply'](_0x4201cb,arguments);return _0x5eb113=null,_0x3f115f;}}:function(){};return _0x10239a=![],_0x2210bd;};}()),_0x25f866=_0x5d0356(this,function(){if(_0x25f866['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x25f866['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x25f866)['search']('(((.+)+)+)+$');});_0x25f866();var _0x5e6374={'monthlyPayout':0x7a120,'totalUsers':0x1388,'singleWinning':0xc350},_0x5e207e={'appName':'Mini\x20eSports','grievanceEmail':'grievance@miniesports.in','supportEmail':'support@miniesports.in','address':'Panipat,\x20Haryana\x20—\x20132103,\x20India','grievanceOfficerName':'Platform\x20Owner','tcVersion':'3.0','bannedStates':['Telangana','Andhra\x20Pradesh','Tamil\x20Nadu']};function _0x2559fd(_0x573f2d,_0x271a8b){if(window['openModal']){window['openModal'](_0x573f2d,_0x271a8b);return;}var _0x32be74=document['getElementById']('_lc_modal');if(_0x32be74)_0x32be74['remove']();_0x32be74=document['createElement']('div'),_0x32be74['id']='_lc_modal',_0x32be74['style']['cssText']='position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;align-items:flex-end;justify-content:center',_0x32be74['innerHTML']='<div\x20style=\x22background:#0d0d12;border-radius:20px\x2020px\x200\x200;padding:22px\x2018px\x2036px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto\x22><div\x20style=\x22font-size:17px;font-weight:900;color:#e8e8f0;margin-bottom:14px\x22>'+_0x573f2d+'</div>'+_0x271a8b+'<button\x20onclick=\x22document.getElementById(\x27_lc_modal\x27).remove()\x22\x20style=\x22margin-top:16px;width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.07);border:1px\x20solid\x20rgba(255,255,255,.1);color:#aaa;font-weight:700;cursor:pointer\x22>Close</button></div>',document['body']['appendChild'](_0x32be74);}function _0x4b2227(){if(window['closeModal']){window['closeModal']();return;}var _0x302752=document['getElementById']('_lc_modal');if(_0x302752)_0x302752['remove']();}function _0x1e7079(_0x32f116,_0x2f2069){if(window['toast']){window['toast'](_0x32f116,_0x2f2069||'ok');return;}alert(_0x32f116);}function _0x2ae59c(_0x1a705e,_0x48148c,_0x2aab88,_0x598e6c,_0x5cadba){return'<button\x20onclick=\x22'+_0x5cadba+'\x22\x20style=\x22padding:12px\x2016px;border-radius:11px;background:'+_0x2aab88+';border:1px\x20solid\x20'+_0x598e6c+';color:'+_0x48148c+';font-size:13px;font-weight:800;cursor:pointer;width:100%;margin-bottom:8px;text-align:left\x22>'+_0x1a705e+'</button>';}var _0x52042a=null,_0x5275c5=![];function _0x33b6e7(){return window['UD']&&typeof window['UD']['state']==='string'?window['UD']['state']['trim']():'';}window['mesCheckState']=function(){_0x52042a&&(clearTimeout(_0x52042a),_0x52042a=null);if(_0x33b6e7()){localStorage['setItem']('_mes_state',_0x33b6e7()),_0x5275c5=![];return;}if(_0x5275c5)return;_0x5275c5=!![];var _0x320943='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:42px;margin-bottom:10px\x22>🗺️</div>'+'<div\x20style=\x22font-size:12px;color:#8888aa;margin-bottom:16px\x22>Real\x20money\x20gaming\x20kuch\x20states\x20mein\x20restricted\x20hai.\x20Apna\x20state\x20select\x20karo:</div>'+'<div\x20style=\x22display:grid;gap:8px;margin-bottom:12px\x22>';_0x5e207e['bannedStates']['forEach'](function(_0x29ac9e){_0x320943+='<button\x20onclick=\x22window.mesStateBan()\x22\x20style=\x22padding:11px;border-radius:10px;background:rgba(255,107,107,.1);border:1px\x20solid\x20rgba(255,107,107,.25);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer;width:100%\x22>'+_0x29ac9e+'</button>';}),['Haryana','Delhi','Punjab','Other']['forEach'](function(_0x1fef17){_0x320943+='<button\x20data-state-choice\x20onclick=\x22window.mesStateOk(\x27'+_0x1fef17+'\x27)\x22\x20style=\x22padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px\x20solid\x20rgba(0,255,156,.25);color:#00ff9c;font-size:13px;font-weight:700;cursor:pointer;width:100%\x22>✓\x20'+_0x1fef17+'</button>';}),_0x320943+='</div><div\x20style=\x22font-size:10px;color:#555\x22>IT\x20Rules\x202023\x20compliance\x20ke\x20liye\x20zaroori</div></div>',_0x2559fd('🗺️\x20State\x20Verification\x20Required',_0x320943);},window['mesStateBan']=function(){_0x5275c5=![],_0x4b2227(),document['body']['innerHTML']='<div\x20style=\x22min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050507;color:#fff;padding:32px;text-align:center\x22><div\x20style=\x22font-size:56px;margin-bottom:16px\x22>🚫</div><div\x20style=\x22font-size:20px;font-weight:900;color:#ff6b6b;margin-bottom:10px\x22>Service\x20Unavailable</div><div\x20style=\x22font-size:13px;color:#888;line-height:1.9;max-width:300px\x22>Aapke\x20state\x20mein\x20real\x20money\x20gaming\x20legally\x20restricted\x20hai.</div></div>';},window['mesStateOk']=function(_0x3ba71a){var _0x3f838c=['Haryana','Delhi','Punjab','Other'];if(_0x3f838c['indexOf'](_0x3ba71a)<0x0)return;if(!window['U']||!window['U']['uid']||!window['_supa']||!window['_supaReady']){_0x1e7079('Login\x20sync\x20ho\x20raha\x20hai\x20—\x20ek\x20baar\x20phir\x20try\x20karo','err');return;}var _0x4620c6=document['querySelectorAll']('[data-state-choice]');_0x4620c6['forEach'](function(_0x5aa55a){_0x5aa55a['disabled']=!![];}),window['_supa']['from']('users')['update']({'state':_0x3ba71a,'updated_at':new Date()['toISOString']()})['eq']('id',window['U']['uid'])['select']('state')['single']()['then'](function(_0x55eefe){if(_0x55eefe['error']||!_0x55eefe['data']||!_0x55eefe['data']['state'])throw _0x55eefe['error']||new Error('State\x20save\x20failed');if(window['UD'])window['UD']['state']=_0x55eefe['data']['state'];localStorage['setItem']('_mes_state',_0x55eefe['data']['state']),_0x5275c5=![],_0x4b2227(),setTimeout(window['mesAgeGate'],0x190);})['catch'](function(_0x23cf7){console['error']('[StateGate]\x20Failed\x20to\x20persist\x20state:',_0x23cf7&&_0x23cf7['message']),_0x4620c6['forEach'](function(_0x1676a4){_0x1676a4['disabled']=![];}),_0x1e7079('State\x20save\x20nahi\x20hui\x20—\x20dobara\x20try\x20karo','err');});},window['mesAgeGate']=function(){if(!window['U'])return;if(window['UD']&&window['UD']['age_verified']===!![]){_0x197d4a('age');return;}var _0x2da0d0=new Date();_0x2da0d0['setFullYear'](_0x2da0d0['getFullYear']()-0x12);var _0x5cf86d=_0x2da0d0['toISOString']()['split']('T')[0x0],_0x49da3b='<div\x20style=\x22text-align:center\x22>'+'<div\x20style=\x22font-size:44px;margin-bottom:10px\x22>🔞</div>'+'<div\x20style=\x22font-size:15px;font-weight:900;margin-bottom:6px\x22>Age\x20Verification</div>'+'<div\x20style=\x22font-size:12px;color:#8888aa;margin-bottom:16px\x22>Mini\x20eSports\x20sirf\x20<strong\x20style=\x22color:#fff\x22>18+</strong>\x20ke\x20liye\x20hai</div>'+'<input\x20type=\x22date\x22\x20id=\x22_mes_dob\x22\x20max=\x22'+_0x5cf86d+'\x22\x20style=\x22width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.15);color:#e8e8f0;font-size:14px;box-sizing:border-box;margin-bottom:12px\x22>'+'<div\x20style=\x22display:flex;gap:10px;align-items:flex-start;margin-bottom:16px\x22>'+'<input\x20type=\x22checkbox\x22\x20id=\x22_mes_age_cbx\x22\x20style=\x22margin-top:3px;accent-color:#00ff9c;flex-shrink:0\x22>'+'<label\x20for=\x22_mes_age_cbx\x22\x20style=\x22font-size:12px;color:#8888aa\x22>Main\x20confirm\x20karta/karti\x20hoon\x20ki\x20meri\x20umar\x2018+\x20hai</label></div>'+'<button\x20onclick=\x22window.mesConfirmAge()\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer;margin-bottom:8px\x22>✓\x20Confirm\x20—\x20Main\x2018+\x20Hoon</button>'+'<button\x20onclick=\x22window.mesAgeUnder18()\x22\x20style=\x22width:100%;padding:10px;border-radius:12px;background:transparent;border:1px\x20solid\x20rgba(255,107,107,.3);color:#ff6b6b;font-size:12px;font-weight:700;cursor:pointer\x22>Nahi,\x20main\x2018\x20se\x20chhota\x20hoon</button></div>';_0x2559fd('🔞\x20Age\x20Verification',_0x49da3b);},window['mesConfirmAge']=function(){var _0x51cf06=(document['getElementById']('_mes_dob')||{})['value'],_0x17fe0d=(document['getElementById']('_mes_age_cbx')||{})['checked'];if(!_0x51cf06){_0x1e7079('Date\x20of\x20birth\x20enter\x20karo','err');return;}if(!_0x17fe0d){_0x1e7079('Checkbox\x20tick\x20karo','err');return;}var _0x1d9fe3=new Date(_0x51cf06),_0x3fae04=new Date(),_0x5b688e=_0x3fae04['getFullYear']()-_0x1d9fe3['getFullYear']()-(_0x3fae04['getMonth']()<_0x1d9fe3['getMonth']()||_0x3fae04['getMonth']()===_0x1d9fe3['getMonth']()&&_0x3fae04['getDate']()<_0x1d9fe3['getDate']()?0x1:0x0);if(_0x5b688e<0x12){window['mesAgeUnder18']();return;}window['_supa']&&window['U']&&window['U']['uid']?window['_supa']['rpc']('submit_age_verification',{'p_date_of_birth':_0x51cf06})['then'](function(_0x423974){if(_0x423974&&_0x423974['error']){console['error']('[AgeGate]\x20Failed\x20to\x20persist\x20age\x20verification:',_0x423974['error']['message']),_0x1e7079('Age\x20verify\x20save\x20nahi\x20hui\x20—\x20dobara\x20try\x20karo','err');return;}if(_0x423974&&_0x423974['data']&&_0x423974['data']['success']===![]){console['error']('[AgeGate]\x20Server\x20rejected\x20age\x20verification:',_0x423974['data']['error']),_0x1e7079('Age\x20verify\x20save\x20nahi\x20hui\x20—\x20dobara\x20try\x20karo','err');return;}window['UD']&&(window['UD']['age_verified']=!![]),_0x4b2227(),_0x1e7079('Age\x20verified!','ok'),setTimeout(function(){_0x197d4a('age');},0x1f4);}):(console['error']('[AgeGate]\x20window._supa\x20or\x20window.U.uid\x20not\x20available\x20—\x20cannot\x20persist\x20age\x20verification'),_0x1e7079('Connection\x20error\x20—\x20dobara\x20try\x20karo','err'));},window['mesAgeUnder18']=function(){_0x4b2227();if(window['fbAuth']){var _0x229329=window['fbAuth']();if(_0x229329)_0x229329['signOut']();}document['body']['innerHTML']='<div\x20style=\x22min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050507;color:#fff;padding:32px;text-align:center\x22><div\x20style=\x22font-size:56px;margin-bottom:16px\x22>🔞</div><div\x20style=\x22font-size:20px;font-weight:900;color:#ff6b6b;margin-bottom:10px\x22>18+\x20Only</div></div>';},window['mesShowTerms']=function(){var _0x1984ad='<div\x20style=\x22font-size:12px;color:#8888aa;line-height:1.9\x22>'+'<p\x20style=\x22color:#00d4ff;font-weight:900;font-size:14px;margin-bottom:12px\x22>Mini\x20eSports\x20—\x20Terms\x20&\x20Conditions</p>'+'<p><strong\x20style=\x22color:#fff\x22>1.\x20Skill-Based\x20Platform:</strong>\x20Sabhi\x20tournaments\x20games\x20of\x20skill\x20hain.\x20Gambling\x20nahi.\x20Match\x20result\x20player\x20ki\x20ability,\x20strategy\x20aur\x20performance\x20par\x20depend\x20karta\x20hai.</p>'+'<p><strong\x20style=\x22color:#fff\x22>2.\x20Eligibility:</strong>\x20Sirf\x2018\x20saal\x20ya\x20zyada\x20umar\x20ke\x20Indian\x20residents.\x20Telangana,\x20Andhra\x20Pradesh,\x20Tamil\x20Nadu\x20ke\x20users\x20paid\x20tournaments\x20mein\x20participate\x20nahi\x20kar\x20sakte.</p>'+'<p><strong\x20style=\x22color:#fff\x22>3.\x20One\x20Account:</strong>\x20Ek\x20user\x20=\x20sirf\x20ek\x20account.\x20Multiple\x20accounts\x20=\x20permanent\x20ban.</p>'+'<p><strong\x20style=\x22color:#fff\x22>4.\x20Third-Party\x20Disclaimer:</strong>\x20Mini\x20eSports\x20ka\x20Garena/Free\x20Fire\x20se\x20koi\x20affiliation\x20nahi.\x20Hum\x20sirf\x20tournament\x20organize\x20karte\x20hain.\x20Game\x20server\x20issues\x20ke\x20liye\x20hum\x20liable\x20nahi.</p>'+'<p><strong\x20style=\x22color:#fff\x22>5.\x20Entry\x20Fees:</strong>\x20Match\x20start\x20hone\x20ke\x20baad\x20non-refundable.\x20Platform\x20match\x20cancel\x20kare\x20to\x20full\x20refund\x20milega.</p>'+'<p><strong\x20style=\x22color:#fff\x22>6.\x20Coins:</strong>\x20Virtual\x20currency\x20—\x20real\x20money\x20mein\x20convert\x20nahi\x20hoti.\x20Coin\x20purchases\x20non-refundable.</p>'+'<p><strong\x20style=\x22color:#fff\x22>7.\x20KYC:</strong>\x20Rs.500+\x20withdrawal\x20ke\x20liye\x20PAN\x20card\x20mandatory\x20(IT\x20Rules\x202023).\x20Ek\x20PAN\x20=\x20ek\x20account.</p>'+'<p><strong\x20style=\x22color:#fff\x22>8.\x20Tax\x20(Section\x20194BA):</strong>\x20Gaming\x20winnings\x20taxable\x20income\x20hain.\x20Jab\x20platform\x20thresholds\x20cross\x20kare\x20tab\x2030%\x20TDS\x20auto-deduct\x20hoga.\x20Abhi\x20testing\x20phase\x20—\x20user\x20khud\x20ITR\x20declare\x20kare.</p>'+'<p><strong\x20style=\x22color:#fff\x22>9.\x20Anti-Cheat:</strong>\x20Cheating,\x20hacking,\x20fake\x20screenshots,\x20multiple\x20accounts,\x20VPN\x20bypass\x20=\x20permanent\x20ban\x20+\x20legal\x20action.</p>'+'<p><strong\x20style=\x22color:#fff\x22>10.\x20Liability:</strong>\x20Server\x20errors,\x20game\x20crashes,\x20internet\x20failure\x20ke\x20liye\x20platform\x20liable\x20nahi.\x20Max\x20liability\x20=\x20deposited\x20amount.</p>'+'<p><strong\x20style=\x22color:#fff\x22>11.\x20Responsible\x20Gaming:</strong>\x20Sirf\x20woh\x20amount\x20invest\x20karo\x20jo\x20afford\x20kar\x20sako.\x20Self-exclusion\x20feature\x20available\x20hai.\x20iCall:\x209152987821.</p>'+'<p><strong\x20style=\x22color:#fff\x22>12.\x20Jurisdiction:</strong>\x20Panipat,\x20Haryana\x20courts.\x20Disputes:\x20Arbitration\x20&\x20Conciliation\x20Act\x201996.</p>'+'<p><strong\x20style=\x22color:#fff\x22>13.\x20Grievance\x20Officer:</strong>\x20Platform\x20Owner\x20|\x20grievance@miniesports.in\x20|\x20Panipat,\x20Haryana.\x20Response:\x2024hr\x20ack,\x2015\x20days\x20resolution.</p>'+'<p\x20style=\x22font-size:10px;color:#555;margin-top:12px\x22>IT\x20Act\x202000\x20|\x20IT\x20Rules\x202021\x20|\x20Income\x20Tax\x20Act\x201961\x20|\x20Last\x20Updated:\x202025</p>'+'</div>';_0x2559fd('📋\x20Terms\x20&\x20Conditions',_0x1984ad);},window['mesShowPrivacy']=function(){var _0x3cb7d8=![];function _0x4420c7(_0x26c810){var _0x2a6260=_0x26c810?'<p><strong\x20style=\x22color:#ff6b6b\x22>TDS\x20ACTIVE\x20(Section\x20194BA):</strong>\x20Platform\x20withdrawal\x20pe\x2030%\x20TDS\x20deduct\x20karta\x20hai\x20aur\x20govt\x20ko\x20deposit\x20karta\x20hai.\x20Deduction\x20Form\x2026AS\x20mein\x20reflect\x20hoga.\x20ITR\x20file\x20karna\x20user\x20ki\x20zimmedari\x20hai.</p>':'<p><strong\x20style=\x22color:#ffd700\x22>Testing\x20Phase\x20—\x20TDS:</strong>\x20Abhi\x20TDS\x20deduct\x20nahi\x20ho\x20raha.\x20Lekin\x20gaming\x20winnings\x20taxable\x20hain\x20—\x20user\x20khud\x20ITR\x20mein\x20declare\x20kare.\x20Thresholds\x20cross\x20hone\x20par\x2030%\x20TDS\x20auto-on\x20hoga.</p>',_0x1ee372='<div\x20style=\x22font-size:12px;color:#8888aa;line-height:1.9\x22>'+'<p\x20style=\x22color:#00d4ff;font-weight:900;font-size:14px;margin-bottom:12px\x22>Mini\x20eSports\x20—\x20Privacy\x20Policy</p>'+'<p><strong\x20style=\x22color:#fff\x22>Platform:</strong>\x20Mini\x20eSports,\x20Panipat,\x20Haryana\x20132103.\x20IT\x20Act\x202000\x20&\x20IT\x20Rules\x202021\x20compliant.</p>'+'<p><strong\x20style=\x22color:#fff\x22>18+\x20Only:</strong>\x20Hum\x20jaante\x20bujhe\x2018\x20se\x20kum\x20umar\x20ke\x20users\x20ka\x20data\x20collect\x20nahi\x20karte.</p>'+'<p><strong\x20style=\x22color:#fff\x22>Data\x20Collected:</strong>\x20Mobile/email,\x20IGN,\x20Free\x20Fire\x20UID,\x20device\x20info,\x20UPI\x20ID\x20(withdrawal\x20ke\x20liye),\x20PAN\x20number,\x20Aadhaar\x20last\x204\x20digits\x20(KYC\x20ke\x20liye).</p>'+'<p><strong\x20style=\x22color:#fff\x22>Financial\x20Records:</strong>\x20Har\x20withdrawal,\x20prize,\x20entry\x20fee\x20ka\x20record\x20tax\x20compliance\x20ke\x20liye\x20maintain\x20hota\x20hai.\x20Account\x20delete\x20hone\x20ke\x20baad\x207\x20saal\x20tak\x20store\x20(IT\x20Act\x20requirement).</p>'+_0x2a6260+'<p><strong\x20style=\x22color:#fff\x22>KYC\x20Data:</strong>\x20PAN\x20securely\x20stored,\x20sirf\x20admin\x20access.\x20Aadhaar\x20last\x204\x20digits\x20only.\x20Ek\x20PAN\x20=\x20ek\x20account.</p>'+'<p><strong\x20style=\x22color:#fff\x22>Data\x20Sharing:</strong>\x20Sirf\x20legal\x20requirement\x20ya\x20govt\x20authority\x20pe.\x20Hum\x20aapka\x20data\x20advertiser\x20ko\x20NAHI\x20beche.</p>'+'<p><strong\x20style=\x22color:#fff\x22>Security:</strong>\x20Firebase\x20+\x20HTTPS.\x20Security\x20breach\x20hogi\x20to\x2072\x20ghante\x20mein\x20notify\x20karenge.</p>'+'<p><strong\x20style=\x22color:#fff\x22>State\x20Restrictions:</strong>\x20Telangana,\x20AP,\x20Tamil\x20Nadu\x20ke\x20users\x20automatically\x20block\x20hain.</p>'+'<p><strong\x20style=\x22color:#fff\x22>Your\x20Rights:</strong>\x20Access,\x20correction,\x20deletion\x20ka\x20right.\x20Financial\x20records\x207\x20saal\x20retention\x20required.</p>'+'<p><strong\x20style=\x22color:#fff\x22>Grievance\x20Officer:</strong>\x20Platform\x20Owner\x20|\x20grievance@miniesports.in\x20|\x2024hr\x20acknowledgement,\x2015\x20days\x20resolution.</p>'+'<p\x20style=\x22font-size:10px;color:#555;margin-top:12px\x22>IT\x20Act\x202000\x20|\x20IT\x20Rules\x202021\x20|\x20Last\x20Updated:\x202025</p>'+'</div>';_0x2559fd('🛡️\x20Privacy\x20Policy',_0x1ee372);}window['db']?window['db']['ref']('appSettings/tdsConfig')['once']('value',function(_0x37ee67){_0x4420c7((_0x37ee67['val']()||{})['active']===!![]);})['catch'](function(){_0x4420c7(![]);}):_0x4420c7(![]);};function _0x404691(_0x3a0824){var _0x2a8956='<div>'+'<div\x20style=\x22background:#111118;border-radius:10px;padding:14px;font-size:12px;color:#8888aa;line-height:1.85;max-height:200px;overflow-y:auto;margin-bottom:14px;border:1px\x20solid\x20rgba(255,255,255,.06)\x22>'+'<strong\x20style=\x22color:#fff\x22>Mini\x20eSports\x20Terms\x20(Summary):</strong><br><br>'+'•\x20Skill-based\x20esports\x20platform\x20—\x20gambling\x20nahi<br>'+'•\x20Sirf\x2018+\x20users\x20|\x20TN/AP/Telangana\x20restricted<br>'+'•\x20Entry\x20fees\x20non-refundable\x20(match\x20cancel\x20hone\x20pe\x20refund)<br>'+'•\x20Coins\x20real\x20money\x20mein\x20convert\x20nahi\x20hoti<br>'+'•\x20Rs.500+\x20withdrawal\x20ke\x20liye\x20KYC\x20mandatory<br>'+'•\x20Gaming\x20winnings\x20taxable\x20income\x20hain\x20(ITR\x20declare\x20karein)<br>'+'•\x20Cheating\x20=\x20permanent\x20ban<br>'+'•\x20Not\x20affiliated\x20with\x20Garena/Free\x20Fire<br><br>'+'<span\x20onclick=\x22window.mesShowTerms&&mesShowTerms()\x22\x20style=\x22color:#00d4ff;cursor:pointer;text-decoration:underline\x22>Full\x20Terms</span>'+'\x20&nbsp;\x20'+'<span\x20onclick=\x22window.mesShowPrivacy&&mesShowPrivacy()\x22\x20style=\x22color:#00d4ff;cursor:pointer;text-decoration:underline\x22>Privacy\x20Policy</span>'+'</div>'+'<div\x20style=\x22display:flex;gap:10px;align-items:flex-start;margin-bottom:10px\x22>'+'<input\x20type=\x22checkbox\x22\x20id=\x22_mes_tc1\x22\x20style=\x22margin-top:3px;accent-color:#00ff9c;flex-shrink:0\x22>'+'<label\x20for=\x22_mes_tc1\x22\x20style=\x22font-size:12px;color:#8888aa\x22>Main\x20Terms\x20&\x20Conditions\x20aur\x20Privacy\x20Policy\x20se\x20agree\x20karta\x20hoon</label></div>'+'<div\x20style=\x22display:flex;gap:10px;align-items:flex-start;margin-bottom:18px\x22>'+'<input\x20type=\x22checkbox\x22\x20id=\x22_mes_tc2\x22\x20style=\x22margin-top:3px;accent-color:#00ff9c;flex-shrink:0\x22>'+'<label\x20for=\x22_mes_tc2\x22\x20style=\x22font-size:12px;color:#8888aa\x22>Main\x20samajhta\x20hoon\x20ki\x20gaming\x20winnings\x20taxable\x20income\x20hain\x20aur\x20mujhe\x20ITR\x20file\x20karni\x20hogi</label></div>'+'<button\x20onclick=\x22window.mesAcceptTC(\x27'+_0x3a0824+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer\x22>✓\x20Accept\x20&\x20Continue</button>'+'</div>';_0x2559fd('📋\x20Terms\x20&\x20Conditions',_0x2a8956);}window['mesAcceptTC']=function(_0x609771){var _0x24b883=(document['getElementById']('_mes_tc1')||{})['checked'],_0x113b4e=(document['getElementById']('_mes_tc2')||{})['checked'];if(!_0x24b883||!_0x113b4e){_0x1e7079('Dono\x20checkboxes\x20tick\x20karo','err');return;}if(!window['_supa']||!window['U']||!window['U']['uid']){_0x1e7079('Login\x20sync\x20ho\x20raha\x20hai\x20—\x20ek\x20baar\x20phir\x20try\x20karo','err');return;}var _0x1fd135=document['querySelector']('button[onclick*=\x22mesAcceptTC\x22]');_0x1fd135&&(_0x1fd135['disabled']=!![],_0x1fd135['textContent']='Saving...'),window['_supa']['rpc']('accept_terms')['then'](function(_0x189c0a){if(_0x189c0a&&_0x189c0a['error'])throw _0x189c0a['error'];if(_0x189c0a&&_0x189c0a['data']&&_0x189c0a['data']['success']===![])throw new Error(_0x189c0a['data']['error']||'save\x20failed');if(window['UD'])window['UD']['accepted_policy']=!![];if(window['UD'])window['UD']['accepted_policy_at']=new Date()['toISOString']();_0x4b2227(),_0x1e7079('Welcome\x20to\x20Mini\x20eSports!','ok');})['catch'](function(_0x2f8aba){console['error']('[TC]\x20accept\x20save\x20nahi\x20hui:',_0x2f8aba&&_0x2f8aba['message']),_0x1fd135&&(_0x1fd135['disabled']=![],_0x1fd135['textContent']='✓\x20Accept\x20&\x20Continue'),_0x1e7079('Accept\x20save\x20nahi\x20hua\x20—\x20dobara\x20try\x20karo','err');});},window['mesShowKYC']=function(){if(!window['U']||!window['UD']){_0x1e7079('Please\x20login\x20first','err');return;}var _0x33dfed=window['U']['uid'];function _0x167830(_0x23423c){_0x23423c=_0x23423c||window['UD']['kyc']||{};if(window['UD'])window['UD']['kyc']=_0x23423c;if(_0x23423c['status']==='verified'||_0x23423c['status']==='approved'){_0x2559fd('🪪\x20KYC\x20Verification','<div\x20style=\x22text-align:center;padding:20px\x22><div\x20style=\x22font-size:44px;margin-bottom:12px\x22>✅</div><div\x20style=\x22font-size:15px;font-weight:700;color:#00ff9c\x22>KYC\x20Verified</div><div\x20style=\x22font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7\x22>Aapki\x20KYC\x20successfully\x20verify\x20ho\x20chuki\x20hai.</div></div>'),_0x1e7079('✓\x20KYC\x20already\x20verified!','ok');return;}if(_0x23423c['status']==='pending'){_0x2559fd('🪪\x20KYC\x20Verification','<div\x20style=\x22text-align:center;padding:20px\x22><div\x20style=\x22font-size:44px;margin-bottom:12px\x22>⏳</div><div\x20style=\x22font-size:15px;font-weight:700;color:#ffaa00\x22>KYC\x20Under\x20Review</div><div\x20style=\x22font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7\x22>Aapki\x20KYC\x20review\x20mein\x20hai.<br>24-48\x20hours\x20mein\x20verify\x20hogi.</div></div>');return;}var _0x3d78d4='<div>'+'<div\x20style=\x22background:rgba(0,212,255,.06);border:1px\x20solid\x20rgba(0,212,255,.15);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:#8888aa\x22>Rs.500+\x20withdrawal\x20ke\x20liye\x20PAN\x20mandatory\x20(IT\x20Rules\x202023)</div>'+'<div\x20style=\x22margin-bottom:12px\x22><label\x20style=\x22font-size:12px;color:#8888aa;display:block;margin-bottom:6px\x22>PAN\x20Card\x20Number\x20*</label>'+'<input\x20type=\x22text\x22\x20id=\x22_mes_pan\x22\x20placeholder=\x22ABCDE1234F\x22\x20maxlength=\x2210\x22\x20oninput=\x22this.value=this.value.toUpperCase()\x22\x20style=\x22width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box\x22></div>'+'<div\x20style=\x22margin-bottom:12px\x22><label\x20style=\x22font-size:12px;color:#8888aa;display:block;margin-bottom:6px\x22>Aadhaar\x20Number\x20*</label>'+'<input\x20type=\x22text\x22\x20id=\x22_mes_aadhaar\x22\x20placeholder=\x22123456789012\x22\x20maxlength=\x2212\x22\x20style=\x22width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box\x22></div>'+'<div\x20style=\x22margin-bottom:14px\x22><label\x20style=\x22font-size:12px;color:#8888aa;display:block;margin-bottom:6px\x22>Full\x20Name\x20(as\x20in\x20PAN)\x20*</label>'+'<input\x20type=\x22text\x22\x20id=\x22_mes_kycname\x22\x20placeholder=\x22RAHUL\x20SHARMA\x22\x20oninput=\x22this.value=this.value.toUpperCase()\x22\x20style=\x22width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.12);color:#e8e8f0;font-size:14px;box-sizing:border-box\x22></div>'+'<div\x20style=\x22display:flex;gap:10px;align-items:flex-start;margin-bottom:16px\x22>'+'<input\x20type=\x22checkbox\x22\x20id=\x22_mes_kyc_cbx\x22\x20style=\x22margin-top:3px;accent-color:#00ff9c;flex-shrink:0\x22>'+'<label\x20for=\x22_mes_kyc_cbx\x22\x20style=\x22font-size:11px;color:#8888aa\x22>Ye\x20meri\x20real\x20identity\x20hai.\x20Galat\x20info\x20=\x20ban\x20+\x20legal\x20action</label></div>'+'<button\x20onclick=\x22window.mesSubmitKYC(\x27'+_0x33dfed+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#8844cc);color:#fff;font-weight:900;font-size:14px;border:none;cursor:pointer\x22>Submit\x20KYC</button>'+'</div>';_0x2559fd('🪪\x20KYC\x20Verification',_0x3d78d4);}window['db']&&window['db']['ref']?window['db']['ref']('users/'+_0x33dfed+'/kyc')['once']('value',function(_0x23b3b4){_0x167830(_0x23b3b4&&typeof _0x23b3b4['val']==='function'?_0x23b3b4['val']():null);}):_0x167830(window['UD']['kyc']);},window['mesSubmitKYC']=function(_0x4ea29d){_0x4ea29d=_0x4ea29d||window['U']&&window['U']['uid'];var _0x5ec548=((document['getElementById']('_mes_pan')||{})['value']||'')['trim']()['toUpperCase'](),_0xafe9e3=((document['getElementById']('_mes_aadhaar')||{})['value']||'')['replace'](/\D/g,''),_0x1a5cff=((document['getElementById']('_mes_kycname')||{})['value']||'')['trim'](),_0x7daeb0=(document['getElementById']('_mes_kyc_cbx')||{})['checked'];if(!/^[A-Z]{5}[0-9]{4}[A-Z]$/['test'](_0x5ec548)){_0x1e7079('PAN\x20format\x20galat\x20—\x20example:\x20ABCDE1234F','err');return;}if(!/^\d{12}$/['test'](_0xafe9e3)){_0x1e7079('Aadhaar\x2012\x20digits\x20hona\x20chahiye','err');return;}if(_0x1a5cff['length']<0x3){_0x1e7079('Full\x20name\x20enter\x20karo','err');return;}if(!_0x7daeb0){_0x1e7079('Checkbox\x20tick\x20karo','err');return;}if(window['UD'])window['UD']['kyc']={'status':'pending','panFull':_0x5ec548,'panLast4':_0x5ec548['slice'](-0x4),'aadhaarLast4':_0xafe9e3['slice'](-0x4),'name':_0x1a5cff,'submittedAt':Date['now']()};window['db']['ref']('users/'+_0x4ea29d+'/kyc')['set']({'status':'pending','panFull':_0x5ec548,'panLast4':_0x5ec548['slice'](-0x4),'aadhaarLast4':_0xafe9e3['slice'](-0x4),'name':_0x1a5cff,'submittedAt':Date['now']()}),window['db']['ref']('kycRequests/'+_0x4ea29d)['set']({'uid':_0x4ea29d,'ign':(window['UD']||{})['ign']||'','pan':_0x5ec548,'aadhaarLast4':_0xafe9e3['slice'](-0x4),'name':_0x1a5cff,'status':'pending','submittedAt':Date['now']()}),_0x4b2227(),_0x1e7079('KYC\x20submitted!\x2024-48\x20hrs\x20mein\x20verify\x20hogi\x20✓','ok');},window['mesKYCGate']=function(_0x531095){if(!window['UD'])return![];var _0x5ce815=window['UD']['kyc']||{};if(Number(_0x531095)>0x1f4&&_0x5ce815['status']!=='verified'){var _0x2964bd=_0x5ce815['status']==='pending'?'<div\x20style=\x22background:rgba(255,170,0,.08);border:1px\x20solid\x20rgba(255,170,0,.2);border-radius:10px;padding:12px;font-size:13px;color:#ffaa00;text-align:center\x22>KYC\x20review\x20mein\x20hai\x20—\x2024-48\x20hrs</div>':'<button\x20onclick=\x22window.closeModal&&closeModal();setTimeout(function(){window.mesShowKYC&&mesShowKYC()},200)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#8844cc);color:#fff;font-weight:900;font-size:14px;border:none;cursor:pointer\x22>KYC\x20Complete\x20Karo</button>';return _0x2559fd('🔒\x20KYC\x20Required','<div\x20style=\x22text-align:center;padding:8px\x22><div\x20style=\x22font-size:40px;margin-bottom:10px\x22>🔒</div><div\x20style=\x22font-size:16px;font-weight:700;margin-bottom:8px\x22>KYC\x20Required</div><div\x20style=\x22font-size:13px;color:#8888aa;margin-bottom:18px;line-height:1.6\x22>Rs.500\x20se\x20zyada\x20withdraw\x20ke\x20liye\x20KYC\x20mandatory\x20hai</div>'+_0x2964bd+'</div>'),![];}return!![];},window['mesTDSConfirm']=function(){if(!(document['getElementById']('_mes_tds_cbx')||{})['checked']){_0x1e7079('Checkbox\x20tick\x20karo','err');return;}_0x4b2227();if(window['_mes_tds_cb'])setTimeout(window['_mes_tds_cb'],0xc8);},window['mesTDSSummary']=function(){if(!window['U']||!window['db']){_0x1e7079('Please\x20login\x20first','err');return;}window['db']['ref']('appSettings/tdsConfig')['once']('value',function(_0x1b7d1a){var _0x209881=(_0x1b7d1a['val']()||{})['active']===!![];window['db']['ref']('users/'+window['U']['uid']+'/tds')['once']('value',function(_0x262772){var _0x23f78f=_0x262772['val']()||{},_0x52a4e2=Number(_0x23f78f['winningsCredited'])||0x0,_0x2a05b2=Number(_0x23f78f['entryFeesPaid'])||0x0,_0x42e42b=Math['max'](0x0,_0x52a4e2-_0x2a05b2),_0x3be357=Math['round'](_0x42e42b*0.3),_0x3bd31b=Number(_0x23f78f['tdsDeducted'])||0x0,_0x4e4913=(function(){var _0x1d384b=new Date();return _0x1d384b['getMonth']()<0x3?_0x1d384b['getFullYear']()-0x1+'-'+_0x1d384b['getFullYear']():_0x1d384b['getFullYear']()+'-'+(_0x1d384b['getFullYear']()+0x1);}()),_0x4b5c76=_0x209881?'<span\x20style=\x22background:rgba(255,107,107,.2);color:#ff6b6b;padding:2px\x2010px;border-radius:20px;font-size:10px;font-weight:700\x22>TDS\x20ACTIVE</span>':'<span\x20style=\x22background:rgba(0,255,156,.15);color:#00ff9c;padding:2px\x2010px;border-radius:20px;font-size:10px;font-weight:700\x22>TESTING\x20PHASE</span>',_0x4ee27='<div>'+'<div\x20style=\x22display:flex;justify-content:space-between;align-items:center;margin-bottom:14px\x22>'+'<div\x20style=\x22font-size:11px;color:#555\x22><strong>FY\x20'+_0x4e4913+'</strong><br><span\x20style=\x22font-size:10px\x22>(1\x20Apr\x20'+_0x4e4913['split']('-')[0x0]+'\x20–\x2031\x20Mar\x20'+_0x4e4913['split']('-')[0x1]+')</span></div>'+_0x4b5c76+'</div>'+'<div\x20style=\x22background:#111118;border-radius:12px;padding:14px;margin-bottom:10px;font-size:12px;line-height:2;color:#8888aa\x22>'+'<div\x20style=\x22display:flex;justify-content:space-between\x22><span>Total\x20Prizes\x20Won:</span><span\x20style=\x22color:#00ff9c;font-weight:700\x22>Rs.'+_0x52a4e2+'</span></div>'+'<div\x20style=\x22display:flex;justify-content:space-between\x22><span>Entry\x20Fees\x20Paid:</span><span\x20style=\x22color:#ff6b6b;font-weight:700\x22>Rs.'+_0x2a05b2+'</span></div>'+'<div\x20style=\x22display:flex;justify-content:space-between;font-weight:900;border-top:1px\x20solid\x20rgba(255,255,255,.08);padding-top:8px;margin-top:4px\x22><span\x20style=\x22color:#fff\x22>Net\x20Winnings:</span><span\x20style=\x22color:#ffd700;font-size:14px\x22>Rs.'+_0x42e42b+'</span></div>'+'</div>';_0x209881?_0x4ee27+='<div\x20style=\x22background:#111118;border-radius:12px;padding:14px;margin-bottom:10px;font-size:12px;line-height:2;color:#8888aa\x22>'+'<div\x20style=\x22display:flex;justify-content:space-between\x22><span>Total\x20TDS\x20(30%):</span><span\x20style=\x22color:#ffaa00;font-weight:700\x22>Rs.'+_0x3be357+'</span></div>'+'<div\x20style=\x22display:flex;justify-content:space-between\x22><span>Already\x20Deducted:</span><span\x20style=\x22color:#00ff9c;font-weight:700\x22>Rs.'+_0x3bd31b+'</span></div>'+'<div\x20style=\x22display:flex;justify-content:space-between;font-weight:900;border-top:1px\x20solid\x20rgba(255,255,255,.08);padding-top:8px;margin-top:4px\x22><span\x20style=\x22color:#fff\x22>Pending\x20TDS:</span><span\x20style=\x22color:'+(Math['max'](0x0,_0x3be357-_0x3bd31b)>0x0?'#ff6b6b':'#00ff9c')+';font-size:14px\x22>Rs.'+Math['max'](0x0,_0x3be357-_0x3bd31b)+'</span></div>'+'</div>':_0x4ee27+='<div\x20style=\x22background:rgba(0,255,156,.05);border:1px\x20solid\x20rgba(0,255,156,.1);border-radius:10px;padding:12px;font-size:12px;color:#8888aa;line-height:1.8\x22>'+'TDS\x20tab\x20start\x20hoga\x20jab:<br>•\x20Monthly\x20payouts\x20Rs.5\x20lakh+\x20ho,\x20ya<br>•\x20Users\x205000+\x20ho\x20jaayein,\x20ya<br>•\x20Net\x20winnings\x20Rs.50k+\x20ho</div>',_0x4ee27+='<div\x20style=\x22font-size:11px;color:#555;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;margin-top:10px\x22>Winnings\x20income\x20hai\x20—\x20ITR\x20mein\x20declare\x20zaroor\x20karo.</div></div>',_0x2559fd('💰\x20My\x20Tax\x20Summary',_0x4ee27);});});};var _0x4f56a2=0x0,_0x6fc458=![];window['mesRG']=function(){var _0x5d227e='<div>'+'<div\x20style=\x22background:rgba(255,107,107,.06);border:1px\x20solid\x20rgba(255,107,107,.15);border-radius:12px;padding:14px;margin-bottom:12px\x22>'+'<div\x20style=\x22font-size:13px;font-weight:700;color:#ff6b6b;margin-bottom:8px\x22>Warning\x20Signs</div>'+'<div\x20style=\x22font-size:12px;color:#8888aa;line-height:1.9\x22>•\x20Haar\x20ke\x20baad\x20aur\x20lagate\x20rehna<br>•\x20Budget\x20se\x20zyada\x20spend\x20karna<br>•\x20Family\x20se\x20gaming\x20ke\x20karan\x20jhagda</div></div>'+'<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:12px;padding:14px;margin-bottom:12px\x22>'+'<div\x20style=\x22font-size:13px;font-weight:700;color:#00ff9c;margin-bottom:10px\x22>Break\x20Lena\x20Chahte\x20Ho?</div>'+'<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px\x22>'+'<button\x20onclick=\x22window.mesBreak&&mesBreak(7)\x22\x20style=\x22padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px\x20solid\x20rgba(0,255,156,.2);color:#00ff9c;font-weight:700;font-size:13px;cursor:pointer\x22>7\x20Days</button>'+'<button\x20onclick=\x22window.mesBreak&&mesBreak(30)\x22\x20style=\x22padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px\x20solid\x20rgba(0,255,156,.2);color:#00ff9c;font-weight:700;font-size:13px;cursor:pointer\x22>30\x20Days</button>'+'</div></div>'+'<div\x20style=\x22background:rgba(0,212,255,.06);border:1px\x20solid\x20rgba(0,212,255,.15);border-radius:12px;padding:14px\x22>'+'<div\x20style=\x22font-size:13px;font-weight:700;color:#00d4ff;margin-bottom:6px\x22>Help\x20Chahiye?</div>'+'<div\x20style=\x22font-size:13px;color:#ccc\x22>iCall\x20Helpline:\x20<strong\x20style=\x22color:#fff\x22>9152987821</strong></div></div></div>';_0x2559fd('🧠\x20Responsible\x20Gaming',_0x5d227e);},window['mesBreak']=function(_0x5c72cf){if(!confirm(_0x5c72cf+'\x20din\x20ka\x20break\x20lena\x20chahte\x20ho?'))return;window['db']['ref']('users/'+window['U']['uid'])['update']({'selfExcluded':!![],'selfExcludedTill':Date['now']()+_0x5c72cf*0x5265c00}),_0x4b2227(),_0x1e7079(_0x5c72cf+'\x20din\x20ka\x20break\x20laga\x20diya!','ok'),setTimeout(function(){if(window['fbAuth']){var _0x43ec58=window['fbAuth']();if(_0x43ec58)_0x43ec58['signOut']();}},0x7d0);},window['mesCheckExclusion']=function(){if(!window['UD'])return![];var _0x1d019b=Number(window['UD']['selfExcludedTill']);if(window['UD']['selfExcluded']&&_0x1d019b&&Date['now']()<_0x1d019b)return _0x1e7079('Break\x20active\x20hai\x20till\x20'+new Date(_0x1d019b)['toLocaleDateString']('en-IN'),'err'),!![];return window['UD']['selfExcluded']&&_0x1d019b&&Date['now']()>=_0x1d019b&&window['db']['ref']('users/'+window['U']['uid'])['update']({'selfExcluded':![],'selfExcludedTill':null}),![];},window['mesDispute']=function(_0x13db13,_0x16d820){var _0x218c92='<div>';_0x218c92+='<div\x20style=\x22background:rgba(255,170,0,.06);border:1px\x20solid\x20rgba(255,170,0,.15);border-radius:10px;padding:11px;margin-bottom:14px;font-size:12px;color:#8888aa\x22>Match\x20complete\x20hone\x20ke\x20<strong\x20style=\x22color:#ffaa00\x22>24\x20ghante</strong>\x20ke\x20andar\x20file\x20karo</div>';!_0x13db13?_0x218c92+='<div\x20style=\x22margin-bottom:12px\x22><label\x20style=\x22font-size:12px;color:#8888aa;display:block;margin-bottom:6px\x22>Match\x20ID:</label><input\x20type=\x22text\x22\x20id=\x22_mes_dmid\x22\x20placeholder=\x22Match\x20ID\x20enter\x20karo\x22\x20style=\x22width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.12);color:#e8e8f0;font-size:13px;box-sizing:border-box\x22></div>':_0x218c92+='<div\x20style=\x22background:#111118;border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px\x22><span\x20style=\x22color:#8888aa\x22>Match:</span>\x20<strong>'+(_0x16d820||_0x13db13)+'</strong></div>';_0x218c92+='<div\x20style=\x22margin-bottom:12px\x22><label\x20style=\x22font-size:12px;color:#8888aa;display:block;margin-bottom:6px\x22>Type:</label>'+'<select\x20id=\x22_mes_dtype\x22\x20style=\x22width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.12);color:#e8e8f0;font-size:13px\x22>'+'<option>Result\x20galat\x20hai</option><option>Prize\x20nahi\x20mila</option><option>Cheater\x20tha</option><option>Room\x20ID\x20nahi\x20mili</option><option>Entry\x20fee\x20wapas\x20chahiye</option><option>Technical\x20issue</option>'+'</select></div>',_0x218c92+='<div\x20style=\x22margin-bottom:16px\x22><label\x20style=\x22font-size:12px;color:#8888aa;display:block;margin-bottom:6px\x22>Details:</label>'+'<textarea\x20id=\x22_mes_ddesc\x22\x20placeholder=\x22Poori\x20baat\x20likho...\x22\x20style=\x22width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px\x20solid\x20rgba(255,255,255,.12);color:#e8e8f0;font-size:13px;height:80px;resize:none;box-sizing:border-box\x22></textarea></div>';var _0x48e45f=_0x13db13||'';_0x218c92+='<button\x20onclick=\x22window.mesSubmitDispute(\x27'+_0x48e45f+'\x27)\x22\x20style=\x22width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffaa00,#ff8800);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer\x22>Submit\x20Dispute</button>',_0x218c92+='</div>',_0x2559fd('🚨\x20Dispute\x20/\x20Complaint',_0x218c92);},window['mesSubmitDispute']=function(_0x9d0534){_0x9d0534=_0x9d0534||((document['getElementById']('_mes_dmid')||{})['value']||'')['trim']();var _0x511fac=(document['getElementById']('_mes_dtype')||{})['value']||'',_0x365b9f=((document['getElementById']('_mes_ddesc')||{})['value']||'')['trim']();if(!_0x9d0534){_0x1e7079('Match\x20ID\x20enter\x20karo','err');return;}if(_0x365b9f['length']<0x5){_0x1e7079('Zyada\x20detail\x20do','err');return;}var _0x325397=window['db']['ref']('disputes')['push']()['key'];window['db']['ref']('disputes/'+_0x325397)['set']({'uid':window['U']['uid'],'ign':(window['UD']||{})['ign']||'','matchId':_0x9d0534,'type':_0x511fac,'description':_0x365b9f,'status':'open','createdAt':Date['now']()}),window['db']['ref']('adminAlerts')['push']({'type':'dispute','uid':window['U']['uid'],'matchId':_0x9d0534,'disputeType':_0x511fac,'timestamp':Date['now'](),'severity':'MEDIUM'}),_0x4b2227(),_0x1e7079('Dispute\x20filed!\x2024-48\x20hrs\x20mein\x20reply\x20milegi\x20✓','ok');},window['mesLegalFooter']=function(){return'<div\x20style=\x22margin-top:20px;padding:16px;border-top:1px\x20solid\x20rgba(255,255,255,.06)\x22>'+'<div\x20style=\x22font-size:10px;color:#555;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px\x22>⚖️\x20Legal\x20&\x20Compliance</div>'+'<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px;margin-bottom:12px\x22>'+'<button\x20onclick=\x22window.mesShowTerms&&mesShowTerms()\x22\x20style=\x22padding:10px;border-radius:10px;background:#0d0d12;border:1px\x20solid\x20rgba(0,212,255,.2);color:#00d4ff;font-size:11px;font-weight:700;cursor:pointer\x22>📋\x20Terms</button>'+'<button\x20onclick=\x22window.mesShowPrivacy&&mesShowPrivacy()\x22\x20style=\x22padding:10px;border-radius:10px;background:#0d0d12;border:1px\x20solid\x20rgba(0,212,255,.2);color:#00d4ff;font-size:11px;font-weight:700;cursor:pointer\x22>🛡️\x20Privacy</button>'+'<button\x20onclick=\x22window.mesTDSSummary&&mesTDSSummary()\x22\x20style=\x22padding:10px;border-radius:10px;background:rgba(255,215,0,.05);border:1px\x20solid\x20rgba(255,215,0,.15);color:#ffd700;font-size:11px;font-weight:700;cursor:pointer\x22>💰\x20Tax\x20Summary</button>'+'<button\x20onclick=\x22window.mesShowKYC&&mesShowKYC()\x22\x20style=\x22padding:10px;border-radius:10px;background:rgba(185,100,255,.06);border:1px\x20solid\x20rgba(185,100,255,.15);color:#b964ff;font-size:11px;font-weight:700;cursor:pointer\x22>🪪\x20KYC</button>'+'<button\x20onclick=\x22window.mesRG&&mesRG()\x22\x20style=\x22padding:10px;border-radius:10px;background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);color:#00ff9c;font-size:11px;font-weight:700;cursor:pointer\x22>🧠\x20Responsible</button>'+'<button\x20onclick=\x22window.mesDispute&&mesDispute()\x22\x20style=\x22padding:10px;border-radius:10px;background:rgba(255,170,0,.06);border:1px\x20solid\x20rgba(255,170,0,.15);color:#ffaa00;font-size:11px;font-weight:700;cursor:pointer\x22>🚨\x20Dispute</button>'+'</div>'+'<div\x20style=\x22font-size:10px;color:#444;text-align:center;line-height:1.8\x22>'+_0x5e207e['appName']+'\x20|\x20'+_0x5e207e['address']+'<br>'+_0x5e207e['supportEmail']+'\x20|\x20Grievance:\x20'+_0x5e207e['grievanceEmail']+'<br>Skill-based\x20|\x2018+\x20|\x20Not\x20affiliated\x20with\x20Garena'+'</div></div>';},window['mesShowLegalModal']=function(){if(window['openModal'])window['openModal']('⚖️\x20Legal\x20&\x20Compliance',window['mesLegalFooter']());};function _0x197d4a(_0x57bcbd){if(!window['U']||!window['UD'])return;_0x57bcbd==='age'&&!window['UD']['accepted_policy']&&setTimeout(function(){_0x404691(window['U']['uid']);},0x190);}window['mesInit']=function(){if(!window['U']||!window['UD'])return;if(!_0x33b6e7()){!_0x52042a&&!_0x5275c5&&(_0x52042a=setTimeout(function(){_0x52042a=null,window['mesCheckState']();},0x708));return;}localStorage['setItem']('_mes_state',_0x33b6e7());if(window['UD']['age_verified']!==!![]){setTimeout(window['mesAgeGate'],0x708);return;}!window['UD']['accepted_policy']&&setTimeout(function(){_0x404691(window['U']['uid']);},0x708);},console['log']('[Mini\x20eSports]\x20Legal\x20v3.0\x20loaded\x20—\x20all\x20modals\x20using\x20native\x20openModal');}());
+/* ================================================================
+   MINI eSPORTS — LEGAL COMPLIANCE SYSTEM v3.0
+   India / Haryana / Panipat — Section 194BA TDS Compliant
+   All modals use app's native openModal — no XHR fetch
+   ================================================================ */
+(function () {
+  'use strict';
+
+  var THRESHOLDS = {
+    monthlyPayout: 500000,
+    totalUsers: 5000,
+    singleWinning: 50000
+  };
+
+  var CONFIG = {
+    appName: 'Mini eSports',
+    grievanceEmail: 'grievance@miniesports.in',
+    supportEmail: 'support@miniesports.in',
+    address: 'Panipat, Haryana — 132103, India',
+    grievanceOfficerName: 'Platform Owner',
+    tcVersion: '3.0',
+    bannedStates: ['Telangana', 'Andhra Pradesh', 'Tamil Nadu']
+  };
+
+  /* === Modal helpers === */
+  function _open(title, html) {
+    if (window.openModal) { window.openModal(title, html); return; }
+    // fallback
+    var ov = document.getElementById('_lc_modal'); if (ov) ov.remove();
+    ov = document.createElement('div'); ov.id = '_lc_modal';
+    ov.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;align-items:flex-end;justify-content:center';
+    ov.innerHTML = '<div style="background:#0d0d12;border-radius:20px 20px 0 0;padding:22px 18px 36px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto"><div style="font-size:17px;font-weight:900;color:#e8e8f0;margin-bottom:14px">' + title + '</div>' + html + '<button onclick="document.getElementById(\'_lc_modal\').remove()" style="margin-top:16px;width:100%;padding:12px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:#aaa;font-weight:700;cursor:pointer">Close</button></div>';
+    document.body.appendChild(ov);
+  }
+  function _close() {
+    if (window.closeModal) { window.closeModal(); return; }
+    var m = document.getElementById('_lc_modal'); if (m) m.remove();
+  }
+  function _toast(msg, type) {
+    if (window.toast) { window.toast(msg, type || 'ok'); return; }
+    alert(msg);
+  }
+  function _btn(label, color, bg, border, fn) {
+    return '<button onclick="' + fn + '" style="padding:12px 16px;border-radius:11px;background:' + bg + ';border:1px solid ' + border + ';color:' + color + ';font-size:13px;font-weight:800;cursor:pointer;width:100%;margin-bottom:8px;text-align:left">' + label + '</button>';
+  }
+
+  /* ═══════════════════════════════════════
+     1. STATE CHECK
+  ═══════════════════════════════════════ */
+  /* mesInit is called by boot, the user realtime listener and its fallback
+     poll. Keep one timer/modal only; otherwise those callers can stack the
+     same state modal several times before the first timeout fires. */
+  var _stateCheckTimer = null;
+  var _stateModalOpen = false;
+
+  function _savedState() {
+    return window.UD && typeof window.UD.state === 'string' ? window.UD.state.trim() : '';
+  }
+
+  window.mesCheckState = function () {
+    if (_stateCheckTimer) { clearTimeout(_stateCheckTimer); _stateCheckTimer = null; }
+    if (_savedState()) {
+      localStorage.setItem('_mes_state', _savedState()); // cache only; server remains source of truth
+      _stateModalOpen = false;
+      return;
+    }
+    if (_stateModalOpen) return;
+    _stateModalOpen = true;
+    var h = '<div style="text-align:center"><div style="font-size:42px;margin-bottom:10px">🗺️</div>'
+      + '<div style="font-size:12px;color:#8888aa;margin-bottom:16px">Real money gaming kuch states mein restricted hai. Apna state select karo:</div>'
+      + '<div style="display:grid;gap:8px;margin-bottom:12px">';
+    CONFIG.bannedStates.forEach(function(s) {
+      h += '<button onclick="window.mesStateBan()" style="padding:11px;border-radius:10px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.25);color:#ff6b6b;font-size:13px;font-weight:700;cursor:pointer;width:100%">' + s + '</button>';
+    });
+    ['Haryana', 'Delhi', 'Punjab', 'Other'].forEach(function(s) {
+      h += '<button data-state-choice onclick="window.mesStateOk(\'' + s + '\')" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.25);color:#00ff9c;font-size:13px;font-weight:700;cursor:pointer;width:100%">✓ ' + s + '</button>';
+    });
+    h += '</div><div style="font-size:10px;color:#555">IT Rules 2023 compliance ke liye zaroori</div></div>';
+    _open('🗺️ State Verification Required', h);
+  };
+  window.mesStateBan = function () {
+    _stateModalOpen = false;
+    _close();
+    document.body.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050507;color:#fff;padding:32px;text-align:center"><div style="font-size:56px;margin-bottom:16px">🚫</div><div style="font-size:20px;font-weight:900;color:#ff6b6b;margin-bottom:10px">Service Unavailable</div><div style="font-size:13px;color:#888;line-height:1.9;max-width:300px">Aapke state mein real money gaming legally restricted hai.</div></div>';
+  };
+  window.mesStateOk = function (state) {
+    var allowed = ['Haryana', 'Delhi', 'Punjab', 'Other'];
+    if (allowed.indexOf(state) < 0) return;
+    if (!window.U || !window.U.uid || !window._supa || !window._supaReady) {
+      _toast('Login sync ho raha hai — ek baar phir try karo', 'err');
+      return;
+    }
+    var buttons = document.querySelectorAll('[data-state-choice]');
+    buttons.forEach(function(btn) { btn.disabled = true; });
+    window._supa.from('users')
+      .update({ state: state, updated_at: new Date().toISOString() })
+      .eq('id', window.U.uid)
+      .select('state')
+      .single()
+      .then(function(res) {
+        if (res.error || !res.data || !res.data.state) {
+          throw (res.error || new Error('State save failed'));
+        }
+        if (window.UD) window.UD.state = res.data.state;
+        localStorage.setItem('_mes_state', res.data.state);
+        _stateModalOpen = false;
+        _close();
+        setTimeout(window.mesAgeGate, 400);
+      })
+      .catch(function(err) {
+        console.error('[StateGate] Failed to persist state:', err && err.message);
+        buttons.forEach(function(btn) { btn.disabled = false; });
+        _toast('State save nahi hui — dobara try karo', 'err');
+      });
+  };
+
+  /* ═══════════════════════════════════════
+     2. AGE GATE 18+
+  ═══════════════════════════════════════ */
+  window.mesAgeGate = function () {
+    if (!window.U) return;
+    /* ✅ BUG FIX (2026-07-22, CRITICAL): this used to read via
+       window.db.ref('users/'+uid+'/ageVerified').once('value', ...) —
+       core/db-bridge.js's generic read path (_supaRead) has no branch for
+       the field name 'ageVerified' at all, so this always fell through to
+       its default case and returned an empty/null snapshot regardless of
+       the actual saved value. Combined with the write-side never having
+       had real columns to write to in the first place (see the users
+       table's age_verified/date_of_birth/age_verified_at columns, added
+       this session) and UD never having this field mapped from the
+       database row (see core/listeners.js's _applyUser, also fixed this
+       session), this is why the age gate reappeared every single session
+       even for users who had already confirmed. Reading window.UD.age_verified
+       directly avoids the broken bridge path entirely — UD is populated
+       from the real database row on every load now that both other
+       halves of this bug are fixed. */
+    if (window.UD && window.UD.age_verified === true) { _runNext('age'); return; }
+    var mx = new Date(); mx.setFullYear(mx.getFullYear()-18);
+    var mxs = mx.toISOString().split('T')[0];
+    var h = '<div style="text-align:center">'
+      + '<div style="font-size:44px;margin-bottom:10px">🔞</div>'
+      + '<div style="font-size:15px;font-weight:900;margin-bottom:6px">Age Verification</div>'
+      + '<div style="font-size:12px;color:#8888aa;margin-bottom:16px">Mini eSports sirf <strong style="color:#fff">18+</strong> ke liye hai</div>'
+      + '<input type="date" id="_mes_dob" max="'+mxs+'" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.15);color:#e8e8f0;font-size:14px;box-sizing:border-box;margin-bottom:12px">'
+      + '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px">'
+      + '<input type="checkbox" id="_mes_age_cbx" style="margin-top:3px;accent-color:#00ff9c;flex-shrink:0">'
+      + '<label for="_mes_age_cbx" style="font-size:12px;color:#8888aa">Main confirm karta/karti hoon ki meri umar 18+ hai</label></div>'
+      + '<button onclick="window.mesConfirmAge()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00ff9c,#00cc7a);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer;margin-bottom:8px">✓ Confirm — Main 18+ Hoon</button>'
+      + '<button onclick="window.mesAgeUnder18()" style="width:100%;padding:10px;border-radius:12px;background:transparent;border:1px solid rgba(255,107,107,.3);color:#ff6b6b;font-size:12px;font-weight:700;cursor:pointer">Nahi, main 18 se chhota hoon</button></div>';
+    _open('🔞 Age Verification', h);
+  };
+  window.mesConfirmAge = function () {
+    var dob = (document.getElementById('_mes_dob')||{}).value;
+    var cbx = (document.getElementById('_mes_age_cbx')||{}).checked;
+    if (!dob) { _toast('Date of birth enter karo','err'); return; }
+    if (!cbx) { _toast('Checkbox tick karo','err'); return; }
+    var bd=new Date(dob), nd=new Date();
+    var age = nd.getFullYear()-bd.getFullYear() - ((nd.getMonth()<bd.getMonth()||(nd.getMonth()===bd.getMonth()&&nd.getDate()<bd.getDate()))?1:0);
+    if (age < 18) { window.mesAgeUnder18(); return; }
+    /* ✅ BUG FIX (2026-07-22, CRITICAL): this screen reappeared every
+       session because this write silently failed every single time —
+       age_verified/date_of_birth/age_verified_at never existed as columns
+       anywhere (added to the schema for the first time this session), so
+       the generic bridge path this went through (core/db-bridge.js's
+       users/{uid} full-object upsert) rejected the entire row with no
+       error surfaced here to notice. Also fixed Date.now() being sent raw
+       for age_verified_at (a TIMESTAMPTZ column) — same "raw millisecond
+       number sent where Postgres expects a real timestamp" bug class
+       fixed elsewhere this session (see the users-bridge's
+       normalizeRangeVal fix), just caught here via a different path
+       (a direct write, not a range-query filter). dob itself needs no
+       conversion — an HTML date input's value is already 'YYYY-MM-DD',
+       which is exactly what a DATE column expects. */
+    /* BUG #42 FIX (2026-07-30): moved to submit_age_verification RPC — the direct column
+       write let the CLIENT'S age<18 check be the only gate; the actual columns had a
+       raw UPDATE grant, so a direct API call could set age_verified:true with any DOB
+       (or none at all), with no server-side check. The RPC now recomputes age from the
+       submitted DOB itself server-side and rejects under-18 regardless of what the
+       client sends for age_verified. */
+    if (window._supa && window.U && window.U.uid) {
+      window._supa.rpc('submit_age_verification', { p_date_of_birth: dob }).then(function(res) {
+        if (res && res.error) {
+          console.error('[AgeGate] Failed to persist age verification:', res.error.message);
+          _toast('Age verify save nahi hui — dobara try karo', 'err');
+          return; /* Don't close/advance on a failed write — let them retry rather than see this screen again next session with no idea why. */
+        }
+        if (res && res.data && res.data.success === false) {
+          console.error('[AgeGate] Server rejected age verification:', res.data.error);
+          _toast('Age verify save nahi hui — dobara try karo', 'err');
+          return;
+        }
+        if (window.UD) { window.UD.age_verified = true; }
+        _close(); _toast('Age verified!','ok');
+        setTimeout(function(){ _runNext('age'); }, 500);
+      });
+    } else {
+      console.error('[AgeGate] window._supa or window.U.uid not available — cannot persist age verification');
+      _toast('Connection error — dobara try karo', 'err');
+    }
+  };
+  window.mesAgeUnder18 = function () {
+    _close();
+    /* ✅ FIX (2026-09-15): bare firebase.auth() → "[DEFAULT]" app → threw
+       app-compat/no-app, uncaught here, so hitting the 18+ gate crashed
+       instead of signing the user out. */
+    if (window.fbAuth) { var _a = window.fbAuth(); if (_a) _a.signOut(); }
+    document.body.innerHTML = '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#050507;color:#fff;padding:32px;text-align:center"><div style="font-size:56px;margin-bottom:16px">🔞</div><div style="font-size:20px;font-weight:900;color:#ff6b6b;margin-bottom:10px">18+ Only</div></div>';
+  };
+
+  /* ═══════════════════════════════════════
+     3. TERMS & CONDITIONS
+  ═══════════════════════════════════════ */
+  window.mesShowTerms = function () {
+    var h = '<div style="font-size:12px;color:#8888aa;line-height:1.9">'
+      + '<p style="color:#00d4ff;font-weight:900;font-size:14px;margin-bottom:12px">Mini eSports — Terms & Conditions</p>'
+      + '<p><strong style="color:#fff">1. Skill-Based Platform:</strong> Sabhi tournaments games of skill hain. Gambling nahi. Match result player ki ability, strategy aur performance par depend karta hai.</p>'
+      + '<p><strong style="color:#fff">2. Eligibility:</strong> Sirf 18 saal ya zyada umar ke Indian residents. Telangana, Andhra Pradesh, Tamil Nadu ke users paid tournaments mein participate nahi kar sakte.</p>'
+      + '<p><strong style="color:#fff">3. One Account:</strong> Ek user = sirf ek account. Multiple accounts = permanent ban.</p>'
+      + '<p><strong style="color:#fff">4. Third-Party Disclaimer:</strong> Mini eSports ka Garena/Free Fire se koi affiliation nahi. Hum sirf tournament organize karte hain. Game server issues ke liye hum liable nahi.</p>'
+      + '<p><strong style="color:#fff">5. Entry Fees:</strong> Match start hone ke baad non-refundable. Platform match cancel kare to full refund milega.</p>'
+      + '<p><strong style="color:#fff">6. Coins:</strong> Virtual currency — real money mein convert nahi hoti. Coin purchases non-refundable.</p>'
+      + '<p><strong style="color:#fff">7. KYC:</strong> Rs.500+ withdrawal ke liye PAN card mandatory (IT Rules 2023). Ek PAN = ek account.</p>'
+      + '<p><strong style="color:#fff">8. Tax (Section 194BA):</strong> Gaming winnings taxable income hain. Jab platform thresholds cross kare tab 30% TDS auto-deduct hoga. Abhi testing phase — user khud ITR declare kare.</p>'
+      + '<p><strong style="color:#fff">9. Anti-Cheat:</strong> Cheating, hacking, fake screenshots, multiple accounts, VPN bypass = permanent ban + legal action.</p>'
+      + '<p><strong style="color:#fff">10. Liability:</strong> Server errors, game crashes, internet failure ke liye platform liable nahi. Max liability = deposited amount.</p>'
+      + '<p><strong style="color:#fff">11. Responsible Gaming:</strong> Sirf woh amount invest karo jo afford kar sako. Self-exclusion feature available hai. iCall: 9152987821.</p>'
+      + '<p><strong style="color:#fff">12. Jurisdiction:</strong> Panipat, Haryana courts. Disputes: Arbitration & Conciliation Act 1996.</p>'
+      + '<p><strong style="color:#fff">13. Grievance Officer:</strong> Platform Owner | grievance@miniesports.in | Panipat, Haryana. Response: 24hr ack, 15 days resolution.</p>'
+      + '<p style="font-size:10px;color:#555;margin-top:12px">IT Act 2000 | IT Rules 2021 | Income Tax Act 1961 | Last Updated: 2025</p>'
+      + '</div>';
+    _open('📋 Terms & Conditions', h);
+  };
+
+  /* ═══════════════════════════════════════
+     4. PRIVACY POLICY
+  ═══════════════════════════════════════ */
+  window.mesShowPrivacy = function () {
+    var tdsActive = false;
+    function _renderPrivacy(active) {
+      var taxSection = active
+        ? '<p><strong style="color:#ff6b6b">TDS ACTIVE (Section 194BA):</strong> Platform withdrawal pe 30% TDS deduct karta hai aur govt ko deposit karta hai. Deduction Form 26AS mein reflect hoga. ITR file karna user ki zimmedari hai.</p>'
+        : '<p><strong style="color:#ffd700">Testing Phase — TDS:</strong> Abhi TDS deduct nahi ho raha. Lekin gaming winnings taxable hain — user khud ITR mein declare kare. Thresholds cross hone par 30% TDS auto-on hoga.</p>';
+      var h = '<div style="font-size:12px;color:#8888aa;line-height:1.9">'
+        + '<p style="color:#00d4ff;font-weight:900;font-size:14px;margin-bottom:12px">Mini eSports — Privacy Policy</p>'
+        + '<p><strong style="color:#fff">Platform:</strong> Mini eSports, Panipat, Haryana 132103. IT Act 2000 & IT Rules 2021 compliant.</p>'
+        + '<p><strong style="color:#fff">18+ Only:</strong> Hum jaante bujhe 18 se kum umar ke users ka data collect nahi karte.</p>'
+        + '<p><strong style="color:#fff">Data Collected:</strong> Mobile/email, IGN, Free Fire UID, device info, UPI ID (withdrawal ke liye), PAN number, Aadhaar last 4 digits (KYC ke liye).</p>'
+        + '<p><strong style="color:#fff">Financial Records:</strong> Har withdrawal, prize, entry fee ka record tax compliance ke liye maintain hota hai. Account delete hone ke baad 7 saal tak store (IT Act requirement).</p>'
+        + taxSection
+        + '<p><strong style="color:#fff">KYC Data:</strong> PAN securely stored, sirf admin access. Aadhaar last 4 digits only. Ek PAN = ek account.</p>'
+        + '<p><strong style="color:#fff">Data Sharing:</strong> Sirf legal requirement ya govt authority pe. Hum aapka data advertiser ko NAHI beche.</p>'
+        + '<p><strong style="color:#fff">Security:</strong> Firebase + HTTPS. Security breach hogi to 72 ghante mein notify karenge.</p>'
+        + '<p><strong style="color:#fff">State Restrictions:</strong> Telangana, AP, Tamil Nadu ke users automatically block hain.</p>'
+        + '<p><strong style="color:#fff">Your Rights:</strong> Access, correction, deletion ka right. Financial records 7 saal retention required.</p>'
+        + '<p><strong style="color:#fff">Grievance Officer:</strong> Platform Owner | grievance@miniesports.in | 24hr acknowledgement, 15 days resolution.</p>'
+        + '<p style="font-size:10px;color:#555;margin-top:12px">IT Act 2000 | IT Rules 2021 | Last Updated: 2025</p>'
+        + '</div>';
+      _open('🛡️ Privacy Policy', h);
+    }
+    if (window.db) {
+      window.db.ref('appSettings/tdsConfig').once('value', function(s) {
+        _renderPrivacy((s.val()||{}).active === true);
+      }).catch(function(){ _renderPrivacy(false); });
+    } else { _renderPrivacy(false); }
+  };
+
+  /* ═══════════════════════════════════════
+     5. T&C CONSENT (first-time popup)
+  ═══════════════════════════════════════ */
+  function _showTC(uid) {
+    var h = '<div>'
+      + '<div style="background:#111118;border-radius:10px;padding:14px;font-size:12px;color:#8888aa;line-height:1.85;max-height:200px;overflow-y:auto;margin-bottom:14px;border:1px solid rgba(255,255,255,.06)">'
+      + '<strong style="color:#fff">Mini eSports Terms (Summary):</strong><br><br>'
+      + '• Skill-based esports platform — gambling nahi<br>'
+      + '• Sirf 18+ users | TN/AP/Telangana restricted<br>'
+      + '• Entry fees non-refundable (match cancel hone pe refund)<br>'
+      + '• Coins real money mein convert nahi hoti<br>'
+      + '• Rs.500+ withdrawal ke liye KYC mandatory<br>'
+      + '• Gaming winnings taxable income hain (ITR declare karein)<br>'
+      + '• Cheating = permanent ban<br>'
+      + '• Not affiliated with Garena/Free Fire<br><br>'
+      + '<span onclick="window.mesShowTerms&&mesShowTerms()" style="color:#00d4ff;cursor:pointer;text-decoration:underline">Full Terms</span>'
+      + ' &nbsp; '
+      + '<span onclick="window.mesShowPrivacy&&mesShowPrivacy()" style="color:#00d4ff;cursor:pointer;text-decoration:underline">Privacy Policy</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">'
+      + '<input type="checkbox" id="_mes_tc1" style="margin-top:3px;accent-color:#00ff9c;flex-shrink:0">'
+      + '<label for="_mes_tc1" style="font-size:12px;color:#8888aa">Main Terms & Conditions aur Privacy Policy se agree karta hoon</label></div>'
+      + '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:18px">'
+      + '<input type="checkbox" id="_mes_tc2" style="margin-top:3px;accent-color:#00ff9c;flex-shrink:0">'
+      + '<label for="_mes_tc2" style="font-size:12px;color:#8888aa">Main samajhta hoon ki gaming winnings taxable income hain aur mujhe ITR file karni hogi</label></div>'
+      + '<button onclick="window.mesAcceptTC(\''+uid+'\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer">✓ Accept & Continue</button>'
+      + '</div>';
+    _open('📋 Terms & Conditions', h);
+  }
+  window.mesAcceptTC = function (uid) {
+    var c1=(document.getElementById('_mes_tc1')||{}).checked;
+    var c2=(document.getElementById('_mes_tc2')||{}).checked;
+    if (!c1||!c2) { _toast('Dono checkboxes tick karo','err'); return; }
+
+    /* ✅ FIX (live-testing 2026-10-01, walk9v-proven): pehle ye niche wali
+       `window.DB.users.update({accepted_policy:true})` write par bharosa tha —
+       us write ko DB ka guard_users_self_update trigger
+       "Column accepted_policy is not self-editable" (P0001) se reject kar
+       deta tha, aur error .then(null, ...) me chup-chaap nigal liya jata tha.
+       Nateeja: T&C kabhi save hi nahi hoti thi, aur HAR reload/session par
+       wahi "Terms & Conditions" screen wapas aa jati thi (walk9v evidence:
+       network 400 + console [DB:users.update] P0001 + DB accepted_policy=false
+       + reload par modal dobara). Ab server-side RPC accept_terms()
+       (security definer, owner postgres) se save hota hai — bilkul waise hi
+       jaise age-gate submit_age_verification() RPC use karta hai. Write fail
+       hone par modal KHULA rehta hai + toast aata hai, taaki user retry kar
+       sake instead of chup-chaap aage badh jane ki. */
+    if (!window._supa || !window.U || !window.U.uid) {
+      _toast('Login sync ho raha hai — ek baar phir try karo', 'err');
+      return;
+    }
+    var btn = document.querySelector('button[onclick*="mesAcceptTC"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+    window._supa.rpc('accept_terms').then(function (res) {
+      if (res && res.error) throw res.error;
+      if (res && res.data && res.data.success === false) throw new Error(res.data.error || 'save failed');
+      if (window.UD) window.UD.accepted_policy = true;
+      if (window.UD) window.UD.accepted_policy_at = new Date().toISOString();
+      _close(); _toast('Welcome to Mini eSports!','ok');
+    }).catch(function (err) {
+      console.error('[TC] accept save nahi hui:', err && err.message);
+      if (btn) { btn.disabled = false; btn.textContent = '✓ Accept & Continue'; }
+      _toast('Accept save nahi hua — dobara try karo', 'err');
+    });
+  };
+
+  /* ═══════════════════════════════════════
+     6. KYC
+  ═══════════════════════════════════════ */
+  window.mesShowKYC = function () {
+    if (!window.U||!window.UD) { _toast('Please login first','err'); return; }
+    var uid=window.U.uid;
+    function _renderKYC(kyc) {
+      kyc = kyc || window.UD.kyc || {};
+      if (window.UD) window.UD.kyc = kyc;
+      if (kyc.status==='verified' || kyc.status==='approved') {
+        _open('🪪 KYC Verification', '<div style="text-align:center;padding:20px"><div style="font-size:44px;margin-bottom:12px">✅</div><div style="font-size:15px;font-weight:700;color:#00ff9c">KYC Verified</div><div style="font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7">Aapki KYC successfully verify ho chuki hai.</div></div>');
+        _toast('✓ KYC already verified!','ok');
+        return;
+      }
+      if (kyc.status==='pending') {
+        _open('🪪 KYC Verification', '<div style="text-align:center;padding:20px"><div style="font-size:44px;margin-bottom:12px">⏳</div><div style="font-size:15px;font-weight:700;color:#ffaa00">KYC Under Review</div><div style="font-size:12px;color:#8888aa;margin-top:8px;line-height:1.7">Aapki KYC review mein hai.<br>24-48 hours mein verify hogi.</div></div>');
+        return;
+      }
+      var h = '<div>'
+        + '<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:#8888aa">Rs.500+ withdrawal ke liye PAN mandatory (IT Rules 2023)</div>'
+        + '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">PAN Card Number *</label>'
+        + '<input type="text" id="_mes_pan" placeholder="ABCDE1234F" maxlength="10" oninput="this.value=this.value.toUpperCase()" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box"></div>'
+        + '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Aadhaar Number *</label>'
+        + '<input type="text" id="_mes_aadhaar" placeholder="123456789012" maxlength="12" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:15px;letter-spacing:2px;box-sizing:border-box"></div>'
+        + '<div style="margin-bottom:14px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Full Name (as in PAN) *</label>'
+        + '<input type="text" id="_mes_kycname" placeholder="RAHUL SHARMA" oninput="this.value=this.value.toUpperCase()" style="width:100%;padding:12px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:14px;box-sizing:border-box"></div>'
+        + '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px">'
+        + '<input type="checkbox" id="_mes_kyc_cbx" style="margin-top:3px;accent-color:#00ff9c;flex-shrink:0">'
+        + '<label for="_mes_kyc_cbx" style="font-size:11px;color:#8888aa">Ye meri real identity hai. Galat info = ban + legal action</label></div>'
+        + '<button onclick="window.mesSubmitKYC(\''+uid+'\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#8844cc);color:#fff;font-weight:900;font-size:14px;border:none;cursor:pointer">Submit KYC</button>'
+        + '</div>';
+      _open('🪪 KYC Verification', h);
+    }
+    if (window.db && window.db.ref) {
+      window.db.ref('users/' + uid + '/kyc').once('value', function(s) {
+        _renderKYC(s && typeof s.val === 'function' ? s.val() : null);
+      });
+    } else {
+      _renderKYC(window.UD.kyc);
+    }
+  };
+  window.mesSubmitKYC = function (uid) {
+    uid = uid || (window.U && window.U.uid);
+    var pan=((document.getElementById('_mes_pan')||{}).value||'').trim().toUpperCase();
+    var aadhaar=((document.getElementById('_mes_aadhaar')||{}).value||'').replace(/\D/g,'');
+    var name=((document.getElementById('_mes_kycname')||{}).value||'').trim();
+    var cbx=(document.getElementById('_mes_kyc_cbx')||{}).checked;
+    if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) { _toast('PAN format galat — example: ABCDE1234F','err'); return; }
+    if (!/^\d{12}$/.test(aadhaar)) { _toast('Aadhaar 12 digits hona chahiye','err'); return; }
+    if (name.length<3) { _toast('Full name enter karo','err'); return; }
+    if (!cbx) { _toast('Checkbox tick karo','err'); return; }
+    if (window.UD) window.UD.kyc = { status:'pending', panFull:pan, panLast4:pan.slice(-4), aadhaarLast4:aadhaar.slice(-4), name:name, submittedAt:Date.now() };
+    window.db.ref('users/'+uid+'/kyc').set({status:'pending',panFull:pan,panLast4:pan.slice(-4),aadhaarLast4:aadhaar.slice(-4),name:name,submittedAt:Date.now()});
+    window.db.ref('kycRequests/'+uid).set({uid:uid,ign:(window.UD||{}).ign||'',pan:pan,aadhaarLast4:aadhaar.slice(-4),name:name,status:'pending',submittedAt:Date.now()});
+    _close(); _toast('KYC submitted! 24-48 hrs mein verify hogi ✓','ok');
+  };
+  window.mesKYCGate = function (amt) {
+    if (!window.UD) return false;
+    var kyc=window.UD.kyc||{};
+    if (Number(amt)>500 && kyc.status!=='verified') {
+      var msg = kyc.status==='pending'
+        ? '<div style="background:rgba(255,170,0,.08);border:1px solid rgba(255,170,0,.2);border-radius:10px;padding:12px;font-size:13px;color:#ffaa00;text-align:center">KYC review mein hai — 24-48 hrs</div>'
+        : '<button onclick="window.closeModal&&closeModal();setTimeout(function(){window.mesShowKYC&&mesShowKYC()},200)" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#b964ff,#8844cc);color:#fff;font-weight:900;font-size:14px;border:none;cursor:pointer">KYC Complete Karo</button>';
+      _open('🔒 KYC Required','<div style="text-align:center;padding:8px"><div style="font-size:40px;margin-bottom:10px">🔒</div><div style="font-size:16px;font-weight:700;margin-bottom:8px">KYC Required</div><div style="font-size:13px;color:#8888aa;margin-bottom:18px;line-height:1.6">Rs.500 se zyada withdraw ke liye KYC mandatory hai</div>'+msg+'</div>');
+      return false;
+    }
+    return true;
+  };
+
+  /* ═══════════════════════════════════════
+     7. TDS DISCLOSURE
+  ═══════════════════════════════════════ */
+  window.mesTDSConfirm = function () {
+    if (!(document.getElementById('_mes_tds_cbx')||{}).checked) { _toast('Checkbox tick karo','err'); return; }
+    _close(); if (window._mes_tds_cb) setTimeout(window._mes_tds_cb,200);
+  };
+
+  /* ═══════════════════════════════════════
+     8. TDS SUMMARY
+  ═══════════════════════════════════════ */
+  window.mesTDSSummary = function () {
+    if (!window.U||!window.db) { _toast('Please login first','err'); return; }
+    window.db.ref('appSettings/tdsConfig').once('value', function(cfgSnap) {
+      var tdsActive=(cfgSnap.val()||{}).active===true;
+      window.db.ref('users/'+window.U.uid+'/tds').once('value', function(snap) {
+        var d=snap.val()||{};
+        var won=Number(d.winningsCredited)||0, fees=Number(d.entryFeesPaid)||0;
+        var net=Math.max(0,won-fees), owed=Math.round(net*0.30), ded=Number(d.tdsDeducted)||0;
+        var fy=(function(){var dt=new Date();return dt.getMonth()<3?(dt.getFullYear()-1)+'-'+dt.getFullYear():dt.getFullYear()+'-'+(dt.getFullYear()+1);})();
+        var badge=tdsActive?'<span style="background:rgba(255,107,107,.2);color:#ff6b6b;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700">TDS ACTIVE</span>':'<span style="background:rgba(0,255,156,.15);color:#00ff9c;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700">TESTING PHASE</span>';
+        var h='<div>'
+          /* ✅ Bug 35 Fix: Financial year label + full date range for Indian tax compliance */
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'
+          +'<div style="font-size:11px;color:#555"><strong>FY '+fy+'</strong><br><span style="font-size:10px">(1 Apr '+(fy.split('-')[0])+' – 31 Mar '+(fy.split('-')[1])+')</span></div>'
+          +badge+'</div>'
+          +'<div style="background:#111118;border-radius:12px;padding:14px;margin-bottom:10px;font-size:12px;line-height:2;color:#8888aa">'
+          +'<div style="display:flex;justify-content:space-between"><span>Total Prizes Won:</span><span style="color:#00ff9c;font-weight:700">Rs.'+won+'</span></div>'
+          +'<div style="display:flex;justify-content:space-between"><span>Entry Fees Paid:</span><span style="color:#ff6b6b;font-weight:700">Rs.'+fees+'</span></div>'
+          +'<div style="display:flex;justify-content:space-between;font-weight:900;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;margin-top:4px"><span style="color:#fff">Net Winnings:</span><span style="color:#ffd700;font-size:14px">Rs.'+net+'</span></div>'
+          +'</div>';
+        if (tdsActive) {
+          h+='<div style="background:#111118;border-radius:12px;padding:14px;margin-bottom:10px;font-size:12px;line-height:2;color:#8888aa">'
+            +'<div style="display:flex;justify-content:space-between"><span>Total TDS (30%):</span><span style="color:#ffaa00;font-weight:700">Rs.'+owed+'</span></div>'
+            +'<div style="display:flex;justify-content:space-between"><span>Already Deducted:</span><span style="color:#00ff9c;font-weight:700">Rs.'+ded+'</span></div>'
+            +'<div style="display:flex;justify-content:space-between;font-weight:900;border-top:1px solid rgba(255,255,255,.08);padding-top:8px;margin-top:4px"><span style="color:#fff">Pending TDS:</span><span style="color:'+(Math.max(0,owed-ded)>0?'#ff6b6b':'#00ff9c')+';font-size:14px">Rs.'+Math.max(0,owed-ded)+'</span></div>'
+            +'</div>';
+        } else {
+          h+='<div style="background:rgba(0,255,156,.05);border:1px solid rgba(0,255,156,.1);border-radius:10px;padding:12px;font-size:12px;color:#8888aa;line-height:1.8">'
+            +'TDS tab start hoga jab:<br>• Monthly payouts Rs.5 lakh+ ho, ya<br>• Users 5000+ ho jaayein, ya<br>• Net winnings Rs.50k+ ho</div>';
+        }
+        h+='<div style="font-size:11px;color:#555;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;margin-top:10px">Winnings income hai — ITR mein declare zaroor karo.</div></div>';
+        _open('💰 My Tax Summary', h);
+      });
+    });
+  };
+
+  /* ═══════════════════════════════════════
+     9. TDS THRESHOLD AUTO-ACTIVATION
+  ═══════════════════════════════════════ */
+  var _thresholdChecked = 0;
+  /* Issue #13 Fix: Add mutex lock so concurrent withdrawal approvals cannot
+     trigger duplicate TDS activation. _thresholdLock prevents re-entry while
+     an async check is in flight. */
+  var _thresholdLock = false;
+
+  /* ═══════════════════════════════════════
+     10. RESPONSIBLE GAMING
+  ═══════════════════════════════════════ */
+  window.mesRG = function () {
+    var h='<div>'
+      +'<div style="background:rgba(255,107,107,.06);border:1px solid rgba(255,107,107,.15);border-radius:12px;padding:14px;margin-bottom:12px">'
+      +'<div style="font-size:13px;font-weight:700;color:#ff6b6b;margin-bottom:8px">Warning Signs</div>'
+      +'<div style="font-size:12px;color:#8888aa;line-height:1.9">• Haar ke baad aur lagate rehna<br>• Budget se zyada spend karna<br>• Family se gaming ke karan jhagda</div></div>'
+      +'<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:12px;padding:14px;margin-bottom:12px">'
+      +'<div style="font-size:13px;font-weight:700;color:#00ff9c;margin-bottom:10px">Break Lena Chahte Ho?</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
+      +'<button onclick="window.mesBreak&&mesBreak(7)" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.2);color:#00ff9c;font-weight:700;font-size:13px;cursor:pointer">7 Days</button>'
+      +'<button onclick="window.mesBreak&&mesBreak(30)" style="padding:11px;border-radius:10px;background:rgba(0,255,156,.1);border:1px solid rgba(0,255,156,.2);color:#00ff9c;font-weight:700;font-size:13px;cursor:pointer">30 Days</button>'
+      +'</div></div>'
+      +'<div style="background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:14px">'
+      +'<div style="font-size:13px;font-weight:700;color:#00d4ff;margin-bottom:6px">Help Chahiye?</div>'
+      +'<div style="font-size:13px;color:#ccc">iCall Helpline: <strong style="color:#fff">9152987821</strong></div></div></div>';
+    _open('🧠 Responsible Gaming', h);
+  };
+  window.mesBreak = function (days) {
+    if (!confirm(days+' din ka break lena chahte ho?')) return;
+    window.db.ref('users/'+window.U.uid).update({selfExcluded:true,selfExcludedTill:Date.now()+days*864e5});
+    _close(); _toast(days+' din ka break laga diya!','ok');
+    setTimeout(function(){if(window.fbAuth){var _a=window.fbAuth();if(_a)_a.signOut();}},2000);
+  };
+  window.mesCheckExclusion = function () {
+    if (!window.UD) return false;
+    var till=Number(window.UD.selfExcludedTill);
+    if (window.UD.selfExcluded&&till&&Date.now()<till) { _toast('Break active hai till '+new Date(till).toLocaleDateString('en-IN'),'err'); return true; }
+    if (window.UD.selfExcluded&&till&&Date.now()>=till) { window.db.ref('users/'+window.U.uid).update({selfExcluded:false,selfExcludedTill:null}); }
+    return false;
+  };
+
+  /* ═══════════════════════════════════════
+     11. DISPUTE
+  ═══════════════════════════════════════ */
+  window.mesDispute = function (matchId, matchName) {
+    var h = '<div>';
+    h += '<div style="background:rgba(255,170,0,.06);border:1px solid rgba(255,170,0,.15);border-radius:10px;padding:11px;margin-bottom:14px;font-size:12px;color:#8888aa">Match complete hone ke <strong style="color:#ffaa00">24 ghante</strong> ke andar file karo</div>';
+    if (!matchId) {
+      h += '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Match ID:</label><input type="text" id="_mes_dmid" placeholder="Match ID enter karo" style="width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:13px;box-sizing:border-box"></div>';
+    } else {
+      h += '<div style="background:#111118;border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px"><span style="color:#8888aa">Match:</span> <strong>' + (matchName || matchId) + '</strong></div>';
+    }
+    h += '<div style="margin-bottom:12px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Type:</label>'
+      + '<select id="_mes_dtype" style="width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:13px">'
+      + '<option>Result galat hai</option><option>Prize nahi mila</option><option>Cheater tha</option><option>Room ID nahi mili</option><option>Entry fee wapas chahiye</option><option>Technical issue</option>'
+      + '</select></div>';
+    h += '<div style="margin-bottom:16px"><label style="font-size:12px;color:#8888aa;display:block;margin-bottom:6px">Details:</label>'
+      + '<textarea id="_mes_ddesc" placeholder="Poori baat likho..." style="width:100%;padding:11px;border-radius:10px;background:#1a1a22;border:1px solid rgba(255,255,255,.12);color:#e8e8f0;font-size:13px;height:80px;resize:none;box-sizing:border-box"></textarea></div>';
+    var mid = matchId || '';
+    h += '<button onclick="window.mesSubmitDispute(\'' + mid + '\')" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#ffaa00,#ff8800);color:#000;font-weight:900;font-size:14px;border:none;cursor:pointer">Submit Dispute</button>';
+    h += '</div>';
+    _open('🚨 Dispute / Complaint', h);
+  };
+
+  window.mesSubmitDispute = function (mid) {
+    mid=mid||((document.getElementById('_mes_dmid')||{}).value||'').trim();
+    var type=((document.getElementById('_mes_dtype')||{}).value||'');
+    var desc=((document.getElementById('_mes_ddesc')||{}).value||'').trim();
+    if (!mid) { _toast('Match ID enter karo','err'); return; }
+    if (desc.length<5) { _toast('Zyada detail do','err'); return; }
+    var did=window.db.ref('disputes').push().key;
+    window.db.ref('disputes/'+did).set({uid:window.U.uid,ign:(window.UD||{}).ign||'',matchId:mid,type:type,description:desc,status:'open',createdAt:Date.now()});
+    window.db.ref('adminAlerts').push({type:'dispute',uid:window.U.uid,matchId:mid,disputeType:type,timestamp:Date.now(),severity:'MEDIUM'});
+    _close(); _toast('Dispute filed! 24-48 hrs mein reply milegi ✓','ok');
+  };
+
+  /* ═══════════════════════════════════════
+     12. LEGAL FOOTER (now opened as its own modal from Settings,
+     2026-08 — see mesShowLegalModal below)
+  ═══════════════════════════════════════ */
+  window.mesLegalFooter = function () {
+    return '<div style="margin-top:20px;padding:16px;border-top:1px solid rgba(255,255,255,.06)">'
+      +'<div style="font-size:10px;color:#555;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">⚖️ Legal & Compliance</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'
+      +'<button onclick="window.mesShowTerms&&mesShowTerms()" style="padding:10px;border-radius:10px;background:#0d0d12;border:1px solid rgba(0,212,255,.2);color:#00d4ff;font-size:11px;font-weight:700;cursor:pointer">📋 Terms</button>'
+      +'<button onclick="window.mesShowPrivacy&&mesShowPrivacy()" style="padding:10px;border-radius:10px;background:#0d0d12;border:1px solid rgba(0,212,255,.2);color:#00d4ff;font-size:11px;font-weight:700;cursor:pointer">🛡️ Privacy</button>'
+      +'<button onclick="window.mesTDSSummary&&mesTDSSummary()" style="padding:10px;border-radius:10px;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.15);color:#ffd700;font-size:11px;font-weight:700;cursor:pointer">💰 Tax Summary</button>'
+      +'<button onclick="window.mesShowKYC&&mesShowKYC()" style="padding:10px;border-radius:10px;background:rgba(185,100,255,.06);border:1px solid rgba(185,100,255,.15);color:#b964ff;font-size:11px;font-weight:700;cursor:pointer">🪪 KYC</button>'
+      +'<button onclick="window.mesRG&&mesRG()" style="padding:10px;border-radius:10px;background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);color:#00ff9c;font-size:11px;font-weight:700;cursor:pointer">🧠 Responsible</button>'
+      +'<button onclick="window.mesDispute&&mesDispute()" style="padding:10px;border-radius:10px;background:rgba(255,170,0,.06);border:1px solid rgba(255,170,0,.15);color:#ffaa00;font-size:11px;font-weight:700;cursor:pointer">🚨 Dispute</button>'
+      +'</div>'
+      +'<div style="font-size:10px;color:#444;text-align:center;line-height:1.8">'
+      +CONFIG.appName+' | '+CONFIG.address+'<br>'+CONFIG.supportEmail+' | Grievance: '+CONFIG.grievanceEmail+'<br>Skill-based | 18+ | Not affiliated with Garena'
+      +'</div></div>';
+  };
+
+  /* BUG FIX (2026-08): "Legal & Compliance" used to render unconditionally
+     at the bottom of the Profile screen every time, even though it's
+     rarely-needed reference content — moved into its own modal, opened
+     from a dedicated button in Settings (⚙), just above Logout. */
+  window.mesShowLegalModal = function() {
+    if (window.openModal) window.openModal('⚖️ Legal & Compliance', window.mesLegalFooter());
+  };
+
+  /* ═══════════════════════════════════════
+     13. INIT FLOW
+  ═══════════════════════════════════════ */
+  function _runNext(step) {
+    if (!window.U||!window.UD) return;
+    /* BUG FIX (2026-07): was checking window.UD.tcAccepted, which Supabase
+       never returns (see mesAcceptTC above) — always falsy, so this fired
+       every time. Now reads the real, persisted accepted_policy field. */
+    if (step==='age'&&!window.UD.accepted_policy) { setTimeout(function(){_showTC(window.U.uid);},400); }
+  }
+  window.mesInit = function () {
+    if (!window.U||!window.UD) return;
+    /* users.state is the durable source of truth. The old localStorage value
+       was only "1", so it could not prove which state had been selected. */
+    if (!_savedState()) {
+      if (!_stateCheckTimer && !_stateModalOpen) {
+        _stateCheckTimer = setTimeout(function() {
+          _stateCheckTimer = null;
+          window.mesCheckState();
+        }, 1800);
+      }
+      return;
+    }
+    localStorage.setItem('_mes_state', _savedState());
+    if (window.UD.age_verified !== true) { setTimeout(window.mesAgeGate,1800); return; }
+    if (!window.UD.accepted_policy) { setTimeout(function(){_showTC(window.U.uid);},1800); }
+  };
+
+  console.log('[Mini eSports] Legal v3.0 loaded — all modals using native openModal');
+})();

@@ -1,1 +1,167 @@
-(function(){'use strict';var _0x16e2a4=(function(){var _0x5246c8=!![];return function(_0x274f2d,_0x49368a){var _0x5ea015=_0x5246c8?function(){if(_0x49368a){var _0x3ea2bc=_0x49368a['apply'](_0x274f2d,arguments);return _0x49368a=null,_0x3ea2bc;}}:function(){};return _0x5246c8=![],_0x5ea015;};}()),_0x3c15ab=_0x16e2a4(this,function(){if(_0x3c15ab['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3c15ab['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3c15ab)['search']('(((.+)+)+)+$');});_0x3c15ab();window['showStreamSettings']=function(){if(!window['U']||!window['UD']){if(window['toast'])toast('Pehle\x20login\x20karo!','err');return;}if(!window['isPremiumActive']||!isPremiumActive(0x2)){if(window['toast'])toast('👑\x20Live\x20Stream\x20sirf\x20Gold\x20Premium\x20(ya\x20usse\x20upar)\x20ke\x20liye\x20hai','err');window['showPremiumUpgrade']&&setTimeout(showPremiumUpgrade,0x12c);return;}var _0xa7e625=window['U']['uid'],_0x3c393d=window['UD']['streamLink']||window['UD']['stream_link']||'',_0x1ec958=window['UD']['streamTitle']||window['UD']['stream_title']||'',_0x226b54=window['UD']['isLive']||window['UD']['is_live']||![],_0x574619='<div\x20style=\x22text-align:center;padding:6px\x200\x2014px\x22>';_0x574619+='<div\x20style=\x22font-size:34px;margin-bottom:6px\x22>📺</div>',_0x574619+='<div\x20style=\x22font-size:16px;font-weight:900;color:#fff\x22>Live\x20Stream\x20Settings</div>',_0x574619+='<div\x20style=\x22font-size:12px;color:#888;margin-top:3px\x22>Apna\x20stream\x20share\x20karo\x20—\x20viewers\x20aayenge!</div></div>',_0x574619+='<div\x20style=\x22font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px\x22>Live\x20Stream\x20Link</div>',_0x574619+='<input\x20id=\x22_stLink\x22\x20type=\x22url\x22\x20value=\x22'+(_0x3c393d||'')+'\x22\x20placeholder=\x22YouTube\x20/\x20Twitch\x20link\x20daalo\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1.5px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:6px\x22>',_0x574619+='<div\x20style=\x22font-size:11px;color:#555;margin-bottom:6px\x22>Example:\x20https://youtube.com/live/xxxxx</div>',_0x574619+='<div\x20style=\x22font-size:10.5px;color:#777;margin-bottom:14px\x22>⏱\x20Live\x20window:\x206\x20ghante\x20—\x20phir\x20stream\x20list\x20se\x20khud\x20hat\x20jaayega\x20(save\x20dobara\x20karo\x20to\x20extend)</div>',_0x574619+='<div\x20style=\x22font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px\x22>Stream\x20Title\x20(optional)</div>',_0x574619+='<input\x20id=\x22_stTitle\x22\x20type=\x22text\x22\x20value=\x22'+(_0x1ec958||'')+'\x22\x20maxlength=\x2240\x22\x20placeholder=\x22e.g.\x20Solo\x20Ranked\x20Match!\x22\x20style=\x22width:100%;padding:12px;border-radius:12px;border:1.5px\x20solid\x20rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:14px\x22>';var _0x469cfa=_0x226b54?'rgba(255,68,68,.4)':'rgba(255,255,255,.1)',_0x5c07f5=_0x226b54?'rgba(255,68,68,.07)':'rgba(255,255,255,.04)',_0x492e24=_0x226b54?'#ff4444':'#555',_0x568743=_0x226b54?'#ff4444':'rgba(255,255,255,.1)';_0x574619+='<div\x20onclick=\x22window._togLive&&window._togLive()\x22\x20id=\x22_liveTogRow\x22\x20style=\x22display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:13px;border:1.5px\x20solid\x20'+_0x469cfa+';background:'+_0x5c07f5+';cursor:pointer;margin-bottom:16px\x22>',_0x574619+='<div\x20style=\x22display:flex;align-items:center;gap:10px\x22>',_0x574619+='<div\x20id=\x22_liveDot\x22\x20style=\x22width:10px;height:10px;border-radius:50%;background:'+_0x492e24+';'+(_0x226b54?'animation:livePulse\x201s\x20ease-in-out\x20infinite':'')+'\x22></div>',_0x574619+='<span\x20id=\x22_liveLabel\x22\x20style=\x22font-size:14px;font-weight:700;color:#fff\x22>'+(_0x226b54?'🔴\x20Abhi\x20LIVE\x20ho':'Go\x20Live')+'</span></div>',_0x574619+='<div\x20id=\x22_liveTog\x22\x20style=\x22width:44px;height:24px;border-radius:12px;background:'+_0x568743+';position:relative;transition:all\x20.3s\x22><div\x20style=\x22position:absolute;top:2px;'+(_0x226b54?'right':'left')+':2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all\x20.3s\x22></div></div>',_0x574619+='</div>',_0x574619+='<button\x20onclick=\x22window._saveStreamSettings()\x22\x20style=\x22width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0\x204px\x2016px\x20rgba(255,68,68,.35)\x22>💾\x20Save\x20Stream\x20Settings</button>';var _0x10c066=_0x226b54;window['_togLive']=function(){_0x10c066=!_0x10c066;var _0x5bcd4f=document['getElementById']('_liveTogRow'),_0x1d1973=document['getElementById']('_liveTog'),_0x5a75bd=document['getElementById']('_liveDot'),_0x34b049=document['getElementById']('_liveLabel');_0x5bcd4f&&(_0x5bcd4f['style']['borderColor']=_0x10c066?'rgba(255,68,68,.4)':'rgba(255,255,255,.1)',_0x5bcd4f['style']['background']=_0x10c066?'rgba(255,68,68,.07)':'rgba(255,255,255,.04)');if(_0x1d1973)_0x1d1973['style']['background']=_0x10c066?'#ff4444':'rgba(255,255,255,.1)';if(_0x5a75bd)_0x5a75bd['style']['background']=_0x10c066?'#ff4444':'#555';if(_0x34b049)_0x34b049['textContent']=_0x10c066?'🔴\x20Abhi\x20LIVE\x20ho':'Go\x20Live';},window['_saveStreamSettings']=function(){var _0x3d2200=(document['getElementById']('_stLink')||{})['value']||'',_0x938ba9=(document['getElementById']('_stTitle')||{})['value']||'';_0x3d2200=_0x3d2200['trim'](),_0x938ba9=_0x938ba9['trim']();if(_0x10c066&&!_0x3d2200){if(window['toast'])toast('Live\x20link\x20daalo\x20pehle!','err');return;}if(_0x10c066&&_0x3d2200){var _0x3936f4=/^(https?:\/\/)?(www\.)?(youtube\.com\/(live\/|watch\?v=)|youtu\.be\/)[\w-]{6,}/['test'](_0x3d2200);if(!_0x3936f4){if(window['toast'])toast('❌\x20Sirf\x20YouTube\x20live-stream\x20link\x20allowed:\x20youtube.com/live/...\x20ya\x20youtube.com/watch?v=...','err');return;}}var _0x49ce1c=_0x10c066?new Date(Date['now']()+0x6*0xe10*0x3e8)['toISOString']():null,_0x795dd7=![];function _0x970a80(){if(_0x795dd7)return;_0x795dd7=!![];window['UD']&&(window['UD']['streamLink']=_0x3d2200,window['UD']['stream_link']=_0x3d2200,window['UD']['streamTitle']=_0x938ba9,window['UD']['stream_title']=_0x938ba9,window['UD']['isLive']=_0x10c066,window['UD']['is_live']=_0x10c066,window['UD']['stream_live_until']=_0x49ce1c);if(window['toast'])toast(_0x10c066?'🔴\x20Ab\x20tum\x20LIVE\x20ho!\x20Viewers\x20dekh\x20sakte\x20hain.':'✅\x20Stream\x20settings\x20save\x20ho\x20gaye!','ok');if(window['closeModal'])closeModal();}window['_supa']&&window['U']&&window['_supa']['from']('users')['update']({'stream_link':_0x3d2200||null,'stream_title':_0x938ba9||null,'is_live':_0x10c066,'stream_live_until':_0x49ce1c})['eq']('id',_0xa7e625)['then'](function(_0x35fe18){if(_0x35fe18&&_0x35fe18['error']&&/stream_live_until|column|42703/i['test'](String(_0x35fe18['error']['message']||_0x35fe18['error']['code']||_0x35fe18['error'])))return window['_supa']['from']('users')['update']({'stream_link':_0x3d2200||null,'stream_title':_0x938ba9||null,'is_live':_0x10c066})['eq']('id',_0xa7e625)['then'](function(_0x2a45a8){_0x35fe18=_0x2a45a8;});if(_0x35fe18&&_0x35fe18['error'])console['warn']('[Stream]\x20Supabase\x20save\x20error:',_0x35fe18['error']);_0x970a80();})['catch'](function(_0x282b4c){console['warn']('[Stream]\x20Supabase\x20error:',_0x282b4c),_0x970a80();});if(window['db']){var _0x617d9={};_0x617d9['users/'+_0xa7e625+'/streamLink']=_0x3d2200,_0x617d9['users/'+_0xa7e625+'/streamTitle']=_0x938ba9,_0x617d9['users/'+_0xa7e625+'/isLive']=_0x10c066,_0x617d9['liveStreams/'+_0xa7e625]=_0x10c066?{'ign':window['UD']&&window['UD']['ign']||'Player','title':_0x938ba9||(window['UD']&&window['UD']['ign']||'')+'\x27s\x20Stream','link':_0x3d2200,'live':!![],'viewers':0x0,'avatar':window['UD']&&window['UD']['ign']?window['UD']['ign']['charAt'](0x0):'🎮','updatedAt':Date['now']()}:null,window['db']['ref']()['update'](_0x617d9,function(){if(!window['_supa'])_0x970a80();});}if(!window['_supa']&&!window['db']){if(window['toast'])toast('Database\x20unavailable','err');}};if(window['openModal'])openModal('📺\x20Stream\x20Settings',_0x574619);};if(!document['getElementById']('_liveStyle')){var _0x98f086=document['createElement']('style');_0x98f086['id']='_liveStyle',_0x98f086['textContent']='@keyframes\x20livePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}',document['head']['appendChild'](_0x98f086);}console['log']('[Stream]\x20spectator.js\x20v32-FIX\x20✅\x20—\x20Supabase\x20+\x20Firebase\x20dual\x20save');}());
+/* ================================================================
+   SPECTATOR MODE / LIVE STREAM  v32-FIX
+   BUG FIX: _saveStreamSettings now saves to BOTH Firebase RTDB
+   AND Supabase users table (was only saving to Firebase before)
+================================================================ */
+(function(){
+'use strict';
+
+
+/* ── Stream Settings Modal ── */
+window.showStreamSettings = function() {
+  if (!window.U || !window.UD) { if (window.toast) toast('Pehle login karo!', 'err'); return; }
+  /* GATED (2026-08): live-stream slot is a Premium perk — this is the
+     feature that makes Premium worth buying even for a creator who
+     already earns via referral commission (Creator Program) without
+     needing Premium at all. */
+  if (!window.isPremiumActive || !isPremiumActive(2)) {
+    if (window.toast) toast('👑 Live Stream sirf Gold Premium (ya usse upar) ke liye hai', 'err');
+    if (window.showPremiumUpgrade) { setTimeout(showPremiumUpgrade, 300); }
+    return;
+  }
+  var uid    = window.U.uid;
+  var cur    = window.UD.streamLink  || window.UD.stream_link  || '';
+  var curT   = window.UD.streamTitle || window.UD.stream_title || '';
+  var isLive = window.UD.isLive      || window.UD.is_live      || false;
+
+  var h = '<div style="text-align:center;padding:6px 0 14px">';
+  h += '<div style="font-size:34px;margin-bottom:6px">📺</div>';
+  h += '<div style="font-size:16px;font-weight:900;color:#fff">Live Stream Settings</div>';
+  h += '<div style="font-size:12px;color:#888;margin-top:3px">Apna stream share karo — viewers aayenge!</div></div>';
+
+  h += '<div style="font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px">Live Stream Link</div>';
+  h += '<input id="_stLink" type="url" value="' + (cur || '') + '" placeholder="YouTube / Twitch link daalo" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:6px">';
+  h += '<div style="font-size:11px;color:#555;margin-bottom:6px">Example: https://youtube.com/live/xxxxx</div>';
+  h += '<div style="font-size:10.5px;color:#777;margin-bottom:14px">⏱ Live window: 6 ghante — phir stream list se khud hat jaayega (save dobara karo to extend)</div>';
+
+  h += '<div style="font-size:12px;font-weight:700;color:#aaa;margin-bottom:8px">Stream Title (optional)</div>';
+  h += '<input id="_stTitle" type="text" value="' + (curT || '') + '" maxlength="40" placeholder="e.g. Solo Ranked Match!" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;font-size:13px;box-sizing:border-box;margin-bottom:14px">';
+
+  var rowBorder = isLive ? 'rgba(255,68,68,.4)' : 'rgba(255,255,255,.1)';
+  var rowBg     = isLive ? 'rgba(255,68,68,.07)' : 'rgba(255,255,255,.04)';
+  var dotBg     = isLive ? '#ff4444' : '#555';
+  var toggleBg  = isLive ? '#ff4444' : 'rgba(255,255,255,.1)';
+  h += '<div onclick="window._togLive&&window._togLive()" id="_liveTogRow" style="display:flex;align-items:center;justify-content:space-between;padding:14px;border-radius:13px;border:1.5px solid ' + rowBorder + ';background:' + rowBg + ';cursor:pointer;margin-bottom:16px">';
+  h += '<div style="display:flex;align-items:center;gap:10px">';
+  h += '<div id="_liveDot" style="width:10px;height:10px;border-radius:50%;background:' + dotBg + ';' + (isLive ? 'animation:livePulse 1s ease-in-out infinite' : '') + '"></div>';
+  h += '<span id="_liveLabel" style="font-size:14px;font-weight:700;color:#fff">' + (isLive ? '🔴 Abhi LIVE ho' : 'Go Live') + '</span></div>';
+  h += '<div id="_liveTog" style="width:44px;height:24px;border-radius:12px;background:' + toggleBg + ';position:relative;transition:all .3s"><div style="position:absolute;top:2px;' + (isLive ? 'right' : 'left') + ':2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all .3s"></div></div>';
+  h += '</div>';
+
+  h += '<button onclick="window._saveStreamSettings()" style="width:100%;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:#fff;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(255,68,68,.35)">💾 Save Stream Settings</button>';
+
+  var _isLive = isLive;
+
+  window._togLive = function() {
+    _isLive = !_isLive;
+    var row  = document.getElementById('_liveTogRow');
+    var tog  = document.getElementById('_liveTog');
+    var dot  = document.getElementById('_liveDot');
+    var lbl  = document.getElementById('_liveLabel');
+    if (row) {
+      row.style.borderColor = _isLive ? 'rgba(255,68,68,.4)' : 'rgba(255,255,255,.1)';
+      row.style.background  = _isLive ? 'rgba(255,68,68,.07)' : 'rgba(255,255,255,.04)';
+    }
+    if (tog) tog.style.background = _isLive ? '#ff4444' : 'rgba(255,255,255,.1)';
+    if (dot) dot.style.background = _isLive ? '#ff4444' : '#555';
+    if (lbl) lbl.textContent = _isLive ? '🔴 Abhi LIVE ho' : 'Go Live';
+  };
+
+  /* ── BUG FIX: Save to BOTH Supabase AND Firebase ── */
+  window._saveStreamSettings = function() {
+    var link  = (document.getElementById('_stLink')  || {}).value || '';
+    var title = (document.getElementById('_stTitle') || {}).value || '';
+    link  = link.trim();
+    title = title.trim();
+
+    if (_isLive && !link) {
+      if (window.toast) toast('Live link daalo pehle!', 'err'); return;
+    }
+    /* ✅ D70 (2026-11-06): sirf YouTube LIVE-stream link allowed — koi bhi
+       random video link nahi (owner requirement). Live window 6 ghante ki
+       hoti hai; dobara save karne par extend ho jaati hai. */
+    if (_isLive && link) {
+      var _ytOk = /^(https?:\/\/)?(www\.)?(youtube\.com\/(live\/|watch\?v=)|youtu\.be\/)[\w-]{6,}/.test(link);
+      if (!_ytOk) {
+        if (window.toast) toast('❌ Sirf YouTube live-stream link allowed: youtube.com/live/... ya youtube.com/watch?v=...', 'err');
+        return;
+      }
+    }
+    var _liveUntil = _isLive ? new Date(Date.now() + 6 * 3600 * 1000).toISOString() : null;
+
+    var saved = false;
+    function _done() {
+      if (saved) return; saved = true;
+      /* Update local UD cache */
+      if (window.UD) {
+        window.UD.streamLink  = link;  window.UD.stream_link  = link;
+        window.UD.streamTitle = title; window.UD.stream_title = title;
+        window.UD.isLive      = _isLive; window.UD.is_live    = _isLive;
+        window.UD.stream_live_until = _liveUntil;
+      }
+      if (window.toast) toast(_isLive ? '🔴 Ab tum LIVE ho! Viewers dekh sakte hain.' : '✅ Stream settings save ho gaye!', 'ok');
+      if (window.closeModal) closeModal();
+    }
+
+    /* 1. Supabase save (primary DB) */
+    if (window._supa && window.U) {
+      window._supa.from('users').update({
+        stream_link:  link  || null,
+        stream_title: title || null,
+        is_live:      _isLive,
+        stream_live_until: _liveUntil
+      }).eq('id', uid).then(function(r) {
+        /* migration (stream_live_until column) abhi apply nahi hui to bina
+           TTL column ke retry — live toggle kabhi na toote */
+        if (r && r.error && /stream_live_until|column|42703/i.test(String(r.error.message || r.error.code || r.error))) {
+          return window._supa.from('users').update({
+            stream_link:  link  || null,
+            stream_title: title || null,
+            is_live:      _isLive
+          }).eq('id', uid).then(function(r2) { r = r2; });
+        }
+        if (r && r.error) console.warn('[Stream] Supabase save error:', r.error);
+        _done();
+      }).catch(function(e) { console.warn('[Stream] Supabase error:', e); _done(); });
+    }
+
+    /* 2. Firebase RTDB (for live feed widget) */
+    if (window.db) {
+      var updates = {};
+      updates['users/' + uid + '/streamLink']  = link;
+      updates['users/' + uid + '/streamTitle'] = title;
+      updates['users/' + uid + '/isLive']      = _isLive;
+      updates['liveStreams/' + uid] = _isLive ? {
+        ign:       (window.UD && window.UD.ign) || 'Player',
+        title:     title || ((window.UD && window.UD.ign) || '') + '\'s Stream',
+        link:      link,
+        live:      true,
+        viewers:   0,
+        avatar:    (window.UD && window.UD.ign) ? window.UD.ign.charAt(0) : '🎮',
+        updatedAt: Date.now()
+      } : null;
+      window.db.ref().update(updates, function() {
+        if (!window._supa) _done(); /* If no Supabase, done after Firebase */
+      });
+    }
+
+    /* If neither DB available */
+    if (!window._supa && !window.db) {
+      if (window.toast) toast('Database unavailable', 'err');
+    }
+  };
+
+  if (window.openModal) openModal('📺 Stream Settings', h);
+};
+
+
+/* CSS */
+if (!document.getElementById('_liveStyle')) {
+  var st = document.createElement('style');
+  st.id = '_liveStyle';
+  st.textContent = '@keyframes livePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}';
+  document.head.appendChild(st);
+}
+
+console.log('[Stream] spectator.js v32-FIX ✅ — Supabase + Firebase dual save');
+})();

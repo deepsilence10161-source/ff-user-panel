@@ -1,1 +1,166 @@
-(function(){'use strict';var _0x3d3222=(function(){var _0x23983f=!![];return function(_0x4cb590,_0x22806a){var _0x5b1edf=_0x23983f?function(){if(_0x22806a){var _0x4cf8ba=_0x22806a['apply'](_0x4cb590,arguments);return _0x22806a=null,_0x4cf8ba;}}:function(){};return _0x23983f=![],_0x5b1edf;};}()),_0x63fa82=_0x3d3222(this,function(){if(_0x63fa82['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x63fa82['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x63fa82)['search']('(((.+)+)+)+$');});_0x63fa82();function _0x423b86(){return window['_supa'];}function _0x261f30(){return window['U']&&window['U']['uid'];}function _0x443865(){return window['UD']||{};}function _0x3df5d5(_0x4b2119){var _0x27801d=Date['now']()-new Date(_0x4b2119)['getTime'](),_0x55c9a6=Math['floor'](_0x27801d/0xea60);if(_0x55c9a6<0x1)return'Just\x20now';if(_0x55c9a6<0x3c)return _0x55c9a6+'m\x20ago';var _0x1a8833=Math['floor'](_0x55c9a6/0x3c);if(_0x1a8833<0x18)return _0x1a8833+'h\x20ago';return Math['floor'](_0x1a8833/0x18)+'d\x20ago';}function _0x47f375(_0x1c7f55){var _0x48e39d=window['getRankTier']?window['getRankTier'](_0x1c7f55):{'name':'Bronze','emoji':'','color':'#cd7f32','bg':'rgba(205,127,50,.12)'};return{'b':_0x48e39d['name'],'e':window['tierIconHtml']?tierIconHtml(_0x48e39d['name'],0xc):_0x48e39d['emoji']||'','c':_0x48e39d['color'],'bg':_0x48e39d['bg']};}window['showFriends']=function(){if(!_0x261f30()){if(window['toast'])toast('Pehle\x20login\x20karo','err');return;}var _0x4dac73='<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px\x22>';[{'l':'Friends','ic':'fa-user-friends'},{'l':'Activity','ic':'fa-stream'},{'l':'Add','ic':'fa-user-plus'}]['forEach'](function(_0x1c0ffe,_0x1a4f42){_0x4dac73+='<button\x20id=\x22frTab'+_0x1a4f42+'\x22\x20onclick=\x22frTab('+_0x1a4f42+')\x22\x20style=\x22flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:pointer;background:'+(_0x1a4f42===0x0?'var(--green)':'rgba(255,255,255,.06)')+';color:'+(_0x1a4f42===0x0?'#000':'var(--txt)')+'\x22><i\x20class=\x22fas\x20'+_0x1c0ffe['ic']+'\x22\x20style=\x22margin-right:4px\x22></i>'+_0x1c0ffe['l']+'</button>';}),_0x4dac73+='</div><div\x20id=\x22frContent\x22></div>',openModal('👥\x20Friends',_0x4dac73),frTab(0x0);},window['frTab']=function(_0x278c3b){[0x0,0x1,0x2]['forEach'](function(_0x54c18d){var _0x161c8f=document['getElementById']('frTab'+_0x54c18d);if(!_0x161c8f)return;_0x161c8f['style']['background']=_0x54c18d===_0x278c3b?'var(--green)':'rgba(255,255,255,.06)',_0x161c8f['style']['color']=_0x54c18d===_0x278c3b?'#000':'var(--txt)';});var _0x5bf7c9=document['getElementById']('frContent');if(!_0x5bf7c9)return;if(_0x278c3b===0x0)_0x41b558(_0x5bf7c9);else{if(_0x278c3b===0x1)_0x15bb5c(_0x5bf7c9);else _0x31c27f(_0x5bf7c9);}};function _0x41b558(_0xe48869){_0xe48869['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x423b86()||!_0x261f30()){_0xe48869['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Login\x20required</p>';return;}_0x423b86()['from']('friendships')['select']('user_a,user_b')['or']('user_a.eq.'+_0x261f30()+',user_b.eq.'+_0x261f30())['then'](function(_0x13ba71){var _0x357c03=(_0x13ba71['data']||[])['map'](function(_0x5e0519){return _0x5e0519['user_a']===_0x261f30()?_0x5e0519['user_b']:_0x5e0519['user_a'];});if(!_0x357c03['length']){_0xe48869['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>👥</div><p\x20style=\x22font-size:13px\x22>Koi\x20friend\x20nahi<br><small>Add\x20tab\x20se\x20dhundho!</small></p></div>';return;}_0x423b86()['from']('user_public_profiles')['select']('id,ign,avatar_url,rank_points,total_matches,total_wins')['in']('id',_0x357c03)['then'](function(_0x1ed8bd){var _0x509d89=_0x1ed8bd['data']||[];if(!_0x509d89['length']){_0xe48869['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22>Friends\x20data\x20nahi\x20mila</div>';return;}var _0x70af64='<div\x20style=\x22display:flex;flex-direction:column;gap:8px\x22>';_0x509d89['forEach'](function(_0x15f624){var _0x3199c3=_0x47f375(_0x15f624['rank_points']||0x0),_0x5f0a92=_0x15f624['avatar_url']?'<img\x20src=\x22'+_0x15f624['avatar_url']+'\x22\x20style=\x22width:100%;height:100%;border-radius:50%;object-fit:cover\x22>':'<span\x20style=\x22font-size:15px;font-weight:800\x22>'+(_0x15f624['ign']||'P')['charAt'](0x0)+'</span>';_0x70af64+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x70af64+='<div\x20style=\x22width:46px;height:46px;border-radius:50%;background:'+_0x3199c3['bg']+';border:2px\x20solid\x20'+_0x3199c3['c']+';display:flex;align-items:center;justify-content:center;flex-shrink:0\x22>'+_0x5f0a92+'</div>',_0x70af64+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:800\x22>'+(window['escHtml']?window['escHtml'](_0x15f624['ign']||'Player'):_0x15f624['ign']||'Player')+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+_0x3199c3['e']+'\x20'+_0x3199c3['b']+'\x20·\x20'+(_0x15f624['total_matches']||0x0)+'\x20matches</div></div>',_0x70af64+='<div\x20style=\x22display:flex;flex-direction:column;gap:5px\x22>',_0x70af64+='<button\x20onclick=\x22window.sendDuelChallenge(\x27'+_0x15f624['id']+'\x27,\x27'+(window['escAttrJs']?window['escAttrJs'](_0x15f624['ign']||'Player'):_0x15f624['ign']||'Player')+'\x27);\x22\x20style=\x22padding:5px\x2010px;border-radius:8px;border:1px\x20solid\x20rgba(255,107,107,.4);background:rgba(255,107,107,.08);color:#ff6b6b;font-size:10px;font-weight:700;cursor:pointer\x22>⚔️\x20Duel</button>',_0x70af64+='<button\x20onclick=\x22window.removeFriend(\x27'+_0x15f624['id']+'\x27)\x22\x20style=\x22padding:5px\x2010px;border-radius:8px;border:1px\x20solid\x20rgba(255,255,255,.1);background:transparent;color:var(--txt2);font-size:10px;cursor:pointer\x22>Remove</button>',_0x70af64+='</div></div>';}),_0x70af64+='</div>',_0xe48869['innerHTML']=_0x70af64;})['catch'](function(){_0xe48869['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error\x20loading\x20friends</div>';});})['catch'](function(){_0xe48869['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error</div>';});}function _0x15bb5c(_0x22b234){_0x22b234['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x423b86()||!_0x261f30()){_0x22b234['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Login\x20required</p>';return;}_0x423b86()['from']('friendships')['select']('user_a,user_b')['or']('user_a.eq.'+_0x261f30()+',user_b.eq.'+_0x261f30())['then'](function(_0x23dade){var _0x5a3c0c=[_0x261f30()]['concat']((_0x23dade['data']||[])['map'](function(_0x553927){return _0x553927['user_a']===_0x261f30()?_0x553927['user_b']:_0x553927['user_a'];}));_0x423b86()['from']('user_activities')['select']('*')['in']('user_id',_0x5a3c0c)['order']('created_at',{'ascending':![]})['limit'](0x1e)['then'](function(_0xc26b96){var _0x28890d=_0xc26b96['data']||[];if(!_0x28890d['length']){_0x22b234['innerHTML']='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:30px;opacity:.3\x22>📰</div><p\x20style=\x22font-size:13px\x22>Koi\x20activity\x20nahi<br><small>Zyada\x20friends\x20add\x20karo!</small></p></div>';return;}var _0x938493={'win':'🏆','kill':'💀','rank_up':'📈','join':'🎮','streak':'🔥','clan':'🛡️'},_0x2c0f2f='<div\x20style=\x22display:flex;flex-direction:column;gap:7px\x22>';_0x28890d['forEach'](function(_0x35759b){var _0x29f35b=_0x35759b['uid']===_0x261f30();_0x2c0f2f+='<div\x20style=\x22display:flex;align-items:flex-start;gap:10px;padding:10px\x2012px;border-radius:12px;background:'+(_0x29f35b?'rgba(0,255,156,.04)':'var(--card)')+';border:1px\x20solid\x20'+(_0x29f35b?'rgba(0,255,156,.12)':'var(--border)')+'\x22>',_0x2c0f2f+='<div\x20style=\x22font-size:20px;min-width:28px;text-align:center\x22>'+(_0x938493[_0x35759b['type']]||'🎮')+'</div>',_0x2c0f2f+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:700\x22>'+(_0x29f35b?'You':_0x35759b['ign']||'Player')+'</div><div\x20style=\x22font-size:12px;color:var(--txt2)\x22>'+(_0x35759b['text']||'')+'</div></div>',_0x2c0f2f+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x3df5d5(_0x35759b['created_at'])+'</div></div>';}),_0x2c0f2f+='</div>',_0x22b234['innerHTML']=_0x2c0f2f;})['catch'](function(){_0x22b234['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error\x20loading\x20activity</div>';});})['catch'](function(){_0x22b234['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error</div>';});}function _0x31c27f(_0x50a5c3){_0x50a5c3['innerHTML']='<div\x20style=\x22position:relative;margin-bottom:10px\x22><input\x20id=\x22frSearchIn\x22\x20type=\x22text\x22\x20placeholder=\x22IGN\x20ya\x20FF\x20UID\x20se\x20search\x20karo...\x22\x20oninput=\x22frSearchUser(this.value)\x22\x20style=\x22width:100%;padding:12px\x2040px\x2012px\x2014px;border-radius:12px;background:var(--card2);border:1px\x20solid\x20var(--border);color:var(--txt);font-size:13px;box-sizing:border-box\x22><i\x20class=\x22fas\x20fa-search\x22\x20style=\x22position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--txt2)\x22></i></div><div\x20id=\x22frSearchResults\x22><div\x20style=\x22text-align:center;padding:20px;color:var(--txt2);font-size:12px\x22>Type\x20karo\x20search\x20ke\x20liye...</div></div>',setTimeout(function(){var _0x47ee85=document['getElementById']('frSearchIn');_0x47ee85&&_0x47ee85['focus']();},0x96);}var _0x257428=null,_0x2c4dcf=0x0;window['frSearchUser']=function(_0x4075c7){_0x4075c7=(_0x4075c7||'')['trim']();var _0x2af074=document['getElementById']('frSearchResults');if(!_0x2af074)return;if(_0x4075c7['length']<0x2){_0x2af074['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2);font-size:12px\x22>2+\x20characters\x20type\x20karo...</div>';return;}_0x2af074['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>',clearTimeout(_0x257428);var _0x2cf174=++_0x2c4dcf;_0x257428=setTimeout(function(){if(_0x2cf174!==_0x2c4dcf)return;if(!_0x423b86()){_0x2af074['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</div>';return;}_0x423b86()['from']('user_public_profiles')['select']('id,ign,ff_uid,avatar_url,rank_points,total_matches')['or']('ign.ilike.%'+_0x4075c7+'%,ff_uid.ilike.%'+_0x4075c7+'%')['eq']('is_banned',![])['neq']('id',_0x261f30())['limit'](0xa)['then'](function(_0x117d2d){if(_0x2cf174!==_0x2c4dcf)return;var _0x168f99=_0x117d2d['data']||[];if(!_0x168f99['length']){_0x2af074['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22>Koi\x20nahi\x20mila</div>';return;}_0x423b86()['from']('friendships')['select']('user_a,user_b')['or']('user_a.eq.'+_0x261f30()+',user_b.eq.'+_0x261f30())['then'](function(_0x30e1ed){if(_0x2cf174!==_0x2c4dcf)return;var _0x23aad5={};(_0x30e1ed['data']||[])['forEach'](function(_0x4dbf00){var _0x4afbc0=_0x4dbf00['user_a']===_0x261f30()?_0x4dbf00['user_b']:_0x4dbf00['user_a'];_0x23aad5[_0x4afbc0]=!![];});var _0x5ce59c='<div\x20style=\x22display:flex;flex-direction:column;gap:7px\x22>';_0x168f99['forEach'](function(_0x17b9a8){var _0x394ff8=_0x47f375(_0x17b9a8['rank_points']||0x0),_0x45f455=_0x17b9a8['avatar_url']?'<img\x20src=\x22'+_0x17b9a8['avatar_url']+'\x22\x20style=\x22width:100%;height:100%;border-radius:50%;object-fit:cover\x22>':'<span\x20style=\x22font-size:15px;font-weight:800\x22>'+(_0x17b9a8['ign']||'P')['charAt'](0x0)+'</span>';_0x5ce59c+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:10px\x2012px;border-radius:12px;background:var(--card);border:1px\x20solid\x20var(--border)\x22>',_0x5ce59c+='<div\x20style=\x22width:42px;height:42px;border-radius:50%;background:'+_0x394ff8['bg']+';border:2px\x20solid\x20'+_0x394ff8['c']+';display:flex;align-items:center;justify-content:center;flex-shrink:0\x22>'+_0x45f455+'</div>',_0x5ce59c+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:800\x22>'+(_0x17b9a8['ign']||'Player')+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+_0x394ff8['e']+'\x20'+_0x394ff8['b']+'\x20·\x20'+(_0x17b9a8['total_matches']||0x0)+'\x20matches</div></div>',_0x5ce59c+=_0x23aad5[_0x17b9a8['id']]?'<span\x20style=\x22font-size:11px;color:var(--green);font-weight:700\x22>✅\x20Friend</span>':'<button\x20onclick=\x22window.addFriend(\x27'+_0x17b9a8['id']+'\x27,\x27'+(_0x17b9a8['ign']||'Player')['replace'](/'/g,'\x5c\x27')+'\x27,this)\x22\x20style=\x22padding:7px\x2012px;border-radius:10px;border:1.5px\x20solid\x20rgba(0,255,156,.4);background:rgba(0,255,156,.08);color:var(--green);font-size:11px;font-weight:800;cursor:pointer\x22>+\x20Add</button>',_0x5ce59c+='</div>';}),_0x5ce59c+='</div>',_0x2af074['innerHTML']=_0x5ce59c;})['catch'](function(){_0x2af074['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error</div>';});})['catch'](function(){_0x2af074['innerHTML']='<div\x20style=\x22text-align:center;color:#ff6b6b\x22>Error\x20hua</div>';});},0x15e);},window['addFriend']=function(_0x55a537,_0x3b6d7e,_0x1b63bf){if(!_0x423b86()||!_0x261f30()){if(window['toast'])toast('Login\x20karo','err');return;}_0x1b63bf&&(_0x1b63bf['disabled']=!![],_0x1b63bf['textContent']='Adding...');var _0x1cb4c2=_0x443865()['ign']||_0x443865()['displayName']||'Player';_0x423b86()['from']('friendships')['upsert']([{'user_a':_0x261f30(),'user_b':_0x55a537},{'user_a':_0x55a537,'user_b':_0x261f30()}],{'onConflict':'user_a,user_b','ignoreDuplicates':!![]})['then'](function(){_0x423b86()['from']('notifications')['insert']({'user_id':_0x55a537,'type':'friend_add','title':'👥\x20New\x20Friend!','body':_0x1cb4c2+'\x20ne\x20tumhe\x20friend\x20add\x20kiya!','ref_id':_0x261f30(),'is_read':![]})['then'](null,function(){});if(window['logActivity'])logActivity('join','Friend\x20'+_0x3b6d7e+'\x20add\x20kar\x20liya!');_0x1b63bf&&(_0x1b63bf['textContent']='✅\x20Added',_0x1b63bf['style']['background']='rgba(0,255,156,.15)');if(window['toast'])toast('✅\x20'+_0x3b6d7e+'\x20friend\x20ban\x20gaya!','ok');})['catch'](function(_0x538738){_0x1b63bf&&(_0x1b63bf['disabled']=![],_0x1b63bf['textContent']='+\x20Add');if(window['toast'])toast('Error','err');});},window['removeFriend']=function(_0x3e87f6){if(!_0x423b86()||!_0x261f30())return;if(!confirm('Is\x20friend\x20ko\x20remove\x20karo?'))return;_0x423b86()['from']('friendships')['delete']()['or']('and(user_a.eq.'+_0x261f30()+',user_b.eq.'+_0x3e87f6+'),and(user_a.eq.'+_0x3e87f6+',user_b.eq.'+_0x261f30()+')')['then'](function(){if(window['toast'])toast('Friend\x20remove\x20ho\x20gaya','ok');var _0x3447db=document['getElementById']('frContent');if(_0x3447db)_0x41b558(_0x3447db);})['catch'](function(){if(window['toast'])toast('Error','err');});},window['logActivity']=function(_0x1bd782,_0x46e031){if(!_0x423b86()||!_0x261f30()||!_0x443865()['ign'])return;_0x423b86()['from']('user_activities')['insert']({'user_id':_0x261f30(),'ign':_0x443865()['ign']||_0x443865()['displayName']||'Player','type':_0x1bd782,'message':_0x46e031})['then'](null,function(){});};if(window['_flushActivityQueue'])window['_flushActivityQueue']();var _0x12e535=0x0,_0x1c6586=setInterval(function(){_0x12e535++;if(_0x12e535>0x3c){clearInterval(_0x1c6586);return;}var _0x2c02c6=document['querySelector']('.special-pills');if(!_0x2c02c6||_0x2c02c6['querySelector']('#_frPill')){if(_0x2c02c6)clearInterval(_0x1c6586);return;}clearInterval(_0x1c6586);var _0x5a9600=document['createElement']('div');_0x5a9600['id']='_frPill',_0x5a9600['className']='special-pill',_0x5a9600['style']['cssText']='background:rgba(185,100,255,.08);border:1px\x20solid\x20rgba(185,100,255,.2);color:#b964ff',_0x5a9600['innerHTML']='<i\x20class=\x22fas\x20fa-user-friends\x22\x20style=\x22font-size:11px\x22></i>\x20Friends',_0x5a9600['onclick']=function(){if(window['showFriends'])showFriends();};try{_0x2c02c6['insertBefore'](_0x5a9600,_0x2c02c6['firstChild']);}catch(_0x5dfc2c){}},0x190);}());
+/* ================================================================
+   FRIENDS SYSTEM v2.0 — 100% Supabase
+   Tables: friendships(user_a,user_b), user_activities(uid,ign,type,text), notifications
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+function _ud(){ return window.UD||{}; }
+function _timeAgo(ts){ var d=Date.now()-new Date(ts).getTime(),m=Math.floor(d/60000); if(m<1)return'Just now';if(m<60)return m+'m ago';var h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago'; }
+/* BUG #27 FIX (2026-07): same fix as mentor.js — derives from the canonical rank system. */
+function _ri(p){ var t=(window.getRankTier?window.getRankTier(p):{name:'Bronze',emoji:'',color:'#cd7f32',bg:'rgba(205,127,50,.12)'}); return {b:t.name,e:(window.tierIconHtml?tierIconHtml(t.name,12):(t.emoji||'')),c:t.color,bg:t.bg}; } /* D101: tier img */
+
+window.showFriends=function(){
+  if(!_uid()){ if(window.toast)toast('Pehle login karo','err');return; }
+  var h='<div style="display:flex;gap:8px;margin-bottom:12px">';
+  [{l:'Friends',ic:'fa-user-friends'},{l:'Activity',ic:'fa-stream'},{l:'Add',ic:'fa-user-plus'}].forEach(function(tab,i){
+    h+='<button id="frTab'+i+'" onclick="frTab('+i+')" style="flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:pointer;background:'+(i===0?'var(--green)':'rgba(255,255,255,.06)')+';color:'+(i===0?'#000':'var(--txt)')+'"><i class="fas '+tab.ic+'" style="margin-right:4px"></i>'+tab.l+'</button>';
+  });
+  h+='</div><div id="frContent"></div>';
+  openModal('👥 Friends',h); frTab(0);
+};
+
+window.frTab=function(idx){
+  [0,1,2].forEach(function(i){ var b=document.getElementById('frTab'+i);if(!b)return;b.style.background=i===idx?'var(--green)':'rgba(255,255,255,.06)';b.style.color=i===idx?'#000':'var(--txt)'; });
+  var c=document.getElementById('frContent');if(!c)return;
+  if(idx===0)_frList(c); else if(idx===1)_frActivity(c); else _frAdd(c);
+};
+
+function _frList(c){
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()||!_uid()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Login required</p>';return;}
+  _s().from('friendships').select('user_a,user_b').or('user_a.eq.'+_uid()+',user_b.eq.'+_uid())
+  .then(function(r){
+    var ids=(r.data||[]).map(function(f){return f.user_a===_uid()?f.user_b:f.user_a;});
+    if(!ids.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">👥</div><p style="font-size:13px">Koi friend nahi<br><small>Add tab se dhundho!</small></p></div>';return;}
+    _s().from('user_public_profiles').select('id,ign,avatar_url,rank_points,total_matches,total_wins').in('id',ids) /* BUG #38 FIX */
+    .then(function(u){
+      var list=u.data||[];
+      if(!list.length){c.innerHTML='<div style="text-align:center;padding:20px;color:var(--txt2)">Friends data nahi mila</div>';return;}
+      var h='<div style="display:flex;flex-direction:column;gap:8px">';
+      list.forEach(function(d){
+        var ri=_ri(d.rank_points||0);
+        var av=d.avatar_url?'<img src="'+d.avatar_url+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover">':'<span style="font-size:15px;font-weight:800">'+((d.ign||'P').charAt(0))+'</span>';
+        h+='<div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:13px;background:var(--card);border:1px solid var(--border)">';
+        h+='<div style="width:46px;height:46px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'+av+'</div>';
+        h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+(window.escHtml?window.escHtml(d.ign||'Player'):d.ign||'Player')+'</div><div style="font-size:11px;color:var(--txt2)">'+ri.e+' '+ri.b+' · '+(d.total_matches||0)+' matches</div></div>';
+        h+='<div style="display:flex;flex-direction:column;gap:5px">';
+        h+='<button onclick="window.sendDuelChallenge(\''+d.id+'\',\''+(window.escAttrJs?window.escAttrJs(d.ign||'Player'):d.ign||'Player')+'\');" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(255,107,107,.4);background:rgba(255,107,107,.08);color:#ff6b6b;font-size:10px;font-weight:700;cursor:pointer">⚔️ Duel</button>';
+        h+='<button onclick="window.removeFriend(\''+d.id+'\')" style="padding:5px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--txt2);font-size:10px;cursor:pointer">Remove</button>';
+        h+='</div></div>';
+      });
+      h+='</div>'; c.innerHTML=h;
+    }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error loading friends</div>';});
+  }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error</div>';});
+}
+
+function _frActivity(c){
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()||!_uid()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Login required</p>';return;}
+  // Get my friends first
+  _s().from('friendships').select('user_a,user_b').or('user_a.eq.'+_uid()+',user_b.eq.'+_uid())
+  .then(function(r){
+    var ids=[_uid()].concat((r.data||[]).map(function(f){return f.user_a===_uid()?f.user_b:f.user_a;}));
+    _s().from('user_activities').select('*').in('user_id',ids).order('created_at',{ascending:false}).limit(30)
+    .then(function(ar){
+      var acts=ar.data||[];
+      if(!acts.length){c.innerHTML='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:30px;opacity:.3">📰</div><p style="font-size:13px">Koi activity nahi<br><small>Zyada friends add karo!</small></p></div>';return;}
+      var icons={win:'🏆',kill:'💀',rank_up:'📈',join:'🎮',streak:'🔥',clan:'🛡️'};
+      var h='<div style="display:flex;flex-direction:column;gap:7px">';
+      acts.forEach(function(a){
+        var isSelf=a.uid===_uid();
+        h+='<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:12px;background:'+(isSelf?'rgba(0,255,156,.04)':'var(--card)')+';border:1px solid '+(isSelf?'rgba(0,255,156,.12)':'var(--border)')+'">';
+        h+='<div style="font-size:20px;min-width:28px;text-align:center">'+(icons[a.type]||'🎮')+'</div>';
+        h+='<div style="flex:1"><div style="font-size:13px;font-weight:700">'+(isSelf?'You':(a.ign||'Player'))+'</div><div style="font-size:12px;color:var(--txt2)">'+(a.text||'')+'</div></div>';
+        h+='<div style="font-size:10px;color:var(--txt2)">'+_timeAgo(a.created_at)+'</div></div>';
+      });
+      h+='</div>'; c.innerHTML=h;
+    }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error loading activity</div>';});
+  }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error</div>';});
+}
+
+function _frAdd(c){
+  c.innerHTML='<div style="position:relative;margin-bottom:10px"><input id="frSearchIn" type="text" placeholder="IGN ya FF UID se search karo..." oninput="frSearchUser(this.value)" style="width:100%;padding:12px 40px 12px 14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);color:var(--txt);font-size:13px;box-sizing:border-box"><i class="fas fa-search" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--txt2)"></i></div><div id="frSearchResults"><div style="text-align:center;padding:20px;color:var(--txt2);font-size:12px">Type karo search ke liye...</div></div>';
+  setTimeout(function(){ var el=document.getElementById('frSearchIn');if(el){el.focus();} },150);
+}
+
+var _frTimer=null;
+/* Issue #30 Fix: Consistent name _frSearchReqId (underscore prefix) used everywhere.
+   Bug report flagged a mismatch — confirmed all usages are consistent. */
+var _frSearchReqId = 0;
+window.frSearchUser=function(q){
+  q=(q||'').trim(); var r=document.getElementById('frSearchResults');if(!r)return;
+  if(q.length<2){r.innerHTML='<div style="text-align:center;padding:20px;color:var(--txt2);font-size:12px">2+ characters type karo...</div>';return;}
+  r.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  clearTimeout(_frTimer);
+  var _myReqId = ++_frSearchReqId; /* Increment for this request */
+  _frTimer=setTimeout(function(){
+    if(_myReqId !== _frSearchReqId) return; /* ✅ Stale request — discard */
+    if(!_s()){r.innerHTML='<div style="color:#ff6b6b;text-align:center">Service unavailable</div>';return;}
+    _s().from('user_public_profiles').select('id,ign,ff_uid,avatar_url,rank_points,total_matches').or('ign.ilike.%'+q+'%,ff_uid.ilike.%'+q+'%').eq('is_banned',false).neq('id',_uid()).limit(10) /* BUG #38 FIX */
+    .then(function(res){
+      if(_myReqId !== _frSearchReqId) return; /* ✅ Stale response — discard */
+      var users=res.data||[];
+      if(!users.length){r.innerHTML='<div style="text-align:center;padding:20px;color:var(--txt2)">Koi nahi mila</div>';return;}
+      _s().from('friendships').select('user_a,user_b').or('user_a.eq.'+_uid()+',user_b.eq.'+_uid())
+      .then(function(fr){
+        if(_myReqId !== _frSearchReqId) return; /* ✅ Stale response — discard */
+        var myFriends={};(fr.data||[]).forEach(function(f){var fid=f.user_a===_uid()?f.user_b:f.user_a;myFriends[fid]=true;});
+        var h='<div style="display:flex;flex-direction:column;gap:7px">';
+        users.forEach(function(u){
+          var ri=_ri(u.rank_points||0);
+          var av=u.avatar_url?'<img src="'+u.avatar_url+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover">':'<span style="font-size:15px;font-weight:800">'+((u.ign||'P').charAt(0))+'</span>';
+          h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--border)">';
+          h+='<div style="width:42px;height:42px;border-radius:50%;background:'+ri.bg+';border:2px solid '+ri.c+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'+av+'</div>';
+          h+='<div style="flex:1"><div style="font-size:13px;font-weight:800">'+(u.ign||'Player')+'</div><div style="font-size:11px;color:var(--txt2)">'+ri.e+' '+ri.b+' · '+(u.total_matches||0)+' matches</div></div>';
+          h+=myFriends[u.id]?'<span style="font-size:11px;color:var(--green);font-weight:700">✅ Friend</span>':'<button onclick="window.addFriend(\''+u.id+'\',\''+(u.ign||'Player').replace(/'/g,"\\'")+'\',this)" style="padding:7px 12px;border-radius:10px;border:1.5px solid rgba(0,255,156,.4);background:rgba(0,255,156,.08);color:var(--green);font-size:11px;font-weight:800;cursor:pointer">+ Add</button>';
+          h+='</div>';
+        });
+        h+='</div>'; r.innerHTML=h;
+      }).catch(function(){r.innerHTML='<div style="color:#ff6b6b;text-align:center">Error</div>';});
+    }).catch(function(){r.innerHTML='<div style="text-align:center;color:#ff6b6b">Error hua</div>';});
+  },350);
+};
+
+window.addFriend=function(uid,ign,btn){
+  if(!_s()||!_uid()){if(window.toast)toast('Login karo','err');return;}
+  if(btn){btn.disabled=true;btn.textContent='Adding...';}
+  var myIgn=_ud().ign||_ud().displayName||'Player';
+  // Insert both directions for easy querying
+  _s().from('friendships').upsert([{user_a:_uid(),user_b:uid},{user_a:uid,user_b:_uid()}],{onConflict:'user_a,user_b',ignoreDuplicates:true})
+  .then(function(){
+    _s().from('notifications').insert({user_id:uid,type:'friend_add',title:'👥 New Friend!',body:myIgn+' ne tumhe friend add kiya!',ref_id:_uid(),is_read:false}).then(null, function(){});
+    if(window.logActivity)logActivity('join','Friend '+ign+' add kar liya!');
+    if(btn){btn.textContent='✅ Added';btn.style.background='rgba(0,255,156,.15)';}
+    if(window.toast)toast('✅ '+ign+' friend ban gaya!','ok');
+  }).catch(function(e){if(btn){btn.disabled=false;btn.textContent='+ Add';}if(window.toast)toast('Error','err');});
+};
+
+window.removeFriend=function(uid){
+  if(!_s()||!_uid())return;
+  if(!confirm('Is friend ko remove karo?'))return;
+  _s().from('friendships').delete().or('and(user_a.eq.'+_uid()+',user_b.eq.'+uid+'),and(user_a.eq.'+uid+',user_b.eq.'+_uid()+')')
+  .then(function(){if(window.toast)toast('Friend remove ho gaya','ok');var c=document.getElementById('frContent');if(c)_frList(c);})
+  .catch(function(){if(window.toast)toast('Error','err');});
+};
+
+window.logActivity=function(type,text){
+  if(!_s()||!_uid()||!_ud().ign)return;
+  _s().from('user_activities').insert({user_id:_uid(),ign:_ud().ign||_ud().displayName||'Player',type:type,message:text}).then(null, function(){});
+};
+/* Flush any queued activity calls from before friends.js loaded */
+if (window._flushActivityQueue) window._flushActivityQueue();
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>60){clearInterval(_t);return;}
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_frPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_frPill';p.className='special-pill';
+  p.style.cssText='background:rgba(185,100,255,.08);border:1px solid rgba(185,100,255,.2);color:#b964ff';
+  p.innerHTML='<i class="fas fa-user-friends" style="font-size:11px"></i> Friends';
+  p.onclick=function(){if(window.showFriends)showFriends();};
+  try{row.insertBefore(p,row.firstChild);}catch(e){}
+},400);
+})();

@@ -1,1 +1,127 @@
-(function(){'use strict';var _0x2f7500=(function(){var _0x538f4c=!![];return function(_0x22d406,_0x5dbc91){var _0x2a651d=_0x538f4c?function(){if(_0x5dbc91){var _0x1b7bf3=_0x5dbc91['apply'](_0x22d406,arguments);return _0x5dbc91=null,_0x1b7bf3;}}:function(){};return _0x538f4c=![],_0x2a651d;};}()),_0x1ac22a=_0x2f7500(this,function(){if(_0x1ac22a['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x1ac22a['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x1ac22a)['search']('(((.+)+)+)+$');});_0x1ac22a();function _0x53affe(){return window['_supa'];}function _0x237591(){return window['U']&&window['U']['uid'];}function _0x5cee38(){var _0x4cfeee=new Date(),_0x55baef=5.5*0x3c*0x3c*0x3e8,_0x518253=new Date(_0x4cfeee['getTime']()+_0x55baef),_0x402640=_0x518253['getUTCFullYear'](),_0x4886bd=String(_0x518253['getUTCMonth']()+0x1)['padStart'](0x2,'0');return _0x402640+'-'+_0x4886bd;}window['showCityChampionship']=function(){if(!_0x237591()){if(window['toast'])toast('Pehle\x20login\x20karo','err');return;}var _0x2d411b='<div\x20style=\x22display:flex;gap:8px;margin-bottom:12px\x22>';[{'id':'ccTabStand','l':'🏆\x20Standings'},{'id':'ccTabMy','l':'🏙️\x20My\x20City'},{'id':'ccTabRules','l':'📋\x20Rules'}]['forEach'](function(_0x286731,_0x2fc3ea){_0x2d411b+='<button\x20id=\x22'+_0x286731['id']+'\x22\x20onclick=\x22ccTab('+_0x2fc3ea+')\x22\x20style=\x22flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:pointer;background:'+(_0x2fc3ea===0x0?'var(--primary)':'transparent')+';color:'+(_0x2fc3ea===0x0?'#000':'var(--txt)')+'\x22>'+_0x286731['l']+'</button>';}),_0x2d411b+='</div><div\x20id=\x22ccContent\x22></div>',openModal('🏙️\x20City\x20Championship',_0x2d411b),ccTab(0x0);},window['ccTab']=function(_0x5e759a){['ccTabStand','ccTabMy','ccTabRules']['forEach'](function(_0x129f00,_0x8c1045){var _0x3273b7=document['getElementById'](_0x129f00);if(!_0x3273b7)return;_0x3273b7['style']['background']=_0x8c1045===_0x5e759a?'var(--primary)':'transparent',_0x3273b7['style']['color']=_0x8c1045===_0x5e759a?'#000':'var(--txt)',_0x3273b7['style']['border']=_0x8c1045===_0x5e759a?'none':'1px\x20solid\x20var(--border)';});var _0xa92d20=document['getElementById']('ccContent');if(!_0xa92d20)return;if(_0x5e759a===0x0)_0xa965e1(_0xa92d20);else{if(_0x5e759a===0x1)_0x5db403(_0xa92d20);else _0x29de51(_0xa92d20);}};function _0xa965e1(_0x1d4746){_0x1d4746['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x53affe()){_0x1d4746['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}var _0x33cf9a=_0x5cee38();_0x53affe()['from']('city_championship')['select']('*')['eq']('month',_0x33cf9a)['order']('score',{'ascending':![]})['limit'](0x14)['then'](function(_0x238e9c){var _0x59cb49=_0x238e9c['data']||[],_0x4ff30a=window['UD']&&window['UD']['city']||'',_0x190c7c=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],_0x1131be=new Date(),_0x4d1453=_0x190c7c[_0x1131be['getMonth']()]+'\x20'+_0x1131be['getFullYear'](),_0x42c134='<div\x20style=\x22text-align:center;margin-bottom:12px\x22><div\x20style=\x22font-size:12px;color:var(--txt2)\x22>Season:\x20<strong\x20style=\x22color:var(--txt)\x22>'+_0x4d1453+'</strong></div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>Score\x20=\x20Wins×10\x20+\x20Kills×1</div></div>';if(!_0x59cb49['length']){_0x42c134+='<div\x20style=\x22text-align:center;padding:30px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>🏙️</div><p>Abhi\x20koi\x20city\x20registered\x20nahi</p></div>',_0x1d4746['innerHTML']=_0x42c134;return;}_0x42c134+='<div\x20style=\x22display:flex;flex-direction:column;gap:7px\x22>',_0x59cb49['forEach'](function(_0x412045,_0x4766aa){var _0xda26ed=_0x4ff30a&&_0x412045['city']['toLowerCase']()===_0x4ff30a['toLowerCase']();_0x42c134+='<div\x20style=\x22display:flex;align-items:center;gap:12px;padding:12px\x2014px;border-radius:13px;background:'+(_0xda26ed?'rgba(0,255,156,.06)':'var(--card)')+';border:1.5px\x20solid\x20'+(_0xda26ed?'rgba(0,255,156,.25)':'var(--border)')+'\x22>',_0x42c134+='<div\x20style=\x22font-size:22px;min-width:32px;text-align:center\x22>'+(window['medalHtml']?medalHtml(_0x4766aa+0x1,0x16):'#'+(_0x4766aa+0x1))+'</div>',_0x42c134+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:14px;font-weight:800\x22>'+_0x412045['city']+'</div><div\x20style=\x22font-size:11px;color:var(--txt2)\x22>👥\x20'+(_0x412045['player_count']||0x0)+'\x20·\x20🏆\x20'+(_0x412045['wins']||0x0)+'\x20wins</div></div>',_0x42c134+='<div\x20style=\x22text-align:right\x22><div\x20style=\x22font-size:16px;font-weight:900;color:'+(_0xda26ed?'var(--green)':'var(--txt)')+'\x22>'+(_0x412045['score']||0x0)['toLocaleString']()+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>pts</div></div>';if(_0xda26ed)_0x42c134+='<span\x20style=\x22font-size:10px;color:var(--green);font-weight:700\x22>YOU</span>';_0x42c134+='</div>';}),_0x42c134+='</div>',_0x1d4746['innerHTML']=_0x42c134;})['catch'](function(){_0x1d4746['innerHTML']='<div\x20style=\x22color:#ff6b6b;text-align:center\x22>Error\x20loading</div>';});}function _0x5db403(_0x538529){var _0x5a2c28=window['UD']||{},_0x288d98=_0x5a2c28['city']||'';if(!_0x288d98){_0x538529['innerHTML']='<div\x20style=\x22text-align:center;padding:20px\x22><p\x20style=\x22color:var(--txt2)\x22>Profile\x20mein\x20apna\x20city\x20set\x20karo\x20pehle!</p><button\x20onclick=\x22navTo(\x27profile\x27)\x22\x20style=\x22padding:10px\x2020px;border-radius:11px;border:none;background:var(--green);color:#000;font-weight:800;cursor:pointer;margin-top:10px\x22>Profile\x20Open</button></div>';return;}_0x538529['innerHTML']='<div\x20style=\x22text-align:center;padding:16px;color:var(--txt2)\x22><i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i></div>';if(!_0x53affe()){_0x538529['innerHTML']='<p\x20style=\x22color:#ff6b6b;text-align:center\x22>Service\x20unavailable</p>';return;}var _0x4879df=_0x5cee38();_0x53affe()['from']('city_championship')['select']('*')['eq']('city',_0x288d98)['eq']('month',_0x4879df)['single']()['then'](function(_0x1563e5){var _0x2ca338=_0x1563e5['data']||{'score':0x0,'wins':0x0,'kills':0x0,'player_count':0x0},_0x254919='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,255,156,.06),rgba(0,212,255,.04));border:1.5px\x20solid\x20rgba(0,255,156,.2);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px\x22>';_0x254919+='<div\x20style=\x22font-size:32px;margin-bottom:6px\x22>🏙️</div><div\x20style=\x22font-size:22px;font-weight:900;color:var(--green)\x22>'+_0x288d98+'</div>',_0x254919+='<div\x20style=\x22display:flex;justify-content:center;gap:20px;margin-top:14px\x22>',[[(_0x2ca338['score']||0x0)+'pts','Score'],[_0x2ca338['wins']||0x0,'Wins'],[_0x2ca338['player_count']||0x0,'Players']]['forEach'](function(_0x35269c){_0x254919+='<div\x20style=\x22text-align:center\x22><div\x20style=\x22font-size:18px;font-weight:900;color:var(--green)\x22>'+_0x35269c[0x0]+'</div><div\x20style=\x22font-size:10px;color:var(--txt2)\x22>'+_0x35269c[0x1]+'</div></div>';}),_0x254919+='</div></div>',_0x538529['innerHTML']=_0x254919;})['catch'](function(){_0x538529['innerHTML']='<div\x20style=\x22text-align:center;padding:20px;color:var(--txt2)\x22><div\x20style=\x22font-size:36px;opacity:.3\x22>🏙️</div><p>'+_0x288d98+'\x20abhi\x20championship\x20mein\x20nahi\x20hai.<br><small>Match\x20khelo\x20toh\x20score\x20add\x20hoga!</small></p></div>';});}function _0x29de51(_0x24d67e){_0x24d67e['innerHTML']='<div\x20style=\x22display:flex;flex-direction:column;gap:10px\x22>'+_0x21db6f('🗓️','Monthly\x20Season','Har\x20mahine\x20naya\x20season.\x20Purane\x20scores\x20reset\x20ho\x20jaate\x20hain.')+_0x21db6f('📊','Points\x20System','Win=10pts\x20·\x20Kill=1pt')+_0x21db6f('🏆','Top\x203','Month\x20end\x20pe\x20top\x203\x20cities\x20ke\x20players\x20ko\x20exclusive\x20badge\x20milta\x20hai')+_0x21db6f('📍','Represent','Profile\x20mein\x20city\x20set\x20karo\x20—\x20auto\x20update\x20hoga')+'</div>';}function _0x21db6f(_0x49dd39,_0x50a2c1,_0x383cbc){return'<div\x20style=\x22display:flex;gap:12px;padding:12px\x2014px;border-radius:13px;background:var(--card);border:1px\x20solid\x20var(--border)\x22><span\x20style=\x22font-size:22px;flex-shrink:0\x22>'+_0x49dd39+'</span><div><div\x20style=\x22font-size:13px;font-weight:800;margin-bottom:2px\x22>'+_0x50a2c1+'</div><div\x20style=\x22font-size:12px;color:var(--txt2);line-height:1.5\x22>'+_0x383cbc+'</div></div></div>';}window['updateCityChampScore']=function(_0x2ec2f3,_0x1604e9){if(!_0x53affe()||!_0x237591()||!window['UD'])return;var _0x524ebb=window['UD']['city'];if(!_0x524ebb)return;_0x524ebb=_0x524ebb['trim']()['replace'](/\b\w/g,function(_0xf11ede){return _0xf11ede['toUpperCase']();});var _0x520a57=_0x5cee38(),_0x1d2429=(_0x2ec2f3?0xa:0x0)+(_0x1604e9||0x0),_0x277d70=window['UD']['ign']||window['UD']['displayName']||'Player';_0x53affe()['rpc']('increment_city_score',{'p_city':_0x524ebb,'p_month':_0x520a57,'p_score':_0x1d2429,'p_wins':_0x2ec2f3?0x1:0x0,'p_kills':_0x1604e9||0x0,'p_uid':_0x237591()})['then'](null,function(){});};var _0x1e5204=0x0,_0xac3b75=setInterval(function(){_0x1e5204++;if(_0x1e5204>0x3c){clearInterval(_0xac3b75);return;}var _0x1597f2=document['querySelector']('.special-pills');if(!_0x1597f2||_0x1597f2['querySelector']('#_ccPill')){if(_0x1597f2)clearInterval(_0xac3b75);return;}clearInterval(_0xac3b75);var _0x3e3440=document['createElement']('div');_0x3e3440['id']='_ccPill',_0x3e3440['className']='special-pill',_0x3e3440['style']['cssText']='background:rgba(255,165,0,.08);border:1px\x20solid\x20rgba(255,165,0,.2);color:#ffa500',_0x3e3440['innerHTML']='<i\x20class=\x22fas\x20fa-trophy\x22\x20style=\x22font-size:11px\x22></i>\x20City\x20War',_0x3e3440['onclick']=function(){if(window['showCityChampionship'])showCityChampionship();},_0x1597f2['appendChild'](_0x3e3440);},0x190);}());
+/* ================================================================
+   CITY CHAMPIONSHIP v2.0 — 100% Supabase
+   Table: city_championship(id,city,month,score,wins,kills,player_count)
+================================================================ */
+(function(){ 'use strict';
+function _s(){ return window._supa; }
+function _uid(){ return window.U&&window.U.uid; }
+/* H14 Fix: Use IST local date not UTC — toISOString() returns UTC which may
+   show previous/next month for Indian users around midnight IST (UTC+5:30).
+   e.g. 11:45 PM IST = 6:15 PM UTC → still the previous UTC day. */
+function _month() {
+  var d = new Date();
+  var istOffset = 5.5 * 60 * 60 * 1000; // IST = UTC+5:30
+  var istDate = new Date(d.getTime() + istOffset);
+  var y = istDate.getUTCFullYear();
+  var m = String(istDate.getUTCMonth() + 1).padStart(2, '0');
+  return y + '-' + m;
+}
+
+window.showCityChampionship=function(){
+  if(!_uid()){if(window.toast)toast('Pehle login karo','err');return;}
+  var h='<div style="display:flex;gap:8px;margin-bottom:12px">';
+  [{id:'ccTabStand',l:'🏆 Standings'},{id:'ccTabMy',l:'🏙️ My City'},{id:'ccTabRules',l:'📋 Rules'}].forEach(function(tab,i){
+    h+='<button id="'+tab.id+'" onclick="ccTab('+i+')" style="flex:1;padding:9px;border-radius:11px;border:none;font-size:12px;font-weight:800;cursor:pointer;background:'+(i===0?'var(--primary)':'transparent')+';color:'+(i===0?'#000':'var(--txt)')+'">'+ tab.l+'</button>';
+  });
+  h+='</div><div id="ccContent"></div>';
+  openModal('🏙️ City Championship',h); ccTab(0);
+};
+
+window.ccTab=function(idx){
+  ['ccTabStand','ccTabMy','ccTabRules'].forEach(function(id,i){
+    var b=document.getElementById(id);if(!b)return;
+    b.style.background=i===idx?'var(--primary)':'transparent';b.style.color=i===idx?'#000':'var(--txt)';b.style.border=i===idx?'none':'1px solid var(--border)';
+  });
+  var c=document.getElementById('ccContent');if(!c)return;
+  if(idx===0)_ccStandings(c); else if(idx===1)_ccMyCity(c); else _ccRules(c);
+};
+
+function _ccStandings(c){
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  var mon=_month();
+  _s().from('city_championship').select('*').eq('month',mon).order('score',{ascending:false}).limit(20)
+  .then(function(r){
+    var cities=r.data||[];
+    var myCity=(window.UD&&window.UD.city)||'';
+    var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var d=new Date(); var label=months[d.getMonth()]+' '+d.getFullYear();
+    var h='<div style="text-align:center;margin-bottom:12px"><div style="font-size:12px;color:var(--txt2)">Season: <strong style="color:var(--txt)">'+label+'</strong></div><div style="font-size:11px;color:var(--txt2)">Score = Wins×10 + Kills×1</div></div>';
+    if(!cities.length){h+='<div style="text-align:center;padding:30px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">🏙️</div><p>Abhi koi city registered nahi</p></div>';c.innerHTML=h;return;}
+    h+='<div style="display:flex;flex-direction:column;gap:7px">';
+    cities.forEach(function(ci,i){
+      var isMe=myCity&&ci.city.toLowerCase()===myCity.toLowerCase();
+      h+='<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:13px;background:'+(isMe?'rgba(0,255,156,.06)':'var(--card)')+';border:1.5px solid '+(isMe?'rgba(0,255,156,.25)':'var(--border)')+'">';
+      h+='<div style="font-size:22px;min-width:32px;text-align:center">'+(window.medalHtml?medalHtml(i+1,22):('#'+(i+1)))+'</div>';
+      h+='<div style="flex:1"><div style="font-size:14px;font-weight:800">'+ci.city+'</div><div style="font-size:11px;color:var(--txt2)">👥 '+(ci.player_count||0)+' · 🏆 '+(ci.wins||0)+' wins</div></div>';
+      h+='<div style="text-align:right"><div style="font-size:16px;font-weight:900;color:'+(isMe?'var(--green)':'var(--txt)')+'">'+((ci.score||0).toLocaleString())+'</div><div style="font-size:10px;color:var(--txt2)">pts</div></div>';
+      if(isMe)h+='<span style="font-size:10px;color:var(--green);font-weight:700">YOU</span>';
+      h+='</div>';
+    });
+    h+='</div>'; c.innerHTML=h;
+  }).catch(function(){c.innerHTML='<div style="color:#ff6b6b;text-align:center">Error loading</div>';});
+}
+
+function _ccMyCity(c){
+  var ud=window.UD||{},city=ud.city||'';
+  if(!city){c.innerHTML='<div style="text-align:center;padding:20px"><p style="color:var(--txt2)">Profile mein apna city set karo pehle!</p><button onclick="navTo(\'profile\')" style="padding:10px 20px;border-radius:11px;border:none;background:var(--green);color:#000;font-weight:800;cursor:pointer;margin-top:10px">Profile Open</button></div>';return;}
+  c.innerHTML='<div style="text-align:center;padding:16px;color:var(--txt2)"><i class="fas fa-spinner fa-spin"></i></div>';
+  if(!_s()){c.innerHTML='<p style="color:#ff6b6b;text-align:center">Service unavailable</p>';return;}
+  var mon=_month();
+  _s().from('city_championship').select('*').eq('city',city).eq('month',mon).single()
+  .then(function(r){
+    var d=r.data||{score:0,wins:0,kills:0,player_count:0};
+    var h='<div style="background:linear-gradient(135deg,rgba(0,255,156,.06),rgba(0,212,255,.04));border:1.5px solid rgba(0,255,156,.2);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px">';
+    h+='<div style="font-size:32px;margin-bottom:6px">🏙️</div><div style="font-size:22px;font-weight:900;color:var(--green)">'+city+'</div>';
+    h+='<div style="display:flex;justify-content:center;gap:20px;margin-top:14px">';
+    [[(d.score||0)+'pts','Score'],[(d.wins||0),'Wins'],[(d.player_count||0),'Players']].forEach(function(s){
+      h+='<div style="text-align:center"><div style="font-size:18px;font-weight:900;color:var(--green)">'+s[0]+'</div><div style="font-size:10px;color:var(--txt2)">'+s[1]+'</div></div>';
+    });
+    h+='</div></div>';
+    c.innerHTML=h;
+  }).catch(function(){
+    // City not in championship yet
+    c.innerHTML='<div style="text-align:center;padding:20px;color:var(--txt2)"><div style="font-size:36px;opacity:.3">🏙️</div><p>'+city+' abhi championship mein nahi hai.<br><small>Match khelo toh score add hoga!</small></p></div>';
+  });
+}
+
+function _ccRules(c){
+  c.innerHTML='<div style="display:flex;flex-direction:column;gap:10px">'
+    +_rCard('🗓️','Monthly Season','Har mahine naya season. Purane scores reset ho jaate hain.')
+    +_rCard('📊','Points System','Win=10pts · Kill=1pt')
+    +_rCard('🏆','Top 3','Month end pe top 3 cities ke players ko exclusive badge milta hai')
+    +_rCard('📍','Represent','Profile mein city set karo — auto update hoga')
+    +'</div>';
+}
+function _rCard(i,t,d){ return'<div style="display:flex;gap:12px;padding:12px 14px;border-radius:13px;background:var(--card);border:1px solid var(--border)"><span style="font-size:22px;flex-shrink:0">'+i+'</span><div><div style="font-size:13px;font-weight:800;margin-bottom:2px">'+t+'</div><div style="font-size:12px;color:var(--txt2);line-height:1.5">'+d+'</div></div></div>'; }
+
+window.updateCityChampScore=function(wins,kills){
+  if(!_s()||!_uid()||!window.UD)return;
+  var city=window.UD.city;if(!city)return;
+  /* Bug #67 Fix: Normalize city name to Title Case to prevent fragmented leaderboards
+     e.g. "mumbai", "Mumbai", "MUMBAI" all treated as same city */
+  city = city.trim().replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+  var mon=_month(); var score=(wins?10:0)+(kills||0);
+  var myIgn=window.UD.ign||window.UD.displayName||'Player';
+  // Upsert city total
+  /* Round-10 (2026-09-20n): direct upsert fallback REMOVED — server ne
+     city_championship ke any-auth INSERT/UPDATE policies drop kar di hain
+     (koi bhi KISI BHI city ka score tamper kar sakta tha). increment_city_score
+     RPC hi ek authorized path hai (self-only + per-call caps). */
+  _s().rpc('increment_city_score',{p_city:city,p_month:mon,p_score:score,p_wins:wins?1:0,p_kills:kills||0,p_uid:_uid()})
+  .then(null, function(){}); /* BUG Z5 FIX: .catch is rpc-thenable pe exist nahi karta tha => city score kabhi update nahi hota tha */
+};
+
+// Pill injection
+var _i=0,_t=setInterval(function(){
+  _i++;if(_i>60){clearInterval(_t);return;}
+  var row=document.querySelector('.special-pills');
+  if(!row||row.querySelector('#_ccPill')){if(row)clearInterval(_t);return;}
+  clearInterval(_t);
+  var p=document.createElement('div');p.id='_ccPill';p.className='special-pill';
+  p.style.cssText='background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.2);color:#ffa500';
+  p.innerHTML='<i class="fas fa-trophy" style="font-size:11px"></i> City War';
+  p.onclick=function(){if(window.showCityChampionship)showCityChampionship();};
+  row.appendChild(p);
+},400);
+})();

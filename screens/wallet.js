@@ -1,1 +1,661 @@
-var _0x5f47c7=(function(){var _0x448cc1=!![];return function(_0x4c624d,_0x586eac){var _0x2623cc=_0x448cc1?function(){if(_0x586eac){var _0x2b0714=_0x586eac['apply'](_0x4c624d,arguments);return _0x586eac=null,_0x2b0714;}}:function(){};return _0x448cc1=![],_0x2623cc;};}()),_0x56a2e6=_0x5f47c7(this,function(){if(_0x56a2e6['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x56a2e6['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x56a2e6)['search']('(((.+)+)+)+$');});_0x56a2e6();function setWFilter(_0x4f3be4){window['_wFilter']=_0x4f3be4,renderWallet();}function renderWallet(){if(!UD)return;var _0x7e008e=$('walletMain'),_0x5880b8=$('walletFlow');if(_0x7e008e&&_0x7e008e['style']['display']==='none')_0x7e008e['style']['display']='';if(_0x5880b8&&_0x5880b8['style']['display']!=='none')_0x5880b8['style']['display']='none';var _0x4197a9=UD['realMoney']||{'deposited':0x0,'winnings':0x0,'bonus':0x0},_0x566663=Math['max'](Number(_0x4197a9['deposited'])||0x0,0x0),_0x5a714d=Math['max'](Number(_0x4197a9['winnings'])||0x0,0x0),_0x46fd93=Math['max'](Number(_0x4197a9['bonus'])||0x0,0x0),_0x45a46b=_0x566663+_0x5a714d+_0x46fd93,_0x1fde22=Math['max'](Number(UD['coins'])||0x0,0x0),_0x59a7f2=_0x566663,_0x427e24=$('wTotal'),_0x5600d8=$('wCoins');_0x427e24&&(_0x427e24['textContent']=_0x59a7f2,_0x427e24['style']['color']='#00d4ff');if(_0x5600d8)_0x5600d8['textContent']=_0x1fde22;if(window['updateHdr'])updateHdr();var _0x31ae0a=$('greenDiaCount');if(_0x31ae0a){var _0x252d49=Math['max'](Number(UD['greenDiamonds'])||0x0,0x0);_0x31ae0a['textContent']=String(_0x252d49);}var _0x20d20f=$('sponsoredPrizeCard'),_0x18b307=$('sponsoredBalDisplay');if(_0x20d20f){var _0x27bcbd=Math['max'](Number(UD&&UD['sponsored_winnings']||0x0),0x0);if(_0x27bcbd>0x0){_0x20d20f['style']['display']='';if(_0x18b307)_0x18b307['textContent']='₹'+_0x27bcbd;}else _0x20d20f['style']['display']='none';}var _0x5a75e4=$('walletHist');if(!_0x5a75e4)return;var _0x27689c='';if(window['renderWalletStats'])_0x27689c=window['renderWalletStats']();var _0x38b7ee=[],_0x55e85e={};function _0x4213c0(_0x41ff18,_0x1a4711){var _0x5ddace=Math['floor']((_0x1a4711['createdAt']||_0x1a4711['timestamp']||0x0)/0xea60),_0x4c5cf9=Math['abs'](Number(_0x1a4711['amount']||_0x1a4711['sd_amount']||_0x1a4711['diamonds']||0x0)),_0x36e297=(_0x1a4711['type']||_0x1a4711['txn_type']||_0x1a4711['entryType']||'tx')['toLowerCase']()['substring'](0x0,0x8);return _0x41ff18+'_'+_0x36e297+'_'+_0x4c5cf9+'_'+_0x5ddace;}WH['forEach'](function(_0x51389a){var _0x3bec99=_0x4213c0('wh',_0x51389a);if(_0x55e85e[_0x3bec99])return;_0x55e85e[_0x3bec99]=!![],_0x38b7ee['push']({'_src':'wh','_ts':_0x51389a['createdAt']||_0x51389a['timestamp']||0x0,'data':_0x51389a});}),TXNS['forEach'](function(_0x237954){var _0x4f3ecc=_0x4213c0('tx',_0x237954);if(_0x55e85e[_0x4f3ecc])return;_0x55e85e[_0x4f3ecc]=!![],_0x38b7ee['push']({'_src':'txn','_ts':_0x237954['timestamp']||0x0,'data':_0x237954});});var _0x2decb9=TXNS['some'](function(_0x3a2066){return _0x3a2066['type']==='winning'||_0x3a2066['type']==='result';}),_0x50f7d4=Number(UD['greenDiamonds']!==undefined&&UD['greenDiamonds']!==null?UD['greenDiamonds']:(UD['realMoney']||{})['winnings'])||0x0;_0x50f7d4>0x0&&!_0x2decb9&&_0x38b7ee['push']({'_src':'txn','_ts':0x0,'data':{'type':'winning','amount':_0x50f7d4,'currency':'green_diamonds','description':'Match\x20Winnings\x20(total)','timestamp':0x0,'_synthetic':!![]}});_0x38b7ee['sort'](function(_0x4370ab,_0x122f6e){return _0x122f6e['_ts']-_0x4370ab['_ts'];});if(!_0x38b7ee['length']){_0x5a75e4['innerHTML']=_0x27689c+'<div\x20style=\x22text-align:center;color:var(--txt2);padding:20px;font-size:13px\x22>No\x20transactions\x20yet</div>';return;}var _0x2cf524=window['_wFilter']||'all',_0x5d0059='<div\x20id=\x22walletFilterRow\x22\x20style=\x22display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px\x22>'+['all','sky','coin','credit','debit']['map'](function(_0x150e79){var _0x21322e={'all':'All','sky':'💎\x20Sky','coin':'🪙\x20Coin','credit':'📈\x20In','debit':'📉\x20Out'},_0xbd18c4={'credit':'rgba(0,255,156,.25)','debit':'rgba(255,107,107,.25)'},_0x33250a=_0x2cf524===_0x150e79,_0xc99f44=_0x33250a?'background:'+(_0xbd18c4[_0x150e79]||'linear-gradient(135deg,rgba(0,212,255,.25),rgba(0,212,255,.1))')+';color:'+(_0x150e79==='credit'?'#00ff9c':_0x150e79==='debit'?'#ff6b6b':'#00d4ff')+';border:1.5px\x20solid\x20'+(_0x150e79==='credit'?'rgba(0,255,156,.4)':_0x150e79==='debit'?'rgba(255,107,107,.4)':'rgba(0,212,255,.4)')+';':'background:rgba(255,255,255,.04);color:#8a8a92;border:1px\x20solid\x20rgba(255,255,255,.07);';return'<button\x20onclick=\x22setWFilter(\x27'+_0x150e79+'\x27)\x22\x20style=\x22flex:0\x200\x20auto;padding:10px\x2012px;border-radius:10px;'+_0xc99f44+'font-size:11px;font-weight:800;cursor:pointer\x22>'+_0x21322e[_0x150e79]+'</button>';})['join']('')+'</div>',_0x531dbf=_0x5d0059+_0x27689c,_0x458eba=window['_wFilter']||'all';_0x458eba!=='all'&&(_0x38b7ee=_0x38b7ee['filter'](function(_0xf67bb8){var _0x5632bb=_0xf67bb8['data'],_0xc9de38=(_0x5632bb['entryType']||_0x5632bb['type']||_0x5632bb['txn_type']||'')['toLowerCase'](),_0x169cd7=['credit','match_win','admin_credit','watch_earn','daily_bonus','referral','check_in','checkin','referral_bonus','refund','match_refund','ad_reward','no_show_refund','gift_coins','bonus','winning','wallet_credit'];if(_0x169cd7['indexOf'](_0xc9de38)!==-0x1)_0x5632bb['type']='credit';var _0x4d59b2=Number(_0x5632bb['amount']||_0x5632bb['coins']||_0x5632bb['diamonds']||0x0);if(_0x458eba==='credit'){var _0xefa378=['credit','reward','refund','win','bonus','earn','deposit','approved','add'];return _0xefa378['some'](function(_0x1d4072){return _0xc9de38['indexOf'](_0x1d4072)>=0x0;})||_0x4d59b2>0x0;}if(_0x458eba==='debit'){var _0x1dd07f=['debit','entry','join','deduct','purchase','withdraw','spend'];return _0x1dd07f['some'](function(_0x74dfd2){return _0xc9de38['indexOf'](_0x74dfd2)>=0x0;})||_0x4d59b2<0x0;}var _0x1015a7=(_0x5632bb['currency']||'')['toLowerCase']();if(_0x458eba==='sky')return _0xc9de38['indexOf']('diamond')>=0x0||_0xc9de38['indexOf']('paid')>=0x0||_0xc9de38['indexOf']('sky')>=0x0||_0xc9de38['indexOf']('deposit')>=0x0||_0xc9de38['indexOf']('withdraw')>=0x0||_0x1015a7['indexOf']('sky')>=0x0||_0x1015a7['indexOf']('diamond')>=0x0;if(_0x458eba==='coin')return _0xc9de38['indexOf']('coin')>=0x0||_0xc9de38['indexOf']('ad')>=0x0||_0xc9de38['indexOf']('check')>=0x0||_0x1015a7['indexOf']('coin')>=0x0;return!![];})),_0x38b7ee['forEach'](function(_0x47e1e3){var _0x1399e5=_0x47e1e3['data'];if(_0x47e1e3['_src']==='wh'){var _0x564369=_0x1399e5['type']==='deposit'||_0x1399e5['type']==='add';if(_0x2cf524==='credit'&&!_0x564369)return;if(_0x2cf524==='debit'&&_0x564369)return;var _0x283688=_0x1399e5['status']==='approved'||_0x1399e5['status']==='done'?'whs-a':_0x1399e5['status']==='rejected'?'whs-r':'whs-p',_0xdeea9=_0x1399e5['status']==='approved'||_0x1399e5['status']==='done'?'Done':_0x1399e5['status']==='rejected'?'Failed':'Pending',_0x59edb2=Math['abs'](Number(_0x1399e5['sdAmount']||_0x1399e5['diamonds']||0x0)),_0x338e57=Math['abs'](Number(_0x1399e5['amount']||0x0)),_0x5fa4d6=_0x564369?_0x59edb2>0x0?'+💎'+_0x59edb2:'+₹'+_0x338e57:'-₹'+_0x338e57,_0x57cd1a=_0x1399e5['status']==='rejected';_0x531dbf+='<div\x20class=\x22wh-card\x22><div\x20class=\x22wh-icon\x20'+(_0x564369?_0x57cd1a?'whi-m':'whi-g':'whi-r')+'\x22><i\x20class=\x22fas\x20fa-'+(_0x564369?'arrow-up':'arrow-down')+'\x22></i></div>',_0x531dbf+='<div\x20class=\x22wh-info\x22><div\x20class=\x22wh-name\x22>'+(_0x564369?'Deposit\x20via\x20UPI':'Withdrawal')+'</div>',_0x531dbf+='<div\x20class=\x22wh-time\x22>'+timeAgo(_0x1399e5['createdAt']||_0x1399e5['timestamp'])+'</div>';if(_0x1399e5['utr']||_0x1399e5['transactionId'])_0x531dbf+='<div\x20class=\x22wh-utr\x22>UTR:\x20'+(_0x1399e5['utr']||_0x1399e5['transactionId'])+'</div>';_0x531dbf+='</div><div\x20class=\x22wh-amt\x20'+(_0x564369?_0x57cd1a?'wha-m':'wha-g':'wha-r')+'\x22>'+_0x5fa4d6+'</div>',_0x531dbf+='<span\x20class=\x22wh-status\x20'+_0x283688+'\x22>'+_0xdeea9+'</span></div>';}else{var _0x211787=_0x1399e5['amount']||0x0,_0x4199f5=_0x211787>0x0;if(_0x2cf524==='credit'&&!_0x4199f5)return;if(_0x2cf524==='debit'&&_0x4199f5)return;var _0xa94e52={'winning':'🏆\x20Prize\x20Won','debit':'🎮\x20Entry\x20Fee','credit':'💰\x20Bonus','cashback':'🔄\x20Cashback','referral':'🤝\x20Referral','refund':'↩️\x20Refund','withdraw':'📤\x20Withdrawal','withdrawal':'📤\x20Withdrawal','result':'🏆\x20Prize\x20Won'},_0x32071e=_0x1399e5['reason']==='cosmetic_purchase'?'🛍️\x20Store\x20Purchase':_0x1399e5['reason']==='reward_redemption'?'🎁\x20Reward\x20Redemption':_0xa94e52[_0x1399e5['type']]||_0x1399e5['description']||_0x1399e5['type']||'Transaction',_0x323bb=_0x1399e5['description']||'',_0x13fb43=_0x4199f5?'whi-g':'whi-r',_0x547a0d=_0x4199f5?'wha-g':'wha-r',_0x2880ae=_0x1399e5['currency']==='sponsored'||_0x1399e5['currency']==='inr'||_0x1399e5['currency']==='money'?'₹':_0x1399e5['currency']==='diamonds'||_0x1399e5['currency']==='sky_diamonds'?'💎':_0x1399e5['currency']==='green_diamonds'?'<img\x20src=\x22js/green-diamond.png?v=20261124a\x22\x20style=\x22width:13px;height:13px;vertical-align:middle;object-fit:contain\x22>':'🪙';_0x531dbf+='<div\x20class=\x22wh-card\x22><div\x20class=\x22wh-icon\x20'+_0x13fb43+'\x22><i\x20class=\x22fas\x20fa-'+(_0x4199f5?'coins':'gamepad')+'\x22></i></div>',_0x531dbf+='<div\x20class=\x22wh-info\x22><div\x20class=\x22wh-name\x22>'+_0x32071e+'</div>',_0x531dbf+='<div\x20class=\x22wh-time\x22>'+timeAgo(_0x1399e5['timestamp'])+'</div>';if(_0x323bb&&_0x323bb!==_0x32071e)_0x531dbf+='<div\x20class=\x22wh-utr\x22>'+_0x323bb+'</div>';_0x531dbf+='</div><div\x20class=\x22wh-amt\x20'+_0x547a0d+'\x22>'+(_0x4199f5?'+':'-')+_0x2880ae+Math['abs'](_0x211787)+'</div></div>';}}),_0x5a75e4['innerHTML']=_0x531dbf;}function startAdd(){if(isVO()){toast('Complete\x20profile\x20first','err');return;}history['pushState'](null,null,null),wfStep=0x1,wfAmt=0x0,wfScreenshot='',_wfPreUp=null,showWFStep();}window['_sendEmailVerif']=function(){window['auth']&&window['U']&&window['auth']['currentUser']&&window['auth']['currentUser']['sendEmailVerification']()['then'](function(){toast('Verification\x20email\x20bheja!\x20Inbox\x20check\x20karo','ok'),closeModal();})['catch'](function(){toast('Email\x20bhejne\x20mein\x20error\x20—\x20try\x20again','err');});};function startWd(){var _0x42dfe5=window['UD']&&window['UD']['email_verified']||window['U']&&window['U']['emailVerified']||![];if(!_0x42dfe5){var _0x17ea5b='<div\x20style=\x22text-align:center;padding:16px\x22>'+'<div\x20style=\x22font-size:32px;margin-bottom:12px\x22>📧</div>'+'<div\x20style=\x22font-size:14px;font-weight:800;margin-bottom:8px\x22>Email\x20Verify\x20Karo</div>'+'<div\x20style=\x22font-size:12px;color:var(--txt2);margin-bottom:16px\x22>Withdrawal\x20ke\x20liye\x20email\x20verification\x20zaruri\x20hai.\x20'+'Apni\x20email\x20check\x20karo\x20aur\x20verification\x20link\x20click\x20karo.</div>'+'<button\x20onclick=\x22window._sendEmailVerif()\x22\x20'+'style=\x22width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#4facfe,#00f2fe);border:none;color:#fff;font-weight:800;cursor:pointer\x22>📧\x20Verification\x20Email\x20Bhejo</button>'+'</div>';if(window['openModal'])window['openModal']('Email\x20Verify\x20Karo',_0x17ea5b);else toast('Pehle\x20email\x20verify\x20karo\x20—\x20inbox\x20check\x20karo','err');return;}if(isVO()){toast('Complete\x20profile\x20first','err');return;}var _0x558815=Math['max'](Number(UD&&UD['sponsored_winnings']||0x0),0x0);(function(_0x23abc2){if(_0x23abc2<=0x0){var _0x290c59='<div\x20style=\x22text-align:center;padding:10px\x200\x204px\x22>';_0x290c59+='<div\x20style=\x22font-size:48px;margin-bottom:12px\x22>🏆</div>',_0x290c59+='<div\x20style=\x22font-size:16px;font-weight:800;margin-bottom:8px\x22>Sponsored\x20Prize\x20Withdraw</div>',_0x290c59+='<div\x20style=\x22font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px\x22>',_0x290c59+='Filhaal\x20aapke\x20paas\x20koi\x20sponsored\x20prize\x20nahi\x20hai.<br>',_0x290c59+='<strong\x20style=\x22color:#ffd700\x22>Sirf\x20Sponsored\x20Tournaments</strong>\x20ke\x20winners<br>',_0x290c59+='hi\x20real\x20prize\x20withdraw\x20kar\x20sakte\x20hain.',_0x290c59+='</div>',_0x290c59+='<div\x20style=\x22background:rgba(0,255,156,.06);border:1px\x20solid\x20rgba(0,255,156,.15);border-radius:12px;padding:12px;font-size:12px;color:var(--txt2);line-height:1.7\x22>',_0x290c59+='✅\x20<strong\x20style=\x22color:#00ff9c\x22>Halal\x20System:</strong><br>',_0x290c59+='•\x20Koi\x20entry\x20fee\x20nahi\x20hogi<br>',_0x290c59+='•\x20Prize\x20sponsor\x20deta\x20hai<br>',_0x290c59+='•\x20Sirf\x20tournament\x20winners\x20ko\x20milega<br>',_0x290c59+='•\x20Admin\x20approve\x20karega\x20withdrawal',_0x290c59+='</div>',_0x290c59+='</div>',openModal('💰\x20Withdraw',_0x290c59);return;}history['pushState'](null,null,null);var _0x290c59='<div\x20style=\x22background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.05));border:1px\x20solid\x20rgba(0,255,156,.2);border-radius:12px;padding:12px;margin-bottom:14px\x22>';_0x290c59+='<div\x20style=\x22font-size:11px;font-weight:700;color:#00ff9c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px\x22>🏆\x20Sponsored\x20Prize\x20Balance</div>',_0x290c59+='<div\x20style=\x22font-size:26px;font-weight:900;color:#00ff9c\x22>₹'+_0x23abc2+'</div>',_0x290c59+='<div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:4px\x22>Sponsored\x20tournament\x20jeet\x20ke\x20kamaya\x20gaya</div>',_0x290c59+='</div>',_0x290c59+='<div\x20style=\x22background:rgba(0,212,255,.05);border:1px\x20solid\x20rgba(0,212,255,.15);border-radius:10px;padding:10px;margin-bottom:14px;font-size:11px;color:var(--txt2);line-height:1.6\x22>',_0x290c59+='✅\x20<strong\x20style=\x22color:#00d4ff\x22>Halal\x20Withdrawal</strong>\x20—\x20Ye\x20prize\x20sponsor\x20ka\x20paisa\x20hai,\x20kisi\x20bhi\x20player\x20ki\x20entry\x20fee\x20nahi.',_0x290c59+='</div>',_0x290c59+='<div\x20class=\x22f-group\x22><label>Amount\x20(₹)\x20—\x20Max\x20₹'+_0x23abc2+'</label>',_0x290c59+='<input\x20type=\x22number\x22\x20class=\x22f-input\x22\x20id=\x22wdAmt\x22\x20placeholder=\x22Amount\x20enter\x20karo\x22\x20min=\x221\x22\x20max=\x22'+_0x23abc2+'\x22></div>',_0x290c59+='<div\x20class=\x22f-group\x22><label>UPI\x20ID</label>',_0x290c59+='<input\x20type=\x22text\x22\x20class=\x22f-input\x22\x20id=\x22wdUpi\x22\x20placeholder=\x22yourname@upi\x22></div>',_0x290c59+='<button\x20class=\x22f-btn\x20fb-green\x22\x20onclick=\x22submitSponsoredWd('+_0x23abc2+')\x22><i\x20class=\x22fas\x20fa-paper-plane\x22></i>\x20Withdrawal\x20Request\x20Bhejo</button>',openModal('💰\x20Prize\x20Withdraw',_0x290c59);}(_0x558815));}function submitSponsoredWd(_0x4dc0fb){var _0x159b41=Number(($('wdAmt')||{})['value']),_0x43f410=(($('wdUpi')||{})['value']||'')['trim']();if(!_0x159b41||_0x159b41<0x1){toast('Amount\x20enter\x20karo','err');return;}if(!_0x43f410||!/^[\w.\-]{2,}@[\w]{2,}$/['test'](_0x43f410['trim']())){toast('Valid\x20UPI\x20ID\x20daalo\x20(e.g.\x20name@upi,\x20phone@paytm)','err');return;}if(_0x159b41>_0x4dc0fb){toast('Balance\x20se\x20zyada\x20nahi\x20withdraw\x20kar\x20sakte','err');return;}if(!window['_supa']||!window['_supaReady']){toast('Service\x20unavailable.\x20Try\x20again.','err');return;}window['_supa']['rpc']('submit_sponsored_withdrawal',{'p_amount':_0x159b41,'p_upi':_0x43f410['trim']()})['then'](function(_0x1a08a8){var _0x573288=_0x1a08a8&&_0x1a08a8['data'];if(_0x1a08a8&&_0x1a08a8['error']||_0x573288&&_0x573288['success']===![]){var _0x220df8=_0x573288&&_0x573288['error']||_0x1a08a8&&_0x1a08a8['error']&&_0x1a08a8['error']['message']||'Error',_0x2a0246=_0x220df8==='amount_exceeds_balance'?'Balance\x20se\x20zyada\x20nahi\x20withdraw\x20kar\x20sakte':_0x220df8==='pending_requests_exceed_balance'?'Pehle\x20wali\x20pending\x20request\x20resolve\x20hone\x20do':'Error\x20submitting.\x20Try\x20again.';toast('❌\x20'+_0x2a0246,'err');return;}closeModal(),toast('✅\x20Withdrawal\x20request\x20submit\x20ho\x20gayi!\x20Admin\x20approve\x20karega.','ok');if(window['renderWallet'])renderWallet();})['catch'](function(_0x4d17e2){toast('Error\x20submitting.\x20Try\x20again.','err');});}function submitWd(){toast('Withdrawal\x20form\x20mein\x20UPI\x20ID\x20aur\x20amount\x20bharo','ok');}function cancelWF(){$('walletFlow')['style']['display']='none',$('walletMain')['style']['display']='';try{wfScreenshot='',wfStep=0x1,wfAmt=0x0;}catch(_0x47f7cf){}_wfPreUp=null;var _0xce1e85=document['getElementById']('ssPreview');_0xce1e85&&(_0xce1e85['src']='',_0xce1e85['style']['display']='none');}function showWFStep(){$('walletMain')['style']['display']='none';var _0x30f507=$('walletFlow');_0x30f507['style']['display']='';var _0x1cc0bf='<div\x20class=\x22w-progress\x22><div\x20class=\x22w-step-dot\x20'+(wfStep>=0x1?'active':'')+'\x22>1</div><div\x20class=\x22w-step-line\x20'+(wfStep>=0x2?'done':'')+'\x22></div><div\x20class=\x22w-step-dot\x20'+(wfStep>=0x2?'active':'')+'\x22>2</div><div\x20class=\x22w-step-line\x20'+(wfStep>=0x3?'done':'')+'\x22></div><div\x20class=\x22w-step-dot\x20'+(wfStep>=0x3?'active':'')+'\x22>3</div></div>',_0x3e28f2=_0x1cc0bf;if(wfStep===0x1){_0x3e28f2+='<div\x20style=\x22font-size:16px;font-weight:700;margin-bottom:14px\x22>Enter\x20Amount</div>',_0x3e28f2+='<div\x20style=\x22background:rgba(255,68,68,.08);border:1.5px\x20solid\x20rgba(255,68,68,.35);border-radius:12px;padding:10px\x2012px;margin-bottom:14px;font-size:12px;color:#ff6b6b;line-height:1.5;text-align:left;font-weight:600\x22>⚠️\x20<strong>Withdraw\x20nahi\x20hoga</strong>\x20—\x20Sky\x20Diamonds\x20sirf\x20matches\x20khelne\x20ke\x20liye\x20hain,\x20ye\x20ek\x20non-refundable\x20in-app\x20currency\x20hai.</div>',_0x3e28f2+='<div\x20class=\x22f-group\x22><label>Amount\x20(₹)\x20—\x20Min\x20₹10</label><input\x20type=\x22number\x22\x20class=\x22f-input\x22\x20id=\x22addAmt\x22\x20placeholder=\x22Enter\x20amount\x22\x20min=\x2210\x22\x20value=\x22'+(wfAmt||'')+'\x22></div>';var _0x43775c=window['CFG']&&window['CFG']['sdPackages']||[{'label':'₹50','price':0x32},{'label':'₹99','price':0x63},{'label':'₹199','price':0xc7},{'label':'₹499','price':0x1f3}];_0x3e28f2+='<div\x20id=\x22wfMaxHint\x22\x20style=\x22font-size:10px;color:#00baf2;margin-bottom:10px;line-height:1.5\x22>'+'⚡\x20Online\x20(Paytm)\x20payment\x20sirf\x20₹'+(window['CFG']&&window['CFG']['paytmMaxTxn']||0x7d0)+'\x20tak\x20—\x20isse\x20upar\x20ke\x20liye\x20UPI/QR\x20(manual)\x20se\x20bhejo.</div>',_0x3e28f2+='<div\x20class=\x22w-amt-grid\x22>',_0x43775c['forEach'](function(_0x31b0d0){_0x3e28f2+='<div\x20class=\x22w-amt-btn\x22\x20onclick=\x22pickAmt('+_0x31b0d0['price']+')\x22>₹'+_0x31b0d0['price']+'<br><small\x20style=\x22font-size:9px;opacity:.7\x22>'+_0x31b0d0['label']+'</small></div>';}),_0x3e28f2+='</div>',_0x3e28f2+='<button\x20class=\x22f-btn\x20fb-green\x22\x20onclick=\x22wfNext()\x22>Continue\x20(Manual\x20UPI)</button>',window['CFG']&&window['CFG']['paytmEnabled']&&(_0x3e28f2+='<button\x20class=\x22f-btn\x22\x20style=\x22background:linear-gradient(135deg,#00baf2,#0095d7);color:#fff;margin-top:8px\x22\x20onclick=\x22wfPaytmPay()\x22>⚡\x20Pay\x20Instantly\x20via\x20Paytm\x20(UPI)</button>'),_0x3e28f2+='<button\x20class=\x22f-btn\x22\x20style=\x22background:var(--card2);color:var(--txt2);margin-top:8px\x22\x20onclick=\x22cancelWF()\x22>Cancel</button>';}else{if(wfStep===0x2){var _0x2edcb8=PAY['upiId']||'merchant@upi',_0x2cc453=PAY['payeeName']||'Mini\x20eSports',_0x14f907='upi://pay?pa='+_0x2edcb8+'&pn='+encodeURIComponent(_0x2cc453)+'&am='+wfAmt+'&cu=INR&tn=Mini_eSports_Wallet',_0x56d2f0='gpay://upi/pay?pa='+_0x2edcb8+'&pn='+encodeURIComponent(_0x2cc453)+'&am='+wfAmt+'&cu=INR&tn=Mini_eSports',_0x34de94='phonepe://pay?pa='+_0x2edcb8+'&pn='+encodeURIComponent(_0x2cc453)+'&am='+wfAmt+'&cu=INR&tn=Mini_eSports',_0x29db93='paytmmp://pay?pa='+_0x2edcb8+'&pn='+encodeURIComponent(_0x2cc453)+'&am='+wfAmt+'&cu=INR&tn=Mini_eSports';_0x3e28f2+='<div\x20style=\x22font-size:16px;font-weight:700;margin-bottom:14px\x22>Pay\x20₹'+wfAmt+'</div>',_0x3e28f2+='<div\x20style=\x22background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px\x22><div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px\x22>Pay\x20To</div><div\x20style=\x22font-size:15px;font-weight:800;display:flex;justify-content:space-between;align-items:center\x22>'+_0x2edcb8+'<button\x20onclick=\x22copyTxt(\x27'+_0x2edcb8+'\x27)\x22\x20style=\x22background:rgba(0,255,106,.1);border:none;color:var(--green);padding:5px\x2010px;border-radius:8px;cursor:pointer;font-size:12px\x22><i\x20class=\x22fas\x20fa-copy\x22></i></button></div><div\x20style=\x22font-size:12px;color:var(--txt2);margin-top:2px\x22>Amount:\x20<strong\x20style=\x22color:var(--green)\x22>₹'+wfAmt+'</strong></div></div>',_0x3e28f2+='<div\x20style=\x22margin-bottom:12px\x22><div\x20style=\x22font-size:11px;color:var(--txt2);margin-bottom:8px;font-weight:700\x22>⚡\x20UPI\x20INSTANT\x20—\x20App\x20Choose\x20Karo:</div>',_0x3e28f2+='<div\x20style=\x22display:grid;grid-template-columns:1fr\x201fr;gap:8px;margin-bottom:8px\x22>',_0x3e28f2+='<a\x20href=\x22'+_0x56d2f0+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(66,133,244,.12);border:1.5px\x20solid\x20rgba(66,133,244,.3);color:#4285f4;font-weight:800;font-size:13px;text-decoration:none\x22><img\x20src=\x22https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg\x22\x20style=\x22height:18px;filter:brightness(2)\x22\x20onerror=\x22this.style.display=\x27none\x27\x22>\x20Google\x20Pay</a>',_0x3e28f2+='<a\x20href=\x22'+_0x34de94+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(99,36,242,.12);border:1.5px\x20solid\x20rgba(99,36,242,.3);color:#6324f2;font-weight:800;font-size:13px;text-decoration:none\x22>💜\x20PhonePe</a>',_0x3e28f2+='<a\x20href=\x22'+_0x29db93+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(0,149,215,.12);border:1.5px\x20solid\x20rgba(0,149,215,.3);color:#0095d7;font-weight:800;font-size:13px;text-decoration:none\x22>🔵\x20Paytm</a>',_0x3e28f2+='<a\x20href=\x22'+_0x14f907+'\x22\x20style=\x22display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(0,255,106,.08);border:1.5px\x20solid\x20rgba(0,255,106,.25);color:var(--green);font-weight:800;font-size:13px;text-decoration:none\x22><i\x20class=\x22fas\x20fa-university\x22></i>\x20Any\x20UPI\x20App</a>',_0x3e28f2+='</div></div>',_0x3e28f2+='<div\x20class=\x22f-warn\x22><i\x20class=\x22fas\x20fa-info-circle\x22></i>\x20App\x20open\x20hone\x20ke\x20baad\x20payment\x20karo,\x20phir\x20\x22I\x20Have\x20Paid\x22\x20tap\x20karo.</div>',_0x3e28f2+='<button\x20class=\x22f-btn\x20fb-green\x22\x20style=\x22margin-top:12px\x22\x20onclick=\x22wfNext()\x22>✅\x20I\x20Have\x20Paid\x20→</button>',_0x3e28f2+='<button\x20class=\x22f-btn\x22\x20style=\x22background:var(--card2);color:var(--txt2);margin-top:8px\x22\x20onclick=\x22cancelWF()\x22>Cancel</button>';}else wfStep===0x3&&(_wfPreUp=null,window['_wfPreGen']=(window['_wfPreGen']||0x0)+0x1,_0x3e28f2+='<div\x20style=\x22font-size:16px;font-weight:700;margin-bottom:14px\x22>Enter\x20Transaction\x20Details</div>',_0x3e28f2+='<div\x20class=\x22f-group\x22><label>UTR\x20Number\x20(Mandatory)</label><input\x20type=\x22text\x22\x20class=\x22f-input\x22\x20id=\x22addUtr\x22\x20placeholder=\x22Enter\x20UTR\x20from\x20your\x20UPI\x20app\x22><div\x20style=\x22font-size:11px;color:var(--txt2);margin-top:4px\x22>Find\x20UTR\x20in\x20your\x20UPI\x20app\x20payment\x20history</div></div>',_0x3e28f2+='<div\x20class=\x22f-group\x22><label>Payment\x20Screenshot</label><div\x20class=\x22upload-area\x22\x20onclick=\x22$(\x27ssInput\x27).click()\x22><i\x20class=\x22fas\x20fa-cloud-upload-alt\x22\x20style=\x22display:block;font-size:28px;color:var(--txt2);margin-bottom:8px\x22></i><p>Tap\x20to\x20upload\x20screenshot</p><input\x20type=\x22file\x22\x20id=\x22ssInput\x22\x20accept=\x22image/*\x22\x20style=\x22display:none\x22\x20onchange=\x22handleSS(this)\x22></div><img\x20id=\x22ssPreview\x22\x20class=\x22upload-preview\x22\x20style=\x22display:none\x22></div>',_0x3e28f2+='<button\x20class=\x22f-btn\x20fb-green\x22\x20onclick=\x22submitAddMoney()\x22>Submit\x20for\x20Verification</button>',_0x3e28f2+='<button\x20class=\x22f-btn\x22\x20style=\x22background:var(--card2);color:var(--txt2);margin-top:8px\x22\x20onclick=\x22cancelWF()\x22>Cancel</button>');}_0x30f507['innerHTML']=_0x3e28f2;}function pickAmt(_0x32657d){var _0x7c5bef=$('addAmt');if(_0x7c5bef)_0x7c5bef['value']=_0x32657d;wfAmt=_0x32657d;}function wfNext(){if(wfStep===0x1){var _0x278616=Number(($('addAmt')||{})['value']);if(!_0x278616||_0x278616<0xa){toast('Minimum\x20₹10','err');return;}wfAmt=_0x278616;}wfStep++,showWFStep();}function wfPaytmPay(){var _0x48f43f=Number(($('addAmt')||{})['value']);if(!_0x48f43f||_0x48f43f<0xa){toast('Minimum\x20₹10','err');return;}if(window['_paytmAmountAllowed']&&!window['_paytmAmountAllowed'](_0x48f43f)){toast(window['_paytmCapMessage']?window['_paytmCapMessage'](_0x48f43f):'Online\x20payment\x20ki\x20seema\x20se\x20upar\x20hai','err');var _0x17f380=document['getElementById']('wfMaxHint');if(_0x17f380)_0x17f380['style']['display']='block';return;}if(!window['startPaytmPayment']){toast('Paytm\x20abhi\x20ready\x20nahi\x20hai,\x20app\x20update\x20karo','err');return;}wfAmt=_0x48f43f,window['startPaytmPayment'](_0x48f43f,{'onStatus':function(_0x416541,_0x1af921){if(_0x416541==='loading')toast('Order\x20ban\x20raha\x20hai...','info');else{if(_0x416541==='processing')toast('Confirm\x20ho\x20raha\x20hai...','info');else{if(_0x416541==='approved')toast('💎\x20Sky\x20Diamonds\x20add\x20ho\x20gaye!','success'),cancelWF();else{if(_0x416541==='rejected')toast('Payment\x20fail\x20ho\x20gaya','err'),cancelWF();else{if(_0x416541==='timeout')toast('Thodi\x20der\x20lag\x20rahi\x20hai\x20—\x20Wallet\x20History\x20mein\x20check\x20karo','info'),cancelWF();else _0x416541==='error'&&toast(_0x1af921||'Kuch\x20galat\x20ho\x20gaya','err');}}}}}});}function handleSS(_0x260b1a){if(!_0x260b1a['files']||!_0x260b1a['files'][0x0])return;var _0x136c70=_0x260b1a['files'][0x0];_0x260b1a['value']='';if(_0x136c70['type']&&_0x136c70['type']['indexOf']('image/')!==0x0){toast('Sirf\x20image\x20file\x20upload\x20karo!','err');return;}if(!window['compImg']){toast('Image\x20tool\x20load\x20nahi\x20hua\x20—\x20app\x20refresh\x20karo','err');return;}window['compImg'](_0x136c70,0x320,0.7,0x96,function(_0x460a07){if(!_0x460a07){toast('Screenshot\x20read\x20nahi\x20hui\x20—\x20JPG/PNG\x20dobara\x20choose\x20karo','err');return;}wfScreenshot=_0x460a07;var _0x1b63e2=$('ssPreview');_0x1b63e2&&(_0x1b63e2['src']=_0x460a07,_0x1b63e2['style']['display']='block'),_startWfPreUpload();});}var _wfPreUp=null;function _startWfPreUpload(){_wfPreUp=null;if(!wfScreenshot||!window['uploadToImgBBBase64'])return;var _0x267ee5=(window['_wfPreGen']||0x0)+0x1;window['_wfPreGen']=_0x267ee5;var _0x34ea8c={'gen':_0x267ee5,'state':'uploading','url':null,'err':null,'waiters':[]};_wfPreUp=_0x34ea8c;try{window['uploadToImgBBBase64'](wfScreenshot,'payment_proof_pre_'+Date['now'](),function(_0x58edb5,_0x400dc4){if(_wfPreUp!==_0x34ea8c)return;_0x58edb5?(_0x34ea8c['state']='error',_0x34ea8c['err']=_0x58edb5):(_0x34ea8c['state']='done',_0x34ea8c['url']=_0x400dc4);var _0x32380e=_0x34ea8c['waiters'];_0x34ea8c['waiters']=[];for(var _0x1502db=0x0;_0x1502db<_0x32380e['length'];_0x1502db++){try{_0x32380e[_0x1502db]();}catch(_0x224214){}}});}catch(_0x37470e){_0x34ea8c['state']='error',_0x34ea8c['err']=String(_0x37470e&&_0x37470e['message']||_0x37470e);}}function _wfEnsureUpload(_0x27d017,_0x2315cd,_0x2e9d40){if(!_wfPreUp&&wfScreenshot&&wfScreenshot['indexOf']('data:image/')===0x0&&window['uploadToImgBBBase64']&&!_0x27d017){_startWfPreUpload(),_wfEnsureUpload(!![],_0x2315cd,_0x2e9d40);return;}if(_wfPreUp&&_wfPreUp['state']==='done'){_0x2e9d40(null,_wfPreUp['url'],null);return;}if(_wfPreUp&&_wfPreUp['state']==='uploading'){_0x2315cd&&(_0x2315cd['disabled']=!![],_0x2315cd['textContent']='⏳\x20Screenshot\x20upload\x20ho\x20raha\x20hai…');_wfPreUp['waiters']['push'](function(){_wfEnsureUpload(_0x27d017,_0x2315cd,_0x2e9d40);});return;}if(_wfPreUp&&_wfPreUp['state']==='error'&&!_0x27d017){_startWfPreUpload(),_wfEnsureUpload(!![],_0x2315cd,_0x2e9d40);return;}var _0x5a4933=_wfPreUp&&_wfPreUp['err']||'upload\x20fail';if(wfScreenshot&&wfScreenshot['length']<0xaae60&&wfScreenshot['indexOf']('data:image/')===0x0){console['warn']('[Wallet]\x20Hosted\x20proof\x20upload\x20failed;\x20saving\x20compressed\x20proof\x20inline:',_0x5a4933),_0x2e9d40(null,null,wfScreenshot);return;}_0x2e9d40(_0x5a4933,null,null);}var _addMoneySubmitting=![];function submitAddMoney(){if(_addMoneySubmitting)return;if(!navigator['onLine']){toast('📡\x20Internet\x20nahi\x20hai.\x20Online\x20hone\x20ke\x20baad\x20try\x20karo.\x20(Paise\x20bhej\x20diye\x20to\x20screenshot\x20sambhal\x20ke\x20rakhna!)','err');return;}if(!wfScreenshot||wfScreenshot['length']<0x64){toast('Payment\x20screenshot\x20upload\x20karo\x20—\x20mandatory\x20hai!','err');return;}var _0x47a696=($('addUtr')||{})['value'];if(!_0x47a696||_0x47a696['trim']()['length']<0x6){toast('Enter\x20valid\x20UTR\x20(min\x206\x20chars)','err');return;}_0x47a696=_0x47a696['trim']()['toUpperCase'](),_addMoneySubmitting=!![];var _0x4ec84e=setTimeout(function(){_addMoneySubmitting&&(_addMoneySubmitting=![],console['warn']('[Wallet]\x20submitAddMoney:\x2060s\x20timeout,\x20resetting\x20flag'));},0xea60),_0x3a63fb=document['querySelector']('.fb-green');_0x3a63fb&&(_0x3a63fb['disabled']=!![],_0x3a63fb['textContent']='Submitting...');function _0x5872f4(_0x5881f2,_0x547342){var _0x3a43a8=_0x5881f2['substring'](0x0,0x1f4)+_0x5881f2['substring'](Math['max'](0x0,_0x5881f2['length']-0xc8))+_0x47a696+wfAmt;if(window['crypto']&&window['crypto']['subtle']){var _0x56b40f=new TextEncoder()['encode'](_0x3a43a8['substring'](0x0,0xfa0));window['crypto']['subtle']['digest']('SHA-256',_0x56b40f)['then'](function(_0x217d2d){var _0x536cd6=Array['from'](new Uint8Array(_0x217d2d))['map'](function(_0x3e578b){return _0x3e578b['toString'](0x10)['padStart'](0x2,'0');})['join']('');_0x547342('SD'+_0x536cd6['substring'](0x0,0x14)['toUpperCase']());})['catch'](function(){_0x547342(_0x1e1356(_0x3a43a8));});}else _0x547342(_0x1e1356(_0x3a43a8));}function _0x1e1356(_0x50bc64){var _0x2f531f=0x1505;for(var _0x210d3f=0x0;_0x210d3f<Math['min'](_0x50bc64['length'],0x7d0);_0x210d3f++){_0x2f531f=(_0x2f531f<<0x5)+_0x2f531f+_0x50bc64['charCodeAt'](_0x210d3f),_0x2f531f=_0x2f531f&_0x2f531f;}return'SD'+Math['abs'](_0x2f531f)['toString'](0x24)['toUpperCase']();}var _0x4b89c8=wfScreenshot||'';_0x5872f4(_0x4b89c8,function(_0x5d738c){if(!window['_supa']||!window['_supaReady']){_addMoneySubmitting=![];_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification');toast('Service\x20unavailable.\x20Try\x20again.','err');return;}Promise['all']([window['_supa']['from']('sd_requests')['select']('id,upi_ref')['eq']('upi_ref',_0x47a696)['limit'](0x1),window['_supa']['from']('sd_requests')['select']('id,img_hash')['eq']('img_hash',_0x5d738c)['limit'](0x1)])['then'](function(_0x4b3eef){var _0x121c79=_0x4b3eef[0x0]['data']&&_0x4b3eef[0x0]['data']['length']>0x0,_0x587931=_0x4b3eef[0x1]['data']&&_0x4b3eef[0x1]['data']['length']>0x0;if(_0x121c79){toast('❌\x20This\x20UTR\x20has\x20already\x20been\x20submitted!','err'),_addMoneySubmitting=![];_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification');return;}if(_0x587931){toast('❌\x20This\x20screenshot\x20was\x20already\x20used\x20in\x20a\x20previous\x20request!','err'),_addMoneySubmitting=![];_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification');return;}var _0x2989fb=(window['CFG']&&window['CFG']['sdPackages']||[])['filter'](function(_0x5bec24){return Number(_0x5bec24['price'])===Number(wfAmt);})[0x0],_0x83cbc7=_0x2989fb&&_0x2989fb['diamonds']?Number(_0x2989fb['diamonds']):Number(wfAmt);function _0xc109cd(_0x4339db){window['_supa']['from']('sd_requests')['insert']({'user_id':U['uid'],'ign':UD&&UD['ign']||'','amount_inr':wfAmt,'sd_amount':_0x83cbc7,'upi_ref':_0x47a696,'screenshot_url':_0x4339db||null,'img_hash':_0x5d738c,'status':'pending'})['then'](function(_0x4005b4){if(_0x4005b4&&_0x4005b4['error']){console['warn']('[Wallet]\x20sd_requests\x20insert\x20failed:',_0x4005b4['error']['message']),_addMoneySubmitting=![];_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification');toast('❌\x20Request\x20save\x20nahi\x20hua\x20—\x20dobara\x20try\x20karo','err');return;}window['_supa']['from']('wallet_transactions')['insert']({'user_id':U['uid'],'txn_type':'pending_deposit','currency':'sky_diamonds','amount':_0x83cbc7,'ref_id':_0x47a696,'description':'UPI\x20payment\x20pending\x20—\x20UTR:\x20'+_0x47a696})['then'](null,function(){}),_addMoneySubmitting=![],cancelWF(),toast('Payment\x20submitted\x20for\x20verification!\x20✅\x20Admin\x2024h\x20mein\x20approve\x20karega.','ok');if(window['renderWallet'])renderWallet();},function(_0x4b891c){console['warn']('[Wallet]\x20sd_requests\x20insert\x20failed:',_0x4b891c&&_0x4b891c['message']),_addMoneySubmitting=![],_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification'),toast('❌\x20Request\x20save\x20nahi\x20hua\x20—\x20dobara\x20try\x20karo','err');});}_wfEnsureUpload(![],_0x3a63fb,function(_0x34427c,_0x482198,_0xadc2a4){if(_0x34427c){console['warn']('[Wallet]\x20ImgBB\x20upload\x20error:',_0x34427c),_addMoneySubmitting=![];_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification');toast('❌\x20Screenshot\x20upload\x20failed:\x20'+_0x34427c+'\x20—\x20dobara\x20try\x20karo','err');return;}_0xc109cd(_0x482198||_0xadc2a4);});})['catch'](function(_0x53d6ec){_addMoneySubmitting=![],_0x3a63fb&&(_0x3a63fb['disabled']=![],_0x3a63fb['textContent']='Submit\x20for\x20Verification'),toast('Network\x20error.\x20Try\x20again.','err');});});}
+/* ====== WALLET ====== */
+
+function setWFilter(f) {
+  window._wFilter = f;
+  renderWallet(); // re-renders with updated filter tabs
+}
+function renderWallet() {
+  if (!UD) return;
+  // ALWAYS ensure walletMain visible, walletFlow hidden (fixes blank screen bug)
+  var wm = $('walletMain'), wf = $('walletFlow');
+  if (wm && wm.style.display === 'none') wm.style.display = '';
+  if (wf && wf.style.display !== 'none') wf.style.display = 'none';
+
+  // Null-safe balance calculation
+  var rm = UD.realMoney || { deposited: 0, winnings: 0, bonus: 0 };
+  var dep = Math.max(Number(rm.deposited) || 0, 0);
+  var win = Math.max(Number(rm.winnings) || 0, 0);
+  var bon = Math.max(Number(rm.bonus) || 0, 0);
+  var total = dep + win + bon;
+  var coins = Math.max(Number(UD.coins) || 0, 0);
+  // Sky diamonds = deposited (bought with real money)
+  var skyDia = dep;
+
+  // Update wallet UI elements
+  // BUG FIX (2026-07): wTotal/wCoins used to include the emoji prefix in
+  // the text itself, which duplicated the emoji now shown separately in
+  // the circular icon badge above each number (see index.html). The
+  // "Sky Diamonds: X | Coins: Y" breakdown line was removed too — it was
+  // redundant with the big numbers already shown in each card.
+  var wt = $('wTotal'), wc = $('wCoins');
+  if (wt) { wt.textContent = skyDia; wt.style.color = '#00d4ff'; }
+  if (wc) wc.textContent = coins;
+
+  // ALWAYS update header balance in real-time
+  if (window.updateHdr) updateHdr();
+
+  // Update green diamond count
+  var gdc = $('greenDiaCount');
+  if (gdc) {
+    var greenDia = Math.max(Number(UD.greenDiamonds)||0, 0);
+    gdc.textContent = String(greenDia);   /* ✅ D72: gem icon card art me baked hai */
+  }
+
+  // Update sponsored prize balance card
+  var sponsoredCard = $('sponsoredPrizeCard');
+  var sponsoredDisp = $('sponsoredBalDisplay');
+  if (sponsoredCard) {
+    var _sbal = Math.max(Number((UD && UD.sponsored_winnings) || 0), 0);
+    if (_sbal > 0) {
+      sponsoredCard.style.display = '';
+      if (sponsoredDisp) sponsoredDisp.textContent = '₹' + _sbal;
+    } else {
+      sponsoredCard.style.display = 'none';
+    }
+  }
+
+  var wh = $('walletHist'); if (!wh) return;
+
+  // Feature 15: Wallet Stats widget above history
+  var statsHtml = '';
+  if (window.renderWalletStats) statsHtml = window.renderWalletStats();
+
+  // Merge wallet requests (deposit/withdraw) + transactions (entry fees, winnings)
+  // ✅ DEDUPLICATION: same amount + type + timestamp (within 60s) = duplicate
+  var allTxns = [];
+  var _seen = {}; /* key → true for dedup */
+
+  function _dedupKey(src, data) {
+    /* Create a fingerprint: source + type + amount + rounded timestamp (60s bucket) */
+    var ts   = Math.floor((data.createdAt || data.timestamp || 0) / 60000); /* 60s bucket */
+    var amt  = Math.abs(Number(data.amount || data.sd_amount || data.diamonds || 0));
+    var type = (data.type || data.txn_type || data.entryType || 'tx').toLowerCase().substring(0, 8);
+    return src + '_' + type + '_' + amt + '_' + ts;
+  }
+
+  WH.forEach(function(w) {
+    var k = _dedupKey('wh', w);
+    if (_seen[k]) return; /* Skip duplicate */
+    _seen[k] = true;
+    allTxns.push({ _src: 'wh', _ts: w.createdAt || w.timestamp || 0, data: w });
+  });
+  TXNS.forEach(function(t) {
+    var k = _dedupKey('tx', t);
+    if (_seen[k]) return; /* Skip duplicate */
+    _seen[k] = true;
+    allTxns.push({ _src: 'txn', _ts: t.timestamp || 0, data: t });
+  });
+  // Synthetic entry: if green diamonds > 0 but no winning transaction, show balance entry
+  var existingWinTxn = TXNS.some(function(t) { return t.type === 'winning' || t.type === 'result'; });
+  var currentWin = Number((UD.greenDiamonds !== undefined && UD.greenDiamonds !== null)
+                     ? UD.greenDiamonds
+                     : (UD.realMoney || {}).winnings) || 0;
+  if (currentWin > 0 && !existingWinTxn) {
+    allTxns.push({ _src: 'txn', _ts: 0, data: { type: 'winning', amount: currentWin, currency: 'green_diamonds', description: 'Match Winnings (total)', timestamp: 0, _synthetic: true } });
+  }
+  allTxns.sort(function(a,b) { return b._ts - a._ts; });
+
+  if (!allTxns.length) {
+    wh.innerHTML = statsHtml + '<div style="text-align:center;color:var(--txt2);padding:20px;font-size:13px">No transactions yet</div>';
+    return;
+  }
+  // M9 Fix: 5 filter tabs — all, sky, coin, credit, debit
+  var activeFilter = (window._wFilter || 'all');
+  var filterHtml = '<div id="walletFilterRow" style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px">' +
+    ['all','sky','coin','credit','debit'].map(function(f) {
+      var labels = { all:'All', sky:'💎 Sky', coin:'🪙 Coin', credit:'📈 In', debit:'📉 Out' };
+      var colors = { credit:'rgba(0,255,156,.25)', debit:'rgba(255,107,107,.25)' };
+      var isActive = activeFilter === f;
+      var activeStyle = isActive
+        ? 'background:' + (colors[f] || 'linear-gradient(135deg,rgba(0,212,255,.25),rgba(0,212,255,.1))') + ';color:' + (f==='credit'?'#00ff9c':f==='debit'?'#ff6b6b':'#00d4ff') + ';border:1.5px solid ' + (f==='credit'?'rgba(0,255,156,.4)':f==='debit'?'rgba(255,107,107,.4)':'rgba(0,212,255,.4)') + ';'
+        : 'background:rgba(255,255,255,.04);color:#8a8a92;border:1px solid rgba(255,255,255,.07);';
+      return '<button onclick="setWFilter(\'' + f + '\')" style="flex:0 0 auto;padding:10px 12px;border-radius:10px;' + activeStyle + 'font-size:11px;font-weight:800;cursor:pointer">' + labels[f] + '</button>';
+    }).join('') + '</div>';
+  var h = filterHtml + statsHtml;
+  var _af = window._wFilter || 'all';
+  if (_af !== 'all') {
+    allTxns = allTxns.filter(function(item) {
+      var w = item.data;
+      var et = (w.entryType||w.type||w.txn_type||'').toLowerCase();
+      /* ✅ FIX: All credit-type txn_types */
+      var _CREDIT_TYPES = ['credit','match_win','admin_credit','watch_earn','daily_bonus',
+        'referral','check_in','checkin','referral_bonus','refund','match_refund',
+        'ad_reward','no_show_refund','gift_coins','bonus','winning','wallet_credit'];
+      if (_CREDIT_TYPES.indexOf(et) !== -1) w.type = 'credit';
+      var amt = Number(w.amount || w.coins || w.diamonds || 0);
+      /* M9 Fix: credit/debit filters check amount sign and txn_type */
+      if (_af === 'credit') {
+        var creditTypes = ['credit','reward','refund','win','bonus','earn','deposit','approved','add'];
+        return creditTypes.some(function(t) { return et.indexOf(t) >= 0; }) || amt > 0;
+      }
+      if (_af === 'debit') {
+        var debitTypes = ['debit','entry','join','deduct','purchase','withdraw','spend'];
+        return debitTypes.some(function(t) { return et.indexOf(t) >= 0; }) || amt < 0;
+      }
+      var cur = (w.currency || '').toLowerCase();
+      if (_af === 'sky')  return et.indexOf('diamond')>=0||et.indexOf('paid')>=0||et.indexOf('sky')>=0||et.indexOf('deposit')>=0||et.indexOf('withdraw')>=0||cur.indexOf('sky')>=0||cur.indexOf('diamond')>=0;
+      if (_af === 'coin') return et.indexOf('coin')>=0||et.indexOf('ad')>=0||et.indexOf('check')>=0||cur.indexOf('coin')>=0;
+      return true;
+    });
+  }
+  allTxns.forEach(function(item) {
+    var w = item.data;
+    if (item._src === 'wh') {
+      // Deposit/Withdrawal request
+      var isD = w.type === 'deposit' || w.type === 'add';
+      if (activeFilter === 'credit' && !isD) return;
+      if (activeFilter === 'debit' && isD) return;
+      var sc = w.status === 'approved' || w.status === 'done' ? 'whs-a' : w.status === 'rejected' ? 'whs-r' : 'whs-p';
+      var sl = w.status === 'approved' || w.status === 'done' ? 'Done' : w.status === 'rejected' ? 'Failed' : 'Pending';
+      /* ✅ FIX (2026-09-15c): "History me +💎99 dikhta hai jabki maine ₹99
+         me 120 diamonds kharide the" — the row hardcoded the 💎 icon onto
+         `w.amount`, which core/listeners.js fills from amount_INR (the
+         money paid), so a ₹99 purchase rendered as "99 diamonds": two
+         currencies mixed into one number. A deposit credits DIAMONDS
+         (sd_amount, what admin actually adds), so that is the single
+         number shown, with its own icon; only when a row has no diamond
+         amount at all (legacy data) does it fall back to the ₹ figure —
+         one currency per row, never mixed. Withdrawals are real money,
+         so they always show ₹. */
+      var _diaAmt = Math.abs(Number(w.sdAmount || w.diamonds || 0));
+      var _inrAmt = Math.abs(Number(w.amount || 0));
+      var amtTxt = isD
+        ? (_diaAmt > 0 ? '+💎' + _diaAmt : '+₹' + _inrAmt)
+        : '-₹' + _inrAmt;
+      /* ✅ FIX (R19, 2026-09-21): rejected/failed deposit को भी green "+💎120"
+         icon+amount मिलता था — misleading (पैसा credit हुआ ही नहीं)। अब failed
+         row muted-grey render होती है; red "Failed" badge पहले से था। */
+      var _fail = (w.status === 'rejected');
+      h += '<div class="wh-card"><div class="wh-icon ' + (isD ? (_fail ? 'whi-m' : 'whi-g') : 'whi-r') + '"><i class="fas fa-' + (isD ? 'arrow-up' : 'arrow-down') + '"></i></div>';
+      h += '<div class="wh-info"><div class="wh-name">' + (isD ? 'Deposit via UPI' : 'Withdrawal') + '</div>';
+      h += '<div class="wh-time">' + timeAgo(w.createdAt || w.timestamp) + '</div>';
+      if (w.utr || w.transactionId) h += '<div class="wh-utr">UTR: ' + (w.utr || w.transactionId) + '</div>';
+      h += '</div><div class="wh-amt ' + (isD ? (_fail ? 'wha-m' : 'wha-g') : 'wha-r') + '">' + amtTxt + '</div>';
+      h += '<span class="wh-status ' + sc + '">' + sl + '</span></div>';
+    } else {
+      // Internal transactions (entry fee, winnings, cashback, etc)
+      var amt2 = w.amount || 0;
+      var isCredit = amt2 > 0;
+      if (activeFilter === 'credit' && !isCredit) return;
+      if (activeFilter === 'debit' && isCredit) return;
+      var typeMap = { winning: '🏆 Prize Won', debit: '🎮 Entry Fee', credit: '💰 Bonus', cashback: '🔄 Cashback', referral: '🤝 Referral', refund: '↩️ Refund', withdraw: '📤 Withdrawal', withdrawal: '📤 Withdrawal', result: '🏆 Prize Won' };
+      /* ✅ FIX (R19, 2026-09-21): typeMap हर debit को "Entry Fee" दिखा देता था —
+         cosmetics-store से badge खरीदने पर भी "Entry Fee ⚡ BADGE-NAME" render
+         होता था (user confusion: उसे लगा entry-fee कट गई)। अब reason से
+         असली पहचान: cosmetic_purchase → Store Purchase, reward_redemption →
+         Reward Redemption. बाकी reasons पहले जैसा। */
+      var label = (w.reason === 'cosmetic_purchase') ? '🛍️ Store Purchase'
+                : (w.reason === 'reward_redemption') ? '🎁 Reward Redemption'
+                : typeMap[w.type] || w.description || w.type || 'Transaction';
+      var desc = w.description || '';
+      var iconColor = isCredit ? 'whi-g' : 'whi-r';
+      var amtColor = isCredit ? 'wha-g' : 'wha-r';
+      /* BUG FIX (2026-08): this always showed 💎 (Sky Diamond) regardless
+         of what the transaction actually moved — an ad-watch coin reward
+         (currency:'coins') showed up here as "+50 💎" even though the
+         user's coin balance is what actually went up, not their diamond
+         balance. Now picks the icon from the row's real currency field
+         (already correctly set upstream in core/listeners.js's
+         _loadTransactions — it just wasn't being read here). */
+      var _curIcon = (w.currency === 'sponsored' || w.currency === 'inr' || w.currency === 'money')
+                   ? '₹'
+                   : (w.currency === 'diamonds' || w.currency === 'sky_diamonds') ? '💎'
+                   : (w.currency === 'green_diamonds')
+                     ? '<img src="js/green-diamond.png?v=20261124a" style="width:13px;height:13px;vertical-align:middle;object-fit:contain">'
+                     : '🪙';
+      h += '<div class="wh-card"><div class="wh-icon ' + iconColor + '"><i class="fas fa-' + (isCredit ? 'coins' : 'gamepad') + '"></i></div>';
+      h += '<div class="wh-info"><div class="wh-name">' + label + '</div>';
+      h += '<div class="wh-time">' + timeAgo(w.timestamp) + '</div>';
+      if (desc && desc !== label) h += '<div class="wh-utr">' + desc + '</div>';
+      h += '</div><div class="wh-amt ' + amtColor + '">' + (isCredit ? '+' : '-') + _curIcon + Math.abs(amt2) + '</div></div>';
+    }
+  });
+  wh.innerHTML = h;
+}
+
+function startAdd() {
+  if (isVO()) { toast('Complete profile first', 'err'); return; }
+  history.pushState(null, null, null); wfStep = 1; wfAmt = 0; wfScreenshot = ''; _wfPreUp = null; showWFStep();
+}
+/* ✅ Bug 34 Fix: Email verification helper (avoids nested quote issues in onclick) */
+window._sendEmailVerif = function() {
+  if (window.auth && window.U && window.auth.currentUser) {
+    window.auth.currentUser.sendEmailVerification()
+      .then(function() { toast('Verification email bheja! Inbox check karo', 'ok'); closeModal(); })
+      .catch(function() { toast('Email bhejne mein error — try again', 'err'); });
+  }
+};
+
+function startWd() {
+  /* ✅ Bug 34 Fix: Require email verification before withdrawal */
+  var _emailVerified = (window.UD && window.UD.email_verified) ||
+                       (window.U && window.U.emailVerified) || false;
+  if (!_emailVerified) {
+    var _modalHtml = '<div style="text-align:center;padding:16px">' +
+      '<div style="font-size:32px;margin-bottom:12px">📧</div>' +
+      '<div style="font-size:14px;font-weight:800;margin-bottom:8px">Email Verify Karo</div>' +
+      '<div style="font-size:12px;color:var(--txt2);margin-bottom:16px">Withdrawal ke liye email verification zaruri hai. ' +
+      'Apni email check karo aur verification link click karo.</div>' +
+      '<button onclick="window._sendEmailVerif()" ' +
+      'style="width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,#4facfe,#00f2fe);border:none;color:#fff;font-weight:800;cursor:pointer">📧 Verification Email Bhejo</button>' +
+      '</div>';
+    if (window.openModal) window.openModal('Email Verify Karo', _modalHtml);
+    else toast('Pehle email verify karo — inbox check karo', 'err');
+    return;
+  }
+  if (isVO()) { toast('Complete profile first', 'err'); return; }
+  // ✅ HALAL: Only sponsored tournament prize winnings withdrawable
+  var sponsoredBal = Math.max(Number((UD && UD.sponsored_winnings) || 0), 0);
+  (function(sponsoredBal) {
+    if (sponsoredBal <= 0) {
+      // Show info — no sponsored winnings yet
+      var h = '<div style="text-align:center;padding:10px 0 4px">';
+      h += '<div style="font-size:48px;margin-bottom:12px">🏆</div>';
+      h += '<div style="font-size:16px;font-weight:800;margin-bottom:8px">Sponsored Prize Withdraw</div>';
+      h += '<div style="font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:16px">';
+      h += 'Filhaal aapke paas koi sponsored prize nahi hai.<br>';
+      h += '<strong style="color:#ffd700">Sirf Sponsored Tournaments</strong> ke winners<br>';
+      h += 'hi real prize withdraw kar sakte hain.';
+      h += '</div>';
+      h += '<div style="background:rgba(0,255,156,.06);border:1px solid rgba(0,255,156,.15);border-radius:12px;padding:12px;font-size:12px;color:var(--txt2);line-height:1.7">';
+      h += '✅ <strong style="color:#00ff9c">Halal System:</strong><br>';
+      h += '• Koi entry fee nahi hogi<br>';
+      h += '• Prize sponsor deta hai<br>';
+      h += '• Sirf tournament winners ko milega<br>';
+      h += '• Admin approve karega withdrawal';
+      h += '</div>';
+      h += '</div>';
+      openModal('💰 Withdraw', h);
+      return;
+    }
+    // Has sponsored winnings — show withdrawal form
+    history.pushState(null, null, null);
+    var h = '<div style="background:linear-gradient(135deg,rgba(0,255,156,.08),rgba(0,212,255,.05));border:1px solid rgba(0,255,156,.2);border-radius:12px;padding:12px;margin-bottom:14px">';
+    h += '<div style="font-size:11px;font-weight:700;color:#00ff9c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">🏆 Sponsored Prize Balance</div>';
+    h += '<div style="font-size:26px;font-weight:900;color:#00ff9c">₹' + sponsoredBal + '</div>';
+    h += '<div style="font-size:11px;color:var(--txt2);margin-top:4px">Sponsored tournament jeet ke kamaya gaya</div>';
+    h += '</div>';
+    h += '<div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:10px;margin-bottom:14px;font-size:11px;color:var(--txt2);line-height:1.6">';
+    h += '✅ <strong style="color:#00d4ff">Halal Withdrawal</strong> — Ye prize sponsor ka paisa hai, kisi bhi player ki entry fee nahi.';
+    h += '</div>';
+    h += '<div class="f-group"><label>Amount (₹) — Max ₹' + sponsoredBal + '</label>';
+    h += '<input type="number" class="f-input" id="wdAmt" placeholder="Amount enter karo" min="1" max="' + sponsoredBal + '"></div>';
+    h += '<div class="f-group"><label>UPI ID</label>';
+    h += '<input type="text" class="f-input" id="wdUpi" placeholder="yourname@upi"></div>';
+    h += '<button class="f-btn fb-green" onclick="submitSponsoredWd(' + sponsoredBal + ')"><i class="fas fa-paper-plane"></i> Withdrawal Request Bhejo</button>';
+    openModal('💰 Prize Withdraw', h);
+  }(sponsoredBal));
+}
+
+function submitSponsoredWd(maxBal) {
+  var amt = Number(($('wdAmt')||{}).value);
+  var upi = (($('wdUpi')||{}).value||'').trim();
+  if (!amt || amt < 1)   { toast('Amount enter karo', 'err'); return; }
+  if (!upi || !/^[\w.\-]{2,}@[\w]{2,}$/.test(upi.trim())) { toast('Valid UPI ID daalo (e.g. name@upi, phone@paytm)', 'err'); return; }
+  if (amt > maxBal)      { toast('Balance se zyada nahi withdraw kar sakte', 'err'); return; }
+
+  /* ✅ R5: SERVER-AUTHORITATIVE withdrawal request — ab SECDEF RPC
+     submit_sponsored_withdrawal(p_amount, p_upi) server-side balance/
+     pending-sum verify karke EXPLICIT status='pending' row banata hai.
+     Pehle client direct wallet_transactions insert karta tha (schema
+     default par rely) — ab client amount ke अलावा kuch nahi; server
+     authoritative balance + dup-guard + pending status. केवल sponsored
+     winnings withdrawable (server bhi yahi rule). */
+  if (!window._supa || !window._supaReady) { toast('Service unavailable. Try again.', 'err'); return; }
+  window._supa.rpc('submit_sponsored_withdrawal', { p_amount: amt, p_upi: upi.trim() })
+    .then(function(r) {
+      var d = r && r.data;
+      if ((r && r.error) || (d && d.success === false)) {
+        var e = (d && d.error) || ((r && r.error) && r.error.message) || 'Error';
+        var msg = e === 'amount_exceeds_balance' ? 'Balance se zyada nahi withdraw kar sakte'
+                : e === 'pending_requests_exceed_balance' ? 'Pehle wali pending request resolve hone do'
+                : 'Error submitting. Try again.';
+        toast('❌ ' + msg, 'err');
+        return;
+      }
+      closeModal();
+      toast('✅ Withdrawal request submit ho gayi! Admin approve karega.', 'ok');
+      if (window.renderWallet) renderWallet();
+    }).catch(function(e) {
+      toast('Error submitting. Try again.', 'err');
+    });
+}
+function submitWd() {
+  // Legacy stub — now handled by submitSponsoredWd()
+  toast('Withdrawal form mein UPI ID aur amount bharo', 'ok');
+}
+function cancelWF() {
+  $('walletFlow').style.display = 'none';
+  $('walletMain').style.display = '';
+  /* Bug H-1 Fix: Clear screenshot data to free memory */
+  try { wfScreenshot = ''; wfStep = 1; wfAmt = 0; } catch(e) {}
+  _wfPreUp = null; /* 15c: drop any in-flight background proof upload */
+  var prev = document.getElementById('ssPreview');
+  if (prev) { prev.src = ''; prev.style.display = 'none'; }
+}
+
+function showWFStep() {
+  $('walletMain').style.display = 'none'; var wf = $('walletFlow'); wf.style.display = '';
+  var prog = '<div class="w-progress"><div class="w-step-dot ' + (wfStep >= 1 ? 'active' : '') + '">1</div><div class="w-step-line ' + (wfStep >= 2 ? 'done' : '') + '"></div><div class="w-step-dot ' + (wfStep >= 2 ? 'active' : '') + '">2</div><div class="w-step-line ' + (wfStep >= 3 ? 'done' : '') + '"></div><div class="w-step-dot ' + (wfStep >= 3 ? 'active' : '') + '">3</div></div>';
+  var h = prog;
+  if (wfStep === 1) {
+    h += '<div style="font-size:16px;font-weight:700;margin-bottom:14px">Enter Amount</div>';
+    /* Sky Diamond non-refundable warning — moved here (2026-08) from
+       always-visible on the Wallet card to only-on-purchase-intent,
+       shown in red since it's a hard rule the buyer must acknowledge
+       right before spending money, not passive background info. */
+    h += '<div style="background:rgba(255,68,68,.08);border:1.5px solid rgba(255,68,68,.35);border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#ff6b6b;line-height:1.5;text-align:left;font-weight:600">⚠️ <strong>Withdraw nahi hoga</strong> — Sky Diamonds sirf matches khelne ke liye hain, ye ek non-refundable in-app currency hai.</div>';
+    h += '<div class="f-group"><label>Amount (₹) — Min ₹10</label><input type="number" class="f-input" id="addAmt" placeholder="Enter amount" min="10" value="' + (wfAmt || '') + '"></div>';
+    var _sdPkgs = (window.CFG && window.CFG.sdPackages) || [{label:'₹50',price:50},{label:'₹99',price:99},{label:'₹199',price:199},{label:'₹499',price:499}];
+    /* ✅ B23 (2026-10-06): online (Paytm) payment ki seema yahin saaf likh do —
+       user amount chunte waqt hi jaan le (click karne par toast bhi aata hai,
+       aur cap ke upar order banta hi nahi). Seema Settings se badalti hai. */
+    h += '<div id="wfMaxHint" style="font-size:10px;color:#00baf2;margin-bottom:10px;line-height:1.5">' +
+         '⚡ Online (Paytm) payment sirf ₹' + ((window.CFG && window.CFG.paytmMaxTxn) || 2000) +
+         ' tak — isse upar ke liye UPI/QR (manual) se bhejo.</div>';
+    h += '<div class="w-amt-grid">';
+    _sdPkgs.forEach(function(p){ h += '<div class="w-amt-btn" onclick="pickAmt('+p.price+')">₹'+p.price+'<br><small style="font-size:9px;opacity:.7">'+p.label+'</small></div>'; });
+    h += '</div>';
+    h += '<button class="f-btn fb-green" onclick="wfNext()">Continue (Manual UPI)</button>';
+    if (window.CFG && window.CFG.paytmEnabled) {
+      h += '<button class="f-btn" style="background:linear-gradient(135deg,#00baf2,#0095d7);color:#fff;margin-top:8px" onclick="wfPaytmPay()">⚡ Pay Instantly via Paytm (UPI)</button>';
+    }
+    h += '<button class="f-btn" style="background:var(--card2);color:var(--txt2);margin-top:8px" onclick="cancelWF()">Cancel</button>';
+  } else if (wfStep === 2) {
+    var upiId = PAY.upiId || 'merchant@upi', payeeName = PAY.payeeName || 'Mini eSports';
+    var upiLink = 'upi://pay?pa=' + upiId + '&pn=' + encodeURIComponent(payeeName) + '&am=' + wfAmt + '&cu=INR&tn=Mini_eSports_Wallet';
+    // UPI 2.0 deeplinks for specific apps
+    var gpayLink = 'gpay://upi/pay?pa=' + upiId + '&pn=' + encodeURIComponent(payeeName) + '&am=' + wfAmt + '&cu=INR&tn=Mini_eSports';
+    var phonepeLink = 'phonepe://pay?pa=' + upiId + '&pn=' + encodeURIComponent(payeeName) + '&am=' + wfAmt + '&cu=INR&tn=Mini_eSports';
+    var paytmLink = 'paytmmp://pay?pa=' + upiId + '&pn=' + encodeURIComponent(payeeName) + '&am=' + wfAmt + '&cu=INR&tn=Mini_eSports';
+    h += '<div style="font-size:16px;font-weight:700;margin-bottom:14px">Pay ₹' + wfAmt + '</div>';
+    h += '<div style="background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px"><div style="font-size:11px;color:var(--txt2);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Pay To</div><div style="font-size:15px;font-weight:800;display:flex;justify-content:space-between;align-items:center">' + upiId + '<button onclick="copyTxt(\'' + upiId + '\')" style="background:rgba(0,255,106,.1);border:none;color:var(--green);padding:5px 10px;border-radius:8px;cursor:pointer;font-size:12px"><i class="fas fa-copy"></i></button></div><div style="font-size:12px;color:var(--txt2);margin-top:2px">Amount: <strong style="color:var(--green)">₹' + wfAmt + '</strong></div></div>';
+    h += '<div style="margin-bottom:12px"><div style="font-size:11px;color:var(--txt2);margin-bottom:8px;font-weight:700">⚡ UPI INSTANT — App Choose Karo:</div>';
+    h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">';
+    h += '<a href="' + gpayLink + '" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(66,133,244,.12);border:1.5px solid rgba(66,133,244,.3);color:#4285f4;font-weight:800;font-size:13px;text-decoration:none"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" style="height:18px;filter:brightness(2)" onerror="this.style.display=\'none\'"> Google Pay</a>';
+    h += '<a href="' + phonepeLink + '" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(99,36,242,.12);border:1.5px solid rgba(99,36,242,.3);color:#6324f2;font-weight:800;font-size:13px;text-decoration:none">💜 PhonePe</a>';
+    h += '<a href="' + paytmLink + '" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(0,149,215,.12);border:1.5px solid rgba(0,149,215,.3);color:#0095d7;font-weight:800;font-size:13px;text-decoration:none">🔵 Paytm</a>';
+    h += '<a href="' + upiLink + '" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;background:rgba(0,255,106,.08);border:1.5px solid rgba(0,255,106,.25);color:var(--green);font-weight:800;font-size:13px;text-decoration:none"><i class="fas fa-university"></i> Any UPI App</a>';
+    h += '</div></div>';
+    h += '<div class="f-warn"><i class="fas fa-info-circle"></i> App open hone ke baad payment karo, phir "I Have Paid" tap karo.</div>';
+    h += '<button class="f-btn fb-green" style="margin-top:12px" onclick="wfNext()">✅ I Have Paid →</button>';
+    h += '<button class="f-btn" style="background:var(--card2);color:var(--txt2);margin-top:8px" onclick="cancelWF()">Cancel</button>';
+  } else if (wfStep === 3) {
+    /* ✅ FIX (2026-09-16): wfStep-3 re-renders from scratch on every
+       navigation (back/forward between steps included), so any pre-upload
+       promise from a previous visit is stale by the time Submit reads it.
+       Drop the stale handle so this step always starts clean — the upload
+       (re)kicks off the moment a screenshot is picked, exactly like
+       quick-deposit.js. */
+    _wfPreUp = null;
+    window._wfPreGen = (window._wfPreGen || 0) + 1;
+    h += '<div style="font-size:16px;font-weight:700;margin-bottom:14px">Enter Transaction Details</div>';
+    h += '<div class="f-group"><label>UTR Number (Mandatory)</label><input type="text" class="f-input" id="addUtr" placeholder="Enter UTR from your UPI app"><div style="font-size:11px;color:var(--txt2);margin-top:4px">Find UTR in your UPI app payment history</div></div>';
+    h += '<div class="f-group"><label>Payment Screenshot</label><div class="upload-area" onclick="$(\'ssInput\').click()"><i class="fas fa-cloud-upload-alt" style="display:block;font-size:28px;color:var(--txt2);margin-bottom:8px"></i><p>Tap to upload screenshot</p><input type="file" id="ssInput" accept="image/*" style="display:none" onchange="handleSS(this)"></div><img id="ssPreview" class="upload-preview" style="display:none"></div>';
+    h += '<button class="f-btn fb-green" onclick="submitAddMoney()">Submit for Verification</button>';
+    h += '<button class="f-btn" style="background:var(--card2);color:var(--txt2);margin-top:8px" onclick="cancelWF()">Cancel</button>';
+  }
+  wf.innerHTML = h;
+}
+function pickAmt(v) { var inp = $('addAmt'); if (inp) inp.value = v; wfAmt = v; }
+function wfNext() { if (wfStep === 1) { var a = Number(($('addAmt') || {}).value); if (!a || a < 10) { toast('Minimum ₹10', 'err'); return; } wfAmt = a; } wfStep++; showWFStep(); }
+/* ✅ NEW (v32.6): Paytm instant UPI checkout — manual flow (wfNext) ko
+   touch nahi karta, sirf ek alternative path hai. Balance update
+   apne aap ho jaata hai existing realtime listener (listeners.js
+   _bootUser) se — yahan manually refresh karne ki zaroorat nahi. */
+function wfPaytmPay() {
+  var a = Number(($('addAmt') || {}).value);
+  if (!a || a < 10) { toast('Minimum ₹10', 'err'); return; }
+  /* ✅ B23 (2026-10-06): online (Paytm) payment par ₹2000 ki seema — isse
+     upar wala paisa UPI/QR (manual) se hi aata hai, taki koi payment
+     atka hua (stuck) na bane. Seema Settings se badli ja sakti hai. */
+  if (window._paytmAmountAllowed && !window._paytmAmountAllowed(a)) {
+    toast(window._paytmCapMessage ? window._paytmCapMessage(a) : 'Online payment ki seema se upar hai', 'err');
+    var _hint = document.getElementById('wfMaxHint');
+    if (_hint) _hint.style.display = 'block';
+    return;
+  }
+  if (!window.startPaytmPayment) { toast('Paytm abhi ready nahi hai, app update karo', 'err'); return; }
+  wfAmt = a;
+  window.startPaytmPayment(a, {
+    onStatus: function (status, detail) {
+      if (status === 'loading') toast('Order ban raha hai...', 'info');
+      else if (status === 'processing') toast('Confirm ho raha hai...', 'info');
+      else if (status === 'approved') { toast('💎 Sky Diamonds add ho gaye!', 'success'); cancelWF(); }
+      else if (status === 'rejected') { toast('Payment fail ho gaya', 'err'); cancelWF(); }
+      else if (status === 'timeout') { toast('Thodi der lag rahi hai — Wallet History mein check karo', 'info'); cancelWF(); }
+      else if (status === 'error') { toast(detail || 'Kuch galat ho gaya', 'err'); }
+    }
+  });
+}
+function handleSS(inp) {
+  if (!inp.files || !inp.files[0]) return;
+  var _ssFile = inp.files[0];
+  /* Clear immediately so choosing the same screenshot after any failure
+     still fires onchange. */
+  inp.value = '';
+  if (_ssFile.type && _ssFile.type.indexOf('image/') !== 0) {
+    toast('Sirf image file upload karo!', 'err'); return;
+  }
+  if (!window.compImg) { toast('Image tool load nahi hua — app refresh karo', 'err'); return; }
+  window.compImg(_ssFile, 800, 0.7, 150, function(b64) {
+    if (!b64) { toast('Screenshot read nahi hui — JPG/PNG dobara choose karo', 'err'); return; }
+    wfScreenshot = b64;
+    var prev = $('ssPreview');
+    if (prev) { prev.src = b64; prev.style.display = 'block'; }
+    _startWfPreUpload();
+  });
+}
+/* ✅ FIX (2026-09-15c, SPEED): same background pre-upload as the Sky
+   Diamond modal (js/quick-deposit.js) — the ImgBB round-trip starts when
+   the screenshot is picked instead of when Submit is tapped, so the
+   submit click no longer stalls for the whole upload. Generations make
+   a re-picked screenshot invalidate the older upload. */
+var _wfPreUp = null;
+function _startWfPreUpload() {
+  _wfPreUp = null;
+  if (!wfScreenshot || !window.uploadToImgBBBase64) return;
+  var gen = (window._wfPreGen || 0) + 1; window._wfPreGen = gen;
+  var st = { gen: gen, state: 'uploading', url: null, err: null, waiters: [] };
+  _wfPreUp = st;
+  try {
+    window.uploadToImgBBBase64(wfScreenshot, 'payment_proof_pre_' + Date.now(), function(err, url) {
+      if (_wfPreUp !== st) return;
+      if (err) { st.state = 'error'; st.err = err; }
+      else     { st.state = 'done';  st.url = url; }
+      var ws = st.waiters; st.waiters = [];
+      for (var i = 0; i < ws.length; i++) { try { ws[i](); } catch (e) {} }
+    });
+  } catch (e) { st.state = 'error'; st.err = String((e && e.message) || e); }
+}
+/* cb(errOrNull, urlOrNull, inlineB64OrNull) */
+function _wfEnsureUpload(retried, btn, cb) {
+  /* ✅ FIX (2026-09-16): if no pre-upload ever started (e.g. the uploader
+     wasn't ready the moment the screenshot was picked), don't jump
+     straight to the inline fallback — actually attempt a real upload
+     first. The inline path stays as the last-resort safety net so a
+     payment proof is never lost, but only AFTER a genuine attempt. */
+  if (!_wfPreUp && wfScreenshot && wfScreenshot.indexOf('data:image/') === 0 && window.uploadToImgBBBase64 && !retried) {
+    _startWfPreUpload();
+    _wfEnsureUpload(true, btn, cb);
+    return;
+  }
+  if (_wfPreUp && _wfPreUp.state === 'done') { cb(null, _wfPreUp.url, null); return; }
+  if (_wfPreUp && _wfPreUp.state === 'uploading') {
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Screenshot upload ho raha hai…'; }
+    _wfPreUp.waiters.push(function() { _wfEnsureUpload(retried, btn, cb); });
+    return;
+  }
+  if (_wfPreUp && _wfPreUp.state === 'error' && !retried) {
+    _startWfPreUpload();
+    _wfEnsureUpload(true, btn, cb);
+    return;
+  }
+  var reason = (_wfPreUp && _wfPreUp.err) || 'upload fail';
+  if (wfScreenshot && wfScreenshot.length < 700000 && wfScreenshot.indexOf('data:image/') === 0) {
+    /* This is a successful durability fallback, not a failed payment.
+       `screenshot_url` accepts the compressed data URL and the admin panel
+       renders it directly — exactly why the proof was visible in the
+       user's screenshot despite the old warning. Keep the technical
+       failure in the console, then let the confirmed DB insert's success
+       toast be the only user-facing result. */
+    console.warn('[Wallet] Hosted proof upload failed; saving compressed proof inline:', reason);
+    cb(null, null, wfScreenshot);
+    return;
+  }
+  cb(reason, null, null);
+}
+var _addMoneySubmitting = false;
+function submitAddMoney() {
+  if (_addMoneySubmitting) return;
+  /* Cross-cutting #3 Fix: Guard offline submissions — wallet deposits need
+     server-side processing, cannot be queued for later like match joins. */
+  if (!navigator.onLine) {
+    toast('📡 Internet nahi hai. Online hone ke baad try karo. (Paise bhej diye to screenshot sambhal ke rakhna!)', 'err');
+    return;
+  }
+  if (!wfScreenshot || wfScreenshot.length < 100) { toast('Payment screenshot upload karo — mandatory hai!', 'err'); return; }
+  var utr = ($('addUtr') || {}).value;
+  if (!utr || utr.trim().length < 6) { toast('Enter valid UTR (min 6 chars)', 'err'); return; }
+  utr = utr.trim().toUpperCase(); /* Normalize UTR */
+  _addMoneySubmitting = true;
+  /* Bug #94 Fix: Auto-reset submitting flag after 60s in case of hung request */
+  var _subTimeoutGuard = setTimeout(function() {
+    if (_addMoneySubmitting) {
+      _addMoneySubmitting = false;
+      console.warn('[Wallet] submitAddMoney: 60s timeout, resetting flag');
+    }
+  }, 60000);
+  var btn = document.querySelector('.fb-green');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+
+  /* Bug 5 Fix: Use SHA-256 (crypto.subtle) — same as quick-deposit.js.
+     djb2 had collision risk; SHA-256 is collision-resistant for large user bases. */
+  function _hashScreenshot(str, cb) {
+    var data = str.substring(0, 500) + str.substring(Math.max(0, str.length - 200)) + utr + wfAmt;
+    if (window.crypto && window.crypto.subtle) {
+      var buf = new TextEncoder().encode(data.substring(0, 4000));
+      window.crypto.subtle.digest('SHA-256', buf).then(function(hashBuf) {
+        var hex = Array.from(new Uint8Array(hashBuf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+        cb('SD' + hex.substring(0, 20).toUpperCase());
+      }).catch(function() { cb(_djb2Fallback(data)); });
+    } else { cb(_djb2Fallback(data)); }
+  }
+  function _djb2Fallback(str) {
+    var hash = 5381;
+    for (var i = 0; i < Math.min(str.length, 2000); i++) {
+      hash = ((hash << 5) + hash) + str.charCodeAt(i); hash = hash & hash;
+    }
+    return 'SD' + Math.abs(hash).toString(36).toUpperCase();
+  }
+  var _scData = wfScreenshot || '';
+  _hashScreenshot(_scData, function(_imgHash) {
+
+  if (!window._supa || !window._supaReady) {
+    _addMoneySubmitting = false;
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+    toast('Service unavailable. Try again.', 'err');
+    return;
+  }
+
+  /* Check both UTR AND screenshot hash for duplicates */
+  Promise.all([
+    window._supa.from('sd_requests').select('id,upi_ref').eq('upi_ref', utr).limit(1),
+    window._supa.from('sd_requests').select('id,img_hash').eq('img_hash', _imgHash).limit(1)
+  ]).then(function(results) {
+    var utrDup = results[0].data && results[0].data.length > 0;
+    var hashDup = results[1].data && results[1].data.length > 0;
+
+    if (utrDup) {
+      toast('❌ This UTR has already been submitted!', 'err');
+      _addMoneySubmitting = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+      return;
+    }
+    if (hashDup) {
+      toast('❌ This screenshot was already used in a previous request!', 'err');
+      _addMoneySubmitting = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+      return;
+    }
+
+    /* Upload screenshot to ImgBB
+       ✅ 2026-09-15c: reuses the background pre-upload kicked off in
+       handleSS when the screenshot was picked — normally already done,
+       so Submit no longer waits on the ImgBB round-trip. */
+    var _pkgMatch = ((window.CFG && window.CFG.sdPackages) || []).filter(function(p){ return Number(p.price) === Number(wfAmt); })[0];
+    /* ✅ FIX (2026-09-15c): sd_amount used to be wfAmt — the RUPEE figure —
+       so a ₹99 package bought through this wizard was recorded (and then
+       credited by admin) as 99 diamonds instead of the package's real
+       diamond count (120). Map price → diamonds from the same live config
+       the Buy modal uses; custom amounts keep the old 1:1 semantics. */
+    var _diaAmt = (_pkgMatch && _pkgMatch.diamonds) ? Number(_pkgMatch.diamonds) : Number(wfAmt);
+    function saveRequest(screenshotUrl) {
+      /* ✅ FIX (2026-09-16): `screenshotUrl` is either an ImgBB-hosted URL
+         or, when ImgBB was unreachable, the compressed proof inline as a
+         data-URL (see _wfEnsureUpload below). Both are saved to
+         screenshot_url — the single column sd_requests (and the admin
+         panel's "Sky Diamond Requests" view) already reads for proof — so
+         the proof ALWAYS reaches admin exactly how it leaves the phone,
+         hosted or inline. */
+      window._supa.from('sd_requests').insert({
+        user_id: U.uid,
+        ign: (UD && UD.ign) || '',
+        amount_inr: wfAmt,
+        sd_amount: _diaAmt,
+        upi_ref: utr,
+        screenshot_url: screenshotUrl || null,
+        img_hash: _imgHash,
+        status: 'pending'
+      }).then(function(res) {
+        /* ✅ FIX (2026-09-15c): supabase-js v2 RESOLVES with `.error` on
+           DB/RLS failures instead of rejecting — the old single-callback
+           .then() treated those as success and toasted "submitted" while
+           nothing was saved. Both outcomes are handled now. */
+        if (res && res.error) {
+          console.warn('[Wallet] sd_requests insert failed:', res.error.message);
+          _addMoneySubmitting = false;
+          if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+          toast('❌ Request save nahi hua — dobara try karo', 'err');
+          return;
+        }
+        /* Issue #23 Fix: Also log UTR in wallet_transactions as ref_id
+           so it's queryable in Supabase admin views alongside balance changes.
+           15c: amount here is the DIAMOND count (currency sky_diamonds),
+           not the rupee figure — same currency-mixing bug as the history
+           row fixed above. */
+        window._supa.from('wallet_transactions').insert({
+          user_id: U.uid, txn_type: 'pending_deposit',
+          currency: 'sky_diamonds', amount: _diaAmt,
+          ref_id: utr,
+          description: 'UPI payment pending — UTR: ' + utr
+        }).then(null, function(){});
+        _addMoneySubmitting = false;
+        cancelWF();
+        toast('Payment submitted for verification! ✅ Admin 24h mein approve karega.', 'ok');
+        if (window.renderWallet) renderWallet();
+      }, function(e) {
+        console.warn('[Wallet] sd_requests insert failed:', e && e.message);
+        _addMoneySubmitting = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+        toast('❌ Request save nahi hua — dobara try karo', 'err');
+      });
+    }
+    _wfEnsureUpload(false, btn, function(err, url, inlineB64) {
+      if (err) {
+        console.warn('[Wallet] ImgBB upload error:', err);
+        _addMoneySubmitting = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+        toast('❌ Screenshot upload failed: ' + err + ' — dobara try karo', 'err');
+        return;
+      }
+      saveRequest(url || inlineB64);
+    });
+  }).catch(function(e) {
+    _addMoneySubmitting = false;
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit for Verification'; }
+    toast('Network error. Try again.', 'err');
+  });
+  }); // end _hashScreenshot callback (Bug 5 Fix)
+}
+/* ====== LOOT CRATE ANIMATION ====== */

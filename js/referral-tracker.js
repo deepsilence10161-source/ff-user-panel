@@ -1,1 +1,58 @@
-(function(){var _0x41c50f=(function(){var _0x361f9c=!![];return function(_0x3a351a,_0x1bd5ed){var _0x12a01e=_0x361f9c?function(){if(_0x1bd5ed){var _0x55e824=_0x1bd5ed['apply'](_0x3a351a,arguments);return _0x1bd5ed=null,_0x55e824;}}:function(){};return _0x361f9c=![],_0x12a01e;};}()),_0x3484af=_0x41c50f(this,function(){if(_0x3484af['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x3484af['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x3484af)['search']('(((.+)+)+)+$');});_0x3484af();function _0xcdd1a5(_0x8f3ef3){if(!_0x8f3ef3||!UD||!U)return;var _0x1f8d4c=UD['referralCode']||U['uid']['substring'](0x0,0x8)['toUpperCase']();db['ref']('referrals')['orderByChild']('referrerId')['equalTo'](U['uid'])['once']('value',function(_0x15b48c){var _0x16d6f8=0x0,_0xd17723=0x0,_0x56f723=0x0,_0x1bb7c7=0x0,_0x5ac5a4=[];_0x15b48c['exists']()&&_0x15b48c['forEach'](function(_0x140de4){var _0x4701a8=_0x140de4['val']();_0x16d6f8++;if(_0x4701a8['verified'])_0xd17723++,_0x1bb7c7+=_0x4701a8['reward']||0xa;else _0x56f723++;_0x5ac5a4['push'](_0x4701a8);});var _0x329488='';_0x329488+='<div\x20style=\x22display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px\x200\x22>',_0x329488+='<div\x20style=\x22background:var(--card);border:1px\x20solid\x20var(--border);border-radius:10px;padding:10px;text-align:center\x22>',_0x329488+='<div\x20style=\x22font-size:20px;font-weight:900;color:var(--green)\x22>'+_0x16d6f8+'</div>',_0x329488+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Total\x20Joined</div></div>',_0x329488+='<div\x20style=\x22background:var(--card);border:1px\x20solid\x20var(--border);border-radius:10px;padding:10px;text-align:center\x22>',_0x329488+='<div\x20style=\x22font-size:20px;font-weight:900;color:var(--yellow)\x22>'+_0x56f723+'</div>',_0x329488+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Pending</div></div>',_0x329488+='<div\x20style=\x22background:var(--card);border:1px\x20solid\x20var(--border);border-radius:10px;padding:10px;text-align:center\x22>',_0x329488+='<div\x20style=\x22font-size:20px;font-weight:900;color:var(--purple)\x22>🪙\x20'+_0x1bb7c7+'</div>',_0x329488+='<div\x20style=\x22font-size:10px;color:var(--txt2)\x22>Earned</div></div>',_0x329488+='</div>',_0x5ac5a4['length']>0x0&&(_0x329488+='<div\x20style=\x22font-size:13px;font-weight:700;margin:12px\x200\x208px;color:var(--txt2)\x22>Recent\x20Referrals</div>',_0x5ac5a4['slice'](0x0,0xa)['forEach'](function(_0x41e6df){_0x329488+='<div\x20style=\x22display:flex;align-items:center;gap:10px;padding:8px;background:var(--card);border-radius:10px;margin-bottom:6px\x22>',_0x329488+='<div\x20style=\x22width:32px;height:32px;border-radius:10px;background:rgba(185,100,255,.12);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px\x22><i\x20class=\x22fas\x20fa-user-plus\x22></i></div>',_0x329488+='<div\x20style=\x22flex:1\x22><div\x20style=\x22font-size:13px;font-weight:600\x22>'+(_0x41e6df['referredName']||'User')+'</div>',_0x329488+='<div\x20style=\x22font-size:11px;color:var(--txt2)\x22>'+timeAgo(_0x41e6df['createdAt'])+'</div></div>',_0x329488+='<div\x20style=\x22font-size:13px;font-weight:700;color:'+(_0x41e6df['verified']?'var(--green)':'var(--yellow)')+'\x22>'+(_0x41e6df['verified']?'+🪙\x2010':'⏳')+'</div>',_0x329488+='</div>';})),_0x8f3ef3['innerHTML']=_0x329488;});}window['loadReferralDashboard']=_0xcdd1a5,console['log']('[Mini\x20eSports]\x20✅\x20Feature\x207:\x20Referral\x20Tracker\x20loaded');}());
+/* ====== FEATURE 7: REAL-TIME REFERRAL DASHBOARD ====== */
+/* Enhanced referral tracking with live stats */
+
+(function() {
+  function loadReferralDashboard(container) {
+    if (!container || !UD || !U) return;
+    var myCode = UD.referralCode || U.uid.substring(0, 8).toUpperCase();
+
+    // Load referral stats
+    db.ref('referrals').orderByChild('referrerId').equalTo(U.uid).once('value', function(s) {
+      var total = 0, verified = 0, pending = 0, earned = 0;
+      var refList = [];
+
+      if (s.exists()) {
+        s.forEach(function(c) {
+          var r = c.val();
+          total++;
+          if (r.verified) { verified++; earned += (r.reward || 10); }
+          else pending++;
+          refList.push(r);
+        });
+      }
+
+      var h = '';
+      // Stats grid
+      h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0">';
+      h += '<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">';
+      h += '<div style="font-size:20px;font-weight:900;color:var(--green)">' + total + '</div>';
+      h += '<div style="font-size:10px;color:var(--txt2)">Total Joined</div></div>';
+      h += '<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">';
+      h += '<div style="font-size:20px;font-weight:900;color:var(--yellow)">' + pending + '</div>';
+      h += '<div style="font-size:10px;color:var(--txt2)">Pending</div></div>';
+      h += '<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center">';
+      h += '<div style="font-size:20px;font-weight:900;color:var(--purple)">🪙 ' + earned + '</div>';
+      h += '<div style="font-size:10px;color:var(--txt2)">Earned</div></div>';
+      h += '</div>';
+
+      // Referral list
+      if (refList.length > 0) {
+        h += '<div style="font-size:13px;font-weight:700;margin:12px 0 8px;color:var(--txt2)">Recent Referrals</div>';
+        refList.slice(0, 10).forEach(function(r) {
+          h += '<div style="display:flex;align-items:center;gap:10px;padding:8px;background:var(--card);border-radius:10px;margin-bottom:6px">';
+          h += '<div style="width:32px;height:32px;border-radius:10px;background:rgba(185,100,255,.12);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:12px"><i class="fas fa-user-plus"></i></div>';
+          h += '<div style="flex:1"><div style="font-size:13px;font-weight:600">' + (r.referredName || 'User') + '</div>';
+          h += '<div style="font-size:11px;color:var(--txt2)">' + timeAgo(r.createdAt) + '</div></div>';
+          h += '<div style="font-size:13px;font-weight:700;color:' + (r.verified ? 'var(--green)' : 'var(--yellow)') + '">' + (r.verified ? '+🪙 10' : '⏳') + '</div>';
+          h += '</div>';
+        });
+      }
+
+      container.innerHTML = h;
+    });
+  }
+
+  window.loadReferralDashboard = loadReferralDashboard;
+
+  console.log('[Mini eSports] ✅ Feature 7: Referral Tracker loaded');
+})();

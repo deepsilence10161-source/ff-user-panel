@@ -1,1 +1,303 @@
-(function(){'use strict';var _0x267ef9=(function(){var _0x4a8073=!![];return function(_0x4e1302,_0x347d2e){var _0x435ac5=_0x4a8073?function(){if(_0x347d2e){var _0x39599e=_0x347d2e['apply'](_0x4e1302,arguments);return _0x347d2e=null,_0x39599e;}}:function(){};return _0x4a8073=![],_0x435ac5;};}());var _0x23adff=0x0,_0x2ae9b1=0xfa0;function _0x2106c8(){var _0x201d02=window['doJoin'];if(!_0x201d02||window['_rateLimitPatched'])return;window['_rateLimitPatched']=!![],window['doJoin']=function(_0x2a7747){var _0x169551=Date['now'](),_0x2d254e=_0x169551-_0x23adff;if(_0x2d254e<_0x2ae9b1){var _0x2aa3d0=Math['ceil']((_0x2ae9b1-_0x2d254e)/0x3e8);if(window['toast'])window['toast']('⏳\x20Thoda\x20ruko\x20—\x20'+_0x2aa3d0+'s\x20mein\x20dobara\x20try\x20karo','err');return;}_0x23adff=_0x169551,_0x201d02['call'](this,_0x2a7747);},console['log']('[Security]\x20✅\x20Join\x20rate\x20limit\x20applied\x20(4s\x20cooldown)');}function _0x57f0c2(){if(window['_selfExclusionPatched'])return;window['_selfExclusionPatched']=!![],window['mesCheckExclusionAsync']=function(_0xfc8616){if(typeof _0xfc8616!=='function')_0xfc8616=function(){};var _0x2b7506=window['U'],_0x3d722a=window['db'];if(!_0x2b7506){_0xfc8616(![]);return;}function _0x3ccfc4(){if(!_0x3d722a){_0xfc8616(![]);return;}_0x3d722a['ref']('users/'+_0x2b7506['uid']+'/selfExcluded')['once']('value',function(_0x9bfbbd){if(!_0x9bfbbd['val']()){_0xfc8616(![]);return;}_0x3d722a['ref']('users/'+_0x2b7506['uid']+'/selfExcludedTill')['once']('value',function(_0x50bc80){var _0x4dd67a=Number(_0x50bc80['val']())||0x0;if(_0x4dd67a&&Date['now']()<_0x4dd67a){if(window['toast'])window['toast']('🚫\x20Break\x20active\x20hai\x20till\x20'+new Date(_0x4dd67a)['toLocaleDateString']('en-IN'),'err');_0xfc8616(!![]);}else _0x3d722a['ref']('users/'+_0x2b7506['uid'])['update']({'selfExcluded':![],'selfExcludedTill':null}),_0xfc8616(![]);});});}window['_supa']?window['_supa']['from']('users')['select']('is_banned,ban_reason')['eq']('id',_0x2b7506['uid'])['single']()['then'](function(_0x4e996d){if(_0x4e996d['data']&&_0x4e996d['data']['is_banned']){var _0x3185b2=_0x4e996d['data']['ban_reason']||'Admin\x20ne\x20ban\x20kiya';if(window['toast'])window['toast']('⛔\x20Account\x20banned:\x20'+_0x3185b2,'err');_0xfc8616(!![]);return;}_0x3ccfc4();})['catch'](function(){_0x3ccfc4();}):_0x3ccfc4();};var _0x287a30=window['doJoin'];if(!_0x287a30||window['_selfExcPatchDone'])return;window['_selfExcPatchDone']=!![],window['doJoin']=function(_0xfb3cac){var _0x32a7f4=_0x287a30;window['mesCheckExclusionAsync'](function(_0x3a1779){if(!_0x3a1779)_0x32a7f4['call'](window,_0xfb3cac);});},console['log']('[Security]\x20✅\x20Self-exclusion\x20live\x20DB\x20check\x20patched');}function _0x486ce7(){if(window['_offlineJoinPatched'])return;window['_offlineJoinPatched']=!![];var _0x4697d6=window['doJoin'];window['doJoin']=function(_0x146cb1){if(!navigator['onLine']){if(window['OQ']&&window['OQ']['joinMatch']){var _0x10af03=window['MT']&&window['MT'][_0x146cb1],_0x22d5c4=_0x10af03?_0x10af03['name']||'':'';window['OQ']['joinMatch'](_0x146cb1,_0x22d5c4);if(window['toast'])window['toast']('📡\x20Offline\x20—\x20join\x20request\x20queued,\x20online\x20hone\x20pe\x20submit\x20hoga','inf');}else{if(window['toast'])window['toast']('❌\x20Internet\x20nahi\x20hai,\x20baad\x20mein\x20try\x20karo','err');}return;}_0x4697d6['call'](this,_0x146cb1);},console['log']('[Security]\x20✅\x20Offline\x20join\x20routing\x20patched');}function _0x185704(){function _0x5e9e50(){var _0x414b4b=document['getElementById']('_refCodeInput');if(!_0x414b4b)return;var _0xababe9=window['UD'];if(_0xababe9&&_0xababe9['referredBy']){_0x414b4b['disabled']=!![],_0x414b4b['value']=_0xababe9['referredByCode']||'(Applied)',_0x414b4b['style']['opacity']='0.5',_0x414b4b['style']['cursor']='not-allowed',_0x414b4b['title']='Referral\x20code\x20already\x20apply\x20ho\x20chuka\x20hai';var _0x7be2bf=_0x414b4b['nextElementSibling'];while(_0x7be2bf){if(_0x7be2bf['tagName']==='BUTTON'){_0x7be2bf['style']['display']='none';break;}_0x7be2bf=_0x7be2bf['nextElementSibling'];}var _0x147a83=document['getElementById']('_refLockMsg');if(!_0x147a83){_0x147a83=document['createElement']('div'),_0x147a83['id']='_refLockMsg',_0x147a83['style']['cssText']='font-size:11px;color:#00ff9c;margin-top:4px;display:flex;align-items:center;gap:4px',_0x147a83['innerHTML']='<i\x20class=\x22fas\x20fa-lock\x22></i>\x20Referral\x20code\x20lock\x20ho\x20gaya\x20hai';try{_0x414b4b['parentNode']['insertBefore'](_0x147a83,_0x414b4b['nextSibling']);}catch(_0x50528e){}}}}var _0x1a267e=new MutationObserver(_0x5e9e50);_0x1a267e['observe'](document['body'],{'childList':!![],'subtree':!![]});var _0x20dc4e=window['afterLogin'];_0x20dc4e&&(window['afterLogin']=function(){var _0x304814=_0x20dc4e['apply'](this,arguments);return setTimeout(_0x5e9e50,0x1f4),_0x304814;}),console['log']('[Security]\x20✅\x20Referral\x20UI\x20lock\x20applied');}function _0x5d1bdc(){function _0x4eb71a(){var _0xa85cf3=window['JR'];if(!_0xa85cf3)return;Object['keys'](_0xa85cf3)['forEach'](function(_0x2b09a5){var _0x1bb23e=_0xa85cf3[_0x2b09a5];if(!_0x1bb23e||_0x1bb23e['inRoom'])return;var _0x27b6a8=document['querySelector']('[data-mid=\x22'+_0x1bb23e['matchId']+'\x22]');if(_0x27b6a8&&!_0x27b6a8['querySelector']('._inRoomWarn')){var _0x447c84=document['createElement']('div');_0x447c84['className']='_inRoomWarn',_0x447c84['style']['cssText']='font-size:10px;color:#ffaa00;margin-top:4px;display:flex;align-items:center;gap:4px',_0x447c84['innerHTML']='<i\x20class=\x22fas\x20fa-exclamation-triangle\x22></i>\x20Room\x20join\x20confirm\x20nahi\x20kiya',_0x27b6a8['appendChild'](_0x447c84);}});}var _0x4b76b4=setInterval(function(){window['JR']&&(_0x4eb71a(),clearInterval(_0x4b76b4));},0x3e8);console['log']('[Security]\x20✅\x20Room\x20confirm\x20warning\x20enforcement\x20active');}function _0xd57b39(){var _0x45c2c1=_0x267ef9(this,function(){if(_0x45c2c1['bind']()['toString']()['indexOf']('\x0a')!==-0x1)return;return _0x45c2c1['toString']()['search']('(((.+)+)+)+$')['toString']()['constructor'](_0x45c2c1)['search']('(((.+)+)+)+$');});_0x45c2c1(),_0x185704(),_0x5d1bdc();var _0x1df0f6=window['doJoin'];if(!_0x1df0f6||window['_allJoinChecksDone'])return;window['_allJoinChecksDone']=!![],window['doJoin']=function(_0x516f87){var _0x3a3908=Date['now']();if(_0x3a3908-_0x23adff<_0x2ae9b1){var _0x9cd2f0=Math['ceil']((_0x2ae9b1-(_0x3a3908-_0x23adff))/0x3e8);if(window['toast'])window['toast']('⏳\x20Thoda\x20ruko\x20—\x20'+_0x9cd2f0+'s\x20mein\x20dobara\x20try\x20karo','err');return;}_0x23adff=_0x3a3908;if(!navigator['onLine']){if(window['OQ']&&window['OQ']['joinMatch']){var _0x2969f2=window['MT']&&window['MT'][_0x516f87];window['OQ']['joinMatch'](_0x516f87,_0x2969f2?_0x2969f2['name']||'':'');if(window['toast'])window['toast']('📡\x20Offline\x20—\x20join\x20queued,\x20online\x20hone\x20pe\x20submit\x20hoga','inf');}else{if(window['toast'])window['toast']('❌\x20Internet\x20nahi\x20hai,\x20baad\x20mein\x20try\x20karo','err');}return;}var _0x1756a1=window['U'],_0x4470ef=window['db'],_0xc9c3d9=window['UD']||{};if(_0x1756a1&&_0xc9c3d9['selfExcluded']){var _0x16d024=Number(_0xc9c3d9['selfExcludedTill'])||0x0;if(_0x16d024&&Date['now']()<_0x16d024){if(window['toast'])window['toast']('🚫\x20Break\x20active\x20hai\x20till\x20'+new Date(_0x16d024)['toLocaleDateString']('en-IN'),'err');return;}if(_0x4470ef)_0x4470ef['ref']('users/'+_0x1756a1['uid'])['update']({'selfExcluded':![],'selfExcludedTill':null});}_0x2b0692(_0x516f87);};function _0x2b0692(_0x1d7760){window['checkDeviceJoin']&&window['U']?window['checkDeviceJoin'](_0x1d7760,function(_0x5c0262,_0x2d8e70){if(_0x5c0262&&_0x2d8e70&&_0x2d8e70['uid']!==window['U']['uid']){if(window['toast'])window['toast']('⚠️\x20Is\x20device\x20se\x20pehle\x20kisi\x20aur\x20ne\x20join\x20kiya\x20hai!','err');return;}_0x1df0f6['call'](window,_0x1d7760);}):_0x1df0f6['call'](window,_0x1d7760);}console['log']('[Security]\x20✅\x20Single\x20consolidated\x20doJoin\x20wrapper\x20applied\x20(all\x20checks\x20in\x20order)');}if(window['doJoin'])_0xd57b39();else var _0x46d5c3=setInterval(function(){window['doJoin']&&(clearInterval(_0x46d5c3),_0xd57b39());},0xc8);console['log']('[Mini\x20eSports]\x20✅\x20User\x20Security\x20Patches\x20loaded');}());
+/* ================================================================
+   MINI eSPORTS — USER PANEL SECURITY PATCHES
+   Fixes:
+   1. Rate limit on match join (Issue #4)
+   2. Self-exclusion DB live check (Issue #10)
+   3. Offline mode — doJoin routes to OQ (Issue #11)
+   4. Referral code UI lock after first use (Issue #6)
+   5. Room confirm enforcement before prize claim (Issue #4 admin)
+   ================================================================ */
+(function () {
+  'use strict';
+
+  /* ─────────────────────────────────────────────
+     1. RATE LIMIT ON doJoin
+     Max 1 join per 4 seconds — blocks bot scripts
+     ──────────────────────────────────────────── */
+  var _lastJoinAt = 0;
+  var JOIN_COOLDOWN_MS = 4000; // 4 seconds between joins
+
+  function applyJoinRateLimit() {
+    var origDoJoin = window.doJoin;
+    if (!origDoJoin || window._rateLimitPatched) return;
+    window._rateLimitPatched = true;
+
+    window.doJoin = function (id) {
+      var now = Date.now();
+      var elapsed = now - _lastJoinAt;
+      if (elapsed < JOIN_COOLDOWN_MS) {
+        var wait = Math.ceil((JOIN_COOLDOWN_MS - elapsed) / 1000);
+        if (window.toast) window.toast('⏳ Thoda ruko — ' + wait + 's mein dobara try karo', 'err');
+        return;
+      }
+      _lastJoinAt = now;
+      origDoJoin.call(this, id);
+    };
+    console.log('[Security] ✅ Join rate limit applied (4s cooldown)');
+  }
+
+  /* ─────────────────────────────────────────────
+     2. SELF-EXCLUSION — LIVE DB CHECK
+     UD cache ki jagah direct Firebase read
+     ──────────────────────────────────────────── */
+  function patchSelfExclusion() {
+    if (window._selfExclusionPatched) return;
+    window._selfExclusionPatched = true;
+
+    /* Bug High #8 Fix: Unified ban check reads BOTH Supabase is_banned (admin sets this)
+       AND Firebase selfExcluded (user-initiated break). Previously only Firebase was
+       checked, so admin banning a user in Supabase had no effect on join validation. */
+    window.mesCheckExclusionAsync = function (cb) {
+      if (typeof cb !== 'function') cb = function () {};
+      var U = window.U;
+      var db = window.db;
+      if (!U) { cb(false); return; }
+
+      // Step 1: Check Supabase is_banned (authoritative — set by admin)
+      function _checkFirebaseExclusion() {
+        if (!db) { cb(false); return; }
+        db.ref('users/' + U.uid + '/selfExcluded').once('value', function (s) {
+          if (!s.val()) { cb(false); return; }
+          db.ref('users/' + U.uid + '/selfExcludedTill').once('value', function (ts) {
+            var till = Number(ts.val()) || 0;
+            if (till && Date.now() < till) {
+              if (window.toast) window.toast('🚫 Break active hai till ' + new Date(till).toLocaleDateString('en-IN'), 'err');
+              cb(true);
+            } else {
+              db.ref('users/' + U.uid).update({ selfExcluded: false, selfExcludedTill: null });
+              cb(false);
+            }
+          });
+        });
+      }
+
+      if (window._supa) {
+        window._supa.from('users').select('is_banned,ban_reason').eq('id', U.uid).single()
+          .then(function(r) {
+            if (r.data && r.data.is_banned) {
+              var reason = r.data.ban_reason || 'Admin ne ban kiya';
+              if (window.toast) window.toast('⛔ Account banned: ' + reason, 'err');
+              cb(true); return;
+            }
+            // Not banned in Supabase → check Firebase self-exclusion
+            _checkFirebaseExclusion();
+          })
+          .catch(function() {
+            // Supabase unavailable → Firebase fallback only
+            _checkFirebaseExclusion();
+          });
+      } else {
+        _checkFirebaseExclusion();
+      }
+    };
+
+    // Patch doJoin to use async exclusion check
+    var origDoJoin = window.doJoin;
+    if (!origDoJoin || window._selfExcPatchDone) return;
+    window._selfExcPatchDone = true;
+
+    window.doJoin = function (id) {
+      var _orig = origDoJoin;
+      window.mesCheckExclusionAsync(function (excluded) {
+        if (!excluded) _orig.call(window, id);
+      });
+    };
+    console.log('[Security] ✅ Self-exclusion live DB check patched');
+  }
+
+  /* ─────────────────────────────────────────────
+     3. OFFLINE MODE — route doJoin to OQ
+     When navigator.onLine = false, queue the join
+     ──────────────────────────────────────────── */
+  function patchOfflineJoin() {
+    if (window._offlineJoinPatched) return;
+    window._offlineJoinPatched = true;
+
+    var origDoJoin = window.doJoin;
+    window.doJoin = function (id) {
+      if (!navigator.onLine) {
+        // Route to offline queue
+        if (window.OQ && window.OQ.joinMatch) {
+          var t = window.MT && window.MT[id];
+          var teamName = t ? (t.name || '') : '';
+          window.OQ.joinMatch(id, teamName);
+          if (window.toast) window.toast('📡 Offline — join request queued, online hone pe submit hoga', 'inf');
+        } else {
+          if (window.toast) window.toast('❌ Internet nahi hai, baad mein try karo', 'err');
+        }
+        return;
+      }
+      origDoJoin.call(this, id);
+    };
+    console.log('[Security] ✅ Offline join routing patched');
+  }
+
+  /* ─────────────────────────────────────────────
+     4. REFERRAL CODE UI LOCK
+     UD.referredBy set hai toh input disable + lock show
+     ──────────────────────────────────────────── */
+  function lockReferralUI() {
+    // Run whenever referral section renders
+    function doLock() {
+      var inp = document.getElementById('_refCodeInput');
+      if (!inp) return;
+      var UD = window.UD;
+      if (UD && UD.referredBy) {
+        inp.disabled = true;
+        inp.value = UD.referredByCode || '(Applied)';
+        inp.style.opacity = '0.5';
+        inp.style.cursor = 'not-allowed';
+        inp.title = 'Referral code already apply ho chuka hai';
+        // Hide apply button
+        var btn = inp.nextElementSibling;
+        while (btn) {
+          if (btn.tagName === 'BUTTON') { btn.style.display = 'none'; break; }
+          btn = btn.nextElementSibling;
+        }
+        // Show lock message if not already there
+        var lockMsg = document.getElementById('_refLockMsg');
+        if (!lockMsg) {
+          lockMsg = document.createElement('div');
+          lockMsg.id = '_refLockMsg';
+          lockMsg.style.cssText = 'font-size:11px;color:#00ff9c;margin-top:4px;display:flex;align-items:center;gap:4px';
+          lockMsg.innerHTML = '<i class="fas fa-lock"></i> Referral code lock ho gaya hai';
+          try{inp.parentNode.insertBefore(lockMsg, inp.nextSibling);}catch(e){}
+        }
+      }
+    }
+
+    // Observe DOM for referral input appearing
+    var obs = new MutationObserver(doLock);
+    obs.observe(document.body, { childList: true, subtree: true });
+
+    // Also run when UD is loaded
+    var _origAfterLogin = window.afterLogin;
+    if (_origAfterLogin) {
+      window.afterLogin = function () {
+        var r = _origAfterLogin.apply(this, arguments);
+        setTimeout(doLock, 500);
+        return r;
+      };
+    }
+    console.log('[Security] ✅ Referral UI lock applied');
+  }
+
+  /* ─────────────────────────────────────────────
+     5. ROOM CONFIRM ENFORCEMENT
+     Result page mein inRoom=false wale players ko
+     badge dikhao — admin ke liye warning in result table
+     (Client-side visual guard)
+     ──────────────────────────────────────────── */
+  function enforceRoomConfirmWarning() {
+    // Patch showRoomPopup / confirmInRoom to make confirm mandatory before result claim
+    // User panel: badge on match card if joined but inRoom is false
+    function addInRoomBadges() {
+      var JR = window.JR;
+      if (!JR) return;
+      Object.keys(JR).forEach(function (k) {
+        var jr = JR[k];
+        if (!jr || jr.inRoom) return;
+        // Find match card element and add badge if not present
+        var card = document.querySelector('[data-mid="' + jr.matchId + '"]');
+        if (card && !card.querySelector('._inRoomWarn')) {
+          var badge = document.createElement('div');
+          badge.className = '_inRoomWarn';
+          badge.style.cssText = 'font-size:10px;color:#ffaa00;margin-top:4px;display:flex;align-items:center;gap:4px';
+          badge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Room join confirm nahi kiya';
+          card.appendChild(badge);
+        }
+      });
+    }
+
+    // Run periodically once JR data loads
+    var _iv = setInterval(function () {
+      if (window.JR) { addInRoomBadges(); clearInterval(_iv); }
+    }, 1000);
+    console.log('[Security] ✅ Room confirm warning enforcement active');
+  }
+
+  /* ─────────────────────────────────────────────
+     APPLY ALL PATCHES — Single consolidated doJoin wrapper
+     All checks run in order inside ONE wrapper.
+     This prevents any later code from bypassing checks
+     by wrapping doJoin again.
+     ──────────────────────────────────────────── */
+  function applyAll() {
+    /* Run individual setup (non-doJoin parts) */
+    lockReferralUI();
+    enforceRoomConfirmWarning();
+
+    /* Get the ORIGINAL doJoin (before any wrapping) */
+    var _coreDoJoin = window.doJoin;
+    if (!_coreDoJoin || window._allJoinChecksDone) return;
+    window._allJoinChecksDone = true;
+
+    /* ONE definitive wrapper — checks run sequentially */
+    window.doJoin = function(id) {
+      /* ── Check 1: Rate limit ── */
+      var now = Date.now();
+      if (now - _lastJoinAt < JOIN_COOLDOWN_MS) {
+        var wait = Math.ceil((JOIN_COOLDOWN_MS - (now - _lastJoinAt)) / 1000);
+        if (window.toast) window.toast('⏳ Thoda ruko — ' + wait + 's mein dobara try karo', 'err');
+        return;
+      }
+      _lastJoinAt = now;
+
+      /* ── Check 2: Offline queue ── */
+      if (!navigator.onLine) {
+        if (window.OQ && window.OQ.joinMatch) {
+          var t = window.MT && window.MT[id];
+          window.OQ.joinMatch(id, t ? (t.name || '') : '');
+          if (window.toast) window.toast('📡 Offline — join queued, online hone pe submit hoga', 'inf');
+        } else {
+          if (window.toast) window.toast('❌ Internet nahi hai, baad mein try karo', 'err');
+        }
+        return;
+      }
+
+      /* ── Check 3: Self-exclusion (fast in-memory UD check) ── */
+      var U = window.U, db = window.db, UD = window.UD || {};
+      if (U && UD.selfExcluded) {
+        var till = Number(UD.selfExcludedTill) || 0;
+        if (till && Date.now() < till) {
+          if (window.toast) window.toast('🚫 Break active hai till ' + new Date(till).toLocaleDateString('en-IN'), 'err');
+          return;
+        }
+        if (db) db.ref('users/' + U.uid).update({ selfExcluded: false, selfExcludedTill: null });
+      }
+      _runJoin(id);
+    };
+
+    /* _runJoin: device fingerprint check then core join */
+    function _runJoin(id) {
+      /* ── Check 4: Device fingerprint anti-cheat ── */
+      if (window.checkDeviceJoin && window.U) {
+        window.checkDeviceJoin(id, function(alreadyJoined, data) {
+          if (alreadyJoined && data && data.uid !== window.U.uid) {
+            if (window.toast) window.toast('⚠️ Is device se pehle kisi aur ne join kiya hai!', 'err');
+            return;
+          }
+          _coreDoJoin.call(window, id);
+        });
+      } else {
+        _coreDoJoin.call(window, id);
+      }
+    }
+
+    console.log('[Security] ✅ Single consolidated doJoin wrapper applied (all checks in order)');
+  }
+
+  // Wait for doJoin to be defined (app.js loads before this file but async init)
+  if (window.doJoin) {
+    applyAll();
+  } else {
+    var _wait = setInterval(function () {
+      if (window.doJoin) {
+        clearInterval(_wait);
+        applyAll();
+      }
+    }, 200);
+  }
+
+  console.log('[Mini eSports] ✅ User Security Patches loaded');
+})();
