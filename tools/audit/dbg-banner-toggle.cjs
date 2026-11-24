@@ -34,6 +34,9 @@ const RUN        = process.env.RUN || 'bnrtgl2';
 const ADMIN_BASE = process.env.ADMIN_BASE || 'http://127.0.0.1:8095';
 const USER_BASE  = process.env.USER_BASE  || 'http://127.0.0.1:8092';
 const STATE_DIR  = process.env.STATE_DIR  || 'tools/tri-e2e/.state';
+/* DSF=1 → mobile contexts me deviceScaleFactor 1 (chhoti sandbox RAM me renderer
+   'Target crashed' se bachne ke liye; assertions par koi asar nahi, sirf pixels). */
+const DSF        = Number(process.env.DSF || 2);
 const SB_URL     = 'https://hddhkculuyrfoevxmlwy.supabase.co';
 const SB_KEY     = fs.readFileSync('/home/user/.secrets/supabase_service_role', 'utf8').trim();
 
@@ -66,6 +69,18 @@ async function dbRead() {
   return { flag: v.bannerChangeEnabled == null ? null : Number(v.bannerChangeEnabled), keys: Object.keys(v).length };
 }
 
+/* QA admin ka users.is_admin — admin panel ka admin-gateway shim Firebase token se
+   privileged Supabase token tabhi banata hai jab ye true ho. False hone par client
+   ANON key par reh jaata hai aur app_settings write RLS 42501 deta hai — ye APP ka
+   defect nahi, harness (QA account) ki state hai, isliye alag se check karte hain. */
+async function dbIsAdmin(uid) {
+  const r = await fetch(SB_URL + '/rest/v1/users?id=eq.' + encodeURIComponent(uid) + '&select=id,is_admin', {
+    headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY },
+  });
+  const d = await r.json();
+  return Array.isArray(d) && d.length ? !!d[0].is_admin : null;
+}
+
 /* 900x300 solid PNG (chhoti, valid image/* file) */
 function pngBuffer() {
   const b64 = 'iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FAP5FDvcfRYWgAAAAAElFTkSuQmCC';
@@ -81,6 +96,16 @@ function pngBuffer() {
   step('PHASE 0 — DB baseline');
   check('live_config.bannerChangeEnabled = 0 (owner default OFF)', base.flag === 0, 'flag=' + base.flag + ' keys=' + base.keys);
   const KEY_COUNT = base.keys;
+  const isAdm = await dbIsAdmin(state.admin.uid);
+  check('QA admin ka users.is_admin = true (admin-gateway isi se privileged token deta hai)', isAdm === true, 'uid=' + state.admin.uid + ' is_admin=' + isAdm);
+  if (isAdm !== true) {
+    console.log('\n❌ HARNESS PROBLEM (app defect NAHI): QA admin ka users.is_admin ' + isAdm + ' hai.\n' +
+      '   Admin panel ka syncFirebaseToken/admin-gateway shim tabhi privileged Supabase token\n' +
+      '   deta hai jab users.is_admin true ho; warna client anon key par rehta hai aur\n' +
+      '   app_settings write RLS 42501 (new row violates row-level security) deta hai.\n' +
+      '   Fix: update users set is_admin=true where id=\'' + state.admin.uid + '\';  (ya naya QA run banao)\n');
+    process.exit(2);
+  }
 
   const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--js-flags=--max-old-space-size=384'] });
   const PNG = pngBuffer();
@@ -135,13 +160,17 @@ function pngBuffer() {
 
   /* ══════════ USER (mobile) ══════════ */
   const ctxU = await browser.newContext({
-    viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2,
+    viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: DSF,
   });
   await ctxU.addInitScript((uid) => {
     try {
       localStorage.setItem('ffOnbV1', '1');
       localStorage.setItem('tutorialSeen', '1');
       localStorage.setItem('tutorialSeen_' + uid, '1');
+      /* referral-code popup sirf PEHLE login par aata hai (js/referral-system-fix.js
+         _refDone_<uid> dekhta hai). QA player returning user ki tarah behave kare,
+         warna screenshot me sheet/toast ke upar popup ka blur aa jaata hai. */
+      localStorage.setItem('_refDone_' + uid, '1');
     } catch (e) {}
   }, state.player.uid);
   const pu = await ctxU.newPage();
@@ -211,6 +240,9 @@ function pngBuffer() {
   check('settings sheet me label "Change Banner Photo (OFF)"', /\(OFF\)/.test(off1.row), off1.row);
   check('file input waise hi maujood (layout/DOM nahi toda)', off1.input === true);
   check('block toast dikha', off1.toasts.some(t => /Banner change abhi admin ne band kiya hai/.test(t)), JSON.stringify(off1.toasts));
+  /* D93 owner rule: update ki Asli screenshot — ye LIVE user app (Pages/APK web view) ka
+     OFF state hai: settings sheet me "Change Banner Photo (OFF)" + block toast. */
+  await pu.screenshot({ path: 'reports/release-evidence/banner-off-user-live.png' }).catch(() => {});
   check('uploader tak flow NAHI pahuncha', off1.calls === 0, 'uploadBannerImage calls=' + off1.calls);
   /* ⚠️ 2026-11-24: app boot par premium monthly-bonus claim jaisa UNRELATED rpc
      chalta hai (QA player premium hai) — isliye sirf banner/upload related rpc
@@ -241,6 +273,7 @@ function pngBuffer() {
   check('settings sheet me label wapas "Change Banner Photo" (OFF hata)', !/\(OFF\)/.test(on1.row), on1.row);
   check('block toast NAHI aaya', !on1.toasts.some(t => /band kiya hai/.test(t)), JSON.stringify(on1.toasts));
   check('uploader tak flow PAHUNCHA (stub call = 1)', on1.calls === 1, 'uploadBannerImage calls=' + on1.calls);
+  await pu.screenshot({ path: 'reports/release-evidence/banner-on-user-live.png' }).catch(() => {});  /* admin ON kare to wahi screen wapas */
 
   step('PHASE 5 — ADMIN wapas OFF (owner ka default)');
   await pa.evaluate(() => {
@@ -263,6 +296,10 @@ function pngBuffer() {
   check('user app phir block (flag 0)', off2.calls === 0 && off2.toasts.some(t => /band kiya hai/.test(t)), 'cfg=' + cfg2.flag + ' calls=' + off2.calls);
   check('label phir "(OFF)"', /\(OFF\)/.test(off2.row), off2.row);
 
+  /* user page ka kaam khatam → context band karo taaki aage ke phases (admin mobile)
+     ke liye RAM khali rahe. uerr array memory me hai, PHASE 8 me use hota rahega. */
+  await ctxU.close().catch(() => {});
+
   step('PHASE 6 — v2 App Settings ka koi toot nahi gaya');
   const v2 = await pa.evaluate(() => {
     const host = document.getElementById('appSettingsContent');
@@ -283,12 +320,22 @@ function pngBuffer() {
   check('"Save All Settings" button zinda (v2 ka apna save)', v2.saveAll);
   check('banner ids sirf hamare hain', v2.bannerIds.join(',') === 'as_bannerChangeEnabled,as_bannerChangeEnabled_lbl', v2.bannerIds.join(','));
 
+  /* desktop Save button ka size YAHIN nap lo: PHASE 7 me mobile se compare hota hai,
+     aur tab tak desktop context band ho chuka hoga (chhoti sandbox RAM ke liye). */
+  const deskBtn = await pa.evaluate(() => {
+    const b = document.getElementById('bannerToggleSave');
+    if (!b) return null;
+    const r = b.getBoundingClientRect();
+    return { h: Math.round(r.height), w: Math.round(r.width) };
+  }).catch(() => null);
+  await ctxA.close().catch(() => {});   /* desktop admin page band — RAM free (aerr array safe) */
+
   step('PHASE 7 — naya admin card MOBILE (360x800) par comfortable');
   /* ✅ 2026-11-24 fix: pehle desktop page ka viewport resize karke nap rahe the —
      admin ka mobile layout (media queries + d33-mobile-ui.js) tab apply hi nahi
      hota, isliye jhootha 240px overflow dikha. Ab ALAG mobile context
      (isMobile + hasTouch, viewport pehle se 360x800) me fresh login. */
-  const ctxM = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+  const ctxM = await browser.newContext({ viewport: { width: 360, height: 800 }, isMobile: true, hasTouch: true, deviceScaleFactor: DSF });
   const pm = await ctxM.newPage();
   const merr = [];
   pm.on('pageerror', e => merr.push(String(e.message || e).slice(0, 120)));
@@ -343,12 +390,7 @@ function pngBuffer() {
      Card ko jaan-boojh kar 44px !important se alag NAHI banaya — warna
      mobile par hamara button baaki sab admin buttons se bada dikhta. */
   check('mobile: Save button panel ke house standard ke barabar (>=38px)', mob.btnH >= 38, 'h=' + mob.btnH + ' w=' + mob.btnW + ' (admin-ui-v10.css mobile rule = 38px !important)');
-  const deskBtn = await pa.evaluate(() => {
-    const b = document.getElementById('bannerToggleSave');
-    if (!b) return null;
-    const r = b.getBoundingClientRect();
-    return { h: Math.round(r.height), w: Math.round(r.width) };
-  });
+  /* deskBtn upar (PHASE 6 ke baad) desktop context band hone se PEHLE nap liya gaya tha */
   check('desktop (1280): Save button >=44px tall (hamara inline min-height)', deskBtn && deskBtn.h >= 44, deskBtn ? 'h=' + deskBtn.h + ' w=' + deskBtn.w : 'button nahi mila');
   check('mobile: toggle switch tap-friendly (>=20px)', mob.slH >= 20 && mob.slW >= 20, 'slider h=' + mob.slH + ' w=' + mob.slW);
   check('mobile admin: koi pageerror nahi', merr.length === 0, JSON.stringify(merr.slice(0, 3)));

@@ -1249,7 +1249,17 @@ window.showProfileSettings = function() {
   h += '<div style="text-align:center;padding:14px 0 6px"><div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.18);margin:0 auto"></div></div>';
   /* Header */
   h += '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 20px 14px">';
-  h += '<div><div style="font-size:16px;font-weight:900;color:#fff">⚙️ Settings</div><div style="font-size:9px;color:#555;margin-top:2px">build 20261106d</div></div>';
+  /* ✅ 2026-11-24 fix: ye "build" tag pehle HARDCODED tha (20261106d) — har release ke
+     baad PURANA jhootha tag dikhata tha (owner ko live screenshot me pakda gaya).
+     Ab runtime par index.html ke script ?v= stamp se padhte hain; stamp na mile to
+     '?' dikhta hai, kabhi purana tag nahi. */
+  var _btag = '';
+  try {
+    var _bs = document.querySelector('script[src*="?v="]');
+    var _bm = _bs && String(_bs.src).match(/\?v=([0-9]{8}[a-z]*)/);
+    if (_bm) _btag = _bm[1];
+  } catch (e) {}
+  h += '<div><div style="font-size:16px;font-weight:900;color:#fff">⚙️ Settings</div><div style="font-size:9px;color:#555;margin-top:2px">build ' + (_btag || '?') + '</div></div>';
   h += '<div onclick="window.closeProfileSettings()" style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fas fa-times" style="font-size:13px;color:#aaa"></i></div>';
   h += '</div>';
   /* Items */

@@ -142,6 +142,10 @@ console.log('\n── TEST 3b: ek hi version stamp (index.html / sw.js / manifes
   const asset = (sw.match(/var\s+ASSET_VER\s*=\s*'([^']*)'/) || [])[1];
   const cache = (sw.match(/var\s+CACHE_VER\s*=\s*'me-v(\d+)-([^']*)'/) || [])[2];
   ok(asset === stamp, 'sw.js ASSET_VER == index.html ?v= (mile: ' + asset + ')');
+  /* 2026-11-24: profile settings sheet ka build label hardcoded stamp nahi rakh sakta
+     (purana tag jhooth bolta tha) — runtime ?v= se aana chahiye. */
+  const prof = fs.readFileSync(path.join(REPO, 'screens/profile.js'), 'utf8');
+  ok(!/build 20[0-9]{6}[a-z]<\/div>/.test(prof), 'settings sheet build label hardcoded stamp nahi (runtime ?v= se aata hai)');
   ok(cache === stamp, 'sw.js CACHE_VER == index.html ?v= (mile: ' + cache + ')');
   const man = JSON.parse(fs.readFileSync(path.join(REPO, 'manifest.json'), 'utf8'));
   const srcs = man.icons.map((i) => i.src).filter((s) => /\?v=/.test(s));
